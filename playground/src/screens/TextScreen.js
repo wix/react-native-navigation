@@ -27,6 +27,7 @@ class TextScreen extends Component {
           {this.renderTextFromFunctionInProps()}
           <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
           <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onClickSetBadge()} />
+          <Button title={'Set empty Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON_NULL} onPress={() => this.onClickSetNullBadge()} />
           <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
           <Button title={'Switch To Tab 1 by componentID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByComponentID()} />
           {/* tslint:disable-next-line:max-line-length */}
@@ -37,9 +38,26 @@ class TextScreen extends Component {
           <Button title='Show Right Side Menu' testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
           <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
           <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
+          <Button title='Dismiss modal' testID={testIDs.DISMISS_MODAL_BUTTON} onPress={this.onClickDismissModal} />
         </View>
       </Bounds>
     );
+  }
+
+  onClickSetBadge() {
+    Navigation.mergeOptions(this.props.componentId, {
+      bottomTab: {
+        badge: `TeSt`
+      }
+    });
+  }
+
+  onClickSetNullBadge() {
+    Navigation.mergeOptions(this.props.componentId, {
+      bottomTab: {
+        badge: null
+      }
+    });
   }
 
   onClickPush = async () => {
@@ -48,6 +66,10 @@ class TextScreen extends Component {
         name: 'navigation.playground.PushedScreen'
       }
     });
+  }
+
+  onClickDismissModal = () => {
+    Navigation.dismissModal(this.props.componentId);
   }
 
   onClickPop = async () => {
@@ -61,14 +83,6 @@ class TextScreen extends Component {
     return (
       <Text style={styles.h1}>{this.props.myFunction()}</Text>
     );
-  }
-
-  onClickSetBadge() {
-    Navigation.mergeOptions(this.props.componentId, {
-      bottomTab: {
-        badge: `TeSt`
-      }
-    });
   }
 
   onClickSwitchToTab() {

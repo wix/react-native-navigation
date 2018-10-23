@@ -23,9 +23,9 @@ import com.reactnativenavigation.utils.Now;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
+import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import java.util.Map;
 
@@ -61,7 +61,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setRoot(String commandId, ReadableMap rawLayoutTree, Promise promise) {
-		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree).optJSONObject("root"));
+        final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree).optJSONObject("root"));
 		handle(() -> {
             navigator().setEventEmitter(eventEmitter);
             final ViewController viewController = newLayoutFactory().create(layoutTree);
@@ -81,7 +81,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void push(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
-		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
+        final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
             navigator().push(onComponentId, viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));

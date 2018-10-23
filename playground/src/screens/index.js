@@ -26,6 +26,7 @@ const ComplexLayout = require('./ComplexLayout');
 const SearchScreen = require('./SearchScreen');
 const KeyboardScreen = require('./KeyboardScreen');
 const BottomTabSideMenuScreen = require('./complexlayouts/BottomTabSideMenuScreen');
+const FlatListScreen = require('./FlatListScreen');
 
 function registerScreens() {
   Navigation.registerComponent(`navigation.playground.CustomTransitionDestination`, () => CustomTransitionDestination);
@@ -55,6 +56,7 @@ function registerScreens() {
   Navigation.registerComponent('navigation.playground.SearchControllerScreen', () => SearchScreen);
   Navigation.registerComponent('navigation.playground.KeyboardScreen', () => KeyboardScreen);
   Navigation.registerComponent('complexLayout.bottomTabThatOpensSideMenu', () => BottomTabSideMenuScreen);
+  Navigation.registerComponent('navigation.playground.FlatListScreen', () => FlatListScreen);
 }
 
 module.exports = {

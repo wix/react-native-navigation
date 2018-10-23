@@ -5,6 +5,16 @@ const { Navigation } = require('react-native-navigation');
 const testIDs = require('../../testIDs');
 
 class BottomTabSideMenuScreen extends Component {
+  static get options() {
+    return {
+      topBar: {
+        title: {
+          text: 'test',
+        }
+      }
+    }
+  }
+
   onOpenSideMenuPress = () => {
     Navigation.mergeOptions(this.props.componentId, {
       sideMenu: {
@@ -14,6 +24,7 @@ class BottomTabSideMenuScreen extends Component {
       }
     });
   }
+
   render() {
     return (
       <View style={styles.root}>

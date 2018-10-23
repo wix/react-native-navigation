@@ -33,7 +33,8 @@ public class AnimationOptions {
                     options.id = TextParser.parse(json, key);
                     break;
                 case "enable":
-                    options.enable = BoolParser.parse(json, key);
+                case "enabled":
+                    options.enabled = BoolParser.parse(json, key);
                     break;
                 case "waitForRender":
                     options.waitForRender = BoolParser.parse(json, key);
@@ -47,26 +48,26 @@ public class AnimationOptions {
     }
 
     public Text id = new NullText();
-    public Bool enable = new NullBool();
+    public Bool enabled = new NullBool();
     public Bool waitForRender = new NullBool();
     private HashSet<ValueAnimationOptions> valueOptions = new HashSet<>();
 
     void mergeWith(AnimationOptions other) {
         if (other.id.hasValue()) id = other.id;
-        if (other.enable.hasValue()) enable = other.enable;
+        if (other.enabled.hasValue()) enabled = other.enabled;
         if (other.waitForRender.hasValue()) waitForRender = other.waitForRender;
         if (!other.valueOptions.isEmpty()) valueOptions = other.valueOptions;
     }
 
     void mergeWithDefault(AnimationOptions defaultOptions) {
         if (!id.hasValue()) id = defaultOptions.id;
-        if (!enable.hasValue()) enable = defaultOptions.enable;
+        if (!enabled.hasValue()) enabled = defaultOptions.enabled;
         if (!waitForRender.hasValue()) waitForRender = defaultOptions.waitForRender;
         if (valueOptions.isEmpty()) valueOptions = defaultOptions.valueOptions;
     }
 
     public boolean hasValue() {
-        return id.hasValue() || enable.hasValue() || waitForRender.hasValue();
+        return id.hasValue() || enabled.hasValue() || waitForRender.hasValue();
     }
 
     public AnimatorSet getAnimation(View view) {

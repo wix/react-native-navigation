@@ -7,71 +7,51 @@
 #import "RNNRootViewController.h"
 #import "RNNSplitViewController.h"
 #import "RNNNavigationButtons.h"
+#import "UIViewController+RNNOptions.h"
+#import "UINavigationController+RNNOptions.h"
 
 @implementation RNNNavigationOptions
 
-- (void)applyOn:(UIViewController *)viewController {
-	[self.topBar applyOn:viewController];
-	[self.bottomTabs applyOn:viewController];
-	[self.topTab applyOn:viewController];
-	[self.bottomTab applyOn:viewController];
-	[self.sideMenu applyOn:viewController];
-	[self.overlay applyOn:viewController];
-	[self.statusBar applyOn:viewController];
-	[self.layout applyOn:viewController];
-	[self applyOtherOptions:self on:viewController];
-}
-
-- (void)applyOnNavigationController:(UINavigationController *)navigationController {
-	[self.topBar applyOnNavigationController:navigationController];
-	[self.statusBar applyOn:navigationController];
-	[self.layout applyOn:navigationController];
-	[self.bottomTab applyOn:navigationController];
-	[self applyOtherOptions:self onNavigationController:navigationController];
-}
-
-- (void)applyOnTabBarController:(UITabBarController *)tabBarController {
-	[self.bottomTabs applyOnTabBarController:tabBarController];
-}
-
-- (void)applyOtherOptions:(RNNNavigationOptions *)options onNavigationController:(UINavigationController*)navigationController {
-	if (options.popGesture) {
-		navigationController.interactivePopGestureRecognizer.enabled = [options.popGesture boolValue];
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
 	
-	if (options.rootBackgroundImage) {
-		UIImageView* backgroundImageView = (navigationController.view.subviews.count > 0) ? navigationController.view.subviews[0] : nil;
-		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
-			backgroundImageView = [[UIImageView alloc] initWithFrame:navigationController.view.bounds];
-			[navigationController.view insertSubview:backgroundImageView atIndex:0];
-		}
-		
-		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [options.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)options.rootBackgroundImage : [RCTConvert UIImage:options.rootBackgroundImage];
-		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
-	}
+	self.topBar = [[RNNTopBarOptions alloc] initWithDict:dict[@"topBar"]];
+	self.bottomTabs = [[RNNBottomTabsOptions alloc] initWithDict:dict[@"bottomTabs"]];
+	self.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:dict[@"bottomTab"]];
+	self.topTabs = [[RNNTopTabsOptions alloc] initWithDict:dict[@"topTabs"]];
+	self.topTab = [[RNNTopTabOptions alloc] initWithDict:dict[@"topTab"]];
+	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:dict[@"sideMenu"]];
+	self.overlay = [[RNNOverlayOptions alloc] initWithDict:dict[@"overlay"]];
+	self.customTransition = [[RNNAnimationOptions alloc] initWithDict:dict[@"customTransition"]];
+	self.animations = [[RNNTransitionsOptions alloc] initWithDict:dict[@"animations"]];
+	self.statusBar = [[RNNStatusBarOptions alloc] initWithDict:dict[@"statusBar"]];
+	self.preview = [[RNNPreviewOptions alloc] initWithDict:dict[@"preview"]];
+	self.layout = [[RNNLayoutOptions alloc] initWithDict:dict[@"layout"]];
+	
+	self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
+	
+	self.backgroundImage = [ImageParser parse:dict key:@"backgroundImage"];
+	self.rootBackgroundImage = [ImageParser parse:dict key:@"rootBackgroundImage"];
+	self.modalPresentationStyle = [[Text alloc] initWithValue:dict[@"modalPresentationStyle"]];
+	self.modalTransitionStyle = [[Text alloc] initWithValue:dict[@"modalTransitionStyle"]];
+	
+	return self;
 }
 
-- (void)applyOtherOptions:(RNNNavigationOptions *)options on:(UIViewController*)viewController {
-	if (options.backgroundImage) {
-		UIImageView* backgroundImageView = (viewController.view.subviews.count > 0) ? viewController.view.subviews[0] : nil;
-		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
-			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
-			[viewController.view insertSubview:backgroundImageView atIndex:0];
-		}
-		
-		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [options.backgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)options.backgroundImage : [RCTConvert UIImage:options.backgroundImage];
-		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
-	}
+- (instancetype)initEmptyOptions {
+	self = [self initWithDict:@{}];
+	return self;
+}
 
-	if (options.modalPresentationStyle) {
-		viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:options.modalPresentationStyle];
-		[viewController.view setBackgroundColor:[UIColor clearColor]];
-	}
-	if (options.modalTransitionStyle) {
-		viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:options.modalTransitionStyle];
-	}
+- (RNNOptions *)copy {
+	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
+	[newOptions overrideOptions:self];
+	
+	return newOptions;
+}
+
+- (RNNNavigationOptions *)withDefault:(RNNNavigationOptions *)defaultOptions {
+	return (RNNNavigationOptions *)[super withDefault:defaultOptions];
 }
 
 @end

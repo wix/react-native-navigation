@@ -27,7 +27,7 @@ public class BottomTabFinder {
     @IntRange(from = -1)
     public int findByControllerId(String id) {
         for (int i = 0; i < tabs.size(); i++) {
-            if (tabs.get(i).findControllerById(id) != null) {
+            if (tabs.get(i).findController(id) != null) {
                 return i;
             }
         }

@@ -9,7 +9,7 @@ describe('screen style', () => {
     await device.relaunchApp();
   });
 
-  test('declare a options on component component', async () => {
+  test('declare options on a component', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementByLabel('Static Title')).toBeVisible();
   });
@@ -56,6 +56,20 @@ describe('screen style', () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await elementById(testIDs.SET_TAB_BADGE_BUTTON).tap();
     await expect(element(by.text('TeSt'))).toBeVisible();
+  });
+
+  test('set Tab Bar badge on a current Tab appear once', async () => {
+    await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
+    await elementById(testIDs.SET_TAB_BADGE_BUTTON).tap();
+    await expect(element(by.text('TeSt'))).toBeVisible();
+  });
+
+  test(':ios: set Tab Bar badge null on a current Tab should reset badge', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.SET_TAB_BADGE_BUTTON).tap();
+    await expect(element(by.text('TeSt'))).toBeVisible();
+    await elementById(testIDs.SET_TAB_BADGE_BUTTON_NULL).tap();
+    await expect(element(by.text('TeSt'))).toBeNotVisible();
   });
 
   test(':android: hide Tab Bar', async () => {

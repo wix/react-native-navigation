@@ -1,13 +1,14 @@
 #import <UIKit/UIKit.h>
 #import "RNNParentProtocol.h"
 #import "RNNNavigationControllerPresenter.h"
-#import "RNNParentOptionsResolver.h"
+#import "UINavigationController+RNNOptions.h"
 
 @interface RNNNavigationController : UINavigationController <RNNParentProtocol>
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, retain) RNNNavigationControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNParentOptionsResolver* optionsResolver;
+
+- (void)setTopBarBackgroundColor:(UIColor *)backgroundColor;
 
 @end

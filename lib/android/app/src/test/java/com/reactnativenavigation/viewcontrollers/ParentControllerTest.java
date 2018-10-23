@@ -10,7 +10,7 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.ReactComponent;
@@ -36,7 +36,7 @@ public class ParentControllerTest extends BaseTest {
     private ChildControllersRegistry childRegistry;
     private List<ViewController> children;
     private ParentController uut;
-    private OptionsPresenter presenter;
+    private Presenter presenter;
 
     @Override
     public void beforeEach() {
@@ -46,7 +46,7 @@ public class ParentControllerTest extends BaseTest {
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        presenter = spy(new OptionsPresenter(activity, new Options()));
+        presenter = spy(new Presenter(activity, new Options()));
         uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
 
             @Override
@@ -95,8 +95,8 @@ public class ParentControllerTest extends BaseTest {
         children.add(child1);
         children.add(child2);
 
-        assertThat(uut.findControllerById("uut")).isEqualTo(uut);
-        assertThat(uut.findControllerById("child1")).isEqualTo(child1);
+        assertThat(uut.findController("uut")).isEqualTo(uut);
+        assertThat(uut.findController("child1")).isEqualTo(child1);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class ParentControllerTest extends BaseTest {
         stackController.push(child2, new CommandListenerAdapter());
         children.add(stackController);
 
-        assertThat(uut.findControllerById("child2")).isEqualTo(child2);
+        assertThat(uut.findController("child2")).isEqualTo(child2);
     }
 
     @Test
@@ -194,7 +194,13 @@ public class ParentControllerTest extends BaseTest {
     public void resolveCurrentOptions_mergesWithCurrentChild() {
         ViewController child1 = Mockito.mock(ViewController.class);
         when(child1.getView()).thenReturn(new FrameLayout(activity));
-        Options childOptions = spy(new Options());
+        Options copiedChildOptions = spy(new Options());
+        Options childOptions = spy(new Options() {
+            @Override
+            public Options copy() {
+                return copiedChildOptions;
+            }
+        });
         when(child1.resolveCurrentOptions()).thenReturn(childOptions);
 
         children.add(child1);
@@ -203,7 +209,7 @@ public class ParentControllerTest extends BaseTest {
         assertThat(uut.getCurrentChild()).isEqualTo(child1);
         uut.resolveCurrentOptions();
         verify(child1).resolveCurrentOptions();
-        verify(childOptions).mergeWith(uut.initialOptions);
+        verify(copiedChildOptions).withDefaultOptions(uut.initialOptions);
     }
 
     @Test

@@ -2,10 +2,12 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -45,5 +47,21 @@ public class BottomTabs extends AHBottomNavigation {
     @Override
     public void setTitleState(TitleState titleState) {
         if (getTitleState() != titleState) super.setTitleState(titleState);
+    }
+
+    public void setText(int index, String text) {
+        AHBottomNavigationItem item = getItem(index);
+        if (!item.getTitle(getContext()).equals(text)) {
+            item.setTitle(text);
+            refresh();
+        }
+    }
+
+    public void setIcon(int index, Drawable icon) {
+        AHBottomNavigationItem item = getItem(index);
+        if (!item.getDrawable(getContext()).equals(icon)) {
+            item.setDrawable(icon);
+            refresh();
+        }
     }
 }

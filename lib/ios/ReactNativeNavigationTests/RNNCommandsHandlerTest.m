@@ -40,7 +40,7 @@
 	[super setUp];
 //	[self.store setReadyToReceiveCommands:true];
 	self.store = [[RNNStore alloc] init];
-	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:nil eventEmitter:nil];
+	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:[[RNNControllerFactory alloc] initWithRootViewCreator:nil store:self.store eventEmitter:nil andBridge:nil] eventEmitter:nil];
 	self.vc1 = [RNNRootViewController new];
 	self.vc2 = [RNNRootViewController new];
 	self.vc3 = [RNNRootViewController new];
@@ -95,16 +95,14 @@
 
 -(void)testDynamicStylesMergeWithStaticStyles {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
-	initialOptions.topBar.title.text = @"the title";
+	initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"the title"];
 	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
 	RNNTestRootViewCreator* creator = [[RNNTestRootViewCreator alloc] init];
 	
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions];
 	
-	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
-	nav.presenter = [[RNNNavigationControllerPresenter alloc] init];
-	nav.options = initialOptions;
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[vc] options:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[[RNNNavigationControllerPresenter alloc] init]];
 	
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
@@ -123,7 +121,7 @@
 
 - (void)testMergeOptions_shouldOverrideOptions {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
-	initialOptions.topBar.title.text = @"the title";
+	initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"the title"];
 	
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil presenter:presenter options:initialOptions];
