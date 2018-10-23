@@ -3,6 +3,7 @@
 #import "UITabBarController+RNNOptions.h"
 #import "RNNNavigationButtons.h"
 #import "RCTConvert+Modal.h"
+#import "RNNReactView.h"
 
 @interface RNNViewControllerPresenter()
 @property (nonatomic, strong) RNNNavigationButtons* navigationButtons;
@@ -23,6 +24,7 @@
 	[viewController rnn_setStatusBarBlur:[options.statusBar.blur getWithDefaultValue:NO]];
 	[viewController rnn_setStatusBarStyle:[options.statusBar.style getWithDefaultValue:@"default"] animated:[options.statusBar.animate getWithDefaultValue:YES]];
 	[viewController rnn_setBackButtonVisible:[options.topBar.backButton.visible getWithDefaultValue:YES]];
+	[viewController rnn_setInterceptTouchOutside:[options.overlay.interceptTouchOutside getWithDefaultValue:YES]];
 
 	if (options.layout.backgroundColor.hasValue) {
 		[viewController rnn_setBackgroundColor:options.layout.backgroundColor.get];
@@ -116,6 +118,11 @@
 		RNNNavigationOptions* buttonsResolvedOptions = (RNNNavigationOptions *)[[resolvedOptions overrideOptions:options] withDefault:self.defaultOptions];
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:buttonsResolvedOptions.topBar.leftButtonStyle defaultRightButtonStyle:buttonsResolvedOptions.topBar.rightButtonStyle];
+	}
+	
+	if (options.overlay.interceptTouchOutside.hasValue) {
+		RCTRootView* rootView = (RCTRootView*)viewController.view;
+		rootView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
 	}
 }
 

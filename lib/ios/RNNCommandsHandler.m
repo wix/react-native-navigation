@@ -1,7 +1,4 @@
 #import "RNNCommandsHandler.h"
-#import "RNNModalManager.h"
-#import "RNNNavigationStackManager.h"
-#import "RNNOverlayManager.h"
 #import "RNNNavigationOptions.h"
 #import "RNNRootViewController.h"
 #import "RNNSplitViewController.h"
@@ -33,21 +30,23 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 @implementation RNNCommandsHandler {
 	RNNControllerFactory *_controllerFactory;
 	RNNStore *_store;
+	RNNStore *_overlayStore;
 	RNNModalManager* _modalManager;
 	RNNOverlayManager* _overlayManager;
 	RNNNavigationStackManager* _stackManager;
 	RNNEventEmitter* _eventEmitter;
 }
 
-- (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter {
+- (instancetype)initWithStore:(RNNStore*)store overlayStore:(RNNStore*)overlayStore controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager {
 	self = [super init];
 	_store = store;
+	_overlayStore = overlayStore;
 	_controllerFactory = controllerFactory;
 	_eventEmitter = eventEmitter;
-	_modalManager = [[RNNModalManager alloc] init];
+	_modalManager = modalManager;
 	_modalManager.delegate = self;
-	_stackManager = [[RNNNavigationStackManager alloc] init];
-	_overlayManager = [[RNNOverlayManager alloc] init];
+	_stackManager = stackManager;
+	_overlayManager = overlayManager;
 	return self;
 }
 
@@ -59,7 +58,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_modalManager dismissAllModalsAnimated:NO];
 	[_store removeAllComponents];
 	
-	UIViewController *vc = [_controllerFactory createLayoutAndSaveToStore:layout[@"root"]];
+	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
 	
 	UIApplication.sharedApplication.delegate.window.rootViewController = vc;
 	[UIApplication.sharedApplication.delegate.window makeKeyWindow];
@@ -97,7 +96,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
-	UIViewController<RNNLayoutProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
+	UIViewController<RNNLayoutProtocol> *newVc = [_controllerFactory createLayout:layout saveToStore:_store];
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	
 	if ([newVc.options.preview.reactTag floatValue] > 0) {
@@ -154,7 +153,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
-	UIViewController<RNNParentProtocol> *newVC = [_controllerFactory createLayoutAndSaveToStore:layout];
+	UIViewController<RNNParentProtocol> *newVC = [_controllerFactory createLayout:layout saveToStore:_store];
 	RNNNavigationOptions* options = [newVC getCurrentChild].options;
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
@@ -229,7 +228,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)showModal:(NSDictionary*)layout completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
+	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayout:layout saveToStore:_store];
 	
 	[newVc.getCurrentChild waitForReactViewRender:newVc.getCurrentChild.options.animations.showModal.waitForRender perform:^{
 		[_modalManager showModal:newVc animated:newVc.getCurrentChild.options.animations.showModal.enable hasCustomAnimation:newVc.getCurrentChild.options.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
@@ -281,7 +280,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayoutAndSaveToStore:layout];
+	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayout:layout saveToStore:_overlayStore];
 	[_overlayManager showOverlay:overlayVC];
 	[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
 	completion();
@@ -289,7 +288,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	[self assertReady];
-	UIViewController* viewController = [_store findComponentForId:componentId];
+	UIViewController* viewController = [_overlayStore findComponentForId:componentId];
 	if (viewController) {
 		[_overlayManager dismissOverlay:viewController];
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissOverlay params:@{@"componentId": componentId}];

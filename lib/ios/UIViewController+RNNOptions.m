@@ -1,4 +1,6 @@
 #import "UIViewController+RNNOptions.h"
+#import <React/RCTRootView.h>
+
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
 
@@ -148,5 +150,11 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	return NO;
 }
 
+- (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside {
+	if ([self.view isKindOfClass:[RCTRootView class]]) {
+		RCTRootView* rootView = (RCTRootView*)self.view;
+		rootView.passThroughTouches = !interceptTouchOutside;
+	}
+}
 
 @end
