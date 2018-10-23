@@ -30,7 +30,8 @@
 	[[self.bindedViewController expect] setAnimationVelocityRight:840.0f];
 	[[self.bindedViewController reject] side:MMDrawerSideLeft width:0];
 	[[self.bindedViewController reject] side:MMDrawerSideRight width:0];
-	
+  [[self.bindedViewController expect] setAnimationType:@"door"];
+    
 	[self.uut applyOptions:self.options];
 
 	[self.bindedViewController verify];

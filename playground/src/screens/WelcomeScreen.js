@@ -23,7 +23,10 @@ class WelcomeScreen extends Component {
           visible: false,
         },
         drawBehind: true,
-        visible: false,
+        background: {
+          color: 'transparent'
+        },
+        visible: true,
         animate: false
       }
     };

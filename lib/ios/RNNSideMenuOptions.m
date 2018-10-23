@@ -8,6 +8,7 @@
 	
 	self.left = [[RNNSideMenuSideOptions alloc] initWithDict:dict[@"left"]];
 	self.right = [[RNNSideMenuSideOptions alloc] initWithDict:dict[@"right"]];
+	self.animationType = [TextParser parse:dict key:@"animationType"];
 	
 	return self;
 }

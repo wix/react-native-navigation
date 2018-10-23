@@ -1,8 +1,8 @@
 const _ = require('lodash');
 const React = require('react');
-const { Component } = require('react');
-const { View, Text, Platform } = require('react-native');
-const { Navigation } = require('react-native-navigation');
+const {Component} = require('react');
+const {View, Text, Platform} = require('react-native');
+const {Navigation} = require('react-native-navigation');
 const Button = require('./Button');
 const testIDs = require('../testIDs');
 
@@ -21,6 +21,7 @@ class PushedScreen extends Component {
           testID: testIDs.TOP_BAR_BUTTON
         },
         rightButtonColor: 'red',
+       noBorder: true
       },
       bottomTabs: {
         visible: false
@@ -40,7 +41,7 @@ class PushedScreen extends Component {
     this.onClickPopToFirstPosition = this.onClickPopToFirstPosition.bind(this);
     this.onClickPopToRoot = this.onClickPopToRoot.bind(this);
     this.onClickSetStackRoot = this.onClickSetStackRoot.bind(this);
-    this.state = { disabled: false };
+    this.state = {disabled: false};
   }
 
   simulateLongRunningTask() {
@@ -54,7 +55,7 @@ class PushedScreen extends Component {
     this.listeners.push(
       Navigation.events().registerComponentDidAppearListener((event) => {
         if (this.state.previewComponentId === event.componentId) {
-          this.setState({ disabled: event.type === 'ComponentDidAppear' });
+          this.setState({disabled: event.type === 'ComponentDidAppear'});
         }
       })
     );
@@ -94,7 +95,7 @@ class PushedScreen extends Component {
     );
   }
 
-  onClickShowPreview = async ({ reactTag }) => {
+  onClickShowPreview = async ({reactTag}) => {
     await Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.PushedScreen',
