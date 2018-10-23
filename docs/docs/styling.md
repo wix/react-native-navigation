@@ -187,6 +187,14 @@ Navigation.mergeOptions(this.props.componentId, {
       color: 'red',
       fontFamily: 'Helvetica'
     },
+    leftButtonStyle: {
+      color: 'red',
+      disabledColor: 'black'
+    },
+    rightButtonStyle: {
+      color: 'red',
+      disabledColor: 'black'
+    },
   },
   sideMenu: {
     left: {
