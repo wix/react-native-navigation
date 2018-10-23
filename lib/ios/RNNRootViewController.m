@@ -164,10 +164,10 @@
 
 - (void)setCustomNavigationTitleView {
 	if (!_customTitleView && _isBeingPresented) {
-		if (self.options.topBar.title.component.name.hasValue) {
-			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
+		if (self.optionsWithDefault.topBar.title.component.name.hasValue) {
+			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:self.optionsWithDefault.topBar.title.component];
 			_customTitleView.backgroundColor = UIColor.clearColor;
-			NSString* alignment = [self.options.topBar.title.component.alignment getWithDefaultValue:@""];
+			NSString* alignment = [self.optionsWithDefault.topBar.title.component.alignment getWithDefaultValue:@""];
 			[_customTitleView setAlignment:alignment];
 			BOOL isCenter = [alignment isEqualToString:@"center"];
 			__weak RNNReactView *weakTitleView = _customTitleView;
