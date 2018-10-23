@@ -71,6 +71,23 @@
 	XCTAssertEqual([self.uut edgesForExtendedLayout], expectedRectEdge);
 }
 
+- (void)testSetBackgroundImageShouldNotAddViewIfImageNil {
+	NSUInteger subviewsCount = [[[self.uut view] subviews] count];
+	[self.uut rnn_setBackgroundImage:nil];
+	XCTAssertEqual([[[self.uut view] subviews] count], subviewsCount);
+}
 
+- (void)testSetBackgroundImageShouldAddUIImageViewSubview {
+	NSUInteger subviewsCount = [[[self.uut view] subviews] count];
+	[self.uut rnn_setBackgroundImage:[UIImage new]];
+	XCTAssertEqual([[[self.uut view] subviews] count], subviewsCount+1);
+}
+
+- (void)testSetBackgroundImageShouldAddUIImageViewSubviewWithImage {
+	UIImage* image = [UIImage new];
+	[self.uut rnn_setBackgroundImage:image];
+	UIImageView* imageView = [[[self.uut view] subviews] firstObject];
+	XCTAssertEqual(imageView.image, image);
+}
 
 @end

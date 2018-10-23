@@ -72,7 +72,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[self.presenter applyOptions:rnnController.options];
+			[self setTopBarBackgroundColor:[rnnController.options.topBar.background.color getWithDefaultValue:nil]];
 		}
 	}
 	
@@ -129,6 +129,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			self.navigationBar.shadowImage = self.originalTopBarImages[@"shadowImage"] ? self.originalTopBarImages[@"shadowImage"] : self.navigationBar.shadowImage;
 			self.originalTopBarImages = nil;
 		}
+		
+		self.navigationBar.barTintColor = nil;
 	}
 }
 

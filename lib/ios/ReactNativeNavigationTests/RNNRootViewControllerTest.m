@@ -546,34 +546,6 @@
 //	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
 //}
 
--(void)testTopBarDrawUnder_true {
-	self.options.topBar.drawBehind = [[Bool alloc] initWithValue:@(1)];
-	[self.uut viewWillAppear:false];
-
-	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
-}
-
--(void)testTopBarDrawUnder_false {
-	self.options.topBar.drawBehind = [[Bool alloc] initWithValue:@(0)];
-	[self.uut viewWillAppear:false];
-
-	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
-}
-
--(void)testBottomTabsDrawUnder_true {
-	self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(1)];
-	[self.uut viewWillAppear:false];
-
-	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
-}
-
--(void)testBottomTabsDrawUnder_false {
-	self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(0)];
-	[self.uut viewWillAppear:false];
-
-	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
-}
-
 #pragma mark BottomTabs
 
 

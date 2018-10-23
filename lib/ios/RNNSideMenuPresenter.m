@@ -19,7 +19,7 @@
 	[sideMenuController setAnimationVelocityLeft:[options.sideMenu.left.animationVelocity getWithDefaultValue:840.0f]];
 	[sideMenuController setAnimationVelocityRight:[options.sideMenu.right.animationVelocity getWithDefaultValue:840.0f]];
 	
-	[sideMenuController setAnimationType:[options.sideMenu.animationType getWithDefaultValue:@"door"]];
+	[sideMenuController setAnimationType:[options.sideMenu.animationType getWithDefaultValue:nil]];
 
 	if (options.sideMenu.left.width.hasValue) {
 		[sideMenuController side:MMDrawerSideLeft width:options.sideMenu.left.width.get];
