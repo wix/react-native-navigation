@@ -2,7 +2,6 @@ package com.reactnativenavigation.react;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
@@ -183,10 +182,9 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @Override
     public void onCatalystInstanceDestroy() {
-        try {
-            activity().onCatalystInstanceDestroy();
-        } catch (NullPointerException | ClassCastException e) {
-            Log.e(NAME, "onCatalystInstanceDestroy(): activity null or unexpected class type", e);
+        final NavigationActivity navigationActivity = activity();
+        if (navigationActivity != null) {
+            navigationActivity.onCatalystInstanceDestroy();
         }
         super.onCatalystInstanceDestroy();
     }
