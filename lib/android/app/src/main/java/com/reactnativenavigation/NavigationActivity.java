@@ -22,12 +22,14 @@ import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import com.reactnativenavigation.viewcontrollers.navigator.RootPresenter;
+import com.reactnativenavigation.utils.KeyboardUtil;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
     private PermissionListener mPermissionListener;
     
     protected Navigator navigator;
+    protected KeyboardUtil keyboardUtil;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         navigator = new Navigator(this, new ChildControllersRegistry(), new ModalStack(this), new OverlayManager(), new RootPresenter(this));
         navigator.bindViews();
         getReactGateway().onActivityCreated(this);
+        keyboardUtil = new KeyboardUtil(NavigationActivity.this,navigator.getView());
     }
 
     @Override
