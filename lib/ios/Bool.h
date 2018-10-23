@@ -2,6 +2,8 @@
 
 @interface Bool : Param
 
+- (instancetype)initWithBOOL:(BOOL)boolValue;
+
 - (BOOL)get;
 
 - (NSNumber *)getValue;

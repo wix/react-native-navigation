@@ -20,6 +20,10 @@
 	[self.bottomTabPresenter bindViewController:bindedViewController];
 }
 
+- (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
+	
+}
+
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
 	[self.bottomTabPresenter applyOptions:options];
 }
@@ -29,7 +33,7 @@
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
-	
+	[self.bottomTabPresenter mergeOptions:options resolvedOptions:resolvedOptions];
 }
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {

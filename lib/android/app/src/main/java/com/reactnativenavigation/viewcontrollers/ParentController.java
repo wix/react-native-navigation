@@ -72,19 +72,19 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
 	@Nullable
 	@Override
-	public ViewController findControllerById(final String id) {
-		ViewController fromSuper = super.findControllerById(id);
+	public ViewController findController(final String id) {
+		ViewController fromSuper = super.findController(id);
 		if (fromSuper != null) return fromSuper;
 
 		for (ViewController child : getChildControllers()) {
-			ViewController fromChild = child.findControllerById(id);
+			ViewController fromChild = child.findController(id);
 			if (fromChild != null) return fromChild;
 		}
 
 		return null;
 	}
 
-	@Override
+    @Override
     public boolean containsComponent(Component component) {
         if (super.containsComponent(component)) {
             return true;

@@ -35,7 +35,6 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 											options:(RNNNavigationOptions *)options;
 
 - (BOOL)isExternalViewController;
-- (BOOL)isCustomTransitioned;
 
 -(void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem;
 

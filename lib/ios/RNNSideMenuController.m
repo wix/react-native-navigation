@@ -40,13 +40,8 @@
 	}
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[_presenter applyOptions:self.options];
-}
-
 - (UITabBarItem *)tabBarItem {
-	return super.tabBarItem ? super.tabBarItem : self.center.tabBarItem;
+	return self.center.tabBarItem;
 }
 
 - (void)onChildWillAppear {

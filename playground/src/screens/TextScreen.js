@@ -27,6 +27,7 @@ class TextScreen extends Component {
           {this.renderTextFromFunctionInProps()}
           <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
           <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onClickSetBadge()} />
+          <Button title={'Set empty Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON_NULL} onPress={() => this.onClickSetNullBadge()} />
           <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
           <Button title={'Switch To Tab 1 by componentID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByComponentID()} />
           {/* tslint:disable-next-line:max-line-length */}
@@ -47,6 +48,14 @@ class TextScreen extends Component {
     Navigation.mergeOptions(this.props.componentId, {
       bottomTab: {
         badge: `TeSt`
+      }
+    });
+  }
+
+  onClickSetNullBadge() {
+    Navigation.mergeOptions(this.props.componentId, {
+      bottomTab: {
+        badge: null
       }
     });
   }

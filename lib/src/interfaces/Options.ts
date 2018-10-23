@@ -759,4 +759,10 @@ setRoot: {
    * #### (iOS specific)
    */
   rootBackgroundImage?: ImageRequireSource;
+  /**
+   * Enable or disable automatically blurring focused input, dismissing keyboard on unmount
+   * #### (Android specific)
+   * @default false
+   */
+  blurOnUnmount?: boolean;
 }

@@ -15,17 +15,11 @@
 @implementation RNNNavigationControllerPresenterTest
 
 - (void)setUp {
-    [super setUp];
+	[super setUp];
 	self.uut = [[RNNNavigationControllerPresenter alloc] init];
 	self.bindedViewController = [OCMockObject partialMockForObject:[RNNNavigationController new]];
 	[self.uut bindViewController:self.bindedViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
-}
-
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withDefaultValues {
-	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:nil];
-	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-	[_bindedViewController verify];
 }
 
 - (void)testApplyOptions_shouldSetBackButtonColor_withDefaultValues {
@@ -41,29 +35,63 @@
 	[_bindedViewController verify];
 }
 
+
+- (void)testApplyOptions_shouldSetBackButtonOnBindedViewController_withTitle {
+	Text* title = [[Text alloc] initWithValue:@"Title"];
+	self.options.topBar.backButton.title = title;
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get];
+	[self.uut applyOptions:self.options];
+	[_bindedViewController verify];
+}
+
+- (void)testApplyOptions_shouldSetBackButtonOnBindedViewController_withHideTitle {
+	Text* title = [[Text alloc] initWithValue:@"Title"];
+	self.options.topBar.backButton.title = title;
+	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:@""];
+	[self.uut applyOptions:self.options];
+	[_bindedViewController verify];
+}
+
+- (void)testApplyOptions_shouldSetBackButtonOnBindedViewController_withIcon {
+	Image* image = [[Image alloc] initWithValue:[UIImage new]];
+	self.options.topBar.backButton.icon = image;
+	[[_bindedViewController expect] rnn_setBackButtonIcon:image.get withColor:nil title:nil];
+	[self.uut applyOptions:self.options];
+	[_bindedViewController verify];
+}
+
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withTitle {
+	Text* title = [[Text alloc] initWithValue:@"Title"];
+	self.options.topBar.backButton.title = title;
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get];
+	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
+	[_bindedViewController verify];
+}
+
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withHideTitle {
+	Text* title = [[Text alloc] initWithValue:@"Title"];
+	self.options.topBar.backButton.title = title;
+	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:@""];
+	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
+	[_bindedViewController verify];
+}
+
 - (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withIcon {
-    Image* image = [[Image alloc] initWithValue:[UIImage new]];
-    self.options.topBar.backButton.icon = image;
+	Image* image = [[Image alloc] initWithValue:[UIImage new]];
+	self.options.topBar.backButton.icon = image;
 	[[_bindedViewController expect] rnn_setBackButtonIcon:image.get withColor:nil title:nil];
 	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
 	[_bindedViewController verify];
 }
 
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withTitle {
-    Text* title = [[Text alloc] initWithValue:@"Title"];
-    self.options.topBar.backButton.title = title;
-    [[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get];
-    [self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-    [_bindedViewController verify];
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withDefaultValues {
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:nil];
+	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
+	[_bindedViewController verify];
 }
 
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withHideTitle {
-    Text* title = [[Text alloc] initWithValue:@"Title"];
-    self.options.topBar.backButton.title = title;
-    self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
-    [[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:@""];
-    [self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-    [_bindedViewController verify];
-}
+
 
 @end

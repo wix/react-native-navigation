@@ -48,7 +48,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (UITabBarItem *)tabBarItem {
-	return super.tabBarItem ? super.tabBarItem : self.viewControllers.lastObject.tabBarItem;
+	return self.viewControllers.lastObject.tabBarItem;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -72,7 +72,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[self.presenter applyOptions:rnnController.options];
+			[self setTopBarBackgroundColor:[rnnController.options.topBar.background.color getWithDefaultValue:nil]];
 		}
 	}
 	
@@ -125,10 +125,12 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		UIView *transparentView = [self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 		if (transparentView){
 			[transparentView removeFromSuperview];
-			[self.navigationBar setBackgroundImage:self.originalTopBarImages[@"backgroundImage"] forBarMetrics:UIBarMetricsDefault];
-			self.navigationBar.shadowImage = self.originalTopBarImages[@"shadowImage"];
+			[self.navigationBar setBackgroundImage:self.originalTopBarImages[@"backgroundImage"] ? self.originalTopBarImages[@"backgroundImage"] : [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
+			self.navigationBar.shadowImage = self.originalTopBarImages[@"shadowImage"] ? self.originalTopBarImages[@"shadowImage"] : self.navigationBar.shadowImage;
 			self.originalTopBarImages = nil;
 		}
+		
+		self.navigationBar.barTintColor = nil;
 	}
 }
 
