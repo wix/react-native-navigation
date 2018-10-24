@@ -17,7 +17,7 @@
 	viewController.view.backgroundColor = [UIColor clearColor];
 	[overlayWindow setWindowLevel:UIWindowLevelNormal];
 	[overlayWindow setRootViewController:viewController];
-	[overlayWindow makeKeyAndVisible];
+	[overlayWindow setHidden:NO];
 }
 
 - (void)dismissOverlay:(UIViewController*)viewController {
@@ -30,19 +30,7 @@
 - (void)detachOverlayWindow:(UIWindow *)overlayWindow {
 	[overlayWindow setHidden:YES];
 	[overlayWindow setRootViewController:nil];
-	[overlayWindow resignKeyWindow];
-	[self assignKeyWindow];
 	[_overlayWindows removeObject:overlayWindow];
-}
-
-- (void)assignKeyWindow {
-	NSArray* windows = [[[UIApplication sharedApplication].windows reverseObjectEnumerator] allObjects];
-	for (UIWindow* window in windows) {
-		if (window.rootViewController) {
-			[window makeKeyAndVisible];
-			return;
-		}
-	}
 }
 
 - (UIWindow *)findWindowByRootViewController:(UIViewController *)viewController {
