@@ -23,6 +23,7 @@
 	RCTBridge* _bridge;
 
 	RNNStore* _store;
+	RNNStore* _overlayStore;
 
 	RNNCommandsHandler* _commandsHandler;
 }
@@ -34,6 +35,7 @@
 		_delegate = delegate;
 		
 		_store = [RNNStore new];
+		_overlayStore = [RNNStore new];
 		_bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:_launchOptions];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -74,8 +76,9 @@
 	RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
 
 	id<RNNRootViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge];
-	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator store:_store eventEmitter:eventEmitter andBridge:bridge];
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory eventEmitter:eventEmitter];
+	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter andBridge:bridge];
+	
+	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store overlayStore:_overlayStore controllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:[RNNOverlayManager new]];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 
 	return [@[bridgeModule,eventEmitter] arrayByAddingObjectsFromArray:[self extraModulesFromDelegate]];
@@ -85,10 +88,12 @@
 
 - (void)onJavaScriptWillLoad {
 	[_store clean];
+	[_overlayStore clean];
 }
 
 - (void)onJavaScriptLoaded {
 	[_store setReadyToReceiveCommands:true];
+	[_overlayStore setReadyToReceiveCommands:true];
 	[[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
 }
 

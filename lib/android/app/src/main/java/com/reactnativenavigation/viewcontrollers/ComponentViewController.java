@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
@@ -70,5 +71,22 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     ReactComponent getComponent() {
         return view;
+    }
+
+    @Override
+    public void destroy() {
+        final boolean blurOnUnmount = options != null && options.modal.blurOnUnmount.isTrue();
+        if (blurOnUnmount) {
+            blurActivityFocus();
+        }
+        super.destroy();
+    }
+
+    private void blurActivityFocus() {
+        final Activity activity = getActivity();
+        final View focusView = activity != null ? activity.getCurrentFocus() : null;
+        if (focusView != null) {
+            focusView.clearFocus();
+        }
     }
 }

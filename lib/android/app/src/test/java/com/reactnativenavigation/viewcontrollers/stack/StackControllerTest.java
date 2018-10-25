@@ -917,6 +917,15 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void mergeChildOptions_presenterMergesOptionsOnlyForCurrentChild() {
+        ViewController vc = mock(ViewController.class);
+        when(vc.isViewShown()).thenReturn(true);
+        Component child = mock(Component.class);
+        uut.mergeChildOptions(new Options(), vc, child);
+        verify(presenter, times(0)).mergeChildOptions(any(), any(), any());
+    }
+
+    @Test
     public void resolvedOptionsAreAppliedWhenStackIsAttachedToParentAndNotVisible() {
         FrameLayout parent = new FrameLayout(activity);
         activity.setContentView(parent);

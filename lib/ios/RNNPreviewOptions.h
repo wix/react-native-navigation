@@ -2,10 +2,10 @@
 
 @interface RNNPreviewOptions : RNNOptions
 
-@property (nonatomic, strong) NSNumber* reactTag;
-@property (nonatomic, strong) NSNumber* width;
-@property (nonatomic, strong) NSNumber* height;
-@property (nonatomic, strong) NSNumber* commit;
+@property (nonatomic, strong) Number* reactTag;
+@property (nonatomic, strong) Number* width;
+@property (nonatomic, strong) Number* height;
+@property (nonatomic, strong) Bool* commit;
 @property (nonatomic, strong) NSArray* actions;
 
 @end

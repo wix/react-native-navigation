@@ -1,19 +1,23 @@
 #import "UIViewController+RNNOptions.h"
+#import <React/RCTRootView.h>
+
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
 
 @implementation UIViewController (RNNOptions)
 
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage {
-	UIImageView* backgroundImageView = (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
-	if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
-		backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-		[self.view insertSubview:backgroundImageView atIndex:0];
+	if (backgroundImage) {
+		UIImageView* backgroundImageView = (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
+		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
+			backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+			[self.view insertSubview:backgroundImageView atIndex:0];
+		}
+		
+		backgroundImageView.layer.masksToBounds = YES;
+		backgroundImageView.image = backgroundImage;
+		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
-	
-	backgroundImageView.layer.masksToBounds = YES;
-	backgroundImageView.image = backgroundImage;
-	[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 }
 
 - (void)rnn_setModalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle {
@@ -146,5 +150,11 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	return NO;
 }
 
+- (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside {
+	if ([self.view isKindOfClass:[RCTRootView class]]) {
+		RCTRootView* rootView = (RCTRootView*)self.view;
+		rootView.passThroughTouches = !interceptTouchOutside;
+	}
+}
 
 @end

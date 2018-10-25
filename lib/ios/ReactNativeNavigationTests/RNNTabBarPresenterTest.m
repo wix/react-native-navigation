@@ -25,7 +25,7 @@
 	RNNNavigationOptions* emptyOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
 	[[self.bindedViewController expect] rnn_setTabBarTestID:nil];
 	[[self.bindedViewController expect] rnn_setTabBarBackgroundColor:nil];
-	[[self.bindedViewController expect] rnn_setTabBarTranslucent:YES];
+	[[self.bindedViewController expect] rnn_setTabBarTranslucent:NO];
 	[[self.bindedViewController expect] rnn_setTabBarHideShadow:NO];
     [[self.bindedViewController expect] rnn_setTabBarStyle:UIBarStyleDefault];
 	[[self.bindedViewController expect] rnn_setTabBarVisible:YES];

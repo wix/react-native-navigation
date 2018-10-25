@@ -2,6 +2,7 @@
 #import <OCMock/OCMock.h>
 #import "RNNViewControllerPresenter.h"
 #import "UIViewController+RNNOptions.h"
+#import "RNNReactView.h"
 
 @interface RNNViewControllerPresenterTest : XCTestCase
 
@@ -21,9 +22,9 @@
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
-- (void)testApplyOptions_backgroundImageDefaultNil {
+- (void)testApplyOptions_backgroundImageDefaultNilShouldNotAddSubview {
 	[self.uut applyOptions:self.options];
-	XCTAssertNil(((UIImageView *)self.bindedViewController.view.subviews[0]).image);
+	XCTAssertTrue((self.bindedViewController.view.subviews.count) == 0);
 }
 
 - (void)testApplyOptions_topBarPrefersLargeTitleDefaultFalse {
@@ -55,8 +56,15 @@
 - (void)testApplyOptions_drawBehindTabBarTrueWhenVisibleFalse {
 	self.options.bottomTabs.visible = [[Bool alloc] initWithValue:@(0)];
 	[[(id)self.bindedViewController expect] rnn_setDrawBehindTabBar:YES];
-	[self.uut applyOptions:self.options];
+	[self.uut applyOptionsOnInit:self.options];
 	[(id)self.bindedViewController verify];
+}
+
+- (void)testApplyOptions_setOverlayTouchOutsideIfHasValue {
+    self.options.overlay.interceptTouchOutside = [[Bool alloc] initWithBOOL:YES];
+    [[(id)self.bindedViewController expect] rnn_setInterceptTouchOutside:YES];
+    [self.uut applyOptions:self.options];
+    [(id)self.bindedViewController verify];
 }
 
 - (void)testApplyOptionsOnInit_shouldSetModalPresentetionStyleWithDefault {
@@ -83,6 +91,38 @@
 	[[(id)self.bindedViewController expect] rnn_setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
 	[self.uut applyOptionsOnInit:self.options];
 	[(id)self.bindedViewController verify];
+}
+
+-(void)testApplyOptionsOnInit_TopBarDrawUnder_true {
+    self.options.topBar.drawBehind = [[Bool alloc] initWithValue:@(1)];
+    
+    [[(id)self.bindedViewController expect] rnn_setDrawBehindTopBar:YES];
+    [self.uut applyOptionsOnInit:self.options];
+    [(id)self.bindedViewController verify];
+}
+
+-(void)testApplyOptionsOnInit_TopBarDrawUnder_false {
+    self.options.topBar.drawBehind = [[Bool alloc] initWithValue:@(0)];
+    
+    [[(id)self.bindedViewController expect] rnn_setDrawBehindTopBar:NO];
+    [self.uut applyOptionsOnInit:self.options];
+    [(id)self.bindedViewController verify];
+}
+
+-(void)testApplyOptionsOnInit_BottomTabsDrawUnder_true {
+    self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(1)];
+    
+    [[(id)self.bindedViewController expect] rnn_setDrawBehindTabBar:YES];
+    [self.uut applyOptionsOnInit:self.options];
+    [(id)self.bindedViewController verify];
+}
+
+-(void)testApplyOptionsOnInit_BottomTabsDrawUnder_false {
+    self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(0)];
+    
+    [[(id)self.bindedViewController expect] rnn_setDrawBehindTabBar:NO];
+    [self.uut applyOptionsOnInit:self.options];
+    [(id)self.bindedViewController verify];
 }
 
 @end

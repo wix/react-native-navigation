@@ -92,7 +92,9 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
         if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
             layoutParams.topMargin = ViewUtils.getHeight(topBar);
-            setLayoutParams(layoutParams);
+            try {
+                setLayoutParams(layoutParams);
+            } catch (IllegalStateException ignored) { }
         }
     }
 

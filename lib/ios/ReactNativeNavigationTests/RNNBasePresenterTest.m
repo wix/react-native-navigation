@@ -1,11 +1,11 @@
 #import <XCTest/XCTest.h>
-#import "RNNBottomTabPresenter.h"
+#import "RNNBasePresenter.h"
 #import <OCMock/OCMock.h>
 #import "UIViewController+RNNOptions.h"
 
 @interface RNNBottomTabPresenterTest : XCTestCase
 
-@property (nonatomic, strong) RNNBottomTabPresenter *uut;
+@property (nonatomic, strong) RNNBasePresenter *uut;
 @property (nonatomic, strong) RNNNavigationOptions *options;
 @property (nonatomic, strong) UIViewController* bindedViewController;
 @property (nonatomic, strong) id mockBindedViewController;
@@ -16,7 +16,7 @@
 
 - (void)setUp {
     [super setUp];
-    self.uut = [[RNNBottomTabPresenter alloc] init];
+    self.uut = [[RNNBasePresenter alloc] init];
 	self.bindedViewController = [UIViewController new];
     self.mockBindedViewController = [OCMockObject partialMockForObject:self.bindedViewController];
     [self.uut bindViewController:self.mockBindedViewController];

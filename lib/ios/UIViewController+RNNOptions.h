@@ -32,6 +32,8 @@
 
 - (void)rnn_setBackgroundColor:(UIColor *)backgroundColor;
 
+- (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside;
+
 - (BOOL)isModal;
 
 @end
