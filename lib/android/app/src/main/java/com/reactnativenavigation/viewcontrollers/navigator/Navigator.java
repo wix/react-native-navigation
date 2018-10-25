@@ -7,6 +7,9 @@ import android.support.annotation.RestrictTo;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.OverlayManager;
@@ -190,6 +193,27 @@ public class Navigator extends ParentController {
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
         overlayManager.dismiss(componentId, listener);
+    }
+
+    public WritableMap getStackChildrenIds(final String id, CommandListener listener) {
+        ViewController from = findController(id);
+        WritableMap args = Arguments.createMap();
+        WritableArray array = Arguments.createArray();
+        String componentId = id;
+        if (from != null) {
+            if (from instanceof StackController) {
+                array = ((StackController) from).getChildControllersIds();
+            } else {
+                StackController parentController = (StackController) from.getParentController();
+                array = parentController.getChildControllersIds();
+                componentId = parentController.getId();
+            }
+        } else {
+            listener.onError("Failed to execute stack command. Stack " + id + " not found.");
+        }
+        args.putString("componentId", componentId);
+        args.putArray("childrenIds", array);
+        return args;
     }
 
     @Nullable

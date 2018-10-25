@@ -164,6 +164,13 @@ export class Navigation {
     return this.commands.getLaunchArgs();
   }
 
+    /**
+   * Constants coming from native
+   */
+    public async getStackChildrenIds(componentId: string): Promise<any> {
+        return await this.commands.getStackChildrenIds(componentId);
+    }
+
   /**
    * Obtain the events registry instance
    */

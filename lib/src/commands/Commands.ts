@@ -147,5 +147,12 @@ export class Commands {
     const result = this.nativeCommandsSender.getLaunchArgs(commandId);
     this.commandsObserver.notify('getLaunchArgs', { commandId });
     return result;
-  }
+    }
+
+    public getStackChildrenIds(componentId: string) {
+        const commandId = this.uniqueIdProvider.generate('getStackChildrenIds');
+        const result = this.nativeCommandsSender.getStackChildrenIds(commandId, componentId);
+        this.commandsObserver.notify('getStackChildrenIds', { commandId, componentId });
+        return result;
+    }
 }

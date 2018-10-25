@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableArray;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
@@ -348,6 +350,16 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public Collection<ViewController> getChildControllers() {
         return stack.values();
+    }
+
+    public WritableArray getChildControllersIds(){
+        WritableArray idArr = Arguments.createArray();
+        Iterator<String> iterator = stack.iterator();
+        while (iterator.hasNext()) {
+            String controlId = iterator.next();
+            idArr.pushString(controlId);
+        }
+        return idArr;
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.NavigationApplication;
@@ -110,6 +111,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	@ReactMethod
 	public void popToRoot(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
 		handle(() -> navigator().popToRoot(componentId, parse(mergeOptions), new NativeCommandListener(commandId, promise, eventEmitter, now)));
+	}
+
+	@ReactMethod
+	public void getStackChildrenIds(String commandId, String componentId, Promise promise) {
+		WritableMap args = navigator().getStackChildrenIds(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now));
+		promise.resolve(args);
 	}
 
 	@ReactMethod
