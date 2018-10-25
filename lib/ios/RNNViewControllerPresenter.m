@@ -12,9 +12,8 @@
 @implementation RNNViewControllerPresenter
 
 
-- (void)applyOptions:(RNNNavigationOptions *)initialOptions {
-	[super applyOptions:initialOptions];
-	RNNNavigationOptions* options = [initialOptions withDefault:self.defaultOptions];
+- (void)applyOptions:(RNNNavigationOptions *)options {
+	[super applyOptions:options];
 	
 	UIViewController* viewController = self.bindedViewController;
 	[viewController rnn_setBackgroundImage:[options.backgroundImage getWithDefaultValue:nil]];
@@ -38,7 +37,6 @@
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:options.topBar.leftButtonStyle defaultRightButtonStyle:options.topBar.rightButtonStyle];
 	}
-	
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
@@ -51,78 +49,76 @@
 	[viewController rnn_setDrawBehindTabBar:[options.bottomTabs.drawBehind getWithDefaultValue:NO] || ![options.bottomTabs.visible getWithDefaultValue:YES]];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
-	[super mergeOptions:options resolvedOptions:resolvedOptions];
-	
-	RNNNavigationOptions* withDefault = (RNNNavigationOptions *)[options withDefault:self.defaultOptions];
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
+	[super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
 	
 	UIViewController* viewController = self.bindedViewController;
 	
-	if (options.backgroundImage.hasValue) {
-		[viewController rnn_setBackgroundImage:options.backgroundImage.get];
+	if (newOptions.backgroundImage.hasValue) {
+		[viewController rnn_setBackgroundImage:newOptions.backgroundImage.get];
 	}
 	
-	if (options.modalPresentationStyle.hasValue) {
-		[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:options.modalPresentationStyle.get]];
+	if (newOptions.modalPresentationStyle.hasValue) {
+		[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:newOptions.modalPresentationStyle.get]];
 	}
 	
-	if (options.modalTransitionStyle.hasValue) {
-		[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:options.modalTransitionStyle.get]];
+	if (newOptions.modalTransitionStyle.hasValue) {
+		[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:newOptions.modalTransitionStyle.get]];
 	}
 	
-	if (options.topBar.searchBar.hasValue) {
-		[viewController rnn_setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""]];
+	if (newOptions.topBar.searchBar.hasValue) {
+		[viewController rnn_setSearchBarWithPlaceholder:[newOptions.topBar.searchBarPlaceholder getWithDefaultValue:@""]];
 	}
 	
-	if (options.topBar.drawBehind.hasValue) {
-		[viewController rnn_setDrawBehindTopBar:options.topBar.drawBehind.get];
+	if (newOptions.topBar.drawBehind.hasValue) {
+		[viewController rnn_setDrawBehindTopBar:newOptions.topBar.drawBehind.get];
 	}
 	
-	if (options.topBar.title.text.hasValue) {
-		[viewController rnn_setNavigationItemTitle:options.topBar.title.text.get];
+	if (newOptions.topBar.title.text.hasValue) {
+		[viewController rnn_setNavigationItemTitle:newOptions.topBar.title.text.get];
 	}
 	
-	if (options.topBar.largeTitle.visible.hasValue) {
-		[viewController rnn_setTopBarPrefersLargeTitle:options.topBar.largeTitle.visible.get];
+	if (newOptions.topBar.largeTitle.visible.hasValue) {
+		[viewController rnn_setTopBarPrefersLargeTitle:newOptions.topBar.largeTitle.visible.get];
 	}
 	
-	if (options.bottomTabs.drawBehind.hasValue) {
-		[viewController rnn_setDrawBehindTabBar:options.bottomTabs.drawBehind.get];
+	if (newOptions.bottomTabs.drawBehind.hasValue) {
+		[viewController rnn_setDrawBehindTabBar:newOptions.bottomTabs.drawBehind.get];
 	}
 	
-	if (options.bottomTab.badgeColor.hasValue) {
-		[viewController rnn_setTabBarItemBadgeColor:options.bottomTab.badgeColor.get];
+	if (newOptions.bottomTab.badgeColor.hasValue) {
+		[viewController rnn_setTabBarItemBadgeColor:newOptions.bottomTab.badgeColor.get];
 	}
 	
-	if (options.layout.backgroundColor.hasValue) {
-		[viewController rnn_setBackgroundColor:options.layout.backgroundColor.get];
+	if (newOptions.layout.backgroundColor.hasValue) {
+		[viewController rnn_setBackgroundColor:newOptions.layout.backgroundColor.get];
 	}
 	
-	if (options.bottomTab.visible.hasValue) {
+	if (newOptions.bottomTab.visible.hasValue) {
 		[viewController.tabBarController rnn_setCurrentTabIndex:[viewController.tabBarController.viewControllers indexOfObject:viewController]];
 	}
 	
-	if (options.statusBar.blur.hasValue) {
-		[viewController rnn_setStatusBarBlur:options.statusBar.blur.get];
+	if (newOptions.statusBar.blur.hasValue) {
+		[viewController rnn_setStatusBarBlur:newOptions.statusBar.blur.get];
 	}
 	
-	if (options.statusBar.style.hasValue) {
-		[viewController rnn_setStatusBarStyle:options.statusBar.style.get animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
+	if (newOptions.statusBar.style.hasValue) {
+		[viewController rnn_setStatusBarStyle:newOptions.statusBar.style.get animated:[newOptions.statusBar.animate getWithDefaultValue:YES]];
 	}
 	
-	if (options.topBar.backButton.visible.hasValue) {
-		[viewController rnn_setBackButtonVisible:options.topBar.backButton.visible.get];
+	if (newOptions.topBar.backButton.visible.hasValue) {
+		[viewController rnn_setBackButtonVisible:newOptions.topBar.backButton.visible.get];
 	}
 	
-	if (options.topBar.leftButtons || options.topBar.rightButtons) {
-		RNNNavigationOptions* buttonsResolvedOptions = (RNNNavigationOptions *)[[resolvedOptions overrideOptions:options] withDefault:self.defaultOptions];
+	if (newOptions.topBar.leftButtons || newOptions.topBar.rightButtons) {
+		RNNNavigationOptions* buttonsResolvedOptions = [(RNNNavigationOptions *)[currentOptions overrideOptions:newOptions] withDefault:defaultOptions];
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
-		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:buttonsResolvedOptions.topBar.leftButtonStyle defaultRightButtonStyle:buttonsResolvedOptions.topBar.rightButtonStyle];
+		[_navigationButtons applyLeftButtons:newOptions.topBar.leftButtons rightButtons:newOptions.topBar.rightButtons defaultLeftButtonStyle:buttonsResolvedOptions.topBar.leftButtonStyle defaultRightButtonStyle:buttonsResolvedOptions.topBar.rightButtonStyle];
 	}
 	
-	if (options.overlay.interceptTouchOutside.hasValue) {
+	if (newOptions.overlay.interceptTouchOutside.hasValue) {
 		RCTRootView* rootView = (RCTRootView*)viewController.view;
-		rootView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
+		rootView.passThroughTouches = !newOptions.overlay.interceptTouchOutside.get;
 	}
 }
 

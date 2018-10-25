@@ -1,4 +1,5 @@
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "RNNNavigationController.h"
 #import "RNNRootViewController.h"
 
@@ -12,16 +13,17 @@
 	RNNRootViewController* _vc1;
 	RNNRootViewController* _vc2;
 	UIViewController* _vc3;
+	RNNNavigationOptions* _options;
 }
 
 - (void)setUp {
     [super setUp];
 	
-	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions]];
-	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:nil];
+	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions]  defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	_vc3 = [UIViewController new];
-	
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] presenter:[[RNNViewControllerPresenter alloc] init]];
+	_options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNViewControllerPresenter alloc] init]];
 }
 
 - (void)testInitWithLayoutInfo_shouldBindPresenter {
@@ -29,7 +31,7 @@
 }
 
 - (void)testInitWithLayoutInfo_shouldSetMultipleViewControllers {
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] presenter:[[RNNViewControllerPresenter alloc] init]];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNViewControllerPresenter alloc] init]];
 	XCTAssertTrue(self.uut.viewControllers.count == 2);
 }
 
@@ -42,7 +44,7 @@
 }
 
 - (void)testPreferredStatusBarStyle_shouldReturnLeafPreferredStatusBarStyle {
-	self.uut.getCurrentChild.options.statusBar.style = [[Text alloc] initWithValue:@"light"];
+	self.uut.getCurrentChild.resolveOptions.statusBar.style = [[Text alloc] initWithValue:@"light"];
 	XCTAssertTrue(self.uut.preferredStatusBarStyle == self.uut.getCurrentChild.preferredStatusBarStyle);
 }
 
@@ -106,8 +108,37 @@
 	XCTAssertEqual(self.uut.supportedInterfaceOrientations, self.uut.getCurrentChild.supportedInterfaceOrientations);
 }
 
+- (void)testPopViewControllerReturnLastChildViewController {
+	RNNNavigationController* uut = [RNNNavigationController new];
+	[uut setViewControllers:@[_vc1, _vc2]];
+	XCTAssertEqual([uut popViewControllerAnimated:NO], _vc2);
+}
+
+- (void)testPopViewControllerSetTopBarBackgroundForPoppingViewController {
+	RNNNavigationController* uut = [RNNNavigationController new];
+	[uut setViewControllers:@[_vc1, _vc2]];
+	
+	_options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
+	[_vc1 overrideOptions:_options];
+	
+	[uut popViewControllerAnimated:NO];
+	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, uut.navigationBar.barTintColor);
+}
+
+- (void)testPopViewControllerSetDefaultTopBarBackgroundForPoppingViewController {
+	RNNNavigationController* uut = [RNNNavigationController new];
+	[uut setViewControllers:@[_vc1, _vc2]];
+
+	_options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
+	[_vc1 setDefaultOptions:_options];
+
+	[uut popViewControllerAnimated:NO];
+	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, uut.navigationBar.barTintColor);
+}
+
+
 - (RNNNavigationController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
-	return [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:options presenter:[[RNNNavigationControllerPresenter alloc] init]];
+	return [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:options defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init]];
 }
 
 @end

@@ -109,9 +109,9 @@
 	RNNTestRootViewCreator* creator = [[RNNTestRootViewCreator alloc] init];
 	
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions];
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
 	
-	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[vc] options:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[[RNNNavigationControllerPresenter alloc] init]];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[vc] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init]];
 	
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
@@ -133,7 +133,7 @@
 	initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"the title"];
 	
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil presenter:presenter options:initialOptions];
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
 	
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
 	[vc viewWillAppear:false];

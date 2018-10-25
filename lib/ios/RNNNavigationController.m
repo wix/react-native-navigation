@@ -13,11 +13,13 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNNavigationControllerPresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNNavigationControllerPresenter *)presenter {
 	self = [super init];
 
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
+	
+	self.defaultOptions = defaultOptions;
 	self.options = options;
 	
 	self.layoutInfo = layoutInfo;
@@ -29,7 +31,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	if (parent) {
-		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
 	}
 }
 
@@ -39,12 +41,16 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (RNNNavigationOptions *)resolveOptions {
-	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+	return [(RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options] withDefault:self.defaultOptions];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-	[_presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
 	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)overrideOptions:(RNNNavigationOptions *)options {
+	[self.options overrideOptions:options];
 }
 
 - (UITabBarItem *)tabBarItem {
@@ -72,7 +78,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[self setTopBarBackgroundColor:[rnnController.options.topBar.background.color getWithDefaultValue:nil]];
+			[self setTopBarBackgroundColor:[rnnController.resolveOptions.topBar.background.color getWithDefaultValue:nil]];
 		}
 	}
 	
@@ -80,11 +86,11 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.options.animations.showModal isDismiss:NO];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.resolveOptions.animations.showModal isDismiss:NO];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.options.animations.dismissModal isDismiss:YES];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.resolveOptions.animations.dismissModal isDismiss:YES];
 }
 
 - (UIViewController *)getCurrentChild {
