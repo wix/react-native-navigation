@@ -86,7 +86,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		}
 	}
 	if (customBadge != nil) {
-		BOOL hideBadge = (BOOL)(tabBarItem.badgeValue == nil) || [tabBarItem.badgeValue isEqualToString:@""];
+		BOOL hideBadge = (BOOL)(badge == nil) || [badge isEqualToString:@""];
 		[customBadge setHidden:hideBadge];
 		tabBarItem.badgeValue = nil;
 	} else if ([badge isKindOfClass:[NSNull class]] || [badge isEqualToString:@""]) {
