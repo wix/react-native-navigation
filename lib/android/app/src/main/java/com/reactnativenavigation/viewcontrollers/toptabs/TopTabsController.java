@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
@@ -24,7 +24,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     private List<ViewController> tabs;
     private TopTabsLayoutCreator viewCreator;
 
-    public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options, OptionsPresenter presenter) {
+    public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options, Presenter presenter) {
         super(activity, childRegistry, id, presenter, options);
         this.viewCreator = viewCreator;
         this.tabs = tabs;

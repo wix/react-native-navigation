@@ -1,50 +1,17 @@
 #import "RNNSideMenuSideOptions.h"
-#import "RNNSideMenuController.h"
 
 @implementation RNNSideMenuSideOptions
 
-- (void)applyOnSide:(MMDrawerSide)side viewController:(UIViewController *)viewController {
-	RNNSideMenuController* sideMenuController = (RNNSideMenuController*)UIApplication.sharedApplication.delegate.window.rootViewController;
-	if (sideMenuController && [sideMenuController isKindOfClass:[RNNSideMenuController class]]) {
-		if (self.enabled) {
-			switch (side) {
-				case MMDrawerSideRight:
-					sideMenuController.sideMenu.rightSideEnabled = [self.enabled boolValue];
-					break;
-				case MMDrawerSideLeft:
-					sideMenuController.sideMenu.leftSideEnabled = [self.enabled boolValue];
-				default:
-					break;
-			}
-		}
-		
-		if (self.visible) {
-			if (self.visible.boolValue) {
-				[sideMenuController showSideMenu:side animated:YES];
-			} else {
-				[sideMenuController hideSideMenu:side animated:YES];
-			}
-		}
-
-		if (self.width) {
-			switch (side) {
-				case MMDrawerSideRight:
-					sideMenuController.sideMenu.maximumRightDrawerWidth = self.width.floatValue;
-					break;
-				case MMDrawerSideLeft:
-					sideMenuController.sideMenu.maximumLeftDrawerWidth = self.width.floatValue;
-				default:
-					break;
-			}
-		}
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
 	
-	[self resetOptions];
-}
-
-- (void)resetOptions {
-	self.visible = nil;
-	self.enabled = nil;
+	self.visible = [BoolParser parse:dict key:@"visible"];
+	self.enabled = [BoolParser parse:dict key:@"enabled"];
+	self.width = [DoubleParser parse:dict key:@"width"];
+	self.shouldStretchDrawer = [BoolParser parse:dict key:@"shouldStretchDrawer"];
+	self.animationVelocity = [DoubleParser parse:dict key:@"animationVelocity"];
+	
+	return self;
 }
 
 @end

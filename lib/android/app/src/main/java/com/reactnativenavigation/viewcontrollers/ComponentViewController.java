@@ -2,9 +2,10 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
 
@@ -20,7 +21,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
                                    final String componentName,
                                    final ReactViewCreator viewCreator,
                                    final Options initialOptions,
-                                   final OptionsPresenter presenter) {
+                                   final Presenter presenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.componentName = componentName;
         this.viewCreator = viewCreator;
@@ -63,11 +64,29 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void mergeOptions(Options options) {
+        if (options == Options.EMPTY) return;
         performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
         super.mergeOptions(options);
     }
 
     ReactComponent getComponent() {
         return view;
+    }
+
+    @Override
+    public void destroy() {
+        final boolean blurOnUnmount = options != null && options.modal.blurOnUnmount.isTrue();
+        if (blurOnUnmount) {
+            blurActivityFocus();
+        }
+        super.destroy();
+    }
+
+    private void blurActivityFocus() {
+        final Activity activity = getActivity();
+        final View focusView = activity != null ? activity.getCurrentFocus() : null;
+        if (focusView != null) {
+            focusView.clearFocus();
+        }
     }
 }

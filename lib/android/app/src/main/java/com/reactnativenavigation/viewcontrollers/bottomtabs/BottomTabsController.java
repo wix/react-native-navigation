@@ -12,9 +12,9 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
-import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabPresenter;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -39,10 +39,10 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	private List<ViewController> tabs;
     private EventEmitter eventEmitter;
     private ImageLoader imageLoader;
-    private BottomTabsOptionsPresenter presenter;
-    private BottomTabOptionsPresenter tabPresenter;
+    private BottomTabsPresenter presenter;
+    private BottomTabPresenter tabPresenter;
 
-    public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, OptionsPresenter presenter, BottomTabsOptionsPresenter bottomTabsPresenter, BottomTabOptionsPresenter bottomTabPresenter) {
+    public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
 		super(activity, childRegistry, id, presenter, initialOptions);
         this.tabs = tabs;
         this.eventEmitter = eventEmitter;
@@ -78,14 +78,27 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         super.applyOptions(options);
         presenter.present(options);
         tabPresenter.present();
+        this.options.bottomTabsOptions.clearOneTimeOptions();
+        this.initialOptions.bottomTabsOptions.clearOneTimeOptions();
+    }
+
+    @Override
+    public void mergeOptions(Options options) {
+        presenter.mergeOptions(options);
+        super.mergeOptions(options);
     }
 
     @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
-        presenter.applyChildOptions(this.options, child);
+        presenter.applyChildOptions(resolveCurrentOptions(), child);
         performOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(this.options.copy().clearBottomTabsOptions().clearBottomTabOptions(), child)
+                ((ParentController) parentController).applyChildOptions(
+                        this.options.copy()
+                                .clearBottomTabsOptions()
+                                .clearBottomTabOptions(),
+                        child
+                )
         );
     }
 
@@ -116,8 +129,8 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
-        if (wasSelected) return false;
         eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
+        if (wasSelected) return false;
         selectTab(index);
         return false;
 	}

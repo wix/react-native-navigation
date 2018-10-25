@@ -1,4 +1,4 @@
-package com.reactnativenavigation.viewcontrollers;
+    package com.reactnativenavigation.viewcontrollers;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ArrayUtils;
-import com.reactnativenavigation.utils.ButtonOptionsPresenter;
+import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.UiUtils;
@@ -34,7 +35,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
 
     private final NavigationIconResolver navigationIconResolver;
     private final ImageLoader imageLoader;
-    private ButtonOptionsPresenter optionsPresenter;
+    private ButtonPresenter optionsPresenter;
     private final Button button;
     private final ReactViewCreator viewCreator;
     private TitleBarButtonController.OnClickListener onPressListener;
@@ -52,7 +53,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     public TitleBarButtonController(Activity activity,
                                     NavigationIconResolver navigationIconResolver,
                                     ImageLoader imageLoader,
-                                    ButtonOptionsPresenter optionsPresenter,
+                                    ButtonPresenter optionsPresenter,
                                     Button button,
                                     ReactViewCreator viewCreator,
                                     OnClickListener onClickListener) {
@@ -115,7 +116,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public void addToMenu(Toolbar toolbar, int position) {
-        MenuItem menuItem = toolbar.getMenu().add(0, position, position, button.text.get(""));
+        MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, position, position, button.text.get(""));
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get());
         menuItem.setEnabled(button.enabled.isTrueOrUndefined());
         menuItem.setOnMenuItemClickListener(this);

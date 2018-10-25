@@ -41,6 +41,7 @@ public class TopBarOptions {
         options.borderColor = ColorParser.parse(json, "borderColor");
         options.borderHeight = FractionParser.parse(json, "borderHeight");
         options.elevation = FractionParser.parse(json, "elevation");
+        options.topMargin = NumberParser.parse(json, "topMargin");
         options.buttons = TopBarButtons.parse(typefaceLoader, json);
 
         options.rightButtonColor = ColorParser.parse(json, "rightButtonColor");
@@ -61,6 +62,7 @@ public class TopBarOptions {
     public Bool drawBehind = new NullBool();
     public Number height = new NullNumber();
     public Fraction elevation = new NullFraction();
+    public Number topMargin = new NullNumber();
     public Fraction borderHeight = new NullFraction();
     public Colour borderColor = new NullColor();
 
@@ -90,6 +92,7 @@ public class TopBarOptions {
         if (other.borderHeight.hasValue()) borderHeight = other.borderHeight;
         if (other.borderColor.hasValue()) borderColor = other.borderColor;
         if (other.elevation.hasValue()) elevation = other.elevation;
+        if (other.topMargin.hasValue()) topMargin = other.topMargin;
 
         if (other.rightButtonColor.hasValue()) rightButtonColor = other.rightButtonColor;
         if (other.leftButtonColor.hasValue()) leftButtonColor = other.leftButtonColor;
@@ -113,6 +116,7 @@ public class TopBarOptions {
         if (!borderHeight.hasValue()) borderHeight = defaultOptions.borderHeight;
         if (!borderColor.hasValue()) borderColor = defaultOptions.borderColor;
         if (!elevation.hasValue()) elevation = defaultOptions.elevation;
+        if (!topMargin.hasValue()) topMargin = defaultOptions.topMargin;
 
         if (!rightButtonColor.hasValue()) rightButtonColor = defaultOptions.rightButtonColor;
         if (!leftButtonColor.hasValue()) leftButtonColor = defaultOptions.leftButtonColor;

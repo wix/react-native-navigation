@@ -18,6 +18,7 @@ class CustomDialog extends PureComponent {
       <View style={styles.root}>
         <Text style={styles.h1} testID={testIDs.DIALOG_HEADER}>Test view</Text>
         <Button title='OK' testID={testIDs.OK_BUTTON} onPress={() => this.onCLickOk()} />
+        <Button title='Set Root' testID={testIDs.SET_ROOT_BUTTON} onPress={() => this.onCLickSetRoot()} />
       </View>
     );
   }
@@ -27,8 +28,19 @@ class CustomDialog extends PureComponent {
       Alert.alert('Overlay disappeared');
     }
   }
+
   onCLickOk() {
     Navigation.dismissOverlay(this.props.componentId);
+  }
+
+  onCLickSetRoot() {
+    Navigation.setRoot({
+      root: {
+        component: {
+          name: 'navigation.playground.TextScreen'
+        }
+      }
+    });
   }
 }
 
@@ -37,7 +49,7 @@ const styles = {
     backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 100,
+    height: 140,
     bottom: 0,
     position: 'absolute',
     left: 0,

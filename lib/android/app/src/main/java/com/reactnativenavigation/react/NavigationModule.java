@@ -1,6 +1,7 @@
 package com.reactnativenavigation.react;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
@@ -22,9 +23,9 @@ import com.reactnativenavigation.utils.Now;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
+import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import java.util.Map;
 
@@ -49,17 +50,18 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
     public void getConstants(Promise promise) {
+        ReactApplicationContext ctx = getReactApplicationContext();
         WritableMap constants = Arguments.createMap();
-        constants.putString(Constants.BACK_BUTTON_JS_KEY, Constants.BACK_BUTTON_ID);
-        constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, UiUtils.getStatusBarHeight(getReactApplicationContext()));
-        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, UiUtils.getToolBarHeight(getReactApplicationContext()));
-        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, UiUtils.dpToPx(getReactApplicationContext(), Constants.BOTTOM_TABS_HEIGHT));
+        constants.putString(Constants.BACK_BUTTON_JS_KEY,    Constants.BACK_BUTTON_ID);
+        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY,    Constants.BOTTOM_TABS_HEIGHT);
+        constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, UiUtils.pxToDp(ctx, UiUtils.getStatusBarHeight(ctx)));
+        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY,    UiUtils.pxToDp(ctx, UiUtils.getTopBarHeight(ctx)));
         promise.resolve(constants);
     }
 
 	@ReactMethod
 	public void setRoot(String commandId, ReadableMap rawLayoutTree, Promise promise) {
-		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree).optJSONObject("root"));
+        final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree).optJSONObject("root"));
 		handle(() -> {
             navigator().setEventEmitter(eventEmitter);
             final ViewController viewController = newLayoutFactory().create(layoutTree);
@@ -69,19 +71,17 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setDefaultOptions(ReadableMap options) {
-        final Options defaultOptions = Options.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
-        handle(() -> navigator().setDefaultOptions(defaultOptions));
+        handle(() -> navigator().setDefaultOptions(parse(options)));
     }
 
 	@ReactMethod
-	public void mergeOptions(String onComponentId, ReadableMap options) {
-		final Options navOptions = Options.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
-		handle(() -> navigator().mergeOptions(onComponentId, navOptions));
+	public void mergeOptions(String onComponentId, @Nullable ReadableMap options) {
+		handle(() -> navigator().mergeOptions(onComponentId, parse(options)));
 	}
 
 	@ReactMethod
 	public void push(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
-		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
+        final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
             navigator().push(onComponentId, viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
@@ -98,18 +98,18 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
 	@ReactMethod
-	public void pop(String commandId, String onComponentId, ReadableMap options, Promise promise) {
-		handle(() -> navigator().popSpecific(onComponentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
+	public void pop(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
+		handle(() -> navigator().pop(componentId, parse(mergeOptions), new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
-	public void popTo(String commandId, String componentId, Promise promise) {
-		handle(() -> navigator().popTo(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
+	public void popTo(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
+		handle(() -> navigator().popTo(componentId, parse(mergeOptions), new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
-	public void popToRoot(String commandId, String componentId, Promise promise) {
-		handle(() -> navigator().popToRoot(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
+	public void popToRoot(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
+		handle(() -> navigator().popToRoot(componentId, parse(mergeOptions), new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
@@ -122,13 +122,16 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void dismissModal(String commandId, String componentId, Promise promise) {
-		handle(() -> navigator().dismissModal(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
+	public void dismissModal(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
+		handle(() -> {
+            navigator().mergeOptions(componentId, parse(mergeOptions));
+            navigator().dismissModal(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now));
+        });
 	}
 
-	@ReactMethod
-	public void dismissAllModals(String commandId, Promise promise) {
-		handle(() -> navigator().dismissAllModals(new NativeCommandListener(commandId, promise, eventEmitter, now)));
+    @ReactMethod
+	public void dismissAllModals(String commandId, @Nullable ReadableMap mergeOptions, Promise promise) {
+		handle(() -> navigator().dismissAllModals(parse(mergeOptions), new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
@@ -160,6 +163,10 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         );
 	}
 
+    private  Options parse(@Nullable ReadableMap mergeOptions) {
+        return mergeOptions == null ? Options.EMPTY : Options.parse(new TypefaceLoader(activity()), JSONParser.parse(mergeOptions));
+    }
+
 	private Map<String, ExternalComponentCreator> externalComponentCreator() {
         return ((NavigationApplication) activity().getApplication()).getExternalComponents();
     }
@@ -171,5 +178,14 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     private NavigationActivity activity() {
         return (NavigationActivity) getCurrentActivity();
+    }
+
+    @Override
+    public void onCatalystInstanceDestroy() {
+        final NavigationActivity navigationActivity = activity();
+        if (navigationActivity != null) {
+            navigationActivity.onCatalystInstanceDestroy();
+        }
+        super.onCatalystInstanceDestroy();
     }
 }
