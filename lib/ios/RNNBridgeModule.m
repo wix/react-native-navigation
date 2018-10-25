@@ -38,8 +38,8 @@ RCT_EXPORT_METHOD(setDefaultOptions:(NSDictionary*)options resolver:(RCTPromiseR
 }
 
 RCT_EXPORT_METHOD(push:(NSString*)commandId componentId:(NSString*)componentId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler push:componentId layout:layout completion:^{
-		resolve(componentId);
+	[_commandsHandler push:componentId layout:layout completion:^(NSString *newComponentId){
+		resolve(newComponentId);
 	} rejection:reject];
 }
 
