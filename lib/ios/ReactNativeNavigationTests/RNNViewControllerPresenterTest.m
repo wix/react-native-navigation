@@ -2,6 +2,7 @@
 #import <OCMock/OCMock.h>
 #import "RNNViewControllerPresenter.h"
 #import "UIViewController+RNNOptions.h"
+#import "RNNReactView.h"
 
 @interface RNNViewControllerPresenterTest : XCTestCase
 
@@ -57,6 +58,13 @@
 	[[(id)self.bindedViewController expect] rnn_setDrawBehindTabBar:YES];
 	[self.uut applyOptionsOnInit:self.options];
 	[(id)self.bindedViewController verify];
+}
+
+- (void)testApplyOptions_setOverlayTouchOutsideIfHasValue {
+    self.options.overlay.interceptTouchOutside = [[Bool alloc] initWithBOOL:YES];
+    [[(id)self.bindedViewController expect] rnn_setInterceptTouchOutside:YES];
+    [self.uut applyOptions:self.options];
+    [(id)self.bindedViewController verify];
 }
 
 - (void)testApplyOptionsOnInit_shouldSetModalPresentetionStyleWithDefault {

@@ -392,6 +392,7 @@ public class StackPresenter {
         if (options.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
 
         if (options.background.color.hasValue()) topBar.setBackgroundColor(options.background.color.get());
+        if (options.background.component.hasValue()) topBar.setBackgroundComponent(options.background.component);
 
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 

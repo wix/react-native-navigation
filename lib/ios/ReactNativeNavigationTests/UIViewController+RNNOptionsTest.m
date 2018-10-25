@@ -84,10 +84,10 @@
 }
 
 - (void)testSetBackgroundImageShouldAddUIImageViewSubviewWithImage {
-	UIImage* image = [UIImage new];
-	[self.uut rnn_setBackgroundImage:image];
-	UIImageView* imageView = [[[self.uut view] subviews] firstObject];
-	XCTAssertEqual(imageView.image, image);
+    UIImage* image = [UIImage new];
+    [self.uut rnn_setBackgroundImage:image];
+    UIImageView* imageView = [[[self.uut view] subviews] firstObject];
+    XCTAssertEqual(imageView.image, image);
 }
 
 @end

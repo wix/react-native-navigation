@@ -104,7 +104,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void mergeChildOptions(Options options, ViewController childController, Component child) {
         super.mergeChildOptions(options, childController, child);
-        if (childController.isViewShown()) {
+        if (childController.isViewShown() && peek() == childController) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), child);
             if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
                 fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());

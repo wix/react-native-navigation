@@ -129,4 +129,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         view.setBackgroundColor(Color.WHITE);
         setContentView(view);
     }
+
+    public void onCatalystInstanceDestroy() {
+        runOnUiThread(() -> navigator.destroyViews());
+    }
 }

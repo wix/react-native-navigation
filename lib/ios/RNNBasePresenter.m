@@ -1,23 +1,11 @@
 #import "RNNBasePresenter.h"
-#import "RNNBottomTabPresenter.h"
-
-@interface RNNBasePresenter()
-
-@property (nonatomic, strong) RNNBottomTabPresenter* bottomTabPresenter;
-
-@end
+#import "UIViewController+RNNOptions.h"
+#import "RNNTabBarItemCreator.h"
 
 @implementation RNNBasePresenter
 
-- (instancetype)init {
-	self = [super init];
-	self.bottomTabPresenter = [[RNNBottomTabPresenter alloc] init];
-	return self;
-}
-
 - (void)bindViewController:(UIViewController *)bindedViewController {
 	_bindedViewController = bindedViewController;
-	[self.bottomTabPresenter bindViewController:bindedViewController];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
@@ -25,20 +13,30 @@
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
-	[self.bottomTabPresenter applyOptions:options];
+	UIViewController* viewController = self.bindedViewController;
+	if ((options.bottomTab.text.hasValue || options.bottomTab.icon.hasValue || options.bottomTab.selectedIcon.hasValue)) {
+		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:options.bottomTab];
+		viewController.tabBarItem = tabItem;
+		[options.bottomTab.text consume];
+		[options.bottomTab.icon consume];
+		[options.bottomTab.selectedIcon consume];
+	}
 }
 
-- (void)applyOptions:(RNNNavigationOptions *)initialOptions {
-	[self.bottomTabPresenter applyOptions:initialOptions];
+- (void)applyOptions:(RNNNavigationOptions *)options {
+	UIViewController* viewController = self.bindedViewController;
+	
+	if ([viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
+		[viewController rnn_setTabBarItemBadge:[options.bottomTab.badge getWithDefaultValue:nil]];
+	}
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
-	[self.bottomTabPresenter mergeOptions:options resolvedOptions:resolvedOptions];
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
+	UIViewController* viewController = self.bindedViewController;
+	if (newOptions.bottomTab.badge.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
+		[viewController rnn_setTabBarItemBadge:newOptions.bottomTab.badge.get];
+	}
 }
 
-- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-	_defaultOptions = defaultOptions;
-	[self.bottomTabPresenter setDefaultOptions:defaultOptions];
-}
 
 @end

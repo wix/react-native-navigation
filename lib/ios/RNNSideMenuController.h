@@ -12,6 +12,7 @@
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
 - (void)side:(MMDrawerSide)side enabled:(BOOL)enabled;
 - (void)side:(MMDrawerSide)side visible:(BOOL)visible;
