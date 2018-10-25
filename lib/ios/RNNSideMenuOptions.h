@@ -6,7 +6,6 @@
 @property (nonatomic, strong) RNNSideMenuSideOptions* left;
 @property (nonatomic, strong) RNNSideMenuSideOptions* right;
 
-@property (nonatomic, strong) Bool* shouldStretchDrawer;
-@property (nonatomic, strong) Double* animationVelocity;
+@property (nonatomic, strong) Text* animationType;
 
 @end

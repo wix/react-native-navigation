@@ -95,8 +95,8 @@ public class ParentControllerTest extends BaseTest {
         children.add(child1);
         children.add(child2);
 
-        assertThat(uut.findControllerById("uut")).isEqualTo(uut);
-        assertThat(uut.findControllerById("child1")).isEqualTo(child1);
+        assertThat(uut.findController("uut")).isEqualTo(uut);
+        assertThat(uut.findController("child1")).isEqualTo(child1);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class ParentControllerTest extends BaseTest {
         stackController.push(child2, new CommandListenerAdapter());
         children.add(stackController);
 
-        assertThat(uut.findControllerById("child2")).isEqualTo(child2);
+        assertThat(uut.findController("child2")).isEqualTo(child2);
     }
 
     @Test

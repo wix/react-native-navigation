@@ -9,11 +9,10 @@
 @interface RNNControllerFactory : NSObject
 
 -(instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
-								 store:(RNNStore*)store
 						  eventEmitter:(RNNEventEmitter*)eventEmitter
 							 andBridge:(RCTBridge*)bridge;
 
--(UIViewController<RNNParentProtocol, UIViewControllerPreviewingDelegate> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
+- (UIViewController<RNNParentProtocol> *)createLayout:(NSDictionary*)layout saveToStore:(RNNStore *)store;
 
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 

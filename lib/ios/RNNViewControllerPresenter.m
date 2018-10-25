@@ -3,6 +3,7 @@
 #import "UITabBarController+RNNOptions.h"
 #import "RNNNavigationButtons.h"
 #import "RCTConvert+Modal.h"
+#import "RNNReactView.h"
 
 @interface RNNViewControllerPresenter()
 @property (nonatomic, strong) RNNNavigationButtons* navigationButtons;
@@ -17,17 +18,13 @@
 	
 	UIViewController* viewController = self.bindedViewController;
 	[viewController rnn_setBackgroundImage:[options.backgroundImage getWithDefaultValue:nil]];
-	[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[options.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]];
-	[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[options.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
-	[viewController rnn_setDrawBehindTopBar:[options.topBar.drawBehind getWithDefaultValue:NO]];
 	[viewController rnn_setNavigationItemTitle:[options.topBar.title.text getWithDefaultValue:nil]];
 	[viewController rnn_setTopBarPrefersLargeTitle:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
-	[viewController rnn_setDrawBehindTabBar:[options.bottomTabs.drawBehind getWithDefaultValue:NO]];
-	[viewController rnn_setTabBarItemBadge:[options.bottomTab.badge getWithDefaultValue:nil]];
 	[viewController rnn_setTabBarItemBadgeColor:[options.bottomTab.badgeColor getWithDefaultValue:nil]];
 	[viewController rnn_setStatusBarBlur:[options.statusBar.blur getWithDefaultValue:NO]];
 	[viewController rnn_setStatusBarStyle:[options.statusBar.style getWithDefaultValue:@"default"] animated:[options.statusBar.animate getWithDefaultValue:YES]];
 	[viewController rnn_setBackButtonVisible:[options.topBar.backButton.visible getWithDefaultValue:YES]];
+	[viewController rnn_setInterceptTouchOutside:[options.overlay.interceptTouchOutside getWithDefaultValue:YES]];
 
 	if (options.layout.backgroundColor.hasValue) {
 		[viewController rnn_setBackgroundColor:options.layout.backgroundColor.get];
@@ -42,6 +39,16 @@
 		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:options.topBar.leftButtonStyle defaultRightButtonStyle:options.topBar.rightButtonStyle];
 	}
 	
+}
+
+- (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
+	[super applyOptionsOnInit:options];
+	
+	UIViewController* viewController = self.bindedViewController;
+	[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[options.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]];
+	[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[options.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
+	[viewController rnn_setDrawBehindTopBar:[options.topBar.drawBehind getWithDefaultValue:NO]];
+	[viewController rnn_setDrawBehindTabBar:[options.bottomTabs.drawBehind getWithDefaultValue:NO] || ![options.bottomTabs.visible getWithDefaultValue:YES]];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
@@ -83,10 +90,6 @@
 		[viewController rnn_setDrawBehindTabBar:options.bottomTabs.drawBehind.get];
 	}
 	
-	if (options.bottomTab.badge.hasValue) {
-		[viewController rnn_setTabBarItemBadge:options.bottomTab.badge.get];
-	}
-	
 	if (options.bottomTab.badgeColor.hasValue) {
 		[viewController rnn_setTabBarItemBadgeColor:options.bottomTab.badgeColor.get];
 	}
@@ -115,6 +118,11 @@
 		RNNNavigationOptions* buttonsResolvedOptions = (RNNNavigationOptions *)[[resolvedOptions overrideOptions:options] withDefault:self.defaultOptions];
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:buttonsResolvedOptions.topBar.leftButtonStyle defaultRightButtonStyle:buttonsResolvedOptions.topBar.rightButtonStyle];
+	}
+	
+	if (options.overlay.interceptTouchOutside.hasValue) {
+		RCTRootView* rootView = (RCTRootView*)viewController.view;
+		rootView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
 	}
 }
 

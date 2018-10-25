@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
@@ -357,6 +358,34 @@ public class StackControllerTest extends BaseTest {
         assertThat(animator.getDuration()).isEqualTo(300);
     }
 
+    @SuppressWarnings("MagicNumber")
+    @Test
+    public void pop_animationOptionsAreMergedCorrectlyToDisappearingChildWithDefaultOptions() throws JSONException {
+        disablePushAnimation(child1, child2);
+
+        uut.push(child1, new CommandListenerAdapter());
+        uut.push(child2, new CommandListenerAdapter());
+
+        Options defaultOptions = new Options();
+        JSONObject content = new JSONObject();
+        JSONObject x = new JSONObject();
+        x.put("duration", 300);
+        x.put("from", 0);
+        x.put("to", 1000);
+        content.put("x", x);
+        defaultOptions.animations.pop.content = AnimationOptions.parse(content);
+        uut.setDefaultOptions(defaultOptions);
+
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
+        ArgumentCaptor<NestedAnimationsOptions> captor = ArgumentCaptor.forClass(NestedAnimationsOptions.class);
+        verify(animator, times(1)).pop(any(), captor.capture(), any());
+        Animator animator = captor.getValue().content
+                .getAnimation(mock(View.class))
+                .getChildAnimations()
+                .get(0);
+        assertThat(animator.getDuration()).isEqualTo(300);
+    }
+
     @Test
     public void canPopWhenSizeIsMoreThanOne() {
         assertThat(uut.isEmpty()).isTrue();
@@ -629,10 +658,10 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void findControllerById_ReturnsSelfOrChildrenById() {
-        assertThat(uut.findControllerById("123")).isNull();
-        assertThat(uut.findControllerById(uut.getId())).isEqualTo(uut);
+        assertThat(uut.findController("123")).isNull();
+        assertThat(uut.findController(uut.getId())).isEqualTo(uut);
         uut.push(child1, new CommandListenerAdapter());
-        assertThat(uut.findControllerById(child1.getId())).isEqualTo(child1);
+        assertThat(uut.findController(child1.getId())).isEqualTo(child1);
     }
 
     @Test
@@ -641,7 +670,7 @@ public class StackControllerTest extends BaseTest {
         stack.ensureViewIsCreated();
         stack.push(child2, new CommandListenerAdapter());
         uut.push(stack, new CommandListenerAdapter());
-        assertThat(uut.findControllerById(child2.getId())).isEqualTo(child2);
+        assertThat(uut.findController(child2.getId())).isEqualTo(child2);
     }
 
     @Test
@@ -885,6 +914,30 @@ public class StackControllerTest extends BaseTest {
         Component child = mock(Component.class);
         uut.mergeChildOptions(new Options(), vc, child);
         verify(presenter, times(0)).mergeChildOptions(any(), any(), any());
+    }
+
+    @Test
+    public void mergeChildOptions_presenterMergesOptionsOnlyForCurrentChild() {
+        ViewController vc = mock(ViewController.class);
+        when(vc.isViewShown()).thenReturn(true);
+        Component child = mock(Component.class);
+        uut.mergeChildOptions(new Options(), vc, child);
+        verify(presenter, times(0)).mergeChildOptions(any(), any(), any());
+    }
+
+    @Test
+    public void resolvedOptionsAreAppliedWhenStackIsAttachedToParentAndNotVisible() {
+        FrameLayout parent = new FrameLayout(activity);
+        activity.setContentView(parent);
+
+        ViewController child = new SimpleViewController(activity, childRegistry, "child1", new Options());
+        StackController stack = createStack(Collections.singletonList(child));
+        stack.getView().setVisibility(View.INVISIBLE);
+
+        parent.addView(stack.getView());
+
+        Component component = (Component) child.getView();
+        verify(presenter).applyChildOptions(any(), eq(component));
     }
 
     @Test

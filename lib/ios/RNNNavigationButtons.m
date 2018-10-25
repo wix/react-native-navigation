@@ -63,7 +63,7 @@
 
 -(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary defaultStyle:(RNNButtonOptions *)defaultStyle {
 	NSString* buttonId = dictionary[@"id"];
-	NSString* title = [self getValue:dictionary[@"text"] withDefault:defaultStyle.text];
+	NSString* title = [self getValue:dictionary[@"text"] withDefault:[defaultStyle.text getWithDefaultValue:nil]];
 	NSDictionary* component = dictionary[@"component"];
 	
 	if (!buttonId) {

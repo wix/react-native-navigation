@@ -31,4 +31,8 @@
 	self.tabBar.clipsToBounds = hideShadow;
 }
 
+- (void)rnn_setTabBarVisible:(BOOL)visible {
+	self.tabBar.hidden = !visible;
+}
+
 @end

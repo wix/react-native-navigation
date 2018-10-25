@@ -22,7 +22,7 @@
 	[super setUp];
 	self.creator = nil;
 	self.store = [RNNStore new];
-	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator store:self.store eventEmitter:nil andBridge:nil];
+	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator eventEmitter:nil andBridge:nil];
 }
 
 - (void)tearDown {
@@ -30,16 +30,15 @@
 }
 
 - (void)testCreateLayout_EmptyLayout {
-	XCTAssertThrows([self.factory createLayoutAndSaveToStore:@{}]);
+	XCTAssertThrows([self.factory createLayout:@{} saveToStore:self.store]);
 }
 
 - (void)testCreateLayout_ComponentLayout {
-	
-	id ans = [self.factory createLayoutAndSaveToStore:
-			  @{@"id": @"cntId",
-				@"type": @"Component",
-				@"data": @{},
-				@"children": @[]}];
+	NSDictionary* layout = @{@"id": @"cntId",
+							 @"type": @"Component",
+							 @"data": @{},
+							 @"children": @[]};
+	id ans = [self.factory createLayout:layout saveToStore:self.store];
 	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
 }
 
@@ -48,50 +47,50 @@
 		return [UIViewController new];
 	}];
 	
-	id ans = [self.factory createLayoutAndSaveToStore:
-			  @{@"id": @"cntId",
-				@"type": @"ExternalComponent",
-				@"data": @{@"name": @"externalComponent"},
-				@"children": @[]}];
+	NSDictionary* layout =  @{@"id": @"cntId",
+							  @"type": @"ExternalComponent",
+							  @"data": @{@"name": @"externalComponent"},
+							  @"children": @[]};
+	id ans = [self.factory createLayout:layout saveToStore:self.store];
 	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
 }
 
 - (void)testCreateLayout_ComponentStackLayout {
-	id ans = [self.factory createLayoutAndSaveToStore:
-			  @{@"id": @"cntId",
-				@"type": @"Stack",
-				@"data": @{},
-				@"children": @[]}];
+	NSDictionary* layout = @{@"id": @"cntId",
+							 @"type": @"Stack",
+							 @"data": @{},
+							 @"children": @[]};
+	id ans = [self.factory createLayout:layout saveToStore:self.store];
 	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
 }
 
 - (void)testCreateLayout_SplitViewLayout {
-	id ans = [self.factory createLayoutAndSaveToStore:
-			  @{@"id": @"cntId",
-				@"type": @"SplitView",
-				@"data": @{},
-				@"children": @[
-						@{@"id": @"cntId_2",
-						  @"type": @"Component",
-						  @"data": @{},
-						  @"children": @[]},
-			  @{@"id": @"cntId_3",
-				@"type": @"Component",
-				@"data": @{},
-				@"children": @[]}]}];
+	NSDictionary* layout = @{@"id": @"cntId",
+							 @"type": @"SplitView",
+							 @"data": @{},
+							 @"children": @[
+									 @{@"id": @"cntId_2",
+									   @"type": @"Component",
+									   @"data": @{},
+									   @"children": @[]},
+									 @{@"id": @"cntId_3",
+									   @"type": @"Component",
+									   @"data": @{},
+									   @"children": @[]}]};
+	id ans = [self.factory createLayout:layout saveToStore:self.store];
 	XCTAssertTrue([ans isMemberOfClass:[RNNSplitViewController class]]);
 }
 
 - (void)testCreateLayout_ComponentStackLayoutRecursive {
-	RNNNavigationController* ans = (RNNNavigationController*) [self.factory createLayoutAndSaveToStore:
-															 @{@"id": @"cntId",
-															   @"type": @"Stack",
-															   @"data": @{},
-															   @"children": @[
-																	   @{@"id": @"cntId_2",
-																		 @"type": @"Component",
-																		 @"data": @{},
-																		 @"children": @[]}]}];
+	NSDictionary* layout = @{@"id": @"cntId",
+							 @"type": @"Stack",
+							 @"data": @{},
+							 @"children": @[
+									 @{@"id": @"cntId_2",
+									   @"type": @"Component",
+									   @"data": @{},
+									   @"children": @[]}]};
+	RNNNavigationController* ans = (RNNNavigationController*) [self.factory createLayout:layout saveToStore:self.store];
 	
 	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
 	XCTAssertTrue(ans.childViewControllers.count == 1);
@@ -99,20 +98,20 @@
 }
 
 - (void)testCreateLayout_BottomTabsLayout {
-	RNNTabBarController* tabBar = (RNNTabBarController*) [self.factory createLayoutAndSaveToStore:
-														@{
-														  @"id": @"cntId",
-														  @"type": @"BottomTabs",
-														  @"data": @{},
-														  @"children": @[
-																  @{@"id": @"cntId_2",
-																	@"type": @"Stack",
-																	@"data": @{},
-																	@"children": @[
-																			@{@"id": @"cntId_3",
-																			  @"type": @"Component",
-																			  @"data": @{},
-																			  @"children": @[]}]}]}];
+	NSDictionary* layout = @{
+							 @"id": @"cntId",
+							 @"type": @"BottomTabs",
+							 @"data": @{},
+							 @"children": @[
+									 @{@"id": @"cntId_2",
+									   @"type": @"Stack",
+									   @"data": @{},
+									   @"children": @[
+											   @{@"id": @"cntId_3",
+												 @"type": @"Component",
+												 @"data": @{},
+												 @"children": @[]}]}]};
+	RNNTabBarController* tabBar = (RNNTabBarController*) [self.factory createLayout:layout saveToStore:self.store];
 	
 	XCTAssertTrue([tabBar isMemberOfClass:[RNNTabBarController class]]);
 	XCTAssertTrue(tabBar.childViewControllers.count == 1);
@@ -124,54 +123,54 @@
 }
 
 - (void)testCreateLayout_TopTabsLayout {
-	RNNTopTabsViewController* tabBar = (RNNTopTabsViewController*) [self.factory createLayoutAndSaveToStore:
-														  @{
-															@"id": @"cntId",
-															@"type": @"TopTabs",
-															@"data": @{},
-															@"children": @[
-																	@{@"id": @"cntId_2",
-																	  @"type": @"Stack",
-																	  @"data": @{},
-																	  @"children": @[
-																			  @{@"id": @"cntId_3",
-																				@"type": @"Component",
-																				@"data": @{},
-																				@"children": @[]}]}]}];
+	NSDictionary* layout = @{
+							 @"id": @"cntId",
+							 @"type": @"TopTabs",
+							 @"data": @{},
+							 @"children": @[
+									 @{@"id": @"cntId_2",
+									   @"type": @"Stack",
+									   @"data": @{},
+									   @"children": @[
+											   @{@"id": @"cntId_3",
+												 @"type": @"Component",
+												 @"data": @{},
+												 @"children": @[]}]}]};
+	RNNTopTabsViewController* tabBar = (RNNTopTabsViewController*) [self.factory createLayout:layout saveToStore:self.store];
 	
 	XCTAssertTrue([tabBar isMemberOfClass:[RNNTopTabsViewController class]]);
 }
 
 - (void)testCreateLayout_ComponentSideMenuLayoutCenterLeftRight {
-	RNNSideMenuController *ans = (RNNSideMenuController*) [self.factory createLayoutAndSaveToStore:
-														   @{@"id": @"cntId",
-															 @"type": @"SideMenuRoot",
-															 @"data": @{},
-															 @"children": @[
-																	 @{@"id": @"cntI_2",
-																	   @"type": @"SideMenuCenter",
-																	   @"data": @{},
-																	   @"children": @[
-																			   @{@"id": @"cntId_3",
-																				 @"type": @"Component",
-																				 @"data": @{},
-																				 @"children": @[]}]},
-																	 @{@"id": @"cntI_4",
-																	   @"type": @"SideMenuLeft",
-																	   @"data": @{},
-																	   @"children": @[
-																			   @{@"id": @"cntId_5",
-																				 @"type": @"Component",
-																				 @"data": @{},
-																				 @"children": @[]}]},
-																	 @{@"id": @"cntI_6",
-																	   @"type": @"SideMenuRight",
-																	   @"data": @{},
-																	   @"children": @[
-																			   @{@"id": @"cntId_7",
-																				 @"type": @"Component",
-																				 @"data": @{},
-																				 @"children": @[]}]}]}];
+	NSDictionary* layout = @{@"id": @"cntId",
+							 @"type": @"SideMenuRoot",
+							 @"data": @{},
+							 @"children": @[
+									 @{@"id": @"cntI_2",
+									   @"type": @"SideMenuCenter",
+									   @"data": @{},
+									   @"children": @[
+											   @{@"id": @"cntId_3",
+												 @"type": @"Component",
+												 @"data": @{},
+												 @"children": @[]}]},
+									 @{@"id": @"cntI_4",
+									   @"type": @"SideMenuLeft",
+									   @"data": @{},
+									   @"children": @[
+											   @{@"id": @"cntId_5",
+												 @"type": @"Component",
+												 @"data": @{},
+												 @"children": @[]}]},
+									 @{@"id": @"cntI_6",
+									   @"type": @"SideMenuRight",
+									   @"data": @{},
+									   @"children": @[
+											   @{@"id": @"cntId_7",
+												 @"type": @"Component",
+												 @"data": @{},
+												 @"children": @[]}]}]};
+	RNNSideMenuController *ans = (RNNSideMenuController*) [self.factory createLayout:layout saveToStore:self.store];
 	XCTAssertTrue([ans isMemberOfClass:[RNNSideMenuController class]]);
 	XCTAssertTrue([ans isKindOfClass:[UIViewController class]]);
 	XCTAssertTrue([ans.center isMemberOfClass:[RNNSideMenuChildVC class]]);
@@ -190,11 +189,11 @@
 
 - (void)testCreateLayout_addComponentToStore {
 	NSString *componentId = @"cntId";
-	UIViewController *ans = [self.factory createLayoutAndSaveToStore:
-							 @{@"id": componentId,
-							   @"type": @"Component",
-							   @"data": @{},
-							   @"children": @[]}];
+	NSDictionary* layout = @{@"id": componentId,
+							 @"type": @"Component",
+							 @"data": @{},
+							 @"children": @[]};
+	UIViewController *ans = [self.factory createLayout:layout saveToStore:self.store];
 	
 	UIViewController *storeAns = [self.store findComponentForId:componentId];
 	XCTAssertEqualObjects(ans, storeAns);

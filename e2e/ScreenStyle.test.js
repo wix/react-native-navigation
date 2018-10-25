@@ -58,6 +58,20 @@ describe('screen style', () => {
     await expect(element(by.text('TeSt'))).toBeVisible();
   });
 
+  test('set Tab Bar badge on a current Tab appear once', async () => {
+    await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
+    await elementById(testIDs.SET_TAB_BADGE_BUTTON).tap();
+    await expect(element(by.text('TeSt'))).toBeVisible();
+  });
+
+  test(':ios: set Tab Bar badge null on a current Tab should reset badge', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.SET_TAB_BADGE_BUTTON).tap();
+    await expect(element(by.text('TeSt'))).toBeVisible();
+    await elementById(testIDs.SET_TAB_BADGE_BUTTON_NULL).tap();
+    await expect(element(by.text('TeSt'))).toBeNotVisible();
+  });
+
   test(':android: hide Tab Bar', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
@@ -169,7 +183,7 @@ describe('screen style', () => {
     await expect(elementByLabel('Press Me')).toBeVisible();
   });
 
-  xit(':ios: set searchBar and handle onSearchUpdated event', async () => {
+  test(':ios: set searchBar and handle onSearchUpdated event', async () => {
     await elementById(testIDs.SHOW_TOPBAR_SEARCHBAR).tap();
     await expect(elementByLabel('Start Typing')).toBeVisible();
     await elementByLabel('Start Typing').tap();

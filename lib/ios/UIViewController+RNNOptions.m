@@ -1,19 +1,23 @@
 #import "UIViewController+RNNOptions.h"
+#import <React/RCTRootView.h>
+
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
 
 @implementation UIViewController (RNNOptions)
 
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage {
-	UIImageView* backgroundImageView = (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
-	if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
-		backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-		[self.view insertSubview:backgroundImageView atIndex:0];
+	if (backgroundImage) {
+		UIImageView* backgroundImageView = (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
+		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
+			backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+			[self.view insertSubview:backgroundImageView atIndex:0];
+		}
+		
+		backgroundImageView.layer.masksToBounds = YES;
+		backgroundImageView.image = backgroundImage;
+		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
-	
-	backgroundImageView.layer.masksToBounds = YES;
-	backgroundImageView.image = backgroundImage;
-	[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 }
 
 - (void)rnn_setModalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle {
@@ -56,6 +60,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 - (void)rnn_setDrawBehindTopBar:(BOOL)drawBehind {
 	if (drawBehind) {
+		[self setExtendedLayoutIncludesOpaqueBars:YES];
 		self.edgesForExtendedLayout |= UIRectEdgeTop;
 	} else {
 		self.edgesForExtendedLayout &= ~UIRectEdgeTop;
@@ -67,17 +72,17 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		[self setExtendedLayoutIncludesOpaqueBars:YES];
 		self.edgesForExtendedLayout |= UIRectEdgeBottom;
 	} else {
-		[self setExtendedLayoutIncludesOpaqueBars:NO];
 		self.edgesForExtendedLayout &= ~UIRectEdgeBottom;
 	}
 }
 
 - (void)rnn_setTabBarItemBadge:(NSString *)badge {
 	UITabBarItem *tabBarItem = self.tabBarItem;
-	tabBarItem.badgeValue = badge;
 	
 	if ([badge isKindOfClass:[NSNull class]] || [badge isEqualToString:@""]) {
 		tabBarItem.badgeValue = nil;
+	} else {
+		tabBarItem.badgeValue = badge;
 	}
 }
 
@@ -134,5 +139,22 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	return animated ? kStatusBarAnimationDuration : CGFLOAT_MIN;
 }
 
+- (BOOL)isModal {
+	if([self presentingViewController])
+		return YES;
+	if([[[self navigationController] presentingViewController] presentedViewController] == [self navigationController])
+		return YES;
+	if([[[self tabBarController] presentingViewController] isKindOfClass:[UITabBarController class]])
+		return YES;
+	
+	return NO;
+}
+
+- (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside {
+	if ([self.view isKindOfClass:[RCTRootView class]]) {
+		RCTRootView* rootView = (RCTRootView*)self.view;
+		rootView.passThroughTouches = !interceptTouchOutside;
+	}
+}
 
 @end

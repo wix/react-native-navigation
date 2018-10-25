@@ -4,8 +4,9 @@
 #import "RNNNavigationOptions.h"
 #import "RNNTestRootViewCreator.h"
 #import "RNNRootViewController.h"
-#import "RNNNavigationStackManager.h"
 #import "RNNNavigationController.h"
+#import "RNNErrorHandler.h"
+#import <OCMock/OCMock.h>
 
 @interface MockUINavigationController : RNNNavigationController
 @property (nonatomic, strong) NSArray* willReturnVCs;
@@ -26,11 +27,15 @@
 @interface RNNCommandsHandlerTest : XCTestCase
 
 @property (nonatomic, strong) RNNStore* store;
+@property (nonatomic, strong) id overlayStore;
 @property (nonatomic, strong) RNNCommandsHandler* uut;
 @property (nonatomic, strong) RNNRootViewController* vc1;
 @property (nonatomic, strong) RNNRootViewController* vc2;
 @property (nonatomic, strong) RNNRootViewController* vc3;
 @property (nonatomic, strong) MockUINavigationController* nvc;
+@property (nonatomic, strong) id controllerFactory;
+@property (nonatomic, strong) id overlayManager;
+@property (nonatomic, strong) id eventEmmiter;
 
 @end
 
@@ -40,7 +45,11 @@
 	[super setUp];
 //	[self.store setReadyToReceiveCommands:true];
 	self.store = [[RNNStore alloc] init];
-	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:[[RNNControllerFactory alloc] initWithRootViewCreator:nil store:self.store eventEmitter:nil andBridge:nil] eventEmitter:nil];
+	self.overlayStore = [OCMockObject partialMockForObject:[[RNNStore alloc] init]];
+	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
+	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
+	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter andBridge:nil]];
+	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store overlayStore:self.overlayStore controllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:self.overlayManager];
 	self.vc1 = [RNNRootViewController new];
 	self.vc2 = [RNNRootViewController new];
 	self.vc3 = [RNNRootViewController new];
@@ -67,7 +76,7 @@
 -(NSArray*) getPublicMethodNamesForObject:(NSObject*)obj{
 	NSMutableArray* skipMethods = [NSMutableArray new];
 
-	[skipMethods addObject:@"initWithStore:controllerFactory:eventEmitter:"];
+	[skipMethods addObject:@"initWithStore:overlayStore:controllerFactory:eventEmitter:stackManager:modalManager:overlayManager:"];
 	[skipMethods addObject:@"assertReady"];
 	[skipMethods addObject:@"removePopedViewControllers:"];
 	[skipMethods addObject:@".cxx_destruct"];
@@ -182,6 +191,90 @@
 	} rejection:nil];
 	
 	[self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testShowOverlay_createLayout {
+	[self.store setReadyToReceiveCommands:true];
+	OCMStub([self.overlayManager showOverlay:[OCMArg any]]);
+	NSDictionary* layout = @{};
+	
+	[[self.controllerFactory expect] createLayout:layout saveToStore:self.overlayStore];
+	[self.uut showOverlay:layout completion:^{}];
+	[self.controllerFactory verify];
+}
+
+- (void)testShowOverlay_saveToOverlayStore {
+	[self.store setReadyToReceiveCommands:true];
+	OCMStub([self.overlayManager showOverlay:[OCMArg any]]);
+	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]);
+	
+	[[self.controllerFactory expect] createLayout:[OCMArg any] saveToStore:self.overlayStore];
+	[self.uut showOverlay:@{} completion:^{}];
+	[self.overlayManager verify];
+}
+
+- (void)testShowOverlay_withCreatedLayout {
+	[self.store setReadyToReceiveCommands:true];
+	UIViewController* layoutVC = [RNNRootViewController new];
+	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]).andReturn(layoutVC);
+	
+	[[self.overlayManager expect] showOverlay:layoutVC];
+	[self.uut showOverlay:@{} completion:^{}];
+	[self.overlayManager verify];
+}
+
+- (void)testShowOverlay_invokeNavigationCommandEventWithLayout {
+	[self.store setReadyToReceiveCommands:true];
+	OCMStub([self.overlayManager showOverlay:[OCMArg any]]);
+	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]);
+
+	NSDictionary* layout = @{};
+	
+	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"showOverlay" params:[OCMArg any]];
+	[self.uut showOverlay:layout completion:^{}];
+	[self.eventEmmiter verify];
+}
+
+- (void)testDismissOverlay_findComponentFromOverlayStore {
+	[self.store setReadyToReceiveCommands:true];
+	NSString* componentId = @"componentId";
+	[[self.overlayStore expect] findComponentForId:componentId];
+	[self.uut dismissOverlay:componentId completion:^{} rejection:^(NSString *code, NSString *message, NSError *error) {}];
+	[self.overlayStore verify];
+}
+
+- (void)testDismissOverlay_dismissReturnedViewController {
+	[self.store setReadyToReceiveCommands:true];
+	NSString* componentId = @"componentId";
+	UIViewController* returnedView = [UIViewController new];
+	OCMStub([self.overlayStore findComponentForId:componentId]).andReturn(returnedView);
+	
+	[[self.overlayManager expect] dismissOverlay:returnedView];
+	[self.uut dismissOverlay:componentId completion:^{} rejection:^(NSString *code, NSString *message, NSError *error) {}];
+	[self.overlayManager verify];
+}
+
+- (void)testDismissOverlay_handleErrorIfNoOverlayExists {
+	[self.store setReadyToReceiveCommands:true];
+	NSString* componentId = @"componentId";
+    id errorHandlerMockClass = [OCMockObject mockForClass:[RNNErrorHandler class]];
+	
+    [[errorHandlerMockClass expect] reject:[OCMArg any] withErrorCode:1010 errorDescription:[OCMArg any]];
+    [self.uut dismissOverlay:componentId completion:[OCMArg any] rejection:[OCMArg any]];
+    [errorHandlerMockClass verify];
+}
+
+- (void)testDismissOverlay_invokeNavigationCommandEvent {
+	[self.store setReadyToReceiveCommands:true];
+	NSString* componentId = @"componentId";
+	OCMStub([self.overlayStore findComponentForId:componentId]).andReturn([UIViewController new]);
+	
+	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"dismissOverlay" params:[OCMArg any]];
+	[self.uut dismissOverlay:componentId completion:^{
+		
+	} rejection:^(NSString *code, NSString *message, NSError *error) {}];
+	 
+	[self.eventEmmiter verify];
 }
 
 @end

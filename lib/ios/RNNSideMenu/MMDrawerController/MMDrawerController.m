@@ -213,10 +213,12 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     [self setMaximumLeftDrawerWidth:MMDrawerDefaultWidth];
     [self setMaximumRightDrawerWidth:MMDrawerDefaultWidth];
     
-    [self setAnimationVelocity:MMDrawerDefaultAnimationVelocity];
+    [self setAnimationVelocityLeft:MMDrawerDefaultAnimationVelocity];
+	[self setAnimationVelocityRight:MMDrawerDefaultAnimationVelocity];
     
     [self setShowsShadow:YES];
-    [self setShouldStretchDrawer:YES];
+    [self setShouldStretchLeftDrawer:YES];
+	[self setShouldStretchRightDrawer:YES];
     
     [self setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
     [self setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
@@ -297,7 +299,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 }
 
 -(void)closeDrawerAnimated:(BOOL)animated completion:(void (^)(BOOL finished))completion{
-    [self closeDrawerAnimated:animated velocity:self.animationVelocity animationOptions:UIViewAnimationOptionCurveEaseInOut completion:completion];
+	CGFloat velocity = self.openSide == MMDrawerSideLeft ? self.animationVelocityLeft : self.animationVelocityRight;
+	[self closeDrawerAnimated:animated velocity:velocity animationOptions:UIViewAnimationOptionCurveEaseInOut completion:completion];
 }
 
 -(void)closeDrawerAnimated:(BOOL)animated velocity:(CGFloat)velocity animationOptions:(UIViewAnimationOptions)options completion:(void (^)(BOOL finished))completion{
@@ -359,8 +362,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
 -(void)openDrawerSide:(MMDrawerSide)drawerSide animated:(BOOL)animated completion:(void (^)(BOOL finished))completion{
     NSParameterAssert(drawerSide != MMDrawerSideNone);
-    
-    [self openDrawerSide:drawerSide animated:animated velocity:self.animationVelocity animationOptions:UIViewAnimationOptionCurveEaseInOut completion:completion];
+	CGFloat velocity = drawerSide == MMDrawerSideLeft ? self.animationVelocityLeft : self.animationVelocityRight;
+    [self openDrawerSide:drawerSide animated:animated velocity:velocity animationOptions:UIViewAnimationOptionCurveEaseInOut completion:completion];
 }
 
 -(void)openDrawerSide:(MMDrawerSide)drawerSide animated:(BOOL)animated velocity:(CGFloat)velocity animationOptions:(UIViewAnimationOptions)options completion:(void (^)(BOOL finished))completion{
@@ -1250,9 +1253,23 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     if(self.drawerVisualState){
         self.drawerVisualState(self,drawerSide,percentVisible);
     }
-    else if(self.shouldStretchDrawer){
+    else if([self shouldStretchForSide:drawerSide]){
         [self applyOvershootScaleTransformForDrawerSide:drawerSide percentVisible:percentVisible];
     }
+}
+
+- (BOOL)shouldStretchForSide:(MMDrawerSide)drawerSide {
+	switch (drawerSide) {
+		case MMDrawerSideLeft:
+			return self.shouldStretchLeftDrawer;
+			break;
+		case MMDrawerSideRight:
+			return self.shouldStretchRightDrawer;
+			break;
+		default:
+			return YES;
+			break;
+	}
 }
 
 - (void)applyOvershootScaleTransformForDrawerSide:(MMDrawerSide)drawerSide percentVisible:(CGFloat)percentVisible{
@@ -1283,7 +1300,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 -(CGFloat)roundedOriginXForDrawerConstriants:(CGFloat)originX{
     
     if (originX < -self.maximumRightDrawerWidth) {
-        if (self.shouldStretchDrawer &&
+        if (self.shouldStretchRightDrawer &&
             self.rightDrawerViewController) {
             CGFloat maxOvershoot = (CGRectGetWidth(self.centerContainerView.frame)-self.maximumRightDrawerWidth)*MMDrawerOvershootPercentage;
             return originXForDrawerOriginAndTargetOriginOffset(originX, -self.maximumRightDrawerWidth, maxOvershoot);
@@ -1293,7 +1310,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         }
     }
     else if(originX > self.maximumLeftDrawerWidth){
-        if (self.shouldStretchDrawer &&
+        if (self.shouldStretchLeftDrawer &&
             self.leftDrawerViewController) {
             CGFloat maxOvershoot = (CGRectGetWidth(self.centerContainerView.frame)-self.maximumLeftDrawerWidth)*MMDrawerOvershootPercentage;
             return originXForDrawerOriginAndTargetOriginOffset(originX, self.maximumLeftDrawerWidth, maxOvershoot);
@@ -1387,7 +1404,8 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
 }
 
 -(NSTimeInterval)animationDurationForAnimationDistance:(CGFloat)distance{
-    NSTimeInterval duration = MAX(distance/self.animationVelocity,MMDrawerMinimumAnimationDuration);
+	CGFloat velocity = self.openSide == MMDrawerSideLeft ? self.animationVelocityLeft : self.animationVelocityRight;
+    NSTimeInterval duration = MAX(distance/velocity,MMDrawerMinimumAnimationDuration);
     return duration;
 }
 

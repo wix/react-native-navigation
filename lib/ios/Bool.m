@@ -8,6 +8,11 @@
 
 @implementation Bool
 
+- (instancetype)initWithBOOL:(BOOL)boolValue {
+	self = [super initWithValue:@(boolValue)];
+	return self;
+}
+
 - (BOOL)get {
 	return [self.value boolValue];
 }

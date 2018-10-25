@@ -25,22 +25,23 @@
 
 
 - (instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
-								  store:(RNNStore *)store
 						   eventEmitter:(RNNEventEmitter*)eventEmitter
 							  andBridge:(RCTBridge *)bridge {
 	
 	self = [super init];
 	
 	_creator = creator;
-	_store = store;
 	_eventEmitter = eventEmitter;
 	_bridge = bridge;
 	
 	return self;
 }
 
-- (UIViewController<RNNParentProtocol> *)createLayoutAndSaveToStore:(NSDictionary*)layout {
-	return [self fromTree:layout];
+- (UIViewController<RNNParentProtocol> *)createLayout:(NSDictionary*)layout saveToStore:(RNNStore *)store {
+	_store = store;
+	UIViewController<RNNParentProtocol>* layoutViewController = [self fromTree:layout];
+	_store = nil;
+	return layoutViewController;
 }
 
 # pragma mark private

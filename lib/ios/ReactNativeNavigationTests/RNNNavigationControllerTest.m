@@ -21,7 +21,7 @@
 	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:nil];
 	_vc3 = [UIViewController new];
 	
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:[[RNNNavigationOptions alloc] initWithDict:@{}] presenter:[[RNNViewControllerPresenter alloc] init]];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] presenter:[[RNNViewControllerPresenter alloc] init]];
 }
 
 - (void)testInitWithLayoutInfo_shouldBindPresenter {
@@ -68,16 +68,16 @@
 	XCTAssertTrue(self.uut.interactivePopGestureRecognizer.enabled);
 }
 
-//- (void)testRootBackgroundImage {
-//	UIImage* rootBackgroundImage = [[UIImage alloc] init];
-//	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
-//	options.rootBackgroundImage = rootBackgroundImage;
-//	
-//	self.uut = [self createNavigationControllerWithOptions:options];
-//	[self.uut viewWillAppear:false];
-//	
-//	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:rootBackgroundImage]);
-//}
+- (void)testRootBackgroundImage {
+	UIImage* rootBackgroundImage = [[UIImage alloc] init];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.rootBackgroundImage = [[Image alloc] initWithValue:rootBackgroundImage];
+	
+	self.uut = [self createNavigationControllerWithOptions:options];
+	[self.uut onChildWillAppear];
+	
+	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:rootBackgroundImage]);
+}
 
 - (void)testTopBarBackgroundClipToBounds_true {
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
@@ -96,6 +96,14 @@
 	self.uut = [self createNavigationControllerWithOptions:options];
 	
 	XCTAssertFalse(self.uut.navigationController.navigationBar.clipsToBounds);
+}
+
+- (void)testTabBarItemShouldReturnFirstChildTabBarItem {
+	XCTAssertEqual(self.uut.tabBarItem, self.uut.childViewControllers.firstObject.tabBarItem);
+}
+
+- (void)testSupportedOrientationsShouldReturnCurrentChildSupportedOrientations {
+	XCTAssertEqual(self.uut.supportedInterfaceOrientations, self.uut.getCurrentChild.supportedInterfaceOrientations);
 }
 
 - (RNNNavigationController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
