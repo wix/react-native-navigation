@@ -27,6 +27,8 @@
   "typings": "lib/dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./lib/dist && tsc",
+    "build-manually": "cd lib && tsc --outDir ./dist",
+    "list-files": "cd lib && dir /s /b *.ts | findstr /e .ts",
     "xcode": "open playground/ios/playground.xcodeproj",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
