@@ -336,11 +336,7 @@ public class StackController extends ParentController<StackLayout> {
 
     private void onNavigationButtonPressed(String buttonId) {
         if (Constants.BACK_BUTTON_ID.equals(buttonId)) {
-<<<<<<< HEAD
             pop(Options.EMPTY, new CommandListenerAdapter());
-=======
-            pop(new CommandListenerAdapter());
->>>>>>> parent of 76bed336... Revert "Update lib/android/app/src/main/java/com/reactnativenavigation/viewcontrollers/stack/StackController.java"
         }
         sendOnNavigationButtonPressed(buttonId);
     }
