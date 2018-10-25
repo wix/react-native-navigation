@@ -51,6 +51,10 @@ This is because the `React` scheme is missing from your project. You can verify 
 
 To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
 
+3b. If you are using Xcode 10 and get a `“Multiple commands produce…” ` error when attempting to build the project, try the following solutions. 
+In Project Navigator (left pane), open  `Libraries`  and select  `ReactNativeNavigation.xcodeproj` , then navigate to `Build Phases` tab, expand `Copy Files` and check `Copy only when installing`.  Note that this step will have to be repeated if `node_modules` are ever deleted.
+Alternatively, you can switch to the legacy build mode. In Xcode open the menu `File -> Project Settings` and for `Build System` select `Legacy Build System`.
+
 ## Android
 
 > Make sure your Android Studio installation is updated. We recommend editing `gradle` and `java` files in Android Studio as the IDE will suggest fixes and point out errors, this way you avoid most common pitfalls.
