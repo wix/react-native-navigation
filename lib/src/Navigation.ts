@@ -167,8 +167,8 @@ export class Navigation {
     /**
    * Get children ids of stack
    */
-    public async getStackChildrenIds(componentId: string): Promise<any> {
-        return await this.commands.getStackChildrenIds(componentId);
+    public getStackChildrenIds(componentId: string): Promise<any> {
+        return this.commands.getStackChildrenIds(componentId);
     }
 
   /**
