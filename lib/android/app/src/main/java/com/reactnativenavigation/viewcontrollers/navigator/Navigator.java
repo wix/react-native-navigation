@@ -202,10 +202,10 @@ public class Navigator extends ParentController {
         String componentId = id;
         if (from != null) {
             if (from instanceof StackController) {
-                array = ((StackController) from).getChildControllersIds();
+                array = ((StackController) from).getControllerChildrenIds();
             } else {
                 StackController parentController = (StackController) from.getParentController();
-                array = parentController.getChildControllersIds();
+                array = parentController.getControllerChildrenIds();
                 componentId = parentController.getId();
             }
         } else {

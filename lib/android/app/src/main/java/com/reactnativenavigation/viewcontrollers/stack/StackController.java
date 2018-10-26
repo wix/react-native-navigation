@@ -29,6 +29,7 @@ import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -352,11 +353,15 @@ public class StackController extends ParentController<StackLayout> {
         return stack.values();
     }
 
-    public WritableArray getChildControllersIds(){
+    public WritableArray getControllerChildrenIds(){
+        ArrayList<String> idList = new ArrayList<>();
         WritableArray idArr = Arguments.createArray();
         Iterator<String> iterator = stack.iterator();
         while (iterator.hasNext()) {
             String controlId = iterator.next();
+            idList.add(0, controlId);
+        }
+        for(String controlId : idList){
             idArr.pushString(controlId);
         }
         return idArr;
