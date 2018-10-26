@@ -11,7 +11,9 @@
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
-- (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getCurrentChild;
+- (UIViewController<RNNLayoutProtocol> *)getCurrentChild;
+
+- (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getCurrentLeaf;
 
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 

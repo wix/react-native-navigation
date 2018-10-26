@@ -133,6 +133,10 @@
 	return self;
 }
 
+- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
+	return self;
+}
+
 - (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock {
 	if (self.isExternalViewController) {
 		readyBlock();
