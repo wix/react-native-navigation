@@ -16,6 +16,8 @@ import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
+import { Provider } from 'react-redux';
+import { Store as ReduxStore } from 'redux';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -62,7 +64,12 @@ export class Navigation {
    * Utility helper function like registerComponent,
    * wraps the provided component with a react-redux Provider with the passed redux store
    */
-  public registerComponentWithRedux(componentName: string, getComponentClassFunc: ComponentProvider, ReduxProvider: any, reduxStore: any): ComponentType<any> {
+  public registerComponentWithRedux(
+    componentName: string,
+    getComponentClassFunc: ComponentProvider,
+    ReduxProvider: typeof Provider,
+    reduxStore: ReduxStore<any>
+  ): ComponentType<any> {
     return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, ReduxProvider, reduxStore);
   }
 
