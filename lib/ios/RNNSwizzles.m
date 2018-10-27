@@ -48,8 +48,14 @@ static void __RNN_setFrame_orig(UIScrollView* self, SEL _cmd, CGRect frame)
 - (void)__swz_presentViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^ __nullable)(void))completion
 {
 	if ([viewController isKindOfClass:[UIAlertController class]]) {
-		UIViewController* topWindowRootViewController = [[[[UIApplication sharedApplication] windows] lastObject] rootViewController];
-		__SWZ_presentViewController_orig(topWindowRootViewController, _cmd, viewController, animated, completion);
+		UIViewController *controller = [[[[UIApplication sharedApplication] windows] lastObject] rootViewController];
+		UIViewController *presentedController = controller.presentedViewController;
+		while (presentedController && ![presentedController isBeingDismissed]) {
+			controller = presentedController;
+			presentedController = controller.presentedViewController;
+		}
+		
+		__SWZ_presentViewController_orig(controller, _cmd, viewController, animated, completion);
 	} else
 		__SWZ_presentViewController_orig(self, _cmd, viewController, animated, completion);
 }
