@@ -2,4 +2,6 @@
 
 @interface RNNNavigationControllerPresenter : RNNBasePresenter
 
+- (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
+
 @end
