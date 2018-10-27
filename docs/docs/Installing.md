@@ -28,7 +28,7 @@
 
 	#import <React/RCTBundleURLProvider.h>
 	#import <React/RCTRootView.h>
-	#import <ReactNativeNavigation/ReactNativeNavigation.h>
+	#import "ReactNativeNavigation.h"
 
 	@implementation AppDelegate
 
@@ -50,6 +50,12 @@
 This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu. 
 
 To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
+
+3b. If you see the following error message in `AppDelegate.m` next to `#import "ReactNativeNavigation.h"` 
+```
+! ''ReactNativeNavigation.h' file not found
+```   
+Make sure the path `$(SRCROOT)/../node_modules/react-native-navigation/lib/ios` exist in your project's `Header Search Paths`.
 
 ## Android
 
