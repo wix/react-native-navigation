@@ -3,12 +3,14 @@ import { Text } from 'react-native';
 import * as renderer from 'react-test-renderer';
 import { ComponentWrapper } from './ComponentWrapper';
 import { Store } from './Store';
+import { mock } from 'ts-mockito';
+import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 
 describe('ComponentWrapper', () => {
   const componentName = 'example.MyComponent';
   let store;
   let myComponentProps;
-  const componentEventsObserver = { unmounted: jest.fn() };
+  const componentEventsObserver = mock(ComponentEventsObserver);
 
   class MyComponent extends React.Component<any, any> {
     static options = {

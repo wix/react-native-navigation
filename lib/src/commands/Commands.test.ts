@@ -6,6 +6,7 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider.mock';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender.mock';
 import { Commands } from './Commands';
 import { CommandsObserver } from '../events/CommandsObserver';
+import { mock } from 'ts-mockito';
 
 describe('Commands', () => {
   let uut: Commands;
@@ -379,8 +380,8 @@ describe('Commands', () => {
 
     beforeEach(() => {
       cb = jest.fn();
-      const mockParser = { parse: () => 'parsed' };
-      const mockCrawler = { crawl: (x) => x, processOptions: (x) => x };
+      const mockParser = mock(LayoutTreeParser);
+      const mockCrawler = mock(LayoutTreeCrawler);
       commandsObserver.register(cb);
       uut = new Commands(mockCommandsSender, mockParser, mockCrawler, commandsObserver, new UniqueIdProvider());
     });
