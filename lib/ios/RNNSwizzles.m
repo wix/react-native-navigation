@@ -12,6 +12,7 @@
 
 static id (*__SWZ_initWithEventDispatcher_orig)(id self, SEL _cmd, id eventDispatcher);
 static void (*__SWZ_setFrame_orig)(id self, SEL _cmd, CGRect frame);
+static void (*__SWZ_presentViewController_orig)(id self, SEL _cmd, UIViewController* viewController, BOOL animated, id completion);
 
 static void __RNN_setFrame_orig(UIScrollView* self, SEL _cmd, CGRect frame)
 {
@@ -44,6 +45,15 @@ static void __RNN_setFrame_orig(UIScrollView* self, SEL _cmd, CGRect frame)
 
 @implementation RNNSwizzles
 
+- (void)__swz_presentViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^ __nullable)(void))completion
+{
+	if ([viewController isKindOfClass:[UIAlertController class]]) {
+		UIViewController* topWindowRootViewController = [[[[UIApplication sharedApplication] windows] lastObject] rootViewController];
+		__SWZ_presentViewController_orig(topWindowRootViewController, _cmd, viewController, animated, completion);
+	} else
+		__SWZ_presentViewController_orig(self, _cmd, viewController, animated, completion);
+}
+
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
 - (id)__swz_initWithEventDispatcher:(id)eventDispatcher
 {
@@ -73,6 +83,15 @@ static void __RNN_setFrame_orig(UIScrollView* self, SEL _cmd, CGRect frame)
 	__SWZ_initWithEventDispatcher_orig = (void*)method_getImplementation(m1);
 	Method m2 = class_getInstanceMethod([RNNSwizzles class], NSSelectorFromString(@"__swz_initWithEventDispatcher:"));
 	method_exchangeImplementations(m1, m2);
+	
+	Class viewControllerClass = NSClassFromString(@"UIViewController");
+	Method presentViewControllerOrig = class_getInstanceMethod(viewControllerClass, NSSelectorFromString(@"presentViewController:animated:completion:"));
+	Method presentViewControllerSWZ = class_getInstanceMethod([RNNSwizzles class], NSSelectorFromString(@"__swz_presentViewController:animated:completion:"));
+	
+	if (presentViewControllerOrig != NULL) {
+		__SWZ_presentViewController_orig = (void*)method_getImplementation(presentViewControllerOrig);
+		method_exchangeImplementations(presentViewControllerOrig, presentViewControllerSWZ);
+	}
 	
 	if (@available(iOS 11.0, *)) {
 		cls = NSClassFromString(@"RCTCustomScrollView");
