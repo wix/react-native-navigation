@@ -3,14 +3,15 @@ import { Text } from 'react-native';
 import * as renderer from 'react-test-renderer';
 import { ComponentWrapper } from './ComponentWrapper';
 import { Store } from './Store';
-import { mock } from 'ts-mockito';
+import { mock, verify, instance } from 'ts-mockito';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 
 describe('ComponentWrapper', () => {
   const componentName = 'example.MyComponent';
   let store;
   let myComponentProps;
-  const componentEventsObserver = mock(ComponentEventsObserver);
+  let mockedComponentEventsObserver: ComponentEventsObserver;
+  let componentEventsObserver: ComponentEventsObserver;
 
   class MyComponent extends React.Component<any, any> {
     static options = {
@@ -47,6 +48,8 @@ describe('ComponentWrapper', () => {
 
   beforeEach(() => {
     store = new Store();
+    mockedComponentEventsObserver = mock(ComponentEventsObserver);
+    componentEventsObserver = instance(mockedComponentEventsObserver);
   });
 
   it('must have componentId as prop', () => {
@@ -132,9 +135,9 @@ describe('ComponentWrapper', () => {
   it(`calls unmounted on componentEventsObserver`, () => {
     const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
     const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
-    expect(componentEventsObserver.unmounted).not.toHaveBeenCalled();
+    verify(mockedComponentEventsObserver.unmounted('component123')).never();
     tree.unmount();
-    expect(componentEventsObserver.unmounted).toHaveBeenCalledTimes(1);
+    verify(mockedComponentEventsObserver.unmounted('component123')).once();
   });
 
   describe(`register with redux store`, () => {
