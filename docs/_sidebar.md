@@ -1,5 +1,5 @@
 #### V 1.1.X  
-For [V2 docs click here](https://github.com/wix/react-native-navigation/tree/v2)
+For [V2 docs click here](https://wix.github.io/react-native-navigation/v2/#/)
 
 - Getting started
  - [Installation - iOS](/installation-ios)
