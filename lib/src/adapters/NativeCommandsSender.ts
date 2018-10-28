@@ -62,7 +62,7 @@ export class NativeCommandsSender {
     return this.nativeCommandsModule.getLaunchArgs(commandId);
   }
 
-    getStackChildrenIds(commandId: string, componentId: string) {
-        return this.nativeCommandsModule.getStackChildrenIds(commandId, componentId);
+    async getStackChildrenIds(commandId: string, componentId: string) {
+        return await this.nativeCommandsModule.getStackChildrenIds(commandId, componentId);
     }
 }
