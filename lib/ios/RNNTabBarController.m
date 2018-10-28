@@ -7,9 +7,10 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
+					defaultOptions:(RNNNavigationOptions *)defaultOptions
 						 presenter:(RNNTabBarPresenter *)presenter
 					  eventEmitter:(RNNEventEmitter *)eventEmitter {
-	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options presenter:presenter];
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:defaultOptions presenter:presenter];
 	
 	_eventEmitter = eventEmitter;
 	
@@ -19,11 +20,13 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
+					defaultOptions:(RNNNavigationOptions *)defaultOptions
 						 presenter:(RNNTabBarPresenter *)presenter {
 	self = [super init];
 	
 	self.delegate = self;
 	self.options = options;
+	self.defaultOptions = defaultOptions;
 	self.layoutInfo = layoutInfo;
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
@@ -34,7 +37,7 @@
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	if (parent) {
-		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
 	}
 }
 
@@ -44,12 +47,16 @@
 }
 
 - (RNNNavigationOptions *)resolveOptions {
-	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+	return [(RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options] withDefault:self.defaultOptions];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-	[_presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
 	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)overrideOptions:(RNNNavigationOptions *)options {
+	[self.options overrideOptions:options];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

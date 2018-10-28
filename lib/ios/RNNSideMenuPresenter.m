@@ -3,11 +3,9 @@
 
 @implementation RNNSideMenuPresenter
 
-- (void)applyOptions:(RNNNavigationOptions *)initialOptions {
-	[super applyOptions:initialOptions];
-	
-	RNNNavigationOptions* options = [initialOptions withDefault:self.defaultOptions];
-	
+- (void)applyOptions:(RNNNavigationOptions *)options {
+	[super applyOptions:options];
+		
 	RNNSideMenuController* sideMenuController = self.bindedViewController;
 	
 	[sideMenuController side:MMDrawerSideLeft enabled:[options.sideMenu.left.enabled getWithDefaultValue:YES]];
@@ -30,57 +28,57 @@
 	}
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
-	[super mergeOptions:options resolvedOptions:resolvedOptions];
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
+	[super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
 	
 	RNNSideMenuController* sideMenuController = self.bindedViewController;
 	
-	if (options.sideMenu.left.enabled.hasValue) {
-		[sideMenuController side:MMDrawerSideLeft enabled:options.sideMenu.left.enabled.get];
-		[options.sideMenu.left.enabled consume];
+	if (newOptions.sideMenu.left.enabled.hasValue) {
+		[sideMenuController side:MMDrawerSideLeft enabled:newOptions.sideMenu.left.enabled.get];
+		[newOptions.sideMenu.left.enabled consume];
 	}
 	
-	if (options.sideMenu.right.enabled.hasValue) {
-		[sideMenuController side:MMDrawerSideRight enabled:options.sideMenu.right.enabled.get];
-		[options.sideMenu.right.enabled consume];
+	if (newOptions.sideMenu.right.enabled.hasValue) {
+		[sideMenuController side:MMDrawerSideRight enabled:newOptions.sideMenu.right.enabled.get];
+		[newOptions.sideMenu.right.enabled consume];
 	}
 	
-	if (options.sideMenu.left.visible.hasValue) {
-		[sideMenuController side:MMDrawerSideLeft visible:options.sideMenu.left.visible.get];
-		[options.sideMenu.left.visible consume];
+	if (newOptions.sideMenu.left.visible.hasValue) {
+		[sideMenuController side:MMDrawerSideLeft visible:newOptions.sideMenu.left.visible.get];
+		[newOptions.sideMenu.left.visible consume];
 	}
 	
-	if (options.sideMenu.right.visible.hasValue) {
-		[sideMenuController side:MMDrawerSideRight visible:options.sideMenu.right.visible.get];
-		[options.sideMenu.right.visible consume];
+	if (newOptions.sideMenu.right.visible.hasValue) {
+		[sideMenuController side:MMDrawerSideRight visible:newOptions.sideMenu.right.visible.get];
+		[newOptions.sideMenu.right.visible consume];
 	}
 	
-	if (options.sideMenu.left.width.hasValue) {
-		[sideMenuController side:MMDrawerSideLeft width:options.sideMenu.left.width.get];
+	if (newOptions.sideMenu.left.width.hasValue) {
+		[sideMenuController side:MMDrawerSideLeft width:newOptions.sideMenu.left.width.get];
 	}
 	
-	if (options.sideMenu.right.width.hasValue) {
-		[sideMenuController side:MMDrawerSideRight width:options.sideMenu.right.width.get];
+	if (newOptions.sideMenu.right.width.hasValue) {
+		[sideMenuController side:MMDrawerSideRight width:newOptions.sideMenu.right.width.get];
 	}
 	
-	if (options.sideMenu.left.shouldStretchDrawer.hasValue) {
-		sideMenuController.shouldStretchLeftDrawer = options.sideMenu.left.shouldStretchDrawer.get;
+	if (newOptions.sideMenu.left.shouldStretchDrawer.hasValue) {
+		sideMenuController.shouldStretchLeftDrawer = newOptions.sideMenu.left.shouldStretchDrawer.get;
 	}
 	
-	if (options.sideMenu.right.shouldStretchDrawer.hasValue) {
-		sideMenuController.shouldStretchRightDrawer = options.sideMenu.right.shouldStretchDrawer.get;
+	if (newOptions.sideMenu.right.shouldStretchDrawer.hasValue) {
+		sideMenuController.shouldStretchRightDrawer = newOptions.sideMenu.right.shouldStretchDrawer.get;
 	}
 	
-	if (options.sideMenu.left.animationVelocity.hasValue) {
-		sideMenuController.animationVelocityLeft = options.sideMenu.left.animationVelocity.get;
+	if (newOptions.sideMenu.left.animationVelocity.hasValue) {
+		sideMenuController.animationVelocityLeft = newOptions.sideMenu.left.animationVelocity.get;
 	}
 	
-	if (options.sideMenu.right.animationVelocity.hasValue) {
-		sideMenuController.animationVelocityRight = options.sideMenu.right.animationVelocity.get;
+	if (newOptions.sideMenu.right.animationVelocity.hasValue) {
+		sideMenuController.animationVelocityRight = newOptions.sideMenu.right.animationVelocity.get;
 	}
 	
-	if (options.sideMenu.animationType.hasValue) {
-		[sideMenuController setAnimationType:options.sideMenu.animationType.get];
+	if (newOptions.sideMenu.animationType.hasValue) {
+		[sideMenuController setAnimationType:newOptions.sideMenu.animationType.get];
 	}
 }
 

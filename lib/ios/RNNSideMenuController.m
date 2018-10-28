@@ -13,13 +13,14 @@
 
 @implementation RNNSideMenuController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNViewControllerPresenter *)presenter {
 	[self setControllers:childViewControllers];
 	self = [super initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
 	
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
 	
+	self.defaultOptions = defaultOptions;
 	self.options = options;
 	
 	self.layoutInfo = layoutInfo;
@@ -36,7 +37,7 @@
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	if (parent) {
-		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
 	}
 }
 
@@ -50,12 +51,16 @@
 }
 
 - (RNNNavigationOptions *)resolveOptions {
-	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+	return [(RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options] withDefault:self.defaultOptions];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-	[_presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
 	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)overrideOptions:(RNNNavigationOptions *)options {
+	[self.options overrideOptions:options];
 }
 
 - (void)setAnimationType:(NSString *)animationType {

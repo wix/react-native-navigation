@@ -92,6 +92,14 @@
 	[_bindedViewController verify];
 }
 
+- (void)testApplyOptionsBefoePoppingShouldSetTopBarBackgroundForPoppingViewController {
+	_options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
+	
+	[[_bindedViewController expect] setTopBarBackgroundColor:_options.topBar.background.color.get];
+	[self.uut applyOptionsBeforePopping:self.options];
+	[_bindedViewController verify];
+}
+
 
 
 @end

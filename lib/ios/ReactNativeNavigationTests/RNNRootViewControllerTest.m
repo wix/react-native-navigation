@@ -1,4 +1,5 @@
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "RNNRootViewController.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNTestRootViewCreator.h"
@@ -48,8 +49,8 @@
 	layoutInfo.componentId = self.componentId;
 	layoutInfo.name = self.pageName;
 	
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:presenter options:self.options];
+	id presenter = [OCMockObject partialMockForObject:[[RNNViewControllerPresenter alloc] init]];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:presenter options:self.options defaultOptions:nil];
 }
 
 -(void)testTopBarBackgroundColor_validColor{
@@ -195,11 +196,11 @@
 	XCTAssertFalse(transparentView);
 }
 
-//-(void)testTopBarLargeTitle_default {
-//	[self.uut viewWillAppear:false];
-//
-//	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
-//}
+-(void)testTopBarLargeTitle_default {
+	[self.uut viewWillAppear:false];
+
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
+}
 
 -(void)testTopBarLargeTitle_true {
 	self.options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(1)];
@@ -413,8 +414,8 @@
 
 -(void)testRightButtonsWithTitle_withoutStyle {
 	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test"}];
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:self.options defaultOptions:nil];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:nil defaultOptions:nil presenter:nil];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
@@ -428,8 +429,8 @@
 	NSNumber* inputColor = @(0xFFFF0000);
 
 	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:self.options defaultOptions:nil];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:nil defaultOptions:nil presenter:nil];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
@@ -444,8 +445,8 @@
 
 -(void)testLeftButtonsWithTitle_withoutStyle {
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test"}];
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:self.options defaultOptions:nil];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:nil defaultOptions:nil presenter:nil];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
@@ -459,9 +460,8 @@
 	NSNumber* inputColor = @(0xFFFF0000);
 
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
-	__unused RNNNavigationController* nav = [self createNavigationController];
-
-	[self.uut viewWillAppear:false];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:self.options defaultOptions:nil];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:nil defaultOptions:nil presenter:nil];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
@@ -538,19 +538,34 @@
 	XCTAssertNotNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
 }
 
-//-(void)testBackgroundImage {
-//	UIImage* backgroundImage = [[UIImage alloc] init];
-//	self.options.backgroundImage = backgroundImage;
-//	[self.uut viewWillAppear:false];
-//
-//	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
-//}
+-(void)testBackgroundImage {
+	Image* backgroundImage = [[Image alloc] initWithValue:[[UIImage alloc] init]];
+	self.options.backgroundImage = backgroundImage;
+	[self.uut viewWillAppear:false];
+
+	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage.get]);
+}
+
+- (void)testMergeOptionsShouldCallPresenterMergeOptions {
+	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	[[(id)self.uut.presenter expect] mergeOptions:newOptions currentOptions:self.uut.options defaultOptions:self.uut.defaultOptions];
+	[self.uut mergeOptions:newOptions];
+	[(id)self.uut.presenter verify];
+}
+
+- (void)testOverrideOptions {
+	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	newOptions.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
+	
+	[self.uut overrideOptions:newOptions];
+	XCTAssertEqual([UIColor redColor], self.uut.options.topBar.background.color.get);
+}
 
 #pragma mark BottomTabs
 
 
 - (RNNNavigationController *)createNavigationController {
-	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[[RNNNavigationControllerPresenter alloc] init]];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init]];
 	
 	return nav;
 }
