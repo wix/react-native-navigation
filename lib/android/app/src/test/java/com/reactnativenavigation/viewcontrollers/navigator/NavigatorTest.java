@@ -71,7 +71,7 @@ public class NavigatorTest extends BaseTest {
     public void beforeEach() {
         childRegistry = new ChildControllersRegistry();
         eventEmitter = Mockito.mock(EventEmitter.class);
-        overlayManager = Mockito.mock(OverlayManager.class);
+        overlayManager = spy(new OverlayManager());
         imageLoaderMock = ImageLoaderMock.mock();
         activityController = newActivityController(TestActivity.class);
         activity = activityController.create().get();
@@ -349,6 +349,24 @@ public class NavigatorTest extends BaseTest {
         return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new Presenter(activity, new Options()), new BottomTabsPresenter(tabs, new Options()), new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options()));
     }
 
+    @Test
+    public void findController_root() {
+        uut.setRoot(child1, new CommandListenerAdapter());
+        assertThat(uut.findController(child1.getId())).isEqualTo(child1);
+    }
+
+    @Test
+    public void findController_overlay() {
+        uut.showOverlay(child1, new CommandListenerAdapter());
+        assertThat(uut.findController(child1.getId())).isEqualTo(child1);
+    }
+
+    @Test
+    public void findController_modal() {
+        uut.showModal(child1, new CommandListenerAdapter());
+        assertThat(uut.findController(child1.getId())).isEqualTo(child1);
+    }
+
     @NonNull
     private StackController newStack() {
         StackController stack = TestUtils.newStackController(activity)
@@ -588,7 +606,7 @@ public class NavigatorTest extends BaseTest {
     public void destroy_destroyOverlayManager() {
         uut.setRoot(parentController, new CommandListenerAdapter());
         activityController.destroy();
-        verify(overlayManager, times(1)).destroy();
+        verify(overlayManager).destroy();
     }
 
     @Test
