@@ -19,11 +19,11 @@
 - (void)setUp {
     [super setUp];
 	
-	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions]  defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[OCMockObject partialMockForObject:[[RNNViewControllerPresenter alloc] init]] options:[[RNNNavigationOptions alloc] initEmptyOptions]  defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	_vc3 = [UIViewController new];
-	_options = [[RNNNavigationOptions alloc] initEmptyOptions];
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNViewControllerPresenter alloc] init]];
+	_options = [OCMockObject partialMockForObject:[[RNNNavigationOptions alloc] initEmptyOptions]];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:_options defaultOptions:nil presenter:[OCMockObject partialMockForObject:[[RNNNavigationControllerPresenter alloc] init]]];
 }
 
 - (void)testInitWithLayoutInfo_shouldBindPresenter {
@@ -115,27 +115,38 @@
 }
 
 - (void)testPopViewControllerSetTopBarBackgroundForPoppingViewController {
-	RNNNavigationController* uut = [RNNNavigationController new];
-	[uut setViewControllers:@[_vc1, _vc2]];
-	
 	_options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
 	[_vc1 overrideOptions:_options];
 	
-	[uut popViewControllerAnimated:NO];
-	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, uut.navigationBar.barTintColor);
+	[self.uut popViewControllerAnimated:NO];
+	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, self.uut.navigationBar.barTintColor);
 }
 
 - (void)testPopViewControllerSetDefaultTopBarBackgroundForPoppingViewController {
-	RNNNavigationController* uut = [RNNNavigationController new];
-	[uut setViewControllers:@[_vc1, _vc2]];
-
 	_options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
 	[_vc1 setDefaultOptions:_options];
 
-	[uut popViewControllerAnimated:NO];
-	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, uut.navigationBar.barTintColor);
+	[self.uut popViewControllerAnimated:NO];
+	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, self.uut.navigationBar.barTintColor);
 }
 
+- (void)testPopViewControllerShouldInvokeApplyOptionsBeforePoppingForDestinationViewController {
+	RNNNavigationController* uut = [RNNNavigationController new];
+	[uut setViewControllers:@[_vc1, _vc2]];
+	
+	[[(id)uut.presenter expect] applyOptionsBeforePopping:[OCMArg any]];
+	
+	[uut popViewControllerAnimated:NO];
+	
+	[(id)uut.presenter verify];
+}
+
+- (void)testOverrideOptionsShouldOverrideOptionsState {
+	RNNNavigationOptions* overrideOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	[(RNNNavigationOptions*)[(id)self.uut.options expect] overrideOptions:overrideOptions];
+	[self.uut overrideOptions:overrideOptions];
+	[(id)self.uut.options verify];
+}
 
 - (RNNNavigationController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
 	return [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:options defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init]];

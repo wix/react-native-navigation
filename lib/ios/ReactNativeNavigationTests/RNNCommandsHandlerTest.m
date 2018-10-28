@@ -26,8 +26,7 @@
 
 @interface RNNCommandsHandlerTest : XCTestCase
 
-@property (nonatomic, strong) RNNStore* store;
-@property (nonatomic, strong) id overlayStore;
+@property (nonatomic, strong) id store;
 @property (nonatomic, strong) RNNCommandsHandler* uut;
 @property (nonatomic, strong) RNNRootViewController* vc1;
 @property (nonatomic, strong) RNNRootViewController* vc2;
@@ -43,13 +42,11 @@
 
 - (void)setUp {
 	[super setUp];
-//	[self.store setReadyToReceiveCommands:true];
-	self.store = [[RNNStore alloc] init];
-	self.overlayStore = [OCMockObject partialMockForObject:[[RNNStore alloc] init]];
+	self.store = [OCMockObject partialMockForObject:[[RNNStore alloc] init]];
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
 	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter andBridge:nil]];
-	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store overlayStore:self.overlayStore controllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:self.overlayManager];
+	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:self.overlayManager];
 	self.vc1 = [RNNRootViewController new];
 	self.vc2 = [RNNRootViewController new];
 	self.vc3 = [RNNRootViewController new];
@@ -76,7 +73,7 @@
 -(NSArray*) getPublicMethodNamesForObject:(NSObject*)obj{
 	NSMutableArray* skipMethods = [NSMutableArray new];
 
-	[skipMethods addObject:@"initWithStore:overlayStore:controllerFactory:eventEmitter:stackManager:modalManager:overlayManager:"];
+	[skipMethods addObject:@"initWithStore:controllerFactory:eventEmitter:stackManager:modalManager:overlayManager:"];
 	[skipMethods addObject:@"assertReady"];
 	[skipMethods addObject:@"removePopedViewControllers:"];
 	[skipMethods addObject:@".cxx_destruct"];
@@ -198,17 +195,17 @@
 	OCMStub([self.overlayManager showOverlay:[OCMArg any]]);
 	NSDictionary* layout = @{};
 	
-	[[self.controllerFactory expect] createLayout:layout saveToStore:self.overlayStore];
+	[[self.controllerFactory expect] createLayout:layout saveToStore:self.store];
 	[self.uut showOverlay:layout completion:^{}];
 	[self.controllerFactory verify];
 }
 
-- (void)testShowOverlay_saveToOverlayStore {
+- (void)testShowOverlay_saveToStore {
 	[self.store setReadyToReceiveCommands:true];
 	OCMStub([self.overlayManager showOverlay:[OCMArg any]]);
 	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]);
 	
-	[[self.controllerFactory expect] createLayout:[OCMArg any] saveToStore:self.overlayStore];
+	[[self.controllerFactory expect] createLayout:[OCMArg any] saveToStore:self.store];
 	[self.uut showOverlay:@{} completion:^{}];
 	[self.overlayManager verify];
 }
@@ -235,19 +232,19 @@
 	[self.eventEmmiter verify];
 }
 
-- (void)testDismissOverlay_findComponentFromOverlayStore {
+- (void)testDismissOverlay_findComponentFromStore {
 	[self.store setReadyToReceiveCommands:true];
 	NSString* componentId = @"componentId";
-	[[self.overlayStore expect] findComponentForId:componentId];
+	[[self.store expect] findComponentForId:componentId];
 	[self.uut dismissOverlay:componentId completion:^{} rejection:^(NSString *code, NSString *message, NSError *error) {}];
-	[self.overlayStore verify];
+	[self.store verify];
 }
 
 - (void)testDismissOverlay_dismissReturnedViewController {
 	[self.store setReadyToReceiveCommands:true];
 	NSString* componentId = @"componentId";
 	UIViewController* returnedView = [UIViewController new];
-	OCMStub([self.overlayStore findComponentForId:componentId]).andReturn(returnedView);
+	OCMStub([self.store findComponentForId:componentId]).andReturn(returnedView);
 	
 	[[self.overlayManager expect] dismissOverlay:returnedView];
 	[self.uut dismissOverlay:componentId completion:^{} rejection:^(NSString *code, NSString *message, NSError *error) {}];
@@ -267,7 +264,7 @@
 - (void)testDismissOverlay_invokeNavigationCommandEvent {
 	[self.store setReadyToReceiveCommands:true];
 	NSString* componentId = @"componentId";
-	OCMStub([self.overlayStore findComponentForId:componentId]).andReturn([UIViewController new]);
+	OCMStub([self.store findComponentForId:componentId]).andReturn([UIViewController new]);
 	
 	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"dismissOverlay" params:[OCMArg any]];
 	[self.uut dismissOverlay:componentId completion:^{
