@@ -12,6 +12,7 @@ import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ViewHelper;
@@ -90,7 +91,8 @@ public class TopTabsViewControllerTest extends BaseTest {
                     "theComponentName",
                     new TestComponentViewCreator(),
                     tabOptions.get(i),
-                    new Presenter(activity, new Options())
+                    new Presenter(activity, new Options()),
+                    new ComponentPresenter()
             );
             tabControllers.add(spy(viewController));
         }
