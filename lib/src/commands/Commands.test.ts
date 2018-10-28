@@ -327,6 +327,23 @@ describe('Commands', () => {
     });
   });
 
+    describe('getStackChildrenIds', () => {
+        it('gets an array containing the ids of the stack\'s children', async () => {
+            uut.getStackChildrenIds('theComponentId');
+            expect(mockCommandsSender.getStackChildrenIds).toHaveBeenCalledTimes(1);
+            expect(mockCommandsSender.getStackChildrenIds).toHaveBeenCalledWith('getStackChildrenIds+UNIQUE_ID', 'theComponentId');
+        });
+
+        it('returns a promise that resolves to { componentId: targetId, childrenIds: [] }', async () => {
+            mockCommandsSender.getStackChildrenIds.mockReturnValue(Promise.resolve('theComponentId'));
+            const result = await uut.getStackChildrenIds('theComponentId');
+            expect(result).toEqual({
+                componentId: 'theComponentId',
+                childrenIds: []
+            });
+        });
+    });
+
   describe('showOverlay', () => {
     it('sends command to native after parsing into a correct layout tree', () => {
       uut.showOverlay({
@@ -437,7 +454,8 @@ describe('Commands', () => {
         setStackRoot: ['id', {}],
         showOverlay: [{}],
         dismissOverlay: ['id'],
-        getLaunchArgs: ['id']
+          getLaunchArgs: ['id'],
+          getStackChildrenIds: ['id']
       };
       const paramsForMethodName = {
         setRoot: { commandId: 'setRoot+UNIQUE_ID', layout: { root: 'parsed', modals: [], overlays: [] } },
@@ -453,7 +471,8 @@ describe('Commands', () => {
         setStackRoot: { commandId: 'setStackRoot+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
         showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: 'parsed' },
         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
-        getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' },
+          getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' },
+          getStackChildrenIds: { commandId: 'setStackChildrenIds+UNIQUE_ID', componentId: 'id' },
       };
       _.forEach(getAllMethodsOfUut(), (m) => {
         it(`for ${m}`, () => {
