@@ -149,10 +149,10 @@ export class Commands {
     return result;
     }
 
-    public async getStackChildrenIds(componentId: string) {
+    public getStackChildrenIds(componentId: string) {
         const commandId = this.uniqueIdProvider.generate('getStackChildrenIds');
-        const result = await this.nativeCommandsSender.getStackChildrenIds(commandId, componentId);
-        //this.commandsObserver.notify('getStackChildrenIds', { commandId, componentId });
+        const result = this.nativeCommandsSender.getStackChildrenIds(commandId, componentId);
+        this.commandsObserver.notify('getStackChildrenIds', { commandId, componentId });
         return result;
     }
 }
