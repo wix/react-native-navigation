@@ -3,6 +3,7 @@
 #import "RNNViewControllerPresenter.h"
 #import "UIViewController+RNNOptions.h"
 #import "RNNReactView.h"
+#import "RNNRootViewController.h"
 
 @interface RNNViewControllerPresenterTest : XCTestCase
 
@@ -17,7 +18,7 @@
 - (void)setUp {
     [super setUp];
 	self.uut = [[RNNViewControllerPresenter alloc] init];
-	self.bindedViewController = [OCMockObject partialMockForObject:[UIViewController new]];
+	self.bindedViewController = [OCMockObject partialMockForObject:[RNNRootViewController new]];
 	[self.uut bindViewController:self.bindedViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
@@ -65,6 +66,12 @@
     [[(id)self.bindedViewController expect] rnn_setInterceptTouchOutside:YES];
     [self.uut applyOptions:self.options];
     [(id)self.bindedViewController verify];
+}
+
+- (void)testBindViewControllerShouldCreateNavigationButtonsCreator {
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	[presenter bindViewController:self.bindedViewController viewCreator:nil];
+	XCTAssertNotNil(presenter.navigationButtons);
 }
 
 - (void)testApplyOptionsOnInit_shouldSetModalPresentetionStyleWithDefault {
@@ -124,5 +131,6 @@
     [self.uut applyOptionsOnInit:self.options];
     [(id)self.bindedViewController verify];
 }
+
 
 @end

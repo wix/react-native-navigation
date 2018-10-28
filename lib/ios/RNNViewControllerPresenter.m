@@ -1,16 +1,15 @@
 #import "RNNViewControllerPresenter.h"
 #import "UIViewController+RNNOptions.h"
 #import "UITabBarController+RNNOptions.h"
-#import "RNNNavigationButtons.h"
 #import "RCTConvert+Modal.h"
 #import "RNNReactView.h"
 
-@interface RNNViewControllerPresenter()
-@property (nonatomic, strong) RNNNavigationButtons* navigationButtons;
-@end
-
 @implementation RNNViewControllerPresenter
 
+- (void)bindViewController:(UIViewController *)bindedViewController viewCreator:(id<RNNRootViewCreator>)creator {
+	self.bindedViewController = bindedViewController;
+	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController rootViewCreator:creator];
+}
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
@@ -33,8 +32,7 @@
 		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""]];
 	}
 	
-	if ((options.topBar.leftButtons || options.topBar.rightButtons) && !_navigationButtons) {
-		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
+	if ((options.topBar.leftButtons || options.topBar.rightButtons)) {
 		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:options.topBar.leftButtonStyle defaultRightButtonStyle:options.topBar.rightButtonStyle];
 	}
 }
@@ -112,7 +110,6 @@
 	
 	if (newOptions.topBar.leftButtons || newOptions.topBar.rightButtons) {
 		RNNNavigationOptions* buttonsResolvedOptions = [(RNNNavigationOptions *)[currentOptions overrideOptions:newOptions] withDefault:defaultOptions];
-		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:newOptions.topBar.leftButtons rightButtons:newOptions.topBar.rightButtons defaultLeftButtonStyle:buttonsResolvedOptions.topBar.leftButtonStyle defaultRightButtonStyle:buttonsResolvedOptions.topBar.rightButtonStyle];
 	}
 	
