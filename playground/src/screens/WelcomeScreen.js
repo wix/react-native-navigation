@@ -265,7 +265,15 @@ class WelcomeScreen extends Component {
                 side: 'right'
               }
             }
-          }
+          },
+          options: {
+            sideMenu: {
+              left: {
+                width: 325,
+              },
+              animationType: 'parallax',
+            },
+          },
         }
       }
     });
