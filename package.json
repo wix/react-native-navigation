@@ -56,7 +56,8 @@
     "hoist-non-react-statics": "3.x.x",
     "lodash": "4.x.x",
     "prop-types": "15.x.x",
-    "react-lifecycles-compat": "2.0.0"
+    "react-lifecycles-compat": "2.0.0",
+    "tslib": "1.9.3"
   },
   "devDependencies": {
     "@types/jest": "22.x.x",
