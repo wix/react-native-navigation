@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
@@ -12,7 +13,7 @@ import com.reactnativenavigation.views.ReactComponent;
 public class ComponentViewController extends ChildController<ComponentLayout> {
 
     private final String componentName;
-
+    private ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
 
     public ComponentViewController(final Activity activity,
@@ -21,10 +22,12 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
                                    final String componentName,
                                    final ReactViewCreator viewCreator,
                                    final Options initialOptions,
-                                   final Presenter presenter) {
+                                   final Presenter presenter,
+                                   final ComponentPresenter componentPresenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.componentName = componentName;
         this.viewCreator = viewCreator;
+        this.presenter = componentPresenter;
     }
 
     @Override
@@ -65,6 +68,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public void mergeOptions(Options options) {
         if (options == Options.EMPTY) return;
+        presenter.mergeOptions(getView(), options);
         performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
         super.mergeOptions(options);
     }

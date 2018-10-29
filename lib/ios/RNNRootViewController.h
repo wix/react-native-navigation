@@ -17,6 +17,7 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNViewControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
 @property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
@@ -27,15 +28,18 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 				   rootViewCreator:(id<RNNRootViewCreator>)creator
 					  eventEmitter:(RNNEventEmitter*)eventEmitter
 						 presenter:(RNNViewControllerPresenter *)presenter
-						   options:(RNNNavigationOptions *)options;
+						   options:(RNNNavigationOptions *)options
+					defaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (instancetype)initExternalComponentWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 									   eventEmitter:(RNNEventEmitter*)eventEmitter
 										  presenter:(RNNViewControllerPresenter *)presenter
-											options:(RNNNavigationOptions *)options;
+											options:(RNNNavigationOptions *)options
+									 defaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (BOOL)isExternalViewController;
 
--(void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem;
+- (void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem;
+
 
 @end

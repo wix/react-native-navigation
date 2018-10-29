@@ -1,11 +1,11 @@
 #import <XCTest/XCTest.h>
-#import "RNNBottomTabPresenter.h"
+#import "RNNBasePresenter.h"
 #import <OCMock/OCMock.h>
 #import "UIViewController+RNNOptions.h"
 
 @interface RNNBottomTabPresenterTest : XCTestCase
 
-@property (nonatomic, strong) RNNBottomTabPresenter *uut;
+@property (nonatomic, strong) RNNBasePresenter *uut;
 @property (nonatomic, strong) RNNNavigationOptions *options;
 @property (nonatomic, strong) UIViewController* bindedViewController;
 @property (nonatomic, strong) id mockBindedViewController;
@@ -16,7 +16,7 @@
 
 - (void)setUp {
     [super setUp];
-    self.uut = [[RNNBottomTabPresenter alloc] init];
+    self.uut = [[RNNBasePresenter alloc] init];
 	self.bindedViewController = [UIViewController new];
     self.mockBindedViewController = [OCMockObject partialMockForObject:self.bindedViewController];
     [self.uut bindViewController:self.mockBindedViewController];
@@ -27,13 +27,6 @@
 	[super tearDown];
 	[self.mockBindedViewController stopMocking];
 	self.bindedViewController = nil;
-}
-
-- (void)testApplyOptions_shouldSetTabBarItemBadgeWithDefaultWhenParentIsUITabBarController {
-	OCMStub([self.mockBindedViewController parentViewController]).andReturn([UITabBarController new]);
-	[[self.mockBindedViewController expect] rnn_setTabBarItemBadge:nil];
-	[self.uut applyOptions:self.options];
-	[self.mockBindedViewController verify];
 }
 
 - (void)testApplyOptions_shouldSetTabBarItemBadgeOnlyWhenParentIsUITabBarController {
@@ -54,6 +47,14 @@
 	[self.uut bindViewController:self.mockBindedViewController];
 	self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
 	[[self.mockBindedViewController reject] rnn_setTabBarItemBadge:@"badge"];
+	[self.uut applyOptions:self.options];
+	[self.mockBindedViewController verify];
+}
+
+- (void)testApplyOptions_setTabBarItemBadgeShouldWhenNoValue {
+	[self.uut bindViewController:self.mockBindedViewController];
+	self.options.bottomTab.badge = nil;
+	[[self.mockBindedViewController reject] rnn_setTabBarItemBadge:[OCMArg any]];
 	[self.uut applyOptions:self.options];
 	[self.mockBindedViewController verify];
 }

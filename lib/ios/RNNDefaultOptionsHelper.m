@@ -4,11 +4,11 @@
 
 + (void)recrusivelySetDefaultOptions:(RNNNavigationOptions *)defaultOptions onRootViewController:(UIViewController *)rootViewController {
 	if ([rootViewController conformsToProtocol:@protocol(RNNLayoutProtocol)])
-		[((UIViewController<RNNLayoutProtocol> *)rootViewController).presenter setDefaultOptions:defaultOptions];
+		[((UIViewController<RNNLayoutProtocol> *)rootViewController) setDefaultOptions:defaultOptions];
 	
 	for (UIViewController<RNNLayoutProtocol>* childViewController in rootViewController.childViewControllers) {
 		if ([childViewController conformsToProtocol:@protocol(RNNLayoutProtocol)]) {
-			[childViewController.presenter setDefaultOptions:defaultOptions];
+			[childViewController setDefaultOptions:defaultOptions];
 		}
 		
 		[self recrusivelySetDefaultOptions:defaultOptions onRootViewController:childViewController];

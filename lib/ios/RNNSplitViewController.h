@@ -12,6 +12,7 @@
 @interface RNNSplitViewController : UISplitViewController <RNNParentProtocol>
 
 @property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 

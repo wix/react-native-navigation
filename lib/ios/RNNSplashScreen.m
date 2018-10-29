@@ -40,6 +40,8 @@
 			imageName = [imageName stringByAppendingString:@"-667h"];
 		else if (screenHeight == 736)
 			imageName = [imageName stringByAppendingString:@"-736h"];
+		else if (screenHeight == 812)
+			imageName = [imageName stringByAppendingString:@"-812h"];
 		
 		//xcassets LaunchImage files
 		UIImage *image = [UIImage imageNamed:imageName];

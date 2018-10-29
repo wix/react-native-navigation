@@ -1,4 +1,3 @@
-
 #import "RNNStore.h"
 
 @interface RNNStore ()
@@ -47,6 +46,23 @@
 	[_componentStore removeAllObjects];
 }
 
+- (void)removeAllComponentsFromWindow:(UIWindow *)window {
+	for (NSString *key in [self componentsForWindow:window]) {
+		[_componentStore removeObjectForKey:key];
+	}
+}
+
+- (NSArray *)componentsForWindow:(UIWindow *)window {
+	NSMutableArray* keyWindowComponents = [NSMutableArray new];
+	for (NSString* key in _componentStore) {
+		UIViewController *component = [_componentStore objectForKey:key];
+		if (component.view.window == window) {
+			[keyWindowComponents addObject:key];
+		}
+	}
+	
+	return keyWindowComponents;
+}
 
 -(void)setReadyToReceiveCommands:(BOOL)isReady {
 	_isReadyToReceiveCommands = isReady;

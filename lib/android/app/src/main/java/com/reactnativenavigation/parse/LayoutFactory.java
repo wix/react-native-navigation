@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
+import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.presentation.StackPresenter;
@@ -144,7 +145,8 @@ public class LayoutFactory {
                 name,
                 new ComponentViewCreator(reactInstanceManager),
                 parse(typefaceManager, node.getOptions()),
-                new Presenter(activity, defaultOptions)
+                new Presenter(activity, defaultOptions),
+                new ComponentPresenter()
         );
 	}
 
