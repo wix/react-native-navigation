@@ -3,8 +3,4 @@
 
 @implementation RNNTopTabsOptions
 
-- (void)applyOn:(RNNTopTabsViewController *)viewController {
-
-}
-
 @end

@@ -13,8 +13,8 @@ public class YellowBoxHelper {
     public boolean isYellowBox(View parent, View child) {
         return parent instanceof ViewGroup &&
                child instanceof ViewGroup &&
-                ((ViewGroup) parent).getChildCount() > 1 &&
-               !ViewUtils.findChildrenByClassRecursive(((ViewGroup) child), View.class, YellowBackgroundMather()).isEmpty();
+               ((ViewGroup) parent).getChildCount() > 1 &&
+               !ViewUtils.findChildrenByClassRecursive((ViewGroup) child, View.class, YellowBackgroundMather()).isEmpty();
     }
 
     @NonNull

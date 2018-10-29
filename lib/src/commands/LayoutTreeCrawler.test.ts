@@ -158,6 +158,18 @@ describe('LayoutTreeCrawler', () => {
     expect(node.data.options).toEqual({});
   });
 
+  it('Components: omits passProps after processing so they are not passed over the bridge', () => {
+    const node = {
+      type: LayoutType.Component,
+      data: {
+        name: 'compName',
+        passProps: {}
+      }
+    };
+    uut.crawl(node);
+    expect(node.data.passProps).toBeUndefined();
+  });
+
   describe('navigation options', () => {
     let options;
     let node;

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.ViewManager;
 
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 public class TopTabs extends TabLayout {
@@ -49,9 +49,9 @@ public class TopTabs extends TabLayout {
         }
     }
 
-    public void clear(ViewManager parent) {
+    public void clear() {
         setupWithViewPager(null);
-        parent.removeView(this);
+        ViewUtils.removeFromParent(this);
     }
 
     public void init(ViewPager viewPager) {

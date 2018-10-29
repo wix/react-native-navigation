@@ -145,7 +145,9 @@ Transparent TopBar. Set `drawBehind: true` to draw the screen behind the transpa
 
 ```js
 topBar: {
-  transparent: true
+  background: {
+    color: 'transparent'
+  }
 }  
 ```
 
@@ -417,7 +419,9 @@ Translucent TopBar, Setting `drawBehind: true` is required for this property to 
 
 ```js
 topBar: {
-  translucent: true
+  background: {
+    translucent: true
+  }
 }
 ```
 
@@ -435,7 +439,9 @@ Blue the area behind the TopBar, Setting `drawBehind: true` is required for this
 
 ```js
 topBar: {
-  blur: true
+  background: {
+    blur: true
+  }
 }  
 ```
 

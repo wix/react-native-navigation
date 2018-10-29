@@ -1,24 +1,21 @@
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <React/RCTConvert.h>
+#import "BoolParser.h"
+#import "TextParser.h"
+#import "NumberParser.h"
+#import "DictionaryParser.h"
+#import "ColorParser.h"
+#import "ImageParser.h"
+#import "IntNumberParser.h"
+#import "DoubleParser.h"
 
-@class RNNOptions;
-
-@protocol RNNOptionsProtocol <NSObject>
-
-@optional
-- (void)resetOptions;
-- (void)applyOn:(UIViewController *)viewController;
-
-@end
-
-@interface RNNOptions : NSObject <RNNOptionsProtocol>
+@interface RNNOptions : NSObject
 
 - (instancetype)initWithDict:(NSDictionary*)dict;
-- (void)mergeWith:(NSDictionary*)otherOptions;
-- (void)applyOn:(UIViewController *)viewController defaultOptions:(RNNOptions*)defaultOptions;
-- (BOOL)hasProperty:(NSString*)propName;
-- (void)mergeOptions:(RNNOptions *)otherOptions;
-- (void)mergeOptions:(RNNOptions *)otherOptions overrideOptions:(BOOL)override;
+
+- (RNNOptions *)overrideOptions:(RNNOptions *)otherOptions;
+- (RNNOptions *)mergeOptions:(RNNOptions *)otherOptions;
+
+- (RNNOptions *)withDefault:(RNNOptions *)defaultOptions;
 
 @end

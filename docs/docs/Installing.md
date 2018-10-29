@@ -366,3 +366,5 @@ import App from "./App";
 +  });
 +});
 ```
+
+⚠️ we use the layout type `component` here, which renders a React component but does not allow you to navigate to others. See [Usage](./Usage.md) and [LayoutTypes](./layout-types.md) for more options.
