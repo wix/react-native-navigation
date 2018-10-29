@@ -1,76 +1,26 @@
 #import "RNNBottomTabsOptions.h"
-#import "RNNTabBarController.h"
-extern const NSInteger BLUR_TOPBAR_TAG;
 
 @implementation RNNBottomTabsOptions
 
-- (void)applyOn:(UIViewController *)viewController {
-	if (self.currentTabIndex) {
-		[viewController.tabBarController setSelectedIndex:[self.currentTabIndex unsignedIntegerValue]];
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
 	
-	if (self.currentTabId) {
-		[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByComponentID:self.currentTabId];
-	}
+	self.visible = [BoolParser parse:dict key:@"visible"];
+	self.currentTabIndex = [IntNumberParser parse:dict key:@"currentTabIndex"];
+	self.drawBehind = [BoolParser parse:dict key:@"drawBehind"];
+	self.tabColor = [ColorParser parse:dict key:@"tabColor"];
+	self.selectedTabColor = [ColorParser parse:dict key:@"selectedTabColor"];
+	self.translucent = [BoolParser parse:dict key:@"translucent"];
+	self.hideShadow = [BoolParser parse:dict key:@"hideShadow"];
+	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
+	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
 	
-	if (self.testID) {
-		viewController.tabBarController.tabBar.accessibilityIdentifier = self.testID;
-	}
+	self.testID = [TextParser parse:dict key:@"testID"];
+	self.currentTabId = [TextParser parse:dict key:@"currentTabId"];
+	self.barStyle = [TextParser parse:dict key:@"barStyle"];
+	self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
 	
-	if (self.drawBehind) {
-		if ([self.drawBehind boolValue]) {
-			[viewController setExtendedLayoutIncludesOpaqueBars:YES];
-			viewController.edgesForExtendedLayout |= UIRectEdgeBottom;
-		} else {
-			[viewController setExtendedLayoutIncludesOpaqueBars:NO];
-			viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;
-		}
-	}
-	
-	if (self.backgroundColor) {
-		viewController.tabBarController.tabBar.barTintColor = [RCTConvert UIColor:self.backgroundColor];
-	} else {
-		viewController.tabBarController.tabBar.barTintColor = nil;
-	}
-	
-	if (self.barStyle) {
-		viewController.tabBarController.tabBar.barStyle = [RCTConvert UIBarStyle:self.barStyle];
-	} else {
-		viewController.tabBarController.tabBar.barStyle = UIBarStyleDefault;
-	}
-
-	if (self.translucent) {
-		viewController.tabBarController.tabBar.translucent = [self.translucent boolValue];
-	} else {
-		viewController.tabBarController.tabBar.translucent = NO;
-	}
-	
-	if (self.hideShadow) {
-		viewController.tabBarController.tabBar.clipsToBounds = [self.hideShadow boolValue];
-	}
-
-	[self resetOptions];
-}
-
--(UIFont *)tabBarTextFont {
-	if (self.fontFamily) {
-		return [UIFont fontWithName:self.fontFamily size:self.tabBarTextFontSizeValue];
-	}
-	else if (self.fontSize) {
-		return [UIFont systemFontOfSize:self.tabBarTextFontSizeValue];
-	}
-	else {
-		return nil;
-	}
-}
-
--(CGFloat)tabBarTextFontSizeValue {
-	return self.fontSize ? [self.fontSize floatValue] : 10;
-}
-
-- (void)resetOptions {
-	self.currentTabId = nil;
-	self.currentTabIndex = nil;
+	return self;
 }
 
 @end

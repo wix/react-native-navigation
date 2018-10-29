@@ -5,7 +5,7 @@ import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 
 describe('ComponentEventsObserver', () => {
   const mockEventsReceiver = new NativeEventsReceiver();
-  let uut;
+  const uut = new ComponentEventsObserver(mockEventsReceiver);
   const didAppearFn = jest.fn();
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
@@ -13,6 +13,7 @@ describe('ComponentEventsObserver', () => {
   const navigationButtonPressedFn = jest.fn();
   const searchBarUpdatedFn = jest.fn();
   const searchBarCancelPressedFn = jest.fn();
+  const previewCompletedFn = jest.fn();
   const modalDismissedFn = jest.fn();
   let subscription;
 
@@ -60,14 +61,14 @@ describe('ComponentEventsObserver', () => {
       searchBarCancelPressedFn(event);
     }
 
+    previewCompleted(event) {
+      previewCompletedFn(event);
+    }
+
     render() {
       return 'Hello';
     }
   }
-
-  beforeEach(() => {
-    uut = new ComponentEventsObserver(mockEventsReceiver);
-  });
 
   it(`bindComponent expects a component with componentId`, () => {
     const tree = renderer.create(<SimpleScreen />);
@@ -105,6 +106,10 @@ describe('ComponentEventsObserver', () => {
     uut.notifySearchBarCancelPressed({ componentId: 'myCompId' });
     expect(searchBarCancelPressedFn).toHaveBeenCalledTimes(1);
     expect(searchBarCancelPressedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
+
+    uut.notifyPreviewCompleted({ componentId: 'myCompId' });
+    expect(previewCompletedFn).toHaveBeenCalledTimes(1);
+    expect(previewCompletedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
 
     tree.unmount();
     expect(willUnmountFn).toHaveBeenCalledTimes(1);
@@ -181,6 +186,7 @@ describe('ComponentEventsObserver', () => {
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerSearchBarUpdatedListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerSearchBarCancelPressedListener).not.toHaveBeenCalled();
+    expect(mockEventsReceiver.registerPreviewCompletedListener).not.toHaveBeenCalled();
     uut.registerOnceForAllComponentEvents();
     uut.registerOnceForAllComponentEvents();
     uut.registerOnceForAllComponentEvents();
@@ -190,30 +196,6 @@ describe('ComponentEventsObserver', () => {
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerSearchBarUpdatedListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
-  });
-
-  it(`warn when button event is not getting handled`, () => {
-    const tree1 = renderer.create(<SimpleScreen componentId={'myCompId'} />);
-    const instance1 = tree1.getInstance() as any;
-    console.warn = jest.fn();
-    uut.bindComponent(instance1);
-
-    uut.notifyNavigationButtonPressed({ componentId: 'myCompId', buttonId: 'myButtonId' });
-
-    expect(console.warn).toHaveBeenCalledTimes(1);
-    expect(console.warn).toHaveBeenCalledWith(`navigationButtonPressed for button 'myButtonId' was not handled`);
-  });
-
-  it(`doesn't warn when button event is getting handled`, () => {
-    const tree1 = renderer.create(<SimpleScreen componentId={'myCompId'} />);
-    const instance1 = tree1.getInstance() as any;
-    console.warn = jest.fn();
-    
-    instance1.navigationButtonPressed = jest.fn();
-    uut.bindComponent(instance1);
-
-    uut.notifyNavigationButtonPressed({ componentId: 'myCompId', buttonId: 'myButtonId' });
-
-    expect(console.warn).toHaveBeenCalledTimes(0);
+    expect(mockEventsReceiver.registerPreviewCompletedListener).toHaveBeenCalledTimes(1);
   });
 });

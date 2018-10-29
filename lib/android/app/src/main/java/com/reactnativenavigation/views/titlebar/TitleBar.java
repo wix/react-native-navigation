@@ -2,7 +2,11 @@ package com.reactnativenavigation.views.titlebar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -178,9 +182,20 @@ public class TitleBar extends Toolbar {
     }
 
     public void setHeight(int height) {
-        if (height == getLayoutParams().height) return;
+        int pixelHeight = UiUtils.dpToPx(getContext(), height);
+        if (pixelHeight == getLayoutParams().height) return;
         ViewGroup.LayoutParams lp = getLayoutParams();
-        lp.height = (int) UiUtils.dpToPx(getContext(), height);
+        lp.height = pixelHeight;
         setLayoutParams(lp);
+    }
+
+    public void setOverflowButtonColor(int color) {
+        ActionMenuView actionMenuView = ViewUtils.findChildByClass(this, ActionMenuView.class);
+        if (actionMenuView != null) {
+            Drawable overflowIcon = actionMenuView.getOverflowIcon();
+            if (overflowIcon != null) {
+                overflowIcon.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+            }
+        }
     }
 }

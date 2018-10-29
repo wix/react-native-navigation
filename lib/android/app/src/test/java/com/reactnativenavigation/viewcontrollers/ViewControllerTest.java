@@ -107,8 +107,8 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void findControllerById_SelfOrNull() {
-        assertThat(uut.findControllerById("456")).isNull();
-        assertThat(uut.findControllerById("uut")).isEqualTo(uut);
+        assertThat(uut.findController("456")).isNull();
+        assertThat(uut.findController("uut")).isEqualTo(uut);
     }
 
     @Test

@@ -156,14 +156,16 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController * dr
  
  By default, this is set to 840 points per second (three times the default drawer width), meaning it takes 1/3 of a second for the `centerViewController` to open/close across the default drawer width. Note that there is a minimum .1 second duration for built in animations, to account for small distance animations.
  */
-@property (nonatomic, assign) CGFloat animationVelocity;
+@property (nonatomic, assign) CGFloat animationVelocityLeft;
+@property (nonatomic, assign) CGFloat animationVelocityRight;
 
 /**
  A boolean that determines whether or not the panning gesture will "hard-stop" at the maximum width for a given drawer side.
  
  By default, this value is set to YES. Enabling `shouldStretchDrawer` will give the pan a gradual asymptotic stopping point much like `UIScrollView` behaves. Note that if this value is set to YES, the `drawerVisualStateBlock` can be passed a `percentVisible` greater than 1.0, so be sure to handle that case appropriately.
  */
-@property (nonatomic, assign) BOOL shouldStretchDrawer;
+@property (nonatomic, assign) BOOL shouldStretchLeftDrawer;
+@property (nonatomic, assign) BOOL shouldStretchRightDrawer;
 
 /**
  The current open side of the drawer.

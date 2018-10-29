@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.topbar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -71,7 +72,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
         root = new FrameLayout(getContext());
         root.setId(CompatUtils.generateViewId());
-        content.addView(titleBar, MATCH_PARENT, WRAP_CONTENT);
+        content.addView(titleBar, MATCH_PARENT, UiUtils.getTopBarHeight(getContext()));
         content.addView(topTabs);
         root.addView(content);
         root.addView(border);
@@ -97,7 +98,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     private View createBorder() {
         View border = new View(getContext());
-        border.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        border.setBackgroundColor(Color.TRANSPARENT);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(MATCH_PARENT, 0);
         lp.gravity = Gravity.BOTTOM;
         border.setLayoutParams(lp);
@@ -111,9 +112,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setHeight(int height) {
-        if (height == getLayoutParams().height) return;
+        int pixelHeight = UiUtils.dpToPx(getContext(), height);
+        if (pixelHeight == getLayoutParams().height) return;
         ViewGroup.LayoutParams lp = getLayoutParams();
-        lp.height = (int) UiUtils.dpToPx(getContext(), height);
+        lp.height = pixelHeight;
         setLayoutParams(lp);
     }
 
@@ -265,6 +267,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void hideAnimate(AnimationOptions options, Runnable onAnimationEnd) {
+        if (!visible()) return;
         animator.hide(options, onAnimationEnd);
     }
 
@@ -275,7 +278,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void clearTopTabs() {
-        topTabs.clear(this);
+        topTabs.clear();
     }
 
     @VisibleForTesting
@@ -310,5 +313,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setBorderColor(int color) {
         border.setBackgroundColor(color);
+    }
+
+    public void setOverflowButtonColor(int color) {
+        titleBar.setOverflowButtonColor(color);
     }
 }

@@ -1,5 +1,6 @@
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "RNNStore.h"
 
 @interface RNNStoreTest : XCTestCase
@@ -67,7 +68,7 @@
 	XCTAssertNil([self.store findComponentForId:componentId1]);
 }
 
--(void)testPopWillRemoveVcFromStore {
+- (void)testPopWillRemoveVcFromStore {
 	NSString *vcId = @"cnt_vc_2";
 	
 	[self setComponentAndRelease:vcId];
@@ -77,7 +78,7 @@
 }
 
 
--(void)testRemoveComponentByInstance {
+- (void)testRemoveComponentByInstance {
 	NSString *componentId1 = @"cntId1";
 	UIViewController *vc1 = [UIViewController new];
 	
@@ -87,14 +88,38 @@
 	XCTAssertNil([self.store findComponentForId:@"cntId1"]);
 }
 
+- (void)testRemoveAllComponentsFromWindowShouldRemoveComponentsInWindow {
+	UIViewController* overlayVC = [self createMockedViewControllerWithWindow:[UIWindow new]];
+	
+	NSString* overlayId = @"overlayId";
+	[self.store setComponent:overlayVC componentId:overlayId];
+	[self.store removeAllComponentsFromWindow:overlayVC.view.window];
+	XCTAssertNil([self.store findComponentForId:overlayId]);
+}
+
+- (void)testRemoveAllComponentsFromWindowShouldNotRemoveComponentsInOtherWindows {
+	UIViewController* overlayVC = [self createMockedViewControllerWithWindow:[UIWindow new]];
+	UIViewController* componentVC = [self createMockedViewControllerWithWindow:[UIWindow new]];
+	
+	NSString* componentId = @"componentId";
+	NSString* overlayId = @"overlayId";
+	[self.store setComponent:overlayVC componentId:overlayId];
+	[self.store setComponent:componentVC componentId:componentId];
+	
+	[self.store removeAllComponentsFromWindow:componentVC.view.window];
+	XCTAssertNil([self.store findComponentForId:componentId]);
+	XCTAssertNotNil([self.store findComponentForId:overlayId]);
+}
+
 - (void)testGetExternalComponentShouldRetrunSavedComponent {
 	UIViewController* testVC = [UIViewController new];
-	NSString *externalComponentId = @"extId1";
-	[self.store registerExternalComponent:externalComponentId callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] init];
+	layoutInfo.name = @"extId1";
+	[self.store registerExternalComponent:layoutInfo.name callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
 		return testVC;
 	}];
 	
-	UIViewController* savedComponent = [self.store getExternalComponent:externalComponentId props:nil bridge:nil];
+	UIViewController* savedComponent = [self.store getExternalComponent:layoutInfo bridge:nil];
 	XCTAssertEqual(testVC, savedComponent);
 }
 
@@ -103,7 +128,7 @@
 	XCTAssertNil(result);
 }
 
--(void)testCleanStore {
+- (void)testCleanStore {
 	[self.store clean];
 	XCTAssertFalse(self.store.isReadyToReceiveCommands);
 }
@@ -120,6 +145,14 @@
 	}
 }
 
+- (UIViewController *)createMockedViewControllerWithWindow:(UIWindow *)window {
+	UIWindow* overlayWindow = [UIWindow new];
+	id mockedViewController = [OCMockObject partialMockForObject:[UIViewController new]];
+	id mockedView = [OCMockObject partialMockForObject:[UIView new]];
+	OCMStub([mockedView window]).andReturn(overlayWindow);
+	OCMStub([mockedViewController view]).andReturn(mockedView);
+	return mockedViewController;
+}
 
 
 @end
