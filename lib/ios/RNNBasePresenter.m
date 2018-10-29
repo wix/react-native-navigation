@@ -26,8 +26,8 @@
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	UIViewController* viewController = self.bindedViewController;
 	
-	if ([viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
-		[viewController rnn_setTabBarItemBadge:[options.bottomTab.badge getWithDefaultValue:nil]];
+	if (options.bottomTab.badge.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
+		[viewController rnn_setTabBarItemBadge:options.bottomTab.badge.get];
 	}
 }
 

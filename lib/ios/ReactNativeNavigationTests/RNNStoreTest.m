@@ -1,5 +1,6 @@
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "RNNStore.h"
 
 @interface RNNStoreTest : XCTestCase
@@ -67,7 +68,7 @@
 	XCTAssertNil([self.store findComponentForId:componentId1]);
 }
 
--(void)testPopWillRemoveVcFromStore {
+- (void)testPopWillRemoveVcFromStore {
 	NSString *vcId = @"cnt_vc_2";
 	
 	[self setComponentAndRelease:vcId];
@@ -77,7 +78,7 @@
 }
 
 
--(void)testRemoveComponentByInstance {
+- (void)testRemoveComponentByInstance {
 	NSString *componentId1 = @"cntId1";
 	UIViewController *vc1 = [UIViewController new];
 	
@@ -85,6 +86,29 @@
 	[self.store removeComponentByViewControllerInstance:vc1];
 	
 	XCTAssertNil([self.store findComponentForId:@"cntId1"]);
+}
+
+- (void)testRemoveAllComponentsFromWindowShouldRemoveComponentsInWindow {
+	UIViewController* overlayVC = [self createMockedViewControllerWithWindow:[UIWindow new]];
+	
+	NSString* overlayId = @"overlayId";
+	[self.store setComponent:overlayVC componentId:overlayId];
+	[self.store removeAllComponentsFromWindow:overlayVC.view.window];
+	XCTAssertNil([self.store findComponentForId:overlayId]);
+}
+
+- (void)testRemoveAllComponentsFromWindowShouldNotRemoveComponentsInOtherWindows {
+	UIViewController* overlayVC = [self createMockedViewControllerWithWindow:[UIWindow new]];
+	UIViewController* componentVC = [self createMockedViewControllerWithWindow:[UIWindow new]];
+	
+	NSString* componentId = @"componentId";
+	NSString* overlayId = @"overlayId";
+	[self.store setComponent:overlayVC componentId:overlayId];
+	[self.store setComponent:componentVC componentId:componentId];
+	
+	[self.store removeAllComponentsFromWindow:componentVC.view.window];
+	XCTAssertNil([self.store findComponentForId:componentId]);
+	XCTAssertNotNil([self.store findComponentForId:overlayId]);
 }
 
 - (void)testGetExternalComponentShouldRetrunSavedComponent {
@@ -104,7 +128,7 @@
 	XCTAssertNil(result);
 }
 
--(void)testCleanStore {
+- (void)testCleanStore {
 	[self.store clean];
 	XCTAssertFalse(self.store.isReadyToReceiveCommands);
 }
@@ -121,6 +145,14 @@
 	}
 }
 
+- (UIViewController *)createMockedViewControllerWithWindow:(UIWindow *)window {
+	UIWindow* overlayWindow = [UIWindow new];
+	id mockedViewController = [OCMockObject partialMockForObject:[UIViewController new]];
+	id mockedView = [OCMockObject partialMockForObject:[UIView new]];
+	OCMStub([mockedView window]).andReturn(overlayWindow);
+	OCMStub([mockedViewController view]).andReturn(mockedView);
+	return mockedViewController;
+}
 
 
 @end

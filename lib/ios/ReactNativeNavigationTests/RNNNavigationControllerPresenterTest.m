@@ -92,6 +92,26 @@
 	[_bindedViewController verify];
 }
 
+- (void)testApplyOptionsBeforePoppingShouldSetTopBarBackgroundForPoppingViewController {
+	_options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
+	
+	[[_bindedViewController expect] setTopBarBackgroundColor:_options.topBar.background.color.get];
+	[self.uut applyOptionsBeforePopping:self.options];
+	[_bindedViewController verify];
+}
 
+- (void)testApplyOptionsBeforePoppingShouldSetLargeTitleForPoppingViewController {
+	_options.topBar.largeTitle.visible = [[Bool alloc] initWithBOOL:YES];
+	
+	[self.uut applyOptionsBeforePopping:self.options];
+	XCTAssertTrue([[self.uut.bindedViewController navigationBar] prefersLargeTitles]);
+}
+
+- (void)testApplyOptionsBeforePoppingShouldSetDefaultLargeTitleFalseForPoppingViewController {
+	_options.topBar.largeTitle.visible = nil;
+	
+	[self.uut applyOptionsBeforePopping:self.options];
+	XCTAssertFalse([[self.uut.bindedViewController navigationBar] prefersLargeTitles]);
+}
 
 @end

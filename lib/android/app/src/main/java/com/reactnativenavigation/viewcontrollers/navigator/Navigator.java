@@ -196,7 +196,13 @@ public class Navigator extends ParentController {
     @Override
     public ViewController findController(String id) {
         ViewController controllerById = super.findController(id);
-        return controllerById != null ? controllerById : modalStack.findControllerById(id);
+        if (controllerById == null) {
+            controllerById = modalStack.findControllerById(id);
+        }
+        if (controllerById == null) {
+            controllerById = overlayManager.findControllerById(id);
+        }
+        return controllerById;
     }
 
     private void applyOnStack(String fromId, CommandListener listener, Task<StackController> task) {
@@ -217,7 +223,7 @@ public class Navigator extends ParentController {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    public FrameLayout getModalsLayout() {
+    FrameLayout getModalsLayout() {
         return modalsLayout;
     }
 }

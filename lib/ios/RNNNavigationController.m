@@ -78,7 +78,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[self setTopBarBackgroundColor:[rnnController.resolveOptions.topBar.background.color getWithDefaultValue:nil]];
+			[self.presenter applyOptionsBeforePopping:rnnController.resolveOptions];
 		}
 	}
 	
