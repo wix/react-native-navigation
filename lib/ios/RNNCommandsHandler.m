@@ -30,17 +30,15 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 @implementation RNNCommandsHandler {
 	RNNControllerFactory *_controllerFactory;
 	RNNStore *_store;
-	RNNStore *_overlayStore;
 	RNNModalManager* _modalManager;
 	RNNOverlayManager* _overlayManager;
 	RNNNavigationStackManager* _stackManager;
 	RNNEventEmitter* _eventEmitter;
 }
 
-- (instancetype)initWithStore:(RNNStore*)store overlayStore:(RNNStore*)overlayStore controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager {
+- (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager {
 	self = [super init];
 	_store = store;
-	_overlayStore = overlayStore;
 	_controllerFactory = controllerFactory;
 	_eventEmitter = eventEmitter;
 	_modalManager = modalManager;
@@ -56,7 +54,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	[_modalManager dismissAllModalsAnimated:NO];
-	[_store removeAllComponents];
+	[_store removeAllComponentsFromWindow:UIApplication.sharedApplication.delegate.window];
 	
 	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
 	
@@ -280,7 +278,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayout:layout saveToStore:_overlayStore];
+	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayout:layout saveToStore:_store];
 	[_overlayManager showOverlay:overlayVC];
 	[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
 	completion();
@@ -288,7 +286,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	[self assertReady];
-	UIViewController* viewController = [_overlayStore findComponentForId:componentId];
+	UIViewController* viewController = [_store findComponentForId:componentId];
 	if (viewController) {
 		[_overlayManager dismissOverlay:viewController];
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissOverlay params:@{@"componentId": componentId}];

@@ -50,18 +50,23 @@ android {
     productFlavors {
         reactNative51 {
             dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "51")
         }
         reactNative55 {
             dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "55")
         }
         reactNative56 {
             dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "56")
         }
         reactNative57 {
             dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
         }
         reactNative57WixFork {
             dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
         }
     }
 }

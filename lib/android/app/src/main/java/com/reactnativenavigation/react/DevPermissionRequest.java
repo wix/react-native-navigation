@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.react.common.ReactConstants;
+import com.reactnativenavigation.BuildConfig;
 
 public class DevPermissionRequest {
 
@@ -20,8 +21,9 @@ public class DevPermissionRequest {
 
 	public boolean shouldAskPermission(Activity activity) {
 		return isDebug &&
-				Build.VERSION.SDK_INT >= 23 &&
-				!Settings.canDrawOverlays(activity);
+               Build.VERSION.SDK_INT >= 23 &&
+               BuildConfig.REACT_NATVE_VERSION_MINOR <= 51 &&
+               !Settings.canDrawOverlays(activity);
 	}
 
 	@TargetApi(23)

@@ -414,8 +414,8 @@
 
 -(void)testRightButtonsWithTitle_withoutStyle {
 	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test"}];
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:self.options defaultOptions:nil];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:nil defaultOptions:nil presenter:nil];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
@@ -429,8 +429,8 @@
 	NSNumber* inputColor = @(0xFFFF0000);
 
 	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:self.options defaultOptions:nil];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:nil defaultOptions:nil presenter:nil];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
@@ -445,8 +445,8 @@
 
 -(void)testLeftButtonsWithTitle_withoutStyle {
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test"}];
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:self.options defaultOptions:nil];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:nil defaultOptions:nil presenter:nil];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
@@ -460,9 +460,8 @@
 	NSNumber* inputColor = @(0xFFFF0000);
 
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
-	__unused RNNNavigationController* nav = [self createNavigationController];
-
-	[self.uut viewWillAppear:false];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:self.options defaultOptions:nil];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:nil defaultOptions:nil presenter:nil];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";

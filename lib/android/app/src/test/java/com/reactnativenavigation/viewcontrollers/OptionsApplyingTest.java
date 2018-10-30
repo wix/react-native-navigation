@@ -19,6 +19,7 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
@@ -61,7 +62,8 @@ public class OptionsApplyingTest extends BaseTest {
                 "componentName",
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions,
-                new Presenter(activity, new Options())
+                new Presenter(activity, new Options()),
+                new ComponentPresenter()
         ) {
             @Override
             public boolean isViewShown() {

@@ -15,7 +15,7 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, N
 - (void)removeComponent:(NSString*)componentId;
 - (void)removeComponentByViewControllerInstance:(UIViewController*)componentInstance;
 - (void)removeAllComponents;
-
+- (void)removeAllComponentsFromWindow:(UIWindow *)window;
 - (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
 - (UIViewController *)getExternalComponent:(RNNLayoutInfo *)layoutInfo bridge:(RCTBridge *)bridge;
 

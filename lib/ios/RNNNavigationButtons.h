@@ -1,11 +1,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNRootViewController.h"
 #import "RNNButtonOptions.h"
+#import "RNNRootViewCreator.h"
 
 @interface RNNNavigationButtons : NSObject
 
--(instancetype)initWithViewController:(RNNRootViewController*)viewController;
+-(instancetype)initWithViewController:(UIViewController*)viewController rootViewCreator:(id<RNNRootViewCreator>)creator;
 
 -(void)applyLeftButtons:(NSArray*)leftButtons rightButtons:(NSArray*)rightButtons defaultLeftButtonStyle:(RNNButtonOptions *)defaultLeftButtonStyle defaultRightButtonStyle:(RNNButtonOptions *)defaultRightButtonStyle;
 
