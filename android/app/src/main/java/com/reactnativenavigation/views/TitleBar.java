@@ -238,13 +238,13 @@ public class TitleBar extends Toolbar {
     }
 
     private void updateLeftButton(TitleBarLeftButtonParams leftButtonParams) {
-        if (leftButtonParams.hasDefaultIcon()) {
-            leftButton.setIconState(leftButtonParams);
-            setNavigationIcon(leftButton);
-        } else if (leftButtonParams.hasCustomIcon()) {
+        if (leftButtonParams.hasCustomIcon()) {
             leftButton.setCustomIcon(leftButtonParams);
             setNavigationIcon(leftButtonParams.icon);
-        }
+        } else if (leftButtonParams.hasDefaultIcon()) {
+            leftButton.setIconState(leftButtonParams);
+            setNavigationIcon(leftButton);
+        } 
     }
 
     private boolean shouldSetLeftButton(TitleBarLeftButtonParams leftButtonParams) {
