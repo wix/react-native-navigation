@@ -58,8 +58,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
 	
-	UIApplication.sharedApplication.delegate.window.rootViewController = vc;
-	[UIApplication.sharedApplication.delegate.window makeKeyWindow];
+	[UIApplication sharedApplication].windows.firstObject.rootViewController = vc;
+
 	[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
 	completion();
 }
@@ -279,7 +279,9 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayout:layout saveToStore:_store];
-	[_overlayManager showOverlay:overlayVC];
+	UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	overlayWindow.rootViewController = overlayVC;
+	[_overlayManager showOverlayWindow:overlayWindow];
 	[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
 	completion();
 }
