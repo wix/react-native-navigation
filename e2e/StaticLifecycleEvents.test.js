@@ -36,7 +36,7 @@ describe('static lifecycle events', () => {
     await expect(elementByLabel('dismissModal')).toBeVisible();
   });
 
-  test(':ios: unmounts when dismissed', async () => {
+  xtest(':ios: unmounts when dismissed', async () => {
     await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
     await elementById(testIDs.DISMISS_BUTTON).tap();
