@@ -138,8 +138,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			});
 		}
 	} else {
-		id animationDelegate = (newVc.resolveOptions.animations.push.hasCustomAnimation || newVc.getCurrentChild.isCustomTransitioned) ? newVc : nil;
-		[newVc.getCurrentChild waitForReactViewRender:(newVc.resolveOptions.animations.push.waitForRender || animationDelegate) perform:^{
+		id animationDelegate = (newVc.resolveOptions.animations.push.hasCustomAnimation || newVc.getCurrentLeaf.isCustomTransitioned) ? newVc : nil;
+		[newVc.getCurrentLeaf waitForReactViewRender:(newVc.resolveOptions.animations.push.waitForRender || animationDelegate) perform:^{
 			[_stackManager push:newVc onTop:fromVC animated:newVc.resolveOptions.animations.push.enable animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 				completion();
@@ -228,7 +228,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayout:layout saveToStore:_store];
 	
-	[newVc.getCurrentChild waitForReactViewRender:newVc.getCurrentChild.resolveOptions.animations.showModal.waitForRender perform:^{
+	[newVc.getCurrentLeaf waitForReactViewRender:newVc.getCurrentLeaf.resolveOptions.animations.showModal.waitForRender perform:^{
 		[_modalManager showModal:newVc animated:newVc.getCurrentChild.resolveOptions.animations.showModal.enable hasCustomAnimation:newVc.getCurrentChild.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
 			[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
 			completion(componentId);

@@ -123,16 +123,14 @@
 	[parentMock verify];
 }
 
-- (void)testGetCurrentChild_shouldInvokeSelectedViewControllerGetCurrentChild {
-	[[self.mockChildViewController expect] getCurrentChild];
-	[self.mockUut getCurrentChild];
+- (void)testGetCurrentLeaf_shouldInvokeSelectedViewControllerGetCurrentLeaf {
+	[[self.mockChildViewController expect] getCurrentLeaf];
+	[self.mockUut getCurrentLeaf];
 	[self.mockChildViewController verify];
 }
 
-- (void)testGetCurrentChild_shouldInvokeOnSelectedViewController {
-	[[self.mockChildViewController expect] getCurrentChild];
-	[self.mockUut getCurrentChild];
-	[self.mockChildViewController verify];
+- (void)testGetCurrentChild_shouldReturnSelectedViewController {
+	XCTAssertEqual([self.mockUut getCurrentChild], [(RNNTabBarController *)self.mockUut selectedViewController]);
 }
 
 - (void)testPreferredStatusBarStyle_shouldInvokeSelectedViewControllerPreferredStatusBarStyle {

@@ -3,7 +3,7 @@
 @interface RNNSideMenuChildVC ()
 
 @property (readwrite) RNNSideMenuChildType type;
-@property (nonatomic, retain) UIViewController<RNNParentProtocol> *child;
+@property (nonatomic, retain) UIViewController<RNNLayoutProtocol> *child;
 
 @end
 
@@ -56,7 +56,7 @@
 	return self.child.tabBarItem;
 }
 
-- (void)bindChildViewController:(UIViewController<RNNParentProtocol>*)child {
+- (void)bindChildViewController:(UIViewController<RNNLayoutProtocol>*)child {
 	self.child = child;
 	[self addChildViewController:self.child];
 	[self.child.view setFrame:self.view.bounds];
@@ -65,7 +65,11 @@
 }
 
 - (UIViewController *)getCurrentChild {
-	return [self.child getCurrentChild];
+	return self.child;
+}
+
+- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
+	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
