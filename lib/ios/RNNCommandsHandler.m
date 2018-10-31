@@ -281,7 +281,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayout:layout saveToStore:_store];
 	UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	overlayWindow.rootViewController = overlayVC;
-	[_overlayManager showOverlayWindow:overlayWindow];
+	[_overlayManager showOverlayWindow:overlayWindow withOptions:layout[@"data"][@"options"][@"overlay"]];
 	[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
 	completion();
 }
