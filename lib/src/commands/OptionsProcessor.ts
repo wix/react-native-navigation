@@ -37,6 +37,7 @@ export class OptionsProcessor {
       _.forEach(value, (button) => {
         if (button.passProps && button.id) {
           this.store.setPropsForId(button.id, button.passProps);
+          button.passProps = undefined;
         }
       });
     }

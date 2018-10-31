@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ChildController;
@@ -23,10 +23,10 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options options) {
-        this(activity, childRegistry, id, new OptionsPresenter(activity, new Options()), options);
+        this(activity, childRegistry, id, new Presenter(activity, new Options()), options);
     }
 
-    public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options options) {
+    public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options options) {
         super(activity, childRegistry, id, presenter, options);
     }
 
@@ -41,13 +41,19 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
     }
 
     @Override
+    public void destroy() {
+        if (!isDestroyed()) performOnParentController(parent -> parent.onChildDestroyed(getView()));
+        super.destroy();
+    }
+
+    @Override
     public String toString() {
         return "SimpleViewController " + getId();
     }
 
     @Override
     public void mergeOptions(Options options) {
-        applyOnParentController(parentController -> parentController.mergeChildOptions(options, getView()));
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
         super.mergeOptions(options);
     }
 
@@ -71,8 +77,8 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         public void drawBelowTopBar(TopBar topBar) {
             if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-                if (layoutParams.topMargin == ViewUtils.getPreferredHeight(topBar)) return;
-                layoutParams.topMargin = ViewUtils.getPreferredHeight(topBar);
+                if (layoutParams.topMargin == ViewUtils.getHeight(topBar)) return;
+                layoutParams.topMargin = ViewUtils.getHeight(topBar);
 //                setLayoutParams(layoutParams);
             }
         }

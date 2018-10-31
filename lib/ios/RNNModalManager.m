@@ -2,77 +2,65 @@
 #import "RNNRootViewController.h"
 
 @implementation RNNModalManager {
-	RNNStore *_store;
-	RNNTransitionCompletionBlock _completionBlock;
+	NSMutableArray* _pendingModalIdsToDismiss;
+	NSMutableArray* _presentedModals;
 }
 
 
--(instancetype)initWithStore:(RNNStore*)store {
+-(instancetype)init {
 	self = [super init];
-	_store = store;
+	_pendingModalIdsToDismiss = [[NSMutableArray alloc] init];
+	_presentedModals = [[NSMutableArray alloc] init];
+
 	return self;
 }
 
--(void)showModal:(BOOL)animated {
+-(void)showModal:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
+	[self showModal:viewController animated:animated hasCustomAnimation:NO completion:completion];
+}
+
+-(void)showModal:(UIViewController *)viewController animated:(BOOL)animated hasCustomAnimation:(BOOL)hasCustomAnimation completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
+	if (!viewController) {
+		@throw [NSException exceptionWithName:@"ShowUnknownModal" reason:@"showModal called with nil viewController" userInfo:nil];
+	}
+	
 	UIViewController* topVC = [self topPresentedVC];
 	topVC.definesPresentationContext = YES;
 	
-	if ([topVC conformsToProtocol:@protocol(RNNRootViewProtocol)]) {
-		UIViewController<RNNRootViewProtocol> *navigationTopVC = (UIViewController<RNNRootViewProtocol>*)topVC;
-		RNNNavigationOptions* options = navigationTopVC.getLeafViewController.options;
-		if (options.animations.showModal.hasCustomAnimation) {
-			self.toVC.transitioningDelegate = navigationTopVC;
-		}
+	if (hasCustomAnimation) {
+		viewController.transitioningDelegate = (UIViewController<UIViewControllerTransitioningDelegate>*)topVC;
 	}
 	
-	[topVC presentViewController:self.toVC animated:animated completion:^{
-		if (_completionBlock) {
-			_completionBlock();
-			_completionBlock = nil;
+	[topVC presentViewController:viewController animated:animated completion:^{
+		if (completion) {
+			completion(nil);
 		}
-		self.toVC = nil;
+		
+		[_presentedModals addObject:viewController.navigationController ? viewController.navigationController : viewController];
 	}];
 }
 
--(void)showModal:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion {
-	self.toVC = (UIViewController<RNNRootViewProtocol>*)viewController;
-	RNNNavigationOptions* options = self.toVC.getLeafViewController.options;
-
-	_completionBlock = completion;
-	
-    if ([self.toVC respondsToSelector:@selector(applyModalOptions)]) {
-        [self.toVC.getLeafViewController applyModalOptions];
-    }
-    
-    if ([self.toVC respondsToSelector:@selector(isCustomViewController)] &&
-        [self.toVC.getLeafViewController isCustomViewController]
-    ) {
-		[self showModal:animated];
-	} else {
-		[self.toVC.getLeafViewController waitForReactViewRender:options.animations.showModal.waitForRender perform:^{
-			[self showModal:animated];
-		}];
+- (void)dismissModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
+	if (viewController) {
+		[_pendingModalIdsToDismiss addObject:viewController];
+		[self removePendingNextModalIfOnTop:completion];
 	}
 }
 
--(void)dismissModal:(NSString *)componentId {
-	[[_store pendingModalIdsToDismiss] addObject:componentId];
-	[self removePendingNextModalIfOnTop];
-}
-
--(void)dismissAllModals {
+-(void)dismissAllModalsAnimated:(BOOL)animated {
 	UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
-	[root dismissViewControllerAnimated:YES completion:nil];
-	[[_store pendingModalIdsToDismiss] removeAllObjects];
+	[root dismissViewControllerAnimated:animated completion:nil];
+	[_delegate dismissedMultipleModals:_presentedModals];
+	[_pendingModalIdsToDismiss removeAllObjects];
+	[_presentedModals removeAllObjects];
 }
 
 #pragma mark - private
 
 
--(void)removePendingNextModalIfOnTop {
-	NSString *componentId = [[_store pendingModalIdsToDismiss] lastObject];
-	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
-	RNNNavigationOptions* options = modalToDismiss.getLeafViewController.options;
+-(void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion {
+	UIViewController<RNNParentProtocol> *modalToDismiss = [_pendingModalIdsToDismiss lastObject];
+	RNNNavigationOptions* options = modalToDismiss.getCurrentChild.resolveOptions;
 
 	if(!modalToDismiss) {
 		return;
@@ -86,11 +74,32 @@
 
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
 		[modalToDismiss dismissViewControllerAnimated:options.animations.dismissModal.enable completion:^{
-			[[_store pendingModalIdsToDismiss] removeObject:componentId];
-			[_store removeComponent:componentId];
-			[self removePendingNextModalIfOnTop];
+			[_pendingModalIdsToDismiss removeObject:modalToDismiss];
+			if (modalToDismiss.view) {
+				[self dismissedModal:modalToDismiss];
+			}
+			
+			if (completion) {
+				completion();
+			}
+			
+			[self removePendingNextModalIfOnTop:nil];
 		}];
+	} else {
+		[modalToDismiss.view removeFromSuperview];
+		modalToDismiss.view = nil;
+		modalToDismiss.getCurrentChild.resolveOptions.animations.dismissModal.enable = NO;
+		[self dismissedModal:modalToDismiss];
+		
+		if (completion) {
+			completion();
+		}
 	}
+}
+
+- (void)dismissedModal:(UIViewController *)viewController {
+	[_presentedModals removeObject:viewController.navigationController ? viewController.navigationController : viewController];
+	[_delegate dismissedModal:viewController];
 }
 
 -(UIViewController*)topPresentedVC {

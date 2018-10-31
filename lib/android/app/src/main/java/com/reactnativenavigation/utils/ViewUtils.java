@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.view.ViewParent;
 
 import com.facebook.react.views.view.ReactViewBackgroundDrawable;
@@ -32,20 +33,24 @@ public class ViewUtils {
     }
 
     public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class clazz) {
+        return findChildrenByClassRecursive(root, clazz, child -> true);
+    }
+
+    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class clazz, Matcher<T> matcher) {
         ArrayList<T> ret = new ArrayList<>();
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
             if (view instanceof ViewGroup) {
                 ret.addAll(findChildrenByClassRecursive((ViewGroup) view, clazz));
             }
-            if (clazz.isAssignableFrom(view.getClass())) {
+            if (clazz.isAssignableFrom(view.getClass()) && matcher.match((T) view)) {
                 ret.add((T) view);
             }
         }
         return ret;
     }
 
-    public static <T> List<T> findChildrenByClass(ViewGroup root, Class clazz) {
+    public static <T> List<T> findChildrenByClass(ViewGroup root, Class<T> clazz) {
         return findChildrenByClass(root, clazz, child -> true);
     }
 
@@ -80,7 +85,7 @@ public class ViewUtils {
         return false;
     }
 
-    public static int getPreferredHeight(View view) {
+    public static int getHeight(View view) {
         if (view.getLayoutParams() == null) return 0;
         return view.getLayoutParams().height < 0 ? view.getHeight() : view.getLayoutParams().height;
     }
@@ -124,5 +129,12 @@ public class ViewUtils {
             return ((ReactViewBackgroundDrawable) view.getBackground()).getColor();
         }
         throw new RuntimeException(view.getBackground().getClass().getSimpleName() + " is not ReactViewBackgroundDrawable");
+    }
+
+    public static void removeFromParent(View view) {
+        ViewParent parent = view.getParent();
+        if (parent != null) {
+            ((ViewManager) parent).removeView(view);
+        }
     }
 }

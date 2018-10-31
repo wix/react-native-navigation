@@ -6,7 +6,9 @@ import {
   NavigationButtonPressedEvent,
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent,
-  ComponentEvent
+  ComponentEvent,
+  PreviewCompletedEvent,
+  ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 
@@ -18,8 +20,10 @@ export class ComponentEventsObserver {
     this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
     this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
     this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
+    this.notifyModalDismissed = this.notifyModalDismissed.bind(this);
     this.notifySearchBarUpdated = this.notifySearchBarUpdated.bind(this);
     this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
+    this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
   }
 
   public registerOnceForAllComponentEvents() {
@@ -28,8 +32,10 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerComponentDidAppearListener(this.notifyComponentDidAppear);
     this.nativeEventsReceiver.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
     this.nativeEventsReceiver.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);
+    this.nativeEventsReceiver.registerModalDismissedListener(this.notifyModalDismissed);
     this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
     this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
+    this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
   }
 
   public bindComponent(component: React.Component<any>): EventSubscription {
@@ -62,12 +68,20 @@ export class ComponentEventsObserver {
     this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
   }
 
+  notifyModalDismissed(event: ModalDismissedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'modalDismissed');
+  }
+
   notifySearchBarUpdated(event: SearchBarUpdatedEvent) {
     this.triggerOnAllListenersByComponentId(event, 'searchBarUpdated');
   }
 
   notifySearchBarCancelPressed(event: SearchBarCancelPressedEvent) {
     this.triggerOnAllListenersByComponentId(event, 'searchBarCancelPressed');
+  }
+
+  notifyPreviewCompleted(event: PreviewCompletedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'previewCompleted');
   }
 
   private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {

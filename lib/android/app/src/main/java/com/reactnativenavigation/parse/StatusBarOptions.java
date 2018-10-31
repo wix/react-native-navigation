@@ -3,7 +3,7 @@ package com.reactnativenavigation.parse;
 import android.support.annotation.Nullable;
 
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.parsers.BoolParser;
@@ -50,7 +50,7 @@ public class StatusBarOptions {
         return result;
     }
 
-    public Color backgroundColor = new NullColor();
+    public Colour backgroundColor = new NullColor();
     public TextColorScheme textColorScheme = TextColorScheme.None;
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();

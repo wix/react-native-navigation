@@ -44,6 +44,7 @@ export class LayoutTreeCrawler {
     this._assertComponentDataName(node);
     this._savePropsToStore(node);
     this._applyStaticOptions(node);
+    node.data.passProps = undefined;
   }
 
   _savePropsToStore(node) {
@@ -52,7 +53,7 @@ export class LayoutTreeCrawler {
 
   _applyStaticOptions(node) {
     const clazz = this.store.getOriginalComponentClassForName(node.data.name) || {};
-    const staticOptions = _.cloneDeep(clazz.options) || {};
+    const staticOptions = _.isFunction(clazz.options) ? clazz.options(node.data.passProps || {}) : (_.cloneDeep(clazz.options) || {});
     const passedOptions = node.data.options || {};
     node.data.options = _.merge({}, staticOptions, passedOptions);
   }

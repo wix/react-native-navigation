@@ -13,6 +13,8 @@ module.exports = function (wallaby) {
       'package.json',
       'lib/src/**/*.js',
       'lib/src/**/*.ts',
+      'lib/src/**/*.tsx',
+      '!lib/src/**/*.test.tsx',
       '!lib/src/**/*.test.js',
       '!lib/src/**/*.test.ts',
       'integration/**/*.js',
@@ -22,11 +24,16 @@ module.exports = function (wallaby) {
     tests: [
       'lib/src/**/*.test.js',
       'lib/src/**/*.test.ts',
+      'lib/src/**/*.test.tsx',
       'integration/**/*.test.js'
     ],
 
     compilers: {
-      '**/*.js': wallaby.compilers.babel(babelOptions)
+      '**/*.js': wallaby.compilers.babel(babelOptions),
+      '**/*.ts?(x)': wallaby.compilers.typeScript({
+        module: 'commonjs',
+        jsx: 'React'
+      })
     },
 
     setup: (w) => {

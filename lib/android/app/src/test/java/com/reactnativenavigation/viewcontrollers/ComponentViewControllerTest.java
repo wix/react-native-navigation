@@ -7,12 +7,14 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.ComponentPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -21,6 +23,7 @@ import static org.mockito.Mockito.when;
 public class ComponentViewControllerTest extends BaseTest {
     private ComponentViewController uut;
     private IReactView view;
+    private ComponentPresenter componentPresenter;
 
     @Override
     public void beforeEach() {
@@ -28,8 +31,9 @@ public class ComponentViewControllerTest extends BaseTest {
         Activity activity = newActivity();
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
         ParentController<StackLayout> parentController = TestUtils.newStackController(activity).build();
-        OptionsPresenter presenter = new OptionsPresenter(activity, new Options());
-        uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter);
+        Presenter presenter = new Presenter(activity, new Options());
+        this.componentPresenter = spy(new ComponentPresenter());
+        uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter, this.componentPresenter);
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();
     }
@@ -76,5 +80,19 @@ public class ComponentViewControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
         uut.sendOnNavigationButtonPressed("btn1");
         verify(view, times(1)).sendOnNavigationButtonPressed("btn1");
+    }
+
+    @Test
+    public void mergeOptions_emptyOptionsAreIgnored() {
+        ComponentViewController spy = spy(uut);
+        spy.mergeOptions(Options.EMPTY);
+        verify(spy, times(0)).performOnParentController(any());
+    }
+
+    @Test
+    public void mergeOptions_delegatesToPresenter() {
+        Options options = new Options();
+        uut.mergeOptions(options);
+        verify(componentPresenter).mergeOptions(uut.getView(), options);
     }
 }

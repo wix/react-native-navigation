@@ -1,4 +1,3 @@
-
 #import "RNNStore.h"
 
 @interface RNNStore ()
@@ -7,7 +6,6 @@
 
 @implementation RNNStore {
 	NSMapTable* _componentStore;
-	NSMutableArray* _pendingModalIdsToDismiss;
 	NSMutableDictionary* _externalComponentCreators;
 	BOOL _isReadyToReceiveCommands;
 }
@@ -16,7 +14,6 @@
 	self = [super init];
 	_isReadyToReceiveCommands = false;
 	_componentStore = [NSMapTable strongToWeakObjectsMapTable];
-	_pendingModalIdsToDismiss = [NSMutableArray new];
 	_externalComponentCreators = [NSMutableDictionary new];
 	return self;
 }
@@ -45,6 +42,28 @@
 	}
 }
 
+- (void)removeAllComponents {
+	[_componentStore removeAllObjects];
+}
+
+- (void)removeAllComponentsFromWindow:(UIWindow *)window {
+	for (NSString *key in [self componentsForWindow:window]) {
+		[_componentStore removeObjectForKey:key];
+	}
+}
+
+- (NSArray *)componentsForWindow:(UIWindow *)window {
+	NSMutableArray* keyWindowComponents = [NSMutableArray new];
+	for (NSString* key in _componentStore) {
+		UIViewController *component = [_componentStore objectForKey:key];
+		if (component.view.window == window) {
+			[keyWindowComponents addObject:key];
+		}
+	}
+	
+	return keyWindowComponents;
+}
+
 -(void)setReadyToReceiveCommands:(BOOL)isReady {
 	_isReadyToReceiveCommands = isReady;
 }
@@ -53,14 +72,9 @@
 	return _isReadyToReceiveCommands;
 }
 
--(NSMutableArray *)pendingModalIdsToDismiss {
-	return _pendingModalIdsToDismiss;
-}
-
 -(void)clean {
 	_isReadyToReceiveCommands = false;
-	[_pendingModalIdsToDismiss removeAllObjects];
-	[_componentStore removeAllObjects];
+	[self removeAllComponents];
 }
 
 -(NSString*)componentKeyForInstance:(UIViewController*)instance {
@@ -77,9 +91,9 @@
 	[_externalComponentCreators setObject:[callback copy] forKey:name];
 }
 
-- (UIViewController *)getExternalComponent:(NSString *)name props:(NSDictionary*)props bridge:(RCTBridge *)bridge {
-	RNNExternalViewCreator creator = [_externalComponentCreators objectForKey:name];
-	return creator(props, bridge);
+- (UIViewController *)getExternalComponent:(RNNLayoutInfo *)layoutInfo bridge:(RCTBridge *)bridge {
+	RNNExternalViewCreator creator = [_externalComponentCreators objectForKey:layoutInfo.name];
+	return creator(layoutInfo.props, bridge);
 }
 
 @end

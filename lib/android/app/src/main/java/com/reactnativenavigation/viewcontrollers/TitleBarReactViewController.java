@@ -14,7 +14,7 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
     private Component component;
 
     public TitleBarReactViewController(Activity activity, TitleBarReactViewCreator reactViewCreator) {
-        super(activity, CompatUtils.generateViewId() + "", new Options());
+        super(activity, CompatUtils.generateViewId() + "", new YellowBoxDelegate(), new Options());
         this.reactViewCreator = reactViewCreator;
     }
 
@@ -33,7 +33,7 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
 
     @Override
     protected TitleBarReactView createView() {
-        return reactViewCreator.create(getActivity(), getId(), component.name.get());
+        return reactViewCreator.create(getActivity(), component.componentId.get(), component.name.get());
     }
 
     @Override

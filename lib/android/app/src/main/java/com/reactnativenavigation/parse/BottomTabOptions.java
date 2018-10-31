@@ -3,7 +3,7 @@ package com.reactnativenavigation.parse;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
@@ -38,14 +38,14 @@ public class BottomTabOptions {
     }
 
     public Text text = new NullText();
-    public Color textColor = new NullColor();
-    public Color selectedTextColor = new NullColor();
+    public Colour textColor = new NullColor();
+    public Colour selectedTextColor = new NullColor();
     public Text icon = new NullText();
-    public Color iconColor = new NullColor();
-    public Color selectedIconColor = new NullColor();
+    public Colour iconColor = new NullColor();
+    public Colour selectedIconColor = new NullColor();
     public Text testId = new NullText();
     public Text badge = new NullText();
-    public Color badgeColor = new NullColor();
+    public Colour badgeColor = new NullColor();
     public Number fontSize = new NullNumber();
     public Number selectedFontSize = new NullNumber();
     @Nullable public Typeface fontFamily;
@@ -78,5 +78,6 @@ public class BottomTabOptions {
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (!selectedFontSize.hasValue()) selectedFontSize = defaultOptions.selectedFontSize;
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
+        if (!testId.hasValue()) testId = defaultOptions.testId;
     }
 }

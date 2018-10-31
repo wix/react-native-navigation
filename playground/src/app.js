@@ -22,7 +22,7 @@ if (Platform.OS === 'android') {
 
 function start() {
   registerScreens();
-  Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.events().registerAppLaunchedListener(async () => {
     Navigation.setDefaultOptions({
       bottomTab: {
         iconColor: '#1B4C77',
@@ -37,22 +37,15 @@ function start() {
           waitForRender: false,
         }
       },
-      _animations: {
-        startApp: {
-          y: {
-            from: 1000,
-            to: 0,
-            duration: 500,
-            interpolation: 'accelerate',
-          },
+      animations: {
+        setRoot: {
           alpha: {
             from: 0,
             to: 1,
-            duration: 500,
-            interpolation: 'accelerate'
+            duration: 300
           }
         },
-        push: {
+        _push: {
           topBar: {
             id: 'TEST',
             alpha: {
@@ -91,7 +84,7 @@ function start() {
             }
           }
         },
-        pop: {
+        _pop: {
           topBar: {
             id: 'TEST',
             alpha: {
@@ -146,6 +139,18 @@ function start() {
         }
       }
     });
+
+    // await Navigation.showModal({
+    //   stack: {
+    //     children: [
+    //       {
+    //         component: {
+    //           name: 'navigation.playground.ModalScreen'
+    //         }
+    //       }
+    //     ]
+    //   }
+    // });
 
     Navigation.setRoot({
       root: {

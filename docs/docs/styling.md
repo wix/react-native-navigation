@@ -1,12 +1,12 @@
 # Styling Options
 
-You can style the navigator appearance and behavior by passing an `options` object. This object can be passed when the screen is originally created; can be defined per-screen by setting `static get options()` on the screen component; and can be overridden when a screen is pushed.
+You can style the navigator appearance and behavior by passing an `options` object. This object can be passed when the screen is originally created; can be defined per-screen by setting `static options(passProps)` on the screen component; and can be overridden when a screen is pushed, dynamically (after the screen was already rendered at least once) using `mergeOptions()`.
 
-The easiest way to style your screen is by adding `static get options()` to your screen React component definition.
+The easiest way to style your screen is by adding `static options(passProps)` to your screen React component definition. `passProps` is the same passProps you can specify as part of the push/modal or other command operation.
 
 ```js
 export default class StyledScreen extends Component {
-  static get options() {
+  static options(passProps) {
     return {
       topBar: {
         title: {
@@ -43,7 +43,7 @@ Navigation.setDefaultOptions({
 ```
 
 ## Setting styles dynamically
-Use the `mergeOptions` method to change a screen's style dynamically.
+Use the `mergeOptions` method to change a screen's style dynamically. WARNING! these options will be applied on an already rendered screen, after it has been rendered at least once.
 
 ```js
 Navigation.mergeOptions(this.props.componentId, {
@@ -75,16 +75,6 @@ Navigation.mergeOptions(this.props.componentId, {
     buttonColor: 'black',
     drawBehind: false,
     testID: 'topBar',
-    searchBar: true, // iOS 11+ native UISearchBar inside topBar
-    searchBarHiddenWhenScrolling: true,
-    searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
-    // iOS 11+ Large Title
-    largeTitle: {
-      visible: true,
-      fontSize: 30,
-      color: 'red',
-      fontFamily: 'Helvetica'
-    },
     title: {
       text: 'Title',
       fontSize: 14,
@@ -153,7 +143,7 @@ Navigation.mergeOptions(this.props.componentId, {
     interceptTouchOutside: true
   },
   preview: {
-    elementId: 'PreviewId',
+    reactTag: 0, // result from findNodeHandle(ref)
     width: 100,
     height: 100,
     commit: false,
@@ -179,14 +169,18 @@ Navigation.mergeOptions(this.props.componentId, {
   rootBackgroundImage: require('rootBackground.png'),
   topBar: {
     barStyle: 'default' | 'black',
-    translucent: true,
-    transparent: false,
+    background: {
+      translucent: true,
+      blur: false
+    }
     noBorder: false,
-    blur: false,
     backButton: {
       title: 'Back',
       showTitle: false
     },
+    searchBar: true, // iOS 11+ native UISearchBar inside topBar
+    searchBarHiddenWhenScrolling: true,
+    searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
     largeTitle: {
       visible: true,
       fontSize: 30,
@@ -194,6 +188,18 @@ Navigation.mergeOptions(this.props.componentId, {
       fontFamily: 'Helvetica'
     },
   },
+  sideMenu: {
+    left: {
+      shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
+      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
+      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+    },
+    right: {
+      shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
+      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
+      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+    }
+  }
   bottomTabs: {
     barStyle: 'default' | 'black',
     translucent: true,
@@ -218,22 +224,26 @@ Navigation.mergeOptions(this.props.componentId, {
     visible: false
   },
   layout: {
-    topMargin: Navigation.constants().statusBarHeight // Set the layout's top margin
+    topMargin: Navigation.constants().statusBarHeight, // Set the layout's top margin
+    orientation: ['portrait', 'landscape'] | ['sensorLandscape'] // An array of supported orientations
   },
   topBar: {
     height: 70, // TopBar height in dp
     borderColor: 'red',
     borderHeight: 1.3,
     elevation: 1.5, // TopBar elevation in dp
+    topMargin: 24, // top margin in dp
     title: {
       height: 70 // TitleBar height in dp
     }
   },
   bottomTabs: {
+    elevation: 8, // BottomTabs elevation in dp
     titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
   },
   bottomTab: {
     selectedFontSize: 19 // Selected tab font size in sp
+  }
 }
 ```
 
@@ -291,17 +301,12 @@ The following properties can be animated:
 }
 ```
 
-For example, changing the animation used when the app is first launched:
+For example, changing the animation used when the app is first launched (Supported only on Android):
 ```js
 Navigation.setDefaultOptions({
   animations: {
-    startApp: {
-      y: {
-        from: 1000,
-        to: 0,
-        duration: 500,
-        interpolation: 'accelerate',
-      },
+    setRoot: {
+      enabled: 'true' | 'false', // Optional, used to enable/disable the animation
       alpha: {
         from: 0,
         to: 1,
@@ -317,7 +322,7 @@ Navigation.setDefaultOptions({
 ## Customizing navigation commands animation
 
 Animations for the following set of commands can be customized
-* startApp
+* setRoot
 * push
 * pop
 * showModal
@@ -330,6 +335,7 @@ When *pushing* and *popping* screens to and from a stack, you can control the To
 ```js
 animations: {
   push: {
+    enabled: 'true' | 'false', // Optional, used to enable/disable the animation
     topBar: {
       id: 'TEST', // Optional, id of the TopBar we'd like to animate.
       alpha: {
@@ -349,6 +355,9 @@ animations: {
         to: 1
       }
     }
+  },
+  pop: {
+    ...
   }
 }
 ```

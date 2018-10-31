@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import java.util.Collections;
 
-import static com.reactnativenavigation.utils.CollectionUtils.map;
+import static com.reactnativenavigation.utils.CollectionUtils.keyBy;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class TransitionValidatorTest extends BaseTest {
@@ -50,8 +50,8 @@ public class TransitionValidatorTest extends BaseTest {
         transition.toId = new NullText();
         boolean result = uut.validate(
                 transition,
-                map(Collections.singletonList(from1), Element::getElementId),
-                map(Collections.singletonList(from1), Element::getElementId)
+                keyBy(Collections.singletonList(from1), Element::getElementId),
+                keyBy(Collections.singletonList(from1), Element::getElementId)
         );
         assertThat(result).isFalse();
     }
@@ -61,8 +61,8 @@ public class TransitionValidatorTest extends BaseTest {
         transition.fromId = new NullText();
         boolean result = uut.validate(
                 transition,
-                map(Collections.singletonList(from1), Element::getElementId),
-                map(Collections.singletonList(from1), Element::getElementId)
+                keyBy(Collections.singletonList(from1), Element::getElementId),
+                keyBy(Collections.singletonList(from1), Element::getElementId)
         );
         assertThat(result).isFalse();
     }
@@ -71,8 +71,8 @@ public class TransitionValidatorTest extends BaseTest {
     public void validate_falseIfFromElementRequiredByTransitionDontExist() {
         boolean result = uut.validate(
                 invalidFromElementTransition,
-                map(Collections.singletonList(from1), Element::getElementId),
-                map(Collections.singletonList(to1), Element::getElementId)
+                keyBy(Collections.singletonList(from1), Element::getElementId),
+                keyBy(Collections.singletonList(to1), Element::getElementId)
         );
         assertThat(result).isFalse();
     }
@@ -81,8 +81,8 @@ public class TransitionValidatorTest extends BaseTest {
     public void validate_falseIfToElementRequiredByTransitionDontExist() {
         boolean result = uut.validate(
                 invalidToElementTransition,
-                map(Collections.singletonList(from1), Element::getElementId),
-                map(Collections.singletonList(to1), Element::getElementId)
+                keyBy(Collections.singletonList(from1), Element::getElementId),
+                keyBy(Collections.singletonList(to1), Element::getElementId)
         );
         assertThat(result).isFalse();
     }
@@ -91,8 +91,8 @@ public class TransitionValidatorTest extends BaseTest {
     public void validate_trueIfElementsRequiredByTransitionExist() {
         boolean result = uut.validate(
                 transition,
-                map(Collections.singletonList(from1), Element::getElementId),
-                map(Collections.singletonList(to1), Element::getElementId)
+                keyBy(Collections.singletonList(from1), Element::getElementId),
+                keyBy(Collections.singletonList(to1), Element::getElementId)
         );
         assertThat(result).isTrue();
     }
@@ -102,8 +102,8 @@ public class TransitionValidatorTest extends BaseTest {
         transition.duration = new NullNumber();
         boolean result = uut.validate(
                 transition,
-                map(Collections.singletonList(from1), Element::getElementId),
-                map(Collections.singletonList(to1), Element::getElementId)
+                keyBy(Collections.singletonList(from1), Element::getElementId),
+                keyBy(Collections.singletonList(to1), Element::getElementId)
         );
         assertThat(result).isFalse();
     }

@@ -11,20 +11,20 @@ export interface OptionsSplitView {
    * Master view display mode
    * @default 'auto'
    */
-  displayMode: 'auto' | 'visible' | 'hidden' | 'overlay';
+  displayMode?: 'auto' | 'visible' | 'hidden' | 'overlay';
   /**
    * Master view side. Leading is left. Trailing is right.
    * @default 'leading'
    */
-  primaryEdge: 'leading' | 'trailing';
+  primaryEdge?: 'leading' | 'trailing';
   /**
    * Set the minimum width of master view
    */
-  minWidth: number;
+  minWidth?: number;
   /**
    * Set the maximum width of master view
    */
-  maxWidth: number;
+  maxWidth?: number;
 }
 
 export interface OptionsStatusBar {
@@ -119,8 +119,22 @@ export interface OptionsTopBarTitle {
    * Custom component as the title view
    */
   component?: {
+    /**
+     * Component reference id, Auto generated if empty
+     */
+    id?: string;
+    /**
+     * Name of your component
+     */
     name: string;
+    /**
+     * Set component alignment
+     */
     alignment?: 'center' | 'fill';
+    /**
+     * Properties to pass down to the component
+     */
+    passProps?: object;
   };
   /**
    * Top Bar title height in densitiy pixels
@@ -156,7 +170,7 @@ export interface OptionsTopBarBackButton {
   /**
    * Image to show as the back button
    */
-  icon: ImageRequireSource;
+  icon?: ImageRequireSource;
   /**
    * Weither the back button is visible or not
    * @default true
@@ -173,8 +187,7 @@ export interface OptionsTopBarBackButton {
    */
   showTitle?: boolean;
   /**
-   * Back button icon or text color
-   * #### (Android specific)
+   * Back button icon and text color
    */
   color?: Color;
 }
@@ -185,11 +198,26 @@ export interface  OptionsTopBarBackground {
    */
   color?: Color;
   /**
+   * Clip the top bar background to bounds if set to true.
+   * #### (iOS specific)
+   */
+  clipToBounds?: boolean;
+  /**
    * Set a custom component for the Top Bar background
    */
   component?: {
     name?: string;
   };
+  /**
+   * Allows the NavBar to be translucent (blurred)
+   * #### (iOS specific)
+   */
+  translucent?: boolean;
+  /**
+   * Enable background blur
+   * #### (iOS specific)
+   */
+  blur?: boolean;
 }
 
 export interface OptionsTopBarButton {
@@ -231,7 +259,7 @@ export interface OptionsTopBarButton {
   /**
    * Set testID for reference in E2E tests
    */
-  testID: string;
+  testID?: string;
 }
 
 export interface OptionsTopBar {
@@ -291,27 +319,11 @@ export interface OptionsTopBar {
    */
   barStyle?: 'default' | 'black';
   /**
-   * Allows the NavBar to be translucent (blurred)
-   * #### (iOS specific)
-   * @requires transparent: false
-   */
-  translucent?: boolean;
-  /**
-   * Allows the NavBar to be transparent
-   * #### (iOS specific)
-   */
-  transparent?: boolean;
-  /**
    * Disable the border on bottom of the navbar
    * #### (iOS specific)
    * @default false
    */
   noBorder?: boolean;
-  /**
-   * Enable background blur
-   * #### (iOS specific)
-   */
-  blur?: boolean;
   /**
    * Show a UISearchBar in the Top Bar
    * #### (iOS 11+ specific)
@@ -393,7 +405,6 @@ export interface OptionsBottomTabs {
   /**
    * Allows the Bottom Tabs to be translucent (blurred)
    * #### (iOS specific)
-   * @requires transparent: false
    */
   translucent?: boolean;
   /**
@@ -406,6 +417,11 @@ export interface OptionsBottomTabs {
    * #### (Android specific)
    */
   titleDisplayMode?: 'alwaysShow' | 'showWhenActive' | 'alwaysHide';
+  /**
+   * Set the elevation of the Bottom Tabs in dp
+   * #### (Android specific)
+   */
+  elevation?: AndroidDensityNumber;
 }
 
 export interface OptionsBottomTab {
@@ -417,6 +433,10 @@ export interface OptionsBottomTab {
    * Set the text in a badge that is overlayed over the component
    */
   badge?: string;
+  /**
+   * Set the background color of the badge that is overlayed over the component
+   */
+  badgeColor?: string;
   /**
    * Set a testID to reference the tab in E2E tests
    */
@@ -555,11 +575,11 @@ export interface OptionsAnimationPropertyConfig {
   /**
    * Animate from this value, ex. 0
    */
-  from: number;
+  from?: number;
   /**
    * Animate to this value, ex. 1
    */
-  to: number;
+  to?: number;
   /**
    * Animation duration
    * @default 300
@@ -635,9 +655,9 @@ export interface OptionsAnimationSeparate {
 
 export interface OptionsAnimations {
   /**
-   * Configure the start app animation
+   * Configure the setRoot animation
    */
-  startApp?: OptionsAnimationProperties;
+  setRoot?: OptionsAnimationProperties;
   /**
    * Configure what animates when a screen is pushed
    */
@@ -698,7 +718,7 @@ export interface Options {
    *
    * Example:
 ```js
-startApp: {
+setRoot: {
   y: {
     from: 1000,
     to: 0,
@@ -737,4 +757,10 @@ startApp: {
    * #### (iOS specific)
    */
   rootBackgroundImage?: ImageRequireSource;
+  /**
+   * Enable or disable automatically blurring focused input, dismissing keyboard on unmount
+   * #### (Android specific)
+   * @default false
+   */
+  blurOnUnmount?: boolean;
 }

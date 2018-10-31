@@ -13,6 +13,8 @@ describe('ComponentEventsObserver', () => {
   const navigationButtonPressedFn = jest.fn();
   const searchBarUpdatedFn = jest.fn();
   const searchBarCancelPressedFn = jest.fn();
+  const previewCompletedFn = jest.fn();
+  const modalDismissedFn = jest.fn();
   let subscription;
 
   class SimpleScreen extends React.Component<any, any> {
@@ -47,12 +49,20 @@ describe('ComponentEventsObserver', () => {
       navigationButtonPressedFn(event);
     }
 
+    modalDismissed(event) {
+      modalDismissedFn(event);
+    }
+
     searchBarUpdated(event) {
       searchBarUpdatedFn(event);
     }
 
     searchBarCancelPressed(event) {
       searchBarCancelPressedFn(event);
+    }
+
+    previewCompleted(event) {
+      previewCompletedFn(event);
     }
 
     render() {
@@ -85,6 +95,10 @@ describe('ComponentEventsObserver', () => {
     expect(navigationButtonPressedFn).toHaveBeenCalledTimes(1);
     expect(navigationButtonPressedFn).toHaveBeenCalledWith({ buttonId: 'myButtonId', componentId: 'myCompId' });
 
+    uut.notifyModalDismissed({ componentId: 'myCompId' });
+    expect(modalDismissedFn).toHaveBeenCalledTimes(1);
+    expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId' })
+
     uut.notifySearchBarUpdated({ componentId: 'myCompId', text: 'theText', isFocused: true });
     expect(searchBarUpdatedFn).toHaveBeenCalledTimes(1);
     expect(searchBarUpdatedFn).toHaveBeenCalledWith({ componentId: 'myCompId', text: 'theText', isFocused: true });
@@ -92,6 +106,10 @@ describe('ComponentEventsObserver', () => {
     uut.notifySearchBarCancelPressed({ componentId: 'myCompId' });
     expect(searchBarCancelPressedFn).toHaveBeenCalledTimes(1);
     expect(searchBarCancelPressedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
+
+    uut.notifyPreviewCompleted({ componentId: 'myCompId' });
+    expect(previewCompletedFn).toHaveBeenCalledTimes(1);
+    expect(previewCompletedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
 
     tree.unmount();
     expect(willUnmountFn).toHaveBeenCalledTimes(1);
@@ -168,6 +186,7 @@ describe('ComponentEventsObserver', () => {
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerSearchBarUpdatedListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerSearchBarCancelPressedListener).not.toHaveBeenCalled();
+    expect(mockEventsReceiver.registerPreviewCompletedListener).not.toHaveBeenCalled();
     uut.registerOnceForAllComponentEvents();
     uut.registerOnceForAllComponentEvents();
     uut.registerOnceForAllComponentEvents();
@@ -177,5 +196,6 @@ describe('ComponentEventsObserver', () => {
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerSearchBarUpdatedListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsReceiver.registerPreviewCompletedListener).toHaveBeenCalledTimes(1);
   });
 });

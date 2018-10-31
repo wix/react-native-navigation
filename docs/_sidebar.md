@@ -3,6 +3,7 @@
   - [Installing](/docs/Installing)
   - [Working Locally](/docs/WorkingLocally)
   - [Usage](/docs/Usage)
+  - [Showcases](/docs/showcases)
 - Guide
   - [Top Level](/docs/top-level-api)
   - [Screen](/docs/screen-api)
@@ -12,6 +13,7 @@
   - [TopBar Buttons](/docs/topBar-buttons) 
   - [Animations](/docs/animations)
   - [Constants](/docs/constants)
+  - [Third Party Libraries Support](/docs/third-party)
 - Migration from v1
   - [Top Level](/docs/top-level-api-migration)
   - [Options](/docs/options-migration)

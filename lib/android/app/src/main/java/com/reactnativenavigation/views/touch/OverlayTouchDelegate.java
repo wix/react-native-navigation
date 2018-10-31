@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.touch;
 import android.graphics.Rect;
 import android.support.annotation.VisibleForTesting;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.params.Bool;
@@ -15,6 +16,10 @@ public class OverlayTouchDelegate {
     private final Rect hitRect = new Rect();
     private IReactView reactView;
     private Bool interceptTouchOutside = new NullBool();
+
+    public void setInterceptTouchOutside(Bool interceptTouchOutside) {
+        this.interceptTouchOutside = interceptTouchOutside;
+    }
 
     public OverlayTouchDelegate(IReactView reactView) {
         this.reactView = reactView;
@@ -45,13 +50,13 @@ public class OverlayTouchDelegate {
     }
 
     private TouchLocation getTouchLocation(MotionEvent ev) {
-        ((ViewGroup) reactView.asView()).getChildAt(0).getHitRect(hitRect);
+        getView((ViewGroup) reactView.asView()).getHitRect(hitRect);
         return hitRect.contains((int) ev.getRawX(), (int) ev.getRawY() - UiUtils.getStatusBarHeight(reactView.asView().getContext())) ?
                 TouchLocation.Inside :
                 TouchLocation.Outside;
     }
 
-    public void setInterceptTouchOutside(Bool interceptTouchOutside) {
-        this.interceptTouchOutside = interceptTouchOutside;
+    private View getView(ViewGroup view) {
+        return view.getChildCount() > 0 ? view.getChildAt(0) : view;
     }
 }

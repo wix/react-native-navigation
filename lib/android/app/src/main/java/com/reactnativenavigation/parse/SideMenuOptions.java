@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 public class SideMenuOptions {
     public Bool visible = new NullBool();
+    public Bool enabled = new NullBool();
     public Number height = new NullNumber();
     public Number width = new NullNumber();
 
@@ -19,6 +20,7 @@ public class SideMenuOptions {
         if (json == null) return options;
 
         options.visible = BoolParser.parse(json, "visible");
+        options.enabled = BoolParser.parse(json, "enabled");
         options.height = NumberParser.parse(json, "height");
         options.width = NumberParser.parse(json, "width");
 
@@ -28,6 +30,9 @@ public class SideMenuOptions {
     public void mergeWith(SideMenuOptions other) {
         if (other.visible.hasValue()) {
             visible = other.visible;
+        }
+        if (other.enabled.hasValue()) {
+            enabled = other.enabled;
         }
         if (other.height.hasValue()) {
             height = other.height;

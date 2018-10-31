@@ -1,6 +1,6 @@
 package com.reactnativenavigation.parse;
 
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.Number;
@@ -21,7 +21,7 @@ public class LayoutOptions {
         return result;
     }
 
-    public Color backgroundColor = new NullColor();
+    public Colour backgroundColor = new NullColor();
     public Number topMargin = new NullNumber();
     public OrientationOptions orientation = new OrientationOptions();
 

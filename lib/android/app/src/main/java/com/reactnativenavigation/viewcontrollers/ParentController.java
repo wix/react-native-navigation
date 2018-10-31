@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.views.Component;
 
@@ -18,7 +18,7 @@ import java.util.Collection;
 
 public abstract class ParentController<T extends ViewGroup> extends ChildController {
 
-	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options initialOptions) {
+	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options initialOptions) {
 		super(activity, childRegistry, id, presenter, initialOptions);
 	}
 
@@ -30,6 +30,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @Override
     public void setDefaultOptions(Options defaultOptions) {
+	    super.setDefaultOptions(defaultOptions);
         Collection<? extends ViewController> children = getChildControllers();
         if (!CollectionUtils.isNullOrEmpty(children)) {
             for (ViewController child : children) {
@@ -41,11 +42,11 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @Override
     @CheckResult
     public Options resolveCurrentOptions() {
-	    if (CollectionUtils.isNullOrEmpty(getChildControllers())) return options;
+	    if (CollectionUtils.isNullOrEmpty(getChildControllers())) return initialOptions;
         return getCurrentChild()
                 .resolveCurrentOptions()
                 .copy()
-                .mergeWith(options);
+                .withDefaultOptions(initialOptions);
     }
 
     @Override
@@ -71,19 +72,19 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
 	@Nullable
 	@Override
-	public ViewController findControllerById(final String id) {
-		ViewController fromSuper = super.findControllerById(id);
+	public ViewController findController(final String id) {
+		ViewController fromSuper = super.findController(id);
 		if (fromSuper != null) return fromSuper;
 
 		for (ViewController child : getChildControllers()) {
-			ViewController fromChild = child.findControllerById(id);
+			ViewController fromChild = child.findController(id);
 			if (fromChild != null) return fromChild;
 		}
 
 		return null;
 	}
 
-	@Override
+    @Override
     public boolean containsComponent(Component component) {
         if (super.containsComponent(component)) {
             return true;
@@ -96,14 +97,14 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @CallSuper
     public void applyChildOptions(Options options, Component child) {
-        this.options = this.options.mergeWith(options);
+        this.options = initialOptions.mergeWith(options);
         if (isRoot()) {
             presenter.applyRootOptions(getView(), options);
         }
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, Component child) {
+    public void mergeChildOptions(Options options, ViewController childController, Component child) {
 
     }
 
@@ -117,7 +118,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
 	@CallSuper
     protected void clearOptions() {
-	    applyOnParentController(parent -> ((ParentController) parent).clearOptions());
+	    performOnParentController(parent -> ((ParentController) parent).clearOptions());
         options = initialOptions.copy().clearOneTimeOptions();
     }
 
@@ -132,5 +133,9 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @Override
     public boolean isRendered() {
         return getCurrentChild() != null && getCurrentChild().isRendered();
+    }
+
+    public void onChildDestroyed(Component child) {
+
     }
 }

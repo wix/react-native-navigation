@@ -1,41 +1,18 @@
 #import "RNNBackButtonOptions.h"
-#import "UIImage+tint.h"
 
 @implementation RNNBackButtonOptions
 
-- (void)applyOn:(UIViewController *)viewController {
-	if (self.icon) {
-		UIImage *image = self.tintedIcon;
-		[viewController.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
-		[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
-		
-		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:nil action:nil];
-		viewController.navigationItem.backBarButtonItem = backItem;
-	} else if (self.title) {
-		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:self.title
-																	 style:UIBarButtonItemStylePlain
-																	target:nil
-																	action:nil];
-		
-		viewController.navigationItem.backBarButtonItem = backItem;
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
 	
-	if (self.visible) {
-		viewController.navigationItem.hidesBackButton = ![self.visible boolValue];
-	}
+	self.icon = [ImageParser parse:dict key:@"icon"];
+	self.title = [TextParser parse:dict key:@"title"];
+	self.transition = [TextParser parse:dict key:@"transition"];
+	self.color = [ColorParser parse:dict key:@"color"];
+	self.showTitle = [BoolParser parse:dict key:@"showTitle"];
+	self.visible = [BoolParser parse:dict key:@"visible"];
 	
-	if (self.showTitle && ![self.showTitle boolValue]) {
-		self.title = @"";
-	}
-}
-
-- (UIImage *)tintedIcon {
-	UIImage *image = self.icon ? [RCTConvert UIImage:self.icon] : nil;
-	if (self.color) {
-		return [[image withTintColor:[RCTConvert UIColor:self.color]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-	}
-	
-	return image;
+	return self;
 }
 
 @end

@@ -1,41 +1,73 @@
-
 #import "RNNTabBarController.h"
-
-#define kTabBarHiddenDuration 0.3
 
 @implementation RNNTabBarController {
 	NSUInteger _currentTabIndex;
-	RNNEventEmitter *_eventEmitter;
 }
 
-- (instancetype)initWithEventEmitter:(id)eventEmitter {
-	self = [super init];
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+					defaultOptions:(RNNNavigationOptions *)defaultOptions
+						 presenter:(RNNTabBarPresenter *)presenter
+					  eventEmitter:(RNNEventEmitter *)eventEmitter {
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:defaultOptions presenter:presenter];
+	
 	_eventEmitter = eventEmitter;
-	self.delegate = self;
+	
 	return self;
+}
+
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+					defaultOptions:(RNNNavigationOptions *)defaultOptions
+						 presenter:(RNNTabBarPresenter *)presenter {
+	self = [super init];
+	
+	self.delegate = self;
+	self.options = options;
+	self.defaultOptions = defaultOptions;
+	self.layoutInfo = layoutInfo;
+	self.presenter = presenter;
+	[self.presenter bindViewController:self];
+	[self setViewControllers:childViewControllers];
+	
+	return self;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
+	}
+}
+
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return [(RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options] withDefault:self.defaultOptions];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)overrideOptions:(RNNNavigationOptions *)options {
+	[self.options overrideOptions:options];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.selectedViewController.supportedInterfaceOrientations;
 }
 
-- (void)setTabBarHidden:(BOOL)hidden animated:(BOOL)animated {
-	CGRect frame = self.tabBar.frame;
-	CGFloat height = frame.size.height;
-	CGFloat offsetY = (hidden ? self.view.frame.size.height : self.view.frame.size.height-height);
-	frame.origin.y = offsetY;
-	NSTimeInterval duration = animated ? kTabBarHiddenDuration : 0.0;
-	
-	[UIView animateWithDuration:duration animations:^{
-		self.tabBar.frame = frame;
-	}];
-}
-
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
-		RNNRootViewController* vc = child;
+		UIViewController<RNNLayoutProtocol>* vc = child;
 
-		if ([vc.componentId isEqualToString:componentID]) {
+		if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] && [vc.layoutInfo.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}
@@ -46,16 +78,16 @@
 	[super setSelectedIndex:selectedIndex];
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.getLeafViewController mergeOptions:options];
+- (UIViewController *)getCurrentChild {
+	return self.selectedViewController;
 }
 
-- (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).getLeafViewController;
+- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
+	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
 }
 
 #pragma mark UITabBarControllerDelegate

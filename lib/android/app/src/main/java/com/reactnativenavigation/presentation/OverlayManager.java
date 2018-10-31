@@ -10,10 +10,10 @@ import java.util.HashMap;
 public class OverlayManager {
     private final HashMap<String, ViewController> overlayRegistry = new HashMap<>();
 
-    public void show(ViewGroup root, ViewController overlay, CommandListener listener) {
+    public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
         overlayRegistry.put(overlay.getId(), overlay);
         overlay.setOnAppearedListener(() -> listener.onSuccess(overlay.getId()));
-        root.addView(overlay.getView());
+        overlaysContainer.addView(overlay.getView());
     }
 
     public void dismiss(String componentId, CommandListener listener) {
@@ -36,5 +36,9 @@ public class OverlayManager {
 
     public int size() {
         return overlayRegistry.size();
+    }
+
+    public ViewController findControllerById(String id) {
+        return overlayRegistry.get(id);
     }
 }

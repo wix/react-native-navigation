@@ -56,19 +56,30 @@ public abstract class BaseTest {
 
     protected void disablePushAnimation(ViewController... controllers) {
         for (ViewController controller : controllers) {
-            controller.options.animations.push.enable = new Bool(false);
+            controller.options.animations.push.enabled = new Bool(false);
         }
+    }
+
+    protected void disablePopAnimation(ViewController... controllers) {
+        for (ViewController controller : controllers) {
+            controller.options.animations.pop.enabled = new Bool(false);
+        }
+    }
+
+    protected void disableModalAnimations(ViewController... modals) {
+        disableShowModalAnimation(modals);
+        disableDismissModalAnimation(modals);
     }
 
     protected void disableShowModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
-            modal.options.animations.showModal.enable = new Bool(false);
+            modal.options.animations.showModal.enabled = new Bool(false);
         }
     }
 
     protected void disableDismissModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
-            modal.options.animations.dismissModal.enable = new Bool(false);
+            modal.options.animations.dismissModal.enabled = new Bool(false);
         }
     }
 
