@@ -62,7 +62,12 @@ export class Navigation {
    * Utility helper function like registerComponent,
    * wraps the provided component with a react-redux Provider with the passed redux store
    */
-  public registerComponentWithRedux(componentName: string, getComponentClassFunc: ComponentProvider, ReduxProvider: any, reduxStore: any): ComponentType<any> {
+  public registerComponentWithRedux(
+    componentName: string,
+    getComponentClassFunc: ComponentProvider,
+    ReduxProvider: any,
+    reduxStore: any
+  ): ComponentType<any> {
     return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, ReduxProvider, reduxStore);
   }
 
@@ -97,14 +102,14 @@ export class Navigation {
   /**
    * Dismiss a modal by componentId. The dismissed modal can be anywhere in the stack.
    */
-  public dismissModal(componentId: string, mergeOptions?): Promise<any> {
+  public dismissModal(componentId: string, mergeOptions?: Options): Promise<any> {
     return this.commands.dismissModal(componentId, mergeOptions);
   }
 
   /**
    * Dismiss all Modals
    */
-  public dismissAllModals(mergeOptions?): Promise<any> {
+  public dismissAllModals(mergeOptions?: Options): Promise<any> {
     return this.commands.dismissAllModals(mergeOptions);
   }
 
@@ -118,21 +123,21 @@ export class Navigation {
   /**
    * Pop a component from the stack, regardless of it's position.
    */
-  public pop(componentId: string, mergeOptions?): Promise<any> {
+  public pop(componentId: string, mergeOptions?: Options): Promise<any> {
     return this.commands.pop(componentId, mergeOptions);
   }
 
   /**
    * Pop the stack to a given component
    */
-  public popTo(componentId: string, mergeOptions?): Promise<any> {
+  public popTo(componentId: string, mergeOptions?: Options): Promise<any> {
     return this.commands.popTo(componentId, mergeOptions);
   }
 
   /**
    * Pop the component's stack to root.
    */
-  public popToRoot(componentId: string, mergeOptions?): Promise<any> {
+  public popToRoot(componentId: string, mergeOptions?: Options): Promise<any> {
     return this.commands.popToRoot(componentId, mergeOptions);
   }
 

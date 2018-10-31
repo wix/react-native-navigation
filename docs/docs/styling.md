@@ -257,6 +257,25 @@ If you'd like to use a custom font, you'll first have to edit your project.
 
 * iOS - follow this [guide](https://medium.com/@dabit3/adding-custom-fonts-to-react-native-b266b41bff7f)
 
+## Custom tab icons
+
+* Android - add cooresponding resoltion icons into folders in android/app/src/main/res.
+For example, icon_name.png in each drawable-x folder.
+* iOS - drag and drop to Images.xcassets in Xcode.
+For example, image set icon_name in Images.xcassets with x1, x2, x3.
+
+Then, the tab icon can be defined by following syntax:
+
+```js
+bottomTab: {
+  icon: {
+    uri: 'icon_name',
+    ...
+  },
+  ...
+}
+```
+
 ## Customizing screen animations
 Animation used for navigation commands that modify the layout hierarchy can be controlled in options. Animations can be modified per command and it's also possible to change the default animation for each command.
 

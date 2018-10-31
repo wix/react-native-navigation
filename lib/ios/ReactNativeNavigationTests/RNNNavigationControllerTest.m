@@ -11,6 +11,7 @@
 
 @implementation RNNNavigationControllerTest {
 	RNNRootViewController* _vc1;
+	id _vc2Mock;
 	RNNRootViewController* _vc2;
 	UIViewController* _vc3;
 	RNNNavigationOptions* _options;
@@ -21,6 +22,7 @@
 	
 	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[OCMockObject partialMockForObject:[[RNNViewControllerPresenter alloc] init]] options:[[RNNNavigationOptions alloc] initEmptyOptions]  defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+	_vc2Mock = [OCMockObject partialMockForObject:_vc2];
 	_vc3 = [UIViewController new];
 	_options = [OCMockObject partialMockForObject:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:_options defaultOptions:nil presenter:[OCMockObject partialMockForObject:[[RNNNavigationControllerPresenter alloc] init]]];
@@ -37,6 +39,16 @@
 
 - (void)testChildViewControllerForStatusBarStyle_shouldReturnTopViewController {
 	XCTAssertTrue(self.uut.childViewControllerForStatusBarStyle == self.uut.topViewController);
+}
+
+- (void)testCurrentChild_shouldReturnTopViewController {
+	XCTAssertTrue(self.uut.getCurrentChild == self.uut.topViewController);
+}
+
+- (void)testCurrentLeaf_shouldReturnCurrentChildLeaf {
+	[[_vc2Mock expect] getCurrentLeaf];
+	[self.uut getCurrentLeaf];
+	[_vc2Mock verify];
 }
 
 - (void)testGetLeafViewController_shouldReturnTopViewController {
