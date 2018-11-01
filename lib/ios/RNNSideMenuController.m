@@ -28,6 +28,8 @@
 	self.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
 	self.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
 	
+	[self.presenter applyOptionsOnInit:self.resolveOptions];
+	
 	// Fixes #3697
 	[self setExtendedLayoutIncludesOpaqueBars:YES];
 	self.edgesForExtendedLayout |= UIRectEdgeBottom;
