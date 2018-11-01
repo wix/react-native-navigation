@@ -4,12 +4,14 @@ import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Options } from '../interfaces/Options';
 import { Layout, LayoutRoot } from '../interfaces/Layout';
+import { LayoutTreeParser } from './LayoutTreeParser';
+import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 
 export class Commands {
   constructor(
     private readonly nativeCommandsSender: NativeCommandsSender,
-    private readonly layoutTreeParser,
-    private readonly layoutTreeCrawler,
+    private readonly layoutTreeParser: LayoutTreeParser,
+    private readonly layoutTreeCrawler: LayoutTreeCrawler,
     private readonly commandsObserver: CommandsObserver,
     private readonly uniqueIdProvider: UniqueIdProvider) {
   }
@@ -64,7 +66,7 @@ export class Commands {
     return result;
   }
 
-  public dismissModal(componentId, mergeOptions?: Options) {
+  public dismissModal(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('dismissModal');
     const result = this.nativeCommandsSender.dismissModal(commandId, componentId, mergeOptions);
     this.commandsObserver.notify('dismissModal', { commandId, componentId, mergeOptions});

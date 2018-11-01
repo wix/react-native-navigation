@@ -382,7 +382,7 @@ describe('Commands', () => {
       const mockParser = { parse: () => 'parsed' };
       const mockCrawler = { crawl: (x) => x, processOptions: (x) => x };
       commandsObserver.register(cb);
-      uut = new Commands(mockCommandsSender, mockParser, mockCrawler, commandsObserver, new UniqueIdProvider());
+      uut = new Commands(mockCommandsSender, mockParser as any, mockCrawler as any, commandsObserver, new UniqueIdProvider());
     });
 
     function getAllMethodsOfUut() {

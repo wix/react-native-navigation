@@ -160,7 +160,11 @@
 }
 
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild {
-	return [self.center getCurrentChild];
+	return self.center;
+}
+
+- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
+	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 @end

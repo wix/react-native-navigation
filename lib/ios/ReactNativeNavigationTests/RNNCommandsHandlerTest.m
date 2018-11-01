@@ -192,7 +192,7 @@
 
 - (void)testShowOverlay_createLayout {
 	[self.store setReadyToReceiveCommands:true];
-	OCMStub([self.overlayManager showOverlay:[OCMArg any]]);
+	OCMStub([self.overlayManager showOverlayWindow:[OCMArg any]]);
 	NSDictionary* layout = @{};
 	
 	[[self.controllerFactory expect] createLayout:layout saveToStore:self.store];
@@ -202,7 +202,7 @@
 
 - (void)testShowOverlay_saveToStore {
 	[self.store setReadyToReceiveCommands:true];
-	OCMStub([self.overlayManager showOverlay:[OCMArg any]]);
+	OCMStub([self.overlayManager showOverlayWindow:[OCMArg any]]);
 	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]);
 	
 	[[self.controllerFactory expect] createLayout:[OCMArg any] saveToStore:self.store];
@@ -215,14 +215,14 @@
 	UIViewController* layoutVC = [RNNRootViewController new];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]).andReturn(layoutVC);
 	
-	[[self.overlayManager expect] showOverlay:layoutVC];
+	[[self.overlayManager expect] showOverlayWindow:[OCMArg any]];
 	[self.uut showOverlay:@{} completion:^{}];
 	[self.overlayManager verify];
 }
 
 - (void)testShowOverlay_invokeNavigationCommandEventWithLayout {
 	[self.store setReadyToReceiveCommands:true];
-	OCMStub([self.overlayManager showOverlay:[OCMArg any]]);
+	OCMStub([self.overlayManager showOverlayWindow:[OCMArg any]]);
 	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]);
 
 	NSDictionary* layout = @{};
