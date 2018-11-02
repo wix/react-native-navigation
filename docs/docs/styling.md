@@ -170,6 +170,7 @@ Navigation.mergeOptions(this.props.componentId, {
   topBar: {
     barStyle: 'default' | 'black',
     background: {
+      color: 'white',
       translucent: true,
       blur: false
     }
