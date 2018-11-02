@@ -10,11 +10,12 @@ export default class ScreenVisibilityListener {
   }
 
   register() {
-    const {willAppear, didAppear, willDisappear, didDisappear} = this.listeners;
+    const {willAppear, didAppear, willDisappear, didDisappear, bottomTabSelected} = this.listeners;
     this.willAppearSubscription = willAppear && this.emitter.addListener('willAppear', willAppear);
     this.didAppearSubscription = didAppear && this.emitter.addListener('didAppear', didAppear);
     this.willDisappearSubscription = willDisappear && this.emitter.addListener('willDisappear', willDisappear);
     this.didDisappearSubscription = didDisappear && this.emitter.addListener('didDisappear', didDisappear);
+    this.bottomTabSelectedSubscription = bottomTabSelected && this.emitter.addListener('bottomTabSelected', bottomTabSelected);
   }
 
   unregister() {
@@ -32,6 +33,10 @@ export default class ScreenVisibilityListener {
 
     if (this.didDisappearSubscription) {
       this.didDisappearSubscription.remove();
+    }
+
+    if (this.bottomTabSelectedSubscription) {
+      this.bottomTabSelectedSubscription.remove();
     }
   }
 }
