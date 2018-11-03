@@ -18,13 +18,18 @@
 	[sideMenuController setAnimationVelocityRight:[options.sideMenu.right.animationVelocity getWithDefaultValue:840.0f]];
 	
 	[sideMenuController setAnimationType:[options.sideMenu.animationType getWithDefaultValue:nil]];
+}
 
-	if (options.sideMenu.left.width.hasValue) {
-		[sideMenuController side:MMDrawerSideLeft width:options.sideMenu.left.width.get];
+- (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
+	[super applyOptionsOnInit:initialOptions];
+	
+	RNNSideMenuController* sideMenuController = self.bindedViewController;
+	if (initialOptions.sideMenu.left.width.hasValue) {
+		[sideMenuController side:MMDrawerSideLeft width:initialOptions.sideMenu.left.width.get];
 	}
 	
-	if (options.sideMenu.right.width.hasValue) {
-		[sideMenuController side:MMDrawerSideRight width:options.sideMenu.right.width.get];
+	if (initialOptions.sideMenu.right.width.hasValue) {
+		[sideMenuController side:MMDrawerSideRight width:initialOptions.sideMenu.right.width.get];
 	}
 }
 
