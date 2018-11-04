@@ -44,8 +44,6 @@
 	self.options.sideMenu.right.shouldStretchDrawer = [[Bool alloc] initWithBOOL:NO];
 	self.options.sideMenu.right.animationVelocity = [[Double alloc] initWithValue:@(100.0f)];
 	self.options.sideMenu.left.animationVelocity = [[Double alloc] initWithValue:@(100.0f)];
-	self.options.sideMenu.right.width = [[Double alloc] initWithValue:@(100.0f)];
-	self.options.sideMenu.left.width = [[Double alloc] initWithValue:@(100.0f)];
 	
 	[[self.bindedViewController expect] side:MMDrawerSideLeft enabled:NO];
 	[[self.bindedViewController expect] side:MMDrawerSideRight enabled:NO];
@@ -53,13 +51,24 @@
 	[[self.bindedViewController expect] setShouldStretchRightDrawer:NO];
 	[[self.bindedViewController expect] setAnimationVelocityLeft:100.0f];
 	[[self.bindedViewController expect] setAnimationVelocityRight:100.0f];
-	[[self.bindedViewController expect] side:MMDrawerSideLeft width:100.0f];
-	[[self.bindedViewController expect] side:MMDrawerSideRight width:100.0f];
 	
 	[self.uut applyOptions:self.options];
 	
 	[self.bindedViewController verify];
 }
+
+- (void)testApplyOptionsOnInitShouldSetWidthOptions {
+	self.options.sideMenu.right.width = [[Double alloc] initWithValue:@(100.0f)];
+	self.options.sideMenu.left.width = [[Double alloc] initWithValue:@(100.0f)];
+
+	[[self.bindedViewController expect] side:MMDrawerSideLeft width:100.0f];
+	[[self.bindedViewController expect] side:MMDrawerSideRight width:100.0f];
+	
+	[self.uut applyOptionsOnInit:self.options];
+	
+	[self.bindedViewController verify];
+}
+
 
 
 @end
