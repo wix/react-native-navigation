@@ -203,7 +203,7 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | screenBackgroundColor     | ✅    |   ✅     |     [Contribute](/docs/WorkingLocally.md)       |  Wix|
 | orientation     |  ✅   |    ✅     |✅| Wix|
 | statusBarHideWithTopBar        |  ✅   |   ✅     |     [Contribute](/docs/WorkingLocally.md)       | @gtchance|
-| statusBarHidden       |  ✅   |    ✅       |     [Contribute](/docs/WorkingLocally.md)      | WIX |
+| statusBarHidden       |  ✅   |    ✅       |     ✅      | WIX |
 | disabledBackGesture       |   ✅  |   ✅  |    / iOS specific     |
 | screenBackgroundImageName         |   ✅  |   ✅      |    [Contribute](/docs/WorkingLocally.md)        |
 | rootBackgroundImageName            |  ✅   |    ✅     |    [Contribute](/docs/WorkingLocally.md)       |
