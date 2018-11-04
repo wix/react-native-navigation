@@ -109,7 +109,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void bindViews() {
         verify(rootPresenter).setRootContainer(uut.getRootLayout());
-        verify(modalStack).setModalsContainer(uut.getModalsLayout());
+        verify(modalStack).setModalsLayout(uut.getModalsLayout());
     }
 
     @Test

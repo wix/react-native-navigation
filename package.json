@@ -65,7 +65,7 @@
     "@types/react": "16.x.x",
     "@types/react-native": "0.51.x",
     "@types/react-test-renderer": "16.x.x",
-    "detox": "8.1.6",
+    "detox": "9.0.6",
     "handlebars": "4.x.x",
     "jest": "22.x.x",
     "react": "16.2.0",
