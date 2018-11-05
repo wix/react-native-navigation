@@ -52,7 +52,7 @@ export class LayoutTreeCrawler {
   }
 
   _applyStaticOptions(node) {
-    const clazz = this.store.getOriginalComponentClassForName(node.data.name) || {};
+    const clazz = this.store.getComponentClassForName(node.data.name) ? this.store.getComponentClassForName(node.data.name)() : {};
     const staticOptions = _.isFunction(clazz.options) ? clazz.options(node.data.passProps || {}) : (_.cloneDeep(clazz.options) || {});
     const passedOptions = node.data.options || {};
     node.data.options = _.merge({}, staticOptions, passedOptions);

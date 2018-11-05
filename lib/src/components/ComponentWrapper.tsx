@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ComponentProvider } from 'react-native';
 import * as  _ from 'lodash';
 import * as ReactLifecyclesCompat from 'react-lifecycles-compat';
 import { Store } from './Store';
@@ -10,12 +11,13 @@ interface HocProps { componentId: string; }
 export class ComponentWrapper {
   static wrap(
     componentName: string,
-    OriginalComponentClass: React.ComponentType<any>,
+    OriginalComponentGenerator: ComponentProvider,
     store: Store,
     componentEventsObserver: ComponentEventsObserver,
     ReduxProvider?: any,
     reduxStore?: any
   ): React.ComponentClass<any> {
+    const GeneratedComponentClass = OriginalComponentGenerator();
     class WrappedComponent extends React.Component<HocProps, HocState> {
       static getDerivedStateFromProps(nextProps: any, prevState: HocState) {
         return {
@@ -39,7 +41,7 @@ export class ComponentWrapper {
 
       render() {
         return (
-          <OriginalComponentClass
+          <GeneratedComponentClass
             {...this.state.allProps}
             componentId={this.state.componentId}
             key={this.state.componentId}
@@ -55,7 +57,7 @@ export class ComponentWrapper {
     }
 
     ReactLifecyclesCompat.polyfill(WrappedComponent);
-    require('hoist-non-react-statics')(WrappedComponent, OriginalComponentClass);
+    require('hoist-non-react-statics')(WrappedComponent, GeneratedComponentClass);
 
     if (reduxStore && ReduxProvider) {
       return ComponentWrapper.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore);

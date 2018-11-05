@@ -48,7 +48,7 @@ describe('remx support', () => {
   it('support for static members in connected components', () => {
     expect(MyConnectedComponent.options).toEqual({ title: 'MyComponent' });
 
-    const registeredComponentClass = Navigation.registerComponent('MyComponentName', () => MyConnectedComponent);
+    const registeredComponentClass = Navigation.registerComponent('MyComponentName', () => MyConnectedComponent)();
     expect(registeredComponentClass.options).toEqual({ title: 'MyComponent' });
   });
 });
