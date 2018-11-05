@@ -5,7 +5,7 @@
 
 @interface RNNOverlayManager : NSObject
 
-- (void)showOverlay:(UIViewController*)viewController withOptions:(NSDictionary *)options;
+- (void)showOverlayWindow:(UIWindow*)window withOptions:(NSDictionary *)options;
 - (void)dismissOverlay:(UIViewController*)viewController;
 
 @property (nonatomic, retain) NSMutableArray* overlayWindows;
