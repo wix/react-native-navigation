@@ -10,16 +10,7 @@ describe('ComponentRegistry', () => {
   let mockRegistry: any;
   let mockWrapper: any;
 
-  class MyComponent extends React.Component {
-    render() {
-      return (
-        <Text>
-          {
-            'Hello, World!'
-          }
-        </Text>);
-    }
-  }
+  class MyComponent extends React.Component {}
 
   class WrappedComponent extends React.Component {
     render() {
