@@ -97,7 +97,6 @@ describe('LayoutTreeCrawler', () => {
 
     const node2: any = { type: LayoutType.Component, data: { name: 'theComponentName' } };
     uut.crawl(node2);
-    console.log(node2.data.options);
     expect(node2.data.options).toEqual(optionsWithTitle(undefined));
   });
 
