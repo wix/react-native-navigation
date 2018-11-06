@@ -105,7 +105,10 @@
       "!lib/dist/index.js",
       "!lib/dist/Navigation.js",
       "!lib/dist/adapters/**/*",
-      "!lib/dist/interfaces/**/*"
+      "!lib/dist/interfaces/**/*",
+      "!lib/dist/**/*.test.*",
+      "!integration/**/*.test.*",
+      "!integration/*.test.*"
     ],
     "resetMocks": true,
     "resetModules": true,
