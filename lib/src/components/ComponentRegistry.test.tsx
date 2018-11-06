@@ -10,7 +10,6 @@ describe('ComponentRegistry', () => {
   let mockRegistry: any;
   let mockWrapper: any;
 
-  class MyComponent extends React.Component {}
 
   class WrappedComponent extends React.Component {
     render() {
@@ -33,7 +32,7 @@ describe('ComponentRegistry', () => {
 
   it('registers component by componentName into AppRegistry', () => {
     expect(mockRegistry).not.toHaveBeenCalled();
-    const result = uut.registerComponent('example.MyComponent.name', () => MyComponent);
+    const result = uut.registerComponent('example.MyComponent.name', () => {});
     expect(mockRegistry).toHaveBeenCalledTimes(1);
     expect(mockRegistry.mock.calls[0][0]).toEqual('example.MyComponent.name');
     expect(mockRegistry.mock.calls[0][1]()).toEqual(result());
@@ -41,7 +40,7 @@ describe('ComponentRegistry', () => {
 
   it('saves the wrapper component generator the store', () => {
     expect(store.getComponentClassForName('example.MyComponent.name')).toBeUndefined();
-    uut.registerComponent('example.MyComponent.name', () => MyComponent);
+    uut.registerComponent('example.MyComponent.name', () => {});
     const Class = store.getComponentClassForName('example.MyComponent.name');
     expect(Class).not.toBeUndefined();
     expect(Class()).toEqual(WrappedComponent);
@@ -49,21 +48,21 @@ describe('ComponentRegistry', () => {
   });
 
   it('resulting in a normal component', () => {
-    uut.registerComponent('example.MyComponent.name', () => MyComponent);
+    uut.registerComponent('example.MyComponent.name', () => {});
     const Component = mockRegistry.mock.calls[0][1]();
     const tree = renderer.create(<Component componentId='123' />);
     expect(tree.toJSON()!.children).toEqual(['Hello, World!']);
   });
 
   it('should not invoke generator', () => {
-    const generator = jest.fn(() => MyComponent);
+    const generator = jest.fn(() => {});
     uut.registerComponent('example.MyComponent.name', generator);
     expect(generator).toHaveBeenCalledTimes(0);
   });
 
   it('saves wrapped component to store', () => {
     jest.spyOn(store, 'setComponentClassForName');
-    const generator = jest.fn(() => MyComponent);
+    const generator = jest.fn(() => {});
     const componentName = 'example.MyComponent.name';
     uut.registerComponent(componentName, generator);
     expect(store.getComponentClassForName(componentName)()).toEqual(WrappedComponent);
