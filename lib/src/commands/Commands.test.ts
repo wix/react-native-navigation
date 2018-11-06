@@ -260,7 +260,7 @@ describe('Commands', () => {
         return {};
       });
       store.setComponentClassForName('theComponentName', generator);
-      const result = await uut.push('theComponentId', { component: { name: 'theComponentName' } });
+      await uut.push('theComponentId', { component: { name: 'theComponentName' } });
       expect(generator).toHaveBeenCalledTimes(1);
     });
   });
