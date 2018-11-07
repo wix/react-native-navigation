@@ -60,7 +60,7 @@ export class EventsRegistry {
     return this.commandsObserver.register(callback);
   }
 
-  public bindComponent(component: React.Component<any>): EventSubscription {
-    return this.componentEventsObserver.bindComponent(component);
+  public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
+    return this.componentEventsObserver.bindComponent(component, componentId);
   }
 }
