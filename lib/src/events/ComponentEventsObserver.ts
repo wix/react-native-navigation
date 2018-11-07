@@ -41,7 +41,7 @@ export class ComponentEventsObserver {
   public bindComponent(component: React.Component<any>, componentIdArg?: string): EventSubscription {
     const componentId = componentIdArg ? componentIdArg : component.props.componentId;
 
-    if (_.isNil(this.listeners[componentId])) {
+    if (!this.listeners[componentId]) {
       this.listeners[componentId] = {};
     }
     const key = _.uniqueId();

@@ -72,9 +72,9 @@ describe('ComponentEventsObserver', () => {
 
   it(`bindComponent expects a component with componentId`, () => {
     const tree = renderer.create(<SimpleScreen />);
-    expect(() => uut.bindComponent(tree.getInstance() as any)).toThrow('');
+    expect(() => uut.bindComponent(tree.getInstance() as any)).not.toThrow('');
     const tree2 = renderer.create(<SimpleScreen componentId={123} />);
-    expect(() => uut.bindComponent(tree2.getInstance() as any)).toThrow('');
+    expect(() => uut.bindComponent(tree2.getInstance() as any)).not.toThrow('');
   });
 
   it(`bindComponent notifies listeners by componentId via optional param on events`, () => {
@@ -125,29 +125,29 @@ describe('ComponentEventsObserver', () => {
     expect(willUnmountFn).not.toHaveBeenCalled();
 
     uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
-    expect(didAppearFn).toHaveBeenCalledTimes(1);
+    expect(didAppearFn).toHaveBeenCalledTimes(2);
 
     uut.notifyComponentDidDisappear({ componentId: 'myCompId', componentName: 'doesnt matter' });
-    expect(didDisappearFn).toHaveBeenCalledTimes(1);
+    expect(didDisappearFn).toHaveBeenCalledTimes(2);
 
     uut.notifyNavigationButtonPressed({ componentId: 'myCompId', buttonId: 'myButtonId' });
-    expect(navigationButtonPressedFn).toHaveBeenCalledTimes(1);
+    expect(navigationButtonPressedFn).toHaveBeenCalledTimes(2);
     expect(navigationButtonPressedFn).toHaveBeenCalledWith({ buttonId: 'myButtonId', componentId: 'myCompId' });
 
     uut.notifyModalDismissed({ componentId: 'myCompId' });
-    expect(modalDismissedFn).toHaveBeenCalledTimes(1);
+    expect(modalDismissedFn).toHaveBeenCalledTimes(2);
     expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId' })
 
     uut.notifySearchBarUpdated({ componentId: 'myCompId', text: 'theText', isFocused: true });
-    expect(searchBarUpdatedFn).toHaveBeenCalledTimes(1);
+    expect(searchBarUpdatedFn).toHaveBeenCalledTimes(2);
     expect(searchBarUpdatedFn).toHaveBeenCalledWith({ componentId: 'myCompId', text: 'theText', isFocused: true });
 
     uut.notifySearchBarCancelPressed({ componentId: 'myCompId' });
-    expect(searchBarCancelPressedFn).toHaveBeenCalledTimes(1);
+    expect(searchBarCancelPressedFn).toHaveBeenCalledTimes(2);
     expect(searchBarCancelPressedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
 
     uut.notifyPreviewCompleted({ componentId: 'myCompId' });
-    expect(previewCompletedFn).toHaveBeenCalledTimes(1);
+    expect(previewCompletedFn).toHaveBeenCalledTimes(2);
     expect(previewCompletedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
 
     tree.unmount();

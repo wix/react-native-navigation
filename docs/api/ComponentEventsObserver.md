@@ -10,7 +10,7 @@
 
 ## bindComponent
 
-`bindComponent(component: Component<any>, componentIdArg: string): EventSubscription`
+`bindComponent(component: Component<any>, componentIdArg?: string): EventSubscription`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/ComponentEventsObserver.ts#L35)
 
