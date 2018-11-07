@@ -3,7 +3,7 @@ import * as renderer from 'react-test-renderer';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 
-describe.only('ComponentEventsObserver', () => {
+describe('ComponentEventsObserver', () => {
   const mockEventsReceiver = new NativeEventsReceiver();
   const uut = new ComponentEventsObserver(mockEventsReceiver);
   const didAppearFn = jest.fn();
@@ -77,7 +77,7 @@ describe.only('ComponentEventsObserver', () => {
     expect(() => uut.bindComponent(tree2.getInstance() as any)).toThrow('');
   });
 
-  it.only(`bindComponent notifies listeners by componentId via optional param on events`, () => {
+  it(`bindComponent notifies listeners by componentId via optional param on events`, () => {
     const tree = renderer.create(<BoundScreen componentId={'myCompId'} />);
     uut.bindComponent(tree.getInstance() as any, 'myCompId2');
     expect(tree.toJSON()).toBeDefined();
