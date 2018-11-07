@@ -160,14 +160,12 @@ describe.only('ComponentEventsObserver', () => {
     expect(didAppearFn).not.toHaveBeenCalled();
   });
 
-
   it(`doesnt call unimplemented methods`, () => {
     const tree = renderer.create(<SimpleScreen componentId={'myCompId'} />);
     expect((tree.getInstance() as any).componentDidAppear).toBeUndefined();
     uut.bindComponent(tree.getInstance() as any);
     uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
   });
-
 
   it(`returns unregister fn`, () => {
     renderer.create(<BoundScreen componentId={'123'} />);
@@ -183,7 +181,6 @@ describe.only('ComponentEventsObserver', () => {
     expect((tree.getInstance() as any).componentDidAppear).toBeUndefined();
     uut.bindComponent(tree.getInstance() as any);
     uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
-  });
   });
 
   it(`removeAllListenersForComponentId`, () => {
@@ -225,7 +222,6 @@ describe.only('ComponentEventsObserver', () => {
     expect(instance1.componentDidAppear).toHaveBeenCalledTimes(2);
     expect(instance2.componentDidAppear).toHaveBeenCalledTimes(1);
   });
-
 
   it(`register for all native component events notifies self on events, once`, () => {
     expect(mockEventsReceiver.registerComponentDidAppearListener).not.toHaveBeenCalled();
