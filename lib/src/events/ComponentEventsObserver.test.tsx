@@ -70,13 +70,6 @@ describe('ComponentEventsObserver', () => {
     }
   }
 
-  it(`bindComponent expects a component with componentId`, () => {
-    const tree = renderer.create(<SimpleScreen />);
-    expect(() => uut.bindComponent(tree.getInstance() as any)).not.toThrow('');
-    const tree2 = renderer.create(<SimpleScreen componentId={123} />);
-    expect(() => uut.bindComponent(tree2.getInstance() as any)).not.toThrow('');
-  });
-
   it(`bindComponent notifies listeners by componentId via optional param on events`, () => {
     const tree = renderer.create(<BoundScreen componentId={'myCompId'} />);
     uut.bindComponent(tree.getInstance() as any, 'myCompId2');
