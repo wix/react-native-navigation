@@ -176,11 +176,7 @@ describe('ComponentEventsObserver', () => {
     subscription.remove();
 
     uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter' });
-    expect(didAppearFn).toHaveBeenCalledTimes(1);it(`doesnt call unimplemented methods when optional componentId param is present`, () => {
-    const tree = renderer.create(<SimpleScreen componentId={'myCompId'} />);
-    expect((tree.getInstance() as any).componentDidAppear).toBeUndefined();
-    uut.bindComponent(tree.getInstance() as any);
-    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    expect(didAppearFn).toHaveBeenCalledTimes(1);
   });
 
   it(`removeAllListenersForComponentId`, () => {

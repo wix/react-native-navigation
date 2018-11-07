@@ -41,9 +41,6 @@ export class ComponentEventsObserver {
   public bindComponent(component: React.Component<any>, componentIdArg?: string): EventSubscription {
     const componentId = componentIdArg ? componentIdArg : component.props.componentId;
 
-    if (!_.isString(componentId)) {
-      throw new Error(`bindComponent expects a component with a componentId in props`);
-    }
     if (_.isNil(this.listeners[componentId])) {
       this.listeners[componentId] = {};
     }
