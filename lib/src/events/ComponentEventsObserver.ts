@@ -38,8 +38,9 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
   }
 
-  public bindComponent(component: React.Component<any>): EventSubscription {
-    const componentId = component.props.componentId;
+  public bindComponent(component: React.Component<any>, componentIdArg?: string): EventSubscription {
+    const componentId = componentIdArg ? componentIdArg : component.props.componentId;
+
     if (!_.isString(componentId)) {
       throw new Error(`bindComponent expects a component with a componentId in props`);
     }
