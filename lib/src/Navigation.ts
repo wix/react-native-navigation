@@ -116,7 +116,7 @@ export class Navigation {
   /**
    * Push a new layout into this screen's navigation stack.
    */
-  public push(componentId: string, layout: Layout): Promise<any> {
+  public push<P>(componentId: string, layout: Layout<P>): Promise<any> {
     return this.commands.push(componentId, layout);
   }
 

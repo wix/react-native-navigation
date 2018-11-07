@@ -28,6 +28,8 @@
 	self.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
 	self.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
 	
+	[self.presenter applyOptionsOnInit:self.resolveOptions];
+	
 	// Fixes #3697
 	[self setExtendedLayoutIncludesOpaqueBars:YES];
 	self.edgesForExtendedLayout |= UIRectEdgeBottom;
@@ -158,7 +160,11 @@
 }
 
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild {
-	return [self.center getCurrentChild];
+	return self.center;
+}
+
+- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
+	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 @end

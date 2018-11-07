@@ -72,7 +72,8 @@ public class Navigator extends ParentController {
     }
 
     public void bindViews() {
-        modalStack.setModalsContainer(modalsLayout);
+        modalStack.setModalsLayout(modalsLayout);
+        modalStack.setRootLayout(rootLayout);
         rootPresenter.setRootContainer(rootLayout);
     }
 

@@ -65,7 +65,7 @@
     "@types/react": "16.x.x",
     "@types/react-native": "0.51.x",
     "@types/react-test-renderer": "16.x.x",
-    "detox": "8.1.6",
+    "detox": "9.0.6",
     "handlebars": "4.x.x",
     "jest": "22.x.x",
     "react": "16.2.0",
@@ -128,6 +128,15 @@
     "test-runner": "jest",
     "specs": "e2e",
     "configurations": {
+      "ios.none": {
+        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
+        "type": "ios.none",
+        "name": "iPhone X",
+        "session": {
+          "server": "ws://localhost:8099",
+          "sessionId": "playground"
+        }
+      },
       "ios.sim.debug": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet",

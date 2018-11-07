@@ -35,8 +35,12 @@ public class ModalStack {
         this.presenter = presenter;
     }
 
-    public void setModalsContainer(ViewGroup modalsLayout) {
-        presenter.setModalsContainer(modalsLayout);
+    public void setModalsLayout(ViewGroup modalsLayout) {
+        presenter.setModalsLayout(modalsLayout);
+    }
+
+    public void setRootLayout(ViewGroup rootLayout) {
+        presenter.setRootLayout(rootLayout);
     }
 
     public void setDefaultOptions(Options defaultOptions) {
@@ -52,9 +56,9 @@ public class ModalStack {
     public boolean dismissModal(String componentId, @Nullable ViewController root, CommandListener listener) {
         ViewController toDismiss = findModalByComponentId(componentId);
         if (toDismiss != null) {
-            boolean isTop = isTop(toDismiss);
+            boolean isDismissingTopModal = isTop(toDismiss);
             modals.remove(toDismiss);
-            @Nullable ViewController toAdd = isEmpty() ? root : isTop ? get(size() - 1) : null;
+            @Nullable ViewController toAdd = isEmpty() ? root : isDismissingTopModal ? get(size() - 1) : null;
             CommandListenerAdapter onDismiss = new CommandListenerAdapter(listener) {
                 @Override
                 public void onSuccess(String childId) {
@@ -62,15 +66,13 @@ public class ModalStack {
                     super.onSuccess(childId);
                 }
             };
-            if (isTop) {
+            if (isDismissingTopModal) {
                 if (toAdd == null) {
                     listener.onError("Could not dismiss modal");
                     return false;
                 }
-                presenter.dismissTopModal(toDismiss, toAdd, onDismiss);
-            } else {
-                presenter.dismissModal(toDismiss, onDismiss);
             }
+            presenter.dismissModal(toDismiss, toAdd, root, onDismiss);
             return true;
         } else {
             listener.onError("Nothing to dismiss");
@@ -113,7 +115,7 @@ public class ModalStack {
         return dismissModal(peek().getId(), root, listener);
     }
 
-    public ViewController peek() {
+    ViewController peek() {
         if (modals.isEmpty()) throw new EmptyStackException();
         return modals.get(modals.size() - 1);
     }

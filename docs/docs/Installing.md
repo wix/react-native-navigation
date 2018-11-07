@@ -255,7 +255,7 @@ android {
         applicationId "com.yourproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative56"
++        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57"
         versionCode 1
         versionName "1.0"
         ...

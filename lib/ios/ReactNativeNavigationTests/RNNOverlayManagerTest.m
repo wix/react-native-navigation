@@ -1,10 +1,12 @@
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "RNNOverlayManager.h"
 
 @interface RNNOverlayManagerTest : XCTestCase
 
 @property (nonatomic, retain) RNNOverlayManager* overlayManager;
 @property (nonatomic, retain) UIViewController* overlayVC;
+@property (nonatomic, retain) RNNOverlayWindow* overlayWindow;
 
 @end
 
@@ -14,57 +16,54 @@
     [super setUp];
 	_overlayManager = [RNNOverlayManager new];
 	_overlayVC = [UIViewController new];
+	_overlayWindow = [OCMockObject partialMockForObject:[RNNOverlayWindow new]];
+	OCMStub([_overlayWindow makeKeyAndVisible]);
+	_overlayWindow.rootViewController = _overlayVC;
 }
 
 
 - (void)testShowOverlayShouldAddWindowWithVCAsRoot {
-	[_overlayManager showOverlay:_overlayVC];
+	[_overlayManager showOverlayWindow:_overlayWindow];
 	UIWindow* window = _overlayManager.overlayWindows.lastObject;
 	XCTAssertTrue([window.rootViewController isEqual:_overlayVC]);
 }
 
-- (void)testShowOverlayShouldAddVisibleWindow {
-	[_overlayManager showOverlay:_overlayVC];
-	UIWindow* window = _overlayManager.overlayWindows.lastObject;
-	XCTAssertTrue(window.windowLevel == UIWindowLevelNormal);
-	XCTAssertFalse(window.hidden);
+- (void)testShowOverlayShouldSetKeyAndVisibleWindow {
+	id window = _overlayManager.overlayWindows.lastObject;
+	[[window expect] makeKeyAndVisible];
+	[_overlayManager showOverlayWindow:_overlayWindow];
+	[window verify];
 }
 
 - (void)testShowOverlayShouldCreateTransparentView {
-	[_overlayManager showOverlay:_overlayVC];
+	[_overlayManager showOverlayWindow:_overlayWindow];
 	UIWindow* window = _overlayManager.overlayWindows.lastObject;
 	XCTAssertTrue(window.rootViewController.view.backgroundColor == [UIColor clearColor]);
 }
 
-- (void)testShowOverlayShouldNotBeKeyWindow {
-	[_overlayManager showOverlay:_overlayVC];
-	UIWindow* window = _overlayManager.overlayWindows.lastObject;
-	XCTAssertFalse(window.keyWindow);
-}
-
 - (void)testDismissOverlayShouldCleanWindowRootVC {
-	[_overlayManager showOverlay:_overlayVC];
+	[_overlayManager showOverlayWindow:_overlayWindow];
 	UIWindow* window = _overlayManager.overlayWindows.lastObject;
 	[_overlayManager dismissOverlay:_overlayVC];
 	XCTAssertNil(window.rootViewController);
 }
 
 - (void)testDismissOverlayShouldHideWindow {
-	[_overlayManager showOverlay:_overlayVC];
+	[_overlayManager showOverlayWindow:_overlayWindow];
 	UIWindow* window = _overlayManager.overlayWindows.lastObject;
 	[_overlayManager dismissOverlay:_overlayVC];
 	XCTAssertTrue(window.hidden);
 }
 
 - (void)testDismissOverlayShouldRemoveOverlayWindow {
-	[_overlayManager showOverlay:_overlayVC];
+	[_overlayManager showOverlayWindow:_overlayWindow];
 	UIWindow* window = _overlayManager.overlayWindows.lastObject;
 	[_overlayManager dismissOverlay:_overlayVC];
 	XCTAssertFalse([_overlayManager.overlayWindows containsObject:window]);
 }
 
 - (void)testDismissOverlayShouldNotRemoveWrongVC {
-	[_overlayManager showOverlay:_overlayVC];
+	[_overlayManager showOverlayWindow:_overlayWindow];
 	UIWindow* window = _overlayManager.overlayWindows.lastObject;
 	[_overlayManager dismissOverlay:[UIViewController new]];
 	XCTAssertTrue([_overlayManager.overlayWindows containsObject:window]);

@@ -111,7 +111,11 @@
 }
 
 - (UIViewController *)getCurrentChild {
-	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getCurrentChild;
+	return self.selectedViewController;
+}
+
+- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
+	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

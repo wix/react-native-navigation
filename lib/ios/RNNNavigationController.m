@@ -97,6 +97,10 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	return ((UIViewController<RNNParentProtocol>*)self.topViewController);
 }
 
+- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
+	return [[self getCurrentChild] getCurrentLeaf];
+}
+
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
 }

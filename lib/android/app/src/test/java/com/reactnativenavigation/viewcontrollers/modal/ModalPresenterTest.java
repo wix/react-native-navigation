@@ -36,9 +36,9 @@ public class ModalPresenterTest extends BaseTest {
     private ChildController modal1;
     private ChildController modal2;
     private ModalPresenter uut;
-    private FrameLayout contentLayout;
     private ModalAnimator animator;
     private ViewController root;
+    private FrameLayout modalsLayout;
 
     @Override
     public void beforeEach() {
@@ -46,13 +46,18 @@ public class ModalPresenterTest extends BaseTest {
         ChildControllersRegistry childRegistry = new ChildControllersRegistry();
 
         root = spy(new SimpleViewController(activity, childRegistry, "root", new Options()));
-        contentLayout = new FrameLayout(activity);
-        contentLayout.addView(root.getView());
+        FrameLayout contentLayout = new FrameLayout(activity);
+        FrameLayout rootLayout = new FrameLayout(activity);
+        rootLayout.addView(root.getView());
+        modalsLayout = new FrameLayout(activity);
+        contentLayout.addView(rootLayout);
+        contentLayout.addView(modalsLayout);
         activity.setContentView(contentLayout);
 
         animator = spy(new ModalAnimator(activity));
         uut = new ModalPresenter(animator);
-        uut.setModalsContainer(contentLayout);
+        uut.setModalsLayout(modalsLayout);
+        uut.setRootLayout(rootLayout);
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
     }
@@ -73,7 +78,7 @@ public class ModalPresenterTest extends BaseTest {
         CommandListener listener = spy(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                assertThat(modal1.getView().getParent()).isEqualTo(contentLayout);
+                assertThat(modal1.getView().getParent()).isEqualTo(modalsLayout);
                 verify(modal1, times(1)).onViewAppeared();
             }
         });
@@ -139,7 +144,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void showModal_rejectIfContentIsNull() {
-        uut.setModalsContainer(null);
+        uut.setModalsLayout(null);
         CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
         uut.showModal(modal1, modal2, listener);
         verify(listener).onError(any());
@@ -150,7 +155,7 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        uut.dismissTopModal(modal1, root, new CommandListenerAdapter() {
+        uut.dismissModal(modal1, root, root, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 verify(modal1, times(1)).onViewDisappear();
@@ -158,16 +163,19 @@ public class ModalPresenterTest extends BaseTest {
             }
         });
 
-        verify(animator, times(1)).dismiss(eq(modal1.getView()), eq(modal1.options.animations.dismissModal), any());
+        verify(animator).dismiss(eq(modal1.getView()), any(), any());
     }
 
     @Test
     public void dismissModal_previousViewIsAddedAtIndex0() {
-        modal2.ensureViewIsCreated();
+        disableShowModalAnimation(modal1);
         FrameLayout spy = spy(new FrameLayout(newActivity()));
-        uut.setModalsContainer(spy);
-        uut.dismissTopModal(modal1, modal2, new CommandListenerAdapter());
-        verify(spy, times(1)).addView(modal2.getView(), 0);
+        uut.setRootLayout(spy);
+
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
+
+        verify(spy).addView(root.getView(), 0);
     }
 
     @Test
@@ -176,7 +184,7 @@ public class ModalPresenterTest extends BaseTest {
         disableDismissModalAnimation(modal1);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        uut.dismissTopModal(modal1, root, new CommandListenerAdapter());
+        uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
         verify(modal1, times(1)).onViewDisappear();
         verify(modal1, times(1)).destroy();
         verify(animator, times(0)).dismiss(any(), eq(modal1.options.animations.dismissModal), any());
@@ -187,9 +195,11 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1, modal2);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
+        verify(modal1).onViewAppeared();
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNull();
-        uut.dismissTopModal(modal2, modal1, new CommandListenerAdapter());
+        uut.dismissModal(modal2, modal1, root, new CommandListenerAdapter());
+        assertThat(modal1.getView().getParent()).isNotNull();
         verify(modal1, times(2)).onViewAppeared();
     }
 
@@ -203,10 +213,10 @@ public class ModalPresenterTest extends BaseTest {
         assertThat(modal1.getView().getParent()).isNull();
         assertThat(root.getView().getParent()).isNull();
 
-        uut.dismissModal(modal1, new CommandListenerAdapter());
+        uut.dismissModal(modal1, null, root, new CommandListenerAdapter());
         assertThat(root.getView().getParent()).isNull();
 
-        uut.dismissTopModal(modal2, root, new CommandListenerAdapter());
+        uut.dismissModal(modal2, root, root, new CommandListenerAdapter());
         assertThat(root.getView().getParent()).isNotNull();
     }
 
@@ -221,18 +231,10 @@ public class ModalPresenterTest extends BaseTest {
     }
 
     @Test
-    public void dismissTopModal_rejectIfContentIsNull() {
-        uut.setModalsContainer(null);
-        CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
-        uut.dismissTopModal(modal1, modal2, listener);
-        verify(listener).onError(any());
-    }
-
-    @Test
     public void dismissModal_rejectIfContentIsNull() {
-        uut.setModalsContainer(null);
+        uut.setModalsLayout(null);
         CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
-        uut.dismissModal(modal1, listener);
+        uut.dismissModal(modal1, root, root, listener);
         verify(listener).onError(any());
     }
 }
