@@ -234,6 +234,7 @@ export interface OptionsTopBarButton {
    */
   component?: {
     name: string;
+    passProps?: object;
   };
   /**
    * Set the button text
