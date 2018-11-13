@@ -101,7 +101,9 @@ Navigation.mergeOptions(this.props.componentId, {
       component: {
         name: 'example.CustomTopBarBackground'
       }
-    }
+    },
+    rightButtonColor: '#ffffff',
+    leftButtonColor: '#ff00ff',
   },
   bottomTabs: {
     visible: true,
