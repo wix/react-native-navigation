@@ -4,6 +4,12 @@
 * node >= 8
 * react-native >= 0.51
 
+### Suported versions of react-native
+RNN only supports versions:
+* 0.51 ("reactNative51")
+* 0.55 ("reactNative55")
+* 0.56 ("reactNative56")
+
 ## npm
 * `npm install --save react-native-navigation@alpha`
 
@@ -36,18 +42,18 @@
 	{
 		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 		[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
-		
+
 		return YES;
 	}
 
 	@end
 	```
 
-3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h": 
+3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h":
 ```
 ! 'RCTBundleURLProvider.h' file not found
 ```
-This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu. 
+This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu.
 
 To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
 
@@ -176,7 +182,7 @@ This file is located in `android/app/src/main/java/com/<yourproject>/MainActivit
 -import com.facebook.react.ReactActivity;
 +import com.reactnativenavigation.NavigationActivity;
 
--public class MainActivity extends ReactActivity { 
+-public class MainActivity extends ReactActivity {
 +public class MainActivity extends NavigationActivity {
 -    @Override
 -    protected String getMainComponentName() {
@@ -190,7 +196,7 @@ If you have any **react-native** related methods, you can safely delete them.
 ### 7. Update `MainApplication.java`
 
 This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
-	
+
 ```diff
 ...
 import android.app.Application;
@@ -210,7 +216,7 @@ import java.util.List;
 
 -public class MainApplication extends Application implements ReactApplication {
 +public class MainApplication extends NavigationApplication {
-+    
++
 +    @Override
 +    protected ReactGateway createReactGateway() {
 +        ReactNativeHost host = new NavigationReactNativeHost(this, isDebug(), createAdditionalReactPackages()) {
@@ -234,7 +240,7 @@ import java.util.List;
 +            // eg. new VectorIconsPackage()
 +        );
 +    }
-+  
++
 +    @Override
 +    public List<ReactPackage> createAdditionalReactPackages() {
 +        return getPackages();
@@ -264,11 +270,11 @@ android {
 }
 ```
 
-RNN only support react-native 0.51 (`"reactNative51"`), 0.55 (`"reactNative55"`), and 0.56 (`"reactNative56"`),
+See above [supported versions](docs/installing?id=suported-versions-of-react-native) of react-native.
 
 Now we need to instruct gradle how to build that flavor. To do so here two solutions:
 
-#### 8.1 Build app with gradle command 
+#### 8.1 Build app with gradle command
 
 **prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:asembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
 
