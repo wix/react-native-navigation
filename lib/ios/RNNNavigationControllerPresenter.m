@@ -104,7 +104,11 @@
 		[navigationController rnn_setBackButtonColor:newOptions.topBar.backButton.color.get];
 	}
 	
-	[navigationController rnn_setNavigationBarLargeTitleFontFamily:[newOptions.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[newOptions.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[newOptions.topBar.largeTitle.color getWithDefaultValue:nil]];
+
+	RNNLargeTitleOptions *largteTitleOptions = newOptions.topBar.largeTitle;
+	if (largteTitleOptions.color.hasValue || largteTitleOptions.fontSize.hasValue || largteTitleOptions.fontFamily.hasValue) {
+		[navigationController rnn_setNavigationBarLargeTitleFontFamily:[newOptions.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[newOptions.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[newOptions.topBar.largeTitle.color getWithDefaultValue:nil]];
+	}
 	
 	[navigationController rnn_setNavigationBarFontFamily:[newOptions.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[newOptions.topBar.title.fontSize getWithDefaultValue:nil] color:[newOptions.topBar.title.color getWithDefaultValue:nil]];
 	
