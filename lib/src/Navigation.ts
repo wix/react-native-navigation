@@ -54,7 +54,7 @@ export class Navigation {
    * Every navigation component in your app must be registered with a unique name.
    * The component itself is a traditional React component extending React.Component.
    */
-  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): ComponentType<any> {
+  public registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider): ComponentType<any> {
     return this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
   }
 
@@ -63,7 +63,7 @@ export class Navigation {
    * wraps the provided component with a react-redux Provider with the passed redux store
    */
   public registerComponentWithRedux(
-    componentName: string,
+    componentName: string | number,
     getComponentClassFunc: ComponentProvider,
     ReduxProvider: any,
     reduxStore: any

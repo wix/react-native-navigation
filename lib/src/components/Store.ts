@@ -12,7 +12,7 @@ export class Store {
     return _.get(this.propsById, componentId, {});
   }
 
-  setOriginalComponentClassForName(componentName: string, ComponentClass) {
+  setOriginalComponentClassForName(componentName: string | number, ComponentClass) {
     _.set(this.componentsByName, componentName, ComponentClass);
   }
 
