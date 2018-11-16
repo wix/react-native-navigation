@@ -33,7 +33,8 @@
     "pretest": "npm run lint",
     "test": "npm run test:js && npm run test:android && npm run test:ios",
     "test:watch": "jest --coverage --watch",
-    "release": "node ./scripts/release.js"
+    "release": "node ./scripts/release.js",
+    "local-docs": "node ./scripts/local-docs"
   },
   "peerDependencies": {
     "react": "*",
