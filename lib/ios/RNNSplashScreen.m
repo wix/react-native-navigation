@@ -21,12 +21,19 @@
 		}
 		@catch(NSException *e)
 		{
-			UIView *splashView = [[NSBundle mainBundle] loadNibNamed:launchStoryBoard owner:self options:nil][0];
-			if (splashView != nil)
-			{
-				splashView.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
-				viewController = [[RNNSplashScreen alloc] init];
-				viewController.view = splashView;
+			id splash = [[NSBundle mainBundle] loadNibNamed:launchStoryBoard owner:self options:nil][0];
+			
+			if (splash != nil) {
+				if ([splash isKindOfClass:UIView.class]) {
+					UIView *splashView = (UIView*)splashView;
+					splashView.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
+					viewController = [[RNNSplashScreen alloc] init];
+					viewController.view = splashView;
+				}
+				if ([splash isKindOfClass:UINavigationController.class]) {
+					UINavigationController *splashNavController = (UINavigationController*)splash;
+					viewController = splashNavController.topViewController;
+				}
 			}
 		}
 	}
