@@ -32,7 +32,7 @@
 				}
 				if ([splash isKindOfClass:UINavigationController.class]) {
 					UINavigationController *splashNavController = (UINavigationController*)splash;
-					viewController = splashNavController.topViewController;
+					viewController = splashNavController;
 				}
 			}
 		}
