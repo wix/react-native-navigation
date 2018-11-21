@@ -159,14 +159,7 @@ dependencies {
 }
 ```
 
-### 5. Update `gradle.properties` and disable incremental resource processing
-
-```diff
-+# Disable incremental resource processing as it broke release build
-+android.enableAapt2=false
-```
-
-### 6. Update `MainActivity.java`
+### 5. Update `MainActivity.java`
 
 `MainActivity.java` should extend `com.reactnativenavigation.NavigationActivity` instead of `ReactActivity`.
 
@@ -187,7 +180,7 @@ This file is located in `android/app/src/main/java/com/<yourproject>/MainActivit
 
 If you have any **react-native** related methods, you can safely delete them.
 
-### 7. Update `MainApplication.java`
+### 6. Update `MainApplication.java`
 
 This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
 	
@@ -244,7 +237,7 @@ import java.util.List;
 
 ```
 
-### 8 RNN and React Native version
+### 7 RNN and React Native version
 
 react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `android/app/build.gradle`.
 
@@ -268,7 +261,7 @@ RNN only support react-native 0.51 (`"reactNative51"`), 0.55 (`"reactNative55"`)
 
 Now we need to instruct gradle how to build that flavor. To do so here two solutions:
 
-#### 8.1 Build app with gradle command 
+#### 7.1 Build app with gradle command 
 
 **prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:asembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
 
@@ -281,7 +274,7 @@ Now we need to instruct gradle how to build that flavor. To do so here two solut
 
 Now run `npm run android` to build your application
 
-#### 8.2 Ignore other RNN flavors
+#### 7.2 Ignore other RNN flavors
 
 If you don't want to run `npm run android` and want to keep the default `react-native run-android` command, you need to specify to graddle to ignore the other flavors RNN provides.
 
@@ -306,7 +299,7 @@ To do so edit `android/build.gradle` and add:
 
 **Note**: As more build variants come available in the future, you will need to adjust the list (`names.contains("reactNative51") || names.contains("reactNative55")`). This is why we recommend the first solution.
 
-### 9. Force the same support library version across all dependencies (optional)
+### 8. Force the same support library version across all dependencies (optional)
 
 Some of your dependencies might require a different version of one of Google's support library packages. This results in compilation errors similar to this:
 
