@@ -116,6 +116,10 @@ export interface OptionsTopBarTitle {
    */
   fontFamily?: FontFamily;
   /**
+   * Title alignment
+   */
+  alignment?: 'center'
+  /**
    * Custom component as the title view
    */
   component?: {
