@@ -116,10 +116,6 @@ export interface OptionsTopBarTitle {
    */
   fontFamily?: FontFamily;
   /**
-   * Title alignment
-   */
-  alignment?: 'center'
-  /**
    * Custom component as the title view
    */
   component?: {
@@ -145,6 +141,11 @@ export interface OptionsTopBarTitle {
    * #### (Android specific)
    */
   height?: number;
+  /**
+   * Title alignment
+   * #### (Android specific)
+   */
+  alignment?: 'center';
 }
 
 export interface OptionsTopBarSubtitle {
