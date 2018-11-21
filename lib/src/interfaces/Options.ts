@@ -145,7 +145,7 @@ export interface OptionsTopBarTitle {
    * Title alignment
    * #### (Android specific)
    */
-  alignment?: 'center';
+  alignment?: 'center' | 'fill';
 }
 
 export interface OptionsTopBarSubtitle {
