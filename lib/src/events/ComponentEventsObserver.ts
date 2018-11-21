@@ -38,18 +38,19 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
   }
 
-  public bindComponent(component: React.Component<any>): EventSubscription {
-    const componentId = component.props.componentId;
-    if (!_.isString(componentId)) {
-      throw new Error(`bindComponent expects a component with a componentId in props`);
+  public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
+    const computedComponentId = componentId || component.props.componentId;
+
+    if (!_.isString(computedComponentId)) {
+      throw new Error(`bindComponent expects a component with a componentId in props or a componentId as the second argument`);
     }
-    if (_.isNil(this.listeners[componentId])) {
-      this.listeners[componentId] = {};
+    if (_.isNil(this.listeners[computedComponentId])) {
+      this.listeners[computedComponentId] = {};
     }
     const key = _.uniqueId();
-    this.listeners[componentId][key] = component;
+    this.listeners[computedComponentId][key] = component;
 
-    return { remove: () => _.unset(this.listeners[componentId], key) };
+    return { remove: () => _.unset(this.listeners[computedComponentId], key) };
   }
 
   public unmounted(componentId: string) {

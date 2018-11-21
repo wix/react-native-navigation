@@ -11,11 +11,11 @@ import { ComponentProvider } from 'react-native';
 import { Element } from './adapters/Element';
 import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
-import { ComponentType } from 'react';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
+import { ComponentWrapper } from './components/ComponentWrapper';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -31,15 +31,17 @@ export class Navigation {
   private readonly eventsRegistry: EventsRegistry;
   private readonly commandsObserver: CommandsObserver;
   private readonly componentEventsObserver: ComponentEventsObserver;
+  private readonly componentWrapper: typeof ComponentWrapper;
 
   constructor() {
     this.Element = Element;
     this.TouchablePreview = TouchablePreview;
     this.store = new Store();
+    this.componentWrapper = ComponentWrapper;
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
-    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver);
+    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver, this.componentWrapper);
     this.layoutTreeParser = new LayoutTreeParser();
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
     this.nativeCommandsSender = new NativeCommandsSender();
@@ -54,7 +56,7 @@ export class Navigation {
    * Every navigation component in your app must be registered with a unique name.
    * The component itself is a traditional React component extending React.Component.
    */
-  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): ComponentType<any> {
+  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): ComponentProvider {
     return this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
   }
 
@@ -67,7 +69,7 @@ export class Navigation {
     getComponentClassFunc: ComponentProvider,
     ReduxProvider: any,
     reduxStore: any
-  ): ComponentType<any> {
+  ): ComponentProvider {
     return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, ReduxProvider, reduxStore);
   }
 
