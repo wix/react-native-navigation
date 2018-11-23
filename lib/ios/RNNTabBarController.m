@@ -1,25 +1,62 @@
-
 #import "RNNTabBarController.h"
-
-#define kTabBarHiddenDuration 0.3
 
 @implementation RNNTabBarController {
 	NSUInteger _currentTabIndex;
-	RNNEventEmitter *_eventEmitter;
 }
 
-- (instancetype)initWithEventEmitter:(id)eventEmitter {
-	self = [super init];
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+					defaultOptions:(RNNNavigationOptions *)defaultOptions
+						 presenter:(RNNTabBarPresenter *)presenter
+					  eventEmitter:(RNNEventEmitter *)eventEmitter {
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:defaultOptions presenter:presenter];
+	
 	_eventEmitter = eventEmitter;
-	self.delegate = self;
+	
 	return self;
 }
 
-- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
-	[_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:childOptions];
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+					defaultOptions:(RNNNavigationOptions *)defaultOptions
+						 presenter:(RNNTabBarPresenter *)presenter {
+	self = [super init];
+	
+	self.delegate = self;
+	self.options = options;
+	self.defaultOptions = defaultOptions;
+	self.layoutInfo = layoutInfo;
+	self.presenter = presenter;
+	[self.presenter bindViewController:self];
+	[self setViewControllers:childViewControllers];
+	
+	return self;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
 	}
+}
+
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return [(RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options] withDefault:self.defaultOptions];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)overrideOptions:(RNNNavigationOptions *)options {
+	[self.options overrideOptions:options];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -28,9 +65,9 @@
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
-		UIViewController<RNNParentProtocol>* vc = child;
+		UIViewController<RNNLayoutProtocol>* vc = child;
 
-		if ([vc.layoutInfo.componentId isEqualToString:componentID]) {
+		if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] && [vc.layoutInfo.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}
@@ -41,16 +78,16 @@
 	[super setSelectedIndex:selectedIndex];
 }
 
-- (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getLeafViewController;
+- (UIViewController *)getCurrentChild {
+	return self.selectedViewController;
+}
+
+- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
+	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
-}
-
-- (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers {
-	[super setViewControllers:viewControllers];
 }
 
 #pragma mark UITabBarControllerDelegate

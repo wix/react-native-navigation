@@ -255,7 +255,7 @@ android {
         applicationId "com.yourproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative56"
++        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57"
         versionCode 1
         versionName "1.0"
         ...
@@ -366,3 +366,5 @@ import App from "./App";
 +  });
 +});
 ```
+
+⚠️ we use the layout type `component` here, which renders a React component but does not allow you to navigate to others. See [Usage](./Usage.md) and [LayoutTypes](./layout-types.md) for more options.

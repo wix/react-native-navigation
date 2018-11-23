@@ -13,6 +13,21 @@
 
 @implementation RNNTopTabsViewController
 
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNViewControllerPresenter *)presenter {
+	self = [self init];
+	
+	self.presenter = presenter;
+	[self.presenter bindViewController:self];
+	
+	self.defaultOptions = defaultOptions;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	
+	[self setViewControllers:childViewControllers];
+	
+	return self;
+}
+
 - (instancetype)init {
 	self = [super init];
 	
@@ -23,6 +38,24 @@
 	[self createContentView];
 	
 	return self;
+}
+
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return [(RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options] withDefault:self.defaultOptions];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)overrideOptions:(RNNNavigationOptions *)options {
+	[self.options overrideOptions:options];
 }
 
 - (void)createTabBar {
@@ -57,7 +90,7 @@
 	_viewControllers = viewControllers;
 	for (RNNRootViewController* childVc in viewControllers) {
 		[childVc.view setFrame:_contentView.bounds];
-		[childVc.presenter.options.topTab applyOn:childVc];
+//		[childVc.options.topTab applyOn:childVc];
 	}
 	
 	[self setSelectedViewControllerIndex:0];
@@ -74,8 +107,12 @@
 
 #pragma mark RNNParentProtocol
 
-- (UIViewController *)getLeafViewController {
+- (UIViewController *)getCurrentChild {
 	return _currentViewController;
+}
+
+- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
+	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 @end

@@ -5,11 +5,8 @@
 
 @required
 
-- (UIViewController<RNNLeafProtocol> *)getLeafViewController;
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNBasePresenter *)presenter;
 
-@optional
-
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)options;
-- (void)performOnChildLoad:(RNNNavigationOptions *)options;
+- (void)onChildWillAppear;
 
 @end

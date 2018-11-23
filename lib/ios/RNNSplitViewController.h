@@ -1,4 +1,3 @@
-
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "RNNLayoutNode.h"
@@ -10,18 +9,11 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNParentProtocol.h"
 
-@interface RNNSplitViewController : UISplitViewController	<RNNParentProtocol>
+@interface RNNSplitViewController : UISplitViewController <RNNParentProtocol>
 
-@property (nonatomic, strong) RNNSplitViewOptions* options;
-@property (nonatomic, strong) RNNEventEmitter *eventEmitter;
-@property (nonatomic, strong) NSString* componentId;
+@property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, retain) RNNBasePresenter* presenter;
-@property (nonatomic) id<RNNRootViewCreator> creator;
-
--(instancetype)initWithOptions:(RNNSplitViewOptions*)options
-			withComponentId:(NSString*)componentId
-			rootViewCreator:(id<RNNRootViewCreator>)creator
-				  eventEmitter:(RNNEventEmitter*)eventEmitter;
+@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 
 @end

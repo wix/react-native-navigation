@@ -16,7 +16,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.utils.ButtonOptionsPresenter;
+import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
@@ -35,7 +35,7 @@ public class TopBarButtonControllerTest extends BaseTest {
     private TitleBarButtonController uut;
     private StackController stackController;
     private Button button;
-    private ButtonOptionsPresenter optionsPresenter;
+    private ButtonPresenter optionsPresenter;
 
     @Override
     public void beforeEach() {
@@ -52,7 +52,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         stackController.getTopBar().layout(0, 0, 1080, 200);
         getTitleBar().layout(0, 0, 1080, 200);
 
-        optionsPresenter = spy(new ButtonOptionsPresenter(getTitleBar(), button));
+        optionsPresenter = spy(new ButtonPresenter(getTitleBar(), button));
         uut = new TitleBarButtonController(activity, new NavigationIconResolver(activity, ImageLoaderMock.mock()), ImageLoaderMock.mock(), optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
 
         stackController.ensureViewIsCreated();

@@ -1,11 +1,15 @@
-#import "RNNLayoutProtocol.h"
+#import "RNNRootViewCreator.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
-@protocol RNNLeafProtocol <RNNLayoutProtocol>
-
-- (UIViewController<RNNLeafProtocol> *)getLeafViewController;
+@protocol RNNLeafProtocol <NSObject>
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+
+- (void)bindViewController:(UIViewController *)viewController;
+
+- (BOOL)isCustomTransitioned;
+
+- (id<RNNRootViewCreator>)creator;
 
 @end

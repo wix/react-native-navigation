@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
@@ -63,6 +64,10 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
         touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside);
     }
 
+    public void setInterceptTouchOutside(Bool interceptTouchOutside) {
+        touchDelegate.setInterceptTouchOutside(interceptTouchOutside);
+    }
+
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
         reactView.sendOnNavigationButtonPressed(buttonId);
@@ -92,7 +97,9 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
         if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
             layoutParams.topMargin = ViewUtils.getHeight(topBar);
-            setLayoutParams(layoutParams);
+            try {
+                setLayoutParams(layoutParams);
+            } catch (IllegalStateException ignored) { }
         }
     }
 

@@ -50,12 +50,14 @@ Navigation.push(this.props.componentId, {
   component: {
     name: 'navigation.playground.PushedScreen',
     options: {
-      rightButtons: [
-        {
-          id: 'buttonOne',
-          icon: require('icon.png')
-        }
-      ]
+      topBar: {
+        rightButtons: [
+          {
+            id: 'buttonOne',
+            icon: require('icon.png')
+          }
+        ]
+      }
     }
   }
 }

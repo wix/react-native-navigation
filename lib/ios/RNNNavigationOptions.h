@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import "RNNTopBarOptions.h"
 #import "RNNBottomTabsOptions.h"
 #import "RNNBottomTabOptions.h"
@@ -11,7 +10,6 @@
 #import "RNNStatusBarOptions.h"
 #import "RNNPreviewOptions.h"
 #import "RNNLayoutOptions.h"
-#import "RCTConvert+Modal.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
@@ -31,13 +29,16 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNPreviewOptions* preview;
 @property (nonatomic, strong) RNNLayoutOptions* layout;
 
-@property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
-@property (nonatomic, strong) NSNumber* popGesture;
-@property (nonatomic, strong) NSDictionary* backgroundImage;
-@property (nonatomic, strong) NSDictionary* rootBackgroundImage;
-@property (nonatomic, strong) NSString* modalPresentationStyle;
-@property (nonatomic, strong) NSString* modalTransitionStyle;
+@property (nonatomic, strong) Bool* popGesture;
+@property (nonatomic, strong) Image* backgroundImage;
+@property (nonatomic, strong) Image* rootBackgroundImage;
+@property (nonatomic, strong) Text* modalPresentationStyle;
+@property (nonatomic, strong) Text* modalTransitionStyle;
 
-- (RNNNavigationOptions *)combineWithOptions:(RNNOptions *)options;
+- (instancetype)initEmptyOptions;
+
+- (RNNNavigationOptions *)withDefault:(RNNNavigationOptions *)defaultOptions;
+
+- (RNNNavigationOptions *)copy;
 
 @end

@@ -1,36 +1,42 @@
 #import "RNNBasePresenter.h"
+#import "UIViewController+RNNOptions.h"
+#import "RNNTabBarItemCreator.h"
 
 @implementation RNNBasePresenter
 
-- (instancetype)initWithOptions:(RNNNavigationOptions *)options {
-	self = [super init];
-	if (self) {
-		self.options = options;
+- (void)bindViewController:(UIViewController *)bindedViewController {
+	_bindedViewController = bindedViewController;
+}
+
+- (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
+	
+}
+
+- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
+	UIViewController* viewController = self.bindedViewController;
+	if ((options.bottomTab.text.hasValue || options.bottomTab.icon.hasValue || options.bottomTab.selectedIcon.hasValue)) {
+		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:options.bottomTab];
+		viewController.tabBarItem = tabItem;
+		[options.bottomTab.text consume];
+		[options.bottomTab.icon consume];
+		[options.bottomTab.selectedIcon consume];
 	}
-	return self;
 }
 
-- (void)presentOn:(UIViewController *)viewController {
-	[self.options applyOn:viewController];
-}
-
-- (void)present:(RNNNavigationOptions *)options on:(UIViewController *)viewController {
+- (void)applyOptions:(RNNNavigationOptions *)options {
+	UIViewController* viewController = self.bindedViewController;
 	
+	if (options.bottomTab.badge.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
+		[viewController rnn_setTabBarItemBadge:options.bottomTab.badge.get];
+	}
 }
 
-- (RNNNavigationOptions *)presentWithChildOptions:(RNNNavigationOptions *)childOptions on:(UIViewController *)viewController {
-	RNNNavigationOptions* options = [self.options combineWithOptions:childOptions];
-	[self present:options on:viewController];
-	
-	return options;
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
+	UIViewController* viewController = self.bindedViewController;
+	if (newOptions.bottomTab.badge.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
+		[viewController rnn_setTabBarItemBadge:newOptions.bottomTab.badge.get];
+	}
 }
 
-- (void)presentOnLoad:(UIViewController *)viewController {
-	
-}
-
-- (void)overrideOptions:(RNNNavigationOptions *)options {
-	[_options mergeOptions:options overrideOptions:YES];
-}
 
 @end

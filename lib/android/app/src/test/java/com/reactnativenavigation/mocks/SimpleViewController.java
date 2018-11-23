@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ChildController;
@@ -23,10 +23,10 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options options) {
-        this(activity, childRegistry, id, new OptionsPresenter(activity, new Options()), options);
+        this(activity, childRegistry, id, new Presenter(activity, new Options()), options);
     }
 
-    public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options options) {
+    public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options options) {
         super(activity, childRegistry, id, presenter, options);
     }
 

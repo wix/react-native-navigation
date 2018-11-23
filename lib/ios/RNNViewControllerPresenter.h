@@ -1,8 +1,10 @@
-#import <Foundation/Foundation.h>
 #import "RNNBasePresenter.h"
+#import "RNNNavigationButtons.h"
 
 @interface RNNViewControllerPresenter : RNNBasePresenter
 
-- (void)presentOn:(UIViewController *)viewController;
+@property (nonatomic, strong) RNNNavigationButtons* navigationButtons;
+
+- (void)bindViewController:(UIViewController *)bindedViewController viewCreator:(id<RNNRootViewCreator>)creator;
 
 @end

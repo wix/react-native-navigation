@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
@@ -62,7 +62,7 @@ public class Navigator extends ParentController {
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
-        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity, new Options()), new Options());
+        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
@@ -72,7 +72,8 @@ public class Navigator extends ParentController {
     }
 
     public void bindViews() {
-        modalStack.setModalsContainer(modalsLayout);
+        modalStack.setModalsLayout(modalsLayout);
+        modalStack.setRootLayout(rootLayout);
         rootPresenter.setRootContainer(rootLayout);
     }
 
@@ -137,7 +138,7 @@ public class Navigator extends ParentController {
     }
 
     public void mergeOptions(final String componentId, Options options) {
-        ViewController target = findControllerById(componentId);
+        ViewController target = findController(componentId);
         if (target != null) {
             target.mergeOptions(options);
         }
@@ -160,7 +161,7 @@ public class Navigator extends ParentController {
     }
 
     public void popTo(final String id, Options mergeOptions, CommandListener listener) {
-        ViewController target = findControllerById(id);
+        ViewController target = findController(id);
         if (target != null) {
             target.performOnParentStack(stack -> ((StackController) stack).popTo(target, mergeOptions, listener));
         } else {
@@ -194,13 +195,19 @@ public class Navigator extends ParentController {
 
     @Nullable
     @Override
-    public ViewController findControllerById(String id) {
-        ViewController controllerById = super.findControllerById(id);
-        return controllerById != null ? controllerById : modalStack.findControllerById(id);
+    public ViewController findController(String id) {
+        ViewController controllerById = super.findController(id);
+        if (controllerById == null) {
+            controllerById = modalStack.findControllerById(id);
+        }
+        if (controllerById == null) {
+            controllerById = overlayManager.findControllerById(id);
+        }
+        return controllerById;
     }
 
     private void applyOnStack(String fromId, CommandListener listener, Task<StackController> task) {
-        ViewController from = findControllerById(fromId);
+        ViewController from = findController(fromId);
         if (from != null) {
             if (from instanceof StackController) {
                 task.run((StackController) from);
@@ -217,7 +224,7 @@ public class Navigator extends ParentController {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    public FrameLayout getModalsLayout() {
+    FrameLayout getModalsLayout() {
         return modalsLayout;
     }
 }

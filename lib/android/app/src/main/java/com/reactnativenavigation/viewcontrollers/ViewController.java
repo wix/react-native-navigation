@@ -14,7 +14,7 @@ import android.view.ViewTreeObserver;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
-import com.reactnativenavigation.presentation.FabOptionsPresenter;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
@@ -31,6 +31,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     private Runnable onAppearedListener;
     private boolean appearEventPosted;
+    private boolean isFirstLayout = true;
     private Bool waitForRender = new NullBool();
 
     public interface ViewVisibilityListener {
@@ -56,7 +57,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
-    protected FabOptionsPresenter fabOptionsPresenter;
+    protected FabPresenter fabOptionsPresenter;
 
     public boolean isDestroyed() {
         return isDestroyed;
@@ -66,7 +67,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.activity = activity;
         this.id = id;
         this.yellowBoxDelegate = yellowBoxDelegate;
-        fabOptionsPresenter = new FabOptionsPresenter();
+        fabOptionsPresenter = new FabPresenter();
         this.initialOptions = initialOptions;
         options = initialOptions.copy();
     }
@@ -108,7 +109,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     public void mergeOptions(Options options) {
         this.initialOptions = this.initialOptions.mergeWith(options);
         this.options = this.options.mergeWith(options);
-        if (view != null) applyOptions(this.options);
         this.options.clearOneTimeOptions();
         initialOptions.clearOneTimeOptions();
     }
@@ -178,7 +178,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     @Nullable
-    public ViewController findControllerById(String id) {
+    public ViewController findController(String id) {
         return isSameId(id) ? this : null;
     }
 
@@ -239,6 +239,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @Override
     public void onGlobalLayout() {
+        if (isFirstLayout) {
+            onAttachToParent();
+            isFirstLayout = false;
+        }
         if (!isShown && isViewShown()) {
             if (!viewVisibilityListener.onViewAppeared(view)) {
                 isShown = true;
@@ -250,6 +254,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 onViewDisappear();
             }
         }
+    }
+
+    protected void onAttachToParent() {
+
     }
 
     @Override
