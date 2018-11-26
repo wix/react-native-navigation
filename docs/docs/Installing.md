@@ -5,7 +5,7 @@
 * react-native >= 0.51
 
 ## npm
-* `npm install --save react-native-navigation@alpha`
+* `npm install --save react-native-navigation`
 
 ## iOS
 
