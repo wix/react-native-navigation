@@ -111,7 +111,7 @@ class PushedScreen extends Component {
           },
           animations: {
             push: {
-              enable: false
+              enabled: false
             }
           },
           preview: {
@@ -178,7 +178,7 @@ class PushedScreen extends Component {
         options: {
           animations: {
             setStackRoot: {
-              enable: false
+              enabled: false
             }
           },
           topBar: {
