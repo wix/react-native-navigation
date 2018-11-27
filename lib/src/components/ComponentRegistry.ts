@@ -11,7 +11,7 @@ export class ComponentRegistry {
       return this.ComponentWrapperClass.wrap(componentName.toString(), getComponentClassFunc, this.store, this.componentEventsObserver, ReduxProvider, reduxStore)
     };
     this.store.setComponentClassForName(componentName.toString(), NavigationComponent);
-    AppRegistry.registerComponent(componentName, NavigationComponent);
+    AppRegistry.registerComponent(componentName.toString(), NavigationComponent);
     return NavigationComponent;
   }
 }
