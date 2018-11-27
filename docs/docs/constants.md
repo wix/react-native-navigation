@@ -2,15 +2,18 @@
 
 ## statusBarHeight
 ```js
-const statusBarHeight = Navigation.constants().statusBarHeight;
+const constants = await Navigation.constants();
+const statusBarHeight = constants.statusBarHeight;
 ```
 
 ## topBarHeight
 ```js
-const topBarHeight = Navigation.constants().topBarHeight;
+const constants = await Navigation.constants();
+const topBarHeight = constants.topBarHeight;
 ```
 
 ## bottomTabsHeight
 ```js
-const bottomTabsHeight = Navigation.constants().bottomTabsHeight;
+const constants = await Navigation.constants();
+const bottomTabsHeight = constants.bottomTabsHeight;
 ```

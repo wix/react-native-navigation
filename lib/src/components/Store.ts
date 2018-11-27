@@ -12,14 +12,15 @@ export class Store {
     return _.get(this.propsById, componentId, {});
   }
 
-  setOriginalComponentClassForName(componentName: string | number, ComponentClass) {
-    _.set(this.componentsByName, componentName, ComponentClass);
+
+  setComponentClassForName(componentName: string | number, ComponentClass) {
+    _.set(this.componentsByName, componentName.toString(), ComponentClass);
   }
 
-  getOriginalComponentClassForName(componentName: string) {
-    return _.get(this.componentsByName, componentName);
+  getComponentClassForName(componentName: string | number) {
+    return _.get(this.componentsByName, componentName.toString());
   }
-
+  
   cleanId(id: string) {
     _.unset(this.propsById, id);
   }

@@ -141,6 +141,11 @@ export interface OptionsTopBarTitle {
    * #### (Android specific)
    */
   height?: number;
+  /**
+   * Title alignment
+   * #### (Android specific)
+   */
+  alignment?: 'center' | 'fill';
 }
 
 export interface OptionsTopBarSubtitle {

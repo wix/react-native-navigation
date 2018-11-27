@@ -1,17 +1,17 @@
 import { AppRegistry, ComponentProvider } from 'react-native';
 import { ComponentWrapper } from './ComponentWrapper';
-import { ComponentType } from 'react';
 import { Store } from './Store';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 
 export class ComponentRegistry {
-  constructor(private readonly store: Store, private readonly componentEventsObserver: ComponentEventsObserver) { }
+  constructor(private readonly store: Store, private readonly componentEventsObserver: ComponentEventsObserver, private readonly ComponentWrapperClass: typeof ComponentWrapper) { }
 
-  registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider, ReduxProvider?: any, reduxStore?: any): ComponentType<any> {
-    const OriginalComponentClass = getComponentClassFunc();
-    const NavigationComponent = ComponentWrapper.wrap(componentName, OriginalComponentClass, this.store, this.componentEventsObserver, ReduxProvider, reduxStore);
-    this.store.setOriginalComponentClassForName(componentName, OriginalComponentClass);
-    AppRegistry.registerComponent(componentName.toString(), () => NavigationComponent);
+  registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider, ReduxProvider?: any, reduxStore?: any): ComponentProvider {
+    const NavigationComponent = () => {
+      return this.ComponentWrapperClass.wrap(componentName.toString(), getComponentClassFunc, this.store, this.componentEventsObserver, ReduxProvider, reduxStore)
+    };
+    this.store.setComponentClassForName(componentName.toString(), NavigationComponent);
+    AppRegistry.registerComponent(componentName, NavigationComponent);
     return NavigationComponent;
   }
 }

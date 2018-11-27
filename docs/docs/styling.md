@@ -235,7 +235,8 @@ Navigation.mergeOptions(this.props.componentId, {
     elevation: 1.5, // TopBar elevation in dp
     topMargin: 24, // top margin in dp
     title: {
-      height: 70 // TitleBar height in dp
+      height: 70, // TitleBar height in dp
+      alignment: 'center', // Center title
     }
   },
   bottomTabs: {
