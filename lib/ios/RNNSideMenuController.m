@@ -114,7 +114,6 @@
 		default:
 			break;
 	}
-	self.openDrawerGestureModeMask = enabled ? MMOpenDrawerGestureModeAll : MMOpenDrawerGestureModeNone;
 }
 
 -(void)setControllers:(NSArray*)controllers {

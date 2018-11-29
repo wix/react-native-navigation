@@ -9,7 +9,7 @@
 
 RCT_ENUM_CONVERTER(MMOpenDrawerGestureMode,
 				   (@{@"entireScreen": @(MMOpenDrawerGestureModeAll),
-					  @"bezel": @(MMOpenDrawerGestureModeNone),
+					  @"bezel": @(MMOpenDrawerGestureModeBezelPanningCenterView),
 					  }), MMOpenDrawerGestureModeAll, integerValue)
 
 @end

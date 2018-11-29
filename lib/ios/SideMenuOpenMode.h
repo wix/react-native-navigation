@@ -1,6 +1,6 @@
-#import "IntNumber.h"
+#import "Number.h"
 
-@interface SideMenuOpenMode : IntNumber
+@interface SideMenuOpenMode : Number
 
 
 
