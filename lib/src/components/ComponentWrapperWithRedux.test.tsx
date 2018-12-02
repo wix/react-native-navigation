@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { Text } from 'react-native';
 import * as renderer from 'react-test-renderer';
-import { ComponentWrapper } from './ComponentWrapper';
+import { ComponentWrapperWithRedux } from './ComponentWrapperWithRedux';
 import { Store } from './Store';
 import { mock, verify, instance } from 'ts-mockito';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 
-describe('ComponentWrapper', () => {
+describe('ComponentWrapperWithRedux', () => {
   const componentName = 'example.MyComponent';
   let store;
   let myComponentProps;
   let mockedComponentEventsObserver: ComponentEventsObserver;
   let componentEventsObserver: ComponentEventsObserver;
-  let uut: ComponentWrapper;
+  let uut: ComponentWrapperWithRedux;
 
   class MyComponent extends React.Component<any, any> {
     static options = {
@@ -51,7 +51,10 @@ describe('ComponentWrapper', () => {
     store = new Store();
     mockedComponentEventsObserver = mock(ComponentEventsObserver);
     componentEventsObserver = instance(mockedComponentEventsObserver);
-    uut = new ComponentWrapper();
+    const ReduxProvider = require('react-redux').Provider;
+    const initialState = { txt: 'it just works' };
+    const reduxStore = require('redux').createStore((state = initialState) => state);
+    uut = new ComponentWrapperWithRedux(ReduxProvider, reduxStore);
   });
 
   it('must have componentId as prop', () => {
@@ -113,11 +116,12 @@ describe('ComponentWrapper', () => {
     expect(myComponentProps.componentId).toEqual('component1');
   });
 
-  it('assigns key by componentId', () => {
+  it('assigns key by component1', () => {
     const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
     const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
     expect(myComponentProps.componentId).toEqual('component1');
-    expect((tree.getInstance() as any)._reactInternalInstance.child.key).toEqual('component1');
+    console.log((tree.getInstance() as any)._reactInternalInstance.child)
+    expect((tree.getInstance() as any)._reactInternalInstance.child.child.child.key).toEqual('component1');
   });
 
   it('cleans props from store on unMount', () => {
@@ -140,5 +144,34 @@ describe('ComponentWrapper', () => {
     verify(mockedComponentEventsObserver.unmounted('component123')).never();
     tree.unmount();
     verify(mockedComponentEventsObserver.unmounted('component123')).once();
+  });
+
+  describe(`register with redux store`, () => {
+    class MyReduxComp extends React.Component<any> {
+      static get options() {
+        return { foo: 123 };
+      }
+      render() {
+        return (
+          <Text>{this.props.txt}</Text>
+        );
+      }
+    }
+    function mapStateToProps(state) {
+      return {
+        txt: state.txt
+      };
+    }
+    const ConnectedComp = require('react-redux').connect(mapStateToProps)(MyReduxComp);
+    // const ReduxProvider = require('react-redux').Provider;
+    // const initialState = { txt: 'it just works' };
+    // const reduxStore = require('redux').createStore((state = initialState) => state);
+
+    it(`wraps the component with a react-redux provider with passed store`, () => {
+      const NavigationComponent = uut.wrap(componentName, () => ConnectedComp, store, componentEventsObserver);
+      const tree = renderer.create(<NavigationComponent componentId={'theCompId'} />);
+      expect(tree.toJSON()!.children).toEqual(['it just works']);
+      expect((NavigationComponent as any).options).toEqual({ foo: 123 });
+    });
   });
 });

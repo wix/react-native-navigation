@@ -23,7 +23,7 @@ describe('redux support', () => {
         );
       }
     };
-    Navigation.registerComponent('ComponentName', () => HOC);
+    Navigation.registerComponentWithRedux('ComponentName', () => HOC, Provider, store.reduxStore);
 
     const tree = renderer.create(<HOC />);
     expect(tree.toJSON().children).toEqual(['no name']);

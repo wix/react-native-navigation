@@ -4,11 +4,13 @@ import { Store } from './Store';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 
 export class ComponentRegistry {
-  constructor(private readonly store: Store, private readonly componentEventsObserver: ComponentEventsObserver, private readonly ComponentWrapperClass: typeof ComponentWrapper) { }
+  constructor(private readonly store: Store, private readonly componentEventsObserver: ComponentEventsObserver) { }
 
-  registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider, ReduxProvider?: any, reduxStore?: any): ComponentProvider {
+  registerComponent(componentName: string | number,
+                    getComponentClassFunc: ComponentProvider,
+                    componentWrapper: ComponentWrapper): ComponentProvider {
     const NavigationComponent = () => {
-      return this.ComponentWrapperClass.wrap(componentName.toString(), getComponentClassFunc, this.store, this.componentEventsObserver, ReduxProvider, reduxStore)
+      return componentWrapper.wrap(componentName.toString(), getComponentClassFunc, this.store, this.componentEventsObserver);
     };
     this.store.setComponentClassForName(componentName.toString(), NavigationComponent);
     AppRegistry.registerComponent(componentName.toString(), NavigationComponent);
