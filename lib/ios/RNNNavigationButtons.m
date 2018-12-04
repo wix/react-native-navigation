@@ -114,8 +114,13 @@
 	
 	if (color) {
 		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
-		[barButtonItem setImage:[[iconImage withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 	}
+	bool disableIconTint = [RCTConvert BOOL:dictionary[@"disableIconTint"]];
+	
+	if (disableIconTint == false) {
+		iconImage = [iconImage withTintColor:color];
+	}
+	[barButtonItem setImage:[iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 	
 	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:[defaultStyle.fontSize getWithDefaultValue:nil]];
 	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:[defaultStyle.fontFamily getWithDefaultValue:nil]];
