@@ -254,6 +254,15 @@ describe('Commands', () => {
         children: []
       });
     });
+
+    it('calls component generator once', async () => {
+      const generator = jest.fn(() => {
+        return {};
+      });
+      store.setComponentClassForName('theComponentName', generator);
+      await uut.push('theComponentId', { component: { name: 'theComponentName' } });
+      expect(generator).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('pop', () => {

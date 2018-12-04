@@ -76,7 +76,7 @@
 	id<RNNRootViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge];
 	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter andBridge:bridge];
 	
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:[RNNOverlayManager new]];
+	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:[RNNOverlayManager new] sharedApplication:[UIApplication sharedApplication]];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 
 	return [@[bridgeModule,eventEmitter] arrayByAddingObjectsFromArray:[self extraModulesFromDelegate]];

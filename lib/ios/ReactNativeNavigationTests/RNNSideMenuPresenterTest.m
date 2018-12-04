@@ -69,6 +69,20 @@
 	[self.bindedViewController verify];
 }
 
+- (void)testApplyOptionsOnInitShouldSetDefaultDrawerGestureMode {
+	[[self.bindedViewController expect] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+	[self.uut applyOptionsOnInit:self.options];
+	[self.bindedViewController verify];
+}
+
+- (void)testApplyOptionsOnInitShouldSetBezelDrawerGestureMode {
+	self.options.sideMenu.openGestureMode = [[SideMenuOpenMode alloc] initWithValue:@(MMOpenDrawerGestureModeNone)];
+	[[self.bindedViewController expect] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+	[self.uut applyOptionsOnInit:self.options];
+	[self.bindedViewController verify];
+}
+
+
 
 
 @end

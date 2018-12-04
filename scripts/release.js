@@ -4,8 +4,11 @@ const semver = require('semver');
 const fs = require('fs');
 const _ = require('lodash');
 
-const ONLY_ON_BRANCH = 'origin/v2';
-const VERSION_TAG = 'alpha';
+// Workaround JS
+const isRelease = process.env.RELEASE_BUILD === 'true';
+
+const ONLY_ON_BRANCH = 'origin/master';
+const VERSION_TAG = isRelease ? 'latest' : 'snapshot';
 const VERSION_INC = 'patch';
 
 function run() {
@@ -41,7 +44,7 @@ function setupGit() {
   exec.execSyncSilent(`git config --global user.name "${process.env.GIT_USER}"`);
   const remoteUrl = new RegExp(`https?://(\\S+)`).exec(exec.execSyncRead(`git remote -v`))[1];
   exec.execSyncSilent(`git remote add deploy "https://${process.env.GIT_USER}:${process.env.GIT_TOKEN}@${remoteUrl}"`);
-  exec.execSync(`git checkout ${ONLY_ON_BRANCH}`);
+  // exec.execSync(`git checkout ${ONLY_ON_BRANCH}`);
 }
 
 function createNpmRc() {
@@ -54,18 +57,17 @@ email=\${NPM_EMAIL}
 }
 
 function versionTagAndPublish() {
-  const packageVersion = semver.clean(process.env.npm_package_version);
-  console.log(`package version: ${packageVersion}`);
-
   const currentPublished = findCurrentPublishedVersion();
   console.log(`current published version: ${currentPublished}`);
 
-  const version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, VERSION_INC);
+  const version = isRelease ? process.env.VERSION : `${currentPublished}-snapshot.${process.env.BUILD_ID}`;
+  console.log(`Publishing version: ${version}`);
+
   tryPublishAndTag(version);
 }
 
 function findCurrentPublishedVersion() {
-  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.${VERSION_TAG}`);
+  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.latest`);
 }
 
 function tryPublishAndTag(version) {
@@ -89,7 +91,7 @@ function tryPublishAndTag(version) {
 function tagAndPublish(newVersion) {
   console.log(`trying to publish ${newVersion}...`);
   exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
-  exec.execSyncRead(`npm publish --tag ${VERSION_TAG}`);
+  exec.execSync(`npm publish --tag ${VERSION_TAG}`);
   exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
   exec.execSyncSilent(`git push deploy ${newVersion} || true`);
 }

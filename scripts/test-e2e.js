@@ -16,7 +16,7 @@ function run() {
     const configuration = `${prefix}.${suffix}`;
     const cleanup = process.env.CI ? `--cleanup` : ``;
     const headless$ = android ? headless ? `--headless` : `` : ``;
-    const workers = multi ? 2 : 1;
+    const workers = multi ? 3 : 1;
 
     if (!skipBuild) {
         exec.execSync(`detox build --configuration ${configuration}`);

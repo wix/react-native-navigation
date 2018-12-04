@@ -199,7 +199,8 @@ Navigation.mergeOptions(this.props.componentId, {
       shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
       animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
       animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
-    }
+    },
+    openGestureMode: 'entireScreen' | 'bezel'
   }
   bottomTabs: {
     barStyle: 'default' | 'black',
@@ -235,7 +236,8 @@ Navigation.mergeOptions(this.props.componentId, {
     elevation: 1.5, // TopBar elevation in dp
     topMargin: 24, // top margin in dp
     title: {
-      height: 70 // TitleBar height in dp
+      height: 70, // TitleBar height in dp
+      alignment: 'center', // Center title
     }
   },
   bottomTabs: {

@@ -25,7 +25,6 @@
 	
 	self.layoutInfo = layoutInfo;
 	
-	self.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
 	self.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
 	
 	[self.presenter applyOptionsOnInit:self.resolveOptions];
@@ -115,7 +114,6 @@
 		default:
 			break;
 	}
-	self.openDrawerGestureModeMask = enabled ? MMOpenDrawerGestureModeAll : MMOpenDrawerGestureModeNone;
 }
 
 -(void)setControllers:(NSArray*)controllers {
