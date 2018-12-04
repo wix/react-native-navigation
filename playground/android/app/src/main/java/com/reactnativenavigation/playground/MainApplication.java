@@ -5,10 +5,8 @@ import android.support.annotation.Nullable;
 import com.entria.views.RNViewOverflowPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.uimanager.UIImplementationProvider;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
-import com.reactnativenavigation.react.SyncUiImplementation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +27,10 @@ public class MainApplication extends NavigationApplication {
                 return "index";
             }
 
-            @Override
-            protected UIImplementationProvider getUIImplementationProvider() {
-                return new SyncUiImplementation.Provider();
-            }
+//            @Override
+//            protected UIImplementationProvider getUIImplementationProvider() {
+//                return new SyncUiImplementation.Provider();
+//            }
         };
     }
 
