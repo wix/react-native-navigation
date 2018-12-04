@@ -162,7 +162,7 @@ describe('ComponentWrapper', () => {
     const reduxStore = require('redux').createStore((state = initialState) => state);
 
     it(`wraps the component with a react-redux provider with passed store`, () => {
-      const NavigationComponent = ComponentWrapper.wrap(componentName, () => ConnectedComp, store, componentEventsObserver, ReduxProvider, reduxStore);
+      const NavigationComponent = ComponentWrapper.wrap(componentName, () => ConnectedComp, store, componentEventsObserver, ReduxProvider, {store: reduxStore});
       const tree = renderer.create(<NavigationComponent componentId={'theCompId'} />);
       expect(tree.toJSON()!.children).toEqual(['it just works']);
       expect((NavigationComponent as any).options).toEqual({ foo: 123 });

@@ -2,17 +2,17 @@
 
 ## wrap
 
-`wrap(componentName: string, OriginalComponentClass: React.ComponentType<any>, store: any, componentEventsObserver: any, ReduxProvider: any, reduxStore: any): React.ComponentType<any>`
+`wrap(componentName: string, OriginalComponentGenerator: ComponentProvider, store: Store, componentEventsObserver: ComponentEventsObserver, Provider: any, providerParams: any): ComponentClass<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/ComponentWrapper.tsx#L7)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/ComponentWrapper.tsx#L12)
 
 ---
 
-## wrapWithRedux
+## wrapWithProvider
 
-`wrapWithRedux(WrappedComponent: any, ReduxProvider: any, reduxStore: any): React.ComponentType<any>`
+`wrapWithProvider(WrappedComponent: ComponentClass<any>, Provider: any, providerParams: any): ComponentClass<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/ComponentWrapper.tsx#L64)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/ComponentWrapper.tsx#L69)
 
 ---
 

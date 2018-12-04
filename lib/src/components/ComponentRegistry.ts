@@ -6,9 +6,9 @@ import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 export class ComponentRegistry {
   constructor(private readonly store: Store, private readonly componentEventsObserver: ComponentEventsObserver, private readonly ComponentWrapperClass: typeof ComponentWrapper) { }
 
-  registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider, ReduxProvider?: any, reduxStore?: any): ComponentProvider {
+  registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider, Provider?: any, providerParams?: any): ComponentProvider {
     const NavigationComponent = () => {
-      return this.ComponentWrapperClass.wrap(componentName.toString(), getComponentClassFunc, this.store, this.componentEventsObserver, ReduxProvider, reduxStore)
+      return this.ComponentWrapperClass.wrap(componentName.toString(), getComponentClassFunc, this.store, this.componentEventsObserver, Provider, providerParams)
     };
     this.store.setComponentClassForName(componentName.toString(), NavigationComponent);
     AppRegistry.registerComponent(componentName.toString(), NavigationComponent);

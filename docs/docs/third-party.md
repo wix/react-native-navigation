@@ -2,10 +2,10 @@
 
 ## Redux
 
-### registerComponentWithRedux(screenID, generator, Provider, store)
+### wrapWithProvider(screenID, generator, Provider, providerParams)
 Utility helper function like registerComponent,
-wraps the provided component with a react-redux Provider with the passed redux store
+wraps the provided component with a react-redux Provider or any other type of provider with the passed params for the provider.
 
 ```js
-Navigation.registerComponentWithRedux('navigation.playground.WelcomeScreen', () => WelcomeScreen, Provider, store);
+Navigation.wrapWithProvider('navigation.playground.WelcomeScreen', () => WelcomeScreen, Provider, {store: store});
 ```

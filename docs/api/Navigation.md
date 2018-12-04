@@ -22,14 +22,14 @@ The component itself is a traditional React component extending React.Component.
 
 ---
 
-## registerComponentWithRedux
+## registerComponentWithProvider
 
-`registerComponentWithRedux(componentName: string, getComponentClassFunc: ComponentProvider, ReduxProvider: any, reduxStore: any): ComponentType<any>`
+`registerComponentWithProvider(componentName: string, getComponentClassFunc: ComponentProvider, ReduxProvider: any, providerParams: any): ComponentProvider`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L60)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L67)
 
 Utility helper function like registerComponent,
-wraps the provided component with a react-redux Provider with the passed redux store
+wraps the provided component with a react-redux Provider with the passed params for the provider
 
 ---
 
