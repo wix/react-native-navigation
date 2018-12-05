@@ -1,5 +1,6 @@
 module.exports = {
-  projectRoots: [__dirname, `${__dirname}/playground`],
+  projectRoot: `${__dirname}/playground`,
+  watchFolders: [__dirname],
   transformer: {
     babelTransformerPath: require.resolve('react-native-typescript-transformer'),
   },

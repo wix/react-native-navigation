@@ -1,4 +1,4 @@
-const babelOptions = require('./package.json').babel.env.test;
+const babelOptions = require('./babel.config')().env.test;
 
 module.exports = function (wallaby) {
   return {
