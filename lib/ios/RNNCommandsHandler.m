@@ -34,11 +34,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNOverlayManager* _overlayManager;
 	RNNNavigationStackManager* _stackManager;
 	RNNEventEmitter* _eventEmitter;
-	UIApplication* _sharedApplication;
 	UIWindow* _mainWindow;
 }
 
-- (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager sharedApplication:(UIApplication *)sharedApplication {
+- (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager mainWindow:(UIWindow *)mainWindow {
 	self = [super init];
 	_store = store;
 	_controllerFactory = controllerFactory;
@@ -47,7 +46,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	_modalManager.delegate = self;
 	_stackManager = stackManager;
 	_overlayManager = overlayManager;
-	_sharedApplication = sharedApplication;
+	_mainWindow = mainWindow;
 	return self;
 }
 
@@ -55,10 +54,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)setRoot:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	
-	if (!_mainWindow) {
-		_mainWindow = _sharedApplication.keyWindow;
-	}
 	
 	[_modalManager dismissAllModalsAnimated:NO];
 	[_store removeAllComponentsFromWindow:_mainWindow];

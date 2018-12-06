@@ -21,13 +21,14 @@
 	NSDictionary* _launchOptions;
 	id<RNNBridgeManagerDelegate> _delegate;
 	RCTBridge* _bridge;
-
+	UIWindow* _mainWindow;
+	
 	RNNStore* _store;
 
 	RNNCommandsHandler* _commandsHandler;
 }
 
-- (instancetype)initWithJsCodeLocation:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate {
+- (instancetype)initWithJsCodeLocation:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate mainWindow:(UIWindow *)mainWindow {
 	if (self = [super init]) {
 		_jsCodeLocation = jsCodeLocation;
 		_launchOptions = launchOptions;
@@ -35,7 +36,8 @@
 		
 		_store = [RNNStore new];
 		_bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:_launchOptions];
-
+		_mainWindow = mainWindow;
+		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(onJavaScriptLoaded)
 													 name:RCTJavaScriptDidLoadNotification
@@ -76,7 +78,7 @@
 	id<RNNRootViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge];
 	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter andBridge:bridge];
 	
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:[RNNOverlayManager new] sharedApplication:[UIApplication sharedApplication]];
+	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:[RNNOverlayManager new] mainWindow:_mainWindow];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 
 	return [@[bridgeModule,eventEmitter] arrayByAddingObjectsFromArray:[self extraModulesFromDelegate]];

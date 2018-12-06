@@ -4,10 +4,9 @@
 
 @implementation RNNSplashScreen
 
-+(void)show {
++ (void)showOnWindow:(UIWindow *)window {
 	
-	UIApplication.sharedApplication.delegate.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	UIApplication.sharedApplication.delegate.window.backgroundColor = [UIColor whiteColor];
+	UIApplication.sharedApplication.delegate.window = window;
 	
 	CGRect screenBounds = [UIScreen mainScreen].bounds;
 	UIViewController *viewController = nil;

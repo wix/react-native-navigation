@@ -55,8 +55,11 @@
 }
 
 -(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate {
-	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate];
-	[RNNSplashScreen show];
+	UIWindow* mainWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+	mainWindow.backgroundColor = [UIColor whiteColor];
+	
+	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate mainWindow:mainWindow];
+	[RNNSplashScreen showOnWindow:mainWindow];
 }
 
 @end
