@@ -55,11 +55,18 @@
 }
 
 -(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate {
-	UIWindow* mainWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	mainWindow.backgroundColor = [UIColor whiteColor];
+	UIWindow* mainWindow = [self initializeKeyWindow];
 	
 	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate mainWindow:mainWindow];
 	[RNNSplashScreen showOnWindow:mainWindow];
+}
+
+- (UIWindow *)initializeKeyWindow {
+	UIWindow* keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+	keyWindow.backgroundColor = [UIColor whiteColor];
+	UIApplication.sharedApplication.delegate.window = keyWindow;
+	
+	return keyWindow;
 }
 
 @end

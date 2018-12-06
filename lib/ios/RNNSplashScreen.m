@@ -5,9 +5,6 @@
 @implementation RNNSplashScreen
 
 + (void)showOnWindow:(UIWindow *)window {
-	
-	UIApplication.sharedApplication.delegate.window = window;
-	
 	CGRect screenBounds = [UIScreen mainScreen].bounds;
 	UIViewController *viewController = nil;
 	
