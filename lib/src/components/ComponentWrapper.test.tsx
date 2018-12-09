@@ -8,8 +8,8 @@ import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 
 describe('ComponentWrapper', () => {
   const componentName = 'example.MyComponent';
-  let store;
-  let myComponentProps;
+  let store: Store;
+  let myComponentProps: any;
   let mockedComponentEventsObserver: ComponentEventsObserver;
   let componentEventsObserver: ComponentEventsObserver;
 
@@ -28,9 +28,9 @@ describe('ComponentWrapper', () => {
   }
 
   class TestParent extends React.Component<any, any> {
-    private ChildClass;
+    private ChildClass: any;
 
-    constructor(props) {
+    constructor(props: any) {
       super(props);
       this.ChildClass = props.ChildClass;
       this.state = { propsFromState: {} };
@@ -55,7 +55,7 @@ describe('ComponentWrapper', () => {
   it('must have componentId as prop', () => {
     const NavigationComponent = ComponentWrapper.wrap(componentName, () => MyComponent, store, componentEventsObserver);
     const orig = console.error;
-    console.error = (a) => a;
+    console.error = (a: any) => a;
     expect(() => {
       renderer.create(<NavigationComponent />);
     }).toThrowError('Component example.MyComponent does not have a componentId!');
@@ -151,14 +151,17 @@ describe('ComponentWrapper', () => {
         );
       }
     }
-    function mapStateToProps(state) {
+    interface RootState {
+      txt: string;
+    }
+    function mapStateToProps(state: RootState) {
       return {
         txt: state.txt
       };
     }
     const ConnectedComp = require('react-redux').connect(mapStateToProps)(MyReduxComp);
     const ReduxProvider = require('react-redux').Provider;
-    const initialState = { txt: 'it just works' };
+    const initialState: RootState = { txt: 'it just works' };
     const reduxStore = require('redux').createStore((state = initialState) => state);
 
     it(`wraps the component with a react-redux provider with passed store`, () => {
