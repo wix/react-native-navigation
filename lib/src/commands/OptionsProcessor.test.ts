@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
-  let options;
+  let options: Record<string, any>;
   let store: Store;
   beforeEach(() => {
     options = {};
