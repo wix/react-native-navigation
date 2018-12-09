@@ -30,13 +30,14 @@
 
 - (instancetype)initWithJsCodeLocation:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate mainWindow:(UIWindow *)mainWindow {
 	if (self = [super init]) {
+		_mainWindow = mainWindow;
 		_jsCodeLocation = jsCodeLocation;
 		_launchOptions = launchOptions;
 		_delegate = delegate;
 		
 		_store = [RNNStore new];
 		_bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:_launchOptions];
-		_mainWindow = mainWindow;
+		
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(onJavaScriptLoaded)
