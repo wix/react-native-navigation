@@ -3,18 +3,19 @@ import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider.mock';
-import { NativeCommandsSender } from '../adapters/NativeCommandsSender.mock';
+import { NativeCommandsSender as NativeCommandsSenderMock } from '../adapters/NativeCommandsSender.mock';
 import { Commands } from './Commands';
 import { CommandsObserver } from '../events/CommandsObserver';
+import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 
 describe('Commands', () => {
   let uut: Commands;
-  let mockCommandsSender;
-  let store;
+  let mockCommandsSender: NativeCommandsSender;
+  let store: Store;
   let commandsObserver: CommandsObserver;
 
   beforeEach(() => {
-    mockCommandsSender = new NativeCommandsSender();
+    mockCommandsSender = new NativeCommandsSenderMock();
     store = new Store();
     commandsObserver = new CommandsObserver();
 
