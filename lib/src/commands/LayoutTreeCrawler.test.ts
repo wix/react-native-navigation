@@ -4,8 +4,8 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider.mock';
 import { Store } from '../components/Store';
 
 describe('LayoutTreeCrawler', () => {
-  let uut;
-  let store;
+  let uut: LayoutTreeCrawler;
+  let store: Store;
 
   beforeEach(() => {
     store = new Store();
@@ -20,27 +20,22 @@ describe('LayoutTreeCrawler', () => {
   });
 
   it('does not generate unique id when already provided', () => {
-    const node = { id: 'user defined id', type: LayoutType.Stack };
+    const node = { id: 'user defined id', type: LayoutType.Stack, data: {}, children: [] };
     uut.crawl(node);
     expect(node.id).toEqual('user defined id');
   });
 
   it('crawls a layout tree and ensures data exists', () => {
-    const node: any = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs }] };
+    const node = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }], data: {} };
     uut.crawl(node);
     expect(node.data).toEqual({});
     expect(node.children[0].data).toEqual({});
   });
 
   it('crawls a layout tree and ensures children exists', () => {
-    const node: any = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs }] };
+    const node = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }], data: {} };
     uut.crawl(node);
     expect(node.children[0].children).toEqual([]);
-  });
-
-  it('crawls a layout tree and asserts known layout type', () => {
-    const node = { type: LayoutType.Stack, children: [{ type: 'Bob' }] };
-    expect(() => uut.crawl(node)).toThrowError('Unknown layout type Bob');
   });
 
   it('saves passProps into store for Component nodes', () => {

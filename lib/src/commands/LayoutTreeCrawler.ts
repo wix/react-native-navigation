@@ -58,12 +58,6 @@ export class LayoutTreeCrawler {
     node.data.options = _.merge({}, staticOptions, passedOptions);
   }
 
-  _assertKnownLayoutType(type) {
-    if (!LayoutType[type]) {
-      throw new Error(`Unknown layout type ${type}`);
-    }
-  }
-
   _assertComponentDataName(component) {
     if (!component.data.name) {
       throw new Error('Missing component data.name');
