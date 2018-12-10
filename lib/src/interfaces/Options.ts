@@ -239,6 +239,10 @@ export interface OptionsTopBarButton {
    */
   component?: {
     name: string;
+    /**
+     * Properties to pass down to the component
+     */
+    passProps?: object;
   };
   /**
    * Set the button text

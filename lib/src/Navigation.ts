@@ -18,7 +18,7 @@ import { Options } from './interfaces/Options';
 import { ComponentWrapper } from './components/ComponentWrapper';
 import { ComponentWrapperWithRedux } from './components/ComponentWrapperWithRedux';
 
-export class Navigation {
+export class NavigationRoot {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
   public readonly TouchablePreview: React.ComponentType<any>;
   public readonly store: Store;
