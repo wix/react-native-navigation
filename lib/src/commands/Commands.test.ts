@@ -360,27 +360,26 @@ describe('Commands', () => {
     //   expect(mockCommandsSender.showOverlay.mock.calls[0][1].data.inner).not.toBe(obj);
     // });
 
-    // it('resolves with the component id', async () => {
-    //   mockCommandsSender.showOverlay.mockReturnValue(Promise.resolve('Component1'));
-    //   const result = await uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
-    //   expect(result).toEqual('Component1');
-    // });
+    it('resolves with the component id', async () => {
+      when(mockedNativeCommandsSender.showOverlay(anyString(), anything())).thenResolve('Component1' as any);
+      const result = await uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
+      expect(result).toEqual('Component1');
+    });
   });
 
-//   describe('dismissOverlay', () => {
-//     it('check promise returns true', async () => {
-//       mockCommandsSender.dismissOverlay.mockReturnValue(Promise.resolve(true));
-//       const result = await uut.dismissOverlay('Component1');
-//       expect(mockCommandsSender.dismissOverlay).toHaveBeenCalledTimes(1);
-//       expect(result).toEqual(true);
-//     });
+  describe('dismissOverlay', () => {
+    it('check promise returns true', async () => {
+      when(mockedNativeCommandsSender.dismissOverlay(anyString(), anyString())).thenResolve(true as any);
+      const result = await uut.dismissOverlay('Component1');
+      verify(mockedNativeCommandsSender.dismissOverlay(anyString(), anyString())).called();
+      expect(result).toEqual(true);
+    });
 
-//     it('send command to native with componentId', () => {
-//       uut.dismissOverlay('Component1');
-//       expect(mockCommandsSender.dismissOverlay).toHaveBeenCalledTimes(1);
-//       expect(mockCommandsSender.dismissOverlay).toHaveBeenCalledWith('dismissOverlay+UNIQUE_ID', 'Component1');
-//     });
-//   });
+    it('send command to native with componentId', () => {
+      uut.dismissOverlay('Component1');
+      verify(mockedNativeCommandsSender.dismissOverlay('dismissOverlay+UNIQUE_ID', 'Component1')).called();
+    });
+  });
 
 //   describe('notifies commandsObserver', () => {
 //     let cb;
