@@ -54,7 +54,7 @@ export class NavigationRoot {
    * Every navigation component in your app must be registered with a unique name.
    * The component itself is a traditional React component extending React.Component.
    */
-  public registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider, componentWrapperFunc?): ComponentProvider {
+  public registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider, componentWrapperFunc?: (Component: any) => any): ComponentProvider {
     return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, new ComponentWrapper(componentWrapperFunc));
   }
 

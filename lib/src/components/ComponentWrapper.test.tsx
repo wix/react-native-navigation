@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text } from 'react-native';
+import { View, Text } from 'react-native';
 import * as renderer from 'react-test-renderer';
 import { ComponentWrapper } from './ComponentWrapper';
 import { Store } from './Store';
@@ -145,11 +145,16 @@ describe('ComponentWrapper', () => {
   });
 
   it('invokes componentWrapperFunc passed as argument', () => {
-    const wrappedComponent = {x: 1};
-    const wrapper = jest.fn(() => wrappedComponent);
+    const wrapper = jest.fn((Component) => (
+      <View>
+        <Component/>
+      </View>
+    ));
     uut = new ComponentWrapper(wrapper);
     const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
-    expect(NavigationComponent).toEqual(wrappedComponent);
+    const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
+    expect(wrapper.mock.calls.length).toBe(1);
+    expect(tree.root.findByType(View)).toBeDefined()
   });
 
   describe(`register with redux store`, () => {

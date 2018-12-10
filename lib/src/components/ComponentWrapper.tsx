@@ -9,11 +9,7 @@ interface HocState { componentId: string; allProps: {}; }
 interface HocProps { componentId: string; }
 
 export class ComponentWrapper {
-  private componentWrapperFunc?;
-  constructor(componentWrapperFunc?) {
-    this.componentWrapperFunc = componentWrapperFunc;
-  }
-
+  constructor(private componentWrapper = (component) => component()) { }
   wrap(
     componentName: string | number,
     OriginalComponentGenerator: ComponentProvider,
@@ -23,6 +19,7 @@ export class ComponentWrapper {
     reduxStore?: any
   ): React.ComponentClass<any> {
     const GeneratedComponentClass = OriginalComponentGenerator();
+    const wrapper = this.componentWrapper;
     class WrappedComponent extends React.Component<HocProps, HocState> {
       static getDerivedStateFromProps(nextProps: any, prevState: HocState) {
         return {
@@ -46,11 +43,11 @@ export class ComponentWrapper {
 
       render() {
         return (
-          <GeneratedComponentClass
+          wrapper(() => <GeneratedComponentClass
             {...this.props}
             {...this.state.allProps}
             componentId={this.state.componentId}
-          />
+          />)
         );
       }
 
@@ -63,15 +60,7 @@ export class ComponentWrapper {
 
     ReactLifecyclesCompat.polyfill(WrappedComponent);
     require('hoist-non-react-statics')(WrappedComponent, GeneratedComponentClass);
-
-    console.log('guyca', `componentWrapperFunc: ${this.componentWrapperFunc}`);
-    if (ReduxProvider) {
-      return this.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore);
-    } else if (this.componentWrapperFunc) {
-      return this.componentWrapperFunc(WrappedComponent);
-    } else {
-      return WrappedComponent;
-    }
+    return ReduxProvider ? this.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore) : WrappedComponent;
   }
 
   wrapWithRedux(WrappedComponent: React.ComponentClass<any>, ReduxProvider: any, reduxStore: any): React.ComponentClass<any> {

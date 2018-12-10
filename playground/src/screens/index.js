@@ -42,15 +42,12 @@ function registerScreens() {
   Navigation.registerComponent(`navigation.playground.TextScreen`, () => TextScreen);
   Navigation.registerComponent(`navigation.playground.PushedScreen`, () => PushedScreen);
   Navigation.registerComponent('navigation.playground.ContextScreen', () => ContextScreen, (NavigationWrappedComponent) => {
-    console.error('guyca', 'wrapped with provider');
     return (
       <TitleContext.Provider value={'Title from Provider'}>
         <NavigationWrappedComponent/>
       </TitleContext.Provider>
     );
-  }
-  );
-  Navigation.registerComponent('navigation.playground.ContextScreen', () => ContextScreen);
+  });
   Navigation.registerComponent(`navigation.playground.OptionsScreen`, () => OptionsScreen);
   Navigation.registerComponent(`navigation.playground.OrientationSelectScreen`, () => OrientationSelectScreen);
   Navigation.registerComponent(`navigation.playground.OrientationDetectScreen`, () => OrientationDetectScreen);
