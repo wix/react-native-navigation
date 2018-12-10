@@ -16,7 +16,6 @@ import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
 import { ComponentWrapper } from './components/ComponentWrapper';
-import { ComponentWrapperWithRedux } from './components/ComponentWrapperWithRedux';
 
 export class NavigationRoot {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -69,7 +68,7 @@ export class NavigationRoot {
     ReduxProvider: any,
     reduxStore: any
   ): ComponentProvider {
-    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, new ComponentWrapperWithRedux(ReduxProvider, reduxStore));
+    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, new ComponentWrapper(), ReduxProvider, reduxStore);
   }
 
   /**

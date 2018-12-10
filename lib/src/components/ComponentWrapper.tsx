@@ -17,6 +17,8 @@ export class ComponentWrapper {
     OriginalComponentGenerator: ComponentProvider,
     store: Store,
     componentEventsObserver: ComponentEventsObserver,
+    ReduxProvider?: any,
+    reduxStore?: any
   ): React.ComponentClass<any> {
     const GeneratedComponentClass = OriginalComponentGenerator();
     class WrappedComponent extends React.Component<HocProps, HocState> {
@@ -59,6 +61,25 @@ export class ComponentWrapper {
 
     ReactLifecyclesCompat.polyfill(WrappedComponent);
     require('hoist-non-react-statics')(WrappedComponent, GeneratedComponentClass);
-    return this.componentWrapperFunc(WrappedComponent);
+
+    if (ReduxProvider) {
+      return this.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore);
+    } else {
+      return this.componentWrapperFunc(WrappedComponent);
+    }
+  }
+
+  wrapWithRedux(WrappedComponent: React.ComponentClass<any>, ReduxProvider: any, reduxStore: any): React.ComponentClass<any> {
+    class ReduxWrapper extends React.Component<any, any> {
+      render() {
+        return (
+          <ReduxProvider store={reduxStore}>
+            <WrappedComponent {...this.props} />
+          </ReduxProvider>
+        );
+      }
+    }
+    require('hoist-non-react-statics')(ReduxWrapper, WrappedComponent);
+    return ReduxWrapper;
   }
 }
