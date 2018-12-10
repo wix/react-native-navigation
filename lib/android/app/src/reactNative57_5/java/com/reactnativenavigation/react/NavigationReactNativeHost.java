@@ -35,7 +35,6 @@ public class NavigationReactNativeHost extends ReactNativeHost implements Bundle
         }
     };
 
-
     public NavigationReactNativeHost(NavigationApplication application) {
         this(application, application.isDebug(), application.createAdditionalReactPackages());
     }
