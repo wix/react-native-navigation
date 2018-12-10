@@ -56,12 +56,6 @@ describe('Commands', () => {
       }))).called();
     });
 
-    // it('deep clones input to avoid mutation errors', () => {
-    //   const obj = {};
-    //   uut.setRoot({ root: { component: { name: 'bla', inner: obj } as any } });
-    //   expect(mockCommandsSender.setRoot.mock.calls[0][1].root.data.inner).not.toBe(obj);
-    // });
-
     it('passProps into components', () => {
       const passProps = {
         fn: () => 'Hello'
@@ -141,25 +135,11 @@ describe('Commands', () => {
   });
 
   describe('mergeOptions', () => {
-    // it('deep clones input to avoid mutation errors', () => {
-    //   const obj = { title: 'test' };
-    //   uut.mergeOptions('theComponentId', obj as any);
-    //   expect(mockCommandsSender.mergeOptions.mock.calls[0][1]).not.toBe(obj);
-    // });
-
     it('passes options for component', () => {
       uut.mergeOptions('theComponentId', { title: '1' } as any);
       verify(mockedNativeCommandsSender.mergeOptions('theComponentId', deepEqual({title: '1'}))).called();
     });
   });
-
-//   describe('setDefaultOptions', () => {
-//     it('deep clones input to avoid mutation errors', () => {
-//       const obj = { title: 'test' };
-//       uut.setDefaultOptions(obj as any);
-//       expect(mockCommandsSender.setDefaultOptions.mock.calls[0][0]).not.toBe(obj);
-//     });
-//   });
 
   describe('showModal', () => {
     it('sends command to native after parsing into a correct layout tree', () => {
@@ -179,12 +159,6 @@ describe('Commands', () => {
         children: []
       }))).called();
     });
-
-    // it('deep clones input to avoid mutation errors', () => {
-    //   const obj = {};
-    //   uut.showModal({ component: { name: 'name', inner: obj } as any });
-    //   expect(mockCommandsSender.showModal.mock.calls[0][1].data.inner).not.toBe(obj);
-    // });
 
     it('passProps into components', () => {
       const passProps = {};
@@ -232,12 +206,6 @@ describe('Commands', () => {
   });
 
   describe('push', () => {
-    // it('deep clones input to avoid mutation errors', () => {
-    //   const options = {};
-    //   uut.push('theComponentId', { component: { name: 'name', options } });
-    //   expect(mockCommandsSender.push.mock.calls[0][2].data.options).not.toBe(options);
-    // });
-
     it('resolves with the parsed layout', async () => {
       when(mockedNativeCommandsSender.push(anyString(), anyString(), anything())).thenResolve('the resolved layout' as any);
       const result = await uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
@@ -353,12 +321,6 @@ describe('Commands', () => {
         children: []
       }))).called();
     });
-
-    // it('deep clones input to avoid mutation errors', () => {
-    //   const obj = {};
-    //   uut.showOverlay({ component: { name: 'name', inner: obj } as any });
-    //   expect(mockCommandsSender.showOverlay.mock.calls[0][1].data.inner).not.toBe(obj);
-    // });
 
     it('resolves with the component id', async () => {
       when(mockedNativeCommandsSender.showOverlay(anyString(), anything())).thenResolve('Component1' as any);
