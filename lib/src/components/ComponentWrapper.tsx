@@ -12,17 +12,12 @@ export class ComponentWrapper {
   constructor(private componentWrapperFunc = (WrappedComponent) => WrappedComponent) {
   }
 
-  do() {
-    console.log('guyca', 'do ComponentWrapper');
-  }
-
   wrap(
     componentName: string | number,
     OriginalComponentGenerator: ComponentProvider,
     store: Store,
     componentEventsObserver: ComponentEventsObserver,
   ): React.ComponentClass<any> {
-    console.log('guyca', 'wrap');
     const GeneratedComponentClass = OriginalComponentGenerator();
     class WrappedComponent extends React.Component<HocProps, HocState> {
       static getDerivedStateFromProps(nextProps: any, prevState: HocState) {

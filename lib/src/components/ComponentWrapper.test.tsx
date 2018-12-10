@@ -131,16 +131,24 @@ describe('ComponentWrapper', () => {
     expect(store.getPropsForId('component123')).toEqual({});
   });
 
-  it(`merges static members from wrapped component when generated`, () => {
+  it('merges static members from wrapped component when generated', () => {
     const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver) as any;
     expect(NavigationComponent.options).toEqual({ title: 'MyComponentTitle' });
   });
 
-  it(`calls unmounted on componentEventsObserver`, () => {
+  it('calls unmounted on componentEventsObserver', () => {
     const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
     const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
     verify(mockedComponentEventsObserver.unmounted('component123')).never();
     tree.unmount();
     verify(mockedComponentEventsObserver.unmounted('component123')).once();
   });
+
+  it('invokes componentWrapperFunc passed as argument', () => {
+    const wrappedComponent = {x: 1};
+    const wrapper = jest.fn(() => wrappedComponent);
+    uut = new ComponentWrapper(wrapper);
+    const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
+    expect(NavigationComponent).toEqual(wrappedComponent);
+});
 });

@@ -17,7 +17,6 @@ import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
 import { ComponentWrapper } from './components/ComponentWrapper';
 import { ComponentWrapperWithRedux } from './components/ComponentWrapperWithRedux';
-import { ComponentWrapperWithProviders } from './components/ComponentWrapperWithProviders';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -71,21 +70,6 @@ export class Navigation {
     reduxStore: any
   ): ComponentProvider {
     return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, new ComponentWrapperWithRedux(ReduxProvider, reduxStore));
-  }
-
-  /**
-   * Utility helper function like registerComponent,
-   * wraps the provided component with a react-redux Provider with the passed redux store
-   */
-  public registerComponentWithProviders(
-    componentName: string | number,
-    getComponentClassFunc: ComponentProvider,
-    componentWrapperFunc: any
-  ): ComponentProvider {
-    console.log('guyca', 'registerComponentWithProviders!!!!!!!!');
-    const test = new ComponentWrapperWithProviders(componentWrapperFunc);
-    // test.do();
-    return this.componentRegistry.registerComponentWithProvider(componentName, getComponentClassFunc, test);
   }
 
   /**
