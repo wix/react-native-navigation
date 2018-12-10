@@ -344,12 +344,12 @@ describe('Commands', () => {
   });
 
   describe('notifies commandsObserver', () => {
-    let cb;
+    let cb: any;
 
     beforeEach(() => {
       cb = jest.fn();
       const mockParser = { parse: () => 'parsed' };
-      const mockCrawler = { crawl: (x) => x, processOptions: (x) => x };
+      const mockCrawler = { crawl: (x: any) => x, processOptions: (x: any) => x };
       commandsObserver.register(cb);
       uut = new Commands(mockedNativeCommandsSender, mockParser as any, mockCrawler as any, commandsObserver, new UniqueIdProvider());
     });
@@ -385,7 +385,7 @@ describe('Commands', () => {
     // });
 
     describe('passes correct params', () => {
-      const argsForMethodName = {
+      const argsForMethodName: Record<string, any[]> = {
         setRoot: [{}],
         setDefaultOptions: [{}],
         mergeOptions: ['id', {}],
@@ -401,7 +401,7 @@ describe('Commands', () => {
         dismissOverlay: ['id'],
         getLaunchArgs: ['id']
       };
-      const paramsForMethodName = {
+      const paramsForMethodName: Record<string, object> = {
         setRoot: { commandId: 'setRoot+UNIQUE_ID', layout: { root: 'parsed', modals: [], overlays: [] } },
         setDefaultOptions: { options: {} },
         mergeOptions: { componentId: 'id', options: {} },
