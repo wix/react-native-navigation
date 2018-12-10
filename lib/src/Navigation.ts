@@ -17,6 +17,7 @@ import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
 import { ComponentWrapper } from './components/ComponentWrapper';
 import { ComponentWrapperWithRedux } from './components/ComponentWrapperWithRedux';
+import { ComponentWrapperWithProviders } from './components/ComponentWrapperWithProviders';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -32,12 +33,10 @@ export class Navigation {
   private readonly eventsRegistry: EventsRegistry;
   private readonly commandsObserver: CommandsObserver;
   private readonly componentEventsObserver: ComponentEventsObserver;
-  private readonly componentWrapper: ComponentWrapper;
 
   constructor() {
     this.Element = Element;
     this.TouchablePreview = TouchablePreview;
-    this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
@@ -57,8 +56,8 @@ export class Navigation {
    * Every navigation component in your app must be registered with a unique name.
    * The component itself is a traditional React component extending React.Component.
    */
-  public registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider): ComponentProvider {
-    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, this.componentWrapper);
+  public registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider, componentWrapperFunc?): ComponentProvider {
+    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, new ComponentWrapper(componentWrapperFunc));
   }
 
   /**
@@ -78,12 +77,15 @@ export class Navigation {
    * Utility helper function like registerComponent,
    * wraps the provided component with a react-redux Provider with the passed redux store
    */
-  public registerComponentWithProvider(
+  public registerComponentWithProviders(
     componentName: string | number,
     getComponentClassFunc: ComponentProvider,
-    componentWrapper: ComponentWrapper
+    componentWrapperFunc: any
   ): ComponentProvider {
-    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, componentWrapper);
+    console.log('guyca', 'registerComponentWithProviders!!!!!!!!');
+    const test = new ComponentWrapperWithProviders(componentWrapperFunc);
+    // test.do();
+    return this.componentRegistry.registerComponentWithProvider(componentName, getComponentClassFunc, test);
   }
 
   /**

@@ -38,13 +38,12 @@ describe('ComponentRegistry', () => {
     expect(mockRegistry.mock.calls[0][1]()).toEqual(result());
   });
 
-  it('saves the wrapper component generator the store', () => {
+  it('saves the wrapper component generator to the store', () => {
     expect(store.getComponentClassForName('example.MyComponent.name')).toBeUndefined();
     uut.registerComponent('example.MyComponent.name', () => {}, mockWrapper);
     const Class = store.getComponentClassForName('example.MyComponent.name');
     expect(Class).not.toBeUndefined();
     expect(Class()).toEqual(WrappedComponent);
-    expect(Object.getPrototypeOf(Class())).toEqual(React.Component);
   });
 
   it('resulting in a normal component', () => {

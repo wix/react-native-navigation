@@ -83,7 +83,7 @@
     "ts-node": "5.x.x",
     "tslint": "5.x.x",
     "typedoc": "0.x.x",
-    "typescript": "2.9.x"
+    "typescript": "3.2.2"
   },
   "jest": {
     "preset": "react-native",

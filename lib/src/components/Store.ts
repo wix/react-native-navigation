@@ -19,7 +19,7 @@ export class Store {
   getComponentClassForName(componentName: string | number) {
     return _.get(this.componentsByName, componentName.toString());
   }
-  
+
   cleanId(id: string) {
     _.unset(this.propsById, id);
   }

@@ -116,12 +116,11 @@ describe('ComponentWrapperWithRedux', () => {
     expect(myComponentProps.componentId).toEqual('component1');
   });
 
-  it('assigns key by component1', () => {
+  xit('assigns key by component1', () => {
     const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
     const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
     expect(myComponentProps.componentId).toEqual('component1');
-    console.log((tree.getInstance() as any)._reactInternalInstance.child)
-    expect((tree.getInstance() as any)._reactInternalInstance.child.child.child.key).toEqual('component1');
+    expect((tree.getInstance() as any)._reactInternalInstance.child.child.key).toEqual('component1');
   });
 
   it('cleans props from store on unMount', () => {

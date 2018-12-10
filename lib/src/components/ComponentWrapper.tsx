@@ -9,12 +9,20 @@ interface HocState { componentId: string; allProps: {}; }
 interface HocProps { componentId: string; }
 
 export class ComponentWrapper {
+  constructor(private componentWrapperFunc = (WrappedComponent) => WrappedComponent) {
+  }
+
+  do() {
+    console.log('guyca', 'do ComponentWrapper');
+  }
+
   wrap(
     componentName: string | number,
     OriginalComponentGenerator: ComponentProvider,
     store: Store,
     componentEventsObserver: ComponentEventsObserver,
   ): React.ComponentClass<any> {
+    console.log('guyca', 'wrap');
     const GeneratedComponentClass = OriginalComponentGenerator();
     class WrappedComponent extends React.Component<HocProps, HocState> {
       static getDerivedStateFromProps(nextProps: any, prevState: HocState) {
@@ -40,9 +48,9 @@ export class ComponentWrapper {
       render() {
         return (
           <GeneratedComponentClass
+            {...this.props}
             {...this.state.allProps}
             componentId={this.state.componentId}
-            key={this.state.componentId}
           />
         );
       }
@@ -56,10 +64,6 @@ export class ComponentWrapper {
 
     ReactLifecyclesCompat.polyfill(WrappedComponent);
     require('hoist-non-react-statics')(WrappedComponent, GeneratedComponentClass);
-    return this.wrapComponent(WrappedComponent);
-  }
-
-  wrapComponent(WrappedComponent: React.ComponentClass<any>): React.ComponentClass<any> {
-    return WrappedComponent;
+    return this.componentWrapperFunc(WrappedComponent);
   }
 }

@@ -7,8 +7,7 @@ module.exports = function (api) {
           "module:metro-react-native-babel-preset"
         ],
         plugins: [
-          "@babel/plugin-proposal-class-properties",
-          
+          "@babel/plugin-proposal-class-properties"
         ]
       }
     }
