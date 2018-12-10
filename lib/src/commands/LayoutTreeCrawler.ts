@@ -26,8 +26,6 @@ export class LayoutTreeCrawler {
 
   crawl(node: LayoutNode): void {
     node.id = node.id || this.uniqueIdProvider.generate(node.type);
-    node.data = node.data || {};
-    node.children = node.children || [];
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }

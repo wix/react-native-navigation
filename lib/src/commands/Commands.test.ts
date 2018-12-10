@@ -1,4 +1,4 @@
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 import { mock, verify, instance, deepEqual, when, anything, anyString } from 'ts-mockito';
 
 import { LayoutTreeParser } from './LayoutTreeParser';
@@ -381,97 +381,89 @@ describe('Commands', () => {
     });
   });
 
-//   describe('notifies commandsObserver', () => {
-//     let cb;
+  describe('notifies commandsObserver', () => {
+    let cb;
 
-//     beforeEach(() => {
-//       cb = jest.fn();
-//       const mockParser = { parse: () => 'parsed' };
-//       const mockCrawler = { crawl: (x) => x, processOptions: (x) => x };
-//       commandsObserver.register(cb);
-//       uut = new Commands(mockCommandsSender, mockParser as any, mockCrawler as any, commandsObserver, new UniqueIdProvider());
-//     });
+    beforeEach(() => {
+      cb = jest.fn();
+      const mockParser = { parse: () => 'parsed' };
+      const mockCrawler = { crawl: (x) => x, processOptions: (x) => x };
+      commandsObserver.register(cb);
+      uut = new Commands(mockedNativeCommandsSender, mockParser as any, mockCrawler as any, commandsObserver, new UniqueIdProvider());
+    });
 
-//     function getAllMethodsOfUut() {
-//       const uutFns = Object.getOwnPropertyNames(Commands.prototype);
-//       const methods = _.filter(uutFns, (fn) => fn !== 'constructor');
-//       expect(methods.length).toBeGreaterThan(1);
-//       return methods;
-//     }
+    function getAllMethodsOfUut() {
+      const uutFns = Object.getOwnPropertyNames(Commands.prototype);
+      const methods = _.filter(uutFns, (fn) => fn !== 'constructor');
+      expect(methods.length).toBeGreaterThan(1);
+      return methods;
+    }
 
-//     function getAllMethodsOfNativeCommandsSender() {
-//       const nativeCommandsSenderFns = _.functions(mockCommandsSender);
-//       expect(nativeCommandsSenderFns.length).toBeGreaterThan(1);
-//       return nativeCommandsSenderFns;
-//     }
+    // function getAllMethodsOfNativeCommandsSender() {
+    //   const nativeCommandsSenderFns = _.functions(mockedNativeCommandsSender);
+    //   expect(nativeCommandsSenderFns.length).toBeGreaterThan(1);
+    //   return nativeCommandsSenderFns;
+    // }
 
-//     it('always call last, when nativeCommand fails, dont notify listeners', () => {
-//       // throw when calling any native commands sender
-//       _.forEach(getAllMethodsOfNativeCommandsSender(), (fn) => {
-//         mockCommandsSender[fn].mockImplementation(() => {
-//           throw new Error(`throwing from mockNativeCommandsSender`);
-//         });
-//       });
+    // it('always call last, when nativeCommand fails, dont notify listeners', () => {
+    //   // expect(getAllMethodsOfUut().sort()).toEqual(getAllMethodsOfNativeCommandsSender().sort());
 
-//       expect(getAllMethodsOfUut().sort()).toEqual(getAllMethodsOfNativeCommandsSender().sort());
+    //   // call all commands on uut, all should throw, no commandObservers called
+    //   _.forEach(getAllMethodsOfUut(), (m) => {
+    //     expect(() => uut[m]()).toThrow();
+    //     expect(cb).not.toHaveBeenCalled();
+    //   });
+    // });
 
-//       // call all commands on uut, all should throw, no commandObservers called
-//       _.forEach(getAllMethodsOfUut(), (m) => {
-//         expect(() => uut[m]()).toThrow();
-//         expect(cb).not.toHaveBeenCalled();
-//       });
-//     });
+    // it('notify on all commands', () => {
+    //   _.forEach(getAllMethodsOfUut(), (m) => {
+    //     uut[m]({});
+    //   });
+    //   expect(cb).toHaveBeenCalledTimes(getAllMethodsOfUut().length);
+    // });
 
-//     it('notify on all commands', () => {
-//       _.forEach(getAllMethodsOfUut(), (m) => {
-//         uut[m]({});
-//       });
-//       expect(cb).toHaveBeenCalledTimes(getAllMethodsOfUut().length);
-//     });
-
-//     describe('passes correct params', () => {
-//       const argsForMethodName = {
-//         setRoot: [{}],
-//         setDefaultOptions: [{}],
-//         mergeOptions: ['id', {}],
-//         showModal: [{}],
-//         dismissModal: ['id', {}],
-//         dismissAllModals: [{}],
-//         push: ['id', {}],
-//         pop: ['id', {}],
-//         popTo: ['id', {}],
-//         popToRoot: ['id', {}],
-//         setStackRoot: ['id', {}],
-//         showOverlay: [{}],
-//         dismissOverlay: ['id'],
-//         getLaunchArgs: ['id']
-//       };
-//       const paramsForMethodName = {
-//         setRoot: { commandId: 'setRoot+UNIQUE_ID', layout: { root: 'parsed', modals: [], overlays: [] } },
-//         setDefaultOptions: { options: {} },
-//         mergeOptions: { componentId: 'id', options: {} },
-//         showModal: { commandId: 'showModal+UNIQUE_ID', layout: 'parsed' },
-//         dismissModal: { commandId: 'dismissModal+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
-//         dismissAllModals: { commandId: 'dismissAllModals+UNIQUE_ID', mergeOptions: {} },
-//         push: { commandId: 'push+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
-//         pop: { commandId: 'pop+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
-//         popTo: { commandId: 'popTo+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
-//         popToRoot: { commandId: 'popToRoot+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
-//         setStackRoot: { commandId: 'setStackRoot+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
-//         showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: 'parsed' },
-//         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
-//         getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' },
-//       };
-//       _.forEach(getAllMethodsOfUut(), (m) => {
-//         it(`for ${m}`, () => {
-//           expect(argsForMethodName).toHaveProperty(m);
-//           expect(paramsForMethodName).toHaveProperty(m);
-//           _.invoke(uut, m, ...argsForMethodName[m]);
-//           expect(cb).toHaveBeenCalledTimes(1);
-//           expect(cb).toHaveBeenCalledWith(m, paramsForMethodName[m]);
-//         });
-//       });
-//     });
-//   });
-// });
+    describe('passes correct params', () => {
+      const argsForMethodName = {
+        setRoot: [{}],
+        setDefaultOptions: [{}],
+        mergeOptions: ['id', {}],
+        showModal: [{}],
+        dismissModal: ['id', {}],
+        dismissAllModals: [{}],
+        push: ['id', {}],
+        pop: ['id', {}],
+        popTo: ['id', {}],
+        popToRoot: ['id', {}],
+        setStackRoot: ['id', {}],
+        showOverlay: [{}],
+        dismissOverlay: ['id'],
+        getLaunchArgs: ['id']
+      };
+      const paramsForMethodName = {
+        setRoot: { commandId: 'setRoot+UNIQUE_ID', layout: { root: 'parsed', modals: [], overlays: [] } },
+        setDefaultOptions: { options: {} },
+        mergeOptions: { componentId: 'id', options: {} },
+        showModal: { commandId: 'showModal+UNIQUE_ID', layout: 'parsed' },
+        dismissModal: { commandId: 'dismissModal+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
+        dismissAllModals: { commandId: 'dismissAllModals+UNIQUE_ID', mergeOptions: {} },
+        push: { commandId: 'push+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
+        pop: { commandId: 'pop+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
+        popTo: { commandId: 'popTo+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
+        popToRoot: { commandId: 'popToRoot+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
+        setStackRoot: { commandId: 'setStackRoot+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
+        showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: 'parsed' },
+        dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
+        getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' },
+      };
+      _.forEach(getAllMethodsOfUut(), (m) => {
+        it(`for ${m}`, () => {
+          expect(argsForMethodName).toHaveProperty(m);
+          expect(paramsForMethodName).toHaveProperty(m);
+          _.invoke(uut, m, ...argsForMethodName[m]);
+          expect(cb).toHaveBeenCalledTimes(1);
+          expect(cb).toHaveBeenCalledWith(m, paramsForMethodName[m]);
+        });
+      });
+    });
+  });
 });
