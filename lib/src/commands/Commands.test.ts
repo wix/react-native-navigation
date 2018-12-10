@@ -218,159 +218,154 @@ describe('Commands', () => {
     });
   });
 
-//   describe('dismissAllModals', () => {
-//     it('sends command to native', () => {
-//       uut.dismissAllModals({});
-//       expect(mockCommandsSender.dismissAllModals).toHaveBeenCalledTimes(1);
-//       expect(mockCommandsSender.dismissAllModals).toHaveBeenCalledWith('dismissAllModals+UNIQUE_ID', {});
-//     });
+  describe('dismissAllModals', () => {
+    it('sends command to native', () => {
+      uut.dismissAllModals({});
+      verify(mockedNativeCommandsSender.dismissAllModals('dismissAllModals+UNIQUE_ID', deepEqual({}))).called();
+    });
 
-//     it('returns a promise with the id', async () => {
-//       mockCommandsSender.dismissAllModals.mockReturnValue(Promise.resolve('the id'));
-//       const result = await uut.dismissAllModals();
-//       expect(result).toEqual('the id');
-//     });
-//   });
+    it('returns a promise with the id', async () => {
+      when(mockedNativeCommandsSender.dismissAllModals(anyString(), anything())).thenResolve('the id' as any);
+      const result = await uut.dismissAllModals();
+      expect(result).toEqual('the id');
+    });
+  });
 
-//   describe('push', () => {
-//     it('deep clones input to avoid mutation errors', () => {
-//       const options = {};
-//       uut.push('theComponentId', { component: { name: 'name', options } });
-//       expect(mockCommandsSender.push.mock.calls[0][2].data.options).not.toBe(options);
-//     });
+  describe('push', () => {
+    // it('deep clones input to avoid mutation errors', () => {
+    //   const options = {};
+    //   uut.push('theComponentId', { component: { name: 'name', options } });
+    //   expect(mockCommandsSender.push.mock.calls[0][2].data.options).not.toBe(options);
+    // });
 
-//     it('resolves with the parsed layout', async () => {
-//       mockCommandsSender.push.mockReturnValue(Promise.resolve('the resolved layout'));
-//       const result = await uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
-//       expect(result).toEqual('the resolved layout');
-//     });
+    it('resolves with the parsed layout', async () => {
+      when(mockedNativeCommandsSender.push(anyString(), anyString(), anything())).thenResolve('the resolved layout' as any);
+      const result = await uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
+      expect(result).toEqual('the resolved layout');
+    });
 
-//     it('parses into correct layout node and sends to native', () => {
-//       uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
-//       expect(mockCommandsSender.push).toHaveBeenCalledTimes(1);
-//       expect(mockCommandsSender.push).toHaveBeenCalledWith('push+UNIQUE_ID', 'theComponentId', {
-//         type: 'Component',
-//         id: 'Component+UNIQUE_ID',
-//         data: {
-//           name: 'com.example.MyScreen',
-//           options: {}
-//         },
-//         children: []
-//       });
-//     });
+    it('parses into correct layout node and sends to native', () => {
+      uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
+      verify(mockedNativeCommandsSender.push('push+UNIQUE_ID', 'theComponentId', deepEqual({
+        type: 'Component',
+        id: 'Component+UNIQUE_ID',
+        data: {
+          name: 'com.example.MyScreen',
+          options: {},
+          passProps: undefined
+        },
+        children: []
+      }))).called();
+    });
 
-//     it('calls component generator once', async () => {
-//       const generator = jest.fn(() => {
-//         return {};
-//       });
-//       store.setComponentClassForName('theComponentName', generator);
-//       await uut.push('theComponentId', { component: { name: 'theComponentName' } });
-//       expect(generator).toHaveBeenCalledTimes(1);
-//     });
-//   });
+    it('calls component generator once', async () => {
+      const generator = jest.fn(() => {
+        return {};
+      });
+      store.setComponentClassForName('theComponentName', generator);
+      await uut.push('theComponentId', { component: { name: 'theComponentName' } });
+      expect(generator).toHaveBeenCalledTimes(1);
+    });
+  });
 
-//   describe('pop', () => {
-//     it('pops a component, passing componentId', () => {
-//       uut.pop('theComponentId', {});
-//       expect(mockCommandsSender.pop).toHaveBeenCalledTimes(1);
-//       expect(mockCommandsSender.pop).toHaveBeenCalledWith('pop+UNIQUE_ID', 'theComponentId', {});
-//     });
-//     it('pops a component, passing componentId and options', () => {
-//       const options = {
-//         customTransition: {
-//           animations: [
-//             { type: 'sharedElement', fromId: 'title2', toId: 'title1', startDelay: 0, springVelocity: 0.2, duration: 0.5 }
-//           ],
-//           duration: 0.8
-//         }
-//       };
-//       uut.pop('theComponentId', options as any);
-//       expect(mockCommandsSender.pop).toHaveBeenCalledTimes(1);
-//       expect(mockCommandsSender.pop).toHaveBeenCalledWith('pop+UNIQUE_ID', 'theComponentId', options);
-//     });
+  describe('pop', () => {
+    it('pops a component, passing componentId', () => {
+      uut.pop('theComponentId', {});
+      verify(mockedNativeCommandsSender.pop('pop+UNIQUE_ID', 'theComponentId', deepEqual({}))).called();
+    });
+    it('pops a component, passing componentId and options', () => {
+      const options = {
+        customTransition: {
+          animations: [
+            { type: 'sharedElement', fromId: 'title2', toId: 'title1', startDelay: 0, springVelocity: 0.2, duration: 0.5 }
+          ],
+          duration: 0.8
+        }
+      };
+      uut.pop('theComponentId', options as any);
+      verify(mockedNativeCommandsSender.pop('pop+UNIQUE_ID', 'theComponentId', options)).called();
+    });
 
-//     it('pop returns a promise that resolves to componentId', async () => {
-//       mockCommandsSender.pop.mockReturnValue(Promise.resolve('theComponentId'));
-//       const result = await uut.pop('theComponentId', {});
-//       expect(result).toEqual('theComponentId');
-//     });
-//   });
+    it('pop returns a promise that resolves to componentId', async () => {
+      when(mockedNativeCommandsSender.pop(anyString(), anyString(), anything())).thenResolve('theComponentId' as any);
+      const result = await uut.pop('theComponentId', {});
+      expect(result).toEqual('theComponentId');
+    });
+  });
 
-//   describe('popTo', () => {
-//     it('pops all components until the passed Id is top', () => {
-//       uut.popTo('theComponentId', {});
-//       expect(mockCommandsSender.popTo).toHaveBeenCalledTimes(1);
-//       expect(mockCommandsSender.popTo).toHaveBeenCalledWith('popTo+UNIQUE_ID', 'theComponentId', {});
-//     });
+  describe('popTo', () => {
+    it('pops all components until the passed Id is top', () => {
+      uut.popTo('theComponentId', {});
+      verify(mockedNativeCommandsSender.popTo('popTo+UNIQUE_ID', 'theComponentId', deepEqual({}))).called();
+    });
 
-//     it('returns a promise that resolves to targetId', async () => {
-//       mockCommandsSender.popTo.mockReturnValue(Promise.resolve('theComponentId'));
-//       const result = await uut.popTo('theComponentId');
-//       expect(result).toEqual('theComponentId');
-//     });
-//   });
+    it('returns a promise that resolves to targetId', async () => {
+      when(mockedNativeCommandsSender.popTo(anyString(), anyString(), anything())).thenResolve('theComponentId' as any);
+      const result = await uut.popTo('theComponentId');
+      expect(result).toEqual('theComponentId');
+    });
+  });
 
-//   describe('popToRoot', () => {
-//     it('pops all components to root', () => {
-//       uut.popToRoot('theComponentId', {});
-//       expect(mockCommandsSender.popToRoot).toHaveBeenCalledTimes(1);
-//       expect(mockCommandsSender.popToRoot).toHaveBeenCalledWith('popToRoot+UNIQUE_ID', 'theComponentId', {});
-//     });
+  describe('popToRoot', () => {
+    it('pops all components to root', () => {
+      uut.popToRoot('theComponentId', {});
+      verify(mockedNativeCommandsSender.popToRoot('popToRoot+UNIQUE_ID', 'theComponentId', deepEqual({}))).called();
+    });
 
-//     it('returns a promise that resolves to targetId', async () => {
-//       mockCommandsSender.popToRoot.mockReturnValue(Promise.resolve('theComponentId'));
-//       const result = await uut.popToRoot('theComponentId');
-//       expect(result).toEqual('theComponentId');
-//     });
-//   });
+    it('returns a promise that resolves to targetId', async () => {
+      when(mockedNativeCommandsSender.popToRoot(anyString(), anyString(), anything())).thenResolve('theComponentId' as any);
+      const result = await uut.popToRoot('theComponentId');
+      expect(result).toEqual('theComponentId');
+    });
+  });
 
-//   describe('setStackRoot', () => {
-//     it('parses into correct layout node and sends to native', () => {
-//       uut.setStackRoot('theComponentId', { component: { name: 'com.example.MyScreen' } });
-//       expect(mockCommandsSender.setStackRoot).toHaveBeenCalledTimes(1);
-//       expect(mockCommandsSender.setStackRoot).toHaveBeenCalledWith('setStackRoot+UNIQUE_ID', 'theComponentId', {
-//         type: 'Component',
-//         id: 'Component+UNIQUE_ID',
-//         data: {
-//           name: 'com.example.MyScreen',
-//           options: {}
-//         },
-//         children: []
-//       });
-//     });
-//   });
+  describe('setStackRoot', () => {
+    it('parses into correct layout node and sends to native', () => {
+      uut.setStackRoot('theComponentId', { component: { name: 'com.example.MyScreen' } });
+      verify(mockedNativeCommandsSender.setStackRoot('setStackRoot+UNIQUE_ID', 'theComponentId', deepEqual({
+        type: 'Component',
+        id: 'Component+UNIQUE_ID',
+        data: {
+          name: 'com.example.MyScreen',
+          options: {},
+          passProps: undefined
+        },
+        children: []
+      }))).called();
+    });
+  });
 
-//   describe('showOverlay', () => {
-//     it('sends command to native after parsing into a correct layout tree', () => {
-//       uut.showOverlay({
-//         component: {
-//           name: 'com.example.MyScreen'
-//         }
-//       });
-//       expect(mockCommandsSender.showOverlay).toHaveBeenCalledTimes(1);
-//       expect(mockCommandsSender.showOverlay).toHaveBeenCalledWith('showOverlay+UNIQUE_ID', {
-//         type: 'Component',
-//         id: 'Component+UNIQUE_ID',
-//         data: {
-//           name: 'com.example.MyScreen',
-//           options: {}
-//         },
-//         children: []
-//       });
-//     });
+  describe('showOverlay', () => {
+    it('sends command to native after parsing into a correct layout tree', () => {
+      uut.showOverlay({
+        component: {
+          name: 'com.example.MyScreen'
+        }
+      });
+      verify(mockedNativeCommandsSender.showOverlay('showOverlay+UNIQUE_ID', deepEqual({
+        type: 'Component',
+        id: 'Component+UNIQUE_ID',
+        data: {
+          name: 'com.example.MyScreen',
+          options: {},
+          passProps: undefined
+        },
+        children: []
+      }))).called();
+    });
 
-//     it('deep clones input to avoid mutation errors', () => {
-//       const obj = {};
-//       uut.showOverlay({ component: { name: 'name', inner: obj } as any });
-//       expect(mockCommandsSender.showOverlay.mock.calls[0][1].data.inner).not.toBe(obj);
-//     });
+    // it('deep clones input to avoid mutation errors', () => {
+    //   const obj = {};
+    //   uut.showOverlay({ component: { name: 'name', inner: obj } as any });
+    //   expect(mockCommandsSender.showOverlay.mock.calls[0][1].data.inner).not.toBe(obj);
+    // });
 
-//     it('resolves with the component id', async () => {
-//       mockCommandsSender.showOverlay.mockReturnValue(Promise.resolve('Component1'));
-//       const result = await uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
-//       expect(result).toEqual('Component1');
-//     });
-//   });
+    // it('resolves with the component id', async () => {
+    //   mockCommandsSender.showOverlay.mockReturnValue(Promise.resolve('Component1'));
+    //   const result = await uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
+    //   expect(result).toEqual('Component1');
+    // });
+  });
 
 //   describe('dismissOverlay', () => {
 //     it('check promise returns true', async () => {
