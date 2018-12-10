@@ -9,7 +9,9 @@ interface HocState { componentId: string; allProps: {}; }
 interface HocProps { componentId: string; }
 
 export class ComponentWrapper {
-  constructor(private componentWrapperFunc = (WrappedComponent) => WrappedComponent) {
+  private componentWrapperFunc?;
+  constructor(componentWrapperFunc?) {
+    this.componentWrapperFunc = componentWrapperFunc;
   }
 
   wrap(
@@ -62,10 +64,13 @@ export class ComponentWrapper {
     ReactLifecyclesCompat.polyfill(WrappedComponent);
     require('hoist-non-react-statics')(WrappedComponent, GeneratedComponentClass);
 
+    console.log('guyca', `componentWrapperFunc: ${this.componentWrapperFunc}`);
     if (ReduxProvider) {
       return this.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore);
-    } else {
+    } else if (this.componentWrapperFunc) {
       return this.componentWrapperFunc(WrappedComponent);
+    } else {
+      return WrappedComponent;
     }
   }
 
