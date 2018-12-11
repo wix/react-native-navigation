@@ -66,8 +66,8 @@
 - (void)testStackRoot_shouldUpdateNavigationControllerChildrenViewControllers {
 	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
 	[_stackManager setStackRoot:self.vc2 fromViewController:self.vc1 animated:NO completion:^{
-		XCTAssertTrue(self.nvc.childViewControllers.count == 1);
-		XCTAssertTrue([self.nvc.topViewController isEqual:self.vc2]);
+		XCTAssertTrue(self.nvc.childViewControllers.count == 3);
+		XCTAssertTrue([self.nvc.topViewController isEqual:self.vc3]);
 		[expectation fulfill];
 	} rejection:nil];
 
