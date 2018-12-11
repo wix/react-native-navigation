@@ -1,7 +1,6 @@
 module.exports = {
   projectRoot: `${__dirname}/playground`,
   watchFolders: [
-    `${__dirname}/playground`,
     __dirname
   ],
   transformer: {
