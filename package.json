@@ -63,7 +63,7 @@
     "@types/jest": "23.x.x",
     "@types/lodash": "4.x.x",
     "@types/react": "16.x.x",
-    "@types/react-native": "0.51.x",
+    "@types/react-native": "0.57.7",
     "@types/react-test-renderer": "16.x.x",
     "detox": "9.0.6",
     "handlebars": "4.x.x",

@@ -13,7 +13,7 @@ function run() {
 }
 
 function runAndroidUnitTests() {
-  const conf = release ? 'testReactNative51ReleaseUnitTest' : 'testReactNative51DebugUnitTest';
+  const conf = release ? 'testReactNative57_7ReleaseUnitTest' : 'testReactNative57_7DebugUnitTest';
 
   exec.execSync(`cd lib/android && ./gradlew ${conf}`);
 }
