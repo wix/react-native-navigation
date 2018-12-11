@@ -64,9 +64,10 @@ typedef void (^RNNAnimationBlock)(void);
 
 - (void)setStackRoot:(UIViewController *)newRoot fromViewController:(UIViewController *)fromViewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
 	UINavigationController* nvc = fromViewController.navigationController;
+	NSArray *newViewControllers = [[newRoot navigationController] viewControllers];
 	
 	[self performAnimationBlock:^{
-		[nvc setViewControllers:@[newRoot] animated:animated];
+		[nvc setViewControllers:newViewControllers animated:animated];
 	} completion:completion];
 }
 
