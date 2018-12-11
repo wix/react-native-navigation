@@ -3,5 +3,9 @@ module.exports = {
   watchFolders: [__dirname],
   transformer: {
     babelTransformerPath: require.resolve('react-native-typescript-transformer'),
+  },
+  resolver: {
+    extraNodeModules: [__dirname]
   }
 };
+
