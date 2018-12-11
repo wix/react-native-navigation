@@ -9,7 +9,6 @@ interface HocState { componentId: string; allProps: {}; }
 interface HocProps { componentId: string; }
 
 export class ComponentWrapper {
-  constructor(private componentWrapper = (component) => component()) { }
   wrap(
     componentName: string | number,
     OriginalComponentGenerator: ComponentProvider,
@@ -19,7 +18,6 @@ export class ComponentWrapper {
     reduxStore?: any
   ): React.ComponentClass<any> {
     const GeneratedComponentClass = OriginalComponentGenerator();
-    const wrapper = this.componentWrapper;
     class WrappedComponent extends React.Component<HocProps, HocState> {
       static getDerivedStateFromProps(nextProps: any, prevState: HocState) {
         return {
@@ -43,11 +41,11 @@ export class ComponentWrapper {
 
       render() {
         return (
-          wrapper(() => <GeneratedComponentClass
+          <GeneratedComponentClass
             {...this.props}
             {...this.state.allProps}
             componentId={this.state.componentId}
-          />)
+          />
         );
       }
 

@@ -41,13 +41,11 @@ function registerScreens() {
   Navigation.registerComponent(`navigation.playground.StaticLifecycleOverlay`, () => StaticLifecycleOverlay);
   Navigation.registerComponent(`navigation.playground.TextScreen`, () => TextScreen);
   Navigation.registerComponent(`navigation.playground.PushedScreen`, () => PushedScreen);
-  Navigation.registerComponent('navigation.playground.ContextScreen', () => ContextScreen, (NavigationWrappedComponent) => {
-    return (
-      <TitleContext.Provider value={'Title from Provider'}>
-        <NavigationWrappedComponent/>
-      </TitleContext.Provider>
-    );
-  });
+  Navigation.registerComponent('navigation.playground.ContextScreen', () => (props) => (
+    <TitleContext.Provider value={'Title from Provider'}>
+        <ContextScreen {...props} />
+    </TitleContext.Provider>
+  ));
   Navigation.registerComponent(`navigation.playground.OptionsScreen`, () => OptionsScreen);
   Navigation.registerComponent(`navigation.playground.OrientationSelectScreen`, () => OrientationSelectScreen);
   Navigation.registerComponent(`navigation.playground.OrientationDetectScreen`, () => OrientationDetectScreen);

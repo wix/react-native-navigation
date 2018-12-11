@@ -144,17 +144,17 @@ describe('ComponentWrapper', () => {
     verify(mockedComponentEventsObserver.unmounted('component123')).once();
   });
 
-  it('invokes componentWrapperFunc passed as argument', () => {
-    const wrapper = jest.fn((Component) => (
+  it('renders HOC components correctly', () => {
+    const generator = () => (props) => (
       <View>
-        <Component/>
+        <MyComponent {...props}/>
       </View>
-    ));
-    uut = new ComponentWrapper(wrapper);
-    const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
+    );
+    uut = new ComponentWrapper();
+    const NavigationComponent = uut.wrap(componentName, generator, store, componentEventsObserver);
     const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
-    expect(wrapper.mock.calls.length).toBe(1);
     expect(tree.root.findByType(View)).toBeDefined()
+    expect(tree.root.findByType(MyComponent).props).toEqual({componentId: 'component123'});
   });
 
   describe(`register with redux store`, () => {
