@@ -67,7 +67,7 @@ typedef void (^RNNAnimationBlock)(void);
 	NSArray *newViewControllers = [[newRoot navigationController] viewControllers];
 	
 	[self performAnimationBlock:^{
-		[nvc setViewControllers:newViewControllers animated:animated];
+		[nvc setViewControllers:newViewControllers ? newViewControllers : @[newRoot] animated:animated];
 	} completion:completion];
 }
 
