@@ -13,6 +13,10 @@
 	for (id prop in [self objectProperties:otherOptions]) {
 		id value = [otherOptions valueForKey:prop];
 		if ([value isKindOfClass:[RNNOptions class]]) {
+            if( [self valueForKey:prop] == nil ) {
+                RNNOptions* propOptions = [[[value class] alloc] initWithDict:@{}];
+                [self setValue:propOptions forKey:prop];
+            }
 			[[self valueForKey:prop] mergeOptions:value overrideOptions:override];
 		} else if ([value isKindOfClass:[Param class]]) {
 			if ((((Param *)value).hasValue) && (override || !((Param *)[self valueForKey:prop]).hasValue)) {
