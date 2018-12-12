@@ -4,7 +4,7 @@ module.exports = {
     __dirname
   ],
   transformer: {
-    babelTransformerPath: require.resolve('react-native-typescript-transformer'),
+    babelTransformerPath: require.resolve('react-native-typescript-transformer')
   }
 };
 
