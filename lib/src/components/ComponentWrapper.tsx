@@ -42,7 +42,6 @@ export class ComponentWrapper {
       render() {
         return (
           <GeneratedComponentClass
-            {...this.props}
             {...this.state.allProps}
             componentId={this.state.componentId}
           />
