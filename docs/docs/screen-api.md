@@ -62,7 +62,7 @@ Navigation.setStackRoot(this.props.componentId, {
         options: {
           animations: {
             setStackRoot: {
-              enable: true
+              enabled: true
             }
           }
         }

@@ -3,6 +3,6 @@
 
 @interface RNNSplashScreen : UIViewController
 
-+(void)show;
++(void)showOnWindow:(UIWindow *)window;
 
 @end

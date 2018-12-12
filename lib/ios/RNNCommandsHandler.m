@@ -34,9 +34,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNOverlayManager* _overlayManager;
 	RNNNavigationStackManager* _stackManager;
 	RNNEventEmitter* _eventEmitter;
+	UIWindow* _mainWindow;
 }
 
-- (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager {
+- (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager mainWindow:(UIWindow *)mainWindow {
 	self = [super init];
 	_store = store;
 	_controllerFactory = controllerFactory;
@@ -45,6 +46,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	_modalManager.delegate = self;
 	_stackManager = stackManager;
 	_overlayManager = overlayManager;
+	_mainWindow = mainWindow;
 	return self;
 }
 
@@ -54,12 +56,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	[_modalManager dismissAllModalsAnimated:NO];
-	[_store removeAllComponentsFromWindow:UIApplication.sharedApplication.delegate.window];
+	[_store removeAllComponentsFromWindow:_mainWindow];
 	
 	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
 	
-	[UIApplication sharedApplication].windows.firstObject.rootViewController = vc;
-
+	_mainWindow.rootViewController = vc;
+	
 	[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
 	completion();
 }
@@ -75,7 +77,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		
 		[vc overrideOptions:newOptions];
 		[vc mergeOptions:newOptions];
-
+		
 		[CATransaction commit];
 	}
 }
@@ -103,8 +105,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		if([vc isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController* rootVc = (RNNRootViewController*)vc;
 			rootVc.previewController = newVc;
-
-      		rootVc.previewCallback = ^(UIViewController *vcc) {
+			
+			rootVc.previewCallback = ^(UIViewController *vcc) {
 				RNNRootViewController* rvc  = (RNNRootViewController*)vcc;
 				[self->_eventEmitter sendOnPreviewCompleted:componentId previewComponentId:newVc.layoutInfo.componentId];
 				if ([newVc.resolveOptions.preview.commit getWithDefaultValue:NO]) {
@@ -131,7 +133,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			if (newVc.resolveOptions.preview.width.hasValue || newVc.resolveOptions.preview.height.hasValue) {
 				newVc.preferredContentSize = size;
 			}
-      
+			
 			RCTExecuteOnMainQueue(^{
 				UIView *view = [[ReactNativeNavigation getBridge].uiManager viewForReactTag:newVc.resolveOptions.preview.reactTag.get];
 				[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];

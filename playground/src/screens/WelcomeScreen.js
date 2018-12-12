@@ -359,7 +359,7 @@ class WelcomeScreen extends Component {
         options: {
           animations: {
             push: {
-              enable: false
+              enabled: false
             }
           },
           preview: reactTag ? {
@@ -391,7 +391,7 @@ class WelcomeScreen extends Component {
         options: {
           animations: {
             push: {
-              enable: false
+              enabled: false
             }
           }
         }

@@ -10,7 +10,7 @@ interface HocProps { componentId: string; }
 
 export class ComponentWrapper {
   static wrap(
-    componentName: string,
+    componentName: string | number,
     OriginalComponentGenerator: ComponentProvider,
     store: Store,
     componentEventsObserver: ComponentEventsObserver,

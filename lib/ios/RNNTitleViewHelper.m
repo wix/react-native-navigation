@@ -127,14 +127,10 @@
 	
 	titleLabel.autoresizingMask = self.titleView.autoresizingMask;
 	
-	UIFont *titleFont = [UIFont boldSystemFontOfSize:17.f];
+	NSDictionary* fontAttributes = [RNNFontAttributesCreator createFontAttributesWithFontFamily:[_titleOptions.fontFamily getWithDefaultValue:nil] fontSize:[_titleOptions.fontSize getWithDefaultValue:nil] color:[_subtitleOptions.color getWithDefaultValue:nil]];
+	[titleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.title attributes:fontAttributes]];
 	
-	CGFloat fontSizeFloat = [RCTConvert CGFloat:[_titleOptions.fontSize getWithDefaultValue:@(17)]];
-	titleFont = [UIFont boldSystemFontOfSize:fontSizeFloat];
-	
-	[titleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.title attributes:_titleOptions.fontAttributes]];
-	
-	CGSize labelSize = [titleLabel.text sizeWithAttributes:@{NSFontAttributeName:titleFont}];
+	CGSize labelSize = [titleLabel.text sizeWithAttributes:fontAttributes];
 	CGRect labelframe = titleLabel.frame;
 	labelframe.size = labelSize;
 	titleLabel.frame = labelframe;
