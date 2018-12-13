@@ -16,7 +16,7 @@ const testIDs = require('../testIDs');
 
 const ITEMS = [];
 for(let i = 0; i < 200; i++) {
-  ITEMS.push(`key ${i}`);
+  ITEMS.push({key: `${i}`});
 }
 
 class SearchControllerScreen extends Component {
@@ -116,8 +116,8 @@ module.exports = SearchControllerScreen;
 const styles = StyleSheet.create({
   contentContainer: {},
   row: {
-    height: 50,
-    padding: 20,
+    height: 60,
+    padding: 15,
     justifyContent: 'center'
   },
   rowText: {
