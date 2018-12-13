@@ -16,7 +16,7 @@ const testIDs = require('../testIDs');
 
 const ITEMS = [];
 for(let i = 0; i < 200; i++) {
-  ITEMS.push({key: `${i}`});
+  ITEMS.push({key: `Item ${i}`});
 }
 
 class SearchControllerScreen extends Component {
