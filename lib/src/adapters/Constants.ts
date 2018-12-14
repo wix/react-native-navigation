@@ -1,9 +1,16 @@
 import { NativeModules } from 'react-native';
 
+export interface NavigationConstants {
+  statusBarHeight: number;
+  backButtonId: string;
+  topBarHeight: number;
+  bottomTabsHeight: number;
+}
+
 export class Constants {
-  static async get(): Promise<any> {
+  static async get(): Promise<NavigationConstants> {
     if (!this.instance) {
-      const constants = await NativeModules.RNNBridgeModule.getConstants();
+      const constants: NavigationConstants = await NativeModules.RNNBridgeModule.getConstants();
       this.instance = new Constants(constants);
     }
     return this.instance;
@@ -16,7 +23,7 @@ export class Constants {
   public readonly topBarHeight: number;
   public readonly bottomTabsHeight: number;
 
-  private constructor(constants) {
+  private constructor(constants: NavigationConstants) {
     this.statusBarHeight = constants.statusBarHeight;
     this.topBarHeight = constants.topBarHeight;
     this.backButtonId = constants.backButtonId;
