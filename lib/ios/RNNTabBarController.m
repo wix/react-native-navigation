@@ -33,7 +33,7 @@
 	[self setViewControllers:childViewControllers];
 	
 	IntNumber *currentTabIndex = [self.options valueForKeyPath:@"bottomTabs.currentTabIndex"];
-	if ([currentTabIndex valueForKey:@"value"] != nil) {
+	if ([[currentTabIndex valueForKey:@"value"] isKindOfClass:[NSNumber class]]) {
 		[self setSelectedIndex:[currentTabIndex get]];
 	}
 	
