@@ -32,6 +32,11 @@
 	[self.presenter bindViewController:self];
 	[self setViewControllers:childViewControllers];
 	
+	IntNumber *currentTabIndex = [self.options valueForKeyPath:@"bottomTabs.currentTabIndex"];
+	if ([currentTabIndex valueForKey:@"value"] != nil) {
+		[self setSelectedIndex:[currentTabIndex get]];
+	}
+	
 	return self;
 }
 
