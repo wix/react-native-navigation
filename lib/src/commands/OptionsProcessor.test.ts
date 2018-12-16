@@ -2,22 +2,25 @@ import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
-import { mock, instance, when, anyNumber, anyString } from 'ts-mockito';
+import { mock, instance, when, anyNumber, anyString, verify } from 'ts-mockito';
 import { AssetResolver } from '../adapters/AssetResolver';
 import { ColorService } from '../adapters/ColorService';
 
-describe('navigation options', () => {
+describe(OptionsProcessor.name, () => {
   let optionsProcessor: OptionsProcessor;
-  let store: Store;
+
   const mockedAssetResolver = mock(AssetResolver);
   when(mockedAssetResolver.resolveFromRequire(anyNumber())).thenReturn('lol');
   const assetResolver = instance(mockedAssetResolver);
+
   const mockedColorService = mock(ColorService);
   when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
   const colorService = instance(mockedColorService);
 
+  const mockedStore = mock(Store);
+  const store = instance(mockedStore);
+
   beforeEach(() => {
-    store = new Store();
     optionsProcessor = new OptionsProcessor(
       store,
       new UniqueIdProvider(),
@@ -26,7 +29,7 @@ describe('navigation options', () => {
     );
   });
 
-  it('keeps original values if values was not processed', () => {
+  it('keeps original values if values were not processed', () => {
     const options: Options = {
       blurOnUnmount: false,
       popGesture: false,
@@ -41,7 +44,7 @@ describe('navigation options', () => {
     });
   });
 
-  it('processes colors into numeric AARRGGBB', () => {
+  it('processes color keys', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'red' },
       topBar: { background: { color: 'blue' } },
@@ -52,20 +55,20 @@ describe('navigation options', () => {
     });
   });
 
-  it('resolve image sources with name/ending with icon', () => {
+  it('processes image keys', () => {
     const options: Options = {
       backgroundImage: 123,
       rootBackgroundImage: 234,
-      bottomTab: { icon: 345 },
+      bottomTab: { icon: 345, selectedIcon: 345 },
     };
     expect(optionsProcessor.processOptions(options)).toEqual({
       backgroundImage: 'lol',
       rootBackgroundImage: 'lol',
-      bottomTab: { icon: 'lol' },
+      bottomTab: { icon: 'lol', selectedIcon: 'lol' },
     });
   });
 
-  it('passProps for Buttons options', () => {
+  it('calls store when buttons have props', () => {
     const passProps = { prop: 'prop' };
     const options: Options = {
       topBar: {
@@ -75,10 +78,10 @@ describe('navigation options', () => {
 
     optionsProcessor.processOptions(options);
 
-    expect(store.getPropsForId('1')).toEqual(passProps);
+    verify(mockedStore.setPropsForId('1', passProps)).called();
   });
 
-  it('remove passProps on button components', () => {
+  it('remove passProps if buttons have passProps', () => {
     const options: Options = {
       topBar: {
         rightButtons: [{ component: { passProps: { prop: 'prop' }, name: 'loool' }, id: '1' }],
@@ -87,12 +90,12 @@ describe('navigation options', () => {
 
     expect(optionsProcessor.processOptions(options)).toEqual({
       topBar: {
-        rightButtons: [{ component: { passProps: undefined, name: 'loool' }, id: '1' }],
+        rightButtons: [{ component: { name: 'loool' }, id: '1' }],
       },
     });
   });
 
-  it('button components are untouched if they do not have passProps', () => {
+  it('keeps button components untouched if they do not have passProps', () => {
     const options: Options = {
       topBar: { rightButtons: [{ component: { name: 'loool' }, id: '1' }] },
     };
@@ -109,30 +112,6 @@ describe('navigation options', () => {
 
     expect(optionsProcessor.processOptions(options)).toEqual({
       topBar: { title: { component: { name: 'a', componentId: 'CustomComponent1' } } },
-    });
-  });
-
-  it('passProps from options are not processed', () => {
-    const options: Options = {
-      topBar: {
-        title: {
-          component: { passProps: { color: '#ff0000', some: 'thing' }, name: 'a', id: '123' },
-        },
-      },
-    };
-
-    expect(optionsProcessor.processOptions(options)).toEqual({
-      topBar: { title: { component: { name: 'a', componentId: '123', id: '123' } } },
-    });
-  });
-
-  it('pass supplied componentId for component in options', () => {
-    const options: Options = {
-      topBar: { title: { component: { name: 'a', id: 'Component1' } } },
-    };
-
-    expect(optionsProcessor.processOptions(options)).toEqual({
-      topBar: { title: { component: { name: 'a', id: 'Component1', componentId: 'Component1' } } },
     });
   });
 });

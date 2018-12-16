@@ -24,11 +24,7 @@ export class OptionsProcessor {
         return this.processComponent(value);
       } else if (key === 'color' || _.endsWith(key, 'Color')) {
         return this.colorService.toNativeColor(value);
-      } else if (
-        ['icon', 'image'].includes(key) ||
-        _.endsWith(key, 'Icon') ||
-        _.endsWith(key, 'Image')
-      ) {
+      } else if (key === 'icon' || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
         return this.assetResolver.resolveFromRequire(value);
       } else if (_.endsWith(key, 'Buttons') && Array.isArray(value)) {
         return value.map(this.processButtonsPassProps);
