@@ -3,7 +3,7 @@ import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutType } from './LayoutType';
 
 describe('LayoutTreeParser', () => {
-  let uut;
+  let uut: LayoutTreeParser;
 
   beforeEach(() => {
     uut = new LayoutTreeParser();
