@@ -17,6 +17,11 @@ describe('navigation options', () => {
     uut = new OptionsProcessor(store, new UniqueIdProvider(), assetResolver);
   });
 
+  it('empty options', () => {
+    const options: Options = {};
+    expect(uut.processOptions(options)).toEqual({});
+  });
+
   it('processes colors into numeric AARRGGBB', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'red' },

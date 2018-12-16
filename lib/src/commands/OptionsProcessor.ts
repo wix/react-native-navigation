@@ -19,7 +19,7 @@ export class OptionsProcessor {
 
   private processObjectOrArray(objectOrArray: object | any[]) {
     _.forEach(objectOrArray, (value, key) => {
-      if (!value || _.isEqual(key, 'passProps')) {
+      if (!value || key === 'passProps') {
         return;
       }
       this.processComponent(key, value, objectOrArray);
@@ -35,7 +35,7 @@ export class OptionsProcessor {
   }
 
   private processColor(key: string, value: any, options: Record<string, any>) {
-    if (_.isEqual(key, 'color') || _.endsWith(key, 'Color')) {
+    if (key === 'color' || _.endsWith(key, 'Color')) {
       options[key] = processColor(value);
     }
   }
