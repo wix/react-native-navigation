@@ -47,16 +47,14 @@ describe('navigation options', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'fuchsia' },
     };
-    const transformed: any = uut.processOptions(options);
-    expect(transformed.statusBar.backgroundColor).toEqual(0xffff00ff);
+    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: 0xffff00ff } });
   });
 
   it('process colors with hsla functions', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'hsla(360, 100%, 100%, 1.0)' },
     };
-    const transformed: any = uut.processOptions(options);
-    expect(transformed.statusBar.backgroundColor).toEqual(0xffffffff);
+    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: 0xffffffff } });
   });
 
   it('unknown colors return undefined', () => {
@@ -95,7 +93,9 @@ describe('navigation options', () => {
 
   // it('passProps for custom component', () => {
   //   const passProps = { color: '#ff0000', some: 'thing' };
-  //   options.component = { passProps, name: 'a' };
+  //   const options: Options = {
+  //     component: { passProps, name: 'a' }
+  //   };
 
   //   uut.processOptions({ o: options });
 
