@@ -1,7 +1,7 @@
 import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
-import { Options } from '../interfaces/Options';
+import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
 import { mock, instance, when, anyNumber, anyString } from 'ts-mockito';
 import { AssetResolver } from '../adapters/AssetResolver';
 import { ColorService } from '../adapters/ColorService';
@@ -21,9 +21,19 @@ describe('navigation options', () => {
     uut = new OptionsProcessor(store, new UniqueIdProvider(), assetResolver, colorService);
   });
 
-  it('keeps original value if value was not processed', () => {
-    const options: Options = { blurOnUnmount: false };
-    expect(uut.processOptions(options)).toEqual({ blurOnUnmount: false });
+  it('keeps original values if values was not processed', () => {
+    const options: Options = {
+      blurOnUnmount: false,
+      popGesture: false,
+      modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
+      animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
+    };
+    expect(uut.processOptions(options)).toEqual({
+      blurOnUnmount: false,
+      popGesture: false,
+      modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
+      animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
+    });
   });
 
   it('processes colors into numeric AARRGGBB', () => {

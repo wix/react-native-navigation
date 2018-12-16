@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
-import { Options } from '../interfaces/Options';
+import { Options, OptionsTopBarButton } from '../interfaces/Options';
 import { AssetResolver } from '../adapters/AssetResolver';
 import { ColorService } from '../adapters/ColorService';
 
@@ -31,8 +31,8 @@ export class OptionsProcessor {
       ) {
         return this.assetResolver.resolveFromRequire(value);
       } else if (_.endsWith(key, 'Buttons') && Array.isArray(value)) {
-        return this.processButtonsPassProps(value);
-      } else if (_.isObject(value) || Array.isArray(value)) {
+        return value.map(this.processButtonsPassProps);
+      } else if (_.isObject(value)) {
         return this.processObjectOrArray(value);
       }
 
@@ -40,14 +40,12 @@ export class OptionsProcessor {
     });
   }
 
-  private processButtonsPassProps(value: any[]) {
-    return value.map((button: any) => {
-      if (button.component && button.component.passProps && button.id) {
-        this.store.setPropsForId(button.id, button.component.passProps);
-        button.component.passProps = undefined;
-      }
-      return button;
-    });
+  private processButtonsPassProps = (button: OptionsTopBarButton) => {
+    if (button.component && button.component.passProps && button.id) {
+      this.store.setPropsForId(button.id, button.component.passProps);
+      button.component.passProps = undefined;
+    }
+    return button;
   }
 
   private processComponent(value: { [key: string]: any }) {
