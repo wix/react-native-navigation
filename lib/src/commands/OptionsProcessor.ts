@@ -22,18 +22,17 @@ export class OptionsProcessor {
     return _.mapValues(objectOrArray, (value, key) => {
       if (key === 'component') {
         return this.processComponent(value);
-      }
-      if (key === 'color' || _.endsWith(key, 'Color')) {
+      } else if (key === 'color' || _.endsWith(key, 'Color')) {
         return this.colorService.toNativeColor(value);
-      }
-      if (['icon', 'image'].includes(key) || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
+      } else if (
+        ['icon', 'image'].includes(key) ||
+        _.endsWith(key, 'Icon') ||
+        _.endsWith(key, 'Image')
+      ) {
         return this.assetResolver.resolveFromRequire(value);
-      }
-      if (_.endsWith(key, 'Buttons') && Array.isArray(value)) {
+      } else if (_.endsWith(key, 'Buttons') && Array.isArray(value)) {
         return this.processButtonsPassProps(value);
-      }
-
-      if (_.isObject(value) || Array.isArray(value)) {
+      } else if (_.isObject(value) || Array.isArray(value)) {
         return this.processObjectOrArray(value);
       }
 
@@ -50,7 +49,7 @@ export class OptionsProcessor {
       });
   }
 
-  private processComponent(value: any) {
+  private processComponent(value: { [key: string]: any }) {
     const { passProps, ...rest } = value;
     const componentId = rest.id || this.uniqueIdProvider.generate('CustomComponent');
     if (passProps) {
