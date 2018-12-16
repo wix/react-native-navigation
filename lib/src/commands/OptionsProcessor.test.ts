@@ -80,14 +80,18 @@ describe('navigation options', () => {
     });
   });
 
-  // it('passProps for Buttons options', () => {
-  //   const passProps = { prop: 'prop' };
-  //   options.rightButtons = [{ passProps, id: '1' }];
+  it('passProps for Buttons options', () => {
+    const passProps = { prop: 'prop' };
+    const options: Options = {
+      topBar: {
+        rightButtons: [{ component: { passProps, name: 'loool' }, id: '1' }],
+      },
+    };
 
-  //   uut.processOptions({ o: options });
+    uut.processOptions(options);
 
-  //   expect(store.getPropsForId('1')).toEqual(passProps);
-  // });
+    expect(store.getPropsForId('1')).toEqual(passProps);
+  });
 
   // it('passProps for custom component', () => {
   //   const passProps = { color: '#ff0000', some: 'thing' };
