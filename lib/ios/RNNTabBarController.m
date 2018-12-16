@@ -31,6 +31,7 @@
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
 	[self setViewControllers:childViewControllers];
+	[self.presenter applyOptionsOnInit:self.options];
 	
 	return self;
 }
