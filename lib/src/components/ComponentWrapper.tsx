@@ -14,7 +14,7 @@ export class ComponentWrapper {
     OriginalComponentGenerator: ComponentProvider,
     store: Store,
     componentEventsObserver: ComponentEventsObserver,
-    ComponentClass?: React.Component,
+    concreteComponentProvider: ComponentProvider = OriginalComponentGenerator,
     ReduxProvider?: any,
     reduxStore?: any
   ): React.ComponentClass<any> {
@@ -57,7 +57,7 @@ export class ComponentWrapper {
     }
 
     ReactLifecyclesCompat.polyfill(WrappedComponent);
-    require('hoist-non-react-statics')(WrappedComponent, ComponentClass || GeneratedComponentClass);
+    require('hoist-non-react-statics')(WrappedComponent, concreteComponentProvider());
     return ReduxProvider ? this.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore) : WrappedComponent;
   }
 

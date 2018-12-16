@@ -7,13 +7,13 @@ export class ComponentRegistry {
   constructor(private readonly store: Store, private readonly componentEventsObserver: ComponentEventsObserver) { }
 
   registerComponent(componentName: string | number,
-                    getComponentClassFunc: ComponentProvider,
+                    componentProvider: ComponentProvider,
                     componentWrapper: ComponentWrapper,
-                    ComponentClass?: React.Component,
+                    concreteComponentProvider?: ComponentProvider,
                     ReduxProvider?: any,
                     reduxStore?: any): ComponentProvider {
     const NavigationComponent = () => {
-      return componentWrapper.wrap(componentName.toString(), getComponentClassFunc, this.store, this.componentEventsObserver, ComponentClass, ReduxProvider, reduxStore);
+      return componentWrapper.wrap(componentName.toString(), componentProvider, this.store, this.componentEventsObserver, concreteComponentProvider, ReduxProvider, reduxStore);
     };
     this.store.setComponentClassForName(componentName.toString(), NavigationComponent);
     AppRegistry.registerComponent(componentName.toString(), NavigationComponent);
