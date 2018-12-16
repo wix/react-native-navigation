@@ -14,21 +14,24 @@ export class OptionsProcessor {
   ) {}
 
   public processOptions(options: Options) {
-    const input = options;
-    _.forEach(input, (value, key) => {
-      if (!value) {
+    return this.processObjectOrArray(options);
+  }
+
+  private processObjectOrArray(objectOrArray: object | any[]) {
+    _.forEach(objectOrArray, (value, key) => {
+      if (!value || _.isEqual(key, 'passProps')) {
         return;
       }
-      this.processComponent(key, value, input);
-      this.processColor(key, value, input);
-      this.processImage(key, value, input);
+      this.processComponent(key, value, objectOrArray);
+      this.processColor(key, value, objectOrArray);
+      this.processImage(key, value, objectOrArray);
       this.processButtonsPassProps(key, value);
 
-      if (!_.isEqual(key, 'passProps') && (_.isObject(value) || _.isArray(value))) {
-        this.processOptions(value as any);
+      if (_.isObject(value) || _.isArray(value)) {
+        this.processObjectOrArray(value);
       }
     });
-    return input;
+    return objectOrArray;
   }
 
   private processColor(key: string, value: any, options: Record<string, any>) {
