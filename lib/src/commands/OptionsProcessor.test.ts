@@ -111,14 +111,19 @@ describe('navigation options', () => {
   //   expect(options.component.componentId).toBeDefined();
   // });
 
-  // it('passProps from options are not processed', () => {
-  //   const passProps = { color: '#ff0000', some: 'thing' };
-  //   const clonedProps = _.cloneDeep(passProps);
-  //   options.component = { passProps, name: 'a' };
+  it('passProps from options are not processed', () => {
+    const options: Options = {
+      topBar: {
+        title: {
+          component: { passProps: { color: '#ff0000', some: 'thing' }, name: 'a', id: '123' },
+        },
+      },
+    };
 
-  //   uut.processOptions(options);
-  //   expect(store.getPropsForId(options.component.componentId)).toEqual(clonedProps);
-  // });
+    expect(uut.processOptions(options)).toEqual({
+      topBar: { title: { component: { name: 'a', componentId: '123', id: '123' } } },
+    });
+  });
 
   // it('pass supplied componentId for component in options', () => {
   //   options.component = { name: 'a', id: 'Component1' };
