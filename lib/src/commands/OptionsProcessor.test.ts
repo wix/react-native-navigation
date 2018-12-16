@@ -65,11 +65,11 @@ describe('navigation options', () => {
 
   it('generate component id for component in options', () => {
     const options: Options = {
-      topBar: {title: {component: { name: 'a' }}}
+      topBar: { title: { component: { name: 'a' } } },
     };
 
     expect(uut.processOptions(options)).toEqual({
-      topBar: {title: {component: { name: 'a', componentId: 'CustomComponent1' }}}
+      topBar: { title: { component: { name: 'a', componentId: 'CustomComponent1' } } },
     });
   });
 
