@@ -23,7 +23,7 @@ export class OptionsProcessor {
       if (!value || key === 'passProps') {
         return;
       }
-      if (_.isEqual(key, 'component')) {
+      if (key === 'component') {
         return this.processComponent(value);
       }
       if (key === 'color' || _.endsWith(key, 'Color')) {
@@ -52,10 +52,11 @@ export class OptionsProcessor {
   }
 
   private processComponent(value: any) {
-    value.componentId = value.id ? value.id : this.uniqueIdProvider.generate('CustomComponent');
-    if (value.passProps) {
-      this.store.setPropsForId(value.componentId, value.passProps);
+    const { passProps, ...rest } = value;
+    const componentId = rest.id || this.uniqueIdProvider.generate('CustomComponent');
+    if (passProps) {
+      this.store.setPropsForId(componentId, passProps);
     }
-    return _.omit(value, 'passProps');
+    return { ...rest, componentId };
   }
 }
