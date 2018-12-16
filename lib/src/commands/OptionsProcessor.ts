@@ -4,23 +4,26 @@ import * as resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSo
 
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { Options } from '../interfaces/Options';
 
 export class OptionsProcessor {
   constructor(public store: Store, public uniqueIdProvider: UniqueIdProvider) { }
 
-  public processOptions(options: Record<string, any>) {
-    _.forEach(options, (value, key) => {
+  public processOptions(options: Options) {
+    const input = _.cloneDeep(options);
+    _.forEach(input, (value, key) => {
       if (!value) { return; }
 
-      this.processComponent(key, value, options);
-      this.processColor(key, value, options);
-      this.processImage(key, value, options);
+      this.processComponent(key, value, input);
+      this.processColor(key, value, input);
+      this.processImage(key, value, input);
       this.processButtonsPassProps(key, value);
 
       if (!_.isEqual(key, 'passProps') && (_.isObject(value) || _.isArray(value))) {
         this.processOptions(value);
       }
     });
+    return input;
   }
 
   private processColor(key: string, value: any, options: Record<string, any>) {

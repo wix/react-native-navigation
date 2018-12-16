@@ -40,10 +40,8 @@ export class Commands {
   }
 
   public setDefaultOptions(options: Options) {
-    const input = _.cloneDeep(options);
-    this.layoutTreeCrawler.processOptions(input);
-
-    this.nativeCommandsSender.setDefaultOptions(input);
+    const transformedOptions = this.layoutTreeCrawler.processOptions(options);
+    this.nativeCommandsSender.setDefaultOptions(transformedOptions);
     this.commandsObserver.notify('setDefaultOptions', { options });
   }
 

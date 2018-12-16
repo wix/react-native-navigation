@@ -37,7 +37,7 @@ export class LayoutTreeCrawler {
   }
 
   processOptions = (options: Options) => {
-    this.optionsProcessor.processOptions(options);
+    return this.optionsProcessor.processOptions(options);
   }
 
   _handleComponent(node) {
