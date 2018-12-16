@@ -22,25 +22,24 @@ describe('navigation options', () => {
       statusBar: { backgroundColor: 'red' },
       topBar: { background: { color: 'blue' } },
     };
-    const transformed: any = uut.processOptions(options);
-    expect(transformed.statusBar.backgroundColor).toEqual(0xffff0000);
-    expect(transformed.topBar.background.color).toEqual(0xff0000ff);
+    expect(uut.processOptions(options)).toEqual({
+      statusBar: { backgroundColor: 0xffff0000 },
+      topBar: { background: { color: 0xff0000ff } },
+    });
   });
 
   it('processes numeric colors', () => {
     const options: Options = {
       statusBar: { backgroundColor: '#123456' },
     };
-    const transformed: any = uut.processOptions(options);
-    expect(transformed.statusBar.backgroundColor).toEqual(0xff123456);
+    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: 0xff123456 } });
   });
 
   it('process colors with rgb functions', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'rgb(255, 0, 255)' },
     };
-    const transformed: any = uut.processOptions(options);
-    expect(transformed.statusBar.backgroundColor).toEqual(0xffff00ff);
+    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: 0xffff00ff } });
   });
 
   it('process colors with special words', () => {
@@ -61,8 +60,7 @@ describe('navigation options', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'wut' },
     };
-    const transformed: any = uut.processOptions(options);
-    expect(transformed.statusBar.backgroundColor).toEqual(undefined);
+    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: undefined } });
   });
 
   it('resolve image sources with name/ending with icon', () => {
