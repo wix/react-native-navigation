@@ -7,7 +7,7 @@ import { Layout, LayoutRoot } from '../interfaces/Layout';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { OptionsProcessor } from './OptionsProcessor';
-import { AssetResolver } from '../adapters/AssetResolver';
+import { AssetService } from '../adapters/AssetResolver';
 import { ColorService } from '../adapters/ColorService';
 import { Store } from '../components/Store';
 
@@ -24,7 +24,7 @@ export class Commands {
     this.optionsProcessor = new OptionsProcessor(
       this.store,
       uniqueIdProvider,
-      new AssetResolver(),
+      new AssetService(),
       new ColorService(),
     );
   }

@@ -4,7 +4,7 @@ import { OptionsProcessor } from './OptionsProcessor';
 import { LayoutType } from './LayoutType';
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
-import { AssetResolver } from '../adapters/AssetResolver';
+import { AssetService } from '../adapters/AssetResolver';
 import { ColorService } from '../adapters/ColorService';
 
 export interface Data {
@@ -28,7 +28,7 @@ export class LayoutTreeCrawler {
     this.optionsProcessor = new OptionsProcessor(
       store,
       uniqueIdProvider,
-      new AssetResolver(),
+      new AssetService(),
       new ColorService(),
     );
   }

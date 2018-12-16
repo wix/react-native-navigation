@@ -3,15 +3,15 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
 import { mock, instance, when, anyNumber, anyString, verify } from 'ts-mockito';
-import { AssetResolver } from '../adapters/AssetResolver';
+import { AssetService } from '../adapters/AssetResolver';
 import { ColorService } from '../adapters/ColorService';
 
 describe(OptionsProcessor.name, () => {
   let optionsProcessor: OptionsProcessor;
 
-  const mockedAssetResolver = mock(AssetResolver);
-  when(mockedAssetResolver.resolveFromRequire(anyNumber())).thenReturn('lol');
-  const assetResolver = instance(mockedAssetResolver);
+  const mockedAssetService = mock(AssetService);
+  when(mockedAssetService.resolveFromRequire(anyNumber())).thenReturn('lol');
+  const assetService = instance(mockedAssetService);
 
   const mockedColorService = mock(ColorService);
   when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
@@ -24,7 +24,7 @@ describe(OptionsProcessor.name, () => {
     optionsProcessor = new OptionsProcessor(
       store,
       new UniqueIdProvider(),
-      assetResolver,
+      assetService,
       colorService,
     );
   });

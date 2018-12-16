@@ -3,14 +3,14 @@ import * as _ from 'lodash';
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Options, OptionsTopBarButton } from '../interfaces/Options';
-import { AssetResolver } from '../adapters/AssetResolver';
+import { AssetService } from '../adapters/AssetResolver';
 import { ColorService } from '../adapters/ColorService';
 
 export class OptionsProcessor {
   constructor(
     public store: Store,
     public uniqueIdProvider: UniqueIdProvider,
-    private assetResolver: AssetResolver,
+    private assetService: AssetService,
     private colorService: ColorService,
   ) {}
 
@@ -25,7 +25,7 @@ export class OptionsProcessor {
       } else if (key === 'color' || _.endsWith(key, 'Color')) {
         return this.colorService.toNativeColor(value);
       } else if (key === 'icon' || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
-        return this.assetResolver.resolveFromRequire(value);
+        return this.assetService.resolveFromRequire(value);
       } else if (_.endsWith(key, 'Buttons') && Array.isArray(value)) {
         return value.map(this.processButtonsPassProps);
       } else if (_.isObject(value)) {
