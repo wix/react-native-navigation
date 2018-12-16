@@ -9,6 +9,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationActivity;
@@ -27,6 +28,7 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
@@ -89,11 +91,14 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
     @ReactMethod
-    public void setStackRoot(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
-        final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
+    public void setStackRoot(String commandId, String onComponentId, ReadableArray children, Promise promise) {
         handle(() -> {
-            final ViewController viewController = newLayoutFactory().create(layoutTree);
-            navigator().setStackRoot(onComponentId, viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
+            ArrayList<ViewController> _children = new ArrayList();
+            for (int i = 0; i < children.size(); i++) {
+                final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(children.getMap(i)));
+                _children.add(newLayoutFactory().create(layoutTree));
+            }
+            navigator().setStackRoot(onComponentId, _children, new NativeCommandListener(commandId, promise, eventEmitter, now));
         });
     }
 

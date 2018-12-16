@@ -38,6 +38,7 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -301,7 +302,7 @@ public class NavigatorTest extends BaseTest {
 
         stack.push(child1, new CommandListenerAdapter());
         stack.push(child2, new CommandListenerAdapter());
-        stack.setRoot(child3, new CommandListenerAdapter());
+        stack.setRoot(Collections.singletonList(child3), new CommandListenerAdapter());
 
         assertThat(stack.getChildControllers()).containsOnly(child3);
     }

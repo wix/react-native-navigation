@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.OverlayManager;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -22,6 +22,7 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class Navigator extends ParentController {
 
@@ -148,8 +149,8 @@ public class Navigator extends ParentController {
         applyOnStack(id, listener, stack -> stack.push(viewController, listener));
     }
 
-    public void setStackRoot(String id, ViewController viewController, CommandListener listener) {
-        applyOnStack(id, listener, stack -> stack.setRoot(viewController, listener));
+    public void setStackRoot(String id, List<ViewController> children, CommandListener listener) {
+        applyOnStack(id, listener, stack -> stack.setRoot(children, listener));
     }
 
     public void pop(String id, Options mergeOptions, CommandListener listener) {

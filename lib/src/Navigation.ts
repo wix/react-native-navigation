@@ -1,3 +1,4 @@
+import { isArray } from 'lodash';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { UniqueIdProvider } from './adapters/UniqueIdProvider';
@@ -146,8 +147,9 @@ export class NavigationRoot {
   /**
    * Sets new root component to stack.
    */
-  public setStackRoot(componentId: string, layout: Layout): Promise<any> {
-    return this.commands.setStackRoot(componentId, layout);
+  public setStackRoot(componentId: string, layout: Layout | Layout[]): Promise<any> {
+    const children: Layout[] = isArray(layout) ? layout : [layout];
+    return this.commands.setStackRoot(componentId, children);
   }
 
   /**
