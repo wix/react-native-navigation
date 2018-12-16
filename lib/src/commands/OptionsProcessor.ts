@@ -1,16 +1,17 @@
 import * as _ from 'lodash';
-import { processColor } from 'react-native';
 
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Options, OptionsTopBarButton } from '../interfaces/Options';
 import { AssetResolver } from '../adapters/AssetResolver';
+import { ColorService } from '../adapters/ColorService';
 
 export class OptionsProcessor {
   constructor(
     public store: Store,
     public uniqueIdProvider: UniqueIdProvider,
     private assetResolver: AssetResolver,
+    private colorService: ColorService
   ) {}
 
   public processOptions(options: Options) {
@@ -36,7 +37,7 @@ export class OptionsProcessor {
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (key === 'color' || _.endsWith(key, 'Color')) {
-      options[key] = processColor(value);
+      options[key] = this.colorService.toNativeColor(value);
     }
   }
 

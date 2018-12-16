@@ -2,8 +2,9 @@ import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import { Options } from '../interfaces/Options';
-import { mock, instance, when, anyNumber } from 'ts-mockito';
+import { mock, instance, when, anyNumber, anyString } from 'ts-mockito';
 import { AssetResolver } from '../adapters/AssetResolver';
+import { ColorService } from '../adapters/ColorService';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
@@ -11,10 +12,13 @@ describe('navigation options', () => {
   const mockedAssetResolver = mock(AssetResolver);
   when(mockedAssetResolver.resolveFromRequire(anyNumber())).thenReturn('lol');
   const assetResolver = instance(mockedAssetResolver);
+  const mockedColorService = mock(ColorService);
+  when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
+  const colorService = instance(mockedColorService);
 
   beforeEach(() => {
     store = new Store();
-    uut = new OptionsProcessor(store, new UniqueIdProvider(), assetResolver);
+    uut = new OptionsProcessor(store, new UniqueIdProvider(), assetResolver, colorService);
   });
 
   it('empty options', () => {
@@ -28,16 +32,9 @@ describe('navigation options', () => {
       topBar: { background: { color: 'blue' } },
     };
     expect(uut.processOptions(options)).toEqual({
-      statusBar: { backgroundColor: 0xffff0000 },
-      topBar: { background: { color: 0xff0000ff } },
+      statusBar: { backgroundColor: 666 },
+      topBar: { background: { color: 666 } },
     });
-  });
-
-  it('unknown colors return undefined', () => {
-    const options: Options = {
-      statusBar: { backgroundColor: 'wut' },
-    };
-    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: undefined } });
   });
 
   it('resolve image sources with name/ending with icon', () => {

@@ -6,6 +6,7 @@ import { Options } from '../interfaces/Options';
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { AssetResolver } from '../adapters/AssetResolver';
+import { ColorService } from '../adapters/ColorService';
 
 export interface Data {
   name?: string;
@@ -25,7 +26,12 @@ export class LayoutTreeCrawler {
     private readonly uniqueIdProvider: UniqueIdProvider,
     public readonly store: Store
   ) {
-    this.optionsProcessor = new OptionsProcessor(store, uniqueIdProvider, new AssetResolver());
+    this.optionsProcessor = new OptionsProcessor(
+      store,
+      uniqueIdProvider,
+      new AssetResolver(),
+      new ColorService(),
+    );
   }
 
   crawl = (node: LayoutNode): void => {
