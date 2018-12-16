@@ -32,7 +32,7 @@ export class OptionsProcessor {
       if (['icon', 'image'].includes(key) || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
         return this.assetResolver.resolveFromRequire(value);
       }
-      if (_.endsWith(key, 'Buttons')) {
+      if (_.endsWith(key, 'Buttons') && Array.isArray(value)) {
         return this.processButtonsPassProps(value);
       }
 
