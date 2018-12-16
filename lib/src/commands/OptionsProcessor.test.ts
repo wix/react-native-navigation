@@ -33,34 +33,6 @@ describe('navigation options', () => {
     });
   });
 
-  it('processes numeric colors', () => {
-    const options: Options = {
-      statusBar: { backgroundColor: '#123456' },
-    };
-    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: 0xff123456 } });
-  });
-
-  it('process colors with rgb functions', () => {
-    const options: Options = {
-      statusBar: { backgroundColor: 'rgb(255, 0, 255)' },
-    };
-    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: 0xffff00ff } });
-  });
-
-  it('process colors with special words', () => {
-    const options: Options = {
-      statusBar: { backgroundColor: 'fuchsia' },
-    };
-    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: 0xffff00ff } });
-  });
-
-  it('process colors with hsla functions', () => {
-    const options: Options = {
-      statusBar: { backgroundColor: 'hsla(360, 100%, 100%, 1.0)' },
-    };
-    expect(uut.processOptions(options)).toEqual({ statusBar: { backgroundColor: 0xffffffff } });
-  });
-
   it('unknown colors return undefined', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'wut' },
