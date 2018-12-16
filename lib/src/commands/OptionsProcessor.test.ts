@@ -21,9 +21,9 @@ describe('navigation options', () => {
     uut = new OptionsProcessor(store, new UniqueIdProvider(), assetResolver, colorService);
   });
 
-  it('empty options', () => {
-    const options: Options = {};
-    expect(uut.processOptions(options)).toEqual({});
+  it('keeps original value if value was not processed', () => {
+    const options: Options = { blurOnUnmount: true };
+    expect(uut.processOptions(options)).toEqual({ blurOnUnmount: true });
   });
 
   it('processes colors into numeric AARRGGBB', () => {
