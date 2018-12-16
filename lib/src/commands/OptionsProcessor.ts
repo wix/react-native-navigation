@@ -14,7 +14,7 @@ export class OptionsProcessor {
   ) {}
 
   public processOptions(options: Options) {
-    return this.processObjectOrArray(options);
+    return this.processObjectOrArray({...options});
   }
 
   private processObjectOrArray(objectOrArray: object | any[]) {
