@@ -15,11 +15,11 @@ export class OptionsProcessor {
   ) {}
 
   public processOptions(options: Options): Options {
-    return this.processObjectOrArray(options);
+    return this.processObject(options);
   }
 
-  private processObjectOrArray(objectOrArray: object | any[]): any {
-    return _.mapValues(objectOrArray, (value, key) => {
+  private processObject(object: { [key: string]: any }): any {
+    return _.mapValues(object, (value, key) => {
       if (key === 'component') {
         return this.processComponent(value);
       } else if (key === 'color' || _.endsWith(key, 'Color')) {
@@ -29,7 +29,7 @@ export class OptionsProcessor {
       } else if (_.endsWith(key, 'Buttons') && Array.isArray(value)) {
         return value.map(this.processButtonsPassProps);
       } else if (_.isObject(value)) {
-        return this.processObjectOrArray(value);
+        return this.processObject(value);
       }
 
       return value;
