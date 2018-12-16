@@ -7,7 +7,7 @@ import { AssetResolver } from '../adapters/AssetResolver';
 import { ColorService } from '../adapters/ColorService';
 
 describe('navigation options', () => {
-  let uut: OptionsProcessor;
+  let optionsProcessor: OptionsProcessor;
   let store: Store;
   const mockedAssetResolver = mock(AssetResolver);
   when(mockedAssetResolver.resolveFromRequire(anyNumber())).thenReturn('lol');
@@ -18,7 +18,12 @@ describe('navigation options', () => {
 
   beforeEach(() => {
     store = new Store();
-    uut = new OptionsProcessor(store, new UniqueIdProvider(), assetResolver, colorService);
+    optionsProcessor = new OptionsProcessor(
+      store,
+      new UniqueIdProvider(),
+      assetResolver,
+      colorService,
+    );
   });
 
   it('keeps original values if values was not processed', () => {
@@ -28,7 +33,7 @@ describe('navigation options', () => {
       modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
       animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
     };
-    expect(uut.processOptions(options)).toEqual({
+    expect(optionsProcessor.processOptions(options)).toEqual({
       blurOnUnmount: false,
       popGesture: false,
       modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
@@ -41,7 +46,7 @@ describe('navigation options', () => {
       statusBar: { backgroundColor: 'red' },
       topBar: { background: { color: 'blue' } },
     };
-    expect(uut.processOptions(options)).toEqual({
+    expect(optionsProcessor.processOptions(options)).toEqual({
       statusBar: { backgroundColor: 666 },
       topBar: { background: { color: 666 } },
     });
@@ -53,7 +58,7 @@ describe('navigation options', () => {
       rootBackgroundImage: 234,
       bottomTab: { icon: 345 },
     };
-    expect(uut.processOptions(options)).toEqual({
+    expect(optionsProcessor.processOptions(options)).toEqual({
       backgroundImage: 'lol',
       rootBackgroundImage: 'lol',
       bottomTab: { icon: 'lol' },
@@ -68,7 +73,7 @@ describe('navigation options', () => {
       },
     };
 
-    uut.processOptions(options);
+    optionsProcessor.processOptions(options);
 
     expect(store.getPropsForId('1')).toEqual(passProps);
   });
@@ -80,7 +85,7 @@ describe('navigation options', () => {
       },
     };
 
-    expect(uut.processOptions(options)).toEqual({
+    expect(optionsProcessor.processOptions(options)).toEqual({
       topBar: {
         rightButtons: [{ component: { passProps: undefined, name: 'loool' }, id: '1' }],
       },
@@ -92,7 +97,7 @@ describe('navigation options', () => {
       topBar: { rightButtons: [{ component: { name: 'loool' }, id: '1' }] },
     };
 
-    expect(uut.processOptions(options)).toEqual({
+    expect(optionsProcessor.processOptions(options)).toEqual({
       topBar: { rightButtons: [{ component: { name: 'loool' }, id: '1' }] },
     });
   });
@@ -102,7 +107,7 @@ describe('navigation options', () => {
       topBar: { title: { component: { name: 'a' } } },
     };
 
-    expect(uut.processOptions(options)).toEqual({
+    expect(optionsProcessor.processOptions(options)).toEqual({
       topBar: { title: { component: { name: 'a', componentId: 'CustomComponent1' } } },
     });
   });
@@ -116,7 +121,7 @@ describe('navigation options', () => {
       },
     };
 
-    expect(uut.processOptions(options)).toEqual({
+    expect(optionsProcessor.processOptions(options)).toEqual({
       topBar: { title: { component: { name: 'a', componentId: '123', id: '123' } } },
     });
   });
@@ -126,7 +131,7 @@ describe('navigation options', () => {
       topBar: { title: { component: { name: 'a', id: 'Component1' } } },
     };
 
-    expect(uut.processOptions(options)).toEqual({
+    expect(optionsProcessor.processOptions(options)).toEqual({
       topBar: { title: { component: { name: 'a', id: 'Component1', componentId: 'Component1' } } },
     });
   });
