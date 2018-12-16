@@ -1,7 +1,8 @@
+import * as React from 'react';
 import { Store } from './Store';
 
 describe('Store', () => {
-  let uut;
+  let uut: Store;
 
   beforeEach(() => {
     uut = new Store();
@@ -18,16 +19,13 @@ describe('Store', () => {
 
   it('defensive for invalid Id and props', () => {
     uut.setPropsForId('component1', undefined);
-    uut.setPropsForId(undefined, undefined);
     expect(uut.getPropsForId('component1')).toEqual({});
   });
 
   it('holds original components classes by componentName', () => {
-    const MyComponent = class {
-      //
-    };
-    uut.setComponentClassForName('example.mycomponent', MyComponent);
-    expect(uut.getComponentClassForName('example.mycomponent')).toEqual(MyComponent);
+    const MyWrappedComponent = () => class MyComponent extends React.Component {};
+    uut.setComponentClassForName('example.mycomponent', MyWrappedComponent);
+    expect(uut.getComponentClassForName('example.mycomponent')).toEqual(MyWrappedComponent);
   });
 
   it('clean by component id', () => {

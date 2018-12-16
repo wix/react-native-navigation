@@ -64,7 +64,7 @@ android {
             dimension "RNN.reactNativeVersion"
             buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
         }
-        reactNative57WixFork {
+        reactNative57_5 {
             dimension "RNN.reactNativeVersion"
             buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
         }

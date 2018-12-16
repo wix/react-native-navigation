@@ -25,10 +25,7 @@ export class LayoutTreeCrawler {
   }
 
   crawl(node: LayoutNode): void {
-    this._assertKnownLayoutType(node.type);
     node.id = node.id || this.uniqueIdProvider.generate(node.type);
-    node.data = node.data || {};
-    node.children = node.children || [];
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }
@@ -56,12 +53,6 @@ export class LayoutTreeCrawler {
     const staticOptions = _.isFunction(clazz.options) ? clazz.options(node.data.passProps || {}) : (_.cloneDeep(clazz.options) || {});
     const passedOptions = node.data.options || {};
     node.data.options = _.merge({}, staticOptions, passedOptions);
-  }
-
-  _assertKnownLayoutType(type) {
-    if (!LayoutType[type]) {
-      throw new Error(`Unknown layout type ${type}`);
-    }
   }
 
   _assertComponentDataName(component) {

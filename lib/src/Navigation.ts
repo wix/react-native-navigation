@@ -31,17 +31,17 @@ export class NavigationRoot {
   private readonly eventsRegistry: EventsRegistry;
   private readonly commandsObserver: CommandsObserver;
   private readonly componentEventsObserver: ComponentEventsObserver;
-  private readonly componentWrapper: typeof ComponentWrapper;
+  private readonly componentWrapper: ComponentWrapper;
 
   constructor() {
     this.Element = Element;
     this.TouchablePreview = TouchablePreview;
+    this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
-    this.componentWrapper = ComponentWrapper;
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
-    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver, this.componentWrapper);
+    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver);
     this.layoutTreeParser = new LayoutTreeParser();
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
     this.nativeCommandsSender = new NativeCommandsSender();
@@ -56,9 +56,8 @@ export class NavigationRoot {
    * Every navigation component in your app must be registered with a unique name.
    * The component itself is a traditional React component extending React.Component.
    */
-
-  public registerComponent(componentName: string | number, getComponentClassFunc: ComponentProvider): ComponentProvider {
-    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
+  public registerComponent(componentName: string | number, componentProvider: ComponentProvider, concreteComponentProvider?: ComponentProvider): ComponentProvider {
+    return this.componentRegistry.registerComponent(componentName, componentProvider, this.componentWrapper, concreteComponentProvider);
   }
 
   /**
@@ -71,7 +70,7 @@ export class NavigationRoot {
     ReduxProvider: any,
     reduxStore: any
   ): ComponentProvider {
-    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, ReduxProvider, reduxStore);
+    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, this.componentWrapper, undefined, ReduxProvider, reduxStore);
   }
 
   /**

@@ -2,7 +2,7 @@ apply plugin: "com.android.application"
 
 project.ext.react = [
         root     : "../../../",
-        entryFile: "playground/index.js"
+        entryFile: "index.js"
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"
@@ -28,7 +28,7 @@ android {
 
         testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
         missingDimensionStrategy "minReactNative", "minReactNative46"
-        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative51"
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57_5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
