@@ -97,13 +97,15 @@ describe('navigation options', () => {
     });
   });
 
-  // it('pass supplied componentId for component in options', () => {
-  //   options.component = { name: 'a', id: 'Component1' };
+  it('pass supplied componentId for component in options', () => {
+    const options: Options = {
+      topBar: { title: { component: { name: 'a', id: 'Component1' } } },
+    };
 
-  //   uut.processOptions({ o: options });
-
-  //   expect(options.component.componentId).toEqual('Component1');
-  // });
+    expect(uut.processOptions(options)).toEqual({
+      topBar: { title: { component: { name: 'a', id: 'Component1', componentId: 'Component1' } } },
+    });
+  });
 
   // it('passProps must be with id next to it', () => {
   //   const passProps = { prop: 'prop' };
