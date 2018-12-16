@@ -6,6 +6,19 @@ const { TitleContext, Context } = require('../context');
 class ContextScreen extends React.Component {
   static contextType = Context;
 
+  static options() {
+    return {
+      topBar: {
+        title: {
+          text: 'My Screen'
+        },
+        background: {
+          color: 'red'
+        }
+      }
+    };
+  }
+
   render() {
     return (
       <View style={styles.root}>

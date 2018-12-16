@@ -43,9 +43,9 @@ function registerScreens() {
   Navigation.registerComponent(`navigation.playground.PushedScreen`, () => PushedScreen);
   Navigation.registerComponent('navigation.playground.ContextScreen', () => (props) => (
     <TitleContext.Provider value={'Title from Provider'}>
-        <ContextScreen {...props} />
+      <ContextScreen {...props} />
     </TitleContext.Provider>
-  ), ContextScreen);
+  ), () => ContextScreen);
   Navigation.registerComponent(`navigation.playground.OptionsScreen`, () => OptionsScreen);
   Navigation.registerComponent(`navigation.playground.OrientationSelectScreen`, () => OrientationSelectScreen);
   Navigation.registerComponent(`navigation.playground.OrientationDetectScreen`, () => OrientationDetectScreen);
