@@ -14,6 +14,8 @@
 
 - (UIViewController<RNNParentProtocol> *)createLayout:(NSDictionary*)layout saveToStore:(RNNStore *)store;
 
+- (NSArray<RNNLayoutProtocol> *)createChildrenLayout:(NSArray*)children saveToStore:(RNNStore *)store;
+
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
