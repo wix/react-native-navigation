@@ -55,9 +55,13 @@ export class OptionsProcessor {
     );
   }
 
+  private isButtonArray(buttons: any, key: string): buttons is OptionsTopBarButton[] {
+    return _.endsWith(key, 'Buttons') && !!buttons.length;
+  }
+
   private processButtonsPassProps(key: string, value: any) {
-    if (_.endsWith(key, 'Buttons')) {
-      _.forEach(value, (button) => {
+    if (this.isButtonArray(value, key)) {
+      value.forEach((button) => {
         if (this.isButton(button) && button.component) {
           this.store.setPropsForId(button.id, button.component.passProps);
           button.component.passProps = undefined;
