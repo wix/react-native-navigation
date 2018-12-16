@@ -63,25 +63,15 @@ describe('navigation options', () => {
     expect(store.getPropsForId('1')).toEqual(passProps);
   });
 
-  // it('passProps for custom component', () => {
-  //   const passProps = { color: '#ff0000', some: 'thing' };
-  //   const options: Options = {
-  //     component: { passProps, name: 'a' }
-  //   };
+  it('generate component id for component in options', () => {
+    const options: Options = {
+      topBar: {title: {component: { name: 'a' }}}
+    };
 
-  //   uut.processOptions({ o: options });
-
-  //   expect(store.getPropsForId(options.component.componentId)).toEqual(passProps);
-  //   expect(Object.keys(options.component)).not.toContain('passProps');
-  // });
-
-  // it('generate component id for component in options', () => {
-  //   options.component = { name: 'a' };
-
-  //   uut.processOptions({ o: options });
-
-  //   expect(options.component.componentId).toBeDefined();
-  // });
+    expect(uut.processOptions(options)).toEqual({
+      topBar: {title: {component: { name: 'a', componentId: 'CustomComponent1' }}}
+    });
+  });
 
   it('passProps from options are not processed', () => {
     const options: Options = {
@@ -106,54 +96,4 @@ describe('navigation options', () => {
       topBar: { title: { component: { name: 'a', id: 'Component1', componentId: 'Component1' } } },
     });
   });
-
-  // it('passProps must be with id next to it', () => {
-  //   const passProps = { prop: 'prop' };
-  //   options.rightButtons = [{ passProps }];
-
-  //   uut.processOptions({ o: options });
-
-  //   expect(store.getPropsForId('1')).toEqual({});
-  // });
-
-  // it('undefined value return undefined ', () => {
-  //   options.someImage = undefined;
-  //   uut.processOptions(options);
-
-  //   expect(options.someImage).toEqual(undefined);
-  // });
-
-  // it('omits passProps when processing options', () => {
-  //   const passProps = {
-  //     topBar: {
-  //       rightButtons: [
-  //         {
-  //           passProps: {},
-  //           id: 'btn1'
-  //         },
-  //       ],
-  //       leftButtons: [
-  //         {
-  //           passProps: {},
-  //           id: 'btn2'
-  //         }
-  //       ],
-  //       title: {
-  //         component: {
-  //           passProps: {}
-  //         }
-  //       },
-  //       background: {
-  //         component: {
-  //           passProps: {}
-  //         }
-  //       }
-  //     }
-  //   };
-  //   uut.processOptions(passProps);
-  //   expect(passProps.topBar.rightButtons[0].passProps).toBeUndefined();
-  //   expect(passProps.topBar.leftButtons[0].passProps).toBeUndefined();
-  //   expect(passProps.topBar.title.component.passProps).toBeUndefined();
-  //   expect(passProps.topBar.background.component.passProps).toBeUndefined();
-  // });
 });
