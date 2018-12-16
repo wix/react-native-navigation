@@ -2,19 +2,25 @@ import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import { Options } from '../interfaces/Options';
+import { mock, instance, when, anyNumber } from 'ts-mockito';
+import { AssetResolver } from '../adapters/AssetResolver';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
   let store: Store;
+  const mockedAssetResolver = mock(AssetResolver);
+  when(mockedAssetResolver.resolveFromRequire(anyNumber())).thenReturn('lol');
+  const assetResolver = instance(mockedAssetResolver);
+
   beforeEach(() => {
     store = new Store();
-    uut = new OptionsProcessor(store, new UniqueIdProvider());
+    uut = new OptionsProcessor(store, new UniqueIdProvider(), assetResolver);
   });
 
   it('processes colors into numeric AARRGGBB', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'red' },
-      topBar: { background: { color: 'blue' } }
+      topBar: { background: { color: 'blue' } },
     };
     const transformed: any = uut.processOptions(options);
     expect(transformed.statusBar.backgroundColor).toEqual(0xffff0000);
@@ -61,25 +67,18 @@ describe('navigation options', () => {
     expect(transformed.statusBar.backgroundColor).toEqual(undefined);
   });
 
-  // it('resolve image sources with name/ending with icon', () => {
-  //   options.icon = 'require("https://wix.github.io/react-native-navigation/_images/logo.png");';
-  //   options.image = 'require("https://wix.github.io/react-native-navigation/_images/logo.png");';
-  //   options.myImage = 'require("https://wix.github.io/react-native-navigation/_images/logo.png");';
-  //   options.topBar = {
-  //     myIcon: 'require("https://wix.github.io/react-native-navigation/_images/logo.png");',
-  //     myOtherValue: 'value'
-  //   };
-  //   uut.processOptions(options);
-
-  //   // As we can't import external images and we don't want to add an image here
-  //   // I assign the icons to strings (what the require would generally look like)
-  //   // and expect the value to be resolved, in this case it doesn't find anything and returns null
-  //   expect(options.icon).toEqual(null);
-  //   expect(options.topBar.myIcon).toEqual(null);
-  //   expect(options.image).toEqual(null);
-  //   expect(options.myImage).toEqual(null);
-  //   expect(options.topBar.myOtherValue).toEqual('value');
-  // });
+  it('resolve image sources with name/ending with icon', () => {
+    const options: Options = {
+      backgroundImage: 123,
+      rootBackgroundImage: 234,
+      bottomTab: { icon: 345 },
+    };
+    expect(uut.processOptions(options)).toEqual({
+      backgroundImage: 'lol',
+      rootBackgroundImage: 'lol',
+      bottomTab: { icon: 'lol' },
+    });
+  });
 
   // it('passProps for Buttons options', () => {
   //   const passProps = { prop: 'prop' };

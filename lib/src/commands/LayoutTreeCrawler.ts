@@ -5,6 +5,7 @@ import { LayoutType } from './LayoutType';
 import { Options } from '../interfaces/Options';
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { AssetResolver } from '../adapters/AssetResolver';
 
 export interface Data {
   name?: string;
@@ -24,7 +25,7 @@ export class LayoutTreeCrawler {
     private readonly uniqueIdProvider: UniqueIdProvider,
     public readonly store: Store
   ) {
-    this.optionsProcessor = new OptionsProcessor(store, uniqueIdProvider);
+    this.optionsProcessor = new OptionsProcessor(store, uniqueIdProvider, new AssetResolver());
   }
 
   crawl = (node: LayoutNode): void => {
@@ -53,7 +54,7 @@ export class LayoutTreeCrawler {
 
   _applyStaticOptions(node) {
     const clazz = this.store.getComponentClassForName(node.data.name) ? this.store.getComponentClassForName(node.data.name)() : {};
-    const staticOptions = _.isFunction(clazz.options) ? clazz.options(node.data.passProps || {}) : (_.cloneDeep(clazz.options) || {});
+    const staticOptions = _.isFunction((clazz as any).options) ? (clazz as any).options(node.data.passProps || {}) : (_.cloneDeep((clazz as any).options) || {});
     const passedOptions = node.data.options || {};
     node.data.options = _.merge({}, staticOptions, passedOptions);
   }

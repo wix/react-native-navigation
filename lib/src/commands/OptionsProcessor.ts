@@ -1,26 +1,29 @@
 import * as _ from 'lodash';
 import { processColor } from 'react-native';
-import * as resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Options } from '../interfaces/Options';
+import { AssetResolver } from '../adapters/AssetResolver';
 
 export class OptionsProcessor {
-  constructor(public store: Store, public uniqueIdProvider: UniqueIdProvider) { }
+  constructor(
+    public store: Store,
+    public uniqueIdProvider: UniqueIdProvider,
+    private assetResolver: AssetResolver
+  ) { }
 
   public processOptions(options: Options) {
-    const input = _.cloneDeep(options);
+    const input = options;
     _.forEach(input, (value, key) => {
       if (!value) { return; }
-
       this.processComponent(key, value, input);
       this.processColor(key, value, input);
       this.processImage(key, value, input);
       this.processButtonsPassProps(key, value);
 
       if (!_.isEqual(key, 'passProps') && (_.isObject(value) || _.isArray(value))) {
-        this.processOptions(value);
+        this.processOptions(value as any);
       }
     });
     return input;
@@ -34,7 +37,7 @@ export class OptionsProcessor {
 
   private processImage(key: string, value: any, options: Record<string, any>) {
     if (_.isEqual(key, 'icon') || _.isEqual(key, 'image') || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
-      options[key] = resolveAssetSource(value);
+      options[key] = this.assetResolver.resolveFromRequire(value);
     }
   }
 
