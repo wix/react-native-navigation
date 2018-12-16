@@ -38,12 +38,7 @@ export class OptionsProcessor {
   }
 
   private processImage(key: string, value: any, options: Record<string, any>) {
-    if (
-      _.isEqual(key, 'icon') ||
-      _.isEqual(key, 'image') ||
-      _.endsWith(key, 'Icon') ||
-      _.endsWith(key, 'Image')
-    ) {
+    if (['icon', 'image'].includes(key) || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
       options[key] = this.assetResolver.resolveFromRequire(value);
     }
   }
