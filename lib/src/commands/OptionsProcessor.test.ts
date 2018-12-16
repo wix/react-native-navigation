@@ -63,6 +63,20 @@ describe('navigation options', () => {
     expect(store.getPropsForId('1')).toEqual(passProps);
   });
 
+  it('passProps for Buttons are remove', () => {
+    const options: Options = {
+      topBar: {
+        rightButtons: [{ component: { passProps: { prop: 'prop' }, name: 'loool' }, id: '1' }],
+      },
+    };
+
+    expect(uut.processOptions(options)).toEqual({
+      topBar: {
+        rightButtons: [{ component: { passProps: undefined, name: 'loool' }, id: '1' }],
+      },
+    });
+  });
+
   it('generates component id for component without id', () => {
     const options: Options = {
       topBar: { title: { component: { name: 'a' } } },

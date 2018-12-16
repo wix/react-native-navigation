@@ -43,9 +43,10 @@ export class OptionsProcessor {
   private processButtonsPassProps(value: any[]) {
     return value
       .filter((button: any) => button.component && button.component.passProps && button.id)
-      .forEach((button: any) => {
+      .map((button: any) => {
         this.store.setPropsForId(button.id, button.component.passProps);
         button.component.passProps = undefined;
+        return button;
       });
   }
 
