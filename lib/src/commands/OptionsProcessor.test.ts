@@ -63,7 +63,7 @@ describe('navigation options', () => {
     expect(store.getPropsForId('1')).toEqual(passProps);
   });
 
-  it('generate component id for component in options', () => {
+  it('generates component id for component without id', () => {
     const options: Options = {
       topBar: { title: { component: { name: 'a' } } },
     };
