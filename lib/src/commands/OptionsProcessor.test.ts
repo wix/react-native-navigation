@@ -22,8 +22,8 @@ describe('navigation options', () => {
   });
 
   it('keeps original value if value was not processed', () => {
-    const options: Options = { blurOnUnmount: true };
-    expect(uut.processOptions(options)).toEqual({ blurOnUnmount: true });
+    const options: Options = { blurOnUnmount: false };
+    expect(uut.processOptions(options)).toEqual({ blurOnUnmount: false });
   });
 
   it('processes colors into numeric AARRGGBB', () => {

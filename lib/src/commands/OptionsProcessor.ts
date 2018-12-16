@@ -20,9 +20,6 @@ export class OptionsProcessor {
 
   private processObjectOrArray(objectOrArray: object | any[]): any {
     return _.mapValues(objectOrArray, (value, key) => {
-      if (!value) {
-        return;
-      }
       if (key === 'component') {
         return this.processComponent(value);
       }
