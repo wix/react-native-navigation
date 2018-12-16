@@ -41,13 +41,13 @@ export class OptionsProcessor {
   }
 
   private processButtonsPassProps(value: any[]) {
-    return value
-      .filter((button: any) => button.component && button.component.passProps && button.id)
-      .map((button: any) => {
+    return value.map((button: any) => {
+      if (button.component && button.component.passProps && button.id) {
         this.store.setPropsForId(button.id, button.component.passProps);
         button.component.passProps = undefined;
-        return button;
-      });
+      }
+      return button;
+    });
   }
 
   private processComponent(value: { [key: string]: any }) {
