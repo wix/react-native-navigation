@@ -117,16 +117,6 @@ describe('navigation options', () => {
   //   expect(store.getPropsForId('1')).toEqual({});
   // });
 
-  // it('processes Options object', () => {
-  //   options.someKeyColor = 'rgb(255, 0, 255)';
-  //   options.topBar = { textColor: 'red' };
-  //   options.topBar.innerMostObj = { anotherColor: 'yellow' };
-
-  //   uut.processOptions({ o: options });
-
-  //   expect(options.topBar.textColor).toEqual(0xffff0000);
-  // });
-
   // it('undefined value return undefined ', () => {
   //   options.someImage = undefined;
   //   uut.processOptions(options);
