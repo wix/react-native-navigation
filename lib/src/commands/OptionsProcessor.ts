@@ -36,7 +36,7 @@ export class OptionsProcessor {
         return this.processButtonsPassProps(value);
       }
 
-      if (_.isObject(value) || _.isArray(value)) {
+      if (_.isObject(value) || Array.isArray(value)) {
         return this.processObjectOrArray(value);
       }
     });
