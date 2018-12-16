@@ -2,7 +2,6 @@ import * as _ from 'lodash';
 
 import { OptionsProcessor } from './OptionsProcessor';
 import { LayoutType } from './LayoutType';
-import { Options } from '../interfaces/Options';
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { AssetResolver } from '../adapters/AssetResolver';
@@ -39,12 +38,11 @@ export class LayoutTreeCrawler {
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }
-    this.processOptions(node.data.options);
+    if (node.data.options) {
+      const transformedOptions = this.optionsProcessor.processOptions(node.data.options);
+      node.data.options = transformedOptions;
+    }
     _.forEach(node.children, this.crawl);
-  }
-
-  processOptions = (options: Options) => {
-    return this.optionsProcessor.processOptions(options);
   }
 
   _handleComponent(node) {

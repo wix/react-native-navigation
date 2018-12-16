@@ -6,14 +6,27 @@ import { Options } from '../interfaces/Options';
 import { Layout, LayoutRoot } from '../interfaces/Layout';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
+import { OptionsProcessor } from './OptionsProcessor';
+import { AssetResolver } from '../adapters/AssetResolver';
+import { ColorService } from '../adapters/ColorService';
+import { Store } from '../components/Store';
 
 export class Commands {
+  private optionsProcessor: OptionsProcessor;
   constructor(
     private readonly nativeCommandsSender: NativeCommandsSender,
     private readonly layoutTreeParser: LayoutTreeParser,
     private readonly layoutTreeCrawler: LayoutTreeCrawler,
     private readonly commandsObserver: CommandsObserver,
-    private readonly uniqueIdProvider: UniqueIdProvider) {
+    private readonly uniqueIdProvider: UniqueIdProvider,
+    private readonly store: Store,
+  ) {
+    this.optionsProcessor = new OptionsProcessor(
+      this.store,
+      uniqueIdProvider,
+      new AssetResolver(),
+      new ColorService(),
+    );
   }
 
   public setRoot(simpleApi: LayoutRoot) {
@@ -40,16 +53,14 @@ export class Commands {
   }
 
   public setDefaultOptions(options: Options) {
-    const transformedOptions = this.layoutTreeCrawler.processOptions(options);
+    const transformedOptions = this.optionsProcessor.processOptions(options);
     this.nativeCommandsSender.setDefaultOptions(transformedOptions);
     this.commandsObserver.notify('setDefaultOptions', { options });
   }
 
   public mergeOptions(componentId: string, options: Options) {
-    const input = _.cloneDeep(options);
-    this.layoutTreeCrawler.processOptions(input);
-
-    this.nativeCommandsSender.mergeOptions(componentId, input);
+    const transformedOptions = this.optionsProcessor.processOptions(options);
+    this.nativeCommandsSender.mergeOptions(componentId, transformedOptions);
     this.commandsObserver.notify('mergeOptions', { componentId, options });
   }
 

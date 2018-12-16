@@ -46,7 +46,14 @@ export class NavigationRoot {
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver();
-    this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver, this.uniqueIdProvider);
+    this.commands = new Commands(
+      this.nativeCommandsSender,
+      this.layoutTreeParser,
+      this.layoutTreeCrawler,
+      this.commandsObserver,
+      this.uniqueIdProvider,
+      this.store,
+    );
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
 
     this.componentEventsObserver.registerOnceForAllComponentEvents();

@@ -27,7 +27,8 @@ describe('Commands', () => {
       new LayoutTreeParser(),
       new LayoutTreeCrawler(new UniqueIdProvider(), store),
       commandsObserver,
-      new UniqueIdProvider()
+      new UniqueIdProvider(),
+      store
     );
   });
 
@@ -136,8 +137,8 @@ describe('Commands', () => {
 
   describe('mergeOptions', () => {
     it('passes options for component', () => {
-      uut.mergeOptions('theComponentId', { title: '1' } as any);
-      verify(mockedNativeCommandsSender.mergeOptions('theComponentId', deepEqual({title: '1'}))).called();
+      uut.mergeOptions('theComponentId', { topBar: {title: {text: 'lol'}} });
+      verify(mockedNativeCommandsSender.mergeOptions('theComponentId', deepEqual({ topBar: {title: {text: 'lol'}} }))).called();
     });
   });
 
@@ -351,7 +352,7 @@ describe('Commands', () => {
       const mockParser = { parse: () => 'parsed' };
       const mockCrawler = { crawl: (x: any) => x, processOptions: (x: any) => x };
       commandsObserver.register(cb);
-      uut = new Commands(mockedNativeCommandsSender, mockParser as any, mockCrawler as any, commandsObserver, new UniqueIdProvider());
+      uut = new Commands(mockedNativeCommandsSender, mockParser as any, mockCrawler as any, commandsObserver, new UniqueIdProvider(), store);
     });
 
     function getAllMethodsOfUut() {

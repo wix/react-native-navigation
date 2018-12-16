@@ -39,6 +39,8 @@ export class OptionsProcessor {
       if (_.isObject(value) || Array.isArray(value)) {
         return this.processObjectOrArray(value);
       }
+
+      return value;
     });
   }
 
