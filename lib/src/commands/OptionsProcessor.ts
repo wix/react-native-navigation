@@ -11,40 +11,35 @@ export class OptionsProcessor {
     public store: Store,
     public uniqueIdProvider: UniqueIdProvider,
     private assetResolver: AssetResolver,
-    private colorService: ColorService
+    private colorService: ColorService,
   ) {}
 
-  public processOptions(options: Options) {
-    return this.processObjectOrArray({...options});
+  public processOptions(options: Options): Options {
+    return this.processObjectOrArray(options);
   }
 
-  private processObjectOrArray(objectOrArray: object | any[]) {
-    _.forEach(objectOrArray, (value, key) => {
+  private processObjectOrArray(objectOrArray: object | any[]): any {
+    return _.mapValues(objectOrArray, (value, key) => {
       if (!value || key === 'passProps') {
         return;
       }
-      this.processComponent(key, value, objectOrArray);
-      this.processColor(key, value, objectOrArray);
-      this.processImage(key, value, objectOrArray);
-      this.processButtonsPassProps(key, value);
+      if (_.isEqual(key, 'component')) {
+        return this.processComponent(value);
+      }
+      if (key === 'color' || _.endsWith(key, 'Color')) {
+        return this.colorService.toNativeColor(value);
+      }
+      if (['icon', 'image'].includes(key) || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
+        return this.assetResolver.resolveFromRequire(value);
+      }
+      if (this.isButtonArray(value, key)) {
+        return this.processButtonsPassProps(value);
+      }
 
       if (_.isObject(value) || _.isArray(value)) {
-        this.processObjectOrArray(value);
+        return this.processObjectOrArray(value);
       }
     });
-    return objectOrArray;
-  }
-
-  private processColor(key: string, value: any, options: Record<string, any>) {
-    if (key === 'color' || _.endsWith(key, 'Color')) {
-      options[key] = this.colorService.toNativeColor(value);
-    }
-  }
-
-  private processImage(key: string, value: any, options: Record<string, any>) {
-    if (['icon', 'image'].includes(key) || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
-      options[key] = this.assetResolver.resolveFromRequire(value);
-    }
   }
 
   private isButton(button: any): button is OptionsTopBarButton {
@@ -58,24 +53,20 @@ export class OptionsProcessor {
     return _.endsWith(key, 'Buttons') && !!buttons.length;
   }
 
-  private processButtonsPassProps(key: string, value: any) {
-    if (this.isButtonArray(value, key)) {
-      value.forEach((button) => {
-        if (this.isButton(button) && button.component) {
-          this.store.setPropsForId(button.id, button.component.passProps);
-          button.component.passProps = undefined;
-        }
-      });
-    }
+  private processButtonsPassProps(value: any) {
+    value.forEach((button: any) => {
+      if (this.isButton(button) && button.component) {
+        this.store.setPropsForId(button.id, button.component.passProps);
+        button.component.passProps = undefined;
+      }
+    });
   }
 
-  private processComponent(key: string, value: any, options: Record<string, any>) {
-    if (_.isEqual(key, 'component')) {
-      value.componentId = value.id ? value.id : this.uniqueIdProvider.generate('CustomComponent');
-      if (value.passProps) {
-        this.store.setPropsForId(value.componentId, value.passProps);
-      }
-      options[key] = _.omit(value, 'passProps');
+  private processComponent(value: any) {
+    value.componentId = value.id ? value.id : this.uniqueIdProvider.generate('CustomComponent');
+    if (value.passProps) {
+      this.store.setPropsForId(value.componentId, value.passProps);
     }
+    return _.omit(value, 'passProps');
   }
 }
