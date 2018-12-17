@@ -66,11 +66,13 @@
 		}
 	}
 	
-	if (viewController != nil) {
-		id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
-		appDelegate.window.rootViewController = viewController;
-		[appDelegate.window makeKeyAndVisible];
+	if (viewController == nil) {
+		viewController = [[RNNSplashScreen alloc] init];
 	}
+	
+	id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+	appDelegate.window.rootViewController = viewController;
+	[appDelegate.window makeKeyAndVisible];
 }
 
 @end
