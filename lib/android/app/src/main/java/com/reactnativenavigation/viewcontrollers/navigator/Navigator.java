@@ -13,7 +13,7 @@ import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -207,7 +207,7 @@ public class Navigator extends ParentController {
         return controllerById;
     }
 
-    private void applyOnStack(String fromId, CommandListener listener, Task<StackController> task) {
+    private void applyOnStack(String fromId, CommandListener listener, Func1<StackController> task) {
         ViewController from = findController(fromId);
         if (from != null) {
             if (from instanceof StackController) {
