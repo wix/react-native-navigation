@@ -105,6 +105,14 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void parentControllerIsSet() {
+        uut = createBottomTabs();
+        for (ViewController tab : tabs) {
+            assertThat(tab.getParentController()).isEqualTo(uut);
+        }
+    }
+
+    @Test
     public void setTabs_allChildViewsAreAttachedToHierarchy() {
         uut.onViewAppeared();
         assertThat(uut.getView().getChildCount()).isEqualTo(6);
