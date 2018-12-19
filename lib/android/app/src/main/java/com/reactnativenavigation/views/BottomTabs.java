@@ -16,10 +16,35 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 @SuppressLint("ViewConstructor")
 public class BottomTabs extends AHBottomNavigation {
+    private boolean itemsCreationEnabled = true;
+    private boolean shouldCreateItems = true;
+
+    public void disableItemsCreation() {
+        itemsCreationEnabled = false;
+    }
+
+    public void enableItemsCreation() {
+        itemsCreationEnabled = true;
+        if (shouldCreateItems) createItems();
+    }
+
     public BottomTabs(Context context) {
         super(context);
         setId(CompatUtils.generateViewId());
         setContentDescription("BottomTabs");
+    }
+
+    @Override
+    protected void createItems() {
+        if (itemsCreationEnabled) {
+            superCreateItems();
+        } else {
+            shouldCreateItems = true;
+        }
+    }
+
+    public void superCreateItems() {
+        super.createItems();
     }
 
     public void setTabTestId(int index, Text testId) {

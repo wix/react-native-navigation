@@ -51,6 +51,7 @@ import static org.mockito.Mockito.when;
 public class BottomTabsControllerTest extends BaseTest {
 
     private Activity activity;
+    private BottomTabs bottomTabs;
     private BottomTabsController uut;
     private Options initialOptions = new Options();
     private ViewController child1;
@@ -69,6 +70,12 @@ public class BottomTabsControllerTest extends BaseTest {
     @Override
     public void beforeEach() {
         activity = newActivity();
+        bottomTabs = spy(new BottomTabs(activity) {
+            @Override
+            public void superCreateItems() {
+
+            }
+        });
         childRegistry = new ChildControllersRegistry();
         eventEmitter = Mockito.mock(EventEmitter.class);
 
@@ -181,6 +188,12 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void applyOptions_bottomTabsCreateViewOnlyOnce() {
+        verify(presenter).applyOptions(any());
+        verify(bottomTabs, times(2)).superCreateItems(); // first time when view is created, second time when options are applied
+    }
+
+    @Test
     public void mergeOptions_currentTabIndex() {
         uut.ensureViewIsCreated();
         assertThat(uut.getSelectedIndex()).isZero();
@@ -235,6 +248,17 @@ public class BottomTabsControllerTest extends BaseTest {
             @Override
             public Options resolveCurrentOptions() {
                 return resolvedOptions;
+            }
+
+            @NonNull
+            @Override
+            protected BottomTabs createBottomTabs() {
+                return new BottomTabs(activity) {
+                    @Override
+                    protected void createItems() {
+
+                    }
+                };
             }
         };
 
@@ -346,6 +370,12 @@ public class BottomTabsControllerTest extends BaseTest {
                 super.ensureViewIsCreated();
                 uut.getView().layout(0, 0, 1000, 1000);
                 uut.getBottomTabs().layout(0, 0, 1000, 100);
+            }
+
+            @NonNull
+            @Override
+            protected BottomTabs createBottomTabs() {
+                return bottomTabs;
             }
         };
     }

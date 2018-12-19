@@ -62,7 +62,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	@Override
 	protected ViewGroup createView() {
 		RelativeLayout root = new RelativeLayout(getActivity());
-		bottomTabs = new BottomTabs(getActivity());
+		bottomTabs = createBottomTabs();
         presenter.bindView(bottomTabs, this);
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
@@ -70,14 +70,21 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		lp.addRule(ALIGN_PARENT_BOTTOM);
 		root.addView(bottomTabs, lp);
 		createTabs(root);
+        bottomTabs.disableItemsCreation();
 		return root;
 	}
+
+    @NonNull
+    protected BottomTabs createBottomTabs() {
+        return new BottomTabs(getActivity());
+    }
 
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        presenter.present(options);
-        tabPresenter.present();
+        presenter.applyOptions(options);
+        tabPresenter.applyOptions();
+        bottomTabs.enableItemsCreation();
         this.options.bottomTabsOptions.clearOneTimeOptions();
         this.initialOptions.bottomTabsOptions.clearOneTimeOptions();
     }

@@ -29,7 +29,7 @@ public class Time {
 
     public static void log(String tag) {
         if (tagsToStartTime.containsKey(tag)) {
-            Log.i(tag, "Elapsed: " + (now() - time(tag)));
+            Log.i(tag, "Elapsed: " + (now() - time(tag)) + "ms");
         } else {
             Log.v(tag, "logging start");
         }
