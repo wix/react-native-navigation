@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -103,7 +103,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
         getView().switchToTab(index);
     }
 
-    private void performOnCurrentTab(Task<ViewController> task) {
+    private void performOnCurrentTab(Func1<ViewController> task) {
         task.run(tabs.get(getView().getCurrentItem()));
     }
 }

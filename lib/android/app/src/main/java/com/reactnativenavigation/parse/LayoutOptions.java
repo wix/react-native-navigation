@@ -15,6 +15,7 @@ public class LayoutOptions {
         if (json == null) return result;
 
         result.backgroundColor = ColorParser.parse(json, "backgroundColor");
+        result.componentBackgroundColor = ColorParser.parse(json, "componentBackgroundColor");
         result.topMargin = NumberParser.parse(json, "topMargin");
         result.orientation = OrientationOptions.parse(json);
 
@@ -22,11 +23,13 @@ public class LayoutOptions {
     }
 
     public Colour backgroundColor = new NullColor();
+    public Colour componentBackgroundColor = new NullColor();
     public Number topMargin = new NullNumber();
     public OrientationOptions orientation = new OrientationOptions();
 
     public void mergeWith(LayoutOptions other) {
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
+        if (other.componentBackgroundColor.hasValue()) componentBackgroundColor = other.componentBackgroundColor;
         if (other.topMargin.hasValue()) topMargin = other.topMargin;
         if (other.orientation.hasValue()) orientation = other.orientation;
 
@@ -34,6 +37,7 @@ public class LayoutOptions {
 
     public void mergeWithDefault(LayoutOptions defaultOptions) {
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
+        if (!componentBackgroundColor.hasValue()) componentBackgroundColor = defaultOptions.componentBackgroundColor;
         if (!topMargin.hasValue()) topMargin = defaultOptions.topMargin;
         if (!orientation.hasValue()) orientation = defaultOptions.orientation;
     }

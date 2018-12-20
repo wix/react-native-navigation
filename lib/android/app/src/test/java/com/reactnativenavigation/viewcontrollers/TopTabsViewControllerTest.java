@@ -92,7 +92,7 @@ public class TopTabsViewControllerTest extends BaseTest {
                     new TestComponentViewCreator(),
                     tabOptions.get(i),
                     new Presenter(activity, new Options()),
-                    new ComponentPresenter()
+                    new ComponentPresenter(Options.EMPTY)
             );
             tabControllers.add(spy(viewController));
         }

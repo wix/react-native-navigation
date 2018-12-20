@@ -51,7 +51,7 @@ public class BottomTabPresenterTest extends BaseTest {
 
     @Test
     public void present() {
-        uut.present();
+        uut.applyOptions();
         for (int i = 0; i < tabs.size(); i++) {
             verify(bottomTabs, times(1)).setBadge(i, tabs.get(i).options.bottomTabOptions.badge.get(""));
             verify(bottomTabs, times(1)).setTitleInactiveColor(i, tabs.get(i).options.bottomTabOptions.textColor.get(null));

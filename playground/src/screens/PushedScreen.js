@@ -168,27 +168,50 @@ class PushedScreen extends Component {
   }
 
   async onClickSetStackRoot() {
-    await Navigation.setStackRoot(this.props.componentId, {
-      component: {
-        name: 'navigation.playground.PushedScreen',
-        passProps: {
-          stackPosition: this.getStackPosition() + 1,
-          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
-        },
-        options: {
-          animations: {
-            setStackRoot: {
-              enabled: false
-            }
+    await Navigation.setStackRoot(this.props.componentId, [
+      {
+        component: {
+          name: 'navigation.playground.PushedScreen',
+          passProps: {
+            stackPosition: this.getStackPosition() + 1,
+            previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
           },
-          topBar: {
-            title: {
-              text: `Pushed ${this.getStackPosition() + 1}`
+          options: {
+            animations: {
+              setStackRoot: {
+                enabled: false
+              }
+            },
+            topBar: {
+              title: {
+                text: `Pushed ${this.getStackPosition() + 1} a`
+              }
+            }
+          }
+        }
+      },
+      {
+        component: {
+          name: 'navigation.playground.PushedScreen',
+          passProps: {
+            stackPosition: this.getStackPosition() + 1,
+            previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+          },
+          options: {
+            animations: {
+              setStackRoot: {
+                enabled: false
+              }
+            },
+            topBar: {
+              title: {
+                text: `Pushed ${this.getStackPosition() + 1} b`
+              }
             }
           }
         }
       }
-    });
+    ]);
   }
 
   onClickPushWaitForRender = async () => {

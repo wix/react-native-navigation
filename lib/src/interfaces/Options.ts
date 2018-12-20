@@ -56,6 +56,11 @@ export interface OptionsLayout {
    */
   backgroundColor?: Color;
   /**
+   * Set background color only for components, helps reduce overdraw if background color is set in default options.
+   * #### (Android specific)
+   */
+  componentBackgroundColor?: Color;
+  /**
    * Set the allowed orientations
    */
   orientation?: LayoutOrientation[];

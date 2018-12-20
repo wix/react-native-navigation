@@ -44,6 +44,16 @@
 	return layoutViewController;
 }
 
+- (NSArray<RNNLayoutProtocol> *)createChildrenLayout:(NSArray*)children saveToStore:(RNNStore *)store {
+	_store = store;
+	NSMutableArray<RNNLayoutProtocol>* childViewControllers = [NSMutableArray<RNNLayoutProtocol> new];
+	for (NSDictionary* layout in children) {
+		[childViewControllers addObject:[self fromTree:layout]];
+	}
+	_store = nil;
+	return childViewControllers;
+}
+
 # pragma mark private
 
 - (UIViewController<RNNParentProtocol> *)fromTree:(NSDictionary*)json {

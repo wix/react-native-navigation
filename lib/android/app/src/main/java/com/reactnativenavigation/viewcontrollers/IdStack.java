@@ -4,33 +4,42 @@ import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.utils.StringUtils;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
+import static com.reactnativenavigation.utils.CollectionUtils.last;
+import static com.reactnativenavigation.utils.CollectionUtils.removeLast;
 
 public class IdStack<E> implements Iterable<String> {
 
-	private final ArrayDeque<String> deque = new ArrayDeque<>();
-	private final HashMap<String, E> map = new HashMap<>();
+	private final ArrayList<String> deque = new ArrayList();
+	private final Map<String, E> map = new HashMap<>();
 
 	public void push(String id, E item) {
-		deque.push(id);
+		deque.add(id);
 		map.put(id, item);
 	}
+
+    public void set(String id, E item, int index) {
+        deque.add(index, id);
+        map.put(id, item);
+    }
 
 	public E peek() {
 		if (isEmpty()) {
 			return null;
 		}
-		return map.get(deque.peek());
+		return map.get(last(deque));
 	}
 
 	public E pop() {
 		if (isEmpty()) {
 			return null;
 		}
-		return map.remove(deque.pop());
+		return map.remove(removeLast(deque));
 	}
 
 	public boolean isEmpty() {
@@ -42,7 +51,7 @@ public class IdStack<E> implements Iterable<String> {
 	}
 
 	public String peekId() {
-		return deque.peek();
+		return last(deque);
 	}
 
 	public void clear() {
@@ -53,6 +62,10 @@ public class IdStack<E> implements Iterable<String> {
 	public E get(final String id) {
 		return map.get(id);
 	}
+
+	public E get(final int index) {
+        return map.get(deque.get(index));
+    }
 
 	public boolean containsId(final String id) {
 		return deque.contains(id);
@@ -80,4 +93,9 @@ public class IdStack<E> implements Iterable<String> {
 	public Collection<E> values() {
 		return map.values();
 	}
+
+    public void remove(Iterator<String> iterator, String id) {
+        iterator.remove();
+        map.remove(id);
+    }
 }

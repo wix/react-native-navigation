@@ -18,12 +18,12 @@ describe('redux support', () => {
       render() {
         return (
           <Provider store={store.reduxStore}>
-            <MyConnectedComponent />
+            <MyConnectedComponent/>
           </Provider>
         );
       }
     };
-    Navigation.registerComponent('ComponentName', () => HOC);
+    Navigation.registerComponent('ComponentName', () => (props) => <HOC {...props} />, Provider, store.reduxStore);
 
     const tree = renderer.create(<HOC />);
     expect(tree.toJSON().children).toEqual(['no name']);
@@ -41,7 +41,7 @@ describe('redux support', () => {
         );
       }
     };
-    const CompFromNavigation = Navigation.registerComponent('ComponentName', () => HOC)();
+    const CompFromNavigation = Navigation.registerComponent('ComponentName', () => (props) => <HOC {...props} />)();
 
     const tree = renderer.create(<CompFromNavigation componentId='componentId' renderCountIncrement={renderCountIncrement}/>);
     expect(tree.toJSON().children).toEqual(['no name']);

@@ -63,7 +63,7 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions,
                 new Presenter(activity, new Options()),
-                new ComponentPresenter()
+                new ComponentPresenter(Options.EMPTY)
         ) {
             @Override
             public boolean isViewShown() {
