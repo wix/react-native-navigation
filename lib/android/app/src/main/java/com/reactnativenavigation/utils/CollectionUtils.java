@@ -83,6 +83,14 @@ public class CollectionUtils {
         return null;
     }
 
+    public static <T> T last(@Nullable List<T> items) {
+        return CollectionUtils.isNullOrEmpty(items) ? null : items.get(items.size() - 1);
+    }
+
+    public static <T> T removeLast(@NonNull List<T> items) {
+        return items.remove(items.size() - 1);
+    }
+
     private static @NonNull <T> Collection<T> get(@Nullable Collection<T> t) {
         return t == null ? Collections.EMPTY_LIST : t;
     }

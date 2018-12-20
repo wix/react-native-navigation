@@ -190,6 +190,7 @@ Navigation.mergeOptions(this.props.componentId, {
     },
   },
   sideMenu: {
+    openGestureMode: 'entireScreen' | 'bezel'
     left: {
       shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
       animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
@@ -227,7 +228,8 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   layout: {
     topMargin: Navigation.constants().statusBarHeight, // Set the layout's top margin
-    orientation: ['portrait', 'landscape'] | ['sensorLandscape'] // An array of supported orientations
+    orientation: ['portrait', 'landscape'] | ['sensorLandscape'], // An array of supported orientations
+    componentBackgroundColor: 'red' // Set background color only for components, helps reduce overdraw if background color is set in default options.
   },
   topBar: {
     height: 70, // TopBar height in dp

@@ -41,6 +41,7 @@ class WelcomeScreen extends Component {
           <Button title='Push Lifecycle Screen' testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
           <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
           <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
+          {false && <Button title='Push Context Screen' testID={testIDs.PUSH_CONTEXT_SCREEN_BUTTON} onPress={this.onClickPushContextScreen} />}
           {Platform.OS === 'ios' && <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPress={this.onClickPush} onPressIn={this.onClickShowPreview} title='Push Preview' />}
           <Button title='Push Options Screen' testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
           <Button title='Push External Component' testID={testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON} onPress={this.onClickPushExternalComponent} />
@@ -291,6 +292,14 @@ class WelcomeScreen extends Component {
         }
       }
     });
+  }
+
+  onClickPushContextScreen = async () => {
+    await Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.ContextScreen',
+      }
+    })
   }
 
   onClickPushExternalComponent = async () => {
@@ -574,12 +583,10 @@ const styles = {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e8e8e8',
   },
   bar: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#e8e8e8',
     justifyContent: 'space-between'
   },
   h1: {

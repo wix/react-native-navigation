@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
+import { EventSubscription } from '../interfaces/EventSubscription';
 
 describe('ComponentEventsObserver', () => {
   const mockEventsReceiver = new NativeEventsReceiver();
@@ -14,8 +15,8 @@ describe('ComponentEventsObserver', () => {
   const searchBarCancelPressedFn = jest.fn();
   const previewCompletedFn = jest.fn();
   const modalDismissedFn = jest.fn();
-  let subscription;
-  let uut;
+  let subscription: EventSubscription;
+  let uut: ComponentEventsObserver;
 
   class SimpleScreen extends React.Component<any, any> {
     render() {
@@ -24,7 +25,7 @@ describe('ComponentEventsObserver', () => {
   }
 
   class UnboundScreen extends React.Component<any, any> {
-    constructor(props) {
+    constructor(props: any) {
       super(props);
     }
 
@@ -44,23 +45,23 @@ describe('ComponentEventsObserver', () => {
       didDisappearFn();
     }
 
-    navigationButtonPressed(event) {
+    navigationButtonPressed(event: any) {
       navigationButtonPressedFn(event);
     }
 
-    modalDismissed(event) {
+    modalDismissed(event: any) {
       modalDismissedFn(event);
     }
 
-    searchBarUpdated(event) {
+    searchBarUpdated(event: any) {
       searchBarUpdatedFn(event);
     }
 
-    searchBarCancelPressed(event) {
+    searchBarCancelPressed(event: any) {
       searchBarCancelPressedFn(event);
     }
 
-    previewCompleted(event) {
+    previewCompleted(event: any) {
       previewCompletedFn(event);
     }
 
@@ -70,7 +71,7 @@ describe('ComponentEventsObserver', () => {
   }
 
   class BoundScreen extends React.Component<any, any> {
-    constructor(props) {
+    constructor(props: any) {
       super(props);
       subscription = uut.bindComponent(this);
     }
@@ -91,23 +92,23 @@ describe('ComponentEventsObserver', () => {
       didDisappearFn();
     }
 
-    navigationButtonPressed(event) {
+    navigationButtonPressed(event: any) {
       navigationButtonPressedFn(event);
     }
 
-    modalDismissed(event) {
+    modalDismissed(event: any) {
       modalDismissedFn(event);
     }
 
-    searchBarUpdated(event) {
+    searchBarUpdated(event: any) {
       searchBarUpdatedFn(event);
     }
 
-    searchBarCancelPressed(event) {
+    searchBarCancelPressed(event: any) {
       searchBarCancelPressedFn(event);
     }
 
-    previewCompleted(event) {
+    previewCompleted(event: any) {
       previewCompletedFn(event);
     }
 

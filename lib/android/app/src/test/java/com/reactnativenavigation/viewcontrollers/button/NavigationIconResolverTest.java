@@ -10,8 +10,8 @@ import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.Constants;
+import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ImageLoader;
-import com.reactnativenavigation.utils.Task;
 
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class NavigationIconResolverTest extends BaseTest {
 
     @Test
     public void create_iconButton() {
-        @SuppressWarnings("Convert2Lambda") Task<Drawable> onSuccess = spy(new Task<Drawable>() {
+        @SuppressWarnings("Convert2Lambda") Func1<Drawable> onSuccess = spy(new Func1<Drawable>() {
             @Override
             public void run(Drawable icon) {
 
@@ -49,7 +49,7 @@ public class NavigationIconResolverTest extends BaseTest {
 
     @Test
     public void create_backButton() {
-        @SuppressWarnings("Convert2Lambda") Task<Drawable> onSuccess = spy(new Task<Drawable>() {
+        @SuppressWarnings("Convert2Lambda") Func1<Drawable> onSuccess = spy(new Func1<Drawable>() {
             @Override
             public void run(Drawable param) {
 

@@ -130,8 +130,10 @@ On **Android**, Visibility can be toggled dynamically using the `mergeOptions` c
 
 ```js
 Navigation.mergeOptions(componentId, {
-  bottomTabs: visible: false,
-  ...Platform.select({ android: { drawBehind: true } })
+  bottomTabs: {
+    visible: false,
+    ...Platform.select({ android: { drawBehind: true } })
+  },
 });
 ```
 

@@ -1,10 +1,11 @@
+import * as React from 'react';
 import * as _ from 'lodash';
 
 export class Store {
-  private componentsByName = {};
-  private propsById = {};
+  private componentsByName: Record<string, () => React.ComponentClass<any, any>> = {};
+  private propsById: Record<string, any> = {};
 
-  setPropsForId(componentId: string, props) {
+  setPropsForId(componentId: string, props: any) {
     _.set(this.propsById, componentId, props);
   }
 
@@ -12,7 +13,7 @@ export class Store {
     return _.get(this.propsById, componentId, {});
   }
 
-  setComponentClassForName(componentName: string | number, ComponentClass) {
+  setComponentClassForName(componentName: string | number, ComponentClass: () => React.ComponentClass<any, any>) {
     _.set(this.componentsByName, componentName.toString(), ComponentClass);
   }
 
@@ -20,7 +21,7 @@ export class Store {
     return _.get(this.componentsByName, componentName.toString());
   }
 
-  cleanId(id: string) {
-    _.unset(this.propsById, id);
+  cleanId(componentId: string) {
+    _.unset(this.propsById, componentId);
   }
 }

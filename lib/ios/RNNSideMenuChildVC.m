@@ -52,10 +52,6 @@
 	[self.options overrideOptions:options];
 }
 
-- (UITabBarItem *)tabBarItem {
-	return self.child.tabBarItem;
-}
-
 - (void)bindChildViewController:(UIViewController<RNNLayoutProtocol>*)child {
 	self.child = child;
 	[self addChildViewController:self.child];

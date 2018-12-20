@@ -150,14 +150,14 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 }
 
-- (void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)setStackRoot:(NSString*)componentId children:(NSArray*)children completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
-	UIViewController<RNNParentProtocol> *newVC = [_controllerFactory createLayout:layout saveToStore:_store];
-	RNNNavigationOptions* options = [newVC getCurrentChild].resolveOptions;
+ 	NSArray<RNNLayoutProtocol> *childViewControllers = [_controllerFactory createChildrenLayout:children saveToStore:_store];
+	RNNNavigationOptions* options = [childViewControllers.lastObject getCurrentChild].resolveOptions;
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
-	[_stackManager setStackRoot:newVC fromViewController:fromVC animated:options.animations.setStackRoot.enable completion:^{
+	[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:options.animations.setStackRoot.enable completion:^{
 		[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot params:@{@"componentId": componentId}];
 		completion();
 	} rejection:rejection];
