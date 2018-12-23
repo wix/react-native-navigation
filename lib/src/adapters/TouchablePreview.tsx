@@ -47,14 +47,9 @@ export class TouchablePreview extends React.PureComponent<Props, any> {
 
   static peeking = false;
 
-  private ref: React.Component<any> | null = null;
   private timeout: number | undefined;
   private ts: number = 0;
-
-  onRef = (ref: React.Component<any>) => {
-    this.ref = ref;
-  }
-
+  private onRef = React.createRef<any>();
   onPress = () => {
     const { onPress } = this.props;
 
@@ -73,7 +68,7 @@ export class TouchablePreview extends React.PureComponent<Props, any> {
         return;
       }
 
-      const reactTag = findNodeHandle(this.ref);
+      const reactTag = findNodeHandle(this.onRef.current);
 
       return onPressIn({ reactTag });
     }

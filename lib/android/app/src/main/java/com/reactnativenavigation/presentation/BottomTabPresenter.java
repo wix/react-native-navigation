@@ -45,7 +45,7 @@ public class BottomTabPresenter {
         this.bottomTabs = bottomTabs;
     }
 
-    public void present() {
+    public void applyOptions() {
         for (int i = 0; i < tabs.size(); i++) {
             BottomTabOptions tab = tabs.get(i).options.copy().withDefaultOptions(defaultOptions).bottomTabOptions;
             bottomTabs.setBadge(i, tab.badge.get(""));

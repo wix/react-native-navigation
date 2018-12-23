@@ -56,6 +56,11 @@ export interface OptionsLayout {
    */
   backgroundColor?: Color;
   /**
+   * Set background color only for components, helps reduce overdraw if background color is set in default options.
+   * #### (Android specific)
+   */
+  componentBackgroundColor?: Color;
+  /**
    * Set the allowed orientations
    */
   orientation?: LayoutOrientation[];
@@ -373,6 +378,21 @@ export interface OptionsTopBar {
    * #### (Android specific)
    */
   elevation?: AndroidDensityNumber;
+}
+
+export interface OptionsFab {
+  id: string;
+  backgroundColor?: Color;
+  clickColor?: Color;
+  rippleColor?: Color;
+  visible?: boolean;
+  icon?: ImageRequireSource;
+  iconColor?: Color;
+  alignHorizontally?: 'left' | 'right';
+  alignVertically?: 'top' | 'bottom';
+  hideOnScroll?: boolean;
+  size?: number;
+  actions?: OptionsFab[];
 }
 
 export interface OptionsBottomTabs {
@@ -708,6 +728,7 @@ export interface Options {
    * Configure the top bar
    */
   topBar?: OptionsTopBar;
+  fab?: OptionsFab;
   /**
    * Configure the bottom tabs
    */

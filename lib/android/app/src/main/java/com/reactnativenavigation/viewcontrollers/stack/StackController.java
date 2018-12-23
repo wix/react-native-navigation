@@ -14,6 +14,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.Constants;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
@@ -183,15 +184,34 @@ public class StackController extends ParentController<StackLayout> {
         getView().addView(view, getView().getChildCount() - 1);
     }
 
-    public void setRoot(ViewController child, CommandListener listener) {
-        backButtonHelper.clear(child);
-        push(child, new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                removeChildrenBellowTop();
-                listener.onSuccess(childId);
-            }
-        });
+    public void setRoot(List<ViewController> children, CommandListener listener) {
+        if (children.size() == 1) {
+            backButtonHelper.clear(CollectionUtils.last(children));
+            push(CollectionUtils.last(children), new CommandListenerAdapter() {
+                @Override
+                public void onSuccess(String childId) {
+                    removeChildrenBellowTop();
+                    listener.onSuccess(childId);
+                }
+            });
+        } else {
+            push(CollectionUtils.last(children), new CommandListenerAdapter() {
+                @Override
+                public void onSuccess(String childId) {
+                    removeChildrenBellowTop();
+                    for (int i = 0; i < children.size() - 1; i++) {
+                        stack.set(children.get(i).getId(), children.get(i), i);
+                        children.get(i).setParentController(StackController.this);
+                        if (i == 0) {
+                            backButtonHelper.clear(children.get(i));
+                        } else {
+                            backButtonHelper.addToPushedChild(children.get(i));
+                        }
+                    }
+                    listener.onSuccess(childId);
+                }
+            });
+        }
     }
 
     private void removeChildrenBellowTop() {
@@ -199,7 +219,8 @@ public class StackController extends ParentController<StackLayout> {
         while (stack.size() > 1) {
             ViewController controller = stack.get(iterator.next());
             if (!stack.isTop(controller.getId())) {
-                removeAndDestroyController(controller);
+                stack.remove(iterator, controller.getId());
+                controller.destroy();
             }
         }
     }
@@ -247,15 +268,17 @@ public class StackController extends ParentController<StackLayout> {
             return;
         }
 
-        Iterator<String> iterator = stack.iterator();
-        String currentControlId = iterator.next();
-        while (!viewController.getId().equals(currentControlId)) {
-            if (stack.isTop(currentControlId)) {
-                currentControlId = iterator.next();
-                continue;
+
+        String currentControlId;
+        for (int i = stack.size() - 2; i >= 0; i--) {
+            currentControlId = stack.get(i).getId();
+            if (currentControlId.equals(viewController.getId())) {
+                break;
             }
-            removeAndDestroyController(stack.get(currentControlId));
-            currentControlId = iterator.next();
+
+            ViewController controller = stack.get(currentControlId);
+            stack.remove(controller.getId());
+            controller.destroy();
         }
 
         pop(mergeOptions, listener);
@@ -268,10 +291,12 @@ public class StackController extends ParentController<StackLayout> {
         }
 
         Iterator<String> iterator = stack.iterator();
+        iterator.next();
         while (stack.size() > 2) {
             ViewController controller = stack.get(iterator.next());
             if (!stack.isTop(controller.getId())) {
-                removeAndDestroyController(controller);
+                stack.remove(iterator, controller.getId());
+                controller.destroy();
             }
         }
 

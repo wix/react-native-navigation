@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ViewUtils;
 
 class TopTabsStyleHelper {
@@ -44,7 +44,7 @@ class TopTabsStyleHelper {
         applyOnTabTitle(tabIndex, (title) -> title.setTypeface(fontFamily));
     }
 
-    private void applyOnTabTitle(int tabIndex, Task<TextView> action) {
+    private void applyOnTabTitle(int tabIndex, Func1<TextView> action) {
         TextView title = ViewUtils.findChildByClass(getTabView(tabIndex), TextView.class);
         if (title != null) {
             action.run(title);

@@ -14,7 +14,10 @@ const {
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
-const ITEMS = [...Array(200).keys()].map(key => ({ key: `Item ${key}` }));
+const ITEMS = [];
+for(let i = 0; i < 200; i++) {
+  ITEMS.push({key: `Item ${i}`});
+}
 
 class SearchControllerScreen extends Component {
   static get options() {
@@ -113,8 +116,8 @@ module.exports = SearchControllerScreen;
 const styles = StyleSheet.create({
   contentContainer: {},
   row: {
-    height: 50,
-    padding: 20,
+    height: 60,
+    padding: 15,
     justifyContent: 'center'
   },
   rowText: {
