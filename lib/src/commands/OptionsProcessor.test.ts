@@ -9,11 +9,10 @@ import { AssetService } from '../adapters/AssetResolver';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
-  let optionsRemoveThis: Record<string, any>;
   const mockedStore = mock(Store);
   const store = instance(mockedStore);
+
   beforeEach(() => {
-    optionsRemoveThis = {};
     const mockedAssetService = mock(AssetService);
     when(mockedAssetService.resolveFromRequire(anyNumber())).thenReturn('lol');
     const assetService = instance(mockedAssetService);
@@ -67,45 +66,36 @@ describe('navigation options', () => {
     });
   });
 
-  it('passProps for custom component', () => {
+  it('calls store if component has passProps', () => {
     const passProps = { some: 'thing' };
-    optionsRemoveThis.component = { passProps, name: 'a' };
+    const options = {topBar: {title: {component: { passProps, name: 'a' }}}};
 
-    uut.processOptions(optionsRemoveThis);
+    uut.processOptions(options);
 
-    verify(mockedStore.setPropsForId('CustomComponent1', passProps)).called();
-    expect(Object.keys(optionsRemoveThis.component)).not.toContain('passProps');
-  });
-
-  it('generate component id for component in options', () => {
-    optionsRemoveThis.component = { name: 'a' };
-
-    uut.processOptions(optionsRemoveThis);
-
-    expect(optionsRemoveThis.component.componentId).toBeDefined();
-  });
-
-  it('passProps from options are not processed', () => {
-    const passProps = { some: 'thing' };
-    optionsRemoveThis.component = { passProps, name: 'a' };
-
-    uut.processOptions(optionsRemoveThis);
     verify(mockedStore.setPropsForId('CustomComponent1', passProps)).called();
   });
 
-  it('pass supplied componentId for component in options', () => {
-    optionsRemoveThis.component = { name: 'a', id: 'Component1' };
+  it('generates componentId for component id was not passed', () => {
+    const options = {topBar: {title: {component: { name: 'a' }}}};
 
-    uut.processOptions(optionsRemoveThis);
+    uut.processOptions(options);
 
-    expect(optionsRemoveThis.component.componentId).toEqual('Component1');
+    expect(options).toEqual({topBar: {title: {component: { name: 'a', componentId: 'CustomComponent1' }}}});
+  });
+
+  it('copies passed id to componentId key', () => {
+    const options = {topBar: {title: {component: { name: 'a', id: 'Component1' }}}};
+
+    uut.processOptions(options);
+
+    expect(options).toEqual({topBar: {title: {component: { name: 'a', id: 'Component1', componentId: 'Component1' }}}});
   });
 
   it('calls store when button has passProps and id', () => {
     const passProps = { prop: 'prop' };
-    optionsRemoveThis.rightButtons = [{ passProps, id: '1' }];
+    const options = {topBar: {rightButtons: [{ passProps, id: '1' }]}};
 
-    uut.processOptions(optionsRemoveThis);
+    uut.processOptions(options);
 
     verify(mockedStore.setPropsForId('1', passProps)).called();
   });
