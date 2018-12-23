@@ -68,7 +68,7 @@ describe('navigation options', () => {
 
   it('calls store if component has passProps', () => {
     const passProps = { some: 'thing' };
-    const options = {topBar: {title: {component: { passProps, name: 'a' }}}};
+    const options = { topBar: { title: { component: { passProps, name: 'a' } } } };
 
     uut.processOptions(options);
 
@@ -76,24 +76,28 @@ describe('navigation options', () => {
   });
 
   it('generates componentId for component id was not passed', () => {
-    const options = {topBar: {title: {component: { name: 'a' }}}};
+    const options = { topBar: { title: { component: { name: 'a' } } } };
 
     uut.processOptions(options);
 
-    expect(options).toEqual({topBar: {title: {component: { name: 'a', componentId: 'CustomComponent1' }}}});
+    expect(options).toEqual({
+      topBar: { title: { component: { name: 'a', componentId: 'CustomComponent1' } } },
+    });
   });
 
   it('copies passed id to componentId key', () => {
-    const options = {topBar: {title: {component: { name: 'a', id: 'Component1' }}}};
+    const options = { topBar: { title: { component: { name: 'a', id: 'Component1' } } } };
 
     uut.processOptions(options);
 
-    expect(options).toEqual({topBar: {title: {component: { name: 'a', id: 'Component1', componentId: 'Component1' }}}});
+    expect(options).toEqual({
+      topBar: { title: { component: { name: 'a', id: 'Component1', componentId: 'Component1' } } },
+    });
   });
 
   it('calls store when button has passProps and id', () => {
     const passProps = { prop: 'prop' };
-    const options = {topBar: {rightButtons: [{ passProps, id: '1' }]}};
+    const options = { topBar: { rightButtons: [{ passProps, id: '1' }] } };
 
     uut.processOptions(options);
 
@@ -103,31 +107,11 @@ describe('navigation options', () => {
   it('omits passProps when processing buttons or components', () => {
     const options = {
       topBar: {
-        rightButtons: [
-          {
-            passProps: {},
-            id: 'btn1'
-          },
-        ],
-        leftButtons: [
-          {
-            passProps: {},
-            id: 'btn2'
-          }
-        ],
-        title: {
-          component: {
-            name: 'helloThere1',
-            passProps: {}
-          }
-        },
-        background: {
-          component: {
-            name: 'helloThere2',
-            passProps: {}
-          }
-        }
-      }
+        rightButtons: [{ passProps: {}, id: 'btn1' }],
+        leftButtons: [{ passProps: {}, id: 'btn2' }],
+        title: { component: { name: 'helloThere1', passProps: {} } },
+        background: { component: { name: 'helloThere2', passProps: {} } },
+      },
     };
     uut.processOptions(options);
     expect(options.topBar.rightButtons[0].passProps).toBeUndefined();
