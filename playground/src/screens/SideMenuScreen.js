@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button } = require('react-native');
+const { View, Text, Button, Platform } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
@@ -31,10 +31,20 @@ class SideMenuScreen extends Component {
   }
 
   pushAndCloseSideMenu() {
-    this.hideSideMenu();
+    if (Platform.OS === 'ios') {
+      this.hideSideMenu();
+    }
     Navigation.push('tab1Stack', {
       component: {
-        name: 'navigation.playground.TextScreen'
+        name: 'navigation.playground.TextScreen',
+        options: {
+          sideMenu: {
+            left: {
+              visible: false,
+              enabled: false
+            }
+          }
+        }
       }
     });
   }
