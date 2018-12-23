@@ -18,7 +18,7 @@ export class OptionsProcessor {
     this.processObject(options);
   }
 
-  processObject(objectToProcess: object) {
+  private processObject(objectToProcess: object) {
     _.forEach(objectToProcess, (value, key) => {
       if (!value) {
         return;

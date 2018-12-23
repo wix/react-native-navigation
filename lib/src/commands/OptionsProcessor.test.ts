@@ -3,14 +3,15 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import * as _ from 'lodash';
 import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
-import { mock, when, anyString, instance, anyNumber } from 'ts-mockito';
+import { mock, when, anyString, instance, anyNumber, verify } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
   let optionsRemoveThis: Record<string, any>;
-  let store: Store;
+  const mockedStore = mock(Store);
+  const store = instance(mockedStore);
   beforeEach(() => {
     optionsRemoveThis = {};
     const mockedAssetService = mock(AssetService);
@@ -21,7 +22,6 @@ describe('navigation options', () => {
     when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
     const colorService = instance(mockedColorService);
 
-    store = new Store();
     uut = new OptionsProcessor(store, new UniqueIdProvider(), colorService, assetService);
   });
 
@@ -116,7 +116,7 @@ describe('navigation options', () => {
 
     uut.processOptions(optionsRemoveThis);
 
-    expect(store.getPropsForId('1')).toEqual(passProps);
+    verify(mockedStore.setPropsForId('1', passProps)).called();
   });
 
   it('passProps for custom component', () => {
@@ -125,7 +125,7 @@ describe('navigation options', () => {
 
     uut.processOptions(optionsRemoveThis);
 
-    expect(store.getPropsForId(optionsRemoveThis.component.componentId)).toEqual(passProps);
+    verify(mockedStore.setPropsForId('CustomComponent1', passProps)).called();
     expect(Object.keys(optionsRemoveThis.component)).not.toContain('passProps');
   });
 
@@ -139,11 +139,10 @@ describe('navigation options', () => {
 
   it('passProps from options are not processed', () => {
     const passProps = { color: '#ff0000', some: 'thing' };
-    const clonedProps = _.cloneDeep(passProps);
     optionsRemoveThis.component = { passProps, name: 'a' };
 
     uut.processOptions(optionsRemoveThis);
-    expect(store.getPropsForId(optionsRemoveThis.component.componentId)).toEqual(clonedProps);
+    verify(mockedStore.setPropsForId('CustomComponent1', passProps)).called();
   });
 
   it('pass supplied componentId for component in options', () => {
@@ -154,15 +153,6 @@ describe('navigation options', () => {
     expect(optionsRemoveThis.component.componentId).toEqual('Component1');
   });
 
-  it('passProps must be with id next to it', () => {
-    const passProps = { prop: 'prop' };
-    optionsRemoveThis.rightButtons = [{ passProps }];
-
-    uut.processOptions(optionsRemoveThis);
-
-    expect(store.getPropsForId('1')).toEqual({});
-  });
-
   it('processes Options object', () => {
     optionsRemoveThis.someKeyColor = 'rgb(255, 0, 255)';
     optionsRemoveThis.topBar = { textColor: 'red' };
@@ -171,13 +161,6 @@ describe('navigation options', () => {
     uut.processOptions(optionsRemoveThis);
 
     expect(optionsRemoveThis.topBar.textColor).toEqual(666);
-  });
-
-  it('undefined value return undefined ', () => {
-    optionsRemoveThis.someImage = undefined;
-    uut.processOptions(optionsRemoveThis);
-
-    expect(optionsRemoveThis.someImage).toEqual(undefined);
   });
 
   it('omits passProps when processing options', () => {
