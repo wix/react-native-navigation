@@ -69,7 +69,7 @@ export class OptionsProcessor {
       if (value.passProps) {
         this.store.setPropsForId(value.componentId, value.passProps);
       }
-      options[key] = _.omit(value, 'passProps');
+      options[key].passProps = undefined;
     }
   }
 }
