@@ -2,7 +2,7 @@ import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import * as _ from 'lodash';
-import { Options } from '../interfaces/Options';
+import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
 import { mock, when, anyString, instance } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
 
@@ -17,6 +17,22 @@ describe('navigation options', () => {
     const colorService = instance(mockedColorService);
     store = new Store();
     uut = new OptionsProcessor(store, new UniqueIdProvider(), colorService);
+  });
+
+  it('keeps original values if values were not processed', () => {
+    const options: Options = {
+      blurOnUnmount: false,
+      popGesture: false,
+      modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
+      animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
+    };
+    uut.processOptions(options);
+    expect(options).toEqual({
+      blurOnUnmount: false,
+      popGesture: false,
+      modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
+      animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
+    });
   });
 
   it('processes color keys', () => {
