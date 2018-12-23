@@ -180,37 +180,39 @@ describe('navigation options', () => {
     expect(optionsRemoveThis.someImage).toEqual(undefined);
   });
 
-  // it('omits passProps when processing options', () => {
-  //   const passProps = {
-  //     topBar: {
-  //       rightButtons: [
-  //         {
-  //           passProps: {},
-  //           id: 'btn1'
-  //         },
-  //       ],
-  //       leftButtons: [
-  //         {
-  //           passProps: {},
-  //           id: 'btn2'
-  //         }
-  //       ],
-  //       title: {
-  //         component: {
-  //           passProps: {}
-  //         }
-  //       },
-  //       background: {
-  //         component: {
-  //           passProps: {}
-  //         }
-  //       }
-  //     }
-  //   };
-  //   uut.processOptions(passProps);
-  //   expect(passProps.topBar.rightButtons[0].passProps).toBeUndefined();
-  //   expect(passProps.topBar.leftButtons[0].passProps).toBeUndefined();
-  //   expect(passProps.topBar.title.component.passProps).toBeUndefined();
-  //   expect(passProps.topBar.background.component.passProps).toBeUndefined();
-  // });
+  it('omits passProps when processing options', () => {
+    const options = {
+      topBar: {
+        rightButtons: [
+          {
+            passProps: {},
+            id: 'btn1'
+          },
+        ],
+        leftButtons: [
+          {
+            passProps: {},
+            id: 'btn2'
+          }
+        ],
+        title: {
+          component: {
+            name: 'helloThere1',
+            passProps: {}
+          }
+        },
+        background: {
+          component: {
+            name: 'helloThere2',
+            passProps: {}
+          }
+        }
+      }
+    };
+    uut.processOptions(options);
+    expect(options.topBar.rightButtons[0].passProps).toBeUndefined();
+    expect(options.topBar.leftButtons[0].passProps).toBeUndefined();
+    expect(options.topBar.title.component.passProps).toBeUndefined();
+    expect(options.topBar.background.component.passProps).toBeUndefined();
+  });
 });
