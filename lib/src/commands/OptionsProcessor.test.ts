@@ -104,6 +104,15 @@ describe('navigation options', () => {
     verify(mockedStore.setPropsForId('1', passProps)).called();
   });
 
+  it('do not touch passProps when id for button is missing', () => {
+    const passProps = { prop: 'prop' };
+    const options = { topBar: { rightButtons: [{ passProps } as any] } };
+
+    uut.processOptions(options);
+
+    expect(options).toEqual({ topBar: { rightButtons: [{ passProps }] } });
+  });
+
   it('omits passProps when processing buttons or components', () => {
     const options = {
       topBar: {
