@@ -16,6 +16,9 @@ import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
 import { ComponentWrapper } from './components/ComponentWrapper';
+import { OptionsProcessor } from './commands/OptionsProcessor';
+import { ColorService } from './adapters/ColorService';
+import { AssetService } from './adapters/AssetResolver';
 
 export class NavigationRoot {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -43,10 +46,18 @@ export class NavigationRoot {
     this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
     this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver);
     this.layoutTreeParser = new LayoutTreeParser();
-    this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
+    const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService());
+    this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver();
-    this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver, this.uniqueIdProvider);
+    this.commands = new Commands(
+      this.nativeCommandsSender,
+      this.layoutTreeParser,
+      this.layoutTreeCrawler,
+      this.commandsObserver,
+      this.uniqueIdProvider,
+      optionsProcessor
+    );
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
 
     this.componentEventsObserver.registerOnceForAllComponentEvents();

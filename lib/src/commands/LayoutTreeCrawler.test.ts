@@ -4,6 +4,8 @@ import { LayoutType } from './LayoutType';
 import { LayoutTreeCrawler, LayoutNode } from './LayoutTreeCrawler';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider.mock';
 import { Store } from '../components/Store';
+import { mock, instance } from 'ts-mockito';
+import { OptionsProcessor } from './OptionsProcessor';
 
 describe('LayoutTreeCrawler', () => {
   let uut: LayoutTreeCrawler;
@@ -11,7 +13,9 @@ describe('LayoutTreeCrawler', () => {
 
   beforeEach(() => {
     store = new Store();
-    uut = new LayoutTreeCrawler(new UniqueIdProvider(), store);
+    const mockedOptionsProcessor = mock(OptionsProcessor);
+    const optionsProcessor = instance(mockedOptionsProcessor);
+    uut = new LayoutTreeCrawler(new UniqueIdProvider(), store, optionsProcessor);
   });
 
   it('crawls a layout tree and adds unique id to each node', () => {

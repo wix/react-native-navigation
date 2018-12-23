@@ -8,8 +8,8 @@ import { Options } from '../interfaces/Options';
 
 export class OptionsProcessor {
   constructor(
-    public store: Store,
-    public uniqueIdProvider: UniqueIdProvider,
+    private store: Store,
+    private uniqueIdProvider: UniqueIdProvider,
     private colorService: ColorService,
     private assetService: AssetService,
   ) {}

@@ -1,8 +1,7 @@
 import * as _ from 'lodash';
-import { OptionsProcessor } from './OptionsProcessor';
 import { LayoutType } from './LayoutType';
-import { ColorService } from '../adapters/ColorService';
-import { AssetService } from '../adapters/AssetResolver';
+import { OptionsProcessor } from './OptionsProcessor';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 export interface Data {
   name?: string;
@@ -17,13 +16,12 @@ export interface LayoutNode {
 }
 
 export class LayoutTreeCrawler {
-  private optionsProcessor: OptionsProcessor;
   constructor(
-    private readonly uniqueIdProvider: any,
-    public readonly store: any) {
+    private readonly uniqueIdProvider: UniqueIdProvider,
+    public readonly store: any,
+    private readonly optionsProcessor: OptionsProcessor
+  ) {
     this.crawl = this.crawl.bind(this);
-    this.processOptions = this.processOptions.bind(this);
-    this.optionsProcessor = new OptionsProcessor(store, uniqueIdProvider, new ColorService(), new AssetService());
   }
 
   crawl(node: LayoutNode): void {
@@ -31,12 +29,8 @@ export class LayoutTreeCrawler {
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }
-    this.processOptions(node.data.options);
+    this.optionsProcessor.processOptions(node.data.options);
     _.forEach(node.children, this.crawl);
-  }
-
-  processOptions(options) {
-    this.optionsProcessor.processOptions(options);
   }
 
   _handleComponent(node) {

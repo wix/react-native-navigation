@@ -8,6 +8,7 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider.mock';
 import { Commands } from './Commands';
 import { CommandsObserver } from '../events/CommandsObserver';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
+import { OptionsProcessor } from './OptionsProcessor';
 
 describe('Commands', () => {
   let uut: Commands;
@@ -22,12 +23,16 @@ describe('Commands', () => {
     mockedNativeCommandsSender = mock(NativeCommandsSender);
     nativeCommandsSender = instance(mockedNativeCommandsSender);
 
+    const mockedOptionsProcessor = mock(OptionsProcessor);
+    const optionsProcessor = instance(mockedOptionsProcessor);
+
     uut = new Commands(
       nativeCommandsSender,
       new LayoutTreeParser(),
-      new LayoutTreeCrawler(new UniqueIdProvider(), store),
+      new LayoutTreeCrawler(new UniqueIdProvider(), store, optionsProcessor),
       commandsObserver,
-      new UniqueIdProvider()
+      new UniqueIdProvider(),
+      optionsProcessor
     );
   });
 
@@ -351,7 +356,16 @@ describe('Commands', () => {
       const mockParser = { parse: () => 'parsed' };
       const mockCrawler = { crawl: (x: any) => x, processOptions: (x: any) => x };
       commandsObserver.register(cb);
-      uut = new Commands(mockedNativeCommandsSender, mockParser as any, mockCrawler as any, commandsObserver, new UniqueIdProvider());
+      const mockedOptionsProcessor = mock(OptionsProcessor);
+      const optionsProcessor = instance(mockedOptionsProcessor);
+      uut = new Commands(
+        mockedNativeCommandsSender,
+        mockParser as any,
+        mockCrawler as any,
+        commandsObserver,
+        new UniqueIdProvider(),
+        optionsProcessor
+      );
     });
 
     function getAllMethodsOfUut() {
