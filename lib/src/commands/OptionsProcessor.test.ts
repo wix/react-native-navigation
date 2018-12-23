@@ -67,60 +67,8 @@ describe('navigation options', () => {
     });
   });
 
-  it('process colors with rgb functions', () => {
-    optionsRemoveThis.someKeyColor = 'rgb(255, 0, 255)';
-    uut.processOptions(optionsRemoveThis);
-    expect(optionsRemoveThis.someKeyColor).toEqual(666);
-  });
-
-  it('process colors with special words', () => {
-    optionsRemoveThis.someKeyColor = 'fuchsia';
-    uut.processOptions(optionsRemoveThis);
-    expect(optionsRemoveThis.someKeyColor).toEqual(666);
-  });
-
-  it('process colors with hsla functions', () => {
-    optionsRemoveThis.someKeyColor = 'hsla(360, 100%, 100%, 1.0)';
-    uut.processOptions(optionsRemoveThis);
-
-    expect(optionsRemoveThis.someKeyColor).toEqual(666);
-  });
-
-  it('any keys ending with Color', () => {
-    optionsRemoveThis.otherKeyColor = 'red';
-    optionsRemoveThis.yetAnotherColor = 'blue';
-    optionsRemoveThis.andAnotherColor = 'rgb(0, 255, 0)';
-    uut.processOptions(optionsRemoveThis);
-    expect(optionsRemoveThis.otherKeyColor).toEqual(666);
-    expect(optionsRemoveThis.yetAnotherColor).toEqual(666);
-    expect(optionsRemoveThis.andAnotherColor).toEqual(666);
-  });
-
-  it('keys ending with Color case sensitive', () => {
-    optionsRemoveThis.otherKey_color = 'red'; // eslint-disable-line camelcase
-    uut.processOptions(optionsRemoveThis);
-    expect(optionsRemoveThis.otherKey_color).toEqual('red');
-  });
-
-  it('any nested recursive keys ending with Color', () => {
-    optionsRemoveThis.topBar = { textColor: 'red' };
-    optionsRemoveThis.topBar.innerMostObj = { anotherColor: 'yellow' };
-    uut.processOptions(optionsRemoveThis);
-    expect(optionsRemoveThis.topBar.textColor).toEqual(666);
-    expect(optionsRemoveThis.topBar.innerMostObj.anotherColor).toEqual(666);
-  });
-
-  it('passProps for Buttons options', () => {
-    const passProps = { prop: 'prop' };
-    optionsRemoveThis.rightButtons = [{ passProps, id: '1' }];
-
-    uut.processOptions(optionsRemoveThis);
-
-    verify(mockedStore.setPropsForId('1', passProps)).called();
-  });
-
   it('passProps for custom component', () => {
-    const passProps = { color: '#ff0000', some: 'thing' };
+    const passProps = { some: 'thing' };
     optionsRemoveThis.component = { passProps, name: 'a' };
 
     uut.processOptions(optionsRemoveThis);
@@ -138,7 +86,7 @@ describe('navigation options', () => {
   });
 
   it('passProps from options are not processed', () => {
-    const passProps = { color: '#ff0000', some: 'thing' };
+    const passProps = { some: 'thing' };
     optionsRemoveThis.component = { passProps, name: 'a' };
 
     uut.processOptions(optionsRemoveThis);
@@ -153,17 +101,16 @@ describe('navigation options', () => {
     expect(optionsRemoveThis.component.componentId).toEqual('Component1');
   });
 
-  it('processes Options object', () => {
-    optionsRemoveThis.someKeyColor = 'rgb(255, 0, 255)';
-    optionsRemoveThis.topBar = { textColor: 'red' };
-    optionsRemoveThis.topBar.innerMostObj = { anotherColor: 'yellow' };
+  it('calls store when button has passProps and id', () => {
+    const passProps = { prop: 'prop' };
+    optionsRemoveThis.rightButtons = [{ passProps, id: '1' }];
 
     uut.processOptions(optionsRemoveThis);
 
-    expect(optionsRemoveThis.topBar.textColor).toEqual(666);
+    verify(mockedStore.setPropsForId('1', passProps)).called();
   });
 
-  it('omits passProps when processing options', () => {
+  it('omits passProps when processing buttons or components', () => {
     const options = {
       topBar: {
         rightButtons: [
