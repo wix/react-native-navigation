@@ -1,12 +1,12 @@
 import * as _ from 'lodash';
-import { processColor } from 'react-native';
 import * as resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { ColorService } from '../adapters/ColorService';
 
 export class OptionsProcessor {
-  constructor(public store: Store, public uniqueIdProvider: UniqueIdProvider) { }
+  constructor(public store: Store, public uniqueIdProvider: UniqueIdProvider, private colorService: ColorService) { }
 
   public processOptions(options: Record<string, any>) {
     _.forEach(options, (value, key) => {
@@ -25,7 +25,7 @@ export class OptionsProcessor {
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (_.isEqual(key, 'color') || _.endsWith(key, 'Color')) {
-      options[key] = processColor(value);
+      options[key] = this.colorService.toNativeColor(value);
     }
   }
 
