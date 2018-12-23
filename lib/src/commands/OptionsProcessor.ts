@@ -6,11 +6,18 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 
 export class OptionsProcessor {
-  constructor(public store: Store, public uniqueIdProvider: UniqueIdProvider, private colorService: ColorService, private assetService: AssetService) { }
+  constructor(
+    public store: Store,
+    public uniqueIdProvider: UniqueIdProvider,
+    private colorService: ColorService,
+    private assetService: AssetService,
+  ) {}
 
   public processOptions(options: Record<string, any>) {
     _.forEach(options, (value, key) => {
-      if (!value) { return; }
+      if (!value) {
+        return;
+      }
 
       this.processComponent(key, value, options);
       this.processColor(key, value, options);
@@ -30,7 +37,12 @@ export class OptionsProcessor {
   }
 
   private processImage(key: string, value: any, options: Record<string, any>) {
-    if (_.isEqual(key, 'icon') || _.isEqual(key, 'image') || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
+    if (
+      _.isEqual(key, 'icon') ||
+      _.isEqual(key, 'image') ||
+      _.endsWith(key, 'Icon') ||
+      _.endsWith(key, 'Image')
+    ) {
       options[key] = this.assetService.resolveFromRequire(value);
     }
   }
