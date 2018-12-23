@@ -4,6 +4,7 @@ import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
+import { Options } from '../interfaces/Options';
 
 export class OptionsProcessor {
   constructor(
@@ -13,19 +14,23 @@ export class OptionsProcessor {
     private assetService: AssetService,
   ) {}
 
-  public processOptions(options: Record<string, any>) {
-    _.forEach(options, (value, key) => {
+  public processOptions(options: Options) {
+    this.processObject(options);
+  }
+
+  processObject(objectToProcess: object) {
+    _.forEach(objectToProcess, (value, key) => {
       if (!value) {
         return;
       }
 
-      this.processComponent(key, value, options);
-      this.processColor(key, value, options);
-      this.processImage(key, value, options);
+      this.processComponent(key, value, objectToProcess);
+      this.processColor(key, value, objectToProcess);
+      this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
 
       if (!_.isEqual(key, 'passProps') && (_.isObject(value) || _.isArray(value))) {
-        this.processOptions(value);
+        this.processObject(value);
       }
     });
   }
