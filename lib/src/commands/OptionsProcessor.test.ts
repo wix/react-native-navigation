@@ -3,8 +3,9 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import * as _ from 'lodash';
 import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
-import { mock, when, anyString, instance } from 'ts-mockito';
+import { mock, when, anyString, instance, anyNumber } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
+import { AssetService } from '../adapters/AssetResolver';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
@@ -12,11 +13,16 @@ describe('navigation options', () => {
   let store: Store;
   beforeEach(() => {
     optionsRemoveThis = {};
+    const mockedAssetService = mock(AssetService);
+    when(mockedAssetService.resolveFromRequire(anyNumber())).thenReturn('lol');
+    const assetService = instance(mockedAssetService);
+
     const mockedColorService = mock(ColorService);
     when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
     const colorService = instance(mockedColorService);
+
     store = new Store();
-    uut = new OptionsProcessor(store, new UniqueIdProvider(), colorService);
+    uut = new OptionsProcessor(store, new UniqueIdProvider(), colorService, assetService);
   });
 
   it('keeps original values if values were not processed', () => {
@@ -44,6 +50,20 @@ describe('navigation options', () => {
     expect(options).toEqual({
       statusBar: { backgroundColor: 666 },
       topBar: { background: { color: 666 } },
+    });
+  });
+
+  it('processes image keys', () => {
+    const options: Options = {
+      backgroundImage: 123,
+      rootBackgroundImage: 234,
+      bottomTab: { icon: 345, selectedIcon: 345 },
+    };
+    uut.processOptions(options);
+    expect(options).toEqual({
+      backgroundImage: 'lol',
+      rootBackgroundImage: 'lol',
+      bottomTab: { icon: 'lol', selectedIcon: 'lol' },
     });
   });
 
@@ -88,26 +108,6 @@ describe('navigation options', () => {
     uut.processOptions(optionsRemoveThis);
     expect(optionsRemoveThis.topBar.textColor).toEqual(666);
     expect(optionsRemoveThis.topBar.innerMostObj.anotherColor).toEqual(666);
-  });
-
-  it('resolve image sources with name/ending with icon', () => {
-    optionsRemoveThis.icon = 'require("https://wix.github.io/react-native-navigation/_images/logo.png");';
-    optionsRemoveThis.image = 'require("https://wix.github.io/react-native-navigation/_images/logo.png");';
-    optionsRemoveThis.myImage = 'require("https://wix.github.io/react-native-navigation/_images/logo.png");';
-    optionsRemoveThis.topBar = {
-      myIcon: 'require("https://wix.github.io/react-native-navigation/_images/logo.png");',
-      myOtherValue: 'value'
-    };
-    uut.processOptions(optionsRemoveThis);
-
-    // As we can't import external images and we don't want to add an image here
-    // I assign the icons to strings (what the require would generally look like)
-    // and expect the value to be resolved, in this case it doesn't find anything and returns null
-    expect(optionsRemoveThis.icon).toEqual(null);
-    expect(optionsRemoveThis.topBar.myIcon).toEqual(null);
-    expect(optionsRemoveThis.image).toEqual(null);
-    expect(optionsRemoveThis.myImage).toEqual(null);
-    expect(optionsRemoveThis.topBar.myOtherValue).toEqual('value');
   });
 
   it('passProps for Buttons options', () => {

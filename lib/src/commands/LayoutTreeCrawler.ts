@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { OptionsProcessor } from './OptionsProcessor';
 import { LayoutType } from './LayoutType';
 import { ColorService } from '../adapters/ColorService';
+import { AssetService } from '../adapters/AssetResolver';
 
 export interface Data {
   name?: string;
@@ -22,7 +23,7 @@ export class LayoutTreeCrawler {
     public readonly store: any) {
     this.crawl = this.crawl.bind(this);
     this.processOptions = this.processOptions.bind(this);
-    this.optionsProcessor = new OptionsProcessor(store, uniqueIdProvider, new ColorService());
+    this.optionsProcessor = new OptionsProcessor(store, uniqueIdProvider, new ColorService(), new AssetService());
   }
 
   crawl(node: LayoutNode): void {
