@@ -14,7 +14,12 @@ describe('navigation options', () => {
 
   beforeEach(() => {
     const mockedAssetService = mock(AssetService);
-    when(mockedAssetService.resolveFromRequire(anyNumber())).thenReturn('lol');
+    when(mockedAssetService.resolveFromRequire(anyNumber())).thenReturn({
+      height: 100,
+      scale: 1,
+      uri: 'lol',
+      width: 100,
+    });
     const assetService = instance(mockedAssetService);
 
     const mockedColorService = mock(ColorService);
@@ -60,9 +65,12 @@ describe('navigation options', () => {
     };
     uut.processOptions(options);
     expect(options).toEqual({
-      backgroundImage: 'lol',
-      rootBackgroundImage: 'lol',
-      bottomTab: { icon: 'lol', selectedIcon: 'lol' },
+      backgroundImage: { height: 100, scale: 1, uri: 'lol', width: 100 },
+      rootBackgroundImage: { height: 100, scale: 1, uri: 'lol', width: 100 },
+      bottomTab: {
+        icon: { height: 100, scale: 1, uri: 'lol', width: 100 },
+        selectedIcon: { height: 100, scale: 1, uri: 'lol', width: 100 },
+      },
     });
   });
 
