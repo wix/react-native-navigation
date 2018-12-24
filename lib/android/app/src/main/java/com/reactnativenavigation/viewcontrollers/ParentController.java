@@ -16,6 +16,8 @@ import com.reactnativenavigation.views.Component;
 
 import java.util.Collection;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+
 public abstract class ParentController<T extends ViewGroup> extends ChildController {
 
 	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options initialOptions) {
@@ -31,12 +33,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @Override
     public void setDefaultOptions(Options defaultOptions) {
 	    super.setDefaultOptions(defaultOptions);
-        Collection<? extends ViewController> children = getChildControllers();
-        if (!CollectionUtils.isNullOrEmpty(children)) {
-            for (ViewController child : children) {
-                child.setDefaultOptions(defaultOptions);
-            }
-        }
+	    forEach(getChildControllers(), (child) -> child.setDefaultOptions(defaultOptions));
     }
 
     @Override

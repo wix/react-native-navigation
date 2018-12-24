@@ -49,8 +49,8 @@ RCT_EXPORT_METHOD(pop:(NSString*)commandId componentId:(NSString*)componentId me
 	} rejection:reject];
 }
 
-RCT_EXPORT_METHOD(setStackRoot:(NSString*)commandId componentId:(NSString*)componentId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler setStackRoot:componentId layout:layout completion:^{
+RCT_EXPORT_METHOD(setStackRoot:(NSString*)commandId componentId:(NSString*)componentId children:(NSArray*)children resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler setStackRoot:componentId children:children completion:^{
 		resolve(componentId);
 	} rejection:reject];
 }

@@ -28,17 +28,16 @@ public class SideMenuOptions {
     }
 
     public void mergeWith(SideMenuOptions other) {
-        if (other.visible.hasValue()) {
-            visible = other.visible;
-        }
-        if (other.enabled.hasValue()) {
-            enabled = other.enabled;
-        }
-        if (other.height.hasValue()) {
-            height = other.height;
-        }
-        if (other.width.hasValue()) {
-            width = other.width;
-        }
+        if (other.visible.hasValue()) visible = other.visible;
+        if (other.enabled.hasValue()) enabled = other.enabled;
+        if (other.height.hasValue()) height = other.height;
+        if (other.width.hasValue()) width = other.width;
+    }
+
+    public void mergeWithDefault(SideMenuOptions defaultOptions) {
+        if (!visible.hasValue()) visible = defaultOptions.visible;
+        if (!enabled.hasValue()) enabled = defaultOptions.enabled;
+        if (!height.hasValue()) height = defaultOptions.height;
+        if (!width.hasValue()) width = defaultOptions.width;
     }
 }

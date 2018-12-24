@@ -50,24 +50,26 @@ Navigation.popTo(componentId);
 
 ## setStackRoot(componentId, params)
 
-Reset the current navigation stack to a new screen component (the stack root is changed).
+Reset the current navigation stack to a new screen component (the stack root is changed, accepts multiple children).
 
 ```js
-Navigation.setStackRoot(this.props.componentId, {
-  component: {
-        name: 'example.NewRootScreen',
-        passProps: {
-          text: 'Root screen'
-        },
-        options: {
-          animations: {
-            setStackRoot: {
-              enabled: true
+Navigation.setStackRoot(this.props.componentId, [
+    {
+    component: {
+          name: 'example.NewRootScreen',
+          passProps: {
+            text: 'Root screen'
+          },
+          options: {
+            animations: {
+              setStackRoot: {
+                enabled: true
+              }
             }
           }
         }
-      }
-});
+  }
+]);
 ```
 
 ## showModal(layout = {})

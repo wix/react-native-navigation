@@ -31,6 +31,12 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
+    public void setDefaultOptions(Options defaultOptions) {
+        super.setDefaultOptions(defaultOptions);
+        presenter.setDefaultOptions(defaultOptions);
+    }
+
+    @Override
     public void onViewAppeared() {
         super.onViewAppeared();
         view.sendComponentStart();
@@ -50,7 +56,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        view.applyOptions(options);
+        getView().applyOptions(options);
+        presenter.applyOptions(getView(), resolveCurrentOptions(presenter.defaultOptions));
     }
 
     @Override

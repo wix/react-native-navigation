@@ -52,7 +52,7 @@ public class BottomTabsPresenter {
         mergeBottomTabsOptions(options.bottomTabsOptions, options.animations);
     }
 
-    public void present(Options options) {
+    public void applyOptions(Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
     }

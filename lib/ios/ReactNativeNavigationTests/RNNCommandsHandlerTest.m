@@ -310,4 +310,28 @@
 	[self.store verify];
 }
 
+- (void)testSetStackRoot_resetStackWithSingleComponent {
+	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any] saveToStore:self.store]).andReturn(@[self.vc2]);
+	[self.store setReadyToReceiveCommands:true];
+	[self.uut setStackRoot:@"vc1" children:nil completion:^{
+		
+	} rejection:^(NSString *code, NSString *message, NSError *error) {
+		
+	}];
+	XCTAssertEqual(_nvc.viewControllers.firstObject, self.vc2);
+	XCTAssertEqual(_nvc.viewControllers.count, 1);
+}
+
+- (void)testSetStackRoot_setMultipleChildren {
+	NSArray* newViewControllers = @[_vc1, _vc3];
+	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any] saveToStore:self.store]).andReturn(newViewControllers);
+	[self.store setReadyToReceiveCommands:true];
+	[self.uut setStackRoot:@"vc1" children:nil completion:^{
+		
+	} rejection:^(NSString *code, NSString *message, NSError *error) {
+		
+	}];
+	XCTAssertTrue([_nvc.viewControllers isEqual:newViewControllers]);
+}
+
 @end

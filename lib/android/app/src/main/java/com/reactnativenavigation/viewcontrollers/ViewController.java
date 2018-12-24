@@ -16,8 +16,8 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.StringUtils;
-import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
@@ -126,7 +126,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return activity;
     }
 
-    protected void performOnParentController(Task<ParentController> task) {
+    protected void performOnParentController(Func1<ParentController> task) {
         if (parentController != null) task.run(parentController);
     }
 
@@ -139,7 +139,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.parentController = parentController;
     }
 
-    public void performOnParentStack(Task<StackController> task) {
+    public void performOnParentStack(Func1<StackController> task) {
         if (parentController instanceof StackController) {
             task.run((StackController) parentController);
         } else if (this instanceof StackController) {
@@ -270,7 +270,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     }
 
-    void runOnPreDraw(Task<T> task) {
+    void runOnPreDraw(Func1<T> task) {
         UiUtils.runOnPreDrawOnce(getView(), () -> task.run(getView()));
     }
 
@@ -291,7 +291,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         );
     }
 
-    void applyOnController(ViewController controller, Task<ViewController> task) {
+    void applyOnController(ViewController controller, Func1<ViewController> task) {
         if (controller != null) task.run(controller);
     }
 

@@ -33,6 +33,16 @@ public class ImageLoader {
 
     private static final String FILE_SCHEME = "file";
 
+    @Nullable
+    public Drawable loadIcon(Context context, String uri) {
+        try {
+            return getDrawable(context, uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void loadIcon(Context context, String uri, ImagesLoadingListener listener) {
         try {
             listener.onComplete(getDrawable(context, uri));

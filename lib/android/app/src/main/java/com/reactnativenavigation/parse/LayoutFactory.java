@@ -146,7 +146,7 @@ public class LayoutFactory {
                 new ComponentViewCreator(reactInstanceManager),
                 parse(typefaceManager, node.getOptions()),
                 new Presenter(activity, defaultOptions),
-                new ComponentPresenter()
+                new ComponentPresenter(defaultOptions)
         );
 	}
 

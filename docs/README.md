@@ -9,5 +9,5 @@ React Native Navigation provides 100% native platform navigation on both iOS and
 - [Documentation](https://wix.github.io/react-native-navigation/)
 - [Stack Overflow](http://stackoverflow.com/questions/tagged/react-native-navigation)
 - [Chat with us](https://discord.gg/DhkZjq2)
-- [Contributing](/docs/docs/WorkingLocally.md)
+- [Contributing](/docs/WorkingLocally.md)
 

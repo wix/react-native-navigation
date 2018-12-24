@@ -294,17 +294,19 @@ describe('Commands', () => {
 
   describe('setStackRoot', () => {
     it('parses into correct layout node and sends to native', () => {
-      uut.setStackRoot('theComponentId', { component: { name: 'com.example.MyScreen' } });
-      verify(mockedNativeCommandsSender.setStackRoot('setStackRoot+UNIQUE_ID', 'theComponentId', deepEqual({
-        type: 'Component',
-        id: 'Component+UNIQUE_ID',
-        data: {
-          name: 'com.example.MyScreen',
-          options: {},
-          passProps: undefined
-        },
-        children: []
-      }))).called();
+      uut.setStackRoot('theComponentId', [{ component: { name: 'com.example.MyScreen' } }]);
+      verify(mockedNativeCommandsSender.setStackRoot('setStackRoot+UNIQUE_ID', 'theComponentId', deepEqual([
+        {
+          type: 'Component',
+          id: 'Component+UNIQUE_ID',
+          data: {
+            name: 'com.example.MyScreen',
+            options: {},
+            passProps: undefined
+          },
+          children: []
+        }
+      ]))).called();
     });
   });
 
@@ -410,7 +412,7 @@ describe('Commands', () => {
         pop: ['id', {}],
         popTo: ['id', {}],
         popToRoot: ['id', {}],
-        setStackRoot: ['id', {}],
+        setStackRoot: ['id', [{}]],
         showOverlay: [{}],
         dismissOverlay: ['id'],
         getLaunchArgs: ['id']
@@ -426,7 +428,7 @@ describe('Commands', () => {
         pop: { commandId: 'pop+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
         popTo: { commandId: 'popTo+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
         popToRoot: { commandId: 'popToRoot+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
-        setStackRoot: { commandId: 'setStackRoot+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
+        setStackRoot: { commandId: 'setStackRoot+UNIQUE_ID', componentId: 'id', layout: ['parsed'] },
         showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: 'parsed' },
         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
         getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' },

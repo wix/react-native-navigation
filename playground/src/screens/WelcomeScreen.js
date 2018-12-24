@@ -583,12 +583,10 @@ const styles = {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e8e8e8',
   },
   bar: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#e8e8e8',
     justifyContent: 'space-between'
   },
   h1: {

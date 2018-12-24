@@ -115,15 +115,15 @@ export class Commands {
     return result;
   }
 
-  public setStackRoot(componentId: string, simpleApi: Layout) {
-    const input = _.cloneDeep(simpleApi);
-
-    const layout = this.layoutTreeParser.parse(input);
-    this.layoutTreeCrawler.crawl(layout);
-
+  public setStackRoot(componentId: string, children: Layout[]) {
+    const input = _.map(_.cloneDeep(children), (simpleApi) => {
+      const layout = this.layoutTreeParser.parse(simpleApi);
+      this.layoutTreeCrawler.crawl(layout);
+      return layout;
+    });
     const commandId = this.uniqueIdProvider.generate('setStackRoot');
-    const result = this.nativeCommandsSender.setStackRoot(commandId, componentId, layout);
-    this.commandsObserver.notify('setStackRoot', { commandId, componentId, layout });
+    const result = this.nativeCommandsSender.setStackRoot(commandId, componentId, input);
+    this.commandsObserver.notify('setStackRoot', { commandId, componentId, layout: input });
     return result;
   }
 
