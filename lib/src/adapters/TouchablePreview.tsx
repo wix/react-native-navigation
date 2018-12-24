@@ -21,7 +21,7 @@ export interface Props {
   children: React.ReactNode;
   touchableComponent?: TouchableHighlight | TouchableOpacity | TouchableNativeFeedback | TouchableWithoutFeedback | React.ReactNode;
   onPress?: () => void;
-  onPressIn?: (reactTag?) => void;
+  onPressIn?: (payload: {reactTag: number | null}) => void;
   onPeekIn?: () => void;
   onPeekOut?: () => void;
 }
@@ -30,7 +30,7 @@ const PREVIEW_DELAY = 350;
 const PREVIEW_MIN_FORCE = 0.1;
 const PREVIEW_TIMEOUT = 1250;
 
-export class TouchablePreview extends React.PureComponent<Props, any> {
+export class TouchablePreview extends React.PureComponent<Props> {
 
   static propTypes = {
     children: PropTypes.node,
@@ -48,7 +48,7 @@ export class TouchablePreview extends React.PureComponent<Props, any> {
   static peeking = false;
 
   private timeout: number | undefined;
-  private ts: number = 0;
+  private touchStartedAt: number = 0;
   private onRef = React.createRef<any>();
   onPress = () => {
     const { onPress } = this.props;
@@ -79,13 +79,13 @@ export class TouchablePreview extends React.PureComponent<Props, any> {
 
   onTouchStart = (event: GestureResponderEvent) => {
     // Store a timstamp of the initial touch start
-    this.ts = event.nativeEvent.timestamp;
+    this.touchStartedAt = event.nativeEvent.timestamp;
   }
 
   onTouchMove = (event: GestureResponderEventWithForce) => {
     clearTimeout(this.timeout);
     const { force, timestamp } = event.nativeEvent;
-    const diff = (timestamp - this.ts);
+    const diff = (timestamp - this.touchStartedAt);
 
     if (force > PREVIEW_MIN_FORCE && diff > PREVIEW_DELAY) {
       TouchablePreview.peeking = true;
