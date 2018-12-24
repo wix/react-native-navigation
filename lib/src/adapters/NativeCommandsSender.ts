@@ -1,7 +1,7 @@
 import { NativeModules } from 'react-native';
 
 interface NativeCommandsModule {
-  setRoot(commandId: string, layout: { root: any, modals: any[], overlays: any[] }): Promise<any>;
+  setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;
   setDefaultOptions(options: object): void;
   mergeOptions(componentId: string, options: object): void;
   push(commandId: string, onComponentId: string, layout: object): Promise<any>;
@@ -23,7 +23,7 @@ export class NativeCommandsSender {
     this.nativeCommandsModule = NativeModules.RNNBridgeModule;
   }
 
-  setRoot(commandId: string, layout: { root: any, modals: any[], overlays: any[] }) {
+  setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
     return this.nativeCommandsModule.setRoot(commandId, layout);
   }
 
