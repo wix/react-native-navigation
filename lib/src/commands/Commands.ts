@@ -57,14 +57,14 @@ export class Commands {
     this.commandsObserver.notify('mergeOptions', { componentId, options });
   }
 
-  public showModal(simpleApi: Layout) {
-    const input = _.cloneDeep(simpleApi);
-    const layout = this.layoutTreeParser.parse(input);
-    this.layoutTreeCrawler.crawl(layout);
+  public showModal(layout: Layout) {
+    const layoutCloned = _.cloneDeep(layout);
+    const layoutNode = this.layoutTreeParser.parse(layoutCloned);
+    this.layoutTreeCrawler.crawl(layoutNode);
 
     const commandId = this.uniqueIdProvider.generate('showModal');
-    const result = this.nativeCommandsSender.showModal(commandId, layout);
-    this.commandsObserver.notify('showModal', { commandId, layout });
+    const result = this.nativeCommandsSender.showModal(commandId, layoutNode);
+    this.commandsObserver.notify('showModal', { commandId, layout: layoutNode });
     return result;
   }
 

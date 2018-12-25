@@ -113,14 +113,22 @@ export interface LayoutSplitView {
   options?: OptionsSplitView;
 }
 
+export interface TopTabs {
+  id?: string;
+  children?: any[];
+  options?: Options;
+}
+
 export interface LayoutRoot {
   /**
    * Set the root
    */
-  root?: Layout;
+  root: Layout;
   modals?: any;
   overlays?: any;
 }
+
+export type ExternalComponent = any;
 
 export interface Layout<P = {}> {
   /**
@@ -143,4 +151,12 @@ export interface Layout<P = {}> {
    * Set the split view
    */
   splitView?: LayoutSplitView;
+  /**
+   * ???
+   */
+  topTabs?: TopTabs;
+  /**
+   * ???
+   */
+  externalComponent?: ExternalComponent;
 }
