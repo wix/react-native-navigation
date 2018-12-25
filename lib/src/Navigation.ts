@@ -45,7 +45,7 @@ export class NavigationRoot {
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
-    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver);
+    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver, this.componentWrapper);
     this.layoutTreeParser = new LayoutTreeParser();
     const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService());
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store, optionsProcessor);
@@ -69,7 +69,7 @@ export class NavigationRoot {
    * The component itself is a traditional React component extending React.Component.
    */
   public registerComponent(componentName: string | number, componentProvider: ComponentProvider, concreteComponentProvider?: ComponentProvider): ComponentProvider {
-    return this.componentRegistry.registerComponent(componentName, componentProvider, this.componentWrapper, concreteComponentProvider);
+    return this.componentRegistry.registerComponent(componentName, componentProvider, concreteComponentProvider);
   }
 
   /**
@@ -82,7 +82,7 @@ export class NavigationRoot {
     ReduxProvider: any,
     reduxStore: any
   ): ComponentProvider {
-    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, this.componentWrapper, undefined, ReduxProvider, reduxStore);
+    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, undefined, ReduxProvider, reduxStore);
   }
 
   /**
