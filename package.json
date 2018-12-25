@@ -60,6 +60,7 @@
     "tslib": "1.9.3"
   },
   "devDependencies": {
+    "@types/hoist-non-react-statics": "^3.0.1",
     "@types/jest": "23.x.x",
     "@types/lodash": "4.x.x",
     "@types/react": "16.x.x",
@@ -68,13 +69,13 @@
     "detox": "9.0.6",
     "handlebars": "4.x.x",
     "jest": "23.x.x",
+    "metro-react-native-babel-preset": "0.50.0",
     "react": "16.6.1",
     "react-native": "0.57.7",
     "react-native-typescript-transformer": "^1.2.10",
     "react-native-view-overflow": "0.0.3",
     "react-redux": "5.x.x",
     "react-test-renderer": "16.6.3",
-    "metro-react-native-babel-preset": "0.50.0",
     "redux": "3.x.x",
     "remx": "2.x.x",
     "semver": "5.x.x",

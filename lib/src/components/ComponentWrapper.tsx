@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ComponentProvider } from 'react-native';
 import * as  _ from 'lodash';
 import { polyfill } from 'react-lifecycles-compat';
+import hoistNonReactStatics = require('hoist-non-react-statics');
 
 import { Store } from './Store';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
@@ -58,7 +59,7 @@ export class ComponentWrapper {
     }
 
     polyfill(WrappedComponent);
-    require('hoist-non-react-statics')(WrappedComponent, concreteComponentProvider());
+    hoistNonReactStatics(WrappedComponent, concreteComponentProvider());
     return ReduxProvider ? this.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore) : WrappedComponent;
   }
 
@@ -72,7 +73,7 @@ export class ComponentWrapper {
         );
       }
     }
-    require('hoist-non-react-statics')(ReduxWrapper, WrappedComponent);
+    hoistNonReactStatics(ReduxWrapper, WrappedComponent);
     return ReduxWrapper;
   }
 }
