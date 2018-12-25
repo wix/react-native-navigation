@@ -55,9 +55,6 @@ export class LayoutTreeParser {
   }
 
   private sideMenuChildren(api: LayoutSideMenu): LayoutNode[] {
-    if (!api.center) {
-      throw new Error(`sideMenu.center is required`);
-    }
     const children: LayoutNode[] = [];
     if (api.left) {
       children.push({ type: LayoutType.SideMenuLeft, data: {}, children: [this.parse(api.left)] });
@@ -108,7 +105,7 @@ export class LayoutTreeParser {
     return {
       id: api.id,
       type: LayoutType.ExternalComponent,
-      data: { name: api.name, options: api.options, passProps: api.passProps },
+      data: { name: api.name.toString(), options: api.options, passProps: api.passProps },
       children: []
     };
   }

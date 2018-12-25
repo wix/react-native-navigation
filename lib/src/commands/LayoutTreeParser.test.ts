@@ -94,10 +94,6 @@ describe('LayoutTreeParser', () => {
       expect(result.children[2].children[0].type).toEqual(LayoutType.Component);
     });
 
-    it('side menu center is require', () => {
-      expect(() => uut.parse({ sideMenu: {} })).toThrowError('sideMenu.center is required');
-    });
-
     it('top tabs', () => {
       const result = uut.parse(LayoutExamples.topTabs);
       expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
