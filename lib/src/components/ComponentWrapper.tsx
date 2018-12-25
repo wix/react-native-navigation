@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { ComponentProvider } from 'react-native';
 import * as  _ from 'lodash';
-import * as ReactLifecyclesCompat from 'react-lifecycles-compat';
+import { polyfill } from 'react-lifecycles-compat';
+
 import { Store } from './Store';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 
@@ -56,7 +57,7 @@ export class ComponentWrapper {
       }
     }
 
-    ReactLifecyclesCompat.polyfill(WrappedComponent);
+    polyfill(WrappedComponent);
     require('hoist-non-react-statics')(WrappedComponent, concreteComponentProvider());
     return ReduxProvider ? this.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore) : WrappedComponent;
   }
