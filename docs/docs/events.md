@@ -27,14 +27,14 @@ class MyComponent extends Component {
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
-  
+
   componentWillUnmount() {
     // Not mandatory
     if (this.navigationEventListener) {
       this.navigationEventListener.remove();
     }
   }
-  
+
   componentDidAppear() {
 
   }
@@ -66,7 +66,7 @@ class MyComponent extends Component {
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
-  
+
   componentWillUnmount() {
     // Not mandatory
     if (this.navigationEventListener) {
@@ -101,7 +101,7 @@ The `commandListener` is called whenever a *Navigation command* (i.e push, pop, 
 
 ```js
 // Subscribe
-const commandListener = Navigation.events().registerCommandListener(({ name, params }) => {
+const commandListener = Navigation.events().registerCommandListener((name, params) => {
 
 });
 ...
@@ -158,7 +158,7 @@ class MyComponent extends Component {
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
-  
+
   componentWillUnmount() {
     // Not mandatory
     if (this.navigationEventListener) {
@@ -197,7 +197,7 @@ class MyComponent extends Component {
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
-  
+
   componentWillUnmount() {
     // Not mandatory
     if (this.navigationEventListener) {
@@ -220,7 +220,7 @@ class MyComponent extends Component {
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
-  
+
   componentWillUnmount() {
     // Not mandatory
     if (this.navigationEventListener) {
@@ -243,7 +243,7 @@ class MyComponent extends Component {
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
-  
+
   componentWillUnmount() {
     // Not mandatory
     if (this.navigationEventListener) {
