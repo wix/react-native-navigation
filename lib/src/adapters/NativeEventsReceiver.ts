@@ -7,7 +7,7 @@ import {
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent,
   PreviewCompletedEvent,
-  ModalDismissedEvent,
+  ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 
@@ -22,9 +22,9 @@ export class NativeEventsReceiver {
       this.emitter = {
         addListener: () => {
           return {
-            remove: () => undefined,
+            remove: () => undefined
           };
-        },
+        }
       };
     }
   }
@@ -33,57 +33,40 @@ export class NativeEventsReceiver {
     return this.emitter.addListener('RNN.AppLaunched', callback);
   }
 
-  public registerComponentDidAppearListener(
-    callback: (event: ComponentDidAppearEvent) => void,
-  ): EventSubscription {
+  public registerComponentDidAppearListener(callback: (event: ComponentDidAppearEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.ComponentDidAppear', callback);
   }
 
-  public registerComponentDidDisappearListener(
-    callback: (event: ComponentDidDisappearEvent) => void,
-  ): EventSubscription {
+  public registerComponentDidDisappearListener(callback: (event: ComponentDidDisappearEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.ComponentDidDisappear', callback);
   }
 
-  public registerNavigationButtonPressedListener(
-    callback: (event: NavigationButtonPressedEvent) => void,
-  ): EventSubscription {
+  public registerNavigationButtonPressedListener(callback: (event: NavigationButtonPressedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.NavigationButtonPressed', callback);
   }
 
-  public registerModalDismissedListener(
-    callback: (event: ModalDismissedEvent) => void,
-  ): EventSubscription {
+  public registerModalDismissedListener(callback: (event: ModalDismissedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.ModalDismissed', callback);
   }
 
-  public registerSearchBarUpdatedListener(
-    callback: (event: SearchBarUpdatedEvent) => void,
-  ): EventSubscription {
+  public registerSearchBarUpdatedListener(callback: (event: SearchBarUpdatedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.SearchBarUpdated', callback);
   }
 
-  public registerSearchBarCancelPressedListener(
-    callback: (event: SearchBarCancelPressedEvent) => void,
-  ): EventSubscription {
+  public registerSearchBarCancelPressedListener(callback: (event: SearchBarCancelPressedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.SearchBarCancelPressed', callback);
   }
 
-  public registerPreviewCompletedListener(
-    callback: (event: PreviewCompletedEvent) => void,
-  ): EventSubscription {
+  public registerPreviewCompletedListener(callback: (event: PreviewCompletedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.PreviewCompleted', callback);
   }
 
-  public registerCommandCompletedListener(
-    callback: (data: CommandCompletedEvent) => void,
+  public registerCommandCompletedListener(callback: (data: CommandCompletedEvent) => void
   ): EventSubscription {
     return this.emitter.addListener('RNN.CommandCompleted', callback);
   }
 
-  public registerBottomTabSelectedListener(
-    callback: (data: BottomTabSelectedEvent) => void,
-  ): EventSubscription {
+  public registerBottomTabSelectedListener(callback: (data: BottomTabSelectedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.BottomTabSelected', callback);
   }
 }
