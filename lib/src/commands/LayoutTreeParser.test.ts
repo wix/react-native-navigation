@@ -12,6 +12,10 @@ describe('LayoutTreeParser', () => {
   });
 
   describe('parses into { type, data, children }', () => {
+    it('unknown type', () => {
+      expect(() => uut.parse({ wut: {} } as Layout)).toThrowError('unknown LayoutType "wut"');
+    });
+
     it('single component', () => {
       expect(uut.parse(LayoutExamples.singleComponent)).toEqual({
         type: LayoutType.Component,
