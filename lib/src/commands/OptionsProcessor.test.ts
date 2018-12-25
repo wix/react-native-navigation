@@ -18,7 +18,7 @@ describe('navigation options', () => {
       height: 100,
       scale: 1,
       uri: 'lol',
-      width: 100,
+      width: 100
     });
     const assetService = instance(mockedAssetService);
 
