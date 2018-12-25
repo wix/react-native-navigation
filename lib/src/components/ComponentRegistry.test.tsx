@@ -1,22 +1,22 @@
-import { AppRegistry } from 'react-native';
-
 import { ComponentRegistry } from './ComponentRegistry';
 import { Store } from './Store';
 import { mock, instance, verify, anyFunction } from 'ts-mockito';
 import { ComponentWrapper } from './ComponentWrapper';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
+import { AppRegistryService } from '../adapters/AppRegistryService';
+
+const DummyComponent = () => null;
 
 describe('ComponentRegistry', () => {
   let uut: ComponentRegistry;
-  let mockRegistry: any;
-  const DummyComponent = () => null;
 
-  let mockedStore = mock(Store);
-  let store = instance(mockedStore);
+  let mockedStore: Store;
+  let store: Store;
+
+  let mockedAppRegistryService: AppRegistryService;
+  let appRegistryService: AppRegistryService;
 
   beforeEach(() => {
-    mockRegistry = AppRegistry.registerComponent = jest.fn(AppRegistry.registerComponent);
-
     mockedStore = mock(Store);
     store = instance(mockedStore);
 
@@ -26,15 +26,22 @@ describe('ComponentRegistry', () => {
     const mockedComponentWrapper = mock(ComponentWrapper);
     const componentWrapper = instance(mockedComponentWrapper);
 
-    uut = new ComponentRegistry(store, componentEventsObserver, componentWrapper);
+    mockedAppRegistryService = mock(AppRegistryService);
+    appRegistryService = instance(mockedAppRegistryService);
+
+    uut = new ComponentRegistry(
+      store,
+      componentEventsObserver,
+      componentWrapper,
+      appRegistryService
+    );
   });
 
   it('registers component by componentName into AppRegistry', () => {
-    expect(mockRegistry).not.toHaveBeenCalled();
-    const result = uut.registerComponent('example.MyComponent.name', () => DummyComponent);
-    expect(mockRegistry).toHaveBeenCalledTimes(1);
-    expect(mockRegistry.mock.calls[0][0]).toEqual('example.MyComponent.name');
-    expect(mockRegistry.mock.calls[0][1]()).toEqual(result());
+    uut.registerComponent('example.MyComponent.name', () => DummyComponent);
+    verify(
+      mockedAppRegistryService.registerComponent('example.MyComponent.name', anyFunction())
+    ).called();
   });
 
   it('saves the wrapper component generator to the store', () => {

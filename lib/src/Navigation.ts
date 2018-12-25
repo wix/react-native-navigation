@@ -20,6 +20,7 @@ import { ComponentWrapper } from './components/ComponentWrapper';
 import { OptionsProcessor } from './commands/OptionsProcessor';
 import { ColorService } from './adapters/ColorService';
 import { AssetService } from './adapters/AssetResolver';
+import { AppRegistryService } from './adapters/AppRegistryService';
 
 export class NavigationRoot {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -45,7 +46,13 @@ export class NavigationRoot {
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
-    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver, this.componentWrapper);
+    const appRegistryService = new AppRegistryService();
+    this.componentRegistry = new ComponentRegistry(
+      this.store,
+      this.componentEventsObserver,
+      this.componentWrapper,
+      appRegistryService
+    );
     this.layoutTreeParser = new LayoutTreeParser();
     const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService());
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store, optionsProcessor);
