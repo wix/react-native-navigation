@@ -2,8 +2,6 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { requireNativeComponent } from 'react-native';
 
-let RNNElement: React.ComponentType<any>;
-
 export class Element extends React.Component<{ elementId: any; resizeMode?: any }> {
   static propTypes = {
     elementId: PropTypes.string.isRequired,
@@ -19,8 +17,6 @@ export class Element extends React.Component<{ elementId: any; resizeMode?: any 
   }
 }
 
-RNNElement = requireNativeComponent('RNNElement', Element, {
-  nativeOnly: {
-    nativeID: true
-  }
+const RNNElement = requireNativeComponent('RNNElement', Element, {
+  nativeOnly: { nativeID: true }
 });
