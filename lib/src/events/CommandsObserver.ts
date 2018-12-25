@@ -1,7 +1,7 @@
 import { EventSubscription } from '../interfaces/EventSubscription';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
-type CommandsListener = (name: string, params: any) => void;
+export type CommandsListener = (name: string, params: any) => void;
 
 export class CommandsObserver {
   private listeners: Record<string, CommandsListener> = {};
