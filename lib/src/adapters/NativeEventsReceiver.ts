@@ -61,8 +61,7 @@ export class NativeEventsReceiver {
     return this.emitter.addListener('RNN.PreviewCompleted', callback);
   }
 
-  public registerCommandCompletedListener(callback: (data: CommandCompletedEvent) => void
-  ): EventSubscription {
+  public registerCommandCompletedListener(callback: (data: CommandCompletedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.CommandCompleted', callback);
   }
 
