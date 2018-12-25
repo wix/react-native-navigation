@@ -8,32 +8,23 @@ import { AppRegistryService } from '../adapters/AppRegistryService';
 const DummyComponent = () => null;
 
 describe('ComponentRegistry', () => {
-  let uut: ComponentRegistry;
-
   let mockedStore: Store;
-  let store: Store;
-
+  let mockedComponentEventsObserver: ComponentEventsObserver;
+  let mockedComponentWrapper: ComponentWrapper;
   let mockedAppRegistryService: AppRegistryService;
-  let appRegistryService: AppRegistryService;
+  let uut: ComponentRegistry;
 
   beforeEach(() => {
     mockedStore = mock(Store);
-    store = instance(mockedStore);
-
-    const mockedComponentEventsObserver = mock(ComponentEventsObserver);
-    const componentEventsObserver = instance(mockedComponentEventsObserver);
-
-    const mockedComponentWrapper = mock(ComponentWrapper);
-    const componentWrapper = instance(mockedComponentWrapper);
-
+    mockedComponentEventsObserver = mock(ComponentEventsObserver);
+    mockedComponentWrapper = mock(ComponentWrapper);
     mockedAppRegistryService = mock(AppRegistryService);
-    appRegistryService = instance(mockedAppRegistryService);
 
     uut = new ComponentRegistry(
-      store,
-      componentEventsObserver,
-      componentWrapper,
-      appRegistryService
+      instance(mockedStore),
+      instance(mockedComponentEventsObserver),
+      instance(mockedComponentWrapper),
+      instance(mockedAppRegistryService)
     );
   });
 
