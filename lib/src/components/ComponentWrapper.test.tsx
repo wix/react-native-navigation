@@ -145,7 +145,7 @@ describe('ComponentWrapper', () => {
   });
 
   it('renders HOC components correctly', () => {
-    const generator = () => (props) => (
+    const generator = () => (props: any) => (
       <View>
         <MyComponent {...props}/>
       </View>
