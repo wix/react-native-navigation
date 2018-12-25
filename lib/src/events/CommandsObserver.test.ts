@@ -1,4 +1,5 @@
 import { CommandsObserver } from './CommandsObserver';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 describe('CommandsObserver', () => {
   let uut: CommandsObserver;
@@ -8,7 +9,7 @@ describe('CommandsObserver', () => {
   beforeEach(() => {
     cb1 = jest.fn();
     cb2 = jest.fn();
-    uut = new CommandsObserver();
+    uut = new CommandsObserver(new UniqueIdProvider());
   });
 
   it('register and notify listener', () => {

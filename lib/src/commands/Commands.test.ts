@@ -19,7 +19,7 @@ describe('Commands', () => {
 
   beforeEach(() => {
     store = new Store();
-    commandsObserver = new CommandsObserver();
+    commandsObserver = new CommandsObserver(new UniqueIdProvider());
     mockedNativeCommandsSender = mock(NativeCommandsSender);
     nativeCommandsSender = instance(mockedNativeCommandsSender);
 
