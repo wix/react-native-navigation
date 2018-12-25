@@ -22,5 +22,5 @@ export class Element extends React.Component<{ elementId: any; resizeMode?: any 
 RNNElement = requireNativeComponent('RNNElement', Element, {
   nativeOnly: {
     nativeID: true
-  },
+  }
 });
