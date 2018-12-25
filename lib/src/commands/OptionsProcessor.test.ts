@@ -69,8 +69,8 @@ describe('navigation options', () => {
       rootBackgroundImage: { height: 100, scale: 1, uri: 'lol', width: 100 },
       bottomTab: {
         icon: { height: 100, scale: 1, uri: 'lol', width: 100 },
-        selectedIcon: { height: 100, scale: 1, uri: 'lol', width: 100 },
-      },
+        selectedIcon: { height: 100, scale: 1, uri: 'lol', width: 100 }
+      }
     });
   });
 
