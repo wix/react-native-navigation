@@ -277,6 +277,9 @@ class WelcomeScreen extends Component {
       component: {
         name: 'navigation.playground.PushedScreen',
         options: {
+          layout: {
+            
+          },
           topBar: {
             title: {
               text: 'pushed',

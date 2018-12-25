@@ -8,8 +8,7 @@ project.ext.react = [
 apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -19,7 +18,7 @@ android {
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         ndk {
@@ -57,8 +56,8 @@ configurations.all {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'

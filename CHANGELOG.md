@@ -1,4 +1,16 @@
 # Changelog
+## 2.4.0
+### Added
+#### Android
+* Add fab.iconColor option to tint fab icon [#13de5ca](https://github.com/wix/react-native-navigation/commit/13de5cab70834ca5d38f02c512346753dec6c5ed) by [guyca](https://github.com/guyca)
+
+### Fixed
+* Refactor options processor [#ee04610](https://github.com/wix/react-native-navigation/commit/ee04610f6a9c9117f9ae8c17ae6d9ce9ca132883) by [henrikra](https://github.com/henrikra)
+
+#### Android
+* Fix closing sideMenu when pushing a screen [#dc739de](https://github.com/wix/react-native-navigation/commit/dc739dee337b91c825992e3a77cdcf0262fee162) by [guyca](https://github.com/guyca)
+* Orientation.hasValue returns false for default orientation [#43ae659](https://github.com/wix/react-native-navigation/commit/43ae659097f8b6d2cf8897703034829172573fb7) by [guyca](https://github.com/guyca)
+* Measure TopBar buttons using using MeasureSpec.UNSPECIFIED [#dd93c51](https://github.com/wix/react-native-navigation/commit/dd93c5147aaac16c852e4795f39abc455f77c90b) by [guyca](https://github.com/guyca)
 
 ## v2.3.0
 ### Added
