@@ -72,14 +72,14 @@ export interface OptionsLayout {
 }
 
 export enum OptionsModalPresentationStyle {
-  'formSheet',
-  'pageSheet',
-  'overFullScreen',
-  'overCurrentContext',
-  'currentContext',
-  'popOver',
-  'fullScreen',
-  'none',
+  formSheet = 'formSheet',
+  pageSheet = 'pageSheet',
+  overFullScreen = 'overFullScreen',
+  overCurrentContext = 'overCurrentContext',
+  currentContext = 'currentContext',
+  popOver = 'popOver',
+  fullScreen = 'fullScreen',
+  none = 'none'
 }
 
 export interface OptionsTopBarLargeTitle {
