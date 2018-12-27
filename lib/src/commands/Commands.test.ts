@@ -13,7 +13,7 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 describe('Commands', () => {
   let uut: Commands;
   let mockedNativeCommandsSender: NativeCommandsSender;
-  let store: Store;
+  let mockedStore: Store;
   let commandsObserver: CommandsObserver;
   let mockedUniqueIdProvider: UniqueIdProvider;
 
@@ -22,7 +22,7 @@ describe('Commands', () => {
     mockedUniqueIdProvider = mock(UniqueIdProvider);
     when(mockedUniqueIdProvider.generate(anything())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
     const uniqueIdProvider = instance(mockedUniqueIdProvider);
-    store = new Store();
+    mockedStore = mock(Store);
     commandsObserver = new CommandsObserver(uniqueIdProvider);
 
     const mockedOptionsProcessor = mock(OptionsProcessor);
@@ -31,7 +31,7 @@ describe('Commands', () => {
     uut = new Commands(
       instance(mockedNativeCommandsSender),
       new LayoutTreeParser(uniqueIdProvider),
-      new LayoutTreeCrawler(store, optionsProcessor),
+      new LayoutTreeCrawler(instance(mockedStore), optionsProcessor),
       commandsObserver,
       uniqueIdProvider,
       optionsProcessor
@@ -66,16 +66,6 @@ describe('Commands', () => {
           })
         )
       ).called();
-    });
-
-    it('passProps into components', () => {
-      const passProps = {
-        fn: () => 'Hello'
-      };
-      expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual({});
-      uut.setRoot({ root: { component: { name: 'asd', passProps } } });
-      expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual(passProps);
-      expect(store.getPropsForId('Component+UNIQUE_ID').fn()).toEqual('Hello');
     });
 
     it('returns a promise with the resolved layout', async () => {
@@ -185,18 +175,6 @@ describe('Commands', () => {
       ).called();
     });
 
-    it('passProps into components', () => {
-      const passProps = {};
-      expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual({});
-      uut.showModal({
-        component: {
-          name: 'com.example.MyScreen',
-          passProps
-        }
-      });
-      expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual(passProps);
-    });
-
     it('returns a promise with the resolved layout', async () => {
       when(mockedNativeCommandsSender.showModal(anything(), anything())).thenResolve(
         'the resolved layout' as any
@@ -273,15 +251,6 @@ describe('Commands', () => {
           })
         )
       ).called();
-    });
-
-    it('calls component generator once', async () => {
-      const generator = jest.fn(() => {
-        return {};
-      });
-      store.setComponentClassForName('theComponentName', generator);
-      await uut.push('theComponentId', { component: { name: 'theComponentName' } });
-      expect(generator).toHaveBeenCalledTimes(1);
     });
   });
 
