@@ -27,31 +27,31 @@ export class LayoutTreeCrawler {
   crawl(node: LayoutNode): void {
     node.id = node.id || this.uniqueIdProvider.generate(node.type);
     if (node.type === LayoutType.Component) {
-      this._handleComponent(node);
+      this.handleComponent(node);
     }
     this.optionsProcessor.processOptions(node.data.options);
-    _.forEach(node.children, this.crawl);
+    node.children.forEach(this.crawl);
   }
 
-  _handleComponent(node) {
-    this._assertComponentDataName(node);
-    this._savePropsToStore(node);
-    this._applyStaticOptions(node);
+  private handleComponent(node) {
+    this.assertComponentDataName(node);
+    this.savePropsToStore(node);
+    this.applyStaticOptions(node);
     node.data.passProps = undefined;
   }
 
-  _savePropsToStore(node) {
+  private savePropsToStore(node) {
     this.store.setPropsForId(node.id, node.data.passProps);
   }
 
-  _applyStaticOptions(node) {
+  private applyStaticOptions(node) {
     const clazz = this.store.getComponentClassForName(node.data.name) ? this.store.getComponentClassForName(node.data.name)() : {};
     const staticOptions = _.isFunction(clazz.options) ? clazz.options(node.data.passProps || {}) : (_.cloneDeep(clazz.options) || {});
     const passedOptions = node.data.options || {};
     node.data.options = _.merge({}, staticOptions, passedOptions);
   }
 
-  _assertComponentDataName(component) {
+  private assertComponentDataName(component) {
     if (!component.data.name) {
       throw new Error('Missing component data.name');
     }
