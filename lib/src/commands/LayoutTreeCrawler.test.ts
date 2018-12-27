@@ -74,7 +74,7 @@ describe('LayoutTreeCrawler', () => {
     when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
       () =>
         class extends React.Component {
-          static get options(): Options {
+          static options(): Options {
             return { popGesture: true };
           }
         }
@@ -135,7 +135,7 @@ describe('LayoutTreeCrawler', () => {
     when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
       () =>
         class extends React.Component {
-          static get options() {
+          static options() {
             return {
               bazz: 123,
               inner: { foo: 'this gets overriden' },
@@ -171,7 +171,7 @@ describe('LayoutTreeCrawler', () => {
   // it('Component: deepClones options', () => {
   //   const theStyle = {};
   //   const MyComponent = class CoolComponent extends React.Component {
-  //     static get options() {
+  //     static options() {
   //       return theStyle;
   //     }
   //   };

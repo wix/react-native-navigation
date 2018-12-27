@@ -20,7 +20,7 @@ class OptionsScreen extends Component {
     Navigation.events().bindComponent(this);
   }
 
-  static get options() {
+  static options() {
     return {
       statusBar: {
         style: 'dark',
