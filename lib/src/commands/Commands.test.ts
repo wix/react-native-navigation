@@ -21,7 +21,7 @@ describe('Commands', () => {
   beforeEach(() => {
     mockedNativeCommandsSender = mock(NativeCommandsSender);
     mockedUniqueIdProvider = mock(UniqueIdProvider);
-    when(mockedUniqueIdProvider.generate(anything())).thenCall(prefix => `${prefix}+UNIQUE_ID`);
+    when(mockedUniqueIdProvider.generate(anything())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
     const uniqueIdProvider = instance(mockedUniqueIdProvider);
     mockedStore = mock(Store);
     commandsObserver = new CommandsObserver(uniqueIdProvider);
@@ -71,25 +71,9 @@ describe('Commands', () => {
 
     it('inputs modals and overlays', () => {
       uut.setRoot({
-        root: {
-          component: {
-            name: 'com.example.MyScreen'
-          }
-        },
-        modals: [
-          {
-            component: {
-              name: 'com.example.MyModal'
-            }
-          }
-        ],
-        overlays: [
-          {
-            component: {
-              name: 'com.example.MyOverlay'
-            }
-          }
-        ]
+        root: { component: { name: 'com.example.MyScreen' } },
+        modals: [{ component: { name: 'com.example.MyModal' } }],
+        overlays: [{ component: { name: 'com.example.MyOverlay' } }]
       });
       verify(
         mockedNativeCommandsSender.setRoot(
@@ -139,18 +123,17 @@ describe('Commands', () => {
     it('passes options for component', () => {
       uut.mergeOptions('theComponentId', { blurOnUnmount: true });
       verify(
-        mockedNativeCommandsSender.mergeOptions('theComponentId', deepEqual({ blurOnUnmount: true }))
+        mockedNativeCommandsSender.mergeOptions(
+          'theComponentId',
+          deepEqual({ blurOnUnmount: true })
+        )
       ).called();
     });
   });
 
   describe('showModal', () => {
     it('sends command to native after parsing into a correct layout tree', () => {
-      uut.showModal({
-        component: {
-          name: 'com.example.MyScreen'
-        }
-      });
+      uut.showModal({ component: { name: 'com.example.MyScreen' } });
       verify(
         mockedNativeCommandsSender.showModal(
           'showModal+UNIQUE_ID',
@@ -169,7 +152,9 @@ describe('Commands', () => {
     });
 
     it('returns a promise with the resolved layout', async () => {
-      when(mockedNativeCommandsSender.showModal(anything(), anything())).thenResolve('the resolved layout');
+      when(mockedNativeCommandsSender.showModal(anything(), anything())).thenResolve(
+        'the resolved layout'
+      );
       const result = await uut.showModal({ component: { name: 'com.example.MyScreen' } });
       expect(result).toEqual('the resolved layout');
     });
@@ -205,7 +190,9 @@ describe('Commands', () => {
     });
 
     it('returns a promise with the id', async () => {
-      when(mockedNativeCommandsSender.dismissAllModals(anyString(), anything())).thenResolve('the id');
+      when(mockedNativeCommandsSender.dismissAllModals(anyString(), anything())).thenResolve(
+        'the id'
+      );
       const result = await uut.dismissAllModals();
       expect(result).toEqual('the id');
     });
@@ -213,7 +200,9 @@ describe('Commands', () => {
 
   describe('push', () => {
     it('resolves with the parsed layout', async () => {
-      when(mockedNativeCommandsSender.push(anyString(), anyString(), anything())).thenResolve('the resolved layout');
+      when(mockedNativeCommandsSender.push(anyString(), anyString(), anything())).thenResolve(
+        'the resolved layout'
+      );
       const result = await uut.push('theComponentId', {
         component: { name: 'com.example.MyScreen' }
       });
@@ -249,13 +238,15 @@ describe('Commands', () => {
       ).called();
     });
     it('pops a component, passing componentId and options', () => {
-      const options: Options = {popGesture: true};
+      const options: Options = { popGesture: true };
       uut.pop('theComponentId', options);
       verify(mockedNativeCommandsSender.pop('pop+UNIQUE_ID', 'theComponentId', options)).called();
     });
 
     it('pop returns a promise that resolves to componentId', async () => {
-      when(mockedNativeCommandsSender.pop(anyString(), anyString(), anything())).thenResolve('theComponentId');
+      when(mockedNativeCommandsSender.pop(anyString(), anyString(), anything())).thenResolve(
+        'theComponentId'
+      );
       const result = await uut.pop('theComponentId', {});
       expect(result).toEqual('theComponentId');
     });
@@ -270,7 +261,9 @@ describe('Commands', () => {
     });
 
     it('returns a promise that resolves to targetId', async () => {
-      when(mockedNativeCommandsSender.popTo(anyString(), anyString(), anything())).thenResolve('theComponentId');
+      when(mockedNativeCommandsSender.popTo(anyString(), anyString(), anything())).thenResolve(
+        'theComponentId'
+      );
       const result = await uut.popTo('theComponentId');
       expect(result).toEqual('theComponentId');
     });
@@ -285,7 +278,9 @@ describe('Commands', () => {
     });
 
     it('returns a promise that resolves to targetId', async () => {
-      when(mockedNativeCommandsSender.popToRoot(anyString(), anyString(), anything())).thenResolve('theComponentId');
+      when(mockedNativeCommandsSender.popToRoot(anyString(), anyString(), anything())).thenResolve(
+        'theComponentId'
+      );
       const result = await uut.popToRoot('theComponentId');
       expect(result).toEqual('theComponentId');
     });
@@ -317,11 +312,7 @@ describe('Commands', () => {
 
   describe('showOverlay', () => {
     it('sends command to native after parsing into a correct layout tree', () => {
-      uut.showOverlay({
-        component: {
-          name: 'com.example.MyScreen'
-        }
-      });
+      uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
       verify(
         mockedNativeCommandsSender.showOverlay(
           'showOverlay+UNIQUE_ID',
@@ -340,7 +331,9 @@ describe('Commands', () => {
     });
 
     it('resolves with the component id', async () => {
-      when(mockedNativeCommandsSender.showOverlay(anyString(), anything())).thenResolve('Component1');
+      when(mockedNativeCommandsSender.showOverlay(anyString(), anything())).thenResolve(
+        'Component1'
+      );
       const result = await uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
       expect(result).toEqual('Component1');
     });
