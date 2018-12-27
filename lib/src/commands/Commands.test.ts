@@ -28,8 +28,8 @@ describe('Commands', () => {
 
     uut = new Commands(
       nativeCommandsSender,
-      new LayoutTreeParser(),
-      new LayoutTreeCrawler(new UniqueIdProvider(), store, optionsProcessor),
+      new LayoutTreeParser(new UniqueIdProvider()),
+      new LayoutTreeCrawler(store, optionsProcessor),
       commandsObserver,
       new UniqueIdProvider(),
       optionsProcessor

@@ -53,9 +53,9 @@ export class NavigationRoot {
       this.componentWrapper,
       appRegistryService
     );
-    this.layoutTreeParser = new LayoutTreeParser();
+    this.layoutTreeParser = new LayoutTreeParser(this.uniqueIdProvider);
     const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService());
-    this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store, optionsProcessor);
+    this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
     this.commands = new Commands(

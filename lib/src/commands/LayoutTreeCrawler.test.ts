@@ -1,60 +1,27 @@
 import * as React from 'react';
 
 import { LayoutType } from './LayoutType';
-import { LayoutTreeCrawler, LayoutNode } from './LayoutTreeCrawler';
-import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { Store } from '../components/Store';
-import { mock, instance, verify, deepEqual, when, anyString } from 'ts-mockito';
+import { mock, instance, verify, deepEqual, when } from 'ts-mockito';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Options } from '../interfaces/Options';
 
 describe('LayoutTreeCrawler', () => {
   let uut: LayoutTreeCrawler;
-  let mockedUniqueIdProvider: UniqueIdProvider;
   let mockedStore: Store;
   let mockedOptionsProcessor: OptionsProcessor;
 
   beforeEach(() => {
-    mockedUniqueIdProvider = mock(UniqueIdProvider);
     mockedStore = mock(Store);
     mockedOptionsProcessor = mock(OptionsProcessor);
 
-    when(mockedUniqueIdProvider.generate(anyString())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
-
-    uut = new LayoutTreeCrawler(
-      instance(mockedUniqueIdProvider),
-      instance(mockedStore),
-      instance(mockedOptionsProcessor)
-    );
-  });
-
-  it('crawls a layout tree and adds unique id to each node', () => {
-    const node: LayoutNode = {
-      type: LayoutType.Stack,
-      children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }],
-      data: {}
-    };
-    uut.crawl(node);
-    expect(node.id).toEqual('Stack+UNIQUE_ID');
-    expect(node.children[0].id).toEqual('BottomTabs+UNIQUE_ID');
-  });
-
-  it('does not generate unique id when already provided', () => {
-    const node: LayoutNode = {
-      id: 'user defined id',
-      type: LayoutType.Stack,
-      children: [
-        { id: 'user defined id for child', type: LayoutType.BottomTabs, data: {}, children: [] }
-      ],
-      data: {}
-    };
-    uut.crawl(node);
-    expect(node.id).toEqual('user defined id');
-    expect(node.children[0].id).toEqual('user defined id for child');
+    uut = new LayoutTreeCrawler(instance(mockedStore), instance(mockedOptionsProcessor));
   });
 
   it('saves passProps into store for Component nodes', () => {
     const node = {
+      id: 'testId',
       type: LayoutType.BottomTabs,
       children: [
         {
@@ -80,6 +47,7 @@ describe('LayoutTreeCrawler', () => {
         }
     );
     const node = {
+      id: 'testId',
       type: LayoutType.Component,
       data: { name: 'theComponentName', options: {} },
       children: []
@@ -98,6 +66,7 @@ describe('LayoutTreeCrawler', () => {
         }
     );
     const node = {
+      id: 'testId',
       type: LayoutType.Component,
       data: { name: 'theComponentName', options: {}, passProps: { title: 'title' } },
       children: []
@@ -106,6 +75,7 @@ describe('LayoutTreeCrawler', () => {
     expect(node.data.options).toEqual({ topBar: { title: { text: 'title' } } });
 
     const node2 = {
+      id: 'testId',
       type: LayoutType.Component,
       data: { name: 'theComponentName', options: {} },
       children: []
@@ -146,6 +116,7 @@ describe('LayoutTreeCrawler', () => {
     );
 
     const node = {
+      id: 'testId',
       type: LayoutType.Component,
       data: {
         name: 'theComponentName',
@@ -169,7 +140,7 @@ describe('LayoutTreeCrawler', () => {
   });
 
   it('Components: must contain data name', () => {
-    const node = { type: LayoutType.Component, data: {}, children: [] };
+    const node = { type: LayoutType.Component, data: {}, children: [], id: 'testId' };
     expect(() => uut.crawl(node)).toThrowError('Missing component data.name');
   });
 
@@ -179,6 +150,7 @@ describe('LayoutTreeCrawler', () => {
     );
 
     const node = {
+      id: 'testId',
       type: LayoutType.Component,
       data: { name: 'theComponentName', options: {} },
       children: []
@@ -189,6 +161,7 @@ describe('LayoutTreeCrawler', () => {
 
   it('Components: omits passProps after processing so they are not passed over the bridge', () => {
     const node = {
+      id: 'testId',
       type: LayoutType.Component,
       data: {
         name: 'compName',

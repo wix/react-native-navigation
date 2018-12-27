@@ -11,9 +11,10 @@ import {
   LayoutSplitView,
   ExternalComponent
 } from '../interfaces/Layout';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 export class LayoutTreeParser {
-  constructor() {
+  constructor(private uniqueIdProvider: UniqueIdProvider) {
     this.parse = this.parse.bind(this);
   }
 
@@ -38,7 +39,7 @@ export class LayoutTreeParser {
 
   private topTabs(api: TopTabs): LayoutNode {
     return {
-      id: api.id,
+      id: api.id || this.uniqueIdProvider.generate(LayoutType.TopTabs),
       type: LayoutType.TopTabs,
       data: { options: api.options },
       children: api.children ? api.children.map(this.parse) : []
@@ -47,7 +48,7 @@ export class LayoutTreeParser {
 
   private sideMenu(api: LayoutSideMenu): LayoutNode {
     return {
-      id: api.id,
+      id: api.id || this.uniqueIdProvider.generate(LayoutType.SideMenuRoot),
       type: LayoutType.SideMenuRoot,
       data: { options: api.options },
       children: this.sideMenuChildren(api)
@@ -57,15 +58,22 @@ export class LayoutTreeParser {
   private sideMenuChildren(api: LayoutSideMenu): LayoutNode[] {
     const children: LayoutNode[] = [];
     if (api.left) {
-      children.push({ type: LayoutType.SideMenuLeft, data: {}, children: [this.parse(api.left)] });
+      children.push({
+        id: this.uniqueIdProvider.generate(LayoutType.SideMenuLeft),
+        type: LayoutType.SideMenuLeft,
+        data: {},
+        children: [this.parse(api.left)]
+      });
     }
     children.push({
+      id: this.uniqueIdProvider.generate(LayoutType.SideMenuCenter),
       type: LayoutType.SideMenuCenter,
       data: {},
       children: [this.parse(api.center)]
     });
     if (api.right) {
       children.push({
+        id: this.uniqueIdProvider.generate(LayoutType.SideMenuRight),
         type: LayoutType.SideMenuRight,
         data: {},
         children: [this.parse(api.right)]
@@ -76,7 +84,7 @@ export class LayoutTreeParser {
 
   private bottomTabs(api: LayoutBottomTabs): LayoutNode {
     return {
-      id: api.id,
+      id: api.id || this.uniqueIdProvider.generate(LayoutType.BottomTabs),
       type: LayoutType.BottomTabs,
       data: { options: api.options },
       children: api.children ? api.children.map(this.parse) : []
@@ -85,7 +93,7 @@ export class LayoutTreeParser {
 
   private stack(api: LayoutStack): LayoutNode {
     return {
-      id: api.id,
+      id: api.id || this.uniqueIdProvider.generate(LayoutType.Stack),
       type: LayoutType.Stack,
       data: { options: api.options },
       children: api.children ? api.children.map(this.parse) : []
@@ -94,7 +102,7 @@ export class LayoutTreeParser {
 
   private component(api: LayoutComponent): LayoutNode {
     return {
-      id: api.id,
+      id: api.id || this.uniqueIdProvider.generate(LayoutType.Component),
       type: LayoutType.Component,
       data: { name: api.name.toString(), options: api.options, passProps: api.passProps },
       children: []
@@ -103,7 +111,7 @@ export class LayoutTreeParser {
 
   private externalComponent(api: ExternalComponent): LayoutNode {
     return {
-      id: api.id,
+      id: api.id || this.uniqueIdProvider.generate(LayoutType.ExternalComponent),
       type: LayoutType.ExternalComponent,
       data: { name: api.name.toString(), options: api.options, passProps: api.passProps },
       children: []
@@ -115,7 +123,7 @@ export class LayoutTreeParser {
     const detail = api.detail ? this.parse(api.detail) : undefined;
 
     return {
-      id: api.id,
+      id: api.id || this.uniqueIdProvider.generate(LayoutType.SplitView),
       type: LayoutType.SplitView,
       data: { options: api.options },
       children: master && detail ? [master, detail] : []
