@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { LayoutType } from './LayoutType';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Store } from '../components/Store';
+import { Options } from '../interfaces/Options';
 
 export interface Data {
   name?: string;
@@ -15,11 +16,10 @@ export interface LayoutNode {
   children: LayoutNode[];
 }
 
+type ComponentWithOptions = React.ComponentType<any> & { options(passProps: any): Options };
+
 export class LayoutTreeCrawler {
-  constructor(
-    public readonly store: Store,
-    private readonly optionsProcessor: OptionsProcessor
-  ) {
+  constructor(public readonly store: Store, private readonly optionsProcessor: OptionsProcessor) {
     this.crawl = this.crawl.bind(this);
   }
 
@@ -42,16 +42,20 @@ export class LayoutTreeCrawler {
     this.store.setPropsForId(node.id, node.data.passProps);
   }
 
+  private isComponentWithOptions(component: any): component is ComponentWithOptions {
+    return (component as ComponentWithOptions).options !== undefined;
+  }
+
   private staticOptionsIfPossible(node: LayoutNode) {
     const foundReactGenerator = this.store.getComponentClassForName(node.data.name!);
     const reactComponent = foundReactGenerator ? foundReactGenerator() : undefined;
-    return reactComponent && (reactComponent as any).options
-      ? (reactComponent as any).options(node.data.passProps || {})
-      : {};
+    return reactComponent && this.isComponentWithOptions(reactComponent)
+      ? reactComponent.options(node.data.passProps || {})
+      : undefined;
   }
 
   private applyStaticOptions(node: LayoutNode) {
-    node.data.options = _.merge({}, this.staticOptionsIfPossible(node), node.data.options);
+    node.data.options = { ...this.staticOptionsIfPossible(node), ...node.data.options };
   }
 
   private assertComponentDataName(component: LayoutNode) {
