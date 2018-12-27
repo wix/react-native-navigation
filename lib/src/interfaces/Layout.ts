@@ -115,8 +115,7 @@ export interface LayoutSplitView {
 
 export interface TopTabs {
   /**
-   * Set ID of the stack so you can use Navigation.mergeOptions to
-   * update options
+   * Set the layout's id so Navigation.mergeOptions can be used to update options
    */
   id?: string;
   /**
@@ -140,8 +139,7 @@ export interface LayoutRoot {
 
 export interface ExternalComponent {
   /**
-   * Set ID of the stack so you can use Navigation.mergeOptions to
-   * update options
+   * Set the screen's id so Navigation.mergeOptions can be used to update options
    */
   id?: string;
   /**
@@ -149,7 +147,7 @@ export interface ExternalComponent {
    */
   name: string | number;
   /**
-   * Configure top tabs
+   * Configure component options
    */
   options?: Options;
   /**
