@@ -1,4 +1,4 @@
-// import * as React from 'react';
+import * as React from 'react';
 
 import { LayoutType } from './LayoutType';
 import { LayoutTreeCrawler, LayoutNode } from './LayoutTreeCrawler';
@@ -6,6 +6,7 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import { mock, instance, verify, deepEqual, when, anyString } from 'ts-mockito';
 import { OptionsProcessor } from './OptionsProcessor';
+import { Options } from '../interfaces/Options';
 
 describe('LayoutTreeCrawler', () => {
   let uut: LayoutTreeCrawler;
@@ -69,64 +70,49 @@ describe('LayoutTreeCrawler', () => {
     verify(mockedStore.setPropsForId('testId', deepEqual({ myProp: 123 }))).called();
   });
 
-  // it('Components: injects options from original component class static property', () => {
-  //   const theStyle = {};
-  //   const MyComponent = class CoolComponent extends React.Component {
-  //     static get options() {
-  //       return theStyle;
-  //     }
-  //   };
+  it('Components: injects options from original component class static property', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class CoolComponent extends React.Component {
+          static get options(): Options {
+            return { popGesture: true };
+          }
+        }
+    );
+    const node = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {} },
+      children: []
+    };
+    uut.crawl(node);
+    expect(node.data.options).toEqual({ popGesture: true });
+  });
 
-  //   const node = {
-  //     type: LayoutType.Component,
-  //     data: { name: 'theComponentName', options: {} },
-  //     children: []
-  //   };
-  //   store.setComponentClassForName('theComponentName', () => MyComponent);
-  //   uut.crawl(node);
-  //   expect(node.data.options).toEqual(theStyle);
-  // });
+  it('Components: crawl does not cache options', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class CoolComponent extends React.Component {
+          static options(props: { title?: string }) {
+            return { topBar: { title: { text: props.title } } };
+          }
+        }
+    );
+    const node = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {}, passProps: { title: 'title' } },
+      children: []
+    };
+    uut.crawl(node);
+    expect(node.data.options).toEqual({ topBar: { title: { text: 'title' } } });
 
-  // it('Components: crawl does not cache options', () => {
-  //   const optionsWithTitle = (title?: string) => {
-  //     return {
-  //       topBar: {
-  //         title: {
-  //           text: title
-  //         }
-  //       }
-  //     };
-  //   };
-
-  //   const MyComponent = class CoolComponent extends React.Component {
-  //     static options(props: { title: string }) {
-  //       return {
-  //         topBar: {
-  //           title: {
-  //             text: props.title
-  //           }
-  //         }
-  //       };
-  //     }
-  //   };
-
-  //   const node = {
-  //     type: LayoutType.Component,
-  //     data: { name: 'theComponentName', options: {}, passProps: { title: 'title' } },
-  //     children: []
-  //   };
-  //   store.setComponentClassForName('theComponentName', () => MyComponent);
-  //   uut.crawl(node);
-  //   expect(node.data.options).toEqual(optionsWithTitle('title'));
-
-  //   const node2 = {
-  //     type: LayoutType.Component,
-  //     data: { name: 'theComponentName', options: {} },
-  //     children: []
-  //   };
-  //   uut.crawl(node2);
-  //   expect(node2.data.options).toEqual(optionsWithTitle(undefined));
-  // });
+    const node2 = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {} },
+      children: []
+    };
+    uut.crawl(node2);
+    expect(node2.data.options).toEqual({ topBar: { title: {} } });
+  });
 
   // it('Components: passes passProps to the static options function to be used by the user', () => {
   //   const MyComponent = class CoolComponent extends React.Component {
