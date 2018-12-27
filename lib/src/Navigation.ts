@@ -23,7 +23,7 @@ import { AssetService } from './adapters/AssetResolver';
 import { AppRegistryService } from './adapters/AppRegistryService';
 
 export class NavigationRoot {
-  public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
+  public readonly Element: React.ComponentType<{ elementId: string; resizeMode?: string; }>;
   public readonly TouchablePreview: React.ComponentType<any>;
   public readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
