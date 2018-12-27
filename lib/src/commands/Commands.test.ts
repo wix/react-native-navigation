@@ -4,32 +4,36 @@ import { mock, verify, instance, deepEqual, when, anything, anyString } from 'ts
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { Store } from '../components/Store';
-import { UniqueIdProvider } from '../adapters/UniqueIdProvider.mock';
 import { Commands } from './Commands';
 import { CommandsObserver } from '../events/CommandsObserver';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { OptionsProcessor } from './OptionsProcessor';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 describe('Commands', () => {
   let uut: Commands;
   let mockedNativeCommandsSender: NativeCommandsSender;
   let store: Store;
   let commandsObserver: CommandsObserver;
+  let mockedUniqueIdProvider: UniqueIdProvider;
 
   beforeEach(() => {
-    store = new Store();
-    commandsObserver = new CommandsObserver(new UniqueIdProvider());
     mockedNativeCommandsSender = mock(NativeCommandsSender);
+    mockedUniqueIdProvider = mock(UniqueIdProvider);
+    when(mockedUniqueIdProvider.generate(anything())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
+    const uniqueIdProvider = instance(mockedUniqueIdProvider);
+    store = new Store();
+    commandsObserver = new CommandsObserver(uniqueIdProvider);
 
     const mockedOptionsProcessor = mock(OptionsProcessor);
     const optionsProcessor = instance(mockedOptionsProcessor);
 
     uut = new Commands(
       instance(mockedNativeCommandsSender),
-      new LayoutTreeParser(new UniqueIdProvider()),
+      new LayoutTreeParser(uniqueIdProvider),
       new LayoutTreeCrawler(store, optionsProcessor),
       commandsObserver,
-      new UniqueIdProvider(),
+      uniqueIdProvider,
       optionsProcessor
     );
   });
@@ -76,7 +80,7 @@ describe('Commands', () => {
 
     it('returns a promise with the resolved layout', async () => {
       when(mockedNativeCommandsSender.setRoot(anything(), anything())).thenResolve(
-        'the resolved layout' as any
+        'the resolved layout'
       );
       const result = await uut.setRoot({ root: { component: { name: 'com.example.MyScreen' } } });
       expect(result).toEqual('the resolved layout');
@@ -428,6 +432,7 @@ describe('Commands', () => {
 
   describe('notifies commandsObserver', () => {
     let cb: any;
+    let anotherMockedUniqueIdProvider: UniqueIdProvider;
 
     beforeEach(() => {
       cb = jest.fn();
@@ -436,12 +441,15 @@ describe('Commands', () => {
       commandsObserver.register(cb);
       const mockedOptionsProcessor = mock(OptionsProcessor);
       const optionsProcessor = instance(mockedOptionsProcessor);
+      anotherMockedUniqueIdProvider = mock(UniqueIdProvider);
+      when(anotherMockedUniqueIdProvider.generate(anything())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
+
       uut = new Commands(
         mockedNativeCommandsSender,
         mockParser as any,
         mockCrawler as any,
         commandsObserver,
-        new UniqueIdProvider(),
+        instance(anotherMockedUniqueIdProvider),
         optionsProcessor
       );
     });
