@@ -10,16 +10,23 @@ import { OptionsProcessor } from './OptionsProcessor';
 describe('LayoutTreeCrawler', () => {
   let uut: LayoutTreeCrawler;
   let store: Store;
+  let mockedOptionsProcessor: OptionsProcessor;
 
   beforeEach(() => {
     store = new Store();
-    const mockedOptionsProcessor = mock(OptionsProcessor);
-    const optionsProcessor = instance(mockedOptionsProcessor);
-    uut = new LayoutTreeCrawler(new UniqueIdProvider(), store, optionsProcessor);
+    mockedOptionsProcessor = mock(OptionsProcessor);
+    uut = new LayoutTreeCrawler(new UniqueIdProvider(), store, instance(mockedOptionsProcessor));
   });
 
   it('crawls a layout tree and adds unique id to each node', () => {
-    const node = { type: LayoutType.Stack, id: 'Stack+UNIQUE_ID', children: [{ id: 'BottomTabs+UNIQUE_ID', type: LayoutType.BottomTabs, data: {}, children: [] }], data: {} };
+    const node = {
+      type: LayoutType.Stack,
+      id: 'Stack+UNIQUE_ID',
+      children: [
+        { id: 'BottomTabs+UNIQUE_ID', type: LayoutType.BottomTabs, data: {}, children: [] }
+      ],
+      data: {}
+    };
     uut.crawl(node);
     expect(node.id).toEqual('Stack+UNIQUE_ID');
     expect(node.children[0].id).toEqual('BottomTabs+UNIQUE_ID');
@@ -32,14 +39,22 @@ describe('LayoutTreeCrawler', () => {
   });
 
   it('crawls a layout tree and ensures data exists', () => {
-    const node = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }], data: {} };
+    const node = {
+      type: LayoutType.Stack,
+      children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }],
+      data: {}
+    };
     uut.crawl(node);
     expect(node.data).toEqual({});
     expect(node.children[0].data).toEqual({});
   });
 
   it('crawls a layout tree and ensures children exists', () => {
-    const node = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }], data: {} };
+    const node = {
+      type: LayoutType.Stack,
+      children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }],
+      data: {}
+    };
     uut.crawl(node);
     expect(node.children[0].children).toEqual([]);
   });
@@ -47,7 +62,13 @@ describe('LayoutTreeCrawler', () => {
   it('saves passProps into store for Component nodes', () => {
     const node = {
       type: LayoutType.BottomTabs,
-      children: [{ type: LayoutType.Component, data: { name: 'the name', passProps: { myProp: 123 } }, children: [] }],
+      children: [
+        {
+          type: LayoutType.Component,
+          data: { name: 'the name', passProps: { myProp: 123 } },
+          children: []
+        }
+      ],
       data: {}
     };
     expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual({});
@@ -63,7 +84,11 @@ describe('LayoutTreeCrawler', () => {
       }
     };
 
-    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
+    const node = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {} },
+      children: []
+    };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual(theStyle);
@@ -81,7 +106,7 @@ describe('LayoutTreeCrawler', () => {
     };
 
     const MyComponent = class CoolComponent extends React.Component {
-      static options(props: {title: string}) {
+      static options(props: { title: string }) {
         return {
           topBar: {
             title: {
@@ -92,24 +117,40 @@ describe('LayoutTreeCrawler', () => {
       }
     };
 
-    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {}, passProps: { title: 'title' } }, children: [] };
+    const node = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {}, passProps: { title: 'title' } },
+      children: []
+    };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual(optionsWithTitle('title'));
 
-    const node2 = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
+    const node2 = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {} },
+      children: []
+    };
     uut.crawl(node2);
     expect(node2.data.options).toEqual(optionsWithTitle(undefined));
   });
 
   it('Components: passes passProps to the static options function to be used by the user', () => {
     const MyComponent = class CoolComponent extends React.Component {
-      static options(passProps: {bar: {baz: {value: string}}}) {
+      static options(passProps: { bar: { baz: { value: string } } }) {
         return { foo: passProps.bar.baz.value };
       }
     };
 
-    const node = { type: LayoutType.Component, data: { name: 'theComponentName', passProps: { bar: { baz: { value: 'hello' } } }, options: {} }, children: [] };
+    const node = {
+      type: LayoutType.Component,
+      data: {
+        name: 'theComponentName',
+        passProps: { bar: { baz: { value: 'hello' } } },
+        options: {}
+      },
+      children: []
+    };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual({ foo: 'hello' });
@@ -122,7 +163,11 @@ describe('LayoutTreeCrawler', () => {
       }
     };
 
-    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
+    const node = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {} },
+      children: []
+    };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual({ foo: {} });
@@ -150,7 +195,11 @@ describe('LayoutTreeCrawler', () => {
       }
     };
 
-    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: passedOptions }, children: [] };
+    const node = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: passedOptions },
+      children: []
+    };
     store.setComponentClassForName('theComponentName', () => MyComponent);
 
     uut.crawl(node);
@@ -173,7 +222,11 @@ describe('LayoutTreeCrawler', () => {
       }
     };
 
-    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
+    const node = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {} },
+      children: []
+    };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).not.toBe(theStyle);
@@ -185,9 +238,13 @@ describe('LayoutTreeCrawler', () => {
   });
 
   it('Components: options default obj', () => {
-    const MyComponent = class extends React.Component { };
+    const MyComponent = class extends React.Component {};
 
-    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
+    const node = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {} },
+      children: []
+    };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual({});
