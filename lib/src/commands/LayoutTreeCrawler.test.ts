@@ -19,12 +19,9 @@ describe('LayoutTreeCrawler', () => {
   });
 
   it('crawls a layout tree and adds unique id to each node', () => {
-    const node = {
+    const node: LayoutNode = {
       type: LayoutType.Stack,
-      id: 'Stack+UNIQUE_ID',
-      children: [
-        { id: 'BottomTabs+UNIQUE_ID', type: LayoutType.BottomTabs, data: {}, children: [] }
-      ],
+      children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }],
       data: {}
     };
     uut.crawl(node);
@@ -33,9 +30,15 @@ describe('LayoutTreeCrawler', () => {
   });
 
   it('does not generate unique id when already provided', () => {
-    const node = { id: 'user defined id', type: LayoutType.Stack, data: {}, children: [] };
+    const node: LayoutNode = {
+      id: 'user defined id',
+      type: LayoutType.Stack,
+      children: [{ id: 'user defined id for child', type: LayoutType.BottomTabs, data: {}, children: [] }],
+      data: {}
+    };
     uut.crawl(node);
     expect(node.id).toEqual('user defined id');
+    expect(node.children[0].id).toEqual('user defined id for child');
   });
 
   it('crawls a layout tree and ensures data exists', () => {
