@@ -23,9 +23,10 @@ import { AssetService } from './adapters/AssetResolver';
 import { AppRegistryService } from './adapters/AppRegistryService';
 
 export class NavigationRoot {
-  public readonly Element: typeof SharedElement;
-  public readonly TouchablePreview: React.ComponentType<any>;
-  public readonly store: Store;
+  public readonly Element = SharedElement;
+  public readonly TouchablePreview = TouchablePreview;
+
+  private readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
   private readonly componentRegistry: ComponentRegistry;
@@ -39,8 +40,6 @@ export class NavigationRoot {
   private readonly componentWrapper: ComponentWrapper;
 
   constructor() {
-    this.Element = SharedElement;
-    this.TouchablePreview = TouchablePreview;
     this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
