@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { LayoutType } from './LayoutType';
 import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { Store } from '../components/Store';
 
 export interface Data {
   name?: string;
@@ -18,7 +19,7 @@ export interface LayoutNode {
 export class LayoutTreeCrawler {
   constructor(
     private readonly uniqueIdProvider: UniqueIdProvider,
-    public readonly store: any,
+    public readonly store: Store,
     private readonly optionsProcessor: OptionsProcessor
   ) {
     this.crawl = this.crawl.bind(this);
@@ -33,29 +34,30 @@ export class LayoutTreeCrawler {
     node.children.forEach(this.crawl);
   }
 
-  private handleComponent(node) {
+  private handleComponent(node: LayoutNode) {
     this.assertComponentDataName(node);
     this.savePropsToStore(node);
     this.applyStaticOptions(node);
     node.data.passProps = undefined;
   }
 
-  private savePropsToStore(node) {
-    this.store.setPropsForId(node.id, node.data.passProps);
+  private savePropsToStore(node: LayoutNode) {
+    this.store.setPropsForId(node.id!, node.data.passProps);
   }
 
-  private applyStaticOptions(node) {
-    const clazz = this.store.getComponentClassForName(node.data.name)
-      ? this.store.getComponentClassForName(node.data.name)()
+  private staticOptionsIfPossible(node: LayoutNode) {
+    const foundReactGenerator = this.store.getComponentClassForName(node.data.name!);
+    const reactComponent = foundReactGenerator ? foundReactGenerator() : undefined;
+    return reactComponent && (reactComponent as any).options
+      ? (reactComponent as any).options(node.data.passProps || {})
       : {};
-    const staticOptions = _.isFunction(clazz.options)
-      ? clazz.options(node.data.passProps || {})
-      : {};
-    const passedOptions = node.data.options || {};
-    node.data.options = _.merge({}, staticOptions, passedOptions);
   }
 
-  private assertComponentDataName(component) {
+  private applyStaticOptions(node: LayoutNode) {
+    node.data.options = _.merge({}, this.staticOptionsIfPossible(node), node.data.options);
+  }
+
+  private assertComponentDataName(component: LayoutNode) {
     if (!component.data.name) {
       throw new Error('Missing component data.name');
     }
