@@ -2,7 +2,12 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { requireNativeComponent } from 'react-native';
 
-export class Element extends React.Component<{ elementId: string; resizeMode?: string }> {
+export interface SharedElementProps {
+  elementId: string;
+  resizeMode: string;
+}
+
+export class SharedElement extends React.Component<SharedElementProps> {
   static propTypes = {
     elementId: PropTypes.string.isRequired,
     resizeMode: PropTypes.string
@@ -13,10 +18,10 @@ export class Element extends React.Component<{ elementId: string; resizeMode?: s
   };
 
   render() {
-    return <RNNElement {...this.props} />;
+    return <RnnSharedElement {...this.props} />;
   }
 }
 
-const RNNElement = requireNativeComponent('RNNElement', Element, {
+const RnnSharedElement = requireNativeComponent('RNNElement', SharedElement, {
   nativeOnly: { nativeID: true }
 });

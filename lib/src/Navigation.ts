@@ -9,7 +9,7 @@ import { LayoutTreeParser } from './commands/LayoutTreeParser';
 import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
 import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
-import { Element } from './adapters/Element';
+import { SharedElement } from './adapters/SharedElement';
 import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
@@ -23,7 +23,7 @@ import { AssetService } from './adapters/AssetResolver';
 import { AppRegistryService } from './adapters/AppRegistryService';
 
 export class NavigationRoot {
-  public readonly Element: React.ComponentType<{ elementId: string; resizeMode?: string; }>;
+  public readonly Element: typeof SharedElement;
   public readonly TouchablePreview: React.ComponentType<any>;
   public readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
@@ -39,7 +39,7 @@ export class NavigationRoot {
   private readonly componentWrapper: ComponentWrapper;
 
   constructor() {
-    this.Element = Element;
+    this.Element = SharedElement;
     this.TouchablePreview = TouchablePreview;
     this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
