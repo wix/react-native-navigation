@@ -84,23 +84,6 @@ describe('LayoutTreeCrawler', () => {
     expect(node2.data.options).toEqual({ topBar: { title: {} } });
   });
 
-  // it('Components: passProps in the static options is optional', () => {
-  //   const MyComponent = class CoolComponent extends React.Component {
-  //     static options(passProps: string) {
-  //       return { foo: passProps };
-  //     }
-  //   };
-
-  //   const node = {
-  //     type: LayoutType.Component,
-  //     data: { name: 'theComponentName', options: {} },
-  //     children: []
-  //   };
-  //   store.setComponentClassForName('theComponentName', () => MyComponent);
-  //   uut.crawl(node);
-  //   expect(node.data.options).toEqual({ foo: {} });
-  // });
-
   it('Components: merges options from component class static property with passed options, favoring passed options', () => {
     when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
       () =>

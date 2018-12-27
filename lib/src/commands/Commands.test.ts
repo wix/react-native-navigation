@@ -389,29 +389,6 @@ describe('Commands', () => {
       return methods;
     }
 
-    // function getAllMethodsOfNativeCommandsSender() {
-    //   const nativeCommandsSenderFns = _.functions(mockedNativeCommandsSender);
-    //   expect(nativeCommandsSenderFns.length).toBeGreaterThan(1);
-    //   return nativeCommandsSenderFns;
-    // }
-
-    // it('always call last, when nativeCommand fails, dont notify listeners', () => {
-    //   // expect(getAllMethodsOfUut().sort()).toEqual(getAllMethodsOfNativeCommandsSender().sort());
-
-    //   // call all commands on uut, all should throw, no commandObservers called
-    //   _.forEach(getAllMethodsOfUut(), (m) => {
-    //     expect(() => uut[m]()).toThrow();
-    //     expect(cb).not.toHaveBeenCalled();
-    //   });
-    // });
-
-    // it('notify on all commands', () => {
-    //   _.forEach(getAllMethodsOfUut(), (m) => {
-    //     uut[m]({});
-    //   });
-    //   expect(cb).toHaveBeenCalledTimes(getAllMethodsOfUut().length);
-    // });
-
     describe('passes correct params', () => {
       const argsForMethodName: Record<string, any[]> = {
         setRoot: [{}],
