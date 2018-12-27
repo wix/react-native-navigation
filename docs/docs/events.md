@@ -5,7 +5,7 @@
 Called once the app is launched. This event is used to set the Application's initial layout - after which the app is ready for user interaction.
 
 ```js
-appLaunchedListener = Navigation.events().registerAppLaunchedListener(() => {
+const appLaunchedListener = Navigation.events().registerAppLaunchedListener(() => {
 
 });
 ```
@@ -23,12 +23,7 @@ Called each time this component appears on screen (attached to the view hierarch
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    
-    this.navigationEventListener = null;
-  }
-  
+
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
@@ -50,7 +45,7 @@ This event can be observed globally as well:
 
 ```js
 // Subscribe
-screenEventListener = Navigation.events().registerComponentDidAppearListener(({ componentId, componentName }) => {
+const screenEventListener = Navigation.events().registerComponentDidAppearListener(({ componentId, componentName }) => {
 
 });
 ...
@@ -67,12 +62,7 @@ Called each time this component disappears from screen (detached from the view h
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    
-    this.navigationEventListener = null;
-  }
-  
+
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
@@ -94,7 +84,7 @@ This event can be observed globally as well:
 
 ```js
 // Subscribe
-screenEventListener = Navigation.events().registerComponentDidDisappearListener(({ componentId, componentName }) => {
+const screenEventListener = Navigation.events().registerComponentDidDisappearListener(({ componentId, componentName }) => {
 
 });
 ...
@@ -111,7 +101,7 @@ The `commandListener` is called whenever a *Navigation command* (i.e push, pop, 
 
 ```js
 // Subscribe
-commandListener = Navigation.events().registerCommandListener(({ name, params }) => {
+const commandListener = Navigation.events().registerCommandListener(({ name, params }) => {
 
 });
 ...
@@ -128,7 +118,7 @@ Invoked when a command finishes executing in native. If the command contains ani
 
 ```js
 // Subscribe
-commandCompletedListener = Navigation.events().registerCommandCompletedListener(({ commandId, completionTime, params }) => {
+const commandCompletedListener = Navigation.events().registerCommandCompletedListener(({ commandId, completionTime, params }) => {
 
 });
 ...
@@ -146,7 +136,7 @@ Invoked when a BottomTab is selected by the user.
 
 ```js
 // Subscribe
-bottomTabEventListener = Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
+const bottomTabEventListener = Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
 
 });
 ...
@@ -164,12 +154,7 @@ This event is emitted whenever a TopBar button is pressed by the user.
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    
-    this.navigationEventListener = null;
-  }
-  
+
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
@@ -191,7 +176,7 @@ This event can be observed globally as well:
 
 ```js
 // Subscribe
-navigationButtonEventListener = Navigation.events().registerNavigationButtonPressedListener(({ buttonId }) => {
+const navigationButtonEventListener = Navigation.events().registerNavigationButtonPressedListener(({ buttonId }) => {
 
 });
 ...
@@ -208,12 +193,7 @@ Called when a SearchBar from NavigationBar gets updated.
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    
-    this.navigationEventListener = null;
-  }
-  
+
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
@@ -236,12 +216,7 @@ Called when the cancel button on the SearchBar from NavigationBar gets pressed.
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    
-    this.navigationEventListener = null;
-  }
-  
+
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
@@ -264,12 +239,7 @@ Called when preview peek is completed
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    
-    this.navigationEventListener = null;
-  }
-  
+
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
