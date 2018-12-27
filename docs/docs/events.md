@@ -182,3 +182,28 @@ class MyComponent extends Component {
   }
 }
 ```
+
+## Unsubscribe from the events
+Use `EventSubscription::remove` method to unsubscribe from the events
+
+```js
+class MyComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.eventSubscription = Navigation.events().bindComponent(this);
+  }
+
+  unsubscribe = () => {
+    this.eventSubscription.remove();
+  }
+}
+```
+
+Global events can be unsubscribed in this way as well.
+```js
+const eventSubscription = Navigation.events().registerNavigationButtonPressedListener(({ buttonId }) => {
+
+});
+...
+eventSubscription.remove();
+```
