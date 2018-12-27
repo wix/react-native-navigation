@@ -50,7 +50,7 @@ export class LayoutTreeCrawler {
       : {};
     const staticOptions = _.isFunction(clazz.options)
       ? clazz.options(node.data.passProps || {})
-      : _.cloneDeep(clazz.options) || {};
+      : {};
     const passedOptions = node.data.options || {};
     node.data.options = _.merge({}, staticOptions, passedOptions);
   }

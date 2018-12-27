@@ -168,24 +168,6 @@ describe('LayoutTreeCrawler', () => {
     });
   });
 
-  // it('Component: deepClones options', () => {
-  //   const theStyle = {};
-  //   const MyComponent = class CoolComponent extends React.Component {
-  //     static options() {
-  //       return theStyle;
-  //     }
-  //   };
-
-  //   const node = {
-  //     type: LayoutType.Component,
-  //     data: { name: 'theComponentName', options: {} },
-  //     children: []
-  //   };
-  //   store.setComponentClassForName('theComponentName', () => MyComponent);
-  //   uut.crawl(node);
-  //   expect(node.data.options).not.toBe(theStyle);
-  // });
-
   it('Components: must contain data name', () => {
     const node = { type: LayoutType.Component, data: {}, children: [] };
     expect(() => uut.crawl(node)).toThrowError('Missing component data.name');
