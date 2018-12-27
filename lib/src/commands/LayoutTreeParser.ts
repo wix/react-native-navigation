@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { LayoutType } from './LayoutType';
 import { LayoutNode } from './LayoutTreeCrawler';
 import {
@@ -34,7 +33,7 @@ export class LayoutTreeParser {
     } else if (api.splitView) {
       return this.splitView(api.splitView);
     }
-    throw new Error(`unknown LayoutType "${_.keys(api)}"`);
+    throw new Error(`unknown LayoutType "${Object.keys(api)}"`); // käytä object.keys?
   }
 
   private topTabs(api: TopTabs): LayoutNode {
