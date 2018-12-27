@@ -73,7 +73,7 @@ describe('LayoutTreeCrawler', () => {
   it('Components: injects options from original component class static property', () => {
     when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
       () =>
-        class CoolComponent extends React.Component {
+        class extends React.Component {
           static get options(): Options {
             return { popGesture: true };
           }
@@ -91,7 +91,7 @@ describe('LayoutTreeCrawler', () => {
   it('Components: crawl does not cache options', () => {
     when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
       () =>
-        class CoolComponent extends React.Component {
+        class extends React.Component {
           static options(props: { title?: string }) {
             return { topBar: { title: { text: props.title } } };
           }
@@ -114,27 +114,6 @@ describe('LayoutTreeCrawler', () => {
     expect(node2.data.options).toEqual({ topBar: { title: {} } });
   });
 
-  // it('Components: passes passProps to the static options function to be used by the user', () => {
-  //   const MyComponent = class CoolComponent extends React.Component {
-  //     static options(passProps: { bar: { baz: { value: string } } }) {
-  //       return { foo: passProps.bar.baz.value };
-  //     }
-  //   };
-
-  //   const node = {
-  //     type: LayoutType.Component,
-  //     data: {
-  //       name: 'theComponentName',
-  //       passProps: { bar: { baz: { value: 'hello' } } },
-  //       options: {}
-  //     },
-  //     children: []
-  //   };
-  //   store.setComponentClassForName('theComponentName', () => MyComponent);
-  //   uut.crawl(node);
-  //   expect(node.data.options).toEqual({ foo: 'hello' });
-  // });
-
   // it('Components: passProps in the static options is optional', () => {
   //   const MyComponent = class CoolComponent extends React.Component {
   //     static options(passProps: string) {
@@ -152,46 +131,42 @@ describe('LayoutTreeCrawler', () => {
   //   expect(node.data.options).toEqual({ foo: {} });
   // });
 
-  // it('Components: merges options from component class static property with passed options, favoring passed options', () => {
-  //   const theStyle = {
-  //     bazz: 123,
-  //     inner: {
-  //       foo: 'bar'
-  //     },
-  //     opt: 'exists only in static'
-  //   };
-  //   const MyComponent = class CoolComponent extends React.Component {
-  //     static get options() {
-  //       return theStyle;
-  //     }
-  //   };
+  it('Components: merges options from component class static property with passed options, favoring passed options', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static get options() {
+            return {
+              bazz: 123,
+              inner: { foo: 'this gets overriden' },
+              opt: 'exists only in static'
+            };
+          }
+        }
+    );
 
-  //   const passedOptions = {
-  //     aaa: 'exists only in passed',
-  //     bazz: 789,
-  //     inner: {
-  //       foo: 'this is overriden'
-  //     }
-  //   };
+    const node = {
+      type: LayoutType.Component,
+      data: {
+        name: 'theComponentName',
+        options: {
+          aaa: 'exists only in passed',
+          bazz: 789,
+          inner: { foo: 'this should override same keys' }
+        }
+      },
+      children: []
+    };
 
-  //   const node = {
-  //     type: LayoutType.Component,
-  //     data: { name: 'theComponentName', options: passedOptions },
-  //     children: []
-  //   };
-  //   store.setComponentClassForName('theComponentName', () => MyComponent);
+    uut.crawl(node);
 
-  //   uut.crawl(node);
-
-  //   expect(node.data.options).toEqual({
-  //     aaa: 'exists only in passed',
-  //     bazz: 789,
-  //     inner: {
-  //       foo: 'this is overriden'
-  //     },
-  //     opt: 'exists only in static'
-  //   });
-  // });
+    expect(node.data.options).toEqual({
+      aaa: 'exists only in passed',
+      bazz: 789,
+      inner: { foo: 'this should override same keys' },
+      opt: 'exists only in static'
+    });
+  });
 
   // it('Component: deepClones options', () => {
   //   const theStyle = {};
@@ -216,18 +191,19 @@ describe('LayoutTreeCrawler', () => {
     expect(() => uut.crawl(node)).toThrowError('Missing component data.name');
   });
 
-  // it('Components: options default obj', () => {
-  //   const MyComponent = class extends React.Component {};
+  it('Components: options default obj', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () => class extends React.Component {}
+    );
 
-  //   const node = {
-  //     type: LayoutType.Component,
-  //     data: { name: 'theComponentName', options: {} },
-  //     children: []
-  //   };
-  //   store.setComponentClassForName('theComponentName', () => MyComponent);
-  //   uut.crawl(node);
-  //   expect(node.data.options).toEqual({});
-  // });
+    const node = {
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {} },
+      children: []
+    };
+    uut.crawl(node);
+    expect(node.data.options).toEqual({});
+  });
 
   it('Components: omits passProps after processing so they are not passed over the bridge', () => {
     const node = {
