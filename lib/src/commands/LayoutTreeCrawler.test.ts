@@ -2,21 +2,26 @@
 
 import { LayoutType } from './LayoutType';
 import { LayoutTreeCrawler, LayoutNode } from './LayoutTreeCrawler';
-import { UniqueIdProvider } from '../adapters/UniqueIdProvider.mock';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
-import { mock, instance, verify, deepEqual } from 'ts-mockito';
+import { mock, instance, verify, deepEqual, when, anyString } from 'ts-mockito';
 import { OptionsProcessor } from './OptionsProcessor';
 
 describe('LayoutTreeCrawler', () => {
   let uut: LayoutTreeCrawler;
+  let mockedUniqueIdProvider: UniqueIdProvider;
   let mockedStore: Store;
   let mockedOptionsProcessor: OptionsProcessor;
 
   beforeEach(() => {
+    mockedUniqueIdProvider = mock(UniqueIdProvider);
     mockedStore = mock(Store);
     mockedOptionsProcessor = mock(OptionsProcessor);
+
+    when(mockedUniqueIdProvider.generate(anyString())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
+
     uut = new LayoutTreeCrawler(
-      new UniqueIdProvider(),
+      instance(mockedUniqueIdProvider),
       instance(mockedStore),
       instance(mockedOptionsProcessor)
     );
