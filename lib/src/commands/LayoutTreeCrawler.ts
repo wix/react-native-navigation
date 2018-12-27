@@ -51,11 +51,11 @@ export class LayoutTreeCrawler {
     const reactComponent = foundReactGenerator ? foundReactGenerator() : undefined;
     return reactComponent && this.isComponentWithOptions(reactComponent)
       ? reactComponent.options(node.data.passProps || {})
-      : undefined;
+      : {};
   }
 
   private applyStaticOptions(node: LayoutNode) {
-    node.data.options = { ...this.staticOptionsIfPossible(node), ...node.data.options };
+    node.data.options = _.merge({}, this.staticOptionsIfPossible(node), node.data.options);
   }
 
   private assertComponentDataName(component: LayoutNode) {
