@@ -33,7 +33,7 @@ export class LayoutTreeParser {
     } else if (api.splitView) {
       return this.splitView(api.splitView);
     }
-    throw new Error(`unknown LayoutType "${Object.keys(api)}"`); // käytä object.keys?
+    throw new Error(`unknown LayoutType "${Object.keys(api)}"`);
   }
 
   private topTabs(api: TopTabs): LayoutNode {
