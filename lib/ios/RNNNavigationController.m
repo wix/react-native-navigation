@@ -121,6 +121,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			self.navigationBar.barTintColor = backgroundColor;
 			UIView *transparentView = [self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 			if (transparentView){
+				self.navigationBar.translucent = NO;
 				[transparentView removeFromSuperview];
 				[self.navigationBar setBackgroundImage:self.originalTopBarImages[@"backgroundImage"] forBarMetrics:UIBarMetricsDefault];
 				self.navigationBar.shadowImage = self.originalTopBarImages[@"shadowImage"];
@@ -130,6 +131,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	} else {
 		UIView *transparentView = [self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 		if (transparentView){
+			self.navigationBar.translucent = NO;
 			[transparentView removeFromSuperview];
 			[self.navigationBar setBackgroundImage:self.originalTopBarImages[@"backgroundImage"] ? self.originalTopBarImages[@"backgroundImage"] : [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
 			self.navigationBar.shadowImage = self.originalTopBarImages[@"shadowImage"] ? self.originalTopBarImages[@"shadowImage"] : self.navigationBar.shadowImage;
