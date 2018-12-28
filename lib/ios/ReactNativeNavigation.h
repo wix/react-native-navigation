@@ -4,6 +4,8 @@
 #import <React/RCTUIManager.h>
 #import "RNNBridgeManagerDelegate.h"
 
+@class RNNBridgeManager;
+
 typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBridge* bridge);
 
 @interface ReactNativeNavigation : NSObject

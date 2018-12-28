@@ -13,6 +13,8 @@
 
 - (void)setRoot:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
 
+- (void)removeRootIfNotLaunchScreen;
+
 - (void)mergeOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 
 - (void)setDefaultOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;

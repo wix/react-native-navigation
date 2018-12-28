@@ -97,7 +97,8 @@
 }
 
 - (void)onBridgeWillReload {
-	UIApplication.sharedApplication.delegate.window.rootViewController =  nil;
+	// This will only remove the root if it's not the launch screen
+	[_commandsHandler removeRootIfNotLaunchScreen];
 }
 
 @end

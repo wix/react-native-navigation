@@ -35,6 +35,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNNavigationStackManager* _stackManager;
 	RNNEventEmitter* _eventEmitter;
 	UIWindow* _mainWindow;
+	BOOL _isRootLaunchScreen;
+	UIViewController *_pendingRoot;
 }
 
 - (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager mainWindow:(UIWindow *)mainWindow {
@@ -47,6 +49,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	_stackManager = stackManager;
 	_overlayManager = overlayManager;
 	_mainWindow = mainWindow;
+	_isRootLaunchScreen = YES;
 	return self;
 }
 
@@ -58,12 +61,48 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_modalManager dismissAllModalsAnimated:NO];
 	[_store removeAllComponentsFromWindow:_mainWindow];
 	
-	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
+	UIViewController<RNNParentProtocol> *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
+
+	// First time, wait for first render
+	_pendingRoot = vc;
+	_pendingRoot.view.frame = _mainWindow.rootViewController.view.frame;
 	
-	_mainWindow.rootViewController = vc;
+	__weak __typeof(self) _self = self;
+	
+	[vc.getCurrentLeaf waitForReactViewRender:YES perform:^{
+		// Now the RCTContentDidAppearNotification is emitted, but it only means that the React Native view was added to the hierarchy, not that it started rendering!
+		
+		RCTUIManager *uiManager = [ReactNativeNavigation getBridge].uiManager;
+		
+		// UIManager methods could only be called on the UIManager queue
+		dispatch_async(uiManager.methodQueue, ^{
+			
+			// Make this the first call that happens with the UI on the view that was just added
+			[uiManager prependUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
+				__typeof(self) __self = _self;
+				
+				// Sanity!
+				if (!__self || __self->_pendingRoot != vc) return;
+				
+				// Now we finally replace the launch screen
+				__self->_mainWindow.rootViewController = __self->_pendingRoot;
+				__self->_pendingRoot = nil;
+			}];
+			
+		});
+	}];
+	
+	// Let us know later that it's not the launch screen anymore
+	_isRootLaunchScreen = NO;
 	
 	[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
 	completion();
+}
+
+- (void)removeRootIfNotLaunchScreen {
+	if (!_isRootLaunchScreen) {
+		_mainWindow.rootViewController = nil;
+	}
 }
 
 - (void)mergeOptions:(NSString*)componentId options:(NSDictionary*)mergeOptions completion:(RNNTransitionCompletionBlock)completion {
