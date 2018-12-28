@@ -254,6 +254,10 @@ export interface OptionsTopBarButton {
    */
   text?: string;
   /**
+   * Set subtitle font family
+   */
+  fontFamily?: string;
+  /**
    * Set the button enabled or disabled
    * @default true
    */
