@@ -202,7 +202,7 @@ export interface OptionsTopBarBackButton {
   color?: Color;
 }
 
-export interface  OptionsTopBarBackground {
+export interface OptionsTopBarBackground {
   /**
    * Background color of the top bar
    */
@@ -666,7 +666,8 @@ export interface OptionsAnimationProperties {
   rotation?: OptionsAnimationPropertyConfig;
 }
 
-export interface OptionsAnimationPropertiesId extends OptionsAnimationProperties {
+export interface OptionsAnimationPropertiesId
+  extends OptionsAnimationProperties {
   /**
    * ID of the Top Bar we want to animate
    */
@@ -709,6 +710,38 @@ export interface OptionsAnimations {
    * Configure what animates when modal is dismissed
    */
   dismissModal?: OptionsAnimationProperties;
+}
+
+export interface OptionsCustomTransition {
+  animations: OptionsCustomTransitionAnimation[];
+  duration?: number;
+}
+
+export interface OptionsCustomTransitionAnimation {
+  /**
+   * Animation type, only support sharedElement currently
+   */
+  type: 'sharedElement';
+  /**
+   * Transition from element Id
+   */
+  fromId: string;
+  /**
+   * Transition to element Id
+   */
+  toId: string;
+  /**
+   * Animation delay
+   */
+  startDelay?: number;
+  /**
+   * Animation spring Velocity
+   */
+  springVelocity?: number;
+  /**
+   * Animation duration
+   */
+  duration?: number;
 }
 
 export interface Options {
@@ -772,6 +805,27 @@ setRoot: {
 ```
    */
   animations?: OptionsAnimations;
+
+  /**
+   * Custom Transition used for animate shared element between two screens
+   * Example:
+  ```js
+  Navigation.push(this.props.componentId, {
+    component: {
+      name: 'second.screen',
+      options: {
+        customTransition: {
+          animations: [
+            { type: 'sharedElement', fromId: 'image1', toId: 'image2', startDelay: 0, springVelocity: 0.2, duration: 0.5 }
+          ],
+          duration: 0.8
+        }
+      }
+    }
+  });
+  ```
+  */
+  customTransition?: OptionsCustomTransition;
   /**
    * Preview configuration for Peek and Pop
    * #### (iOS specific)
