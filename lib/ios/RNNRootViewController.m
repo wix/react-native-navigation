@@ -6,6 +6,7 @@
 #import "RNNReactView.h"
 #import "RNNParentProtocol.h"
 #import "RNNTitleViewHelper.h"
+#import "ReactNativeNavigation.h"
 
 @interface RNNRootViewController() {
 	RNNReactView* _customTitleView;
@@ -15,6 +16,7 @@
 }
 
 @property (nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
+@property (nonatomic, assign) BOOL readyBlockWaitingForEvent;
 
 @end
 
@@ -112,18 +114,41 @@
 }
 
 - (void)reactViewReady {
-	if (_reactViewReadyBlock) {
-		_reactViewReadyBlock();
-		_reactViewReadyBlock = nil;
+	RNNReactViewReadyCompletionBlock block = self.reactViewReadyBlock;
+	self.reactViewReadyBlock = nil;
+	
+	if (block) {
+		if (self.readyBlockWaitingForEvent) {
+			// Now the RCTContentDidAppearNotification is emitted, but it only means that the React Native view was added to the hierarchy, not that it started rendering!
+			
+			RCTUIManager *uiManager = [ReactNativeNavigation getBridge].uiManager;
+			
+			if (!uiManager) {
+				NSLog(@"Warning: RCTUIManager was `nil`. This probably means you are running in a testing environment. If not - there might be a serious issue.");
+				block();
+				return;
+			}
+			
+			// UIManager methods could only be called on the UIManager queue
+			dispatch_async(uiManager.methodQueue, ^{
+				
+				// Make this the first call that happens with the UI on the view that was just added
+				[uiManager prependUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
+					block();
+				}];
+				
+			});
+		} else {
+			block();
+		}
 	}
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 }
 
-
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (wait && !self.isExternalViewController) {
-		[self onReactViewReady:readyBlock];
+- (void)waitForReactViewReady:(BOOL)wait waitForUIEvent:(BOOL)waitForUIEvent perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	if ((wait || waitForUIEvent) && !self.isExternalViewController) {
+		[self setOnReactViewReady:readyBlock waitForUIEvent:waitForUIEvent];
 	} else {
 		readyBlock();
 	}
@@ -137,11 +162,12 @@
 	return self;
 }
 
-- (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock {
+- (void)setOnReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock waitForUIEvent:(BOOL)waitForUIEvent {
 	if (self.isExternalViewController) {
 		readyBlock();
 	} else {
 		self.reactViewReadyBlock = readyBlock;
+		self.readyBlockWaitingForEvent = waitForUIEvent;
 	}
 }
 

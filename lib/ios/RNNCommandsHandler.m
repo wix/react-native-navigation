@@ -69,27 +69,15 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	__weak __typeof(self) _self = self;
 	
-	[vc.getCurrentLeaf waitForReactViewRender:YES perform:^{
-		// Now the RCTContentDidAppearNotification is emitted, but it only means that the React Native view was added to the hierarchy, not that it started rendering!
+	[vc.getCurrentLeaf waitForReactViewReady:YES waitForUIEvent:YES perform:^{
+		__typeof(self) __self = _self;
 		
-		RCTUIManager *uiManager = [ReactNativeNavigation getBridge].uiManager;
+		// Sanity!
+		if (!__self || __self->_pendingRoot != vc) return;
 		
-		// UIManager methods could only be called on the UIManager queue
-		dispatch_async(uiManager.methodQueue, ^{
-			
-			// Make this the first call that happens with the UI on the view that was just added
-			[uiManager prependUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
-				__typeof(self) __self = _self;
-				
-				// Sanity!
-				if (!__self || __self->_pendingRoot != vc) return;
-				
-				// Now we finally replace the launch screen
-				__self->_mainWindow.rootViewController = __self->_pendingRoot;
-				__self->_pendingRoot = nil;
-			}];
-			
-		});
+		// Now we finally replace the launch screen
+		__self->_mainWindow.rootViewController = __self->_pendingRoot;
+		__self->_pendingRoot = nil;
 	}];
 	
 	// Let us know later that it's not the launch screen anymore
@@ -180,7 +168,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		}
 	} else {
 		id animationDelegate = (newVc.resolveOptions.animations.push.hasCustomAnimation || newVc.getCurrentLeaf.isCustomTransitioned) ? newVc : nil;
-		[newVc.getCurrentLeaf waitForReactViewRender:(newVc.resolveOptions.animations.push.waitForRender || animationDelegate) perform:^{
+		[newVc.getCurrentLeaf waitForReactViewReady:(newVc.resolveOptions.animations.push.waitForRender || animationDelegate) waitForUIEvent:NO perform:^{
 			[_stackManager push:newVc onTop:fromVC animated:newVc.resolveOptions.animations.push.enable animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 				completion();
@@ -269,7 +257,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayout:layout saveToStore:_store];
 	
-	[newVc.getCurrentLeaf waitForReactViewRender:newVc.getCurrentLeaf.resolveOptions.animations.showModal.waitForRender perform:^{
+	[newVc.getCurrentLeaf waitForReactViewReady:newVc.getCurrentLeaf.resolveOptions.animations.showModal.waitForRender waitForUIEvent:NO perform:^{
 		[_modalManager showModal:newVc animated:newVc.getCurrentChild.resolveOptions.animations.showModal.enable hasCustomAnimation:newVc.getCurrentChild.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
 			[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
 			completion(componentId);

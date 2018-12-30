@@ -4,7 +4,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @protocol RNNLeafProtocol <NSObject>
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+- (void)waitForReactViewReady:(BOOL)wait waitForUIEvent:(BOOL)waitForUIEvent perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
 - (void)bindViewController:(UIViewController *)viewController;
 

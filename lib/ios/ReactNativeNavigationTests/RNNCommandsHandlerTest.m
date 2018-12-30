@@ -293,7 +293,7 @@
 	[self.eventEmmiter verify];
 }
 
-/*- (void)testSetRoot_setRootViewControllerOnMainWindow {
+- (void)testSetRoot_setRootViewControllerOnMainWindow {
 	[self.store setReadyToReceiveCommands:true];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:self.store]).andReturn(self.vc1);
 	
@@ -309,7 +309,7 @@
 	[[self.store expect] removeAllComponentsFromWindow:self.mainWindow];
 	[self.uut setRoot:@{} completion:^{}];
 	[self.store verify];
-}*/
+}
 
 - (void)testSetStackRoot_resetStackWithSingleComponent {
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any] saveToStore:self.store]).andReturn(@[self.vc2]);
