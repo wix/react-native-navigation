@@ -117,6 +117,18 @@ Dismiss all the current modals at the same time.
 Navigation.dismissAllModals();
 ```
 
+
+## registerComponent(params) -> registerComponentWithRedux(params)
+
+If you are using redux, you will need to change this as will.
+
+Note that the order of the parameters have changed, now the store is the last parameter
+
+```js
+Navigation.registerComponentWithRedux("example.FirstTabScreen", () => ExampleFirstScreen, Provider, store)
+```
+
+
 <!-- ## showLightBox(params = {}) - Use showOverlay
 
 Show a screen as a lightbox.
