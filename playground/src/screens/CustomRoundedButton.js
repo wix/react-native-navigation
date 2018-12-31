@@ -14,8 +14,15 @@ class CustomRoundedButton extends Component {
 
   constructor(props) {
     super(props);
-    this.subscription = Navigation.events().bindComponent(this);
+    this.simulateLongRunningTask();
+    console.log('guyca', `CRB`);
+    Navigation.events().bindComponent(this);
     this.state = {};
+  }
+
+  simulateLongRunningTask = () => {
+    // tslint:disable-next-line
+    for (let i = 0; i < Math.pow(2, 24); i++);
   }
 
   componentDidAppear() {
@@ -31,7 +38,6 @@ class CustomRoundedButton extends Component {
   }
 
   componentWillUnmount() {
-    this.subscription.remove();
     console.log('RNN', `CRB.componentWillUnmount`);
   }
 
