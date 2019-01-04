@@ -1,3 +1,3 @@
 export interface EventSubscription {
-  remove();
+  remove(): void;
 }

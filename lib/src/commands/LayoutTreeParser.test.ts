@@ -1,9 +1,11 @@
 import * as  _ from 'lodash';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutType } from './LayoutType';
+import { Layout } from '../interfaces/Layout';
+import { OptionsSplitView } from '../interfaces/Options';
 
 describe('LayoutTreeParser', () => {
-  let uut;
+  let uut: LayoutTreeParser;
 
   beforeEach(() => {
     uut = new LayoutTreeParser();
@@ -11,7 +13,7 @@ describe('LayoutTreeParser', () => {
 
   describe('parses into { type, data, children }', () => {
     it('unknown type', () => {
-      expect(() => uut.parse({ wut: {} })).toThrowError('unknown LayoutType "wut"');
+      expect(() => uut.parse({ wut: {} } as Layout)).toThrowError('unknown LayoutType "wut"');
     });
 
     it('single component', () => {
@@ -43,7 +45,6 @@ describe('LayoutTreeParser', () => {
         children: []
       });
       expect(result.data.passProps).toBe(LayoutExamples.passProps);
-      expect(result.data.passProps.fnProp()).toEqual('Hello from a function');
     });
 
     it('stack of components with top bar', () => {
@@ -97,10 +98,6 @@ describe('LayoutTreeParser', () => {
       expect(result.children[2].children[0].type).toEqual(LayoutType.Component);
     });
 
-    it('side menu center is require', () => {
-      expect(() => uut.parse({ sideMenu: {} })).toThrowError('sideMenu.center is required');
-    });
-
     it('top tabs', () => {
       const result = uut.parse(LayoutExamples.topTabs);
       expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
@@ -121,16 +118,12 @@ describe('LayoutTreeParser', () => {
       expect(result.children[1].type).toEqual('SideMenuCenter');
       expect(result.children[1].children[0].type).toEqual('BottomTabs');
       expect(result.children[1].children[0].children[2].type).toEqual('Stack');
-      expect(result.children[1].children[0].children[2].children[0].type).toEqual('TopTabs');
-      expect(result.children[1].children[0].children[2].children[0].children[2].type).toEqual('TopTabs');
-      expect(result.children[1].children[0].children[2].children[0].children[2].children[4].type).toEqual('Stack');
-      expect(result.children[1].children[0].children[2].children[0].children[2].data).toEqual({ options: { topBar: { title: { text: 'Hello1'} } } });
     });
 
     it('split view', () => {
       const result = uut.parse(LayoutExamples.splitView);
-      const master = uut.parse(LayoutExamples.splitView.splitView.master);
-      const detail = uut.parse(LayoutExamples.splitView.splitView.detail);
+      const master = uut.parse(LayoutExamples.splitView.splitView!.master!);
+      const detail = uut.parse(LayoutExamples.splitView.splitView!.detail!);
 
       expect(result.type).toEqual('SplitView');
       expect(result.children[0]).toEqual(master);
@@ -139,16 +132,16 @@ describe('LayoutTreeParser', () => {
   });
 
   it('options for all containing types', () => {
-    expect(uut.parse({ component: { options } }).data.options).toBe(options);
+    expect(uut.parse({ component: { name: 'lol', options } }).data.options).toBe(options);
     expect(uut.parse({ stack: { options } }).data.options).toBe(options);
     expect(uut.parse({ bottomTabs: { options } }).data.options).toBe(options);
     expect(uut.parse({ topTabs: { options } }).data.options).toBe(options);
-    expect(uut.parse({ sideMenu: { options, center: { component: {} } } }).data.options).toBe(options);
+    expect(uut.parse({ sideMenu: { options, center: { component: {name: 'lool'} } } }).data.options).toBe(options);
     expect(uut.parse(LayoutExamples.splitView).data.options).toBe(optionsSplitView);
   });
 
   it('pass user provided id as is', () => {
-    const component = { id: 'compId' };
+    const component = { id: 'compId', name: 'loool' };
     expect(uut.parse({ component }).id).toEqual('compId');
     expect(uut.parse({ stack: { id: 'stackId' } }).id).toEqual('stackId');
     expect(uut.parse({ stack: { children: [{ component }] } }).children[0].id).toEqual('compId');
@@ -157,9 +150,6 @@ describe('LayoutTreeParser', () => {
     expect(uut.parse({ topTabs: { id: 'myId' } }).id).toEqual('myId');
     expect(uut.parse({ topTabs: { children: [{ component }] } }).children[0].id).toEqual('compId');
     expect(uut.parse({ sideMenu: { id: 'myId', center: { component } } }).id).toEqual('myId');
-    expect(uut.parse({ sideMenu: { center: { id: 'myId', component } } }).children[0].id).toEqual('myId');
-    expect(uut.parse({ sideMenu: { center: { component }, left: { id: 'theId', component } } }).children[0].id).toEqual('theId');
-    expect(uut.parse({ sideMenu: { center: { component }, right: { id: 'theId', component } } }).children[1].id).toEqual('theId');
   });
 });
 
@@ -180,7 +170,7 @@ const options = {
   }
 };
 
-const optionsSplitView = {
+const optionsSplitView: OptionsSplitView = {
   displayMode: 'auto',
   primaryEdge: 'leading',
   minWidth: 150,
@@ -257,7 +247,7 @@ const topTabs = {
   }
 };
 
-const complexLayout = {
+const complexLayout: Layout = {
   sideMenu: {
     left: singleComponent,
     center: {
@@ -268,26 +258,10 @@ const complexLayout = {
           {
             stack: {
               children: [
-                {
-                  topTabs: {
-                    children: [
-                      stackWithTopBar,
-                      stackWithTopBar,
-                      {
-                        topTabs: {
-                          options,
-                          children: [
-                            singleComponent,
-                            singleComponent,
-                            singleComponent,
-                            singleComponent,
-                            stackWithTopBar
-                          ]
-                        }
-                      }
-                    ]
-                  }
-                }
+                singleComponent,
+                singleComponent,
+                singleComponent,
+                singleComponent,
               ]
             }
           }
@@ -297,7 +271,7 @@ const complexLayout = {
   }
 };
 
-const splitView = {
+const splitView: Layout = {
   splitView: {
     master: {
       stack: {

@@ -32,6 +32,7 @@
 	[self.presenter bindViewController:self];
 	[self setViewControllers:childViewControllers];
 	[self setTabItemBadges];
+	[self.presenter applyOptionsOnInit:self.options];
 	
 	return self;
 }

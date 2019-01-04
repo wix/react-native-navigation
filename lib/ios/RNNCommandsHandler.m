@@ -34,11 +34,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNOverlayManager* _overlayManager;
 	RNNNavigationStackManager* _stackManager;
 	RNNEventEmitter* _eventEmitter;
-	UIApplication* _sharedApplication;
 	UIWindow* _mainWindow;
 }
 
-- (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager sharedApplication:(UIApplication *)sharedApplication {
+- (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager mainWindow:(UIWindow *)mainWindow {
 	self = [super init];
 	_store = store;
 	_controllerFactory = controllerFactory;
@@ -47,7 +46,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	_modalManager.delegate = self;
 	_stackManager = stackManager;
 	_overlayManager = overlayManager;
-	_sharedApplication = sharedApplication;
+	_mainWindow = mainWindow;
 	return self;
 }
 
@@ -55,10 +54,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)setRoot:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	
-	if (!_mainWindow) {
-		_mainWindow = _sharedApplication.keyWindow;
-	}
 	
 	[_modalManager dismissAllModalsAnimated:NO];
 	[_store removeAllComponentsFromWindow:_mainWindow];
@@ -155,14 +150,14 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 }
 
-- (void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)setStackRoot:(NSString*)componentId children:(NSArray*)children completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
-	UIViewController<RNNParentProtocol> *newVC = [_controllerFactory createLayout:layout saveToStore:_store];
-	RNNNavigationOptions* options = [newVC getCurrentChild].resolveOptions;
+ 	NSArray<RNNLayoutProtocol> *childViewControllers = [_controllerFactory createChildrenLayout:children saveToStore:_store];
+	RNNNavigationOptions* options = [childViewControllers.lastObject getCurrentChild].resolveOptions;
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
-	[_stackManager setStackRoot:newVC fromViewController:fromVC animated:options.animations.setStackRoot.enable completion:^{
+	[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:options.animations.setStackRoot.enable completion:^{
 		[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot params:@{@"componentId": componentId}];
 		completion();
 	} rejection:rejection];

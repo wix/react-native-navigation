@@ -24,6 +24,10 @@ function start() {
   registerScreens();
   Navigation.events().registerAppLaunchedListener(async () => {
     Navigation.setDefaultOptions({
+      layout: {
+        componentBackgroundColor: '#e8e8e8',
+        orientation: ['portrait']
+      },
       bottomTab: {
         iconColor: '#1B4C77',
         selectedIconColor: '#0f0',

@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "2.0.0",
+  "version": "2.5.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -60,19 +60,22 @@
     "tslib": "1.9.3"
   },
   "devDependencies": {
-    "@types/jest": "22.x.x",
+    "@types/hoist-non-react-statics": "^3.0.1",
+    "@types/jest": "23.x.x",
     "@types/lodash": "4.x.x",
     "@types/react": "16.x.x",
-    "@types/react-native": "0.51.x",
+    "@types/react-native": "0.57.7",
     "@types/react-test-renderer": "16.x.x",
     "detox": "9.0.6",
     "handlebars": "4.x.x",
-    "jest": "22.x.x",
-    "react": "16.2.0",
-    "react-native": "0.51.x",
+    "jest": "23.x.x",
+    "metro-react-native-babel-preset": "0.50.0",
+    "react": "16.6.1",
+    "react-native": "0.57.7",
+    "react-native-typescript-transformer": "^1.2.10",
     "react-native-view-overflow": "0.0.3",
     "react-redux": "5.x.x",
-    "react-test-renderer": "16.0.0-alpha.12",
+    "react-test-renderer": "16.6.3",
     "redux": "3.x.x",
     "remx": "2.x.x",
     "semver": "5.x.x",
@@ -81,19 +84,13 @@
     "ts-node": "5.x.x",
     "tslint": "5.x.x",
     "typedoc": "0.x.x",
-    "typescript": "2.9.x"
-  },
-  "babel": {
-    "env": {
-      "test": {
-        "presets": [
-          "react-native"
-        ]
-      }
-    }
+    "typescript": "3.2.2"
   },
   "jest": {
     "preset": "react-native",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    },
     "roots": [
       "<rootDir>/node_modules/",
       "<rootDir>/lib/dist/",
@@ -112,14 +109,6 @@
     ],
     "resetMocks": true,
     "resetModules": true,
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    },
     "coverageReporters": [
       "json",
       "lcov",

@@ -33,7 +33,7 @@
 	[self.bindedViewController verify];
 }
 
-- (void)testApplyOptions_shouldSetInitialOptions {
+- (void)testApplyOptions_shouldApplyOptions {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
 	initialOptions.bottomTabs.testID = [[Text alloc] initWithValue:@"testID"];
 	initialOptions.bottomTabs.backgroundColor = [[Color alloc] initWithValue:[UIColor redColor]];
@@ -50,6 +50,15 @@
 	[[self.bindedViewController expect] rnn_setTabBarVisible:NO];
 	
 	[self.uut applyOptions:initialOptions];
+	[self.bindedViewController verify];
+}
+
+- (void)testApplyOptions_shouldApplyOptionsOnInit {
+	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	initialOptions.bottomTabs.currentTabIndex = [[IntNumber alloc] initWithValue:@(1)];
+	[[self.bindedViewController expect] rnn_setCurrentTabIndex:1];
+	
+	[self.uut applyOptionsOnInit:initialOptions];
 	[self.bindedViewController verify];
 }
 

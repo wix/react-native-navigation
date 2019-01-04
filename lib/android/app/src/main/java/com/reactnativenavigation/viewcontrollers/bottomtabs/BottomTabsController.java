@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.view.View;
@@ -18,20 +17,20 @@ import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.ImageLoader;
-import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.Component;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.map;
 
 public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
@@ -49,6 +48,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         this.imageLoader = imageLoader;
         this.presenter = bottomTabsPresenter;
         this.tabPresenter = bottomTabPresenter;
+        forEach(tabs, (tab) -> tab.setParentController(this));
     }
 
     @Override
@@ -62,22 +62,30 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	@Override
 	protected ViewGroup createView() {
 		RelativeLayout root = new RelativeLayout(getActivity());
-		bottomTabs = new BottomTabs(getActivity());
+		bottomTabs = createBottomTabs();
         presenter.bindView(bottomTabs, this);
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 		lp.addRule(ALIGN_PARENT_BOTTOM);
 		root.addView(bottomTabs, lp);
-		createTabs(root);
-		return root;
+		bottomTabs.addItems(createTabs());
+        attachTabs(root);
+        return root;
 	}
+
+    @NonNull
+    protected BottomTabs createBottomTabs() {
+        return new BottomTabs(getActivity());
+    }
 
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        presenter.present(options);
-        tabPresenter.present();
+        bottomTabs.disableItemsCreation();
+        presenter.applyOptions(options);
+        tabPresenter.applyOptions();
+        bottomTabs.enableItemsCreation();
         this.options.bottomTabsOptions.clearOneTimeOptions();
         this.initialOptions.bottomTabsOptions.clearOneTimeOptions();
     }
@@ -135,48 +143,20 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         return false;
 	}
 
-	private void createTabs(RelativeLayout root) {
-		if (tabs.size() > 5) {
-			throw new RuntimeException("Too many tabs!");
-		}
-        List<String> icons = new ArrayList<>();
-        List<BottomTabOptions> bottomTabOptionsList = new ArrayList<>();
-        for (int i = 0; i < tabs.size(); i++) {
-            tabs.get(i).setParentController(this);
-            BottomTabOptions tabOptions = tabs.get(i).resolveCurrentOptions().bottomTabOptions;
-            if (!tabOptions.icon.hasValue()) {
-                throw new RuntimeException("BottomTab must have an icon");
-            }
-            bottomTabOptionsList.add(tabOptions);
-            icons.add(tabOptions.icon.get());
-        }
-
-        imageLoader.loadIcons(getActivity(), icons, new ImageLoadingListenerAdapter() {
-
-            @Override
-            public void onComplete(@NonNull List<Drawable> drawables) {
-                List<AHBottomNavigationItem> tabs = new ArrayList<>();
-                for (int i = 0; i < drawables.size(); i++) {
-                    tabs.add(new AHBottomNavigationItem(bottomTabOptionsList.get(i).text.get(""), drawables.get(i)));
-                }
-                bottomTabs.addItems(tabs);
-                bottomTabs.post(() -> {
-                    for (int i = 0; i < bottomTabOptionsList.size(); i++) {
-                        bottomTabs.setTabTestId(i, bottomTabOptionsList.get(i).testId);
-                    }
-                });
-                attachTabs(root);
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                error.printStackTrace();
-            }
+	private List<AHBottomNavigationItem> createTabs() {
+		if (tabs.size() > 5) throw new RuntimeException("Too many tabs!");
+        return map(tabs, tab -> {
+            BottomTabOptions options = tab.resolveCurrentOptions().bottomTabOptions;
+            return new AHBottomNavigationItem(
+                    options.text.get(""),
+                    imageLoader.loadIcon(getActivity(), options.icon.get()),
+                    options.testId.get("")
+            );
         });
 	}
 
     private void attachTabs(RelativeLayout root) {
-        for (int i = (tabs.size() - 1); i >= 0; i--) {
+        for (int i = 0; i < tabs.size(); i++) {
             ViewGroup tab = tabs.get(i).getView();
             tab.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
             Options options = resolveCurrentOptions();

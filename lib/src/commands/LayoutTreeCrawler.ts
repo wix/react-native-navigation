@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
-import { OptionsProcessor } from './OptionsProcessor';
 import { LayoutType } from './LayoutType';
+import { OptionsProcessor } from './OptionsProcessor';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 export interface Data {
   name?: string;
@@ -15,29 +16,21 @@ export interface LayoutNode {
 }
 
 export class LayoutTreeCrawler {
-  private optionsProcessor: OptionsProcessor;
   constructor(
-    private readonly uniqueIdProvider: any,
-    public readonly store: any) {
+    private readonly uniqueIdProvider: UniqueIdProvider,
+    public readonly store: any,
+    private readonly optionsProcessor: OptionsProcessor
+  ) {
     this.crawl = this.crawl.bind(this);
-    this.processOptions = this.processOptions.bind(this);
-    this.optionsProcessor = new OptionsProcessor(store, uniqueIdProvider);
   }
 
   crawl(node: LayoutNode): void {
-    this._assertKnownLayoutType(node.type);
     node.id = node.id || this.uniqueIdProvider.generate(node.type);
-    node.data = node.data || {};
-    node.children = node.children || [];
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }
-    this.processOptions(node.data.options);
+    this.optionsProcessor.processOptions(node.data.options);
     _.forEach(node.children, this.crawl);
-  }
-
-  processOptions(options) {
-    this.optionsProcessor.processOptions(options);
   }
 
   _handleComponent(node) {
@@ -56,12 +49,6 @@ export class LayoutTreeCrawler {
     const staticOptions = _.isFunction(clazz.options) ? clazz.options(node.data.passProps || {}) : (_.cloneDeep(clazz.options) || {});
     const passedOptions = node.data.options || {};
     node.data.options = _.merge({}, staticOptions, passedOptions);
-  }
-
-  _assertKnownLayoutType(type) {
-    if (!LayoutType[type]) {
-      throw new Error(`Unknown layout type ${type}`);
-    }
   }
 
   _assertComponentDataName(component) {

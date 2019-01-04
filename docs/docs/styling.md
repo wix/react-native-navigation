@@ -227,7 +227,8 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   layout: {
     topMargin: Navigation.constants().statusBarHeight, // Set the layout's top margin
-    orientation: ['portrait', 'landscape'] | ['sensorLandscape'] // An array of supported orientations
+    orientation: ['portrait', 'landscape'] | ['sensorLandscape'], // An array of supported orientations
+    componentBackgroundColor: 'red' // Set background color only for components, helps reduce overdraw if background color is set in default options.
   },
   topBar: {
     height: 70, // TopBar height in dp

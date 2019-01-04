@@ -100,7 +100,7 @@ public class StackControllerTest extends BaseTest {
     public void childrenAreAssignedParent() {
         StackController uut = createStack(Arrays.asList(child1, child2));
         for (ViewController child : uut.getChildControllers()) {
-            assertThat(child.getParentController().equals(uut));
+            assertThat(child.getParentController().equals(uut)).isTrue();
         }
     }
 
@@ -204,7 +204,7 @@ public class StackControllerTest extends BaseTest {
         assertThat(uut.isEmpty()).isTrue();
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
-        uut.setRoot(child3, new CommandListenerAdapter() {
+        uut.setRoot(Collections.singletonList(child3), new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 assertContainsOnlyId(child3.getId());
@@ -213,7 +213,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void setRoot() {
+    public void setRoot_singleChild() {
         activity.setContentView(uut.getView());
         disablePushAnimation(child1, child2, child3);
 
@@ -221,11 +221,37 @@ public class StackControllerTest extends BaseTest {
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
         assertThat(uut.getTopBar().getTitleBar().getNavigationIcon()).isNotNull();
-        uut.setRoot(child3, new CommandListenerAdapter() {
+        uut.setRoot(Collections.singletonList(child3), new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 assertContainsOnlyId(child3.getId());
                 assertThat(uut.getTopBar().getTitleBar().getNavigationIcon()).isNull();
+            }
+        });
+    }
+
+    @Test
+    public void setRoot_multipleChildren() {
+        activity.setContentView(uut.getView());
+        disablePushAnimation(child1, child2, child3, child4);
+        disablePopAnimation(child4);
+
+        assertThat(uut.isEmpty()).isTrue();
+        uut.push(child1, new CommandListenerAdapter());
+        uut.push(child2, new CommandListenerAdapter());
+        assertThat(uut.getTopBar().getTitleBar().getNavigationIcon()).isNotNull();
+        uut.setRoot(Arrays.asList(child3, child4), new CommandListenerAdapter() {
+            @Override
+            public void onSuccess(String childId) {
+                assertContainsOnlyId(child3.getId(), child4.getId());
+                assertThat(uut.getTopBar().getTitleBar().getNavigationIcon()).isNotNull();
+                assertThat(child4.isViewShown()).isTrue();
+                assertThat(child3.isViewShown()).isFalse();
+
+                assertThat(uut.getCurrentChild()).isEqualTo(child4);
+                uut.pop(Options.EMPTY, new CommandListenerAdapter());
+                assertThat(uut.getTopBar().getTitleBar().getNavigationIcon()).isNull();
+                assertThat(uut.getCurrentChild()).isEqualTo(child3);
             }
         });
     }

@@ -1,6 +1,8 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
@@ -8,6 +10,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.reactnativenavigation.anim.FabAnimator;
 import com.reactnativenavigation.anim.FabCollapseBehaviour;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 
@@ -26,10 +29,11 @@ public class Fab extends FloatingActionButton implements FabAnimator {
         this.id = id;
     }
 
-    public void applyIcon(String icon) {
+    public void applyIcon(String icon, Colour color) {
         new ImageLoader().loadIcons(getContext(), Collections.singletonList(icon), new ImageLoadingListenerAdapter() {
             @Override
             public void onComplete(@NonNull List<Drawable> drawables) {
+                if (color.hasValue()) drawables.get(0).setColorFilter(new PorterDuffColorFilter(color.get(), PorterDuff.Mode.SRC_IN));
                 setImageDrawable(drawables.get(0));
             }
 

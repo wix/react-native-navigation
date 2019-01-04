@@ -30,6 +30,7 @@ public class FabOptions {
         if (json.has("icon")) {
             options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
+        options.iconColor = ColorParser.parse(json, "iconColor");
         if (json.has("actions")) {
             JSONArray fabsArray = json.optJSONArray("actions");
             for (int i = 0; i < fabsArray.length(); i++) {
@@ -49,6 +50,7 @@ public class FabOptions {
     public Colour clickColor = new NullColor();
     public Colour rippleColor = new NullColor();
     public Text icon = new NullText();
+    public Colour iconColor = new NullColor();
     public Bool visible = new NullBool();
     public ArrayList<FabOptions> actionsArray = new ArrayList<>();
     public Text alignHorizontally = new NullText();
@@ -74,6 +76,9 @@ public class FabOptions {
         }
         if (other.icon.hasValue()) {
             icon = other.icon;
+        }
+        if (other.iconColor.hasValue()) {
+            iconColor = other.iconColor;
         }
         if (other.actionsArray.size() > 0) {
             actionsArray = other.actionsArray;
@@ -110,6 +115,9 @@ public class FabOptions {
         }
         if (!icon.hasValue()) {
             icon = defaultOptions.icon;
+        }
+        if (!iconColor.hasValue()) {
+            iconColor = defaultOptions.iconColor;
         }
         if (actionsArray.size() == 0) {
             actionsArray = defaultOptions.actionsArray;

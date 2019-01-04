@@ -42,10 +42,6 @@
 	}
 }
 
-- (UITabBarItem *)tabBarItem {
-	return self.center.tabBarItem;
-}
-
 - (void)onChildWillAppear {
 	[_presenter applyOptions:self.resolveOptions];
 	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
@@ -80,9 +76,11 @@
 	switch (side) {
 		case MMDrawerSideRight:
 			self.maximumRightDrawerWidth = width;
+			[self.right setWidth:width];
 			break;
 		case MMDrawerSideLeft:
 			self.maximumLeftDrawerWidth = width;
+			[self.left setWidth:width];
 		default:
 			break;
 	}

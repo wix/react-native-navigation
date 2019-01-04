@@ -1,52 +1,54 @@
+import * as React from 'react';
+
 import { LayoutType } from './LayoutType';
 import { LayoutTreeCrawler, LayoutNode } from './LayoutTreeCrawler';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider.mock';
 import { Store } from '../components/Store';
+import { mock, instance } from 'ts-mockito';
+import { OptionsProcessor } from './OptionsProcessor';
 
 describe('LayoutTreeCrawler', () => {
-  let uut;
-  let store;
+  let uut: LayoutTreeCrawler;
+  let store: Store;
 
   beforeEach(() => {
     store = new Store();
-    uut = new LayoutTreeCrawler(new UniqueIdProvider(), store);
+    const mockedOptionsProcessor = mock(OptionsProcessor);
+    const optionsProcessor = instance(mockedOptionsProcessor);
+    uut = new LayoutTreeCrawler(new UniqueIdProvider(), store, optionsProcessor);
   });
 
   it('crawls a layout tree and adds unique id to each node', () => {
-    const node: any = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs }] };
+    const node = { type: LayoutType.Stack, id: 'Stack+UNIQUE_ID', children: [{ id: 'BottomTabs+UNIQUE_ID', type: LayoutType.BottomTabs, data: {}, children: [] }], data: {} };
     uut.crawl(node);
     expect(node.id).toEqual('Stack+UNIQUE_ID');
     expect(node.children[0].id).toEqual('BottomTabs+UNIQUE_ID');
   });
 
   it('does not generate unique id when already provided', () => {
-    const node = { id: 'user defined id', type: LayoutType.Stack };
+    const node = { id: 'user defined id', type: LayoutType.Stack, data: {}, children: [] };
     uut.crawl(node);
     expect(node.id).toEqual('user defined id');
   });
 
   it('crawls a layout tree and ensures data exists', () => {
-    const node: any = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs }] };
+    const node = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }], data: {} };
     uut.crawl(node);
     expect(node.data).toEqual({});
     expect(node.children[0].data).toEqual({});
   });
 
   it('crawls a layout tree and ensures children exists', () => {
-    const node: any = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs }] };
+    const node = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs, data: {}, children: [] }], data: {} };
     uut.crawl(node);
     expect(node.children[0].children).toEqual([]);
   });
 
-  it('crawls a layout tree and asserts known layout type', () => {
-    const node = { type: LayoutType.Stack, children: [{ type: 'Bob' }] };
-    expect(() => uut.crawl(node)).toThrowError('Unknown layout type Bob');
-  });
-
   it('saves passProps into store for Component nodes', () => {
     const node = {
-      type: LayoutType.BottomTabs, children: [
-        { type: LayoutType.Component, data: { name: 'the name', passProps: { myProp: 123 } } }]
+      type: LayoutType.BottomTabs,
+      children: [{ type: LayoutType.Component, data: { name: 'the name', passProps: { myProp: 123 } }, children: [] }],
+      data: {}
     };
     expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual({});
     uut.crawl(node);
@@ -55,31 +57,31 @@ describe('LayoutTreeCrawler', () => {
 
   it('Components: injects options from original component class static property', () => {
     const theStyle = {};
-    const MyComponent = class {
+    const MyComponent = class CoolComponent extends React.Component {
       static get options() {
         return theStyle;
       }
     };
 
-    const node: any = { type: LayoutType.Component, data: { name: 'theComponentName' } };
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual(theStyle);
   });
 
   it('Components: crawl does not cache options', () => {
-    const optionsWithTitle = (title) => {
+    const optionsWithTitle = (title?: string) => {
       return {
         topBar: {
           title: {
             text: title
           }
         }
-      }
+      };
     };
 
-    const MyComponent = class {
-      static options(props) {
+    const MyComponent = class CoolComponent extends React.Component {
+      static options(props: {title: string}) {
         return {
           topBar: {
             title: {
@@ -90,37 +92,37 @@ describe('LayoutTreeCrawler', () => {
       }
     };
 
-    const node: any = { type: LayoutType.Component, data: { name: 'theComponentName', passProps: { title: 'title' } } };
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {}, passProps: { title: 'title' } }, children: [] };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual(optionsWithTitle('title'));
 
-    const node2: any = { type: LayoutType.Component, data: { name: 'theComponentName' } };
+    const node2 = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
     uut.crawl(node2);
     expect(node2.data.options).toEqual(optionsWithTitle(undefined));
   });
 
   it('Components: passes passProps to the static options function to be used by the user', () => {
-    const MyComponent = class {
-      static options(passProps) {
+    const MyComponent = class CoolComponent extends React.Component {
+      static options(passProps: {bar: {baz: {value: string}}}) {
         return { foo: passProps.bar.baz.value };
       }
     };
 
-    const node: any = { type: LayoutType.Component, data: { name: 'theComponentName', passProps: { bar: { baz: { value: 'hello' } } } } };
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', passProps: { bar: { baz: { value: 'hello' } } }, options: {} }, children: [] };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual({ foo: 'hello' });
   });
 
   it('Components: passProps in the static options is optional', () => {
-    const MyComponent = class {
-      static options(passProps) {
+    const MyComponent = class CoolComponent extends React.Component {
+      static options(passProps: string) {
         return { foo: passProps };
       }
     };
 
-    const node: any = { type: LayoutType.Component, data: { name: 'theComponentName' } };
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual({ foo: {} });
@@ -134,7 +136,7 @@ describe('LayoutTreeCrawler', () => {
       },
       opt: 'exists only in static'
     };
-    const MyComponent = class {
+    const MyComponent = class CoolComponent extends React.Component {
       static get options() {
         return theStyle;
       }
@@ -148,7 +150,7 @@ describe('LayoutTreeCrawler', () => {
       }
     };
 
-    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: passedOptions } };
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: passedOptions }, children: [] };
     store.setComponentClassForName('theComponentName', () => MyComponent);
 
     uut.crawl(node);
@@ -165,27 +167,27 @@ describe('LayoutTreeCrawler', () => {
 
   it('Component: deepClones options', () => {
     const theStyle = {};
-    const MyComponent = class {
+    const MyComponent = class CoolComponent extends React.Component {
       static get options() {
         return theStyle;
       }
     };
 
-    const node: any = { type: LayoutType.Component, data: { name: 'theComponentName' } };
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).not.toBe(theStyle);
   });
 
   it('Components: must contain data name', () => {
-    const node = { type: LayoutType.Component, data: {} };
+    const node = { type: LayoutType.Component, data: {}, children: [] };
     expect(() => uut.crawl(node)).toThrowError('Missing component data.name');
   });
 
   it('Components: options default obj', () => {
-    const MyComponent = class { };
+    const MyComponent = class extends React.Component { };
 
-    const node: any = { type: LayoutType.Component, data: { name: 'theComponentName' } };
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: {} }, children: [] };
     store.setComponentClassForName('theComponentName', () => MyComponent);
     uut.crawl(node);
     expect(node.data.options).toEqual({});
@@ -197,92 +199,11 @@ describe('LayoutTreeCrawler', () => {
       data: {
         name: 'compName',
         passProps: {}
-      }
+      },
+      children: []
     };
     uut.crawl(node);
     expect(node.data.passProps).toBeUndefined();
-  });
-
-  describe('navigation options', () => {
-    let options;
-    let node;
-
-    beforeEach(() => {
-      options = {};
-      node = { type: LayoutType.Component, data: { name: 'theComponentName', options } };
-    });
-
-    it('processes colors into numeric AARRGGBB', () => {
-      options.someKeyColor = 'red';
-      uut.crawl(node);
-      expect(node.data.options.someKeyColor).toEqual(0xffff0000);
-    });
-
-    it('processes colors into numeric AARRGGBB', () => {
-      options.someKeyColor = 'yellow';
-      uut.crawl(node);
-      expect(node.data.options.someKeyColor).toEqual(0xffffff00);
-    });
-
-    it('processes numeric colors', () => {
-      options.someKeyColor = '#123456';
-      uut.crawl(node);
-      expect(node.data.options.someKeyColor).toEqual(0xff123456);
-    });
-
-    it('processes numeric colors with rrggbbAA', () => {
-      options.someKeyColor = 0x123456ff; // wut
-      uut.crawl(node);
-      expect(node.data.options.someKeyColor).toEqual(0xff123456);
-    });
-
-    it('process colors with rgb functions', () => {
-      options.someKeyColor = 'rgb(255, 0, 255)';
-      uut.crawl(node);
-      expect(node.data.options.someKeyColor).toEqual(0xffff00ff);
-    });
-
-    it('process colors with special words', () => {
-      options.someKeyColor = 'fuchsia';
-      uut.crawl(node);
-      expect(node.data.options.someKeyColor).toEqual(0xffff00ff);
-    });
-
-    it('process colors with hsla functions', () => {
-      options.someKeyColor = 'hsla(360, 100%, 100%, 1.0)';
-      uut.crawl(node);
-      expect(node.data.options.someKeyColor).toEqual(0xffffffff);
-    });
-
-    it('unknown colors return undefined', () => {
-      options.someKeyColor = 'wut';
-      uut.crawl(node);
-      expect(node.data.options.someKeyColor).toEqual(undefined);
-    });
-
-    it('any keys ending with Color', () => {
-      options.otherKeyColor = 'red';
-      options.yetAnotherColor = 'blue';
-      options.andAnotherColor = 'rgb(0, 255, 0)';
-      uut.crawl(node);
-      expect(node.data.options.otherKeyColor).toEqual(0xffff0000);
-      expect(node.data.options.yetAnotherColor).toEqual(0xff0000ff);
-      expect(node.data.options.andAnotherColor).toEqual(0xff00ff00);
-    });
-
-    it('keys ending with Color case sensitive', () => {
-      options.otherKey_color = 'red'; // eslint-disable-line camelcase
-      uut.crawl(node);
-      expect(node.data.options.otherKey_color).toEqual('red');
-    });
-
-    it('any nested recursive keys ending with Color', () => {
-      options.innerObj = { theKeyColor: 'red' };
-      options.innerObj.innerMostObj = { anotherColor: 'yellow' };
-      uut.crawl(node);
-      expect(node.data.options.innerObj.theKeyColor).toEqual(0xffff0000);
-      expect(node.data.options.innerObj.innerMostObj.anotherColor).toEqual(0xffffff00);
-    });
   });
 
   describe('LayoutNode', () => {

@@ -6,6 +6,7 @@ import { Options } from '../interfaces/Options';
 import { Layout, LayoutRoot } from '../interfaces/Layout';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
+import { OptionsProcessor } from './OptionsProcessor';
 
 export class Commands {
   constructor(
@@ -13,8 +14,9 @@ export class Commands {
     private readonly layoutTreeParser: LayoutTreeParser,
     private readonly layoutTreeCrawler: LayoutTreeCrawler,
     private readonly commandsObserver: CommandsObserver,
-    private readonly uniqueIdProvider: UniqueIdProvider) {
-  }
+    private readonly uniqueIdProvider: UniqueIdProvider,
+    private readonly optionsProcessor: OptionsProcessor
+  ) {}
 
   public setRoot(simpleApi: LayoutRoot) {
     const input = _.cloneDeep(simpleApi);
@@ -41,7 +43,7 @@ export class Commands {
 
   public setDefaultOptions(options: Options) {
     const input = _.cloneDeep(options);
-    this.layoutTreeCrawler.processOptions(input);
+    this.optionsProcessor.processOptions(input);
 
     this.nativeCommandsSender.setDefaultOptions(input);
     this.commandsObserver.notify('setDefaultOptions', { options });
@@ -49,20 +51,20 @@ export class Commands {
 
   public mergeOptions(componentId: string, options: Options) {
     const input = _.cloneDeep(options);
-    this.layoutTreeCrawler.processOptions(input);
+    this.optionsProcessor.processOptions(input);
 
     this.nativeCommandsSender.mergeOptions(componentId, input);
     this.commandsObserver.notify('mergeOptions', { componentId, options });
   }
 
-  public showModal(simpleApi: Layout) {
-    const input = _.cloneDeep(simpleApi);
-    const layout = this.layoutTreeParser.parse(input);
-    this.layoutTreeCrawler.crawl(layout);
+  public showModal(layout: Layout) {
+    const layoutCloned = _.cloneDeep(layout);
+    const layoutNode = this.layoutTreeParser.parse(layoutCloned);
+    this.layoutTreeCrawler.crawl(layoutNode);
 
     const commandId = this.uniqueIdProvider.generate('showModal');
-    const result = this.nativeCommandsSender.showModal(commandId, layout);
-    this.commandsObserver.notify('showModal', { commandId, layout });
+    const result = this.nativeCommandsSender.showModal(commandId, layoutNode);
+    this.commandsObserver.notify('showModal', { commandId, layout: layoutNode });
     return result;
   }
 
@@ -113,15 +115,15 @@ export class Commands {
     return result;
   }
 
-  public setStackRoot(componentId: string, simpleApi: Layout) {
-    const input = _.cloneDeep(simpleApi);
-
-    const layout = this.layoutTreeParser.parse(input);
-    this.layoutTreeCrawler.crawl(layout);
-
+  public setStackRoot(componentId: string, children: Layout[]) {
+    const input = _.map(_.cloneDeep(children), (simpleApi) => {
+      const layout = this.layoutTreeParser.parse(simpleApi);
+      this.layoutTreeCrawler.crawl(layout);
+      return layout;
+    });
     const commandId = this.uniqueIdProvider.generate('setStackRoot');
-    const result = this.nativeCommandsSender.setStackRoot(commandId, componentId, layout);
-    this.commandsObserver.notify('setStackRoot', { commandId, componentId, layout });
+    const result = this.nativeCommandsSender.setStackRoot(commandId, componentId, input);
+    this.commandsObserver.notify('setStackRoot', { commandId, componentId, layout: input });
     return result;
   }
 

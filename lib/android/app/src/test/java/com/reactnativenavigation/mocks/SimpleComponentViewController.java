@@ -9,6 +9,6 @@ import com.reactnativenavigation.viewcontrollers.*;
 
 public class SimpleComponentViewController extends ComponentViewController {
     public SimpleComponentViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions) {
-        super(activity, childRegistry,id, "theComponentName", new TestComponentViewCreator(), initialOptions, new Presenter(activity, new Options()), new ComponentPresenter());
+        super(activity, childRegistry,id, "theComponentName", new TestComponentViewCreator(), initialOptions, new Presenter(activity, new Options()), new ComponentPresenter(Options.EMPTY));
     }
 }

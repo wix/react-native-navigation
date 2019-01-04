@@ -14,14 +14,21 @@ import {
 } from 'react-native';
 
 // Polyfill GestureResponderEvent type with additional `force` property (iOS)
-interface NativeTouchEventWithForce extends NativeTouchEvent { force: number; }
+interface NativeTouchEventWithForce extends NativeTouchEvent {
+  force: number;
+}
 interface GestureResponderEventWithForce extends NativeSyntheticEvent<NativeTouchEventWithForce> {}
 
 export interface Props {
   children: React.ReactNode;
-  touchableComponent?: TouchableHighlight | TouchableOpacity | TouchableNativeFeedback | TouchableWithoutFeedback | React.ReactNode;
+  touchableComponent?:
+    | TouchableHighlight
+    | TouchableOpacity
+    | TouchableNativeFeedback
+    | TouchableWithoutFeedback
+    | React.ReactNode;
   onPress?: () => void;
-  onPressIn?: (reactTag?) => void;
+  onPressIn?: (payload: { reactTag: number | null }) => void;
   onPeekIn?: () => void;
   onPeekOut?: () => void;
 }
@@ -30,8 +37,7 @@ const PREVIEW_DELAY = 350;
 const PREVIEW_MIN_FORCE = 0.1;
 const PREVIEW_TIMEOUT = 1250;
 
-export class TouchablePreview extends React.PureComponent<Props, any> {
-
+export class TouchablePreview extends React.PureComponent<Props> {
   static propTypes = {
     children: PropTypes.node,
     touchableComponent: PropTypes.func,
@@ -47,14 +53,9 @@ export class TouchablePreview extends React.PureComponent<Props, any> {
 
   static peeking = false;
 
-  private ref: React.Component<any> | null = null;
   private timeout: number | undefined;
-  private ts: number = 0;
-
-  onRef = (ref: React.Component<any>) => {
-    this.ref = ref;
-  }
-
+  private touchStartedAt: number = 0;
+  private onRef = React.createRef<any>();
   onPress = () => {
     const { onPress } = this.props;
 
@@ -73,7 +74,7 @@ export class TouchablePreview extends React.PureComponent<Props, any> {
         return;
       }
 
-      const reactTag = findNodeHandle(this.ref);
+      const reactTag = findNodeHandle(this.onRef.current);
 
       return onPressIn({ reactTag });
     }
@@ -84,13 +85,13 @@ export class TouchablePreview extends React.PureComponent<Props, any> {
 
   onTouchStart = (event: GestureResponderEvent) => {
     // Store a timstamp of the initial touch start
-    this.ts = event.nativeEvent.timestamp;
+    this.touchStartedAt = event.nativeEvent.timestamp;
   }
 
   onTouchMove = (event: GestureResponderEventWithForce) => {
     clearTimeout(this.timeout);
     const { force, timestamp } = event.nativeEvent;
-    const diff = (timestamp - this.ts);
+    const diff = timestamp - this.touchStartedAt;
 
     if (force > PREVIEW_MIN_FORCE && diff > PREVIEW_DELAY) {
       TouchablePreview.peeking = true;
@@ -116,21 +117,15 @@ export class TouchablePreview extends React.PureComponent<Props, any> {
     const { children, touchableComponent, onPress, onPressIn, ...props } = this.props;
 
     // Default to TouchableWithoutFeedback for iOS if set to TouchableNativeFeedback
-    const Touchable = (
-      Platform.OS === 'ios' && touchableComponent instanceof TouchableNativeFeedback
-        ? TouchableWithoutFeedback
-        : touchableComponent
-    ) as typeof TouchableWithoutFeedback;
+    const Touchable = (Platform.OS === 'ios' &&
+    touchableComponent instanceof TouchableNativeFeedback
+      ? TouchableWithoutFeedback
+      : touchableComponent) as typeof TouchableWithoutFeedback;
 
     // Wrap component with Touchable for handling platform touches
     // and a single react View for detecting force and timing.
     return (
-      <Touchable
-        ref={this.onRef}
-        onPress={this.onPress}
-        onPressIn={this.onPressIn}
-        {...props}
-      >
+      <Touchable ref={this.onRef} onPress={this.onPress} onPressIn={this.onPressIn} {...props}>
         <View
           onTouchStart={this.onTouchStart}
           onTouchMove={this.onTouchMove as (event: GestureResponderEvent) => void}

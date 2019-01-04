@@ -112,10 +112,6 @@
 	XCTAssertFalse(self.uut.navigationController.navigationBar.clipsToBounds);
 }
 
-- (void)testTabBarItemShouldReturnFirstChildTabBarItem {
-	XCTAssertEqual(self.uut.tabBarItem, self.uut.childViewControllers.firstObject.tabBarItem);
-}
-
 - (void)testSupportedOrientationsShouldReturnCurrentChildSupportedOrientations {
 	XCTAssertEqual(self.uut.supportedInterfaceOrientations, self.uut.getCurrentChild.supportedInterfaceOrientations);
 }

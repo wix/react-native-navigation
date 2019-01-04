@@ -58,13 +58,12 @@
 
 - (void)setUp {
 	[super setUp];
-	self.sharedApplication = [OCMockObject mockForClass:[UIApplication class]];
 	self.mainWindow = [OCMockObject partialMockForObject:[UIWindow new]];
 	self.store = [OCMockObject partialMockForObject:[[RNNStore alloc] init]];
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
 	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter andBridge:nil]];
-	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:self.overlayManager sharedApplication:_sharedApplication];
+	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:self.overlayManager mainWindow:_mainWindow];
 	self.vc1 = [RNNRootViewController new];
 	self.vc2 = [RNNRootViewController new];
 	self.vc3 = [RNNRootViewController new];
@@ -92,7 +91,7 @@
 -(NSArray*) getPublicMethodNamesForObject:(NSObject*)obj{
 	NSMutableArray* skipMethods = [NSMutableArray new];
 	
-	[skipMethods addObject:@"initWithStore:controllerFactory:eventEmitter:stackManager:modalManager:overlayManager:sharedApplication:"];
+	[skipMethods addObject:@"initWithStore:controllerFactory:eventEmitter:stackManager:modalManager:overlayManager:mainWindow:"];
 	[skipMethods addObject:@"assertReady"];
 	[skipMethods addObject:@"removePopedViewControllers:"];
 	[skipMethods addObject:@".cxx_destruct"];
@@ -309,6 +308,30 @@
 	[[self.store expect] removeAllComponentsFromWindow:self.mainWindow];
 	[self.uut setRoot:@{} completion:^{}];
 	[self.store verify];
+}
+
+- (void)testSetStackRoot_resetStackWithSingleComponent {
+	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any] saveToStore:self.store]).andReturn(@[self.vc2]);
+	[self.store setReadyToReceiveCommands:true];
+	[self.uut setStackRoot:@"vc1" children:nil completion:^{
+		
+	} rejection:^(NSString *code, NSString *message, NSError *error) {
+		
+	}];
+	XCTAssertEqual(_nvc.viewControllers.firstObject, self.vc2);
+	XCTAssertEqual(_nvc.viewControllers.count, 1);
+}
+
+- (void)testSetStackRoot_setMultipleChildren {
+	NSArray* newViewControllers = @[_vc1, _vc3];
+	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any] saveToStore:self.store]).andReturn(newViewControllers);
+	[self.store setReadyToReceiveCommands:true];
+	[self.uut setStackRoot:@"vc1" children:nil completion:^{
+		
+	} rejection:^(NSString *code, NSString *message, NSError *error) {
+		
+	}];
+	XCTAssertTrue([_nvc.viewControllers isEqual:newViewControllers]);
 }
 
 @end

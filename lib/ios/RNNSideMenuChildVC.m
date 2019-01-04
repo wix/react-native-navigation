@@ -52,16 +52,18 @@
 	[self.options overrideOptions:options];
 }
 
-- (UITabBarItem *)tabBarItem {
-	return self.child.tabBarItem;
-}
-
 - (void)bindChildViewController:(UIViewController<RNNLayoutProtocol>*)child {
 	self.child = child;
 	[self addChildViewController:self.child];
 	[self.child.view setFrame:self.view.bounds];
 	[self.view addSubview:self.child.view];
 	[self.view bringSubviewToFront:self.child.view];
+}
+
+- (void)setWidth:(CGFloat)width {
+	CGRect frame = self.child.view.frame;
+	frame.size.width = width;
+	self.child.view.frame = frame;
 }
 
 - (UIViewController *)getCurrentChild {
