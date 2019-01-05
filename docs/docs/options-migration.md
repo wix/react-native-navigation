@@ -522,7 +522,9 @@ Title alignment
 
 ```js
 topBar: {
-  alignment: 'center'|'fill'
+  title: {
+    alignment: 'center'|'fill'
+  }
 }
 ```
 

@@ -60,6 +60,12 @@
 	[self.view bringSubviewToFront:self.child.view];
 }
 
+- (void)setWidth:(CGFloat)width {
+	CGRect frame = self.child.view.frame;
+	frame.size.width = width;
+	self.child.view.frame = frame;
+}
+
 - (UIViewController *)getCurrentChild {
 	return self.child;
 }
