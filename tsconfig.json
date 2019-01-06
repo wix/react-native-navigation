@@ -14,7 +14,9 @@
       "react",
       "react-native",
       "react-test-renderer"
-    ]
+    ],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   },
   "include": [
     "./lib/src/**/*"

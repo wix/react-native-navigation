@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { NavigationRoot } from './Navigation';
 
 const navigationSingleton = new NavigationRoot();

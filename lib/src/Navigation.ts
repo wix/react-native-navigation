@@ -22,6 +22,8 @@ import { ColorService } from './adapters/ColorService';
 import { AssetService } from './adapters/AssetResolver';
 import { AppRegistryService } from './adapters/AppRegistryService';
 
+import { Container } from 'typedi';
+
 export class NavigationRoot {
   public readonly Element = SharedElement;
   public readonly TouchablePreview = TouchablePreview;
@@ -43,7 +45,7 @@ export class NavigationRoot {
     this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
-    this.uniqueIdProvider = new UniqueIdProvider();
+    this.uniqueIdProvider = Container.get(UniqueIdProvider);
     this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
     const appRegistryService = new AppRegistryService();
     this.componentRegistry = new ComponentRegistry(

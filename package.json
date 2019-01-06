@@ -57,7 +57,9 @@
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
-    "tslib": "1.9.3"
+    "reflect-metadata": "^0.1.12",
+    "tslib": "1.9.3",
+    "typedi": "^0.8.0"
   },
   "devDependencies": {
     "@types/hoist-non-react-statics": "^3.0.1",
