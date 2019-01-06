@@ -119,7 +119,8 @@ describe('ComponentEventsObserver', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    uut = new ComponentEventsObserver(mockEventsReceiver);
+    uut = new ComponentEventsObserver();
+    uut.nativeEventsReceiver = mockEventsReceiver;
   });
 
   it(`bindComponent expects a component with componentId`, () => {
