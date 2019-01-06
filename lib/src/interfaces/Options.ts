@@ -666,8 +666,7 @@ export interface OptionsAnimationProperties {
   rotation?: OptionsAnimationPropertyConfig;
 }
 
-export interface OptionsAnimationPropertiesId
-  extends OptionsAnimationProperties {
+export interface OptionsAnimationPropertiesId extends OptionsAnimationProperties {
   /**
    * ID of the Top Bar we want to animate
    */
