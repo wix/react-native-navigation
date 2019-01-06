@@ -20,4 +20,6 @@ typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNViewControllerPresenter *)presenter type:(RNNSideMenuChildType)type;
 
+- (void)setWidth:(CGFloat)width;
+
 @end
