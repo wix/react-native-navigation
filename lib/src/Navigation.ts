@@ -1,6 +1,5 @@
 import { isArray } from 'lodash';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
-import { Store } from './components/Store';
 import { ComponentRegistry } from './components/ComponentRegistry';
 import { Commands } from './commands/Commands';
 import { EventsRegistry } from './events/EventsRegistry';
@@ -12,8 +11,6 @@ import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
-import { ComponentWrapper } from './components/ComponentWrapper';
-import { AppRegistryService } from './adapters/AppRegistryService';
 
 import { Container } from 'typedi';
 
@@ -21,27 +18,17 @@ export class NavigationRoot {
   public readonly Element = SharedElement;
   public readonly TouchablePreview = TouchablePreview;
 
-  private readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly componentRegistry: ComponentRegistry;
   private readonly commands: Commands;
   private readonly eventsRegistry: EventsRegistry;
   private readonly commandsObserver: CommandsObserver;
   private readonly componentEventsObserver: ComponentEventsObserver;
-  private readonly componentWrapper: ComponentWrapper;
 
   constructor() {
-    this.componentWrapper = new ComponentWrapper();
-    this.store = Container.get(Store);
     this.nativeEventsReceiver = Container.get(NativeEventsReceiver);
     this.componentEventsObserver = Container.get(ComponentEventsObserver);
-    const appRegistryService = Container.get(AppRegistryService);
-    this.componentRegistry = new ComponentRegistry(
-      this.store,
-      this.componentEventsObserver,
-      this.componentWrapper,
-      appRegistryService
-    );
+    this.componentRegistry = Container.get(ComponentRegistry);
     this.commandsObserver = Container.get(CommandsObserver);
     this.commands = Container.get(Commands);
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
