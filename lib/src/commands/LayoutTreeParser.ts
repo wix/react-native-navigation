@@ -11,9 +11,14 @@ import {
   ExternalComponent
 } from '../interfaces/Layout';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { Service, Inject } from 'typedi';
 
+@Service()
 export class LayoutTreeParser {
-  constructor(private uniqueIdProvider: UniqueIdProvider) {
+  @Inject()
+  public uniqueIdProvider!: UniqueIdProvider;
+
+  constructor() {
     this.parse = this.parse.bind(this);
   }
 

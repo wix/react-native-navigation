@@ -13,7 +13,8 @@ describe('LayoutTreeParser', () => {
   beforeEach(() => {
     mockedUniqueIdProvider = mock(UniqueIdProvider);
     when(mockedUniqueIdProvider.generate(anything())).thenReturn('myUniqueId');
-    uut = new LayoutTreeParser(instance(mockedUniqueIdProvider));
+    uut = new LayoutTreeParser();
+    uut.uniqueIdProvider = instance(mockedUniqueIdProvider);
   });
 
   describe('parses into { type, data, children }', () => {

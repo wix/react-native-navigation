@@ -25,7 +25,11 @@ describe('navigation options', () => {
     when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
     const colorService = instance(mockedColorService);
 
-    uut = new OptionsProcessor(store, new UniqueIdProvider(), colorService, assetService);
+    uut = new OptionsProcessor();
+    uut.store = store;
+    uut.uniqueIdProvider = new UniqueIdProvider();
+    uut.colorService = colorService;
+    uut.assetService = assetService;
   });
 
   it('keeps original values if values were not processed', () => {

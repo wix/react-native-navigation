@@ -18,8 +18,6 @@ import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
 import { ComponentWrapper } from './components/ComponentWrapper';
 import { OptionsProcessor } from './commands/OptionsProcessor';
-import { ColorService } from './adapters/ColorService';
-import { AssetService } from './adapters/AssetResolver';
 import { AppRegistryService } from './adapters/AppRegistryService';
 
 import { Container } from 'typedi';
@@ -54,8 +52,8 @@ export class NavigationRoot {
       this.componentWrapper,
       appRegistryService
     );
-    this.layoutTreeParser = new LayoutTreeParser(this.uniqueIdProvider);
-    const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, Container.get(ColorService), Container.get(AssetService));
+    this.layoutTreeParser = Container.get(LayoutTreeParser);
+    const optionsProcessor = Container.get(OptionsProcessor);
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = Container.get(NativeCommandsSender);
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);

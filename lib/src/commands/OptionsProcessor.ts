@@ -5,14 +5,18 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Options } from '../interfaces/Options';
+import { Inject, Service } from 'typedi';
 
+@Service()
 export class OptionsProcessor {
-  constructor(
-    private store: Store,
-    private uniqueIdProvider: UniqueIdProvider,
-    private colorService: ColorService,
-    private assetService: AssetService,
-  ) {}
+  @Inject()
+  public store!: Store;
+  @Inject()
+  public uniqueIdProvider!: UniqueIdProvider;
+  @Inject()
+  public colorService!: ColorService;
+  @Inject()
+  public assetService!: AssetService;
 
   public processOptions(options: Options) {
     this.processObject(options);
