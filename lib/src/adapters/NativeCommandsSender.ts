@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+import { Service } from 'typedi';
 
 interface NativeCommandsModule {
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;
@@ -17,6 +18,7 @@ interface NativeCommandsModule {
   getLaunchArgs(commandId: string): Promise<any>;
 }
 
+@Service()
 export class NativeCommandsSender {
   private readonly nativeCommandsModule: NativeCommandsModule;
   constructor() {

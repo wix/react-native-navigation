@@ -1,6 +1,8 @@
 import * as _ from 'lodash';
 import { ComponentProvider } from 'react-native';
+import { Service } from 'typedi';
 
+@Service()
 export class Store {
   private componentsByName: Record<string, ComponentProvider> = {};
   private propsById: Record<string, any> = {};

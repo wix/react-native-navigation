@@ -9,7 +9,9 @@ import {
   ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
+import { Service } from 'typedi';
 
+Service()
 export class NativeEventsReceiver {
   private emitter: EventEmitter;
   constructor() {

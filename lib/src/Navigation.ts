@@ -43,11 +43,11 @@ export class NavigationRoot {
 
   constructor() {
     this.componentWrapper = new ComponentWrapper();
-    this.store = new Store();
-    this.nativeEventsReceiver = new NativeEventsReceiver();
+    this.store = Container.get(Store);
+    this.nativeEventsReceiver = Container.get(NativeEventsReceiver);
     this.uniqueIdProvider = Container.get(UniqueIdProvider);
     this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
-    const appRegistryService = new AppRegistryService();
+    const appRegistryService = Container.get(AppRegistryService);
     this.componentRegistry = new ComponentRegistry(
       this.store,
       this.componentEventsObserver,
@@ -55,9 +55,9 @@ export class NavigationRoot {
       appRegistryService
     );
     this.layoutTreeParser = new LayoutTreeParser(this.uniqueIdProvider);
-    const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService());
+    const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, Container.get(ColorService), Container.get(AssetService));
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
-    this.nativeCommandsSender = new NativeCommandsSender();
+    this.nativeCommandsSender = Container.get(NativeCommandsSender);
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
     this.commands = new Commands(
       this.nativeCommandsSender,
