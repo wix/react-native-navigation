@@ -1,9 +1,9 @@
 import 'reflect-metadata';
+import { Container } from 'typedi';
+
 import { NavigationRoot } from './Navigation';
 
-const navigationSingleton = new NavigationRoot();
-
-export const Navigation = navigationSingleton;
+export const Navigation = Container.get(NavigationRoot);
 export * from './adapters/Constants';
 export * from './interfaces/ComponentEvents';
 export * from './interfaces/Events';

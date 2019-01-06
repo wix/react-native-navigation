@@ -9,24 +9,19 @@ import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
+import { Service } from 'typedi';
 
-import { Container } from 'typedi';
-
+@Service()
 export class NavigationRoot {
   public readonly Element = SharedElement;
   public readonly TouchablePreview = TouchablePreview;
 
-  private readonly componentRegistry: ComponentRegistry;
-  private readonly commands: Commands;
-  private readonly eventsRegistry: EventsRegistry;
-  private readonly componentEventsObserver: ComponentEventsObserver;
-
-  constructor() {
-    this.componentEventsObserver = Container.get(ComponentEventsObserver);
-    this.componentRegistry = Container.get(ComponentRegistry);
-    this.commands = Container.get(Commands);
-    this.eventsRegistry = Container.get(EventsRegistry);
-
+  constructor(
+    private readonly componentRegistry: ComponentRegistry,
+    private readonly commands: Commands,
+    private readonly eventsRegistry: EventsRegistry,
+    private readonly componentEventsObserver: ComponentEventsObserver,
+  ) {
     this.componentEventsObserver.registerOnceForAllComponentEvents();
   }
 
