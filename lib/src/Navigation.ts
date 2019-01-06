@@ -1,11 +1,9 @@
 import { isArray } from 'lodash';
-import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { ComponentRegistry } from './components/ComponentRegistry';
 import { Commands } from './commands/Commands';
 import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { SharedElement } from './adapters/SharedElement';
-import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { TouchablePreview } from './adapters/TouchablePreview';
@@ -18,20 +16,16 @@ export class NavigationRoot {
   public readonly Element = SharedElement;
   public readonly TouchablePreview = TouchablePreview;
 
-  private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly componentRegistry: ComponentRegistry;
   private readonly commands: Commands;
   private readonly eventsRegistry: EventsRegistry;
-  private readonly commandsObserver: CommandsObserver;
   private readonly componentEventsObserver: ComponentEventsObserver;
 
   constructor() {
-    this.nativeEventsReceiver = Container.get(NativeEventsReceiver);
     this.componentEventsObserver = Container.get(ComponentEventsObserver);
     this.componentRegistry = Container.get(ComponentRegistry);
-    this.commandsObserver = Container.get(CommandsObserver);
     this.commands = Container.get(Commands);
-    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
+    this.eventsRegistry = Container.get(EventsRegistry);
 
     this.componentEventsObserver.registerOnceForAllComponentEvents();
   }

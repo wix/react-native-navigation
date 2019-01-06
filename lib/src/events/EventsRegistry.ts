@@ -14,9 +14,16 @@ import {
   ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
+import { Service, Inject } from 'typedi';
 
+@Service()
 export class EventsRegistry {
-  constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver, private componentEventsObserver: ComponentEventsObserver) { }
+  @Inject()
+  public nativeEventsReceiver!: NativeEventsReceiver;
+  @Inject()
+  public commandsObserver!: CommandsObserver;
+  @Inject()
+  public componentEventsObserver!: ComponentEventsObserver;
 
   public registerAppLaunchedListener(callback: () => void): EmitterSubscription {
     return this.nativeEventsReceiver.registerAppLaunchedListener(callback);

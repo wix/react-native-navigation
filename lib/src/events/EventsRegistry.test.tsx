@@ -12,7 +12,10 @@ describe('EventsRegistry', () => {
   beforeEach(() => {
     commandsObserver = new CommandsObserver();
     commandsObserver.uniqueIdProvider = new UniqueIdProvider();
-    uut = new EventsRegistry(mockNativeEventsReceiver, commandsObserver, mockScreenEventsRegistry);
+    uut = new EventsRegistry();
+    uut.nativeEventsReceiver = mockNativeEventsReceiver;
+    uut.commandsObserver = commandsObserver;
+    uut.componentEventsObserver = mockScreenEventsRegistry;
   });
 
   it('exposes appLaunched event', () => {
