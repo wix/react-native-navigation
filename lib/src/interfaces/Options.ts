@@ -737,6 +737,8 @@ export interface Options {
   modalPresentationStyle?: OptionsModalPresentationStyle;
   /**
    * Configure the transition style of the modal
+   *
+   * #### (Android specific)
    */
   modalTransitionStyle?: OptionsModalTransitionStyle;
   /**
