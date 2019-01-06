@@ -17,10 +17,10 @@ export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
 
   constructor(
-    private readonly componentRegistry: ComponentRegistry,
-    private readonly commands: Commands,
-    private readonly eventsRegistry: EventsRegistry,
-    private readonly componentEventsObserver: ComponentEventsObserver,
+    private componentRegistry: ComponentRegistry,
+    private commands: Commands,
+    private eventsRegistry: EventsRegistry,
+    private componentEventsObserver: ComponentEventsObserver,
   ) {
     this.componentEventsObserver.registerOnceForAllComponentEvents();
   }
