@@ -9,7 +9,8 @@ describe('CommandsObserver', () => {
   beforeEach(() => {
     cb1 = jest.fn();
     cb2 = jest.fn();
-    uut = new CommandsObserver(new UniqueIdProvider());
+    uut = new CommandsObserver();
+    uut.uniqueIdProvider = new UniqueIdProvider();
   });
 
   it('register and notify listener', () => {

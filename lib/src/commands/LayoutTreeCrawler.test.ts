@@ -16,7 +16,9 @@ describe('LayoutTreeCrawler', () => {
     mockedStore = mock(Store);
     mockedOptionsProcessor = mock(OptionsProcessor);
 
-    uut = new LayoutTreeCrawler(instance(mockedStore), instance(mockedOptionsProcessor));
+    uut = new LayoutTreeCrawler();
+    uut.store = instance(mockedStore);
+    uut.optionsProcessor = instance(mockedOptionsProcessor);
   });
 
   it('saves passProps into store for Component nodes', () => {

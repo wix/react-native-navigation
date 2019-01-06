@@ -24,21 +24,23 @@ describe('Commands', () => {
     when(mockedUniqueIdProvider.generate(anything())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
     const uniqueIdProvider = instance(mockedUniqueIdProvider);
     mockedStore = mock(Store);
-    commandsObserver = new CommandsObserver(uniqueIdProvider);
+    commandsObserver = new CommandsObserver();
+    commandsObserver.uniqueIdProvider = uniqueIdProvider;
 
     const mockedOptionsProcessor = mock(OptionsProcessor);
     const optionsProcessor = instance(mockedOptionsProcessor);
     const layoutTreeParser = new LayoutTreeParser();
     layoutTreeParser.uniqueIdProvider = uniqueIdProvider;
-
-    uut = new Commands(
-      instance(mockedNativeCommandsSender),
-      layoutTreeParser,
-      new LayoutTreeCrawler(instance(mockedStore), optionsProcessor),
-      commandsObserver,
-      uniqueIdProvider,
-      optionsProcessor
-    );
+    const layoutTreeCrawler = new LayoutTreeCrawler();
+    layoutTreeCrawler.store = instance(mockedStore);
+    layoutTreeCrawler.optionsProcessor = optionsProcessor;
+    uut = new Commands();
+    uut.nativeCommandsSender = instance(mockedNativeCommandsSender);
+    uut.layoutTreeParser = layoutTreeParser;
+    uut.layoutTreeCrawler = layoutTreeCrawler;
+    uut.commandsObserver = commandsObserver;
+    uut.uniqueIdProvider = uniqueIdProvider;
+    uut.optionsProcessor = optionsProcessor;
   });
 
   describe('setRoot', () => {
@@ -374,14 +376,12 @@ describe('Commands', () => {
         (prefix) => `${prefix}+UNIQUE_ID`
       );
 
-      uut = new Commands(
-        mockedNativeCommandsSender,
-        instance(mockedLayoutTreeParser),
-        instance(mockedLayoutTreeCrawler),
-        commandsObserver,
-        instance(anotherMockedUniqueIdProvider),
-        instance(mockedOptionsProcessor)
-      );
+      uut.nativeCommandsSender = mockedNativeCommandsSender;
+      uut.layoutTreeParser = instance(mockedLayoutTreeParser);
+      uut.layoutTreeCrawler = instance(mockedLayoutTreeCrawler);
+      uut.commandsObserver = commandsObserver;
+      uut.uniqueIdProvider = instance(anotherMockedUniqueIdProvider);
+      uut.optionsProcessor = instance(mockedOptionsProcessor);
     });
 
     function getAllMethodsOfUut() {

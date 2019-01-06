@@ -1,12 +1,8 @@
 import { isArray } from 'lodash';
-import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
-import { UniqueIdProvider } from './adapters/UniqueIdProvider';
 import { Store } from './components/Store';
 import { ComponentRegistry } from './components/ComponentRegistry';
 import { Commands } from './commands/Commands';
-import { LayoutTreeParser } from './commands/LayoutTreeParser';
-import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
 import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { SharedElement } from './adapters/SharedElement';
@@ -17,7 +13,6 @@ import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
 import { ComponentWrapper } from './components/ComponentWrapper';
-import { OptionsProcessor } from './commands/OptionsProcessor';
 import { AppRegistryService } from './adapters/AppRegistryService';
 
 import { Container } from 'typedi';
@@ -28,11 +23,7 @@ export class NavigationRoot {
 
   private readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
-  private readonly uniqueIdProvider: UniqueIdProvider;
   private readonly componentRegistry: ComponentRegistry;
-  private readonly layoutTreeParser: LayoutTreeParser;
-  private readonly layoutTreeCrawler: LayoutTreeCrawler;
-  private readonly nativeCommandsSender: NativeCommandsSender;
   private readonly commands: Commands;
   private readonly eventsRegistry: EventsRegistry;
   private readonly commandsObserver: CommandsObserver;
@@ -43,7 +34,6 @@ export class NavigationRoot {
     this.componentWrapper = new ComponentWrapper();
     this.store = Container.get(Store);
     this.nativeEventsReceiver = Container.get(NativeEventsReceiver);
-    this.uniqueIdProvider = Container.get(UniqueIdProvider);
     this.componentEventsObserver = Container.get(ComponentEventsObserver);
     const appRegistryService = Container.get(AppRegistryService);
     this.componentRegistry = new ComponentRegistry(
@@ -52,19 +42,8 @@ export class NavigationRoot {
       this.componentWrapper,
       appRegistryService
     );
-    this.layoutTreeParser = Container.get(LayoutTreeParser);
-    const optionsProcessor = Container.get(OptionsProcessor);
-    this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
-    this.nativeCommandsSender = Container.get(NativeCommandsSender);
-    this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
-    this.commands = new Commands(
-      this.nativeCommandsSender,
-      this.layoutTreeParser,
-      this.layoutTreeCrawler,
-      this.commandsObserver,
-      this.uniqueIdProvider,
-      optionsProcessor
-    );
+    this.commandsObserver = Container.get(CommandsObserver);
+    this.commands = Container.get(Commands);
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
 
     this.componentEventsObserver.registerOnceForAllComponentEvents();

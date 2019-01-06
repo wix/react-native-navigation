@@ -10,7 +10,8 @@ describe('EventsRegistry', () => {
   const mockScreenEventsRegistry = {} as any;
 
   beforeEach(() => {
-    commandsObserver = new CommandsObserver(new UniqueIdProvider());
+    commandsObserver = new CommandsObserver();
+    commandsObserver.uniqueIdProvider = new UniqueIdProvider();
     uut = new EventsRegistry(mockNativeEventsReceiver, commandsObserver, mockScreenEventsRegistry);
   });
 

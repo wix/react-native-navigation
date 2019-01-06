@@ -3,6 +3,7 @@ import { LayoutType } from './LayoutType';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Store } from '../components/Store';
 import { Options } from '../interfaces/Options';
+import { Service, Inject } from 'typedi';
 
 export interface Data {
   name?: string;
@@ -18,8 +19,14 @@ export interface LayoutNode {
 
 type ComponentWithOptions = React.ComponentType<any> & { options(passProps: any): Options };
 
+@Service()
 export class LayoutTreeCrawler {
-  constructor(public readonly store: Store, private readonly optionsProcessor: OptionsProcessor) {
+  @Inject()
+  public store!: Store;
+  @Inject()
+  public optionsProcessor!: OptionsProcessor;
+
+  constructor() {
     this.crawl = this.crawl.bind(this);
   }
 
