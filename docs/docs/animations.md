@@ -69,5 +69,5 @@ const Button = (
   </Navigation.TouchablePreview>
 );
 ```
-All options except for reactTag are optional. Actions trigger the same event as [navigation button presses](https://wix.github.io/react-native-navigation/#/docs/topBar-buttons?id=handling-button-press-events). To react when a preview is commited, listen to the (previewcompleted)[https://wix.github.io/react-native-navigation/#/docs/events?id=previewcompleted-ios-114-only] event.
-```
+
+All options except for reactTag are optional. Actions trigger the same event as [navigation button presses](https://wix.github.io/react-native-navigation/#/docs/topBar-buttons?id=handling-button-press-events). To react when a preview is committed, listen to the [previewCompleted](https://wix.github.io/react-native-navigation/#/docs/events?id=previewcompleted-ios-114-only) event.
