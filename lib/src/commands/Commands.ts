@@ -7,7 +7,7 @@ import { Layout, LayoutRoot } from '../interfaces/Layout';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { OptionsProcessor } from './OptionsProcessor';
-import { Service } from 'typedi';
+import { Service, Inject } from 'typedi';
 
 @Service('Commands')
 export class Commands {
@@ -15,7 +15,7 @@ export class Commands {
     private nativeCommandsSender: NativeCommandsSender,
     private layoutTreeParser: LayoutTreeParser,
     private layoutTreeCrawler: LayoutTreeCrawler,
-    private commandsObserver: CommandsObserver,
+    @Inject('CommandsObserver') private commandsObserver: CommandsObserver,
     private uniqueIdProvider: UniqueIdProvider,
     private optionsProcessor: OptionsProcessor,
   ) {}

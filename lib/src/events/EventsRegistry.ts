@@ -20,7 +20,7 @@ import { Service, Inject } from 'typedi';
 export class EventsRegistry {
   constructor(
     private nativeEventsReceiver: NativeEventsReceiver,
-    private commandsObserver: CommandsObserver,
+    @Inject('CommandsObserver') private commandsObserver: CommandsObserver,
     @Inject('ComponentEventsObserver') private componentEventsObserver: ComponentEventsObserver,
   ) {}
 

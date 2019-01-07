@@ -4,7 +4,7 @@ import { Service, Inject } from 'typedi';
 
 export type CommandsListener = (name: string, params: Record<string, any>) => void;
 
-@Service()
+@Service('CommandsObserver')
 export class CommandsObserver {
   @Inject()
   public uniqueIdProvider!: UniqueIdProvider;
