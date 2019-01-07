@@ -20,11 +20,12 @@ describe('ComponentRegistry', () => {
     mockedComponentWrapper = mock(ComponentWrapper);
     mockedAppRegistryService = mock(AppRegistryService);
 
-    uut = new ComponentRegistry();
-    uut.store = instance(mockedStore),
-    uut.componentEventsObserver = instance(mockedComponentEventsObserver),
-    uut.componentWrapper = instance(mockedComponentWrapper),
-    uut.appRegistryService = instance(mockedAppRegistryService)
+    uut = new ComponentRegistry(
+      instance(mockedStore),
+      instance(mockedComponentEventsObserver),
+      instance(mockedComponentWrapper),
+      instance(mockedAppRegistryService)
+    );
   });
 
   it('registers component by componentName into AppRegistry', () => {
