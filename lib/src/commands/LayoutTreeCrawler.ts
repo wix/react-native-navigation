@@ -21,12 +21,10 @@ type ComponentWithOptions = React.ComponentType<any> & { options(passProps: any)
 
 @Service()
 export class LayoutTreeCrawler {
-  @Inject('Store')
-  public store!: Store;
-  @Inject()
-  public optionsProcessor!: OptionsProcessor;
-
-  constructor() {
+  constructor(
+    @Inject('Store') private store: Store,
+    private optionsProcessor: OptionsProcessor,
+  ) {
     this.crawl = this.crawl.bind(this);
   }
 
