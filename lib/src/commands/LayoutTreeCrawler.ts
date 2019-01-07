@@ -21,7 +21,7 @@ type ComponentWithOptions = React.ComponentType<any> & { options(passProps: any)
 
 @Service()
 export class LayoutTreeCrawler {
-  @Inject()
+  @Inject('Store')
   public store!: Store;
   @Inject()
   public optionsProcessor!: OptionsProcessor;

@@ -9,7 +9,7 @@ import { Inject, Service } from 'typedi';
 
 @Service()
 export class OptionsProcessor {
-  @Inject()
+  @Inject('Store')
   public store!: Store;
   @Inject()
   public uniqueIdProvider!: UniqueIdProvider;
