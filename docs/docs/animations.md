@@ -69,5 +69,5 @@ const Button = (
   </Navigation.TouchablePreview>
 );
 ```
-All options except for reactTag are optional. Actions trigger the same event as [navigation button presses](https://wix.github.io/react-native-navigation/#/docs/topBar-buttons?id=handling-button-press-events). You can listen to a few navigation events to react to the Peek and Pop lifecycle:  `previewContext` when the preview starts, `previewCommit` when the previewed screen is opened (`commit: true`) and `previewDismissed` when the preview is closed without opening the screen (`commit: false`).
+All options except for reactTag are optional. Actions trigger the same event as [navigation button presses](https://wix.github.io/react-native-navigation/#/docs/topBar-buttons?id=handling-button-press-events). To react when a preview is commited, listen to the (previewcompleted)[https://wix.github.io/react-native-navigation/#/docs/events?id=previewcompleted-ios-114-only] event.
 ```
