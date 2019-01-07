@@ -9,7 +9,7 @@ import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Service, Inject } from 'typedi';
 
-@Service()
+@Service('Commands')
 export class Commands {
   @Inject()
   public nativeCommandsSender!: NativeCommandsSender;

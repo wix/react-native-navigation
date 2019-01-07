@@ -18,7 +18,7 @@ export class NavigationRoot {
 
   constructor(
     @Inject('ComponentRegistry') private componentRegistry: ComponentRegistry,
-    private commands: Commands,
+    @Inject('Commands') private commands: Commands,
     private eventsRegistry: EventsRegistry,
     private componentEventsObserver: ComponentEventsObserver,
   ) {
