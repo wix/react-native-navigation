@@ -16,7 +16,7 @@ import {
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 import { Service, Inject } from 'typedi';
 
-@Service()
+@Service('EventsRegistry')
 export class EventsRegistry {
   @Inject()
   public nativeEventsReceiver!: NativeEventsReceiver;
