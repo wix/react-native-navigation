@@ -18,12 +18,11 @@ import { Service, Inject } from 'typedi';
 
 @Service('EventsRegistry')
 export class EventsRegistry {
-  @Inject()
-  public nativeEventsReceiver!: NativeEventsReceiver;
-  @Inject()
-  public commandsObserver!: CommandsObserver;
-  @Inject('ComponentEventsObserver')
-  public componentEventsObserver!: ComponentEventsObserver;
+  constructor(
+    private nativeEventsReceiver: NativeEventsReceiver,
+    private commandsObserver: CommandsObserver,
+    @Inject('ComponentEventsObserver') private componentEventsObserver: ComponentEventsObserver,
+  ) {}
 
   public registerAppLaunchedListener(callback: () => void): EmitterSubscription {
     return this.nativeEventsReceiver.registerAppLaunchedListener(callback);

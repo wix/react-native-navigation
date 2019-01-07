@@ -12,10 +12,7 @@ describe('EventsRegistry', () => {
   beforeEach(() => {
     commandsObserver = new CommandsObserver();
     commandsObserver.uniqueIdProvider = new UniqueIdProvider();
-    uut = new EventsRegistry();
-    uut.nativeEventsReceiver = mockNativeEventsReceiver;
-    uut.commandsObserver = commandsObserver;
-    uut.componentEventsObserver = mockScreenEventsRegistry;
+    uut = new EventsRegistry(mockNativeEventsReceiver, commandsObserver, mockScreenEventsRegistry);
   });
 
   it('exposes appLaunched event', () => {
@@ -61,8 +58,12 @@ describe('EventsRegistry', () => {
   it('delegates navigationButtonPressed to nativeEventsReceiver', () => {
     const cb = jest.fn();
     uut.registerNavigationButtonPressedListener(cb);
-    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
-    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledWith(cb);
+    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(
+      1
+    );
+    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledWith(
+      cb
+    );
   });
 
   it('delegates modalDismissed to nativeEventsReceiver', () => {
@@ -82,8 +83,12 @@ describe('EventsRegistry', () => {
   it('delegates searchBarCancelPressed to nativeEventsReceiver', () => {
     const cb = jest.fn();
     uut.registerSearchBarCancelPressedListener(cb);
-    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
-    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledWith(cb);
+    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(
+      1
+    );
+    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledWith(
+      cb
+    );
   });
 
   it('delegates previewCompleted to nativeEventsReceiver', () => {
