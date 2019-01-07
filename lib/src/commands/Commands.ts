@@ -7,22 +7,18 @@ import { Layout, LayoutRoot } from '../interfaces/Layout';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { OptionsProcessor } from './OptionsProcessor';
-import { Service, Inject } from 'typedi';
+import { Service } from 'typedi';
 
 @Service('Commands')
 export class Commands {
-  @Inject()
-  public nativeCommandsSender!: NativeCommandsSender;
-  @Inject()
-  public layoutTreeParser!: LayoutTreeParser;
-  @Inject()
-  public layoutTreeCrawler!: LayoutTreeCrawler;
-  @Inject()
-  public commandsObserver!: CommandsObserver;
-  @Inject()
-  public uniqueIdProvider!: UniqueIdProvider;
-  @Inject()
-  public optionsProcessor!: OptionsProcessor;
+  constructor(
+    private nativeCommandsSender: NativeCommandsSender,
+    private layoutTreeParser: LayoutTreeParser,
+    private layoutTreeCrawler: LayoutTreeCrawler,
+    private commandsObserver: CommandsObserver,
+    private uniqueIdProvider: UniqueIdProvider,
+    private optionsProcessor: OptionsProcessor,
+  ) {}
 
   public setRoot(simpleApi: LayoutRoot) {
     const input = _.cloneDeep(simpleApi);

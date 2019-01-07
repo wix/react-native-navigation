@@ -34,13 +34,14 @@ describe('Commands', () => {
     const layoutTreeCrawler = new LayoutTreeCrawler();
     layoutTreeCrawler.store = instance(mockedStore);
     layoutTreeCrawler.optionsProcessor = optionsProcessor;
-    uut = new Commands();
-    uut.nativeCommandsSender = instance(mockedNativeCommandsSender);
-    uut.layoutTreeParser = layoutTreeParser;
-    uut.layoutTreeCrawler = layoutTreeCrawler;
-    uut.commandsObserver = commandsObserver;
-    uut.uniqueIdProvider = uniqueIdProvider;
-    uut.optionsProcessor = optionsProcessor;
+    uut = new Commands(
+      instance(mockedNativeCommandsSender),
+      layoutTreeParser,
+      layoutTreeCrawler,
+      commandsObserver,
+      uniqueIdProvider,
+      optionsProcessor
+    );
   });
 
   describe('setRoot', () => {
@@ -376,12 +377,14 @@ describe('Commands', () => {
         (prefix) => `${prefix}+UNIQUE_ID`
       );
 
-      uut.nativeCommandsSender = mockedNativeCommandsSender;
-      uut.layoutTreeParser = instance(mockedLayoutTreeParser);
-      uut.layoutTreeCrawler = instance(mockedLayoutTreeCrawler);
-      uut.commandsObserver = commandsObserver;
-      uut.uniqueIdProvider = instance(anotherMockedUniqueIdProvider);
-      uut.optionsProcessor = instance(mockedOptionsProcessor);
+      uut = new Commands(
+        mockedNativeCommandsSender,
+        instance(mockedLayoutTreeParser),
+        instance(mockedLayoutTreeCrawler),
+        commandsObserver,
+        instance(anotherMockedUniqueIdProvider),
+        instance(mockedOptionsProcessor)
+      );
     });
 
     function getAllMethodsOfUut() {
