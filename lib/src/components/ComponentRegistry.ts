@@ -5,7 +5,7 @@ import { ComponentWrapper } from './ComponentWrapper';
 import { AppRegistryService } from '../adapters/AppRegistryService';
 import { Service, Inject } from 'typedi';
 
-@Service()
+@Service('ComponentRegistry')
 export class ComponentRegistry {
   @Inject()
   public store!: Store;

@@ -9,7 +9,7 @@ import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
-import { Service } from 'typedi';
+import { Service, Inject } from 'typedi';
 
 @Service()
 export class NavigationRoot {
@@ -17,7 +17,7 @@ export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
 
   constructor(
-    private componentRegistry: ComponentRegistry,
+    @Inject('ComponentRegistry') private componentRegistry: ComponentRegistry,
     private commands: Commands,
     private eventsRegistry: EventsRegistry,
     private componentEventsObserver: ComponentEventsObserver,
