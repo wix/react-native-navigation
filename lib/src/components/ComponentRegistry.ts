@@ -3,15 +3,15 @@ import { Store } from './Store';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 import { ComponentWrapper } from './ComponentWrapper';
 import { AppRegistryService } from '../adapters/AppRegistryService';
-import { Service } from 'typedi';
+import { Service, Inject } from 'typedi';
 
 @Service('ComponentRegistry')
 export class ComponentRegistry {
   constructor(
-    public store: Store,
-    public componentEventsObserver: ComponentEventsObserver,
-    public componentWrapper: ComponentWrapper,
-    public appRegistryService: AppRegistryService,
+    private store: Store,
+    private componentEventsObserver: ComponentEventsObserver,
+    private componentWrapper: ComponentWrapper,
+    @Inject('AppRegistryService') private appRegistryService: AppRegistryService,
   ) {}
 
   registerComponent(
