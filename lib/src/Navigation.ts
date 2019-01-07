@@ -20,7 +20,7 @@ export class NavigationRoot {
     @Inject('ComponentRegistry') private componentRegistry: ComponentRegistry,
     @Inject('Commands') private commands: Commands,
     @Inject('EventsRegistry') private eventsRegistry: EventsRegistry,
-    private componentEventsObserver: ComponentEventsObserver,
+    @Inject('ComponentEventsObserver') private componentEventsObserver: ComponentEventsObserver,
   ) {
     this.componentEventsObserver.registerOnceForAllComponentEvents();
   }

@@ -9,7 +9,7 @@ import { Service, Inject } from 'typedi';
 export class ComponentRegistry {
   constructor(
     private store: Store,
-    private componentEventsObserver: ComponentEventsObserver,
+    @Inject('ComponentEventsObserver') private componentEventsObserver: ComponentEventsObserver,
     private componentWrapper: ComponentWrapper,
     @Inject('AppRegistryService') private appRegistryService: AppRegistryService,
   ) {}

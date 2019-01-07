@@ -22,7 +22,7 @@ export class EventsRegistry {
   public nativeEventsReceiver!: NativeEventsReceiver;
   @Inject()
   public commandsObserver!: CommandsObserver;
-  @Inject()
+  @Inject('ComponentEventsObserver')
   public componentEventsObserver!: ComponentEventsObserver;
 
   public registerAppLaunchedListener(callback: () => void): EmitterSubscription {

@@ -15,7 +15,7 @@ import { Service, Inject } from 'typedi';
 
 type ReactComponentWithIndexing = React.Component<any> & Record<string, any>;
 
-@Service()
+@Service('ComponentEventsObserver')
 export class ComponentEventsObserver {
   @Inject()
   public nativeEventsReceiver!: NativeEventsReceiver;
