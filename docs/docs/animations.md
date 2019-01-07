@@ -52,7 +52,12 @@ const handlePress ({ reactTag }) => {
           height: 300,
           width: 300,
           commit: true,
-          actions: [{title: "Displayed Name", id: "actionId"}],
+          actions: [{
+            title: "Displayed Name",
+            id: "actionId",
+            style: 'default', /* or 'selected', 'destructive'*/
+            actions: [/*define a submenu of actions with the same options*/]
+          }]
         },
       },
     },
