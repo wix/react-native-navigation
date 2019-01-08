@@ -9,14 +9,12 @@ import { Inject, Service } from 'typedi';
 
 @Service('OptionsProcessor')
 export class OptionsProcessor {
-  @Inject('Store')
-  public store!: Store;
-  @Inject()
-  public uniqueIdProvider!: UniqueIdProvider;
-  @Inject('ColorService')
-  public colorService!: ColorService;
-  @Inject('AssetService')
-  public assetService!: AssetService;
+  constructor(
+    @Inject('Store') private store: Store,
+    private uniqueIdProvider: UniqueIdProvider,
+    @Inject('ColorService') private colorService: ColorService,
+    @Inject('AssetService') private assetService: AssetService,
+  ) {}
 
   public processOptions(options: Options) {
     this.processObject(options);

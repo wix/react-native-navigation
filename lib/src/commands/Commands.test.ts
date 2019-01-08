@@ -28,12 +28,11 @@ describe('Commands', () => {
 
     const mockedOptionsProcessor = mock(OptionsProcessor);
     const optionsProcessor = instance(mockedOptionsProcessor);
-    const layoutTreeParser = new LayoutTreeParser(uniqueIdProvider);
-    const layoutTreeCrawler = new LayoutTreeCrawler(instance(mockedStore), optionsProcessor);
+
     uut = new Commands(
       instance(mockedNativeCommandsSender),
-      layoutTreeParser,
-      layoutTreeCrawler,
+      new LayoutTreeParser(uniqueIdProvider),
+      new LayoutTreeCrawler(instance(mockedStore), optionsProcessor),
       commandsObserver,
       uniqueIdProvider,
       optionsProcessor
