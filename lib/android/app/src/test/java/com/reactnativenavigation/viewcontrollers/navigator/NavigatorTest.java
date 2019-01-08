@@ -34,6 +34,7 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.BottomTabs;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
@@ -44,6 +45,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -131,13 +133,13 @@ public class NavigatorTest extends BaseTest {
     public void setRoot_delegatesToRootPresenter() {
         CommandListenerAdapter listener = new CommandListenerAdapter();
         uut.setRoot(child1, listener);
-        verify(rootPresenter).setRoot(child1, uut.getDefaultOptions(), listener);
+        ArgumentCaptor<CommandListenerAdapter> captor = ArgumentCaptor.forClass(CommandListenerAdapter.class);
+        verify(rootPresenter).setRoot(eq(child1), eq(uut.getDefaultOptions()), captor.capture());
+        assertThat(captor.getValue().getListener()).isEqualTo(listener);
     }
 
     @Test
     public void setRoot_clearsSplashLayout() {
-        disableModalAnimations(child1);
-
         FrameLayout content = activity.findViewById(android.R.id.content);
         assertThat(content.getChildCount()).isEqualTo(4); // 3 frame layouts and the default splash layout
 

@@ -1,7 +1,7 @@
 import { EventSubscription } from '../interfaces/EventSubscription';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
-export type CommandsListener = (name: string, params: any) => void;
+export type CommandsListener = (name: string, params: Record<string, any>) => void;
 
 export class CommandsObserver {
   private listeners: Record<string, CommandsListener> = {};
@@ -15,7 +15,7 @@ export class CommandsObserver {
     };
   }
 
-  public notify(commandName: string, params: any): void {
+  public notify(commandName: string, params: Record<string, any>): void {
     Object.values(this.listeners).forEach((listener) => listener(commandName, params));
   }
 }

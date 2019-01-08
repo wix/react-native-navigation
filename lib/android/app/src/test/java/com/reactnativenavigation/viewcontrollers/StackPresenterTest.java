@@ -13,6 +13,7 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.Component;
@@ -26,6 +27,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.views.titlebar.TitleBarReactView;
@@ -36,6 +38,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,6 +62,7 @@ public class StackPresenterTest extends BaseTest {
     private TestComponentLayout otherChild;
     private Activity activity;
     private TopBar topBar;
+    private RenderChecker renderChecker;
 
     private Button textBtn1 = TitleBarHelper.textualButton("btn1");
     private Button textBtn2 = TitleBarHelper.textualButton("btn2");
@@ -82,12 +86,31 @@ public class StackPresenterTest extends BaseTest {
                 return spy(super.create(activity, componentId, componentName));
             }
         };
-        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarButtonCreatorMock(), ImageLoaderMock.mock(), new Options()));
+        renderChecker = spy(new RenderChecker());
+        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), ImageLoaderMock.mock(), renderChecker, new Options()));
         topBar = mockTopBar();
         uut.bindView(topBar);
         uut.setButtonOnClickListener(onClickListener);
         child = spy(new TestComponentLayout(activity, new TestReactView(activity)));
         otherChild = new TestComponentLayout(activity, new TestReactView(activity));
+    }
+
+    @Test
+    public void isRendered() {
+        Options o1 = new Options();
+        o1.topBar.title.component = component(Alignment.Default);
+        o1.topBar.background.component = component(Alignment.Default);
+        o1.topBar.buttons.right = new ArrayList(Collections.singletonList(componentBtn1));
+        uut.applyChildOptions(o1, child);
+
+        uut.isRendered(child);
+        ArgumentCaptor<Collection<ViewController>> controllers = ArgumentCaptor.forClass(Collection.class);
+        verify(renderChecker).areRendered(controllers.capture());
+        ArrayList<ViewController> items = new ArrayList(controllers.getValue());
+        assertThat(items.contains(uut.getComponentButtons(child).get(0))).isTrue();
+        assertThat(items.contains(uut.getTitleComponents().get(child))).isTrue();
+        assertThat(items.contains(uut.getBackgroundComponents().get(child))).isTrue();
+        assertThat(items.size()).isEqualTo(3);
     }
 
     @Test

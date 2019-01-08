@@ -4,7 +4,7 @@ const { Component } = require('react');
 const { View, Text, Button, BackHandler } = require('react-native');
 
 class BackHandlerModalScreen extends Component {
-  static get options() {
+  static options() {
     return {
       topBar: {
         title: {

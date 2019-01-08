@@ -21,12 +21,12 @@ import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -72,8 +72,8 @@ public class OptionsApplyingTest extends BaseTest {
         };
         TopBarController topBarController = new TopBarController() {
             @Override
-            protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
-                topBar = spy(super.createTopBar(context, topBarBackgroundViewController, stackLayout));
+            protected TopBar createTopBar(Context context, StackLayout stackLayout) {
+                topBar = spy(super.createTopBar(context, stackLayout));
                 return topBar;
             }
         };
@@ -102,12 +102,10 @@ public class OptionsApplyingTest extends BaseTest {
         uut.options.topBar.title.text = new Text("the title");
         StackController stackController =
                 new StackControllerBuilder(activity)
-                        .setTopBarButtonCreator(new TopBarButtonCreatorMock())
-                        .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
                         .setTopBarController(new TopBarController())
                         .setId("stackId")
                         .setInitialOptions(new Options())
-                        .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
+                        .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new RenderChecker(), new Options()))
                         .build();
         stackController.ensureViewIsCreated();
         stackController.push(uut, new CommandListenerAdapter());

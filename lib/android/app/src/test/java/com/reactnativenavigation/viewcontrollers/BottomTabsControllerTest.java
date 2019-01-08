@@ -125,7 +125,8 @@ public class BottomTabsControllerTest extends BaseTest {
     public void setTabs_firstChildIsVisibleOtherAreGone() {
         uut.onViewAppeared();
         for (int i = 0; i < uut.getChildControllers().size(); i++) {
-            assertThat(uut.getView().getChildAt(i).getVisibility()).isEqualTo(i == 0 ? View.VISIBLE : View.INVISIBLE);
+            assertThat(uut.getView().getChildAt(i + 1)).isEqualTo(tabs.get(i).getView());
+            assertThat(uut.getView().getChildAt(i + 1).getVisibility()).isEqualTo(i == 0 ? View.VISIBLE : View.INVISIBLE);
         }
     }
 

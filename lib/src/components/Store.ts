@@ -1,8 +1,8 @@
-import * as React from 'react';
 import * as _ from 'lodash';
+import { ComponentProvider } from 'react-native';
 
 export class Store {
-  private componentsByName: Record<string, () => React.ComponentClass<any, any>> = {};
+  private componentsByName: Record<string, ComponentProvider> = {};
   private propsById: Record<string, any> = {};
 
   setPropsForId(componentId: string, props: any) {
@@ -13,15 +13,15 @@ export class Store {
     return _.get(this.propsById, componentId, {});
   }
 
-  setComponentClassForName(componentName: string | number, ComponentClass: () => React.ComponentClass<any, any>) {
+  cleanId(componentId: string) {
+    _.unset(this.propsById, componentId);
+  }
+
+  setComponentClassForName(componentName: string | number, ComponentClass: ComponentProvider) {
     _.set(this.componentsByName, componentName.toString(), ComponentClass);
   }
 
-  getComponentClassForName(componentName: string | number) {
+  getComponentClassForName(componentName: string | number): ComponentProvider | undefined {
     return _.get(this.componentsByName, componentName.toString());
-  }
-
-  cleanId(componentId: string) {
-    _.unset(this.propsById, componentId);
   }
 }

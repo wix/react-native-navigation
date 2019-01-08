@@ -2,6 +2,23 @@
 
 In order to make our API homogenous as much as possible, we provide setRoot function that will receive layout of any kind.
 
+## registerComponent
+Registering screens without redux or any wrapping providers is the same as in v1.
+```js
+Navigation.registerComponent('example.FirstTabScreen', () => FirstTabScreen);
+```
+
+### Registering screens with wrapping provider component
+```js
+Navigation.registerComponent('navigation.playground.ReduxScreen', () => (props) => (
+  <Provider store={reduxStore}>
+    <ReduxScreen {...props} />
+  </Provider>
+), () => ReduxScreen);
+```
+!>Note that `Navigation.registerComponentWithRedux` is deprecated
+
+
 ## startTabBasedApp(params) -> setRoot({bottomTabs})
 
 ```js

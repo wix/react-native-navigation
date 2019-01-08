@@ -9,7 +9,7 @@ const testIDs = require('../testIDs');
 const FAB = 'fab';
 
 class ScrollViewScreen extends Component {
-  static get options() {
+  static options() {
     return {
       topBar: {
         title: {

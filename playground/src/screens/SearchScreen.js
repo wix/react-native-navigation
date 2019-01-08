@@ -20,7 +20,7 @@ for(let i = 0; i < 200; i++) {
 }
 
 class SearchControllerScreen extends Component {
-  static get options() {
+  static options() {
     return {
       topBar: {
         title: {

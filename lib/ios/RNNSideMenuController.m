@@ -76,9 +76,11 @@
 	switch (side) {
 		case MMDrawerSideRight:
 			self.maximumRightDrawerWidth = width;
+			[self.right setWidth:width];
 			break;
 		case MMDrawerSideLeft:
 			self.maximumLeftDrawerWidth = width;
+			[self.left setWidth:width];
 		default:
 			break;
 	}

@@ -82,7 +82,4 @@
 	[self.bindedViewController verify];
 }
 
-
-
-
 @end

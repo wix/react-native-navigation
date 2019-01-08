@@ -1,4 +1,22 @@
 # Changelog
+## 2.5.1
+### Fixed
+#### Android
+* Set elevation 0 when creating TopBar [#05dacbd](https://github.com/wix/react-native-navigation/commit/05dacbd0729f4ebf0074bd21c50f3bf813ad7fab) by [guyca](https://github.com/guyca)
+
+## 2.5.0
+### Fixed
+* Road to implicit any part 5 [#ee6dc78](https://github.com/wix/react-native-navigation/commit/ee6dc788023ca78a51834206f9823ca85abd273e) by [henrikra](https://github.com/henrikra)
+* Road to implicitAny part 4 [#02985c5](https://github.com/wix/react-native-navigation/commit/02985c507a61c5534f63f134c3f5fecbf6218908) by [henrikra](https://github.com/henrikra)
+* Fixed the type mismatch for modalPresentationStyle [#9ef60e9](https://github.com/wix/react-native-navigation/commit/9ef60e9bd9f940c47b7efd05ca104b5404a66d3b) by [masarusanjp](https://github.com/masarusanjp)
+
+#### Android
+* Render first tab first [#e5a2efb](https://github.com/wix/react-native-navigation/commit/e5a2efb0d9237cae82fbadb92c3a86d0f01c3b5f) by [guyca](https://github.com/guyca)
+* Retrieve BuildConfig.DEBUG from Application in ImageLoader [#b422dd0](https://github.com/wix/react-native-navigation/commit/b422dd0761183edc5f6e5006ba5d5e9b06b9561b) by [guyca](https://github.com/guyca)
+
+#### iOS
+* Fix sideMenu intuitive side width [#07cc9d3](https://github.com/wix/react-native-navigation/commit/07cc9d3f6212c9bad59767e0a12ae9243de126f7) by [yogevbd](https://github.com/yogevbd)
+
 ## 2.4.0
 ### Added
 #### Android

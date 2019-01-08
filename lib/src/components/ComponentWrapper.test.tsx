@@ -159,7 +159,7 @@ describe('ComponentWrapper', () => {
 
   describe(`register with redux store`, () => {
     class MyReduxComp extends React.Component<any> {
-      static get options() {
+      static options() {
         return { foo: 123 };
       }
       render() {
@@ -185,7 +185,7 @@ describe('ComponentWrapper', () => {
       const NavigationComponent = uut.wrap(componentName, () => ConnectedComp, store, componentEventsObserver, undefined, ReduxProvider, reduxStore);
       const tree = renderer.create(<NavigationComponent componentId={'theCompId'} />);
       expect(tree.toJSON()!.children).toEqual(['it just works']);
-      expect((NavigationComponent as any).options).toEqual({ foo: 123 });
+      expect((NavigationComponent as any).options()).toEqual({ foo: 123 });
     });
   });
 

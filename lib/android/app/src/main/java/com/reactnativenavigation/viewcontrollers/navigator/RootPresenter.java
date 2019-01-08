@@ -13,7 +13,7 @@ public class RootPresenter {
     private NavigationAnimator animator;
     private FrameLayout rootLayout;
 
-    public void setRootContainer(FrameLayout rootLayout) {
+    void setRootContainer(FrameLayout rootLayout) {
         this.rootLayout = rootLayout;
     }
 
@@ -25,9 +25,22 @@ public class RootPresenter {
         this.animator = animator;
     }
 
-    public void setRoot(ViewController root, Options defaultOptions, CommandListener listener) {
+    void setRoot(ViewController root, Options defaultOptions, CommandListener listener) {
         rootLayout.addView(root.getView());
         Options options = root.resolveCurrentOptions(defaultOptions);
+        root.setWaitForRender(options.animations.setRoot.waitForRender);
+        if (options.animations.setRoot.waitForRender.isTrue()) {
+            root.getView().setAlpha(0);
+            root.setOnAppearedListener(() -> {
+                root.getView().setAlpha(1);
+                animateSetRootAndReportSuccess(root, listener, options);
+            });
+        } else {
+            animateSetRootAndReportSuccess(root, listener, options);
+        }
+    }
+
+    private void animateSetRootAndReportSuccess(ViewController root, CommandListener listener, Options options) {
         if (options.animations.setRoot.hasAnimation()) {
             animator.setRoot(root.getView(), options.animations.setRoot, () -> listener.onSuccess(root.getId()));
         } else {

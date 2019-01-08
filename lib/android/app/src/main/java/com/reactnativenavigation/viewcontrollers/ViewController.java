@@ -22,6 +22,7 @@ import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.Renderable;
 import com.reactnativenavigation.views.element.Element;
 
 import java.util.Collections;
@@ -286,8 +287,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     public boolean isRendered() {
         return view != null && (
                 waitForRender.isFalseOrUndefined() ||
-                !(view instanceof Component) ||
-                ((Component) view).isRendered()
+                !(view instanceof Renderable) ||
+                ((Renderable) view).isRendered()
         );
     }
 

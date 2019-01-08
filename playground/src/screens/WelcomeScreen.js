@@ -8,7 +8,7 @@ const Button = require('./Button');
 const { Navigation } = require('react-native-navigation');
 
 class WelcomeScreen extends Component {
-  static get options() {
+  static options() {
     return {
       _statusBar: {
         backgroundColor: 'transparent',

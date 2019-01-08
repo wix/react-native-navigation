@@ -8,7 +8,7 @@ class CustomTransitionOrigin extends Component {
     super(props);
     this.onClickNavigationIcon = this.onClickNavigationIcon.bind(this);
   }
-  static get options() {
+  static options() {
     return {
       topBar: {
         title: {

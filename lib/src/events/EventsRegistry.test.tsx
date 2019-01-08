@@ -1,7 +1,7 @@
 import { EventsRegistry } from './EventsRegistry';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { CommandsObserver } from './CommandsObserver';
-import { UniqueIdProvider } from '../adapters/UniqueIdProvider.mock';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 describe('EventsRegistry', () => {
   let uut: EventsRegistry;
