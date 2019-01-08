@@ -14,7 +14,7 @@ export class Commands {
   constructor(
     @Inject('NativeCommandsSender') private nativeCommandsSender: NativeCommandsSender,
     @Inject('LayoutTreeParser') private layoutTreeParser: LayoutTreeParser,
-    private layoutTreeCrawler: LayoutTreeCrawler,
+    @Inject('LayoutTreeCrawler') private layoutTreeCrawler: LayoutTreeCrawler,
     @Inject('CommandsObserver') private commandsObserver: CommandsObserver,
     private uniqueIdProvider: UniqueIdProvider,
     private optionsProcessor: OptionsProcessor,

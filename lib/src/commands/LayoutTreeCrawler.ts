@@ -19,7 +19,7 @@ export interface LayoutNode {
 
 type ComponentWithOptions = React.ComponentType<any> & { options(passProps: any): Options };
 
-@Service()
+@Service('LayoutTreeCrawler')
 export class LayoutTreeCrawler {
   constructor(
     @Inject('Store') private store: Store,
