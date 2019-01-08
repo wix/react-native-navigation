@@ -13,7 +13,7 @@ import {
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Service, Inject } from 'typedi';
 
-@Service()
+@Service('LayoutTreeParser')
 export class LayoutTreeParser {
   @Inject()
   public uniqueIdProvider!: UniqueIdProvider;

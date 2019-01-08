@@ -13,7 +13,7 @@ import { Service, Inject } from 'typedi';
 export class Commands {
   constructor(
     @Inject('NativeCommandsSender') private nativeCommandsSender: NativeCommandsSender,
-    private layoutTreeParser: LayoutTreeParser,
+    @Inject('LayoutTreeParser') private layoutTreeParser: LayoutTreeParser,
     private layoutTreeCrawler: LayoutTreeCrawler,
     @Inject('CommandsObserver') private commandsObserver: CommandsObserver,
     private uniqueIdProvider: UniqueIdProvider,
