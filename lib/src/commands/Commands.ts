@@ -17,7 +17,7 @@ export class Commands {
     @Inject('LayoutTreeCrawler') private layoutTreeCrawler: LayoutTreeCrawler,
     @Inject('CommandsObserver') private commandsObserver: CommandsObserver,
     private uniqueIdProvider: UniqueIdProvider,
-    private optionsProcessor: OptionsProcessor,
+    @Inject('OptionsProcessor') private optionsProcessor: OptionsProcessor,
   ) {}
 
   public setRoot(simpleApi: LayoutRoot) {

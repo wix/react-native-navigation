@@ -7,7 +7,7 @@ import { AssetService } from '../adapters/AssetResolver';
 import { Options } from '../interfaces/Options';
 import { Inject, Service } from 'typedi';
 
-@Service()
+@Service('OptionsProcessor')
 export class OptionsProcessor {
   @Inject('Store')
   public store!: Store;
