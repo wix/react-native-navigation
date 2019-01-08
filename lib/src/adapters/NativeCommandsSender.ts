@@ -18,7 +18,7 @@ interface NativeCommandsModule {
   getLaunchArgs(commandId: string): Promise<any>;
 }
 
-@Service()
+@Service('NativeCommandsSender')
 export class NativeCommandsSender {
   private readonly nativeCommandsModule: NativeCommandsModule;
   constructor() {
