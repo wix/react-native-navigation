@@ -13,9 +13,9 @@ export class OptionsProcessor {
   public store!: Store;
   @Inject()
   public uniqueIdProvider!: UniqueIdProvider;
-  @Inject()
+  @Inject('ColorService')
   public colorService!: ColorService;
-  @Inject()
+  @Inject('AssetService')
   public assetService!: AssetService;
 
   public processOptions(options: Options) {
