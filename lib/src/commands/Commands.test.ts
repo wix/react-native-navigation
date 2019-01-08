@@ -24,8 +24,7 @@ describe('Commands', () => {
     when(mockedUniqueIdProvider.generate(anything())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
     const uniqueIdProvider = instance(mockedUniqueIdProvider);
     mockedStore = mock(Store);
-    commandsObserver = new CommandsObserver();
-    commandsObserver.uniqueIdProvider = uniqueIdProvider;
+    commandsObserver = new CommandsObserver(uniqueIdProvider);
 
     const mockedOptionsProcessor = mock(OptionsProcessor);
     const optionsProcessor = instance(mockedOptionsProcessor);
