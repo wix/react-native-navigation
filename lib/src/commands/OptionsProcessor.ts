@@ -11,7 +11,7 @@ import { Inject, Service } from 'typedi';
 export class OptionsProcessor {
   constructor(
     @Inject('Store') private store: Store,
-    private uniqueIdProvider: UniqueIdProvider,
+    @Inject('UniqueIdProvider') private uniqueIdProvider: UniqueIdProvider,
     @Inject('ColorService') private colorService: ColorService,
     @Inject('AssetService') private assetService: AssetService,
   ) {}

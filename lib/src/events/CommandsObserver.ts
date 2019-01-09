@@ -1,6 +1,6 @@
 import { EventSubscription } from '../interfaces/EventSubscription';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
-import { Service } from 'typedi';
+import { Service, Inject } from 'typedi';
 
 export type CommandsListener = (name: string, params: Record<string, any>) => void;
 
@@ -8,7 +8,7 @@ export type CommandsListener = (name: string, params: Record<string, any>) => vo
 export class CommandsObserver {
   private listeners: Record<string, CommandsListener> = {};
 
-  constructor(private uniqueIdProvider: UniqueIdProvider) {}
+  constructor(@Inject('UniqueIdProvider') private uniqueIdProvider: UniqueIdProvider) {}
 
   public register(listener: CommandsListener): EventSubscription {
     const id = this.uniqueIdProvider.generate();

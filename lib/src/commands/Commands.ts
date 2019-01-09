@@ -16,7 +16,7 @@ export class Commands {
     @Inject('LayoutTreeParser') private layoutTreeParser: LayoutTreeParser,
     @Inject('LayoutTreeCrawler') private layoutTreeCrawler: LayoutTreeCrawler,
     @Inject('CommandsObserver') private commandsObserver: CommandsObserver,
-    private uniqueIdProvider: UniqueIdProvider,
+    @Inject('UniqueIdProvider') private uniqueIdProvider: UniqueIdProvider,
     @Inject('OptionsProcessor') private optionsProcessor: OptionsProcessor,
   ) {}
 
