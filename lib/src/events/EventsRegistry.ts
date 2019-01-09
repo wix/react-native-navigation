@@ -19,7 +19,7 @@ import { Service, Inject } from 'typedi';
 @Service('EventsRegistry')
 export class EventsRegistry {
   constructor(
-    private nativeEventsReceiver: NativeEventsReceiver,
+    @Inject('NativeEventsReceiver') private nativeEventsReceiver: NativeEventsReceiver,
     @Inject('CommandsObserver') private commandsObserver: CommandsObserver,
     @Inject('ComponentEventsObserver') private componentEventsObserver: ComponentEventsObserver,
   ) {}

@@ -11,7 +11,7 @@ import {
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 import { Service } from 'typedi';
 
-Service()
+@Service('NativeEventsReceiver')
 export class NativeEventsReceiver {
   private emitter: EventEmitter;
   constructor() {

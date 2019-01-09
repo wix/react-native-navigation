@@ -11,7 +11,7 @@ import {
   ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
-import { Service } from 'typedi';
+import { Service, Inject } from 'typedi';
 
 type ReactComponentWithIndexing = React.Component<any> & Record<string, any>;
 
@@ -20,7 +20,7 @@ export class ComponentEventsObserver {
   private listeners: Record<string, Record<string, ReactComponentWithIndexing>> = {};
   private alreadyRegistered = false;
 
-  constructor(private nativeEventsReceiver: NativeEventsReceiver) {
+  constructor(@Inject('NativeEventsReceiver') private nativeEventsReceiver: NativeEventsReceiver) {
     this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
     this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
     this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
