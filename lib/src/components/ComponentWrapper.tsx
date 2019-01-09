@@ -6,10 +6,12 @@ import hoistNonReactStatics = require('hoist-non-react-statics');
 
 import { Store } from './Store';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
+import { Service } from 'typedi';
 
 interface HocState { componentId: string; allProps: {}; }
 interface HocProps { componentId: string; }
 
+@Service('ComponentWrapper')
 export class ComponentWrapper {
   wrap(
     componentName: string | number,

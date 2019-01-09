@@ -10,7 +10,7 @@ export class ComponentRegistry {
   constructor(
     @Inject('Store') private store: Store,
     @Inject('ComponentEventsObserver') private componentEventsObserver: ComponentEventsObserver,
-    private componentWrapper: ComponentWrapper,
+    @Inject('ComponentWrapper') private componentWrapper: ComponentWrapper,
     @Inject('AppRegistryService') private appRegistryService: AppRegistryService,
   ) {}
 
