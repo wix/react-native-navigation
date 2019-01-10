@@ -10,6 +10,11 @@
 	
 	RNNNavigationController* navigationController = self.bindedViewController;
 	
+	self.interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
+	self.interactivePopGestureDelegate.navigationController = navigationController;
+	self.interactivePopGestureDelegate.originalDelegate = navigationController.interactivePopGestureRecognizer.delegate;
+	navigationController.interactivePopGestureRecognizer.delegate = self.interactivePopGestureDelegate;
+	
 	[navigationController rnn_setInteractivePopGestureEnabled:[options.popGesture getWithDefaultValue:YES]];
 	[navigationController rnn_setRootBackgroundImage:[options.rootBackgroundImage getWithDefaultValue:nil]];
 	[navigationController rnn_setNavigationBarTestID:[options.topBar.testID getWithDefaultValue:nil]];
@@ -111,3 +116,28 @@
 }
 
 @end
+
+@implementation InteractivePopGestureDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+	if (self.navigationController.navigationBarHidden && self.navigationController.viewControllers.count > 1) {
+		return YES;
+	} else {
+		return [self.originalDelegate gestureRecognizer:gestureRecognizer shouldReceiveTouch:touch];
+	}
+}
+
+- (BOOL)respondsToSelector:(SEL)aSelector {
+	if (aSelector == @selector(gestureRecognizer:shouldReceiveTouch:)) {
+		return YES;
+	} else {
+		return [self.originalDelegate respondsToSelector:aSelector];
+	}
+}
+
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+	return self.originalDelegate;
+}
+
+@end
+
