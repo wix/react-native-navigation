@@ -99,7 +99,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	}
 }
 
-- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
+- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize textColor: (UIColor *)textColor {
 	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
 	if (icon) {
 		backItem.image = color
@@ -111,6 +111,20 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	}
 	
 	UIViewController *lastViewControllerInStack = self.viewControllers.count > 1 ? [self.viewControllers objectAtIndex:self.viewControllers.count-2] : self.topViewController;
+	
+
+	NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
+
+	UIFont *font = fontFamily ? [UIFont fontWithName:fontFamily size:[fontSize floatValue]] : [UIFont systemFontOfSize:[fontSize floatValue]];
+	[textAttributes setObject:font forKey:NSFontAttributeName];
+
+	if(textColor) {
+		[textAttributes setObject:textColor forKey:NSForegroundColorAttributeName];
+	}
+	
+	[backItem setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
+	[backItem setTitleTextAttributes:textAttributes forState:UIControlStateHighlighted];
+	
 	
 	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
 	backItem.tintColor = color;

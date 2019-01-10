@@ -24,7 +24,7 @@
 
 - (void)rnn_setNavigationBarClipsToBounds:(BOOL)clipsToBounds;
 
-- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title;
+- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize textColor: (UIColor *)textColor;
 
 - (void)rnn_setNavigationBarLargeTitleVisible:(BOOL)visible;
 
