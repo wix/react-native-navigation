@@ -133,7 +133,6 @@ class OptionsScreen extends Component {
         <Button title='Custom Transition' testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTransition} />
         {Platform.OS === 'android' && <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />}
         <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
-        <Button title='Show touch through overlay with scroll' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_SCROLLER} onPress={() => this.onClickShowOverlayWithScroll(true)} />
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
         <Button title='Show TopBar react view' testID={testIDs.SHOW_TOPBAR_REACT_VIEW} onPress={this.onShowTopBarReactView} />
@@ -277,20 +276,6 @@ class OptionsScreen extends Component {
       }
     });
   }
-
-  onClickShowOverlayWithScroll = async (interceptTouchOutside) => {
-    await Navigation.showOverlay({
-      component: {
-        name: 'navigation.playground.CustomDialogWithScroll',
-        options: {
-          overlay: {
-            interceptTouchOutside
-          }
-        }
-      }
-    });
-  }
-
 
   onClickPushDefaultOptionsScreen = () => {
     Navigation.setDefaultOptions({
