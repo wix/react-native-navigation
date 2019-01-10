@@ -67,6 +67,7 @@
 	NSString* buttonId = dictionary[@"id"];
 	NSString* title = [self getValue:dictionary[@"text"] withDefault:[defaultStyle.text getWithDefaultValue:nil]];
 	NSDictionary* component = dictionary[@"component"];
+	NSString* systemItemName = dictionary[@"systemItem"];
 	
 	if (!buttonId) {
 		@throw [NSException exceptionWithName:@"NSInvalidArgumentException" reason:[@"button id is not specified " stringByAppendingString:title] userInfo:nil];
@@ -91,6 +92,8 @@
 		if (buttonTextAttributes.allKeys.count > 0) {
 			[barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateNormal];
 		}
+	} else if (systemItemName) {
+		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withSystemItem:systemItemName];
 	} else {
 		return nil;
 	}

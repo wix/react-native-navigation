@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "RNNUIBarButtonItem.h"
+#import "RCTConvert+UIBarButtonSystemItem.h"
 
 @implementation RNNUIBarButtonItem
 
@@ -22,6 +23,13 @@
 	reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
 	reactView.delegate = self;
 	reactView.backgroundColor = [UIColor clearColor];
+	self.buttonId = buttonId;
+	return self;
+}
+	
+-(instancetype)init:(NSString*)buttonId withSystemItem:(NSString *)systemItemName {
+	UIBarButtonSystemItem systemItem = [RCTConvert UIBarButtonSystemItem:systemItemName];
+	self = [super initWithBarButtonSystemItem:systemItem target:nil action:nil];
 	self.buttonId = buttonId;
 	return self;
 }

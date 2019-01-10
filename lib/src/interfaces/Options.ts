@@ -5,6 +5,7 @@ type Color = string;
 type FontFamily = string;
 type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
+type SystemItemIcon = 'done' | 'cancel' | 'edit' | 'save' | 'add' | 'flexibleSpace' | 'fixedSpace' | 'compose' | 'reply' | 'action' | 'organize' | 'bookmarks' | 'search' | 'refresh' | 'stop' | 'camera' | 'trash' | 'play' | 'pause' | 'rewind' | 'fastForward' | 'undo' | 'redo';
 
 export interface OptionsSplitView {
   /**
@@ -256,6 +257,10 @@ export interface OptionsTopBarButton {
      */
     passProps?: object;
   };
+  /**
+   * (iOS only) Set the button as an iOS system icon
+   */
+  systemItem?: SystemItemIcon;
   /**
    * Set the button text
    */
