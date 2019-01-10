@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   content: {
-    height: 200,
     backgroundColor: 'blue'
   },
   h1: {
