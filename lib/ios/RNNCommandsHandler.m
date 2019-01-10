@@ -69,7 +69,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	__weak __typeof(self) _self = self;
 	
-	[vc.getCurrentLeaf waitForReactViewReady:YES waitForUIEvent:YES perform:^{
+	void (^complete)() = ^{
 		__typeof(self) __self = _self;
 		
 		// Sanity!
@@ -78,13 +78,32 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		// Now we finally replace the launch screen
 		__self->_mainWindow.rootViewController = __self->_pendingRoot;
 		__self->_pendingRoot = nil;
-	}];
+		
+		// Let us know later that it's not the launch screen anymore
+		_isRootLaunchScreen = NO;
+		
+		// Let whoever know that we're ready
+		[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
+		completion();
+	};
 	
-	// Let us know later that it's not the launch screen anymore
-	_isRootLaunchScreen = NO;
-	
-	[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
-	completion();
+	if (vc.resolveOptions.animations.setRoot.waitForRender)
+	{
+		[vc.getCurrentLeaf waitForReactViewReady:YES waitForUIEvent:YES perform:^{
+			complete();
+		}];
+	}
+	else
+	{
+		_mainWindow.rootViewController = _pendingRoot;
+		
+		// Let us know later that it's not the launch screen anymore
+		_isRootLaunchScreen = NO;
+		
+		// Let whoever know that we're ready
+		[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
+		completion();
+	}
 }
 
 - (void)removeRootIfNotLaunchScreen {
