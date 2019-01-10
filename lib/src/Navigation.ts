@@ -11,7 +11,7 @@ import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
 import { Service, Inject } from 'typedi';
 
-@Service()
+@Service(NavigationRoot.name)
 export class NavigationRoot {
   public readonly Element = SharedElement;
   public readonly TouchablePreview = TouchablePreview;
