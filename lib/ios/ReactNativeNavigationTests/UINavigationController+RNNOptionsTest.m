@@ -15,8 +15,9 @@
 	UIViewController* viewController = [UIViewController new];
 	UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:viewController];
 	UIColor* color = [UIColor blackColor];
-	
-	[nav rnn_setBackButtonIcon:nil withColor:color title:nil];
+	NSNumber* backButtonFontSize = @(17);
+
+	[nav rnn_setBackButtonIcon:nil withColor:color title:nil fontFamily:nil fontSize:backButtonFontSize textColor: nil];
 	XCTAssertEqual(color, viewController.navigationItem.backBarButtonItem.tintColor);
 }
 
@@ -24,8 +25,9 @@
 	UIViewController* viewController = [UIViewController new];
 	UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:viewController];
 	NSString* title = @"Title";
-	
-	[nav rnn_setBackButtonIcon:nil withColor:nil title:title];
+	NSNumber* backButtonFontSize = @(17);
+
+	[nav rnn_setBackButtonIcon:nil withColor:nil title:title fontFamily:nil fontSize:backButtonFontSize textColor: nil];
 	XCTAssertEqual(title, viewController.navigationItem.backBarButtonItem.title);
 }
 
@@ -33,8 +35,9 @@
 	UIViewController* viewController = [UIViewController new];
 	UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:viewController];
 	UIImage* icon = [UIImage new];
-	
-	[nav rnn_setBackButtonIcon:icon withColor:nil title:nil];
+
+	NSNumber* backButtonFontSize = @(17);
+	[nav rnn_setBackButtonIcon:icon withColor:nil title:nil fontFamily:nil fontSize:backButtonFontSize textColor: nil];
 	XCTAssertEqual(icon, viewController.navigationItem.backBarButtonItem.image);
 }
 
@@ -45,7 +48,8 @@
 	[nav setViewControllers:@[viewController, viewController2]];
 	NSString* title = @"Title";
 
-	[nav rnn_setBackButtonIcon:nil withColor:nil title:title];
+    NSNumber* backButtonFontSize = @(17);
+	[nav rnn_setBackButtonIcon:nil withColor:nil title:title fontFamily:nil fontSize:backButtonFontSize textColor: nil];
 	XCTAssertEqual(title, viewController.navigationItem.backBarButtonItem.title);
 }
 
