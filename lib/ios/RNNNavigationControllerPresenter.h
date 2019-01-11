@@ -3,7 +3,7 @@
 
 @interface RNNNavigationControllerPresenter : RNNBasePresenter
 
-@property(nonatomic) InteractivePopGestureDelegate *interactivePopGestureDelegate;
+@property (nonatomic, strong) InteractivePopGestureDelegate *interactivePopGestureDelegate;
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
 

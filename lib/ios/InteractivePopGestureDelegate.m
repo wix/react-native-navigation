@@ -13,6 +13,8 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 	if (self.navigationController.navigationBarHidden && self.navigationController.viewControllers.count > 1) {
 		return YES;
+	} else if (!self.navigationController.navigationBarHidden && self.originalDelegate == nil) {
+		return YES;
 	} else {
 		return [self.originalDelegate gestureRecognizer:gestureRecognizer shouldReceiveTouch:touch];
 	}

@@ -2,6 +2,7 @@
 #import "RNNNavigationController.h"
 #import "RNNModalAnimation.h"
 #import "RNNRootViewController.h"
+#import "InteractivePopGestureDelegate.h"
 
 const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
