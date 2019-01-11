@@ -23,7 +23,6 @@ public class BottomTabs extends AHBottomNavigation {
 
     private List<Drawable> selectedIconsDrawable;
 
-
     public void disableItemsCreation() {
         itemsCreationEnabled = false;
     }
