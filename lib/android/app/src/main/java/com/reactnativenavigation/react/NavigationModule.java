@@ -17,6 +17,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.parsers.JSONParser;
 import com.reactnativenavigation.parse.parsers.LayoutNodeParser;
 import com.reactnativenavigation.utils.NativeCommandListener;
@@ -27,6 +28,9 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
+
+import com.facebook.react.modules.i18nmanager.I18nUtil;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -159,12 +163,28 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@NonNull
 	private LayoutFactory newLayoutFactory() {
-		return new LayoutFactory(activity(),
-                navigator().getChildRegistry(),
+
+		NavigationActivity layoutActivity = activity();
+		Options defaultOptions = navigator().getDefaultOptions();
+
+		if(defaultOptions.layout.direction.hasValue()) {
+
+			I18nUtil i18nUtil = I18nUtil.getInstance();
+			ReactApplicationContext reactContext = getReactApplicationContext();
+			Boolean isRtl = defaultOptions.layout.direction.get().equals("rtl");
+
+			// set activity layout direction
+			layoutActivity.getWindow().getDecorView().setLayoutDirection(isRtl ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
+			i18nUtil.allowRTL(reactContext, isRtl);
+			i18nUtil.forceRTL(reactContext, isRtl);
+		}
+
+		return new LayoutFactory(layoutActivity,
+				navigator().getChildRegistry(),
                 reactInstanceManager,
                 eventEmitter,
                 externalComponentCreator(),
-                navigator().getDefaultOptions()
+				defaultOptions
         );
 	}
 

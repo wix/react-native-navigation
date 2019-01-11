@@ -94,13 +94,16 @@ public class TitleBar extends Toolbar {
     }
 
     private void alignTextView(Alignment alignment, TextView view) {
+        Integer direction = view.getParent().getLayoutDirection();
+        Boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
+
         view.post(() -> {
             if (alignment == Alignment.Center) {
                 view.setX((getWidth() - view.getWidth()) / 2);
             } else if (leftButtonController != null) {
-                view.setX(getContentInsetStartWithNavigation());
+                view.setX(isRTL ? (getWidth() - view.getWidth()) - getContentInsetStartWithNavigation() : getContentInsetStartWithNavigation());
             } else {
-                view.setX(UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN));
+                view.setX(isRTL ? (getWidth() - view.getWidth()) - UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN) : UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN));
             }
         });
     }

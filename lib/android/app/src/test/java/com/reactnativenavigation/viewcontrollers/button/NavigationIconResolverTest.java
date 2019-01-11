@@ -42,7 +42,7 @@ public class NavigationIconResolverTest extends BaseTest {
 
             }
         });
-        uut.resolve(iconButton(), onSuccess);
+        uut.resolve(iconButton(), 0, onSuccess);
         verify(imageLoader).loadIcon(eq(context), eq(ICON_URI), any());
         verify(onSuccess).run(any(Drawable.class));
     }
@@ -55,7 +55,7 @@ public class NavigationIconResolverTest extends BaseTest {
 
             }
         });
-        uut.resolve(backButton(), onSuccess);
+        uut.resolve(backButton(), 0, onSuccess);
         verifyZeroInteractions(imageLoader);
         verify(onSuccess).run(any());
     }
