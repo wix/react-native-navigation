@@ -274,6 +274,8 @@
 		7BEF0D1D1E43771B003E96B0 /* RNNLayoutNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */; };
 		A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */; };
 		A7626C011FC5796200492FB8 /* RNNBottomTabsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */; };
+		C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */; };
+		C2A57A1D21E815F80066711C /* InteractivePopGestureDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A57A1B21E815F80066711C /* InteractivePopGestureDelegate.m */; };
 		E33AC20020B5BA0B0090DB8A /* RNNSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC1FF20B5BA0B0090DB8A /* RNNSplitViewController.m */; };
 		E33AC20520B5C3890090DB8A /* RNNStatusBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC20320B5C3890090DB8A /* RNNStatusBarOptions.m */; };
 		E33AC20820B5C4F90090DB8A /* RNNSplitViewOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC20720B5C4F90090DB8A /* RNNSplitViewOptions.m */; };
@@ -603,6 +605,8 @@
 		A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopBarOptions.h; sourceTree = "<group>"; };
 		A7626BFF1FC578AB00492FB8 /* RNNBottomTabsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsOptions.h; sourceTree = "<group>"; };
 		A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsOptions.m; sourceTree = "<group>"; };
+		C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InteractivePopGestureDelegate.h; sourceTree = "<group>"; };
+		C2A57A1B21E815F80066711C /* InteractivePopGestureDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InteractivePopGestureDelegate.m; sourceTree = "<group>"; };
 		D8AFADBD1BEE6F3F00A4592D /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeNavigation.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E33AC1FF20B5BA0B0090DB8A /* RNNSplitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSplitViewController.m; sourceTree = "<group>"; };
 		E33AC20120B5BA550090DB8A /* RNNSplitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSplitViewController.h; sourceTree = "<group>"; };
@@ -703,6 +707,8 @@
 				5038A3BC216E1490009280BC /* RNNTabBarItemCreator.m */,
 				5053CE7D2175FB1900D0386B /* RNNDefaultOptionsHelper.h */,
 				5053CE7E2175FB1900D0386B /* RNNDefaultOptionsHelper.m */,
+				C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */,
+				C2A57A1B21E815F80066711C /* InteractivePopGestureDelegate.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1184,6 +1190,7 @@
 				E8AEDB4A1F5C0BAF000F5A6A /* RNNInteractivePopAnimator.h in Headers */,
 				263905B71E4C6F440023D7D3 /* UIViewController+MMDrawerController.h in Headers */,
 				263905BB1E4C6F440023D7D3 /* RCCDrawerHelper.h in Headers */,
+				C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */,
 				263905CC1E4C6F440023D7D3 /* SidebarWunderlistAnimation.h in Headers */,
 				507F43F41FF4FCFE00D9425B /* HMSegmentedControl.h in Headers */,
 				501CD31F214A5B6900A6E225 /* RNNLayoutInfo.h in Headers */,
@@ -1487,6 +1494,7 @@
 				50F5DFC21F407A8C001A00BC /* RNNTabBarController.m in Sources */,
 				50887CA920F26BFE00D06111 /* RNNOverlayWindow.m in Sources */,
 				5038A3CF216E35E0009280BC /* Dictionary.m in Sources */,
+				C2A57A1D21E815F80066711C /* InteractivePopGestureDelegate.m in Sources */,
 				263905BC1E4C6F440023D7D3 /* RCCDrawerHelper.m in Sources */,
 				4534E72620CB6724009F8185 /* RNNLargeTitleOptions.m in Sources */,
 				507E7D58201DDD3000444E6C /* RNNAnimationOptions.m in Sources */,
