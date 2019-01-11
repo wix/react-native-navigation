@@ -38,56 +38,63 @@
 
 - (void)testApplyOptions_shouldSetBackButtonOnBindedViewController_withTitle {
 	Text* title = [[Text alloc] initWithValue:@"Title"];
+	NSNumber* backButtonFontSize = @(17);
 	self.options.topBar.backButton.title = title;
-	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get];
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get fontFamily:nil fontSize:backButtonFontSize textColor:nil fontFamily:nil fontSize:backButtonFontSize textColor:nil];
 	[self.uut applyOptions:self.options];
 	[_bindedViewController verify];
 }
 
 - (void)testApplyOptions_shouldSetBackButtonOnBindedViewController_withHideTitle {
 	Text* title = [[Text alloc] initWithValue:@"Title"];
+	NSNumber* backButtonFontSize = @(17);
 	self.options.topBar.backButton.title = title;
 	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
-	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:@""];
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:@"" fontFamily:nil fontSize:backButtonFontSize textColor:nil];
 	[self.uut applyOptions:self.options];
 	[_bindedViewController verify];
 }
 
 - (void)testApplyOptions_shouldSetBackButtonOnBindedViewController_withIcon {
 	Image* image = [[Image alloc] initWithValue:[UIImage new]];
+	NSNumber* backButtonFontSize = @(17);
 	self.options.topBar.backButton.icon = image;
-	[[_bindedViewController expect] rnn_setBackButtonIcon:image.get withColor:nil title:nil];
+	[[_bindedViewController expect] rnn_setBackButtonIcon:image.get withColor:nil title:nil fontFamily:nil fontSize:backButtonFontSize textColor:nil];
 	[self.uut applyOptions:self.options];
 	[_bindedViewController verify];
 }
 
 - (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withTitle {
 	Text* title = [[Text alloc] initWithValue:@"Title"];
+	NSNumber* backButtonFontSize = @(17);
 	self.options.topBar.backButton.title = title;
-	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get];
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get fontFamily:nil fontSize:backButtonFontSize textColor:nil];
 	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
 	[_bindedViewController verify];
 }
 
 - (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withHideTitle {
 	Text* title = [[Text alloc] initWithValue:@"Title"];
+	NSNumber* backButtonFontSize = @(17);
 	self.options.topBar.backButton.title = title;
 	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
-	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:@""];
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:@"" fontFamily:nil fontSize:backButtonFontSize textColor:nil];
 	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
 	[_bindedViewController verify];
 }
 
 - (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withIcon {
 	Image* image = [[Image alloc] initWithValue:[UIImage new]];
+	NSNumber* backButtonFontSize = @(17);
 	self.options.topBar.backButton.icon = image;
-	[[_bindedViewController expect] rnn_setBackButtonIcon:image.get withColor:nil title:nil];
+	[[_bindedViewController expect] rnn_setBackButtonIcon:image.get withColor:nil title:nil fontFamily:nil fontSize:backButtonFontSize textColor:nil];
 	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
 	[_bindedViewController verify];
 }
 
 - (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withDefaultValues {
-	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:nil];
+    NSNumber* backButtonFontSize = @(17);
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:nil fontFamily:nil fontSize:backButtonFontSize textColor:nil];
 	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
 	[_bindedViewController verify];
 }
