@@ -1,4 +1,5 @@
 #import "RNNBasePresenter.h"
+#import "InteractivePopGestureDelegate.h"
 
 @interface RNNNavigationControllerPresenter : RNNBasePresenter
 
