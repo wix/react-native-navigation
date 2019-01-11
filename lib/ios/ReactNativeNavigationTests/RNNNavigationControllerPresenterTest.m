@@ -40,7 +40,7 @@
 	Text* title = [[Text alloc] initWithValue:@"Title"];
 	NSNumber* backButtonFontSize = @(17);
 	self.options.topBar.backButton.title = title;
-	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get fontFamily:nil fontSize:backButtonFontSize textColor:nil fontFamily:nil fontSize:backButtonFontSize textColor:nil];
+	[[_bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get fontFamily:nil fontSize:backButtonFontSize textColor:nil];
 	[self.uut applyOptions:self.options];
 	[_bindedViewController verify];
 }
