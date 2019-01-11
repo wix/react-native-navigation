@@ -26,6 +26,7 @@ public class BottomTabOptions {
         options.textColor = ColorParser.parse(json, "textColor");
         options.selectedTextColor = ColorParser.parse(json, "selectedTextColor");
         if (json.has("icon")) options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
+        if (json.has("selectedIcon")) options.selectedIcon = TextParser.parse(json.optJSONObject("selectedIcon"), "uri");
         options.iconColor = ColorParser.parse(json, "iconColor");
         options.selectedIconColor = ColorParser.parse(json, "selectedIconColor");
         options.badge = TextParser.parse(json, "badge");
@@ -41,6 +42,7 @@ public class BottomTabOptions {
     public Colour textColor = new NullColor();
     public Colour selectedTextColor = new NullColor();
     public Text icon = new NullText();
+    public Text selectedIcon = new NullText();
     public Colour iconColor = new NullColor();
     public Colour selectedIconColor = new NullColor();
     public Text testId = new NullText();
@@ -56,6 +58,7 @@ public class BottomTabOptions {
         if (other.textColor.hasValue()) textColor = other.textColor;
         if (other.selectedTextColor.hasValue()) selectedTextColor = other.selectedTextColor;
         if (other.icon.hasValue()) icon = other.icon;
+        if (other.selectedIcon.hasValue()) selectedIcon = other.selectedIcon;
         if (other.iconColor.hasValue()) iconColor = other.iconColor;
         if (other.selectedIconColor.hasValue()) selectedIconColor = other.selectedIconColor;
         if (other.badge.hasValue()) badge = other.badge;
@@ -71,6 +74,7 @@ public class BottomTabOptions {
         if (!textColor.hasValue()) textColor = defaultOptions.textColor;
         if (!selectedTextColor.hasValue()) selectedTextColor = defaultOptions.selectedTextColor;
         if (!icon.hasValue()) icon = defaultOptions.icon;
+        if (!selectedIcon.hasValue()) selectedIcon = defaultOptions.selectedIcon;
         if (!iconColor.hasValue()) iconColor = defaultOptions.iconColor;
         if (!selectedIconColor.hasValue()) selectedIconColor = defaultOptions.selectedIconColor;
         if (!badge.hasValue()) badge = defaultOptions.badge;
