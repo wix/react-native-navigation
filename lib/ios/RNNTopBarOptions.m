@@ -26,6 +26,7 @@
 	self.animate = [BoolParser parse:dict key:@"animate"];
 	self.searchBar = [BoolParser parse:dict key:@"searchBar"];
 	self.searchBarHiddenWhenScrolling = [BoolParser parse:dict key:@"searchBarHiddenWhenScrolling"];
+	self.hidesNavigationBarDuringPresentation = [BoolParser parse:dict key:@"hidesNavigationBarDuringPresentation"];
 	self.testID = [TextParser parse:dict key:@"testID"];
 	self.barStyle = [TextParser parse:dict key:@"barStyle"];
 	self.searchBarPlaceholder = [TextParser parse:dict key:@"searchBarPlaceholder"];

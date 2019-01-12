@@ -28,7 +28,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	self.modalTransitionStyle = modalTransitionStyle;
 }
 
-- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder {
+- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder hidesNavigationBarDuringPresentation:(NSString *)hidesNavigationBarDuringPresentation {
 	if (@available(iOS 11.0, *)) {
 		if (!self.navigationItem.searchController) {
 			UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
@@ -39,6 +39,9 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 			search.searchBar.delegate = (id<UISearchBarDelegate>)self;
 			if (placeholder) {
 				search.searchBar.placeholder = placeholder;
+			}
+			if (hidesNavigationBarDuringPresentation) {
+				search.hidesNavigationBarDuringPresentation = hidesNavigationBarDuringPresentation;
 			}
 			self.navigationItem.searchController = search;
 			
