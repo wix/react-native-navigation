@@ -31,7 +31,7 @@
 	if (options.topBar.searchBar.hasValue) {
 		BOOL hideNavBarOnFocusSearchBar = YES;
 		if (options.topBar.hideNavBarOnFocusSearchBar.hasValue) {
-			hidesNavigationBarDuringPresentation = options.topBar.hideNavBarOnFocusSearchBar.get;
+			hideNavBarOnFocusSearchBar = options.topBar.hideNavBarOnFocusSearchBar.get;
 		}
 		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar: hideNavBarOnFocusSearchBar];
 	}
