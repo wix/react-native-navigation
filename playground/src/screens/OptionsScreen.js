@@ -20,7 +20,7 @@ class OptionsScreen extends Component {
     Navigation.events().bindComponent(this);
   }
 
-  static get options() {
+  static options() {
     return {
       statusBar: {
         style: 'dark',
@@ -269,8 +269,11 @@ class OptionsScreen extends Component {
       component: {
         name: 'navigation.playground.CustomDialog',
         options: {
+          layout: {
+            componentBackgroundColor: 'transparent'
+          },
           overlay: {
-            interceptTouchOutside
+            interceptTouchOutside: false
           }
         }
       }

@@ -7,7 +7,7 @@ const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 const Bounds = require('../components/Bounds');
 class TextScreen extends Component {
-  static get options() {
+  static options() {
     return {
       bottomTabs: {
         drawBehind: true,

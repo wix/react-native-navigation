@@ -8,6 +8,19 @@ const testIDs = require('../testIDs');
 
 class SideMenuScreen extends Component {
 
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  componentDidAppear() {
+    console.log('RNN', `SMS.componentDidAppear ${this.props.side}`);
+  }
+
+  componentDidDisappear() {
+    console.log('RNN', `SMS.componentDidDisappear ${this.props.side}`);
+  }
+
   render() {
     const testID = this.props.side === 'left' ? testIDs.HIDE_LEFT_SIDE_MENU_BUTTON : testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON;
     return (

@@ -4,9 +4,7 @@ import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.TopBarAnimator;
-import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.topbar.TopBar;
 
@@ -28,9 +26,8 @@ public class TopBarTest extends BaseTest {
     @Override
     public void beforeEach() {
         Activity activity = newActivity();
-        TopBarBackgroundViewController topBarBackgroundViewController = new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock());
-        StackLayout parent = new StackLayout(activity, topBarBackgroundViewController, new TopBarController(), null);
-        uut = new TopBar(activity, topBarBackgroundViewController, parent);
+        StackLayout parent = new StackLayout(activity, new TopBarController(), null);
+        uut = new TopBar(activity, parent);
         animator = spy(new TopBarAnimator(uut));
         uut.setAnimator(animator);
         parent.addView(uut);

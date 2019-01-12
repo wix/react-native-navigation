@@ -5,6 +5,7 @@ type Color = string;
 type FontFamily = string;
 type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
+type SystemItemIcon = 'done' | 'cancel' | 'edit' | 'save' | 'add' | 'flexibleSpace' | 'fixedSpace' | 'compose' | 'reply' | 'action' | 'organize' | 'bookmarks' | 'search' | 'refresh' | 'stop' | 'camera' | 'trash' | 'play' | 'pause' | 'rewind' | 'fastForward' | 'undo' | 'redo';
 
 export interface OptionsSplitView {
   /**
@@ -80,6 +81,13 @@ export enum OptionsModalPresentationStyle {
   popOver = 'popOver',
   fullScreen = 'fullScreen',
   none = 'none'
+}
+
+export enum OptionsModalTransitionStyle {
+  coverVertical = 'coverVertical',
+  crossDissolve = 'crossDissolve',
+  flipHorizontal = 'flipHorizontal',
+  partialCurl = 'partialCurl'
 }
 
 export interface OptionsTopBarLargeTitle {
@@ -250,9 +258,17 @@ export interface OptionsTopBarButton {
     passProps?: object;
   };
   /**
+   * (iOS only) Set the button as an iOS system icon
+   */
+  systemItem?: SystemItemIcon;
+  /**
    * Set the button text
    */
   text?: string;
+  /**
+   * Set the button font family
+   */
+  fontFamily?: string;
   /**
    * Set the button enabled or disabled
    * @default true
@@ -756,6 +772,12 @@ export interface Options {
    * Configure the presentation style of the modal
    */
   modalPresentationStyle?: OptionsModalPresentationStyle;
+  /**
+   * Configure the transition style of the modal
+   *
+   * #### (Android specific)
+   */
+  modalTransitionStyle?: OptionsModalTransitionStyle;
   /**
    * Configure the top bar
    */

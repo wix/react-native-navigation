@@ -22,12 +22,12 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
     public void onViewAppeared() {
         super.onViewAppeared();
         runOnPreDraw(view -> view.setLayoutParams(view.getLayoutParams()));
-        view.sendComponentStart();
+        getView().sendComponentStart();
     }
 
     @Override
     public void onViewDisappear() {
-        view.sendComponentStop();
+        getView().sendComponentStop();
         super.onViewDisappear();
     }
 

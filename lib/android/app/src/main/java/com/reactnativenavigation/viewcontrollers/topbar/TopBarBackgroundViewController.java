@@ -20,11 +20,6 @@ public class TopBarBackgroundViewController extends ViewController<TopBarBackgro
         this.viewCreator = viewCreator;
     }
 
-    public TopBarBackgroundViewController(TopBarBackgroundViewController controller) {
-        super(controller.getActivity(), controller.getId(), new YellowBoxDelegate(), controller.options);
-        this.viewCreator = controller.viewCreator;
-    }
-
     @Override
     protected TopBarBackgroundView createView() {
         return viewCreator.create(getActivity(), component.componentId.get(), component.name.get());
@@ -33,12 +28,12 @@ public class TopBarBackgroundViewController extends ViewController<TopBarBackgro
     @Override
     public void onViewAppeared() {
         super.onViewAppeared();
-        view.sendComponentStart();
+        getView().sendComponentStart();
     }
 
     @Override
     public void onViewDisappear() {
-        view.sendComponentStop();
+        getView().sendComponentStop();
         super.onViewDisappear();
     }
 

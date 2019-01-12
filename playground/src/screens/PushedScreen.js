@@ -7,7 +7,7 @@ const Button = require('./Button');
 const testIDs = require('../testIDs');
 
 class PushedScreen extends Component {
-  static get options() {
+  static options() {
     return {
       _statusBar: {
         visible: false,

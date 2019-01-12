@@ -198,7 +198,7 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
         verify(center, times(1)).handleBack(any());
 
-        uut.mergeOptions(SideMenuTestHelper.LEFT_OPEN);
+        openLeftMenu();
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
         verify(center, times(1)).handleBack(any());
     }
@@ -209,8 +209,72 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
         verify(center, times(1)).handleBack(any());
 
-        uut.mergeOptions(SideMenuTestHelper.RIGHT_OPEN);
+        openRightMenu();
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
         verify(center, times(1)).handleBack(any());
+    }
+
+    @Test
+    public void leftMenuOpen_visibilityEventsAreEmitted() {
+        ViewController spy = spy(left);
+        uut.setLeftController(spy);
+        activity.setContentView(uut.getView());
+
+        assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
+        verify(spy, times(0)).onViewAppeared();
+
+        openLeftMenu();
+        assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isTrue();
+        verify(spy).onViewAppeared();
+
+        closeLeft();
+        assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
+        verify(spy).onViewDisappear();
+    }
+
+    @Test
+    public void rightMenuOpen_visibilityEventsAreEmitted() {
+        ViewController spy = spy(right);
+        uut.setRightController(spy);
+        activity.setContentView(uut.getView());
+
+        assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
+        verify(spy, times(0)).onViewAppeared();
+
+        openRightMenu();
+        assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isTrue();
+        verify(spy).onViewAppeared();
+
+        closeRightMenu();
+        assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
+        verify(spy).onViewDisappear();
+    }
+
+    private void openLeftMenu() {
+        Options options = new Options();
+        options.sideMenuRootOptions.left.visible = new Bool(true);
+        options.sideMenuRootOptions.left.animate = new Bool(false);
+        uut.mergeOptions(options);
+    }
+
+    private void openRightMenu() {
+        Options options = new Options();
+        options.sideMenuRootOptions.right.visible = new Bool(true);
+        options.sideMenuRootOptions.right.animate = new Bool(false);
+        uut.mergeOptions(options);
+    }
+
+    private void closeLeft() {
+        Options options = new Options();
+        options.sideMenuRootOptions.left.visible = new Bool(false);
+        options.sideMenuRootOptions.left.animate = new Bool(false);
+        uut.mergeOptions(options);
+    }
+
+    private void closeRightMenu() {
+        Options options = new Options();
+        options.sideMenuRootOptions.right.visible = new Bool(false);
+        options.sideMenuRootOptions.right.animate = new Bool(false);
+        uut.mergeOptions(options);
     }
 }

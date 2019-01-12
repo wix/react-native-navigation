@@ -1,7 +1,7 @@
 const React = require('react');
-const { View, Text } = require('react-native');
+const { View, Text, Button } = require('react-native');
 const testIDs = require('../testIDs');
-const { TitleContext, Context } = require('../context');
+const { GlobalContext, Context } = require('../context');
 
 class ContextScreen extends React.Component {
   static contextType = Context;
@@ -28,11 +28,18 @@ class ContextScreen extends React.Component {
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.h2}>Provider value: </Text>
-          <TitleContext.Consumer>
-            {title => (
-              <Text style={styles.h2} testID={testIDs.CENTERED_TEXT_HEADER}>{title}</Text>
+          <GlobalContext.Consumer>
+            {ctx => (
+              <Text style={styles.h2} testID={testIDs.CENTERED_TEXT_HEADER}>{ctx.title}</Text>
             )}
-          </TitleContext.Consumer>
+          </GlobalContext.Consumer>
+        </View>
+        <View>
+          <GlobalContext.Consumer>
+            {ctx => (
+              <Button title={`clicked ${ctx.count}`} onPress={() => ctx.count++}/>
+            )}
+          </GlobalContext.Consumer>
         </View>
       </View>
     );
