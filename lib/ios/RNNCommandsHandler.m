@@ -76,7 +76,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_store removeAllComponentsFromWindow:_mainWindow];
 	
 	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
-	
 	_mainWindow.rootViewController = vc;
 	
 	[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
