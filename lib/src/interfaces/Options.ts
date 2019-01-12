@@ -691,6 +691,21 @@ export interface OptionsAnimationPropertiesId extends OptionsAnimationProperties
 
 export interface OptionsAnimationSeparate {
   /**
+   * Wait for the View to render before start animation
+   * Example:
+```js
+animations: {
+  push: {
+    waitForRender: true
+  },
+  showModal: {
+    waitForRender: true
+  }
+}
+```
+   */
+  waitForRender?: boolean;
+  /**
    * Configure animations for the top bar
    */
   topBar?: OptionsAnimationPropertiesId;
