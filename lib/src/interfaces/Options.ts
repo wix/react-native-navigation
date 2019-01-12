@@ -373,7 +373,7 @@ export interface OptionsTopBar {
    * Controls Hiding NavBar on focus UISearchBar
    * #### (iOS 11+ specific)
    */
-  hidesNavigationBarDuringPresentation?: boolean;
+  hideNavBarOnFocusSearchBar?: boolean;
   /**
    * Control the Large Title configuration
    * #### (iOS 11+ specific)

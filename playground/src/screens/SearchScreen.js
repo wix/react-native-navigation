@@ -21,6 +21,7 @@ for(let i = 0; i < 200; i++) {
 
 class SearchControllerScreen extends Component {
   static options() {
+   
     return {
       topBar: {
         title: {
@@ -29,11 +30,12 @@ class SearchControllerScreen extends Component {
         largeTitle: {
           visible: true
         },
-        searchBar: true,
+        searchBar: false,
         background: {
           translucent: true
         },
-        searchBarPlaceholder: 'Start Typing'
+        searchBarPlaceholder: 'Sample Search',
+        hideNavBarOnFocusSearchBar: false
       }
     };
   }
