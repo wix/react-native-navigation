@@ -1,4 +1,23 @@
 # Changelog
+## 2.6.0
+### Added
+#### iOS
+* Support iOS system item icons for top bar [#7a26ea9](https://github.com/wix/react-native-navigation/commit/7a26ea956cfce65035ec902ef3f403f178b69317) by [BerndSchrooten](https://github.com/BerndSchrooten)
+
+### Fixed
+#### Android
+* Fix ScrollView not scrollable in Overlay [#d3ab1ac](https://github.com/wix/react-native-navigation/commit/d3ab1ac526f5829fe74989144130a13d83795ad8) by [guyca](https://github.com/guyca)
+
+#### iOS
+* Fixed settings backButton color dynamically [#8434938](https://github.com/wix/react-native-navigation/commit/84349384958ee9f0d03d24c6ef087cc5b7661d4b) by [masarusanjp](https://github.com/masarusanjp)
+
+## 2.5.2
+### Fixed
+#### Android
+* Revert "Set elevation 0 when creating TopBar" [#135c6eb](https://github.com/wix/react-native-navigation/commit/135c6eb7b240d81e3781e564f021883191736504) by [guyca](https://github.com/guyca)
+* Only set elevation values from Options [#487c1da](https://github.com/wix/react-native-navigation/commit/487c1da9dc5277d1ad0e7ca0e410b1c4b5dbc61e) by [guyca](https://github.com/guyca)
+
+
 ## 2.5.1
 ### Fixed
 #### Android
