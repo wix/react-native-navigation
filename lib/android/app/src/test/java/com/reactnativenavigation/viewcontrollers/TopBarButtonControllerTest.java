@@ -30,6 +30,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("MagicNumber")
 public class TopBarButtonControllerTest extends BaseTest {
 
     private TitleBarButtonController uut;
@@ -43,11 +44,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         final Activity activity = newActivity();
 
         TopBarButtonCreatorMock buttonCreatorMock = new TopBarButtonCreatorMock();
-        stackController = spy(
-                TestUtils.newStackController(activity)
-                        .setTopBarButtonCreator(buttonCreatorMock)
-                        .build()
-        );
+        stackController = spy(TestUtils.newStackController(activity).build());
         stackController.getView().layout(0, 0, 1080, 1920);
         stackController.getTopBar().layout(0, 0, 1080, 200);
         getTitleBar().layout(0, 0, 1080, 200);

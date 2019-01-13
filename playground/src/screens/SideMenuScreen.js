@@ -1,12 +1,25 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button } = require('react-native');
+const { View, Text, Button, Platform } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
 class SideMenuScreen extends Component {
+
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  componentDidAppear() {
+    console.log('RNN', `SMS.componentDidAppear ${this.props.side}`);
+  }
+
+  componentDidDisappear() {
+    console.log('RNN', `SMS.componentDidDisappear ${this.props.side}`);
+  }
 
   render() {
     const testID = this.props.side === 'left' ? testIDs.HIDE_LEFT_SIDE_MENU_BUTTON : testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON;
@@ -31,10 +44,20 @@ class SideMenuScreen extends Component {
   }
 
   pushAndCloseSideMenu() {
-    this.hideSideMenu();
+    if (Platform.OS === 'ios') {
+      this.hideSideMenu();
+    }
     Navigation.push('tab1Stack', {
       component: {
-        name: 'navigation.playground.TextScreen'
+        name: 'navigation.playground.TextScreen',
+        options: {
+          sideMenu: {
+            left: {
+              visible: false,
+              enabled: false
+            }
+          }
+        }
       }
     });
   }

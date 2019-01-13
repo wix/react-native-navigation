@@ -1,37 +1,54 @@
 import * as _ from 'lodash';
-import { processColor } from 'react-native';
-import * as resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { ColorService } from '../adapters/ColorService';
+import { AssetService } from '../adapters/AssetResolver';
+import { Options } from '../interfaces/Options';
 
 export class OptionsProcessor {
-  constructor(public store: Store, public uniqueIdProvider: UniqueIdProvider) { }
+  constructor(
+    private store: Store,
+    private uniqueIdProvider: UniqueIdProvider,
+    private colorService: ColorService,
+    private assetService: AssetService,
+  ) {}
 
-  public processOptions(options: Record<string, any>) {
-    _.forEach(options, (value, key) => {
-      if (!value) { return; }
+  public processOptions(options: Options) {
+    this.processObject(options);
+  }
 
-      this.processComponent(key, value, options);
-      this.processColor(key, value, options);
-      this.processImage(key, value, options);
+  private processObject(objectToProcess: object) {
+    _.forEach(objectToProcess, (value, key) => {
+      if (!value) {
+        return;
+      }
+
+      this.processComponent(key, value, objectToProcess);
+      this.processColor(key, value, objectToProcess);
+      this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
 
       if (!_.isEqual(key, 'passProps') && (_.isObject(value) || _.isArray(value))) {
-        this.processOptions(value);
+        this.processObject(value);
       }
     });
   }
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (_.isEqual(key, 'color') || _.endsWith(key, 'Color')) {
-      options[key] = processColor(value);
+      options[key] = this.colorService.toNativeColor(value);
     }
   }
 
   private processImage(key: string, value: any, options: Record<string, any>) {
-    if (_.isEqual(key, 'icon') || _.isEqual(key, 'image') || _.endsWith(key, 'Icon') || _.endsWith(key, 'Image')) {
-      options[key] = resolveAssetSource(value);
+    if (
+      _.isEqual(key, 'icon') ||
+      _.isEqual(key, 'image') ||
+      _.endsWith(key, 'Icon') ||
+      _.endsWith(key, 'Image')
+    ) {
+      options[key] = this.assetService.resolveFromRequire(value);
     }
   }
 
@@ -52,7 +69,7 @@ export class OptionsProcessor {
       if (value.passProps) {
         this.store.setPropsForId(value.componentId, value.passProps);
       }
-      options[key] = _.omit(value, 'passProps');
+      options[key].passProps = undefined;
     }
   }
 }

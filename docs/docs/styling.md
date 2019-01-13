@@ -190,7 +190,6 @@ Navigation.mergeOptions(this.props.componentId, {
     },
   },
   sideMenu: {
-    openGestureMode: 'entireScreen' | 'bezel'
     left: {
       shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
       animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation

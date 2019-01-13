@@ -5,9 +5,17 @@
 Called once the app is launched. This event is used to set the Application's initial layout - after which the app is ready for user interaction.
 
 ```js
-Navigation.events().registerAppLaunchedListener(() => {
+const appLaunchedListener = Navigation.events().registerAppLaunchedListener(() => {
 
 });
+```
+
+RNN automatically unsubscribes components when they unmount, therefore unsubscribing isn't actually mandatory if you subscribed in `componentDidMount`.
+
+But you can use the following method to unsubscribe manually.
+
+```js
+appLaunchedListener.remove();
 ```
 
 ## componentDidAppear
@@ -15,9 +23,16 @@ Called each time this component appears on screen (attached to the view hierarch
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    Navigation.events().bindComponent(this);
+
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
   }
 
   componentDidAppear() {
@@ -29,9 +44,13 @@ class MyComponent extends Component {
 This event can be observed globally as well:
 
 ```js
-Navigation.events().registerComponentDidAppearListener(({ componentId, componentName }) => {
+// Subscribe
+const screenEventListener = Navigation.events().registerComponentDidAppearListener(({ componentId, componentName }) => {
 
 });
+...
+// Unsubscribe
+screenEventListener.remove();
 ```
 |       Parameter         | Description |
 |:--------------------:|:-----|
@@ -43,9 +62,16 @@ Called each time this component disappears from screen (detached from the view h
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    Navigation.events().bindComponent(this);
+
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
   }
 
   componentDidDisappear() {
@@ -57,9 +83,13 @@ class MyComponent extends Component {
 This event can be observed globally as well:
 
 ```js
-Navigation.events().registerComponentDidDisappearListener(({ componentId, componentName }) => {
+// Subscribe
+const screenEventListener = Navigation.events().registerComponentDidDisappearListener(({ componentId, componentName }) => {
 
 });
+...
+// Unsubscribe
+screenEventListener.remove();
 ```
 |       Parameter         | Description |
 |:--------------------:|:-----|
@@ -70,9 +100,13 @@ Navigation.events().registerComponentDidDisappearListener(({ componentId, compon
 The `commandListener` is called whenever a *Navigation command* (i.e push, pop, showModal etc) is invoked.
 
 ```js
-Navigation.events().registerCommandListener(({ name, params }) => {
+// Subscribe
+const commandListener = Navigation.events().registerCommandListener((name, params) => {
 
 });
+...
+// Unsubscribe
+commandListener.remove();
 ```
 |       Parameter         | Description |
 |:--------------------:|:-----|
@@ -83,9 +117,13 @@ Navigation.events().registerCommandListener(({ name, params }) => {
 Invoked when a command finishes executing in native. If the command contains animations, for example pushed screen animation,) the listener is invoked after the animation ends.
 
 ```js
-Navigation.events().registerCommandCompletedListener(({ commandId, completionTime, params }) => {
+// Subscribe
+const commandCompletedListener = Navigation.events().registerCommandCompletedListener(({ commandId, completionTime, params }) => {
 
 });
+...
+// Unsubscribe
+commandCompletedListener.remove();
 ```
 
 |       Parameter         | Description |
@@ -97,9 +135,13 @@ Navigation.events().registerCommandCompletedListener(({ commandId, completionTim
 Invoked when a BottomTab is selected by the user.
 
 ```js
-Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
+// Subscribe
+const bottomTabEventListener = Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
 
 });
+...
+// Unsubscribe
+bottomTabEventListener.remove();
 ```
 
 |       Parameter         | Description |
@@ -112,9 +154,16 @@ This event is emitted whenever a TopBar button is pressed by the user.
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    Navigation.events().bindComponent(this);
+
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
   }
   
   navigationButtonPressed({ buttonId }) {
@@ -126,9 +175,13 @@ class MyComponent extends Component {
 This event can be observed globally as well:
 
 ```js
-Navigation.events().registerNavigationButtonPressedListener(({ buttonId }) => {
+// Subscribe
+const navigationButtonEventListener = Navigation.events().registerNavigationButtonPressedListener(({ buttonId }) => {
 
 });
+...
+// Unsubscribe
+navigationButtonEventListener.remove();
 ```
 
 |Parameter|Description|
@@ -140,9 +193,16 @@ Called when a SearchBar from NavigationBar gets updated.
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    Navigation.events().bindComponent(this);
+
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
   }
 
   searchBarUpdated({ text, isFocused }) {
@@ -156,9 +216,16 @@ Called when the cancel button on the SearchBar from NavigationBar gets pressed.
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    Navigation.events().bindComponent(this);
+
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
   }
 
   searchBarCancelPressed() {
@@ -172,9 +239,16 @@ Called when preview peek is completed
 
 ```js
 class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    Navigation.events().bindComponent(this);
+
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
   }
 
   previewCompleted({ previewComponentId }) {

@@ -11,7 +11,7 @@ class CustomTransitionDestination extends Component {
     this.push = this.push.bind(this);
   }
 
-  static get options() {
+  static options() {
     return {
       topBar: {
         title: {

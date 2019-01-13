@@ -49,6 +49,15 @@ const handlePress ({ reactTag }) => {
       options: {
         preview: {
           reactTag,
+          height: 300,
+          width: 300,
+          commit: true,
+          actions: [{
+            title: "Displayed Name",
+            id: "actionId",
+            style: 'default', /* or 'selected', 'destructive'*/
+            actions: [/*define a submenu of actions with the same options*/]
+          }]
         },
       },
     },
@@ -65,3 +74,5 @@ const Button = (
   </Navigation.TouchablePreview>
 );
 ```
+
+All options except for reactTag are optional. Actions trigger the same event as [navigation button presses](https://wix.github.io/react-native-navigation/#/docs/topBar-buttons?id=handling-button-press-events). To react when a preview is committed, listen to the [previewCompleted](https://wix.github.io/react-native-navigation/#/docs/events?id=previewcompleted-ios-114-only) event.

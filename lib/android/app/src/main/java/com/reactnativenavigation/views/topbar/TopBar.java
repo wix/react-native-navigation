@@ -27,13 +27,11 @@ import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
@@ -50,14 +48,14 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private TopBarAnimator animator;
     private TopTabs topTabs;
     private FrameLayout root;
-    private TopBarBackgroundViewController topBarBackgroundViewController;
     private View border;
+    private View component;
+    private float elevation = -1;
 
-    public TopBar(final Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout parentView) {
+    public TopBar(final Context context, StackLayout parentView) {
         super(context);
         context.setTheme(R.style.TopBar);
         collapsingBehavior = new TopBarCollapseBehavior(this);
-        this.topBarBackgroundViewController = topBarBackgroundViewController;
         topTabs = new TopTabs(getContext());
         animator = new TopBarAnimator(this, parentView.getStackId());
         createLayout();
@@ -175,12 +173,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setComponent(component);
     }
 
-    public void setBackgroundComponent(Component component) {
-        if (component.hasValue()) {
-            topBarBackgroundViewController.setComponent(component);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-            root.addView(topBarBackgroundViewController.getView(), 0, lp);
-        }
+    public void setBackgroundComponent(View component) {
+        this.component = component;
+        root.addView(component, 0);
     }
 
     public void setTopTabFontFamily(int tabIndex, Typeface fontFamily) {
@@ -201,7 +196,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setTopTabsHeight(int height) {
         if (topTabs.getLayoutParams().height == height) return;
-        topTabs.getLayoutParams().height = height > 0 ? (int) UiUtils.dpToPx(getContext(), height) : height;
+        topTabs.getLayoutParams().height = height > 0 ? UiUtils.dpToPx(getContext(), height) : height;
         topTabs.setLayoutParams(topTabs.getLayoutParams());
     }
 
@@ -218,10 +213,15 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setElevation(Double elevation) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                getElevation() != elevation.floatValue()) {
-            setElevation(UiUtils.dpToPx(getContext(), elevation.floatValue()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getElevation() != elevation.floatValue()) {
+            this.elevation = UiUtils.dpToPx(getContext(), elevation.floatValue());
+            setElevation(this.elevation);
         }
+    }
+
+    @Override
+    public void setElevation(float elevation) {
+        if (elevation == this.elevation) super.setElevation(elevation);
     }
 
     public Toolbar getTitleBar() {
@@ -272,8 +272,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void clear() {
-        topBarBackgroundViewController.destroy();
-        topBarBackgroundViewController = new TopBarBackgroundViewController(topBarBackgroundViewController);
+        if (component != null) {
+            root.removeView(component);
+            component = null;
+        }
         titleBar.clear();
     }
 

@@ -7,9 +7,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 
@@ -19,8 +17,6 @@ import java.util.List;
 public class StackControllerBuilder {
     private Activity activity;
     private ChildControllersRegistry childRegistry;
-    private ReactViewCreator topBarButtonCreator;
-    private TopBarBackgroundViewController topBarBackgroundViewController;
     private TopBarController topBarController;
     private String id;
     private Options initialOptions = new Options();
@@ -56,16 +52,6 @@ public class StackControllerBuilder {
         return this;
     }
 
-    public StackControllerBuilder setTopBarButtonCreator(ReactViewCreator topBarButtonCreator) {
-        this.topBarButtonCreator = topBarButtonCreator;
-        return this;
-    }
-
-    public StackControllerBuilder setTopBarBackgroundViewController(TopBarBackgroundViewController topBarBackgroundViewController) {
-        this.topBarBackgroundViewController = topBarBackgroundViewController;
-        return this;
-    }
-
     public StackControllerBuilder setTopBarController(TopBarController topBarController) {
         this.topBarController = topBarController;
         return this;
@@ -86,7 +72,7 @@ public class StackControllerBuilder {
         return this;
     }
 
-    public StackControllerBuilder setBackButtonHelper(BackButtonHelper backButtonHelper) {
+    StackControllerBuilder setBackButtonHelper(BackButtonHelper backButtonHelper) {
         this.backButtonHelper = backButtonHelper;
         return this;
     }
@@ -95,7 +81,6 @@ public class StackControllerBuilder {
         return new StackController(activity,
                 children,
                 childRegistry,
-                topBarBackgroundViewController,
                 topBarController,
                 animator,
                 id,

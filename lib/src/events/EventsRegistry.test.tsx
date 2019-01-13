@@ -1,6 +1,7 @@
 import { EventsRegistry } from './EventsRegistry';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { CommandsObserver } from './CommandsObserver';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 describe('EventsRegistry', () => {
   let uut: EventsRegistry;
@@ -9,7 +10,7 @@ describe('EventsRegistry', () => {
   const mockScreenEventsRegistry = {} as any;
 
   beforeEach(() => {
-    commandsObserver = new CommandsObserver();
+    commandsObserver = new CommandsObserver(new UniqueIdProvider());
     uut = new EventsRegistry(mockNativeEventsReceiver, commandsObserver, mockScreenEventsRegistry);
   });
 

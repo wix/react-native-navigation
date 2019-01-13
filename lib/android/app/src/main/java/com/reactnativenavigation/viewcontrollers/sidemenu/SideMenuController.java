@@ -24,7 +24,7 @@ import java.util.Collection;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public class SideMenuController extends ParentController<DrawerLayout> {
+public class SideMenuController extends ParentController<DrawerLayout> implements DrawerLayout.DrawerListener {
 
 	private ViewController center;
 	private ViewController left;
@@ -51,6 +51,7 @@ public class SideMenuController extends ParentController<DrawerLayout> {
 	protected DrawerLayout createView() {
         DrawerLayout sideMenu = new DrawerLayout(getActivity());
         presenter.bindView(sideMenu);
+        sideMenu.addDrawerListener(this);
         return sideMenu;
 	}
 
@@ -72,7 +73,7 @@ public class SideMenuController extends ParentController<DrawerLayout> {
     @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
-        presenter.applyInitialOptions(options.sideMenuRootOptions);
+        presenter.applyChildOptions(resolveCurrentOptions());
         performOnParentController(parentController ->
                 ((ParentController) parentController).applyChildOptions(this.options, child)
         );
@@ -81,7 +82,7 @@ public class SideMenuController extends ParentController<DrawerLayout> {
     @Override
     public void mergeChildOptions(Options options, ViewController childController, Component child) {
         super.mergeChildOptions(options, childController, child);
-        presenter.present(options.sideMenuRootOptions);
+        presenter.mergeChildOptions(options.sideMenuRootOptions);
         performOnParentController(parentController ->
                 ((ParentController) parentController).mergeChildOptions(options.copy().clearSideMenuOptions(), childController, child)
         );
@@ -90,7 +91,26 @@ public class SideMenuController extends ParentController<DrawerLayout> {
     @Override
     public void mergeOptions(Options options) {
         super.mergeOptions(options);
-        presenter.present(this.options.sideMenuRootOptions);
+        presenter.mergeOptions(options.sideMenuRootOptions);
+    }
+
+    @Override
+    public Options resolveCurrentOptions() {
+        Options options = super.resolveCurrentOptions();
+        if (getView().isDrawerOpen(Gravity.LEFT) || getView().isDrawerOpen(Gravity.RIGHT)) {
+            options = options.mergeWith(center.resolveCurrentOptions());
+        }
+        return options;
+    }
+
+    @Override
+    public void onDrawerOpened(@NonNull View drawerView) {
+        (left != null && drawerView.equals(left.getView()) ? left : right).onViewAppeared();
+    }
+
+    @Override
+    public void onDrawerClosed(@NonNull View drawerView) {
+        (left != null && drawerView.equals(left.getView()) ? left : right).onViewDisappear();
     }
 
     @Override
@@ -132,5 +152,15 @@ public class SideMenuController extends ParentController<DrawerLayout> {
             height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.height.get(), Resources.getSystem().getDisplayMetrics());
         }
         return height;
+    }
+
+    @Override
+    public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 }

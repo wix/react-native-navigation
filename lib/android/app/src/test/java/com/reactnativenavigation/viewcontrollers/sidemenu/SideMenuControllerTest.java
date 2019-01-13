@@ -12,16 +12,22 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.SideMenuOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ParentController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.views.Component;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,26 +38,45 @@ public class SideMenuControllerTest extends BaseTest {
     private Activity activity;
     private ChildControllersRegistry childRegistry;
     private SideMenuPresenter presenter;
-    private SimpleComponentViewController left;
-    private SimpleComponentViewController right;
-    private SimpleComponentViewController center;
+    private ViewController left;
+    private ViewController right;
+    private ViewController center;
+    private ViewController child;
+    private ParentController parent;
+    private Options resolvedOptions;
 
     @Override
     public void beforeEach() {
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
         presenter = spy(new SideMenuPresenter());
+        child = new SimpleComponentViewController(activity, childRegistry, "child", new Options());
         left = new SimpleComponentViewController(activity, childRegistry, "left", new Options());
         right = new SimpleComponentViewController(activity, childRegistry, "right", new Options());
         center = spy(new SimpleComponentViewController(activity, childRegistry, "center", new Options()));
-        uut = new SideMenuController(activity, childRegistry, "sideMenu", new Options(), presenter, new Presenter(activity, new Options()));
+        uut = new SideMenuController(activity, childRegistry, "sideMenu", new Options(), presenter, new Presenter(activity, new Options())) {
+            @Override
+            public Options resolveCurrentOptions() {
+                resolvedOptions = super.resolveCurrentOptions();
+                return resolvedOptions;
+            }
+        };
         uut.setCenterController(center);
+        parent = Mockito.mock(ParentController.class);
+        uut.setParentController(parent);
     }
 
     @Test
     public void createView_bindView() {
         uut.ensureViewIsCreated();
         verify(presenter).bindView(uut.getView());
+    }
+
+    @Test
+    public void applyChildOptions() {
+        uut.applyChildOptions(new Options(), (Component) child.getView());
+        verify(presenter).applyChildOptions(eq(resolvedOptions));
+        verify(parent).applyChildOptions(uut.options, (Component) child.getView());
     }
 
     @Test
@@ -85,6 +110,23 @@ public class SideMenuControllerTest extends BaseTest {
     }
 
     @Test
+    public void mergeChildOptions() {
+        Options options = new Options();
+        uut.mergeChildOptions(options, child, (Component) child.getView());
+        verify(presenter).mergeChildOptions(options.sideMenuRootOptions);
+    }
+
+    @Test
+    public void resolveCurrentOptions_centerOptionsAreMergedEvenIfDrawerIsOpen() {
+        uut.setLeftController(left);
+        center.options.topBar.title.text = new Text("Center");
+        assertThat(uut.resolveCurrentOptions().topBar.title.text.hasValue()).isTrue();
+
+        uut.getView().openDrawer(Gravity.LEFT);
+        assertThat(uut.resolveCurrentOptions().topBar.title.text.hasValue()).isTrue();
+    }
+
+    @Test
     public void setLeftController_matchesParentByDefault() {
         SideMenuOptions options = new SideMenuOptions();
         assertThat(options.width.hasValue()).isFalse();
@@ -98,6 +140,7 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(params.width).isEqualTo(MATCH_PARENT);
         assertThat(params.height).isEqualTo(MATCH_PARENT);
     }
+
     @Test
     public void setLeftController_setHeightAndWidthWithOptions() {
         SideMenuOptions options = new SideMenuOptions();
@@ -115,6 +158,7 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(params.width).isEqualTo(widthInDp);
         assertThat(params.height).isEqualTo(heightInDp);
     }
+
     @Test
     public void setRightController_matchesParentByDefault() {
         SideMenuOptions options = new SideMenuOptions();
@@ -129,6 +173,7 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(params.width).isEqualTo(MATCH_PARENT);
         assertThat(params.height).isEqualTo(MATCH_PARENT);
     }
+
     @Test
     public void setRightController_setHeightAndWidthWithOptions() {
         SideMenuOptions options = new SideMenuOptions();
@@ -153,7 +198,7 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
         verify(center, times(1)).handleBack(any());
 
-        uut.mergeOptions(SideMenuTestHelper.LEFT_OPEN);
+        openLeftMenu();
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
         verify(center, times(1)).handleBack(any());
     }
@@ -164,8 +209,72 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
         verify(center, times(1)).handleBack(any());
 
-        uut.mergeOptions(SideMenuTestHelper.RIGHT_OPEN);
+        openRightMenu();
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
         verify(center, times(1)).handleBack(any());
+    }
+
+    @Test
+    public void leftMenuOpen_visibilityEventsAreEmitted() {
+        ViewController spy = spy(left);
+        uut.setLeftController(spy);
+        activity.setContentView(uut.getView());
+
+        assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
+        verify(spy, times(0)).onViewAppeared();
+
+        openLeftMenu();
+        assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isTrue();
+        verify(spy).onViewAppeared();
+
+        closeLeft();
+        assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
+        verify(spy).onViewDisappear();
+    }
+
+    @Test
+    public void rightMenuOpen_visibilityEventsAreEmitted() {
+        ViewController spy = spy(right);
+        uut.setRightController(spy);
+        activity.setContentView(uut.getView());
+
+        assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
+        verify(spy, times(0)).onViewAppeared();
+
+        openRightMenu();
+        assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isTrue();
+        verify(spy).onViewAppeared();
+
+        closeRightMenu();
+        assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
+        verify(spy).onViewDisappear();
+    }
+
+    private void openLeftMenu() {
+        Options options = new Options();
+        options.sideMenuRootOptions.left.visible = new Bool(true);
+        options.sideMenuRootOptions.left.animate = new Bool(false);
+        uut.mergeOptions(options);
+    }
+
+    private void openRightMenu() {
+        Options options = new Options();
+        options.sideMenuRootOptions.right.visible = new Bool(true);
+        options.sideMenuRootOptions.right.animate = new Bool(false);
+        uut.mergeOptions(options);
+    }
+
+    private void closeLeft() {
+        Options options = new Options();
+        options.sideMenuRootOptions.left.visible = new Bool(false);
+        options.sideMenuRootOptions.left.animate = new Bool(false);
+        uut.mergeOptions(options);
+    }
+
+    private void closeRightMenu() {
+        Options options = new Options();
+        options.sideMenuRootOptions.right.visible = new Bool(false);
+        options.sideMenuRootOptions.right.animate = new Bool(false);
+        uut.mergeOptions(options);
     }
 }

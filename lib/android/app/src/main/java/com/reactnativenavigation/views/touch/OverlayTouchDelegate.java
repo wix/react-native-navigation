@@ -42,11 +42,9 @@ public class OverlayTouchDelegate {
         TouchLocation location = getTouchLocation(event);
         if (location == TouchLocation.Inside) {
             reactView.dispatchTouchEventToJs(event);
+            return false;
         }
-        if (interceptTouchOutside.isTrue()) {
-            return location == TouchLocation.Inside;
-        }
-        return location == TouchLocation.Outside;
+        return interceptTouchOutside.isFalseOrUndefined();
     }
 
     private TouchLocation getTouchLocation(MotionEvent ev) {

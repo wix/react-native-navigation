@@ -5,6 +5,7 @@ type Color = string;
 type FontFamily = string;
 type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
+type SystemItemIcon = 'done' | 'cancel' | 'edit' | 'save' | 'add' | 'flexibleSpace' | 'fixedSpace' | 'compose' | 'reply' | 'action' | 'organize' | 'bookmarks' | 'search' | 'refresh' | 'stop' | 'camera' | 'trash' | 'play' | 'pause' | 'rewind' | 'fastForward' | 'undo' | 'redo';
 
 export interface OptionsSplitView {
   /**
@@ -72,14 +73,21 @@ export interface OptionsLayout {
 }
 
 export enum OptionsModalPresentationStyle {
-  'formSheet',
-  'pageSheet',
-  'overFullScreen',
-  'overCurrentContext',
-  'currentContext',
-  'popOver',
-  'fullScreen',
-  'none',
+  formSheet = 'formSheet',
+  pageSheet = 'pageSheet',
+  overFullScreen = 'overFullScreen',
+  overCurrentContext = 'overCurrentContext',
+  currentContext = 'currentContext',
+  popOver = 'popOver',
+  fullScreen = 'fullScreen',
+  none = 'none'
+}
+
+export enum OptionsModalTransitionStyle {
+  coverVertical = 'coverVertical',
+  crossDissolve = 'crossDissolve',
+  flipHorizontal = 'flipHorizontal',
+  partialCurl = 'partialCurl'
 }
 
 export interface OptionsTopBarLargeTitle {
@@ -202,7 +210,7 @@ export interface OptionsTopBarBackButton {
   color?: Color;
 }
 
-export interface  OptionsTopBarBackground {
+export interface OptionsTopBarBackground {
   /**
    * Background color of the top bar
    */
@@ -250,9 +258,17 @@ export interface OptionsTopBarButton {
     passProps?: object;
   };
   /**
+   * (iOS only) Set the button as an iOS system icon
+   */
+  systemItem?: SystemItemIcon;
+  /**
    * Set the button text
    */
   text?: string;
+  /**
+   * Set the button font family
+   */
+  fontFamily?: string;
   /**
    * Set the button enabled or disabled
    * @default true
@@ -378,6 +394,21 @@ export interface OptionsTopBar {
    * #### (Android specific)
    */
   elevation?: AndroidDensityNumber;
+}
+
+export interface OptionsFab {
+  id: string;
+  backgroundColor?: Color;
+  clickColor?: Color;
+  rippleColor?: Color;
+  visible?: boolean;
+  icon?: ImageRequireSource;
+  iconColor?: Color;
+  alignHorizontally?: 'left' | 'right';
+  alignVertically?: 'top' | 'bottom';
+  hideOnScroll?: boolean;
+  size?: number;
+  actions?: OptionsFab[];
 }
 
 export interface OptionsBottomTabs {
@@ -696,6 +727,38 @@ export interface OptionsAnimations {
   dismissModal?: OptionsAnimationProperties;
 }
 
+export interface OptionsCustomTransition {
+  animations: OptionsCustomTransitionAnimation[];
+  duration?: number;
+}
+
+export interface OptionsCustomTransitionAnimation {
+  /**
+   * Animation type, only support sharedElement currently
+   */
+  type: 'sharedElement';
+  /**
+   * Transition from element Id
+   */
+  fromId: string;
+  /**
+   * Transition to element Id
+   */
+  toId: string;
+  /**
+   * Animation delay
+   */
+  startDelay?: number;
+  /**
+   * Animation spring Velocity
+   */
+  springVelocity?: number;
+  /**
+   * Animation duration
+   */
+  duration?: number;
+}
+
 export interface Options {
   /**
    * Configure the status bar
@@ -710,9 +773,16 @@ export interface Options {
    */
   modalPresentationStyle?: OptionsModalPresentationStyle;
   /**
+   * Configure the transition style of the modal
+   *
+   * #### (Android specific)
+   */
+  modalTransitionStyle?: OptionsModalTransitionStyle;
+  /**
    * Configure the top bar
    */
   topBar?: OptionsTopBar;
+  fab?: OptionsFab;
   /**
    * Configure the bottom tabs
    */
@@ -756,6 +826,27 @@ setRoot: {
 ```
    */
   animations?: OptionsAnimations;
+
+  /**
+   * Custom Transition used for animate shared element between two screens
+   * Example:
+  ```js
+  Navigation.push(this.props.componentId, {
+    component: {
+      name: 'second.screen',
+      options: {
+        customTransition: {
+          animations: [
+            { type: 'sharedElement', fromId: 'image1', toId: 'image2', startDelay: 0, springVelocity: 0.2, duration: 0.5 }
+          ],
+          duration: 0.8
+        }
+      }
+    }
+  });
+  ```
+  */
+  customTransition?: OptionsCustomTransition;
   /**
    * Preview configuration for Peek and Pop
    * #### (iOS specific)

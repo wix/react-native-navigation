@@ -5,8 +5,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBar;
@@ -34,8 +32,8 @@ public class TopBarControllerTest extends BaseTest {
         uut = new TopBarController() {
             @NonNull
             @Override
-            protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
-                return new TopBar(context, topBarBackgroundViewController, stackLayout) {
+            protected TopBar createTopBar(Context context, StackLayout stackLayout) {
+                return new TopBar(context, stackLayout) {
                     @Override
                     protected TitleBar createTitleBar(Context context) {
                         titleBar[0] = spy(super.createTitleBar(context));
@@ -45,7 +43,7 @@ public class TopBarControllerTest extends BaseTest {
             }
         };
         Activity activity = newActivity();
-        uut.createView(activity, new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), Mockito.mock(StackLayout.class));
+        uut.createView(activity, Mockito.mock(StackLayout.class));
         uut.clear();
         verify(titleBar[0], times(1)).clear();
     }

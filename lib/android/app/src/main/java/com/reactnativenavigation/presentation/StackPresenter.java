@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationsOptions;
@@ -22,15 +24,19 @@ import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,9 +45,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.reactnativenavigation.utils.CollectionUtils.filter;
 import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.CollectionUtils.keyBy;
 import static com.reactnativenavigation.utils.CollectionUtils.merge;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class StackPresenter {
     private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
@@ -56,17 +64,28 @@ public class StackPresenter {
     private final TitleBarReactViewCreator titleViewCreator;
     private TitleBarButtonController.OnClickListener onClickListener;
     private final ImageLoader imageLoader;
+    private final RenderChecker renderChecker;
+    private final TopBarBackgroundViewCreator topBarBackgroundViewCreator;
     private final ReactViewCreator buttonCreator;
     private Options defaultOptions;
-    private Map<Component, TitleBarReactViewController> titleComponentViewControllers = new HashMap<>();
-    private Map<Component, Map<String, TitleBarButtonController>> componentRightButtons = new HashMap<>();
-    private Map<Component, Map<String, TitleBarButtonController>> componentLeftButtons = new HashMap<>();
+    private Map<Component, TitleBarReactViewController> titleControllers = new HashMap();
+    private Map<Component, TopBarBackgroundViewController> backgroundControllers = new HashMap();
+    private Map<Component, Map<String, TitleBarButtonController>> componentRightButtons = new HashMap();
+    private Map<Component, Map<String, TitleBarButtonController>> componentLeftButtons = new HashMap();
 
-    public StackPresenter(Activity activity, TitleBarReactViewCreator titleViewCreator, ReactViewCreator buttonCreator, ImageLoader imageLoader, Options defaultOptions) {
+    public StackPresenter(Activity activity,
+                          TitleBarReactViewCreator titleViewCreator,
+                          TopBarBackgroundViewCreator topBarBackgroundViewCreator,
+                          ReactViewCreator buttonCreator,
+                          ImageLoader imageLoader,
+                          RenderChecker renderChecker,
+                          Options defaultOptions) {
         this.activity = activity;
         this.titleViewCreator = titleViewCreator;
+        this.topBarBackgroundViewCreator = topBarBackgroundViewCreator;
         this.buttonCreator = buttonCreator;
         this.imageLoader = imageLoader;
+        this.renderChecker = renderChecker;
         this.defaultOptions = defaultOptions;
         defaultTitleFontSize = UiUtils.dpToSp(activity, 18);
         defaultSubtitleFontSize = UiUtils.dpToSp(activity, 14);
@@ -84,24 +103,15 @@ public class StackPresenter {
         return defaultOptions;
     }
 
-    public List<TitleBarButtonController> getComponentButtons(Component child) {
-        return merge(getRightButtons(child), getLeftButtons(child), Collections.EMPTY_LIST);
-    }
-
-    public List<TitleBarButtonController> getComponentButtons(Component child, List<TitleBarButtonController> defaultValue) {
-        return merge(getRightButtons(child), getLeftButtons(child), defaultValue);
-    }
-
-    private List<TitleBarButtonController> getRightButtons(Component child) {
-        return componentRightButtons.containsKey(child) ? new ArrayList<>(componentRightButtons.get(child).values()) : null;
-    }
-
-    private List<TitleBarButtonController> getLeftButtons(Component child) {
-        return componentLeftButtons.containsKey(child) ? new ArrayList<>(componentLeftButtons.get(child).values()) : null;
-    }
-
     public void bindView(TopBar topBar) {
         this.topBar = topBar;
+    }
+
+    public boolean isRendered(Component component) {
+        ArrayList<ViewController> controllers = new ArrayList<>(perform(componentRightButtons.get(component), new ArrayList<>(), Map::values));
+        controllers.add(backgroundControllers.get(component));
+        controllers.add(titleControllers.get(component));
+        return renderChecker.areRendered(filter(controllers, ObjectUtils::notNull));
     }
 
     public void applyLayoutParamsOptions(Options options, View view) {
@@ -143,22 +153,16 @@ public class StackPresenter {
     }
 
     public void onChildDestroyed(Component child) {
-        TitleBarReactViewController removed = titleComponentViewControllers.remove(child);
-        if (removed != null) {
-            removed.destroy();
-        }
+        perform(titleControllers.remove(child), TitleBarReactViewController::destroy);
+        perform(backgroundControllers.remove(child), TopBarBackgroundViewController::destroy);
         destroyButtons(componentRightButtons.get(child));
         destroyButtons(componentLeftButtons.get(child));
         componentRightButtons.remove(child);
         componentLeftButtons.remove(child);
     }
 
-    private void destroyButtons(Map<String, TitleBarButtonController> buttons) {
-        if (buttons != null) {
-            for (TitleBarButtonController button : buttons.values()) {
-                button.destroy();
-            }
-        }
+    private void destroyButtons(@Nullable Map<String, TitleBarButtonController> buttons) {
+        if (buttons != null) forEach(buttons.values(), ViewController::destroy);
     }
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
@@ -172,11 +176,12 @@ public class StackPresenter {
         topBar.setTitle(options.title.text.get(""));
 
         if (options.title.component.hasValue()) {
-            if (titleComponentViewControllers.containsKey(component)) {
-                topBar.setTitleComponent(titleComponentViewControllers.get(component).getView());
+            if (titleControllers.containsKey(component)) {
+                topBar.setTitleComponent(titleControllers.get(component).getView());
             } else {
                 TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
-                titleComponentViewControllers.put(component, controller);
+                controller.setWaitForRender(options.title.component.waitForRender);
+                titleControllers.put(component, controller);
                 controller.setComponent(options.title.component);
                 controller.getView().setLayoutParams(getComponentLayoutParams(options.title.component));
                 topBar.setTitleComponent(controller.getView());
@@ -198,7 +203,20 @@ public class StackPresenter {
         topBar.setBorderColor(options.borderColor.get(DEFAULT_BORDER_COLOR));
 
         topBar.setBackgroundColor(options.background.color.get(Color.WHITE));
-        topBar.setBackgroundComponent(options.background.component);
+
+        if (options.background.component.hasValue()) {
+            if (backgroundControllers.containsKey(component)) {
+                topBar.setBackgroundComponent(backgroundControllers.get(component).getView());
+            } else {
+                TopBarBackgroundViewController controller = new TopBarBackgroundViewController(activity, topBarBackgroundViewCreator);
+                controller.setWaitForRender(options.background.waitForRender);
+                backgroundControllers.put(component, controller);
+                controller.setComponent(options.background.component);
+                controller.getView().setLayoutParams(new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+                topBar.setBackgroundComponent(controller.getView());
+            }
+        }
+
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
         applyTopBarVisibility(options, animationOptions, componentOptions);
         if (options.drawBehind.isTrue() && !componentOptions.layout.topMargin.hasValue()) {
@@ -278,7 +296,7 @@ public class StackPresenter {
     }
 
     private TitleBarButtonController createButtonController(Button button) {
-        return new TitleBarButtonController(activity,
+        TitleBarButtonController controller = new TitleBarButtonController(activity,
                 new NavigationIconResolver(activity, imageLoader),
                 imageLoader,
                 new ButtonPresenter(topBar.getTitleBar(), button),
@@ -286,6 +304,8 @@ public class StackPresenter {
                 buttonCreator,
                 onClickListener
         );
+        controller.setWaitForRender(button.component.waitForRender);
+        return controller;
     }
 
     private void applyTopTabsOptions(TopTabsOptions options) {
@@ -371,11 +391,11 @@ public class StackPresenter {
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
 
         if (options.title.component.hasValue()) {
-            if (titleComponentViewControllers.containsKey(component)) {
-                topBar.setTitleComponent(titleComponentViewControllers.get(component).getView());
+            if (titleControllers.containsKey(component)) {
+                topBar.setTitleComponent(titleControllers.get(component).getView());
             } else {
                 TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
-                titleComponentViewControllers.put(component, controller);
+                titleControllers.put(component, controller);
                 controller.setComponent(options.title.component);
                 controller.getView().setLayoutParams(getComponentLayoutParams(options.title.component));
                 topBar.setTitleComponent(controller.getView());
@@ -392,7 +412,18 @@ public class StackPresenter {
         if (options.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
 
         if (options.background.color.hasValue()) topBar.setBackgroundColor(options.background.color.get());
-        if (options.background.component.hasValue()) topBar.setBackgroundComponent(options.background.component);
+
+        if (options.background.component.hasValue()) {
+            if (backgroundControllers.containsKey(component)) {
+                topBar.setBackgroundComponent(backgroundControllers.get(component).getView());
+            } else {
+                TopBarBackgroundViewController controller = new TopBarBackgroundViewController(activity, topBarBackgroundViewCreator);
+                backgroundControllers.put(component, controller);
+                controller.setComponent(options.background.component);
+                controller.getView().setLayoutParams(new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+                topBar.setBackgroundComponent(controller.getView());
+            }
+        }
 
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
@@ -441,6 +472,29 @@ public class StackPresenter {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public Map<Component, TitleBarReactViewController> getTitleComponents() {
-        return titleComponentViewControllers;
+        return titleControllers;
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public Map<Component, TopBarBackgroundViewController> getBackgroundComponents() {
+        return backgroundControllers;
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public List<TitleBarButtonController> getComponentButtons(Component child) {
+        return merge(getRightButtons(child), getLeftButtons(child), Collections.EMPTY_LIST);
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public List<TitleBarButtonController> getComponentButtons(Component child, List<TitleBarButtonController> defaultValue) {
+        return merge(getRightButtons(child), getLeftButtons(child), defaultValue);
+    }
+
+    private List<TitleBarButtonController> getRightButtons(Component child) {
+        return componentRightButtons.containsKey(child) ? new ArrayList<>(componentRightButtons.get(child).values()) : null;
+    }
+
+    private List<TitleBarButtonController> getLeftButtons(Component child) {
+        return componentLeftButtons.containsKey(child) ? new ArrayList<>(componentLeftButtons.get(child).values()) : null;
     }
 }

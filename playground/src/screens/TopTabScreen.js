@@ -5,7 +5,7 @@ const { View, Text } = require('react-native');
 const FAB = 'fab';
 
 class TopTabScreen extends PureComponent {
-  static get options() {
+  static options() {
     return {
       topBar: {
         title: {

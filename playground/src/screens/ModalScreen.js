@@ -9,7 +9,7 @@ const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
 class ModalScreen extends Component {
-  static get options() {
+  static options() {
     return {
       statusBar: {
         visible: false,

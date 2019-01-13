@@ -9,7 +9,7 @@ import { LayoutTreeParser } from './commands/LayoutTreeParser';
 import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
 import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
-import { Element } from './adapters/Element';
+import { SharedElement } from './adapters/SharedElement';
 import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
@@ -17,11 +17,16 @@ import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
 import { ComponentWrapper } from './components/ComponentWrapper';
+import { OptionsProcessor } from './commands/OptionsProcessor';
+import { ColorService } from './adapters/ColorService';
+import { AssetService } from './adapters/AssetResolver';
+import { AppRegistryService } from './adapters/AppRegistryService';
 
 export class NavigationRoot {
-  public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
-  public readonly TouchablePreview: React.ComponentType<any>;
-  public readonly store: Store;
+  public readonly Element = SharedElement;
+  public readonly TouchablePreview = TouchablePreview;
+
+  private readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
   private readonly componentRegistry: ComponentRegistry;
@@ -35,19 +40,31 @@ export class NavigationRoot {
   private readonly componentWrapper: ComponentWrapper;
 
   constructor() {
-    this.Element = Element;
-    this.TouchablePreview = TouchablePreview;
     this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
-    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver);
-    this.layoutTreeParser = new LayoutTreeParser();
-    this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
+    const appRegistryService = new AppRegistryService();
+    this.componentRegistry = new ComponentRegistry(
+      this.store,
+      this.componentEventsObserver,
+      this.componentWrapper,
+      appRegistryService
+    );
+    this.layoutTreeParser = new LayoutTreeParser(this.uniqueIdProvider);
+    const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService());
+    this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
-    this.commandsObserver = new CommandsObserver();
-    this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver, this.uniqueIdProvider);
+    this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
+    this.commands = new Commands(
+      this.nativeCommandsSender,
+      this.layoutTreeParser,
+      this.layoutTreeCrawler,
+      this.commandsObserver,
+      this.uniqueIdProvider,
+      optionsProcessor
+    );
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
 
     this.componentEventsObserver.registerOnceForAllComponentEvents();
@@ -58,7 +75,7 @@ export class NavigationRoot {
    * The component itself is a traditional React component extending React.Component.
    */
   public registerComponent(componentName: string | number, componentProvider: ComponentProvider, concreteComponentProvider?: ComponentProvider): ComponentProvider {
-    return this.componentRegistry.registerComponent(componentName, componentProvider, this.componentWrapper, concreteComponentProvider);
+    return this.componentRegistry.registerComponent(componentName, componentProvider, concreteComponentProvider);
   }
 
   /**
@@ -71,7 +88,7 @@ export class NavigationRoot {
     ReduxProvider: any,
     reduxStore: any
   ): ComponentProvider {
-    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, this.componentWrapper, undefined, ReduxProvider, reduxStore);
+    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, undefined, ReduxProvider, reduxStore);
   }
 
   /**
