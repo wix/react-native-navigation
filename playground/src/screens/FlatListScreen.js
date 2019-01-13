@@ -13,10 +13,9 @@ class FlatListScreen extends Component {
         title: {
           text: 'FlatList with fake data',
         },
-        searchBar: false, // iOS 11+ native UISearchBar inside topBar
+        searchBar: true, // iOS 11+ native UISearchBar inside topBar
         searchBarHiddenWhenScrolling: true,
         searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
-        hideNavBarOnFocusSearchBar: false,
         largeTitle: {
           visible: true,
           fontSize: 30,

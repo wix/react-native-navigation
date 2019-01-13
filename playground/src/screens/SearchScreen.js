@@ -30,11 +30,11 @@ class SearchControllerScreen extends Component {
         largeTitle: {
           visible: true
         },
-        searchBar: false,
+        searchBar: true,
         background: {
           translucent: true
         },
-        searchBarPlaceholder: 'Sample Search',
+        searchBarPlaceholder: 'Start Typing',
         hideNavBarOnFocusSearchBar: false
       }
     };
