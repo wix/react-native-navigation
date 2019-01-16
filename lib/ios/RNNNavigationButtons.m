@@ -118,6 +118,7 @@
 	if (color) {
 		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
 		[barButtonItem setImage:[[iconImage withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+		barButtonItem.tintColor = color;
 	}
 	
 	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:[defaultStyle.fontSize getWithDefaultValue:nil]];
