@@ -44,6 +44,10 @@
 		if(barButtonItem) {
 			[barButtonItems addObject:barButtonItem];
 		}
+		UIColor* color = [self color:[RCTConvert UIColor:button[@"color"]] defaultColor:[defaultStyle.color getWithDefaultValue:nil]];
+		if (color) {
+			self.viewController.navigationController.navigationBar.tintColor = color;
+		}
 	}
 	
 	if ([side isEqualToString:@"left"]) {
