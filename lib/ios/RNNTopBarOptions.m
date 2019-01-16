@@ -14,7 +14,6 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
-	
 	self.visible = [BoolParser parse:dict key:@"visible"];
 	self.hideOnScroll = [BoolParser parse:dict key:@"hideOnScroll"];
 	self.leftButtonColor = [ColorParser parse:dict key:@"leftButtonColor"];
@@ -26,6 +25,7 @@
 	self.animate = [BoolParser parse:dict key:@"animate"];
 	self.searchBar = [BoolParser parse:dict key:@"searchBar"];
 	self.searchBarHiddenWhenScrolling = [BoolParser parse:dict key:@"searchBarHiddenWhenScrolling"];
+	self.hideNavBarOnFocusSearchBar = [BoolParser parse:dict key:@"hideNavBarOnFocusSearchBar"];
 	self.testID = [TextParser parse:dict key:@"testID"];
 	self.barStyle = [TextParser parse:dict key:@"barStyle"];
 	self.searchBarPlaceholder = [TextParser parse:dict key:@"searchBarPlaceholder"];
@@ -57,7 +57,6 @@
 	self.leftButtons = dict[@"leftButtons"];
 	self.rightButtons = dict[@"rightButtons"];
 	
-
 	return self;
 }
 
