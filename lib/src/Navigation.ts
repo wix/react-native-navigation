@@ -164,7 +164,7 @@ export class NavigationRoot {
   /**
    * Sets new root component to stack.
    */
-  public setStackRoot(componentId: string, layout: Layout | Layout[]): Promise<any> {
+  public setStackRoot<P>(componentId: string, layout: Layout<P> | Array<Layout<P>>): Promise<any> {
     const children: Layout[] = isArray(layout) ? layout : [layout];
     return this.commands.setStackRoot(componentId, children);
   }
@@ -172,7 +172,7 @@ export class NavigationRoot {
   /**
    * Show overlay on top of the entire app
    */
-  public showOverlay(layout: Layout): Promise<any> {
+  public showOverlay<P>(layout: Layout<P>): Promise<any> {
     return this.commands.showOverlay(layout);
   }
 
