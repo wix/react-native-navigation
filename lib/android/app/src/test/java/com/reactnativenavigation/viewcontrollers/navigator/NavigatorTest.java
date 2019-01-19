@@ -309,7 +309,7 @@ public class NavigatorTest extends BaseTest {
 
         stack.push(child1, new CommandListenerAdapter());
         stack.push(child2, new CommandListenerAdapter());
-        stack.setRoot(Collections.singletonList(child3), new CommandListenerAdapter(), reactInstanceManager);
+        stack.setRoot(Collections.singletonList(child3), new CommandListenerAdapter());
 
         assertThat(stack.getChildControllers()).containsOnly(child3);
     }
