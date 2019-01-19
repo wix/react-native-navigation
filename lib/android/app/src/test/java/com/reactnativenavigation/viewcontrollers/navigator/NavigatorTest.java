@@ -138,7 +138,7 @@ public class NavigatorTest extends BaseTest {
         CommandListenerAdapter listener = new CommandListenerAdapter();
         uut.setRoot(child1, listener, reactInstanceManager);
         ArgumentCaptor<CommandListenerAdapter> captor = ArgumentCaptor.forClass(CommandListenerAdapter.class);
-        verify(rootPresenter).setRoot(eq(child1), eq(uut.getDefaultOptions()), captor.capture());
+        verify(rootPresenter).setRoot(eq(child1), eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
         assertThat(captor.getValue().getListener()).isEqualTo(listener);
     }
 
@@ -309,7 +309,7 @@ public class NavigatorTest extends BaseTest {
 
         stack.push(child1, new CommandListenerAdapter());
         stack.push(child2, new CommandListenerAdapter());
-        stack.setRoot(Collections.singletonList(child3), new CommandListenerAdapter());
+        stack.setRoot(Collections.singletonList(child3), new CommandListenerAdapter(), reactInstanceManager);
 
         assertThat(stack.getChildControllers()).containsOnly(child3);
     }

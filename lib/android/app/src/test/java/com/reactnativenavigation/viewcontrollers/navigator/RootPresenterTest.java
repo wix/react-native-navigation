@@ -88,7 +88,7 @@ public class RootPresenterTest extends BaseTest {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
 
         uut.setRoot(spy, defaultOptions, listener, reactInstanceManager);
-        verify(animator).setRoot(eq(spy.getView()), eq(animatedSetRoot.animations.setRoot), any());
+        verify(animator).setRoot(eq(spy.getView()), eq(animatedSetRoot.animations.setRoot), any(), any());
         verify(listener).onSuccess(spy.getId());
     }
 
