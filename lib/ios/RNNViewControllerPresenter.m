@@ -29,7 +29,11 @@
 	}
 	
 	if (options.topBar.searchBar.hasValue) {
-		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""]];
+		BOOL hideNavBarOnFocusSearchBar = YES;
+		if (options.topBar.hideNavBarOnFocusSearchBar.hasValue) {
+			hideNavBarOnFocusSearchBar = options.topBar.hideNavBarOnFocusSearchBar.get;
+		}
+		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar: hideNavBarOnFocusSearchBar];
 	}
 }
 
@@ -65,7 +69,11 @@
 	}
 	
 	if (newOptions.topBar.searchBar.hasValue) {
-		[viewController rnn_setSearchBarWithPlaceholder:[newOptions.topBar.searchBarPlaceholder getWithDefaultValue:@""]];
+		BOOL hideNavBarOnFocusSearchBar = YES;
+		if (newOptions.topBar.hideNavBarOnFocusSearchBar.hasValue) {
+			hideNavBarOnFocusSearchBar = newOptions.topBar.hideNavBarOnFocusSearchBar.get;
+		}
+		[viewController rnn_setSearchBarWithPlaceholder:[newOptions.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
 	}
 	
 	if (newOptions.topBar.drawBehind.hasValue) {

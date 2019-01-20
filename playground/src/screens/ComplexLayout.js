@@ -14,6 +14,7 @@ class ComplexLayout extends Component {
         <Button title={'External component in stack'} testID={testIDs.EXTERNAL_COMPONENT_IN_STACK} onPress={this.onExternalComponentInStackPressed} />
         <Button title={'External component in deep stack'} testID={testIDs.EXTERNAL_COMPONENT_IN_DEEP_STACK} onPress={this.onExternalComponentInDeepStackPressed} />
         <Button title={'SideMenu layout inside a bottomTab'} testID={testIDs.SIDE_MENU_LAYOUT_INSIDE_BOTTOM_TAB} onPress={this.onSideMenuLayoutInsideBottomTabPressed} />
+        <Button title='Show touch through overlay with scroll' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_SCROLLER} onPress={() => this.onClickShowOverlayWithScroll(true)} />
       </View>
     );
   }
@@ -147,6 +148,22 @@ class ComplexLayout extends Component {
               }
             }
            ]
+        }
+      }
+    });
+  }
+
+  onClickShowOverlayWithScroll = async (interceptTouchOutside) => {
+    await Navigation.showOverlay({
+      component: {
+        name: 'navigation.playground.CustomDialogWithScroll',
+        options: {
+          layout: {
+            componentBackgroundColor: 'transparent'
+          },
+          overlay: {
+            interceptTouchOutside
+          }
         }
       }
     });

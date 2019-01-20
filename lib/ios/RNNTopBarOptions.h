@@ -23,6 +23,7 @@
 @property (nonatomic, strong) Bool* animate;
 @property (nonatomic, strong) Bool* searchBar;
 @property (nonatomic, strong) Bool* searchBarHiddenWhenScrolling;
+@property (nonatomic, strong) Bool* hideNavBarOnFocusSearchBar;
 @property (nonatomic, strong) Text* testID;
 @property (nonatomic, strong) Text* barStyle;
 @property (nonatomic, strong) Text* searchBarPlaceholder;

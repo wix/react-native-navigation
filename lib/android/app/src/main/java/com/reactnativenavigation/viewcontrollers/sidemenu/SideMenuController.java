@@ -24,7 +24,7 @@ import java.util.Collection;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public class SideMenuController extends ParentController<DrawerLayout> {
+public class SideMenuController extends ParentController<DrawerLayout> implements DrawerLayout.DrawerListener {
 
 	private ViewController center;
 	private ViewController left;
@@ -51,6 +51,7 @@ public class SideMenuController extends ParentController<DrawerLayout> {
 	protected DrawerLayout createView() {
         DrawerLayout sideMenu = new DrawerLayout(getActivity());
         presenter.bindView(sideMenu);
+        sideMenu.addDrawerListener(this);
         return sideMenu;
 	}
 
@@ -103,6 +104,16 @@ public class SideMenuController extends ParentController<DrawerLayout> {
     }
 
     @Override
+    public void onDrawerOpened(@NonNull View drawerView) {
+        (left != null && drawerView.equals(left.getView()) ? left : right).onViewAppeared();
+    }
+
+    @Override
+    public void onDrawerClosed(@NonNull View drawerView) {
+        (left != null && drawerView.equals(left.getView()) ? left : right).onViewDisappear();
+    }
+
+    @Override
     public boolean handleBack(CommandListener listener) {
         return presenter.handleBack() || center.handleBack(listener) || super.handleBack(listener);
     }
@@ -141,5 +152,15 @@ public class SideMenuController extends ParentController<DrawerLayout> {
             height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.height.get(), Resources.getSystem().getDisplayMetrics());
         }
         return height;
+    }
+
+    @Override
+    public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 }
