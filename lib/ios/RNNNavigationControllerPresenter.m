@@ -149,6 +149,9 @@
 			[[navigationController.navigationBar.subviews lastObject] removeFromSuperview];
 		}
 		[navigationController.navigationBar addSubview:_customTopBar];
+	} else if (!options.topBar.component.name.hasValue) {
+		[_customTopBar removeFromSuperview];
+		_customTopBar = nil;
 	}
 }
 
@@ -164,12 +167,15 @@
 		} else if (navigationController.navigationBar.subviews.count > 1 && [[navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
 			[[navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
 		}
-	} if (_customTopBarBackground && _customTopBarBackground.superview == nil) {
+	} else if (_customTopBarBackground && _customTopBarBackground.superview == nil) {
 		if (navigationController.navigationBar.subviews.count && [[navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
 			[[navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
 		}
 		[navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
 		navigationController.navigationBar.clipsToBounds = YES;
+	} else if (!options.topBar.background.component.name.hasValue) {
+		[_customTopBarBackground removeFromSuperview];
+		_customTopBarBackground = nil;
 	}
 }
 

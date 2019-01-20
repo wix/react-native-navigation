@@ -6,8 +6,8 @@
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
 	self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
-	_reactViewReadyBlock = reactViewReadyBlock;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentDidAppear:) name:RCTContentDidAppearNotification object:nil];
+	 _reactViewReadyBlock = reactViewReadyBlock;
 	
 	return self;
 }
@@ -19,9 +19,10 @@
 	}
 #endif
 	
-	if (_reactViewReadyBlock) {
-		_reactViewReadyBlock();
-	}
+	 if (_reactViewReadyBlock) {
+	 	_reactViewReadyBlock();
+		 _reactViewReadyBlock = nil;
+	 }
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
