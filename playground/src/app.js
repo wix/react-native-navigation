@@ -161,53 +161,17 @@ function start() {
 
     Navigation.setRoot({
       root: {
-        bottomTabs: {
-          options: {
-            animations: {
-              setRoot: {
-                waitForRender: true
-              }
-            }
-          },
+        stack: {
+          id: 'TEST',
           children: [
             {
-              stack: {
-                children: [
-                  {
-                    component: {
-                      name: `navigation.playground.OptionsScreen`,
-                      options: {
-                        bottomTab: {
-                          icon: require('../img/one.png'),
-                          text: 'options'
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              stack: {
-                id: 'TEST',
-                children: [
-                  {
-                    component: {
-                      name: 'navigation.playground.WelcomeScreen',
-                      // name: 'navigation.playground.CustomTransitionOrigin'
-                      options: {
-                        bottomTab: {
-                          icon: require('../img/two.png'),
-                          text: 'Welcome'
-                        }
-                      }
-                    }
-                  }
-                ]
+              component: {
+                name: 'navigation.playground.WelcomeScreen'
+                // name: 'navigation.playground.CustomTransitionOrigin'
               }
             }
           ]
-        },
+        }
       }
     });
   });

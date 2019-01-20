@@ -17,7 +17,6 @@ const TOPBAR_HEIGHT = 67;
 class OptionsScreen extends Component {
   constructor(props) {
     super(props);
-    console.log('guyca', `OS.ctor`);
     Navigation.events().bindComponent(this);
   }
 
@@ -29,16 +28,8 @@ class OptionsScreen extends Component {
       },
       topBar: {
         title: {
-          _text: 'Static Title',
+          text: 'Static Title',
           _height: TOPBAR_HEIGHT,
-          component: {
-            name: 'navigation.playground.CustomTopBar',
-            alignment: 'center',
-            waitForRender: true,
-            passProps: {
-              title: 'hola'
-            }
-          },
           color: 'black',
           fontSize: 16,
           alignment: 'center',
@@ -47,7 +38,7 @@ class OptionsScreen extends Component {
         largeTitle: {
           visible: false
         },
-        _subtitle: {
+        subtitle: {
           text: 'Static Subtitle',
           color: 'red',
           fontFamily: 'HelveticaNeue-Italic',
@@ -59,8 +50,7 @@ class OptionsScreen extends Component {
             passProps: {
               color: '#bbdefb'
             }
-          },
-          waitForRender: true
+          }
         },
         ...Platform.select({
           android: { drawBehind: true },
@@ -82,7 +72,6 @@ class OptionsScreen extends Component {
             testID: CUSTOM_BUTTON2,
             component: {
               name: 'CustomRoundedButton',
-              waitForRender: true,
               passProps: {
                 title: 'Two'
               }

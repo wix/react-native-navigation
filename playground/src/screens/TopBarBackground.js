@@ -10,16 +10,9 @@ class TopBarBackground extends Component {
 
   constructor(props) {
     super(props);
-    this.simulateLongRunningTask();
-    console.log('guyca', `TBB.ctor ${this.props.color}`);
-    Navigation.events().bindComponent(this);
+    this.subscription = Navigation.events().bindComponent(this);
     this.state = {};
     this.dots = new Array(55).fill('').map((ignored, i) => <View key={'dot' + i} style={[styles.dot, {backgroundColor: this.props.color}]}/>);
-  }
-
-  simulateLongRunningTask = () => {
-    // tslint:disable-next-line
-    for (let i = 0; i < Math.pow(2, 24); i++);
   }
 
   componentDidAppear() {
@@ -36,6 +29,7 @@ class TopBarBackground extends Component {
 
   componentWillUnmount() {
     console.log('RNN', `TBB.componentWillUnmount`);
+    this.subscription.remove();
   }
 
   render() {

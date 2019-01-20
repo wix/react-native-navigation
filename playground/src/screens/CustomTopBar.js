@@ -14,10 +14,8 @@ class CustomTopBar extends Component {
 
   constructor(props) {
     super(props);
-    console.log('guyca', `T.ctor ${this.props.color}`);
-    this.simulateLongRunningTask();
     this.state = {};
-    Navigation.events().bindComponent(this);
+    this.subscription = Navigation.events().bindComponent(this);
   }
 
   componentDidAppear() {
@@ -34,11 +32,7 @@ class CustomTopBar extends Component {
 
   componentWillUnmount() {
     console.log('RNN', `CTB.componentWillUnmount`);
-  }
-
-  simulateLongRunningTask = () => {
-    // tslint:disable-next-line
-    for (let i = 0; i < Math.pow(2, 24); i++);
+    this.subscription.remove();
   }
 
   render() {
