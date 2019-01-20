@@ -13,11 +13,11 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNNavigationControllerPresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo creator:(id<RNNRootViewCreator>)creator childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNNavigationControllerPresenter *)presenter {
 	self = [super init];
 
 	self.presenter = presenter;
-	[self.presenter bindViewController:self];
+	[self.presenter bindViewController:self viewCreator:creator];
 	
 	self.defaultOptions = defaultOptions;
 	self.options = options;
@@ -51,6 +51,10 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
 	[self.options overrideOptions:options];
+}
+
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.getCurrentLeaf waitForReactViewRender:wait perform:readyBlock];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

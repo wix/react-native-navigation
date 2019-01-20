@@ -120,10 +120,10 @@
 	
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
 	
-	if (!component.isExternalViewController) {
-		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
-		[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
-	}
+	// if (!component.isExternalViewController) {
+	// 	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
+	// 	[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
+	// }
 	
 	return (UIViewController<RNNParentProtocol> *)component;
 }
@@ -150,7 +150,7 @@
 	
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
-	RNNNavigationController* stack = [[RNNNavigationController alloc] initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter];
+	RNNNavigationController* stack = [[RNNNavigationController alloc] initWithLayoutInfo:layoutInfo creator:_creator childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter];
 	
 	return stack;
 }

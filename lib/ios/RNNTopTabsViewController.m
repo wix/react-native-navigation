@@ -58,6 +58,10 @@
 	[self.options overrideOptions:options];
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.getCurrentLeaf waitForReactViewRender:wait perform:readyBlock];
+}
+
 - (void)createTabBar {
 	_segmentedControl = [[RNNSegmentedControl alloc] initWithSectionTitles:@[@"", @"", @""]];
 	_segmentedControl.frame = CGRectMake(0, 0, self.view.bounds.size.width, 50);

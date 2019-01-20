@@ -85,7 +85,9 @@
 	
 	RNNUIBarButtonItem *barButtonItem;
 	if (component) {
-		RCTRootView *view = (RCTRootView*)[self.creator createCustomReactView:component[@"name"] rootViewId:component[@"componentId"]];
+		RCTRootView *view = (RCTRootView*)[self.creator createCustomReactView:component[@"name"] rootViewId:component[@"componentId"] reactViewReadyBlock:^{
+			
+		}];
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
 	} else if (iconImage) {
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];

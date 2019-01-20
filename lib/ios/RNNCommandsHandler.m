@@ -58,12 +58,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_modalManager dismissAllModalsAnimated:NO];
 	[_store removeAllComponentsFromWindow:_mainWindow];
 	
-	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
+	UIViewController<RNNLayoutProtocol> *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
 	
-	_mainWindow.rootViewController = vc;
-	
-	[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
-	completion();
+	[vc waitForReactViewRender:vc.resolveOptions.animations.setRoot.waitForRender perform:^{
+		_mainWindow.rootViewController = vc;
+		[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
+		completion() ;
+	}];
 }
 
 - (void)mergeOptions:(NSString*)componentId options:(NSDictionary*)mergeOptions completion:(RNNTransitionCompletionBlock)completion {

@@ -60,6 +60,10 @@
 	[self.options overrideOptions:options];
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.getCurrentLeaf waitForReactViewRender:wait perform:readyBlock];
+}
+
 - (void)setAnimationType:(NSString *)animationType {
 	MMDrawerControllerDrawerVisualStateBlock animationTypeStateBlock = nil;
 	if ([animationType isEqualToString:@"door"]) animationTypeStateBlock = [MMDrawerVisualState swingingDoorVisualStateBlock];

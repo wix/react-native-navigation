@@ -45,6 +45,10 @@
 	[self.options overrideOptions:options];
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.getCurrentLeaf waitForReactViewRender:wait perform:readyBlock];
+}
+
 - (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
 	[self setViewControllers:viewControllers];
 	UIViewController<UISplitViewControllerDelegate>* masterViewController = viewControllers[0];

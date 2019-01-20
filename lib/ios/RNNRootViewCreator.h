@@ -1,14 +1,15 @@
 
 #import <UIKit/UIKit.h>
 #import "RNNComponentOptions.h"
+#import "RNNReactView.h"
 
 @protocol RNNRootViewCreator
 
-- (UIView*)createRootView:(NSString*)name rootViewId:(NSString*)rootViewId;
+- (RNNReactView*)createRootView:(NSString*)name rootViewId:(NSString*)rootViewId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 
 - (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions;
 
-- (UIView*)createCustomReactView:(NSString*)name rootViewId:(NSString*)rootViewId;
+- (RNNReactView*)createCustomReactView:(NSString*)name rootViewId:(NSString*)rootViewId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 
 @end
 

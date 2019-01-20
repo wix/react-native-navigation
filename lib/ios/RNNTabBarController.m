@@ -60,6 +60,10 @@
 	[self.options overrideOptions:options];
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.getCurrentLeaf waitForReactViewRender:wait perform:readyBlock];
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.selectedViewController.supportedInterfaceOrientations;
 }
