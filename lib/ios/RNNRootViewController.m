@@ -1,16 +1,12 @@
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
-#import "RNNCustomTitleView.h"
 #import "RNNPushAnimation.h"
 #import "RNNReactView.h"
 #import "RNNParentProtocol.h"
-#import "RNNTitleViewHelper.h"
+
 
 @interface RNNRootViewController() {
-	RNNReactView* _customTitleView;
-	UIView* _customTopBar;
-	UIView* _customTopBarBackground;
 	BOOL _isBeingPresented;
 }
 
@@ -75,8 +71,6 @@
 - (void)mergeOptions:(RNNNavigationOptions *)options {
 	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
 	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
-	
-	[self initCustomViews];
 }
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
@@ -89,8 +83,6 @@
 	
 	[_presenter applyOptions:self.resolveOptions];
 	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
-	
-	[self initCustomViews];
 }
 
 - (RNNNavigationOptions *)resolveOptions {
@@ -136,52 +128,6 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 	[self.eventEmitter sendOnSearchBarCancelPressed:self.layoutInfo.componentId];
-}
-
-- (void)initCustomViews {
-	[self setCustomNavigationTitleView];
-//	[self setCustomNavigationBarView];
-//	[self setCustomNavigationComponentBackground];
-	
-	if (!_customTitleView) {
-		[self setTitleViewWithSubtitle];
-	}
-}
-
-- (void)setTitleViewWithSubtitle {
-	if (self.resolveOptions.topBar.subtitle.text.hasValue) {
-		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:self.resolveOptions.topBar.title subTitleOptions:self.resolveOptions.topBar.subtitle viewController:self];
-		[titleViewHelper setup];
-	}
-}
-
-- (void)setCustomNavigationTitleView {
-	if (!_customTitleView && _isBeingPresented) {
-		if (self.resolveOptions.topBar.title.component.name.hasValue) {
-			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:self.resolveOptions.topBar.title.component];
-			_customTitleView.backgroundColor = UIColor.clearColor;
-			NSString* alignment = [self.resolveOptions.topBar.title.component.alignment getWithDefaultValue:@""];
-			[_customTitleView setAlignment:alignment];
-			BOOL isCenter = [alignment isEqualToString:@"center"];
-			__weak RNNReactView *weakTitleView = _customTitleView;
-			CGRect frame = self.navigationController.navigationBar.bounds;
-			[_customTitleView setFrame:frame];
-			[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
-				if (isCenter) {
-					[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
-				} else {
-					[weakTitleView setFrame:frame];
-				}
-			}];
-			
-			self.navigationItem.titleView = _customTitleView;
-		}
-	} else if (_customTitleView && _customTitleView.superview == nil) {
-		if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
-			self.navigationItem.title = nil;
-		}
-		self.navigationItem.titleView = _customTitleView;
-	}
 }
 
 -(BOOL)isCustomTransitioned {
@@ -320,9 +266,6 @@
 	self.navigationItem.titleView = nil;
 	self.navigationItem.rightBarButtonItems = nil;
 	self.navigationItem.leftBarButtonItems = nil;
-	_customTopBar = nil;
-	_customTitleView = nil;
-	_customTopBarBackground = nil;
 }
 
 @end

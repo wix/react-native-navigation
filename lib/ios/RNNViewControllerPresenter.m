@@ -3,12 +3,32 @@
 #import "UITabBarController+RNNOptions.h"
 #import "RCTConvert+Modal.h"
 #import "RNNReactView.h"
+#import "RNNCustomTitleView.h"
+#import "RNNTitleViewHelper.h"
+
+@interface RNNViewControllerPresenter() {
+	RNNReactView* _customTitleView;
+	id<RNNRootViewCreator> _creator;
+}
+
+@end
 
 @implementation RNNViewControllerPresenter
+
+- (instancetype)init {
+	self = [super init];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(cleanReactLeftovers)
+												 name:RCTJavaScriptWillStartLoadingNotification
+											   object:nil];
+	
+	return self;
+}
 
 - (void)bindViewController:(UIViewController *)bindedViewController viewCreator:(id<RNNRootViewCreator>)creator {
 	self.bindedViewController = bindedViewController;
 	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController rootViewCreator:creator];
+	_creator = creator;
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
@@ -35,6 +55,9 @@
 		}
 		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar: hideNavBarOnFocusSearchBar];
 	}
+	
+	[self setCustomNavigationTitleView:options];
+	[self setTitleViewWithSubtitle:options];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
@@ -125,6 +148,51 @@
 		RCTRootView* rootView = (RCTRootView*)viewController.view;
 		rootView.passThroughTouches = !newOptions.overlay.interceptTouchOutside.get;
 	}
+	
+	[self setCustomNavigationTitleView:newOptions];
+	[self setTitleViewWithSubtitle:newOptions];
+}
+
+- (void)setCustomNavigationTitleView:(RNNNavigationOptions *)options {
+	UIViewController* viewController = self.bindedViewController;
+
+	if (!_customTitleView) {
+		if (options.topBar.title.component.name.hasValue) {
+			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:options.topBar.title.component];
+			_customTitleView.backgroundColor = UIColor.clearColor;
+			NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
+			[_customTitleView setAlignment:alignment];
+			BOOL isCenter = [alignment isEqualToString:@"center"];
+			__weak RNNReactView *weakTitleView = _customTitleView;
+			CGRect frame = viewController.navigationController.navigationBar.bounds;
+			[_customTitleView setFrame:frame];
+			[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
+				if (isCenter) {
+					[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
+				} else {
+					[weakTitleView setFrame:frame];
+				}
+			}];
+			
+			viewController.navigationItem.titleView = _customTitleView;
+		}
+	} else if (_customTitleView && _customTitleView.superview == nil) {
+		if ([viewController.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
+			viewController.navigationItem.title = nil;
+		}
+		viewController.navigationItem.titleView = _customTitleView;
+	}
+}
+
+- (void)setTitleViewWithSubtitle:(RNNNavigationOptions *)options {
+	if (!_customTitleView && options.topBar.subtitle.text.hasValue) {
+		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.bindedViewController];
+		[titleViewHelper setup];
+	}
+}
+
+- (void)cleanReactLeftovers {
+	_customTitleView = nil;
 }
 
 @end

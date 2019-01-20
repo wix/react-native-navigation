@@ -5,7 +5,6 @@
 #import "RNNCustomTitleView.h"
 
 @interface RNNNavigationControllerPresenter() {
-	RNNReactView* _customTitleView;
 	UIView* _customTopBar;
 	UIView* _customTopBarBackground;
 	id<RNNRootViewCreator> _creator;
@@ -13,6 +12,16 @@
 
 @end
 @implementation RNNNavigationControllerPresenter
+
+- (instancetype)init {
+	self = [super init];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(onJsReload)
+												 name:RCTJavaScriptWillStartLoadingNotification
+											   object:nil];
+	
+	return self;
+}
 
 - (void)bindViewController:(UIViewController *)bindedViewController viewCreator:(id<RNNRootViewCreator>)creator {
 	self.bindedViewController = bindedViewController;
@@ -129,6 +138,8 @@
 	
 	[navigationController rnn_setNavigationBarFontFamily:[newOptions.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[newOptions.topBar.title.fontSize getWithDefaultValue:nil] color:[newOptions.topBar.title.color getWithDefaultValue:nil]];
 	
+	[self setCustomNavigationBarView:newOptions];
+	[self setCustomNavigationComponentBackground:newOptions];
 }
 
 - (void)setCustomNavigationBarView:(RNNNavigationOptions *)options {
@@ -177,6 +188,11 @@
 		[_customTopBarBackground removeFromSuperview];
 		_customTopBarBackground = nil;
 	}
+}
+
+- (void)onJsReload {
+	_customTopBar = nil;
+	_customTopBarBackground = nil;
 }
 
 @end
