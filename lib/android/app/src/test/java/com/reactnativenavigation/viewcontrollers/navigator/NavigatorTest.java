@@ -32,6 +32,7 @@ import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.BottomTabs;
+
 import com.facebook.react.ReactInstanceManager;
 
 import org.junit.Test;
