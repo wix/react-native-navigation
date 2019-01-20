@@ -17,6 +17,11 @@ function run() {
     const cleanup = process.env.CI ? `--cleanup` : ``;
     const headless$ = android ? headless ? `--headless` : `` : ``;
     const workers = multi ? 3 : 1;
+    
+    if (platform === 'android') {
+        const sdkmanager = '/usr/local/share/android-sdk/tools/bin/sdkmanager';
+        exec.execSync(`echo y | ${sdkmanager} --update && echo y | ${sdkmanager} --licenses`);
+    }
 
     if (!skipBuild) {
         exec.execSync(`detox build --configuration ${configuration}`);
