@@ -2,6 +2,7 @@
 #import <OCMock/OCMock.h>
 #import "RNNNavigationController.h"
 #import "RNNRootViewController.h"
+#import "RNNTestRootViewCreator.h"
 
 @interface RNNNavigationControllerTest : XCTestCase
 
@@ -15,17 +16,18 @@
 	RNNRootViewController* _vc2;
 	UIViewController* _vc3;
 	RNNNavigationOptions* _options;
+	RNNTestRootViewCreator* _creator;
 }
 
 - (void)setUp {
     [super setUp];
-	
+	_creator = [[RNNTestRootViewCreator alloc] init];
 	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[OCMockObject partialMockForObject:[[RNNViewControllerPresenter alloc] init]] options:[[RNNNavigationOptions alloc] initEmptyOptions]  defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	_vc2Mock = [OCMockObject partialMockForObject:_vc2];
 	_vc3 = [UIViewController new];
 	_options = [OCMockObject partialMockForObject:[[RNNNavigationOptions alloc] initEmptyOptions]];
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:_options defaultOptions:nil presenter:[OCMockObject partialMockForObject:[[RNNNavigationControllerPresenter alloc] init]]];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator childViewControllers:@[_vc1, _vc2] options:_options defaultOptions:nil presenter:[OCMockObject partialMockForObject:[[RNNNavigationControllerPresenter alloc] init]]];
 }
 
 - (void)testInitWithLayoutInfo_shouldBindPresenter {
@@ -33,7 +35,7 @@
 }
 
 - (void)testInitWithLayoutInfo_shouldSetMultipleViewControllers {
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNViewControllerPresenter alloc] init]];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNViewControllerPresenter alloc] init]];
 	XCTAssertTrue(self.uut.viewControllers.count == 2);
 }
 
@@ -157,7 +159,7 @@
 }
 
 - (RNNNavigationController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
-	return [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:options defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init]];
+	return [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator childViewControllers:@[_vc1] options:options defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init]];
 }
 
 @end
