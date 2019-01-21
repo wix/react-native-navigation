@@ -28,7 +28,8 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	self.modalTransitionStyle = modalTransitionStyle;
 }
 
-- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder {
+- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder 
+						hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar {
 	if (@available(iOS 11.0, *)) {
 		if (!self.navigationItem.searchController) {
 			UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
@@ -40,6 +41,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 			if (placeholder) {
 				search.searchBar.placeholder = placeholder;
 			}
+			search.hidesNavigationBarDuringPresentation = hideNavBarOnFocusSearchBar;
 			self.navigationItem.searchController = search;
 			
 			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller

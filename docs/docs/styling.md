@@ -192,14 +192,13 @@ Navigation.mergeOptions(this.props.componentId, {
   sideMenu: {
     left: {
       shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
-      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
-      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+      animationVelocity: 2500 // defaults to 840, high number is a faster sideMenu open/close animation
     },
     right: {
       shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
-      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
-      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+      animationVelocity: 2500 // defaults to 840, high number is a faster sideMenu open/close animation
     },
+    animationType: 'parallax', // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
     openGestureMode: 'entireScreen' | 'bezel'
   }
   bottomTabs: {

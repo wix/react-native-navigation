@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 public class OptionsTest extends BaseTest {
 
     private static final String TITLE = "the title";
+    private static final Number TITLE_HEIGHT = new Number(100);
     private static final String FAB_ID = "FAB";
     private static final String FAB_ALIGN_HORIZONTALLY = "right";
     private static final String FAB_ALIGN_VERTICALLY = "bottom";
@@ -83,6 +84,7 @@ public class OptionsTest extends BaseTest {
     private void assertResult(Options result) {
         assertThat(result.topBar.title.text.get()).isEqualTo(TITLE);
         assertThat(result.topBar.background.color.get()).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
+        assertThat(result.topBar.title.height.get()).isEqualTo(TITLE_HEIGHT.get());
         assertThat(result.topBar.title.color.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
         assertThat(result.topBar.title.fontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
         assertThat(result.topBar.title.fontFamily).isEqualTo(TOP_BAR_TYPEFACE);
@@ -134,6 +136,7 @@ public class OptionsTest extends BaseTest {
     private JSONObject createTitle() throws JSONException {
         return new JSONObject()
                 .put("text", "the title")
+                .put("height", TITLE_HEIGHT.get())
                 .put("color", TOP_BAR_TEXT_COLOR)
                 .put("fontSize", TOP_BAR_FONT_SIZE)
                 .put("fontFamily", TOP_BAR_FONT_FAMILY);
