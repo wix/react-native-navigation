@@ -10,6 +10,7 @@
 #import "RNNStatusBarOptions.h"
 #import "RNNPreviewOptions.h"
 #import "RNNLayoutOptions.h"
+#import "RNNSplitViewOptions.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
@@ -28,6 +29,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNStatusBarOptions* statusBar;
 @property (nonatomic, strong) RNNPreviewOptions* preview;
 @property (nonatomic, strong) RNNLayoutOptions* layout;
+@property (nonatomic, strong) RNNSplitViewOptions* splitView;
 
 @property (nonatomic, strong) Bool* popGesture;
 @property (nonatomic, strong) Image* backgroundImage;
