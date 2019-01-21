@@ -73,7 +73,7 @@
 	}
 
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
-		[modalToDismiss dismissViewControllerAnimated:options.animations.dismissModal.enable completion:^{
+		[modalToDismiss dismissViewControllerAnimated:[options.animations.dismissModal.enable getWithDefaultValue:YES] completion:^{
 			[_pendingModalIdsToDismiss removeObject:modalToDismiss];
 			if (modalToDismiss.view) {
 				[self dismissedModal:modalToDismiss];
@@ -88,7 +88,7 @@
 	} else {
 		[modalToDismiss.view removeFromSuperview];
 		modalToDismiss.view = nil;
-		modalToDismiss.getCurrentChild.resolveOptions.animations.dismissModal.enable = NO;
+		modalToDismiss.getCurrentChild.resolveOptions.animations.dismissModal.enable = [[Bool alloc] initWithBOOL:NO];
 		[self dismissedModal:modalToDismiss];
 		
 		if (completion) {

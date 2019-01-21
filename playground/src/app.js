@@ -50,7 +50,8 @@ function start() {
             from: 0,
             to: 1,
             duration: 300
-          }
+          },
+          waitForRender: true
         },
         _push: {
           topBar: {

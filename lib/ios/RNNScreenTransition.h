@@ -7,8 +7,8 @@
 @property (nonatomic, strong) RNNTransitionStateHolder* content;
 @property (nonatomic, strong) RNNTransitionStateHolder* bottomTabs;
 
-@property (nonatomic) BOOL enable;
-@property (nonatomic) BOOL waitForRender;
+@property (nonatomic, strong) Bool* enable;
+@property (nonatomic, strong) Bool* waitForRender;
 
 - (BOOL)hasCustomAnimation;
 

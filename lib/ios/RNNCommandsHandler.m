@@ -60,7 +60,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController<RNNLayoutProtocol> *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
 	
-	[vc waitForReactViewRender:vc.resolveOptions.animations.setRoot.waitForRender perform:^{
+	[vc waitForReactViewRender:[vc.resolveOptions.animations.setRoot.waitForRender getWithDefaultValue:NO] perform:^{
 		_mainWindow.rootViewController = vc;
 		[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
 		completion() ;
@@ -142,8 +142,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		}
 	} else {
 		id animationDelegate = (newVc.resolveOptions.animations.push.hasCustomAnimation || newVc.getCurrentLeaf.isCustomTransitioned) ? newVc : nil;
-		[newVc.getCurrentLeaf waitForReactViewRender:(newVc.resolveOptions.animations.push.waitForRender || animationDelegate) perform:^{
-			[_stackManager push:newVc onTop:fromVC animated:newVc.resolveOptions.animations.push.enable animationDelegate:animationDelegate completion:^{
+		[newVc.getCurrentLeaf waitForReactViewRender:([newVc.resolveOptions.animations.push.waitForRender getWithDefaultValue:NO] || animationDelegate) perform:^{
+			[_stackManager push:newVc onTop:fromVC animated:[newVc.resolveOptions.animations.push.enable getWithDefaultValue:YES] animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 				completion();
 			} rejection:rejection];
@@ -158,7 +158,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNNavigationOptions* options = [childViewControllers.lastObject getCurrentChild].resolveOptions;
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
-	[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:options.animations.setStackRoot.enable completion:^{
+	[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
 		[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot params:@{@"componentId": componentId}];
 		completion();
 	} rejection:rejection];
@@ -182,10 +182,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	} else {
 		NSMutableArray * vcs = nvc.viewControllers.mutableCopy;
 		[vcs removeObject:vc];
-		[nvc setViewControllers:vcs animated:vc.resolveOptions.animations.pop.enable];
+		[nvc setViewControllers:vcs animated:[vc.resolveOptions.animations.pop.enable getWithDefaultValue:YES]];
 	}
 	
-	[_stackManager pop:vc animated:vc.resolveOptions.animations.pop.enable completion:^{
+	[_stackManager pop:vc animated:[vc.resolveOptions.animations.pop.enable getWithDefaultValue:YES] completion:^{
 		[_store removeComponent:componentId];
 		[_eventEmitter sendOnNavigationCommandCompletion:pop params:@{@"componentId": componentId}];
 		completion();
@@ -198,7 +198,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
 	[vc overrideOptions:options];
 	
-	[_stackManager popTo:vc animated:vc.resolveOptions.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
+	[_stackManager popTo:vc animated:[vc.resolveOptions.animations.pop.enable getWithDefaultValue:YES] completion:^(NSArray *poppedViewControllers) {
 		[_eventEmitter sendOnNavigationCommandCompletion:popTo params:@{@"componentId": componentId}];
 		[self removePopedViewControllers:poppedViewControllers];
 		completion();
@@ -217,7 +217,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		completion();
 	}];
 	
-	[_stackManager popToRoot:vc animated:vc.resolveOptions.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
+	[_stackManager popToRoot:vc animated:[vc.resolveOptions.animations.pop.enable getWithDefaultValue:YES] completion:^(NSArray *poppedViewControllers) {
 		[self removePopedViewControllers:poppedViewControllers];
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
@@ -231,8 +231,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayout:layout saveToStore:_store];
 	
-	[newVc.getCurrentLeaf waitForReactViewRender:newVc.getCurrentLeaf.resolveOptions.animations.showModal.waitForRender perform:^{
-		[_modalManager showModal:newVc animated:newVc.getCurrentChild.resolveOptions.animations.showModal.enable hasCustomAnimation:newVc.getCurrentChild.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
+	[newVc.getCurrentLeaf waitForReactViewRender:[newVc.getCurrentLeaf.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
+		[_modalManager showModal:newVc animated:[newVc.getCurrentChild.resolveOptions.animations.showModal.enable getWithDefaultValue:YES] hasCustomAnimation:newVc.getCurrentChild.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
 			[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
 			completion(componentId);
 		}];
@@ -273,7 +273,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		completion();
 	}];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-	[_modalManager dismissAllModalsAnimated:options.animations.dismissModal.enable];
+	[_modalManager dismissAllModalsAnimated:[options.animations.dismissModal.enable getWithDefaultValue:YES]];
 	
 	[CATransaction commit];
 }

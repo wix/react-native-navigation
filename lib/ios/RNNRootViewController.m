@@ -105,7 +105,7 @@
 }
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (self.isExternalViewController) {
+	if (!wait || self.isExternalViewController) {
 		readyBlock();
 	} else {
 		_reactViewReadyBlock = readyBlock;
