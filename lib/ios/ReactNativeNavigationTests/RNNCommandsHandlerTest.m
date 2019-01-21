@@ -334,4 +334,30 @@
 	XCTAssertTrue([_nvc.viewControllers isEqual:newViewControllers]);
 }
 
+- (void)testSetRoot_waitForRenderTrue {
+	[self.store setReadyToReceiveCommands:true];
+	self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	self.vc1.options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+	
+	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
+	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:self.store]).andReturn(mockedVC);
+	
+	[[mockedVC expect] waitForReactViewRender:YES perform:[OCMArg any]];
+	[self.uut setRoot:@{} completion:^{}];
+	[mockedVC verify];
+}
+
+- (void)testSetRoot_waitForRenderFalse {
+	[self.store setReadyToReceiveCommands:true];
+	self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	self.vc1.options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:NO];
+	
+	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
+	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:self.store]).andReturn(mockedVC);
+	
+	[[mockedVC expect] waitForReactViewRender:NO perform:[OCMArg any]];
+	[self.uut setRoot:@{} completion:^{}];
+	[mockedVC verify];
+}
+
 @end
