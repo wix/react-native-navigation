@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply from: '../prepare-robolectric.gradle'
 
+def DEFAULT_SUPPORT_LIB_VERSION = "26.1.0"
+
 android {
     compileSdkVersion 26
     buildToolsVersion '27.0.3'
@@ -81,11 +83,13 @@ allprojects { p ->
     }
 }
 
+def supportLibVersion = rootProject.ext.supportLibVersion ? rootProject.ext.supportLibVersion : DEFAULT_SUPPORT_LIB_VERSION
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:support-v4:26.1.0'
+    implementation "com.android.support:design:${supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation "com.android.support:support-v4:${supportLibVersion}"
 
     implementation 'com.github.wix-playground:ahbottomnavigation:2.4.8'
     implementation 'com.github.wix-playground:reflow-animator:1.0.4'
