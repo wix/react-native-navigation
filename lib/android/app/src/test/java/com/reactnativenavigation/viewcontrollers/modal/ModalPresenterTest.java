@@ -138,7 +138,7 @@ public class ModalPresenterTest extends BaseTest {
     public void showModal_waitForRender() {
         modal1.options.animations.showModal.waitForRender = new Bool(true);
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        verify(modal1).setOnAppearedListener(any());
+        verify(modal1).addOnAppearedListener(any());
         verifyZeroInteractions(animator);
     }
 

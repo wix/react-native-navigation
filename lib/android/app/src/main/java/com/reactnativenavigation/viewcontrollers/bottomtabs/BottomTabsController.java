@@ -38,14 +38,16 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	private List<ViewController> tabs;
     private EventEmitter eventEmitter;
     private ImageLoader imageLoader;
+    private final BottomTabsAttacher tabsAttacher;
     private BottomTabsPresenter presenter;
     private BottomTabPresenter tabPresenter;
 
-    public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
+    public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsAttacher tabsAttacher, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
 		super(activity, childRegistry, id, presenter, initialOptions);
         this.tabs = tabs;
         this.eventEmitter = eventEmitter;
         this.imageLoader = imageLoader;
+        this.tabsAttacher = tabsAttacher;
         this.presenter = bottomTabsPresenter;
         this.tabPresenter = bottomTabPresenter;
         forEach(tabs, (tab) -> tab.setParentController(this));
@@ -70,7 +72,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		lp.addRule(ALIGN_PARENT_BOTTOM);
 		root.addView(bottomTabs, lp);
 		bottomTabs.addItems(createTabs());
-        attachTabs(root);
+        tabsAttacher.attach(root, resolveCurrentOptions());
         return root;
 	}
 
@@ -154,17 +156,6 @@ public class BottomTabsController extends ParentController implements AHBottomNa
             );
         });
 	}
-
-    private void attachTabs(RelativeLayout root) {
-        for (int i = 0; i < tabs.size(); i++) {
-            ViewGroup tab = tabs.get(i).getView();
-            tab.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-            Options options = resolveCurrentOptions();
-            presenter.applyLayoutParamsOptions(options, i);
-            if (i != 0) tab.setVisibility(View.INVISIBLE);
-            root.addView(tab);
-        }
-    }
 
     public int getSelectedIndex() {
 		return bottomTabs.getCurrentItem();

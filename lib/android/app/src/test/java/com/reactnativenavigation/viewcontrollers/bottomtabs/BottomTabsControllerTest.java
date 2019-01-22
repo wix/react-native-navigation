@@ -1,4 +1,4 @@
-package com.reactnativenavigation.viewcontrollers;
+package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -24,7 +24,8 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.ReactComponent;
@@ -66,6 +67,7 @@ public class BottomTabsControllerTest extends BaseTest {
     private ChildControllersRegistry childRegistry;
     private List<ViewController> tabs;
     private BottomTabsPresenter presenter;
+    private BottomTabsAttacher tabsAttacher;
 
     @Override
     public void beforeEach() {
@@ -88,6 +90,7 @@ public class BottomTabsControllerTest extends BaseTest {
         when(child5.handleBack(any())).thenReturn(true);
         tabs = createTabs();
         presenter = spy(new BottomTabsPresenter(tabs, new Options()));
+        tabsAttacher = new BottomTabsAttacher(tabs, presenter);
         uut = createBottomTabs();
         activity.setContentView(uut.getView());
     }
@@ -241,6 +244,7 @@ public class BottomTabsControllerTest extends BaseTest {
         child4 = createStack(pushedScreen);
 
         tabs = new ArrayList<>(Collections.singletonList(child4));
+        tabsAttacher = new BottomTabsAttacher(tabs, presenter);
 
         initialOptions.bottomTabsOptions.currentTabIndex = new Number(3);
         Options resolvedOptions = new Options();
@@ -252,6 +256,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 "uut",
                 initialOptions,
                 new Presenter(activity, new Options()),
+                tabsAttacher,
                 presenter,
                 new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options())) {
             @Override
@@ -372,6 +377,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 "uut",
                 initialOptions,
                 new Presenter(activity, new Options()),
+                tabsAttacher,
                 presenter,
                 new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options())) {
             @Override
