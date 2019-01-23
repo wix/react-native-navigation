@@ -72,6 +72,13 @@ public class CollectionUtils {
         if (items != null) forEach(new ArrayList(items), 0, apply);
     }
 
+    public static <T> void forEach(@Nullable T[] items, Apply<T> apply) {
+        if (items == null) return;
+        for (T item : items) {
+            apply.on(item);
+        }
+    }
+
     public static <T> void forEach(@Nullable List<T> items, Apply<T> apply) {
         forEach(items, 0, apply);
     }

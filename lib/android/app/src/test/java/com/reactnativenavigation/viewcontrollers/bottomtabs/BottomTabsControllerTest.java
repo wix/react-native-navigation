@@ -90,7 +90,7 @@ public class BottomTabsControllerTest extends BaseTest {
         when(child5.handleBack(any())).thenReturn(true);
         tabs = createTabs();
         presenter = spy(new BottomTabsPresenter(tabs, new Options()));
-        tabsAttacher = new BottomTabsAttacher(tabs, presenter);
+        tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter));
         uut = createBottomTabs();
         activity.setContentView(uut.getView());
     }
@@ -246,7 +246,7 @@ public class BottomTabsControllerTest extends BaseTest {
         tabs = new ArrayList<>(Collections.singletonList(child4));
         tabsAttacher = new BottomTabsAttacher(tabs, presenter);
 
-        initialOptions.bottomTabsOptions.currentTabIndex = new Number(3);
+        initialOptions.bottomTabsOptions.currentTabIndex = new Number(0);
         Options resolvedOptions = new Options();
         uut = new BottomTabsController(activity,
                 tabs,
@@ -343,6 +343,18 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.getSelectedIndex()).isOne();
         assertThat(uut.options.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
         assertThat(uut.initialOptions.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
+    }
+
+    @Test
+    public void selectTab() {
+        uut.selectTab(1);
+        verify(tabsAttacher).onTabSelected(tabs.get(1));
+    }
+
+    @Test
+    public void destroy() {
+        uut.destroy();
+        verify(tabsAttacher).destroy();
     }
 
     @NonNull

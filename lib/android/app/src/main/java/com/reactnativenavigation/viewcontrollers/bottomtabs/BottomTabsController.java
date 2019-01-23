@@ -65,6 +65,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	protected ViewGroup createView() {
 		RelativeLayout root = new RelativeLayout(getActivity());
 		bottomTabs = createBottomTabs();
+        tabsAttacher.init(root, resolveCurrentOptions());
         presenter.bindView(bottomTabs, this);
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
@@ -72,7 +73,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		lp.addRule(ALIGN_PARENT_BOTTOM);
 		root.addView(bottomTabs, lp);
 		bottomTabs.addItems(createTabs());
-        tabsAttacher.attach(root, resolveCurrentOptions());
+        tabsAttacher.attach();
         return root;
 	}
 
@@ -168,7 +169,14 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	}
 
     @Override
+    public void destroy() {
+        tabsAttacher.destroy();
+        super.destroy();
+    }
+
+    @Override
     public void selectTab(final int newIndex) {
+        tabsAttacher.onTabSelected(tabs.get(newIndex));
         getCurrentView().setVisibility(View.INVISIBLE);
         bottomTabs.setCurrentItem(newIndex, false);
         getCurrentView().setVisibility(View.VISIBLE);

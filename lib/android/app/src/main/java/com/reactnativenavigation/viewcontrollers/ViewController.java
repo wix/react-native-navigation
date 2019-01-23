@@ -80,11 +80,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.waitForRender = waitForRender;
     }
 
-    public void addOnAppearedListener(@NonNull Runnable onAppearedListener) {
+    public void addOnAppearedListener(Runnable onAppearedListener) {
         onAppearedListeners.add(onAppearedListener);
     }
 
-    public void removeOnAppearedListener(@NonNull Runnable onAppearedListener) {
+    public void removeOnAppearedListener(Runnable onAppearedListener) {
         onAppearedListeners.remove(onAppearedListener);
     }
 
