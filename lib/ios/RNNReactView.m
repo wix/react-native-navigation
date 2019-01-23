@@ -19,12 +19,13 @@
 	}
 #endif
 	
-	 if (_reactViewReadyBlock) {
+	RNNReactView* appearedView = notification.object;
+	
+	 if (_reactViewReadyBlock && [appearedView.appProperties[@"componentId"] isEqual:self.appProperties[@"componentId"]]) {
 	 	_reactViewReadyBlock();
 		 _reactViewReadyBlock = nil;
+		 [[NSNotificationCenter defaultCenter] removeObserver:self];
 	 }
-	
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setRootViewDidChangeIntrinsicSize:(void (^)(CGSize))rootViewDidChangeIntrinsicSize {
