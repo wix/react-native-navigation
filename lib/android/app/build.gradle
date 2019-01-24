@@ -83,7 +83,7 @@ allprojects { p ->
     }
 }
 
-def supportLibVersion = (rootProject.ext && rootProject.ext.supportLibVersion) ? rootProject.ext.supportLibVersion : DEFAULT_SUPPORT_LIB_VERSION
+def supportLibVersion = (rootProject.hasProperty("ext") && rootProject.ext.supportLibVersion) ? rootProject.ext.supportLibVersion : DEFAULT_SUPPORT_LIB_VERSION
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
