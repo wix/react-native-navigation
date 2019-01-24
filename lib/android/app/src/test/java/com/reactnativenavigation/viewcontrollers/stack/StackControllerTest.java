@@ -989,7 +989,6 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void destroy() {
-        uut.ensureViewIsCreated();
         uut.destroy();
         verify(topBarController, times(1)).clear();
     }
