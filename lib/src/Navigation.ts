@@ -115,7 +115,7 @@ export class NavigationRoot {
   /**
    * Show a screen as a modal.
    */
-  public showModal(layout: Layout): Promise<any> {
+  public showModal<P>(layout: Layout<P>): Promise<any> {
     return this.commands.showModal(layout);
   }
 
