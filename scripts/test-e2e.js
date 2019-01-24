@@ -17,7 +17,6 @@ function run() {
     const headless$ = android ? headless ? `--headless` : `` : ``;
     const workers = multi ? 3 : 1;
     
-    console.log('guyca', `CI: ${process.env.CI} JENKINS_CI: ${process.env.JENKINS_CI}`)
     if (platform === 'android' && process.env.JENKINS_CI) {
         const sdkmanager = '/usr/local/share/android-sdk/tools/bin/sdkmanager';
         exec.execSync(`echo y | ${sdkmanager} --update && echo y | ${sdkmanager} --licenses`);
