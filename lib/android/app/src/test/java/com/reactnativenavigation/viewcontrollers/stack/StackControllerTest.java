@@ -203,7 +203,7 @@ public class StackControllerTest extends BaseTest {
 
         child2.options.animations.push.waitForRender = new Bool(true);
         uut.push(child2, new CommandListenerAdapter());
-        verify(child2).setOnAppearedListener(any());
+        verify(child2).addOnAppearedListener(any());
         verify(animator, times(0)).push(eq(child1.getView()), eq(child1.options.animations.push), any());
     }
 
@@ -989,7 +989,6 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void destroy() {
-        uut.ensureViewIsCreated();
         uut.destroy();
         verify(topBarController, times(1)).clear();
     }
