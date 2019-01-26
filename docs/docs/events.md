@@ -147,7 +147,7 @@ modalDismissedListener.remove();
 |       Parameter         | Description |
 |:--------------------:|:-----|
 |**componentId** | Id of the modal|
-|**modalsDismissed**| return 1|
+|**modalsDismissed**| Number of modal which were dismissed|
 
 ## registerBottomTabSelectedListener
 Invoked when a BottomTab is selected by the user.
