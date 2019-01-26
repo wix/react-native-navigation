@@ -131,6 +131,24 @@ commandCompletedListener.remove();
 |**commandId** | Id of the completed command|
 |**completionTime**|Timestamp when the command, and consecutive animations, completed.|
 
+## registerModalDismissedListener
+Invoked when modal dismissed.
+
+```js
+// Subscribe
+const modalDismissedListener = Navigation.events().registerModalDismissedListener(({ componentId, modalsDismissed }) => {
+
+});
+...
+// Unsubscribe
+modalDismissedListener.remove();
+```
+
+|       Parameter         | Description |
+|:--------------------:|:-----|
+|**componentId** | Id of the modal|
+|**modalsDismissed**| return 1|
+
 ## registerBottomTabSelectedListener
 Invoked when a BottomTab is selected by the user.
 
