@@ -63,13 +63,5 @@
 	return [[self getCurrentChild] getCurrentLeaf];
 }
 
-- (UIViewController *)primaryViewControllerForCollapsingSplitViewController:(UISplitViewController *)splitViewController {
-	return self.viewControllers[0];
-}
-
-- (void)collapseSecondaryViewController:(UIViewController *)secondaryViewController
-				 forSplitViewController:(UISplitViewController *)splitViewController {
-	return;
-}
 
 @end
