@@ -2,6 +2,4 @@
 
 @interface RNNSplitViewControllerPresenter : RNNViewControllerPresenter
 
-- (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
-
 @end
