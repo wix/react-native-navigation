@@ -8,11 +8,8 @@
 	
 	self.displayMode = dict[@"displayMode"];
 	self.primaryEdge = dict[@"primaryEdge"];
-	NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-	f.numberStyle = NSNumberFormatterDecimalStyle;
-	self.minWidth = [f numberFromString:dict[@"minWidth"]];
-	self.maxWidth = [f numberFromString:dict[@"maxWidth"]];
-	
+	self.minWidth = [NumberParser parse:dict key:@"minWidth"];
+	self.maxWidth = [NumberParser parse:dict key:@"maxWidth"];
 	return self;	
 }
 

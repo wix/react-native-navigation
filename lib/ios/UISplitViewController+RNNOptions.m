@@ -5,32 +5,36 @@
 
 - (void)rnn_setDisplayMode:(NSString *)displayMode {
 	if ([displayMode isEqualToString:@"visible"]) {
-		[self.splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModeAllVisible];
+		self.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
 	} else if ([displayMode isEqualToString:@"hidden"]) {
-		[self.splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModePrimaryHidden];
+		self.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
 	} else if ([displayMode isEqualToString:@"overlay"]) {
-		[self.splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModePrimaryOverlay];
+		self.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
 	} else {
-		[self.splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModeAutomatic];
+		self.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
 	}
 }
 
 - (void)rnn_setPrimaryEdge:(NSString *)primaryEdge {
 	if (@available(iOS 11.0, *)) {
 		if ([primaryEdge isEqualToString:@"trailing"]) {
-			[self.splitViewController setPrimaryEdge:UISplitViewControllerPrimaryEdgeTrailing];
+			self.primaryEdge = UISplitViewControllerPrimaryEdgeTrailing;
 		} else {
-			[self.splitViewController setPrimaryEdge:UISplitViewControllerPrimaryEdgeLeading];
+			self.primaryEdge = UISplitViewControllerPrimaryEdgeLeading;
 		}
 	}
 }
 
-- (void)rnn_setMinWidth:(NSNumber *)minWidth {
-	[self.splitViewController setMinimumPrimaryColumnWidth:[minWidth doubleValue]];
+- (void)rnn_setMinWidth:(Number *)minWidth {
+	if (minWidth.hasValue) {
+		[self setMinimumPrimaryColumnWidth:[[minWidth get] doubleValue]];
+	}
 }
 
-- (void)rnn_setMaxWidth:(NSNumber *)maxWidth {
-	[self.splitViewController setMaximumPrimaryColumnWidth:[maxWidth doubleValue]];
+- (void)rnn_setMaxWidth:(Number *)maxWidth {
+	if (maxWidth.hasValue) {
+		[self setMaximumPrimaryColumnWidth:[[maxWidth get] doubleValue]];
+	}
 }
 
 @end
