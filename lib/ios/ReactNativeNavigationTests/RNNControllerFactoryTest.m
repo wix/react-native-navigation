@@ -6,6 +6,7 @@
 #import "RNNSideMenuChildVC.h"
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
+#import "RNNTopTabsViewController.h"
 #import "RNNSplitViewController.h"
 
 @interface RNNControllerFactoryTest : XCTestCase
