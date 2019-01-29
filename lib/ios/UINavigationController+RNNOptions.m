@@ -47,11 +47,9 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 }
 
 - (void)rnn_setNavigationBarBorderColor:(UIColor *)color withHeight:(double)height {
-	if (color == nil) {
-		self.navigationBar
-		.shadowImage = nil;
-	} else {
-		if (self.navigationBar.shadowImage == nil) { self.navigationBar.shadowImage = [[UIImage alloc] init]; }
+	self.navigationBar
+	.shadowImage = nil;
+	if (color != nil) {
 		self.navigationBar
 		.shadowImage = [UIImage imageWithColor:color withHeight:(double) height];
 	}
