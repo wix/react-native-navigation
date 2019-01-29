@@ -1,6 +1,7 @@
 #import "UINavigationController+RNNOptions.h"
 #import "RNNFontAttributesCreator.h"
 #import "UIImage+tint.h"
+#import "UIImage+color.h"
 
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
@@ -42,6 +43,16 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	} else {
 		self.navigationBar
 		.shadowImage = nil;
+	}
+}
+
+- (void)rnn_setNavigationBarBorderColor:(UIColor *)color withHeight:(double)height {
+	if (color == nil) {
+		self.navigationBar
+		.shadowImage = nil;
+	} else {
+		self.navigationBar
+		.shadowImage = [UIImage imageWithColor: color withHeight:height];
 	}
 }
 
@@ -114,7 +125,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	
 	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
 	backItem.tintColor = color;
-
+	
 	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
