@@ -14,6 +14,8 @@
 
 - (void)rnn_setNavigationBarNoBorder:(BOOL)noBorder;
 
+- (void)rnn_setNavigationBarBorderColor:(UIColor *)color withHeight:(double)height;
+
 - (void)rnn_setBarStyle:(UIBarStyle)barStyle;
 
 - (void)rnn_setNavigationBarFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize color:(UIColor *)color;

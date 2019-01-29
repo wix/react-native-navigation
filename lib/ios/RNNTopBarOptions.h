@@ -18,6 +18,8 @@
 @property (nonatomic, strong) Color* rightButtonColor;
 @property (nonatomic, strong) Color* leftButtonDisabledColor;
 @property (nonatomic, strong) Color* rightButtonDisabledColor;
+@property (nonatomic, strong) Color* borderColor;
+@property (nonatomic, strong) Number* borderHeight;
 @property (nonatomic, strong) Bool* drawBehind;
 @property (nonatomic, strong) Bool* noBorder;
 @property (nonatomic, strong) Bool* animate;

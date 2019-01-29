@@ -24,6 +24,11 @@
 	[navigationController rnn_setNavigationBarLargeTitleVisible:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
 	[navigationController rnn_setNavigationBarLargeTitleFontFamily:[options.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[options.topBar.largeTitle.color getWithDefaultValue:nil]];
 	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:nil] color:[options.topBar.title.color getWithDefaultValue:nil]];
+	if ([options.topBar.noBorder getWithDefaultValue:NO] == NO) {
+		double borderHeight = options.topBar.borderHeight.hasValue
+		? [options.topBar.borderHeight.get doubleValue] : 1.0f;
+		[navigationController rnn_setNavigationBarBorderColor: [options.topBar.borderColor getWithDefaultValue:nil] withHeight:borderHeight];
+	}
 	[navigationController rnn_setBackButtonColor:[options.topBar.backButton.color getWithDefaultValue:nil]];
 	[navigationController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
 }
@@ -38,6 +43,11 @@
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options {
 	RNNNavigationController* navigationController = self.bindedViewController;
 	[navigationController setTopBarBackgroundColor:[options.topBar.background.color getWithDefaultValue:nil]];
+	if ([options.topBar.noBorder getWithDefaultValue:NO] == NO) {
+		double borderHeight = options.topBar.borderHeight.hasValue
+		? [options.topBar.borderHeight.get doubleValue] : 1.0f;
+		[navigationController rnn_setNavigationBarBorderColor: [options.topBar.borderColor getWithDefaultValue:nil] withHeight:borderHeight];
+	}
 	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:@(17)] color:[options.topBar.title.color getWithDefaultValue:[UIColor blackColor]]];
 	[navigationController rnn_setNavigationBarLargeTitleVisible:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
 }
@@ -91,6 +101,14 @@
 		[navigationController setTopBarBackgroundColor:newOptions.topBar.background.color.get];
 	}
 	
+	if (newOptions.topBar.borderColor.hasValue) {
+		if (newOptions.topBar.noBorder.hasValue == NO || newOptions.topBar.noBorder.get == NO) {
+			double borderHeight = newOptions.topBar.borderHeight.hasValue
+			? [newOptions.topBar.borderHeight.get doubleValue] : 1.0f;
+			[navigationController rnn_setNavigationBarBorderColor:newOptions.topBar.borderColor.get withHeight:borderHeight];
+		}
+	}
+	
 	if (newOptions.topBar.largeTitle.visible.hasValue) {
 		[navigationController rnn_setNavigationBarLargeTitleVisible:newOptions.topBar.largeTitle.visible.get];
 	}
@@ -107,7 +125,6 @@
 	[navigationController rnn_setNavigationBarLargeTitleFontFamily:[newOptions.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[newOptions.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[newOptions.topBar.largeTitle.color getWithDefaultValue:nil]];
 	
 	[navigationController rnn_setNavigationBarFontFamily:[newOptions.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[newOptions.topBar.title.fontSize getWithDefaultValue:nil] color:[newOptions.topBar.title.color getWithDefaultValue:nil]];
-	
 }
 
 @end
