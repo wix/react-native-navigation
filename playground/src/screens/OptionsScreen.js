@@ -269,8 +269,11 @@ class OptionsScreen extends Component {
       component: {
         name: 'navigation.playground.CustomDialog',
         options: {
+          layout: {
+            componentBackgroundColor: 'transparent'
+          },
           overlay: {
-            interceptTouchOutside
+            interceptTouchOutside: false
           }
         }
       }

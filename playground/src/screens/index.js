@@ -13,6 +13,7 @@ const ScrollViewScreen = require('./ScrollViewScreen');
 const CustomTransitionOrigin = require('./CustomTransitionOrigin');
 const CustomTransitionDestination = require('./CustomTransitionDestination');
 const CustomDialog = require('./CustomDialog');
+const CustomDialogWithScroll = require('./complexlayouts/CustomDialogWithScroll');
 const BandHandlerScreen = require('./BackHandlerScreen');
 const SideMenuScreen = require('./SideMenuScreen');
 const TopTabScreen = require('./TopTabScreen');
@@ -50,6 +51,7 @@ function registerScreens() {
   Navigation.registerComponent(`navigation.playground.OrientationSelectScreen`, () => OrientationSelectScreen);
   Navigation.registerComponent(`navigation.playground.OrientationDetectScreen`, () => OrientationDetectScreen);
   Navigation.registerComponent('navigation.playground.CustomDialog', () => CustomDialog);
+  Navigation.registerComponent('navigation.playground.CustomDialogWithScroll', () => CustomDialogWithScroll);
   Navigation.registerComponent('navigation.playground.BackHandlerScreen', () => BandHandlerScreen);
   Navigation.registerComponent('navigation.playground.SideMenuScreen', () => SideMenuScreen);
   Navigation.registerComponent('navigation.playground.TopTabScreen', () => TopTabScreen);

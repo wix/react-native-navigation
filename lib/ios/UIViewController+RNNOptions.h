@@ -8,7 +8,7 @@
 
 - (void)rnn_setModalTransitionStyle:(UIModalTransitionStyle)modalTransitionStyle;
 
-- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder;
+- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar;
 
 - (void)rnn_setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden;
 

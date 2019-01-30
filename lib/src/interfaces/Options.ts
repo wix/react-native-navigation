@@ -5,6 +5,7 @@ type Color = string;
 type FontFamily = string;
 type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
+type SystemItemIcon = 'done' | 'cancel' | 'edit' | 'save' | 'add' | 'flexibleSpace' | 'fixedSpace' | 'compose' | 'reply' | 'action' | 'organize' | 'bookmarks' | 'search' | 'refresh' | 'stop' | 'camera' | 'trash' | 'play' | 'pause' | 'rewind' | 'fastForward' | 'undo' | 'redo';
 
 export interface OptionsSplitView {
   /**
@@ -257,6 +258,10 @@ export interface OptionsTopBarButton {
     passProps?: object;
   };
   /**
+   * (iOS only) Set the button as an iOS system icon
+   */
+  systemItem?: SystemItemIcon;
+  /**
    * Set the button text
    */
   text?: string;
@@ -365,6 +370,11 @@ export interface OptionsTopBar {
    */
   searchBarPlaceholder?: string;
   /**
+   * Controls Hiding NavBar on focus UISearchBar
+   * #### (iOS 11+ specific)
+   */
+  hideNavBarOnFocusSearchBar?: boolean;
+  /**
    * Control the Large Title configuration
    * #### (iOS 11+ specific)
    */
@@ -435,6 +445,11 @@ export interface OptionsBottomTabs {
    * Set a background color for the bottom tabs
    */
   backgroundColor?: Color;
+  /**
+   * Set when tabs are attached to hierarchy consequently when the
+   * RootView's constructor is called.
+   */
+  tabsAttachMode?: 'together' | 'afterInitialTab' | 'onSwitchToTab';
   /**
    * Control the Bottom Tabs blur style
    * #### (iOS specific)
@@ -686,6 +701,21 @@ export interface OptionsAnimationPropertiesId extends OptionsAnimationProperties
 
 export interface OptionsAnimationSeparate {
   /**
+   * Wait for the View to render before start animation
+   * Example:
+```js
+animations: {
+  push: {
+    waitForRender: true
+  },
+  showModal: {
+    waitForRender: true
+  }
+}
+```
+   */
+  waitForRender?: boolean;
+  /**
    * Configure animations for the top bar
    */
   topBar?: OptionsAnimationPropertiesId;
@@ -790,6 +820,10 @@ export interface Options {
    * Configure the side menu
    */
   sideMenu?: OptionsSideMenu;
+  /**
+   * Configure the splitView controller
+   */
+  splitView?: OptionsSplitView;
   /**
    * Configure the overlay
    */

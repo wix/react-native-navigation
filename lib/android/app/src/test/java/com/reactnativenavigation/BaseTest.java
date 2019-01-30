@@ -19,6 +19,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 
+import java.util.Arrays;
+
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
@@ -42,10 +45,18 @@ public abstract class BaseTest {
         return Robolectric.buildActivity(clazz);
     }
 
+    public void assertIsChild(ViewGroup parent, ViewController... children) {
+        forEach(Arrays.asList(children),c -> assertIsChild(parent, c.getView()));
+    }
+
     public void assertIsChild(ViewGroup parent, View child) {
         assertThat(parent).isNotNull();
         assertThat(child).isNotNull();
         assertThat(ViewUtils.isChildOf(parent, child)).isTrue();
+    }
+
+    public void assertNotChildOf(ViewGroup parent, ViewController... children) {
+        forEach(Arrays.asList(children), c -> assertNotChildOf(parent, c.getView()));
     }
 
     public void assertNotChildOf(ViewGroup parent, View child) {

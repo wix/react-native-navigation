@@ -44,6 +44,10 @@
 		if(barButtonItem) {
 			[barButtonItems addObject:barButtonItem];
 		}
+		UIColor* color = [self color:[RCTConvert UIColor:button[@"color"]] defaultColor:[defaultStyle.color getWithDefaultValue:nil]];
+		if (color) {
+			self.viewController.navigationController.navigationBar.tintColor = color;
+		}
 	}
 	
 	if ([side isEqualToString:@"left"]) {
@@ -67,6 +71,7 @@
 	NSString* buttonId = dictionary[@"id"];
 	NSString* title = [self getValue:dictionary[@"text"] withDefault:[defaultStyle.text getWithDefaultValue:nil]];
 	NSDictionary* component = dictionary[@"component"];
+	NSString* systemItemName = dictionary[@"systemItem"];
 	
 	if (!buttonId) {
 		@throw [NSException exceptionWithName:@"NSInvalidArgumentException" reason:[@"button id is not specified " stringByAppendingString:title] userInfo:nil];
@@ -91,6 +96,8 @@
 		if (buttonTextAttributes.allKeys.count > 0) {
 			[barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateNormal];
 		}
+	} else if (systemItemName) {
+		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withSystemItem:systemItemName];
 	} else {
 		return nil;
 	}
@@ -115,6 +122,7 @@
 	if (color) {
 		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
 		[barButtonItem setImage:[[iconImage withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+		barButtonItem.tintColor = color;
 	}
 	
 	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:[defaultStyle.fontSize getWithDefaultValue:nil]];

@@ -11,6 +11,9 @@ if (Platform.OS === 'android') {
           title
         },
         options: {
+          layout: {
+            componentBackgroundColor: 'transparent'
+          },
           overlay: {
             interceptTouchOutside: true
           }

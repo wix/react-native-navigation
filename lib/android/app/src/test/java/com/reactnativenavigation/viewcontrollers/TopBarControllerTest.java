@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
@@ -12,6 +13,7 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -19,38 +21,42 @@ import static org.mockito.Mockito.verify;
 public class TopBarControllerTest extends BaseTest {
 
     private TopBarController uut;
-    private TitleBar titleBar;
-    private TopBar topBar;
-    private Activity activity;
 
     @Override
     public void beforeEach() {
-        activity = newActivity();
-        uut = new TopBarController() {
-            @Override
-            protected TopBar createTopBar(Context context, StackLayout stackLayout) {
-                topBar = spy(new TopBar(context, stackLayout) {
-                    @Override
-                    protected TitleBar createTitleBar(Context context) {
-                        titleBar = spy(super.createTitleBar(context));
-                        return titleBar;
-                    }
-                });
-                return topBar;
-            }
-        };
-    }
-
-    @Test
-    public void createView_setElevationToCancelDefaultElevationAnimationWhichMightConflictWithElevationValueFromDefaultOptions() {
-        uut.createView(activity, Mockito.mock(StackLayout.class));
-        verify(topBar).setElevation(0);
+        uut = new TopBarController();
     }
 
     @Test
     public void clear() {
+        final TitleBar[] titleBar = new TitleBar[1];
+        uut = new TopBarController() {
+            @NonNull
+            @Override
+            protected TopBar createTopBar(Context context, StackLayout stackLayout) {
+                return new TopBar(context, stackLayout) {
+                    @Override
+                    protected TitleBar createTitleBar(Context context) {
+                        titleBar[0] = spy(super.createTitleBar(context));
+                        return titleBar[0];
+                    }
+                };
+            }
+        };
+        Activity activity = newActivity();
         uut.createView(activity, Mockito.mock(StackLayout.class));
         uut.clear();
-        verify(titleBar, times(1)).clear();
+        verify(titleBar[0], times(1)).clear();
+    }
+
+    @Test
+    public void destroy() {
+        uut.createView(newActivity(), mock(StackLayout.class));
+        uut.clear();
+    }
+
+    @Test
+    public void destroy_canBeCalledBeforeViewIsCreated() {
+        uut.clear();
     }
 }
