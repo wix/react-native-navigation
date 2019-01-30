@@ -20,6 +20,8 @@
 	self.rightButtonColor = [ColorParser parse:dict key:@"rightButtonColor"];
 	self.leftButtonDisabledColor = [ColorParser parse:dict key:@"leftButtonDisabledColor"];
 	self.rightButtonDisabledColor = [ColorParser parse:dict key:@"rightButtonDisabledColor"];
+	self.borderColor = [ColorParser parse:dict key:@"borderColor"];
+	self.borderHeight = [NumberParser parse:dict key:@"borderHeight"];
 	self.drawBehind = [BoolParser parse:dict key:@"drawBehind"];
 	self.noBorder = [BoolParser parse:dict key:@"noBorder"];
 	self.animate = [BoolParser parse:dict key:@"animate"];
