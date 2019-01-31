@@ -82,6 +82,19 @@
 	[self.options overrideOptions:options];
 }
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	if (@available(iOS 11.0, *)) {
+		[self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+	}
+}
+
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures
+{
+	return UIRectEdgeAll;
+}
+
 - (void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	_isBeingPresented = YES;
