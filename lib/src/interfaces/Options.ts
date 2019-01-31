@@ -446,6 +446,11 @@ export interface OptionsBottomTabs {
    */
   backgroundColor?: Color;
   /**
+   * Set when tabs are attached to hierarchy consequently when the
+   * RootView's constructor is called.
+   */
+  tabsAttachMode?: 'together' | 'afterInitialTab' | 'onSwitchToTab';
+  /**
    * Control the Bottom Tabs blur style
    * #### (iOS specific)
    * @requires translucent: true
@@ -815,6 +820,10 @@ export interface Options {
    * Configure the side menu
    */
   sideMenu?: OptionsSideMenu;
+  /**
+   * Configure the splitView controller
+   */
+  splitView?: OptionsSplitView;
   /**
    * Configure the overlay
    */

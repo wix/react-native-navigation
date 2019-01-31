@@ -111,7 +111,7 @@ public class RootPresenterTest extends BaseTest {
         ViewController spy = spy(root);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.setRoot(spy, defaultOptions, listener, reactInstanceManager);
-        verify(spy).setOnAppearedListener(any());
+        verify(spy).addOnAppearedListener(any());
         assertThat(spy.getView().getAlpha()).isZero();
         verifyZeroInteractions(listener);
 

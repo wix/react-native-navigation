@@ -34,6 +34,7 @@ public class BottomTabsOptions {
         options.elevation = FractionParser.parse(json, "elevation");
         options.testId = TextParser.parse(json, "testID");
         options.titleDisplayMode = TitleDisplayMode.fromString(json.optString("titleDisplayMode"));
+        options.tabsAttachMode = TabsAttachMode.fromString(json.optString("tabsAttachMode"));
 
 		return options;
 	}
@@ -47,6 +48,7 @@ public class BottomTabsOptions {
 	public Text currentTabId = new NullText();
     public Text testId = new NullText();
     public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
+    public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
 
 	void mergeWith(final BottomTabsOptions other) {
 		if (other.currentTabId.hasValue()) currentTabId = other.currentTabId;
@@ -58,6 +60,7 @@ public class BottomTabsOptions {
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
         if (other.testId.hasValue()) testId = other.testId;
         if (other.titleDisplayMode.hasValue()) titleDisplayMode = other.titleDisplayMode;
+        if (other.tabsAttachMode.hasValue()) tabsAttachMode = other.tabsAttachMode;
     }
 
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
@@ -69,6 +72,7 @@ public class BottomTabsOptions {
         if (!elevation.hasValue()) elevation = defaultOptions.elevation;
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
         if (!titleDisplayMode.hasValue()) titleDisplayMode = defaultOptions.titleDisplayMode;
+        if (!tabsAttachMode.hasValue()) tabsAttachMode = defaultOptions.tabsAttachMode;
     }
 
     public void clearOneTimeOptions() {

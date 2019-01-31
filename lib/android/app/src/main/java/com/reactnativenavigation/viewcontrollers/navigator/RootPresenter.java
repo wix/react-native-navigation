@@ -37,7 +37,7 @@ public class RootPresenter {
         root.setWaitForRender(options.animations.setRoot.waitForRender);
         if (options.animations.setRoot.waitForRender.isTrue()) {
             root.getView().setAlpha(0);
-            root.setOnAppearedListener(() -> {
+            root.addOnAppearedListener(() -> {
                 root.getView().setAlpha(1);
                 animateSetRootAndReportSuccess(root, listener, options);
             });
