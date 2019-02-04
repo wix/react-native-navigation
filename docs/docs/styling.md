@@ -231,6 +231,9 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   topBar: {
     height: 70, // TopBar height in dp
+    backButton: {
+      color: 'red'
+    },
     borderColor: 'red',
     borderHeight: 1.3,
     elevation: 1.5, // TopBar elevation in dp
