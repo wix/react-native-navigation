@@ -29,6 +29,8 @@ public class TitleBar extends Toolbar {
 
     private TitleBarButtonController leftButtonController;
     private View component;
+    private Alignment mAlignment;
+    private CharSequence mTitle;
 
     public TitleBar(Context context) {
         super(context);
@@ -40,6 +42,10 @@ public class TitleBar extends Toolbar {
     public void setTitle(CharSequence title) {
         clearComponent();
         super.setTitle(title);
+        if (mTitle != title && mAlignment != null) {
+            this.setTitleAlignment(mAlignment);
+        }
+        mTitle = title;
     }
 
     public String getTitle() {
@@ -72,8 +78,9 @@ public class TitleBar extends Toolbar {
     }
 
     public void setTitleAlignment(Alignment alignment) {
+        mAlignment = alignment;
         TextView title = findTitleTextView();
-        if (title == null) return;
+        if (title == null || title == mTitle) return;
         alignTextView(alignment, title);
     }
 
@@ -94,9 +101,12 @@ public class TitleBar extends Toolbar {
     }
 
     private void alignTextView(Alignment alignment, TextView view) {
+        int width = view.getResources().getDisplayMetrics().widthPixels;
         view.post(() -> {
             if (alignment == Alignment.Center) {
-                view.setX((getWidth() - view.getWidth()) / 2);
+                view.measure(0, 0);
+                //noinspection IntegerDivisionInFloatingPointContext
+                view.setX((width - view.getWidth()) / 2);
             } else if (leftButtonController != null) {
                 view.setX(getContentInsetStartWithNavigation());
             } else {

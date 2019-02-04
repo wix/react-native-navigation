@@ -13,6 +13,7 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.FractionParser;
+import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
@@ -30,6 +31,7 @@ public class TitleOptions {
         options.fontSize = FractionParser.parse(json, "fontSize");
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
+        options.height = NumberParser.parse(json, "height");
 
         return options;
     }

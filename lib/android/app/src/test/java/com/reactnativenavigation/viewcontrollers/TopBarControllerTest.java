@@ -13,6 +13,7 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,5 +47,16 @@ public class TopBarControllerTest extends BaseTest {
         uut.createView(activity, Mockito.mock(StackLayout.class));
         uut.clear();
         verify(titleBar[0], times(1)).clear();
+    }
+
+    @Test
+    public void destroy() {
+        uut.createView(newActivity(), mock(StackLayout.class));
+        uut.clear();
+    }
+
+    @Test
+    public void destroy_canBeCalledBeforeViewIsCreated() {
+        uut.clear();
     }
 }

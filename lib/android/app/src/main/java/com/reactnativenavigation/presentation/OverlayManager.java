@@ -12,7 +12,7 @@ public class OverlayManager {
 
     public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
         overlayRegistry.put(overlay.getId(), overlay);
-        overlay.setOnAppearedListener(() -> listener.onSuccess(overlay.getId()));
+        overlay.addOnAppearedListener(() -> listener.onSuccess(overlay.getId()));
         overlaysContainer.addView(overlay.getView());
     }
 

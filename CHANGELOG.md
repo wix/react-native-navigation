@@ -1,10 +1,40 @@
 # Changelog
+## 2.8.0
+### Added
+* passProps passed to setStackRoot and showOverlay can specify type with generics [#bc23fba](https://github.com/wix/react-native-navigation/commit/bc23fbad608dc9e38a7f09ff76868867310a4d62) by [henrikra](https://github.com/henrikra)
+* passProps passed to showModal can specify type with generics [#34f37aa](https://github.com/wix/react-native-navigation/commit/34f37aa7c5790e10b3f7db8c5a2af23c6848c6c8) by [ruscoder](https://github.com/ruscoder)
+
+#### Android
+* Bottom tabs attach mode [#740ad3c](https://github.com/wix/react-native-navigation/commit/740ad3c326f29f51205b8f0fb046ff0658076925) by [guyca](https://github.com/guyca)
+
+### Fixed
+#### iOS
+* Fix system & back button color [#57d8ff7](https://github.com/wix/react-native-navigation/commit/57d8ff7858f550ade133422e4a02505ed6378968) by [maryjenel](https://github.com/maryjenel)
+
+## 2.7.1
+### Fixed
+#### Android
+* Fix broken static options provided as objects [#4d82292](https://github.com/wix/react-native-navigation/commit/4d82292950471979cfb6c4016e82665fa29fe9da) by [guyca](https://github.com/guyca)
+
+## 2.7.0
+### Added
+* Adding hideNavBarOnFocusSearchBar option [#83f69d4](https://github.com/wix/react-native-navigation/commit/83f69d4effecfbaaf17af3cebdf8a03b38bfa589) by [sganti564](https://github.com/sganti564)
+
+### Fixed
+* Add missing type interface "waitForRender" [#f1ef49e](https://github.com/wix/react-native-navigation/commit/f1ef49e7aeb63ec17b4165cac9d7e9d0cfe6d48e) by [minhtc](https://github.com/minhtc)
+
+### Android
+* Fix title height not being set on Android [#09c8c37](https://github.com/wix/react-native-navigation/commit/09c8c37e644fa0af2f00a7ec0536d814cddc36fd) by [davrosull](https://github.com/davrosull)
+* Support calling mergeOptions on ExternalComponents [#b1e1ec8](https://github.com/wix/react-native-navigation/commit/b1e1ec84ae5f41693e69da17f7427b59e336fc6a) by [guyca](https://github.com/guyca)
+
 ## 2.6.0
 ### Added
 #### iOS
 * Support iOS system item icons for top bar [#7a26ea9](https://github.com/wix/react-native-navigation/commit/7a26ea956cfce65035ec902ef3f403f178b69317) by [BerndSchrooten](https://github.com/BerndSchrooten)
 
 ### Fixed
+* Road to noImplicitAny part 6 (FINAL part) [#08f8581](https://github.com/wix/react-native-navigation/commit/08f8581b3fbf95967a9cc95de2809316065ee275) by [henrikra](https://github.com/henrikra)
+
 #### Android
 * Fix ScrollView not scrollable in Overlay [#d3ab1ac](https://github.com/wix/react-native-navigation/commit/d3ab1ac526f5829fe74989144130a13d83795ad8) by [guyca](https://github.com/guyca)
 

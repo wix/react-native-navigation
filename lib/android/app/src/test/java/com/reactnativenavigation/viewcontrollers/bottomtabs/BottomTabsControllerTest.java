@@ -1,4 +1,4 @@
-package com.reactnativenavigation.viewcontrollers;
+package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -24,7 +24,8 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.ReactComponent;
@@ -66,6 +67,7 @@ public class BottomTabsControllerTest extends BaseTest {
     private ChildControllersRegistry childRegistry;
     private List<ViewController> tabs;
     private BottomTabsPresenter presenter;
+    private BottomTabsAttacher tabsAttacher;
 
     @Override
     public void beforeEach() {
@@ -88,6 +90,7 @@ public class BottomTabsControllerTest extends BaseTest {
         when(child5.handleBack(any())).thenReturn(true);
         tabs = createTabs();
         presenter = spy(new BottomTabsPresenter(tabs, new Options()));
+        tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter));
         uut = createBottomTabs();
         activity.setContentView(uut.getView());
     }
@@ -241,8 +244,9 @@ public class BottomTabsControllerTest extends BaseTest {
         child4 = createStack(pushedScreen);
 
         tabs = new ArrayList<>(Collections.singletonList(child4));
+        tabsAttacher = new BottomTabsAttacher(tabs, presenter);
 
-        initialOptions.bottomTabsOptions.currentTabIndex = new Number(3);
+        initialOptions.bottomTabsOptions.currentTabIndex = new Number(0);
         Options resolvedOptions = new Options();
         uut = new BottomTabsController(activity,
                 tabs,
@@ -252,6 +256,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 "uut",
                 initialOptions,
                 new Presenter(activity, new Options()),
+                tabsAttacher,
                 presenter,
                 new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options())) {
             @Override
@@ -340,6 +345,18 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.initialOptions.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
     }
 
+    @Test
+    public void selectTab() {
+        uut.selectTab(1);
+        verify(tabsAttacher).onTabSelected(tabs.get(1));
+    }
+
+    @Test
+    public void destroy() {
+        uut.destroy();
+        verify(tabsAttacher).destroy();
+    }
+
     @NonNull
     private List<ViewController> createTabs() {
         return Arrays.asList(child1, child2, child3, child4, child5);
@@ -372,6 +389,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 "uut",
                 initialOptions,
                 new Presenter(activity, new Options()),
+                tabsAttacher,
                 presenter,
                 new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options())) {
             @Override
