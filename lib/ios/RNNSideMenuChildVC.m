@@ -52,8 +52,8 @@
 	[self.options overrideOptions:options];
 }
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[self.getCurrentLeaf waitForReactViewRender:wait perform:readyBlock];
+- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.getCurrentChild renderTreeAndWait:wait perform:readyBlock];
 }
 
 - (void)bindChildViewController:(UIViewController<RNNLayoutProtocol>*)child {

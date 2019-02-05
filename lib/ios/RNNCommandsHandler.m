@@ -60,7 +60,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController<RNNLayoutProtocol> *vc = [_controllerFactory createLayout:layout[@"root"]];
 	
-	[vc waitForReactViewRender:[vc.resolveOptions.animations.setRoot.waitForRender getWithDefaultValue:NO] perform:^{
+	[vc renderTreeAndWait:[vc.resolveOptions.animations.setRoot.waitForRender getWithDefaultValue:NO] perform:^{
 		_mainWindow.rootViewController = vc;
 		[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
 		completion() ;
@@ -142,7 +142,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		}
 	} else {
 		id animationDelegate = (newVc.resolveOptions.animations.push.hasCustomAnimation || newVc.getCurrentLeaf.isCustomTransitioned) ? newVc : nil;
-		[newVc.getCurrentLeaf waitForReactViewRender:([newVc.resolveOptions.animations.push.waitForRender getWithDefaultValue:NO] || animationDelegate) perform:^{
+		[newVc renderTreeAndWait:([newVc.resolveOptions.animations.push.waitForRender getWithDefaultValue:NO] || animationDelegate) perform:^{
 			[_stackManager push:newVc onTop:fromVC animated:[newVc.resolveOptions.animations.push.enable getWithDefaultValue:YES] animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 				completion();
@@ -231,7 +231,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayout:layout];
 	
-	[newVc.getCurrentLeaf waitForReactViewRender:[newVc.getCurrentLeaf.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
+	[newVc renderTreeAndWait:[newVc.getCurrentLeaf.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
 		[_modalManager showModal:newVc animated:[newVc.getCurrentChild.resolveOptions.animations.showModal.enable getWithDefaultValue:YES] hasCustomAnimation:newVc.getCurrentChild.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
 			[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
 			completion(componentId);
@@ -282,11 +282,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayout:layout];
-	UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	overlayWindow.rootViewController = overlayVC;
-	[_overlayManager showOverlayWindow:overlayWindow];
-	[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
-	completion();
+	[overlayVC renderTreeAndWait:[overlayVC.options.animations.showOverlay.waitForRender getWithDefaultValue:NO] perform:^{
+		UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+		overlayWindow.rootViewController = overlayVC;
+		[_overlayManager showOverlayWindow:overlayWindow];
+		[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
+		completion();
+	}];
 }
 
 - (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {

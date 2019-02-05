@@ -13,7 +13,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild;
 

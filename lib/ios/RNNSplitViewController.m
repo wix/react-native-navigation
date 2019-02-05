@@ -45,8 +45,24 @@
 	[self.options overrideOptions:options];
 }
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[self.getCurrentLeaf waitForReactViewRender:wait perform:readyBlock];
+- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+		dispatch_group_t group = dispatch_group_create();
+		for (UIViewController<RNNLayoutProtocol>* childViewController in self.childViewControllers) {
+			dispatch_group_enter(group);
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[childViewController renderTreeAndWait:wait perform:^{
+					dispatch_group_leave(group);
+				}];
+			});
+		}
+		
+		dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			readyBlock();
+		});
+	});
 }
 
 - (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {

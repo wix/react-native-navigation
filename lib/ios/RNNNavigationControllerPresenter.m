@@ -133,8 +133,13 @@
 	
 	[navigationController rnn_setNavigationBarFontFamily:[newOptions.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[newOptions.topBar.title.fontSize getWithDefaultValue:nil] color:[newOptions.topBar.title.color getWithDefaultValue:nil]];
 	
-	[self setCustomNavigationBarView:newOptions];
-	[self setCustomNavigationComponentBackground:newOptions];
+	if (newOptions.topBar.component.name.hasValue) {
+		[self setCustomNavigationBarView:newOptions];
+	}
+	
+	if (newOptions.topBar.background.component.name.hasValue) {
+		[self setCustomNavigationComponentBackground:newOptions];
+	}
 }
 
 - (void)setCustomNavigationBarView:(RNNNavigationOptions *)options {

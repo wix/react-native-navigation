@@ -23,14 +23,6 @@
 	
 	self.layoutInfo = layoutInfo;
 	self.creator = creator;
-	if (self.creator) {
-		self.view = [creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId reactViewReadyBlock:^{
-			if (_reactViewReadyBlock) {
-				_reactViewReadyBlock();
-				_reactViewReadyBlock = nil;
-			}
-		}];
-	}
 	
 	self.eventEmitter = eventEmitter;
 	self.presenter = presenter;
@@ -104,11 +96,17 @@
 	[self.eventEmitter sendComponentDidDisappear:self.layoutInfo.componentId componentName:self.layoutInfo.name];
 }
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	if (!wait || self.isExternalViewController) {
 		readyBlock();
-	} else {
-		_reactViewReadyBlock = readyBlock;
+		readyBlock = nil;
+	}
+	
+	if (self.creator) {
+		UIView* reactView = [_creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId reactViewReadyBlock:readyBlock];
+		reactView.backgroundColor = [UIColor clearColor];
+		reactView.frame = self.view.bounds;
+		[self.view addSubview:reactView];
 	}
 }
 

@@ -342,7 +342,7 @@
 	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
-	[[mockedVC expect] waitForReactViewRender:YES perform:[OCMArg any]];
+	[[mockedVC expect] renderTreeAndWait:YES perform:[OCMArg any]];
 	[self.uut setRoot:@{} completion:^{}];
 	[mockedVC verify];
 }
@@ -355,7 +355,7 @@
 	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
-	[[mockedVC expect] waitForReactViewRender:NO perform:[OCMArg any]];
+	[[mockedVC expect] renderTreeAndWait:NO perform:[OCMArg any]];
 	[self.uut setRoot:@{} completion:^{}];
 	[mockedVC verify];
 }
