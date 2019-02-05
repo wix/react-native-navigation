@@ -241,7 +241,8 @@
 - (void)testShowOverlay_invokeNavigationCommandEventWithLayout {
 	[self.store setReadyToReceiveCommands:true];
 	OCMStub([self.overlayManager showOverlayWindow:[OCMArg any]]);
-	OCMStub([self.controllerFactory createLayout:[OCMArg any]]);
+	id mockedVC = [OCMockObject partialMockForObject:self.vc1];	
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
 	NSDictionary* layout = @{};
 	
