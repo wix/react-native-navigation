@@ -9,7 +9,5 @@
 
 - (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions;
 
-- (RNNReactView*)createCustomReactView:(NSString*)name rootViewId:(NSString*)rootViewId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
-
 @end
 
