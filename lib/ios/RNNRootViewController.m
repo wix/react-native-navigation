@@ -236,7 +236,6 @@
 			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
 		}
 		[self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
-		self.navigationController.navigationBar.clipsToBounds = YES;
 	}
 }
 
