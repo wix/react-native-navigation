@@ -62,7 +62,6 @@
 		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar: hideNavBarOnFocusSearchBar];
 	}
 	
-	[self setCustomNavigationTitleView:options];
 	[self setTitleViewWithSubtitle:options];
 }
 
@@ -156,17 +155,25 @@
 	}
 	
 	if (newOptions.topBar.title.component.name.hasValue) {
-		[self setCustomNavigationTitleView:newOptions];
+		[self setCustomNavigationTitleView:newOptions perform:nil];
 	}
 	
 	[self setTitleViewWithSubtitle:newOptions];
 }
 
-- (void)setCustomNavigationTitleView:(RNNNavigationOptions *)options {
+- (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self setCustomNavigationTitleView:options perform:readyBlock];
+}
+
+- (void)setCustomNavigationTitleView:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	UIViewController<RNNLayoutProtocol>* viewController = self.bindedViewController;
+	if (![options.topBar.title.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
+		readyBlock();
+		readyBlock = nil;
+	}
 	
 	if (options.topBar.title.component.name.hasValue) {
-		_customTitleView = (RNNReactView*)[_componentManager createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId reactViewReadyBlock:nil];
+		_customTitleView = (RNNReactView*)[_componentManager createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		_customTitleView.backgroundColor = UIColor.clearColor;
 		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
 		[_customTitleView setAlignment:alignment];
@@ -185,6 +192,9 @@
 		viewController.navigationItem.titleView = _customTitleView;
 	} else {
 		[_customTitleView removeFromSuperview];
+		if (readyBlock) {
+			readyBlock();
+		}
 	}
 }
 

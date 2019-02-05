@@ -139,12 +139,7 @@
 	}
 }
 
-- (void)renderComponentsAndWait:(BOOL)wait options:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (!wait && readyBlock) {
-		readyBlock();
-		readyBlock = nil;
-	}
-	
+- (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 		dispatch_group_t group = dispatch_group_create();
 		
@@ -174,6 +169,10 @@
 
 - (void)setCustomNavigationBarView:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	RNNNavigationController* navigationController = self.bindedViewController;
+	if (![options.topBar.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
+		readyBlock();
+		readyBlock = nil;
+	}
 	if (options.topBar.component.name.hasValue) {
 		RCTRootView *reactView = [_componentManager createComponentIfNotExists:options.topBar.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		
@@ -191,7 +190,10 @@
 
 - (void)setCustomNavigationComponentBackground:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	RNNNavigationController* navigationController = self.bindedViewController;
-	
+	if (![options.topBar.background.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
+		readyBlock();
+		readyBlock = nil;
+	}
 	if (options.topBar.background.component.name.hasValue) {
 		RCTRootView *reactView = [_componentManager createComponentIfNotExists:options.topBar.background.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		

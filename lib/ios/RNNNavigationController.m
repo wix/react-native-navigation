@@ -37,7 +37,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 - (void)onChildWillAppear {
 	[_presenter applyOptions:self.resolveOptions];
-	[_presenter renderComponentsAndWait:NO options:self.resolveOptions perform:nil];
+	[_presenter renderComponents:self.resolveOptions perform:nil];
 	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
 }
 
@@ -67,7 +67,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		}
 		
 		dispatch_group_enter(group);
-		[self.presenter renderComponentsAndWait:wait options:self.resolveOptions perform:^{
+		[self.presenter renderComponents:self.resolveOptions perform:^{
 			dispatch_group_leave(group);
 		}];
 		dispatch_group_wait(group, DISPATCH_TIME_FOREVER);

@@ -6,14 +6,6 @@
 #import "RNNParentProtocol.h"
 
 
-@interface RNNRootViewController() {
-	BOOL _isBeingPresented;
-}
-
-@property (nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
-
-@end
-
 @implementation RNNRootViewController
 
 @synthesize previewCallback;
@@ -71,9 +63,10 @@
 
 - (void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
-	_isBeingPresented = YES;
 	
 	[_presenter applyOptions:self.resolveOptions];
+	[_presenter renderComponents:self.resolveOptions perform:nil];
+	
 	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
 }
 
@@ -88,7 +81,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	_isBeingPresented = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -101,13 +93,16 @@
 		readyBlock();
 		readyBlock = nil;
 	}
-	
-	if (self.creator) {
-		UIView* reactView = [_creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId reactViewReadyBlock:readyBlock];
-		reactView.backgroundColor = [UIColor clearColor];
-		reactView.frame = self.view.bounds;
-		[self.view addSubview:reactView];
-	}
+	[_presenter renderComponents:self.resolveOptions perform:^{
+		if (self.creator) {
+			UIView* reactView = [_creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId reactViewReadyBlock:readyBlock];
+			reactView.backgroundColor = [UIColor clearColor];
+			reactView.frame = self.view.bounds;
+			[self.view addSubview:reactView];
+		} else if (readyBlock) {
+			readyBlock();
+		}
+	}];
 }
 
 - (UIViewController *)getCurrentChild {
