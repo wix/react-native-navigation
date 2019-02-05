@@ -50,6 +50,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private FrameLayout root;
     private View border;
     private View component;
+    private float elevation = -1;
 
     public TopBar(final Context context, StackLayout parentView) {
         super(context);
@@ -195,7 +196,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setTopTabsHeight(int height) {
         if (topTabs.getLayoutParams().height == height) return;
-        topTabs.getLayoutParams().height = height > 0 ? (int) UiUtils.dpToPx(getContext(), height) : height;
+        topTabs.getLayoutParams().height = height > 0 ? UiUtils.dpToPx(getContext(), height) : height;
         topTabs.setLayoutParams(topTabs.getLayoutParams());
     }
 
@@ -212,10 +213,15 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setElevation(Double elevation) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                getElevation() != elevation.floatValue()) {
-            setElevation(UiUtils.dpToPx(getContext(), elevation.floatValue()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getElevation() != elevation.floatValue()) {
+            this.elevation = UiUtils.dpToPx(getContext(), elevation.floatValue());
+            setElevation(this.elevation);
         }
+    }
+
+    @Override
+    public void setElevation(float elevation) {
+        if (elevation == this.elevation) super.setElevation(elevation);
     }
 
     public Toolbar getTitleBar() {

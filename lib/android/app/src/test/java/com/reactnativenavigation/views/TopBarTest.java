@@ -5,10 +5,12 @@ import android.app.Activity;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.junit.Test;
+import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,15 +19,17 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@Config(qualifiers = "xxhdpi")
 public class TopBarTest extends BaseTest {
 
     private TopBar uut;
     private TopBarAnimator animator;
+    private Activity activity;
 
     @SuppressWarnings("Convert2Lambda")
     @Override
     public void beforeEach() {
-        Activity activity = newActivity();
+        activity = newActivity();
         StackLayout parent = new StackLayout(activity, new TopBarController(), null);
         uut = new TopBar(activity, parent);
         animator = spy(new TopBarAnimator(uut));
@@ -53,5 +57,15 @@ public class TopBarTest extends BaseTest {
         uut.hide();
         uut.showAnimate(options);
         verify(animator, times(1)).show(options);
+    }
+
+    @Test
+    public void setElevation_ignoreValuesNotSetByNavigation() {
+        float initialElevation = uut.getElevation();
+        uut.setElevation(1f);
+        assertThat(uut.getElevation()).isEqualTo(initialElevation);
+
+        uut.setElevation(Double.valueOf(2));
+        assertThat(uut.getElevation()).isEqualTo(UiUtils.dpToPx(activity, 2));
     }
 }

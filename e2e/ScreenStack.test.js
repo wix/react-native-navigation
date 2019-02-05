@@ -110,4 +110,11 @@ describe('screen stack', () => {
     await elementById(testIDs.PUSH_BOTTOM_TABS_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
   });
+
+  test(':android: custom back button', async () => {
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await elementById(testIDs.PUSH_CUSTOM_BACK_BUTTON).tap();
+    await elementById(testIDs.CUSTOM_BACK_BUTTON).tap();
+    await expect(elementByLabel('back button clicked')).toBeVisible();
+  });
 });

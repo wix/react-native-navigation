@@ -39,6 +39,13 @@ public class ExternalComponentViewController extends ViewController<ExternalComp
         }
     }
 
+    @Override
+    public void mergeOptions(Options options) {
+        if (options == Options.EMPTY) return;
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
+        super.mergeOptions(options);
+    }
+
     public FragmentActivity getActivity() {
         return (FragmentActivity) super.getActivity();
     }

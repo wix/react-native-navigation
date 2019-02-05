@@ -7,6 +7,7 @@
 #import "RNNRootViewController.h"
 #import "RNNSplitViewController.h"
 #import "RNNNavigationButtons.h"
+#import "RNNSplitViewOptions.h"
 #import "UIViewController+RNNOptions.h"
 #import "UINavigationController+RNNOptions.h"
 
@@ -21,6 +22,7 @@
 	self.topTabs = [[RNNTopTabsOptions alloc] initWithDict:dict[@"topTabs"]];
 	self.topTab = [[RNNTopTabOptions alloc] initWithDict:dict[@"topTab"]];
 	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:dict[@"sideMenu"]];
+	self.splitView = [[RNNSplitViewOptions alloc] initWithDict:dict[@"splitView"]];
 	self.overlay = [[RNNOverlayOptions alloc] initWithDict:dict[@"overlay"]];
 	self.customTransition = [[RNNAnimationOptions alloc] initWithDict:dict[@"customTransition"]];
 	self.animations = [[RNNTransitionsOptions alloc] initWithDict:dict[@"animations"]];
