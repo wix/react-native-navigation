@@ -1,8 +1,20 @@
 #import "RNNBasePresenter.h"
 #import "UIViewController+RNNOptions.h"
 #import "RNNTabBarItemCreator.h"
+#import "RNNReactComponentManager.h"
+
+@interface RNNBasePresenter ()
+@property (nonatomic, strong) RNNReactComponentManager* componentManager;
+@end
+
 
 @implementation RNNBasePresenter
+
+- (instancetype)initWithComponentManager:(RNNReactComponentManager *)componentManager {
+	self = [super init];
+	self.componentManager = componentManager;
+	return self;
+}
 
 - (void)bindViewController:(UIViewController *)bindedViewController {
 	_bindedViewController = bindedViewController;

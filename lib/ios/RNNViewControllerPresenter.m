@@ -8,7 +8,8 @@
 
 @interface RNNViewControllerPresenter() {
 	RNNReactView* _customTitleView;
-	id<RNNRootViewCreator> _creator;
+	RNNTitleViewHelper* _titleViewHelper;
+	RNNReactComponentManager* _componentManager;
 }
 
 @end
@@ -25,10 +26,15 @@
 	return self;
 }
 
-- (void)bindViewController:(UIViewController *)bindedViewController viewCreator:(id<RNNRootViewCreator>)creator {
+- (instancetype)initWithComponentManager:(RNNReactComponentManager *)componentManager {
+	self = [self init];
+	_componentManager = componentManager;
+	return self;
+}
+
+- (void)bindViewController:(UIViewController *)bindedViewController {
 	self.bindedViewController = bindedViewController;
-	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController rootViewCreator:creator];
-	_creator = creator;
+	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController componentManager:_componentManager];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
@@ -43,7 +49,7 @@
 	[viewController rnn_setStatusBarStyle:[options.statusBar.style getWithDefaultValue:@"default"] animated:[options.statusBar.animate getWithDefaultValue:YES]];
 	[viewController rnn_setBackButtonVisible:[options.topBar.backButton.visible getWithDefaultValue:YES]];
 	[viewController rnn_setInterceptTouchOutside:[options.overlay.interceptTouchOutside getWithDefaultValue:YES]];
-
+	
 	if (options.layout.backgroundColor.hasValue) {
 		[viewController rnn_setBackgroundColor:options.layout.backgroundColor.get];
 	}
@@ -154,40 +160,35 @@
 }
 
 - (void)setCustomNavigationTitleView:(RNNNavigationOptions *)options {
-	UIViewController* viewController = self.bindedViewController;
-
-	if (!_customTitleView) {
-		if (options.topBar.title.component.name.hasValue) {
-			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:options.topBar.title.component];
-			_customTitleView.backgroundColor = UIColor.clearColor;
-			NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
-			[_customTitleView setAlignment:alignment];
-			BOOL isCenter = [alignment isEqualToString:@"center"];
-			__weak RNNReactView *weakTitleView = _customTitleView;
-			CGRect frame = viewController.navigationController.navigationBar.bounds;
-			[_customTitleView setFrame:frame];
-			[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
-				if (isCenter) {
-					[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
-				} else {
-					[weakTitleView setFrame:frame];
-				}
-			}];
-			
-			viewController.navigationItem.titleView = _customTitleView;
-		}
-	} else if (_customTitleView && _customTitleView.superview == nil) {
-		if ([viewController.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
-			viewController.navigationItem.title = nil;
-		}
+	UIViewController<RNNLayoutProtocol>* viewController = self.bindedViewController;
+	
+	if (options.topBar.title.component.name.hasValue) {
+		_customTitleView = (RNNReactView*)[_componentManager createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId];
+		_customTitleView.backgroundColor = UIColor.clearColor;
+		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
+		[_customTitleView setAlignment:alignment];
+		BOOL isCenter = [alignment isEqualToString:@"center"];
+		__weak RNNReactView *weakTitleView = _customTitleView;
+		CGRect frame = viewController.navigationController.navigationBar.bounds;
+		[_customTitleView setFrame:frame];
+		[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
+			if (isCenter) {
+				[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
+			} else {
+				[weakTitleView setFrame:frame];
+			}
+		}];
+		
 		viewController.navigationItem.titleView = _customTitleView;
+	} else {
+		[_customTitleView removeFromSuperview];
 	}
 }
 
 - (void)setTitleViewWithSubtitle:(RNNNavigationOptions *)options {
-	if (!_customTitleView && options.topBar.subtitle.text.hasValue) {
-		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.bindedViewController];
-		[titleViewHelper setup];
+	if (!_customTitleView && (_titleViewHelper || options.topBar.subtitle.text.hasValue)) {
+		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.bindedViewController];
+		[_titleViewHelper setup];
 	}
 }
 

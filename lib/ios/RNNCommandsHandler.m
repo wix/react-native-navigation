@@ -58,7 +58,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_modalManager dismissAllModalsAnimated:NO];
 	[_store removeAllComponentsFromWindow:_mainWindow];
 	
-	UIViewController<RNNLayoutProtocol> *vc = [_controllerFactory createLayout:layout[@"root"] saveToStore:_store];
+	UIViewController<RNNLayoutProtocol> *vc = [_controllerFactory createLayout:layout[@"root"]];
 	
 	[vc waitForReactViewRender:[vc.resolveOptions.animations.setRoot.waitForRender getWithDefaultValue:NO] perform:^{
 		_mainWindow.rootViewController = vc;
@@ -97,7 +97,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
-	UIViewController<RNNLayoutProtocol> *newVc = [_controllerFactory createLayout:layout saveToStore:_store];
+	UIViewController<RNNLayoutProtocol> *newVc = [_controllerFactory createLayout:layout];
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	
 	if ([[newVc.resolveOptions.preview.reactTag getWithDefaultValue:@(0)] floatValue] > 0) {
@@ -154,7 +154,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)setStackRoot:(NSString*)componentId children:(NSArray*)children completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
- 	NSArray<RNNLayoutProtocol> *childViewControllers = [_controllerFactory createChildrenLayout:children saveToStore:_store];
+ 	NSArray<RNNLayoutProtocol> *childViewControllers = [_controllerFactory createChildrenLayout:children];
 	RNNNavigationOptions* options = [childViewControllers.lastObject getCurrentChild].resolveOptions;
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
@@ -229,7 +229,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)showModal:(NSDictionary*)layout completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayout:layout saveToStore:_store];
+	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayout:layout];
 	
 	[newVc.getCurrentLeaf waitForReactViewRender:[newVc.getCurrentLeaf.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
 		[_modalManager showModal:newVc animated:[newVc.getCurrentChild.resolveOptions.animations.showModal.enable getWithDefaultValue:YES] hasCustomAnimation:newVc.getCurrentChild.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
@@ -281,7 +281,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayout:layout saveToStore:_store];
+	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayout:layout];
 	UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	overlayWindow.rootViewController = overlayVC;
 	[_overlayManager showOverlayWindow:overlayWindow];

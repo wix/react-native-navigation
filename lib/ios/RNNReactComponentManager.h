@@ -1,0 +1,17 @@
+#import <Foundation/Foundation.h>
+#import "RNNReactView.h"
+#import "RNNComponentOptions.h"
+#import "RNNStore.h"
+#import "RNNRootViewCreator.h"
+
+@interface RNNReactComponentManager : NSObject
+
+- (instancetype)initWithCreator:(id<RNNRootViewCreator>)creator;
+
+- (RNNReactView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId;
+
+- (void)removeComponent:(NSString *)componentId;
+
+- (void)clean;
+
+@end

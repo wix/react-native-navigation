@@ -1,6 +1,6 @@
 #import "RNNLayoutInfo.h"
-#import "RNNViewControllerPresenter.h"
 #import "RNNLeafProtocol.h"
+#import "RNNBasePresenter.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 

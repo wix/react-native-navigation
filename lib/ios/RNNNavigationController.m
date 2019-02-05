@@ -17,7 +17,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self = [super init];
 
 	self.presenter = presenter;
-	[self.presenter bindViewController:self viewCreator:creator];
+	[self.presenter bindViewController:self];
 	
 	self.defaultOptions = defaultOptions;
 	self.options = options;

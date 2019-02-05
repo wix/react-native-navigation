@@ -20,6 +20,7 @@
 	id<RNNRootViewCreator> _creator;
 	RNNStore *_store;
 	RCTBridge *_bridge;
+	RNNReactComponentManager* _componentManager;
 }
 
 # pragma mark public
@@ -27,6 +28,8 @@
 
 - (instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
 						   eventEmitter:(RNNEventEmitter*)eventEmitter
+								  store:(RNNStore *)store
+					   componentManager:(RNNReactComponentManager *)componentManager
 							  andBridge:(RCTBridge *)bridge {
 	
 	self = [super init];
@@ -34,24 +37,22 @@
 	_creator = creator;
 	_eventEmitter = eventEmitter;
 	_bridge = bridge;
+	_store = store;
+	_componentManager = componentManager;
 	
 	return self;
 }
 
-- (UIViewController<RNNParentProtocol> *)createLayout:(NSDictionary*)layout saveToStore:(RNNStore *)store {
-	_store = store;
+- (UIViewController<RNNParentProtocol> *)createLayout:(NSDictionary*)layout {
 	UIViewController<RNNParentProtocol>* layoutViewController = [self fromTree:layout];
-	_store = nil;
 	return layoutViewController;
 }
 
-- (NSArray<RNNLayoutProtocol> *)createChildrenLayout:(NSArray*)children saveToStore:(RNNStore *)store {
-	_store = store;
+- (NSArray<RNNLayoutProtocol> *)createChildrenLayout:(NSArray*)children {
 	NSMutableArray<RNNLayoutProtocol>* childViewControllers = [NSMutableArray<RNNLayoutProtocol> new];
 	for (NSDictionary* layout in children) {
 		[childViewControllers addObject:[self fromTree:layout]];
 	}
-	_store = nil;
 	return childViewControllers;
 }
 
@@ -114,9 +115,7 @@
 - (UIViewController<RNNParentProtocol> *)createComponent:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithComponentManager:_componentManager];
 	
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
 	
@@ -138,8 +137,7 @@
 
 
 - (UIViewController<RNNParentProtocol> *)createStack:(RNNLayoutNode*)node {
-	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] init];
-	
+	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] initWithComponentManager:_componentManager];
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
 	

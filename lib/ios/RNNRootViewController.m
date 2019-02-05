@@ -34,7 +34,7 @@
 	
 	self.eventEmitter = eventEmitter;
 	self.presenter = presenter;
-	[self.presenter bindViewController:self viewCreator:self.creator];
+	[self.presenter bindViewController:self];
 	self.options = options;
 	self.defaultOptions = defaultOptions;
 	

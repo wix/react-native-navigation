@@ -8,11 +8,13 @@
 #import "RNNBridgeModule.h"
 #import "RNNRootViewCreator.h"
 #import "RNNReactRootViewCreator.h"
+#import "RNNReactComponentManager.h"
 
 @interface RNNBridgeManager() <RCTBridgeDelegate>
 
 @property (nonatomic, strong, readwrite) RCTBridge *bridge;
 @property (nonatomic, strong, readwrite) RNNStore *store;
+@property (nonatomic, strong, readwrite) RNNReactComponentManager *componentManager;
 
 @end
 
@@ -77,7 +79,8 @@
 	RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
 
 	id<RNNRootViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge];
-	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter andBridge:bridge];
+	_componentManager = [[RNNReactComponentManager alloc] initWithCreator:rootViewCreator];
+	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter store:_store componentManager:_componentManager andBridge:bridge];
 	
 	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:[RNNOverlayManager new] mainWindow:_mainWindow];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
@@ -89,6 +92,7 @@
 
 - (void)onJavaScriptWillLoad {
 	[_store clean];
+	[_componentManager clean];
 }
 
 - (void)onJavaScriptLoaded {

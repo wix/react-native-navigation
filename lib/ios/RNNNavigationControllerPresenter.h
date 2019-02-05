@@ -1,10 +1,11 @@
 #import "RNNBasePresenter.h"
 #import "RNNRootViewCreator.h"
+#import "RNNReactComponentManager.h"
 
 @interface RNNNavigationControllerPresenter : RNNBasePresenter
 
-- (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
+- (instancetype)initWithComponentManager:(RNNReactComponentManager *)componentManager;
 
-- (void)bindViewController:(UIViewController *)bindedViewController viewCreator:(id<RNNRootViewCreator>)creator;
+- (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
 
 @end
