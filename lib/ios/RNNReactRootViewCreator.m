@@ -6,7 +6,7 @@
 	RCTBridge *_bridge;
 }
 
--(instancetype)initWithBridge:(RCTBridge*)bridge {
+- (instancetype)initWithBridge:(RCTBridge*)bridge {
 	self = [super init];
 	
 	_bridge = bridge;
@@ -26,8 +26,12 @@
 	return view;
 }
 
--(UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions {
+- (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions {
 	return [self createRootView:componentOptions.name.get rootViewId:componentOptions.componentId.get reactViewReadyBlock:nil];
+}
+
+- (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+	return [self createRootView:componentOptions.name.get rootViewId:componentOptions.componentId.get reactViewReadyBlock:reactViewReadyBlock];
 }
 
 @end

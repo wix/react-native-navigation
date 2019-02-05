@@ -89,7 +89,7 @@
 		componentOptions.componentId = [[Text alloc] initWithValue:component[@"componentId"]];
 		componentOptions.name = [[Text alloc] initWithValue:component[@"name"]];
 		
-		RNNReactView *view = [_componentManager createComponentIfNotExists:componentOptions parentComponentId:self.viewController.layoutInfo.componentId];
+		RNNReactView *view = [_componentManager createComponentIfNotExists:componentOptions parentComponentId:self.viewController.layoutInfo.componentId reactViewReadyBlock:nil];
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
 	} else if (iconImage) {
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];

@@ -8,7 +8,7 @@
 
 - (instancetype)initWithCreator:(id<RNNRootViewCreator>)creator;
 
-- (RNNReactView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId;
+- (RNNReactView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 
 - (void)removeComponent:(NSString *)componentId;
 

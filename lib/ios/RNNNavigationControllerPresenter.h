@@ -8,4 +8,6 @@
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
 
+- (void)renderComponentsAndWait:(BOOL)wait options:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+
 @end

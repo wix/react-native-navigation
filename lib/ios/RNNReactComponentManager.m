@@ -16,13 +16,15 @@
 	return self;
 }
 
-- (RNNReactView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId {
+- (RNNReactView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
 	NSMutableDictionary* parentComponentDict = [self componentsForParentId:parentComponentId];
 	
 	RNNReactView* reactView = [parentComponentDict objectForKey:component.componentId.get];
 	if (!reactView) {
-		reactView = (RNNReactView *)[_creator createRootViewFromComponentOptions:component];
+		reactView = (RNNReactView *)[_creator createRootViewFromComponentOptions:component reactViewReadyBlock:reactViewReadyBlock];
 		[parentComponentDict setObject:reactView forKey:component.componentId.get];
+	} else if (reactViewReadyBlock) {
+		reactViewReadyBlock();
 	}
 	
 	return reactView;

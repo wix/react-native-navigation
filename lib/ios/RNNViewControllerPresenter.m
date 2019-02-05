@@ -159,16 +159,14 @@
 		[self setCustomNavigationTitleView:newOptions];
 	}
 	
-	if (newOptions.topBar.subtitle.text.hasValue) {
-		[self setTitleViewWithSubtitle:newOptions];
-	}
+	[self setTitleViewWithSubtitle:newOptions];
 }
 
 - (void)setCustomNavigationTitleView:(RNNNavigationOptions *)options {
 	UIViewController<RNNLayoutProtocol>* viewController = self.bindedViewController;
 	
 	if (options.topBar.title.component.name.hasValue) {
-		_customTitleView = (RNNReactView*)[_componentManager createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId];
+		_customTitleView = (RNNReactView*)[_componentManager createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId reactViewReadyBlock:nil];
 		_customTitleView.backgroundColor = UIColor.clearColor;
 		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
 		[_customTitleView setAlignment:alignment];
@@ -191,8 +189,17 @@
 }
 
 - (void)setTitleViewWithSubtitle:(RNNNavigationOptions *)options {
-	if (!_customTitleView && (_titleViewHelper || options.topBar.subtitle.text.hasValue)) {
+	if (!_customTitleView && options.topBar.subtitle.text.hasValue) {
 		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.bindedViewController];
+		[_titleViewHelper setup];
+	} else if (_titleViewHelper) {
+		if (options.topBar.title.text.hasValue) {
+			[_titleViewHelper setTitleOptions:options.topBar.title];
+		}
+		if (options.topBar.subtitle.text.hasValue) {
+			[_titleViewHelper setSubtitleOptions:options.topBar.subtitle];
+		}
+		
 		[_titleViewHelper setup];
 	}
 }

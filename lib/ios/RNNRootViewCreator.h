@@ -9,5 +9,7 @@
 
 - (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions;
 
+- (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
+
 @end
 
