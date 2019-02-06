@@ -155,6 +155,9 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
  	NSArray<RNNLayoutProtocol> *childViewControllers = [_controllerFactory createChildrenLayout:children];
+	for (UIViewController<RNNLayoutProtocol>* viewController in childViewControllers) {
+		[viewController renderTreeAndWait:NO perform:nil];
+	}
 	RNNNavigationOptions* options = [childViewControllers.lastObject getCurrentChild].resolveOptions;
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;

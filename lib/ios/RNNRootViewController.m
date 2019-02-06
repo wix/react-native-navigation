@@ -89,20 +89,29 @@
 }
 
 - (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (!wait || self.isExternalViewController) {
-		readyBlock();
-		readyBlock = nil;
-	}
-	[_presenter renderComponents:self.resolveOptions perform:^{
-		if (self.creator) {
-			UIView* reactView = [_creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId reactViewReadyBlock:readyBlock];
-			reactView.backgroundColor = [UIColor clearColor];
-			reactView.frame = self.view.bounds;
-			[self.view addSubview:reactView];
-		} else if (readyBlock) {
+	if (self.isExternalViewController) {
+		if (readyBlock) {
 			readyBlock();
 		}
+		return;
+	}
+	
+	__block RNNReactViewReadyCompletionBlock readyBlockCopy = readyBlock;
+	UIView* reactView = [_creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId reactViewReadyBlock:^{
+		[_presenter renderComponents:self.resolveOptions perform:^{
+			if (readyBlockCopy) {
+				readyBlockCopy();
+				readyBlockCopy = nil;
+			}
+		}];
 	}];
+	reactView.backgroundColor = [UIColor clearColor];
+	self.view = reactView;
+	
+	if (!wait && readyBlock) {
+		readyBlockCopy();
+		readyBlockCopy = nil;
+	}
 }
 
 - (UIViewController *)getCurrentChild {

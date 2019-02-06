@@ -154,11 +154,11 @@
 		rootView.passThroughTouches = !newOptions.overlay.interceptTouchOutside.get;
 	}
 	
+	[self setTitleViewWithSubtitle:newOptions];
+	
 	if (newOptions.topBar.title.component.name.hasValue) {
 		[self setCustomNavigationTitleView:newOptions perform:nil];
 	}
-	
-	[self setTitleViewWithSubtitle:newOptions];
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
