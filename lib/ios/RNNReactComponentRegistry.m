@@ -1,13 +1,13 @@
-#import "RNNReactComponentManager.h"
+#import "RNNReactComponentRegistry.h"
 
-@interface RNNReactComponentManager () {
+@interface RNNReactComponentRegistry () {
 	id<RNNRootViewCreator> _creator;
 	NSMutableDictionary* _componentStore;
 }
 
 @end
 
-@implementation RNNReactComponentManager
+@implementation RNNReactComponentRegistry
 
 - (instancetype)initWithCreator:(id<RNNRootViewCreator>)creator {
 	self = [super init];

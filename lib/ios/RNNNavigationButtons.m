@@ -10,16 +10,16 @@
 @property (weak, nonatomic) UIViewController<RNNLayoutProtocol>* viewController;
 @property (strong, nonatomic) RNNButtonOptions* defaultLeftButtonStyle;
 @property (strong, nonatomic) RNNButtonOptions* defaultRightButtonStyle;
-@property (strong, nonatomic) RNNReactComponentManager* componentManager;
+@property (strong, nonatomic) RNNReactComponentRegistry* componentRegistry;
 @end
 
 @implementation RNNNavigationButtons
 
--(instancetype)initWithViewController:(UIViewController<RNNLayoutProtocol>*)viewController componentManager:(id)componentManager {
+-(instancetype)initWithViewController:(UIViewController<RNNLayoutProtocol>*)viewController componentRegistry:(id)componentRegistry {
 	self = [super init];
 	
 	self.viewController = viewController;
-	self.componentManager = componentManager;
+	self.componentRegistry = componentRegistry;
 	
 	return self;
 }
@@ -89,7 +89,7 @@
 		componentOptions.componentId = [[Text alloc] initWithValue:component[@"componentId"]];
 		componentOptions.name = [[Text alloc] initWithValue:component[@"name"]];
 		
-		RNNReactView *view = [_componentManager createComponentIfNotExists:componentOptions parentComponentId:self.viewController.layoutInfo.componentId reactViewReadyBlock:nil];
+		RNNReactView *view = [_componentRegistry createComponentIfNotExists:componentOptions parentComponentId:self.viewController.layoutInfo.componentId reactViewReadyBlock:nil];
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
 	} else if (iconImage) {
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];

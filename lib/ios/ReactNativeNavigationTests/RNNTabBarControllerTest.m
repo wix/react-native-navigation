@@ -123,12 +123,6 @@
 	[parentMock verify];
 }
 
-- (void)testGetCurrentLeaf_shouldInvokeSelectedViewControllerGetCurrentLeaf {
-	[[self.mockChildViewController expect] getCurrentLeaf];
-	[self.mockUut getCurrentLeaf];
-	[self.mockChildViewController verify];
-}
-
 - (void)testGetCurrentChild_shouldReturnSelectedViewController {
 	XCTAssertEqual([self.mockUut getCurrentChild], [(RNNTabBarController *)self.mockUut selectedViewController]);
 }

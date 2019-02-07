@@ -5,7 +5,7 @@
 #import "RNNCustomTitleView.h"
 
 @interface RNNNavigationControllerPresenter() {
-	RNNReactComponentManager* _componentManager;
+	RNNReactComponentRegistry* _componentRegistry;
 	UIView* _customTopBar;
 	UIView* _customTopBarBackground;
 }
@@ -13,9 +13,9 @@
 @end
 @implementation RNNNavigationControllerPresenter
 
-- (instancetype)initWithComponentManager:(RNNReactComponentManager *)componentManager {
+- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
 	self = [super init];
-	_componentManager = componentManager;
+	_componentRegistry = componentRegistry;
 	return self;
 }
 
@@ -174,7 +174,7 @@
 		readyBlock = nil;
 	}
 	if (options.topBar.component.name.hasValue) {
-		RCTRootView *reactView = [_componentManager createComponentIfNotExists:options.topBar.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
+		RCTRootView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		
 		_customTopBar = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		reactView.backgroundColor = UIColor.clearColor;
@@ -195,7 +195,7 @@
 		readyBlock = nil;
 	}
 	if (options.topBar.background.component.name.hasValue) {
-		RCTRootView *reactView = [_componentManager createComponentIfNotExists:options.topBar.background.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
+		RCTRootView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.background.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		
 		_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		[navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
@@ -209,7 +209,7 @@
 
 - (void)dealloc {
 	RNNNavigationController* navigationController = self.bindedViewController;
-	[_componentManager removeComponent:navigationController.layoutInfo.componentId];
+	[_componentRegistry removeComponent:navigationController.layoutInfo.componentId];
 }
 
 @end

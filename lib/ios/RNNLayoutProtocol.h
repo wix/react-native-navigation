@@ -17,8 +17,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild;
 
-- (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getCurrentLeaf;
-
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 
 - (RNNNavigationOptions *)resolveOptions;

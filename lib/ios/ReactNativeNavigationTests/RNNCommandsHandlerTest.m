@@ -62,7 +62,7 @@
 	self.store = [OCMockObject partialMockForObject:[[RNNStore alloc] init]];
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
-	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:self.store componentManager:nil andBridge:nil]];
+	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:self.store componentRegistry:nil andBridge:nil]];
 	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:self.overlayManager mainWindow:_mainWindow];
 	self.vc1 = [RNNRootViewController new];
 	self.vc2 = [RNNRootViewController new];

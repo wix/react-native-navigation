@@ -141,7 +141,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			});
 		}
 	} else {
-		id animationDelegate = (newVc.resolveOptions.animations.push.hasCustomAnimation || newVc.getCurrentLeaf.isCustomTransitioned) ? newVc : nil;
+		id animationDelegate = (newVc.resolveOptions.animations.push.hasCustomAnimation || newVc.resolveOptions.customTransition.animations) ? newVc : nil;
 		[newVc renderTreeAndWait:([newVc.resolveOptions.animations.push.waitForRender getWithDefaultValue:NO] || animationDelegate) perform:^{
 			[_stackManager push:newVc onTop:fromVC animated:[newVc.resolveOptions.animations.push.enable getWithDefaultValue:YES] animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
@@ -234,7 +234,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayout:layout];
 	
-	[newVc renderTreeAndWait:[newVc.getCurrentLeaf.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
+	[newVc renderTreeAndWait:[newVc.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
 		[_modalManager showModal:newVc animated:[newVc.getCurrentChild.resolveOptions.animations.showModal.enable getWithDefaultValue:YES] hasCustomAnimation:newVc.getCurrentChild.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
 			[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
 			completion(componentId);
@@ -285,7 +285,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayout:layout];
-	[overlayVC renderTreeAndWait:[overlayVC.options.animations.showOverlay.waitForRender getWithDefaultValue:NO] perform:^{
+	[overlayVC renderTreeAndWait:NO perform:^{
 		UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 		overlayWindow.rootViewController = overlayVC;
 		[_overlayManager showOverlayWindow:overlayWindow];

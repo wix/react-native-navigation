@@ -1,18 +1,18 @@
 #import "RNNBasePresenter.h"
 #import "UIViewController+RNNOptions.h"
 #import "RNNTabBarItemCreator.h"
-#import "RNNReactComponentManager.h"
+#import "RNNReactComponentRegistry.h"
 
 @interface RNNBasePresenter ()
-@property (nonatomic, strong) RNNReactComponentManager* componentManager;
+@property (nonatomic, strong) RNNReactComponentRegistry* componentRegistry;
 @end
 
 
 @implementation RNNBasePresenter
 
-- (instancetype)initWithComponentManager:(RNNReactComponentManager *)componentManager {
+- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
 	self = [super init];
-	self.componentManager = componentManager;
+	self.componentRegistry = componentRegistry;
 	return self;
 }
 

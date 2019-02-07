@@ -181,8 +181,4 @@
 	return self.center;
 }
 
-- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
-	return [[self getCurrentChild] getCurrentLeaf];
-}
-
 @end

@@ -1,10 +1,10 @@
 #import "RNNBasePresenter.h"
 #import "RNNRootViewCreator.h"
-#import "RNNReactComponentManager.h"
+#import "RNNReactComponentRegistry.h"
 
 @interface RNNNavigationControllerPresenter : RNNBasePresenter
 
-- (instancetype)initWithComponentManager:(RNNReactComponentManager *)componentManager;
+- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry;
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
 

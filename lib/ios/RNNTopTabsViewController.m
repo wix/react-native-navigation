@@ -132,8 +132,4 @@
 	return _currentViewController;
 }
 
-- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
-	return [[self getCurrentChild] getCurrentLeaf];
-}
-
 @end

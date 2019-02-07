@@ -4,7 +4,7 @@
 #import "RNNStore.h"
 #import "RNNRootViewCreator.h"
 
-@interface RNNReactComponentManager : NSObject
+@interface RNNReactComponentRegistry : NSObject
 
 - (instancetype)initWithCreator:(id<RNNRootViewCreator>)creator;
 

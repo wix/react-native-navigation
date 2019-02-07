@@ -47,12 +47,6 @@
 	XCTAssertTrue(self.uut.getCurrentChild == self.uut.topViewController);
 }
 
-- (void)testCurrentLeaf_shouldReturnCurrentChildLeaf {
-	[[_vc2Mock expect] getCurrentLeaf];
-	[self.uut getCurrentLeaf];
-	[_vc2Mock verify];
-}
-
 - (void)testGetLeafViewController_shouldReturnTopViewController {
 	XCTAssertTrue(self.uut.getCurrentChild == self.uut.topViewController);
 }

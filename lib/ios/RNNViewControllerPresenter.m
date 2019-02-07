@@ -9,7 +9,7 @@
 @interface RNNViewControllerPresenter() {
 	RNNReactView* _customTitleView;
 	RNNTitleViewHelper* _titleViewHelper;
-	RNNReactComponentManager* _componentManager;
+	RNNReactComponentRegistry* _componentRegistry;
 }
 
 @end
@@ -26,15 +26,15 @@
 	return self;
 }
 
-- (instancetype)initWithComponentManager:(RNNReactComponentManager *)componentManager {
+- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
 	self = [self init];
-	_componentManager = componentManager;
+	_componentRegistry = componentRegistry;
 	return self;
 }
 
 - (void)bindViewController:(UIViewController *)bindedViewController {
 	self.bindedViewController = bindedViewController;
-	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController componentManager:_componentManager];
+	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController componentRegistry:_componentRegistry];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
@@ -173,7 +173,7 @@
 	}
 	
 	if (options.topBar.title.component.name.hasValue) {
-		_customTitleView = (RNNReactView*)[_componentManager createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
+		_customTitleView = (RNNReactView*)[_componentRegistry createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		_customTitleView.backgroundColor = UIColor.clearColor;
 		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
 		[_customTitleView setAlignment:alignment];

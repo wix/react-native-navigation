@@ -20,7 +20,7 @@
 	id<RNNRootViewCreator> _creator;
 	RNNStore *_store;
 	RCTBridge *_bridge;
-	RNNReactComponentManager* _componentManager;
+	RNNReactComponentRegistry* _componentRegistry;
 }
 
 # pragma mark public
@@ -29,7 +29,7 @@
 - (instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
 						   eventEmitter:(RNNEventEmitter*)eventEmitter
 								  store:(RNNStore *)store
-					   componentManager:(RNNReactComponentManager *)componentManager
+					   componentRegistry:(RNNReactComponentRegistry *)componentRegistry
 							  andBridge:(RCTBridge *)bridge {
 	
 	self = [super init];
@@ -38,7 +38,7 @@
 	_eventEmitter = eventEmitter;
 	_bridge = bridge;
 	_store = store;
-	_componentManager = componentManager;
+	_componentRegistry = componentRegistry;
 	
 	return self;
 }
@@ -115,7 +115,7 @@
 - (UIViewController<RNNParentProtocol> *)createComponent:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithComponentManager:_componentManager];
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithcomponentRegistry:_componentRegistry];
 	
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
 	
@@ -137,7 +137,7 @@
 
 
 - (UIViewController<RNNParentProtocol> *)createStack:(RNNLayoutNode*)node {
-	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] initWithComponentManager:_componentManager];
+	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] initWithcomponentRegistry:_componentRegistry];
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
 	

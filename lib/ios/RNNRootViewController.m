@@ -118,10 +118,6 @@
 	return self;
 }
 
-- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
-	return self;
-}
-
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController {
 	[self.eventEmitter sendOnSearchBarUpdated:self.layoutInfo.componentId
 										 text:searchController.searchBar.text
