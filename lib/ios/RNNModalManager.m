@@ -60,7 +60,7 @@
 
 -(void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion {
 	UIViewController<RNNParentProtocol> *modalToDismiss = [_pendingModalIdsToDismiss lastObject];
-	RNNNavigationOptions* options = modalToDismiss.getCurrentChild.resolveOptions;
+	RNNNavigationOptions* options = modalToDismiss.resolveOptions;
 
 	if(!modalToDismiss) {
 		return;

@@ -15,6 +15,7 @@
 
 - (RNNOptions *)overrideOptions:(RNNOptions *)otherOptions;
 - (RNNOptions *)mergeOptions:(RNNOptions *)otherOptions;
+- (RNNOptions *)mergeInOptions:(RNNOptions *)otherOptions;
 
 - (RNNOptions *)withDefault:(RNNOptions *)defaultOptions;
 
