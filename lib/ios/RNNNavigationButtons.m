@@ -74,6 +74,9 @@
 	NSDictionary* component = dictionary[@"component"];
 	NSString* systemItemName = dictionary[@"systemItem"];
 	
+	UIColor* color = [self color:[RCTConvert UIColor:dictionary[@"color"]] defaultColor:[defaultStyle.color getWithDefaultValue:nil]];
+	UIColor* disabledColor = [self color:[RCTConvert UIColor:dictionary[@"disabledColor"]] defaultColor:[defaultStyle.disabledColor getWithDefaultValue:nil]];
+	
 	if (!buttonId) {
 		@throw [NSException exceptionWithName:@"NSInvalidArgumentException" reason:[@"button id is not specified " stringByAppendingString:title] userInfo:nil];
 	}
@@ -86,6 +89,9 @@
 	
 	if (iconImage) {
 		iconImage = [iconImage imageWithInsets:insets];
+		if (color) {
+			iconImage = [iconImage withTintColor:color];
+		}
 	}
 	
 	
@@ -122,8 +128,6 @@
 	NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary* disabledTextAttributes = [[NSMutableDictionary alloc] init];
 	
-	UIColor* color = [self color:[RCTConvert UIColor:dictionary[@"color"]] defaultColor:[defaultStyle.color getWithDefaultValue:nil]];
-	UIColor* disabledColor = [self color:[RCTConvert UIColor:dictionary[@"disabledColor"]] defaultColor:[defaultStyle.disabledColor getWithDefaultValue:nil]];
 	if (!enabledBool && disabledColor) {
 		color = disabledColor;
 		[disabledTextAttributes setObject:disabledColor forKey:NSForegroundColorAttributeName];
