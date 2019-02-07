@@ -105,7 +105,7 @@
 			}
 		}];
 	}];
-	reactView.backgroundColor = [UIColor clearColor];
+
 	self.view = reactView;
 	
 	if (!wait && readyBlock) {
