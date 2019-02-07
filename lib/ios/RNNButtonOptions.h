@@ -1,4 +1,5 @@
 #import "RNNOptions.h"
+#import "RNNInsetsOptions.h"
 
 @interface RNNButtonOptions : RNNOptions
 
@@ -9,5 +10,6 @@
 @property (nonatomic, strong) Color* disabledColor;
 @property (nonatomic, strong) Image* icon;
 @property (nonatomic, strong) Bool* enabled;
+@property (nonatomic, strong) RNNInsetsOptions* iconInsets;
 
 @end
