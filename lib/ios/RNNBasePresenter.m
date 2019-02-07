@@ -14,7 +14,18 @@
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
 	UIViewController* viewController = self.bindedViewController;
-	if ((options.bottomTab.text.hasValue || options.bottomTab.icon.hasValue || options.bottomTab.selectedIcon.hasValue)) {
+
+	if (options.bottomTab.text.hasValue) {
+		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:options.bottomTab];
+		viewController.tabBarItem = tabItem;
+	}
+
+	if (options.bottomTab.icon.hasValue) {
+		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:options.bottomTab];
+		viewController.tabBarItem = tabItem;
+	}
+
+	if (options.bottomTab.selectedIcon.hasValue) {
 		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:options.bottomTab];
 		viewController.tabBarItem = tabItem;
 	}
@@ -51,6 +62,10 @@
 	if (options.bottomTab.badge.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
 		[viewController rnn_setTabBarItemBadge:options.bottomTab.badge.get];
 	}
+
+	if (options.bottomTab.badgeColor.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
+		[viewController rnn_setTabBarItemBadgeColor:options.bottomTab.badgeColor.get];
+	}
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
@@ -63,7 +78,19 @@
 		[viewController rnn_setTabBarItemBadgeColor:newOptions.bottomTab.badgeColor.get];
 	}
 
-	if ((newOptions.bottomTab.text.hasValue || newOptions.bottomTab.icon.hasValue || newOptions.bottomTab.selectedIcon.hasValue)) {
+	if (newOptions.bottomTab.text.hasValue) {
+		RNNNavigationOptions* buttonsResolvedOptions = [(RNNNavigationOptions *)[currentOptions overrideOptions:newOptions] withDefault:defaultOptions];
+		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
+		viewController.tabBarItem = tabItem;
+	}
+
+	if (newOptions.bottomTab.icon.hasValue) {
+		RNNNavigationOptions* buttonsResolvedOptions = [(RNNNavigationOptions *)[currentOptions overrideOptions:newOptions] withDefault:defaultOptions];
+		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
+		viewController.tabBarItem = tabItem;
+	}
+
+	if (newOptions.bottomTab.selectedIcon.hasValue) {
 		RNNNavigationOptions* buttonsResolvedOptions = [(RNNNavigationOptions *)[currentOptions overrideOptions:newOptions] withDefault:defaultOptions];
 		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
 		viewController.tabBarItem = tabItem;
