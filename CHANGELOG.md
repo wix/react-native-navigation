@@ -1,4 +1,17 @@
 # Changelog
+## 2.9.0
+### Fixed
+#### iOS
+* Improve SplitView and BottomTabs interactions [#954e734](https://github.com/wix/react-native-navigation/commit/954e7348d78d97477927beb0f1ad3f1e37fedf65) by [zzorba](https://github.com/zzorba)
+* SplitView options are handled by presenter [#00d5e31](https://github.com/wix/react-native-navigation/commit/00d5e313f8992cac5b7fb2301515d8e35e20c2f8) by [zzorba](https://github.com/zzorba)
+* Fixes Large title and noBorder issue which caused color to change to default [#9c48a78](https://github.com/wix/react-native-navigation/commit/9c48a78bc2c01e68e3d9d184f5df637f6b331c53) by [mohammadalijf](https://github.com/mohammadalijf)
+* Pull BottomTabs height from correct controller [#8cee745](https://github.com/wix/react-native-navigation/commit/8cee74533489e1877ffea95c1622bd4ab6fb33ff) by [paubins](https://github.com/paubins)
+
+#### Android
+* Fix custom back button missing id [#578f6a8](https://github.com/wix/react-native-navigation/commit/578f6a8eeac543b64dce5637d6e6e856c5fdda1b) by [guyca](https://github.com/guyca)
+* Fix Android title centering [#4aa5cd1](https://github.com/wix/react-native-navigation/commit/4aa5cd17bfb8a2acad884e2614eef137698b0f5a) by [StasDoskalenko](https://github.com/StasDoskalenko)
+
+
 ## 2.8.0
 ### Added
 * passProps passed to setStackRoot and showOverlay can specify type with generics [#bc23fba](https://github.com/wix/react-native-navigation/commit/bc23fbad608dc9e38a7f09ff76868867310a4d62) by [henrikra](https://github.com/henrikra)

@@ -73,4 +73,17 @@
 	}
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	NSString *styleString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIStatusBarStyle"];
+	
+	if ([styleString isEqualToString:@"UIStatusBarStyleLightContent"])
+		return UIStatusBarStyleLightContent;
+	
+	return UIStatusBarStyleDefault;
+}
+
+- (BOOL)prefersStatusBarHidden {
+	return [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIStatusBarHidden"] boolValue];
+}
+
 @end

@@ -32,8 +32,6 @@ function start() {
         orientation: ['portrait']
       },
       bottomTab: {
-        iconColor: '#1B4C77',
-        selectedIconColor: '#0f0',
         textColor: '#1B4C77',
         selectedTextColor: '#0f0',
         fontFamily: 'HelveticaNeue-Italic',
@@ -50,7 +48,8 @@ function start() {
             from: 0,
             to: 1,
             duration: 300
-          }
+          },
+          waitForRender: true
         },
         _push: {
           topBar: {
