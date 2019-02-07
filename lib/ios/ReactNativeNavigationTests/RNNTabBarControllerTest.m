@@ -77,12 +77,6 @@
 	XCTAssertTrue(uut.delegate == uut);
 }
 
-- (void)testWillMoveToParent_invokePresenterApplyOptionsOnWillMoveToParent {
-	[[self.mockTabBarPresenter expect] applyOptionsOnWillMoveToParentViewController:[(RNNTabBarController *)self.mockUut resolveOptions]];
-	[self.mockUut willMoveToParentViewController:[UIViewController new]];
-	[self.mockTabBarPresenter verify];
-}
-
 - (void)testWillMoveToParent_shouldNotInvokePresenterApplyOptionsOnWillMoveToNilParent {
 	[[self.mockTabBarPresenter reject] applyOptionsOnWillMoveToParentViewController:[(RNNTabBarController *)self.mockUut options]];
 	[self.mockUut willMoveToParentViewController:nil];
