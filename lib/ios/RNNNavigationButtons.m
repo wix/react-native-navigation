@@ -4,6 +4,7 @@
 #import "RCTHelpers.h"
 #import "UIImage+tint.h"
 #import "RNNRootViewController.h"
+#import "UIImage+insets.h"
 
 @interface RNNNavigationButtons()
 
@@ -28,19 +29,19 @@
 	_defaultLeftButtonStyle = defaultLeftButtonStyle;
 	_defaultRightButtonStyle = defaultRightButtonStyle;
 	if (leftButtons) {
-		[self setButtons:leftButtons side:@"left" animated:NO defaultStyle:_defaultLeftButtonStyle];
+		[self setButtons:leftButtons side:@"left" animated:NO defaultStyle:_defaultLeftButtonStyle insets:[self leftButtonInsets:_defaultLeftButtonStyle.iconInsets]];
 	}
 	
 	if (rightButtons) {
-		[self setButtons:rightButtons side:@"right" animated:NO defaultStyle:_defaultRightButtonStyle];
+		[self setButtons:rightButtons side:@"right" animated:NO defaultStyle:_defaultRightButtonStyle insets:[self rightButtonInsets:_defaultRightButtonStyle.iconInsets]];
 	}
 }
 
--(void)setButtons:(NSArray*)buttons side:(NSString*)side animated:(BOOL)animated defaultStyle:(RNNButtonOptions *)defaultStyle {
+-(void)setButtons:(NSArray*)buttons side:(NSString*)side animated:(BOOL)animated defaultStyle:(RNNButtonOptions *)defaultStyle insets:(UIEdgeInsets)insets {
 	NSMutableArray *barButtonItems = [NSMutableArray new];
 	NSArray* resolvedButtons = [self resolveButtons:buttons];
 	for (NSDictionary *button in resolvedButtons) {
-		RNNUIBarButtonItem* barButtonItem = [self buildButton:button defaultStyle:defaultStyle];
+		RNNUIBarButtonItem* barButtonItem = [self buildButton:button defaultStyle:defaultStyle insets:insets];
 		if(barButtonItem) {
 			[barButtonItems addObject:barButtonItem];
 		}
@@ -67,11 +68,14 @@
 	}
 }
 
--(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary defaultStyle:(RNNButtonOptions *)defaultStyle {
+-(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary defaultStyle:(RNNButtonOptions *)defaultStyle insets:(UIEdgeInsets)insets {
 	NSString* buttonId = dictionary[@"id"];
 	NSString* title = [self getValue:dictionary[@"text"] withDefault:[defaultStyle.text getWithDefaultValue:nil]];
 	NSDictionary* component = dictionary[@"component"];
 	NSString* systemItemName = dictionary[@"systemItem"];
+	
+	UIColor* color = [self color:[RCTConvert UIColor:dictionary[@"color"]] defaultColor:[defaultStyle.color getWithDefaultValue:nil]];
+	UIColor* disabledColor = [self color:[RCTConvert UIColor:dictionary[@"disabledColor"]] defaultColor:[defaultStyle.disabledColor getWithDefaultValue:nil]];
 	
 	if (!buttonId) {
 		@throw [NSException exceptionWithName:@"NSInvalidArgumentException" reason:[@"button id is not specified " stringByAppendingString:title] userInfo:nil];
@@ -82,6 +86,14 @@
 	if (![iconImage isKindOfClass:[UIImage class]]) {
 		iconImage = [RCTConvert UIImage:iconImage];
 	}
+	
+	if (iconImage) {
+		iconImage = [iconImage imageWithInsets:insets];
+		if (color) {
+			iconImage = [iconImage withTintColor:color];
+		}
+	}
+	
 	
 	RNNUIBarButtonItem *barButtonItem;
 	if (component) {
@@ -116,8 +128,6 @@
 	NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary* disabledTextAttributes = [[NSMutableDictionary alloc] init];
 	
-	UIColor* color = [self color:[RCTConvert UIColor:dictionary[@"color"]] defaultColor:[defaultStyle.color getWithDefaultValue:nil]];
-	UIColor* disabledColor = [self color:[RCTConvert UIColor:dictionary[@"disabledColor"]] defaultColor:[defaultStyle.disabledColor getWithDefaultValue:nil]];
 	if (!enabledBool && disabledColor) {
 		color = disabledColor;
 		[disabledTextAttributes setObject:disabledColor forKey:NSForegroundColorAttributeName];
@@ -183,6 +193,20 @@
 
 - (id)getValue:(id)value withDefault:(id)defaultValue {
 	return value ? value : defaultValue;
+}
+
+- (UIEdgeInsets)leftButtonInsets:(RNNInsetsOptions *)defaultInsets {
+	return UIEdgeInsetsMake([defaultInsets.top getWithDefaultValue:0],
+					 [defaultInsets.left getWithDefaultValue:0],
+					 [defaultInsets.bottom getWithDefaultValue:0],
+					 [defaultInsets.right getWithDefaultValue:15]);
+}
+
+- (UIEdgeInsets)rightButtonInsets:(RNNInsetsOptions *)defaultInsets {
+	return UIEdgeInsetsMake([defaultInsets.top getWithDefaultValue:0],
+					 [defaultInsets.left getWithDefaultValue:15],
+					 [defaultInsets.bottom getWithDefaultValue:0],
+					 [defaultInsets.right getWithDefaultValue:0]);
 }
 
 @end
