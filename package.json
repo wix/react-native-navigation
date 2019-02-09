@@ -94,19 +94,15 @@
     },
     "roots": [
       "<rootDir>/node_modules/",
-      "<rootDir>/lib/dist/",
-      "<rootDir>/integration/"
+      "<rootDir>/lib/dist/"
     ],
     "collectCoverageFrom": [
       "lib/dist/**/*.js",
-      "integration/**/*.js",
       "!lib/dist/index.js",
       "!lib/dist/Navigation.js",
       "!lib/dist/adapters/**/*",
       "!lib/dist/interfaces/**/*",
-      "!lib/dist/**/*.test.*",
-      "!integration/**/*.test.*",
-      "!integration/*.test.*"
+      "!lib/dist/**/*.test.*"
     ],
     "resetMocks": true,
     "resetModules": true,

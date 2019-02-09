@@ -44,7 +44,6 @@ No PR will be accepted without adequate test coverage.
 | `lib/dist/index.js` | the entry point for `import Navigation from 'react-native-navigation'` |
 | `e2e` | [detox](https://github.com/wix/detox) e2e tests on both Android and iOS |
 | `playground` | The end-user project all e2e tests run against. Contains its own `src`, `android` and `ios`. Does not have its own package.json, depends on the local `<root>/lib` for faster local development (no need to `npm install` locally). |
-| `integration` | misc javascript integration tests, proving integration with other libraries like redux |
 | `scripts` | all scripts |
 
 ## Scripts

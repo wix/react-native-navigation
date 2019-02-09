@@ -16,16 +16,13 @@ module.exports = function (wallaby) {
       'lib/src/**/*.tsx',
       '!lib/src/**/*.test.tsx',
       '!lib/src/**/*.test.js',
-      '!lib/src/**/*.test.ts',
-      'integration/**/*.js',
-      '!integration/**/*.test.js'
+      '!lib/src/**/*.test.ts'
     ],
 
     tests: [
       'lib/src/**/*.test.js',
       'lib/src/**/*.test.ts',
-      'lib/src/**/*.test.tsx',
-      'integration/**/*.test.js'
+      'lib/src/**/*.test.tsx'
     ],
 
     compilers: {

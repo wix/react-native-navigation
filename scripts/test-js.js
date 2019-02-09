@@ -5,7 +5,6 @@ const fix = _.includes(process.argv, '--fix') ? '--fix' : '';
 
 const dirs = [
   'lib/src',
-  'integration',
   'e2e',
   'scripts',
   'playground/src'
