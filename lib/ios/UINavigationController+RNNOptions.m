@@ -16,7 +16,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
 		[self.view insertSubview:backgroundImageView atIndex:0];
 	}
-	
+
 	backgroundImageView.layer.masksToBounds = YES;
 	backgroundImageView.image = backgroundImage;
 	[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
@@ -48,7 +48,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 - (void)rnn_setNavigationBarFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize color:(UIColor *)color {
 	NSDictionary* fontAttributes = [RNNFontAttributesCreator createFontAttributesWithFontFamily:fontFamily fontSize:fontSize color:color];
-	
+
 	if (fontAttributes.allKeys.count > 0) {
 		self.navigationBar.titleTextAttributes = fontAttributes;
 	}
@@ -98,20 +98,23 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 - (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
 	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    [backItem setTitleTextAttributes:self.navigationBar.titleTextAttributes forState:UIControlStateNormal];
+	[backItem setTitleTextAttributes:self.navigationBar.titleTextAttributes forState:UIControlStateHighlighted];
+
 	if (icon) {
-		backItem.image = color
+		UIImage *backImage = color
 		? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
 		: icon;
-		
+
 		[self.navigationBar setBackIndicatorImage:[UIImage new]];
 		[self.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
 	}
-	
+
 	UIViewController *lastViewControllerInStack = self.viewControllers.count > 1 ? [self.viewControllers objectAtIndex:self.viewControllers.count-2] : self.topViewController;
-	
+
 	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
 	backItem.tintColor = color;
-	
+
 	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
