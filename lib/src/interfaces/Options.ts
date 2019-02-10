@@ -247,6 +247,10 @@ export interface OptionsTopBarButton {
    * Set the button icon
    */
   icon?: ImageRequireSource;
+   /**
+   * Set the button icon insets
+   */
+  iconInsets?: IconInsets;
   /**
    * Set the button as a custom component
    */
@@ -690,6 +694,25 @@ export interface OptionsAnimationProperties {
    * Animate the element over rotation
    */
   rotation?: OptionsAnimationPropertyConfig;
+}
+
+export interface IconInsets {
+  /**
+   * Configure top inset
+   */
+  top?: number;
+  /**
+   * Configure left inset
+   */
+  left?: number;
+  /**
+   * Configure bottom inset
+   */
+  bottom?: number;
+  /**
+   * Configure right inset
+   */
+  right?: number;
 }
 
 export interface OptionsAnimationPropertiesId extends OptionsAnimationProperties {

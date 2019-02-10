@@ -1,6 +1,8 @@
 #import "RNNLayoutInfo.h"
-#import "RNNViewControllerPresenter.h"
 #import "RNNLeafProtocol.h"
+#import "RNNBasePresenter.h"
+
+typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @protocol RNNLayoutProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
 
@@ -11,9 +13,9 @@
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
-- (UIViewController<RNNLayoutProtocol> *)getCurrentChild;
+- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
-- (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getCurrentLeaf;
+- (UIViewController<RNNLayoutProtocol> *)getCurrentChild;
 
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 
