@@ -98,7 +98,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 - (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
 	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-    [backItem setTitleTextAttributes:self.navigationBar.titleTextAttributes forState:UIControlStateNormal];
+	[backItem setTitleTextAttributes:self.navigationBar.titleTextAttributes forState:UIControlStateNormal];
 	[backItem setTitleTextAttributes:self.navigationBar.titleTextAttributes forState:UIControlStateHighlighted];
 
 	if (icon) {
