@@ -106,8 +106,8 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
 		: icon;
 
-		[self.navigationBar setBackIndicatorImage:[UIImage new]];
-		[self.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
+		[self.navigationBar setBackIndicatorImage:backImage];
+		[self.navigationBar setBackIndicatorTransitionMaskImage:backImage];
 	}
 
 	UIViewController *lastViewControllerInStack = self.viewControllers.count > 1 ? [self.viewControllers objectAtIndex:self.viewControllers.count-2] : self.topViewController;
