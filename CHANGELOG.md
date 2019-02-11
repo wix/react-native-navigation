@@ -1,4 +1,26 @@
 # Changelog
+## 2.11.0
+### Fixed
+#### iOS
+* Support updating bottomTab options [#2362655](https://github.com/wix/react-native-navigation/commit/23626556cf9ae4c161993b39776098855117d928) by [rsispal](https://github.com/rsispal)
+
+#### Android
+* Fix android build for RN 0.58.x [#600a1d1](https://github.com/wix/react-native-navigation/commit/600a1d188b634b7834c1720620336dd5d02bfd80) by [alpha0010](https://github.com/alpha0010)
+
+## 2.10.0
+### Added
+#### iOS
+* Add Icon insets support for topBar buttons [#545e5fe](https://github.com/wix/react-native-navigation/commit/545e5fef5fa570aaa20d95bbb40ed9aed72fc480) by [yogevbd](https://github.com/yogevbd)
+* SetRoot wait for render [#5abea28](https://github.com/wix/react-native-navigation/commit/5abea28c53ed34dc822641f30abe2190c08f8185) by [yogevbd](https://github.com/yogevbd)
+
+### Fixed
+#### iOS
+* Improved RNNSplashScreen status bar styling [#b3b88d1](https://github.com/wix/react-native-navigation/commit/b3b88d15bbb730b96de1fa2c0378d0f3c59b53ab) by [danielgindi](https://github.com/danielgindi)
+
+#### Android
+* Null check when parsing strings [#eda4b9c](https://github.com/wix/react-native-navigation/commit/eda4b9ce0a6a9b732241f662012a1e7e5750e193) by [guyca](https://github.com/guyca)
+* Fixed modalDismissed event being emitted with wrong id [#aef7745](https://github.com/wix/react-native-navigation/commit/aef7745cd3a8d9cfce69f9553c8c01b9bdf1cc06) by [guyca](https://github.com/guyca)
+
 ## 2.9.0
 ### Fixed
 #### iOS
