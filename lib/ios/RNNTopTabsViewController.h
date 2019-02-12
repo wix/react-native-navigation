@@ -6,7 +6,7 @@
 @property (nonatomic, retain) UIView* contentView;
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
+@property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
