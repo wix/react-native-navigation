@@ -5,8 +5,10 @@ import com.reactnativenavigation.parse.params.Text;
 
 import org.json.JSONObject;
 
+import javax.annotation.*;
+
 public class TextParser {
-    public static Text parse(JSONObject json, String text) {
-        return json.has(text) ? new Text(json.optString(text)) : new NullText();
+    public static Text parse(@Nullable JSONObject json, String text) {
+        return json != null && json.has(text) ? new Text(json.optString(text)) : new NullText();
     }
 }

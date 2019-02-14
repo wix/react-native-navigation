@@ -14,11 +14,13 @@
 #import "RNNNavigationControllerPresenter.h"
 #import "RNNTabBarPresenter.h"
 #import "RNNSideMenuPresenter.h"
+#import "RNNSplitViewControllerPresenter.h"
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
 	RNNStore *_store;
 	RCTBridge *_bridge;
+	RNNReactComponentRegistry* _componentRegistry;
 }
 
 # pragma mark public
@@ -26,6 +28,8 @@
 
 - (instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
 						   eventEmitter:(RNNEventEmitter*)eventEmitter
+								  store:(RNNStore *)store
+					   componentRegistry:(RNNReactComponentRegistry *)componentRegistry
 							  andBridge:(RCTBridge *)bridge {
 	
 	self = [super init];
@@ -33,24 +37,22 @@
 	_creator = creator;
 	_eventEmitter = eventEmitter;
 	_bridge = bridge;
+	_store = store;
+	_componentRegistry = componentRegistry;
 	
 	return self;
 }
 
-- (UIViewController<RNNParentProtocol> *)createLayout:(NSDictionary*)layout saveToStore:(RNNStore *)store {
-	_store = store;
+- (UIViewController<RNNParentProtocol> *)createLayout:(NSDictionary*)layout {
 	UIViewController<RNNParentProtocol>* layoutViewController = [self fromTree:layout];
-	_store = nil;
 	return layoutViewController;
 }
 
-- (NSArray<RNNLayoutProtocol> *)createChildrenLayout:(NSArray*)children saveToStore:(RNNStore *)store {
-	_store = store;
+- (NSArray<RNNLayoutProtocol> *)createChildrenLayout:(NSArray*)children {
 	NSMutableArray<RNNLayoutProtocol>* childViewControllers = [NSMutableArray<RNNLayoutProtocol> new];
 	for (NSDictionary* layout in children) {
 		[childViewControllers addObject:[self fromTree:layout]];
 	}
-	_store = nil;
 	return childViewControllers;
 }
 
@@ -113,16 +115,9 @@
 - (UIViewController<RNNParentProtocol> *)createComponent:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithcomponentRegistry:_componentRegistry];
 	
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
-	
-	if (!component.isExternalViewController) {
-		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
-		[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
-	}
 	
 	return (UIViewController<RNNParentProtocol> *)component;
 }
@@ -142,14 +137,13 @@
 
 
 - (UIViewController<RNNParentProtocol> *)createStack:(RNNLayoutNode*)node {
-	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] init];
-	
+	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] initWithcomponentRegistry:_componentRegistry];
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
 	
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
-	RNNNavigationController* stack = [[RNNNavigationController alloc] initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter];
+	RNNNavigationController* stack = [[RNNNavigationController alloc] initWithLayoutInfo:layoutInfo creator:_creator childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter];
 	
 	return stack;
 }
@@ -204,7 +198,7 @@
 - (UIViewController<RNNParentProtocol> *)createSplitView:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	RNNSplitViewControllerPresenter* presenter = [[RNNSplitViewControllerPresenter alloc] init];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 

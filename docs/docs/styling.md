@@ -225,12 +225,15 @@ Navigation.mergeOptions(this.props.componentId, {
     visible: false
   },
   layout: {
-    topMargin: Navigation.constants().statusBarHeight, // Set the layout's top margin
+    topMargin: (await Navigation.constants()).statusBarHeight, // Set the layout's top margin
     orientation: ['portrait', 'landscape'] | ['sensorLandscape'], // An array of supported orientations
     componentBackgroundColor: 'red' // Set background color only for components, helps reduce overdraw if background color is set in default options.
   },
   topBar: {
     height: 70, // TopBar height in dp
+    backButton: {
+      color: 'red'
+    },
     borderColor: 'red',
     borderHeight: 1.3,
     elevation: 1.5, // TopBar elevation in dp

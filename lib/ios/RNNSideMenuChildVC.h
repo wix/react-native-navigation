@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "RNNParentProtocol.h"
+#import "RNNViewControllerPresenter.h"
 
 typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 	RNNSideMenuChildTypeCenter,

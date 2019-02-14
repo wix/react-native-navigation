@@ -2,6 +2,7 @@
 #import "RNNSideMenuChildVC.h"
 #import "MMDrawerController.h"
 #import "RNNParentProtocol.h"
+#import "RNNViewControllerPresenter.h"
 
 @interface RNNSideMenuController : MMDrawerController <RNNParentProtocol>
 
