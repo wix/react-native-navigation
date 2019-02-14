@@ -19,7 +19,7 @@ It is a tab-based app and utilizes Split Layout for iOS tablets, 3D touch and mo
 The playground example is a place where we showcase and test all features of react-native-navigation.
 
 ```bash
-git clone -b v2 git@github.com:wix/react-native-navigation.git
+git clone https://github.com/wix/react-native-navigation
 cd react-native-navigation
 npm install
 npm run xcode # Opens XCode

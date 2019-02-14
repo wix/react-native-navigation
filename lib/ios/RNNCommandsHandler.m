@@ -7,6 +7,7 @@
 #import "RNNErrorHandler.h"
 #import "RNNDefaultOptionsHelper.h"
 #import "UIViewController+RNNOptions.h"
+#import "React/RCTI18nUtil.h"
 
 static NSString* const setRoot	= @"setRoot";
 static NSString* const setStackRoot	= @"setStackRoot";
@@ -54,7 +55,23 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)setRoot:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	
+
+	if (@available(iOS 9, *)) {
+	    if(_controllerFactory.defaultOptions.layout.direction.hasValue) {
+	        if ([_controllerFactory.defaultOptions.layout.direction.get isEqualToString:@"rtl"]) {
+                [[RCTI18nUtil sharedInstance] allowRTL:YES];
+                [[RCTI18nUtil sharedInstance] forceRTL:YES];
+                [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+                [[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+            } else {
+                [[RCTI18nUtil sharedInstance] allowRTL:NO];
+                [[RCTI18nUtil sharedInstance] forceRTL:NO];
+                [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+                [[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+            }
+	    }
+	}
+
 	[_modalManager dismissAllModalsAnimated:NO];
 	[_store removeAllComponentsFromWindow:_mainWindow];
 	
@@ -106,6 +123,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		if([vc isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController* rootVc = (RNNRootViewController*)vc;
 			rootVc.previewController = newVc;
+			[newVc renderTreeAndWait:NO perform:nil];
 			
 			rootVc.previewCallback = ^(UIViewController *vcc) {
 				RNNRootViewController* rvc  = (RNNRootViewController*)vcc;

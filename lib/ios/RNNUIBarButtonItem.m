@@ -3,6 +3,13 @@
 #import "RNNUIBarButtonItem.h"
 #import "RCTConvert+UIBarButtonSystemItem.h"
 
+@interface RNNUIBarButtonItem ()
+
+@property (nonatomic, strong) NSLayoutConstraint *widthConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
+
+@end
+
 @implementation RNNUIBarButtonItem
 
 -(instancetype)init:(NSString*)buttonId withIcon:(UIImage*)iconImage {
@@ -26,11 +33,26 @@
 	reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
 	reactView.delegate = self;
 	reactView.backgroundColor = [UIColor clearColor];
+	self.widthConstraint = [NSLayoutConstraint constraintWithItem:reactView
+														attribute:NSLayoutAttributeWidth
+														relatedBy:NSLayoutRelationEqual
+														   toItem:nil
+														attribute:NSLayoutAttributeNotAnAttribute
+													   multiplier:1.0
+														 constant:1.0];
+	self.heightConstraint = [NSLayoutConstraint constraintWithItem:reactView
+														 attribute:NSLayoutAttributeHeight
+														 relatedBy:NSLayoutRelationEqual
+														   	toItem:nil
+														 attribute:NSLayoutAttributeNotAnAttribute
+													   	multiplier:1.0
+														  constant:1.0];
+	[NSLayoutConstraint activateConstraints:@[self.widthConstraint, self.heightConstraint]];
 	self.buttonId = buttonId;
 	return self;
 }
-
--(instancetype)init:(NSString*)buttonId withSystemItem:(NSString *)systemItemName {
+	
+- (instancetype)init:(NSString*)buttonId withSystemItem:(NSString *)systemItemName {
 	UIBarButtonSystemItem systemItem = [RCTConvert UIBarButtonSystemItem:systemItemName];
 	self = [super initWithBarButtonSystemItem:systemItem target:nil action:nil];
 	self.buttonId = buttonId;
@@ -38,9 +60,10 @@
 }
 
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
-	CGSize size = rootView.intrinsicContentSize;
-	rootView.frame = CGRectMake(0, 0, size.width, size.height);
-	self.width = size.width;
+	self.widthConstraint.constant = rootView.intrinsicContentSize.width;
+	self.heightConstraint.constant = rootView.intrinsicContentSize.height;
+	[rootView setNeedsUpdateConstraints];
+	[rootView updateConstraintsIfNeeded];
 }
 
 - (void)onButtonPressed {

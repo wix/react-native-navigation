@@ -6,6 +6,7 @@
 
 + (void)showOnWindow:(UIWindow *)window {
 	CGRect screenBounds = [UIScreen mainScreen].bounds;
+	CGFloat screenScale = [UIScreen mainScreen].scale;
 	UIViewController *viewController = nil;
 	
 	NSString* launchStoryBoard = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UILaunchStoryboardName"];
@@ -56,6 +57,10 @@
 				imageName = [imageName stringByAppendingString:@"-1100-Portrait-2436h"];
 			else if (screenHeight == 375)
 				imageName = [imageName stringByAppendingString:@"-1100-Landscape-2436h"];
+			else if (screenHeight == 828)
+ 				imageName = [imageName stringByAppendingString:@"-1200-Portrait-1792h"];
+ 			else if (screenHeight == 896)
+ 				imageName = [imageName stringByAppendingString:screenScale == 2. ? @"-1200-Portrait-1792h" : @"-1200-Portrait-2688h"];
 			
 			image = [UIImage imageNamed:imageName];
 		}
