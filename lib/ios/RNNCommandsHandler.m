@@ -106,6 +106,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		if([vc isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController* rootVc = (RNNRootViewController*)vc;
 			rootVc.previewController = newVc;
+			[newVc renderTreeAndWait:NO perform:nil];
 			
 			rootVc.previewCallback = ^(UIViewController *vcc) {
 				RNNRootViewController* rvc  = (RNNRootViewController*)vcc;
