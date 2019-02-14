@@ -28,6 +28,7 @@ class TextScreen extends Component {
           <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
           <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onClickSetBadge()} />
           <Button title={'Set empty Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON_NULL} onPress={() => this.onClickSetNullBadge()} />
+          <Button title={'Switch To Tab 3'} testID={testIDs.SWITCH_THIRD_TAB_BUTTON} onPress={() => this.onClickSwitchTabByIndex()} />
           <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
           <Button title={'Switch To Tab 1 by componentID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByComponentID()} />
           {/* tslint:disable-next-line:max-line-length */}
@@ -83,6 +84,10 @@ class TextScreen extends Component {
     return (
       <Text style={styles.h1}>{this.props.myFunction()}</Text>
     );
+  }
+
+  onClickSwitchTabByIndex() {
+    Navigation.setBottomTabsCurrentIndex(this.props.componentId, 2);
   }
 
   onClickSwitchToTab() {
