@@ -153,6 +153,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 		handle(() -> navigator().dismissOverlay(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
+	@ReactMethod
+	public void setBottomTabsCurrentIndex(String commandId, String componentId, int tabIndex, Promise promise) {
+		handle(() -> navigator().setBottomTabsCurrentIndex(componentId, tabIndex, new NativeCommandListener(commandId, promise, eventEmitter, now)));
+	}
+
 	private Navigator navigator() {
 		return activity().getNavigator();
 	}

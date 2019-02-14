@@ -18,6 +18,7 @@ import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
@@ -199,6 +200,24 @@ public class Navigator extends ParentController {
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
         overlayManager.dismiss(componentId, listener);
+    }
+
+    public void setBottomTabsCurrentIndex(final String componentId, int tabIndex, CommandListener listener) {
+        ViewController target = findController(componentId);
+        if (target != null) {
+            ParentController parentController = target.getParentController();
+            while (parentController != null && !(parentController instanceof BottomTabsController)) {
+                parentController = parentController.getParentController();
+            }
+            final BottomTabsController bottomTabsController = (BottomTabsController) parentController;
+            if (bottomTabsController != null) {
+                bottomTabsController.getBottomTabs().setCurrentItem(tabIndex);
+            } else {
+                listener.onError("Failed update bottomTabs tab index, no bottomTabs found.");
+            }
+        } else {
+            listener.onError("Failed set new tab index. Component by " + componentId + " not found.");
+        }
     }
 
     @Nullable

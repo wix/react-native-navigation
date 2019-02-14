@@ -187,7 +187,6 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         return tabs.get(bottomTabs.getCurrentItem()).getView();
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
     public BottomTabs getBottomTabs() {
         return bottomTabs;
     }
