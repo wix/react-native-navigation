@@ -31,6 +31,7 @@ class PushedScreen extends Component {
 
   constructor(props) {
     super(props);
+    Navigation.events().bindComponent(this);
     if (this.props.simulateLongRunningTask) {
       this.simulateLongRunningTask();
     }
@@ -47,6 +48,12 @@ class PushedScreen extends Component {
   simulateLongRunningTask() {
     // tslint:disable-next-line
     for (let i = 0; i < Math.pow(2, 25); i++);
+  }
+
+  navigationButtonPressed({buttonId}) {
+    if (buttonId === 'backPress') {
+      alert('back button clicked')
+    }
   }
 
   listeners = [];
@@ -89,6 +96,7 @@ class PushedScreen extends Component {
         <Button title='Pop To Root' testID={testIDs.POP_TO_ROOT} onPress={this.onClickPopToRoot} />
         <Button title='Set Stack Root' testID={testIDs.SET_STACK_ROOT_BUTTON} onPress={this.onClickSetStackRoot} />
         <Button title='Push and Wait for Render' testID={testIDs.PUSH_BUTTON_WAIT_FOR_RENDER} onPress={this.onClickPushWaitForRender} />
+        <Button title='Push custom back button' testID={testIDs.PUSH_CUSTOM_BACK_BUTTON} onPress={this.onClickPushCustomBackButton} />
         {stackPosition > 2 && <Button title='Pop To Stack Position 1' testID={testIDs.POP_STACK_POSITION_ONE_BUTTON} onPress={this.onClickPopToFirstPosition} />}
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
       </View>
@@ -235,6 +243,29 @@ class PushedScreen extends Component {
           animations: {
             push: {
               waitForRender: true
+            }
+          }
+        }
+      }
+    });
+  }
+
+  onClickPushCustomBackButton = async () => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen',
+        passProps: {
+          stackPosition: this.getStackPosition() + 1,
+          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId),
+        },
+        options: {
+          topBar: {
+            backButton: {
+              id: 'backPress',
+              icon: require('../../img/navicon_add.png'),
+              visible: true,
+              color: 'black',
+              testID: testIDs.CUSTOM_BACK_BUTTON
             }
           }
         }

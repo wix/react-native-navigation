@@ -62,7 +62,7 @@
 	self.store = [OCMockObject partialMockForObject:[[RNNStore alloc] init]];
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
-	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter andBridge:nil]];
+	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:self.store componentRegistry:nil andBridge:nil]];
 	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:self.overlayManager mainWindow:_mainWindow];
 	self.vc1 = [RNNRootViewController new];
 	self.vc2 = [RNNRootViewController new];
@@ -126,7 +126,7 @@
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
 	
-	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[vc] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init]];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:creator childViewControllers:@[vc] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init]];
 	
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
@@ -213,7 +213,7 @@
 	OCMStub([self.overlayManager showOverlayWindow:[OCMArg any]]);
 	NSDictionary* layout = @{};
 	
-	[[self.controllerFactory expect] createLayout:layout saveToStore:self.store];
+	[[self.controllerFactory expect] createLayout:layout];
 	[self.uut showOverlay:layout completion:^{}];
 	[self.controllerFactory verify];
 }
@@ -221,9 +221,9 @@
 - (void)testShowOverlay_saveToStore {
 	[self.store setReadyToReceiveCommands:true];
 	OCMStub([self.overlayManager showOverlayWindow:[OCMArg any]]);
-	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]);
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]);
 	
-	[[self.controllerFactory expect] createLayout:[OCMArg any] saveToStore:self.store];
+	[[self.controllerFactory expect] createLayout:[OCMArg any]];
 	[self.uut showOverlay:@{} completion:^{}];
 	[self.overlayManager verify];
 }
@@ -231,7 +231,7 @@
 - (void)testShowOverlay_withCreatedLayout {
 	[self.store setReadyToReceiveCommands:true];
 	UIViewController* layoutVC = [RNNRootViewController new];
-	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]).andReturn(layoutVC);
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(layoutVC);
 	
 	[[self.overlayManager expect] showOverlayWindow:[OCMArg any]];
 	[self.uut showOverlay:@{} completion:^{}];
@@ -241,7 +241,8 @@
 - (void)testShowOverlay_invokeNavigationCommandEventWithLayout {
 	[self.store setReadyToReceiveCommands:true];
 	OCMStub([self.overlayManager showOverlayWindow:[OCMArg any]]);
-	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:[OCMArg any]]);
+	id mockedVC = [OCMockObject partialMockForObject:self.vc1];	
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
 	NSDictionary* layout = @{};
 	
@@ -294,7 +295,7 @@
 
 - (void)testSetRoot_setRootViewControllerOnMainWindow {
 	[self.store setReadyToReceiveCommands:true];
-	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:self.store]).andReturn(self.vc1);
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(self.vc1);
 	
 	[[self.mainWindow expect] setRootViewController:self.vc1];
 	[self.uut setRoot:@{} completion:^{}];
@@ -303,7 +304,7 @@
 
 - (void)testSetRoot_removeAllComponentsFromMainWindow {
 	[self.store setReadyToReceiveCommands:true];
-	OCMStub([self.controllerFactory createLayout:[OCMArg any] saveToStore:self.store]).andReturn(self.vc1);
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(self.vc1);
 	
 	[[self.store expect] removeAllComponentsFromWindow:self.mainWindow];
 	[self.uut setRoot:@{} completion:^{}];
@@ -311,7 +312,7 @@
 }
 
 - (void)testSetStackRoot_resetStackWithSingleComponent {
-	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any] saveToStore:self.store]).andReturn(@[self.vc2]);
+	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(@[self.vc2]);
 	[self.store setReadyToReceiveCommands:true];
 	[self.uut setStackRoot:@"vc1" children:nil completion:^{
 		
@@ -324,7 +325,7 @@
 
 - (void)testSetStackRoot_setMultipleChildren {
 	NSArray* newViewControllers = @[_vc1, _vc3];
-	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any] saveToStore:self.store]).andReturn(newViewControllers);
+	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
 	[self.store setReadyToReceiveCommands:true];
 	[self.uut setStackRoot:@"vc1" children:nil completion:^{
 		
@@ -332,6 +333,32 @@
 		
 	}];
 	XCTAssertTrue([_nvc.viewControllers isEqual:newViewControllers]);
+}
+
+- (void)testSetRoot_waitForRenderTrue {
+	[self.store setReadyToReceiveCommands:true];
+	self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	self.vc1.options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+	
+	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
+	
+	[[mockedVC expect] renderTreeAndWait:YES perform:[OCMArg any]];
+	[self.uut setRoot:@{} completion:^{}];
+	[mockedVC verify];
+}
+
+- (void)testSetRoot_waitForRenderFalse {
+	[self.store setReadyToReceiveCommands:true];
+	self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	self.vc1.options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:NO];
+	
+	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
+	
+	[[mockedVC expect] renderTreeAndWait:NO perform:[OCMArg any]];
+	[self.uut setRoot:@{} completion:^{}];
+	[mockedVC verify];
 }
 
 @end
