@@ -15,6 +15,7 @@ interface NativeCommandsModule {
   showOverlay(commandId: string, layout: object): Promise<any>;
   dismissOverlay(commandId: string, componentId: string): Promise<any>;
   getLaunchArgs(commandId: string): Promise<any>;
+  setBottomTabsCurrentIndex(commandId: string, componentId: string, tabIndex: number): Promise<any>;
 }
 
 export class NativeCommandsSender {
@@ -73,6 +74,10 @@ export class NativeCommandsSender {
 
   dismissOverlay(commandId: string, componentId: string) {
     return this.nativeCommandsModule.dismissOverlay(commandId, componentId);
+  }
+
+  setBottomTabsCurrentIndex(commandId: string, componentId: string, tabIndex: number) {
+    return this.nativeCommandsModule.setBottomTabsCurrentIndex(commandId, componentId, tabIndex);
   }
 
   getLaunchArgs(commandId: string) {

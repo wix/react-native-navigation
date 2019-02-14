@@ -404,6 +404,7 @@ describe('Commands', () => {
         setStackRoot: ['id', [{}]],
         showOverlay: [{}],
         dismissOverlay: ['id'],
+        setBottomTabsCurrentIndex: ['id', 0],
         getLaunchArgs: ['id']
       };
       const paramsForMethodName: Record<string, object> = {
@@ -427,6 +428,7 @@ describe('Commands', () => {
         },
         showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: null },
         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
+        setBottomTabsCurrentIndex: { commandId: 'setBottomTabsCurrentIndex+UNIQUE_ID', componentId: 'id', tabIndex: 0 },
         getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' }
       };
       _.forEach(getAllMethodsOfUut(), (m) => {

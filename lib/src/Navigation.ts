@@ -184,6 +184,13 @@ export class NavigationRoot {
   }
 
   /**
+   * Set the bottom tabs currentTabIndex
+   */
+  public setBottomTabsCurrentIndex(componentId: string, tabIndex: number): Promise<any> {
+    return this.commands.setBottomTabsCurrentIndex(componentId, tabIndex);
+  }
+
+  /**
    * Resolves arguments passed on launch
    */
   public getLaunchArgs(): Promise<any> {

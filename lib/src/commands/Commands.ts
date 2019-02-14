@@ -146,6 +146,13 @@ export class Commands {
     return result;
   }
 
+  public setBottomTabsCurrentIndex(componentId: string, tabIndex: number) {
+    const commandId = this.uniqueIdProvider.generate('setBottomTabsCurrentIndex');
+    const result = this.nativeCommandsSender.setBottomTabsCurrentIndex(commandId, componentId, tabIndex);
+    this.commandsObserver.notify('setBottomTabsCurrentIndex', { commandId, componentId, tabIndex });
+    return result;
+  }
+
   public getLaunchArgs() {
     const commandId = this.uniqueIdProvider.generate('getLaunchArgs');
     const result = this.nativeCommandsSender.getLaunchArgs(commandId);
