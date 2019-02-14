@@ -324,6 +324,23 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 }
 
+- (void)setBottomTabsCurrentIndex:(NSString*)componentId tabIndex:(NSUInteger)tabIndex completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
+    [self assertReady];
+	UIViewController* viewController = [_store findComponentForId:componentId];
+
+	if (viewController) {
+		UITabBarController *tbc = viewController.tabBarController;
+		if (tbc) {
+			tbc.selectedIndex = tabIndex;
+			completion();
+		} else {
+			[RNNErrorHandler reject:reject withErrorCode:1010 errorDescription:@"ComponentId is not inside bottomTabs"];
+		}
+	} else {
+		[RNNErrorHandler reject:reject withErrorCode:1010 errorDescription:@"ComponentId not found"];
+	}
+}
+
 #pragma mark - private
 
 - (void)removePopedViewControllers:(NSArray*)viewControllers {

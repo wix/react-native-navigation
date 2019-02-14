@@ -37,4 +37,6 @@
 
 - (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
 
+- (void)setBottomTabsCurrentIndex:(NSString*)componentId tabIndex:(NSUInteger)tabIndex completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
+
 @end

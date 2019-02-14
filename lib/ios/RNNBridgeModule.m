@@ -97,6 +97,12 @@ RCT_EXPORT_METHOD(dismissOverlay:(NSString*)commandId componentId:(NSString*)com
 	} rejection:reject];
 }
 
+RCT_EXPORT_METHOD(setBottomTabsCurrentIndex:(NSString*)commandId componentId:(NSString*)componentId tabIndex:(NSUInteger)tabIndex resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler setBottomTabsCurrentIndex:componentId tabIndex:tabIndex completion:^{
+		resolve(componentId);
+	} rejection:reject];
+}
+
 RCT_EXPORT_METHOD(getLaunchArgs:(NSString*)commandId :(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
 	NSArray* args = [[NSProcessInfo processInfo] arguments];
 	resolve(args);
