@@ -55,6 +55,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
      * Along with that, we should handle commands from the bridge using onNewIntent
      */
     static NavigationActivity currentActivity;
+    static int numberOfActivities = 0;
     private static Promise startAppPromise;
 
     private ActivityParams activityParams;
@@ -76,7 +77,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             finish();
             return;
         }
-
+        numberOfActivities += 1;
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
         disableActivityShowAnimationIfNeeded();
         setOrientation();
@@ -184,6 +185,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected void onDestroy() {
         destroyLayouts();
         destroyJsIfNeeded();
+        numberOfActivities -= 1;
         NavigationApplication.instance.getActivityCallbacks().onActivityDestroyed(this);
         super.onDestroy();
     }
@@ -202,9 +204,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if ( killedBySystem ) {
             return;
         }
-
-        if (currentActivity == null || currentActivity.isFinishing()) {
-            getReactGateway().onDestroyApp(this);
+        if ((currentActivity == null && numberOfActivities < 2) || (currentActivity != null && currentActivity.isFinishing())) {
+        getReactGateway().onDestroyApp(this);
         }
     }
 
