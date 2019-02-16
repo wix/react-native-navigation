@@ -8,9 +8,8 @@
 	self.topBar = dict[@"topBar"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"topBar"]] : nil;
 	self.content = dict[@"content"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"content"]] : nil;
 	self.bottomTabs = dict[@"bottomTabs"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"bottomTabs"]] : nil;
-
-	self.enable = dict[@"enabled"] ? [dict[@"enabled"] boolValue] : YES;
-	self.waitForRender = dict[@"waitForRender"] ? [dict[@"waitForRender"] boolValue] : NO;
+	self.enable = [BoolParser parse:dict key:@"enabled"];
+	self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
 
 	return self;
 }

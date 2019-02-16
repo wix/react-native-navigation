@@ -67,7 +67,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 		handle(() -> {
             navigator().setEventEmitter(eventEmitter);
             final ViewController viewController = newLayoutFactory().create(layoutTree);
-            navigator().setRoot(viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
+            navigator().setRoot(viewController, new NativeCommandListener(commandId, promise, eventEmitter, now), reactInstanceManager);
         });
 	}
 

@@ -6,6 +6,7 @@
 #import "RNNSideMenuChildVC.h"
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
+#import "RNNTopTabsViewController.h"
 #import "RNNSplitViewController.h"
 
 @interface RNNControllerFactoryTest : XCTestCase
@@ -22,7 +23,7 @@
 	[super setUp];
 	self.creator = nil;
 	self.store = [RNNStore new];
-	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator eventEmitter:nil andBridge:nil];
+	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator eventEmitter:nil store:self.store componentRegistry:nil andBridge:nil];
 }
 
 - (void)tearDown {
@@ -30,7 +31,7 @@
 }
 
 - (void)testCreateLayout_EmptyLayout {
-	XCTAssertThrows([self.factory createLayout:@{} saveToStore:self.store]);
+	XCTAssertThrows([self.factory createLayout:@{}]);
 }
 
 - (void)testCreateLayout_ComponentLayout {
@@ -38,7 +39,7 @@
 							 @"type": @"Component",
 							 @"data": @{},
 							 @"children": @[]};
-	id ans = [self.factory createLayout:layout saveToStore:self.store];
+	id ans = [self.factory createLayout:layout];
 	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
 }
 
@@ -51,7 +52,7 @@
 							  @"type": @"ExternalComponent",
 							  @"data": @{@"name": @"externalComponent"},
 							  @"children": @[]};
-	id ans = [self.factory createLayout:layout saveToStore:self.store];
+	id ans = [self.factory createLayout:layout];
 	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
 }
 
@@ -60,7 +61,7 @@
 							 @"type": @"Stack",
 							 @"data": @{},
 							 @"children": @[]};
-	id ans = [self.factory createLayout:layout saveToStore:self.store];
+	id ans = [self.factory createLayout:layout];
 	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
 }
 
@@ -77,7 +78,7 @@
 									   @"type": @"Component",
 									   @"data": @{},
 									   @"children": @[]}]};
-	id ans = [self.factory createLayout:layout saveToStore:self.store];
+	id ans = [self.factory createLayout:layout];
 	XCTAssertTrue([ans isMemberOfClass:[RNNSplitViewController class]]);
 }
 
@@ -90,7 +91,7 @@
 									   @"type": @"Component",
 									   @"data": @{},
 									   @"children": @[]}]};
-	RNNNavigationController* ans = (RNNNavigationController*) [self.factory createLayout:layout saveToStore:self.store];
+	RNNNavigationController* ans = (RNNNavigationController*) [self.factory createLayout:layout];
 	
 	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
 	XCTAssertTrue(ans.childViewControllers.count == 1);
@@ -111,7 +112,7 @@
 												 @"type": @"Component",
 												 @"data": @{},
 												 @"children": @[]}]}]};
-	RNNTabBarController* tabBar = (RNNTabBarController*) [self.factory createLayout:layout saveToStore:self.store];
+	RNNTabBarController* tabBar = (RNNTabBarController*) [self.factory createLayout:layout];
 	
 	XCTAssertTrue([tabBar isMemberOfClass:[RNNTabBarController class]]);
 	XCTAssertTrue(tabBar.childViewControllers.count == 1);
@@ -136,7 +137,7 @@
 												 @"type": @"Component",
 												 @"data": @{},
 												 @"children": @[]}]}]};
-	RNNTopTabsViewController* tabBar = (RNNTopTabsViewController*) [self.factory createLayout:layout saveToStore:self.store];
+	RNNTopTabsViewController* tabBar = (RNNTopTabsViewController*) [self.factory createLayout:layout];
 	
 	XCTAssertTrue([tabBar isMemberOfClass:[RNNTopTabsViewController class]]);
 }
@@ -170,7 +171,7 @@
 												 @"type": @"Component",
 												 @"data": @{},
 												 @"children": @[]}]}]};
-	RNNSideMenuController *ans = (RNNSideMenuController*) [self.factory createLayout:layout saveToStore:self.store];
+	RNNSideMenuController *ans = (RNNSideMenuController*) [self.factory createLayout:layout];
 	XCTAssertTrue([ans isMemberOfClass:[RNNSideMenuController class]]);
 	XCTAssertTrue([ans isKindOfClass:[UIViewController class]]);
 	XCTAssertTrue([ans.center isMemberOfClass:[RNNSideMenuChildVC class]]);
@@ -193,7 +194,7 @@
 							 @"type": @"Component",
 							 @"data": @{},
 							 @"children": @[]};
-	UIViewController *ans = [self.factory createLayout:layout saveToStore:self.store];
+	UIViewController *ans = [self.factory createLayout:layout];
 	
 	UIViewController *storeAns = [self.store findComponentForId:componentId];
 	XCTAssertEqualObjects(ans, storeAns);

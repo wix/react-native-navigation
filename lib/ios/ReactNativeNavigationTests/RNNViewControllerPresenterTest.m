@@ -70,7 +70,7 @@
 
 - (void)testBindViewControllerShouldCreateNavigationButtonsCreator {
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-	[presenter bindViewController:self.bindedViewController viewCreator:nil];
+	[presenter bindViewController:self.bindedViewController];
 	XCTAssertNotNil(presenter.navigationButtons);
 }
 

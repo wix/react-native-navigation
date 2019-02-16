@@ -34,6 +34,14 @@
 	return [self mergeOptions:otherOptions overrideOptions:NO];
 }
 
+- (RNNOptions *)mergeInOptions:(RNNOptions *)otherOptions {
+	if (!otherOptions) {
+		return self;
+	}
+	
+	return [otherOptions mergeOptions:self overrideOptions:NO];
+}
+
 - (RNNOptions *)withDefault:(RNNOptions *)defaultOptions {
 	RNNOptions* newOptions = [[[self class] alloc] initWithDict:@{}];
 	[newOptions mergeOptions:defaultOptions overrideOptions:YES];
