@@ -28,6 +28,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	self.modalTransitionStyle = modalTransitionStyle;
 }
 
+#if !TARGET_OS_TV
 - (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder 
 						hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar {
 	if (@available(iOS 11.0, *)) {
@@ -56,6 +57,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		self.navigationItem.hidesSearchBarWhenScrolling = searchBarHidden;
 	}
 }
+#endif
 
 - (void)rnn_setNavigationItemTitle:(NSString *)title {
 	self.navigationItem.title = title;
@@ -95,6 +97,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
+#if !TARGET_OS_TV
 - (void)rnn_setStatusBarStyle:(NSString *)style animated:(BOOL)animated {
 	if (animated) {
 		[UIView animateWithDuration:[self statusBarAnimationDuration:animated] animations:^{
@@ -131,14 +134,17 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		}
 	}
 }
+#endif
 
 - (void)rnn_setBackgroundColor:(UIColor *)backgroundColor {
 	self.view.backgroundColor = backgroundColor;
 }
 
+#if !TARGET_OS_TV
 - (void)rnn_setBackButtonVisible:(BOOL)visible {
 	self.navigationItem.hidesBackButton = !visible;
 }
+#endif
 
 - (CGFloat)statusBarAnimationDuration:(BOOL)animated {
 	return animated ? kStatusBarAnimationDuration : CGFLOAT_MIN;

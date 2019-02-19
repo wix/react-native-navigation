@@ -6,9 +6,20 @@
 
 + (void)showOnWindow:(UIWindow *)window {
 	CGRect screenBounds = [UIScreen mainScreen].bounds;
-	CGFloat screenScale = [UIScreen mainScreen].scale;
 	UIViewController *viewController = nil;
 	
+	#if TARGET_OS_TV
+	UIView *splashView = [UIView new];
+	splashView.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
+	viewController = [[RNNSplashScreen alloc] init];
+	
+	id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+	appDelegate.window.rootViewController = viewController;
+	[appDelegate.window makeKeyAndVisible];
+	
+	#else
+	
+	CGFloat screenScale = [UIScreen mainScreen].scale;
 	NSString* launchStoryBoard = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UILaunchStoryboardName"];
 	if (launchStoryBoard != nil) {//load the splash from the storyboard that's defined in the info.plist as the LaunchScreen
 		@try
@@ -76,6 +87,8 @@
 		appDelegate.window.rootViewController = viewController;
 		[appDelegate.window makeKeyAndVisible];
 	}
+	
+	#endif
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

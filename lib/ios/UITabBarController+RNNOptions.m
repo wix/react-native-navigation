@@ -19,9 +19,11 @@
 	self.tabBar.barTintColor = backgroundColor;
 }
 
+#if !TARGET_OS_TV
 - (void)rnn_setTabBarStyle:(UIBarStyle)barStyle {
 	self.tabBar.barStyle = barStyle;
 }
+#endif
 
 - (void)rnn_setTabBarTranslucent:(BOOL)translucent {
 	self.tabBar.translucent = translucent;

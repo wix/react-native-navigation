@@ -124,7 +124,9 @@
 
 - (void)commonInit {
     self.scrollView = [[HMScrollView alloc] init];
+	#if !TARGET_OS_TV
     self.scrollView.scrollsToTop = NO;
+	#endif
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.showsHorizontalScrollIndicator = NO;
     [self addSubview:self.scrollView];

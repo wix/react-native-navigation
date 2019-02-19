@@ -127,7 +127,11 @@
 
 + (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix
 {
+	#if !TARGET_OS_TV
 	return [self textAttributesFromDictionary:dictionary withPrefix:prefix baseFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]];
+	#else
+	return [self textAttributesFromDictionary:dictionary withPrefix:prefix baseFont:[UIFont systemFontOfSize:28]];
+	#endif
 }
 
 + (NSString *)getTimestampString {

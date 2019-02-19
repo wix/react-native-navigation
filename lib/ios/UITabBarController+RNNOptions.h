@@ -10,7 +10,9 @@
 
 - (void)rnn_setTabBarBackgroundColor:(UIColor *)backgroundColor;
 
+#if !TARGET_OS_TV
 - (void)rnn_setTabBarStyle:(UIBarStyle)barStyle;
+#endif
 
 - (void)rnn_setTabBarTranslucent:(BOOL)translucent;
 

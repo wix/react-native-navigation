@@ -90,7 +90,7 @@ static void __RNN_setFrame_orig(UIScrollView* self, SEL _cmd, CGRect frame)
 
 @end
 
-#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000 /* __IPHONE_11_0 */
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000 && !TARGET_OS_TV /* __IPHONE_11_0 */
 
 @interface UIView (OS10SafeAreaSupport) @end
 
@@ -110,7 +110,6 @@ static void __RNN_setFrame_orig(UIScrollView* self, SEL _cmd, CGRect frame)
 	UIEdgeInsets rv = UIEdgeInsetsZero;
 	rv.top = CGRectIntersection(myFrameInVCView, CGRectMake(0, 0, vc.view.bounds.size.width, vc.topLayoutGuide.length)).size.height;
 	rv.bottom = CGRectIntersection(myFrameInVCView, CGRectMake(0, vc.view.bounds.size.height - vc.bottomLayoutGuide.length, vc.view.bounds.size.width, vc.bottomLayoutGuide.length)).size.height;
-	
 	return rv;
 }
 
