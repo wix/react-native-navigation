@@ -17,7 +17,7 @@ import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,7 +49,7 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
     @NonNull
 	@Override
 	protected DrawerLayout createView() {
-        DrawerLayout sideMenu = new DrawerLayout(getActivity());
+        DrawerLayout sideMenu = new SideMenu(getActivity());
         presenter.bindView(sideMenu);
         sideMenu.addDrawerListener(this);
         return sideMenu;

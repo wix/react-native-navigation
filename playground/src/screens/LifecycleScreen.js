@@ -6,7 +6,7 @@ const { View, Text, Button } = require('react-native');
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
-class LifecycleScreen extends Component {
+class LifeCycleScreen extends Component {
   constructor(props) {
     super(props);
     this.onClickPush = this.onClickPush.bind(this);
@@ -38,10 +38,10 @@ class LifecycleScreen extends Component {
       <View style={styles.root}>
         <Text style={styles.h1}>{`Lifecycle Screen`}</Text>
         <Text style={styles.h1}>{this.state.text}</Text>
-        <Button title='Push to test didDisappear' testID={testIDs.PUSH_TO_TEST_DID_DISAPPEAR_BUTTON} onPress={this.onClickPush} />
+        <Button title='Push to test didDisappear' testID={testIDs.PUSH_TO_TEST_DID_DISAPPEAR_BTN} onPress={this.onClickPush} />
         {this.props.isModal ?
-          (<Button title='Dismiss' testID={testIDs.DISMISS_MODAL_BUTTON} onPress={() => this.onClickDismiss()} />)
-          : (<Button title='Pop' testID={testIDs.POP_BUTTON} onPress={() => this.onClickPop()} />)}
+          (<Button title='Dismiss' testID={testIDs.DISMISS_MODAL_BTN} onPress={() => this.onClickDismiss()} />)
+          : (<Button title='Pop' testID={testIDs.POP_BTN} onPress={() => this.onClickPop()} />)}
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
       </View>
     );
@@ -59,7 +59,7 @@ class LifecycleScreen extends Component {
     Navigation.dismissModal(this.props.componentId);
   }
 }
-module.exports = LifecycleScreen;
+module.exports = LifeCycleScreen;
 
 const styles = {
   root: {

@@ -1,59 +1,25 @@
 const React = require('react');
-const { Component } = require('react');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
-const Navigation = require('../services/Navigation');
-const Screens = require('./Screens');
-const Colors = require('../commons/Colors');
 const {
-  CHANGE_TITLE_BTN,
-  HIDE_TOP_BAR_BTN,
-  SHOW_TOP_BAR_BTN,
-  TOP_BAR,
-  ROUND_BUTTON,
-  BUTTON_ONE,
-  LEFT_BUTTON,
-  PUSH_BTN,
-  HIDE_TOPBAR_DEFAULT_OPTIONS,
-  SHOW_YELLOW_BOX_BTN,
-  SET_REACT_TITLE_VIEW
+  WELCOME_SCREEN_HEADER,
+  STACK_BTN,
+  BOTTOM_TABS_BTN,
+  BOTTOM_TABS,
+  SIDE_MENU_BTN
 } = require('../testIDs');
+const Screens = require('./Screens');
+const Navigation = require('../services/Navigation');
+const { stack, component } = require('../commons/Layouts');
 
-class Options extends Component {
+class LayoutsScreen extends React.Component {
   static options() {
     return {
       topBar: {
-        visible: true,
-        testID: TOP_BAR,
+        testID: WELCOME_SCREEN_HEADER,
         title: {
-          text: 'Styling Options'
-        },
-        rightButtons: [
-          {
-            id: 'ONE',
-            testID: BUTTON_ONE,
-            text: 'One',
-            color: Colors.primary
-          },
-          {
-            id: 'ROUND',
-            testID: ROUND_BUTTON,
-            component: {
-              name: Screens.RoundButton,
-              passProps: {
-                title: 'Two'
-              }
-            }
-          }
-        ],
-        leftButtons: [
-          {
-            id: 'LEFT',
-            testID: LEFT_BUTTON,
-            icon: require('../../img/clear.png'),
-            color: Colors.primary
-          }
-        ]
+          text: 'React Native Navigation'
+        }
       }
     };
   }
@@ -61,80 +27,48 @@ class Options extends Component {
   render() {
     return (
       <Root componentId={this.props.componentId}>
-        <Button label='Change title' testID={CHANGE_TITLE_BTN} onPress={this.changeTitle} />
-        <Button label='Hide TopBar' testID={HIDE_TOP_BAR_BTN} onPress={this.hideTopBar} />
-        <Button label='Show TopBar' testID={SHOW_TOP_BAR_BTN} onPress={this.showTopBar} />
-        <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
-        <Button label='Hide TopBar in DefaultOptions' testID={HIDE_TOPBAR_DEFAULT_OPTIONS} onPress={this.hideTopBarInDefaultOptions} />
-        <Button label='Set React Title View' testID={SET_REACT_TITLE_VIEW} onPress={this.setReactTitleView} />
-        <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
+        <Button label='Stack' testID={STACK_BTN} onPress={this.stack} />
+        <Button label='BottomTabs' testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
+        <Button label='SideMenu' testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
       </Root>
     );
   }
 
-  changeTitle = () => Navigation.mergeOptions(this, {
-    topBar: {
-      title: {
-        text: 'Title Changed'
-      }
-    }
-  });
+  stack = () => Navigation.showModal(Screens.StackScreen);
 
-  hideTopBar = () => Navigation.mergeOptions(this, {
-    topBar: {
-      visible: false
-    }
-  });
-
-  showTopBar = () => Navigation.mergeOptions(this, {
-    topBar: {
-      visible: true
-    }
-  });
-
-  push = () => Navigation.push(this, Screens.Pushed);
-
-  hideTopBarInDefaultOptions = () => {
-    Navigation.setDefaultOptions({
-      topBar: {
-        visible: false,
-        title: {
-          text: 'Default Title'
-        }
-      }
-    });
-  }
-
-  setReactTitleView = () => Navigation.mergeOptions(this, {
-    topBar: {
-      title: {
-        component: {
-          name: Screens.ReactTitleView,
-          alignment: 'center'
+  bottomTabs = () => Navigation.showModal({
+    bottomTabs: {
+      children: [
+        stack(Screens.FirstBottomTabsScreen),
+        stack({
+          component: {
+            id: 'SecondTab',
+            name: Screens.SecondBottomTabsScreen
+          }
+        })
+      ],
+      options: {
+        bottomTabs: {
+          testID: BOTTOM_TABS
         }
       }
     }
   });
 
-  //       <Button title='Switch to tab based app' testID={testIDs.TAB_BASED_APP_BUTTON} onPress={this.onClickSwitchToTabs} />
-  //       <Button title='Switch to app with side menus' testID={testIDs.TAB_BASED_APP_SIDE_BUTTON} onPress={this.onClickSwitchToSideMenus} />
-  //       {Platform.OS === 'ios' && <Button title='Switch to split view based app' testID={testIDs.SPLIT_VIEW_BUTTON} onPress={this.onClickSplitView} />}
-  //       <Button title='Push Lifecycle Screen' testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
-  //       <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
-  //       <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
-  //       {false && <Button title='Push Context Screen' testID={testIDs.PUSH_CONTEXT_SCREEN_BUTTON} onPress={this.onClickPushContextScreen} />}
-  //       {Platform.OS === 'ios' && <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPress={this.onClickPush} onPressIn={this.onClickShowPreview} title='Push Preview' />}
-  //       <Button title='Push Options Screen' testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
-  //       <Button title='Push External Component' testID={testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON} onPress={this.onClickPushExternalComponent} />
-  //       {Platform.OS === 'android' && <Button title='Push Top Tabs screen' testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />}
-  //       {Platform.OS === 'android' && <Button title='Back Handler' testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />}
-  //       <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
-  //       <Button title='Show Redbox' testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
-  //       <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
-  //       <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
-  //       <Button title='Complex Layout' testID={testIDs.COMPLEX_LAYOUT_BUTTON} onPress={this.onClickComplexLayout} />
-  //       <Button title='Push SearchBar' testID={testIDs.SHOW_TOPBAR_SEARCHBAR} onPress={this.onClickSearchBar} />
-  //       <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
+  sideMenu = () => Navigation.showModal({
+    sideMenu: {
+      left: { ...component(Screens.SideMenuLeft) },
+      center: {
+        ...stack({
+          component: {
+            id: 'SideMenuCenter',
+            name: Screens.SideMenuCenter
+          }
+        })
+      },
+      right: { ...component(Screens.SideMenuRight) }
+    }
+  });
 
   onClickSwitchToTabs = () => {
     Navigation.setRoot({
@@ -258,15 +192,7 @@ class Options extends Component {
                           name: 'navigation.playground.TextScreen',
                           passProps: {
                             text: 'This is a side menu center screen tab 1'
-                          },
-                          // options: {
-                          //   bottomTab: {
-                          //     iconColor: 'red',
-                          //     textColor: 'red',
-                          //     selectedIconColor: 'purple',
-                          //     selectedTextColor: 'purple',
-                          //   }
-                          // }
+                          }
                         }
                       }
                     ],
@@ -649,36 +575,14 @@ class Options extends Component {
       },
     });
   }
+
   onClickSearchBar = () => {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.SearchControllerScreen'
       }
     });
-  }
+  };
 }
 
-module.exports = Options;
-
-const styles = {
-  root: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  bar: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-  },
-  h1: {
-    fontSize: 24,
-    textAlign: 'center',
-    margin: 30
-  },
-  footer: {
-    fontSize: 10,
-    color: '#888',
-    marginTop: 10
-  }
-};
+module.exports = LayoutsScreen;
