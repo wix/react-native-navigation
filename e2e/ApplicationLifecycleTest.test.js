@@ -90,7 +90,7 @@ describe('application lifecycle test', () => {
 
   xit(':android: pressing r twice in succession reloads React Native', async () => {
     if (!IS_RELEASE) {
-      await elementById(TestIDs.PUSH_BUTTON).tap();
+      await elementById(TestIDs.PUSH_BTN).tap();
       await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
       Android.pressKeyCode(KEY_CODE_R);
@@ -103,7 +103,7 @@ describe('application lifecycle test', () => {
 
   xit(':android: sending reload broadcast reloads react native', async () => {
     if (!IS_RELEASE) {
-      await elementById(TestIDs.PUSH_BUTTON).tap();
+      await elementById(TestIDs.PUSH_BTN).tap();
       await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
       Android.executeShellCommand('am broadcast -a com.reactnativenavigation.broadcast.RELOAD');

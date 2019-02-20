@@ -13,7 +13,8 @@ const {
   POP_TO_FIRST_SCREEN_BTN,
   POP_TO_ROOT_BTN,
   ADD_BACK_HANDLER,
-  REMOVE_BACK_HANDLER
+  REMOVE_BACK_HANDLER,
+  SET_STACK_ROOT_BUTTON
 } = require('../testIDs');
 const Screens = require('./Screens');
 
@@ -54,6 +55,7 @@ class PushedScreen extends React.Component {
         <Button label='Pop to Root' testID={POP_TO_ROOT_BTN} onPress={this.popToRoot} />
         <Button label='Add BackHandler' testID={ADD_BACK_HANDLER} onPress={this.addBackHandler} />
         <Button label='Remove BackHandler' testID={REMOVE_BACK_HANDLER} onPress={this.removeBackHandler} />
+        <Button label='Set Stack Root' testID={SET_STACK_ROOT_BUTTON} onPress={this.setStackRoot} />
       </Root>
     );
   }
@@ -90,6 +92,51 @@ class PushedScreen extends React.Component {
   popToFirstScreen = () => Navigation.popTo(this.props.previousScreenIds[0]);
 
   popToRoot = () => Navigation.popToRoot(this);
+
+  setStackRoot = () => Navigation.setStackRoot(this, [
+    {
+      component: {
+        name: Screens.Pushed,
+        passProps: {
+          stackPosition: this.getStackPosition() + 1,
+          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+        },
+        options: {
+          animations: {
+            setStackRoot: {
+              enabled: false
+            }
+          },
+          topBar: {
+            title: {
+              text: `Pushed ${this.getStackPosition() + 1} a`
+            }
+          }
+        }
+      }
+    },
+    {
+      component: {
+        name: Screens.Pushed,
+        passProps: {
+          stackPosition: this.getStackPosition() + 1,
+          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+        },
+        options: {
+          animations: {
+            setStackRoot: {
+              enabled: false
+            }
+          },
+          topBar: {
+            title: {
+              text: `Pushed ${this.getStackPosition() + 1} b`
+            }
+          }
+        }
+      }
+    }
+  ]);
 
   addBackHandler = () => BackHandler.addEventListener('hardwareBackPress', this.backHandler);
 

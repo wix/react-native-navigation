@@ -81,14 +81,12 @@ describe('Stack', () => {
   });
 
   it(':ios: set stack root component should be first in stack', async () => {
-    await expect(elementByLabel('Pushed Screen')).toBeVisible();
-    await elementById(TestIDs.SET_STACK_ROOT_BTN).tap();
-    await expect(elementByLabel('Pushed Screen')).toBeNotVisible();
-    await expect(elementByLabel('Screen B')).toBeVisible();
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await expect(elementByLabel('Stack Position: 1')).toBeVisible();
+    await elementById(TestIDs.SET_STACK_ROOT_BUTTON).tap();
+    await expect(elementByLabel('Stack Position: 2')).toBeVisible();
     await elementById(TestIDs.POP_BTN).tap();
-    await expect(elementByLabel('Screen A')).toBeVisible();
-    await elementById(TestIDs.POP_BTN).tap();
-    await elementById(TestIDs.STACK_SCREEN_HEADER).tap();
+    await expect(elementByLabel('Stack Position: 2')).toBeVisible();
   });
 
   it(':ios: set searchBar and handle onSearchUpdated event', async () => {
@@ -97,6 +95,6 @@ describe('Stack', () => {
     await elementByLabel('Start Typing').tap();
     const query = '124';
     await elementByLabel('Start Typing').typeText(query);
-    await expect(elementById(TestIDs.SEARCH_RESULT_ITEM)).toHaveText('Item ${query}');
+    await expect(elementById(TestIDs.SEARCH_RESULT_ITEM)).toHaveText(`Item ${query}`);
   });
 });

@@ -1,9 +1,9 @@
 const { isString, isArray } = require('lodash');
 
-const stack = (rawChildren) => {
+const stack = (rawChildren, id) => {
   const childrenArray = isArray(rawChildren) ? rawChildren : [rawChildren];
   const children = childrenArray.map(child => component(child));
-  return { stack: { children } };
+  return { stack: { children, id } };
 }
 
 const component = (component, options) => {

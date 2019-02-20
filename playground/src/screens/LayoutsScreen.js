@@ -10,7 +10,7 @@ const {
 } = require('../testIDs');
 const Screens = require('./Screens');
 const Navigation = require('../services/Navigation');
-const { stack, component } = require('../commons/Layouts');
+const {stack, component} = require('../commons/Layouts');
 
 class LayoutsScreen extends React.Component {
   static options() {
@@ -42,10 +42,10 @@ class LayoutsScreen extends React.Component {
         stack(Screens.FirstBottomTabsScreen),
         stack({
           component: {
-            id: 'SecondTab',
             name: Screens.SecondBottomTabsScreen
           }
-        })
+        }, 'SecondTab'
+        )
       ],
       options: {
         bottomTabs: {
@@ -57,7 +57,7 @@ class LayoutsScreen extends React.Component {
 
   sideMenu = () => Navigation.showModal({
     sideMenu: {
-      left: { ...component(Screens.SideMenuLeft) },
+      left: {...component(Screens.SideMenuLeft)},
       center: {
         ...stack({
           component: {
@@ -66,7 +66,7 @@ class LayoutsScreen extends React.Component {
           }
         })
       },
-      right: { ...component(Screens.SideMenuRight) }
+      right: {...component(Screens.SideMenuRight)}
     }
   });
 
@@ -369,7 +369,7 @@ class LayoutsScreen extends React.Component {
     undefined();
   }
 
-  onClickShowPreview = async ({ reactTag }) => {
+  onClickShowPreview = async ({reactTag}) => {
     await Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.PushedScreen',

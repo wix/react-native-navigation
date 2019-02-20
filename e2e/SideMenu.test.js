@@ -11,6 +11,7 @@ describe('SideMenu', () => {
   it('push to stack with static id from SideMenu', async () => {
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
     await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN).tap();
+    await elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN).tap();
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
     await elementById(TestIDs.POP_BTN).tap();
     await expect(elementById(TestIDs.CENTER_SCREEN_HEADER)).toBeVisible();

@@ -22,7 +22,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Navigation, () => require('./NavigationScreen'));
   Navigation.registerComponent(Screens.FirstBottomTabsScreen, () => require('./FirstBottomTabScreen'));
   Navigation.registerComponent(Screens.SecondBottomTabsScreen, () => require('./SecondBottomTabScreen'));
-  Navigation.registerComponent(Screens.LifeCycle, () => require('./LifeCycleScreen'));
+  Navigation.registerComponent(Screens.LifeCycle, () => require('./LifecycleScreen'));
   Navigation.registerComponent(Screens.Overlay, () => require('./OverlayScreen'));
   Navigation.registerComponent(Screens.OverlayAlert, () => require('./OverlayAlert'));
   Navigation.registerComponent(Screens.RoundButton, () => require('./RoundedButton'));
