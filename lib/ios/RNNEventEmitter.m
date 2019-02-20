@@ -70,9 +70,10 @@ static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 									  }];
 }
 
--(void)sendOnNavigationCommandCompletion:(NSString *)commandName params:(NSDictionary*)params {
+-(void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId params:(NSDictionary*)params {
 	[self send:CommandCompleted body:@{
-									   @"commandId":commandName,
+									   @"commandId":commandId,
+									   @"commandName":commandName,
 									   @"params": params,
 									   @"completionTime": [RNNUtils getCurrentTimestamp]
 									   }];
