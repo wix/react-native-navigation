@@ -35,7 +35,6 @@ describe('Overlay', () => {
     await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
   });
 
-
   xtest('overlay pass touches - false', async () => {
     await elementById(TestIDs.SHOW_OVERLAY_BUTTON).tap();
     await expect(elementById(TestIDs.SHOW_OVERLAY_BUTTON)).toBeVisible();
