@@ -11,7 +11,7 @@ It is a tab-based app and utilizes Split Layout for iOS tablets, 3D touch and mo
 - [Download iOS](https://itunes.apple.com/us/app/hekla/id1405096983?mt=8)
 - [Download Android](https://play.google.com/store/apps/details?id=is.pipe.hekla)
 
-## Stater Kits
+## Starter Kits
 * [atoami/react-native-navigation-redux-starter-kit](https://github.com/atoami/react-native-navigation-redux-starter-kit) - React Native Navigation(v2) Starter Kit with Redux, Saga, ESLint, Babel and Jest 😎
 
 ### Playground
