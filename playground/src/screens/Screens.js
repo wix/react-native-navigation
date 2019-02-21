@@ -8,7 +8,7 @@ module.exports = {
   Modal: 'Modal',
   Overlay: 'Overlay',
   OverlayAlert: 'OverlayAlert',
-  LifeCycle: 'LifeCycle',
+  Lifecycle: 'Lifecycle',
   BackHandler: 'BackHandler',
   BottomTabs: 'BottomTabs',
   FirstBottomTabsScreen: 'FirstBottomTabsScreen',

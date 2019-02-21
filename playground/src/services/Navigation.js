@@ -15,7 +15,7 @@ const pop = (selfOrCompId) => Navigation.pop(compId(selfOrCompId));
 
 const showModal = (screen) => Navigation.showModal(isString(screen) ? stack(screen) : screen);
 
-const dismissModal = (componentId) => Navigation.dismissModal(componentId);
+const dismissModal = (selfOrCompId) => Navigation.dismissModal(compId(selfOrCompId));
 
 const dismissAllModals = () => Navigation.dismissAllModals();
 

@@ -76,7 +76,7 @@ class ModalScreen extends React.Component {
 
   modalLifecycle = () => Navigation.showModal({
     component: {
-      name: Screens.LifeCycle,
+      name: Screens.Lifecycle,
       passProps: { isModal: true }
     }
   });

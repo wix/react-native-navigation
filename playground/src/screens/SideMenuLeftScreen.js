@@ -6,7 +6,8 @@ const Navigation = require('../services/Navigation');
 const Screens = require('./Screens');
 const {
   LEFT_SIDE_MENU_PUSH_BTN,
-  CLOSE_LEFT_SIDE_MENU_BTN
+  CLOSE_LEFT_SIDE_MENU_BTN,
+  LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN
 } = require('../testIDs');
 
 class SideMenuLeftScreen extends React.Component {
@@ -14,12 +15,15 @@ class SideMenuLeftScreen extends React.Component {
     return (
       <Root componentId={this.props.componentId} style={{ backgroundColor: Colors.background }}>
         <Button label='Push' testID={LEFT_SIDE_MENU_PUSH_BTN} onPress={this.push} />
+        <Button label='Push and CLose' testID={LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN} onPress={this.pushAndClose} />
         <Button label='Close' testID={CLOSE_LEFT_SIDE_MENU_BTN} onPress={this.close} />
       </Root>
     );
   }
 
-  push = () => Navigation.push('SideMenuCenter', {
+  push = () => Navigation.push('SideMenuCenter', Screens.Pushed);
+
+  pushAndClose = () => Navigation.push('SideMenuCenter', {
     component: {
       name: Screens.Pushed,
       options: {

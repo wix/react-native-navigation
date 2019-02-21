@@ -35,7 +35,7 @@ class StackScreen extends React.Component {
     return (
       <Root componentId={this.props.componentId}>
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
-        <Button label='Push LifeCycle Screen' testID={PUSH_LIFECYCLE_BTN} onPress={this.pushLifeCycleScreen} />
+        <Button label='Push Lifecycle Screen' testID={PUSH_LIFECYCLE_BTN} onPress={this.pushLifecycleScreen} />
         <Button label='Pop None Existent Screen' testID={POP_NONE_EXISTENT_SCREEN_BTN} onPress={this.popNoneExistent} />
         <Button label='Push Custom Back Button' testID={PUSH_CUSTOM_BACK_BTN} onPress={this.pushCustomBackButton} />
         <Button label='Set Stack Root' testID={SET_STACK_ROOT_BTN} onPress={this.setStackRoot} />
@@ -46,7 +46,7 @@ class StackScreen extends React.Component {
 
   push = () => Navigation.push(this, Screens.Pushed);
 
-  pushLifeCycleScreen = () => Navigation.push(this, Screens.LifeCycle);
+  pushLifecycleScreen = () => Navigation.push(this, Screens.Lifecycle);
 
   popNoneExistent = () => Navigation.pop('noneExistentComponentId');
 
