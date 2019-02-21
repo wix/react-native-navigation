@@ -18,19 +18,22 @@
 }
 
 -(void)showModal:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
-	[self showModal:viewController animated:animated hasCustomAnimation:NO completion:completion];
+	[self showModal:viewController animated:animated hasCustomAnimation:NO transitioningDelegate:nil completion:completion];
 }
 
--(void)showModal:(UIViewController<RNNLayoutProtocol> *)viewController animated:(BOOL)animated hasCustomAnimation:(BOOL)hasCustomAnimation completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
+-(void)showModal:(UIViewController<RNNLayoutProtocol> *)viewController animated:(BOOL)animated hasCustomAnimation:(BOOL)hasCustomAnimation transitioningDelegate:(id)transitioningDelegate completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
 	if (!viewController) {
 		@throw [NSException exceptionWithName:@"ShowUnknownModal" reason:@"showModal called with nil viewController" userInfo:nil];
 	}
 	
 	UIViewController* topVC = [self topPresentedVC];
 	topVC.definesPresentationContext = YES;
-	
-	RNNAnimationsTransitionDelegate* tr = [[RNNAnimationsTransitionDelegate alloc] initWithScreenTransition:viewController.resolveOptions.animations.showModal isDismiss:NO];
-	if (hasCustomAnimation) {
+
+	if (transitioningDelegate) {
+		viewController.transitioningDelegate = transitioningDelegate;
+		viewController.modalPresentationStyle = UIModalPresentationCustom;
+	} else if (hasCustomAnimation) {
+		RNNAnimationsTransitionDelegate* tr = [[RNNAnimationsTransitionDelegate alloc] initWithScreenTransition:viewController.resolveOptions.animations.showModal isDismiss:NO];
 		viewController.transitioningDelegate = tr;
 	}
 	
@@ -43,10 +46,10 @@
 	}];
 }
 
-- (void)dismissModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
+- (void)dismissModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion dismissedWithSwipe:(BOOL)dismissedWithSwipe {
 	if (viewController) {
 		[_pendingModalIdsToDismiss addObject:viewController];
-		[self removePendingNextModalIfOnTop:completion];
+		[self removePendingNextModalIfOnTop:completion dismissedWithSwipe:dismissedWithSwipe];
 	}
 }
 
@@ -61,7 +64,7 @@
 #pragma mark - private
 
 
--(void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion {
+-(void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion dismissedWithSwipe:(BOOL)dismissedWithSwipe {
 	UIViewController<RNNLayoutProtocol> *modalToDismiss = [_pendingModalIdsToDismiss lastObject];
 	RNNNavigationOptions* options = modalToDismiss.resolveOptions;
 
@@ -75,7 +78,7 @@
 		[self topViewControllerParent:modalToDismiss].transitioningDelegate = tr;
 	}
 
-	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
+	if ((modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) && !dismissedWithSwipe) {
 		[modalToDismiss dismissViewControllerAnimated:[options.animations.dismissModal.enable getWithDefaultValue:YES] completion:^{
 			[_pendingModalIdsToDismiss removeObject:modalToDismiss];
 			if (modalToDismiss.view) {
@@ -86,7 +89,7 @@
 				completion();
 			}
 			
-			[self removePendingNextModalIfOnTop:nil];
+			[self removePendingNextModalIfOnTop:nil dismissedWithSwipe:false];
 		}];
 	} else {
 		[modalToDismiss.view removeFromSuperview];

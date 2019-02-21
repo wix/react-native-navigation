@@ -1,10 +1,17 @@
+const { Platform } = require('react-native');
 const { Navigation } = require('react-native-navigation');
 const Colors = require('./Colors');
 
 const setDefaultOptions = () => Navigation.setDefaultOptions({
   layout: {
     componentBackgroundColor: Colors.background,
-    orientation: ['portrait']
+    orientation: ['portrait'],
+
+    ...Platform.select({
+      android: {
+        backgroundColor: '#666666',
+      },
+    }),
   },
   bottomTabs: {
     titleDisplayMode: 'alwaysShow'

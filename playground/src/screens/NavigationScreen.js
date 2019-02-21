@@ -48,6 +48,28 @@ class NavigationScreen  extends React.Component {
 
   setRoot = () => Navigation.showModal(Screens.SetRoot);
   showModal = () => Navigation.showModal(Screens.Modal);
+  showDeckModal = () => Navigation.showModal({
+    component: {
+      name: Screens.Modal,
+      options: {
+        modalPresentationStyle: 'overCurrentContext', // Required on android to force rendering of previous screen behind current modal
+        animations: {
+          showModal: {
+            enable: true,
+            enableDeck: true,
+            deckPresentDuration: 0.5,
+            deckDismissDuration: 0.5
+          },
+          dismissModal: {
+            enable: true,
+            enableDeck: true,
+            deckPresentDuration: 0.5,
+            deckDismissDuration: 0.5
+          }
+        }
+      }
+    }
+  });
   showOverlay = () => Navigation.showModal(Screens.Overlay);
   externalComponent = () => Navigation.showModal(Screens.ExternalComponent);
   pushStaticEventsScreen = () => Navigation.showModal(Screens.EventsScreen)

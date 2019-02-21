@@ -12,6 +12,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		50451D35204451A900695F00 /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50451D34204451A800695F00 /* RNNCustomViewController.m */; };
+		58FE17AD222D29F300826F05 /* DeckTransition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58FE17AC222D29F300826F05 /* DeckTransition.framework */; };
+		58FE17AE222D29F300826F05 /* DeckTransition.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 58FE17AC222D29F300826F05 /* DeckTransition.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7B8F30491E84151300110AEC /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8F2FDE1E840F3600110AEC /* libcxxreact.a */; };
 		7B8F304B1E84151300110AEC /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8F2FFA1E8411A800110AEC /* libRCTActionSheet.a */; };
 		7B8F304C1E84151300110AEC /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8F2FEB1E840F6700110AEC /* libRCTAnimation.a */; };
@@ -291,6 +293,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		58FE17D8222D29F400826F05 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				58FE17AE222D29F300826F05 /* DeckTransition.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		13B07F961A680F5B00A75B9A /* playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -301,6 +317,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		50451D33204451A800695F00 /* RNNCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNNCustomViewController.h; path = ../../../lib/ios/RNNCustomViewController.h; sourceTree = "<group>"; };
 		50451D34204451A800695F00 /* RNNCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNNCustomViewController.m; path = ../../../lib/ios/RNNCustomViewController.m; sourceTree = "<group>"; };
+		58FE17AC222D29F300826F05 /* DeckTransition.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeckTransition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B8F2FC41E840F1A00110AEC /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = ../../lib/ios/ReactNativeNavigation.xcodeproj; sourceTree = "<group>"; };
 		7B8F2FCA1E840F3600110AEC /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		7B8F2FE51E840F6700110AEC /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -327,6 +344,7 @@
 				7B8F304C1E84151300110AEC /* libRCTAnimation.a in Frameworks */,
 				7B8F304D1E84151300110AEC /* libRCTGeolocation.a in Frameworks */,
 				7B8F304E1E84151300110AEC /* libRCTImage.a in Frameworks */,
+				58FE17AD222D29F300826F05 /* DeckTransition.framework in Frameworks */,
 				7B8F304F1E84151300110AEC /* libRCTLinking.a in Frameworks */,
 				7B8F30501E84151300110AEC /* libRCTNetwork.a in Frameworks */,
 				7B8F30511E84151300110AEC /* libRCTSettings.a in Frameworks */,
@@ -500,6 +518,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				58FE17AC222D29F300826F05 /* DeckTransition.framework */,
 				13B07FAE1A68108700A75B9A /* playground */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -537,6 +556,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				58FE17D8222D29F400826F05 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

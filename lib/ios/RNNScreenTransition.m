@@ -11,6 +11,11 @@
 	self.enable = [BoolParser parse:dict key:@"enabled"];
 	self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
 
+	self.enableDeck = [BoolParser parse:dict key:@"enableDeck"];
+	self.enableDeckSwipeToDismiss = [BoolParser parse:dict key:@"enableDeckSwipeToDismiss"];
+	self.deckPresentDuration = [DoubleParser parse:dict key:@"deckPresentDuration"];
+	self.deckDismissDuration = [DoubleParser parse:dict key:@"deckDismissDuration"];
+
 	return self;
 }
 

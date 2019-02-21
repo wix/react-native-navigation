@@ -225,8 +225,8 @@
 		50BE951320B5A787004F5DF5 /* RNNStatusBarOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50BE951120B5A787004F5DF5 /* RNNStatusBarOptions.h */; };
 		50C4A496206BDDBB00DB292E /* RNNSubtitleOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C4A494206BDDBB00DB292E /* RNNSubtitleOptions.h */; };
 		50C4A497206BDDBB00DB292E /* RNNSubtitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C4A495206BDDBB00DB292E /* RNNSubtitleOptions.m */; };
-		50C5FD8220D7D6D600F1EA8A /* ReactNativeNavigation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7BA500731E2544B9001B9E1B /* ReactNativeNavigation.h */; };
-		50C5FD8320D7D6DD00F1EA8A /* RNNBridgeManagerDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */; };
+		50C5FD8220D7D6D600F1EA8A /* ReactNativeNavigation.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 7BA500731E2544B9001B9E1B /* ReactNativeNavigation.h */; };
+		50C5FD8320D7D6DD00F1EA8A /* RNNBridgeManagerDelegate.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */; };
 		50CB3B691FDE911400AA153B /* RNNSideMenuOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */; };
 		50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */; };
 		50CE8503217C6C9B00084EBF /* RNNSideMenuPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CE8502217C6C9B00084EBF /* RNNSideMenuPresenterTest.m */; };
@@ -249,6 +249,7 @@
 		50F5DFC21F407A8C001A00BC /* RNNTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F5DFC01F407A8C001A00BC /* RNNTabBarController.m */; };
 		50F5DFC51F407AA0001A00BC /* RNNNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFC31F407AA0001A00BC /* RNNNavigationController.h */; };
 		50F5DFC61F407AA0001A00BC /* RNNNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F5DFC41F407AA0001A00BC /* RNNNavigationController.m */; };
+		5893FF2D221F07670004659C /* DeckTransition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5859B236221EDB7100CD7755 /* DeckTransition.framework */; };
 		651E1F8A21FD624600DFEA19 /* UISplitViewController+RNNOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 651E1F8921FD624600DFEA19 /* UISplitViewController+RNNOptions.m */; };
 		651E1F8D21FD642100DFEA19 /* RNNSplitViewControllerPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 651E1F8C21FD642100DFEA19 /* RNNSplitViewControllerPresenter.m */; };
 		7365071121E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 7365070F21E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h */; };
@@ -322,6 +323,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5859B235221EDB7100CD7755 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5859B227221EDB5700CD7755 /* DeckTransition.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D93F1C981EAEDB6E009A7474;
+			remoteInfo = DeckTransition;
+		};
+		5859B237221EDB7100CD7755 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5859B227221EDB5700CD7755 /* DeckTransition.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D93F1CA11EAEDB6E009A7474;
+			remoteInfo = DeckTransitionTests;
+		};
 		7B49FEC11E95090800DEB3EA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D8AFADB51BEE6F3F00A4592D /* Project object */;
@@ -332,15 +347,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D8AFADBB1BEE6F3F00A4592D /* CopyFiles */ = {
+		D8AFADBB1BEE6F3F00A4592D /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				50C5FD8320D7D6DD00F1EA8A /* RNNBridgeManagerDelegate.h in CopyFiles */,
-				50C5FD8220D7D6D600F1EA8A /* ReactNativeNavigation.h in CopyFiles */,
+				50C5FD8320D7D6DD00F1EA8A /* RNNBridgeManagerDelegate.h in Copy Files */,
+				50C5FD8220D7D6D600F1EA8A /* ReactNativeNavigation.h in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -590,6 +606,7 @@
 		50F5DFC01F407A8C001A00BC /* RNNTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTabBarController.m; sourceTree = "<group>"; };
 		50F5DFC31F407AA0001A00BC /* RNNNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNNavigationController.h; sourceTree = "<group>"; };
 		50F5DFC41F407AA0001A00BC /* RNNNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationController.m; sourceTree = "<group>"; };
+		5859B227221EDB5700CD7755 /* DeckTransition.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DeckTransition.xcodeproj; path = DeckTransition/DeckTransition.xcodeproj; sourceTree = "<group>"; };
 		651E1F8821FD611600DFEA19 /* UISplitViewController+RNNOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISplitViewController+RNNOptions.h"; sourceTree = "<group>"; };
 		651E1F8921FD624600DFEA19 /* UISplitViewController+RNNOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UISplitViewController+RNNOptions.m"; sourceTree = "<group>"; };
 		651E1F8B21FD63F400DFEA19 /* RNNSplitViewControllerPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSplitViewControllerPresenter.h; sourceTree = "<group>"; };
@@ -704,6 +721,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5893FF2D221F07670004659C /* DeckTransition.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1017,6 +1035,23 @@
 			name = Managers;
 			sourceTree = "<group>";
 		};
+		5859B230221EDB6B00CD7755 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				5859B227221EDB5700CD7755 /* DeckTransition.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		5859B231221EDB7100CD7755 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5859B236221EDB7100CD7755 /* DeckTransition.framework */,
+				5859B238221EDB7100CD7755 /* DeckTransitionTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		7B1E4C4B1E2D173700C3A525 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1151,6 +1186,7 @@
 				263905881E4C6F440023D7D3 /* RNNSideMenu */,
 				507F43F11FF4FCD800D9425B /* HMSegmentControl */,
 				7B49FEBC1E95090800DEB3EA /* ReactNativeNavigationTests */,
+				5859B230221EDB6B00CD7755 /* Libraries */,
 				D8AFADBE1BEE6F3F00A4592D /* Products */,
 				7B49FED01E950A7A00DEB3EA /* Frameworks */,
 				E8367B791F77BA1F00675C05 /* Recovered References */,
@@ -1384,7 +1420,7 @@
 			buildPhases = (
 				D8AFADB91BEE6F3F00A4592D /* Sources */,
 				D8AFADBA1BEE6F3F00A4592D /* Frameworks */,
-				D8AFADBB1BEE6F3F00A4592D /* CopyFiles */,
+				D8AFADBB1BEE6F3F00A4592D /* Copy Files */,
 				7B1126A21E2D2B5500F9B03B /* Headers */,
 			);
 			buildRules = (
@@ -1426,6 +1462,12 @@
 			mainGroup = D8AFADB41BEE6F3F00A4592D;
 			productRefGroup = D8AFADBE1BEE6F3F00A4592D /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 5859B231221EDB7100CD7755 /* Products */;
+					ProjectRef = 5859B227221EDB5700CD7755 /* DeckTransition.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D8AFADBC1BEE6F3F00A4592D /* ReactNativeNavigation */,
@@ -1433,6 +1475,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		5859B236221EDB7100CD7755 /* DeckTransition.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = DeckTransition.framework;
+			remoteRef = 5859B235221EDB7100CD7755 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5859B238221EDB7100CD7755 /* DeckTransitionTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = DeckTransitionTests.xctest;
+			remoteRef = 5859B237221EDB7100CD7755 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		7B49FEB91E95090800DEB3EA /* Resources */ = {
@@ -1785,6 +1844,7 @@
 		D8AFADC71BEE6F3F00A4592D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -1802,6 +1862,7 @@
 		D8AFADC81BEE6F3F00A4592D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;

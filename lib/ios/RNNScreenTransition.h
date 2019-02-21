@@ -10,6 +10,11 @@
 @property (nonatomic, strong) Bool* enable;
 @property (nonatomic, strong) Bool* waitForRender;
 
+@property (nonatomic, strong) Bool* enableDeck;
+@property (nonatomic, strong) Bool* enableDeckSwipeToDismiss;
+@property (nonatomic, strong) Double* deckPresentDuration;
+@property (nonatomic, strong) Double* deckDismissDuration;
+
 - (BOOL)hasCustomAnimation;
 - (double)maxDuration;
 

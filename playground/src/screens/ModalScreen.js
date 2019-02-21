@@ -1,10 +1,12 @@
 const _ = require('lodash');
 const React = require('react');
+const { Platform, Text } = require('react-native');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
 const Navigation = require('./../services/Navigation');
 const Screens = require('./Screens');
 const {
+  DECK_TRANSITION_BUTTON,
   PUSH_BTN,
   MODAL_SCREEN_HEADER,
   MODAL_BTN,
@@ -35,10 +37,18 @@ class ModalScreen extends React.Component {
   }
 
   render() {
+    const { isDeck } = this.props;
+
+    const dismissText = isDeck !== undefined ? `DismissDeck:${isDeck}` : 'Dismiss Modal';
+    const deckText = isDeck !== undefined ? `DeckTransition:${isDeck}` : 'DeckTransition';
+
     return (
       <Root componentId={this.props.componentId} footer={`Modal Stack Position: ${this.getModalPosition()}`}>
+        {isDeck !== undefined ? (
+          <Text>I am a deck modal</Text>
+        ) : null}
         <Button label='Show Modal' testID={MODAL_BTN} onPress={this.showModal} />
-        <Button label='Dismiss Modal' testID={DISMISS_MODAL_BTN} onPress={this.dismissModal} />
+        <Button label={dismissText} testID={DISMISS_MODAL_BTN} onPress={this.dismissModal} />
         <Button label='Dismiss Unknown Modal' testID={DISMISS_UNKNOWN_MODAL_BTN} onPress={this.dismissUnknownModal} />
         <Button label='Modal Lifecycle' testID={MODAL_LIFECYCLE_BTN} onPress={this.modalLifecycle} />
         {this.getPreviousModalId() && (<Button label='Dismiss Previous Modal' testID={DISMISS_PREVIOUS_MODAL_BTN} onPress={this.dismissPreviousModal} />)}
@@ -46,6 +56,8 @@ class ModalScreen extends React.Component {
         <Button label='Dismiss All Modals' testID={DISMISS_ALL_MODALS_BTN} onPress={this.dismissAllModals} />
         {this.props.previousModalIds && (<Button label='Dismiss First Modal' testID={DISMISS_FIRST_MODAL_BTN} onPress={this.dismissFirstModal} />)}
         <Button label='Push screen' testID={PUSH_BTN} onPress={this.pushScreen} />
+        <Button label={deckText} testID={DECK_TRANSITION_BUTTON} onPress={this.onDeckTransition} />
+        <Button label='DeckTransition:NO-SWIPE' onPress={this.onDeckTransitionNoSwipe} />
       </Root>
     );
   }
@@ -63,6 +75,46 @@ class ModalScreen extends React.Component {
   }
 
   dismissModal = async () => await Navigation.dismissModal(this.props.componentId);
+  
+  onDeckTransition = () => this.deckTransition(true);
+  onDeckTransitionNoSwipe = () => this.deckTransition(false);
+
+  deckTransition = (enableDeckSwipeToDismiss) => {
+    if (Platform.OS === 'android') {
+      Navigation.mergeOptions(this, {
+        layout: {
+          backgroundColor: '#666666'
+        }
+      });
+    }
+
+    Navigation.showModal({
+      component: {
+        name: Screens.Modal,
+        passProps: {
+          isDeck: this.props.isDeck ? this.props.isDeck + 1 : 1
+        },
+        options: {
+          modalPresentationStyle: 'overCurrentContext', // Required on android to force rendering of previous screen behind current modal
+          animations: {
+            showModal: {
+              enable: true,
+              enableDeck: true,
+              enableDeckSwipeToDismiss,
+              deckPresentDuration: 0.5,
+              deckDismissDuration: 0.5
+            },
+            dismissModal: {
+              enable: true,
+              enableDeck: true,
+              deckPresentDuration: 0.5,
+              deckDismissDuration: 0.5
+            }
+          }
+        }
+      }
+    });
+  };
 
   dismissPreviousModal = () => Navigation.dismissModal(this.getPreviousModalId());
 

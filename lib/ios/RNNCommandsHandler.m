@@ -11,6 +11,15 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "RNNLayoutManager.h"
 
+// See: https://github.com/CocoaPods/CocoaPods/issues/7594
+#if __has_include("DeckTransition-Swift.h")
+	#define HAS_DECK_TRANSITION
+	#import "DeckTransition-Swift.h"
+#elif __has_include("DeckTransition/DeckTransition-Swift.h")
+	#define HAS_DECK_TRANSITION
+	#import <DeckTransition/DeckTransition-Swift.h>
+#endif
+
 static NSString* const setRoot	= @"setRoot";
 static NSString* const setStackRoot	= @"setStackRoot";
 static NSString* const push	= @"push";
@@ -250,7 +259,42 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	UIViewController *newVc = [_controllerFactory createLayout:layout];
 	
 	[newVc renderTreeAndWait:[newVc.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
-		[_modalManager showModal:newVc animated:[newVc.resolveOptions.animations.showModal.enable getWithDefaultValue:YES] hasCustomAnimation:newVc.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
+		id transitioningDelegate;
+
+		if ([newVc.resolveOptions.animations.showModal.enableDeck getWithDefaultValue:NO]) {
+#ifdef HAS_DECK_TRANSITION
+			transitioningDelegate = [[DeckTransitioningDelegate alloc]
+										initWithIsSwipeToDismissEnabled:[newVc.resolveOptions.animations.showModal.enableDeckSwipeToDismiss getWithDefaultValue:YES]
+										presentDuration:[NSNumber numberWithDouble:[newVc.resolveOptions.animations.showModal.deckPresentDuration getWithDefaultValue:0.3]]
+										presentAnimation:nil
+										presentCompletion:nil
+										dismissDuration:[NSNumber numberWithDouble:[newVc.resolveOptions.animations.showModal.deckDismissDuration getWithDefaultValue:0.3]]
+										dismissAnimation:nil
+										dismissCompletion:^(bool completed) {
+											if (newVc.layoutInfo.componentId != nil) {
+												[self dismissModal:newVc.layoutInfo.componentId
+													mergeOptions:@{ @"completed": @true }
+														completion:^() { }
+														rejection:^(NSString *code, NSString *message, NSError *error) { }
+												];
+											} else {
+												[self dismissAllModals:@{} completion:^() { }];
+											}
+										}
+									];
+#else
+			[[NSException exceptionWithName:@"DeckTransitionNotIncludedError"
+									reason:@"DeckTransition has not been included! Refer to installation instructions on how to add it."
+									userInfo:nil]
+			raise];
+#endif
+		}
+
+		[_modalManager showModal:newVc
+						animated:[newVc.resolveOptions.animations.showModal.enable getWithDefaultValue:YES]
+						hasCustomAnimation:newVc.resolveOptions.animations.showModal.hasCustomAnimation
+						transitioningDelegate:transitioningDelegate
+						completion:^(NSString *componentId) {
 			[_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId params:@{@"layout": layout}];
 			completion(newVc.layoutInfo.componentId);
 		}];
@@ -275,7 +319,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal commandId:commandId params:@{@"componentId": componentId}];
 	}];
 	
-	[_modalManager dismissModal:modalToDismiss completion:completion];
+	[_modalManager dismissModal:modalToDismiss completion:completion dismissedWithSwipe:mergeOptions[@"completed"] ];
 	
 	[CATransaction commit];
 }

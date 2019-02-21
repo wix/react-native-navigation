@@ -384,8 +384,10 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void findController_modal() {
-        uut.showModal(child1, new CommandListenerAdapter());
-        assertThat(uut.findController(child1.getId())).isEqualTo(child1);
+        ViewController root = spy(child1);
+        uut.setRoot(root, new CommandListenerAdapter(), reactInstanceManager);
+        uut.showModal(child2, new CommandListenerAdapter());
+        assertThat(uut.findController(child2.getId())).isEqualTo(child2);
     }
 
     @NonNull

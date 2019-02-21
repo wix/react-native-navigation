@@ -15,6 +15,36 @@ describe('modal', () => {
     await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
   });
 
+  test('show/hide modal with deck transition', async () => {
+    await elementById(TestIDs.DECK_TRANSITION_BUTTON).tap();
+    await expect(elementByLabel('DeckTransition:1')).toBeVisible();
+    await elementByLabel('DeckTransition:1').tap();
+    await expect(elementByLabel('DismissDeck:2')).toBeVisible();
+    await elementByLabel('DismissDeck:2').tap();
+    await expect(elementByLabel('DismissDeck:1')).toBeVisible();
+    await elementByLabel('DismissDeck:1').tap();
+  });
+
+  test(':ios: hide modal with deck transition by swiping', async () => {
+    await elementById(TestIDs.DECK_TRANSITION_BUTTON).tap();
+    await expect(elementByLabel('DeckTransition:1')).toBeVisible();
+
+    await expect(element(by.text('I am a deck modal'))).toBeVisible();
+    await element(by.text('I am a deck modal')).swipe('down', 'slow', 0.5);
+    await expect(element(by.text('I am a deck modal'))).toBeNotVisible();
+  });
+
+  test(':ios: hide modal with deck transition by swiping can be disabled', async () => {
+    await elementByLabel('DeckTransition:NO-SWIPE').tap();
+    await expect(elementByLabel('DeckTransition:1')).toBeVisible();
+    await expect(element(by.text('I am a deck modal'))).toBeVisible();
+    await element(by.text('I am a deck modal')).swipe('down', 'fast', 0.5);
+    await expect(element(by.text('I am a deck modal'))).toBeVisible();
+    await expect(elementByLabel('DismissDeck:1')).toBeVisible();
+    await elementByLabel('DismissDeck:1').tap();
+    await expect(element(by.text('I am a deck modal'))).toBeNotVisible();
+  });
+
   it('dismiss modal', async () => {
     await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();

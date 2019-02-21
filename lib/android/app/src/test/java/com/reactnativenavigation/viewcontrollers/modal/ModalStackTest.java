@@ -199,7 +199,7 @@ public class ModalStackTest extends BaseTest {
         Options resolvedOptions = new Options();
         when(modal2.resolveCurrentOptions(defaultOptions)).then(invocation -> resolvedOptions);
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        uut.showModal(modal2, root, new CommandListenerAdapter());
+        uut.showModal(modal2, modal1, new CommandListenerAdapter());
 
         ViewGroup view1 = modal1.getView();
         ViewGroup view2 = modal2.getView();
@@ -207,8 +207,8 @@ public class ModalStackTest extends BaseTest {
         uut.dismissAllModals(root, Options.EMPTY, listener);
         verify(presenter).dismissModal(eq(modal2), eq(root), eq(root), any());
         verify(listener).onSuccess(modal2.getId());
-        verify(animator, times(0)).dismiss(eq(view1), eq(modal1.options.animations.dismissModal), any());
-        verify(animator).dismiss(eq(view2), eq(resolvedOptions.animations.dismissModal), any());
+        verify(animator, times(0)).dismiss(eq(view1), eq(root.getView()), eq(modal1.options.animations.dismissModal), any());
+        verify(animator).dismiss(eq(view2), eq(root.getView()), eq(resolvedOptions.animations.dismissModal), any());
         assertThat(uut.size()).isEqualTo(0);
     }
 

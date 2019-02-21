@@ -789,6 +789,24 @@ export interface StackAnimationOptions {
    * Configure animations for the content (Screen)
    */
   content?: ViewAnimationOptions;
+  /**
+   * Disable/Enable deck transition [Default: false]
+   */
+  enableDeck?: boolean,
+  /**
+   * Disable/Enable swipe to dismiss interaction [Default: true]
+   *
+   * Warning: IOS only
+   */
+  enableDeckSwipeToDismiss?: boolean,
+  /**
+   * Duration of the appear animation in seconds [Default: 0.3]
+   */
+  deckPresentDuration?: boolean,
+  /**
+   * Duration of the dismiss animation in seconds [Default: 0.3]
+   */
+  deckDismissDuration?: boolean,
 }
 
 /**
