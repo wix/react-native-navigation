@@ -148,6 +148,15 @@
     [[self class] showSplashScreen];
 }
 
+-(void)initBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
+    if (self.sharedBridge && [self.sharedBridge isValid]) return;
+    
+    self.sharedBridge = [[RCTBridge alloc] initWithDelegate:delegate launchOptions:launchOptions];
+    self.bundleURL = [delegate sourceURLForBridge:self.sharedBridge];
+    
+    [[self class] showSplashScreen];
+}
+
 -(RCTBridge*)getBridge {
     return self.sharedBridge;
 }

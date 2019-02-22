@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
+#import <React/RCTBridgeDelegate.h>
 #import <UIKit/UIKit.h>
 
 @interface RCCManager : NSObject
@@ -9,6 +10,7 @@
 
 -(void)initBridgeWithBundleURL:(NSURL *)bundleURL;
 -(void)initBridgeWithBundleURL:(NSURL *)bundleURL launchOptions:(NSDictionary *)launchOptions;
+-(void)initBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions;
 -(RCTBridge*)getBridge;
 -(UIWindow*)getAppWindow;
 -(void)setAppStyle:(NSDictionary*)appStyle;
