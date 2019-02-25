@@ -4,7 +4,7 @@ const exec = require('shell-utils').exec;
 const adapter = require('detox/runners/jest/adapter');
 
 jest.setTimeout(300000);
-jasmine.getEnv().addReporter(adapter); // don't forget this line
+jasmine.getEnv().addReporter(adapter);
 
 beforeAll(async () => {
   await detox.init(config, {launchApp: false});

@@ -294,6 +294,12 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void resolveCurrentOptions_returnsFirstTabIfInvokedBeforeViewIsCreated() {
+        uut = createBottomTabs();
+        assertThat(uut.getCurrentChild()).isEqualTo(tabs.get(0));
+    }
+
+    @Test
     public void buttonPressInvokedOnCurrentTab() {
         uut.ensureViewIsCreated();
         uut.selectTab(4);

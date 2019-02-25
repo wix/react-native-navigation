@@ -1,19 +1,31 @@
 const React = require('react');
-const { Component } = require('react');
+const Root = require('../components/Root');
+const Button = require('../components/Button');
+const Navigation = require('../services/Navigation');
+const Screens = require('./Screens');
+const {
+  PUSH_TO_TEST_DID_DISAPPEAR_BTN,
+  DISMISS_MODAL_BTN,
+  POP_BTN
+} = require('../testIDs');
 
-const { View, Text, Button } = require('react-native');
+class LifecycleScreen extends React.Component {
+  static options() {
+    return {
+      topBar: {
+        title: {
+          text: 'Lifecycle Screen'
+        }
+      }
+    }
+  }
+  state = {
+    text: 'nothing yet'
+  };
 
-const { Navigation } = require('react-native-navigation');
-const testIDs = require('../testIDs');
-
-class LifecycleScreen extends Component {
   constructor(props) {
     super(props);
-    this.onClickPush = this.onClickPush.bind(this);
-    this.state = {
-      text: 'nothing yet'
-    };
-    this.subscription = Navigation.events().bindComponent(this);
+    Navigation.events().bindComponent(this);
   }
 
   componentDidAppear() {
@@ -25,7 +37,6 @@ class LifecycleScreen extends Component {
   }
 
   componentWillUnmount() {
-    this.subscription.remove();
     alert('componentWillUnmount'); // eslint-disable-line no-alert
   }
 
@@ -35,47 +46,19 @@ class LifecycleScreen extends Component {
 
   render() {
     return (
-      <View style={styles.root}>
-        <Text style={styles.h1}>{`Lifecycle Screen`}</Text>
-        <Text style={styles.h1}>{this.state.text}</Text>
-        <Button title='Push to test didDisappear' testID={testIDs.PUSH_TO_TEST_DID_DISAPPEAR_BUTTON} onPress={this.onClickPush} />
-        {this.props.isModal ?
-          (<Button title='Dismiss' testID={testIDs.DISMISS_MODAL_BUTTON} onPress={() => this.onClickDismiss()} />)
-          : (<Button title='Pop' testID={testIDs.POP_BUTTON} onPress={() => this.onClickPop()} />)}
-        <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
-      </View>
+      <Root componentId={this.props.componentId} footer={this.state.text}>
+        <Button label='Push to test didDisappear' testID={PUSH_TO_TEST_DID_DISAPPEAR_BTN} onPress={this.push} />
+        {this.renderCloseButton()}
+      </Root>
     );
   }
 
-  onClickPush() {
-    Navigation.push(this.props.componentId, { component: { name: 'navigation.playground.TextScreen' } });
-  }
+  renderCloseButton = () => this.props.isModal ?
+        <Button label='Dismiss' testID={DISMISS_MODAL_BTN} onPress={this.dismiss} /> :
+        <Button label='Pop' testID={POP_BTN} onPress={this.pop} />;
 
-  onClickPop() {
-    Navigation.pop(this.props.componentId);
-  }
-
-  onClickDismiss() {
-    Navigation.dismissModal(this.props.componentId);
-  }
+  push = () => Navigation.push(this, Screens.Pushed);
+  pop = () => Navigation.pop(this);
+  dismiss = () => Navigation.dismissModal(this);
 }
 module.exports = LifecycleScreen;
-
-const styles = {
-  root: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5fcff'
-  },
-  h1: {
-    fontSize: 24,
-    textAlign: 'center',
-    margin: 10
-  },
-  footer: {
-    fontSize: 10,
-    color: '#888',
-    marginTop: 10
-  }
-};

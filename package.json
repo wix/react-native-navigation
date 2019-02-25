@@ -57,6 +57,7 @@
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
+    "react-native-ui-lib": "^3.17.2",
     "tslib": "1.9.3"
   },
   "devDependencies": {

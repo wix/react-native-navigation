@@ -164,6 +164,9 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     private void setTestId(Toolbar toolbar, Text testId) {
         if (!testId.hasValue()) return;
         UiUtils.runOnPreDrawOnce(toolbar, () -> {
+            if (button.hasComponent() && view != null) {
+                view.setTag(testId.get());
+            }
             ActionMenuView buttonsLayout = ViewUtils.findChildByClass(toolbar, ActionMenuView.class);
             List<TextView> buttons = ViewUtils.findChildrenByClass(buttonsLayout, TextView.class);
             for (TextView view : buttons) {
