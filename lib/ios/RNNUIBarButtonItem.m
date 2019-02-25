@@ -62,6 +62,7 @@
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
 	self.widthConstraint.constant = rootView.intrinsicContentSize.width;
 	self.heightConstraint.constant = rootView.intrinsicContentSize.height;
+	[rootView setFrame:CGRectMake(0, 0, rootView.intrinsicContentSize.width, rootView.intrinsicContentSize.height)];
 	[rootView setNeedsUpdateConstraints];
 	[rootView updateConstraintsIfNeeded];
 }
