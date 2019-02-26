@@ -30,6 +30,7 @@ function runIosUnitTests() {
             -configuration ${conf}
             -derivedDataPath ./DerivedData/playground
             -quiet
+            -UseModernBuildSystem=NO
             ONLY_ACTIVE_ARCH=YES`);
 
   exec.execSync(`cd ./playground/ios &&
