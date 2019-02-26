@@ -5,7 +5,7 @@
 
 @protocol RNNRootViewCreator
 
-- (RNNReactView*)createRootView:(NSString*)name rootViewId:(NSString*)rootViewId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
+- (RNNReactView*)createRootView:(NSString*)name rootViewId:(NSString*)rootViewId availableSize:(CGSize)availableSize reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 
 - (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions;
 
