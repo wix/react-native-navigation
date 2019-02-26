@@ -16,6 +16,7 @@
 	UIButton* button = [[UIButton alloc] init];
 	[button addTarget:self action:@selector(onButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 	[button setImage:iconImage forState:UIControlStateNormal];
+	[button setFrame:CGRectMake(0, 0, iconImage.size.width, iconImage.size.height)];
 	self = [super initWithCustomView:button];
 	self.buttonId = buttonId;
 	return self;
@@ -62,6 +63,7 @@
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
 	self.widthConstraint.constant = rootView.intrinsicContentSize.width;
 	self.heightConstraint.constant = rootView.intrinsicContentSize.height;
+	[rootView setFrame:CGRectMake(0, 0, rootView.intrinsicContentSize.width, rootView.intrinsicContentSize.height)];
 	[rootView setNeedsUpdateConstraints];
 	[rootView updateConstraintsIfNeeded];
 }

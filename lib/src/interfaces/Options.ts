@@ -698,6 +698,11 @@ export interface OptionsAnimationProperties {
    * Wait for the root view to render before start animation
    */
   waitForRender?: boolean;
+  /**
+   * Enable or disable the animation
+   * @default true
+   */
+  enabled?: boolean;
 }
 
 export interface IconInsets {
