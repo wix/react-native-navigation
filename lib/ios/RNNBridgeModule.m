@@ -50,8 +50,8 @@ RCT_EXPORT_METHOD(pop:(NSString*)commandId componentId:(NSString*)componentId me
 }
 
 RCT_EXPORT_METHOD(setStackRoot:(NSString*)commandId componentId:(NSString*)componentId children:(NSArray*)children resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler setStackRoot:componentId children:children completion:^{
-		resolve(componentId);
+	[_commandsHandler setStackRoot:componentId children:children completion:^(NSString *newComponentId){
+		resolve(newComponentId);
 	} rejection:reject];
 }
 

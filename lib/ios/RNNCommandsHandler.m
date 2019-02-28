@@ -169,7 +169,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 }
 
-- (void)setStackRoot:(NSString*)componentId children:(NSArray*)children completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)setStackRoot:(NSString*)componentId children:(NSArray*)children completion:(RNNTransitionWithComponentIdCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
  	NSArray<RNNLayoutProtocol> *childViewControllers = [_controllerFactory createChildrenLayout:children];
@@ -181,7 +181,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
 	[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
 		[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot params:@{@"componentId": componentId}];
-		completion();
+		completion(newVC.getLeafViewController.componentId);
 	} rejection:rejection];
 }
 
