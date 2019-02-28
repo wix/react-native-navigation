@@ -132,7 +132,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 					[CATransaction begin];
 					[CATransaction setCompletionBlock:^{
 						[self->_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
-						completion(newVc.componentId);
+						completion(newVc.layoutInfo.componentId);
 					}];
 					[rvc.navigationController pushViewController:newVc animated:YES];
 					[CATransaction commit];
@@ -163,7 +163,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[newVc renderTreeAndWait:([newVc.resolveOptions.animations.push.waitForRender getWithDefaultValue:NO] || animationDelegate) perform:^{
 			[_stackManager push:newVc onTop:fromVC animated:[newVc.resolveOptions.animations.push.enable getWithDefaultValue:YES] animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
-				completion(newVc.componentId);
+				completion(newVc.layoutInfo.componentId);
 			} rejection:rejection];
 		}];
 	}
@@ -181,7 +181,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
 	[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
 		[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot params:@{@"componentId": componentId}];
-		completion(newVC.getLeafViewController.componentId);
+    NSString* newComponentId = [childViewControllers.lastObject getCurrentChild].layoutInfo.componentId;
+		completion(newComponentId);
 	} rejection:rejection];
 }
 
