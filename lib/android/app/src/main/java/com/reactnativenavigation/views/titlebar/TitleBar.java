@@ -39,6 +39,12 @@ public class TitleBar extends Toolbar {
     }
 
     @Override
+    public void onViewAdded(View child) {
+        super.onViewAdded(child);
+        enableOverflowForReactButtonViews(child);
+    }
+
+    @Override
     public void setTitle(CharSequence title) {
         clearComponent();
         super.setTitle(title);
@@ -208,6 +214,12 @@ public class TitleBar extends Toolbar {
             if (overflowIcon != null) {
                 overflowIcon.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
             }
+        }
+    }
+
+    private void enableOverflowForReactButtonViews(View child) {
+        if (child instanceof ActionMenuView) {
+            ((ViewGroup) child).setClipChildren(false);
         }
     }
 }
