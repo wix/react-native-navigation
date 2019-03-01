@@ -57,7 +57,6 @@
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
-    "react-native-ui-lib": "^3.17.2",
     "tslib": "1.9.3"
   },
   "devDependencies": {
@@ -69,6 +68,7 @@
     "@types/react-test-renderer": "16.x.x",
     "jsc-android": "236355.x.x",
     "detox": "9.0.6",
+    "react-native-ui-lib": "3.x.x",
     "handlebars": "4.x.x",
     "jest": "23.x.x",
     "metro-react-native-babel-preset": "0.50.0",
