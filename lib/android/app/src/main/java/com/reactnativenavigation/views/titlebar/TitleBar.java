@@ -48,10 +48,6 @@ public class TitleBar extends Toolbar {
     public void setTitle(CharSequence title) {
         clearComponent();
         super.setTitle(title);
-        if (mTitle != title && mAlignment != null) {
-            this.setTitleAlignment(mAlignment);
-        }
-        mTitle = title;
     }
 
     public String getTitle() {
