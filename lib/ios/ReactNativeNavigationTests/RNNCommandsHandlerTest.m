@@ -314,7 +314,7 @@
 - (void)testSetStackRoot_resetStackWithSingleComponent {
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(@[self.vc2]);
 	[self.store setReadyToReceiveCommands:true];
-	[self.uut setStackRoot:@"vc1" children:nil completion:^{
+	[self.uut setStackRoot:@"vc1" children:nil completion:^(NSString *newComponentId) {
 		
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
@@ -327,7 +327,7 @@
 	NSArray* newViewControllers = @[_vc1, _vc3];
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
 	[self.store setReadyToReceiveCommands:true];
-	[self.uut setStackRoot:@"vc1" children:nil completion:^{
+	[self.uut setStackRoot:@"vc1" children:nil completion:^(NSString *newComponentId){
 		
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
