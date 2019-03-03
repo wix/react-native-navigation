@@ -200,10 +200,12 @@ const splitView = {
     // All layout types accepted supported by device, eg. `stack`
   },
   options: {
-    displayMode: 'auto', // Master view display mode: `auto`, `visible`, `hidden` and `overlay`
-    primaryEdge: 'leading', // Master view side: `leading` or `trailing`
-    minWidth: 150, // Minimum width of master view
-    maxWidth: 300, // Maximum width of master view
+    splitView: {
+      displayMode: 'auto', // Master view display mode: `auto`, `visible`, `hidden` and `overlay`
+      primaryEdge: 'leading', // Master view side: `leading` or `trailing`
+      minWidth: 150, // Minimum width of master view
+      maxWidth: 300, // Maximum width of master view
+    },
   },
 }
 ```

@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.button;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
@@ -42,7 +43,7 @@ public class NavigationIconResolverTest extends BaseTest {
 
             }
         });
-        uut.resolve(iconButton(), onSuccess);
+        uut.resolve(iconButton(), View.LAYOUT_DIRECTION_LTR, onSuccess);
         verify(imageLoader).loadIcon(eq(context), eq(ICON_URI), any());
         verify(onSuccess).run(any(Drawable.class));
     }
@@ -55,7 +56,7 @@ public class NavigationIconResolverTest extends BaseTest {
 
             }
         });
-        uut.resolve(backButton(), onSuccess);
+        uut.resolve(backButton(), View.LAYOUT_DIRECTION_LTR, onSuccess);
         verifyZeroInteractions(imageLoader);
         verify(onSuccess).run(any());
     }

@@ -25,12 +25,15 @@ import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.Renderable;
 import com.reactnativenavigation.views.element.Element;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener, ViewGroup.OnHierarchyChangeListener {
 
-    private Runnable onAppearedListener;
+    private final List<Runnable> onAppearedListeners = new ArrayList();
     private boolean appearEventPosted;
     private boolean isFirstLayout = true;
     private Bool waitForRender = new NullBool();
@@ -47,7 +50,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         boolean onViewDisappear(View view);
     }
 
-    protected Options initialOptions;
+    public Options initialOptions;
     public Options options;
 
     private final Activity activity;
@@ -77,8 +80,12 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.waitForRender = waitForRender;
     }
 
-    public void setOnAppearedListener(Runnable onAppearedListener) {
-        this.onAppearedListener = onAppearedListener;
+    public void addOnAppearedListener(Runnable onAppearedListener) {
+        onAppearedListeners.add(onAppearedListener);
+    }
+
+    public void removeOnAppearedListener(Runnable onAppearedListener) {
+        onAppearedListeners.remove(onAppearedListener);
     }
 
     protected abstract T createView();
@@ -145,6 +152,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             task.run((StackController) parentController);
         } else if (this instanceof StackController) {
             task.run((StackController) this);
+        } else if (parentController != null){
+            parentController.performOnParentStack(task);
         }
     }
 
@@ -199,11 +208,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             parentController.clearOptions();
             if (getView() instanceof Component) parentController.applyChildOptions(options, (Component) getView());
         });
-        if (onAppearedListener != null && !appearEventPosted) {
+        if (!onAppearedListeners.isEmpty() && !appearEventPosted) {
             appearEventPosted = true;
             UiThread.post(() -> {
-                onAppearedListener.run();
-                onAppearedListener = null;
+                forEach(onAppearedListeners, Runnable::run);
+                onAppearedListeners.clear();
             });
         }
     }

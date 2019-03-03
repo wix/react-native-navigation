@@ -1,4 +1,4 @@
-import { Options, OptionsSplitView } from './Options';
+import { Options } from './Options';
 
 export interface LayoutComponent<P = {}> {
   /**
@@ -110,7 +110,7 @@ export interface LayoutSplitView {
   /**
    * Configure split view
    */
-  options?: OptionsSplitView;
+  options?: Options;
 }
 
 export interface TopTabs {

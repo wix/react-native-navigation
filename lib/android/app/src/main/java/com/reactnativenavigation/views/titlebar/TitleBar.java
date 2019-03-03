@@ -48,6 +48,10 @@ public class TitleBar extends Toolbar {
     public void setTitle(CharSequence title) {
         clearComponent();
         super.setTitle(title);
+        if (mTitle != title && mAlignment != null) {
+            this.setTitleAlignment(mAlignment);
+        }
+        mTitle = title;
     }
 
     public String getTitle() {
@@ -109,7 +113,6 @@ public class TitleBar extends Toolbar {
         } else {
             view.setX(isRTL ? (getWidth() - view.getWidth()) - UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN) : UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN));
         }
-
     }
 
     @Override
@@ -126,7 +129,6 @@ public class TitleBar extends Toolbar {
             this.alignTextView(subtitleAlignment, subtitle);
         }
     }
-
 
     @Nullable
     public TextView findTitleTextView() {

@@ -16,6 +16,7 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
@@ -193,6 +194,7 @@ public class LayoutFactory {
         for (int i = 0; i < node.children.size(); i++) {
             tabs.add(create(node.children.get(i)));
         }
+        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions);
         return new BottomTabsController(activity,
                 tabs,
                 childRegistry,
@@ -201,7 +203,8 @@ public class LayoutFactory {
                 node.id,
                 parse(typefaceManager, node.getOptions()),
                 new Presenter(activity, defaultOptions),
-                new BottomTabsPresenter(tabs, defaultOptions),
+                new BottomTabsAttacher(tabs, bottomTabsPresenter),
+                bottomTabsPresenter,
                 new BottomTabPresenter(activity, tabs, new ImageLoader(), defaultOptions));
 	}
 

@@ -21,6 +21,8 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
+import com.facebook.react.ReactInstanceManager;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -125,7 +127,7 @@ public class Navigator extends ParentController {
 
     }
 
-    public void setRoot(final ViewController viewController, CommandListener commandListener) {
+    public void setRoot(final ViewController viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
         destroyRoot();
         final boolean removeSplashView = isRootNotCreated();
         if (isRootNotCreated()) getView();
@@ -136,7 +138,7 @@ public class Navigator extends ParentController {
                 if (removeSplashView) removePreviousContentView();
                 super.onSuccess(childId);
             }
-        });
+        }, reactInstanceManager);
     }
 
     private void removePreviousContentView() {

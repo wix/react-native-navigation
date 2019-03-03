@@ -8,14 +8,13 @@ import android.view.ViewGroup.LayoutParams;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuOptions;
+import com.reactnativenavigation.parse.*;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.utils.*;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -248,6 +247,31 @@ public class SideMenuControllerTest extends BaseTest {
         closeRightMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
         verify(spy).onViewDisappear();
+    }
+
+    @Test
+    public void onDrawerOpened_drawerOpenedWIthSwipe_visibilityIsUpdated() {
+        uut.setLeftController(left);
+        uut.setRightController(right);
+        uut.ensureViewIsCreated();
+
+        openDrawerAndAssertVisibility(right, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.right);
+        closeDrawerAndAssertVisibility(right, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.right);
+
+        openDrawerAndAssertVisibility(left, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.left);
+        closeDrawerAndAssertVisibility(left, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.left);
+    }
+
+    private void openDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
+        assertThat(opt.run(side).visible.isTrue()).isFalse();
+        uut.onDrawerOpened(side.getView());
+        assertThat(opt.run(side).visible.isTrue()).isTrue();
+    }
+
+    private void closeDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
+        assertThat(opt.run(side).visible.isTrue()).isTrue();
+        uut.onDrawerClosed(side.getView());
+        assertThat(opt.run(side).visible.isTrue()).isFalse();
     }
 
     private void openLeftMenu() {
