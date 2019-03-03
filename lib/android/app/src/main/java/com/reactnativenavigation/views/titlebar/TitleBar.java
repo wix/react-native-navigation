@@ -31,6 +31,7 @@ public class TitleBar extends Toolbar {
     private View component;
     private Alignment titleAlignment;
     private Alignment subtitleAlignment;
+    private Boolean isTitleChanged = false;
 
     public TitleBar(Context context) {
         super(context);
@@ -48,6 +49,13 @@ public class TitleBar extends Toolbar {
     public void setTitle(CharSequence title) {
         clearComponent();
         super.setTitle(title);
+        isTitleChanged = true;
+    }
+
+    @Override
+    public void setSubtitle(CharSequence title) {
+        super.setSubtitle(title);
+        isTitleChanged = true;
     }
 
     public String getTitle() {
@@ -115,14 +123,18 @@ public class TitleBar extends Toolbar {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
 
-        TextView title = findTitleTextView();
-        if (title != null) {
-            this.alignTextView(titleAlignment, title);
-        }
+        if(changed || isTitleChanged) {
+            TextView title = findTitleTextView();
+            if (title != null) {
+                this.alignTextView(titleAlignment, title);
+            }
 
-        TextView subtitle = findSubtitleTextView();
-        if (subtitle != null) {
-            this.alignTextView(subtitleAlignment, subtitle);
+            TextView subtitle = findSubtitleTextView();
+            if (subtitle != null) {
+                this.alignTextView(subtitleAlignment, subtitle);
+            }
+
+            isTitleChanged = false;
         }
     }
 
