@@ -32,6 +32,7 @@ public class TitleBar extends Toolbar {
     private Alignment titleAlignment;
     private Alignment subtitleAlignment;
     private Boolean isTitleChanged = false;
+    private Boolean isSubtitleChanged = false;
 
     public TitleBar(Context context) {
         super(context);
@@ -55,7 +56,7 @@ public class TitleBar extends Toolbar {
     @Override
     public void setSubtitle(CharSequence title) {
         super.setSubtitle(title);
-        isTitleChanged = true;
+        isSubtitleChanged = true;
     }
 
     public String getTitle() {
@@ -128,13 +129,15 @@ public class TitleBar extends Toolbar {
             if (title != null) {
                 this.alignTextView(titleAlignment, title);
             }
+            isTitleChanged = false;
+        }
 
+        if(changed || isSubtitleChanged) {
             TextView subtitle = findSubtitleTextView();
             if (subtitle != null) {
                 this.alignTextView(subtitleAlignment, subtitle);
             }
-
-            isTitleChanged = false;
+            isSubtitleChanged = false;
         }
     }
 
