@@ -39,6 +39,12 @@ public class TitleBar extends Toolbar {
     }
 
     @Override
+    public void onViewAdded(View child) {
+        super.onViewAdded(child);
+        enableOverflowForReactButtonViews(child);
+    }
+
+    @Override
     public void setTitle(CharSequence title) {
         clearComponent();
         super.setTitle(title);
@@ -101,6 +107,8 @@ public class TitleBar extends Toolbar {
     }
 
     private void alignTextView(Alignment alignment, TextView view) {
+        Integer direction = view.getParent().getLayoutDirection();
+        Boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
         int width = view.getResources().getDisplayMetrics().widthPixels;
         view.post(() -> {
             if (alignment == Alignment.Center) {
@@ -108,9 +116,9 @@ public class TitleBar extends Toolbar {
                 //noinspection IntegerDivisionInFloatingPointContext
                 view.setX((width - view.getWidth()) / 2);
             } else if (leftButtonController != null) {
-                view.setX(getContentInsetStartWithNavigation());
+                view.setX(isRTL ? (getWidth() - view.getWidth()) - getContentInsetStartWithNavigation() : getContentInsetStartWithNavigation());
             } else {
-                view.setX(UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN));
+                view.setX(isRTL ? (getWidth() - view.getWidth()) - UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN) : UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN));
             }
         });
     }
@@ -206,6 +214,12 @@ public class TitleBar extends Toolbar {
             if (overflowIcon != null) {
                 overflowIcon.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
             }
+        }
+    }
+
+    private void enableOverflowForReactButtonViews(View child) {
+        if (child instanceof ActionMenuView) {
+            ((ViewGroup) child).setClipChildren(false);
         }
     }
 }

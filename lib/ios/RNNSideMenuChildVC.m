@@ -40,7 +40,7 @@
 }
 
 - (RNNNavigationOptions *)resolveOptions {
-	return [(RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options] withDefault:self.defaultOptions];
+	return [(RNNNavigationOptions *)[self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
@@ -50,6 +50,10 @@
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
 	[self.options overrideOptions:options];
+}
+
+- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.getCurrentChild renderTreeAndWait:wait perform:readyBlock];
 }
 
 - (void)bindChildViewController:(UIViewController<RNNLayoutProtocol>*)child {
@@ -68,10 +72,6 @@
 
 - (UIViewController *)getCurrentChild {
 	return self.child;
-}
-
-- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
-	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

@@ -64,6 +64,7 @@ Navigation.mergeOptions(this.props.componentId, {
     style: 'light' | 'dark'
   },
   layout: {
+    direction: 'ltr', // Supported directions are: 'rtl', 'ltr'
     backgroundColor: 'white',
     orientation: ['portrait', 'landscape'] // An array of supported orientations
   },
@@ -225,7 +226,7 @@ Navigation.mergeOptions(this.props.componentId, {
     visible: false
   },
   layout: {
-    topMargin: Navigation.constants().statusBarHeight, // Set the layout's top margin
+    topMargin: (await Navigation.constants()).statusBarHeight, // Set the layout's top margin
     orientation: ['portrait', 'landscape'] | ['sensorLandscape'], // An array of supported orientations
     componentBackgroundColor: 'red' // Set background color only for components, helps reduce overdraw if background color is set in default options.
   },
@@ -251,6 +252,26 @@ Navigation.mergeOptions(this.props.componentId, {
     selectedFontSize: 19 // Selected tab font size in sp
   }
 }
+```
+
+### RTL layout usage
+In order to set layout direction to RTL use following options:
+```javascript
+{
+  layout: {
+    direction: rtl
+  },
+  ...
+}
+```
+
+also __Android__ requires to set `supportsRTL` in _AndroidManifest.xml_
+```xml
+<application
+      android:name=".MainApplication"
++     android:supportsRtl="true"
+      ...
+      android:theme="@style/AppTheme">
 ```
 
 ## Styling the StatusBar

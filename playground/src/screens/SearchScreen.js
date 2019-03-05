@@ -19,9 +19,8 @@ for(let i = 0; i < 200; i++) {
   ITEMS.push({key: `Item ${i}`});
 }
 
-class SearchControllerScreen extends Component {
+class SearchScreen extends Component {
   static options() {
-   
     return {
       topBar: {
         title: {
@@ -113,7 +112,7 @@ class SearchControllerScreen extends Component {
   }
 }
 
-module.exports = SearchControllerScreen;
+module.exports = SearchScreen;
 
 const styles = StyleSheet.create({
   contentContainer: {},

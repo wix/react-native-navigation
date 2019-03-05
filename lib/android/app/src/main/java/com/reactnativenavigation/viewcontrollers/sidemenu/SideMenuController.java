@@ -11,13 +11,14 @@ import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.SideMenuOptions;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,7 +50,7 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
     @NonNull
 	@Override
 	protected DrawerLayout createView() {
-        DrawerLayout sideMenu = new DrawerLayout(getActivity());
+        DrawerLayout sideMenu = new SideMenu(getActivity());
         presenter.bindView(sideMenu);
         sideMenu.addDrawerListener(this);
         return sideMenu;
@@ -103,14 +104,22 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
         return options;
     }
 
+    //For onDrawerOpened and onDrawerClosed :
+    //Merge the options to the current state, if this happened due to a gesture we need to
+    //update the option state
+
     @Override
     public void onDrawerOpened(@NonNull View drawerView) {
-        (left != null && drawerView.equals(left.getView()) ? left : right).onViewAppeared();
+        ViewController view = this.getMatchingView(drawerView);
+        view.mergeOptions(this.getOptionsWithVisability(this.viewIsLeft(drawerView), true));
+        view.onViewAppeared();
     }
 
     @Override
     public void onDrawerClosed(@NonNull View drawerView) {
-        (left != null && drawerView.equals(left.getView()) ? left : right).onViewDisappear();
+        ViewController view = this.getMatchingView(drawerView);
+        view.mergeOptions(this.getOptionsWithVisability(this.viewIsLeft(drawerView), false));
+        view.onViewDisappear();
     }
 
     @Override
@@ -152,6 +161,24 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
             height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.height.get(), Resources.getSystem().getDisplayMetrics());
         }
         return height;
+    }
+
+    private ViewController getMatchingView (View drawerView) {
+        return this.viewIsLeft(drawerView) ? left : right;
+    }
+
+    private boolean viewIsLeft (View drawerView) {
+        return (left != null && drawerView.equals(left.getView()));
+    }
+
+    private Options getOptionsWithVisability ( boolean isLeft, boolean visible ) {
+        Options options = new Options();
+        if (isLeft) {
+            options.sideMenuRootOptions.left.visible = new Bool(visible);
+        } else {
+            options.sideMenuRootOptions.right.visible = new Bool(visible);
+        }
+        return options;
     }
 
     @Override

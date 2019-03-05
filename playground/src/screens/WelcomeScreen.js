@@ -87,8 +87,7 @@ class WelcomeScreen extends Component {
                         },
                         bottomTab: {
                           text: 'Tab 1',
-                          icon: require('../images/one.png'),
-                          selectedIcon: require('../images/one.png'),
+                          icon: require('../images/colored_tab_icon.png'),
                           testID: testIDs.FIRST_TAB_BAR_BUTTON
                         }
                       }
@@ -118,6 +117,8 @@ class WelcomeScreen extends Component {
                   bottomTab: {
                     text: 'Tab 2',
                     icon: require('../images/two.png'),
+                    iconColor: '#1B4C77',
+                    selectedIconColor: '#0f0',
                     testID: testIDs.SECOND_TAB_BAR_BUTTON
                   }
                 }
@@ -138,6 +139,8 @@ class WelcomeScreen extends Component {
                   bottomTab: {
                     text: 'Tab 3',
                     icon: require('../images/one.png'),
+                    iconColor: '#1B4C77',
+                    selectedIconColor: '#0f0',
                     selectedIcon: require('../images/one.png')
                   }
                 }
