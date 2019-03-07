@@ -132,9 +132,7 @@ class TextScreen extends Component {
     });
   }
 
-  onClickPop() {
-    Navigation.pop(this.props.componentId);
-  }
+
 }
 
 module.exports = TextScreen;
