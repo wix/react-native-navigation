@@ -752,6 +752,11 @@ export interface OptionsAnimationSeparate {
    */
   waitForRender?: boolean;
   /**
+   * Enable or disable the animation
+   * @default true
+   */
+  enabled?: boolean;
+  /**
    * Configure animations for the top bar
    */
   topBar?: OptionsAnimationPropertiesId;
