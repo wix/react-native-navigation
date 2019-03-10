@@ -282,6 +282,19 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void setRoot_doesNotCrashWhenCalledInQuickSuccession() {
+        disablePushAnimation(child1);
+        uut.setRoot(Collections.singletonList(child1), new CommandListenerAdapter());
+
+        uut.setRoot(Collections.singletonList(child2), new CommandListenerAdapter());
+        uut.setRoot(Collections.singletonList(child3), new CommandListenerAdapter());
+        animator.endPushAnimation(child2.getView());
+        animator.endPushAnimation(child3.getView());
+
+        assertContainsOnlyId(child3.getId());
+    }
+
+    @Test
     public synchronized void pop() {
         disablePushAnimation(child1, child2);
         uut.push(child1, new CommandListenerAdapter());
