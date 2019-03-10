@@ -275,7 +275,7 @@ public class StackController extends ParentController<StackLayout> {
             return;
         }
 
-
+        animator.cancelPushAnimations();
         String currentControlId;
         for (int i = stack.size() - 2; i >= 0; i--) {
             currentControlId = stack.get(i).getId();
@@ -297,6 +297,7 @@ public class StackController extends ParentController<StackLayout> {
             return;
         }
 
+        animator.cancelPushAnimations();
         Iterator<String> iterator = stack.iterator();
         iterator.next();
         while (stack.size() > 2) {

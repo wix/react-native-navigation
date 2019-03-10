@@ -42,9 +42,7 @@ import org.assertj.core.api.iterable.Extractor;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
+import org.mockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -295,6 +293,18 @@ public class StackControllerTest extends BaseTest {
                 assertContainsOnlyId(child1.getId());
             }
         });
+    }
+
+    @Test
+    public void pop_screenCurrentlyBeingPushedIsPopped() {
+        disablePushAnimation(child1, child2);
+        uut.push(child1, Mockito.mock(CommandListenerAdapter.class));
+        uut.push(child2, Mockito.mock(CommandListenerAdapter.class));
+
+        uut.push(child3, Mockito.mock(CommandListenerAdapter.class));
+        uut.pop(Options.EMPTY, Mockito.mock(CommandListenerAdapter.class));
+        assertThat(uut.size()).isEqualTo(2);
+        assertContainsOnlyId(child1.getId(), child2.getId());
     }
 
     @Test
@@ -623,6 +633,19 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void popTo_pushAnimationIsCancelled() {
+        disablePushAnimation(child1, child2);
+        uut.push(child1, Mockito.mock(CommandListenerAdapter.class));
+        uut.push(child2, Mockito.mock(CommandListenerAdapter.class));
+
+        ViewGroup pushed = child3.getView();
+        uut.push(child3, Mockito.mock(CommandListenerAdapter.class));
+        uut.popTo(child1, Options.EMPTY, Mockito.mock(CommandListenerAdapter.class));
+        animator.endPushAnimation(pushed);
+        assertContainsOnlyId(child1.getId());
+    }
+
+    @Test
     public void popToRoot_PopsEverythingAboveFirstController() {
         child1.options.animations.push.enabled = new Bool(false);
         child2.options.animations.push.enabled = new Bool(false);
@@ -705,6 +728,19 @@ public class StackControllerTest extends BaseTest {
         uut.popToRoot(mergeOptions, new CommandListenerAdapter());
         verify(child2).mergeOptions(mergeOptions);
         verify(child1, times(0)).mergeOptions(mergeOptions);
+    }
+
+    @Test
+    public void popToRoot_screenPushedBeforePopAnimationCompletesIsPopped() {
+        disablePushAnimation(child1, child2);
+        uut.push(child1, Mockito.mock(CommandListenerAdapter.class));
+        uut.push(child2, Mockito.mock(CommandListenerAdapter.class));
+
+        ViewGroup pushed = child3.getView();
+        uut.push(child3, Mockito.mock(CommandListenerAdapter.class));
+        uut.popToRoot(Options.EMPTY, Mockito.mock(CommandListenerAdapter.class));
+        animator.endPushAnimation(pushed);
+        assertContainsOnlyId(child1.getId());
     }
 
     @Test
