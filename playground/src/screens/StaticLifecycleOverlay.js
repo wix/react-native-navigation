@@ -2,9 +2,16 @@ const React = require('react');
 const { Component } = require('react');
 const { View, Text, TouchableOpacity } = require('react-native');
 const { Navigation } = require('react-native-navigation');
-const testIDs = require('../testIDs');
+const TestIDs = require('../testIDs');
 
 class StaticLifecycleOverlay extends Component {
+  static options() {
+    return {
+      layout: {
+        componentBackgroundColor: 'transparent'
+      }
+    }
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -83,7 +90,7 @@ class StaticLifecycleOverlay extends Component {
         style={styles.dismissBtn}
         onPress={() => Navigation.dismissOverlay(this.props.componentId)}
       >
-        <Text testID={testIDs.DISMISS_BUTTON} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
+        <Text testID={TestIDs.DISMISS_BTN} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
       </TouchableOpacity>
     );
   }

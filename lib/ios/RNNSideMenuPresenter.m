@@ -18,6 +18,24 @@
 	[sideMenuController setAnimationVelocityRight:[options.sideMenu.right.animationVelocity getWithDefaultValue:840.0f]];
 	
 	[sideMenuController setAnimationType:[options.sideMenu.animationType getWithDefaultValue:nil]];
+	
+	if (options.sideMenu.left.width.hasValue) {
+		[sideMenuController side:MMDrawerSideLeft width:options.sideMenu.left.width.get];
+	}
+	
+	if (options.sideMenu.right.width.hasValue) {
+		[sideMenuController side:MMDrawerSideRight width:options.sideMenu.right.width.get];
+	}
+	
+	if (options.sideMenu.left.visible.hasValue) {
+		[sideMenuController side:MMDrawerSideLeft visible:options.sideMenu.left.visible.get];
+		[options.sideMenu.left.visible consume];
+	}
+	
+	if (options.sideMenu.right.visible.hasValue) {
+		[sideMenuController side:MMDrawerSideRight visible:options.sideMenu.right.visible.get];
+		[options.sideMenu.right.visible consume];
+	}
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {

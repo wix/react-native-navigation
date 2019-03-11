@@ -268,7 +268,7 @@ Now we need to instruct gradle how to build that flavor. To do so here two solut
 
 #### 7.1 Build app with gradle command 
 
-**prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:asembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
+**prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:assembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
 
 ```
 "scripts": {
@@ -365,4 +365,4 @@ import App from "./App";
 +});
 ```
 
-⚠️ we use the layout type `component` here, which renders a React component but does not allow you to navigate to others. See [Usage](./Usage.md) and [LayoutTypes](./layout-types.md) for more options.
+⚠️ we use the layout type `component` here, which renders a React component but does not allow you to navigate to others. See [Usage](docs/Usage.md) and [LayoutTypes](docs/layout-types.md) for more options.

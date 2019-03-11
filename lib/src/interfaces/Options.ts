@@ -247,6 +247,10 @@ export interface OptionsTopBarButton {
    * Set the button icon
    */
   icon?: ImageRequireSource;
+   /**
+   * Set the button icon insets
+   */
+  iconInsets?: IconInsets;
   /**
    * Set the button as a custom component
    */
@@ -690,6 +694,34 @@ export interface OptionsAnimationProperties {
    * Animate the element over rotation
    */
   rotation?: OptionsAnimationPropertyConfig;
+  /**
+   * Wait for the root view to render before start animation
+   */
+  waitForRender?: boolean;
+  /**
+   * Enable or disable the animation
+   * @default true
+   */
+  enabled?: boolean;
+}
+
+export interface IconInsets {
+  /**
+   * Configure top inset
+   */
+  top?: number;
+  /**
+   * Configure left inset
+   */
+  left?: number;
+  /**
+   * Configure bottom inset
+   */
+  bottom?: number;
+  /**
+   * Configure right inset
+   */
+  right?: number;
 }
 
 export interface OptionsAnimationPropertiesId extends OptionsAnimationProperties {
@@ -703,16 +735,20 @@ export interface OptionsAnimationSeparate {
   /**
    * Wait for the View to render before start animation
    * Example:
-```js
-animations: {
-  push: {
-    waitForRender: true
-  },
-  showModal: {
-    waitForRender: true
-  }
-}
-```
+   ```js
+   animations: {
+     push: {
+       waitForRender: true
+     },
+     showModal: {
+       waitForRender: true
+     },
+     setRoot: {
+       waitForRender: true
+     }
+     }
+   }
+   ```
    */
   waitForRender?: boolean;
   /**

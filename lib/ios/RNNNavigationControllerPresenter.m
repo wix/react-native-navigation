@@ -2,8 +2,26 @@
 #import "UINavigationController+RNNOptions.h"
 #import "RNNNavigationController.h"
 #import <React/RCTConvert.h>
+#import "RNNCustomTitleView.h"
 
+@interface RNNNavigationControllerPresenter() {
+	RNNReactComponentRegistry* _componentRegistry;
+	UIView* _customTopBar;
+	UIView* _customTopBarBackground;
+}
+
+@end
 @implementation RNNNavigationControllerPresenter
+
+- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
+	self = [super init];
+	_componentRegistry = componentRegistry;
+	return self;
+}
+
+- (void)bindViewController:(UIViewController *)bindedViewController {
+	self.bindedViewController = bindedViewController;
+}
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
@@ -117,6 +135,86 @@
 	
 	[navigationController rnn_setNavigationBarFontFamily:[newOptions.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[newOptions.topBar.title.fontSize getWithDefaultValue:nil] color:[newOptions.topBar.title.color getWithDefaultValue:nil]];
 	
+	if (newOptions.topBar.component.name.hasValue) {
+		[self setCustomNavigationBarView:newOptions perform:nil];
+	}
+	
+	if (newOptions.topBar.background.component.name.hasValue) {
+		[self setCustomNavigationComponentBackground:newOptions perform:nil];
+	}
+}
+
+- (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+		dispatch_group_t group = dispatch_group_create();
+		
+		dispatch_group_enter(group);
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self setCustomNavigationBarView:options perform:^{
+				dispatch_group_leave(group);
+			}];
+		});
+		
+		dispatch_group_enter(group);
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self setCustomNavigationComponentBackground:options perform:^{
+				dispatch_group_leave(group);
+			}];
+		});
+		
+		dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (readyBlock) {
+				readyBlock();
+			}
+		});
+	});
+}
+
+- (void)setCustomNavigationBarView:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	RNNNavigationController* navigationController = self.bindedViewController;
+	if (![options.topBar.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
+		readyBlock();
+		readyBlock = nil;
+	}
+	if (options.topBar.component.name.hasValue) {
+		RCTRootView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
+		
+		_customTopBar = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
+		reactView.backgroundColor = UIColor.clearColor;
+		_customTopBar.backgroundColor = UIColor.clearColor;
+		[navigationController.navigationBar addSubview:_customTopBar];
+	} else {
+		[_customTopBar removeFromSuperview];
+		if (readyBlock) {
+			readyBlock();
+		}
+	}
+}
+
+- (void)setCustomNavigationComponentBackground:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	RNNNavigationController* navigationController = self.bindedViewController;
+	if (![options.topBar.background.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
+		readyBlock();
+		readyBlock = nil;
+	}
+	if (options.topBar.background.component.name.hasValue) {
+		RCTRootView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.background.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
+		
+		_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
+		[navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
+	} else {
+		[_customTopBarBackground removeFromSuperview];
+		if (readyBlock) {
+			readyBlock();
+		}
+	}
+}
+
+- (void)dealloc {
+	RNNNavigationController* navigationController = self.bindedViewController;
+	[_componentRegistry removeComponent:navigationController.layoutInfo.componentId];
 }
 
 @end

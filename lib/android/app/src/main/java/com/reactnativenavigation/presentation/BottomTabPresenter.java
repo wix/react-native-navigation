@@ -1,21 +1,18 @@
 package com.reactnativenavigation.presentation;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.content.ContextCompat;
+import android.content.*;
+import android.graphics.drawable.*;
+import android.support.annotation.*;
+import android.support.v4.content.*;
 
-import com.reactnativenavigation.parse.BottomTabOptions;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.utils.ImageLoader;
-import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
-import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.utils.*;
+import com.reactnativenavigation.viewcontrollers.*;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.*;
+import com.reactnativenavigation.views.*;
 import com.reactnativenavigation.views.Component;
 
-import java.util.List;
+import java.util.*;
 
 public class BottomTabPresenter {
     private final Context context;
@@ -47,7 +44,7 @@ public class BottomTabPresenter {
 
     public void applyOptions() {
         for (int i = 0; i < tabs.size(); i++) {
-            BottomTabOptions tab = tabs.get(i).options.copy().withDefaultOptions(defaultOptions).bottomTabOptions;
+            BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
             bottomTabs.setBadge(i, tab.badge.get(""));
             bottomTabs.setBadgeColor(tab.badgeColor.get(null));
             bottomTabs.setTitleTypeface(i, tab.fontFamily);
@@ -57,6 +54,7 @@ public class BottomTabPresenter {
             bottomTabs.setTitleInactiveColor(i, tab.textColor.get(null));
             bottomTabs.setTitleInactiveTextSizeInSp(i, tab.fontSize.hasValue() ? Float.valueOf(tab.fontSize.get()) : null);
             bottomTabs.setTitleActiveTextSizeInSp(i, tab.selectedFontSize.hasValue() ? Float.valueOf(tab.selectedFontSize.get()) : null);
+            bottomTabs.setTag(i, tab.testId.get(null));
         }
     }
 
@@ -78,16 +76,7 @@ public class BottomTabPresenter {
                     bottomTabs.setIcon(index, drawable);
                 }
             });
+            if (bto.testId.hasValue()) bottomTabs.setTag(index, bto.testId.get());
         }
-    }
-
-    @VisibleForTesting
-    public int getDefaultSelectedTextColor() {
-        return defaultSelectedTextColor;
-    }
-
-    @VisibleForTesting
-    public int getDefaultTextColor() {
-        return defaultTextColor;
     }
 }

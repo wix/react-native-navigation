@@ -102,7 +102,8 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public void applyNavigationIcon(Toolbar toolbar) {
-        navigationIconResolver.resolve(button, icon -> {
+        Integer direction = getActivity().getWindow().getDecorView().getLayoutDirection();
+        navigationIconResolver.resolve(button, direction, icon -> {
             setIconColor(icon);
             toolbar.setNavigationOnClickListener(view -> onPressListener.onPress(button.id));
             toolbar.setNavigationIcon(icon);
@@ -163,6 +164,9 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     private void setTestId(Toolbar toolbar, Text testId) {
         if (!testId.hasValue()) return;
         UiUtils.runOnPreDrawOnce(toolbar, () -> {
+            if (button.hasComponent() && view != null) {
+                view.setTag(testId.get());
+            }
             ActionMenuView buttonsLayout = ViewUtils.findChildByClass(toolbar, ActionMenuView.class);
             List<TextView> buttons = ViewUtils.findChildrenByClass(buttonsLayout, TextView.class);
             for (TextView view : buttons) {

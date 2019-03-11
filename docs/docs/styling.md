@@ -64,6 +64,7 @@ Navigation.mergeOptions(this.props.componentId, {
     style: 'light' | 'dark'
   },
   layout: {
+    direction: 'ltr', // Supported directions are: 'rtl', 'ltr'
     backgroundColor: 'white',
     orientation: ['portrait', 'landscape'] // An array of supported orientations
   },
@@ -225,7 +226,7 @@ Navigation.mergeOptions(this.props.componentId, {
     visible: false
   },
   layout: {
-    topMargin: Navigation.constants().statusBarHeight, // Set the layout's top margin
+    topMargin: (await Navigation.constants()).statusBarHeight, // Set the layout's top margin
     orientation: ['portrait', 'landscape'] | ['sensorLandscape'], // An array of supported orientations
     componentBackgroundColor: 'red' // Set background color only for components, helps reduce overdraw if background color is set in default options.
   },
@@ -253,6 +254,26 @@ Navigation.mergeOptions(this.props.componentId, {
 }
 ```
 
+### RTL layout usage
+In order to set layout direction to RTL use following options:
+```javascript
+{
+  layout: {
+    direction: rtl
+  },
+  ...
+}
+```
+
+also __Android__ requires to set `supportsRTL` in _AndroidManifest.xml_
+```xml
+<application
+      android:name=".MainApplication"
++     android:supportsRtl="true"
+      ...
+      android:theme="@style/AppTheme">
+```
+
 ## Styling the StatusBar
 If you set any styles related to the Status Bar, make sure that in Xcode > project > Info.plist, the property `View controller-based status bar appearance` is set to `YES`.
 
@@ -265,12 +286,12 @@ If you'd like to use a custom font, you'll first have to edit your project.
 
 ## Custom tab icons
 
-* Android - add cooresponding resoltion icons into folders in android/app/src/main/res.
-For example, icon_name.png in each drawable-x folder.
-* iOS - drag and drop to Images.xcassets in Xcode.
-For example, image set icon_name in Images.xcassets with x1, x2, x3.
+* Android - add corresponding resolution icons into folders in `android/app/src/main/res`.
+For example, `icon_name.png` in each drawable-x folder.
+* iOS - drag and drop to `Images.xcassets` in Xcode.
+For example, image set `icon_name` in `Images.xcassets` with x1, x2, x3.
 
-Then, the tab icon can be defined by following syntax:
+Then, the tab icon can be defined with the following syntax:
 
 ```js
 bottomTab: {

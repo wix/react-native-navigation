@@ -66,16 +66,15 @@ public class ImageLoader {
     @NonNull
     private Drawable getDrawable(Context context, String source) throws IOException {
         Drawable drawable;
-
         if (isLocalFile(Uri.parse(source))) {
             drawable = loadFile(source);
         } else {
             drawable = loadResource(source);
-            if (drawable == null || NavigationApplication.instance.isDebug()) {
+            if (drawable == null && NavigationApplication.instance.isDebug()) {
                 drawable = readJsDevImage(context, source);
             }
         }
-
+        if (drawable == null) throw new RuntimeException("Could not load image " + source);
         return drawable;
     }
 
