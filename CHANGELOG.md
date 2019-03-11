@@ -1,4 +1,35 @@
 # Changelog
+## 2.13.0
+### Added
+* Add `enabled?` property to interface OptionsAnimationProperties [#6065bd1](https://github.com/wix/react-native-navigation/commit/6065bd1345ef5087d9dea92c9c332ba42619411f) by [taichi-jp](https://github.com/taichi-jp)
+
+### Fixed
+#### iOS
+* Fixes initial screen size [#e036743](https://github.com/wix/react-native-navigation/commit/e03674381315f92292add444055aeaba791076d3) by [yogevbd](https://github.com/yogevbd)
+* Fix top bar buttons size on iOS 10 [#8282d93](https://github.com/wix/react-native-navigation/commit/8282d934f70d512548d6d4ceae25e9798d591141) by [yogevbd](https://github.com/yogevbd)
+* Prevent keyboard from hiding when overlay is shown [#aba58b6](https://github.com/wix/react-native-navigation/commit/aba58b6c5aa4b39a0fb76fa2f8ebbd28dc80952e) by [tomhicks](https://github.com/tomhicks)
+
+#### Android
+* Fix loading local images [#c82bc57](https://github.com/wix/react-native-navigation/commit/c82bc57d58227f8ecb54e7cf351da46b38b4f8f9) by [guyca](https://github.com/guyca)
+* Update side menu options on open / close callback  [#43f05ee](https://github.com/wix/react-native-navigation/commit/43f05ee01574c18d216acfb510be4b5e38165e4d) by [gosuperninja](https://github.com/gosuperninja)
+* Fix overflow visible for react button components in TopBar [#54ff1cd](https://github.com/wix/react-native-navigation/commit/54ff1cd049b7a418f7fd2658f569d06853bcea6c) by [guyca](https://github.com/guyca)
+
+## 2.12.0
+### Added
+* Add waitForRender to root animation options [#298ec43](https://github.com/wix/react-native-navigation/commit/298ec43f27eb9a031c7168675c40ab5be47396ec) by [guyca](https://github.com/guyca)
+
+#### Android
+* RTL support [#d09d010](https://github.com/wix/react-native-navigation/commit/d09d0108d1530cf10e24c46efb6c9d9962807ead) by [hadimostafapour](https://github.com/hadimostafapour)
+
+### Fixed
+* Stop using lodash in store.js [#8ba9796](https://github.com/wix/react-native-navigation/commit/8ba9796d2d94c5dd58266841c2563bbcd563f635) by [guyca](https://github.com/guyca)
+
+#### iOS
+* Use autolayout constraints to set size of custom bar button item [#362606b](https://github.com/wix/react-native-navigation/commit/362606b82ed4de37e05ebf8603739b16adf0e0d2) by [eliperkins](https://github.com/eliperkins)
+* Ignore pan gesture when no drawer is enabled [#664ef34](https://github.com/wix/react-native-navigation/commit/664ef343090051049213eb5d56285e0432b4e2d7) by [StasDoskalenko](https://github.com/StasDoskalenko)
+* Fix peek and pop preview on iOS [#e7c0d16](https://github.com/wix/react-native-navigation/commit/e7c0d166cb70fa27edf68eae8a00f23257eddf9a) by [yogevbd](https://github.com/yogevbd)
+* Fix launch image matching for iPhone XR/XS Max portrait [#dfd894a](https://github.com/wix/react-native-navigation/commit/dfd894ab2f4ab434548a4ef57f0eb176ee17627f) by [oblador](https://github.com/oblador)
+
 ## 2.11.0
 ### Fixed
 #### iOS

@@ -6,33 +6,16 @@ const {
   TouchableOpacity,
   Text,
   Alert,
-  Platform
 } = require('react-native');
+const Colors = require('../commons/Colors');
 const { Navigation } = require('react-native-navigation');
 
-class CustomRoundedButton extends Component {
+class RoundedButton extends Component {
 
   constructor(props) {
     super(props);
     this.subscription = Navigation.events().bindComponent(this);
     this.state = {};
-  }
-
-  componentDidAppear() {
-    console.log('RNN', 'CRB.componentDidAppear');
-  }
-
-  componentDidDisappear() {
-    console.log('RNN', `CRB.componentDidDisappear`);
-  }
-
-  componentDidMount() {
-    console.log('RNN', `CRB.componentDidMount`);
-  }
-
-  componentWillUnmount() {
-    this.subscription.remove();
-    console.log('RNN', `CRB.componentWillUnmount`);
   }
 
   render() {
@@ -48,7 +31,7 @@ class CustomRoundedButton extends Component {
   }
 }
 
-module.exports = CustomRoundedButton;
+module.exports = RoundedButton;
 
 const styles = StyleSheet.create({
   container: {
@@ -62,11 +45,11 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'red',
+    backgroundColor: Colors.primary,
     justifyContent: 'center',
   },
   text: {
-    color: 'black',
+    color: 'white',
     alignSelf: 'center'
   }
 });
