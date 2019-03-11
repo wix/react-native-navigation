@@ -70,6 +70,12 @@ export interface OptionsLayout {
    * #### (Android specific)
    */
   topMargin?: number;
+
+  /**
+   * Set language direction.
+   * only works with DefaultOptions
+   */
+  direction?: 'rtl' | 'ltr';
 }
 
 export enum OptionsModalPresentationStyle {
