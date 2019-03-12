@@ -763,6 +763,11 @@ export interface OptionsAnimationSeparate {
    */
   waitForRender?: boolean;
   /**
+   * Enable or disable the animation
+   * @default true
+   */
+  enabled?: boolean;
+  /**
    * Configure animations for the top bar
    */
   topBar?: OptionsAnimationPropertiesId;
@@ -780,7 +785,7 @@ export interface OptionsAnimations {
   /**
    * Configure the setRoot animation
    */
-  setRoot?: OptionsAnimationProperties;
+  setRoot?: OptionsAnimationSeparate;
   /**
    * Configure what animates when a screen is pushed
    */
@@ -792,11 +797,15 @@ export interface OptionsAnimations {
   /**
    * Configure what animates when modal is shown
    */
-  showModal?: OptionsAnimationProperties;
+  showModal?: OptionsAnimationSeparate;
   /**
    * Configure what animates when modal is dismissed
    */
-  dismissModal?: OptionsAnimationProperties;
+  dismissModal?: OptionsAnimationSeparate;
+  /**
+   * Configure what animates when stack root is changed
+   */
+  setStackRoot?: OptionsAnimationSeparate;
 }
 
 export interface OptionsCustomTransition {
