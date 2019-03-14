@@ -780,7 +780,7 @@ export interface AnimationOptions {
   /**
    * Configure the setRoot animation
    */
-  setRoot?: ScreenAnimationOptions;
+  setRoot?: StackAnimationOptions;
   /**
    * Configure what animates when a screen is pushed
    */
@@ -792,11 +792,15 @@ export interface AnimationOptions {
   /**
    * Configure what animates when modal is shown
    */
-  showModal?: ScreenAnimationOptions;
+  showModal?: StackAnimationOptions;
   /**
    * Configure what animates when modal is dismissed
    */
-  dismissModal?: ScreenAnimationOptions;
+  dismissModal?: StackAnimationOptions;
+  /**
+   * Configure what animates when stack root is changed
+   */
+  setStackRoot?: StackAnimationOptions;
 }
 
 export interface OptionsCustomTransition {
