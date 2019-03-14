@@ -5,7 +5,12 @@ type Color = string;
 type FontFamily = string;
 type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
-type SystemItemIcon = 'done' | 'cancel' | 'edit' | 'save' | 'add' | 'flexibleSpace' | 'fixedSpace' | 'compose' | 'reply' | 'action' | 'organize' | 'bookmarks' | 'search' | 'refresh' | 'stop' | 'camera' | 'trash' | 'play' | 'pause' | 'rewind' | 'fastForward' | 'undo' | 'redo';
+type SystemItemIcon = 'done' | 'cancel' | 'edit'
+  | 'save' | 'add' | 'flexibleSpace' | 'fixedSpace'
+  | 'compose' | 'reply' | 'action' | 'organize'
+  | 'bookmarks' | 'search' | 'refresh' | 'stop'
+  | 'camera' | 'trash' | 'play' | 'pause'
+  | 'rewind' | 'fastForward' | 'undo' | 'redo';
 
 export interface OptionsSplitView {
   /**
@@ -70,6 +75,12 @@ export interface OptionsLayout {
    * #### (Android specific)
    */
   topMargin?: number;
+
+  /**
+   * Set language direction.
+   * only works with DefaultOptions
+   */
+  direction?: 'rtl' | 'ltr';
 }
 
 export enum OptionsModalPresentationStyle {
@@ -247,9 +258,9 @@ export interface OptionsTopBarButton {
    * Set the button icon
    */
   icon?: ImageRequireSource;
-   /**
-   * Set the button icon insets
-   */
+  /**
+  * Set the button icon insets
+  */
   iconInsets?: IconInsets;
   /**
    * Set the button as a custom component

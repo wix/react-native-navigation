@@ -34,7 +34,7 @@ class LayoutsScreen extends React.Component {
     );
   }
 
-  stack = () => Navigation.showModal(Screens.StackScreen);
+  stack = () => Navigation.showModal(Screens.Stack);
 
   bottomTabs = () => Navigation.showModal({
     bottomTabs: {
