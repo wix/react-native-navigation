@@ -43,13 +43,25 @@
 	@end
 	```
 
-3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h": 
+3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h"`: 
 ```
 ! 'RCTBundleURLProvider.h' file not found
 ```
 This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu. 
 
 To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
+
+3b. If, in Xcode, you see the following warning message in `AppDelegate.m` next to `#import "@implementation AppDelegate"`:
+```
+Class 'AppDelegate' does not conform to protocol 'RCTBridgeDelegate'
+```
+You can remove `RCTBridgeDelegate` from this file: `AppDelegate.h`:
+```diff
+- #import <React/RCTBridgeDelegate.h>
+- @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
++ @interface AppDelegate : UIResponder <UIApplicationDelegate>
+	...
+```
 
 ## Android
 
