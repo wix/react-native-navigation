@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.bridge.ReactContext;
 import com.reactnativenavigation.parse.ExternalComponent;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.react.EventEmitter;
@@ -16,27 +15,28 @@ public class ExternalComponentViewController extends ViewController<ExternalComp
     private final ExternalComponent externalComponent;
     private final ExternalComponentCreator componentCreator;
     private ReactInstanceManager reactInstanceManager;
+    private final EventEmitter emitter;
 
-    public ExternalComponentViewController(Activity activity, String id, ExternalComponent externalComponent, ExternalComponentCreator componentCreator, ReactInstanceManager reactInstanceManager, Options initialOptions) {
+    public ExternalComponentViewController(Activity activity, String id, ExternalComponent externalComponent, ExternalComponentCreator componentCreator, ReactInstanceManager reactInstanceManager, EventEmitter emitter, Options initialOptions) {
         super(activity, id, new NoOpYellowBoxDelegate(), initialOptions);
         this.externalComponent = externalComponent;
         this.componentCreator = componentCreator;
         this.reactInstanceManager = reactInstanceManager;
+        this.emitter = emitter;
     }
 
     @Override
     protected ExternalComponentLayout createView() {
         ExternalComponentLayout content = new ExternalComponentLayout(getActivity());
-        content.addView(componentCreator.create(getActivity(), reactInstanceManager, externalComponent.passProps).asView());
+        content.addView(componentCreator
+                .create(getActivity(), reactInstanceManager, externalComponent.passProps)
+                .asView());
         return content;
     }
 
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
-        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
-        if (currentReactContext != null) {
-            new EventEmitter(currentReactContext).emitOnNavigationButtonPressed(getId(), buttonId);
-        }
+        emitter.emitOnNavigationButtonPressed(getId(), buttonId);
     }
 
     @Override
@@ -44,6 +44,18 @@ public class ExternalComponentViewController extends ViewController<ExternalComp
         if (options == Options.EMPTY) return;
         performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
         super.mergeOptions(options);
+    }
+
+    @Override
+    public void onViewAppeared() {
+        super.onViewAppeared();
+        emitter.emitComponentDidAppear(getId(), externalComponent.name.get());
+    }
+
+    @Override
+    public void onViewDisappear() {
+        super.onViewDisappear();
+        emitter.emitComponentDidDisappear(getId(), externalComponent.name.get());
     }
 
     public FragmentActivity getActivity() {
