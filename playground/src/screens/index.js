@@ -38,6 +38,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Orientation, () => require('./OrientationScreen'));
   Navigation.registerComponent(Screens.OrientationDetect, () => require('./OrientationDetectScreen'));
   Navigation.registerComponent(Screens.Search, () => require('./SearchScreen'));
+  Navigation.registerComponent(Screens.ExternalComponent, () => require('./ExternalComponentScreen'));
 
   Navigation.registerComponent(`navigation.playground.CustomTransitionDestination`, () => CustomTransitionDestination);
   Navigation.registerComponent(`navigation.playground.CustomTransitionOrigin`, () => CustomTransitionOrigin);
