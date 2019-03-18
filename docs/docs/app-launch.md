@@ -1,5 +1,5 @@
 # App Launch
-When your app is launched for the first time, the bundle is parsed and executed. At this point you need to show your ui. To do so, Listen to the `appLaunched` event and call `Navigation.setRoot` when the event is received.
+When your app is launched for the first time, the bundle is parsed and executed. At this point you need to show your UI. To do so, Listen to the `appLaunched` event and call `Navigation.setRoot` when the event is received.
 
 ```js
 Navigation.events().registerAppLaunchedListener(() => {
