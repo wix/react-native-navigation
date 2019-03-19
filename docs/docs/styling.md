@@ -286,12 +286,12 @@ If you'd like to use a custom font, you'll first have to edit your project.
 
 ## Custom tab icons
 
-* Android - add cooresponding resoltion icons into folders in android/app/src/main/res.
-For example, icon_name.png in each drawable-x folder.
-* iOS - drag and drop to Images.xcassets in Xcode.
-For example, image set icon_name in Images.xcassets with x1, x2, x3.
+* Android - add corresponding resolution icons into folders in `android/app/src/main/res`.
+For example, `icon_name.png` in each drawable-x folder.
+* iOS - drag and drop to `Images.xcassets` in Xcode.
+For example, image set `icon_name` in `Images.xcassets` with x1, x2, x3.
 
-Then, the tab icon can be defined by following syntax:
+Then, the tab icon can be defined with the following syntax:
 
 ```js
 bottomTab: {

@@ -8,7 +8,8 @@ const {
   OVERLAY_BTN,
   EXTERNAL_COMP_BTN,
   SHOW_STATIC_EVENTS_SCREEN,
-  SHOW_ORIENTATION_SCREEN
+  SHOW_ORIENTATION_SCREEN,
+  TOP_BAR_ELEMENT
 } = require('../testIDs');
 const Screens = require('./Screens');
 
@@ -36,6 +37,10 @@ class NavigationScreen extends React.Component {
         <Button label='External Component' testID={EXTERNAL_COMP_BTN} onPress={this.externalComponent} />
         <Button label='Static Events' testID={SHOW_STATIC_EVENTS_SCREEN} onPress={this.pushStaticEventsScreen} />
         <Button label='Orientation' testID={SHOW_ORIENTATION_SCREEN} onPress={this.orientation} />
+        <Navigation.TouchablePreview
+          touchableComponent={Button}
+          onPressIn={this.preview}
+          label='Preview' />
       </Root>
     );
   }
@@ -45,6 +50,36 @@ class NavigationScreen extends React.Component {
   externalComponent = () => Navigation.showModal(Screens.ExternalComponent);
   pushStaticEventsScreen = () => Navigation.showModal(Screens.EventsScreen)
   orientation = () => Navigation.showModal(Screens.Orientation);
+  preview = ({ reactTag }) => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: Screens.Pushed,
+        options: {
+          animations: {
+            push: {
+              enabled: false
+            }
+          },
+          preview: {
+            reactTag: reactTag,
+            height: 300,
+            actions: [{
+              id: 'action-cancel',
+              title: 'Cancel'
+            }, {
+              id: 'action-delete',
+              title: 'Delete',
+              actions: [{
+                id: 'action-delete-sure',
+                title: 'Are you sure?',
+                style: 'destructive'
+              }]
+            }]
+          }
+        }
+      }
+    });
+  }
 }
 
 module.exports = NavigationScreen;

@@ -158,6 +158,7 @@ public class LayoutFactory {
                 externalComponent,
                 externalComponentCreators.get(externalComponent.name.get()),
                 reactInstanceManager,
+                new EventEmitter(reactInstanceManager.getCurrentReactContext()),
                 parse(typefaceManager, node.getOptions())
         );
     }
