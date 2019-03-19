@@ -1,10 +1,10 @@
-#import "RNNAnimationOptions.h"
+#import "RNNSharedElementAnimationOptions.h"
 
 #define DEFAULT_DURATION @(0.7)
 #define DEFAULT_SPRING_VELOCITY @(0.8)
 #define DEFAULT_SPRING_DAMPING @(0.85)
 
-@implementation RNNAnimationOptions
+@implementation RNNSharedElementAnimationOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];

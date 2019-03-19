@@ -1,10 +1,19 @@
-#import "RNNPushAnimation.h"
+#import "RNNAnimationsTransitionDelegate.h"
 
-@implementation RNNPushAnimation
+@implementation RNNAnimationsTransitionDelegate
 
-- (instancetype)initWithScreenTransition:(RNNScreenTransition *)screenTransition {
+- (instancetype)initWithScreenTransition:(RNNScreenTransition *)screenTransition isDismiss:(BOOL)isDismiss {
 	self = [super init];
 	self.screenTransition = screenTransition;
+	self.isDismiss = isDismiss;
+	return self;
+}
+
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+	return self;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
 	return self;
 }
 
@@ -13,20 +22,22 @@
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-	UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 	UIViewController* toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-	
-	[[transitionContext containerView] addSubview:fromViewController.view];
-	[[transitionContext containerView] addSubview:toViewController.view];
+	UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
 		[transitionContext completeTransition:![transitionContext transitionWasCancelled]];
 	}];
-
-	[self animateElement:self.screenTransition.topBar view:toViewController.navigationController.navigationBar elementName:@"topBar"];
-	[self animateElement:self.screenTransition.content view:toViewController.view elementName:@"content"];
-	[self animateElement:self.screenTransition.bottomTabs view:toViewController.tabBarController.tabBar elementName:@"bottomTabs"];
+	
+	if (_isDismiss) {
+		[[transitionContext containerView] addSubview:toViewController.view];
+		[[transitionContext containerView] addSubview:fromViewController.view];
+		[self animateElement:self.screenTransition.content view:fromViewController.view elementName:@"content"];
+	} else {
+		[[transitionContext containerView] addSubview:toViewController.view];
+		[self animateElement:self.screenTransition.content view:toViewController.view elementName:@"content"];
+	}
 	
 	[CATransaction commit];
 }

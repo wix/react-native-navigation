@@ -4,7 +4,7 @@
 #import "RNNPushAnimation.h"
 #import "RNNReactView.h"
 #import "RNNParentProtocol.h"
-
+#import "RNNAnimationsTransitionDelegate.h"
 
 @implementation RNNRootViewController
 
@@ -172,9 +172,9 @@
 	if (self.animator) {
 		return self.animator;
 	} else if (operation == UINavigationControllerOperationPush && self.resolveOptions.animations.push.hasCustomAnimation) {
-		return [[RNNPushAnimation alloc] initWithScreenTransition:self.resolveOptions.animations.push];
+		return [[RNNAnimationsTransitionDelegate alloc] initWithScreenTransition:self.resolveOptions.animations.push isDismiss:NO];
 	} else if (operation == UINavigationControllerOperationPop && self.resolveOptions.animations.pop.hasCustomAnimation) {
-		return [[RNNPushAnimation alloc] initWithScreenTransition:self.resolveOptions.animations.pop];
+		return [[RNNAnimationsTransitionDelegate alloc] initWithScreenTransition:self.resolveOptions.animations.pop isDismiss:YES];
 	} else {
 		return nil;
 	}
@@ -182,18 +182,9 @@
 	return nil;
 }
 
-- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.resolveOptions.animations.showModal isDismiss:NO];
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.resolveOptions.animations.dismissModal isDismiss:YES];
-}
-
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
 	return self.previewController;
 }
-
 
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
 	if (self.previewCallback) {

@@ -1,6 +1,6 @@
 #import "RNNOptions.h"
 
-@interface RNNAnimationOptions : RNNOptions
+@interface RNNSharedElementAnimationOptions : RNNOptions
 
 @property (nonatomic, strong) NSArray* animations;
 @property (nonatomic, strong) NSNumber* duration;
