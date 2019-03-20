@@ -28,6 +28,11 @@
 	
 	RNNNavigationController* navigationController = self.bindedViewController;
 	
+	self.interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
+	self.interactivePopGestureDelegate.navigationController = navigationController;
+	self.interactivePopGestureDelegate.originalDelegate = navigationController.interactivePopGestureRecognizer.delegate;
+	navigationController.interactivePopGestureRecognizer.delegate = self.interactivePopGestureDelegate;
+	
 	[navigationController rnn_setInteractivePopGestureEnabled:[options.popGesture getWithDefaultValue:YES]];
 	[navigationController rnn_setRootBackgroundImage:[options.rootBackgroundImage getWithDefaultValue:nil]];
 	[navigationController rnn_setNavigationBarTestID:[options.topBar.testID getWithDefaultValue:nil]];

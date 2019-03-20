@@ -48,5 +48,6 @@ module.exports = {
   popTo: Navigation.popTo.bind(Navigation),
   setDefaultOptions: Navigation.setDefaultOptions.bind(Navigation),
   setRoot: Navigation.setRoot.bind(Navigation),
+  TouchablePreview: Navigation.TouchablePreview,
   setStackRoot
 }

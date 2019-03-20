@@ -5,7 +5,12 @@ type Color = string;
 type FontFamily = string;
 type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
-type SystemItemIcon = 'done' | 'cancel' | 'edit' | 'save' | 'add' | 'flexibleSpace' | 'fixedSpace' | 'compose' | 'reply' | 'action' | 'organize' | 'bookmarks' | 'search' | 'refresh' | 'stop' | 'camera' | 'trash' | 'play' | 'pause' | 'rewind' | 'fastForward' | 'undo' | 'redo';
+type SystemItemIcon = 'done' | 'cancel' | 'edit'
+  | 'save' | 'add' | 'flexibleSpace' | 'fixedSpace'
+  | 'compose' | 'reply' | 'action' | 'organize'
+  | 'bookmarks' | 'search' | 'refresh' | 'stop'
+  | 'camera' | 'trash' | 'play' | 'pause'
+  | 'rewind' | 'fastForward' | 'undo' | 'redo';
 
 export interface OptionsSplitView {
   /**
@@ -70,6 +75,12 @@ export interface OptionsLayout {
    * #### (Android specific)
    */
   topMargin?: number;
+
+  /**
+   * Set language direction.
+   * only works with DefaultOptions
+   */
+  direction?: 'rtl' | 'ltr';
 }
 
 export enum OptionsModalPresentationStyle {
@@ -247,9 +258,9 @@ export interface OptionsTopBarButton {
    * Set the button icon
    */
   icon?: ImageRequireSource;
-   /**
-   * Set the button icon insets
-   */
+  /**
+  * Set the button icon insets
+  */
   iconInsets?: IconInsets;
   /**
    * Set the button as a custom component
@@ -661,7 +672,11 @@ export interface OptionsAnimationPropertyConfig {
   interpolation?: 'accelerate' | 'decelerate';
 }
 
-export interface OptionsAnimationProperties {
+/**
+ * Used to animate the actual content added to the hierarchy.
+ * Content can be a React component (component) or any other layout (Stack, BottomTabs etc)
+ */
+export interface ScreenAnimationOptions {
   /**
    * Animate the element over translateX
    */
@@ -724,68 +739,64 @@ export interface IconInsets {
   right?: number;
 }
 
-export interface OptionsAnimationPropertiesId extends OptionsAnimationProperties {
+export interface ViewAnimationOptions extends ScreenAnimationOptions {
   /**
    * ID of the Top Bar we want to animate
    */
   id?: string;
 }
 
-export interface OptionsAnimationSeparate {
+/**
+ * Used for describing stack commands animations.
+ */
+export interface StackAnimationOptions {
   /**
    * Wait for the View to render before start animation
-   * Example:
-   ```js
-   animations: {
-     push: {
-       waitForRender: true
-     },
-     showModal: {
-       waitForRender: true
-     },
-     setRoot: {
-       waitForRender: true
-     }
-     }
-   }
-   ```
    */
   waitForRender?: boolean;
   /**
+   * Enable or disable the animation
+   * @default true
+   */
+  enabled?: boolean;
+  /**
    * Configure animations for the top bar
    */
-  topBar?: OptionsAnimationPropertiesId;
+  topBar?: ViewAnimationOptions;
   /**
    * Configure animations for the bottom tabs
    */
-  bottomTabs?: OptionsAnimationPropertiesId;
+  bottomTabs?: ViewAnimationOptions;
   /**
    * Configure animations for the content (Screen)
    */
-  content?: OptionsAnimationPropertiesId;
+  content?: ViewAnimationOptions;
 }
 
-export interface OptionsAnimations {
+/**
+ * Used for configuring command animations
+ */
+export interface AnimationOptions {
   /**
    * Configure the setRoot animation
    */
-  setRoot?: OptionsAnimationProperties;
+  setRoot?: ScreenAnimationOptions;
   /**
    * Configure what animates when a screen is pushed
    */
-  push?: OptionsAnimationSeparate;
+  push?: StackAnimationOptions;
   /**
    * Configure what animates when a screen is popped
    */
-  pop?: OptionsAnimationSeparate;
+  pop?: StackAnimationOptions;
   /**
    * Configure what animates when modal is shown
    */
-  showModal?: OptionsAnimationProperties;
+  showModal?: ScreenAnimationOptions;
   /**
    * Configure what animates when modal is dismissed
    */
-  dismissModal?: OptionsAnimationProperties;
+  dismissModal?: ScreenAnimationOptions;
 }
 
 export interface OptionsCustomTransition {
@@ -890,7 +901,7 @@ setRoot: {
 }
 ```
    */
-  animations?: OptionsAnimations;
+  animations?: AnimationOptions;
 
   /**
    * Custom Transition used for animate shared element between two screens

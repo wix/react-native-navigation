@@ -1,8 +1,7 @@
 #import "RNNOptions.h"
-#import "RNNTransitionStateHolder.h"
 #import "RNNScreenTransition.h"
 
-@interface RNNTransitionsOptions : RNNOptions
+@interface RNNAnimationsOptions : RNNOptions
 
 @property (nonatomic, strong) RNNScreenTransition* push;
 @property (nonatomic, strong) RNNScreenTransition* pop;

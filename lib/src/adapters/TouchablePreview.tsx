@@ -117,10 +117,9 @@ export class TouchablePreview extends React.PureComponent<Props> {
     const { children, touchableComponent, onPress, onPressIn, ...props } = this.props;
 
     // Default to TouchableWithoutFeedback for iOS if set to TouchableNativeFeedback
-    const Touchable = (Platform.OS === 'ios' &&
-    touchableComponent instanceof TouchableNativeFeedback
-      ? TouchableWithoutFeedback
-      : touchableComponent) as typeof TouchableWithoutFeedback;
+    const Touchable = (Platform.OS === 'ios' && touchableComponent instanceof TouchableNativeFeedback) ?
+      TouchableWithoutFeedback :
+      touchableComponent as typeof React.Component;
 
     // Wrap component with Touchable for handling platform touches
     // and a single react View for detecting force and timing.

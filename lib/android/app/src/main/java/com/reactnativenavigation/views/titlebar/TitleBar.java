@@ -29,8 +29,10 @@ public class TitleBar extends Toolbar {
 
     private TitleBarButtonController leftButtonController;
     private View component;
-    private Alignment mAlignment;
-    private CharSequence mTitle;
+    private Alignment titleAlignment;
+    private Alignment subtitleAlignment;
+    private Boolean isTitleChanged = false;
+    private Boolean isSubtitleChanged = false;
 
     public TitleBar(Context context) {
         super(context);
@@ -48,10 +50,13 @@ public class TitleBar extends Toolbar {
     public void setTitle(CharSequence title) {
         clearComponent();
         super.setTitle(title);
-        if (mTitle != title && mAlignment != null) {
-            this.setTitleAlignment(mAlignment);
-        }
-        mTitle = title;
+        isTitleChanged = true;
+    }
+
+    @Override
+    public void setSubtitle(CharSequence title) {
+        super.setSubtitle(title);
+        isSubtitleChanged = true;
     }
 
     public String getTitle() {
@@ -84,10 +89,7 @@ public class TitleBar extends Toolbar {
     }
 
     public void setTitleAlignment(Alignment alignment) {
-        mAlignment = alignment;
-        TextView title = findTitleTextView();
-        if (title == null || title == mTitle) return;
-        alignTextView(alignment, title);
+        titleAlignment = alignment;
     }
 
     public void setSubtitleTypeface(Typeface typeface) {
@@ -101,26 +103,42 @@ public class TitleBar extends Toolbar {
     }
 
     public void setSubtitleAlignment(Alignment alignment) {
-        TextView subtitle = findSubtitleTextView();
-        if (subtitle == null) return;
-        alignTextView(alignment, subtitle);
+        subtitleAlignment = alignment;
     }
 
     private void alignTextView(Alignment alignment, TextView view) {
         Integer direction = view.getParent().getLayoutDirection();
         Boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
-        int width = view.getResources().getDisplayMetrics().widthPixels;
-        view.post(() -> {
-            if (alignment == Alignment.Center) {
-                view.measure(0, 0);
-                //noinspection IntegerDivisionInFloatingPointContext
-                view.setX((width - view.getWidth()) / 2);
-            } else if (leftButtonController != null) {
-                view.setX(isRTL ? (getWidth() - view.getWidth()) - getContentInsetStartWithNavigation() : getContentInsetStartWithNavigation());
-            } else {
-                view.setX(isRTL ? (getWidth() - view.getWidth()) - UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN) : UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN));
+
+        if (alignment == Alignment.Center) {
+            //noinspection IntegerDivisionInFloatingPointContext
+            view.setX((getWidth() - view.getWidth()) / 2);
+        } else if (leftButtonController != null) {
+            view.setX(isRTL ? (getWidth() - view.getWidth()) - getContentInsetStartWithNavigation() : getContentInsetStartWithNavigation());
+        } else {
+            view.setX(isRTL ? (getWidth() - view.getWidth()) - UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN) : UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN));
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+
+        if(changed || isTitleChanged) {
+            TextView title = findTitleTextView();
+            if (title != null) {
+                this.alignTextView(titleAlignment, title);
             }
-        });
+            isTitleChanged = false;
+        }
+
+        if(changed || isSubtitleChanged) {
+            TextView subtitle = findSubtitleTextView();
+            if (subtitle != null) {
+                this.alignTextView(subtitleAlignment, subtitle);
+            }
+            isSubtitleChanged = false;
+        }
     }
 
     @Nullable
