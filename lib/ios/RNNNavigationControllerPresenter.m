@@ -28,6 +28,11 @@
 	
 	RNNNavigationController* navigationController = self.bindedViewController;
 	
+	self.interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
+	self.interactivePopGestureDelegate.navigationController = navigationController;
+	self.interactivePopGestureDelegate.originalDelegate = navigationController.interactivePopGestureRecognizer.delegate;
+	navigationController.interactivePopGestureRecognizer.delegate = self.interactivePopGestureDelegate;
+	
 	[navigationController rnn_setInteractivePopGestureEnabled:[options.popGesture getWithDefaultValue:YES]];
 	[navigationController rnn_setRootBackgroundImage:[options.rootBackgroundImage getWithDefaultValue:nil]];
 	[navigationController rnn_setNavigationBarTestID:[options.topBar.testID getWithDefaultValue:nil]];
@@ -176,6 +181,9 @@
 	if (options.topBar.component.name.hasValue) {
 		RCTRootView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		
+		if (_customTopBar) {
+			[_customTopBar removeFromSuperview];
+		}
 		_customTopBar = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		reactView.backgroundColor = UIColor.clearColor;
 		_customTopBar.backgroundColor = UIColor.clearColor;
@@ -197,6 +205,9 @@
 	if (options.topBar.background.component.name.hasValue) {
 		RCTRootView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.background.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		
+		if (_customTopBarBackground) {
+			[_customTopBarBackground removeFromSuperview];
+		}
 		_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		[navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
 	} else {

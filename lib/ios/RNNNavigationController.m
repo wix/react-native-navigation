@@ -1,7 +1,7 @@
 
 #import "RNNNavigationController.h"
-#import "RNNModalAnimation.h"
 #import "RNNRootViewController.h"
+#import "InteractivePopGestureDelegate.h"
 
 const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
@@ -104,14 +104,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	}
 	
 	return [super popViewControllerAnimated:animated];
-}
-
-- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.resolveOptions.animations.showModal isDismiss:NO];
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.resolveOptions.animations.dismissModal isDismiss:YES];
 }
 
 - (UIViewController *)getCurrentChild {

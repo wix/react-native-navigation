@@ -28,6 +28,7 @@ class OverlayScreen extends React.Component {
         <Button label='Alert' testID={ALERT_BUTTON} onPress={() => alert('Alert displayed')} />
         <Button label='Show overlay' testID={SHOW_OVERLAY_BTN} onPress={() => this.showOverlay(true)} />
         <Button label='Show touch through overlay' testID={SHOW_TOUCH_THROUGH_OVERLAY_BTN} onPress={() => this.showOverlay(false)} />
+        <Button label='Show overlay with ScrollView' onPress={this.showOverlayWithScrollView} />
         <Button label='Set Root' testID={SET_ROOT_BTN} onPress={this.setRoot} />
       </Root>
     );
@@ -40,20 +41,9 @@ class OverlayScreen extends React.Component {
 
   setRoot = () => Navigation.setRoot({ root: component(Screens.Pushed) })
 
-  // await Navigation.showOverlay({
-  //   component: {
-  //     name: 'navigation.playground.CustomDialog',
-  //     options: {
-  //       layout: {
-  //         componentBackgroundColor: 'transparent'
-  //       },
-  //       overlay: {
-  //         interceptTouchOutside: false
-  //       }
-  //     }
-  //   }
-  // });
-  // });
+  showOverlayWithScrollView = () => Navigation.showOverlay(Screens.ScrollViewOverlay, {
+    layout: { componentBackgroundColor: 'transparent' }
+  });
 }
 
 module.exports = OverlayScreen;
