@@ -1,0 +1,93 @@
+// @flow
+
+export type ComponentProvider = () => React$ComponentType<any>;
+
+declare export class EventSubscription {
+  eventType: string;
+  key: number;
+  subscriber: EventSubscriptionVendor;
+  constructor(subscriber: EventSubscriptionVendor): EventSubscription;
+  remove(): void;
+}
+
+declare export class EventSubscriptionVendor {
+  addSubscription(
+    eventType: string,
+    subscription: EventSubscription
+  ): EventSubscription;
+  removeAllSubscriptions(eventType?: string): void;
+  removeSubscription(subscription: any): void;
+  getSubscriptionsForType(eventType: string): EventSubscription[];
+}
+
+declare export class EmitterSubscription extends EventSubscription {
+  emitter: EventEmitter;
+  listener: () => any;
+  context: any;
+  constructor(
+    emitter: EventEmitter,
+    subscriber: EventSubscriptionVendor,
+    listener: () => any,
+    context: any
+  ): EmitterSubscription;
+}
+
+export type EventEmitter = any;
+
+export type GestureResponderEvent = NativeSyntheticEvent<NativeTouchEvent>;
+
+export type ImageRequireSource = number;
+
+export type Insets = {
+  top?: number,
+  left?: number,
+  bottom?: number,
+  right?: number
+};
+
+export type NativeSyntheticEvent<T> = {|
+  bubbles: ?boolean,
+  cancelable: ?boolean,
+  currentTarget: number,
+  defaultPrevented: ?boolean,
+  dispatchConfig: {|
+    registrationName: string
+  |},
+  eventPhase: ?number,
+  preventDefault: () => void,
+  isDefaultPrevented: () => boolean,
+  stopPropagation: () => void,
+  isPropagationStopped: () => boolean,
+  isTrusted: ?boolean,
+  nativeEvent: T,
+  persist: () => void,
+  target: ?number,
+  timeStamp: number,
+  type: ?string
+|};
+
+export type NativeTouchEvent = {
+  changedTouches: NativeTouchEvent[],
+  identifier: string,
+  locationX: number,
+  locationY: number,
+  pageX: number,
+  pageY: number,
+  target: string,
+  timestamp: number,
+  touches: NativeTouchEvent[]
+};
+
+declare export class TouchableHighlight extends React$Component<any, any> {}
+
+declare export class TouchableNativeFeedback extends React$Component<
+  any,
+  any
+> {}
+
+declare export class TouchableOpacity extends React$Component<any, any> {}
+
+declare export class TouchableWithoutFeedback extends React$Component<
+  any,
+  any
+> {}
