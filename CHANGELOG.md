@@ -1,4 +1,14 @@
 # Changelog
+## 2.15.0
+### Fixed
+* Add `externalComponent` prop to Layout TS declaration [#5ba7ccb7](https://github.com/wix/react-native-navigation/commit/5ba7ccb75fd9e3e9ecf0b954d78704930f50d8f6) by [yedidyak](https://github.com/yedidyak)
+
+#### iOS
+* Fix prevent retaining button component in componentRegistry [#0186b1ac36](https://github.com/wix/react-native-navigation/commit/0186b1ac36e919fb6b2a796677db1905b48aec7e) by [yogevbd](https://github.com/yogevbd)
+* Fix and refactor animations options [#a98f18704](https://github.com/wix/react-native-navigation/commit/a98f18704cc49094cd91859e75089328b4fd7cbc) by [yogevbd](https://github.com/yogevbd)
+* Fix display empty custom topBar background over valid custom background [#6cb1e18a8](https://github.com/wix/react-native-navigation/commit/6cb1e18a883db803a5b193ca86f077d4e281a8e4)
+by [RoTTex](https://github.com/RoTTex)
+
 ## 2.14.0
 ### Fixed
 * Add direction property to Layout TS declaration [#025c5e8](https://github.com/wix/react-native-navigation/commit/025c5e8dd6a0eec75f3a27a49e52af1d252b5351) by [mohammadalijf](https://github.com/mohammadalijf)
