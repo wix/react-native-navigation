@@ -2,7 +2,7 @@
 
 @interface RNNReactComponentRegistry () {
 	id<RNNRootViewCreator> _creator;
-	NSMapTable* _componentStore;
+	NSMutableDictionary* _componentStore;
 }
 
 @end
@@ -12,7 +12,7 @@
 - (instancetype)initWithCreator:(id<RNNRootViewCreator>)creator {
 	self = [super init];
 	_creator = creator;
-	_componentStore = [NSMapTable strongToWeakObjectsMapTable];
+	_componentStore = [NSMutableDictionary new];
 	return self;
 }
 
@@ -31,7 +31,7 @@
 }
 
 - (NSMutableDictionary *)componentsForParentId:(NSString *)parentComponentId {
-	if (![_componentStore objectForKey:parentComponentId]) {
+	if (!_componentStore[parentComponentId]) {
 		[_componentStore setObject:[NSMutableDictionary new] forKey:parentComponentId];;
 	}
 	
