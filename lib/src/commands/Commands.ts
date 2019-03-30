@@ -60,11 +60,12 @@ export class Commands {
   public showModal(layout: Layout) {
     const layoutCloned = _.cloneDeep(layout);
     const layoutNode = this.layoutTreeParser.parse(layoutCloned);
+    const copiedLayoutNode = _.cloneDeep(layoutNode);
     this.layoutTreeCrawler.crawl(layoutNode);
 
     const commandId = this.uniqueIdProvider.generate('showModal');
     const result = this.nativeCommandsSender.showModal(commandId, layoutNode);
-    this.commandsObserver.notify('showModal', { commandId, layout: layoutNode });
+    this.commandsObserver.notify('showModal', { commandId, layout: copiedLayoutNode });
     return result;
   }
 
@@ -86,11 +87,12 @@ export class Commands {
     const input = _.cloneDeep(simpleApi);
 
     const layout = this.layoutTreeParser.parse(input);
+    const copiedLayout = _.cloneDeep(layout);
     this.layoutTreeCrawler.crawl(layout);
 
     const commandId = this.uniqueIdProvider.generate('push');
     const result = this.nativeCommandsSender.push(commandId, componentId, layout);
-    this.commandsObserver.notify('push', { commandId, componentId, layout });
+    this.commandsObserver.notify('push', { commandId, componentId, copiedLayout });
     return result;
   }
 
