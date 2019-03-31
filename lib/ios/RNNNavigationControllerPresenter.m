@@ -181,6 +181,9 @@
 	if (options.topBar.component.name.hasValue) {
 		RCTRootView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		
+		if (_customTopBar) {
+			[_customTopBar removeFromSuperview];
+		}
 		_customTopBar = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		reactView.backgroundColor = UIColor.clearColor;
 		_customTopBar.backgroundColor = UIColor.clearColor;
@@ -202,6 +205,9 @@
 	if (options.topBar.background.component.name.hasValue) {
 		RCTRootView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.background.component parentComponentId:navigationController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		
+		if (_customTopBarBackground) {
+			[_customTopBarBackground removeFromSuperview];
+		}
 		_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		[navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
 	} else {

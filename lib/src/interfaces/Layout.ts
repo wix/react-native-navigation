@@ -24,6 +24,10 @@ export interface LayoutStackChildren {
    * Set component
    */
   component?: LayoutComponent;
+  /**
+   * Set the external component
+   */
+  externalComponent?: ExternalComponent;
 }
 
 export interface LayoutStack {
@@ -51,6 +55,10 @@ export interface LayoutBottomTabsChildren {
    * Set component
    */
   component?: LayoutComponent;
+  /**
+   * Set the external component
+   */
+  externalComponent?: ExternalComponent;
 }
 
 export interface LayoutBottomTabs {
