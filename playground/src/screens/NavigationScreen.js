@@ -8,7 +8,8 @@ const {
   OVERLAY_BTN,
   EXTERNAL_COMP_BTN,
   SHOW_STATIC_EVENTS_SCREEN,
-  SHOW_ORIENTATION_SCREEN
+  SHOW_ORIENTATION_SCREEN,
+  TOP_BAR_ELEMENT
 } = require('../testIDs');
 const Screens = require('./Screens');
 
