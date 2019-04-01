@@ -874,6 +874,16 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             [childViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
         }
     }
+	if (self.rightDrawerViewController != nil) {
+		for (UIView * subview in self.rightDrawerViewController.view.subviews) {
+			subview.frame = self.view.bounds;
+		}
+	}
+	if (self.leftDrawerViewController != nil) {
+		for (UIView * subview in self.leftDrawerViewController.view.subviews) {
+			subview.frame = self.view.bounds;
+		}
+	}
 }
 
 -(bool)hasPan
