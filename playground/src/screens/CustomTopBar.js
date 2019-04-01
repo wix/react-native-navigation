@@ -11,7 +11,6 @@ const {
 const { Navigation } = require('react-native-navigation');
 
 class CustomTopBar extends Component {
-
   constructor(props) {
     super(props);
     this.state = {};
@@ -39,7 +38,7 @@ class CustomTopBar extends Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={() => Alert.alert(this.props.title, 'Thanks for that :)')}>
-          <Text style={styles.text}>Press Me</Text>
+          <Text style={styles.text}>{this.props.title}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -50,6 +49,7 @@ module.exports = CustomTopBar;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'red',
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
   },
   text: {
     alignSelf: 'center',
-    color: 'black',
+    color: 'yellow',
   }
 });

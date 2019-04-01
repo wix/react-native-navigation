@@ -65,6 +65,7 @@ class Options extends Component {
         <Button label='Hide TopBar' testID={HIDE_TOP_BAR_BTN} onPress={this.hideTopBar} />
         <Button label='Show TopBar' testID={SHOW_TOP_BAR_BTN} onPress={this.showTopBar} />
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
+        <Button label='Push ReactTitleView' onPress={this.pushReactTitleView} />
         <Button label='Hide TopBar in DefaultOptions' testID={HIDE_TOPBAR_DEFAULT_OPTIONS} onPress={this.hideTopBarInDefaultOptions} />
         <Button label='Set React Title View' testID={SET_REACT_TITLE_VIEW} onPress={this.setReactTitleView} />
         <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
@@ -93,6 +94,24 @@ class Options extends Component {
   });
 
   push = () => Navigation.push(this, Screens.Pushed);
+  pushReactTitleView = () => Navigation.push(this, {
+    component: {
+      name: Screens.Pushed,
+      options: {
+        topBar: {
+          title: {
+            component: {
+              name: Screens.ReactTitleView,
+              alignment: 'center',
+              passProps: {
+                title: 'Blahhh'
+              }
+            }
+          }
+        }
+      }
+    },
+  });
 
   hideTopBarInDefaultOptions = () => {
     Navigation.setDefaultOptions({
@@ -110,7 +129,10 @@ class Options extends Component {
       title: {
         component: {
           name: Screens.ReactTitleView,
-          alignment: 'center'
+          alignment: 'center',
+          passProps: {
+            title: 'Press me'
+          }
         }
       }
     }
