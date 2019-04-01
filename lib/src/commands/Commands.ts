@@ -92,7 +92,7 @@ export class Commands {
 
     const commandId = this.uniqueIdProvider.generate('push');
     const result = this.nativeCommandsSender.push(commandId, componentId, layout);
-    this.commandsObserver.notify('push', { commandId, componentId, copiedLayout });
+    this.commandsObserver.notify('push', { commandId, componentId, layout: copiedLayout });
     return result;
   }
 
