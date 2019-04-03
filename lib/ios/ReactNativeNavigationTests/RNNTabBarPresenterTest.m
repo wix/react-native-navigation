@@ -2,6 +2,7 @@
 #import <OCMock/OCMock.h>
 #import "RNNTabBarPresenter.h"
 #import "UITabBarController+RNNOptions.h"
+#import "RNNTabBarController.h"
 
 @interface RNNTabBarPresenterTest : XCTestCase
 
@@ -16,7 +17,7 @@
 - (void)setUp {
     [super setUp];
 	self.uut = [[RNNTabBarPresenter alloc] init];
-	self.bindedViewController = [OCMockObject partialMockForObject:[UITabBarController new]];
+	self.bindedViewController = [OCMockObject partialMockForObject:[RNNTabBarController new]];
 	[self.uut bindViewController:self.bindedViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }

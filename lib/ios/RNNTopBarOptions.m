@@ -36,6 +36,7 @@
 	self.backButton = [[RNNBackButtonOptions alloc] initWithDict:dict[@"backButton"]];
 	self.leftButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"leftButtonStyle"]];
 	self.rightButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"rightButtonStyle"]];
+	self.component = [[RNNComponentOptions alloc] initWithDict:dict[@"component"]];
 	
 	if (self.leftButtonColor.hasValue) {
 		self.leftButtonStyle.color = self.leftButtonColor;

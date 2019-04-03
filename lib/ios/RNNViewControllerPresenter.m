@@ -26,14 +26,14 @@
 	return self;
 }
 
-- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
 	self = [self init];
 	_componentRegistry = componentRegistry;
 	return self;
 }
 
-- (void)bindViewController:(UIViewController *)bindedViewController {
-	self.bindedViewController = bindedViewController;
+- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)bindedViewController {
+	[super bindViewController:bindedViewController];
 	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController componentRegistry:_componentRegistry];
 }
 
@@ -175,12 +175,13 @@
 	if (options.topBar.title.component.name.hasValue) {
 		_customTitleView = (RNNReactView*)[_componentRegistry createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		_customTitleView.backgroundColor = UIColor.clearColor;
+		
 		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
 		[_customTitleView setAlignment:alignment];
+		
 		BOOL isCenter = [alignment isEqualToString:@"center"];
 		__weak RNNReactView *weakTitleView = _customTitleView;
 		CGRect frame = viewController.navigationController.navigationBar.bounds;
-		[_customTitleView setFrame:frame];
 		[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
 			if (isCenter) {
 				[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
@@ -212,6 +213,10 @@
 		
 		[_titleViewHelper setup];
 	}
+}
+
+- (void)dealloc {
+	[_componentRegistry clearComponentsForParentId:self.bindedComponentId];
 }
 
 - (void)cleanReactLeftovers {

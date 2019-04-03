@@ -92,7 +92,7 @@
 
 - (void)onJavaScriptWillLoad {
 	[_store clean];
-	[_componentRegistry clean];
+	[_componentRegistry clear];
 }
 
 - (void)onJavaScriptLoaded {

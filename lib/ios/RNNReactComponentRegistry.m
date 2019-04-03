@@ -12,7 +12,7 @@
 - (instancetype)initWithCreator:(id<RNNRootViewCreator>)creator {
 	self = [super init];
 	_creator = creator;
-	_componentStore = [NSMapTable strongToWeakObjectsMapTable];
+	_componentStore = [NSMapTable new];
 	return self;
 }
 
@@ -38,13 +38,17 @@
 	return [_componentStore objectForKey:parentComponentId];;
 }
 
+- (void)clearComponentsForParentId:(NSString *)parentComponentId {
+	[_componentStore removeObjectForKey:parentComponentId];;
+}
+
 - (void)removeComponent:(NSString *)componentId {
 	if ([_componentStore objectForKey:componentId]) {
 		[_componentStore removeObjectForKey:componentId];
 	}
 }
 
-- (void)clean {
+- (void)clear {
 	[_componentStore removeAllObjects];
 }
 

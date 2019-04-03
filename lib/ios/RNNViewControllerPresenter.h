@@ -4,7 +4,7 @@
 
 @interface RNNViewControllerPresenter : RNNBasePresenter
 
-- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry;
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry;
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 

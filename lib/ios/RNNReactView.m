@@ -30,8 +30,8 @@
 }
 
 - (void)setRootViewDidChangeIntrinsicSize:(void (^)(CGSize))rootViewDidChangeIntrinsicSize {
-	_rootViewDidChangeIntrinsicSize = rootViewDidChangeIntrinsicSize;
-	self.delegate = self;
+		_rootViewDidChangeIntrinsicSize = rootViewDidChangeIntrinsicSize;
+		self.delegate = self;
 }
 
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {

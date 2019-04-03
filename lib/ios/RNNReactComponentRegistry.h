@@ -12,6 +12,8 @@
 
 - (void)removeComponent:(NSString *)componentId;
 
-- (void)clean;
+- (void)clearComponentsForParentId:(NSString *)parentComponentId;
+
+- (void)clear;
 
 @end

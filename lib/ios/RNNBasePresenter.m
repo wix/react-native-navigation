@@ -10,13 +10,14 @@
 
 @implementation RNNBasePresenter
 
-- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
 	self = [super init];
 	self.componentRegistry = componentRegistry;
 	return self;
 }
 
-- (void)bindViewController:(UIViewController *)bindedViewController {
+- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)bindedViewController {
+	self.bindedComponentId = bindedViewController.layoutInfo.componentId;
 	_bindedViewController = bindedViewController;
 }
 
