@@ -208,7 +208,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 	
 	[_stackManager pop:vc animated:[vc.resolveOptions.animations.pop.enable getWithDefaultValue:YES] completion:^{
-		[_store removeComponent:componentId];
 		[_eventEmitter sendOnNavigationCommandCompletion:pop commandId:commandId params:@{@"componentId": componentId}];
 		completion();
 	} rejection:rejection];
@@ -222,7 +221,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	[_stackManager popTo:vc animated:[vc.resolveOptions.animations.pop.enable getWithDefaultValue:YES] completion:^(NSArray *poppedViewControllers) {
 		[_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId params:@{@"componentId": componentId}];
-		[self removePopedViewControllers:poppedViewControllers];
 		completion();
 	} rejection:rejection];
 }
@@ -240,7 +238,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}];
 	
 	[_stackManager popToRoot:vc animated:[vc.resolveOptions.animations.pop.enable getWithDefaultValue:YES] completion:^(NSArray *poppedViewControllers) {
-		[self removePopedViewControllers:poppedViewControllers];
+
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
 	}];
@@ -273,9 +271,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
 	[modalToDismiss.getCurrentChild overrideOptions:options];
-	
-	[self removePopedViewControllers:modalToDismiss.navigationController.viewControllers];
-	
+		
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal commandId:commandId params:@{@"componentId": componentId}];
@@ -326,12 +322,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 }
 
 #pragma mark - private
-
-- (void)removePopedViewControllers:(NSArray*)viewControllers {
-	for (UIViewController *popedVC in viewControllers) {
-		[_store removeComponentByViewControllerInstance:popedVC];
-	}
-}
 
 - (void)assertReady {
 	if (!_store.isReadyToReceiveCommands) {

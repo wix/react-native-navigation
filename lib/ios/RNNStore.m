@@ -35,13 +35,6 @@
 	[_componentStore removeObjectForKey:componentId];
 }
 
-- (void)removeComponentByViewControllerInstance:(UIViewController*)componentInstance {
-	NSString *foundKey = [self componentKeyForInstance:componentInstance];
-	if (foundKey) {
-		[self removeComponent:foundKey];
-	}
-}
-
 - (void)removeAllComponents {
 	[_componentStore removeAllObjects];
 }
