@@ -5,13 +5,12 @@
 #import "RNNAnimator.h"
 #import "RNNUIBarButtonItem.h"
 #import "RNNLayoutInfo.h"
-#import "RNNLeafProtocol.h"
 #import "RNNLayoutProtocol.h"
 #import "RNNViewControllerPresenter.h"
 
 typedef void (^PreviewCallback)(UIViewController *vc);
 
-@interface RNNRootViewController : UIViewController	<RNNLeafProtocol, RNNLayoutProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
+@interface RNNRootViewController : UIViewController	<RNNLayoutProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
@@ -19,7 +18,6 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
-@property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) UIViewController* previewController;
 @property (nonatomic, copy) PreviewCallback previewCallback;
@@ -41,5 +39,6 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 
 - (void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem;
 
+- (void)bindViewController:(UIViewController *)viewController;
 
 @end

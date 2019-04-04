@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "RNNParentProtocol.h"
 #import "RNNViewControllerPresenter.h"
+#import "RNNLayoutProtocol.h"
 
 typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 	RNNSideMenuChildTypeCenter,
@@ -9,15 +9,11 @@ typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 };
 
 
-@interface RNNSideMenuChildVC : UIViewController <RNNParentProtocol>
+@interface RNNSideMenuChildVC : UIViewController <RNNLayoutProtocol>
 
 @property (readonly) RNNSideMenuChildType type;
 @property (readonly) UIViewController<RNNLayoutProtocol> *child;
 
-@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
-@property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNViewControllerPresenter *)presenter type:(RNNSideMenuChildType)type;
 

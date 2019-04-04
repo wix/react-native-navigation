@@ -3,6 +3,7 @@
 #import "RNNNavigationController.h"
 #import <React/RCTConvert.h>
 #import "RNNCustomTitleView.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @interface RNNNavigationControllerPresenter() {
 	RNNReactComponentRegistry* _componentRegistry;

@@ -1,14 +1,9 @@
 #import <React/RCTUIManager.h>
-#import "RNNParentProtocol.h"
+#import "RNNLayoutProtocol.h"
 
-@interface RNNTopTabsViewController : UIViewController <RNNParentProtocol>
+@interface RNNTopTabsViewController : UIViewController <RNNLayoutProtocol>
 
 @property (nonatomic, retain) UIView* contentView;
-
-@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, retain) RNNBasePresenter* presenter;
-@property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
 - (void)setViewControllers:(NSArray*)viewControllers;
 - (void)viewController:(UIViewController*)vc changedTitle:(NSString*)title;

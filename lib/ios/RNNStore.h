@@ -1,8 +1,8 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNParentProtocol.h"
 #import "ReactNativeNavigation.h"
+#import "RNNLayoutInfo.h"
 
 typedef void (^RNNTransitionCompletionBlock)(void);
 typedef void (^RNNTransitionWithComponentIdCompletionBlock)(NSString *componentId);

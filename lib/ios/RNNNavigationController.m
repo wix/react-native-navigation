@@ -1,4 +1,3 @@
-
 #import "RNNNavigationController.h"
 #import "RNNRootViewController.h"
 #import "InteractivePopGestureDelegate.h"
@@ -13,69 +12,9 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo creator:(id<RNNRootViewCreator>)creator childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNNavigationControllerPresenter *)presenter {
-	self = [super init];
 
-	self.presenter = presenter;
-	[self.presenter bindViewController:self];
-	
-	self.defaultOptions = defaultOptions;
-	self.options = options;
-	
-	self.layoutInfo = layoutInfo;
-	
-	[self setViewControllers:childViewControllers];
-	
-	return self;
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	if (parent) {
-		[_presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
-	}
-}
-
-- (void)onChildWillAppear {
-	[_presenter applyOptions:self.resolveOptions];
-	[_presenter renderComponents:self.resolveOptions perform:nil];
-	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
-}
-
-- (RNNNavigationOptions *)resolveOptions {
-	return [(RNNNavigationOptions *)[self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
-}
-
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
-	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
-}
-
-- (void)overrideOptions:(RNNNavigationOptions *)options {
-	[self.options overrideOptions:options];
-}
-
-- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-		dispatch_group_t group = dispatch_group_create();
-		for (UIViewController<RNNLayoutProtocol>* childViewController in self.childViewControllers) {
-			dispatch_group_enter(group);
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[childViewController renderTreeAndWait:wait perform:^{
-					dispatch_group_leave(group);
-				}];
-			});
-		}
-		
-		dispatch_group_enter(group);
-		[self.presenter renderComponents:self.resolveOptions perform:^{
-			dispatch_group_leave(group);
-		}];
-		dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			readyBlock();
-		});
-	});
+- (UIViewController *)getCurrentChild {
+	return self.topViewController;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -104,10 +43,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	}
 	
 	return [super popViewControllerAnimated:animated];
-}
-
-- (UIViewController *)getCurrentChild {
-	return ((UIViewController<RNNParentProtocol>*)self.topViewController);
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
