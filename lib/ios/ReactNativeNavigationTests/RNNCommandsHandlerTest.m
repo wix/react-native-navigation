@@ -259,15 +259,6 @@
 	[self.mainWindow verify];
 }
 
-- (void)testSetRoot_removeAllComponentsFromMainWindow {
-	[self.store setReadyToReceiveCommands:true];
-	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(self.vc1);
-	
-	[[self.store expect] removeAllComponentsFromWindow:self.mainWindow];
-	[self.uut setRoot:@{} commandId:@"" completion:^{}];
-	[self.store verify];
-}
-
 - (void)testSetStackRoot_resetStackWithSingleComponent {
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(@[self.vc2]);
 	[self.store setReadyToReceiveCommands:true];

@@ -74,7 +74,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 
 	[_modalManager dismissAllModalsAnimated:NO];
-	[_store removeAllComponentsFromWindow:_mainWindow];
 	
 	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
 	
