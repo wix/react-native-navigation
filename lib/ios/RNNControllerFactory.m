@@ -115,7 +115,7 @@
 - (UIViewController<RNNParentProtocol> *)createComponent:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithcomponentRegistry:_componentRegistry];
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithComponentRegistry:_componentRegistry];
 	
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
 	
@@ -137,7 +137,7 @@
 
 
 - (UIViewController<RNNParentProtocol> *)createStack:(RNNLayoutNode*)node {
-	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] initWithcomponentRegistry:_componentRegistry];
+	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] initWithComponentRegistry:_componentRegistry];
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
 	

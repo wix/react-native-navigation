@@ -2,9 +2,16 @@ const React = require('react');
 const { Component } = require('react');
 const { View, Text, TouchableOpacity } = require('react-native');
 const { Navigation } = require('react-native-navigation');
-const testIDs = require('../testIDs');
+const TestIDs = require('../testIDs');
 
 class StaticLifecycleOverlay extends Component {
+  static options() {
+    return {
+      layout: {
+        componentBackgroundColor: 'transparent'
+      }
+    }
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -24,9 +31,9 @@ class StaticLifecycleOverlay extends Component {
         events: [...this.state.events, { ...event }]
       });
     }));
-    this.listeners.push(Navigation.events().registerCommandCompletedListener(({ commandId }) => {
+    this.listeners.push(Navigation.events().registerCommandListener((commandName) => {
       this.setState({
-        events: [...this.state.events, { event: 'commandCompleted', commandId }]
+        events: [...this.state.events, { event: 'command started', commandName }]
       });
     }));
     this.listeners.push(Navigation.events().registerNavigationButtonPressedListener(({ componentId, buttonId }) => {
@@ -50,6 +57,8 @@ class StaticLifecycleOverlay extends Component {
   renderEvent(event) {
     if (event.commandId) {
       return <Text style={styles.h2}>{`${event.commandId}`}</Text>;
+    } else if (event.commandName) {
+      return <Text style={styles.h2}>{`${event.commandName}`}</Text>;
     } else if (event.componentName) {
       return <Text style={styles.h2}>{`${event.event} | ${event.componentName}`}</Text>;
     } else if (event.buttonId) {
@@ -83,7 +92,7 @@ class StaticLifecycleOverlay extends Component {
         style={styles.dismissBtn}
         onPress={() => Navigation.dismissOverlay(this.props.componentId)}
       >
-        <Text testID={testIDs.DISMISS_BUTTON} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
+        <Text testID={TestIDs.DISMISS_BTN} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
       </TouchableOpacity>
     );
   }

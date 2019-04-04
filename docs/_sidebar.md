@@ -5,6 +5,7 @@
   - [Usage](/docs/Usage)
   - [Showcases](/docs/showcases)
 - Guide
+  - [Launching the App](/docs/app-launch)
   - [Top Level](/docs/top-level-api)
   - [Screen](/docs/screen-api)
   - [Events](/docs/events)

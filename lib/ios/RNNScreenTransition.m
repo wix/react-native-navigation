@@ -5,9 +5,9 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
 
-	self.topBar = dict[@"topBar"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"topBar"]] : nil;
-	self.content = dict[@"content"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"content"]] : nil;
-	self.bottomTabs = dict[@"bottomTabs"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"bottomTabs"]] : nil;
+	self.topBar = [[RNNElementTransitionOptions alloc] initWithDict:dict[@"topBar"]];
+	self.content = [[RNNElementTransitionOptions alloc] initWithDict:dict[@"content"]];
+	self.bottomTabs = [[RNNElementTransitionOptions alloc] initWithDict:dict[@"bottomTabs"]];
 	self.enable = [BoolParser parse:dict key:@"enabled"];
 	self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
 
@@ -15,7 +15,22 @@
 }
 
 - (BOOL)hasCustomAnimation {
-	return (self.topBar || self.content || self.bottomTabs);
+	return (self.topBar.hasAnimation || self.content.hasAnimation || self.bottomTabs.hasAnimation);
+}
+
+- (double)maxDuration {
+	double maxDuration = 0;
+	if ([self.topBar maxDuration] > 0) {
+		maxDuration = [self.topBar maxDuration];
+	}
+	if ([self.content maxDuration] > 0) {
+		maxDuration = [self.content maxDuration];
+	}
+	if ([self.bottomTabs maxDuration] > 0) {
+		maxDuration = [self.bottomTabs maxDuration];
+	}
+	
+	return maxDuration;
 }
 
 @end

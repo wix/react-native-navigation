@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
+import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.utils.TypefaceLoader;
@@ -146,6 +147,8 @@ public class Options {
     }
 
     public Options clearOneTimeOptions() {
+        sideMenuRootOptions.left.visible = new NullBool();
+        sideMenuRootOptions.right.visible = new NullBool();
         bottomTabsOptions.currentTabId = new NullText();
         bottomTabsOptions.currentTabIndex = new NullNumber();
         return this;

@@ -25,6 +25,7 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.BottomTabs;
@@ -92,6 +93,7 @@ public class BottomTabsControllerTest extends BaseTest {
         presenter = spy(new BottomTabsPresenter(tabs, new Options()));
         tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter));
         uut = createBottomTabs();
+        uut.setParentController(Mockito.mock(ParentController.class));
         activity.setContentView(uut.getView());
     }
 
@@ -291,6 +293,12 @@ public class BottomTabsControllerTest extends BaseTest {
         child1.mergeOptions(options);
 
         assertThat(uut.getSelectedIndex()).isOne();
+    }
+
+    @Test
+    public void resolveCurrentOptions_returnsFirstTabIfInvokedBeforeViewIsCreated() {
+        uut = createBottomTabs();
+        assertThat(uut.getCurrentChild()).isEqualTo(tabs.get(0));
     }
 
     @Test

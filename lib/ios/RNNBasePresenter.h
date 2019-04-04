@@ -4,6 +4,8 @@
 
 @property (nonatomic, weak) id bindedViewController;
 
+@property (nonatomic, strong) NSString* bindedComponentId;
+
 - (void)bindViewController:(UIViewController *)bindedViewController;
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions;

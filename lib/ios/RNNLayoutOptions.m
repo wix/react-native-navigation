@@ -8,8 +8,9 @@
 	self = [super init];
 	
 	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
+	self.direction = [TextParser parse:dict key:@"direction"];
 	self.orientation = dict[@"orientation"];
-	
+
 	return self;
 }
 

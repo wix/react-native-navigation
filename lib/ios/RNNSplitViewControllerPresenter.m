@@ -5,10 +5,6 @@
 
 @implementation RNNSplitViewControllerPresenter
 
-- (void)bindViewController:(UISplitViewController *)bindedViewController viewCreator:(id<RNNRootViewCreator>)creator {
-	self.bindedViewController = bindedViewController;
-}
-
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
 	

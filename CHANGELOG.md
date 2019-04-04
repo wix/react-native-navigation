@@ -1,4 +1,73 @@
 # Changelog
+## 2.16.0
+### Fixed
+* Update  app lifecycle docs [#1c740b7](https://github.com/wix/react-native-navigation/commit/1c740b74f25157bcd0b58f88c7da7716deea763b) by [ericketts](https://github.com/ericketts)
+
+#### iOS
+* Fix command completion event commandId [#0e29a03](https://github.com/wix/react-native-navigation/commit/0e29a03a40df26755d71c3578ca5ca554096b14c) by [yogevbd](https://github.com/yogevbd) 
+* Fix topBar buttons iconsInsets [#e2dcef9](https://github.com/wix/react-native-navigation/commit/e2dcef9d4a4a5efb6021e00a80f3898cc0254343) by [yogevbd](https://github.com/yogevbd) 
+
+## 2.15.0
+### Added
+* Add `externalComponent` prop to Layout TS declaration [#5ba7ccb](https://github.com/wix/react-native-navigation/commit/5ba7ccb75fd9e3e9ecf0b954d78704930f50d8f6) by [yedidyak](https://github.com/yedidyak)
+
+### Fixed
+#### iOS
+* Fix prevent retaining button component in componentRegistry [#0186b1a](https://github.com/wix/react-native-navigation/commit/0186b1ac36e919fb6b2a796677db1905b48aec7e) by [yogevbd](https://github.com/yogevbd)
+* Fix and refactor animations options [#a98f187](https://github.com/wix/react-native-navigation/commit/a98f18704cc49094cd91859e75089328b4fd7cbc) by [yogevbd](https://github.com/yogevbd)
+* Fix display empty custom topBar background over valid custom background [#6cb1e18](https://github.com/wix/react-native-navigation/commit/6cb1e18a883db803a5b193ca86f077d4e281a8e4)
+by [RoTTex](https://github.com/RoTTex)
+
+## 2.14.0
+### Fixed
+* Add direction property to Layout TS declaration [#025c5e8](https://github.com/wix/react-native-navigation/commit/025c5e8dd6a0eec75f3a27a49e52af1d252b5351) by [mohammadalijf](https://github.com/mohammadalijf)
+* Add enabled property to StackAnimation TS declaration [#996f2b1](https://github.com/wix/react-native-navigation/commit/996f2b11ff4dc98d579a7c7a0ff7ab6fa8577916) by [larryranches](https://github.com/larryranches)
+* [BREAKING] Rename animation options class name [#4517d22](https://github.com/wix/react-native-navigation/commit/4517d22b38a1450b8e426f8de03c4b9fdc1213e8) by [guyca](https://github.com/guyca)
+
+#### Android
+* Fixed title centering issues [#1899601](https://github.com/wix/react-native-navigation/commit/1899601fb99093f804f8b97773a6470a7587017c) by [hadimostafapour](https://github.com/hadimostafapour)
+* Cancel in-flight push animation on pop [#47b7d2c](https://github.com/wix/react-native-navigation/commit/47b7d2c7c54af861e99b922aa258489d86c9c0b2) by [guyca](https://github.com/guyca)
+* Fix crash when calling setStackRoot multiple times in quick succession  [#fdee254](https://github.com/wix/react-native-navigation/commit/fdee25422f6568be4ba5507b26f470b511decc95) by [guyca](https://github.com/guyca)
+* External component lifecycle events [#602c669](https://github.com/wix/react-native-navigation/commit/602c669b02b31c45b040965e27c327c2bd0fde61) by [guyca](https://github.com/guyca)
+
+#### iOS
+* Fix iOS pop gesture when topBar is hidden [#81d8b69](https://github.com/wix/react-native-navigation/commit/81d8b69d61934e4702d59d531ce84294c9b92c55) by [rawrmaan](https://github.com/rawrmaan)
+
+## 2.13.1
+### Fixed
+* Moved `react-native-uilib` to dev dependencies [#2c514d9](https://github.com/wix/react-native-navigation/commit/2c514d931f74cf97807cb565672ddce50644349f) by [guyca](https://github.com/guyca)
+
+## 2.13.0
+### Added
+* Add `enabled?` property to interface OptionsAnimationProperties [#6065bd1](https://github.com/wix/react-native-navigation/commit/6065bd1345ef5087d9dea92c9c332ba42619411f) by [taichi-jp](https://github.com/taichi-jp)
+
+### Fixed
+#### iOS
+* Fixes initial screen size [#e036743](https://github.com/wix/react-native-navigation/commit/e03674381315f92292add444055aeaba791076d3) by [yogevbd](https://github.com/yogevbd)
+* Fix top bar buttons size on iOS 10 [#8282d93](https://github.com/wix/react-native-navigation/commit/8282d934f70d512548d6d4ceae25e9798d591141) by [yogevbd](https://github.com/yogevbd)
+* Prevent keyboard from hiding when overlay is shown [#aba58b6](https://github.com/wix/react-native-navigation/commit/aba58b6c5aa4b39a0fb76fa2f8ebbd28dc80952e) by [tomhicks](https://github.com/tomhicks)
+
+#### Android
+* Fix loading local images [#c82bc57](https://github.com/wix/react-native-navigation/commit/c82bc57d58227f8ecb54e7cf351da46b38b4f8f9) by [guyca](https://github.com/guyca)
+* Update side menu options on open / close callback  [#43f05ee](https://github.com/wix/react-native-navigation/commit/43f05ee01574c18d216acfb510be4b5e38165e4d) by [gosuperninja](https://github.com/gosuperninja)
+* Fix overflow visible for react button components in TopBar [#54ff1cd](https://github.com/wix/react-native-navigation/commit/54ff1cd049b7a418f7fd2658f569d06853bcea6c) by [guyca](https://github.com/guyca)
+
+## 2.12.0
+### Added
+* Add waitForRender to root animation options [#298ec43](https://github.com/wix/react-native-navigation/commit/298ec43f27eb9a031c7168675c40ab5be47396ec) by [guyca](https://github.com/guyca)
+
+#### Android
+* RTL support [#d09d010](https://github.com/wix/react-native-navigation/commit/d09d0108d1530cf10e24c46efb6c9d9962807ead) by [hadimostafapour](https://github.com/hadimostafapour)
+
+### Fixed
+* Stop using lodash in store.js [#8ba9796](https://github.com/wix/react-native-navigation/commit/8ba9796d2d94c5dd58266841c2563bbcd563f635) by [guyca](https://github.com/guyca)
+
+#### iOS
+* Use autolayout constraints to set size of custom bar button item [#362606b](https://github.com/wix/react-native-navigation/commit/362606b82ed4de37e05ebf8603739b16adf0e0d2) by [eliperkins](https://github.com/eliperkins)
+* Ignore pan gesture when no drawer is enabled [#664ef34](https://github.com/wix/react-native-navigation/commit/664ef343090051049213eb5d56285e0432b4e2d7) by [StasDoskalenko](https://github.com/StasDoskalenko)
+* Fix peek and pop preview on iOS [#e7c0d16](https://github.com/wix/react-native-navigation/commit/e7c0d166cb70fa27edf68eae8a00f23257eddf9a) by [yogevbd](https://github.com/yogevbd)
+* Fix launch image matching for iPhone XR/XS Max portrait [#dfd894a](https://github.com/wix/react-native-navigation/commit/dfd894ab2f4ab434548a4ef57f0eb176ee17627f) by [oblador](https://github.com/oblador)
+
 ## 2.11.0
 ### Fixed
 #### iOS
