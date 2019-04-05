@@ -414,6 +414,11 @@ export interface OptionsTopBar {
    * #### (Android specific)
    */
   elevation?: AndroidDensityNumber;
+  /**
+   * Layout top margin
+   * #### (Android specific)
+   */
+  topMargin?: number;
 }
 
 export interface OptionsFab {
