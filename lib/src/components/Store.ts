@@ -1,27 +1,26 @@
-import * as React from 'react';
-import * as _ from 'lodash';
+import { ComponentProvider } from 'react-native';
 
 export class Store {
-  private componentsByName: Record<string, () => React.ComponentClass<any, any>> = {};
+  private componentsByName: Record<string, ComponentProvider> = {};
   private propsById: Record<string, any> = {};
 
   setPropsForId(componentId: string, props: any) {
-    _.set(this.propsById, componentId, props);
+    this.propsById[componentId] = props;
   }
 
   getPropsForId(componentId: string) {
-    return _.get(this.propsById, componentId, {});
-  }
-
-  setComponentClassForName(componentName: string | number, ComponentClass: () => React.ComponentClass<any, any>) {
-    _.set(this.componentsByName, componentName.toString(), ComponentClass);
-  }
-
-  getComponentClassForName(componentName: string | number) {
-    return _.get(this.componentsByName, componentName.toString());
+    return this.propsById[componentId] || {};
   }
 
   cleanId(componentId: string) {
-    _.unset(this.propsById, componentId);
+    delete this.propsById[componentId];
+  }
+
+  setComponentClassForName(componentName: string | number, ComponentClass: ComponentProvider) {
+    this.componentsByName[componentName.toString()] = ComponentClass;
+  }
+
+  getComponentClassForName(componentName: string | number): ComponentProvider | undefined {
+    return this.componentsByName[componentName.toString()];
   }
 }

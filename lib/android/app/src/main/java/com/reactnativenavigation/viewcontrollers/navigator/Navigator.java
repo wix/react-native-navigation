@@ -12,6 +12,7 @@ import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
@@ -19,6 +20,8 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+
+import com.facebook.react.ReactInstanceManager;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -124,14 +127,18 @@ public class Navigator extends ParentController {
 
     }
 
-    public void setRoot(final ViewController viewController, CommandListener commandListener) {
+    public void setRoot(final ViewController viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
         destroyRoot();
-        if (isRootNotCreated()) {
-            removePreviousContentView();
-            getView();
-        }
+        final boolean removeSplashView = isRootNotCreated();
+        if (isRootNotCreated()) getView();
         root = viewController;
-        rootPresenter.setRoot(root, defaultOptions, commandListener);
+        rootPresenter.setRoot(root, defaultOptions, new CommandListenerAdapter(commandListener) {
+            @Override
+            public void onSuccess(String childId) {
+                if (removeSplashView) removePreviousContentView();
+                super.onSuccess(childId);
+            }
+        }, reactInstanceManager);
     }
 
     private void removePreviousContentView() {

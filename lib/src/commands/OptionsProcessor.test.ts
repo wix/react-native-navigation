@@ -1,7 +1,6 @@
 import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
-import * as _ from 'lodash';
 import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
 import { mock, when, anyString, instance, anyNumber, verify } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';

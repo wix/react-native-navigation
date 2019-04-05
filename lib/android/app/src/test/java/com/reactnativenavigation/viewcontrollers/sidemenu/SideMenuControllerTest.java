@@ -8,14 +8,13 @@ import android.view.ViewGroup.LayoutParams;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuOptions;
+import com.reactnativenavigation.parse.*;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.utils.*;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -198,7 +197,7 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
         verify(center, times(1)).handleBack(any());
 
-        uut.mergeOptions(SideMenuTestHelper.LEFT_OPEN);
+        openLeftMenu();
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
         verify(center, times(1)).handleBack(any());
     }
@@ -209,8 +208,101 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
         verify(center, times(1)).handleBack(any());
 
-        uut.mergeOptions(SideMenuTestHelper.RIGHT_OPEN);
+        openRightMenu();
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
         verify(center, times(1)).handleBack(any());
+    }
+
+    @Test
+    public void leftMenuOpen_visibilityEventsAreEmitted() {
+        ViewController spy = spy(left);
+        uut.setLeftController(spy);
+        activity.setContentView(uut.getView());
+
+        assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
+        verify(spy, times(0)).onViewAppeared();
+
+        openLeftMenu();
+        assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isTrue();
+        verify(spy).onViewAppeared();
+
+        closeLeft();
+        assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
+        verify(spy).onViewDisappear();
+    }
+
+    @Test
+    public void rightMenuOpen_visibilityEventsAreEmitted() {
+        ViewController spy = spy(right);
+        uut.setRightController(spy);
+        activity.setContentView(uut.getView());
+
+        assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
+        verify(spy, times(0)).onViewAppeared();
+
+        openRightMenu();
+        assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isTrue();
+        verify(spy).onViewAppeared();
+
+        closeRightMenu();
+        assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
+        verify(spy).onViewDisappear();
+    }
+
+    @Test
+    public void onDrawerOpened_drawerOpenedWIthSwipe_visibilityIsUpdated() {
+        uut.setLeftController(left);
+        uut.setRightController(right);
+        uut.ensureViewIsCreated();
+
+        openDrawerAndAssertVisibility(right, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.right);
+        closeDrawerAndAssertVisibility(right, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.right);
+
+        openDrawerAndAssertVisibility(left, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.left);
+        closeDrawerAndAssertVisibility(left, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.left);
+    }
+
+    private void openDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
+        Options options = new Options();
+        (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new Bool(true);
+        uut.mergeOptions(options);
+        assertThat(uut.getView().isDrawerVisible(side.getView())).isTrue();
+        assertThat(opt.run(side).visible.isFalseOrUndefined()).isTrue();
+    }
+
+    private void closeDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
+        Options options = new Options();
+        (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new Bool(false);
+        uut.mergeOptions(options);
+        assertThat(uut.getView().isDrawerVisible(side.getView())).isFalse();
+        assertThat(opt.run(side).visible.isTrue()).isFalse();
+    }
+
+    private void openLeftMenu() {
+        Options options = new Options();
+        options.sideMenuRootOptions.left.visible = new Bool(true);
+        options.sideMenuRootOptions.left.animate = new Bool(false);
+        uut.mergeOptions(options);
+    }
+
+    private void openRightMenu() {
+        Options options = new Options();
+        options.sideMenuRootOptions.right.visible = new Bool(true);
+        options.sideMenuRootOptions.right.animate = new Bool(false);
+        uut.mergeOptions(options);
+    }
+
+    private void closeLeft() {
+        Options options = new Options();
+        options.sideMenuRootOptions.left.visible = new Bool(false);
+        options.sideMenuRootOptions.left.animate = new Bool(false);
+        uut.mergeOptions(options);
+    }
+
+    private void closeRightMenu() {
+        Options options = new Options();
+        options.sideMenuRootOptions.right.visible = new Bool(false);
+        options.sideMenuRootOptions.right.animate = new Bool(false);
+        uut.mergeOptions(options);
     }
 }

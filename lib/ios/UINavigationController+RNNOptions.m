@@ -36,12 +36,9 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 - (void)rnn_setNavigationBarNoBorder:(BOOL)noBorder {
 	if (noBorder) {
-		self.navigationBar
-		.shadowImage = [[UIImage alloc] init];
-		[self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+		[self.navigationBar setShadowImage:[[UIImage alloc] init]];
 	} else {
-		self.navigationBar
-		.shadowImage = nil;
+		[self.navigationBar setShadowImage:nil];
 	}
 }
 
@@ -114,7 +111,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	
 	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
 	backItem.tintColor = color;
-
+	
 	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 

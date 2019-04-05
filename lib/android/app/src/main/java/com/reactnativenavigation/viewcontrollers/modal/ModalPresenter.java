@@ -44,13 +44,13 @@ public class ModalPresenter {
         modalsLayout.addView(toAdd.getView());
         if (options.animations.showModal.enabled.isTrueOrUndefined()) {
             if (options.animations.showModal.waitForRender.isTrue()) {
-                toAdd.setOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
+                toAdd.addOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
             } else {
                 animateShow(toAdd, toRemove, listener, options);
             }
         } else {
             if (options.animations.showModal.waitForRender.isTrue()) {
-                toAdd.setOnAppearedListener(() -> onShowModalEnd(toAdd, toRemove, listener));
+                toAdd.addOnAppearedListener(() -> onShowModalEnd(toAdd, toRemove, listener));
             } else {
                 onShowModalEnd(toAdd, toRemove, listener);
             }

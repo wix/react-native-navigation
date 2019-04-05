@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.*;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
@@ -13,6 +13,7 @@ import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.stack.*;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -34,16 +35,20 @@ public class ModalStackTest extends BaseTest {
     private static final String MODAL_ID_1 = "modalId1";
     private static final String MODAL_ID_2 = "modalId2";
     private static final String MODAL_ID_3 = "modalId3";
+    private static final String MODAL_ID_4 = "modalId4";
 
     private ModalStack uut;
     private ViewController modal1;
     private ViewController modal2;
     private ViewController modal3;
+    private ViewController modal4;
+    private StackController stack;
     private Activity activity;
     private ChildControllersRegistry childRegistry;
     private ModalPresenter presenter;
     private ModalAnimator animator;
     private ViewController root;
+    private EventEmitter emitter;
 
     @Override
     public void beforeEach() {
@@ -63,10 +68,15 @@ public class ModalStackTest extends BaseTest {
         uut = new ModalStack(presenter);
         uut.setModalsLayout(modalsLayout);
         uut.setRootLayout(rootLayout);
-        uut.setEventEmitter(Mockito.mock(EventEmitter.class));
+        emitter = Mockito.mock(EventEmitter.class);
+        uut.setEventEmitter(emitter);
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
         modal3 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_3, new Options()));
+        modal4 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_4, new Options()));
+        stack = TestUtils.newStackController(activity)
+                .setChildren(modal4)
+                .build();
     }
 
     @Test
@@ -97,6 +107,15 @@ public class ModalStackTest extends BaseTest {
         assertThat(findModal(modal1.getId())).isNull();
         verify(presenter, times(1)).dismissModal(eq(modal1), eq(root), eq(root), any());
         verify(listener).onSuccess(modal1.getId());
+    }
+
+    @Test
+    public void dismissModal_listenerAndEmitterAreInvokedWithGivenId() {
+        uut.showModal(stack, root, new CommandListenerAdapter());
+        CommandListener listener = spy(new CommandListenerAdapter());
+        uut.dismissModal(modal4.getId(), root, listener);
+        verify(listener).onSuccess(modal4.getId());
+        verify(emitter).emitModalDismissed(modal4.getId(), 1);
     }
 
     @SuppressWarnings("Convert2Lambda")

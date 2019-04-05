@@ -12,20 +12,22 @@ import com.reactnativenavigation.views.topbar.TopBar;
 public class TopBarController {
     private TopBar topBar;
 
-    public View createView(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
+    public View createView(Context context, StackLayout stackLayout) {
         if (topBar == null) {
-            topBar = createTopBar(context, topBarBackgroundViewController, stackLayout);
+            topBar = createTopBar(context, stackLayout);
             topBar.setId(CompatUtils.generateViewId());
         }
         return topBar;
     }
 
-    protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
-        return new TopBar(context, topBarBackgroundViewController, stackLayout);
+    protected TopBar createTopBar(Context context, StackLayout stackLayout) {
+        return new TopBar(context, stackLayout);
     }
 
     public void clear() {
-        topBar.clear();
+        if (topBar != null) {
+            topBar.clear();
+        }
     }
 
     public TopBar getView() {

@@ -51,15 +51,15 @@ public class SideMenuPresenter {
 
     private void mergeVisibility(SideMenuRootOptions options) {
         if (options.left.visible.isTrue()) {
-            sideMenu.openDrawer(Gravity.LEFT);
+            sideMenu.openDrawer(Gravity.LEFT, options.left.animate.get(true));
         } else if (options.left.visible.isFalse()) {
-            sideMenu.closeDrawer(Gravity.LEFT);
+            sideMenu.closeDrawer(Gravity.LEFT, options.left.animate.get(true));
         }
 
         if (options.right.visible.isTrue()) {
-            sideMenu.openDrawer(Gravity.RIGHT);
+            sideMenu.openDrawer(Gravity.RIGHT, options.right.animate.get(true));
         } else if (options.right.visible.isFalse()) {
-            sideMenu.closeDrawer(Gravity.RIGHT);
+            sideMenu.closeDrawer(Gravity.RIGHT, options.right.animate.get(true));
         }
     }
 

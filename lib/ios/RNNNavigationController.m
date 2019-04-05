@@ -1,7 +1,7 @@
 
 #import "RNNNavigationController.h"
-#import "RNNModalAnimation.h"
 #import "RNNRootViewController.h"
+#import "InteractivePopGestureDelegate.h"
 
 const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
@@ -13,7 +13,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNNavigationControllerPresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo creator:(id<RNNRootViewCreator>)creator childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNNavigationControllerPresenter *)presenter {
 	self = [super init];
 
 	self.presenter = presenter;
@@ -37,11 +37,12 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 - (void)onChildWillAppear {
 	[_presenter applyOptions:self.resolveOptions];
+	[_presenter renderComponents:self.resolveOptions perform:nil];
 	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
 }
 
 - (RNNNavigationOptions *)resolveOptions {
-	return [(RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options] withDefault:self.defaultOptions];
+	return [(RNNNavigationOptions *)[self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
@@ -51,6 +52,30 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
 	[self.options overrideOptions:options];
+}
+
+- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+		dispatch_group_t group = dispatch_group_create();
+		for (UIViewController<RNNLayoutProtocol>* childViewController in self.childViewControllers) {
+			dispatch_group_enter(group);
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[childViewController renderTreeAndWait:wait perform:^{
+					dispatch_group_leave(group);
+				}];
+			});
+		}
+		
+		dispatch_group_enter(group);
+		[self.presenter renderComponents:self.resolveOptions perform:^{
+			dispatch_group_leave(group);
+		}];
+		dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			readyBlock();
+		});
+	});
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -81,20 +106,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	return [super popViewControllerAnimated:animated];
 }
 
-- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.resolveOptions.animations.showModal isDismiss:NO];
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.resolveOptions.animations.dismissModal isDismiss:YES];
-}
-
 - (UIViewController *)getCurrentChild {
 	return ((UIViewController<RNNParentProtocol>*)self.topViewController);
-}
-
-- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
-	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {

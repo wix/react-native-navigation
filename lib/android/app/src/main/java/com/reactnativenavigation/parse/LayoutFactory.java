@@ -7,6 +7,7 @@ import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.EventEmitter;
@@ -14,13 +15,13 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
-import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
+import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.ComponentViewCreator;
@@ -157,6 +158,7 @@ public class LayoutFactory {
                 externalComponent,
                 externalComponentCreators.get(externalComponent.name.get()),
                 reactInstanceManager,
+                new EventEmitter(reactInstanceManager.getCurrentReactContext()),
                 parse(typefaceManager, node.getOptions())
         );
     }
@@ -165,12 +167,17 @@ public class LayoutFactory {
         return new StackControllerBuilder(activity)
                 .setChildren(createChildren(node.children))
                 .setChildRegistry(childRegistry)
-                .setTopBarButtonCreator(new TitleBarButtonCreator(reactInstanceManager))
-                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreator(reactInstanceManager)))
                 .setTopBarController(new TopBarController())
                 .setId(node.id)
                 .setInitialOptions(parse(typefaceManager, node.getOptions()))
-                .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreator(reactInstanceManager), new TitleBarButtonCreator(reactInstanceManager), new ImageLoader(), defaultOptions))
+                .setStackPresenter(new StackPresenter(activity,
+                        new TitleBarReactViewCreator(reactInstanceManager),
+                        new TopBarBackgroundViewCreator(reactInstanceManager),
+                        new TitleBarButtonCreator(reactInstanceManager),
+                        new ImageLoader(),
+                        new RenderChecker(),
+                        defaultOptions
+                ))
                 .setPresenter(new Presenter(activity, defaultOptions))
                 .build();
 	}
@@ -188,6 +195,7 @@ public class LayoutFactory {
         for (int i = 0; i < node.children.size(); i++) {
             tabs.add(create(node.children.get(i)));
         }
+        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions);
         return new BottomTabsController(activity,
                 tabs,
                 childRegistry,
@@ -196,7 +204,8 @@ public class LayoutFactory {
                 node.id,
                 parse(typefaceManager, node.getOptions()),
                 new Presenter(activity, defaultOptions),
-                new BottomTabsPresenter(tabs, defaultOptions),
+                new BottomTabsAttacher(tabs, bottomTabsPresenter),
+                bottomTabsPresenter,
                 new BottomTabPresenter(activity, tabs, new ImageLoader(), defaultOptions));
 	}
 

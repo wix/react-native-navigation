@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
+import android.support.annotation.RestrictTo;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.reactnativenavigation.utils.CollectionUtils.merge;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator extends BaseAnimator {
@@ -107,5 +108,19 @@ public class NavigationAnimator extends BaseAnimator {
             }
         });
         set.start();
+    }
+
+    public void cancelPushAnimations() {
+        for (View view : runningPushAnimations.keySet()) {
+            runningPushAnimations.get(view).cancel();
+            runningPushAnimations.remove(view);
+        }
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public void endPushAnimation(View view) {
+        if (runningPushAnimations.containsKey(view)) {
+            runningPushAnimations.get(view).end();
+        }
     }
 }

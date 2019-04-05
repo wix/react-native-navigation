@@ -10,6 +10,7 @@ The following options can be used to customise buttons.
     name: 'example.CustomButtonComponent'
   },
   text: 'Button one',
+  systemItem: 'done', // iOS only. Sets a system bar button item as the icon. Matches UIBarButtonSystemItem naming. See below for details.
   enabled: true,
   disableIconTint: false,
   color: 'red',
@@ -17,6 +18,35 @@ The following options can be used to customise buttons.
   testID: 'buttonOneTestID'
 }
 ```
+
+## iOS System Items
+On iOS, UIKit supplies some common bar button glyphs for developers to use. The following values can be supplied as values to to `systemItem` to use them as an icon for your button.
+
+* `done`
+* `cancel`
+* `edit`
+* `save`
+* `add`
+* `flexibleSpace`
+* `fixedSpace`
+* `compose`
+* `reply`
+* `action`
+* `organize`
+* `bookmarks`
+* `search`
+* `refresh`
+* `stop`
+* `camera`
+* `trash`
+* `play`
+* `pause`
+* `rewind`
+* `fastForward`
+* `undo`
+* `redo`
+
+More information about these glyphs can be found in [Apple's Human Interface Guidelines](https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/system-icons/).
 
 # Declaring Buttons statically
 

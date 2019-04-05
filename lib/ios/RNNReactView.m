@@ -1,28 +1,37 @@
 #import "RNNReactView.h"
 #import "RCTHelpers.h"
+#import <React/RCTUIManager.h>
 
 @implementation RNNReactView
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties {
+- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties availableSize:(CGSize)availableSize reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
 	self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
-	
-#ifdef DEBUG
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentDidAppear:) name:RCTContentDidAppearNotification object:nil];
-#endif
+	 _reactViewReadyBlock = reactViewReadyBlock;
+	[bridge.uiManager setAvailableSize:availableSize forRootView:self];
 	
 	return self;
 }
 
 - (void)contentDidAppear:(NSNotification *)notification {
+#ifdef DEBUG
 	if ([((RNNReactView *)notification.object).moduleName isEqualToString:self.moduleName]) {
 		[RCTHelpers removeYellowBox:self];
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
 	}
+#endif
+	
+	RNNReactView* appearedView = notification.object;
+	
+	 if (_reactViewReadyBlock && [appearedView.appProperties[@"componentId"] isEqual:self.appProperties[@"componentId"]]) {
+	 	_reactViewReadyBlock();
+		 _reactViewReadyBlock = nil;
+		 [[NSNotificationCenter defaultCenter] removeObserver:self];
+	 }
 }
 
 - (void)setRootViewDidChangeIntrinsicSize:(void (^)(CGSize))rootViewDidChangeIntrinsicSize {
-	_rootViewDidChangeIntrinsicSize = rootViewDidChangeIntrinsicSize;
-	self.delegate = self;
+		_rootViewDidChangeIntrinsicSize = rootViewDidChangeIntrinsicSize;
+		self.delegate = self;
 }
 
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {

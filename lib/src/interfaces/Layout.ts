@@ -1,4 +1,4 @@
-import { Options, OptionsSplitView } from './Options';
+import { Options } from './Options';
 
 export interface LayoutComponent<P = {}> {
   /**
@@ -24,6 +24,10 @@ export interface LayoutStackChildren {
    * Set component
    */
   component?: LayoutComponent;
+  /**
+   * Set the external component
+   */
+  externalComponent?: ExternalComponent;
 }
 
 export interface LayoutStack {
@@ -51,6 +55,10 @@ export interface LayoutBottomTabsChildren {
    * Set component
    */
   component?: LayoutComponent;
+  /**
+   * Set the external component
+   */
+  externalComponent?: ExternalComponent;
 }
 
 export interface LayoutBottomTabs {
@@ -110,7 +118,7 @@ export interface LayoutSplitView {
   /**
    * Configure split view
    */
-  options?: OptionsSplitView;
+  options?: Options;
 }
 
 export interface TopTabs {

@@ -1,7 +1,6 @@
 const Utils = require('./Utils');
 const Android = require('./AndroidUtils');
-const testIDs = require('../playground/src/testIDs');
-const exec = require('shell-utils').exec;
+const TestIDs = require('../playground/src/testIDs');
 const _ = require('lodash');
 
 const { elementByLabel, elementById, sleep } = Utils;
@@ -13,15 +12,17 @@ describe('application lifecycle test', () => {
     await device.relaunchApp();
   });
 
-  test('push a screen to ensure its not there after reload', async () => {
-    await elementById(testIDs.PUSH_BUTTON).tap();
+  it('push a screen to ensure its not there after reload', async () => {
+    await elementById(TestIDs.STACK_BTN).tap();
+    await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
     await device.reloadReactNative();
-    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
+    await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
   });
 
-  test('relaunch from background', async () => {
-    await elementById(testIDs.PUSH_BUTTON).tap();
+  it('relaunch from background', async () => {
+    await elementById(TestIDs.STACK_BTN).tap();
+    await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
     await device.sendToHome();
@@ -30,8 +31,9 @@ describe('application lifecycle test', () => {
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 
-  test(':android: relaunch after close with back button', async () => {
-    await elementById(testIDs.PUSH_BUTTON).tap();
+  it(':android: relaunch after close with back button', async () => {
+    await elementById(TestIDs.STACK_BTN).tap();
+    await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
     Android.pressBack();
@@ -40,8 +42,9 @@ describe('application lifecycle test', () => {
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();
   });
 
-  test('device orientation does not destroy activity', async () => {
-    await elementById(testIDs.PUSH_BUTTON).tap();
+  it('device orientation does not destroy activity', async () => {
+    await elementById(TestIDs.STACK_BTN).tap();
+    await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
     await device.setOrientation('landscape');
@@ -49,16 +52,32 @@ describe('application lifecycle test', () => {
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 
-  test(':android: relaunch after activity killed by system', async () => {
-    await elementById(testIDs.PUSH_BUTTON).tap();
+  it(':android: relaunch after activity killed by system', async () => {
+    await elementById(TestIDs.STACK_BTN).tap();
+    await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
     await device.sendToHome();
 
     await togglePhonePermission();
+    await sleep(1000);
     await device.launchApp();
 
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await expect(elementById(TestIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
+  });
+
+  it(':android: pressing r twice with delay does nothing', async () => {
+    if (!IS_RELEASE) {
+      await elementById(TestIDs.STACK_BTN).tap();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await expect(elementByLabel('Pushed Screen')).toBeVisible();
+
+      Android.pressKeyCode(KEY_CODE_R);
+      await sleep(1000);
+      Android.pressKeyCode(KEY_CODE_R);
+
+      await expect(elementByLabel('Pushed Screen')).toBeVisible();
+    }
   });
 
   xit(':android: pressing menu opens dev menu', async () => {
@@ -71,7 +90,7 @@ describe('application lifecycle test', () => {
 
   xit(':android: pressing r twice in succession reloads React Native', async () => {
     if (!IS_RELEASE) {
-      await elementById(testIDs.PUSH_BUTTON).tap();
+      await elementById(TestIDs.PUSH_BTN).tap();
       await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
       Android.pressKeyCode(KEY_CODE_R);
@@ -82,22 +101,9 @@ describe('application lifecycle test', () => {
     }
   });
 
-  test(':android: pressing r twice with delay does nothing', async () => {
-    if (!IS_RELEASE) {
-      await elementById(testIDs.PUSH_BUTTON).tap();
-      await expect(elementByLabel('Pushed Screen')).toBeVisible();
-
-      Android.pressKeyCode(KEY_CODE_R);
-      await sleep(1000);
-      Android.pressKeyCode(KEY_CODE_R);
-
-      await expect(elementByLabel('Pushed Screen')).toBeVisible();
-    }
-  });
-
   xit(':android: sending reload broadcast reloads react native', async () => {
     if (!IS_RELEASE) {
-      await elementById(testIDs.PUSH_BUTTON).tap();
+      await elementById(TestIDs.PUSH_BTN).tap();
       await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
       Android.executeShellCommand('am broadcast -a com.reactnativenavigation.broadcast.RELOAD');

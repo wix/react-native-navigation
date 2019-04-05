@@ -1,14 +1,19 @@
-import * as  _ from 'lodash';
+import * as _ from 'lodash';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutType } from './LayoutType';
+import { Options } from '../interfaces/Options';
 import { Layout } from '../interfaces/Layout';
-import { OptionsSplitView } from '../interfaces/Options';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { mock, instance, when, anything } from 'ts-mockito';
 
 describe('LayoutTreeParser', () => {
   let uut: LayoutTreeParser;
+  let mockedUniqueIdProvider: UniqueIdProvider;
 
   beforeEach(() => {
-    uut = new LayoutTreeParser();
+    mockedUniqueIdProvider = mock(UniqueIdProvider);
+    when(mockedUniqueIdProvider.generate(anything())).thenReturn('myUniqueId');
+    uut = new LayoutTreeParser(instance(mockedUniqueIdProvider));
   });
 
   describe('parses into { type, data, children }', () => {
@@ -18,16 +23,26 @@ describe('LayoutTreeParser', () => {
 
     it('single component', () => {
       expect(uut.parse(LayoutExamples.singleComponent)).toEqual({
+        id: 'myUniqueId',
         type: LayoutType.Component,
-        data: { name: 'MyReactComponent', options: LayoutExamples.options, passProps: LayoutExamples.passProps },
+        data: {
+          name: 'MyReactComponent',
+          options: LayoutExamples.options,
+          passProps: LayoutExamples.passProps
+        },
         children: []
       });
     });
 
     it('external component', () => {
       expect(uut.parse(LayoutExamples.externalComponent)).toEqual({
+        id: 'myUniqueId',
         type: LayoutType.ExternalComponent,
-        data: { name: 'MyReactComponent', options: LayoutExamples.options, passProps: LayoutExamples.passProps },
+        data: {
+          name: 'MyReactComponent',
+          options: LayoutExamples.options,
+          passProps: LayoutExamples.passProps
+        },
         children: []
       });
     });
@@ -40,6 +55,7 @@ describe('LayoutTreeParser', () => {
         }
       });
       expect(result).toEqual({
+        id: 'myUniqueId',
         type: LayoutType.Component,
         data: { name: 'MyScreen', passProps: LayoutExamples.passProps },
         children: []
@@ -49,17 +65,20 @@ describe('LayoutTreeParser', () => {
 
     it('stack of components with top bar', () => {
       expect(uut.parse(LayoutExamples.stackWithTopBar)).toEqual({
+        id: 'myUniqueId',
         type: LayoutType.Stack,
         data: {
           options: LayoutExamples.options
         },
         children: [
           {
+            id: 'myUniqueId',
             type: LayoutType.Component,
             data: { name: 'MyReactComponent1' },
             children: []
           },
           {
+            id: 'myUniqueId',
             type: LayoutType.Component,
             data: { name: 'MyReactComponent2', options: LayoutExamples.options },
             children: []
@@ -71,7 +90,7 @@ describe('LayoutTreeParser', () => {
     it('bottom tabs', () => {
       const result = uut.parse(LayoutExamples.bottomTabs);
       expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
-      expect(result.id).toEqual(undefined);
+      expect(result.id).toEqual('myUniqueId');
       expect(result.type).toEqual(LayoutType.BottomTabs);
       expect(result.data).toEqual({});
       expect(result.children.length).toEqual(3);
@@ -83,7 +102,7 @@ describe('LayoutTreeParser', () => {
     it('side menus', () => {
       const result = uut.parse(LayoutExamples.sideMenu);
       expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
-      expect(result.id).toEqual(undefined);
+      expect(result.id).toEqual('myUniqueId');
       expect(result.type).toEqual(LayoutType.SideMenuRoot);
       expect(result.data).toEqual({});
       expect(result.children.length).toEqual(3);
@@ -101,7 +120,7 @@ describe('LayoutTreeParser', () => {
     it('top tabs', () => {
       const result = uut.parse(LayoutExamples.topTabs);
       expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
-      expect(result.id).toEqual(undefined);
+      expect(result.id).toEqual('myUniqueId');
       expect(result.type).toEqual(LayoutType.TopTabs);
       expect(result.data).toEqual({ options: LayoutExamples.options });
       expect(result.children.length).toEqual(5);
@@ -136,7 +155,9 @@ describe('LayoutTreeParser', () => {
     expect(uut.parse({ stack: { options } }).data.options).toBe(options);
     expect(uut.parse({ bottomTabs: { options } }).data.options).toBe(options);
     expect(uut.parse({ topTabs: { options } }).data.options).toBe(options);
-    expect(uut.parse({ sideMenu: { options, center: { component: {name: 'lool'} } } }).data.options).toBe(options);
+    expect(
+      uut.parse({ sideMenu: { options, center: { component: { name: 'lool' } } } }).data.options
+    ).toBe(options);
     expect(uut.parse(LayoutExamples.splitView).data.options).toBe(optionsSplitView);
   });
 
@@ -146,7 +167,9 @@ describe('LayoutTreeParser', () => {
     expect(uut.parse({ stack: { id: 'stackId' } }).id).toEqual('stackId');
     expect(uut.parse({ stack: { children: [{ component }] } }).children[0].id).toEqual('compId');
     expect(uut.parse({ bottomTabs: { id: 'myId' } }).id).toEqual('myId');
-    expect(uut.parse({ bottomTabs: { children: [{ component }] } }).children[0].id).toEqual('compId');
+    expect(uut.parse({ bottomTabs: { children: [{ component }] } }).children[0].id).toEqual(
+      'compId'
+    );
     expect(uut.parse({ topTabs: { id: 'myId' } }).id).toEqual('myId');
     expect(uut.parse({ topTabs: { children: [{ component }] } }).children[0].id).toEqual('compId');
     expect(uut.parse({ sideMenu: { id: 'myId', center: { component } } }).id).toEqual('myId');
@@ -162,7 +185,7 @@ const passProps = {
   fnProp: () => 'Hello from a function'
 };
 
-const options = {
+const options: Options = {
   topBar: {
     title: {
       text: 'Hello1'
@@ -170,11 +193,18 @@ const options = {
   }
 };
 
-const optionsSplitView: OptionsSplitView = {
-  displayMode: 'auto',
-  primaryEdge: 'leading',
-  minWidth: 150,
-  maxWidth: 300,
+const optionsSplitView: Options = {
+  topBar: {
+    title: {
+      text: 'Hello1',
+    }
+  },
+  splitView: {
+    displayMode: 'auto',
+    primaryEdge: 'leading',
+    minWidth: 150,
+    maxWidth: 300
+  }
 };
 
 const singleComponent = {
@@ -236,13 +266,7 @@ const sideMenu = {
 
 const topTabs = {
   topTabs: {
-    children: [
-      singleComponent,
-      singleComponent,
-      singleComponent,
-      singleComponent,
-      stackWithTopBar
-    ],
+    children: [singleComponent, singleComponent, singleComponent, singleComponent, stackWithTopBar],
     options
   }
 };
@@ -257,12 +281,7 @@ const complexLayout: Layout = {
           stackWithTopBar,
           {
             stack: {
-              children: [
-                singleComponent,
-                singleComponent,
-                singleComponent,
-                singleComponent,
-              ]
+              children: [singleComponent, singleComponent, singleComponent, singleComponent]
             }
           }
         ]
@@ -275,15 +294,13 @@ const splitView: Layout = {
   splitView: {
     master: {
       stack: {
-        children: [
-          singleComponent,
-        ],
+        children: [singleComponent],
         options
-      },
+      }
     },
     detail: stackWithTopBar,
-    options: optionsSplitView,
-  },
+    options: optionsSplitView
+  }
 };
 
 const LayoutExamples = {

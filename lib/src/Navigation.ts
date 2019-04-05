@@ -9,7 +9,7 @@ import { LayoutTreeParser } from './commands/LayoutTreeParser';
 import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
 import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
-import { Element } from './adapters/Element';
+import { SharedElement } from './adapters/SharedElement';
 import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
@@ -23,9 +23,10 @@ import { AssetService } from './adapters/AssetResolver';
 import { AppRegistryService } from './adapters/AppRegistryService';
 
 export class NavigationRoot {
-  public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
-  public readonly TouchablePreview: React.ComponentType<any>;
-  public readonly store: Store;
+  public readonly Element = SharedElement;
+  public readonly TouchablePreview = TouchablePreview;
+
+  private readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
   private readonly componentRegistry: ComponentRegistry;
@@ -39,8 +40,6 @@ export class NavigationRoot {
   private readonly componentWrapper: ComponentWrapper;
 
   constructor() {
-    this.Element = Element;
-    this.TouchablePreview = TouchablePreview;
     this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
@@ -53,9 +52,9 @@ export class NavigationRoot {
       this.componentWrapper,
       appRegistryService
     );
-    this.layoutTreeParser = new LayoutTreeParser();
+    this.layoutTreeParser = new LayoutTreeParser(this.uniqueIdProvider);
     const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService());
-    this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store, optionsProcessor);
+    this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
     this.commands = new Commands(
@@ -116,7 +115,7 @@ export class NavigationRoot {
   /**
    * Show a screen as a modal.
    */
-  public showModal(layout: Layout): Promise<any> {
+  public showModal<P>(layout: Layout<P>): Promise<any> {
     return this.commands.showModal(layout);
   }
 
@@ -165,7 +164,7 @@ export class NavigationRoot {
   /**
    * Sets new root component to stack.
    */
-  public setStackRoot(componentId: string, layout: Layout | Layout[]): Promise<any> {
+  public setStackRoot<P>(componentId: string, layout: Layout<P> | Array<Layout<P>>): Promise<any> {
     const children: Layout[] = isArray(layout) ? layout : [layout];
     return this.commands.setStackRoot(componentId, children);
   }
@@ -173,7 +172,7 @@ export class NavigationRoot {
   /**
    * Show overlay on top of the entire app
    */
-  public showOverlay(layout: Layout): Promise<any> {
+  public showOverlay<P>(layout: Layout<P>): Promise<any> {
     return this.commands.showOverlay(layout);
   }
 

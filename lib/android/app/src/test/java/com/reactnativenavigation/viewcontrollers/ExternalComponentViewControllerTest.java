@@ -9,6 +9,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.ExternalComponent;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.FragmentCreatorMock;
 import com.reactnativenavigation.views.ExternalComponentLayout;
@@ -28,6 +29,7 @@ public class ExternalComponentViewControllerTest extends BaseTest {
     private Activity activity;
     private ExternalComponent ec;
     private ReactInstanceManager reactInstanceManager;
+    private EventEmitter emitter;
 
     @Override
     public void beforeEach() {
@@ -35,20 +37,15 @@ public class ExternalComponentViewControllerTest extends BaseTest {
         activity = newActivity();
         ec = createExternalComponent();
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
+        emitter = Mockito.mock(EventEmitter.class);
         uut = spy(new ExternalComponentViewController(activity,
                 "fragmentId",
                 ec,
                 componentCreator,
                 reactInstanceManager,
+                emitter,
                 new Options())
         );
-    }
-
-    private ExternalComponent createExternalComponent() {
-        ExternalComponent component = new ExternalComponent();
-        component.name = new Text("fragmentComponent");
-        component.passProps = new JSONObject();
-        return component;
     }
 
     @Test
@@ -62,5 +59,24 @@ public class ExternalComponentViewControllerTest extends BaseTest {
         ExternalComponentLayout view = uut.getView();
         verify(componentCreator, times(1)).create((FragmentActivity) activity, reactInstanceManager, ec.passProps);
         assertThat(view.getChildCount()).isGreaterThan(0);
+    }
+
+    @Test
+    public void onViewAppeared_appearEventIsEmitted() {
+        uut.onViewAppeared();
+        verify(emitter).emitComponentDidAppear(uut.getId(), ec.name.get());
+    }
+
+    @Test
+    public void onViewDisappear_disappearEventIsEmitted() {
+        uut.onViewDisappear();
+        verify(emitter).emitComponentDidDisappear(uut.getId(), ec.name.get());
+    }
+
+    private ExternalComponent createExternalComponent() {
+        ExternalComponent component = new ExternalComponent();
+        component.name = new Text("fragmentComponent");
+        component.passProps = new JSONObject();
+        return component;
     }
 }

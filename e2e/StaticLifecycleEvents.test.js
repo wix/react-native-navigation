@@ -1,45 +1,42 @@
 const Utils = require('./Utils');
-const testIDs = require('../playground/src/testIDs');
+const TestIDs = require('../playground/src/testIDs');
 const { elementByLabel, elementById } = Utils;
 
 describe('static lifecycle events', () => {
   beforeEach(async () => {
     await device.relaunchApp();
+    await elementById(TestIDs.NAVIGATION_TAB).tap();
+    await elementById(TestIDs.SHOW_STATIC_EVENTS_SCREEN).tap();
+    await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
   });
 
-  test('didAppear didDisappear', async () => {
-    await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
-    await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
-    await expect(elementByLabel('componentDidAppear | navigation.playground.StaticLifecycleOverlay')).toBeVisible();
-    await elementById(testIDs.PUSH_BUTTON).tap();
-    await expect(elementByLabel('componentDidAppear | navigation.playground.PushedScreen')).toBeVisible();
-    await expect(elementByLabel('componentDidDisappear | navigation.playground.WelcomeScreen')).toBeVisible();
+  it('didAppear didDisappear', async () => {
+    await expect(elementByLabel('componentDidAppear | EventsOverlay')).toBeVisible();
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await expect(elementByLabel('componentDidAppear | Pushed')).toBeVisible();
+    await expect(elementByLabel('componentDidDisappear | EventsScreen')).toBeVisible();
   });
 
-  test(':ios: pushing and popping screen dispatch static event', async () => {
-    await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
+  it('pushing and popping screen dispatch static event', async () => {
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
-    await expect(elementByLabel('componentDidAppear | navigation.playground.StaticLifecycleOverlay')).toBeVisible();
-    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementByLabel('componentDidAppear | EventsOverlay')).toBeVisible();
+    await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('push')).toBeVisible();
-    await elementById(testIDs.POP_BUTTON).tap();
+    await elementById(TestIDs.POP_BTN).tap();
     await expect(elementByLabel('pop')).toBeVisible();
   });
 
-  test(':ios: showModal and dismissModal dispatch static event', async () => {
-    await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
-    await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
-    await expect(elementByLabel('componentDidAppear | navigation.playground.StaticLifecycleOverlay')).toBeVisible();
-    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
+  it('showModal and dismissModal dispatch static event', async () => {
+    await elementById(TestIDs.MODAL_BTN).tap();
     await expect(elementByLabel('showModal')).toBeVisible();
-    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
     await expect(elementByLabel('dismissModal')).toBeVisible();
   });
 
-  test(':ios: unmounts when dismissed', async () => {
-    await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
+  it('unmounts when dismissed', async () => {
+    await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
-    await elementById(testIDs.DISMISS_BUTTON).tap();
+    await elementById(TestIDs.DISMISS_BTN).tap();
     await expect(elementByLabel('Overlay Unmounted')).toBeVisible();
     await elementByLabel('OK').tap();
   });
