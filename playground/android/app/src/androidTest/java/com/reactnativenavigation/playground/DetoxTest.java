@@ -1,14 +1,14 @@
 package com.reactnativenavigation.playground;
 
-import android.support.test.filters.LargeTest;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-
 import com.wix.detox.Detox;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -18,7 +18,7 @@ public class DetoxTest {
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, false, false);
 
     @Test
-    public void runDetoxTests() throws InterruptedException {
+    public void runDetoxTests() {
         Detox.runTests(mActivityRule);
     }
 }
