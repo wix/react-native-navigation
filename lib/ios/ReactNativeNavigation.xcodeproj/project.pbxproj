@@ -289,7 +289,6 @@
 		C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */; };
 		C2A57A1D21E815F80066711C /* InteractivePopGestureDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A57A1B21E815F80066711C /* InteractivePopGestureDelegate.m */; };
 		E33AC20020B5BA0B0090DB8A /* RNNSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC1FF20B5BA0B0090DB8A /* RNNSplitViewController.m */; };
-		E33AC20520B5C3890090DB8A /* RNNStatusBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC20320B5C3890090DB8A /* RNNStatusBarOptions.m */; };
 		E33AC20820B5C4F90090DB8A /* RNNSplitViewOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC20720B5C4F90090DB8A /* RNNSplitViewOptions.m */; };
 		E3458D3E20BD9CE40023149B /* RNNPreviewOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E3458D3D20BD9CE40023149B /* RNNPreviewOptions.m */; };
 		E8367B801F7A8A4700675C05 /* VICMAImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = E8367B7E1F7A8A4700675C05 /* VICMAImageView.h */; };
@@ -636,8 +635,6 @@
 		D8AFADBD1BEE6F3F00A4592D /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeNavigation.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E33AC1FF20B5BA0B0090DB8A /* RNNSplitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSplitViewController.m; sourceTree = "<group>"; };
 		E33AC20120B5BA550090DB8A /* RNNSplitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSplitViewController.h; sourceTree = "<group>"; };
-		E33AC20220B5C3880090DB8A /* RNNStatusBarOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNStatusBarOptions.h; sourceTree = "<group>"; };
-		E33AC20320B5C3890090DB8A /* RNNStatusBarOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNStatusBarOptions.m; sourceTree = "<group>"; };
 		E33AC20620B5C49E0090DB8A /* RNNSplitViewOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSplitViewOptions.h; sourceTree = "<group>"; };
 		E33AC20720B5C4F90090DB8A /* RNNSplitViewOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSplitViewOptions.m; sourceTree = "<group>"; };
 		E3458D3C20BD9CA10023149B /* RNNPreviewOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNPreviewOptions.h; sourceTree = "<group>"; };
@@ -912,8 +909,6 @@
 				504AFE631FFE53070076E904 /* RNNOptions.m */,
 				4534E72320CB6724009F8185 /* RNNLargeTitleOptions.h */,
 				4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */,
-				E33AC20220B5C3880090DB8A /* RNNStatusBarOptions.h */,
-				E33AC20320B5C3890090DB8A /* RNNStatusBarOptions.m */,
 				E83BAD691F27362500A9F3DD /* RNNNavigationOptions.h */,
 				E83BAD6A1F27363A00A9F3DD /* RNNNavigationOptions.m */,
 				50175CCF207A2AA1004FE91B /* RNNComponentOptions.h */,
@@ -1413,6 +1408,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = D8AFADB41BEE6F3F00A4592D;
@@ -1520,7 +1516,6 @@
 				50644A2120E11A720026709C /* Constants.m in Sources */,
 				501223D82173590F000F5F98 /* RNNNavigationControllerPresenter.m in Sources */,
 				E8AEDB3D1F55A1C2000F5A6A /* RNNElementView.m in Sources */,
-				E33AC20520B5C3890090DB8A /* RNNStatusBarOptions.m in Sources */,
 				E83BAD6B1F27363A00A9F3DD /* RNNNavigationOptions.m in Sources */,
 				5049594F216F6277006D2B81 /* NumberParser.m in Sources */,
 				506A2B1520973DFD00F43A95 /* RNNErrorHandler.m in Sources */,
