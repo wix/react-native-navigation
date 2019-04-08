@@ -122,21 +122,22 @@
 	initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"the title"];
 	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
 	RNNTestRootViewCreator* creator = [[RNNTestRootViewCreator alloc] init];
-	
+
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
-	
-	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:creator childViewControllers:@[vc] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init]];
+
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:creator options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init] eventEmitter:nil];
+	[nav setViewControllers:@[vc]];
 	
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
-	
+
 	[self.store setReadyToReceiveCommands:true];
 	[self.store setComponent:vc componentId:@"componentId"];
-	
+
 	NSDictionary* dictFromJs = @{@"topBar": @{@"background" : @{@"color" : @(0xFFFF0000)}}};
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	
+
 	[self.uut mergeOptions:@"componentId" options:dictFromJs completion:^{
 		XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 		XCTAssertTrue([nav.navigationBar.barTintColor isEqual:expectedColor]);
@@ -162,50 +163,6 @@
 	[self.uut mergeOptions:@"componentId" options:dictFromJs completion:^{
 		XCTAssertTrue([vc.navigationItem.title isEqual:@"new title"]);
 	}];
-}
-
-- (void)testPop_removeTopVCFromStore {
-	[self.store setReadyToReceiveCommands:true];
-	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
-	
-	[self.uut pop:@"vc3" commandId:@"" mergeOptions:nil completion:^{
-		XCTAssertNil([self.store findComponentForId:@"vc3"]);
-		XCTAssertNotNil([self.store findComponentForId:@"vc2"]);
-		XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
-		[expectation fulfill];
-	} rejection:^(NSString *code, NSString *message, NSError *error) {
-		
-	}];
-	
-	[self waitForExpectationsWithTimeout:1 handler:nil];
-}
-
-- (void)testPopToSpecificVC_removeAllPopedVCFromStore {
-	[self.store setReadyToReceiveCommands:true];
-	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
-	_nvc.willReturnVCs = @[self.vc2, self.vc3];
-	[self.uut popTo:@"vc1" commandId:@"" mergeOptions:nil completion:^{
-		XCTAssertNil([self.store findComponentForId:@"vc2"]);
-		XCTAssertNil([self.store findComponentForId:@"vc3"]);
-		XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
-		[expectation fulfill];
-	} rejection:nil];
-	
-	[self waitForExpectationsWithTimeout:1 handler:nil];
-}
-
-- (void)testPopToRoot_removeAllTopVCsFromStore {
-	[self.store setReadyToReceiveCommands:true];
-	_nvc.willReturnVCs = @[self.vc2, self.vc3];
-	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
-	[self.uut popToRoot:@"vc3" commandId:@"" mergeOptions:nil completion:^{
-		XCTAssertNil([self.store findComponentForId:@"vc2"]);
-		XCTAssertNil([self.store findComponentForId:@"vc3"]);
-		XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
-		[expectation fulfill];
-	} rejection:nil];
-	
-	[self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 - (void)testShowOverlay_createLayout {
@@ -300,15 +257,6 @@
 	[[self.mainWindow expect] setRootViewController:self.vc1];
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
 	[self.mainWindow verify];
-}
-
-- (void)testSetRoot_removeAllComponentsFromMainWindow {
-	[self.store setReadyToReceiveCommands:true];
-	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(self.vc1);
-	
-	[[self.store expect] removeAllComponentsFromWindow:self.mainWindow];
-	[self.uut setRoot:@{} commandId:@"" completion:^{}];
-	[self.store verify];
 }
 
 - (void)testSetStackRoot_resetStackWithSingleComponent {

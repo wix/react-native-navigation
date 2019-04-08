@@ -26,9 +26,8 @@ android {
         }
 
         testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
-        missingDimensionStrategy "minReactNative", "minReactNative46"
         missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57_5"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     signingConfigs {
         release {
@@ -72,6 +71,4 @@ dependencies {
 
     androidTestImplementation(project(':detox'))
     androidTestImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }

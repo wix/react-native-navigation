@@ -77,17 +77,6 @@
 	XCTAssertNil([self.store findComponentForId:vcId]);
 }
 
-
-- (void)testRemoveComponentByInstance {
-	NSString *componentId1 = @"cntId1";
-	UIViewController *vc1 = [UIViewController new];
-	
-	[self.store setComponent:vc1 componentId:componentId1];
-	[self.store removeComponentByViewControllerInstance:vc1];
-	
-	XCTAssertNil([self.store findComponentForId:@"cntId1"]);
-}
-
 - (void)testRemoveAllComponentsFromWindowShouldRemoveComponentsInWindow {
 	UIViewController* overlayVC = [self createMockedViewControllerWithWindow:[UIWindow new]];
 	

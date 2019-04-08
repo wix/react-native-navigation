@@ -5,6 +5,7 @@
 #import "RNNReactView.h"
 #import "RNNCustomTitleView.h"
 #import "RNNTitleViewHelper.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @interface RNNViewControllerPresenter() {
 	RNNReactView* _customTitleView;

@@ -4,8 +4,8 @@
 #import "RNNRootViewCreator.h"
 #import "RNNStore.h"
 #import "RNNEventEmitter.h"
-#import "RNNParentProtocol.h"
 #import "RNNReactComponentRegistry.h"
+#import "RNNNavigationOptions.h"
 
 @interface RNNControllerFactory : NSObject
 
@@ -15,9 +15,9 @@
 					  componentRegistry:(RNNReactComponentRegistry *)componentRegistry
 							 andBridge:(RCTBridge*)bridge;
 
-- (UIViewController<RNNParentProtocol> *)createLayout:(NSDictionary*)layout;
+- (UIViewController *)createLayout:(NSDictionary*)layout;
 
-- (NSArray<RNNLayoutProtocol> *)createChildrenLayout:(NSArray*)children;
+- (NSArray *)createChildrenLayout:(NSArray*)children;
 
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 
