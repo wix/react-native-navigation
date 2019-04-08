@@ -2,6 +2,7 @@
 #import "UIViewController+RNNOptions.h"
 #import "RNNTabBarItemCreator.h"
 #import "RNNReactComponentRegistry.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @interface RNNBasePresenter ()
 @property (nonatomic, strong) RNNReactComponentRegistry* componentRegistry;
@@ -134,5 +135,11 @@
 	}
 }
 
+- (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	if (readyBlock) {
+		readyBlock();
+		readyBlock = nil;
+	}
+}
 
 @end

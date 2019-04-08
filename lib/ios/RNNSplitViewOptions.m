@@ -1,5 +1,4 @@
 #import "RNNSplitViewOptions.h"
-#import "RNNParentProtocol.h"
 
 @implementation RNNSplitViewOptions
 
