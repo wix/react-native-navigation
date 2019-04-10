@@ -12,6 +12,7 @@ public class TitleBarLeftButtonParams extends TitleBarButtonParams {
         color = params.color;
         eventId = params.eventId;
         enabled = params.enabled;
+        testID = params.testID;
     }
 
     public boolean isBackButton() {

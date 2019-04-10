@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.reactnativenavigation.params.BaseScreenParams;
@@ -264,6 +265,48 @@ public class TitleBar extends Toolbar {
         } else {
             setNavigationIcon(leftButton);
         }
+    }
+
+    public ImageButton getToolbarNavigationButton() {
+        final int size = getChildCount();
+
+        for (int i = 0; i < size; i++) {
+            final View child = getChildAt(i);
+
+            if (child instanceof ImageButton) {
+                final ImageButton btn = (ImageButton) child;
+
+                if (btn.getDrawable() == getNavigationIcon()) {
+                    return btn;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void addAccessibilityLabelToNavigationIcon() {
+        if (getToolbarNavigationButton() != null) {
+            if (leftButton != null
+                    && leftButton.getParams() != null
+                    && !TextUtils.isEmpty(leftButton.getParams().testID)) {
+                getToolbarNavigationButton().setContentDescription(leftButton.getParams().testID);
+            } else {
+                getToolbarNavigationButton().setContentDescription("");
+            }
+        }
+    }
+
+    @Override
+    public void setNavigationIcon(int resId) {
+        super.setNavigationIcon(resId);
+        addAccessibilityLabelToNavigationIcon();
+    }
+
+    @Override
+    public void setNavigationIcon(@Nullable Drawable icon) {
+        super.setNavigationIcon(icon);
+        addAccessibilityLabelToNavigationIcon();
     }
 
     public void hide() {

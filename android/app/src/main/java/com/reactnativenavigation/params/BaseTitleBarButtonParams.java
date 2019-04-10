@@ -28,6 +28,7 @@ public class BaseTitleBarButtonParams {
     public ShowAsAction showAsAction;
     public boolean enabled = true;
     public boolean disableIconTint = false;
+    public String testID;
 
     public void setStyleFromScreen(StyleParams styleParams) {
         setColorFromScreenStyle(styleParams.titleBarButtonColor);

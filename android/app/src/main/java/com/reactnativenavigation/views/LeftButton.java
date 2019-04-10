@@ -45,6 +45,10 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
         animateIconState(params.iconState);
     }
 
+    public TitleBarLeftButtonParams getParams() {
+        return params;
+    }
+
     void setCustomIcon(TitleBarLeftButtonParams params) {
         this.params = params;
         setColor();
