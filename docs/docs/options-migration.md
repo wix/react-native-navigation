@@ -374,10 +374,9 @@ topBar: {
 Controls he behavior of screens displayed modally. 
 
 ### Options supported on iOS
-* overCurrentContext - Content is displayed over the previous screen. Useful for **transparent modals**
+* `overFullScreen` - Content is displayed over the previous screen. Useful for **transparent modals**
 * `formSheet` - Content is centered in the screen
 * `pageSheet` -Content partially covers the underlying content
-* `overFullScreen` - Content covers the screen, without detaching previous content.
 * `fullScreen` - Content covers the screen, previous content is detached.
 
 ### Options supported on Android
@@ -386,7 +385,10 @@ Controls he behavior of screens displayed modally.
 
 ```js
 {
-  modalPresentationStyle: 'overCurrentContext'
+  modalPresentationStyle: Platform.OS == 'ios' ? 'overFullScreen' : 'overCurrentContext'
+  layout: {
+    backgroundColor: 'transparent' // You also need this to get the a transparent background
+  }
 }
 ```
 
