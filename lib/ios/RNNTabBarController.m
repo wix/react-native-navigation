@@ -4,6 +4,11 @@
 	NSUInteger _currentTabIndex;
 }
 
+- (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers {
+	[super setViewControllers:viewControllers];
+	[self.presenter applyOptionsOnSetViewControllers:self.resolveOptions];
+}
+
 - (id<UITabBarControllerDelegate>)delegate {
 	return self;
 }
