@@ -17,19 +17,5 @@
     self.uut.layoutInfo.componentId = @"componentId";
 }
 
-- (void)testSetStoreShouldSaveComponent {
-    RNNStore* store = [[RNNStore alloc] init];
-    [self.uut setStore:store];
-    XCTAssertNotNil([store findComponentForId:self.uut.layoutInfo.componentId]);
-}
-
-- (void)testDeallocShouldRemoveComponentFromStore {
-    RNNStore* store = [[RNNStore alloc] init];
-    [self.uut setStore:store];
-    XCTAssertNotNil([store findComponentForId:self.uut.layoutInfo.componentId]);
-    self.uut = nil;
-    XCTAssertNil([store findComponentForId:self.uut.layoutInfo.componentId]);
-}
-
 
 @end

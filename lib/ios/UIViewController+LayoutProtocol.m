@@ -24,11 +24,6 @@
 	return self;
 }
 
-- (void)setStore:(RNNStore *)store {
-	objc_setAssociatedObject(self, @selector(store), store, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	[self.store setComponent:self componentId:self.layoutInfo.componentId];
-}
-
 - (RNNNavigationOptions *)resolveOptions {
 	return [(RNNNavigationOptions *)[self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
 }
@@ -81,11 +76,6 @@
 	}
 }
 
-- (void)dealloc {
-	[self.store removeComponent:self.layoutInfo.componentId];
-}
-
-
 #pragma mark getters and setters to associated object
 
 - (RNNNavigationOptions *)options {
@@ -126,10 +116,6 @@
 
 - (void)setEventEmitter:(RNNEventEmitter *)eventEmitter {
 	objc_setAssociatedObject(self, @selector(eventEmitter), eventEmitter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (RNNStore *)store {
-	return objc_getAssociatedObject(self, @selector(store));
 }
 
 - (id<RNNRootViewCreator>)creator {

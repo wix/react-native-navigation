@@ -17,16 +17,6 @@
 
 @implementation RNNViewControllerPresenter
 
-- (instancetype)init {
-	self = [super init];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(cleanReactLeftovers)
-												 name:RCTJavaScriptWillStartLoadingNotification
-											   object:nil];
-	
-	return self;
-}
-
 - (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
 	self = [self init];
 	_componentRegistry = componentRegistry;
@@ -220,8 +210,5 @@
 	[_componentRegistry clearComponentsForParentId:self.bindedComponentId];
 }
 
-- (void)cleanReactLeftovers {
-	_customTitleView = nil;
-}
 
 @end

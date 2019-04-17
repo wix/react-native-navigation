@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "RNNEventEmitter.h"
 #import "RNNLayoutProtocol.h"
-#import "RNNStore.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
@@ -24,7 +23,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 @property (nonatomic, strong) RNNEventEmitter* eventEmitter;
-@property (nonatomic, strong) RNNStore* store;
 @property (nonatomic) id<RNNRootViewCreator> creator;
 
 @end

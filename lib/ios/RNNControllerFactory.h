@@ -2,7 +2,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "RNNRootViewCreator.h"
-#import "RNNStore.h"
+#import "RNNExternalComponentStore.h"
 #import "RNNEventEmitter.h"
 #import "RNNReactComponentRegistry.h"
 #import "RNNNavigationOptions.h"
@@ -11,7 +11,7 @@
 
 -(instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
 						  eventEmitter:(RNNEventEmitter*)eventEmitter
-								 store:(RNNStore *)store
+								 store:(RNNExternalComponentStore *)store
 					  componentRegistry:(RNNReactComponentRegistry *)componentRegistry
 							 andBridge:(RCTBridge*)bridge;
 

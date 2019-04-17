@@ -18,7 +18,7 @@
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
-	RNNStore *_store;
+	RNNExternalComponentStore *_store;
 	RCTBridge *_bridge;
 	RNNReactComponentRegistry* _componentRegistry;
 }
@@ -28,7 +28,7 @@
 
 - (instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
 						   eventEmitter:(RNNEventEmitter*)eventEmitter
-								  store:(RNNStore *)store
+								  store:(RNNExternalComponentStore *)store
 					   componentRegistry:(RNNReactComponentRegistry *)componentRegistry
 							  andBridge:(RCTBridge *)bridge {
 	
@@ -106,8 +106,6 @@
 	if (!result) {
 		@throw [NSException exceptionWithName:@"UnknownControllerType" reason:[@"Unknown controller type " stringByAppendingString:node.type] userInfo:nil];
 	}
-	
-	result.store = _store;
 	
 	return result;
 }

@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNStore.h"
 #import "RNNOverlayWindow.h"
 
 @interface RNNOverlayManager : NSObject
