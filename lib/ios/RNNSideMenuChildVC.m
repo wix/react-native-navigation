@@ -60,4 +60,8 @@
 	return self.child.preferredStatusBarStyle;
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+	return self.child.supportedInterfaceOrientations;
+}
+
 @end

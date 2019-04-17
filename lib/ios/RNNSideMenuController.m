@@ -119,6 +119,10 @@
 	return self.openedViewController.preferredStatusBarStyle;
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+	return self.openedViewController.supportedInterfaceOrientations;
+}
+
 - (UIViewController *)openedViewController {
 	switch (self.openSide) {
 		case MMDrawerSideNone:
