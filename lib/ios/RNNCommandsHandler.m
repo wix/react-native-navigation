@@ -252,7 +252,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[newVc renderTreeAndWait:[newVc.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
 		[_modalManager showModal:newVc animated:[newVc.getCurrentChild.resolveOptions.animations.showModal.enable getWithDefaultValue:YES] hasCustomAnimation:newVc.getCurrentChild.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
 			[_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId params:@{@"layout": layout}];
-			completion(componentId);
+			completion(newVc.layoutInfo.componentId);
 		}];
 	}];
 }
