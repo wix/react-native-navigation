@@ -14,6 +14,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)applyOptions:(RNNNavigationOptions *)options;
 
+- (void)applyOptionsOnSetViewControllers:(RNNNavigationOptions *)options;
+
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options;
 
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions;
