@@ -45,17 +45,20 @@
 }
 
 - (void)testFindComponentShouldReturnModalFromFirstWindow {
+	UIViewController* rootViewController = [OCMockObject partialMockForObject:[UIViewController new]];
+	
 	UIViewController* modal = _vc1;
-	OCMStub([_vc2 presentedViewController]).andReturn(modal);
-	_firstWindow.rootViewController = _vc2;
+	OCMStub([rootViewController presentedViewController]).andReturn(modal);
+	_firstWindow.rootViewController = rootViewController;
 	UIViewController *resultVC = [RNNLayoutManager findComponentForId:@"vc1"];
 	XCTAssertEqual(resultVC, modal);
 }
 
 - (void)testFindComponentShouldReturnModalFromSecondWindow {
+	UIViewController* rootViewController = [OCMockObject partialMockForObject:[UIViewController new]];
 	UIViewController* modal = _vc1;
-	OCMStub([_vc2 presentedViewController]).andReturn(modal);
-	_secondWindow.rootViewController = _vc2;
+	OCMStub([rootViewController presentedViewController]).andReturn(modal);
+	_secondWindow.rootViewController = rootViewController;
 	UIViewController *resultVC = [RNNLayoutManager findComponentForId:@"vc1"];
 	XCTAssertEqual(resultVC, modal);
 }
@@ -70,7 +73,7 @@
 	UINavigationController* nvc = [[UINavigationController alloc] init];
 	[nvc setViewControllers:@[_vc1, _vc2, _vc3]];
 	_secondWindow.rootViewController = nvc;
-
+	
 	UIViewController *resultVC = [RNNLayoutManager findComponentForId:@"vc3"];
 	XCTAssertEqual(resultVC, _vc3);
 }
@@ -79,8 +82,8 @@
 	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
 	layoutInfo.componentId = componentId;
 	
-	UIViewController* vc = [OCMockObject partialMockForObject:[UIViewController new]];
-	OCMStub([vc layoutInfo]).andReturn(layoutInfo);
+	UIViewController* vc = [UIViewController new];
+	vc.layoutInfo = layoutInfo;
 	
 	return vc;
 }
