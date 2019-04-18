@@ -301,7 +301,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[overlayVC renderTreeAndWait:NO perform:^{
 		UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 		overlayWindow.rootViewController = overlayVC;
-		[_overlayManager showOverlayWindow:overlayWindow];
+		if ([overlayVC.resolveOptions.overlay.handleKeyboardEvents getWithDefaultValue:NO]) {
+			[_overlayManager showOverlayWindowAsKeyWindow:overlayWindow];
+		} else {
+			[_overlayManager showOverlayWindow:overlayWindow];
+		}
+		
 		[_eventEmitter sendOnNavigationCommandCompletion:showOverlay commandId:commandId params:@{@"layout": layout}];
 		completion();
 	}];

@@ -19,6 +19,11 @@
 	[overlayWindow setHidden: NO];
 }
 
+- (void)showOverlayWindowAsKeyWindow:(RNNOverlayWindow *)overlayWindow {
+	[self showOverlayWindow:overlayWindow];
+	[overlayWindow makeKeyWindow];
+}
+
 - (void)dismissOverlay:(UIViewController*)viewController {
 	RNNOverlayWindow* overlayWindow = [self findWindowByRootViewController:viewController];
 	[overlayWindow.previousWindow makeKeyWindow];
