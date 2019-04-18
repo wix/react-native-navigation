@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
-import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
+import { EventsRegistry } from './EventsRegistry.mock';
 import { EventSubscription } from '../interfaces/EventSubscription';
 
 describe('ComponentEventsObserver', () => {
-  const mockEventsReceiver = new NativeEventsReceiver();
+  const mockEventsRegistry = new EventsRegistry();
   const didAppearFn = jest.fn();
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
@@ -119,7 +119,7 @@ describe('ComponentEventsObserver', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    uut = new ComponentEventsObserver(mockEventsReceiver);
+    uut = new ComponentEventsObserver();
   });
 
   it(`bindComponent expects a component with componentId`, () => {
@@ -258,21 +258,21 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`register for all native component events notifies self on events, once`, () => {
-    expect(mockEventsReceiver.registerComponentDidAppearListener).not.toHaveBeenCalled();
-    expect(mockEventsReceiver.registerComponentDidDisappearListener).not.toHaveBeenCalled();
-    expect(mockEventsReceiver.registerNavigationButtonPressedListener).not.toHaveBeenCalled();
-    expect(mockEventsReceiver.registerSearchBarUpdatedListener).not.toHaveBeenCalled();
-    expect(mockEventsReceiver.registerSearchBarCancelPressedListener).not.toHaveBeenCalled();
-    expect(mockEventsReceiver.registerPreviewCompletedListener).not.toHaveBeenCalled();
-    uut.registerOnceForAllComponentEvents();
-    uut.registerOnceForAllComponentEvents();
-    uut.registerOnceForAllComponentEvents();
-    uut.registerOnceForAllComponentEvents();
-    expect(mockEventsReceiver.registerComponentDidAppearListener).toHaveBeenCalledTimes(1);
-    expect(mockEventsReceiver.registerComponentDidDisappearListener).toHaveBeenCalledTimes(1);
-    expect(mockEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
-    expect(mockEventsReceiver.registerSearchBarUpdatedListener).toHaveBeenCalledTimes(1);
-    expect(mockEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
-    expect(mockEventsReceiver.registerPreviewCompletedListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsRegistry.registerComponentDidAppearListener).not.toHaveBeenCalled();
+    expect(mockEventsRegistry.registerComponentDidDisappearListener).not.toHaveBeenCalled();
+    expect(mockEventsRegistry.registerNavigationButtonPressedListener).not.toHaveBeenCalled();
+    expect(mockEventsRegistry.registerSearchBarUpdatedListener).not.toHaveBeenCalled();
+    expect(mockEventsRegistry.registerSearchBarCancelPressedListener).not.toHaveBeenCalled();
+    expect(mockEventsRegistry.registerPreviewCompletedListener).not.toHaveBeenCalled();
+    uut.registerOnceForAllComponentEvents(mockEventsRegistry);
+    uut.registerOnceForAllComponentEvents(mockEventsRegistry);
+    uut.registerOnceForAllComponentEvents(mockEventsRegistry);
+    uut.registerOnceForAllComponentEvents(mockEventsRegistry);
+    expect(mockEventsRegistry.registerComponentDidAppearListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsRegistry.registerComponentDidDisappearListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsRegistry.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsRegistry.registerSearchBarUpdatedListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsRegistry.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsRegistry.registerPreviewCompletedListener).toHaveBeenCalledTimes(1);
   });
 });

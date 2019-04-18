@@ -10,7 +10,7 @@ import {
   PreviewCompletedEvent,
   ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
-import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
+import { EventsRegistry } from './EventsRegistry';
 
 type ReactComponentWithIndexing = React.Component<any> & Record<string, any>;
 
@@ -18,7 +18,7 @@ export class ComponentEventsObserver {
   private listeners: Record<string, Record<string, ReactComponentWithIndexing>> = {};
   private alreadyRegistered = false;
 
-  constructor(private readonly nativeEventsReceiver: NativeEventsReceiver) {
+  constructor() {
     this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
     this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
     this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
@@ -28,16 +28,16 @@ export class ComponentEventsObserver {
     this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
   }
 
-  public registerOnceForAllComponentEvents() {
+  public registerOnceForAllComponentEvents(eventsRegistry: EventsRegistry) {
     if (this.alreadyRegistered) { return; }
     this.alreadyRegistered = true;
-    this.nativeEventsReceiver.registerComponentDidAppearListener(this.notifyComponentDidAppear);
-    this.nativeEventsReceiver.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
-    this.nativeEventsReceiver.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);
-    this.nativeEventsReceiver.registerModalDismissedListener(this.notifyModalDismissed);
-    this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
-    this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
-    this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
+    eventsRegistry.registerComponentDidAppearListener(this.notifyComponentDidAppear);
+    eventsRegistry.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
+    eventsRegistry.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);
+    eventsRegistry.registerModalDismissedListener(this.notifyModalDismissed);
+    eventsRegistry.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
+    eventsRegistry.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
+    eventsRegistry.registerPreviewCompletedListener(this.notifyPreviewCompleted);
   }
 
   public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {

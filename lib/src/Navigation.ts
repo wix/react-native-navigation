@@ -44,7 +44,7 @@ export class NavigationRoot {
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
-    this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
+    this.componentEventsObserver = new ComponentEventsObserver();
     const appRegistryService = new AppRegistryService();
     this.componentRegistry = new ComponentRegistry(
       this.store,
@@ -67,7 +67,8 @@ export class NavigationRoot {
     );
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
 
-    this.componentEventsObserver.registerOnceForAllComponentEvents();
+    this.componentEventsObserver.registerOnceForAllComponentEvents(this.eventsRegistry);
+    this.eventsRegistry.registerOnceForAllEvents();
   }
 
   /**
