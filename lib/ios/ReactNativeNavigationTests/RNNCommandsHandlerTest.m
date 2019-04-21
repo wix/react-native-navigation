@@ -122,8 +122,7 @@
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
 
-	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:creator options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init] eventEmitter:nil];
-	[nav setViewControllers:@[vc]];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:creator options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init] eventEmitter:nil childViewControllers:@[vc]];
 	
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);

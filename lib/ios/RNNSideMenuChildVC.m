@@ -9,28 +9,11 @@
 
 @implementation RNNSideMenuChildVC
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNViewControllerPresenter *)presenter type:(RNNSideMenuChildType)type {
-	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:defaultOptions presenter:presenter];
-	
+
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo creator:(id<RNNRootViewCreator>)creator options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNBasePresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter childViewController:(UIViewController *)childViewController type:(RNNSideMenuChildType)type {
+	self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:nil];
 	self.type = type;
-
-	return self;
-}
-
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNViewControllerPresenter *)presenter {
-	self = [super init];
-	
-	self.child = childViewControllers[0];
-	
-	self.presenter = presenter;
-	[self.presenter bindViewController:self];
-	
-	self.defaultOptions = defaultOptions;
-	self.options = options;
-	self.layoutInfo = layoutInfo;
-	
-	[self bindChildViewController:self.child];
-
+	self.child = childViewController;
 	return self;
 }
 
@@ -38,8 +21,8 @@
 	[self.getCurrentChild renderTreeAndWait:wait perform:readyBlock];
 }
 
-- (void)bindChildViewController:(UIViewController<RNNLayoutProtocol>*)child {
-	self.child = child;
+- (void)setChild:(UIViewController<RNNLayoutProtocol> *)child {
+	_child = child;
 	[self addChildViewController:self.child];
 	[self.child.view setFrame:self.view.bounds];
 	[self.view addSubview:self.child.view];
