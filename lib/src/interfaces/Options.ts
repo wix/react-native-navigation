@@ -884,7 +884,7 @@ export interface Options {
   /**
    * Configure the overlay
    */
-  overlay?: OptionsOverlay;
+  overlay?: OverlayOptions;
   /**
    * Animation used for navigation commands that modify the layout
    * hierarchy can be controlled in options.
