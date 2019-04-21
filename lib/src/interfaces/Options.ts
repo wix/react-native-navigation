@@ -599,11 +599,16 @@ export interface OptionsSideMenu {
   openGestureMode?: 'entireScreen' | 'bezel';
 }
 
-export interface OptionsOverlay {
+export interface OverlayOptions {
   /**
    * Capture touches outside of the Component View
    */
   interceptTouchOutside?: boolean;
+  /**
+   * Control wether this Overlay should handle Keyboard events.
+   * Set this to true if your Overlay contains a TextInput.
+   */
+  handleKeyboardEvents?: boolean;
 }
 
 export interface OptionsPreviewAction {

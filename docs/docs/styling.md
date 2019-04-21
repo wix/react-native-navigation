@@ -142,7 +142,8 @@ Navigation.mergeOptions(this.props.componentId, {
     }
   },
   overlay: {
-    interceptTouchOutside: true
+    interceptTouchOutside: true,
+    handleKeyboardEvents: true
   },
   preview: {
     reactTag: 0, // result from findNodeHandle(ref)
