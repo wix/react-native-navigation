@@ -19,7 +19,7 @@
 	self.eventEmitter = eventEmitter;
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
-	[self.presenter applyOptionsOnInit:self.options];
+	[self.presenter applyOptionsOnInit:self.resolveOptions];
 
 	return self;
 }
