@@ -5,17 +5,10 @@
 #import "UIViewController+LayoutProtocol.h"
 
 @interface RNNBasePresenter ()
-@property (nonatomic, strong) RNNReactComponentRegistry* componentRegistry;
 @end
 
 
 @implementation RNNBasePresenter
-
-- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
-	self = [super init];
-	self.componentRegistry = componentRegistry;
-	return self;
-}
 
 - (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)bindedViewController {
 	self.bindedComponentId = bindedViewController.layoutInfo.componentId;

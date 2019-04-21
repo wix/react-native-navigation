@@ -9,7 +9,8 @@
 						   options:(RNNNavigationOptions *)options
 					defaultOptions:(RNNNavigationOptions *)defaultOptions
 						 presenter:(RNNBasePresenter *)presenter
-					  eventEmitter:(RNNEventEmitter *)eventEmitter {
+					  eventEmitter:(RNNEventEmitter *)eventEmitter
+			  childViewControllers:(NSArray *)childViewControllers {
 	self = [self init];
 	
 	self.options = options;
@@ -17,9 +18,13 @@
 	self.layoutInfo = layoutInfo;
 	self.creator = creator;
 	self.eventEmitter = eventEmitter;
+	if ([self respondsToSelector:@selector(setViewControllers:)]) {
+		[self performSelector:@selector(setViewControllers:) withObject:childViewControllers];
+	}
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
 	[self.presenter applyOptionsOnInit:self.resolveOptions];
+	
 
 	return self;
 }
