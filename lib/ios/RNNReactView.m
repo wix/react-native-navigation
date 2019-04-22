@@ -8,7 +8,6 @@
 	self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentDidAppear:) name:RCTContentDidAppearNotification object:nil];
 	 _reactViewReadyBlock = reactViewReadyBlock;
-	[bridge.uiManager setAvailableSize:availableSize forRootView:self];
 	
 	return self;
 }
@@ -45,6 +44,10 @@
 		self.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
 	} else {
 		self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
+		__weak RNNReactView *weakSelf = self;
+		[self setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicSize) {
+			[weakSelf setFrame:CGRectMake(0, 0, intrinsicSize.width, intrinsicSize.height)];
+		}];
 	}
 }
 
