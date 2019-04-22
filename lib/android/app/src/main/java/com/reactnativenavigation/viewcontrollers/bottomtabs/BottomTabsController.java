@@ -3,9 +3,10 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
+import android.support.design.widget.CoordinatorLayout;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -26,16 +27,13 @@ import com.reactnativenavigation.views.Component;
 import java.util.Collection;
 import java.util.List;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.CollectionUtils.map;
 
 public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
-	private BottomTabs bottomTabs;
-	private List<ViewController> tabs;
+    private BottomTabs bottomTabs;
+    private List<ViewController> tabs;
     private EventEmitter eventEmitter;
     private ImageLoader imageLoader;
     private final BottomTabsAttacher tabsAttacher;
@@ -63,18 +61,20 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     @NonNull
 	@Override
 	protected ViewGroup createView() {
-		RelativeLayout root = new RelativeLayout(getActivity());
-		bottomTabs = createBottomTabs();
-        tabsAttacher.init(root, resolveCurrentOptions());
-        presenter.bindView(bottomTabs, this);
-        tabPresenter.bindView(bottomTabs);
-        bottomTabs.setOnTabSelectedListener(this);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-		lp.addRule(ALIGN_PARENT_BOTTOM);
-		root.addView(bottomTabs, lp);
-		bottomTabs.addItems(createTabs());
-        tabsAttacher.attach();
-        return root;
+		CoordinatorLayout root = new CoordinatorLayout(getActivity());
+                root.setTag("BottomTabsControllerCoordinatorLayout");
+                bottomTabs = createBottomTabs();
+                tabsAttacher.init(root, resolveCurrentOptions());
+                presenter.bindView(bottomTabs, this);
+                tabPresenter.bindView(bottomTabs);
+                bottomTabs.setOnTabSelectedListener(this);
+		CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+                lp.gravity = Gravity.BOTTOM;
+                lp.anchorGravity = Gravity.BOTTOM;
+                root.addView(bottomTabs, lp);
+                bottomTabs.addItems(createTabs());
+                tabsAttacher.attach();
+                return root;
 	}
 
     @NonNull
