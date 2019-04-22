@@ -3,14 +3,14 @@
 
 @implementation RNNTabBarPresenter
 
-- (void)applyOptionsOnSetViewControllers:(RNNNavigationOptions *)options {
-	UITabBarController* tabBarController = self.bindedViewController;
-	[tabBarController rnn_setCurrentTabIndex:[options.bottomTabs.currentTabIndex getWithDefaultValue:0]];
+- (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
+	[self applyOptions:initialOptions];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	UITabBarController* tabBarController = self.bindedViewController;
 	
+	[tabBarController rnn_setCurrentTabIndex:[options.bottomTabs.currentTabIndex getWithDefaultValue:0]];
 	[tabBarController rnn_setTabBarTestID:[options.bottomTabs.testID getWithDefaultValue:nil]];
 	[tabBarController rnn_setTabBarBackgroundColor:[options.bottomTabs.backgroundColor getWithDefaultValue:nil]];
 	[tabBarController rnn_setTabBarTranslucent:[options.bottomTabs.translucent getWithDefaultValue:NO]];

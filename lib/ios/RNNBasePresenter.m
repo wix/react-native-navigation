@@ -19,10 +19,6 @@
 	
 }
 
-- (void)applyOptionsOnSetViewControllers:(RNNNavigationOptions *)options {
-	
-}
-
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
 	UIViewController* viewController = self.bindedViewController;
 	

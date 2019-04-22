@@ -153,4 +153,14 @@
 	XCTAssertTrue(uut.selectedIndex == 1);
 }
 
+- (void)testSetSelectedIndex_ShouldSetSelectedIndexWithCurrentTabIndex {
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.bottomTabs.currentTabIndex = [[IntNumber alloc] initWithValue:@(1)];
+
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
+	RNNTabBarController* uut = [[RNNTabBarController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:nil presenter:[RNNTabBarPresenter new] eventEmitter:nil childViewControllers:@[[UIViewController new], vc]];
+	
+	XCTAssertTrue(uut.selectedIndex == 1);
+}
+
 @end
