@@ -14,21 +14,6 @@
 
 @implementation RNNTopTabsViewController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNViewControllerPresenter *)presenter {
-	self = [self init];
-	
-	self.presenter = presenter;
-	[self.presenter bindViewController:self];
-	
-	self.defaultOptions = defaultOptions;
-	self.options = options;
-	self.layoutInfo = layoutInfo;
-	
-	[self setViewControllers:childViewControllers];
-	
-	return self;
-}
-
 - (instancetype)init {
 	self = [super init];
 	

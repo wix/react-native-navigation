@@ -14,7 +14,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 						   options:(RNNNavigationOptions *)options
 					defaultOptions:(RNNNavigationOptions *)defaultOptions
 						 presenter:(RNNBasePresenter *)presenter
-					  eventEmitter:(RNNEventEmitter *)eventEmitter;
+					  eventEmitter:(RNNEventEmitter *)eventEmitter
+			  childViewControllers:(NSArray *)childViewControllers;
 
 - (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 

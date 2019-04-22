@@ -173,6 +173,7 @@
 		BOOL isCenter = [alignment isEqualToString:@"center"];
 		__weak RNNReactView *weakTitleView = _customTitleView;
 		CGRect frame = viewController.navigationController.navigationBar.bounds;
+		[_customTitleView setFrame:frame];
 		[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
 			if (isCenter) {
 				[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];

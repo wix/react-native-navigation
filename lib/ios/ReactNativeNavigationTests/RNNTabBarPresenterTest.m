@@ -29,7 +29,7 @@
 	[[self.bindedViewController expect] rnn_setTabBarTranslucent:NO];
 	[[self.bindedViewController expect] rnn_setTabBarHideShadow:NO];
     [[self.bindedViewController expect] rnn_setTabBarStyle:UIBarStyleDefault];
-	[[self.bindedViewController expect] rnn_setTabBarVisible:YES];
+	[[self.bindedViewController expect] rnn_setTabBarVisible:YES animated:NO];
 	[self.uut applyOptions:emptyOptions];
 	[self.bindedViewController verify];
 }
@@ -48,7 +48,7 @@
 	[[self.bindedViewController expect] rnn_setTabBarTranslucent:NO];
 	[[self.bindedViewController expect] rnn_setTabBarHideShadow:YES];
 	[[self.bindedViewController expect] rnn_setTabBarStyle:UIBarStyleBlack];
-	[[self.bindedViewController expect] rnn_setTabBarVisible:NO];
+	[[self.bindedViewController expect] rnn_setTabBarVisible:NO animated:NO];
 	
 	[self.uut applyOptions:initialOptions];
 	[self.bindedViewController verify];

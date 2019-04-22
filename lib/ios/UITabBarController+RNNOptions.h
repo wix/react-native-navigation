@@ -16,6 +16,6 @@
 
 - (void)rnn_setTabBarHideShadow:(BOOL)hideShadow;
 
-- (void)rnn_setTabBarVisible:(BOOL)visible;
+- (void)rnn_setTabBarVisible:(BOOL)visible animated:(BOOL)animated;
 
 @end

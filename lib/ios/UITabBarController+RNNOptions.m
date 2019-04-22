@@ -31,8 +31,47 @@
 	self.tabBar.clipsToBounds = hideShadow;
 }
 
-- (void)rnn_setTabBarVisible:(BOOL)visible {
-	self.tabBar.hidden = !visible;
+- (void)rnn_setTabBarVisible:(BOOL)visible animated:(BOOL)animated {
+    const CGRect tabBarFrame = self.tabBar.frame;
+	const CGRect tabBarVisibleFrame = CGRectMake(tabBarFrame.origin.x,
+												 self.view.frame.size.height - tabBarFrame.size.height,
+												 tabBarFrame.size.width,
+												 tabBarFrame.size.height);
+	const CGRect tabBarHiddenFrame = CGRectMake(tabBarFrame.origin.x,
+												self.view.frame.size.height,
+												tabBarFrame.size.width,
+												tabBarFrame.size.height);
+	if (!animated) {
+		self.tabBar.hidden = !visible;
+		self.tabBar.frame = visible ? tabBarVisibleFrame : tabBarHiddenFrame;
+		return;
+	}
+	static const CGFloat animationDuration = 0.15;
+
+	if (visible) {
+		self.tabBar.hidden = NO;
+		[UIView animateWithDuration: animationDuration
+							  delay: 0
+							options: UIViewAnimationOptionCurveEaseOut
+						 animations:^()
+		 {
+			 self.tabBar.frame = tabBarVisibleFrame;
+		 }
+						 completion:^(BOOL finished)
+		 {}];
+	} else {
+		[UIView animateWithDuration: animationDuration
+							  delay: 0
+							options: UIViewAnimationOptionCurveEaseIn
+						 animations:^()
+		 {
+			 self.tabBar.frame = tabBarHiddenFrame;
+		 }
+						 completion:^(BOOL finished)
+		 {
+			 self.tabBar.hidden = YES;
+		 }];
+	}
 }
 
 @end

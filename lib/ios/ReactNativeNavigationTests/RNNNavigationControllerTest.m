@@ -27,8 +27,7 @@
 	_vc2Mock = [OCMockObject partialMockForObject:_vc2];
 	_vc3 = [UIViewController new];
 	_options = [OCMockObject partialMockForObject:[[RNNNavigationOptions alloc] initEmptyOptions]];
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator options:_options defaultOptions:nil presenter:[OCMockObject partialMockForObject:[[RNNNavigationControllerPresenter alloc] init]] eventEmitter:nil];
-	[self.uut setViewControllers:@[_vc1, _vc2]];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator options:_options defaultOptions:nil presenter:[OCMockObject partialMockForObject:[[RNNNavigationControllerPresenter alloc] init]] eventEmitter:nil childViewControllers:@[_vc1, _vc2]];
 }
 
 - (void)testInitWithLayoutInfo_shouldBindPresenter {
@@ -36,8 +35,7 @@
 }
 
 - (void)testInitWithLayoutInfo_shouldSetMultipleViewControllers {
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNViewControllerPresenter alloc] init] eventEmitter:nil];
-	[self.uut setViewControllers:@[_vc1, _vc2]];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNViewControllerPresenter alloc] init] eventEmitter:nil childViewControllers:@[_vc1, _vc2]];
 	XCTAssertTrue(self.uut.viewControllers.count == 2);
 }
 
@@ -155,8 +153,7 @@
 }
 
 - (RNNNavigationController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
-	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator options:options defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init] eventEmitter:nil];
-	[nav setViewControllers:@[_vc1]];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator options:options defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init] eventEmitter:nil childViewControllers:@[_vc1]];
 	return nav;
 }
 
