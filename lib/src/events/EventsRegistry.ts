@@ -18,7 +18,7 @@ import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Eve
 type NavEvent = ComponentEvent | CommandCompletedEvent | BottomTabSelectedEvent;
 
 export class EventsRegistry {
-  private listeners: Record<string, Record<string, (event?: NavEvent) => void>> = {};
+  private listeners: Record<string, Map<string, (event?: NavEvent) => void>> = {};
   private alreadyRegistered = false;
 
   constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver, private componentEventsObserver: ComponentEventsObserver) { }
@@ -88,7 +88,7 @@ export class EventsRegistry {
 
   public notifyEvent(method: string, event?: NavEvent) {
     if (this.listeners[method]) {
-      _.forEach(this.listeners[method], (callback) => {
+      this.listeners[method].forEach((callback) => {
         callback(event);
       });
     }
@@ -96,11 +96,11 @@ export class EventsRegistry {
 
   private registerEvent(method: string, callback: (event?: any) => void): EventSubscription {
     if (_.isNil(this.listeners[method])) {
-      this.listeners[method] = {};
+      this.listeners[method] = new Map();
     }
     const key = _.uniqueId();
-    this.listeners[method][key] = callback;
+    this.listeners[method].set(key, callback);
 
-    return { remove: () => _.unset(this.listeners[method], key) };
+    return { remove: () => this.listeners[method].delete(key) };
   }
 }
