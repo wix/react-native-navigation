@@ -169,6 +169,7 @@
 		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
 		[_customTitleView setAlignment:alignment];
 
+		viewController.navigationItem.titleView = nil;
 		viewController.navigationItem.titleView = _customTitleView;
 	} else {
 		[_customTitleView removeFromSuperview];
