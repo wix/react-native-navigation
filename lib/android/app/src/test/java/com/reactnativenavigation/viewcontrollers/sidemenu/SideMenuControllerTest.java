@@ -263,14 +263,18 @@ public class SideMenuControllerTest extends BaseTest {
     }
 
     private void openDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
-        assertThat(opt.run(side).visible.isTrue()).isFalse();
-        uut.onDrawerOpened(side.getView());
-        assertThat(opt.run(side).visible.isTrue()).isTrue();
+        Options options = new Options();
+        (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new Bool(true);
+        uut.mergeOptions(options);
+        assertThat(uut.getView().isDrawerVisible(side.getView())).isTrue();
+        assertThat(opt.run(side).visible.isFalseOrUndefined()).isTrue();
     }
 
     private void closeDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
-        assertThat(opt.run(side).visible.isTrue()).isTrue();
-        uut.onDrawerClosed(side.getView());
+        Options options = new Options();
+        (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new Bool(false);
+        uut.mergeOptions(options);
+        assertThat(uut.getView().isDrawerVisible(side.getView())).isFalse();
         assertThat(opt.run(side).visible.isTrue()).isFalse();
     }
 

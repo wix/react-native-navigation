@@ -17,7 +17,7 @@ describe('static lifecycle events', () => {
     await expect(elementByLabel('componentDidDisappear | EventsScreen')).toBeVisible();
   });
 
-  it(':ios: pushing and popping screen dispatch static event', async () => {
+  it('pushing and popping screen dispatch static event', async () => {
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
     await expect(elementByLabel('componentDidAppear | EventsOverlay')).toBeVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
@@ -26,14 +26,14 @@ describe('static lifecycle events', () => {
     await expect(elementByLabel('pop')).toBeVisible();
   });
 
-  it(':ios: showModal and dismissModal dispatch static event', async () => {
+  it('showModal and dismissModal dispatch static event', async () => {
     await elementById(TestIDs.MODAL_BTN).tap();
     await expect(elementByLabel('showModal')).toBeVisible();
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
     await expect(elementByLabel('dismissModal')).toBeVisible();
   });
 
-  it(':ios: unmounts when dismissed', async () => {
+  it('unmounts when dismissed', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
     await elementById(TestIDs.DISMISS_BTN).tap();

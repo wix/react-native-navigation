@@ -43,13 +43,25 @@
 	@end
 	```
 
-3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h": 
+3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h"`: 
 ```
 ! 'RCTBundleURLProvider.h' file not found
 ```
 This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu. 
 
 To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
+
+3b. If, in Xcode, you see the following warning message in `AppDelegate.m` next to `#import "@implementation AppDelegate"`:
+```
+Class 'AppDelegate' does not conform to protocol 'RCTBridgeDelegate'
+```
+You can remove `RCTBridgeDelegate` from this file: `AppDelegate.h`:
+```diff
+- #import <React/RCTBridgeDelegate.h>
+- @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
++ @interface AppDelegate : UIResponder <UIApplicationDelegate>
+	...
+```
 
 ## Android
 
@@ -159,7 +171,75 @@ dependencies {
 }
 ```
 
-### 5. Update `MainActivity.java`
+### 5 RNN and React Native version
+
+react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `android/app/build.gradle`.
+
+```diff
+android {
+    ...
+    defaultConfig {
+        applicationId "com.yourproject"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
++        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57" // See note below!
+        versionCode 1
+        versionName "1.0"
+        ...
+    }
+    ...
+}
+```
+
+!>Important note about `missingDimensionStrategy`<Br>
+>`reactNative51` - RN 0.54.x and below<Br>
+>`reactNative55` - RN 0.55.x<Br>
+>`reactNative56` - RN 0.56.x<Br>
+>`reactNative57` - RN 0.57.0 - 0.57.4<Br>
+>`reactNative57_5` - RN 0.57.5 and above<Br>
+
+Now we need to instruct gradle how to build that flavor. To do so here two solutions:
+
+#### 5.1 Build app with gradle command 
+
+**prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:assembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
+
+```
+"scripts": {
+  ...
+  "android": "cd ./android && ./gradlew app:assembleDebug && ./gradlew installDebug"
+}
+```
+
+Now run `npm run android` to build your application
+
+#### 5.2 Ignore other RNN flavors
+
+If you don't want to run `npm run android` and want to keep the default `react-native run-android` command, you need to specify to graddle to ignore the other flavors RNN provides.
+
+To do so edit `android/build.gradle` and add:
+
+```diff
++subprojects { subproject ->
++    afterEvaluate {
++        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
++            android {
++                variantFilter { variant ->
++                    def names = variant.flavors*.name
++                    if (names.contains("reactNative51") || names.contains("reactNative55")) {
++                        setIgnore(true)
++                    }
++                }
++            }
++        }
++    }
++}
+```
+
+**Note**: As more build variants come available in the future, you will need to adjust the list (`names.contains("reactNative51") || names.contains("reactNative55")`). This is why we recommend the first solution.
+
+
+### 6. Update `MainActivity.java`
 
 `MainActivity.java` should extend `com.reactnativenavigation.NavigationActivity` instead of `ReactActivity`.
 
@@ -180,7 +260,7 @@ This file is located in `android/app/src/main/java/com/<yourproject>/MainActivit
 
 If you have any **react-native** related methods, you can safely delete them.
 
-### 6. Update `MainApplication.java`
+### 7. Update `MainApplication.java`
 
 This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
 	
@@ -236,73 +316,6 @@ import java.util.List;
 +}
 
 ```
-
-### 7 RNN and React Native version
-
-react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `android/app/build.gradle`.
-
-```diff
-android {
-    ...
-    defaultConfig {
-        applicationId "com.yourproject"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57" // See note below!
-        versionCode 1
-        versionName "1.0"
-        ...
-    }
-    ...
-}
-```
-
-!>Important note about `missingDimensionStrategy`<Br>
->`reactNative51` - RN 0.54.x and below<Br>
->`reactNative55` - RN 0.55.x<Br>
->`reactNative56` - RN 0.56.x<Br>
->`reactNative57` - RN 0.57.0 - 0.57.4<Br>
->`reactNative57_5` - RN 0.57.5 and above<Br>
-
-Now we need to instruct gradle how to build that flavor. To do so here two solutions:
-
-#### 7.1 Build app with gradle command 
-
-**prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:assembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
-
-```
-"scripts": {
-  ...
-  "android": "cd ./android && ./gradlew app:assembleDebug && ./gradlew installDebug"
-}
-```
-
-Now run `npm run android` to build your application
-
-#### 7.2 Ignore other RNN flavors
-
-If you don't want to run `npm run android` and want to keep the default `react-native run-android` command, you need to specify to graddle to ignore the other flavors RNN provides.
-
-To do so edit `android/build.gradle` and add:
-
-```diff
-+subprojects { subproject ->
-+    afterEvaluate {
-+        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-+            android {
-+                variantFilter { variant ->
-+                    def names = variant.flavors*.name
-+                    if (names.contains("reactNative51") || names.contains("reactNative55")) {
-+                        setIgnore(true)
-+                    }
-+                }
-+            }
-+        }
-+    }
-+}
-```
-
-**Note**: As more build variants come available in the future, you will need to adjust the list (`names.contains("reactNative51") || names.contains("reactNative55")`). This is why we recommend the first solution.
 
 ### 8. Force the same support library version across all dependencies (optional)
 

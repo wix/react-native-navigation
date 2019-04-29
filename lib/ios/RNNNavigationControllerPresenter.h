@@ -7,10 +7,8 @@
 
 @property (nonatomic, strong) InteractivePopGestureDelegate *interactivePopGestureDelegate;
 
-- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry;
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry;
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
-
-- (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
 @end

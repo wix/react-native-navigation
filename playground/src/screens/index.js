@@ -19,6 +19,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Stack, () => require('./StackScreen'));
   Navigation.registerComponent(Screens.Pushed, () => require('./PushedScreen'));
   Navigation.registerComponent(Screens.Modal, () => require('./ModalScreen'))
+  Navigation.registerComponent(Screens.SetRoot, () => require('./SetRootScreen'))
   Navigation.registerComponent(Screens.Navigation, () => require('./NavigationScreen'));
   Navigation.registerComponent(Screens.FirstBottomTabsScreen, () => require('./FirstBottomTabScreen'));
   Navigation.registerComponent(Screens.SecondBottomTabsScreen, () => require('./SecondBottomTabScreen'));

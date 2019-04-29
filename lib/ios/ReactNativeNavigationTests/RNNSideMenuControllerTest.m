@@ -13,10 +13,10 @@
 
 - (void)setUp {
     [super setUp];
-	_leftVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil childViewControllers:@[[RNNRootViewController new]] options:nil defaultOptions:nil presenter:nil type:RNNSideMenuChildTypeLeft];
-	_rightVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil childViewControllers:@[[RNNRootViewController new]] options:nil defaultOptions:nil presenter:nil type:RNNSideMenuChildTypeRight];
-	_centerVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil childViewControllers:@[[RNNRootViewController new]] options:nil defaultOptions:nil presenter:nil type:RNNSideMenuChildTypeCenter];
-	self.uut = [[RNNSideMenuController alloc] initWithLayoutInfo:nil childViewControllers:@[_leftVC, _centerVC, _rightVC] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil];
+	_leftVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNRootViewController new] type:RNNSideMenuChildTypeLeft];
+	_rightVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNRootViewController new] type:RNNSideMenuChildTypeRight];
+	_centerVC =[[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNRootViewController new] type:RNNSideMenuChildTypeCenter];
+	self.uut = [[RNNSideMenuController alloc] initWithLayoutInfo:nil creator:nil childViewControllers:@[_leftVC, _centerVC, _rightVC] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil];
 }
 
 - (void)testSetSideMenuWidthShouldUpdateLeftReactViewFrameWidth {

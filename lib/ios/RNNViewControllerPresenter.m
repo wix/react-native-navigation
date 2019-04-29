@@ -5,6 +5,7 @@
 #import "RNNReactView.h"
 #import "RNNCustomTitleView.h"
 #import "RNNTitleViewHelper.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @interface RNNViewControllerPresenter() {
 	RNNReactView* _customTitleView;
@@ -16,24 +17,14 @@
 
 @implementation RNNViewControllerPresenter
 
-- (instancetype)init {
-	self = [super init];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(cleanReactLeftovers)
-												 name:RCTJavaScriptWillStartLoadingNotification
-											   object:nil];
-	
-	return self;
-}
-
-- (instancetype)initWithcomponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
 	self = [self init];
 	_componentRegistry = componentRegistry;
 	return self;
 }
 
-- (void)bindViewController:(UIViewController *)bindedViewController {
-	self.bindedViewController = bindedViewController;
+- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)bindedViewController {
+	[super bindViewController:bindedViewController];
 	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController componentRegistry:_componentRegistry];
 }
 
@@ -177,18 +168,8 @@
 		_customTitleView.backgroundColor = UIColor.clearColor;
 		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
 		[_customTitleView setAlignment:alignment];
-		BOOL isCenter = [alignment isEqualToString:@"center"];
-		__weak RNNReactView *weakTitleView = _customTitleView;
-		CGRect frame = viewController.navigationController.navigationBar.bounds;
-		[_customTitleView setFrame:frame];
-		[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
-			if (isCenter) {
-				[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
-			} else {
-				[weakTitleView setFrame:frame];
-			}
-		}];
-		
+
+		viewController.navigationItem.titleView = nil;
 		viewController.navigationItem.titleView = _customTitleView;
 	} else {
 		[_customTitleView removeFromSuperview];
@@ -214,8 +195,9 @@
 	}
 }
 
-- (void)cleanReactLeftovers {
-	_customTitleView = nil;
+- (void)dealloc {
+	[_componentRegistry clearComponentsForParentId:self.bindedComponentId];
 }
+
 
 @end

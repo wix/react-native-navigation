@@ -5,6 +5,7 @@ module.exports = {
   Options: 'Options',
   Stack: 'Stack',
   Modal: 'Modal',
+  SetRoot: 'SetRoot',
   Overlay: 'Overlay',
   OverlayAlert: 'OverlayAlert',
   ScrollViewOverlay: 'ScrollViewOverlay',

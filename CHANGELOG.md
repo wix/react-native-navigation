@@ -1,4 +1,65 @@
 # Changelog
+# 2.18.3
+## Fixed
+### iOS
+* Fix topBar.titleView calculation on props change [#f3b1d34](https://github.com/wix/react-native-navigation/commit/f3b1d34ea61341f08ab864b2134933ec9764b127) by [yogevbd](https://github.com/yogevbd)
+
+# 2.18.2
+## Fixed
+### iOS
+* Fix TopBar react view measurement issue [#1993b93](https://github.com/wix/react-native-navigation/commit/1993b93c2ec388bce8923b6d70edf11fc5499976) by [yogevbd](https://github.com/yogevbd)
+
+# 2.18.1
+## Fixed
+### iOS
+* Fix bottomTabs’s initial currentTabIndex [#0e888fb](https://github.com/wix/react-native-navigation/commit/0e888fb65a70343949386f0d6f9f59b03e7b93b7) by [yogevbd](https://github.com/yogevbd)
+
+# 2.18.0
+## Fixed
+* Add missing topMargin type to OptionsTopBar [#9d7d7f4](https://github.com/wix/react-native-navigation/commit/9d7d7f4600ce4994ed680c123f59eb198130a32c) by [ceyhuno](https://github.com/ceyhuno)
+### iOS
+* Fix bottomTabs’s animate option [#9836730](https://github.com/wix/react-native-navigation/commit/9836730570f8a84c389ddf59728176fa6c828222) by [wsliaw](https://github.com/wsliaw)
+* Stop keeping hard reference to ViewControllers, remove RNNStore [#275304c](https://github.com/wix/react-native-navigation/commit/275304c88e8f35bc053aec2328a94a38a6fce088) by [yogevbd](https://github.com/yogevbd)
+* Return componentId on showModal [#81dc07d](https://github.com/wix/react-native-navigation/commit/81dc07d5b899ed2df1751562afc5a9703fbe0ab9) by [yogevbd](https://github.com/yogevbd)
+* Apply bottomTabs options after children added [#2bddff3](https://github.com/wix/react-native-navigation/commit/2bddff390d939f21d1387645077f57cb81399970) by [yogevbd](https://github.com/yogevbd)
+* Fix sideMenu orientation options [#0e1a35d](https://github.com/wix/react-native-navigation/commit/0e1a35d467fc22eab3742fd92cbf6062a645b535) by [yogevbd](https://github.com/yogevbd)
+* Fix broken TextInput focus in Overlay [#e9ca247](https://github.com/wix/react-native-navigation/commit/e9ca247a524e474daf3ccf56989289ce679fc063) by [yogevbd](https://github.com/yogevbd)
+* Fix TopBar react view measurement issue [#be00c4c](https://github.com/wix/react-native-navigation/commit/be00c4c36d9eee1da39f18a37240c1980cd22951) by [yogevbd](https://github.com/yogevbd)
+
+## 2.17.0
+* Migrate to Detox 12 [#9428233](https://github.com/wix/react-native-navigation/commit/942823390a8d628b0e94a8d1c35301ece0bb0971) by [guyca](https://github.com/guyca)
+
+### Fixed
+#### iOS
+* Fix Height of SideMenu when device orientation changes [#68c62f3](https://github.com/wix/react-native-navigation/commit/68c62f33b586d1d9dfd7839ea66342861dacf534) by [mohammadalijf](https://github.com/mohammadalijf)
+* adding and removing components from registry manually by presenter [#ac60d2f](https://github.com/wix/react-native-navigation/commit/ac60d2fe6ad036528c31954a2997109b06f0c947) by [yogevbd](https://github.com/yogevbd)
+* Attach and detach viewControllers explicitly in store [#2830059](https://github.com/wix/react-native-navigation/commit/28300597ede5de1f08d7b32ba4a9313ffdf4aac1) by [yogevbd](https://github.com/yogevbd)
+* Fix StatusBarOptions duplication in xcodeproj [#ab9fd65](https://github.com/wix/react-native-navigation/commit/ab9fd658c2abde508a42374baad983ba2a3c143d) by [tyronet-sportsbet](https://github.com/tyronet-sportsbet)
+
+#### Android
+* Match android dependencies to app configuration [#e954a41](https://github.com/wix/react-native-navigation/commit/e954a41e64f203b17c70a54224bcac2190c689be) by [alpha0010](https://github.com/alpha0010)
+* Do not setTag to bottomTabs if testId is null [#9126ced](https://github.com/wix/react-native-navigation/commit/9126ced3bd1e0d82d966f6b45f529ac876ecc9d8) by [EliSadaka](https://github.com/EliSadaka)
+* Clear sideMenu's visible options after applying [#283f226](https://github.com/wix/react-native-navigation/commit/283f226f55be633da5022692c76d90a391ec3fd8) by [ItsNoHax](https://github.com/ItsNoHax)
+
+## 2.16.0
+### Fixed
+* Update  app lifecycle docs [#1c740b7](https://github.com/wix/react-native-navigation/commit/1c740b74f25157bcd0b58f88c7da7716deea763b) by [ericketts](https://github.com/ericketts)
+
+#### iOS
+* Fix command completion event commandId [#0e29a03](https://github.com/wix/react-native-navigation/commit/0e29a03a40df26755d71c3578ca5ca554096b14c) by [yogevbd](https://github.com/yogevbd) 
+* Fix topBar buttons iconsInsets [#e2dcef9](https://github.com/wix/react-native-navigation/commit/e2dcef9d4a4a5efb6021e00a80f3898cc0254343) by [yogevbd](https://github.com/yogevbd) 
+
+## 2.15.0
+### Added
+* Add `externalComponent` prop to Layout TS declaration [#5ba7ccb](https://github.com/wix/react-native-navigation/commit/5ba7ccb75fd9e3e9ecf0b954d78704930f50d8f6) by [yedidyak](https://github.com/yedidyak)
+
+### Fixed
+#### iOS
+* Fix prevent retaining button component in componentRegistry [#0186b1a](https://github.com/wix/react-native-navigation/commit/0186b1ac36e919fb6b2a796677db1905b48aec7e) by [yogevbd](https://github.com/yogevbd)
+* Fix and refactor animations options [#a98f187](https://github.com/wix/react-native-navigation/commit/a98f18704cc49094cd91859e75089328b4fd7cbc) by [yogevbd](https://github.com/yogevbd)
+* Fix display empty custom topBar background over valid custom background [#6cb1e18](https://github.com/wix/react-native-navigation/commit/6cb1e18a883db803a5b193ca86f077d4e281a8e4)
+by [RoTTex](https://github.com/RoTTex)
+
 ## 2.14.0
 ### Fixed
 * Add direction property to Layout TS declaration [#025c5e8](https://github.com/wix/react-native-navigation/commit/025c5e8dd6a0eec75f3a27a49e52af1d252b5351) by [mohammadalijf](https://github.com/mohammadalijf)

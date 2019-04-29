@@ -54,7 +54,7 @@ public class BottomTabPresenter {
             bottomTabs.setTitleInactiveColor(i, tab.textColor.get(null));
             bottomTabs.setTitleInactiveTextSizeInSp(i, tab.fontSize.hasValue() ? Float.valueOf(tab.fontSize.get()) : null);
             bottomTabs.setTitleActiveTextSizeInSp(i, tab.selectedFontSize.hasValue() ? Float.valueOf(tab.selectedFontSize.get()) : null);
-            bottomTabs.setTag(i, tab.testId.get(null));
+            if (tab.testId.hasValue()) bottomTabs.setTag(i, tab.testId.get());
         }
     }
 
