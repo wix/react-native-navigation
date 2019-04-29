@@ -10,6 +10,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic, copy) void (^rootViewDidChangeIntrinsicSize)(CGSize intrinsicSize);
 @property (nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
 
-- (void)setAlignment:(NSString *)alignment;
+- (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame;
 
 @end
