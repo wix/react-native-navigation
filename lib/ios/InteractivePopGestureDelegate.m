@@ -15,16 +15,4 @@
 	}
 }
 
-- (BOOL)respondsToSelector:(SEL)aSelector {
-	if (aSelector == @selector(gestureRecognizer:shouldReceiveTouch:)) {
-		return YES;
-	} else {
-		return [self.originalDelegate respondsToSelector:aSelector];
-	}
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return NO;
-}
-
 @end
