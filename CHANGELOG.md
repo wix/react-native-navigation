@@ -1,4 +1,9 @@
 # Changelog
+# 2.18.3
+## Fixed
+### iOS
+* Fix topBar.titleView calculation on props change [#f3b1d34](https://github.com/wix/react-native-navigation/commit/f3b1d34ea61341f08ab864b2134933ec9764b127) by [yogevbd](https://github.com/yogevbd)
+
 # 2.18.2
 ## Fixed
 ### iOS
