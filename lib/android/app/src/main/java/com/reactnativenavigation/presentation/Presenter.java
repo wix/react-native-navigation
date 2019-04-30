@@ -106,10 +106,8 @@ public class Presenter {
     }
 
     private void setDrawBehindStatusBar(View view, StatusBarOptions statusBar) {
-        if (statusBar.visible.isFalse()) {
-            ((MarginLayoutParams) view.getLayoutParams()).topMargin = statusBar.drawBehind.isTrue() ?
-                    0 : UiUtils.getStatusBarHeight(activity);
-        }
+        ((MarginLayoutParams) view.getLayoutParams()).topMargin = statusBar.drawBehind.isTrue() ?
+                0 : UiUtils.getStatusBarHeight(activity);
     }
 
 
