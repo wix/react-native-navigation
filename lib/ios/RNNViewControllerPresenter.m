@@ -32,7 +32,6 @@
 	[super applyOptions:options];
 	
 	UIViewController* viewController = self.bindedViewController;
-	viewController.tabBarItem = viewController.tabBarController.tabBar.selectedItem;
 	
 	[viewController rnn_setBackgroundImage:[options.backgroundImage getWithDefaultValue:nil]];
 	[viewController rnn_setNavigationItemTitle:[options.topBar.title.text getWithDefaultValue:nil]];
