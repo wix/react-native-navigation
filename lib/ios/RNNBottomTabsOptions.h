@@ -5,6 +5,7 @@
 @property (nonatomic, strong) Bool* visible;
 @property (nonatomic, strong) IntNumber* currentTabIndex;
 @property (nonatomic, strong) Bool* drawBehind;
+@property (nonatomic, strong) Bool* animate;
 @property (nonatomic, strong) Color* tabColor;
 @property (nonatomic, strong) Color* selectedTabColor;
 @property (nonatomic, strong) Bool* translucent;

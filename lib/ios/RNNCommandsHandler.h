@@ -2,14 +2,15 @@
 #import <UIKit/UIKit.h>
 
 #import "RNNControllerFactory.h"
-#import "RNNStore.h"
 #import "RNNModalManager.h"
 #import "RNNNavigationStackManager.h"
 #import "RNNOverlayManager.h"
 
 @interface RNNCommandsHandler : NSObject
 
-- (instancetype)initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager mainWindow:(UIWindow *)mainWindow;
+- (instancetype)initWithControllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter stackManager:(RNNNavigationStackManager *)stackManager modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager mainWindow:(UIWindow *)mainWindow;
+
+@property (nonatomic) BOOL readyToReceiveCommands;
 
 - (void)setRoot:(NSDictionary*)layout commandId:(NSString*)commandId completion:(RNNTransitionCompletionBlock)completion;
 

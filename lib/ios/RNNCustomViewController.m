@@ -13,7 +13,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self addTestLabel];
+    [self addTestLabel];
+    [[self view] setBackgroundColor:UIColor.whiteColor];
 }
 
 - (void)addTestLabel {

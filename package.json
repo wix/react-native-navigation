@@ -1,16 +1,9 @@
 {
   "name": "react-native-navigation",
-  "version": "2.16.0",
+  "version": "2.18.4",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
-  "author": "Daniel Zlotin <zlotindaniel@gmail.com>",
-  "contributors": [
-    "Tal Kol <talkol@gmail.com>",
-    "Guy Carmeli <guyc@wix.com>",
-    "Ran Greenberg <rang@wix.com>",
-    "Artal Druk <artald@wix.com>"
-  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -67,8 +60,8 @@
     "@types/react-native": "0.57.7",
     "@types/react-test-renderer": "16.x.x",
     "jsc-android": "236355.x.x",
-    "detox": "9.0.6",
-    "react-native-ui-lib": "3.x.x",
+    "detox": "12.1.x",
+    "react-native-ui-lib": "3.24.2",
     "handlebars": "4.x.x",
     "jest": "23.x.x",
     "metro-react-native-babel-preset": "0.50.0",
@@ -120,7 +113,7 @@
   },
   "detox": {
     "test-runner": "jest",
-    "specs": "e2e",
+    "specs": "",
     "configurations": {
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
