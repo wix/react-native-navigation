@@ -5,7 +5,6 @@
 }
 
 - (id<UITabBarControllerDelegate>)delegate {
-	[self setTabItemBadges];
 	return self;
 }
 
