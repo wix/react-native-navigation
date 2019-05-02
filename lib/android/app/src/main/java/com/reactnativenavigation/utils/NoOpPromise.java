@@ -1,6 +1,7 @@
 package com.reactnativenavigation.utils;
 
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.WritableMap;
 
 import javax.annotation.Nullable;
 
@@ -33,6 +34,31 @@ public class NoOpPromise implements Promise {
 
     @Override
     public void reject(Throwable reason) {
+
+    }
+
+    @Override
+    public void reject(Throwable reason, WritableMap map) {
+
+    }
+
+    @Override
+    public void reject(String message, WritableMap map) {
+
+    }
+    
+    @Override
+    public void reject(String message, Throwable reason, WritableMap map) {
+
+    }
+
+    @Override
+    public void reject(String message1, String message2, WritableMap map) {
+
+    }
+
+    @Override
+    public void reject(String message1, String message2, Throwable reason, WritableMap map) {
 
     }
 }
