@@ -7,7 +7,7 @@
     "diagnostics": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "noEmitOnError": true,
+    "noEmitOnError": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
