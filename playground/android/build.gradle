@@ -32,5 +32,6 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url "$rootDir/../../node_modules/jsc-android/dist" }
+        maven { url "$rootDir/../../node_modules/detox/Detox-android" }
     }
 }
