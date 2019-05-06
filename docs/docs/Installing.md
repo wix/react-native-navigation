@@ -215,7 +215,7 @@ Now run `npm run android` to build your application
 
 #### 5.2 Ignore other RNN flavors
 
-If you don't want to run `npm run android` and want to keep the default `react-native run-android` command, you need to specify to graddle to ignore the other flavors RNN provides.
+If you don't want to run `npm run android` and want to keep the default `react-native run-android` command, you need to specify to gradle to ignore the other flavors RNN provides.
 
 To do so edit `android/build.gradle` and add:
 
