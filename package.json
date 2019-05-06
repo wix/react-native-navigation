@@ -60,7 +60,7 @@
     "@types/react-native": "0.57.7",
     "@types/react-test-renderer": "16.x.x",
     "jsc-android": "236355.x.x",
-    "detox": "12.1.x",
+    "detox": "12.x.x",
     "react-native-ui-lib": "3.24.2",
     "handlebars": "4.x.x",
     "jest": "23.x.x",

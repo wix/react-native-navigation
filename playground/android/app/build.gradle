@@ -69,6 +69,6 @@ dependencies {
     implementation project(':react-native-navigation')
     implementation project(':react-native-view-overflow')
 
-    androidTestImplementation(project(':detox'))
+    androidTestImplementation('com.wix:detox:+') { transitive = true }
     androidTestImplementation 'junit:junit:4.12'
 }
