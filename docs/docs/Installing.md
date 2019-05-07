@@ -226,7 +226,7 @@ To do so edit `android/build.gradle` and add:
 +            android {
 +                variantFilter { variant ->
 +                    def names = variant.flavors*.name
-+                    if (names.contains("reactNative51") || names.contains("reactNative55")) {
++                    if (!names.contains("reactNative57")) {
 +                        setIgnore(true)
 +                    }
 +                }
@@ -236,7 +236,7 @@ To do so edit `android/build.gradle` and add:
 +}
 ```
 
-**Note**: As more build variants come available in the future, you will need to adjust the list (`names.contains("reactNative51") || names.contains("reactNative55")`). This is why we recommend the first solution.
+**Note**: Replace `reactNative57` with whatever flavor you are using in your project so that all other flavors are ignored.
 
 
 ### 6. Update `MainActivity.java`
