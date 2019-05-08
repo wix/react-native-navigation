@@ -1,9 +1,9 @@
-#import <React/RCTRootView.h>
+#import <React/RCTFabricSurfaceHostingProxyRootView.h>
 #import <React/RCTRootViewDelegate.h>
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
-@interface RNNReactView : RCTRootView <RCTRootViewDelegate>
+@interface RNNReactView : RCTFabricSurfaceHostingProxyRootView <RCTRootViewDelegate>
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties availableSize:(CGSize)availableSize reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 

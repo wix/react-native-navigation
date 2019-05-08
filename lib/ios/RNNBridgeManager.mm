@@ -2,6 +2,7 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
+#import <React/RCTSurfacePresenter.h>
 
 #import "RNNEventEmitter.h"
 #import "RNNSplashScreen.h"
@@ -10,7 +11,9 @@
 #import "RNNReactRootViewCreator.h"
 #import "RNNReactComponentRegistry.h"
 
-@interface RNNBridgeManager() <RCTBridgeDelegate>
+@interface RNNBridgeManager() <RCTBridgeDelegate> {
+  RCTSurfacePresenter *_surfacePresenter;
+}
 
 @property (nonatomic, strong, readwrite) RCTBridge *bridge;
 @property (nonatomic, strong, readwrite) RNNExternalComponentStore *store;
@@ -39,6 +42,8 @@
 		
 		_store = [RNNExternalComponentStore new];
 		_bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:_launchOptions];
+		_surfacePresenter = [[RCTSurfacePresenter alloc] initWithBridge:_bridge config:nil];
+		_bridge.surfacePresenter = _surfacePresenter;
 		
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
