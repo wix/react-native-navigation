@@ -1,10 +1,9 @@
 {
   "name": "react-native-navigation",
-  "version": "1.1.406",
+  "version": "2.18.5",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
-  "author": "Tal Kol <talkol@gmail.com>",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -17,59 +16,140 @@
     "type": "git",
     "url": "https://github.com/wix/react-native-navigation.git"
   },
-  "main": "src/index.js",
+  "main": "lib/dist/index.js",
+  "typings": "lib/dist/index.d.ts",
   "scripts": {
-    "build": ":",
-    "clean": ":",
-    "test-js": "npm run test",
-    "test-unit-ios": ":",
-    "test-unit-android": ":",
-    "test-e2e-ios": ":",
-    "test-e2e-android": ":",
-    "lint": "eslint src test",
-    "test:js": "jest --coverage",
-    "test:android": "cd android && ./gradlew clean testDebugUnitTest",
-    "test:ios": ":",
-    "pretest": "npm run lint",
-    "test": "npm run test:js && npm run test:android && npm run test:ios",
-    "test:watch": "jest --coverage --watch",
-    "release": "node ./scripts/release.js"
+    "build": "rm -rf ./lib/dist && tsc",
+    "xcode": "open playground/ios/playground.xcodeproj",
+    "install-android": "node ./scripts/install-android",
+    "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
+    "clean": "node ./scripts/clean",
+    "prestart": "npm run build",
+    "start": "node ./scripts/start",
+    "pretest-js": "npm run build",
+    "test-js": "node ./scripts/test-js",
+    "test-unit-ios": "node ./scripts/test-unit --ios",
+    "test-unit-android": "node ./scripts/test-unit --android",
+    "pretest-e2e-android": "npm run build",
+    "test-e2e-android": "node ./scripts/test-e2e --android",
+    "pretest-e2e-ios": "npm run build",
+    "test-e2e-ios": "node ./scripts/test-e2e --ios",
+    "test-e2e-ios-multi": "npm run test-e2e-ios -- --multi",
+    "test-all": "node ./scripts/test-all",
+    "prerelease": "npm run build",
+    "release": "node ./scripts/release",
+    "local-docs": "node ./scripts/local-docs",
+    "gen-docs": "ts-node ./scripts/gen-docs/Main"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "dependencies": {
-    "lodash": "4.x.x"
+    "hoist-non-react-statics": "3.x.x",
+    "lodash": "4.17.x",
+    "prop-types": "15.x.x",
+    "react-lifecycles-compat": "2.0.0",
+    "tslib": "1.9.3"
   },
   "devDependencies": {
-    "babel-cli": "6.x.x",
-    "babel-core": "6.x.x",
-    "babel-eslint": "7.x.x",
-    "babel-jest": "18.x.x",
-    "babel-polyfill": "6.x.x",
-    "babel-preset-react-native": "1.x.x",
-    "babel-register": "6.x.x",
-    "eslint": "3.x.x",
-    "eslint-plugin-babel": "3.x.x",
-    "eslint-plugin-react": "6.x.x",
-    "eslint-plugin-react-native": "2.x.x",
-    "jest": "18.x.x",
-    "jest-cli": "18.x.x",
-    "jest-react-native": "18.x.x",
-    "prop-types": "^15.5.10",
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.43.0",
-    "react-test-renderer": "15.4.2",
-    "semver": "5.x.x"
+    "@babel/plugin-proposal-export-default-from": "7.2.0",
+    "@babel/plugin-proposal-export-namespace-from": "7.2.0",
+    "@types/hoist-non-react-statics": "^3.0.1",
+    "@types/jest": "23.x.x",
+    "@types/lodash": "4.x.x",
+    "@types/react": "16.x.x",
+    "@types/react-native": "0.57.7",
+    "@types/react-test-renderer": "16.x.x",
+    "detox": "12.x.x",
+    "react-native-ui-lib": "3.24.2",
+    "handlebars": "4.x.x",
+    "jest": "24.0.0-alpha.6",
+    "jsc-android": "236355.x.x",
+    "metro-react-native-babel-preset": "0.52.x",
+    "react": "16.8.3",
+    "react-native": "0.59.5",
+    "react-native-typescript-transformer": "1.2.12",
+    "react-native-view-overflow": "0.0.3",
+    "react-redux": "5.x.x",
+    "react-test-renderer": "16.6.1",
+    "redux": "3.x.x",
+    "remx": "2.x.x",
+    "semver": "5.x.x",
+    "shell-utils": "1.x.x",
+    "ts-mockito": "^2.3.1",
+    "ts-node": "5.x.x",
+    "tslint": "5.x.x",
+    "typedoc": "0.x.x",
+    "typescript": "3.2.2"
   },
   "jest": {
-    "preset": "jest-react-native",
-    "testPathDirs": [
-      "node_modules",
-      "src2"
+    "preset": "react-native",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    },
+    "roots": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/lib/dist/",
+      "<rootDir>/integration/"
+    ],
+    "collectCoverageFrom": [
+      "lib/dist/**/*.js",
+      "integration/**/*.js",
+      "!lib/dist/index.js",
+      "!lib/dist/Navigation.js",
+      "!lib/dist/adapters/**/*",
+      "!lib/dist/interfaces/**/*",
+      "!lib/dist/**/*.test.*",
+      "!integration/**/*.test.*",
+      "!integration/*.test.*"
     ],
     "resetMocks": true,
-    "resetModules": true
+    "resetModules": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ]
+  },
+  "detox": {
+    "test-runner": "jest",
+    "specs": "",
+    "configurations": {
+      "ios.none": {
+        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
+        "type": "ios.none",
+        "name": "iPhone X",
+        "session": {
+          "server": "ws://localhost:8099",
+          "sessionId": "playground"
+        }
+      },
+      "ios.sim.debug": {
+        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
+        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
+        "type": "ios.simulator",
+        "name": "iPhone X"
+      },
+      "ios.sim.release": {
+        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app",
+        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
+        "type": "ios.simulator",
+        "name": "iPhone X"
+      },
+      "android.emu.debug": {
+        "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug",
+        "type": "android.emulator",
+        "name": "Pixel_2_API_26"
+      },
+      "android.emu.release": {
+        "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
+        "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
+        "type": "android.emulator",
+        "name": "Pixel_2_API_26"
+      }
+    }
   }
 }

@@ -1,0 +1,113 @@
+apply plugin: 'com.android.library'
+apply from: '../prepare-robolectric.gradle'
+
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+def DEFAULT_COMPILE_SDK_VERSION = 28
+def DEFAULT_MIN_SDK_VERSION = 19
+def DEFAULT_SUPPORT_LIB_VERSION = '28.0.0'
+def DEFAULT_TARGET_SDK_VERSION = 28
+
+android {
+    compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
+
+    defaultConfig {
+        minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
+        targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    testOptions {
+        unitTests.all { t ->
+            reports {
+                html.enabled true
+            }
+            testLogging {
+                events "PASSED", "SKIPPED", "FAILED", "standardOut", "standardError"
+            }
+            afterSuite { desc, result ->
+                if (!desc.parent) { // will match the outermost suite
+                    def output = "      ${result.resultType} (${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)     "
+                    def repeatLength = output.length()
+                    println '\n\n' + ('-' * repeatLength) + '\n' + output + '\n' + ('-' * repeatLength) + '\n'
+
+                    println "see report at file://${t.reports.html.destination}/index.html"
+                }
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    flavorDimensions "RNN.reactNativeVersion"
+    productFlavors {
+        reactNative51 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "51")
+        }
+        reactNative55 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "55")
+        }
+        reactNative56 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "56")
+        }
+        reactNative57 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
+        }
+        reactNative57_5 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
+        }
+    }
+}
+
+allprojects { p ->
+    p.afterEvaluate {
+        p.android.compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
+        p.android.compileOptions.targetCompatibility JavaVersion.VERSION_1_8
+    }
+    p.repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
+def supportLibVersion = safeExtGet('supportLibVersion', DEFAULT_SUPPORT_LIB_VERSION)
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:design:${supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation "com.android.support:support-v4:${supportLibVersion}"
+
+    implementation 'com.github.wix-playground:ahbottomnavigation:2.4.9'
+    implementation 'com.github.wix-playground:reflow-animator:1.0.4'
+    implementation 'com.github.clans:fab:1.6.4'
+
+    //noinspection GradleDynamicVersion
+    implementation 'com.facebook.react:react-native:+'
+
+    // tests
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.5.1'
+    testImplementation 'org.assertj:assertj-core:3.8.0'
+    testImplementation 'com.squareup.assertj:assertj-android:1.1.1'
+    testImplementation 'org.mockito:mockito-core:2.13.0'
+}

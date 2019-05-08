@@ -1,17 +1,21 @@
-- Getting started
- - [Installation - iOS](/installation-ios)
- - [Installation - Android](/installation-android)
- - [Usage](/usage)
-
+- [Home](/)
+- Getting Started
+  - [Installing](/docs/Installing)
+  - [Working Locally](/docs/WorkingLocally)
+  - [Usage](/docs/Usage)
+  - [Showcases](/docs/showcases)
 - Guide
- - [Top Level API](/top-level-api)
- - [Screen API](/screen-api)
- - [Deep links](/deep-links)
- - [Android Specific Use Cases](/android-specific-use-cases)
- - [Third Party Libraries Support](/third-party-libraries-support)
-
-- Customization
-  - [Styling the Navigator](/styling-the-navigator)
-  - [Adding Buttons to the Navigator](/adding-buttons-to-the-navigator)
-  - [Styling the Tab Bar](/styling-the-tab-bar)
-  
+  - [Launching the App](/docs/app-launch)
+  - [Top Level](/docs/top-level-api)
+  - [Screen](/docs/screen-api)
+  - [Events](/docs/events)
+  - [Layouts](/docs/layout-types)
+  - [Styling](/docs/styling)
+  - [TopBar Buttons](/docs/topBar-buttons) 
+  - [Animations](/docs/animations)
+  - [Constants](/docs/constants)
+  - [Third Party Libraries Support](/docs/third-party)
+- Migration from v1
+  - [Top Level](/docs/top-level-api-migration)
+  - [Options](/docs/options-migration)
+- [API](/api/README)

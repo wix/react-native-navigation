@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Modal" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/modalAnimations</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="modalAnimations">
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
+    </style>
+
+    <style name="TopBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="elevation">0dp</item>
+    </style>
+
+</resources>

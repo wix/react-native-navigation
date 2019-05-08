@@ -1,0 +1,51 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "**/*.test.tsx"
+    ]
+  },
+  "jsRules": {
+    "no-console": [false],
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "max-line-length": [
+      true,
+      180
+    ],
+    "ordered-imports": false,
+    "trailing-comma": [
+      true,
+      "never"
+    ],
+    "member-access": false,
+    "interface-name": false,
+    "object-literal-sort-keys": false,
+    "max-classes-per-file": false
+  },
+  "rules": {
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "max-line-length": [
+      true,
+      180
+    ],
+    "ordered-imports": false,
+    "trailing-comma": [
+      true,
+      "never"
+    ],
+    "member-access": false,
+    "interface-name": false,
+    "object-literal-sort-keys": false,
+    "max-classes-per-file": false
+  },
+  "rulesDirectory": []
+}

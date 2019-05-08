@@ -1,3 +1,6 @@
+dist
+.vscode/
+package-lock.json
 
 ############
 # Node
@@ -208,12 +211,19 @@ npm-debug.log
 # BUCK
 buck-out/
 \.buckd/
+
+#IDE files
 android/app/libs
 android/keystores/debug.keystore
-
-# VSCODE
-jsconfig.json
-.vscode/launchReactNative.js
-example/yarn.lock
-example/package-lock.json
-/package-lock.json
+AndroidE2E/.project
+AndroidE2E/app/.project
+lib/android/.project
+playground/android/.project
+AndroidE2E/app/.classpath
+AndroidE2E/app/.settings/
+AndroidE2E/app/bin/
+lib/android/.settings/
+lib/android/app/.settings/
+playground/android/.settings/
+playground/android/app/.settings/
+AndroidE2E/.settings/

@@ -1,0 +1,74 @@
+apply plugin: "com.android.application"
+
+project.ext.react = [
+        root     : "../../../",
+        entryFile: "index.js"
+]
+
+apply from: "../../../node_modules/react-native/react.gradle"
+
+android {
+    compileSdkVersion 28
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "com.reactnativenavigation.playground"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+
+        testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57_5"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    signingConfigs {
+        release {
+            storeFile file('../playground.keystore')
+            storePassword "playground"
+            keyAlias "playground"
+            keyPassword "playground"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            details.useVersion "28.0.0"
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.webkit:android-jsc:r236355'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+
+    //noinspection GradleDynamicVersion
+    implementation 'com.facebook.react:react-native:+'
+    implementation project(':react-native-navigation')
+    implementation project(':react-native-view-overflow')
+
+    androidTestImplementation('com.wix:detox:+') { transitive = true }
+    androidTestImplementation 'junit:junit:4.12'
+}

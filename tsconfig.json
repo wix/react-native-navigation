@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig-strict.json",
+  "compilerOptions": {
+    "outDir": "./lib/dist",
+    "allowJs": false,
+    "target": "esnext",
+    "module": "commonjs",
+    "jsx": "react-native",
+    "declaration": true,
+    "skipLibCheck": true,
+    "types": [
+      "jest",
+      "lodash",
+      "react",
+      "react-native",
+      "react-test-renderer"
+    ]
+  },
+  "include": [
+    "./lib/src/**/*"
+  ]
+}
