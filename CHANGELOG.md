@@ -1,4 +1,15 @@
 # Changelog
+
+# 2.18.5
+## Fixed
+### iOS
+* Handle simultaneous recognizers, Fixes a crash when tapping on the screen with other gesture recognizers active [#a5b9f58](https://github.com/wix/react-native-navigation/commit/a5b9f58affd132bba03f961a255d05e41272bae9) by [jordoh](https://github.com/jordoh)
+
+# 2.18.4
+## Fixed
+### iOS
+* Fix topBar.title.component fill alignment [#9f439da](https://github.com/wix/react-native-navigation/commit/9f439dabd8fabc151bb96fbb04fa34bfe2b469d8) by [yogevbd](https://github.com/yogevbd)
+
 # 2.18.3
 ## Fixed
 ### iOS

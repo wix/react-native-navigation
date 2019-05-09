@@ -14,7 +14,11 @@ function run() {
 
 function runAndroidUnitTests() {
   const conf = release ? 'testReactNative57_5ReleaseUnitTest' : 'testReactNative57_5DebugUnitTest';
-
+  if (android && process.env.JENKINS_CI) {
+    const sdkmanager = '/usr/local/share/android-sdk/tools/bin/sdkmanager';
+    exec.execSync(`yes | ${sdkmanager} --licenses`);
+    // exec.execSync(`echo y | ${sdkmanager} --update && echo y | ${sdkmanager} --licenses`);
+  }
   exec.execSync(`cd lib/android && ./gradlew ${conf}`);
 }
 
