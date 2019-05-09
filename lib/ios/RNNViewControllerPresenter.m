@@ -3,12 +3,29 @@
 #import "UITabBarController+RNNOptions.h"
 #import "RCTConvert+Modal.h"
 #import "RNNReactView.h"
+#import "RNNCustomTitleView.h"
+#import "RNNTitleViewHelper.h"
+#import "UIViewController+LayoutProtocol.h"
+
+@interface RNNViewControllerPresenter() {
+	RNNReactView* _customTitleView;
+	RNNTitleViewHelper* _titleViewHelper;
+	RNNReactComponentRegistry* _componentRegistry;
+}
+
+@end
 
 @implementation RNNViewControllerPresenter
 
-- (void)bindViewController:(UIViewController *)bindedViewController viewCreator:(id<RNNRootViewCreator>)creator {
-	self.bindedViewController = bindedViewController;
-	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController rootViewCreator:creator];
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
+	self = [self init];
+	_componentRegistry = componentRegistry;
+	return self;
+}
+
+- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)bindedViewController {
+	[super bindViewController:bindedViewController];
+	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController componentRegistry:_componentRegistry];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
@@ -23,14 +40,20 @@
 	[viewController rnn_setStatusBarStyle:[options.statusBar.style getWithDefaultValue:@"default"] animated:[options.statusBar.animate getWithDefaultValue:YES]];
 	[viewController rnn_setBackButtonVisible:[options.topBar.backButton.visible getWithDefaultValue:YES]];
 	[viewController rnn_setInterceptTouchOutside:[options.overlay.interceptTouchOutside getWithDefaultValue:YES]];
-
+	
 	if (options.layout.backgroundColor.hasValue) {
 		[viewController rnn_setBackgroundColor:options.layout.backgroundColor.get];
 	}
 	
 	if (options.topBar.searchBar.hasValue) {
-		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""]];
+		BOOL hideNavBarOnFocusSearchBar = YES;
+		if (options.topBar.hideNavBarOnFocusSearchBar.hasValue) {
+			hideNavBarOnFocusSearchBar = options.topBar.hideNavBarOnFocusSearchBar.get;
+		}
+		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar: hideNavBarOnFocusSearchBar];
 	}
+	
+	[self setTitleViewWithSubtitle:options];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
@@ -65,7 +88,11 @@
 	}
 	
 	if (newOptions.topBar.searchBar.hasValue) {
-		[viewController rnn_setSearchBarWithPlaceholder:[newOptions.topBar.searchBarPlaceholder getWithDefaultValue:@""]];
+		BOOL hideNavBarOnFocusSearchBar = YES;
+		if (newOptions.topBar.hideNavBarOnFocusSearchBar.hasValue) {
+			hideNavBarOnFocusSearchBar = newOptions.topBar.hideNavBarOnFocusSearchBar.get;
+		}
+		[viewController rnn_setSearchBarWithPlaceholder:[newOptions.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
 	}
 	
 	if (newOptions.topBar.drawBehind.hasValue) {
@@ -117,6 +144,60 @@
 		RCTRootView* rootView = (RCTRootView*)viewController.view;
 		rootView.passThroughTouches = !newOptions.overlay.interceptTouchOutside.get;
 	}
+	
+	[self setTitleViewWithSubtitle:(RNNNavigationOptions *)[[currentOptions overrideOptions:newOptions] mergeOptions:defaultOptions]];
+	
+	if (newOptions.topBar.title.component.name.hasValue) {
+		[self setCustomNavigationTitleView:newOptions perform:nil];
+	}
 }
+
+- (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self setCustomNavigationTitleView:options perform:readyBlock];
+}
+
+- (void)setCustomNavigationTitleView:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	UIViewController<RNNLayoutProtocol>* viewController = self.bindedViewController;
+	if (![options.topBar.title.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
+		readyBlock();
+		readyBlock = nil;
+	}
+	
+	if (options.topBar.title.component.name.hasValue) {
+		_customTitleView = (RNNReactView*)[_componentRegistry createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
+		_customTitleView.backgroundColor = UIColor.clearColor;
+		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
+		[_customTitleView setAlignment:alignment inFrame:viewController.navigationController.navigationBar.frame];
+
+		viewController.navigationItem.titleView = nil;
+		viewController.navigationItem.titleView = _customTitleView;
+	} else {
+		[_customTitleView removeFromSuperview];
+		if (readyBlock) {
+			readyBlock();
+		}
+	}
+}
+
+- (void)setTitleViewWithSubtitle:(RNNNavigationOptions *)options {
+	if (!_customTitleView && options.topBar.subtitle.text.hasValue) {
+		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.bindedViewController];
+		[_titleViewHelper setup];
+	} else if (_titleViewHelper) {
+		if (options.topBar.title.text.hasValue) {
+			[_titleViewHelper setTitleOptions:options.topBar.title];
+		}
+		if (options.topBar.subtitle.text.hasValue) {
+			[_titleViewHelper setSubtitleOptions:options.topBar.subtitle];
+		}
+		
+		[_titleViewHelper setup];
+	}
+}
+
+- (void)dealloc {
+	[_componentRegistry clearComponentsForParentId:self.bindedComponentId];
+}
+
 
 @end

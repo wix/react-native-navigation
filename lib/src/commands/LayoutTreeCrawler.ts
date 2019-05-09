@@ -46,16 +46,17 @@ export class LayoutTreeCrawler {
     return (component as ComponentWithOptions).options !== undefined;
   }
 
+  private applyStaticOptions(node: LayoutNode) {
+    node.data.options = _.merge({}, this.staticOptionsIfPossible(node), node.data.options);
+  }
+
   private staticOptionsIfPossible(node: LayoutNode) {
     const foundReactGenerator = this.store.getComponentClassForName(node.data.name!);
     const reactComponent = foundReactGenerator ? foundReactGenerator() : undefined;
-    return reactComponent && this.isComponentWithOptions(reactComponent)
-      ? reactComponent.options(node.data.passProps || {})
-      : {};
-  }
-
-  private applyStaticOptions(node: LayoutNode) {
-    node.data.options = _.merge({}, this.staticOptionsIfPossible(node), node.data.options);
+    if (reactComponent && this.isComponentWithOptions(reactComponent)) {
+      return _.isFunction(reactComponent.options) ? reactComponent.options(node.data.passProps || {}) : reactComponent.options;
+    }
+    return {};
   }
 
   private assertComponentDataName(component: LayoutNode) {

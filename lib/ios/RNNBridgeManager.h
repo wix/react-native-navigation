@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
 #import "RNNBridgeManagerDelegate.h"
-#import "RNNStore.h"
 
 typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBridge* bridge);
 
@@ -12,6 +11,5 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBri
 - (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
 
 @property (readonly, nonatomic, strong) RCTBridge *bridge;
-@property (readonly, nonatomic, strong) RNNStore *store;
 
 @end

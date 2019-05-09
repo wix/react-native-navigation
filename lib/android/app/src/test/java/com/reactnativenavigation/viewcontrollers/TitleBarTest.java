@@ -1,29 +1,22 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.Activity;
-import android.view.View;
+import android.app.*;
+import android.support.v7.widget.*;
+import android.view.*;
 
-import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.react.Constants;
-import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.utils.CollectionUtils;
-import com.reactnativenavigation.views.titlebar.TitleBar;
+import com.reactnativenavigation.*;
+import com.reactnativenavigation.parse.params.*;
+import com.reactnativenavigation.react.*;
+import com.reactnativenavigation.utils.*;
+import com.reactnativenavigation.views.titlebar.*;
 
-import org.junit.Test;
+import org.junit.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static com.reactnativenavigation.utils.TitleBarHelper.createButtonController;
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static com.reactnativenavigation.utils.TitleBarHelper.*;
+import static org.assertj.core.api.Java6Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class TitleBarTest extends BaseTest {
 
@@ -31,14 +24,12 @@ public class TitleBarTest extends BaseTest {
     private Button leftButton;
     private Button textButton;
     private Button customButton;
-    private Map<String, TitleBarButtonController> buttonControllers;
     private Activity activity;
 
     @Override
     public void beforeEach() {
         activity = newActivity();
         createButtons();
-        buttonControllers = new HashMap<>();
         uut = spy(new TitleBar(activity));
     }
 
@@ -103,6 +94,13 @@ public class TitleBarTest extends BaseTest {
         View component = new View(activity);
         uut.setComponent(component);
         verify(uut).addView(component);
+    }
+
+    @Test
+    public void addView_overflowIsEnabledForButtonsContainer() {
+        ActionMenuView buttonsContainer = mock(ActionMenuView.class);
+        uut.addView(buttonsContainer);
+        verify(buttonsContainer).setClipChildren(false);
     }
 
     @Test

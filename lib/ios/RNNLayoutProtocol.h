@@ -1,19 +1,25 @@
 #import "RNNLayoutInfo.h"
-#import "RNNViewControllerPresenter.h"
-#import "RNNLeafProtocol.h"
+#import "RNNBasePresenter.h"
+#import "RNNRootViewCreator.h"
+#import "RNNEventEmitter.h"
+
+typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @protocol RNNLayoutProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
 
 @required
 
-@property (nonatomic, retain) RNNBasePresenter* presenter;
-@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+						   creator:(id<RNNRootViewCreator>)creator
+						   options:(RNNNavigationOptions *)options
+					defaultOptions:(RNNNavigationOptions *)defaultOptions
+						 presenter:(RNNBasePresenter *)presenter
+					  eventEmitter:(RNNEventEmitter *)eventEmitter
+			  childViewControllers:(NSArray *)childViewControllers;
+
+- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild;
-
-- (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getCurrentLeaf;
 
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 
@@ -22,5 +28,7 @@
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)overrideOptions:(RNNNavigationOptions *)options;
+
+- (void)onChildWillAppear;
 
 @end

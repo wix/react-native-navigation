@@ -2,6 +2,7 @@
 #import <OCMock/OCMock.h>
 #import "RNNTabBarPresenter.h"
 #import "UITabBarController+RNNOptions.h"
+#import "RNNTabBarController.h"
 
 @interface RNNTabBarPresenterTest : XCTestCase
 
@@ -16,7 +17,7 @@
 - (void)setUp {
     [super setUp];
 	self.uut = [[RNNTabBarPresenter alloc] init];
-	self.bindedViewController = [OCMockObject partialMockForObject:[UITabBarController new]];
+	self.bindedViewController = [OCMockObject partialMockForObject:[RNNTabBarController new]];
 	[self.uut bindViewController:self.bindedViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
@@ -28,7 +29,7 @@
 	[[self.bindedViewController expect] rnn_setTabBarTranslucent:NO];
 	[[self.bindedViewController expect] rnn_setTabBarHideShadow:NO];
     [[self.bindedViewController expect] rnn_setTabBarStyle:UIBarStyleDefault];
-	[[self.bindedViewController expect] rnn_setTabBarVisible:YES];
+	[[self.bindedViewController expect] rnn_setTabBarVisible:YES animated:NO];
 	[self.uut applyOptions:emptyOptions];
 	[self.bindedViewController verify];
 }
@@ -47,19 +48,11 @@
 	[[self.bindedViewController expect] rnn_setTabBarTranslucent:NO];
 	[[self.bindedViewController expect] rnn_setTabBarHideShadow:YES];
 	[[self.bindedViewController expect] rnn_setTabBarStyle:UIBarStyleBlack];
-	[[self.bindedViewController expect] rnn_setTabBarVisible:NO];
+	[[self.bindedViewController expect] rnn_setTabBarVisible:NO animated:NO];
 	
 	[self.uut applyOptions:initialOptions];
 	[self.bindedViewController verify];
 }
 
-- (void)testApplyOptions_shouldApplyOptionsOnInit {
-	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	initialOptions.bottomTabs.currentTabIndex = [[IntNumber alloc] initWithValue:@(1)];
-	[[self.bindedViewController expect] rnn_setCurrentTabIndex:1];
-	
-	[self.uut applyOptionsOnInit:initialOptions];
-	[self.bindedViewController verify];
-}
 
 @end

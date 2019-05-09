@@ -167,6 +167,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 @property (nonatomic, copy) MMDrawerGestureCompletionBlock gestureStart;
 @property (nonatomic, copy) MMDrawerGestureCompletionBlock gestureCompletion;
 @property (nonatomic, assign, getter = isAnimatingDrawer) BOOL animatingDrawer;
+@property (nonatomic, strong) UIGestureRecognizer *pan;
 
 @end
 
@@ -873,7 +874,26 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             [childViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
         }
     }
+	if (self.rightDrawerViewController != nil) {
+		for (UIView * subview in self.rightDrawerViewController.view.subviews) {
+			subview.frame = self.view.bounds;
+		}
+	}
+	if (self.leftDrawerViewController != nil) {
+		for (UIView * subview in self.leftDrawerViewController.view.subviews) {
+			subview.frame = self.view.bounds;
+		}
+	}
 }
+
+-(bool)hasPan
+{
+    for (UIGestureRecognizer *recognizer in self.view.gestureRecognizers) {
+        if(recognizer == _pan) { return YES; }
+    }
+    return NO;
+}
+
 
 #pragma mark - Setters
 -(void)setRightDrawerViewController:(UIViewController *)rightDrawerViewController{
@@ -1012,6 +1032,18 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 -(void)setAnimatingDrawer:(BOOL)animatingDrawer{
     _animatingDrawer = animatingDrawer;
     [self.view setUserInteractionEnabled:!animatingDrawer];
+}
+
+- (void)setLeftSideEnabled:(BOOL)leftSideEnabled
+{
+    _leftSideEnabled = leftSideEnabled;
+    [self updatePanHandlersState];
+}
+
+- (void)setRightSideEnabled:(BOOL)rightSideEnabled
+{
+    _rightSideEnabled = rightSideEnabled;
+    [self updatePanHandlersState];
 }
 
 #pragma mark - Getters
@@ -1184,6 +1216,15 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     }
 }
 
+- (void)updatePanHandlersState
+{
+    if(_leftSideEnabled == NO && _rightSideEnabled == NO) {
+        if([self hasPan]) { [self.view removeGestureRecognizer:_pan]; }
+    } else {
+        if(![self hasPan]) { [self.view addGestureRecognizer:_pan]; }
+    }
+}
+
 #pragma mark - iOS 7 Status Bar Helpers
 -(UIViewController*)childViewControllerForStatusBarStyle{
     return [self childViewControllerForSide:self.openSide];
@@ -1343,9 +1384,9 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
 
 #pragma mark - Helpers
 -(void)setupGestureRecognizers{
-    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureCallback:)];
-    [pan setDelegate:self];
-    [self.view addGestureRecognizer:pan];
+    _pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureCallback:)];
+    [_pan setDelegate:self];
+    [self.view addGestureRecognizer:_pan];
     
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureCallback:)];
     [tap setDelegate:self];

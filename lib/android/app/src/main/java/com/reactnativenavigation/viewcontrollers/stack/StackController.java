@@ -162,7 +162,7 @@ public class StackController extends ParentController<StackLayout> {
             if (resolvedOptions.animations.push.enabled.isTrueOrUndefined()) {
                 if (resolvedOptions.animations.push.waitForRender.isTrue()) {
                     child.getView().setAlpha(0);
-                    child.setOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
+                    child.addOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
                         getView().removeView(toRemove.getView());
                         listener.onSuccess(child.getId());
                     }));
@@ -192,6 +192,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     public void setRoot(List<ViewController> children, CommandListener listener) {
+        animator.cancelPushAnimations();
         if (children.size() == 1) {
             backButtonHelper.clear(CollectionUtils.last(children));
             push(CollectionUtils.last(children), new CommandListenerAdapter() {
@@ -275,7 +276,7 @@ public class StackController extends ParentController<StackLayout> {
             return;
         }
 
-
+        animator.cancelPushAnimations();
         String currentControlId;
         for (int i = stack.size() - 2; i >= 0; i--) {
             currentControlId = stack.get(i).getId();
@@ -297,6 +298,7 @@ public class StackController extends ParentController<StackLayout> {
             return;
         }
 
+        animator.cancelPushAnimations();
         Iterator<String> iterator = stack.iterator();
         iterator.next();
         while (stack.size() > 2) {

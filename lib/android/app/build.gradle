@@ -1,13 +1,21 @@
 apply plugin: 'com.android.library'
 apply from: '../prepare-robolectric.gradle'
 
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+def DEFAULT_COMPILE_SDK_VERSION = 28
+def DEFAULT_MIN_SDK_VERSION = 19
+def DEFAULT_SUPPORT_LIB_VERSION = '28.0.0'
+def DEFAULT_TARGET_SDK_VERSION = 28
+
 android {
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 25
+        minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
+        targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
         versionCode 1
         versionName "1.0"
     }
@@ -81,13 +89,15 @@ allprojects { p ->
     }
 }
 
+def supportLibVersion = safeExtGet('supportLibVersion', DEFAULT_SUPPORT_LIB_VERSION)
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:support-v4:26.1.0'
+    implementation "com.android.support:design:${supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation "com.android.support:support-v4:${supportLibVersion}"
 
-    implementation 'com.github.wix-playground:ahbottomnavigation:2.4.8'
+    implementation 'com.github.wix-playground:ahbottomnavigation:2.4.9'
     implementation 'com.github.wix-playground:reflow-animator:1.0.4'
     implementation 'com.github.clans:fab:1.6.4'
 

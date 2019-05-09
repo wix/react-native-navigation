@@ -64,15 +64,17 @@ Navigation.mergeOptions(this.props.componentId, {
     style: 'light' | 'dark'
   },
   layout: {
+    direction: 'ltr', // Supported directions are: 'rtl', 'ltr'
     backgroundColor: 'white',
     orientation: ['portrait', 'landscape'] // An array of supported orientations
   },
-  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popOver', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
+  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popover', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
   topBar: {
     visible: true,
     animate: false, // Controls whether TopBar visibility changes should be animated
     hideOnScroll: true,
-    buttonColor: 'black',
+    leftButtonColor: 'black',
+    rightButtonColor: 'black',
     drawBehind: false,
     testID: 'topBar',
     title: {
@@ -140,7 +142,8 @@ Navigation.mergeOptions(this.props.componentId, {
     }
   },
   overlay: {
-    interceptTouchOutside: true
+    interceptTouchOutside: true,
+    handleKeyboardEvents: true
   },
   preview: {
     reactTag: 0, // result from findNodeHandle(ref)
@@ -192,14 +195,13 @@ Navigation.mergeOptions(this.props.componentId, {
   sideMenu: {
     left: {
       shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
-      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
-      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+      animationVelocity: 2500 // defaults to 840, high number is a faster sideMenu open/close animation
     },
     right: {
       shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
-      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
-      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+      animationVelocity: 2500 // defaults to 840, high number is a faster sideMenu open/close animation
     },
+    animationType: 'parallax', // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
     openGestureMode: 'entireScreen' | 'bezel'
   }
   bottomTabs: {
@@ -226,12 +228,15 @@ Navigation.mergeOptions(this.props.componentId, {
     visible: false
   },
   layout: {
-    topMargin: Navigation.constants().statusBarHeight, // Set the layout's top margin
+    topMargin: (await Navigation.constants()).statusBarHeight, // Set the layout's top margin
     orientation: ['portrait', 'landscape'] | ['sensorLandscape'], // An array of supported orientations
     componentBackgroundColor: 'red' // Set background color only for components, helps reduce overdraw if background color is set in default options.
   },
   topBar: {
     height: 70, // TopBar height in dp
+    backButton: {
+      color: 'red'
+    },
     borderColor: 'red',
     borderHeight: 1.3,
     elevation: 1.5, // TopBar elevation in dp
@@ -251,6 +256,26 @@ Navigation.mergeOptions(this.props.componentId, {
 }
 ```
 
+### RTL layout usage
+In order to set layout direction to RTL use following options:
+```javascript
+{
+  layout: {
+    direction: rtl
+  },
+  ...
+}
+```
+
+also __Android__ requires to set `supportsRTL` in _AndroidManifest.xml_
+```xml
+<application
+      android:name=".MainApplication"
++     android:supportsRtl="true"
+      ...
+      android:theme="@style/AppTheme">
+```
+
 ## Styling the StatusBar
 If you set any styles related to the Status Bar, make sure that in Xcode > project > Info.plist, the property `View controller-based status bar appearance` is set to `YES`.
 
@@ -263,12 +288,12 @@ If you'd like to use a custom font, you'll first have to edit your project.
 
 ## Custom tab icons
 
-* Android - add cooresponding resoltion icons into folders in android/app/src/main/res.
-For example, icon_name.png in each drawable-x folder.
-* iOS - drag and drop to Images.xcassets in Xcode.
-For example, image set icon_name in Images.xcassets with x1, x2, x3.
+* Android - add corresponding resolution icons into folders in `android/app/src/main/res`.
+For example, `icon_name.png` in each drawable-x folder.
+* iOS - drag and drop to `Images.xcassets` in Xcode.
+For example, image set `icon_name` in `Images.xcassets` with x1, x2, x3.
 
-Then, the tab icon can be defined by following syntax:
+Then, the tab icon can be defined with the following syntax:
 
 ```js
 bottomTab: {

@@ -1,10 +1,15 @@
 #import <React/RCTRootView.h>
 #import <React/RCTRootViewDelegate.h>
 
+typedef void (^RNNReactViewReadyCompletionBlock)(void);
+
 @interface RNNReactView : RCTRootView <RCTRootViewDelegate>
 
-@property (nonatomic, copy) void (^rootViewDidChangeIntrinsicSize)(CGSize intrinsicSize);
+- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties availableSize:(CGSize)availableSize reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 
-- (void)setAlignment:(NSString *)alignment;
+@property (nonatomic, copy) void (^rootViewDidChangeIntrinsicSize)(CGSize intrinsicSize);
+@property (nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
+
+- (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame;
 
 @end

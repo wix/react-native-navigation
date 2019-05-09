@@ -1,7 +1,6 @@
-
 #import "RNNNavigationController.h"
-#import "RNNModalAnimation.h"
 #import "RNNRootViewController.h"
+#import "InteractivePopGestureDelegate.h"
 
 const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
@@ -13,44 +12,9 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNNavigationControllerPresenter *)presenter {
-	self = [super init];
 
-	self.presenter = presenter;
-	[self.presenter bindViewController:self];
-	
-	self.defaultOptions = defaultOptions;
-	self.options = options;
-	
-	self.layoutInfo = layoutInfo;
-	
-	[self setViewControllers:childViewControllers];
-	
-	return self;
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	if (parent) {
-		[_presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
-	}
-}
-
-- (void)onChildWillAppear {
-	[_presenter applyOptions:self.resolveOptions];
-	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
-}
-
-- (RNNNavigationOptions *)resolveOptions {
-	return [(RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options] withDefault:self.defaultOptions];
-}
-
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
-	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
-}
-
-- (void)overrideOptions:(RNNNavigationOptions *)options {
-	[self.options overrideOptions:options];
+- (UIViewController *)getCurrentChild {
+	return self.topViewController;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -79,22 +43,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	}
 	
 	return [super popViewControllerAnimated:animated];
-}
-
-- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.resolveOptions.animations.showModal isDismiss:NO];
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.resolveOptions.animations.dismissModal isDismiss:YES];
-}
-
-- (UIViewController *)getCurrentChild {
-	return ((UIViewController<RNNParentProtocol>*)self.topViewController);
-}
-
-- (UIViewController<RNNLeafProtocol> *)getCurrentLeaf {
-	return [[self getCurrentChild] getCurrentLeaf];
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
