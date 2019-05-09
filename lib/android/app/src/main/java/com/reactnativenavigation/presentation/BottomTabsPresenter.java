@@ -139,10 +139,6 @@ public class BottomTabsPresenter {
     private void applyBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animationsOptions) {
         bottomTabs.setTitleState(options.titleDisplayMode.get(TitleState.SHOW_WHEN_ACTIVE));
         bottomTabs.setBackgroundColor(options.backgroundColor.get(Color.WHITE));
-        if (options.currentTabIndex.hasValue()) {
-            int tabIndex = options.currentTabIndex.get();
-            if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
-        }
         if (options.testId.hasValue()) bottomTabs.setTag(options.testId.get());
         if (options.currentTabId.hasValue()) {
             int tabIndex = bottomTabFinder.findByControllerId(options.currentTabId.get());
