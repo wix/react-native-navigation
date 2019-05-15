@@ -25,7 +25,7 @@ const dismissOverlay = (name) => Navigation.dismissOverlay(name);
 
 const popToRoot = (self) => Navigation.popToRoot(self.props.componentId);
 
-const mergeOptions = (self, options) => Navigation.mergeOptions(self.props.componentId, options);
+const mergeOptions = (selfOrCompId, options) => Navigation.mergeOptions(compId(selfOrCompId), options);
 
 const setStackRoot = (self, root) => Navigation.setStackRoot(self.props.componentId, root)
 

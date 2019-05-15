@@ -42,6 +42,7 @@
 @interface RNNCommandsHandlerTest : XCTestCase
 
 @property (nonatomic, strong) RNNCommandsHandler* uut;
+@property (nonatomic, strong) id modalManager;
 @property (nonatomic, strong) RNNRootViewController* vc1;
 @property (nonatomic, strong) RNNRootViewController* vc2;
 @property (nonatomic, strong) RNNRootViewController* vc3;
@@ -61,8 +62,9 @@
 	self.mainWindow = [OCMockObject partialMockForObject:[UIWindow new]];
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
+	self.modalManager = [OCMockObject partialMockForObject:[RNNModalManager new]];
 	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:nil componentRegistry:nil andBridge:nil]];
-	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:self.overlayManager mainWindow:_mainWindow];
+	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:self.modalManager overlayManager:self.overlayManager mainWindow:_mainWindow];
 	self.vc1 = [RNNRootViewController new];
 	self.vc2 = [RNNRootViewController new];
 	self.vc3 = [RNNRootViewController new];
@@ -312,5 +314,21 @@
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
 	[mockedVC verify];
 }
+
+- (void)testShowModal_shouldShowAnimated {
+	[self.uut setReadyToReceiveCommands:true];
+	self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	self.vc1.options.animations.showModal.enable = [[Bool alloc] initWithBOOL:YES];
+	
+	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
+	
+	[[self.modalManager expect] showModal:mockedVC animated:YES hasCustomAnimation:NO completion:[OCMArg any]];
+	[self.uut showModal:@{} commandId:@"showModal" completion:^(NSString *componentId) {
+		
+	}];
+	[self.modalManager verify];
+}
+
 
 @end
