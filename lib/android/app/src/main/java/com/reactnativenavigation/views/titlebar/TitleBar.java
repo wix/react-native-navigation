@@ -206,6 +206,10 @@ public class TitleBar extends Toolbar {
 
     private void setLeftButton(TitleBarButtonController button) {
         leftButtonController = button;
+        TextView title = findTitleTextView();
+        if (title != null) {
+            this.alignTextView(titleAlignment, title);
+        }
         button.applyNavigationIcon(this);
     }
 
