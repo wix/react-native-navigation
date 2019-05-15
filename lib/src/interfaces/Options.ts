@@ -236,6 +236,10 @@ export interface OptionsTopBarBackground {
    */
   component?: {
     name?: string;
+    /**
+     * Properties to pass down to the component
+     */
+    passProps?: object;
   };
   /**
    * Allows the NavBar to be translucent (blurred)
