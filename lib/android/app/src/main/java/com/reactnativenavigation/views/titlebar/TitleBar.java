@@ -220,6 +220,7 @@ public class TitleBar extends Toolbar {
     public void setHeight(int height) {
         int pixelHeight = UiUtils.dpToPx(getContext(), height);
         if (pixelHeight == getLayoutParams().height) return;
+        setPadding(getPaddingLeft(), UiUtils.getStatusBarHeight(getContext()) / 2, getPaddingRight(), getPaddingBottom());
         ViewGroup.LayoutParams lp = getLayoutParams();
         lp.height = pixelHeight;
         setLayoutParams(lp);
