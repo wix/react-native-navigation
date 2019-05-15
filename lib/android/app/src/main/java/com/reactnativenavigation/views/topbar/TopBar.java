@@ -36,6 +36,7 @@ import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
+import java.util.Collections;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -178,6 +179,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         root.addView(component, 0);
     }
 
+    @SuppressLint("RestrictedApi")
+    public String getCurrentBackgroundComponentName() {
+        if (!(this.component instanceof TopBarBackgroundView)) return "";
+        return ((TopBarBackgroundView) this.component).getComponentName();
+    }
+
     public void setTopTabFontFamily(int tabIndex, Typeface fontFamily) {
         topTabs.setFontFamily(tabIndex, fontFamily);
     }
@@ -208,8 +215,16 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setLeftButtons(leftButtons);
     }
 
+    public void clearLeftButtons() {
+        titleBar.setLeftButtons(Collections.emptyList());
+    }
+
     public void setRightButtons(List<TitleBarButtonController> rightButtons) {
         titleBar.setRightButtons(rightButtons);
+    }
+
+    public void clearRightButtons() {
+        titleBar.setRightButtons(Collections.emptyList());
     }
 
     public void setElevation(Double elevation) {
@@ -269,14 +284,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public void hideAnimate(AnimationOptions options, Runnable onAnimationEnd) {
         if (!visible()) return;
         animator.hide(options, onAnimationEnd);
-    }
-
-    public void clear() {
-        if (component != null) {
-            root.removeView(component);
-            component = null;
-        }
-        titleBar.clear();
     }
 
     public void clearTopTabs() {

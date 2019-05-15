@@ -204,7 +204,7 @@ public class StackPresenter {
 
         topBar.setBackgroundColor(options.background.color.get(Color.WHITE));
 
-        if (options.background.component.hasValue()) {
+        if (options.background.component.hasValue() && !options.background.component.name.toString().equals(topBar.getCurrentBackgroundComponentName())) {
             if (backgroundControllers.containsKey(component)) {
                 topBar.setBackgroundComponent(backgroundControllers.get(component).getView());
             } else {
@@ -269,6 +269,7 @@ public class StackPresenter {
             topBar.setRightButtons(rightButtonControllers);
         } else {
             topBar.setRightButtons(null);
+            topBar.clearRightButtons();
         }
 
         if (leftButtons != null) {
@@ -277,6 +278,7 @@ public class StackPresenter {
             topBar.setLeftButtons(leftButtonControllers);
         } else {
             topBar.setLeftButtons(null);
+            topBar.clearLeftButtons();
         }
 
         if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) {

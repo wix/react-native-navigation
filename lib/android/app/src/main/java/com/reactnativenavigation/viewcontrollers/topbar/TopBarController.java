@@ -24,12 +24,6 @@ public class TopBarController {
         return new TopBar(context, stackLayout);
     }
 
-    public void clear() {
-        if (topBar != null) {
-            topBar.clear();
-        }
-    }
-
     public TopBar getView() {
         return topBar;
     }
