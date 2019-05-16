@@ -3,7 +3,6 @@ package com.reactnativenavigation.react;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.RestrictTo;
 import android.view.MotionEvent;
 
 import com.facebook.react.ReactInstanceManager;
@@ -108,7 +107,6 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
         return reactContext == null ? null : reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
     public String getComponentName() {
         return componentName;
     }

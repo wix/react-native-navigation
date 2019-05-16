@@ -29,6 +29,7 @@ import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
@@ -179,10 +180,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         root.addView(component, 0);
     }
 
-    @SuppressLint("RestrictedApi")
     public String getCurrentBackgroundComponentName() {
-        if (!(this.component instanceof TopBarBackgroundView)) return "";
-        return ((TopBarBackgroundView) this.component).getComponentName();
+        return component instanceof ReactView ? ((ReactView) component).getComponentName() : "";
     }
 
     public void setTopTabFontFamily(int tabIndex, Typeface fontFamily) {
