@@ -17,4 +17,8 @@ public class ObjectUtils {
     public static boolean notNull(Object o) {
         return o != null;
     }
+
+    public static <T> boolean equalsNotNull(@Nullable T a, @Nullable T b) {
+        return a != null && a.equals(b);
+    }
 }

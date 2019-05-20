@@ -36,6 +36,7 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -352,6 +353,19 @@ public class StackPresenterTest extends BaseTest {
         verify(topBar).setLeftButtons(leftCaptor.capture());
         assertThat(leftCaptor.getValue().get(0).getButton().color).isEqualTo(options.topBar.leftButtonColor);
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
+    }
+
+    @Test
+    public void applyTopBarOptions_backgroundComponentIsCreatedOnceIfNameAndIdAreEqual() {
+        Options o = new Options();
+        o.topBar.background.component.name = new Text("comp");
+        o.topBar.background.component.componentId = new Text("compId");
+
+        uut.applyChildOptions(o, Mockito.mock(com.reactnativenavigation.views.Component.class));
+        assertThat(uut.getBackgroundComponents().size()).isOne();
+
+        uut.applyChildOptions(o, Mockito.mock(com.reactnativenavigation.views.Component.class));
+        assertThat(uut.getBackgroundComponents().size()).isOne();
     }
 
     @Test

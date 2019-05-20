@@ -29,7 +29,6 @@ import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
@@ -176,12 +175,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setBackgroundComponent(View component) {
+        if (this.component == component || component.getParent() != null) return;
         this.component = component;
         root.addView(component, 0);
-    }
-
-    public String getCurrentBackgroundComponentName() {
-        return component instanceof ReactView ? ((ReactView) component).getComponentName() : "";
     }
 
     public void setTopTabFontFamily(int tabIndex, Typeface fontFamily) {
@@ -283,6 +279,13 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public void hideAnimate(AnimationOptions options, Runnable onAnimationEnd) {
         if (!visible()) return;
         animator.hide(options, onAnimationEnd);
+    }
+
+    public void clearBackgroundComponent() {
+        if (component != null) {
+            root.removeView(component);
+            component = null;
+        }
     }
 
     public void clearTopTabs() {

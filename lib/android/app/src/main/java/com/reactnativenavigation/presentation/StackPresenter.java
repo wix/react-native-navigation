@@ -45,10 +45,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.reactnativenavigation.utils.CollectionUtils.filter;
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
-import static com.reactnativenavigation.utils.CollectionUtils.keyBy;
-import static com.reactnativenavigation.utils.CollectionUtils.merge;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class StackPresenter {
@@ -204,9 +201,10 @@ public class StackPresenter {
 
         topBar.setBackgroundColor(options.background.color.get(Color.WHITE));
 
-        if (options.background.component.hasValue() && !options.background.component.name.toString().equals(topBar.getCurrentBackgroundComponentName())) {
-            if (backgroundControllers.containsKey(component)) {
-                topBar.setBackgroundComponent(backgroundControllers.get(component).getView());
+        if (options.background.component.hasValue()) {
+            View createdComponent = findBackgroundComponent(options.background.component);
+            if (createdComponent != null) {
+                topBar.setBackgroundComponent(createdComponent);
             } else {
                 TopBarBackgroundViewController controller = new TopBarBackgroundViewController(activity, topBarBackgroundViewCreator);
                 controller.setWaitForRender(options.background.waitForRender);
@@ -215,6 +213,8 @@ public class StackPresenter {
                 controller.getView().setLayoutParams(new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
                 topBar.setBackgroundComponent(controller.getView());
             }
+        } else {
+            topBar.clearBackgroundComponent();
         }
 
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
@@ -231,6 +231,17 @@ public class StackPresenter {
         } else if (options.hideOnScroll.isFalseOrUndefined()) {
             topBar.disableCollapse();
         }
+    }
+
+    @Nullable
+    private View findBackgroundComponent(com.reactnativenavigation.parse.Component component) {
+        for (TopBarBackgroundViewController controller : backgroundControllers.values()) {
+            if (ObjectUtils.equalsNotNull(controller.getComponent().name.get(null), component.name.get(null)) &&
+                ObjectUtils.equalsNotNull(controller.getComponent().componentId.get(null), component.componentId.get(null))) {
+                return controller.getView();
+            }
+        }
+        return null;
     }
 
     private void setInitialTopBarVisibility(TopBarOptions options) {
@@ -268,7 +279,6 @@ public class StackPresenter {
             componentRightButtons.put(child, keyBy(rightButtonControllers, TitleBarButtonController::getButtonInstanceId));
             topBar.setRightButtons(rightButtonControllers);
         } else {
-            topBar.setRightButtons(null);
             topBar.clearRightButtons();
         }
 
@@ -277,7 +287,6 @@ public class StackPresenter {
             componentLeftButtons.put(child, keyBy(leftButtonControllers, TitleBarButtonController::getButtonInstanceId));
             topBar.setLeftButtons(leftButtonControllers);
         } else {
-            topBar.setLeftButtons(null);
             topBar.clearLeftButtons();
         }
 
