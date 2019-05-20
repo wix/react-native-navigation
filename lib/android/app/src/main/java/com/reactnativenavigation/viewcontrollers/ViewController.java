@@ -274,7 +274,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @Override
     public void onChildViewAdded(View parent, View child) {
-        yellowBoxDelegate.onChildViewAdded(parent, child);
+        // yellowBoxDelegate.onChildViewAdded(parent, child);
     }
 
     @Override
