@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
@@ -22,6 +23,8 @@ import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import static com.reactnativenavigation.utils.UiUtils.runOnPreDrawOnce;
 
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
@@ -63,10 +66,6 @@ public class TitleBar extends Toolbar {
         return super.getTitle() == null ? "" : (String) super.getTitle();
     }
 
-    public void setTitleTextColor(Colour color) {
-        if (color.hasValue()) setTitleTextColor(color.get());
-    }
-
     public void setComponent(View component) {
         clearTitle();
         clearSubtitle();
@@ -106,9 +105,10 @@ public class TitleBar extends Toolbar {
         subtitleAlignment = alignment;
     }
 
-    private void alignTextView(Alignment alignment, TextView view) {
+    public void alignTextView(Alignment alignment, TextView view) {
+        if (StringUtils.isEmpty(view.getText())) return;
         Integer direction = view.getParent().getLayoutDirection();
-        Boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
+        boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
 
         if (alignment == Alignment.Center) {
             //noinspection IntegerDivisionInFloatingPointContext
@@ -206,6 +206,7 @@ public class TitleBar extends Toolbar {
 
     private void setLeftButton(TitleBarButtonController button) {
         leftButtonController = button;
+        runOnPreDrawOnce(findTitleTextView(), title -> alignTextView(titleAlignment, title));
         button.applyNavigationIcon(this);
     }
 

@@ -1036,12 +1036,6 @@ public class StackControllerTest extends BaseTest {
         verify(presenter).applyChildOptions(any(), eq(component));
     }
 
-    @Test
-    public void destroy() {
-        uut.destroy();
-        verify(topBarController, times(1)).clear();
-    }
-
     private void assertContainsOnlyId(String... ids) {
         assertThat(uut.size()).isEqualTo(ids.length);
         assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, String>) ViewController::getId).containsOnly(ids);

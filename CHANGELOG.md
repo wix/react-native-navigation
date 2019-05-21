@@ -1,4 +1,20 @@
 # Changelog
+# 2.19.1
+## Fixed
+### Android
+* Fix missing absolute positioned views [#ecadcb0](https://github.com/wix/react-native-navigation/commit/ecadcb0f352d5c96944966deb09a7c2d570ccb2d) by [guyca](https://github.com/guyca)
+
+# 2.19.0
+## Added
+* Add passProps to component typings file [#42fd86d](https://github.com/wix/react-native-navigation/commit/42fd86d654feac83177c272b19276e71c08ef75a) by [Andarius](https://github.com/Andarius)
+* Add missing topBar options [#5566ffd](https://github.com/wix/react-native-navigation/commit/5566ffd47c65f7bfc608f3a0f0b19814039b541e) by [retyui](https://github.com/retyui)
+
+## Fixed
+### iOS
+* Fixes broken modals animations [#42e26d7](https://github.com/wix/react-native-navigation/commit/42e26d77b8d231debe0489dbe874fc06d9a97589) by [yogevbd](https://github.com/yogevbd)
+
+### Android
+* Fixed buggy currentTabIndex when calling setRoot multiple times [#cd182f4](https://github.com/wix/react-native-navigation/commit/cd182f4693a6a4bd943eddf9a15706d943c88d4e) by [guyca](https://github.com/guyca)
 
 # 2.18.5
 ## Fixed
