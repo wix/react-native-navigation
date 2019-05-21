@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
@@ -105,6 +106,7 @@ public class TitleBar extends Toolbar {
     }
 
     public void alignTextView(Alignment alignment, TextView view) {
+        if (StringUtils.isEmpty(view.getText())) return;
         Integer direction = view.getParent().getLayoutDirection();
         boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
 
