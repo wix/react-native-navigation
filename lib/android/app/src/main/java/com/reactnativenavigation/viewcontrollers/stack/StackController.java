@@ -133,18 +133,6 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public void destroy() {
-        topBarController.clear();
-        super.destroy();
-    }
-
-    @Override
-    public void clearOptions() {
-        super.clearOptions();
-        topBarController.clear();
-    }
-
-    @Override
     public void onChildDestroyed(Component child) {
         super.onChildDestroyed(child);
         presenter.onChildDestroyed(child);
