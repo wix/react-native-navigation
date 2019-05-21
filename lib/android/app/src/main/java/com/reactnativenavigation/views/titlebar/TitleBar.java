@@ -23,6 +23,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import static com.reactnativenavigation.utils.UiUtils.runOnPreDrawOnce;
+
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
     public static final int DEFAULT_LEFT_MARGIN = 16;
@@ -61,10 +63,6 @@ public class TitleBar extends Toolbar {
 
     public String getTitle() {
         return super.getTitle() == null ? "" : (String) super.getTitle();
-    }
-
-    public void setTitleTextColor(Colour color) {
-        if (color.hasValue()) setTitleTextColor(color.get());
     }
 
     public void setComponent(View component) {
@@ -106,9 +104,9 @@ public class TitleBar extends Toolbar {
         subtitleAlignment = alignment;
     }
 
-    private void alignTextView(Alignment alignment, TextView view) {
+    public void alignTextView(Alignment alignment, TextView view) {
         Integer direction = view.getParent().getLayoutDirection();
-        Boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
+        boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
 
         if (alignment == Alignment.Center) {
             //noinspection IntegerDivisionInFloatingPointContext
@@ -206,6 +204,7 @@ public class TitleBar extends Toolbar {
 
     private void setLeftButton(TitleBarButtonController button) {
         leftButtonController = button;
+        runOnPreDrawOnce(findTitleTextView(), title -> alignTextView(titleAlignment, title));
         button.applyNavigationIcon(this);
     }
 
