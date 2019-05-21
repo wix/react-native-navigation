@@ -261,6 +261,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[newVc renderTreeAndWait:[newVc.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
 		id transitioningDelegate;
 
+		// TODO: Move this into modalmanager (or maybe even into RNNAnimationsTransitionDelegate if possible) to reduce integration surface area
 		if ([newVc.resolveOptions.animations.showModal.enableDeck getWithDefaultValue:NO]) {
 #ifdef HAS_DECK_TRANSITION
 			transitioningDelegate = [[DeckTransitioningDelegate alloc]
@@ -270,16 +271,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 										presentCompletion:nil
 										dismissDuration:[NSNumber numberWithDouble:[newVc.resolveOptions.animations.showModal.deckDismissDuration getWithDefaultValue:0.3]]
 										dismissAnimation:nil
-										dismissCompletion:^(bool completed) {
-											if (newVc.layoutInfo.componentId != nil) {
-												[self dismissModal:newVc.layoutInfo.componentId
-													mergeOptions:@{ @"completed": @true }
-														completion:^() { }
-														rejection:^(NSString *code, NSString *message, NSError *error) { }
-												];
-											} else {
-												[self dismissAllModals:@{} completion:^() { }];
-											}
+										dismissCompletion:^(BOOL completed) {
+											[_modalManager
+												dismissModal:newVc
+												completion:^() { }
+												dismissedWithSwipe: completed
+											];
 										}
 									];
 #else
@@ -319,7 +316,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal commandId:commandId params:@{@"componentId": componentId}];
 	}];
 	
-	[_modalManager dismissModal:modalToDismiss completion:completion dismissedWithSwipe:mergeOptions[@"completed"] ];
+	[_modalManager dismissModal:modalToDismiss completion:completion dismissedWithSwipe:false ];
 	
 	[CATransaction commit];
 }

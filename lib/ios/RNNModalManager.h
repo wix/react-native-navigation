@@ -18,7 +18,7 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, N
 
 - (void)showModal:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
 - (void)showModal:(UIViewController *)viewController animated:(BOOL)animated hasCustomAnimation:(BOOL)hasCustomAnimation transitioningDelegate:(id)transitioningDelegate completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
-- (void)dismissModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion;
+- (void)dismissModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion dismissedWithSwipe:(BOOL)dismissedWithSwipe;
 - (void)dismissAllModalsAnimated:(BOOL)animated;
 
 @end
