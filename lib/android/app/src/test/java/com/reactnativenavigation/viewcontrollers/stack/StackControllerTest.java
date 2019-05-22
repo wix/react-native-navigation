@@ -288,8 +288,6 @@ public class StackControllerTest extends BaseTest {
 
         uut.setRoot(Collections.singletonList(child2), new CommandListenerAdapter());
         uut.setRoot(Collections.singletonList(child3), new CommandListenerAdapter());
-        animator.endPushAnimation(child2.getView());
-        animator.endPushAnimation(child3.getView());
 
         assertContainsOnlyId(child3.getId());
     }

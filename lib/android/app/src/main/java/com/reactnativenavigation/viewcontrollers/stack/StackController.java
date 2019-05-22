@@ -183,18 +183,18 @@ public class StackController extends ParentController<StackLayout> {
         animator.cancelPushAnimations();
         if (children.size() == 1) {
             backButtonHelper.clear(CollectionUtils.last(children));
+            clearStack();
             push(CollectionUtils.last(children), new CommandListenerAdapter() {
                 @Override
                 public void onSuccess(String childId) {
-                    removeChildrenBellowTop();
                     listener.onSuccess(childId);
                 }
             });
         } else {
+            clearStack();
             push(CollectionUtils.last(children), new CommandListenerAdapter() {
                 @Override
                 public void onSuccess(String childId) {
-                    removeChildrenBellowTop();
                     for (int i = 0; i < children.size() - 1; i++) {
                         stack.set(children.get(i).getId(), children.get(i), i);
                         children.get(i).setParentController(StackController.this);
@@ -204,20 +204,19 @@ public class StackController extends ParentController<StackLayout> {
                             backButtonHelper.addToPushedChild(children.get(i));
                         }
                     }
+                    backButtonHelper.addToPushedChild(CollectionUtils.last(children));
                     listener.onSuccess(childId);
                 }
             });
         }
     }
 
-    private void removeChildrenBellowTop() {
+    private void clearStack() {
         Iterator<String> iterator = stack.iterator();
-        while (stack.size() > 1) {
+        while (iterator.hasNext()) {
             ViewController controller = stack.get(iterator.next());
-            if (!stack.isTop(controller.getId())) {
-                stack.remove(iterator, controller.getId());
-                controller.destroy();
-            }
+            stack.remove(iterator, controller.getId());
+            controller.destroy();
         }
     }
 
