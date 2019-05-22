@@ -181,34 +181,20 @@ public class StackController extends ParentController<StackLayout> {
 
     public void setRoot(List<ViewController> children, CommandListener listener) {
         animator.cancelPushAnimations();
-        if (children.size() == 1) {
-            backButtonHelper.clear(CollectionUtils.last(children));
-            clearStack();
-            push(CollectionUtils.last(children), new CommandListenerAdapter() {
-                @Override
-                public void onSuccess(String childId) {
-                    listener.onSuccess(childId);
+        clearStack();
+        push(CollectionUtils.last(children), new CommandListenerAdapter() {
+            @Override
+            public void onSuccess(String childId) {
+                for (int i = 0; i < children.size() - 1; i++) {
+                    stack.set(children.get(i).getId(), children.get(i), i);
+                    children.get(i).setParentController(StackController.this);
                 }
-            });
-        } else {
-            clearStack();
-            push(CollectionUtils.last(children), new CommandListenerAdapter() {
-                @Override
-                public void onSuccess(String childId) {
-                    for (int i = 0; i < children.size() - 1; i++) {
-                        stack.set(children.get(i).getId(), children.get(i), i);
-                        children.get(i).setParentController(StackController.this);
-                        if (i == 0) {
-                            backButtonHelper.clear(children.get(i));
-                        } else {
-                            backButtonHelper.addToPushedChild(children.get(i));
-                        }
-                    }
-                    backButtonHelper.addToPushedChild(CollectionUtils.last(children));
-                    listener.onSuccess(childId);
-                }
-            });
-        }
+
+                backButtonHelper.clear(children.get(0));
+                backButtonHelper.addToPushedChild(CollectionUtils.last(children));
+                listener.onSuccess(childId);
+            }
+        });
     }
 
     private void clearStack() {
