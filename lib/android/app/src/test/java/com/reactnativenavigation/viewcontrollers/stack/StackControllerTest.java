@@ -295,6 +295,19 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void setRoot_doesNotCrashWhenCalledWithCurrentChild() {
+        disablePushAnimation(child1);
+        uut.setRoot(Collections.singletonList(child1), new CommandListenerAdapter());
+
+        ViewController childWithSameId = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
+
+        disablePushAnimation(childWithSameId);
+        uut.setRoot(Collections.singletonList(childWithSameId), new CommandListenerAdapter());
+
+        assertContainsOnlyId(childWithSameId.getId());
+    }
+
+    @Test
     public synchronized void pop() {
         disablePushAnimation(child1, child2);
         uut.push(child1, new CommandListenerAdapter());

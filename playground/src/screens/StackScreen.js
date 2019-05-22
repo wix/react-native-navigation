@@ -12,7 +12,8 @@ const {
   PUSH_CUSTOM_BACK_BTN,
   CUSTOM_BACK_BTN,
   SEARCH_BTN,
-  SET_STACK_ROOT_BTN
+  SET_STACK_ROOT_BTN,
+  SET_STACK_ROOT_WITH_ID_BTN
 } = require('../testIDs');
 
 class StackScreen extends React.Component {
@@ -39,6 +40,7 @@ class StackScreen extends React.Component {
         <Button label='Pop None Existent Screen' testID={POP_NONE_EXISTENT_SCREEN_BTN} onPress={this.popNoneExistent} />
         <Button label='Push Custom Back Button' testID={PUSH_CUSTOM_BACK_BTN} onPress={this.pushCustomBackButton} />
         <Button label='Set Stack Root' testID={SET_STACK_ROOT_BTN} onPress={this.setStackRoot} />
+        <Button label='Set Stack Root With ID' testID={SET_STACK_ROOT_WITH_ID_BTN} onPress={this.setStackRootWithId} />
         <Button label='Search' testID={SEARCH_BTN} onPress={this.search} />
       </Root>
     );
@@ -73,6 +75,10 @@ class StackScreen extends React.Component {
     component(Screens.Pushed, { topBar: { title: { text: 'Screen A' } } }),
     component(Screens.Pushed, { topBar: { title: { text: 'Screen B' } } }),
   ]));
+
+  setStackRootWithId = () => Navigation.setStackRoot(this,
+    { component: { id: "StackRootWithId", name: Screens.Stack, options: { topBar: { title: { text: 'Stack With ID' } } } } },
+  );
 }
 
 module.exports = StackScreen;
