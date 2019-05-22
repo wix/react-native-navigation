@@ -1,5 +1,7 @@
 package com.reactnativenavigation.utils;
 
+import android.support.annotation.Nullable;
+
 public class StringUtils {
 
 	@SuppressWarnings("StringEquality")
@@ -9,4 +11,8 @@ public class StringUtils {
 		}
 		return s1.equals(s2);
 	}
+
+    public static boolean isEmpty(@Nullable CharSequence s) {
+        return s == null || s.length() == 0;
+    }
 }

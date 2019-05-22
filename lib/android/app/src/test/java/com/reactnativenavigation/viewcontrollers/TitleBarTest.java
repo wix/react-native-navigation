@@ -1,22 +1,34 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
-import android.support.v7.widget.*;
-import android.view.*;
+import android.app.Activity;
+import android.support.v7.widget.ActionMenuView;
+import android.view.View;
+import android.widget.TextView;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.parse.params.*;
-import com.reactnativenavigation.react.*;
-import com.reactnativenavigation.utils.*;
-import com.reactnativenavigation.views.titlebar.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.react.Constants;
+import com.reactnativenavigation.react.ReactView;
+import com.reactnativenavigation.utils.CollectionUtils;
+import com.reactnativenavigation.views.titlebar.TitleBar;
 
-import org.junit.*;
+import org.junit.Test;
+import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import static com.reactnativenavigation.utils.TitleBarHelper.*;
-import static org.assertj.core.api.Java6Assertions.*;
-import static org.mockito.Mockito.*;
+import static com.reactnativenavigation.utils.TitleBarHelper.createButtonController;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class TitleBarTest extends BaseTest {
 
@@ -80,6 +92,18 @@ public class TitleBarTest extends BaseTest {
         uut.setLeftButtons(new ArrayList<>());
         uut.setRightButtons(rightButtons(textButton));
         assertThat(uut.getNavigationIcon()).isNull();
+    }
+
+    @Test
+    public void setLeftButton_titleIsAligned() {
+        uut.setTitle("Title");
+        TextView title = new TextView(activity);
+        uut.addView(title);
+        when(uut.findTitleTextView()).thenReturn(title);
+
+        uut.setLeftButtons(Collections.singletonList(Mockito.mock(TitleBarButtonController.class)));
+        dispatchPreDraw(title);
+        verify(uut).alignTextView(any(), eq(title));
     }
 
     @Test

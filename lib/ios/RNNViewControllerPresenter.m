@@ -5,6 +5,7 @@
 #import "RNNReactView.h"
 #import "RNNCustomTitleView.h"
 #import "RNNTitleViewHelper.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @interface RNNViewControllerPresenter() {
 	RNNReactView* _customTitleView;
@@ -15,16 +16,6 @@
 @end
 
 @implementation RNNViewControllerPresenter
-
-- (instancetype)init {
-	self = [super init];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(cleanReactLeftovers)
-												 name:RCTJavaScriptWillStartLoadingNotification
-											   object:nil];
-	
-	return self;
-}
 
 - (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
 	self = [self init];
@@ -175,21 +166,10 @@
 	if (options.topBar.title.component.name.hasValue) {
 		_customTitleView = (RNNReactView*)[_componentRegistry createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
 		_customTitleView.backgroundColor = UIColor.clearColor;
-		
 		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
-		[_customTitleView setAlignment:alignment];
-		
-		BOOL isCenter = [alignment isEqualToString:@"center"];
-		__weak RNNReactView *weakTitleView = _customTitleView;
-		CGRect frame = viewController.navigationController.navigationBar.bounds;
-		[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
-			if (isCenter) {
-				[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
-			} else {
-				[weakTitleView setFrame:frame];
-			}
-		}];
-		
+		[_customTitleView setAlignment:alignment inFrame:viewController.navigationController.navigationBar.frame];
+
+		viewController.navigationItem.titleView = nil;
 		viewController.navigationItem.titleView = _customTitleView;
 	} else {
 		[_customTitleView removeFromSuperview];
@@ -219,8 +199,5 @@
 	[_componentRegistry clearComponentsForParentId:self.bindedComponentId];
 }
 
-- (void)cleanReactLeftovers {
-	_customTitleView = nil;
-}
 
 @end

@@ -1,16 +1,9 @@
 {
   "name": "react-native-navigation",
-  "version": "2.16.0",
+  "version": "2.20.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
-  "author": "Daniel Zlotin <zlotindaniel@gmail.com>",
-  "contributors": [
-    "Tal Kol <talkol@gmail.com>",
-    "Guy Carmeli <guyc@wix.com>",
-    "Ran Greenberg <rang@wix.com>",
-    "Artal Druk <artald@wix.com>"
-  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -60,21 +53,23 @@
     "tslib": "1.9.3"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-export-default-from": "7.2.0",
+    "@babel/plugin-proposal-export-namespace-from": "7.2.0",
     "@types/hoist-non-react-statics": "^3.0.1",
     "@types/jest": "23.x.x",
     "@types/lodash": "4.x.x",
     "@types/react": "16.x.x",
     "@types/react-native": "0.57.7",
     "@types/react-test-renderer": "16.x.x",
-    "jsc-android": "236355.x.x",
-    "detox": "9.0.6",
-    "react-native-ui-lib": "3.x.x",
+    "detox": "12.x.x",
+    "react-native-ui-lib": "3.24.2",
     "handlebars": "4.x.x",
-    "jest": "23.x.x",
-    "metro-react-native-babel-preset": "0.50.0",
-    "react": "16.6.1",
-    "react-native": "0.57.7",
-    "react-native-typescript-transformer": "^1.2.10",
+    "jest": "24.0.0-alpha.6",
+    "jsc-android": "236355.x.x",
+    "metro-react-native-babel-preset": "0.52.x",
+    "react": "16.8.3",
+    "react-native": "0.59.5",
+    "react-native-typescript-transformer": "1.2.12",
     "react-native-view-overflow": "0.0.3",
     "react-redux": "5.x.x",
     "react-test-renderer": "16.6.1",
@@ -120,7 +115,7 @@
   },
   "detox": {
     "test-runner": "jest",
-    "specs": "e2e",
+    "specs": "",
     "configurations": {
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",

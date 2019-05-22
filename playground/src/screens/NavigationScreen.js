@@ -9,11 +9,11 @@ const {
   EXTERNAL_COMP_BTN,
   SHOW_STATIC_EVENTS_SCREEN,
   SHOW_ORIENTATION_SCREEN,
-  TOP_BAR_ELEMENT
+  SET_ROOT_BTN
 } = require('../testIDs');
 const Screens = require('./Screens');
 
-class NavigationScreen extends React.Component {
+class NavigationScreen  extends React.Component {
   static options() {
     return {
       topBar: {
@@ -32,6 +32,7 @@ class NavigationScreen extends React.Component {
   render() {
     return (
       <Root componentId={this.props.componentId}>
+        <Button label='Set Root' testID={SET_ROOT_BTN} onPress={this.setRoot} />
         <Button label='Modal' testID={MODAL_BTN} onPress={this.showModal} />
         <Button label='Overlay' testID={OVERLAY_BTN} onPress={this.showOverlay} />
         <Button label='External Component' testID={EXTERNAL_COMP_BTN} onPress={this.externalComponent} />
@@ -45,12 +46,13 @@ class NavigationScreen extends React.Component {
     );
   }
 
+  setRoot = () => Navigation.showModal(Screens.SetRoot);
   showModal = () => Navigation.showModal(Screens.Modal);
   showOverlay = () => Navigation.showModal(Screens.Overlay);
   externalComponent = () => Navigation.showModal(Screens.ExternalComponent);
   pushStaticEventsScreen = () => Navigation.showModal(Screens.EventsScreen)
   orientation = () => Navigation.showModal(Screens.Orientation);
-  preview = ({ reactTag }) => {
+  preview = ({reactTag}) => {
     Navigation.push(this.props.componentId, {
       component: {
         name: Screens.Pushed,

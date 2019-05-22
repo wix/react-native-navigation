@@ -1,6 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNStore.h"
+
+typedef void (^RNNTransitionCompletionBlock)(void);
+typedef void (^RNNTransitionWithComponentIdCompletionBlock)(NSString *componentId);
+typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, NSError *error);
 
 @protocol RNNModalManagerDelegate <NSObject>
 

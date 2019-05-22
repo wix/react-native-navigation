@@ -2,7 +2,6 @@ package com.reactnativenavigation.utils;
 
 import android.content.*;
 import android.graphics.*;
-import android.test.mock.*;
 
 import com.reactnativenavigation.*;
 
@@ -12,47 +11,45 @@ import org.mockito.*;
 import static org.assertj.core.api.Java6Assertions.*;
 
 public class TypefaceLoaderTest extends BaseTest {
+    private TypefaceLoader uut;
+    @Override
+    public void beforeEach() {
+        Context context = Mockito.mock(Context.class);
+        uut = Mockito.spy(new TypefaceLoader(context));
+    }
 
     @Test
     public void loadTypefaceNoAssets() {
-        Context context = new MockContext();
-        TypefaceLoader mockedLoader = Mockito.spy(new TypefaceLoader(context));
-        Mockito.doReturn(null).when(mockedLoader).getTypefaceFromAssets("Helvetica-Bold");
+        Mockito.doReturn(null).when(uut).getTypefaceFromAssets("Helvetica-Bold");
 
-        Typeface typeface = mockedLoader.getTypeFace("Helvetica-Bold");
+        Typeface typeface = uut.getTypeFace("Helvetica-Bold");
         assertThat(typeface).isNotNull();
         assertThat(typeface.getStyle()).isEqualTo(Typeface.BOLD);
     }
 
     @Test
     public void loadTypefaceWithAssets() {
-        Context context = new MockContext();
-        TypefaceLoader mockedLoader = Mockito.spy(new TypefaceLoader(context));
-        Mockito.doReturn(Typeface.create("Helvetica-Italic", Typeface.ITALIC)).when(mockedLoader).getTypefaceFromAssets("Helvetica-Italic");
+        Mockito.doReturn(Typeface.create("Helvetica-Italic", Typeface.ITALIC)).when(uut).getTypefaceFromAssets("Helvetica-Italic");
 
-        Typeface typeface = mockedLoader.getTypeFace("Helvetica-Italic");
+        Typeface typeface = uut.getTypeFace("Helvetica-Italic");
         assertThat(typeface).isNotNull();
         assertThat(typeface.getStyle()).isEqualTo(Typeface.ITALIC);
     }
 
     @Test
     public void loadTypefaceWrongName() {
-        Context context = new MockContext();
-        TypefaceLoader mockedLoader = Mockito.spy(new TypefaceLoader(context));
-        Mockito.doReturn(null).when(mockedLoader).getTypefaceFromAssets("Some-name");
+        Mockito.doReturn(null).when(uut).getTypefaceFromAssets("Some-name");
 
-        Typeface typeface = mockedLoader.getTypeFace("Some-name");
+        Typeface typeface = uut.getTypeFace("Some-name");
         assertThat(typeface).isNotNull();
         assertThat(typeface.getStyle()).isEqualTo(Typeface.NORMAL);
     }
 
     @Test
     public void loadTypefaceNull() {
-        Context context = new MockContext();
-        TypefaceLoader mockedLoader = Mockito.spy(new TypefaceLoader(context));
-        Mockito.doReturn(null).when(mockedLoader).getTypefaceFromAssets(null);
+        Mockito.doReturn(null).when(uut).getTypefaceFromAssets(null);
 
-        Typeface typeface = mockedLoader.getTypeFace(null);
+        Typeface typeface = uut.getTypeFace(null);
         assertThat(typeface).isNull();
     }
 }
