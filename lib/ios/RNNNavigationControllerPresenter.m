@@ -9,6 +9,7 @@
 	RNNReactComponentRegistry* _componentRegistry;
 	UIView* _customTopBar;
 	UIView* _customTopBarBackground;
+	RNNReactView* _customTopBarBackgroundReactView;
 }
 
 @end
@@ -46,6 +47,10 @@
 	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:nil] color:[options.topBar.title.color getWithDefaultValue:nil]];
 	[navigationController rnn_setBackButtonColor:[options.topBar.backButton.color getWithDefaultValue:nil]];
 	[navigationController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
+	
+	if (options.topBar.background.component.name.hasValue) {
+		[self presentBackgroundComponent];
+	}
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
@@ -203,15 +208,9 @@
 	}
 	if (options.topBar.background.component.name.hasValue) {
 		NSString* currentChildComponentId = [navigationController getCurrentChild].layoutInfo.componentId;
-		RCTRootView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.background.component parentComponentId:currentChildComponentId reactViewReadyBlock:readyBlock];
+		RNNReactView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.background.component parentComponentId:currentChildComponentId reactViewReadyBlock:readyBlock];
+		_customTopBarBackgroundReactView = reactView;
 		
-		if (_customTopBarBackground) {
-			[_customTopBarBackground removeFromSuperview];
-		}
-		RNNCustomTitleView* customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
-		_customTopBarBackground = customTopBarBackground;
-		
-		[navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
 	} else {
 		[_customTopBarBackground removeFromSuperview];
 		_customTopBarBackground = nil;
@@ -219,6 +218,17 @@
 			readyBlock();
 		}
 	}
+}
+
+- (void)presentBackgroundComponent {
+	RNNNavigationController* navigationController = self.bindedViewController;
+	if (_customTopBarBackground) {
+		[_customTopBarBackground removeFromSuperview];
+	}
+	RNNCustomTitleView* customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:navigationController.navigationBar.bounds subView:_customTopBarBackgroundReactView alignment:@"fill"];
+	_customTopBarBackground = customTopBarBackground;
+	
+	[navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
 }
 
 - (void)dealloc {
