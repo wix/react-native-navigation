@@ -47,10 +47,6 @@
 	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:nil] color:[options.topBar.title.color getWithDefaultValue:nil]];
 	[navigationController rnn_setBackButtonColor:[options.topBar.backButton.color getWithDefaultValue:nil]];
 	[navigationController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
-	
-	if (options.topBar.background.component.name.hasValue) {
-		[self presentBackgroundComponent];
-	}
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
@@ -58,6 +54,12 @@
 	
 	RNNNavigationController* navigationController = self.bindedViewController;
 	[navigationController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
+}
+
+- (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
+	if (options.topBar.background.component.name.hasValue) {
+		[self presentBackgroundComponent];
+	}
 }
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options {
