@@ -173,7 +173,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
     
     NSArray *childViewControllers = [_controllerFactory createChildrenLayout:children];
     for (UIViewController<RNNLayoutProtocol>* viewController in childViewControllers) {
-        [viewController renderTreeAndWait:viewController.resolveOptions.animations.setStackRoot.waitForRender perform:nil];
+        [viewController renderTreeAndWait:NO perform:nil];
     }
     
     UIViewController *newVC = childViewControllers.lastObject;
