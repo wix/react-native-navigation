@@ -4,6 +4,7 @@ import { ComponentEventsObserver } from './ComponentEventsObserver';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { EventSubscription } from '../interfaces/EventSubscription';
 import { Store } from '../components/Store';
+import { ComponentDidAppearEvent } from '../interfaces/ComponentEvents';
 
 describe('ComponentEventsObserver', () => {
   const mockEventsReceiver = new NativeEventsReceiver();
@@ -86,7 +87,7 @@ describe('ComponentEventsObserver', () => {
       willUnmountFn();
     }
 
-    componentDidAppear(event: object) {
+    componentDidAppear(event: ComponentDidAppearEvent) {
       didAppearFn(event);
     }
 
