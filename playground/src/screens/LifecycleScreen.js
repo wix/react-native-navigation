@@ -37,7 +37,9 @@ class LifecycleScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    alert('componentWillUnmount'); // eslint-disable-line no-alert
+    setTimeout(() => {
+      alert('componentWillUnmount'); // eslint-disable-line no-alert
+    }, 100); 
   }
 
   navigationButtonPressed(id) {

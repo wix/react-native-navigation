@@ -12,6 +12,10 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationController
 
+- (void)viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	[self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
+}
 
 - (UIViewController *)getCurrentChild {
 	return self.topViewController;

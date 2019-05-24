@@ -21,23 +21,27 @@ export class Commands {
   public setRoot(simpleApi: LayoutRoot) {
     const input = _.cloneDeep(simpleApi);
     const root = this.layoutTreeParser.parse(input.root);
-    this.layoutTreeCrawler.crawl(root);
 
     const modals = _.map(input.modals, (modal) => {
-      const modalLayout = this.layoutTreeParser.parse(modal);
-      this.layoutTreeCrawler.crawl(modalLayout);
-      return modalLayout;
+      return this.layoutTreeParser.parse(modal);
     });
 
     const overlays = _.map(input.overlays, (overlay) => {
-      const overlayLayout = this.layoutTreeParser.parse(overlay);
-      this.layoutTreeCrawler.crawl(overlayLayout);
-      return overlayLayout;
+      return this.layoutTreeParser.parse(overlay);
     });
 
     const commandId = this.uniqueIdProvider.generate('setRoot');
-    const result = this.nativeCommandsSender.setRoot(commandId, { root, modals, overlays });
     this.commandsObserver.notify('setRoot', { commandId, layout: { root, modals, overlays } });
+
+    this.layoutTreeCrawler.crawl(root);
+    modals.forEach(modalLayout => {
+      this.layoutTreeCrawler.crawl(modalLayout);
+    });
+    overlays.forEach(overlayLayout => {
+      this.layoutTreeCrawler.crawl(overlayLayout);
+    })
+
+    const result = this.nativeCommandsSender.setRoot(commandId, { root, modals, overlays });
     return result;
   }
 
@@ -60,11 +64,12 @@ export class Commands {
   public showModal(layout: Layout) {
     const layoutCloned = _.cloneDeep(layout);
     const layoutNode = this.layoutTreeParser.parse(layoutCloned);
+    
+    const commandId = this.uniqueIdProvider.generate('showModal');
+    this.commandsObserver.notify('showModal', { commandId, layout: layoutNode });
     this.layoutTreeCrawler.crawl(layoutNode);
 
-    const commandId = this.uniqueIdProvider.generate('showModal');
     const result = this.nativeCommandsSender.showModal(commandId, layoutNode);
-    this.commandsObserver.notify('showModal', { commandId, layout: layoutNode });
     return result;
   }
 
@@ -84,13 +89,13 @@ export class Commands {
 
   public push(componentId: string, simpleApi: Layout) {
     const input = _.cloneDeep(simpleApi);
-
     const layout = this.layoutTreeParser.parse(input);
-    this.layoutTreeCrawler.crawl(layout);
 
     const commandId = this.uniqueIdProvider.generate('push');
-    const result = this.nativeCommandsSender.push(commandId, componentId, layout);
     this.commandsObserver.notify('push', { commandId, componentId, layout });
+    this.layoutTreeCrawler.crawl(layout);
+
+    const result = this.nativeCommandsSender.push(commandId, componentId, layout);
     return result;
   }
 
@@ -118,24 +123,28 @@ export class Commands {
   public setStackRoot(componentId: string, children: Layout[]) {
     const input = _.map(_.cloneDeep(children), (simpleApi) => {
       const layout = this.layoutTreeParser.parse(simpleApi);
-      this.layoutTreeCrawler.crawl(layout);
       return layout;
     });
+  
     const commandId = this.uniqueIdProvider.generate('setStackRoot');
-    const result = this.nativeCommandsSender.setStackRoot(commandId, componentId, input);
     this.commandsObserver.notify('setStackRoot', { commandId, componentId, layout: input });
+    input.forEach(layoutNode => {
+      this.layoutTreeCrawler.crawl(layoutNode);
+    })
+
+    const result = this.nativeCommandsSender.setStackRoot(commandId, componentId, input);
     return result;
   }
 
   public showOverlay(simpleApi: Layout) {
     const input = _.cloneDeep(simpleApi);
-
     const layout = this.layoutTreeParser.parse(input);
+    
+    const commandId = this.uniqueIdProvider.generate('showOverlay');
+    this.commandsObserver.notify('showOverlay', { commandId, layout });
     this.layoutTreeCrawler.crawl(layout);
 
-    const commandId = this.uniqueIdProvider.generate('showOverlay');
     const result = this.nativeCommandsSender.showOverlay(commandId, layout);
-    this.commandsObserver.notify('showOverlay', { commandId, layout });
     return result;
   }
 
