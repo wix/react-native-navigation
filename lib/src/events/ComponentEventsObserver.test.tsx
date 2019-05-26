@@ -3,9 +3,12 @@ import * as renderer from 'react-test-renderer';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { EventSubscription } from '../interfaces/EventSubscription';
+import { Store } from '../components/Store';
+import { ComponentDidAppearEvent } from '../interfaces/ComponentEvents';
 
 describe('ComponentEventsObserver', () => {
   const mockEventsReceiver = new NativeEventsReceiver();
+  const mockStore = new Store();
   const didAppearFn = jest.fn();
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
@@ -84,8 +87,8 @@ describe('ComponentEventsObserver', () => {
       willUnmountFn();
     }
 
-    componentDidAppear() {
-      didAppearFn();
+    componentDidAppear(event: ComponentDidAppearEvent) {
+      didAppearFn(event);
     }
 
     componentDidDisappear() {
@@ -119,7 +122,7 @@ describe('ComponentEventsObserver', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    uut = new ComponentEventsObserver(mockEventsReceiver);
+    uut = new ComponentEventsObserver(mockEventsReceiver, mockStore);
   });
 
   it(`bindComponent expects a component with componentId`, () => {
@@ -190,6 +193,23 @@ describe('ComponentEventsObserver', () => {
 
     tree.unmount();
     expect(willUnmountFn).toHaveBeenCalledTimes(1);
+  });
+
+  it(`componentDidAppear should receive component props from store`, () => {
+    const event = {
+      componentId: 'myCompId',
+      passProps: {
+        propA: 'propA'
+      },
+      componentName: 'doesnt matter'
+    }
+    renderer.create(<BoundScreen componentId={event.componentId} />);
+    mockStore.setPropsForId(event.componentId, event.passProps)
+    expect(didAppearFn).not.toHaveBeenCalled();
+
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    expect(didAppearFn).toHaveBeenCalledTimes(1);
+    expect(didAppearFn).toHaveBeenCalledWith(event);
   });
 
   it(`doesnt call other componentIds`, () => {

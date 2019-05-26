@@ -54,7 +54,7 @@ More information about these glyphs can be found in [Apple's Human Interface Gui
 
 ## Android showAsAction
 
-It is keyword witch configure when and how this item should appear as an action item in the app bar. 
+The keyword `showAsAction` configures when and how an item should appear as an action item in the app bar. 
 A menu item can appear as an action item only when the activity includes an app bar.
 
 * `always`

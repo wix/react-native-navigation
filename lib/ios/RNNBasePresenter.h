@@ -12,6 +12,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions;
 
+- (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options;
+
 - (void)applyOptions:(RNNNavigationOptions *)options;
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options;
