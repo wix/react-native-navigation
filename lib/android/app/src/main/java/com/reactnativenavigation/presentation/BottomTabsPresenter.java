@@ -10,6 +10,7 @@ import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
@@ -137,7 +138,7 @@ public class BottomTabsPresenter {
     }
 
     private void applyBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animationsOptions) {
-        bottomTabs.setTitleState(options.titleDisplayMode.get(TitleState.SHOW_WHEN_ACTIVE));
+        bottomTabs.setTitleState(getTitleDisplayMode(options));
         bottomTabs.setBackgroundColor(options.backgroundColor.get(Color.WHITE));
         if (options.currentTabIndex.hasValue()) {
             int tabIndex = options.currentTabIndex.get();
@@ -165,5 +166,10 @@ public class BottomTabsPresenter {
         if (options.elevation.hasValue()) {
             bottomTabs.setUseElevation(true, options.elevation.get().floatValue());
         }
+    }
+
+    private TitleState getTitleDisplayMode(BottomTabsOptions options) {
+        boolean hasTabWithTitle = CollectionUtils.reduce(tabs, false, (item, currentValue) -> currentValue || item.resolveCurrentOptions().bottomTabOptions.text.hasValue());
+        return hasTabWithTitle ? options.titleDisplayMode.get(TitleState.SHOW_WHEN_ACTIVE) : TitleState.ALWAYS_HIDE;
     }
 }
