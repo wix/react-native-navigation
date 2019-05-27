@@ -21,5 +21,8 @@ module.exports = {
   },
   executeShellCommand: (command) => {
     exec.execSync(`adb shell ${command}`);
+  },
+  unlockPhoneByPin: (pin) => {
+    exec.execSync(`adb shell input text ${pin} && adb shell input keyevent 66`);
   }
 };
