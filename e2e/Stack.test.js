@@ -80,6 +80,11 @@ describe('Stack', () => {
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
   });
 
+  it('does not crash when setting the stack root to an existing component id', async () => {
+    await elementById(TestIDs.SET_STACK_ROOT_WITH_ID_BTN).tap();
+    await elementById(TestIDs.SET_STACK_ROOT_WITH_ID_BTN).tap();
+  });
+
   it(':ios: set stack root component should be first in stack', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Stack Position: 1')).toBeVisible();

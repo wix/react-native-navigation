@@ -2,7 +2,10 @@ apply plugin: "com.android.application"
 
 project.ext.react = [
         root     : "../../../",
-        entryFile: "index.js"
+        entryFile: "index.js",
+        bundleAssetName: "index.android.bundle",
+        bundleInAlpha: true,
+        bundleInBeta: true
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"
@@ -69,6 +72,6 @@ dependencies {
     implementation project(':react-native-navigation')
     implementation project(':react-native-view-overflow')
 
-    androidTestImplementation(project(':detox'))
+    androidTestImplementation('com.wix:detox:+') { transitive = true }
     androidTestImplementation 'junit:junit:4.12'
 }

@@ -40,11 +40,16 @@
 	}
 }
 
-- (void)setAlignment:(NSString *)alignment {
+- (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame {
 	if ([alignment isEqualToString:@"fill"]) {
 		self.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
+		[self setFrame:frame];
 	} else {
 		self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
+		__weak RNNReactView *weakSelf = self;
+		[self setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicSize) {
+			[weakSelf setFrame:CGRectMake(0, 0, intrinsicSize.width, intrinsicSize.height)];
+		}];
 	}
 }
 

@@ -4,6 +4,7 @@ export interface ComponentEvent {
 
 export interface ComponentDidAppearEvent extends ComponentEvent {
   componentName: string;
+  passProps?: object
 }
 
 export interface ComponentDidDisappearEvent extends ComponentEvent {

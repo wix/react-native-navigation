@@ -3,7 +3,7 @@
 
 @implementation RNNTabBarPresenter
 
-- (void)applyOptionsOnSetViewControllers:(RNNNavigationOptions *)options {
+- (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
 	UITabBarController* tabBarController = self.bindedViewController;
 	[tabBarController rnn_setCurrentTabIndex:[options.bottomTabs.currentTabIndex getWithDefaultValue:0]];
 }

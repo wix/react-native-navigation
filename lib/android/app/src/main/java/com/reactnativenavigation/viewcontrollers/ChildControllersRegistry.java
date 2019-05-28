@@ -25,4 +25,8 @@ public class ChildControllersRegistry {
     public int size() {
         return children.size();
     }
+
+    public void onChildDestroyed(ChildController child) {
+        children.remove(child);
+    }
 }

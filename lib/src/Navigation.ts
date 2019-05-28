@@ -44,7 +44,7 @@ export class NavigationRoot {
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
-    this.componentEventsObserver = new ComponentEventsObserver();
+    this.componentEventsObserver = new ComponentEventsObserver(this.store);
     const appRegistryService = new AppRegistryService();
     this.componentRegistry = new ComponentRegistry(
       this.store,

@@ -11,6 +11,7 @@ import {
   ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { EventsRegistry } from './EventsRegistry';
+import { Store } from '../components/Store';
 
 type ReactComponentWithIndexing = React.Component<any> & Record<string, any>;
 
@@ -18,7 +19,7 @@ export class ComponentEventsObserver {
   private listeners: Record<string, Record<string, ReactComponentWithIndexing>> = {};
   private alreadyRegistered = false;
 
-  constructor() {
+  constructor(private readonly store: Store) {
     this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
     this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
     this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
@@ -60,6 +61,7 @@ export class ComponentEventsObserver {
   }
 
   notifyComponentDidAppear(event: ComponentDidAppearEvent) {
+    event.passProps = this.store.getPropsForId(event.componentId);
     this.triggerOnAllListenersByComponentId(event, 'componentDidAppear');
   }
 
@@ -89,7 +91,7 @@ export class ComponentEventsObserver {
 
   private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {
     _.forEach(this.listeners[event.componentId], (component) => {
-      if (component[method]) {
+      if (component && component[method]) {
         component[method](event);
       }
     });

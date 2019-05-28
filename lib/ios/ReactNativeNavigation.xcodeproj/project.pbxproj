@@ -213,6 +213,7 @@
 		50887C1620ECC5C200D06111 /* RNNButtonOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50887C1420ECC5C200D06111 /* RNNButtonOptions.m */; };
 		50887CA920F26BFE00D06111 /* RNNOverlayWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 50887CA720F26BFD00D06111 /* RNNOverlayWindow.m */; };
 		50887CAA20F26BFE00D06111 /* RNNOverlayWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 50887CA820F26BFE00D06111 /* RNNOverlayWindow.h */; };
+		508EBDBD2278746400BEC144 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508EBDBA2278742700BEC144 /* JavaScriptCore.framework */; };
 		509B2480217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 509B247F217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m */; };
 		509B258F2178BE7A00C83C23 /* RNNNavigationControllerPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 509B258E2178BE7A00C83C23 /* RNNNavigationControllerPresenterTest.m */; };
 		50A00C37200F84D6000F01A6 /* RNNOverlayOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */; };
@@ -266,7 +267,6 @@
 		7B49FECE1E95098500DEB3EA /* RNNCommandsHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B49FEC91E95098500DEB3EA /* RNNCommandsHandlerTest.m */; };
 		7B49FECF1E95098500DEB3EA /* RNNNavigationStackManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B49FECA1E95098500DEB3EA /* RNNNavigationStackManagerTest.m */; };
 		7B49FEDF1E950A7A00DEB3EA /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B49FED11E950A7A00DEB3EA /* libcxxreact.a */; };
-		7B49FEE01E950A7A00DEB3EA /* libjschelpers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B49FED21E950A7A00DEB3EA /* libjschelpers.a */; };
 		7B49FEE11E950A7A00DEB3EA /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B49FED31E950A7A00DEB3EA /* libRCTActionSheet.a */; };
 		7B49FEE21E950A7A00DEB3EA /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B49FED41E950A7A00DEB3EA /* libRCTAnimation.a */; };
 		7B49FEE31E950A7A00DEB3EA /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B49FED51E950A7A00DEB3EA /* libRCTGeolocation.a */; };
@@ -554,6 +554,7 @@
 		50887C1420ECC5C200D06111 /* RNNButtonOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNButtonOptions.m; sourceTree = "<group>"; };
 		50887CA720F26BFD00D06111 /* RNNOverlayWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayWindow.m; sourceTree = "<group>"; };
 		50887CA820F26BFE00D06111 /* RNNOverlayWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNOverlayWindow.h; sourceTree = "<group>"; };
+		508EBDBA2278742700BEC144 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		509B247F217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+RNNOptionsTest.m"; sourceTree = "<group>"; };
 		509B258E2178BE7A00C83C23 /* RNNNavigationControllerPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationControllerPresenterTest.m; sourceTree = "<group>"; };
 		50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayOptions.h; sourceTree = "<group>"; };
@@ -680,8 +681,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				508EBDBD2278746400BEC144 /* JavaScriptCore.framework in Frameworks */,
 				7B49FEDF1E950A7A00DEB3EA /* libcxxreact.a in Frameworks */,
-				7B49FEE01E950A7A00DEB3EA /* libjschelpers.a in Frameworks */,
 				7B49FEE11E950A7A00DEB3EA /* libRCTActionSheet.a in Frameworks */,
 				7B49FEE21E950A7A00DEB3EA /* libRCTAnimation.a in Frameworks */,
 				7B49FEE31E950A7A00DEB3EA /* libRCTGeolocation.a in Frameworks */,
@@ -1093,6 +1094,7 @@
 		7B49FED01E950A7A00DEB3EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				508EBDBA2278742700BEC144 /* JavaScriptCore.framework */,
 				501214C8217741A000435148 /* libOCMock.a */,
 				7B49FED11E950A7A00DEB3EA /* libcxxreact.a */,
 				7B49FED21E950A7A00DEB3EA /* libjschelpers.a */,

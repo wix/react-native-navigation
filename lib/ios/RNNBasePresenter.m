@@ -19,7 +19,7 @@
 	
 }
 
-- (void)applyOptionsOnSetViewControllers:(RNNNavigationOptions *)options {
+- (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
 	
 }
 

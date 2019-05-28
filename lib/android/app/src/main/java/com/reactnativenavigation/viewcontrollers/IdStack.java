@@ -29,17 +29,11 @@ public class IdStack<E> implements Iterable<String> {
     }
 
 	public E peek() {
-		if (isEmpty()) {
-			return null;
-		}
-		return map.get(last(deque));
+        return isEmpty() ? null : map.get(last(deque));
 	}
 
 	public E pop() {
-		if (isEmpty()) {
-			return null;
-		}
-		return map.remove(removeLast(deque));
+	    return isEmpty() ? null : map.remove(removeLast(deque));
 	}
 
 	public boolean isEmpty() {

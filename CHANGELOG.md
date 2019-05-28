@@ -1,4 +1,46 @@
 # Changelog
+# 2.19.1
+## Fixed
+### Android
+* Fix missing absolute positioned views [#ecadcb0](https://github.com/wix/react-native-navigation/commit/ecadcb0f352d5c96944966deb09a7c2d570ccb2d) by [guyca](https://github.com/guyca)
+
+# 2.19.0
+## Added
+* Add passProps to component typings file [#42fd86d](https://github.com/wix/react-native-navigation/commit/42fd86d654feac83177c272b19276e71c08ef75a) by [Andarius](https://github.com/Andarius)
+* Add missing topBar options [#5566ffd](https://github.com/wix/react-native-navigation/commit/5566ffd47c65f7bfc608f3a0f0b19814039b541e) by [retyui](https://github.com/retyui)
+
+## Fixed
+### iOS
+* Fixes broken modals animations [#42e26d7](https://github.com/wix/react-native-navigation/commit/42e26d77b8d231debe0489dbe874fc06d9a97589) by [yogevbd](https://github.com/yogevbd)
+
+### Android
+* Fixed buggy currentTabIndex when calling setRoot multiple times [#cd182f4](https://github.com/wix/react-native-navigation/commit/cd182f4693a6a4bd943eddf9a15706d943c88d4e) by [guyca](https://github.com/guyca)
+
+# 2.18.5
+## Fixed
+### iOS
+* Handle simultaneous recognizers, Fixes a crash when tapping on the screen with other gesture recognizers active [#a5b9f58](https://github.com/wix/react-native-navigation/commit/a5b9f58affd132bba03f961a255d05e41272bae9) by [jordoh](https://github.com/jordoh)
+
+# 2.18.4
+## Fixed
+### iOS
+* Fix topBar.title.component fill alignment [#9f439da](https://github.com/wix/react-native-navigation/commit/9f439dabd8fabc151bb96fbb04fa34bfe2b469d8) by [yogevbd](https://github.com/yogevbd)
+
+# 2.18.3
+## Fixed
+### iOS
+* Fix topBar.titleView calculation on props change [#f3b1d34](https://github.com/wix/react-native-navigation/commit/f3b1d34ea61341f08ab864b2134933ec9764b127) by [yogevbd](https://github.com/yogevbd)
+
+# 2.18.2
+## Fixed
+### iOS
+* Fix TopBar react view measurement issue [#1993b93](https://github.com/wix/react-native-navigation/commit/1993b93c2ec388bce8923b6d70edf11fc5499976) by [yogevbd](https://github.com/yogevbd)
+
+# 2.18.1
+## Fixed
+### iOS
+* Fix bottomTabs’s initial currentTabIndex [#0e888fb](https://github.com/wix/react-native-navigation/commit/0e888fb65a70343949386f0d6f9f59b03e7b93b7) by [yogevbd](https://github.com/yogevbd)
+
 # 2.18.0
 ## Fixed
 * Add missing topMargin type to OptionsTopBar [#9d7d7f4](https://github.com/wix/react-native-navigation/commit/9d7d7f4600ce4994ed680c123f59eb198130a32c) by [ceyhuno](https://github.com/ceyhuno)

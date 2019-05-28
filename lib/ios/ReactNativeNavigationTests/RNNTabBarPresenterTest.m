@@ -54,13 +54,5 @@
 	[self.bindedViewController verify];
 }
 
-- (void)testApplyOptions_shouldApplyOptionsOnSetViewControllers {
-	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	initialOptions.bottomTabs.currentTabIndex = [[IntNumber alloc] initWithValue:@(1)];
-	[[self.bindedViewController expect] rnn_setCurrentTabIndex:1];
-	
-	[self.uut applyOptionsOnSetViewControllers:initialOptions];
-	[self.bindedViewController verify];
-}
 
 @end
