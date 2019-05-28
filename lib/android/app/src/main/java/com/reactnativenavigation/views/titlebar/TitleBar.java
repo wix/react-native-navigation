@@ -226,6 +226,16 @@ public class TitleBar extends Toolbar {
         setLayoutParams(lp);
     }
 
+    public void setTopMargin(int topMargin) {
+        int pixelTopMargin = UiUtils.dpToPx(getContext(), topMargin);
+        if (getLayoutParams() instanceof MarginLayoutParams) {
+            MarginLayoutParams lp = (MarginLayoutParams) getLayoutParams();
+            if (lp.topMargin == pixelTopMargin) return;
+            lp.topMargin = pixelTopMargin;
+            setLayoutParams(lp);
+        }
+    }
+
     public void setOverflowButtonColor(int color) {
         ActionMenuView actionMenuView = ViewUtils.findChildByClass(this, ActionMenuView.class);
         if (actionMenuView != null) {
