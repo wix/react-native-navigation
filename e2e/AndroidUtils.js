@@ -7,6 +7,9 @@ module.exports = {
   pressMenu: () => {
     exec.execSync('adb shell input keyevent 82');
   },
+  pressEnter: (keyCode) => {
+    exec.execSync(`adb shell input keyevent 66`);
+  },
   pressKeyCode: (keyCode) => {
     exec.execSync(`adb shell input keyevent ${keyCode}`);
   },
@@ -23,6 +26,10 @@ module.exports = {
     exec.execSync(`adb shell ${command}`);
   },
   unlockPhoneByPin: (pin) => {
-    exec.execSync(`adb shell input text ${pin} && adb shell input keyevent 66`);
+    exec.execSync(`adb shell input text ${pin}`);
+    pressEnter();
+  },
+  swipeUp = () => {
+    exec.execSync('adb shell input touchscreen swipe 300 1200 500 0 100');
   }
 };

@@ -1,12 +1,7 @@
 const Utils = require('./Utils');
 const Android = require('./AndroidUtils');
-const testIDs = require('../playground/src/testIDs');
-const exec = require('shell-utils').exec;
-const _ = require('lodash');
 
-const { elementByLabel, elementById, sleep } = Utils;
-const IS_RELEASE = _.includes(process.argv, '--release');
-const KEY_CODE_R = 46;
+const { elementByLabel } = Utils;
 
 describe('application lifecycle test', () => {
   beforeEach(async () => {
@@ -18,7 +13,7 @@ describe('application lifecycle test', () => {
     await Android.pressKeyCode('26')
     await Android.pressKeyCode('26')
     await device.launchApp();
-    await Android.executeShellCommand(`input touchscreen swipe 300 1200 500 0 100`)
+    await Android.swipeUp()
     await Android.unlockPhoneByPin('1234')
     await expect(elementByLabel('React Native Navigation!')).toBeVisible();
   });
@@ -27,7 +22,7 @@ describe('application lifecycle test', () => {
     await device.terminateApp();
     await Android.pressKeyCode('26')
     await Android.pressKeyCode('26')
-    await Android.executeShellCommand(`input touchscreen swipe 300 1200 500 0 100`)
+    await Android.swipeUp()
     await Android.unlockPhoneByPin('1234')
     await device.launchApp();
     await expect(elementByLabel('React Native Navigation!')).toBeVisible();
