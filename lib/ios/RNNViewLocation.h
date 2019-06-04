@@ -14,8 +14,4 @@
 
 -(instancetype)initWithFromElement:(RNNElementView*)fromElement toElement:(RNNElementView*)toElement startPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint andVC:(UIViewController*)vc;
 
--(CGRect)frameFromSuperViewController:(UIView*)view andVC:(UIViewController*)vc;
-
--(CGPoint)centerFromSuperViewController:(UIView*)view andVC:(UIViewController*)vc;
-
 @end

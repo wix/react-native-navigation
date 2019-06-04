@@ -28,5 +28,6 @@ module.exports = {
   Alert: 'Alert',
   Orientation: 'Orientation',
   OrientationDetect: 'OrientationDetect',
+  CustomTransitionOrigin: 'CustomTransitionOrigin',
   Search: 'Search'
 }

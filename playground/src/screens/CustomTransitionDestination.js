@@ -103,7 +103,7 @@ module.exports = CustomTransitionDestination;
 const styles = {
   root: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#f5fcff'
   },
