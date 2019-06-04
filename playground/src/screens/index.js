@@ -24,6 +24,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Lifecycle, () => require('./LifecycleScreen'));
   Navigation.registerComponent(Screens.Overlay, () => require('./OverlayScreen'));
   Navigation.registerComponent(Screens.OverlayAlert, () => require('./OverlayAlert'));
+  Navigation.registerComponent(Screens.OverlayWithNestedTouchables, () => require('./OverlayWithNestedTouchables'));
   Navigation.registerComponent(Screens.ScrollViewOverlay, () => require('./ScrollViewOverlay'));
   Navigation.registerComponent(Screens.RoundButton, () => require('./RoundedButton'));
   Navigation.registerComponent(Screens.ReactTitleView, () => require('./CustomTopBar'));

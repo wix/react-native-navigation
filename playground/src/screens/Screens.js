@@ -9,6 +9,7 @@ module.exports = {
   SetRoot: 'SetRoot',
   Overlay: 'Overlay',
   OverlayAlert: 'OverlayAlert',
+  OverlayWithNestedTouchables: 'OverlayWithNestedTouchables',
   ScrollViewOverlay: 'ScrollViewOverlay',
   Lifecycle: 'Lifecycle',
   BackHandler: 'BackHandler',

@@ -27,6 +27,7 @@ class OverlayScreen extends React.Component {
       <Root componentId={this.props.componentId}>
         <Button label='Alert' testID={ALERT_BUTTON} onPress={() => alert('Alert displayed')} />
         <Button label='Show overlay' testID={SHOW_OVERLAY_BTN} onPress={() => this.showOverlay(true)} />
+        <Button label='Show overlay with nested touchables' testID={SHOW_OVERLAY_BTN} onPress={() => this.showOverlayWithNestedTouchable()} />
         <Button label='Show touch through overlay' testID={SHOW_TOUCH_THROUGH_OVERLAY_BTN} onPress={() => this.showOverlay(false)} />
         <Button label='Show overlay with ScrollView' onPress={this.showOverlayWithScrollView} />
         <Button label='Set Root' testID={SET_ROOT_BTN} onPress={this.setRoot} />
@@ -37,6 +38,11 @@ class OverlayScreen extends React.Component {
   showOverlay = (interceptTouchOutside) => Navigation.showOverlay(Screens.OverlayAlert, {
     layout: { componentBackgroundColor: 'transparent' },
     overlay: { interceptTouchOutside }
+  });
+
+  showOverlayWithNestedTouchable = () => Navigation.showOverlay(Screens.OverlayWithNestedTouchables, {
+    layout: { componentBackgroundColor: 'transparent' },
+    overlay: { interceptTouchOutside: false }
   });
 
   setRoot = () => Navigation.setRoot({ root: component(Screens.Pushed) })
