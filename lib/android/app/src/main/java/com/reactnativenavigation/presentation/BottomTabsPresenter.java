@@ -2,15 +2,12 @@ package com.reactnativenavigation.presentation;
 
 import android.graphics.Color;
 import android.support.annotation.IntRange;
-import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState;
 import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
@@ -43,11 +40,6 @@ public class BottomTabsPresenter {
         animator = new BottomTabsAnimator(bottomTabs);
     }
 
-    public void applyLayoutParamsOptions(Options options, int tabIndex) {
-        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
-    }
-
     public void mergeOptions(Options options) {
         mergeBottomTabsOptions(options.bottomTabsOptions, options.animations);
     }
@@ -62,7 +54,7 @@ public class BottomTabsPresenter {
         if (tabIndex >= 0) {
             Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
             applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
-            applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
+            applyDrawBehind(tabIndex);
         }
     }
 
@@ -106,34 +98,12 @@ public class BottomTabsPresenter {
         }
     }
 
-    private void applyDrawBehind(BottomTabsOptions options, @IntRange(from = 0) int tabIndex) {
-        ViewGroup tab = tabs.get(tabIndex).getView();
-        MarginLayoutParams lp = (MarginLayoutParams) tab.getLayoutParams();
-        if (options.drawBehind.isTrue()) {
-            lp.bottomMargin = 0;
-        }
-        if (options.visible.isTrueOrUndefined() && options.drawBehind.isFalseOrUndefined()) {
-            if (bottomTabs.getHeight() == 0) {
-                UiUtils.runOnPreDrawOnce(bottomTabs, () -> lp.bottomMargin = bottomTabs.getHeight());
-            } else {
-                lp.bottomMargin = bottomTabs.getHeight();
-            }
-        }
+    private void applyDrawBehind(@IntRange(from = 0) int tabIndex) {
+        tabs.get(tabIndex).applyBottomInset();
     }
 
     private void mergeDrawBehind(BottomTabsOptions options, int tabIndex) {
-        ViewGroup tab = tabs.get(tabIndex).getView();
-        MarginLayoutParams lp = (MarginLayoutParams) tab.getLayoutParams();
-        if (options.drawBehind.isTrue()) {
-            lp.bottomMargin = 0;
-        }
-        if (options.visible.isTrue() && options.drawBehind.isFalse()) {
-            if (bottomTabs.getHeight() == 0) {
-                UiUtils.runOnPreDrawOnce(bottomTabs, () -> lp.bottomMargin = bottomTabs.getHeight());
-            } else {
-                lp.bottomMargin = bottomTabs.getHeight();
-            }
-        }
+        tabs.get(tabIndex).applyBottomInset();
     }
 
     private void applyBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animationsOptions) {

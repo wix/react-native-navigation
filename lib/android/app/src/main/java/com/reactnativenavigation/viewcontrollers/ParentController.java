@@ -158,11 +158,20 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     }
 
     @Override
-    public void applyTopInsets() {
-	    forEach(getChildControllers(), ViewController::applyTopInsets);
+    public void applyTopInset() {
+	    forEach(getChildControllers(), ViewController::applyTopInset);
     }
 
     public int getTopInset(ViewController child) {
         return perform(getParentController(), 0, p -> p.getTopInset(child));
+    }
+
+    @Override
+    public void applyBottomInset() {
+        forEach(getChildControllers(), ViewController::applyBottomInset);
+    }
+
+    public int getBottomInset(ViewController child) {
+        return perform(getParentController(), 0, p -> p.getBottomInset(child));
     }
 }

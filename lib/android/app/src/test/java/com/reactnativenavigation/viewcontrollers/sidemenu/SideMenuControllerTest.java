@@ -274,15 +274,15 @@ public class SideMenuControllerTest extends BaseTest {
     @Test
     public void applyTopInsets_delegatesToChildren() {
         setLeftRight(spy(left), spy(right));
-        assertThat(uut.applyTopInsets()).isFalse();
-        forEach(uut.getChildControllers(), c -> verify(c).applyTopInsets());
+        assertThat(uut.applyTopInset()).isFalse();
+        forEach(uut.getChildControllers(), c -> verify(c).applyTopInset());
     }
 
     @Test
     public void onMeasureChild_topInsetsAreApplied() {
         setLeftRight(spy(left), spy(right));
         uut.onMeasureChild(Mockito.mock(CoordinatorLayout.class), Mockito.mock(ViewGroup.class), 0, 0, 0, 0);
-        forEach(uut.getChildControllers(), c -> verify(c).applyTopInsets());
+        forEach(uut.getChildControllers(), c -> verify(c).applyTopInset());
     }
 
     private void openDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {

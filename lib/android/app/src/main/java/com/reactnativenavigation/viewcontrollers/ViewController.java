@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener,
         ViewGroup.OnHierarchyChangeListener,
@@ -335,11 +336,19 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return false;
     }
 
-    public void applyTopInsets() {
+    public void applyTopInset() {
 
     }
 
     public int getTopInset() {
         return 0;
+    }
+
+    public void applyBottomInset() {
+
+    }
+
+    public int getBottomInset() {
+        return perform(parentController, 0, p -> p.getBottomInset(this));
     }
 }

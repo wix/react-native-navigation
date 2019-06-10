@@ -2,7 +2,7 @@ const { Navigation } = require('react-native-navigation');
 const Colors = require('./Colors');
 const {Dimensions} = require('react-native');
 const { height } = Dimensions.get('window');
-const PUSH_DURATION = 2070;
+const PUSH_DURATION = 2070 * 1;
 
 
 const setDefaultOptions = () => Navigation.setDefaultOptions({

@@ -16,7 +16,6 @@ import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParent
 public abstract class AttachMode {
     protected final ViewGroup parent;
     protected final BottomTabsPresenter presenter;
-    private Options resolved;
     protected final List<ViewController> tabs;
     final ViewController initialTab;
 
@@ -37,7 +36,6 @@ public abstract class AttachMode {
         this.parent = parent;
         this.tabs = tabs;
         this.presenter = presenter;
-        this.resolved = resolved;
         initialTab = tabs.get(resolved.bottomTabsOptions.currentTabIndex.get(0));
     }
 
@@ -54,9 +52,7 @@ public abstract class AttachMode {
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public void attach(ViewController tab) {
         ViewGroup view = tab.getView();
-        view.setLayoutParams(matchParentWithBehaviour(new BottomTabsBehaviour(tab.getParentController())));
-        presenter.applyLayoutParamsOptions(resolved, tabs.indexOf(tab));
         view.setVisibility(tab == initialTab ? View.VISIBLE : View.INVISIBLE);
-        parent.addView(view);
+        parent.addView(view, matchParentWithBehaviour(new BottomTabsBehaviour(tab.getParentController())));
     }
 }

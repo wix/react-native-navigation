@@ -165,13 +165,13 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 
     @Override
     public boolean onMeasureChild(CoordinatorLayout parent, ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        forEach(getChildControllers(), ViewController::applyTopInsets);
+        forEach(getChildControllers(), ViewController::applyTopInset);
         return false;
     }
 
     @Override
-    public void applyTopInsets() {
-        forEach(getChildControllers(), ViewController::applyTopInsets);
+    public void applyTopInset() {
+        forEach(getChildControllers(), ViewController::applyTopInset);
     }
 
     private int getWidth(SideMenuOptions sideMenuOptions) {

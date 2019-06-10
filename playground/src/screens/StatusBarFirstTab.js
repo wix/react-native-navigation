@@ -6,6 +6,8 @@ const Navigation = require('../services/Navigation');
 const Screens = require('./Screens');
 
 class StatusBarFirstTab extends React.Component {
+  visible = true;
+
   static options() {
     return ({
       statusBar: {
@@ -34,11 +36,27 @@ class StatusBarFirstTab extends React.Component {
           fadeDuration={0}
         />
         <Button label='Push' onPress={this.push} />
+        <Button label='Toggle Tabs' onPress={this.toggleTabs} />
       </Root>
     );
   }
 
-  push = () => Navigation.push(this, Screens.Pushed);
+  push = () => Navigation.push(this, Screens.Pushed, {
+    bottomTabs: {
+      visible: false,
+      drawBehind: true
+    }
+  });
+
+  toggleTabs = () => {
+    this.visible = !this.visible
+    Navigation.mergeOptions(this, {
+      bottomTabs: {
+        visible: this.visible,
+        drawBehind: !this.visible
+      }
+    });
+  };
 }
 
 const style = StyleSheet.create({

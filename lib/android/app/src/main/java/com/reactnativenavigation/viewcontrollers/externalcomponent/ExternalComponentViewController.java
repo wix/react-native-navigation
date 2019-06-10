@@ -62,8 +62,13 @@ public class ExternalComponentViewController extends ViewController<ExternalComp
     }
 
     @Override
-    public void applyTopInsets() {
+    public void applyTopInset() {
         presenter.applyTopInsets(view, getTopInset());
+    }
+
+    @Override
+    public void applyBottomInset() {
+        presenter.applyBottomInset(view, getBottomInset());
     }
 
     public FragmentActivity getActivity() {

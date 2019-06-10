@@ -172,8 +172,14 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
     @Override
     public boolean onMeasureChild(CoordinatorLayout parent, ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        perform(findController(child), ViewController::applyTopInsets);
+        perform(findController(child), ViewController::applyBottomInset);
         return false;
+    }
+
+    @Override
+    public int getBottomInset(ViewController child) {
+        int bottomTabsInset = resolveChildOptions(child).bottomTabsOptions.drawBehind.isTrue() ? 0 : bottomTabs.getHeight();
+        return bottomTabsInset + perform(getParentController(), 0, p -> p.getBottomInset(this));
     }
 
     @NonNull

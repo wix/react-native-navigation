@@ -81,12 +81,12 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     public void mergeOptions(Options options) {
         if (options == Options.EMPTY) return;
         presenter.mergeOptions(getView(), options);
-        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
         super.mergeOptions(options);
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
     }
 
     @Override
-    public void applyTopInsets() {
+    public void applyTopInset() {
         presenter.applyTopInsets(view, getTopInset());
     }
 
@@ -94,6 +94,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     public int getTopInset() {
         int statusBarInset = resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : 63;
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
+    }
+
+    @Override
+    public void applyBottomInset() {
+        presenter.applyBottomInset(view, getBottomInset());
     }
 
     @Override

@@ -491,7 +491,7 @@ public class StackPresenter {
 
     public void applyTopInsets(Options options, ViewController child) {
         applyStatusBarInsets(options);
-        child.applyTopInsets();
+        child.applyTopInset();
     }
 
     private void applyStatusBarInsets(Options options) {

@@ -529,7 +529,7 @@ public class StackPresenterTest extends BaseTest {
     public void applyTopInsets() {
         ViewController child = Mockito.mock(ViewController.class);
         uut.applyTopInsets(Options.EMPTY, child);
-        verify(child).applyTopInsets();
+        verify(child).applyTopInset();
     }
 
     private void assertTopBarOptions(Options options, int t) {
