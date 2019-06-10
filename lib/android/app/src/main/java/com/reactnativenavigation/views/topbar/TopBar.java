@@ -76,7 +76,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         root.addView(content);
         root.addView(border);
         addView(root, MATCH_PARENT, WRAP_CONTENT);
-        if (BuildConfig.DEBUG) setContentDescription("TopBar");
     }
 
     private LinearLayout createContentLayout() {
