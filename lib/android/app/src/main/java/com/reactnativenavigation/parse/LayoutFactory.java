@@ -6,6 +6,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.ComponentPresenter;
+import com.reactnativenavigation.presentation.ExternalComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
@@ -165,6 +166,7 @@ public class LayoutFactory {
                 externalComponentCreators.get(externalComponent.name.get()),
                 reactInstanceManager,
                 new EventEmitter(reactInstanceManager.getCurrentReactContext()),
+                new ExternalComponentPresenter(),
                 parse(typefaceManager, node.getOptions())
         );
     }

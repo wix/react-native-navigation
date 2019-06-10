@@ -3,9 +3,10 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
+import android.support.design.widget.CoordinatorLayout;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -16,21 +17,22 @@ import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.utils.CoordinatorLayoutUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
 import java.util.Collection;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
-import static com.reactnativenavigation.utils.CollectionUtils.map;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
@@ -50,7 +52,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         this.tabsAttacher = tabsAttacher;
         this.presenter = bottomTabsPresenter;
         this.tabPresenter = bottomTabPresenter;
-        forEach(tabs, (tab) -> tab.setParentController(this));
+        forEach(tabs, tab -> tab.setParentController(this));
     }
 
     @Override
@@ -63,16 +65,20 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     @NonNull
 	@Override
 	protected ViewGroup createView() {
-		RelativeLayout root = new RelativeLayout(getActivity());
-		bottomTabs = createBottomTabs();
+        BottomTabsLayout root = new BottomTabsLayout(getActivity());
+        root.setLayoutParams(CoordinatorLayoutUtils.matchParentLP());
+
+        bottomTabs = createBottomTabs();
         tabsAttacher.init(root, resolveCurrentOptions());
         presenter.bindView(bottomTabs, this);
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-		lp.addRule(ALIGN_PARENT_BOTTOM);
+
+        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+        lp.gravity = Gravity.BOTTOM;
 		root.addView(bottomTabs, lp);
-		bottomTabs.addItems(createTabs());
+
+        bottomTabs.addItems(createTabs());
         tabsAttacher.attach();
         return root;
 	}
@@ -164,7 +170,13 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		return bottomTabs.getCurrentItem();
 	}
 
-	@NonNull
+    @Override
+    public boolean onMeasureChild(CoordinatorLayout parent, ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+        perform(findController(child), ViewController::applyTopInsets);
+        return false;
+    }
+
+    @NonNull
 	@Override
 	public Collection<ViewController> getChildControllers() {
 		return tabs;

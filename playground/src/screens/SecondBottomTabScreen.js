@@ -45,18 +45,26 @@ class SecondBottomTabScreen extends React.Component {
 
   pushBottomTabs = () => Navigation.push(this, {
     bottomTabs: {
+      options: {
+        _layout: {
+          backgroundColor: '#99ff29'
+        },
+        _bottomTabs: {
+          visible: false
+        }
+      },
       children: [
         component(Screens.Pushed, {
           bottomTab: {
             icon: require('../../img/whatshot.png'),
-            text: 'Tab 1',
+            text: 'Tab A',
             testID: PUSHED_BOTTOM_TABS
           }
         }),
         component(Screens.Pushed, {
           bottomTab: {
             icon: require('../../img/star.png'),
-            text: 'Tab 2'
+            text: 'Tab B'
           }
         })
       ]

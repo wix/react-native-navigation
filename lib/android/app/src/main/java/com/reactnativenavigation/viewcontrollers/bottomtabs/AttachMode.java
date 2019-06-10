@@ -1,24 +1,24 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.support.annotation.VisibleForTesting;
-import android.view.*;
-import android.widget.*;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.reactnativenavigation.parse.*;
-import com.reactnativenavigation.presentation.*;
-import com.reactnativenavigation.viewcontrollers.*;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
+import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.views.bottomtabs.BottomTabsBehaviour;
 
-import java.util.*;
+import java.util.List;
 
-import static android.view.ViewGroup.LayoutParams.*;
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public abstract class AttachMode {
     protected final ViewGroup parent;
     protected final BottomTabsPresenter presenter;
+    private Options resolved;
     protected final List<ViewController> tabs;
     final ViewController initialTab;
-    private final Options resolved;
-
 
     public static AttachMode get(ViewGroup parent, List<ViewController> tabs, BottomTabsPresenter presenter, Options resolved) {
         switch (resolved.bottomTabsOptions.tabsAttachMode) {
@@ -54,7 +54,7 @@ public abstract class AttachMode {
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public void attach(ViewController tab) {
         ViewGroup view = tab.getView();
-        view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        view.setLayoutParams(matchParentWithBehaviour(new BottomTabsBehaviour(tab.getParentController())));
         presenter.applyLayoutParamsOptions(resolved, tabs.indexOf(tab));
         view.setVisibility(tab == initialTab ? View.VISIBLE : View.INVISIBLE);
         parent.addView(view);

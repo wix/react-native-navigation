@@ -8,6 +8,8 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
 
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 
 public class TopBarController {
     private TopBar topBar;
@@ -34,5 +36,9 @@ public class TopBarController {
 
     public void clearTopTabs() {
         topBar.clearTopTabs();
+    }
+
+    public int getHeight() {
+        return perform(topBar, 0, View::getHeight);
     }
 }

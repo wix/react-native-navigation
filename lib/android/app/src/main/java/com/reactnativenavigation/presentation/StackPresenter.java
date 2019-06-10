@@ -111,17 +111,6 @@ public class StackPresenter {
         return renderChecker.areRendered(filter(controllers, ObjectUtils::notNull));
     }
 
-    public void applyLayoutParamsOptions(Options options, View view) {
-        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        if (view instanceof Component) {
-            if (withDefault.topBar.drawBehind.isTrue() && !withDefault.layout.topMargin.hasValue()) {
-                ((Component) view).drawBehindTopBar();
-            } else if (options.topBar.drawBehind.isFalseOrUndefined()) {
-                ((Component) view).drawBelowTopBar(topBar);
-            }
-        }
-    }
-
     public void mergeOptions(Options options, Component currentChild) {
         mergeOrientation(options.layout.orientation);
 //        mergeButtons(topBar, withDefault.topBar.buttons, child);
@@ -220,11 +209,6 @@ public class StackPresenter {
 
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
         applyTopBarVisibility(options, animationOptions, componentOptions);
-        if (options.drawBehind.isTrue() && !componentOptions.layout.topMargin.hasValue()) {
-            component.drawBehindTopBar();
-        } else if (options.drawBehind.isFalseOrUndefined()) {
-            component.drawBelowTopBar(topBar);
-        }
         if (options.hideOnScroll.isTrue()) {
             if (component instanceof IReactView) {
                 topBar.enableCollapse(((IReactView) component).getScrollEventListener());
@@ -454,12 +438,6 @@ public class StackPresenter {
                 topBar.show();
             }
         }
-        if (options.drawBehind.isTrue()) {
-            component.drawBehindTopBar();
-        }
-        if (options.drawBehind.isFalse()) {
-            component.drawBelowTopBar(topBar);
-        }
         if (options.hideOnScroll.isTrue() && component instanceof IReactView) {
             topBar.enableCollapse(((IReactView) component).getScrollEventListener());
         }
@@ -509,5 +487,15 @@ public class StackPresenter {
 
     private List<TitleBarButtonController> getLeftButtons(Component child) {
         return componentLeftButtons.containsKey(child) ? new ArrayList<>(componentLeftButtons.get(child).values()) : null;
+    }
+
+    public void applyTopInsets(Options options, ViewController child) {
+        applyStatusBarInsets(options);
+        child.applyTopInsets();
+    }
+
+    private void applyStatusBarInsets(Options options) {
+        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
+        topBar.setY(withDefault.statusBar.visible.isFalse() ? 0 : 63);
     }
 }

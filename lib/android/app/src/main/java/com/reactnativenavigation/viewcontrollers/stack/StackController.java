@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
@@ -16,6 +16,8 @@ import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.CoordinatorLayoutUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.IdStack;
 import com.reactnativenavigation.viewcontrollers.ParentController;
@@ -24,6 +26,7 @@ import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import java.util.Collection;
@@ -32,6 +35,8 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class StackController extends ParentController<StackLayout> {
 
@@ -49,8 +54,8 @@ public class StackController extends ParentController<StackLayout> {
         this.presenter = stackPresenter;
         stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
         for (ViewController child : children) {
-            stack.push(child.getId(), child);
             child.setParentController(this);
+            stack.push(child.getId(), child);
             if (size() > 1) backButtonHelper.addToPushedChild(child);
         }
     }
@@ -173,9 +178,11 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
-        view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        CoordinatorLayout.LayoutParams lp = CoordinatorLayoutUtils.matchParentLP();
+        lp.setBehavior(new StackBehaviour(this));
+        view.setLayoutParams(lp);
+        view.setTag("Child " + (size() - 1));
         child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
-        presenter.applyLayoutParamsOptions(resolvedOptions, view);
         if (size() == 1) presenter.applyInitialChildLayoutOptions(resolvedOptions);
         getView().addView(view, getView().getChildCount() - 1);
     }
@@ -235,11 +242,9 @@ public class StackController extends ParentController<StackLayout> {
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
 
-        Options resolvedOptions = resolveCurrentOptions();
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
-            appearingView.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-            presenter.applyLayoutParamsOptions(resolvedOptions, appearingView);
+            appearingView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         }
         if (appearingView.getParent() == null) {
             getView().addView(appearingView, 0);
@@ -337,11 +342,9 @@ public class StackController extends ParentController<StackLayout> {
     private void addInitialChild(StackLayout stackLayout) {
         if (isEmpty()) return;
         ViewGroup child = peek().getView();
-        child.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        Options options = resolveCurrentOptions();
-        presenter.applyLayoutParamsOptions(options, child);
-        presenter.applyInitialChildLayoutOptions(options);
-        stackLayout.addView(child, 0);
+        child.setId(CompatUtils.generateViewId());
+        presenter.applyInitialChildLayoutOptions(resolveCurrentOptions());
+        stackLayout.addView(child, 0, matchParentWithBehaviour(new StackBehaviour(this)));
     }
 
     private void onNavigationButtonPressed(String buttonId) {
@@ -371,6 +374,17 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void clearTopTabs() {
         topBarController.clearTopTabs();
+    }
+
+    @Override
+    public boolean onDependentViewChanged(CoordinatorLayout parent, ViewGroup child, View dependency) {
+        perform(findController(child), controller -> presenter.applyTopInsets(resolveChildOptions(controller), controller));
+        return false;
+    }
+
+    @Override
+    public int getTopInset(ViewController child) {
+        return resolveChildOptions(child).topBar.drawBehind.isTrue() ? 0 : topBarController.getHeight();
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

@@ -37,7 +37,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class TopTabsViewControllerTest extends BaseTest {
-
     private static final int SIZE = 2;
 
     private StackController stack;

@@ -1,24 +1,23 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.content.Context;
-import android.widget.FrameLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 
+import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 
-import com.facebook.react.modules.i18nmanager.I18nUtil;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.ReactInstanceManager;
-
 public class RootPresenter {
     private NavigationAnimator animator;
-    private FrameLayout rootLayout;
+    private CoordinatorLayout rootLayout;
 
-    void setRootContainer(FrameLayout rootLayout) {
+    void setRootContainer(CoordinatorLayout rootLayout) {
         this.rootLayout = rootLayout;
     }
 

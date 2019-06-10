@@ -5,6 +5,7 @@ const { Platform } = require('react-native');
 const { setDefaultOptions } = require('./commons/Options')
 const testIDs = require('./testIDs');
 const Screens = require('./screens/Screens');
+const Color = require('./commons/Colors');
 
 if (Platform.OS === 'android') {
   alert = (title) => {
@@ -46,6 +47,9 @@ function start() {
                   }
                 ],
                 options: {
+                  layout: {
+                    backgroundColor: Color.background
+                  },
                   bottomTab: {
                     text: 'Layouts',
                     icon: require('../img/layouts.png'),

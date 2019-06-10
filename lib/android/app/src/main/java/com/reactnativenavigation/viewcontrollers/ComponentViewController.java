@@ -10,11 +10,16 @@ import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
 
-public class ComponentViewController extends ChildController<ComponentLayout> {
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
+public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
+
+    ReactComponent getComponent() {
+        return view;
+    }
 
     public ComponentViewController(final Activity activity,
                                    final ChildControllersRegistry childRegistry,
@@ -39,12 +44,12 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public void onViewAppeared() {
         super.onViewAppeared();
-        view.sendComponentStart();
+        if (view != null) view.sendComponentStart();
     }
 
     @Override
     public void onViewDisappear() {
-        view.sendComponentStop();
+        if (view != null) view.sendComponentStop();
         super.onViewDisappear();
     }
 
@@ -62,7 +67,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public boolean isViewShown() {
-        return super.isViewShown() && view.isReady();
+        return super.isViewShown() && view != null && view.isReady();
     }
 
     @NonNull
@@ -80,8 +85,15 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         super.mergeOptions(options);
     }
 
-    ReactComponent getComponent() {
-        return view;
+    @Override
+    public void applyTopInsets() {
+        presenter.applyTopInsets(view, getTopInset());
+    }
+
+    @Override
+    public int getTopInset() {
+        int statusBarInset = resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : 63;
+        return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 
     @Override

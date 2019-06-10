@@ -3,11 +3,13 @@ package com.reactnativenavigation.viewcontrollers.sidemenu;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.SideMenuOptions;
@@ -18,12 +20,14 @@ import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.*;
+import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.SideMenu;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 public class SideMenuController extends ParentController<DrawerLayout> implements DrawerLayout.DrawerListener {
 
@@ -106,10 +110,6 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
         return options;
     }
 
-    //For onDrawerOpened and onDrawerClosed :
-    //Merge the options to the current state, if this happened due to a gesture we need to
-    //update the option state
-
     @Override
     public void onDrawerOpened(@NonNull View drawerView) {
         ViewController view = this.getMatchingView(drawerView);
@@ -145,23 +145,33 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
     }
 
     public void setCenterController(ViewController centerController) {
-		this.center = centerController;
-		View childView = centerController.getView();
-		getView().addView(childView);
+		center = centerController;
+		getView().addView(center.getView());
 	}
 
     public void setLeftController(ViewController controller) {
-        this.left = controller;
+        left = controller;
         int height = getHeight(options.sideMenuRootOptions.left);
         int width = getWidth(options.sideMenuRootOptions.left);
         getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.LEFT));
     }
 
     public void setRightController(ViewController controller) {
-        this.right = controller;
+        right = controller;
         int height = getHeight(options.sideMenuRootOptions.right);
         int width = getWidth(options.sideMenuRootOptions.right);
         getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.RIGHT));
+    }
+
+    @Override
+    public boolean onMeasureChild(CoordinatorLayout parent, ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+        forEach(getChildControllers(), ViewController::applyTopInsets);
+        return false;
+    }
+
+    @Override
+    public void applyTopInsets() {
+        forEach(getChildControllers(), ViewController::applyTopInsets);
     }
 
     private int getWidth(SideMenuOptions sideMenuOptions) {

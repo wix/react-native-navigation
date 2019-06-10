@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.DotIndicatorOptions;
+import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
@@ -26,8 +27,6 @@ public class BottomTabPresenter {
     private Options defaultOptions;
     private final BottomTabFinder bottomTabFinder;
     private BottomTabs bottomTabs;
-    private final int defaultSelectedTextColor;
-    private final int defaultTextColor;
     private final List<ViewController> tabs;
     private final int defaultDotIndicatorSize;
 

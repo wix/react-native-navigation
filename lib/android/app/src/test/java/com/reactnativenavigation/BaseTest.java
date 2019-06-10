@@ -21,11 +21,11 @@ import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 27, application = TestApplication.class)
+@Config(sdk = 28, application = TestApplication.class)
 public abstract class BaseTest {
     @Before
     public void beforeEach() {
@@ -63,6 +63,11 @@ public abstract class BaseTest {
         assertThat(parent).isNotNull();
         assertThat(child).isNotNull();
         assertThat(ViewUtils.isChildOf(parent, child)).isFalse();
+    }
+
+    public void assertMatchParent(View view) {
+        assertThat(view.getLayoutParams().width).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
+        assertThat(view.getLayoutParams().height).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     protected void disablePushAnimation(ViewController... controllers) {

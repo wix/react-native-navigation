@@ -3,13 +3,12 @@ package com.reactnativenavigation.parse;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullNumber;
+import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
-
 
 import org.json.JSONObject;
 
@@ -39,7 +38,6 @@ public class LayoutOptions {
         if (other.topMargin.hasValue()) topMargin = other.topMargin;
         if (other.orientation.hasValue()) orientation = other.orientation;
         if (other.direction.hasValue()) direction = other.direction;
-
     }
 
     public void mergeWithDefault(LayoutOptions defaultOptions) {

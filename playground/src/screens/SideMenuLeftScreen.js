@@ -20,7 +20,7 @@ class SideMenuLeftScreen extends React.Component {
   }
   render() {
     return (
-      <Root componentId={this.props.componentId} style={{ backgroundColor: Colors.background }}>
+      <Root componentId={this.props.componentId} style={{ marginTop: this.props.marginTop || 0 }}>
         <Button label='Push' testID={LEFT_SIDE_MENU_PUSH_BTN} onPress={this.push} />
         <Button label='Push and Close' testID={LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN} onPress={this.pushAndClose} />
         <Button label='Close' testID={CLOSE_LEFT_SIDE_MENU_BTN} onPress={this.close} />

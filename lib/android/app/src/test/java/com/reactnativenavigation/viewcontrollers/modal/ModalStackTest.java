@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -57,7 +58,7 @@ public class ModalStackTest extends BaseTest {
         root = new SimpleViewController(activity, childRegistry, "root", new Options());
 
         FrameLayout rootLayout = new FrameLayout(activity);
-        FrameLayout modalsLayout = new FrameLayout(activity);
+        CoordinatorLayout modalsLayout = new CoordinatorLayout(activity);
         FrameLayout contentLayout = new FrameLayout(activity);
         contentLayout.addView(rootLayout);
         contentLayout.addView(modalsLayout);

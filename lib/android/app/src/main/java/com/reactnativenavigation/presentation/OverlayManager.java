@@ -7,13 +7,15 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import java.util.HashMap;
 
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
+
 public class OverlayManager {
     private final HashMap<String, ViewController> overlayRegistry = new HashMap<>();
 
     public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
         overlayRegistry.put(overlay.getId(), overlay);
         overlay.addOnAppearedListener(() -> listener.onSuccess(overlay.getId()));
-        overlaysContainer.addView(overlay.getView());
+        overlaysContainer.addView(overlay.getView(), matchParentLP());
     }
 
     public void dismiss(String componentId, CommandListener listener) {

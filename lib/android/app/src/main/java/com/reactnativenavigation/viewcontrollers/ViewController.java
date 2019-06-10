@@ -6,6 +6,7 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -21,6 +22,7 @@ import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.Renderable;
 import com.reactnativenavigation.views.element.Element;
@@ -29,9 +31,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 
-public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener, ViewGroup.OnHierarchyChangeListener {
+public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener,
+        ViewGroup.OnHierarchyChangeListener,
+        BehaviourAdapter<T> {
 
     private final List<Runnable> onAppearedListeners = new ArrayList();
     private boolean appearEventPosted;
@@ -194,6 +198,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return isSameId(id) ? this : null;
     }
 
+    @Nullable
+    public ViewController findController(View child) {
+        return view == child ? this : null;
+    }
+
     public boolean containsComponent(Component component) {
         return getView().equals(component);
     }
@@ -309,5 +318,28 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public List<Element> getElements() {
         return getView() instanceof IReactView && view != null? ((IReactView) view).getElements() : Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public boolean onMeasureChild(CoordinatorLayout parent, T child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+        return false;
+    }
+
+    @Override
+    public boolean onLayoutChild(CoordinatorLayout parent, T child, int layoutDirection) {
+        return false;
+    }
+
+    @Override
+    public boolean onDependentViewChanged(CoordinatorLayout parent, T child, View dependency) {
+        return false;
+    }
+
+    public void applyTopInsets() {
+
+    }
+
+    public int getTopInset() {
+        return 0;
     }
 }

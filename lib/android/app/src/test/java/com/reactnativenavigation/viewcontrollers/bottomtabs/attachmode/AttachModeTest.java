@@ -1,25 +1,29 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs.attachmode;
 
-import android.app.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.support.design.widget.CoordinatorLayout;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.mocks.*;
-import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.presentation.*;
-import com.reactnativenavigation.viewcontrollers.*;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.*;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.AttachMode;
+import com.reactnativenavigation.views.bottomtabs.BottomTabsBehaviour;
 
-import org.junit.*;
-import org.mockito.*;
+import org.junit.Test;
+import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.spy;
 
 public abstract class AttachModeTest extends BaseTest {
     private static final int INITIAL_TAB = 1;
@@ -38,7 +42,7 @@ public abstract class AttachModeTest extends BaseTest {
     public void beforeEach() {
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
-        parent = new FrameLayout(activity);
+        parent = new CoordinatorLayout(activity);
         tabs = createTabs();
         options = new Options();
         options.bottomTabsOptions.currentTabIndex = new Number(INITIAL_TAB);
@@ -48,7 +52,9 @@ public abstract class AttachModeTest extends BaseTest {
     @Test
     public void attach_layoutOptionsAreApplied() {
         uut.attach(tab1);
-        verify(presenter).applyLayoutParamsOptions(options, tabs.indexOf(tab1));
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) tab1.getView().getLayoutParams();
+        assertThat(lp).isNotNull();
+        assertThat(lp.getBehavior()).isInstanceOf(BottomTabsBehaviour.class);
     }
 
     @Test

@@ -71,7 +71,7 @@ public class ViewUtils {
     }
 
     public static boolean isChildOf(ViewGroup parent, View child) {
-        if (parent == child) return true;
+        if (parent == child) return false;
 
         for (int i = 0; i < parent.getChildCount(); i++) {
             View view = parent.getChildAt(i);
@@ -137,5 +137,15 @@ public class ViewUtils {
         if (parent != null) {
             ((ViewManager) parent).removeView(view);
         }
+    }
+
+    public static void setPaddingBottom(@Nullable View view, int paddingBottom) {
+        if (view == null) return;
+        view.setPadding(
+                view.getPaddingLeft(),
+                view.getPaddingTop(),
+                view.getPaddingRight(),
+                paddingBottom
+        );
     }
 }

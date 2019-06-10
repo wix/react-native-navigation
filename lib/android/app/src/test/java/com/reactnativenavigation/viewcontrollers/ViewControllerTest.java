@@ -270,5 +270,11 @@ public class ViewControllerTest extends BaseTest {
         uut.view = mock(ViewGroup.class);
         assertThat(uut.isRendered()).isTrue();
     }
+
+    @Test
+    public void getTopInset_noParent() {
+        uut.setParentController(null);
+        assertThat(uut.getTopInset()).isEqualTo(63);
+    }
 }
 

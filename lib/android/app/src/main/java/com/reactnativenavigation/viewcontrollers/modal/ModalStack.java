@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
 import android.support.annotation.RestrictTo;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.ModalAnimator;
@@ -35,7 +36,7 @@ public class ModalStack {
         this.presenter = presenter;
     }
 
-    public void setModalsLayout(ViewGroup modalsLayout) {
+    public void setModalsLayout(CoordinatorLayout modalsLayout) {
         presenter.setModalsLayout(modalsLayout);
     }
 

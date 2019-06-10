@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply from: '../prepare-robolectric.gradle'
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -32,6 +31,7 @@ android {
     }
 
     testOptions {
+        unitTests.includeAndroidResources = true
         unitTests.all { t ->
             reports {
                 html.enabled true
@@ -105,8 +105,8 @@ dependencies {
 
     // tests
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:3.5.1'
+    testImplementation "org.robolectric:robolectric:4.3-beta-1"
     testImplementation 'org.assertj:assertj-core:3.8.0'
     testImplementation 'com.squareup.assertj:assertj-android:1.1.1'
-    testImplementation 'org.mockito:mockito-core:2.13.0'
+    testImplementation 'org.mockito:mockito-core:2.27.0'
 }

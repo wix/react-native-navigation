@@ -46,6 +46,7 @@ public class StatusBarOptions {
         result.textColorScheme = TextColorScheme.fromString(json.optString("style"));
         result.visible = BoolParser.parse(json, "visible");
         result.drawBehind = BoolParser.parse(json, "drawBehind");
+        result.translucent = BoolParser.parse(json, "translucent");
 
         return result;
     }
@@ -54,12 +55,14 @@ public class StatusBarOptions {
     public TextColorScheme textColorScheme = TextColorScheme.None;
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
+    public Bool translucent = new NullBool();
 
     public void mergeWith(StatusBarOptions other) {
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
         if (other.textColorScheme.hasValue()) textColorScheme = other.textColorScheme;
         if (other.visible.hasValue()) visible = other.visible;
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
+        if (other.translucent.hasValue()) translucent = other.translucent;
     }
 
     public void mergeWithDefault(StatusBarOptions defaultOptions) {
@@ -67,5 +70,6 @@ public class StatusBarOptions {
         if (!textColorScheme.hasValue()) textColorScheme = defaultOptions.textColorScheme;
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;
+        if (!translucent.hasValue()) translucent = defaultOptions.translucent;
     }
 }

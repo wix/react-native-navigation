@@ -7,12 +7,20 @@ import android.support.annotation.IntRange;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.BuildConfig;
+import com.reactnativenavigation.R;
 
 @SuppressLint("ViewConstructor")
 public class BottomTabs extends AHBottomNavigation {
     private boolean itemsCreationEnabled = true;
     private boolean shouldCreateItems = true;
+
+    public BottomTabs(Context context) {
+        super(context);
+        setId(R.id.bottomTabs);
+        if (BuildConfig.DEBUG) setContentDescription("BottomTabs");
+//        setAlpha(0.2f);
+    }
 
     public void disableItemsCreation() {
         itemsCreationEnabled = false;
@@ -21,11 +29,6 @@ public class BottomTabs extends AHBottomNavigation {
     public void enableItemsCreation() {
         itemsCreationEnabled = true;
         if (shouldCreateItems) createItems();
-    }
-
-    public BottomTabs(Context context) {
-        super(context);
-        setId(CompatUtils.generateViewId());
     }
 
     @Override

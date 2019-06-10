@@ -2,9 +2,10 @@ package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
-import android.widget.FrameLayout;
 
+import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
@@ -15,8 +16,6 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
-
-import com.facebook.react.ReactInstanceManager;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -33,7 +32,7 @@ import static org.mockito.Mockito.when;
 
 public class RootPresenterTest extends BaseTest {
     private RootPresenter uut;
-    private FrameLayout rootContainer;
+    private CoordinatorLayout rootContainer;
     private ViewController root;
     private NavigationAnimator animator;
     private Options defaultOptions;
@@ -44,7 +43,7 @@ public class RootPresenterTest extends BaseTest {
     public void beforeEach() {
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
         Activity activity = newActivity();
-        rootContainer = new FrameLayout(activity);
+        rootContainer = new CoordinatorLayout(activity);
         root = new SimpleViewController(activity, new ChildControllersRegistry(), "child1", new Options());
         animator = spy(createAnimator(activity));
         uut = new RootPresenter(animator);

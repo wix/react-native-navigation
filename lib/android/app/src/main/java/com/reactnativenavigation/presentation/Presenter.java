@@ -5,13 +5,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.view.Window;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.StatusBarOptions;
 import com.reactnativenavigation.parse.StatusBarOptions.TextColorScheme;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.utils.UiUtils;
+
+import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class Presenter {
@@ -36,17 +38,12 @@ public class Presenter {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
-        applyStatusBarOptions(view, withDefaultOptions.statusBar);
+        applyStatusBarOptions(withDefaultOptions);
     }
 
-    public void applyRootOptions(View view, Options options) {
+    public void onViewBroughtToFront(Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        setDrawBehindStatusBar(view, withDefaultOptions.statusBar);
-    }
-
-    public void onViewBroughtToFront(View view, Options options) {
-        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        applyStatusBarOptions(view, withDefaultOptions.statusBar);
+        applyStatusBarOptions(withDefaultOptions);
     }
 
     private void applyOrientation(OrientationOptions options) {
@@ -66,18 +63,25 @@ public class Presenter {
         }
     }
 
-    private void applyStatusBarOptions(View view, StatusBarOptions statusBar) {
-        setStatusBarBackgroundColor(statusBar);
-        setTextColorScheme(statusBar.textColorScheme);
-        setStatusBarVisible(view, statusBar.visible, statusBar.drawBehind);
+    private void applyStatusBarOptions(Options options) {
+        setStatusBarBackgroundColor(options.statusBar);
+        setTextColorScheme(options.statusBar.textColorScheme);
+        setTranslucent(options.statusBar);
+        setStatusBarVisible(options.statusBar.visible);
     }
 
-    private void setStatusBarVisible(View view, Bool visible, Bool drawBehind) {
-        if (visible.isFalse()) {
-            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN);
-        } else if (drawBehind.isTrue()) {
-            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    private void setTranslucent(StatusBarOptions options) {
+        Window window = activity.getWindow();
+        if (options.translucent.isTrue()) {
+            window.setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
+        } else {
+            window.clearFlags(FLAG_TRANSLUCENT_STATUS);
         }
+    }
+
+    private void setStatusBarVisible(Bool visible) {
+        View decorView = activity.getWindow().getDecorView();
+        decorView.setSystemUiVisibility(visible.isFalse() ? View.SYSTEM_UI_FLAG_FULLSCREEN : 0);
     }
 
     private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
@@ -104,14 +108,6 @@ public class Presenter {
         flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         view.setSystemUiVisibility(flags);
     }
-
-    private void setDrawBehindStatusBar(View view, StatusBarOptions statusBar) {
-        if (statusBar.visible.isFalse()) {
-            ((MarginLayoutParams) view.getLayoutParams()).topMargin = statusBar.drawBehind.isTrue() ?
-                    0 : UiUtils.getStatusBarHeight(activity);
-        }
-    }
-
 
     private void mergeStatusBarOptions(View view, StatusBarOptions statusBar) {
         mergeStatusBarBackgroundColor(statusBar);

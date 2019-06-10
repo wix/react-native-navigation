@@ -43,7 +43,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -266,7 +266,6 @@ public class StackPresenterTest extends BaseTest {
 
         options.topBar.drawBehind = new Bool(true);
         uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
-        verify(child, times(1)).drawBehindTopBar();
     }
 
     @Test
@@ -508,6 +507,31 @@ public class StackPresenterTest extends BaseTest {
         assertThat(uut.getComponentButtons(child, null)).isNull();
     }
 
+    @Test
+    public void applyTopInsets_topBarIsDrawnUnderStatusBarIfDrawBehindIsTrue() {
+        Options options = new Options();
+        options.statusBar.drawBehind = new Bool(true);
+        uut.applyTopInsets(options, Mockito.mock(ViewController.class));
+
+        assertThat(topBar.getY()).isEqualTo(0);
+    }
+
+    @Test
+    public void applyTopInsets_topBarIsDrawnUnderStatusBarIfStatusBarIsHidden() {
+        Options options = new Options();
+        options.statusBar.visible = new Bool(false);
+        uut.applyTopInsets(options, Mockito.mock(ViewController.class));
+
+        assertThat(topBar.getY()).isEqualTo(0);
+    }
+
+    @Test
+    public void applyTopInsets() {
+        ViewController child = Mockito.mock(ViewController.class);
+        uut.applyTopInsets(Options.EMPTY, child);
+        verify(child).applyTopInsets();
+    }
+
     private void assertTopBarOptions(Options options, int t) {
         if (options.topBar.title.component.hasValue()) {
             verify(topBar, times(0)).setTitle(any());
@@ -524,8 +548,6 @@ public class StackPresenterTest extends BaseTest {
         verify(topBar, times(t)).setSubtitleColor(anyInt());
         verify(topBar, times(t)).setTestId(any());
         verify(topBar, times(t)).hide();
-        verify(child, times(t)).drawBelowTopBar(topBar);
-        verify(child, times(0)).drawBehindTopBar();
     }
 
     private TopBar mockTopBar() {

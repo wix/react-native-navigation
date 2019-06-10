@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
-import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 
 public class OverlayTouchDelegate {
@@ -49,7 +48,7 @@ public class OverlayTouchDelegate {
 
     private TouchLocation getTouchLocation(MotionEvent ev) {
         getView((ViewGroup) reactView.asView()).getHitRect(hitRect);
-        return hitRect.contains((int) ev.getRawX(), (int) ev.getRawY() - UiUtils.getStatusBarHeight(reactView.asView().getContext())) ?
+        return hitRect.contains((int) ev.getRawX(), (int) ev.getRawY()) ?
                 TouchLocation.Inside :
                 TouchLocation.Outside;
     }

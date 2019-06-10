@@ -36,7 +36,6 @@ public class ParentControllerTest extends BaseTest {
     private ChildControllersRegistry childRegistry;
     private List<ViewController> children;
     private ParentController uut;
-    private Presenter presenter;
 
     @Override
     public void beforeEach() {
@@ -46,7 +45,7 @@ public class ParentControllerTest extends BaseTest {
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        presenter = spy(new Presenter(activity, new Options()));
+        Presenter presenter = new Presenter(activity, new Options());
         uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
 
             @Override
@@ -163,25 +162,6 @@ public class ParentControllerTest extends BaseTest {
         child1.ensureViewIsCreated();
         child1.onViewAppeared();
         assertThat(uut.initialOptions.topBar.title.text.get()).isEqualTo(INITIAL_TITLE);
-    }
-
-    @Test
-    public void applyChildOptions_appliesRootOptionsIfRoot() {
-        addToParent(activity, uut);
-
-        Options options = new Options();
-        SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
-        uut.applyChildOptions(options, child1.getView());
-        verify(presenter, times(1)).applyRootOptions(uut.getView(), options);
-    }
-
-    @Test
-    public void applyChildOptions_doesNotApplyRootOptionsIfHasParent() {
-        Options options = new Options();
-        uut.setParentController(Mockito.mock(ParentController.class));
-        SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
-        uut.applyChildOptions(options, child1.getView());
-        verify(presenter, times(0)).applyRootOptions(uut.getView(), options);
     }
 
     @Test
