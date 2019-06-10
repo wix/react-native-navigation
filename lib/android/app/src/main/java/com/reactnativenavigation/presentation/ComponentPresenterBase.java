@@ -1,18 +1,14 @@
 package com.reactnativenavigation.presentation;
 
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 
 public class ComponentPresenterBase {
-    public boolean applyTopInsets(View view, int topInsets) {
-        if (view != null) {
-            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            if (lp.topMargin != topInsets) {
-                lp.topMargin = topInsets;
-                view.requestLayout();
-                return true;
-            }
+    public void applyTopInsets(View view, int topInsets) {
+        MarginLayoutParams lp = (MarginLayoutParams) view.getLayoutParams();
+        if (lp.topMargin != topInsets) {
+            lp.topMargin = topInsets;
+            view.requestLayout();
         }
-        return false;
     }
 }
