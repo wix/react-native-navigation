@@ -274,7 +274,7 @@ public class SideMenuControllerTest extends BaseTest {
     @Test
     public void applyTopInsets_delegatesToChildren() {
         setLeftRight(spy(left), spy(right));
-        assertThat(uut.applyTopInset()).isFalse();
+        uut.applyTopInset();
         forEach(uut.getChildControllers(), c -> verify(c).applyTopInset());
     }
 

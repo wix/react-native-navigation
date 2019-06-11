@@ -322,7 +322,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     @Override
+    @CallSuper
     public boolean onMeasureChild(CoordinatorLayout parent, T child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+        perform(findController(child), ViewController::applyTopInset);
         return false;
     }
 

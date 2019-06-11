@@ -39,20 +39,14 @@ module.exports = {
   },
   StatusBar: {
     sideMenu: {
-      left: {
-        component: {
-          name: SideMenuLeft,
-          passProps: {
-            marginTop: 20
-          },
-          options: {
-            statusBar: {
-              drawBehind: true,
-              translucent: true
-            }
+      left: component(SideMenuLeft,
+        {
+          statusBar: {
+            drawBehind: true,
+            translucent: true
           }
-        }
-      },
+        },
+        { marginTop: 20 }),
       center: stack(StatusBarOptions),
       right: component(SideMenuRight)
     }

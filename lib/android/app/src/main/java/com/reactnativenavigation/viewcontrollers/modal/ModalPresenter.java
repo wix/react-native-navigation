@@ -13,7 +13,7 @@ import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public class ModalPresenter {
 
@@ -46,10 +46,8 @@ public class ModalPresenter {
 
         Options options = toAdd.resolveCurrentOptions(defaultOptions);
         toAdd.setWaitForRender(options.animations.showModal.waitForRender);
-        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        lp.setBehavior(new BehaviourDelegate(toAdd));
         toAdd.getView().setFitsSystemWindows(true);
-        modalsLayout.addView(toAdd.getView(), lp);
+        modalsLayout.addView(toAdd.getView(), matchParentWithBehaviour(new BehaviourDelegate(toAdd)));
 
         if (options.animations.showModal.enabled.isTrueOrUndefined()) {
             if (options.animations.showModal.waitForRender.isTrue()) {

@@ -3,13 +3,11 @@ package com.reactnativenavigation.viewcontrollers.sidemenu;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.SideMenuOptions;
@@ -161,12 +159,6 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
         int height = getHeight(options.sideMenuRootOptions.right);
         int width = getWidth(options.sideMenuRootOptions.right);
         getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.RIGHT));
-    }
-
-    @Override
-    public boolean onMeasureChild(CoordinatorLayout parent, ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        forEach(getChildControllers(), ViewController::applyTopInset);
-        return false;
     }
 
     @Override

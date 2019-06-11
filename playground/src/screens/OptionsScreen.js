@@ -68,7 +68,7 @@ class Options extends Component {
         <Button label='Hide TopBar in DefaultOptions' testID={HIDE_TOPBAR_DEFAULT_OPTIONS} onPress={this.hideTopBarInDefaultOptions} />
         <Button label='Set React Title View' testID={SET_REACT_TITLE_VIEW} onPress={this.setReactTitleView} />
         <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
-        <Button label='StatusBar' onPress={this.pushStatusBarScreen} />
+        <Button label='StatusBar' onPress={this.statusBarScreen} />
       </Root>
     );
   }
@@ -120,7 +120,7 @@ class Options extends Component {
     }
   });
 
-  pushStatusBarScreen = () => Navigation.showModal(Screens.StatusBar);
+  statusBarScreen = () => Navigation.showModal(Screens.StatusBar);
 }
 
 module.exports = Options;
