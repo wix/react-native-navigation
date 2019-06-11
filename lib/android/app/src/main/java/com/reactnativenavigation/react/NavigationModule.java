@@ -21,6 +21,7 @@ import com.reactnativenavigation.parse.parsers.JSONParser;
 import com.reactnativenavigation.parse.parsers.LayoutNodeParser;
 import com.reactnativenavigation.utils.NativeCommandListener;
 import com.reactnativenavigation.utils.Now;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;

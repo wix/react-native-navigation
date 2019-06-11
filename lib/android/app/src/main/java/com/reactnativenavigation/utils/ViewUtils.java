@@ -138,14 +138,4 @@ public class ViewUtils {
             ((ViewManager) parent).removeView(view);
         }
     }
-
-    public static void setPaddingBottom(@Nullable View view, int paddingBottom) {
-        if (view == null) return;
-        view.setPadding(
-                view.getPaddingLeft(),
-                view.getPaddingTop(),
-                view.getPaddingRight(),
-                paddingBottom
-        );
-    }
 }
