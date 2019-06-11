@@ -2,7 +2,10 @@ apply plugin: "com.android.application"
 
 project.ext.react = [
         root     : "../../../",
-        entryFile: "index.js"
+        entryFile: "index.js",
+        bundleAssetName: "index.android.bundle",
+        bundleInAlpha: true,
+        bundleInBeta: true
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"

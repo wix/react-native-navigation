@@ -18,7 +18,6 @@ public class StackLayout extends RelativeLayout implements Component {
         super(context);
         this.stackId = stackId;
         createLayout(topBarController);
-        setContentDescription("StackLayout");
     }
 
     private void createLayout(TopBarController topBarController) {

@@ -171,6 +171,7 @@ public class StackPresenter {
 
         topBar.setTitleHeight(options.title.height.get(UiUtils.getTopBarHeightDp(activity)));
         topBar.setTitle(options.title.text.get(""));
+        topBar.setTitleTopMargin(options.title.topMargin.get(0));
 
         if (options.title.component.hasValue()) {
             if (titleControllers.containsKey(component)) {
@@ -400,6 +401,7 @@ public class StackPresenter {
 
         if (options.title.height.hasValue()) topBar.setTitleHeight(options.title.height.get());
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
+        if (options.title.topMargin.hasValue()) topBar.setTitleTopMargin(options.title.topMargin.get());
 
         if (options.title.component.hasValue()) {
             if (titleControllers.containsKey(component)) {
