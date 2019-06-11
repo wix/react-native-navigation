@@ -2,11 +2,9 @@ package com.reactnativenavigation.viewcontrollers.sidemenu;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.support.design.widget.CoordinatorLayout;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 
@@ -300,7 +298,7 @@ public class SideMenuControllerTest extends BaseTest {
     @Test
     public void onMeasureChild_topInsetsAreApplied() {
         setLeftRight(spy(left), spy(right));
-        uut.onMeasureChild(Mockito.mock(CoordinatorLayout.class), Mockito.mock(ViewGroup.class), 0, 0, 0, 0);
+        uut.applyTopInset();
         forEach(uut.getChildControllers(), c -> verify(c).applyTopInset());
     }
 

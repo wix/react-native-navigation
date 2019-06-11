@@ -130,7 +130,6 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 	public void destroy() {
 		super.destroy();
 		forEach(getChildControllers(), ViewController::destroy);
-		getChildControllers().clear();
 	}
 
 	@CallSuper
