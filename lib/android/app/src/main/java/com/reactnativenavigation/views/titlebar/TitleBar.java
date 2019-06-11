@@ -40,7 +40,6 @@ public class TitleBar extends Toolbar {
     public TitleBar(Context context) {
         super(context);
         getMenu();
-        setContentDescription("titleBar");
     }
 
     @Override
@@ -224,6 +223,16 @@ public class TitleBar extends Toolbar {
         ViewGroup.LayoutParams lp = getLayoutParams();
         lp.height = pixelHeight;
         setLayoutParams(lp);
+    }
+
+    public void setTopMargin(int topMargin) {
+        int pixelTopMargin = UiUtils.dpToPx(getContext(), topMargin);
+        if (getLayoutParams() instanceof MarginLayoutParams) {
+            MarginLayoutParams lp = (MarginLayoutParams) getLayoutParams();
+            if (lp.topMargin == pixelTopMargin) return;
+            lp.topMargin = pixelTopMargin;
+            setLayoutParams(lp);
+        }
     }
 
     public void setOverflowButtonColor(int color) {

@@ -45,7 +45,7 @@ This event can be observed globally as well:
 
 ```js
 // Subscribe
-const screenEventListener = Navigation.events().registerComponentDidAppearListener(({ componentId, componentName }) => {
+const screenEventListener = Navigation.events().registerComponentDidAppearListener(({ componentId, componentName, passProps }) => {
 
 });
 ...
@@ -56,6 +56,7 @@ screenEventListener.remove();
 |:--------------------:|:-----|
 |**componentId**| Id of the appearing component|
 |**componentName**|Registered name used when registering the component with `Navigation.registerComponent()`|
+|**passProps**| props passed to the component|
 
 ## componentDidDisappear
 Called each time this component disappears from screen (detached from the view heirarchy)

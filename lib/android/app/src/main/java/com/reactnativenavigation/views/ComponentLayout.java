@@ -31,7 +31,6 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 		super(context);
 		this.reactView = reactView;
         addView(reactView.asView(), MATCH_PARENT, MATCH_PARENT);
-        setContentDescription("ComponentLayout");
         touchDelegate = new OverlayTouchDelegate(reactView);
     }
 

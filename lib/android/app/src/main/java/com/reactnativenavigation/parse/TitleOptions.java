@@ -32,6 +32,7 @@ public class TitleOptions {
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
         options.height = NumberParser.parse(json, "height");
+        options.topMargin = NumberParser.parse(json, "topMargin");
 
         return options;
     }
@@ -43,6 +44,7 @@ public class TitleOptions {
     @Nullable public Typeface fontFamily;
     public Component component = new Component();
     public Number height = new NullNumber();
+    public Number topMargin = new NullNumber();
 
     void mergeWith(final TitleOptions other) {
         if (other.text.hasValue()) text = other.text;
@@ -52,6 +54,7 @@ public class TitleOptions {
         if (other.alignment != Alignment.Default) alignment = other.alignment;
         if (other.component.hasValue()) component = other.component;
         if (other.height.hasValue()) height = other.height;
+        if (other.topMargin.hasValue()) topMargin = other.topMargin;
     }
 
     void mergeWithDefault(TitleOptions defaultOptions) {
@@ -62,5 +65,6 @@ public class TitleOptions {
         if (alignment == Alignment.Default) alignment = defaultOptions.alignment;
         component.mergeWithDefault(defaultOptions.component);
         if (!height.hasValue()) height = defaultOptions.height;
+        if (!topMargin.hasValue()) topMargin = defaultOptions.topMargin;
     }
 }

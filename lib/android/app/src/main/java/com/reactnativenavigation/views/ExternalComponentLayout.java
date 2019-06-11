@@ -13,7 +13,6 @@ import static android.widget.RelativeLayout.BELOW;
 public class ExternalComponentLayout extends FrameLayout implements Component {
     public ExternalComponentLayout(Context context) {
 		super(context);
-        setContentDescription("ExternalComponentLayout");
     }
 
     @Override
