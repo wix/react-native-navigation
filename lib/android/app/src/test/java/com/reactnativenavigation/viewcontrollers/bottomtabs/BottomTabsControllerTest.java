@@ -201,17 +201,17 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void mergeOptions_drawBehind() {
-        assertThat(uut.getBottomInsets()).isEqualTo(uut.getBottomTabs().getHeight());
+        assertThat(uut.getBottomInset()).isEqualTo(uut.getBottomTabs().getHeight());
 
         Options o1 = new Options();
         o1.bottomTabsOptions.drawBehind = new Bool(true);
         child1.mergeOptions(o1);
-        assertThat(uut.getBottomInsets()).isEqualTo(0);
+        assertThat(uut.getBottomInset()).isEqualTo(0);
 
         Options o2 = new Options();
         o2.topBar.title.text = new Text("Some text");
         child1.mergeOptions(o1);
-        assertThat(uut.getBottomInsets()).isEqualTo(0);
+        assertThat(uut.getBottomInset()).isEqualTo(0);
     }
 
     @Test

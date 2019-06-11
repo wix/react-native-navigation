@@ -9,6 +9,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.ExternalComponent;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.ExternalComponentPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.FragmentCreatorMock;
@@ -44,6 +45,7 @@ public class ExternalComponentViewControllerTest extends BaseTest {
                 componentCreator,
                 reactInstanceManager,
                 emitter,
+                new ExternalComponentPresenter(),
                 new Options())
         );
     }

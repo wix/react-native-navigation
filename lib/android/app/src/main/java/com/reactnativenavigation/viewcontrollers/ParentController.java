@@ -129,9 +129,8 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 	@Override
 	public void destroy() {
 		super.destroy();
-		for (ViewController child : getChildControllers()) {
-			child.destroy();
-		}
+		forEach(getChildControllers(), ViewController::destroy);
+		getChildControllers().clear();
 	}
 
 	@CallSuper

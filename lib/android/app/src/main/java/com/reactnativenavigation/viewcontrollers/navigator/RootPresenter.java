@@ -11,7 +11,10 @@ import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.views.BehaviourDelegate;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
+
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public class RootPresenter {
     private NavigationAnimator animator;
@@ -31,7 +34,7 @@ public class RootPresenter {
 
     void setRoot(ViewController root, Options defaultOptions, CommandListener listener, ReactInstanceManager reactInstanceManager) {
         setLayoutDirection(root, defaultOptions, (ReactApplicationContext) reactInstanceManager.getCurrentReactContext());
-        rootLayout.addView(root.getView());
+        rootLayout.addView(root.getView(), matchParentWithBehaviour(new BehaviourDelegate(root)));
         Options options = root.resolveCurrentOptions(defaultOptions);
         root.setWaitForRender(options.animations.setRoot.waitForRender);
         if (options.animations.setRoot.waitForRender.isTrue()) {

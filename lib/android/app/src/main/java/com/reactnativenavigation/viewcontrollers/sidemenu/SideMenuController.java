@@ -43,10 +43,12 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 
     @Override
     protected ViewController getCurrentChild() {
-	    if (getView().isDrawerOpen(Gravity.LEFT)) {
-            return left;
-        } else if (getView().isDrawerOpen(Gravity.RIGHT)) {
-            return right;
+        if (!isDestroyed()) {
+            if (getView().isDrawerOpen(Gravity.LEFT)) {
+                return left;
+            } else if (getView().isDrawerOpen(Gravity.RIGHT)) {
+                return right;
+            }
         }
         return center;
     }
@@ -102,10 +104,14 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
     @Override
     public Options resolveCurrentOptions() {
         Options options = super.resolveCurrentOptions();
-        if (getView().isDrawerOpen(Gravity.LEFT) || getView().isDrawerOpen(Gravity.RIGHT)) {
+        if (isDrawerOpen(Gravity.LEFT) || isDrawerOpen(Gravity.RIGHT)) {
             options = options.mergeWith(center.resolveCurrentOptions());
         }
         return options;
+    }
+
+    private boolean isDrawerOpen(int gravity) {
+        return !isDestroyed() && getView().isDrawerOpen(gravity);
     }
 
     @Override

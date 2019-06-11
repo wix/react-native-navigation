@@ -81,6 +81,25 @@ public class SideMenuControllerTest extends BaseTest {
     }
 
     @Test
+    public void getCurrentChild() {
+        setLeftRight(left, right);
+
+        assertThat(uut.getCurrentChild()).isEqualTo(center);
+
+        openLeftMenu();
+        assertThat(uut.getCurrentChild()).isEqualTo(left);
+
+        closeLeftMenu();
+        openRightMenu();
+        assertThat(uut.getCurrentChild()).isEqualTo(right);
+
+        closeRightMenu();
+        assertThat(uut.getCurrentChild()).isEqualTo(center);
+        uut.destroy();
+        assertThat(uut.getCurrentChild()).isEqualTo(center);
+    }
+
+    @Test
     public void applyChildOptions() {
         uut.applyChildOptions(new Options(), (Component) child.getView());
         verify(presenter).applyChildOptions(eq(resolvedOptions));
@@ -235,7 +254,7 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isTrue();
         verify(spy).onViewAppeared();
 
-        closeLeft();
+        closeLeftMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
         verify(spy).onViewDisappear();
     }
@@ -315,7 +334,7 @@ public class SideMenuControllerTest extends BaseTest {
         uut.mergeOptions(options);
     }
 
-    private void closeLeft() {
+    private void closeLeftMenu() {
         Options options = new Options();
         options.sideMenuRootOptions.left.visible = new Bool(false);
         options.sideMenuRootOptions.left.animate = new Bool(false);
