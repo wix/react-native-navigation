@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 public class SideMenuController extends ParentController<DrawerLayout> implements DrawerLayout.DrawerListener {
 
@@ -165,11 +164,6 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
         int height = getHeight(options.sideMenuRootOptions.right);
         int width = getWidth(options.sideMenuRootOptions.right);
         getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.RIGHT));
-    }
-
-    @Override
-    public void applyTopInset() {
-        forEach(getChildControllers(), ViewController::applyTopInset);
     }
 
     private int getWidth(SideMenuOptions sideMenuOptions) {

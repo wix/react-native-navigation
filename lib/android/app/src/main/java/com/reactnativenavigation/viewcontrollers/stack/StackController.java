@@ -17,7 +17,6 @@ import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.CoordinatorLayoutUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.IdStack;
 import com.reactnativenavigation.viewcontrollers.ParentController;
@@ -178,10 +177,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
-        CoordinatorLayout.LayoutParams lp = CoordinatorLayoutUtils.matchParentLP();
-        lp.setBehavior(new StackBehaviour(this));
-        view.setLayoutParams(lp);
-        view.setTag("Child " + (size() - 1));
+        view.setLayoutParams(matchParentWithBehaviour(new StackBehaviour(this)));
         child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
         if (size() == 1) presenter.applyInitialChildLayoutOptions(resolvedOptions);
         getView().addView(view, getView().getChildCount() - 1);

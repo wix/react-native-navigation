@@ -37,6 +37,7 @@ import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
+import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.assertj.core.api.iterable.Extractor;
@@ -165,6 +166,7 @@ public class StackControllerTest extends BaseTest {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.push(child1, listener);
         assertContainsOnlyId(child1.getId());
+        assertThat(((CoordinatorLayout.LayoutParams) child1.getView().getLayoutParams()).getBehavior()).isInstanceOf(StackBehaviour.class);
         verify(listener, times(1)).onSuccess(child1.getId());
     }
 
@@ -1096,6 +1098,19 @@ public class StackControllerTest extends BaseTest {
 
         ShadowLooper.idleMainLooper();
         assertThat(uut.getTopBar().getY()).isEqualTo(0);
+    }
+
+    @Test
+    public void getTopInset() {
+        disablePushAnimation(child1);
+        uut.push(child1, new CommandListenerAdapter());
+
+        assertThat(uut.getTopInset(child1)).isEqualTo(topBarController.getHeight());
+
+        Options options = new Options();
+        options.topBar.drawBehind = new Bool(true);
+        child1.mergeOptions(options);
+        assertThat(uut.getTopInset(child1)).isEqualTo(0);
     }
 
     private void assertContainsOnlyId(String... ids) {

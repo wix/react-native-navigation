@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.view.Gravity;
 import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
@@ -99,6 +100,7 @@ public class BottomTabsControllerTest extends BaseTest {
     public void createView_checkProperStructure() {
         assertThat(uut.getView()).isInstanceOf(CoordinatorLayout.class);
         assertThat(uut.getView().getChildAt(0)).isInstanceOf(BottomTabs.class);
+        assertThat(((CoordinatorLayout.LayoutParams) uut.getBottomTabs().getLayoutParams()).gravity).isEqualTo(Gravity.BOTTOM);
     }
 
     @Test(expected = RuntimeException.class)

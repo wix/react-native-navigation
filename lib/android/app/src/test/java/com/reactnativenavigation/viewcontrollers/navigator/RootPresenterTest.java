@@ -15,6 +15,7 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.views.BehaviourDelegate;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import org.junit.Test;
@@ -55,6 +56,7 @@ public class RootPresenterTest extends BaseTest {
     public void setRoot_viewIsAddedToContainer() {
         uut.setRoot(root, defaultOptions, new CommandListenerAdapter(), reactInstanceManager);
         assertThat(root.getView().getParent()).isEqualTo(rootContainer);
+        assertThat(((CoordinatorLayout.LayoutParams) root.getView().getLayoutParams()).getBehavior()).isInstanceOf(BehaviourDelegate.class);
     }
 
     @Test
