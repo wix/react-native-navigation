@@ -88,7 +88,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void applyTopInset() {
-        presenter.applyTopInsets(view, getTopInset());
+        if (view != null) presenter.applyTopInsets(view, getTopInset());
     }
 
     @Override
@@ -99,7 +99,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void applyBottomInset() {
-        presenter.applyBottomInset(view, getBottomInset());
+        if (view != null) presenter.applyBottomInset(view, getBottomInset());
     }
 
     @Override
