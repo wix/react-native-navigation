@@ -11,7 +11,7 @@ public class StatusBarUtils {
     private static final int STATUS_BAR_HEIGHT_L = 25;
     private static int statusBarHeight = -1;
 
-    public static void setStatusBarHeight(int height) {
+    public static void saveStatusBarHeight(int height) {
         statusBarHeight = height;
     }
 

@@ -20,10 +20,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -204,5 +207,49 @@ public class ParentControllerTest extends BaseTest {
         Mockito.when(spy.resolveCurrentOptions()).thenReturn(currentOptions);
         spy.resolveCurrentOptions(defaultOptions);
         verify(currentOptions).withDefaultOptions(defaultOptions);
+    }
+
+    @Test
+    public void applyTopInset() {
+        children.addAll(createChildren());
+        uut.applyTopInset();
+        forEach(children, c-> verify(c).applyTopInset());
+    }
+
+    @Test
+    public void getTopInset() {
+        assertThat(uut.getTopInset()).isZero();
+    }
+
+    @Test
+    public void getTopInsetForChild() {
+        ParentController parent = Mockito.mock(ParentController.class);
+        when(parent.getTopInset(any())).thenReturn(123);
+        uut.setParentController(parent);
+
+        assertThat(uut.getTopInset(Mockito.mock(ViewController.class))).isEqualTo(123);
+    }
+
+    @Test
+    public void applyBottomInset() {
+        children.addAll(createChildren());
+        uut.applyBottomInset();
+        forEach(children, c-> verify(c).applyBottomInset());
+    }
+
+    @Test
+    public void getBottomInsetForChild() {
+        ParentController parent = Mockito.mock(ParentController.class);
+        when(parent.getBottomInset(any())).thenReturn(123);
+        uut.setParentController(parent);
+
+        assertThat(uut.getBottomInset(Mockito.mock(ViewController.class))).isEqualTo(123);
+    }
+
+    private List<ViewController> createChildren() {
+        return Arrays.asList(
+                spy(new SimpleViewController(activity, childRegistry, "child1", new Options())),
+                spy(new SimpleViewController(activity, childRegistry, "child2", new Options()))
+        );
     }
 }

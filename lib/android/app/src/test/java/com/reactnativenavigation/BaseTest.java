@@ -2,10 +2,10 @@ package com.reactnativenavigation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -109,7 +109,7 @@ public abstract class BaseTest {
 
     protected void addToParent(Context context, ViewController... controllers) {
         for (ViewController controller : controllers) {
-            new FrameLayout(context).addView(controller.getView());
+            new CoordinatorLayout(context).addView(controller.getView());
         }
     }
 }

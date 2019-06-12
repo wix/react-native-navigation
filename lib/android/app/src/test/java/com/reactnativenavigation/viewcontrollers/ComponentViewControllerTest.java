@@ -10,6 +10,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.ComponentLayout;
 
@@ -28,11 +29,13 @@ public class ComponentViewControllerTest extends BaseTest {
     private ComponentPresenter presenter;
     private Options resolvedOptions = new Options();
     private StackController parent;
+    private Activity activity;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
-        Activity activity = newActivity();
+        activity = newActivity();
+        StatusBarUtils.saveStatusBarHeight(63);
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
         parent = TestUtils.newStackController(activity).build();
         Presenter presenter = new Presenter(activity, new Options());
@@ -121,15 +124,22 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
+    public void applyTopInset_delegatesToPresenter() {
+        addToParent(activity, uut);
+        uut.applyTopInset();
+        verify(presenter).applyTopInsets(uut.getView(), uut.getTopInset());
+    }
+
+    @Test
     public void getTopInset_returnsStatusBarHeight() {
         //noinspection ConstantConditions
         uut.setParentController(null);
-        assertThat(uut.getTopInset()).isEqualTo(63);
+        assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
     }
 
     @Test
     public void getTopInset_resolveWithParent() {
-        assertThat(uut.getTopInset()).isEqualTo(63 + parent.getTopInset(uut));
+        assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity) + parent.getTopInset(uut));
     }
 
     @Test
@@ -137,5 +147,12 @@ public class ComponentViewControllerTest extends BaseTest {
         uut.options.statusBar.drawBehind = new Bool(true);
         uut.options.topBar.drawBehind = new Bool(true);
         assertThat(uut.getTopInset()).isEqualTo(0);
+    }
+
+    @Test
+    public void applyBottomInset_delegatesToPresenter() {
+        addToParent(activity, uut);
+        uut.applyBottomInset();
+        verify(presenter).applyBottomInset(uut.getView(), uut.getBottomInset());
     }
 }

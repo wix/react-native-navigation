@@ -23,6 +23,7 @@ import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -94,6 +95,8 @@ public class BottomTabsControllerTest extends BaseTest {
         CoordinatorLayout parent = new CoordinatorLayout(activity);
         parent.addView(uut.getView());
         activity.setContentView(parent);
+
+        StatusBarUtils.saveStatusBarHeight(63);
     }
 
     @Test
@@ -325,25 +328,25 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void getTopInset() {
-        assertThat(child1.getTopInset()).isEqualTo(63);
-        assertThat(child2.getTopInset()).isEqualTo(63);
+        assertThat(child1.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
+        assertThat(child2.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
 
         child1.options.statusBar.drawBehind = new Bool(true);
         assertThat(child1.getTopInset()).isEqualTo(0);
-        assertThat(child2.getTopInset()).isEqualTo(63);
+        assertThat(child2.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
 
         SimpleViewController stackChild = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
         disablePushAnimation(stackChild);
         child4.push(stackChild, new CommandListenerAdapter());
 
-        assertThat(stackChild.getTopInset()).isEqualTo(63 + child4.getTopBar().getHeight());
+        assertThat(stackChild.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity) + child4.getTopBar().getHeight());
 
         uut.options.statusBar.drawBehind = new Bool(true);
         stackChild.options.topBar.drawBehind = new Bool(true);
         assertThat(uut.getTopInset()).isEqualTo(0);
         assertThat(child4.getTopInset()).isEqualTo(0);
-        assertThat(child4.getTopBar().getY()).isEqualTo(63);
-        assertThat(stackChild.getTopInset()).isEqualTo(63);
+        assertThat(child4.getTopBar().getY()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
+        assertThat(stackChild.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
     }
 
     @Test

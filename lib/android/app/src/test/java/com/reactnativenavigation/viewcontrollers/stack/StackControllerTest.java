@@ -25,6 +25,7 @@ import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewHelper;
@@ -87,6 +88,7 @@ public class StackControllerTest extends BaseTest {
         super.beforeEach();
         backButtonHelper = spy(new BackButtonHelper());
         activity = newActivity();
+        StatusBarUtils.saveStatusBarHeight(63);
         animator = spy(new NavigationAnimator(activity, Mockito.mock(ElementTransitionManager.class)));
         childRegistry = new ChildControllersRegistry();
         presenter = spy(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), ImageLoaderMock.mock(), new RenderChecker(), new Options()));
@@ -1087,7 +1089,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child1, new CommandListenerAdapter());
 
         ShadowLooper.idleMainLooper();
-        assertThat(uut.getTopBar().getY()).isEqualTo(63);
+        assertThat(uut.getTopBar().getY()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
     }
 
     @Test

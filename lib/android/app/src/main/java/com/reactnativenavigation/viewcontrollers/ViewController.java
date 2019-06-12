@@ -329,11 +329,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     @Override
-    public boolean onLayoutChild(CoordinatorLayout parent, T child, int layoutDirection) {
-        return false;
-    }
-
-    @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, T child, View dependency) {
         return false;
     }

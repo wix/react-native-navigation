@@ -21,9 +21,4 @@ public class BehaviourDelegate<V extends ViewGroup> extends CoordinatorLayout.Be
     public boolean onMeasureChild(CoordinatorLayout parent, V child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         return delegate.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
     }
-
-    @Override
-    public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
-        return delegate.onLayoutChild(parent, child, layoutDirection);
-    }
 }

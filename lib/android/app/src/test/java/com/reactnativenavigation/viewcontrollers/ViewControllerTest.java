@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -275,6 +276,13 @@ public class ViewControllerTest extends BaseTest {
     public void getTopInset_noParent() {
         uut.setParentController(null);
         assertThat(uut.getTopInset()).isEqualTo(63);
+    }
+
+    @Test
+    public void onMeasureChild() {
+        ViewController spy = spy(uut);
+        spy.onMeasureChild(mock(CoordinatorLayout.class), spy.getView(), -1, -1, -1, -1);
+        verify(spy).applyTopInset();
     }
 }
 

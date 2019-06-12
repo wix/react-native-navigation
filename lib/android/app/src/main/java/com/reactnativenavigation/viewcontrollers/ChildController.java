@@ -88,7 +88,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     private WindowInsetsCompat applyWindowInsets(WindowInsetsCompat insets) {
-        StatusBarUtils.setStatusBarHeight(insets.getSystemWindowInsetTop());
+        StatusBarUtils.saveStatusBarHeight(insets.getSystemWindowInsetTop());
         return insets;
     }
 }
