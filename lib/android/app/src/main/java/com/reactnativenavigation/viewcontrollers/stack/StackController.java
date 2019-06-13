@@ -22,6 +22,7 @@ import com.reactnativenavigation.viewcontrollers.IdStack;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.views.BehaviourDelegate;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
@@ -32,7 +33,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
@@ -177,10 +177,9 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
-        view.setLayoutParams(matchParentWithBehaviour(new StackBehaviour(this)));
         child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
         if (size() == 1) presenter.applyInitialChildLayoutOptions(resolvedOptions);
-        getView().addView(view, getView().getChildCount() - 1);
+        getView().addView(view, getView().getChildCount() - 1, matchParentWithBehaviour(new BehaviourDelegate(this)));
     }
 
     public void setRoot(List<ViewController> children, CommandListener listener) {
@@ -240,7 +239,7 @@ public class StackController extends ParentController<StackLayout> {
 
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
-            appearingView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+            appearingView.setLayoutParams(matchParentWithBehaviour(new BehaviourDelegate(this)));
         }
         if (appearingView.getParent() == null) {
             getView().addView(appearingView, 0);
