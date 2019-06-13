@@ -497,6 +497,6 @@ public class StackPresenter {
 
     private void applyStatusBarInsets(Options options, ViewController child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        topBar.setY(withDefault.statusBar.visible.isFalse() ? 0 : StatusBarUtils.getStatusBarHeight(child.getActivity()));
+        topBar.setY(withDefault.statusBar.visible.isTrueOrUndefined() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0);
     }
 }

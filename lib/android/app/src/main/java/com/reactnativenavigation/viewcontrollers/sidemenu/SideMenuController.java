@@ -1,16 +1,14 @@
 package com.reactnativenavigation.viewcontrollers.sidemenu;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
@@ -20,13 +18,12 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.SideMenu;
+import com.reactnativenavigation.views.SideMenuRoot;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-
-public class SideMenuController extends ParentController<DrawerLayout> implements DrawerLayout.DrawerListener {
+public class SideMenuController extends ParentController<SideMenuRoot> implements DrawerLayout.DrawerListener {
 
 	private ViewController center;
 	private ViewController left;
@@ -54,11 +51,14 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 
     @NonNull
 	@Override
-	protected DrawerLayout createView() {
-        DrawerLayout sideMenu = new SideMenu(getActivity());
+	protected SideMenuRoot createView() {
+        SideMenu sideMenu = new SideMenu(getActivity());
         presenter.bindView(sideMenu);
         sideMenu.addDrawerListener(this);
-        return sideMenu;
+
+        SideMenuRoot root = new SideMenuRoot(getActivity());
+        root.addSideMenu(sideMenu, this);
+        return root;
 	}
 
     @Override
@@ -147,39 +147,25 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
         return presenter.handleBack() || center.handleBack(listener) || super.handleBack(listener);
     }
 
+    @Nullable
+    @Override
+    public ViewController findController(View child) {
+        return getView().isSideMenu(child) ? this : super.findController(child);
+    }
+
     public void setCenterController(ViewController centerController) {
 		center = centerController;
-		getView().addView(center.getView());
+        getView().setCenter(center);
 	}
 
     public void setLeftController(ViewController controller) {
         left = controller;
-        int height = getHeight(options.sideMenuRootOptions.left);
-        int width = getWidth(options.sideMenuRootOptions.left);
-        getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.LEFT));
+        getView().setLeft(left, options);
     }
 
     public void setRightController(ViewController controller) {
         right = controller;
-        int height = getHeight(options.sideMenuRootOptions.right);
-        int width = getWidth(options.sideMenuRootOptions.right);
-        getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.RIGHT));
-    }
-
-    private int getWidth(SideMenuOptions sideMenuOptions) {
-        int width = MATCH_PARENT;
-        if (sideMenuOptions.width.hasValue()) {
-            width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.width.get(), Resources.getSystem().getDisplayMetrics());
-        }
-        return width;
-    }
-
-    private int getHeight(SideMenuOptions sideMenuOptions) {
-        int height = MATCH_PARENT;
-        if (sideMenuOptions.height.hasValue()) {
-            height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.height.get(), Resources.getSystem().getDisplayMetrics());
-        }
-        return height;
+        getView().setRight(right, options);
     }
 
     private ViewController getMatchingView (View drawerView) {
@@ -205,7 +191,7 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
     }
 
     private void dispatchSideMenuVisibilityEvents(ViewController drawer, float prevOffset, float offset) {
-        if (prevOffset == 0 && offset> 0) {
+        if (prevOffset == 0 && offset > 0) {
             drawer.onViewAppeared();
         } else if (prevOffset > 0 && offset == 0) {
             drawer.onViewDisappear();

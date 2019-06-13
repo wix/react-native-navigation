@@ -22,11 +22,6 @@ const {
 class ModalScreen extends React.Component {
   static options() {
     return {
-      statusBar: {
-        visible: false,
-        drawBehind: true,
-        backgroundColor: 'transparent'
-      },
       topBar: {
         testID: MODAL_SCREEN_HEADER,
         title: {

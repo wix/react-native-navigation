@@ -11,9 +11,8 @@ import com.reactnativenavigation.parse.ModalPresentationStyle;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.BehaviourDelegate;
 
-import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 
 public class ModalPresenter {
 
@@ -47,7 +46,7 @@ public class ModalPresenter {
         Options options = toAdd.resolveCurrentOptions(defaultOptions);
         toAdd.setWaitForRender(options.animations.showModal.waitForRender);
         toAdd.getView().setFitsSystemWindows(true);
-        modalsLayout.addView(toAdd.getView(), matchParentWithBehaviour(new BehaviourDelegate(toAdd)));
+        modalsLayout.addView(toAdd.getView(), matchParentLP());
 
         if (options.animations.showModal.enabled.isTrueOrUndefined()) {
             if (options.animations.showModal.waitForRender.isTrue()) {
