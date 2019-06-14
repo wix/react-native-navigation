@@ -46,7 +46,11 @@ class StatusBarOptions extends React.Component {
     );
   }
 
-  fullScreenModal = () => Navigation.showModal(Screens.Modal);
+  fullScreenModal = () => Navigation.showModal(Screens.Modal, {
+    statusBar: {
+      visible: false
+    }
+  });
   push = () => Navigation.push(this, Screens.Pushed);
   bottomTabs = () => Navigation.showModal(Screens.StatusBarBottomTabs);
   open = (side) => Navigation.mergeOptions(this, {

@@ -49,6 +49,7 @@ public class ModalPresenter {
         modalsLayout.addView(toAdd.getView(), matchParentLP());
 
         if (options.animations.showModal.enabled.isTrueOrUndefined()) {
+            toAdd.getView().setAlpha(0);
             if (options.animations.showModal.waitForRender.isTrue()) {
                 toAdd.addOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
             } else {
@@ -65,6 +66,11 @@ public class ModalPresenter {
 
     private void animateShow(ViewController toAdd, ViewController toRemove, CommandListener listener, Options options) {
         animator.show(toAdd.getView(), options.animations.showModal, new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                toAdd.getView().setAlpha(1);
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 onShowModalEnd(toAdd, toRemove, listener);
