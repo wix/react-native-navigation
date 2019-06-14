@@ -2,7 +2,7 @@ const { Navigation } = require('react-native-navigation');
 const Colors = require('./Colors');
 const {Dimensions} = require('react-native');
 const { height } = Dimensions.get('window');
-const PUSH_DURATION = 2070 * 1;
+const PUSH_DURATION = 2070 * 0.5;
 
 
 const setDefaultOptions = () => Navigation.setDefaultOptions({
@@ -17,9 +17,16 @@ const setDefaultOptions = () => Navigation.setDefaultOptions({
     selectedIconColor: Colors.primary,
     selectedTextColor: Colors.primary
   },
-  _animations: { // Slow push animation
-    push: {
-      _waitForRender: true,
+  animations: { // Slow push animation
+    showModal: {
+      y: {
+        from: height,
+        to: 0,
+        duration: PUSH_DURATION,
+      }
+    },
+    _push: {
+      waitForRender: true,
       content: {
         alpha: {
           from: 0,
