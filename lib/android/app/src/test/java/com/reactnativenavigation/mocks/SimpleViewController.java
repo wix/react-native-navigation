@@ -41,7 +41,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public void destroy() {
-        if (!isDestroyed()) performOnParentController(parent -> parent.onChildDestroyed(getView()));
+        if (!isDestroyed()) performOnParentController(parent -> parent.onChildDestroyed(this));
         super.destroy();
     }
 
@@ -53,7 +53,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public void mergeOptions(Options options) {
-        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, this));
         super.mergeOptions(options);
     }
 

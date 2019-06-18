@@ -16,7 +16,6 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildController;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.BehaviourDelegate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +72,6 @@ public class ModalPresenterTest extends BaseTest {
         verify(modal1).setWaitForRender(any());
         verify(modal1).resolveCurrentOptions(defaultOptions);
         assertThat(modal1.getView().getFitsSystemWindows()).isTrue();
-        assertThat(((CoordinatorLayout.LayoutParams) modal1.getView().getLayoutParams()).getBehavior()).isInstanceOf(BehaviourDelegate.class);
     }
 
     @Test

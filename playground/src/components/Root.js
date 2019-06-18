@@ -1,8 +1,9 @@
 const React = require('react');
 const { View, Text, StyleSheet } = require('react-native');
+const Colors = require('../commons/Colors');
 
 module.exports = (props) =>
-  <View style={[props.style, styles.root]}>
+  <View style={[styles.root, props.style]}>
     {props.children}
     {props.componentId && <View style={styles.footer}>
       {props.footer && <Text style={styles.footerText}>{props.footer}</Text>}
@@ -13,7 +14,6 @@ module.exports = (props) =>
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    flexDirection: 'column',
     alignItems: 'center',
     padding: 16
   },

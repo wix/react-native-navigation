@@ -10,7 +10,6 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
 import com.reactnativenavigation.views.BottomTabs;
-import com.reactnativenavigation.views.Component;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -47,7 +46,7 @@ public class BottomTabsPresenterTest extends BaseTest {
 
         Options options = new Options();
         options.bottomTabsOptions.backgroundColor = new Colour(10);
-        uut.mergeChildOptions(options, (Component) tabs.get(0).getView());
+        uut.mergeChildOptions(options, tabs.get(0));
         verify(bottomTabs).setBackgroundColor(options.bottomTabsOptions.backgroundColor.get());
         verifyNoMoreInteractions(bottomTabs);
     }

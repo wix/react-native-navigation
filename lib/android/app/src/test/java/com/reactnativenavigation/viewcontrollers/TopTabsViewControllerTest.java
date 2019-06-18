@@ -19,7 +19,6 @@ import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
-import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
 import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 
@@ -98,10 +97,6 @@ public class TopTabsViewControllerTest extends BaseTest {
         return tabControllers;
     }
 
-    private ReactComponent tabView(int index) {
-        return (ReactComponent) tabControllers.get(index).getView();
-    }
-
     @Test
     public void createsViewFromComponentViewCreator() {
         uut.ensureViewIsCreated();
@@ -165,7 +160,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         verify(tabControllers.get(0), times(1)).onViewAppeared();
         verify(tabControllers.get(1), times(0)).onViewAppeared();
 
-        ReactComponent comp = ((ComponentViewController) tabControllers.get(0)).getComponent();
+        ViewController comp = tabControllers.get(0);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(comp));
     }
 
@@ -177,17 +172,17 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.get(1).ensureViewIsCreated();
 
         uut.onViewAppeared();
-        ReactComponent currentTab = tabView(0);
+        ViewController currentTab = tab(0);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(currentTab));
         assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
 
         uut.switchToTab(1);
-        currentTab = tabView(1);
+        currentTab = tab(1);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(currentTab));
         assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(1));
 
         uut.switchToTab(0);
-        currentTab = tabView(0);
+        currentTab = tab(0);
         verify(uut, times(2)).applyChildOptions(any(Options.class), eq(currentTab));
         assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
     }
@@ -242,5 +237,9 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     private String createTabTopBarTitle(int i) {
         return "Title " + i;
+    }
+
+    private ViewController tab(int index) {
+        return tabControllers.get(index);
     }
 }

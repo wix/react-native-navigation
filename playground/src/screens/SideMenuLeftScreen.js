@@ -1,7 +1,6 @@
 const React = require('react');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
-const Colors = require('../commons/Colors');
 const Navigation = require('../services/Navigation');
 const Screens = require('./Screens');
 const {

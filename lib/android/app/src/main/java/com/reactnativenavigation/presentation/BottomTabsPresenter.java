@@ -12,7 +12,6 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
 import com.reactnativenavigation.views.BottomTabs;
-import com.reactnativenavigation.views.Component;
 
 import java.util.List;
 
@@ -49,8 +48,8 @@ public class BottomTabsPresenter {
         applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
     }
 
-    public void applyChildOptions(Options options, Component child) {
-        int tabIndex = bottomTabFinder.findByComponent(child);
+    public void applyChildOptions(Options options, ViewController child) {
+        int tabIndex = bottomTabFinder.findByControllerId(child.getId());
         if (tabIndex >= 0) {
             Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
             applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
@@ -58,10 +57,10 @@ public class BottomTabsPresenter {
         }
     }
 
-    public void mergeChildOptions(Options options, Component child) {
+    public void mergeChildOptions(Options options, ViewController child) {
         mergeBottomTabsOptions(options.bottomTabsOptions, options.animations);
-        int tabIndex = bottomTabFinder.findByComponent(child);
-        if (tabIndex >= 0) mergeDrawBehind(options.bottomTabsOptions, tabIndex);
+        int tabIndex = bottomTabFinder.findByControllerId(child.getId());
+        if (tabIndex >= 0) mergeDrawBehind(tabIndex);
     }
 
     private void mergeBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animations) {
@@ -102,7 +101,7 @@ public class BottomTabsPresenter {
         tabs.get(tabIndex).applyBottomInset();
     }
 
-    private void mergeDrawBehind(BottomTabsOptions options, int tabIndex) {
+    private void mergeDrawBehind(int tabIndex) {
         tabs.get(tabIndex).applyBottomInset();
     }
 

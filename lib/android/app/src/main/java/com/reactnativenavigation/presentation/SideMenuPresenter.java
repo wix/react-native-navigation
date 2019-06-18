@@ -1,16 +1,18 @@
 package com.reactnativenavigation.presentation;
 
+import android.support.annotation.RestrictTo;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.SideMenuRootOptions;
+import com.reactnativenavigation.views.SideMenu;
 
 public class SideMenuPresenter {
 
-    private DrawerLayout sideMenu;
+    private SideMenu sideMenu;
 
-    public void bindView(DrawerLayout sideMenu) {
+    public void bindView(SideMenu sideMenu) {
         this.sideMenu = sideMenu;
     }
 
@@ -75,5 +77,10 @@ public class SideMenuPresenter {
         } else if (options.right.enabled.isTrue()) {
             sideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
         }
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public SideMenu getSideMenu() {
+        return sideMenu;
     }
 }

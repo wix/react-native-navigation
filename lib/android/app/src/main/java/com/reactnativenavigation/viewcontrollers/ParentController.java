@@ -117,12 +117,12 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     }
 
     @CallSuper
-    public void applyChildOptions(Options options, Component child) {
+    public void applyChildOptions(Options options, ViewController child) {
         this.options = initialOptions.mergeWith(options);
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, ViewController childController, Component child) {
+    public void mergeChildOptions(Options options, ViewController childController) {
 
     }
 
@@ -151,7 +151,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return getCurrentChild() != null && getCurrentChild().isRendered();
     }
 
-    public void onChildDestroyed(Component child) {
+    public void onChildDestroyed(ViewController child) {
 
     }
 

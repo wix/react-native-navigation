@@ -1,8 +1,8 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentActivity;
-import android.widget.FrameLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
@@ -53,7 +53,7 @@ public class ExternalComponentViewControllerTest extends BaseTest {
     @Test
     public void createView_returnsFrameLayout() {
         ExternalComponentLayout view = uut.getView();
-        assertThat(FrameLayout.class.isAssignableFrom(view.getClass())).isTrue();
+        assertThat(CoordinatorLayout.class.isAssignableFrom(view.getClass())).isTrue();
     }
 
     @Test

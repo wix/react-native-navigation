@@ -62,7 +62,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     public void applyOptions(Options options) {
         super.applyOptions(options);
         Options resolvedOptions = resolveCurrentOptions();
-        presenter.applyOptions(getView(), resolvedOptions);
+        presenter.applyOptions(this, resolvedOptions);
     }
 
     @Override
@@ -75,7 +75,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     @Override
     public void destroy() {
         if (!isDestroyed() && getView() instanceof Component) {
-            performOnParentController(parent -> parent.onChildDestroyed((Component) getView()));
+            performOnParentController(parent -> parent.onChildDestroyed(this));
         }
         super.destroy();
         childRegistry.onChildDestroyed(this);

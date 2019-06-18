@@ -10,7 +10,7 @@ const {
 } = require('../testIDs');
 const Screens = require('./Screens');
 const Navigation = require('../services/Navigation');
-const {stack, component} = require('../commons/Layouts');
+const {stack} = require('../commons/Layouts');
 
 class LayoutsScreen extends React.Component {
   static options() {

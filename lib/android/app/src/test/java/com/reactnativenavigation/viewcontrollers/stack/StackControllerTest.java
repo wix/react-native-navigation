@@ -34,8 +34,6 @@ import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
-import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 import com.reactnativenavigation.views.stack.StackBehaviour;
@@ -158,7 +156,7 @@ public class StackControllerTest extends BaseTest {
         child1.getView().addView(new View(activity));
         assertThat(uut.isRendered()).isTrue();
 
-        Mockito.when(presenter.isRendered((Component) child1.getView())).then(ignored -> false);
+        Mockito.when(presenter.isRendered(child1.getView())).then(ignored -> false);
         assertThat(uut.isRendered()).isFalse();
     }
 
@@ -368,7 +366,7 @@ public class StackControllerTest extends BaseTest {
             @Override
             public void onSuccess(String childId) {
                 uut.pop(Options.EMPTY, new CommandListenerAdapter());
-                verify(uut, times(1)).applyChildOptions(uut.options, eq((ReactComponent) child1.getView()));
+                verify(uut, times(1)).applyChildOptions(uut.options, eq(child1));
             }
         });
     }
@@ -409,9 +407,8 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void onChildDestroyed() {
-        Component childView = (Component) child2.getView();
-        uut.onChildDestroyed(childView);
-        verify(presenter).onChildDestroyed(childView);
+        uut.onChildDestroyed(child2);
+        verify(presenter).onChildDestroyed(child2);
     }
 
     @Test
@@ -926,7 +923,7 @@ public class StackControllerTest extends BaseTest {
         child1.onViewAppeared();
 
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
-        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
+        ArgumentCaptor<ViewController> viewCaptor = ArgumentCaptor.forClass(ViewController.class);
         verify(parent, times(1)).applyChildOptions(optionsCaptor.capture(), viewCaptor.capture());
         assertThat(optionsCaptor.getValue().topBar.title.text.hasValue()).isFalse();
     }
@@ -957,10 +954,9 @@ public class StackControllerTest extends BaseTest {
                         .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TitleBarReactViewCreatorMock(), ImageLoaderMock.mock(), new RenderChecker(), Options.EMPTY))
                         .build());
         Options optionsToMerge = new Options();
-        Component component = mock(Component.class);
         ViewController vc = mock(ViewController.class);
-        uut.mergeChildOptions(optionsToMerge, vc, component);
-        verify(uut, times(1)).mergeChildOptions(optionsToMerge, vc, component);
+        uut.mergeChildOptions(optionsToMerge, vc);
+        verify(uut, times(1)).mergeChildOptions(optionsToMerge, vc);
     }
 
     @Test
@@ -977,12 +973,11 @@ public class StackControllerTest extends BaseTest {
         Options optionsToMerge = new Options();
         optionsToMerge.topBar.testId = new Text("topBarID");
         optionsToMerge.bottomTabsOptions.testId = new Text("bottomTabsID");
-        Component component = mock(Component.class);
         ViewController vc = mock(ViewController.class);
-        uut.mergeChildOptions(optionsToMerge, vc, component);
+        uut.mergeChildOptions(optionsToMerge, vc);
 
         ArgumentCaptor<Options> captor = ArgumentCaptor.forClass(Options.class);
-        verify(parentController, times(1)).mergeChildOptions(captor.capture(), eq(vc), eq(component));
+        verify(parentController, times(1)).mergeChildOptions(captor.capture(), eq(vc));
         assertThat(captor.getValue().topBar.testId.hasValue()).isFalse();
         assertThat(captor.getValue().bottomTabsOptions.testId.get()).isEqualTo(optionsToMerge.bottomTabsOptions.testId.get());
     }
@@ -996,13 +991,12 @@ public class StackControllerTest extends BaseTest {
         options.animations.push = NestedAnimationsOptions.parse(new JSONObject());
         options.topBar.testId = new Text("id");
         options.fabOptions.id = new Text("fabId");
-        Component component = mock(Component.class);
         ViewController vc = mock(ViewController.class);
 
         assertThat(options.fabOptions.hasValue()).isTrue();
-        uut.mergeChildOptions(options, vc, component);
+        uut.mergeChildOptions(options, vc);
         ArgumentCaptor<Options> captor = ArgumentCaptor.forClass(Options.class);
-        verify(parentController, times(1)).mergeChildOptions(captor.capture(), eq(vc), eq(component));
+        verify(parentController, times(1)).mergeChildOptions(captor.capture(), eq(vc));
         assertThat(captor.getValue().animations.push.hasValue()).isFalse();
         assertThat(captor.getValue().topBar.testId.hasValue()).isFalse();
         assertThat(captor.getValue().fabOptions.hasValue()).isFalse();
@@ -1030,8 +1024,7 @@ public class StackControllerTest extends BaseTest {
     public void mergeChildOptions_presenterDoesNotApplyOptionsIfViewIsNotShown() {
         ViewController vc = mock(ViewController.class);
         when(vc.isViewShown()).thenReturn(false);
-        Component child = mock(Component.class);
-        uut.mergeChildOptions(new Options(), vc, child);
+        uut.mergeChildOptions(new Options(), vc);
         verify(presenter, times(0)).mergeChildOptions(any(), any(), any());
     }
 
@@ -1039,8 +1032,7 @@ public class StackControllerTest extends BaseTest {
     public void mergeChildOptions_presenterMergesOptionsOnlyForCurrentChild() {
         ViewController vc = mock(ViewController.class);
         when(vc.isViewShown()).thenReturn(true);
-        Component child = mock(Component.class);
-        uut.mergeChildOptions(new Options(), vc, child);
+        uut.mergeChildOptions(new Options(), vc);
         verify(presenter, times(0)).mergeChildOptions(any(), any(), any());
     }
 
@@ -1055,9 +1047,8 @@ public class StackControllerTest extends BaseTest {
 
         parent.addView(stack.getView());
 
-        Component component = (Component) child.getView();
         ShadowLooper.idleMainLooper();
-        verify(presenter).applyChildOptions(any(), eq(component));
+        verify(presenter).applyChildOptions(any(), eq(child));
     }
 
     @Test

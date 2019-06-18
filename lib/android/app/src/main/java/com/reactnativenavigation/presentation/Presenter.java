@@ -2,6 +2,9 @@ package com.reactnativenavigation.presentation;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -12,6 +15,10 @@ import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.StatusBarOptions;
 import com.reactnativenavigation.parse.StatusBarOptions.TextColorScheme;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.viewcontrollers.ParentController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 
@@ -34,7 +41,7 @@ public class Presenter {
         mergeStatusBarOptions(view, options.statusBar);
     }
 
-    public void applyOptions(View view, Options options) {
+    public void applyOptions(ViewController view, Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
@@ -50,11 +57,9 @@ public class Presenter {
         activity.setRequestedOrientation(options.getValue());
     }
 
-    private void applyViewOptions(View view, Options options) {
-        if (options.layout.backgroundColor.hasValue()) {
-            view.setBackgroundColor(options.layout.backgroundColor.get());
-        }
-        applyTopMargin(view, options);
+    private void applyViewOptions(ViewController view, Options options) {
+        applyBackgroundColor(view, options);
+        applyTopMargin(view.getView(), options);
     }
 
     private void applyTopMargin(View view, Options options) {

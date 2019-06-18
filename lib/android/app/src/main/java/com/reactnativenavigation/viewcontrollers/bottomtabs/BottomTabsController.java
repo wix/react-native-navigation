@@ -23,7 +23,6 @@ import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.BottomTabs;
-import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
 import java.util.Collection;
@@ -34,7 +33,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
-public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
+public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
 	private BottomTabs bottomTabs;
 	private List<ViewController> tabs;
@@ -64,7 +63,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
     @NonNull
 	@Override
-	protected ViewGroup createView() {
+	protected BottomTabsLayout createView() {
         BottomTabsLayout root = new BottomTabsLayout(getActivity());
         root.setLayoutParams(CoordinatorLayoutUtils.matchParentLP());
 
@@ -108,7 +107,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     @Override
-    public void applyChildOptions(Options options, Component child) {
+    public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), child);
         performOnParentController(parentController ->
@@ -122,12 +121,12 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     @Override
-    public void mergeChildOptions(Options options, ViewController childController, Component child) {
-        super.mergeChildOptions(options, childController, child);
+    public void mergeChildOptions(Options options, ViewController child) {
+        super.mergeChildOptions(options, child);
         presenter.mergeChildOptions(options, child);
         tabPresenter.mergeChildOptions(options, child);
         performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), childController, child)
+                ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), child)
         );
     }
 

@@ -13,7 +13,6 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
-import com.reactnativenavigation.views.ReactComponent;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -27,6 +26,7 @@ import java.util.List;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -146,11 +146,9 @@ public class ParentControllerTest extends BaseTest {
         child1.ensureViewIsCreated();
         child1.onViewAppeared();
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
-        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
         verify(uut, times(1)).clearOptions();
-        verify(uut, times(1)).applyChildOptions(optionsCaptor.capture(), viewCaptor.capture());
+        verify(uut, times(1)).applyChildOptions(optionsCaptor.capture(), eq(child1));
         assertThat(optionsCaptor.getValue().topBar.title.text.get()).isEqualTo("new title");
-        assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
     }
 
     @Test

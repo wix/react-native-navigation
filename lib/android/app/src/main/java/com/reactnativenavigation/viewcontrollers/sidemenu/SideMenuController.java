@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.sidemenu;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.view.Gravity;
@@ -16,7 +17,6 @@ import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.SideMenu;
 import com.reactnativenavigation.views.SideMenuRoot;
 
@@ -77,7 +77,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
 	}
 
     @Override
-    public void applyChildOptions(Options options, Component child) {
+    public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions());
         performOnParentController(parentController ->
@@ -86,11 +86,11 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     @Override
-    public void mergeChildOptions(Options options, ViewController childController, Component child) {
-        super.mergeChildOptions(options, childController, child);
+    public void mergeChildOptions(Options options, ViewController child) {
+        super.mergeChildOptions(options, child);
         presenter.mergeChildOptions(options.sideMenuRootOptions);
         performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(options.copy().clearSideMenuOptions(), childController, child)
+                ((ParentController) parentController).mergeChildOptions(options.copy().clearSideMenuOptions(), child)
         );
     }
 
@@ -109,7 +109,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         return options;
     }
 
-    private boolean isDrawerOpen(int gravity) {
+    public boolean isDrawerOpen(int gravity) {
         return !isDestroyed() && getView().isDrawerOpen(gravity);
     }
 
@@ -196,5 +196,10 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         } else if (prevOffset > 0 && offset == 0) {
             drawer.onViewDisappear();
         }
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    SideMenu getSideMenu() {
+        return presenter.getSideMenu();
     }
 }

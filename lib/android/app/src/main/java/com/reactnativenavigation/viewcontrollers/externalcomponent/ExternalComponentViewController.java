@@ -53,7 +53,7 @@ public class ExternalComponentViewController extends ViewController<ExternalComp
     @Override
     public void mergeOptions(Options options) {
         if (options == Options.EMPTY) return;
-        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, this));
         super.mergeOptions(options);
     }
 

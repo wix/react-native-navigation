@@ -22,7 +22,6 @@ import com.reactnativenavigation.viewcontrollers.IdStack;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
-import com.reactnativenavigation.views.BehaviourDelegate;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
@@ -65,7 +64,7 @@ public class StackController extends ParentController<StackLayout> {
         if (getCurrentChild().isDestroyed()) return false;
         ViewGroup currentChild = getCurrentChild().getView();
         if (currentChild instanceof Component) {
-            return super.isRendered() && presenter.isRendered((Component) currentChild);
+            return super.isRendered() && presenter.isRendered(currentChild);
         }
         return super.isRendered();
     }
@@ -84,22 +83,22 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void onAttachToParent() {
         if (!isEmpty() && !getCurrentChild().isDestroyed() && !isViewShown()) {
-            presenter.applyChildOptions(resolveCurrentOptions(), (Component) getCurrentChild().getView());
+            presenter.applyChildOptions(resolveCurrentOptions(), getCurrentChild());
         }
     }
 
     @Override
     public void mergeOptions(Options options) {
-        presenter.mergeOptions(options, (Component) getCurrentChild().getView());
+        presenter.mergeOptions(options, getCurrentChild());
         super.mergeOptions(options);
     }
 
     @Override
-    public void applyChildOptions(Options options, Component child) {
+    public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), child);
-        if (child instanceof ReactComponent) {
-            fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child, getView());
+        if (child.getView() instanceof ReactComponent) {
+            fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child.getView(), getView());
         }
         performOnParentController(parentController ->
                 ((ParentController) parentController).applyChildOptions(
@@ -115,9 +114,9 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public void mergeChildOptions(Options options, ViewController childController, Component child) {
-        super.mergeChildOptions(options, childController, child);
-        if (childController.isViewShown() && peek() == childController) {
+    public void mergeChildOptions(Options options, ViewController child) {
+        super.mergeChildOptions(options, child);
+        if (child.isViewShown() && peek() == child) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), child);
             if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
                 fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
@@ -131,14 +130,13 @@ public class StackController extends ParentController<StackLayout> {
                                 .clearFabOptions()
                                 .clearTopTabOptions()
                                 .clearTopTabsOptions(),
-                        childController,
                         child
                 )
         );
     }
 
     @Override
-    public void onChildDestroyed(Component child) {
+    public void onChildDestroyed(ViewController child) {
         super.onChildDestroyed(child);
         presenter.onChildDestroyed(child);
     }
@@ -179,7 +177,7 @@ public class StackController extends ParentController<StackLayout> {
     private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
         child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
         if (size() == 1) presenter.applyInitialChildLayoutOptions(resolvedOptions);
-        getView().addView(view, getView().getChildCount() - 1, matchParentWithBehaviour(new BehaviourDelegate(this)));
+        getView().addView(view, getView().getChildCount() - 1, matchParentWithBehaviour(new StackBehaviour(this)));
     }
 
     public void setRoot(List<ViewController> children, CommandListener listener) {
@@ -239,7 +237,7 @@ public class StackController extends ParentController<StackLayout> {
 
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
-            appearingView.setLayoutParams(matchParentWithBehaviour(new BehaviourDelegate(this)));
+            appearingView.setLayoutParams(matchParentWithBehaviour(new StackBehaviour(this)));
         }
         if (appearingView.getParent() == null) {
             getView().addView(appearingView, 0);

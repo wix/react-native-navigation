@@ -218,7 +218,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         applyOptions(options);
         performOnParentController(parentController -> {
             parentController.clearOptions();
-            if (getView() instanceof Component) parentController.applyChildOptions(options, (Component) getView());
+            if (getView() instanceof Component) parentController.applyChildOptions(options, this);
         });
         if (!onAppearedListeners.isEmpty() && !appearEventPosted) {
             appearEventPosted = true;

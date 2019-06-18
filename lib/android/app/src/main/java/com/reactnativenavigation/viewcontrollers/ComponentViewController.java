@@ -83,7 +83,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (options == Options.EMPTY) return;
         presenter.mergeOptions(getView(), options);
         super.mergeOptions(options);
-        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, this));
     }
 
     @Override

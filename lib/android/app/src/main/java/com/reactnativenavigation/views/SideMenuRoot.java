@@ -2,6 +2,7 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.RestrictTo;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -73,5 +74,10 @@ public class SideMenuRoot extends CoordinatorLayout {
     private void enableDrawingBehindStatusBar() {
         sideMenu.setFitsSystemWindows(true);
         ViewCompat.setOnApplyWindowInsetsListener(sideMenu, (view, insets) -> insets);
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public SideMenu getSideMenu() {
+        return sideMenu;
     }
 }
