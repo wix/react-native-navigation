@@ -14,6 +14,8 @@ import com.reactnativenavigation.utils.Functions.Func1;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 public class ViewUtils {
     @Nullable
     public static <T> T findChildByClass(ViewGroup root, Class clazz) {
@@ -137,5 +139,9 @@ public class ViewUtils {
         if (parent != null) {
             ((ViewManager) parent).removeView(view);
         }
+    }
+
+    public static boolean isVisible(View view) {
+        return perform(view, false, v -> v.getVisibility() == View.VISIBLE);
     }
 }

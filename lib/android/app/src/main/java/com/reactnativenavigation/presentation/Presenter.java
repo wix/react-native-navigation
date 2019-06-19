@@ -68,6 +68,21 @@ public class Presenter {
         }
     }
 
+    private void applyBackgroundColor(ViewController view, Options options) {
+        if (options.layout.backgroundColor.hasValue()) {
+            if (view instanceof Navigator) return;
+
+            LayerDrawable ld = new LayerDrawable(new Drawable[]{new ColorDrawable(options.layout.backgroundColor.get())});
+            int top = view.resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : StatusBarUtils.getStatusBarHeight(view.getActivity());
+            if (!(view instanceof ParentController)) {
+                MarginLayoutParams lp = (MarginLayoutParams) view.getView().getLayoutParams();
+                if (lp.topMargin != 0) top = 0;
+            }
+            ld.setLayerInset(0, 0, top, 0, 0);
+            view.getView().setBackground(ld);
+        }
+    }
+
     private void applyStatusBarOptions(Options options) {
         setStatusBarBackgroundColor(options.statusBar);
         setTextColorScheme(options.statusBar.textColorScheme);
@@ -91,7 +106,8 @@ public class Presenter {
 
     private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.getWindow().setStatusBarColor(statusBar.backgroundColor.get(Color.BLACK));
+            int defaultColor = statusBar.visible.isTrueOrUndefined() ? Color.BLACK : Color.TRANSPARENT;
+            activity.getWindow().setStatusBarColor(statusBar.backgroundColor.get(defaultColor));
         }
     }
 

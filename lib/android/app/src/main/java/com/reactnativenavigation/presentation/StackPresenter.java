@@ -33,7 +33,9 @@ import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
@@ -58,6 +60,7 @@ public class StackPresenter {
     private final Activity activity;
 
     private TopBar topBar;
+    private TopBarController topBarController;
     private final TitleBarReactViewCreator titleViewCreator;
     private TitleBarButtonController.OnClickListener onClickListener;
     private final ImageLoader imageLoader;
@@ -71,6 +74,7 @@ public class StackPresenter {
     private Map<View, Map<String, TitleBarButtonController>> componentLeftButtons = new HashMap();
 
     public StackPresenter(Activity activity,
+                          TopBarController topBarController,
                           TitleBarReactViewCreator titleViewCreator,
                           TopBarBackgroundViewCreator topBarBackgroundViewCreator,
                           ReactViewCreator buttonCreator,
@@ -78,6 +82,7 @@ public class StackPresenter {
                           RenderChecker renderChecker,
                           Options defaultOptions) {
         this.activity = activity;
+        this.topBarController = topBarController;
         this.titleViewCreator = titleViewCreator;
         this.topBarBackgroundViewCreator = topBarBackgroundViewCreator;
         this.buttonCreator = buttonCreator;
@@ -111,10 +116,10 @@ public class StackPresenter {
         return renderChecker.areRendered(filter(controllers, ObjectUtils::notNull));
     }
 
-    public void mergeOptions(Options options, ViewController currentChild) {
+    public void mergeOptions(Options options, StackController stack, ViewController currentChild) {
         mergeOrientation(options.layout.orientation);
 //        mergeButtons(topBar, withDefault.topBar.buttons, child);
-        mergeTopBarOptions(options.topBar, options.animations, currentChild);
+        mergeTopBarOptions(options, stack, currentChild);
         mergeTopTabsOptions(options.topTabs);
         mergeTopTabOptions(options.topTabOptions);
     }
@@ -124,11 +129,11 @@ public class StackPresenter {
         setInitialTopBarVisibility(withDefault.topBar);
     }
 
-    public void applyChildOptions(Options options, ViewController child) {
+    public void applyChildOptions(Options options, StackController stack, ViewController child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefault.layout.orientation);
         applyButtons(withDefault.topBar, child);
-        applyTopBarOptions(withDefault.topBar, withDefault.animations, child, options);
+        applyTopBarOptions(withDefault.topBar, withDefault.animations, stack, child, options);
         applyTopTabsOptions(withDefault.topTabs);
         applyTopTabOptions(withDefault.topTabOptions);
     }
@@ -151,7 +156,7 @@ public class StackPresenter {
         if (buttons != null) forEach(buttons.values(), ViewController::destroy);
     }
 
-    private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, ViewController child, Options componentOptions) {
+    private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, StackController stack, ViewController child, Options componentOptions) {
         final View component = child.getView();
         topBar.setHeight(options.height.get(UiUtils.getTopBarHeightDp(activity)));
         topBar.setElevation(options.elevation.get(DEFAULT_ELEVATION));
@@ -209,7 +214,7 @@ public class StackPresenter {
         }
 
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
-        applyTopBarVisibility(options, animationOptions, componentOptions);
+        applyTopBarVisibility(options, animationOptions, componentOptions, stack, child);
         if (options.hideOnScroll.isTrue()) {
             if (component instanceof IReactView) {
                 topBar.enableCollapse(((IReactView) component).getScrollEventListener());
@@ -232,26 +237,27 @@ public class StackPresenter {
 
     private void setInitialTopBarVisibility(TopBarOptions options) {
         if (options.visible.isFalse()) {
-            topBar.hide();
+            topBarController.hide();
         }
         if (options.visible.isTrueOrUndefined()) {
-            topBar.show();
+            topBarController.show();
         }
     }
 
-    private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions) {
+    private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions, StackController stack, ViewController child) {
+        topBarController.resetViewProperties(getTopBarInset(stack, child));
         if (options.visible.isFalse()) {
             if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
-                topBar.hideAnimate(animationOptions.pop.topBar);
+                topBarController.hideAnimate(animationOptions.pop.topBar, 0, getTopBarTranslationFromHideAnimation(stack, child));
             } else {
-                topBar.hide();
+                topBarController.hide();
             }
         }
         if (options.visible.isTrueOrUndefined()) {
             if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
-                topBar.showAnimate(animationOptions.push.topBar);
+                topBarController.showAnimate(animationOptions.push.topBar, getTopBarTranslationFromHideAnimation(stack, child));
             } else {
-                topBar.show();
+                topBarController.show();
             }
         }
     }
@@ -316,21 +322,21 @@ public class StackPresenter {
         if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
     }
 
-    public void onChildWillAppear(Options appearing, Options disappearing) {
-        if (disappearing.topBar.visible.isTrueOrUndefined() && appearing.topBar.visible.isFalse()) {
-            if (disappearing.topBar.animate.isTrueOrUndefined() && disappearing.animations.pop.enabled.isTrueOrUndefined()) {
-                topBar.hideAnimate(disappearing.animations.pop.topBar);
+    public void onChildWillAppear(StackController parent, ViewController appearing, ViewController disappearing) {
+        if (disappearing.options.topBar.visible.isTrueOrUndefined() && appearing.options.topBar.visible.isFalse()) {
+            if (disappearing.options.topBar.animate.isTrueOrUndefined() && disappearing.options.animations.pop.enabled.isTrueOrUndefined()) {
+                topBarController.hideAnimate(disappearing.options.animations.pop.topBar, 0, getTopBarTranslationFromHideAnimation(parent, appearing));
             } else {
-                topBar.hide();
+                topBarController.hide();
             }
         }
     }
 
-    public void mergeChildOptions(Options toMerge, Options resolvedOptions, ViewController child) {
+    public void mergeChildOptions(Options toMerge, Options resolvedOptions, StackController stack, ViewController child) {
         TopBarOptions topBar = toMerge.copy().mergeWith(resolvedOptions).withDefaultOptions(defaultOptions).topBar;
         mergeOrientation(toMerge.layout.orientation);
         mergeButtons(topBar, toMerge.topBar.buttons, child.getView());
-        mergeTopBarOptions(toMerge.topBar, toMerge.animations, child);
+        mergeTopBarOptions(toMerge, stack, child);
         mergeTopTabsOptions(toMerge.topTabs);
         mergeTopTabOptions(toMerge.topTabOptions);
     }
@@ -377,73 +383,76 @@ public class StackPresenter {
         return result;
     }
 
-    private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, ViewController child) {
+    private void mergeTopBarOptions(Options options, StackController stack, ViewController child) {
+        AnimationsOptions animationsOptions = options.animations;
+        TopBarOptions topBarOptions = options.topBar;
         final View component = child.getView();
-        if (options.height.hasValue()) topBar.setHeight(options.height.get());
-        if (options.elevation.hasValue()) topBar.setElevation(options.elevation.get());
-        if (options.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
-            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, options.topMargin.get());
+        if (topBarOptions.height.hasValue()) topBar.setHeight(topBarOptions.height.get());
+        if (topBarOptions.elevation.hasValue()) topBar.setElevation(topBarOptions.elevation.get());
+        if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
+            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());
         }
 
-        if (options.title.height.hasValue()) topBar.setTitleHeight(options.title.height.get());
-        if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        if (options.title.topMargin.hasValue()) topBar.setTitleTopMargin(options.title.topMargin.get());
+        if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
+        if (topBarOptions.title.text.hasValue()) topBar.setTitle(topBarOptions.title.text.get());
+        if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
 
-        if (options.title.component.hasValue()) {
+        if (topBarOptions.title.component.hasValue()) {
             if (titleControllers.containsKey(component)) {
                 topBar.setTitleComponent(titleControllers.get(component).getView());
             } else {
                 TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
                 titleControllers.put(component, controller);
-                controller.setComponent(options.title.component);
-                controller.getView().setLayoutParams(getComponentLayoutParams(options.title.component));
+                controller.setComponent(topBarOptions.title.component);
+                controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
                 topBar.setTitleComponent(controller.getView());
             }
         }
 
-        if (options.title.color.hasValue()) topBar.setTitleTextColor(options.title.color.get());
-        if (options.title.fontSize.hasValue()) topBar.setTitleFontSize(options.title.fontSize.get());
-        if (options.title.fontFamily != null) topBar.setTitleTypeface(options.title.fontFamily);
+        if (topBarOptions.title.color.hasValue()) topBar.setTitleTextColor(topBarOptions.title.color.get());
+        if (topBarOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(topBarOptions.title.fontSize.get());
+        if (topBarOptions.title.fontFamily != null) topBar.setTitleTypeface(topBarOptions.title.fontFamily);
 
-        if (options.subtitle.text.hasValue()) topBar.setSubtitle(options.subtitle.text.get());
-        if (options.subtitle.color.hasValue()) topBar.setSubtitleColor(options.subtitle.color.get());
-        if (options.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(options.subtitle.fontSize.get());
-        if (options.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
+        if (topBarOptions.subtitle.text.hasValue()) topBar.setSubtitle(topBarOptions.subtitle.text.get());
+        if (topBarOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(topBarOptions.subtitle.color.get());
+        if (topBarOptions.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get());
+        if (topBarOptions.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(topBarOptions.subtitle.fontFamily);
 
-        if (options.background.color.hasValue()) topBar.setBackgroundColor(options.background.color.get());
+        if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.get());
 
-        if (options.background.component.hasValue()) {
+        if (topBarOptions.background.component.hasValue()) {
             if (backgroundControllers.containsKey(component)) {
                 topBar.setBackgroundComponent(backgroundControllers.get(component).getView());
             } else {
                 TopBarBackgroundViewController controller = new TopBarBackgroundViewController(activity, topBarBackgroundViewCreator);
                 backgroundControllers.put(component, controller);
-                controller.setComponent(options.background.component);
+                controller.setComponent(topBarOptions.background.component);
                 controller.getView().setLayoutParams(new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
                 topBar.setBackgroundComponent(controller.getView());
             }
         }
 
-        if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
+        if (topBarOptions.testId.hasValue()) topBar.setTestId(topBarOptions.testId.get());
 
-        if (options.visible.isFalse()) {
-            if (options.animate.isTrueOrUndefined()) {
-                topBar.hideAnimate(animationsOptions.pop.topBar);
+        topBarController.resetViewProperties(getTopBarInset(stack, child));
+        if (topBarOptions.visible.isFalse()) {
+            if (topBarOptions.animate.isTrueOrUndefined()) {
+                topBarController.hideAnimate(animationsOptions.pop.topBar, 0, getTopBarTranslationFromHideAnimation(stack, child));
             } else {
-                topBar.hide();
+                topBarController.hide();
             }
         }
-        if (options.visible.isTrue()) {
-            if (options.animate.isTrueOrUndefined()) {
-                topBar.showAnimate(animationsOptions.push.topBar);
+        if (topBarOptions.visible.isTrue()) {
+            if (topBarOptions.animate.isTrueOrUndefined()) {
+                topBarController.showAnimate(animationsOptions.push.topBar, getTopBarTranslationFromHideAnimation(stack, child));
             } else {
-                topBar.show();
+                topBarController.show();
             }
         }
-        if (options.hideOnScroll.isTrue() && component instanceof IReactView) {
+        if (topBarOptions.hideOnScroll.isTrue() && component instanceof IReactView) {
             topBar.enableCollapse(((IReactView) component).getScrollEventListener());
         }
-        if (options.hideOnScroll.isFalse()) {
+        if (topBarOptions.hideOnScroll.isFalse()) {
             topBar.disableCollapse();
         }
     }
@@ -491,14 +500,24 @@ public class StackPresenter {
         return componentLeftButtons.containsKey(child) ? new ArrayList<>(componentLeftButtons.get(child).values()) : null;
     }
 
-    public void applyTopInsets(Options options, ViewController child) {
-        applyStatusBarInsets(options, child);
+    public void applyTopInsets(StackController stack, ViewController child) {
+        applyStatusBarInsets(stack, child);
         child.applyTopInset();
     }
 
-    private void applyStatusBarInsets(Options options, ViewController child) {
-        if (topBar.isAnimating()) return;
-        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        topBar.setY(withDefault.statusBar.visible.isTrueOrUndefined() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0);
+    private void applyStatusBarInsets(StackController stack, ViewController child) {
+        if (topBarController.isAnimating()) return;
+        MarginLayoutParams lp = (MarginLayoutParams) topBar.getLayoutParams();
+        lp.topMargin = getTopBarInset(stack, child);
+    }
+
+    private int getTopBarInset(StackController stack, ViewController child) {
+        Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
+        return withDefault.statusBar.visible.isTrueOrUndefined() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0;
+    }
+
+    private int getTopBarTranslationFromHideAnimation(StackController stack, ViewController child) {
+        Options options = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
+        return options.statusBar.hasTransparency() ? getTopBarInset(stack, child) : 0;
     }
 }

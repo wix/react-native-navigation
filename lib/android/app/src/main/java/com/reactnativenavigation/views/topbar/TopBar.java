@@ -20,17 +20,14 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.R;
-import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Alignment;
-import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
-import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
@@ -44,24 +41,23 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
     private TitleBar titleBar;
     private final TopBarCollapseBehavior collapsingBehavior;
-    private TopBarAnimator animator;
     private TopTabs topTabs;
     private FrameLayout root;
     private View border;
     private View component;
     private float elevation = -1;
 
-    public TopBar(final Context context, StackLayout parentView) {
+    public TopBar(final Context context) {
         super(context);
         context.setTheme(R.style.TopBar);
         collapsingBehavior = new TopBarCollapseBehavior(this);
         topTabs = new TopTabs(getContext());
-        animator = new TopBarAnimator(this, parentView.getStackId());
         createLayout();
     }
 
     private void createLayout() {
         setId(CompatUtils.generateViewId());
+        setFitsSystemWindows(true);
         titleBar = createTitleBar(getContext());
         topTabs = createTopTabs();
         border = createBorder();
@@ -252,36 +248,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         collapsingBehavior.disableCollapse();
     }
 
-    public void show() {
-        if (visible() || animator.isAnimatingShow()) return;
-        resetAnimationOptions();
-        setVisibility(View.VISIBLE);
-    }
-
-    private boolean visible() {
-        return getVisibility() == View.VISIBLE;
-    }
-
-    public void showAnimate(AnimationOptions options) {
-        if (visible() || animator.isAnimatingShow()) return;
-        animator.show(options);
-    }
-
-    public void hide() {
-        if (!animator.isAnimatingHide()) {
-            setVisibility(View.GONE);
-        }
-    }
-
-    public void hideAnimate(AnimationOptions options) {
-        hideAnimate(options, () -> {});
-    }
-
-    public void hideAnimate(AnimationOptions options, Runnable onAnimationEnd) {
-        if (!visible()) return;
-        animator.hide(options, onAnimationEnd);
-    }
-
     public void clearBackgroundComponent() {
         if (component != null) {
             root.removeView(component);
@@ -298,22 +264,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return topTabs;
     }
 
-    @VisibleForTesting
-    public void setAnimator(TopBarAnimator animator) {
-        this.animator = animator;
-    }
-
-    public void resetAnimationOptions() {
-        setTranslationY(0);
-        setTranslationX(0);
-        setAlpha(1);
-        setScaleY(1);
-        setScaleX(1);
-        setRotationX(0);
-        setRotationY(0);
-        setRotation(0);
-    }
-
     public void setBorderHeight(double height) {
         border.getLayoutParams().height = (int) UiUtils.dpToPx(getContext(), (float) height);
     }
@@ -324,9 +274,5 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setOverflowButtonColor(int color) {
         titleBar.setOverflowButtonColor(color);
-    }
-
-    public boolean isAnimating() {
-        return animator.isAnimating();
     }
 }

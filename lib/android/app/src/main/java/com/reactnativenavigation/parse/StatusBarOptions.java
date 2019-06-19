@@ -72,4 +72,12 @@ public class StatusBarOptions {
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;
         if (!translucent.hasValue()) translucent = defaultOptions.translucent;
     }
+
+    public boolean isHiddenOrDrawBehind() {
+        return drawBehind.isTrue() || visible.isFalse();
+    }
+
+    public boolean hasTransparency() {
+        return translucent.isTrue() || visible.isFalse() || backgroundColor.hasTransparency();
+    }
 }

@@ -21,6 +21,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Layouts, () => require('./LayoutsScreen'));
   Navigation.registerComponent(Screens.Lifecycle, () => require('./LifecycleScreen'));
   Navigation.registerComponent(Screens.Modal, () => require('./ModalScreen'))
+  Navigation.registerComponent(Screens.FullScreenModal, () => require('./FullScreenModalScreen'))
   Navigation.registerComponent(Screens.Navigation, () => require('./NavigationScreen'));
   Navigation.registerComponent(Screens.Options, () => require('./OptionsScreen'));
   Navigation.registerComponent(Screens.Orientation, () => require('./OrientationScreen'));

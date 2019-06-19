@@ -13,6 +13,7 @@ module.exports = {
   Options: 'Options',
   Stack: 'Stack',
   Modal: 'Modal',
+  FullScreenModal: 'FullScreenModal',
   SetRoot: 'SetRoot',
   Overlay: 'Overlay',
   OverlayAlert: 'OverlayAlert',

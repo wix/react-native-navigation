@@ -83,20 +83,20 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void onAttachToParent() {
         if (!isEmpty() && !getCurrentChild().isDestroyed() && !isViewShown()) {
-            presenter.applyChildOptions(resolveCurrentOptions(), getCurrentChild());
+            presenter.applyChildOptions(resolveCurrentOptions(), this, getCurrentChild());
         }
     }
 
     @Override
     public void mergeOptions(Options options) {
-        presenter.mergeOptions(options, getCurrentChild());
+        presenter.mergeOptions(options, this, getCurrentChild());
         super.mergeOptions(options);
     }
 
     @Override
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
-        presenter.applyChildOptions(resolveCurrentOptions(), child);
+        presenter.applyChildOptions(resolveCurrentOptions(), this, child);
         if (child.getView() instanceof ReactComponent) {
             fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child.getView(), getView());
         }
@@ -117,7 +117,7 @@ public class StackController extends ParentController<StackLayout> {
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
         if (child.isViewShown() && peek() == child) {
-            presenter.mergeChildOptions(options, resolveCurrentOptions(), child);
+            presenter.mergeChildOptions(options, resolveCurrentOptions(), this, child);
             if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
                 fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
             }
@@ -242,7 +242,7 @@ public class StackController extends ParentController<StackLayout> {
         if (appearingView.getParent() == null) {
             getView().addView(appearingView, 0);
         }
-        presenter.onChildWillAppear(appearing.options, disappearing.options);
+        presenter.onChildWillAppear(this, appearing, disappearing);
         if (disappearingOptions.animations.pop.enabled.isTrueOrUndefined()) {
             animator.pop(disappearing.getView(), disappearingOptions.animations.pop, () -> finishPopping(disappearing, listener));
         } else {
@@ -371,7 +371,7 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, ViewGroup child, View dependency) {
-        perform(findController(child), controller -> presenter.applyTopInsets(resolveChildOptions(controller), controller));
+        perform(findController(child), controller -> presenter.applyTopInsets(this, controller));
         return false;
     }
 

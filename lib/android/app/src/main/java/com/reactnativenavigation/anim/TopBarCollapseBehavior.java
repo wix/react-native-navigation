@@ -2,6 +2,7 @@ package com.reactnativenavigation.anim;
 
 
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -58,6 +59,6 @@ public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListe
 
     @Override
     public void onHide() {
-        animator.hide(topBar.getTranslationY());
+        animator.hide(topBar.getTranslationY(), ((ViewGroup.MarginLayoutParams) topBar.getLayoutParams()).topMargin);
     }
 }
