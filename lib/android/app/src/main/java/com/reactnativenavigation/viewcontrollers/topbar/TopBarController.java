@@ -82,7 +82,7 @@ public class TopBarController {
         return animator.isAnimating();
     }
 
-    public void resetViewProperties(int y) {
+    public void resetViewProperties() {
         topBar.setTranslationY(0);
         topBar.setTranslationX(0);
         topBar.setAlpha(1);

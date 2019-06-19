@@ -245,7 +245,7 @@ public class StackPresenter {
     }
 
     private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions, StackController stack, ViewController child) {
-        topBarController.resetViewProperties(getTopBarInset(stack, child));
+        topBarController.resetViewProperties();
         if (options.visible.isFalse()) {
             if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
                 topBarController.hideAnimate(animationOptions.pop.topBar, 0, getTopBarTranslationFromHideAnimation(stack, child));
@@ -434,7 +434,7 @@ public class StackPresenter {
 
         if (topBarOptions.testId.hasValue()) topBar.setTestId(topBarOptions.testId.get());
 
-        topBarController.resetViewProperties(getTopBarInset(stack, child));
+        topBarController.resetViewProperties();
         if (topBarOptions.visible.isFalse()) {
             if (topBarOptions.animate.isTrueOrUndefined()) {
                 topBarController.hideAnimate(animationsOptions.pop.topBar, 0, getTopBarTranslationFromHideAnimation(stack, child));
@@ -509,6 +509,7 @@ public class StackPresenter {
         if (topBarController.isAnimating()) return;
         MarginLayoutParams lp = (MarginLayoutParams) topBar.getLayoutParams();
         lp.topMargin = getTopBarInset(stack, child);
+        topBar.requestLayout();
     }
 
     private int getTopBarInset(StackController stack, ViewController child) {
