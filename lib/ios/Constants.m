@@ -15,7 +15,11 @@
 }
 
 + (CGFloat)bottomTabsHeight {
-	return CGRectGetHeight(((UITabBarController *)((UIWindow *)(UIApplication.sharedApplication.windows[0])).rootViewController).tabBar.frame);
+	@try {
+		return CGRectGetHeight(((UITabBarController *)((UIWindow *)(UIApplication.sharedApplication.windows[0])).rootViewController).tabBar.frame);
+	} @catch (NSException *exception) {
+		return 0;
+	}
 }
 
 @end
