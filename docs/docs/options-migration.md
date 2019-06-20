@@ -371,7 +371,7 @@ topBar: {
 ```
 
 ## modalPresentationStyle
-Controls he behavior of screens displayed modally. 
+Controls the behavior of screens displayed modally. 
 
 ### Options supported on iOS
 * overCurrentContext - Content is displayed over the previous screen. Useful for **transparent modals**

@@ -40,7 +40,6 @@ public class TitleBar extends Toolbar {
     public TitleBar(Context context) {
         super(context);
         getMenu();
-        setContentDescription("titleBar");
     }
 
     @Override
