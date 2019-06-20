@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.CallSuper;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
@@ -31,7 +32,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
         if (view == null) {
             super.getView();
             view.setFitsSystemWindows(true);
-            ViewCompat.setOnApplyWindowInsetsListener(view, (view, insets) -> applyWindowInsets(insets));
+            ViewCompat.setOnApplyWindowInsetsListener(view, this::applyWindowInsets);
         }
         return view;
     }
@@ -87,8 +88,13 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
                 getView().getParent() != null;
     }
 
-    private WindowInsetsCompat applyWindowInsets(WindowInsetsCompat insets) {
+    private WindowInsetsCompat applyWindowInsets(View view, WindowInsetsCompat insets) {
         StatusBarUtils.saveStatusBarHeight(insets.getSystemWindowInsetTop());
-        return insets;
+        return ViewCompat.onApplyWindowInsets(view, insets.replaceSystemWindowInsets(
+                insets.getSystemWindowInsetLeft(),
+                0,
+                insets.getSystemWindowInsetRight(),
+                insets.getSystemWindowInsetBottom()
+        ));
     }
 }
