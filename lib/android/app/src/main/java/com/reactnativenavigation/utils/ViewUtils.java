@@ -144,4 +144,8 @@ public class ViewUtils {
     public static boolean isVisible(View view) {
         return perform(view, false, v -> v.getVisibility() == View.VISIBLE);
     }
+
+    public static int topMargin(View view) {
+        return ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin;
+    }
 }

@@ -11,9 +11,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
-
-import javax.annotation.Nullable;
 
 import static android.view.View.TRANSLATION_Y;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
@@ -30,13 +29,16 @@ public class TopBarAnimator {
     private Animator hideAnimator;
     private Animator showAnimator;
 
-    public TopBarAnimator(TopBar topBar) {
+    public TopBarAnimator() {
+    }
+
+    TopBarAnimator(TopBar topBar) {
         this.topBar = topBar;
     }
 
-    public TopBarAnimator(TopBar topBar, @Nullable String stackId) {
+    public void bindView(TopBar topBar, StackLayout stack) {
         this.topBar = topBar;
-        this.stackId = stackId;
+        stackId = stack.getStackId();
     }
 
     public void show(AnimationOptions options, int translationYStart) {

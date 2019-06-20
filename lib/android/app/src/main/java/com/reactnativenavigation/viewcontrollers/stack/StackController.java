@@ -327,7 +327,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     protected StackLayout createView() {
         StackLayout stackLayout = new StackLayout(getActivity(), topBarController, getId());
-        presenter.bindView(topBarController.getView());
+        presenter.bindView(topBarController);
         addInitialChild(stackLayout);
         return stackLayout;
     }

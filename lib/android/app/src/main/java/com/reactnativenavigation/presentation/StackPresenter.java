@@ -74,7 +74,6 @@ public class StackPresenter {
     private Map<View, Map<String, TitleBarButtonController>> componentLeftButtons = new HashMap();
 
     public StackPresenter(Activity activity,
-                          TopBarController topBarController,
                           TitleBarReactViewCreator titleViewCreator,
                           TopBarBackgroundViewCreator topBarBackgroundViewCreator,
                           ReactViewCreator buttonCreator,
@@ -82,7 +81,6 @@ public class StackPresenter {
                           RenderChecker renderChecker,
                           Options defaultOptions) {
         this.activity = activity;
-        this.topBarController = topBarController;
         this.titleViewCreator = titleViewCreator;
         this.topBarBackgroundViewCreator = topBarBackgroundViewCreator;
         this.buttonCreator = buttonCreator;
@@ -105,8 +103,9 @@ public class StackPresenter {
         return defaultOptions;
     }
 
-    public void bindView(TopBar topBar) {
-        this.topBar = topBar;
+    public void bindView(TopBarController topBarController) {
+        this.topBarController = topBarController;
+        topBar = topBarController.getView();
     }
 
     public boolean isRendered(View component) {
@@ -245,15 +244,15 @@ public class StackPresenter {
     }
 
     private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions, StackController stack, ViewController child) {
-        topBarController.resetViewProperties();
         if (options.visible.isFalse()) {
+            topBarController.resetViewProperties();
             if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
                 topBarController.hideAnimate(animationOptions.pop.topBar, 0, getTopBarTranslationFromHideAnimation(stack, child));
             } else {
                 topBarController.hide();
             }
-        }
-        if (options.visible.isTrueOrUndefined()) {
+        } else if (options.visible.isTrueOrUndefined()) {
+            topBarController.resetViewProperties();
             if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
                 topBarController.showAnimate(animationOptions.push.topBar, getTopBarTranslationFromHideAnimation(stack, child));
             } else {

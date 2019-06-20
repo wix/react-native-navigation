@@ -19,6 +19,10 @@ public class TopBarController {
     private TopBar topBar;
     private TopBarAnimator animator;
 
+    public TopBarController() {
+        animator = new TopBarAnimator();
+    }
+
     public TopBar getView() {
         return topBar;
     }
@@ -32,11 +36,11 @@ public class TopBarController {
         this.animator = animator;
     }
 
-    public View createView(Context context, StackLayout parent) {
+    public TopBar createView(Context context, StackLayout parent) {
         if (topBar == null) {
             topBar = createTopBar(context, parent);
             topBar.setId(CompatUtils.generateViewId());
-            animator = new TopBarAnimator(topBar, parent.getStackId());
+            animator.bindView(topBar, parent);
         }
         return topBar;
     }

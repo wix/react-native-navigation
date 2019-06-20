@@ -33,7 +33,7 @@ public class TestUtils {
                 .setId("stack")
                 .setChildRegistry(new ChildControllersRegistry())
                 .setTopBarController(topBarController)
-                .setStackPresenter(new StackPresenter(activity, topBarController, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new RenderChecker(), new Options()))
+                .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new RenderChecker(), new Options()))
                 .setInitialOptions(new Options());
     }
 

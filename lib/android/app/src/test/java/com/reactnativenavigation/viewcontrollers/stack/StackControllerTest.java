@@ -55,6 +55,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.reactnativenavigation.utils.ViewUtils.topMargin;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -373,8 +374,9 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void pop_layoutHandlesChildWillDisappear() {
+        TopBarController topBarController = new TopBarController();
         uut = new StackControllerBuilder(activity)
-                        .setTopBarController(new TopBarController())
+                        .setTopBarController(topBarController)
                         .setId("uut")
                         .setInitialOptions(new Options())
                         .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new RenderChecker(), new Options()))
@@ -387,7 +389,7 @@ public class StackControllerTest extends BaseTest {
                 uut.pop(Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(presenter, times(1)).onChildWillAppear(child1.options, child2.options);
+                        verify(presenter, times(1)).onChildWillAppear(uut, child1, child2);
                     }
                 });
             }
@@ -560,9 +562,9 @@ public class StackControllerTest extends BaseTest {
 
                 uut.push(child2, new CommandListenerAdapter());
                 child2.onViewAppeared();
-                verify(uut.getTopBar(), times(0)).showAnimate(child2.options.animations.push.topBar);
+                verify(topBarController, times(0)).showAnimate(child2.options.animations.push.topBar, 0);
                 assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.VISIBLE);
-                verify(uut.getTopBar(), times(1)).resetAnimationOptions();
+                verify(topBarController, times(2)).resetViewProperties();
             }
         });
     }
@@ -579,7 +581,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                verify(uut.getTopBar(), times(1)).resetAnimationOptions();
+                verify(topBarController, times(1)).resetViewProperties();
             }
         });
     }
@@ -840,7 +842,7 @@ public class StackControllerTest extends BaseTest {
                         uut.pop(Options.EMPTY, new CommandListenerAdapter() {
                             @Override
                             public void onSuccess(String childId) {
-                                verify(uut.getTopBar(), times(1)).hideAnimate(child2.options.animations.pop.topBar);
+                                verify(topBarController, times(1)).hideAnimate(child2.options.animations.pop.topBar, 0, 0);
                             }
                         });
                     }
@@ -868,7 +870,7 @@ public class StackControllerTest extends BaseTest {
                 assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.VISIBLE);
 
                 uut.pop(Options.EMPTY, new CommandListenerAdapter());
-                verify(uut.getTopBar(), times(0)).hideAnimate(child2.options.animations.pop.topBar);
+                verify(topBarController, times(0)).hideAnimate(child2.options.animations.pop.topBar, 0, 0);
                 assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
             }
         });
@@ -1025,7 +1027,7 @@ public class StackControllerTest extends BaseTest {
         ViewController vc = mock(ViewController.class);
         when(vc.isViewShown()).thenReturn(false);
         uut.mergeChildOptions(new Options(), vc);
-        verify(presenter, times(0)).mergeChildOptions(any(), any(), any());
+        verify(presenter, times(0)).mergeChildOptions(any(), any(), any(), any());
     }
 
     @Test
@@ -1033,7 +1035,7 @@ public class StackControllerTest extends BaseTest {
         ViewController vc = mock(ViewController.class);
         when(vc.isViewShown()).thenReturn(true);
         uut.mergeChildOptions(new Options(), vc);
-        verify(presenter, times(0)).mergeChildOptions(any(), any(), any());
+        verify(presenter, times(0)).mergeChildOptions(any(), any(), any(), any());
     }
 
     @Test
@@ -1048,7 +1050,7 @@ public class StackControllerTest extends BaseTest {
         parent.addView(stack.getView());
 
         ShadowLooper.idleMainLooper();
-        verify(presenter).applyChildOptions(any(), eq(child));
+        verify(presenter).applyChildOptions(any(), eq(stack), eq(child));
     }
 
     @Test
@@ -1071,7 +1073,7 @@ public class StackControllerTest extends BaseTest {
         CoordinatorLayout parent = Mockito.mock(CoordinatorLayout.class);
         uut.push(child1, new CommandListenerAdapter());
         assertThat(uut.onDependentViewChanged(parent, child1.getView(), Mockito.mock(View.class))).isFalse();
-        verify(presenter).applyTopInsets(any(Options.class), eq(child1));
+        verify(presenter).applyTopInsets(eq(uut), eq(child1));
     }
 
     @Test
@@ -1080,7 +1082,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child1, new CommandListenerAdapter());
 
         ShadowLooper.idleMainLooper();
-        assertThat(uut.getTopBar().getY()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
+        assertThat(topMargin(uut.getTopBar())).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
     }
 
     @Test
