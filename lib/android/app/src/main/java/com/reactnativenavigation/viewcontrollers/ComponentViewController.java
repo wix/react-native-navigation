@@ -2,6 +2,8 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
@@ -100,6 +102,17 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public void applyBottomInset() {
         if (view != null) presenter.applyBottomInset(view, getBottomInset());
+    }
+
+    @Override
+    protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
+        ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
+                insets.getSystemWindowInsetLeft(),
+                insets.getSystemWindowInsetTop(),
+                insets.getSystemWindowInsetRight(),
+                Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0)
+        ));
+        return insets;
     }
 
     @Override

@@ -172,4 +172,11 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     public int getBottomInset(ViewController child) {
         return perform(getParentController(), 0, p -> p.getBottomInset(child));
     }
+
+//    @Override
+//    protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
+//        Log.i("ParentController", "applyWindowInsets " + getId() + " [" + insets.getSystemWindowInsetBottom() + "]");
+//        return super.applyWindowInsets(view, insets);
+////        return super.applyWindowInsets(getCurrentChild(), insets);
+//    }
 }

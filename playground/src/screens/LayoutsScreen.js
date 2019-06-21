@@ -57,7 +57,6 @@ class LayoutsScreen extends React.Component {
 
   sideMenu = () => Navigation.showModal({
     sideMenu: {
-      id: 'center',
       left: {
         component: {
           id: 'left',

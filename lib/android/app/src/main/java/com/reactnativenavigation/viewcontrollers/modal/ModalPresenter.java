@@ -45,7 +45,7 @@ public class ModalPresenter {
 
         Options options = toAdd.resolveCurrentOptions(defaultOptions);
         toAdd.setWaitForRender(options.animations.showModal.waitForRender);
-        toAdd.getView().setFitsSystemWindows(true);
+//        toAdd.getView().setFitsSystemWindows(true);
         modalsLayout.addView(toAdd.getView(), matchParentLP());
 
         if (options.animations.showModal.enabled.isTrueOrUndefined()) {

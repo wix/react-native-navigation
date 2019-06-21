@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.CallSuper;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,7 +33,9 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
         if (view == null) {
             super.getView();
             view.setFitsSystemWindows(true);
-            ViewCompat.setOnApplyWindowInsetsListener(view, this::applyWindowInsets);
+            if (this instanceof Navigator) return view;
+//            if (this instanceof ParentController) return view;
+            ViewCompat.setOnApplyWindowInsetsListener(view, this::onApplyWindowInsets);
         }
         return view;
     }
@@ -88,13 +91,20 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
                 getView().getParent() != null;
     }
 
-    private WindowInsetsCompat applyWindowInsets(View view, WindowInsetsCompat insets) {
+    private WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         StatusBarUtils.saveStatusBarHeight(insets.getSystemWindowInsetTop());
-        return ViewCompat.onApplyWindowInsets(view, insets.replaceSystemWindowInsets(
+//        if (!isViewShown()) return insets;
+        Log.d("ChildController", "applyWindowInsets " + findController(view).getId() + " [" +insets.getSystemWindowInsetBottom() + "]");
+//        return insets;
+        return applyWindowInsets(findController(view), insets);
+    }
+
+    protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
+        return insets.replaceSystemWindowInsets(
                 insets.getSystemWindowInsetLeft(),
                 0,
                 insets.getSystemWindowInsetRight(),
                 insets.getSystemWindowInsetBottom()
-        ));
+        );
     }
 }
