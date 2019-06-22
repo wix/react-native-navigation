@@ -1,19 +1,20 @@
 const React = require('react');
-const { View, Text, StyleSheet } = require('react-native');
-const Colors = require('../commons/Colors');
+const {TextInput} = require('react-native');
+const { View, Text, StyleSheet, ScrollView } = require('react-native');
 
 module.exports = (props) =>
-  <View style={[styles.root, props.style]}>
+  <ScrollView contentContainerStyle={[styles.scrollView, props.style]}>
     {props.children}
     {props.componentId && <View style={styles.footer}>
+      <TextInput placeholder='Input' style={{borderWidth: 1, borderRadius: 10, height: 40, width: 100}}/>
       {props.footer && <Text style={styles.footerText}>{props.footer}</Text>}
       <Text style={styles.footerText}>{`this.props.componentId = ${props.componentId}`}</Text>
     </View>}
-  </View>;
+  </ScrollView>;
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
+  scrollView: {
+    flexGrow: 1,
     alignItems: 'center',
     padding: 16
   },

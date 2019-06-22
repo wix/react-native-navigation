@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
@@ -74,12 +72,6 @@ public class Navigator extends ParentController {
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
-
-        modalsLayout.setFitsSystemWindows(true);
-        ViewCompat.setOnApplyWindowInsetsListener(modalsLayout, (v, i) -> {
-            Log.i("Navigator", "modalsLayout " + i.getSystemWindowInsetBottom());
-            return i;
-        });
     }
 
     public void bindViews() {
