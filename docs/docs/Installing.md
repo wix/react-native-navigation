@@ -36,18 +36,18 @@
 	{
 		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 		[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
-		
+
 		return YES;
 	}
 
 	@end
 	```
 
-3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h"`: 
+3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h"`:
 ```
 ! 'RCTBundleURLProvider.h' file not found
 ```
-This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu. 
+This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu.
 
 To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
 
@@ -197,10 +197,11 @@ android {
 >`reactNative56` - RN 0.56.x<Br>
 >`reactNative57` - RN 0.57.0 - 0.57.4<Br>
 >`reactNative57_5` - RN 0.57.5 and above<Br>
+>`reactNative60` - RN 0.60.0
 
 Now we need to instruct gradle how to build that flavor. To do so here two solutions:
 
-#### 5.1 Build app with gradle command 
+#### 5.1 Build app with gradle command
 
 **prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:assembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
 
@@ -249,7 +250,7 @@ This file is located in `android/app/src/main/java/com/<yourproject>/MainActivit
 -import com.facebook.react.ReactActivity;
 +import com.reactnativenavigation.NavigationActivity;
 
--public class MainActivity extends ReactActivity { 
+-public class MainActivity extends ReactActivity {
 +public class MainActivity extends NavigationActivity {
 -    @Override
 -    protected String getMainComponentName() {
@@ -263,7 +264,7 @@ If you have any **react-native** related methods, you can safely delete them.
 ### 7. Update `MainApplication.java`
 
 This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
-	
+
 ```diff
 ...
 import android.app.Application;
@@ -283,7 +284,7 @@ import java.util.List;
 
 -public class MainApplication extends Application implements ReactApplication {
 +public class MainApplication extends NavigationApplication {
-+    
++
 +    @Override
 +    protected ReactGateway createReactGateway() {
 +        ReactNativeHost host = new NavigationReactNativeHost(this, isDebug(), createAdditionalReactPackages()) {
@@ -307,7 +308,7 @@ import java.util.List;
 +            // eg. new VectorIconsPackage()
 +        );
 +    }
-+  
++
 +    @Override
 +    public List<ReactPackage> createAdditionalReactPackages() {
 +        return getPackages();
@@ -315,6 +316,82 @@ import java.util.List;
 - ...
 +}
 
+```
+
+If you have upgraded to React Native 0.60, a new feature called `AutoLink` is introduced. Make changes to `MainApplication.java` to take advantage of this feature:
+
+```diff
+...
+-import android.app.Application;
+
++import com.facebook.react.PackageList;
+-import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactPackage;
+-import com.facebook.react.shell.MainReactPackage;
+-import com.facebook.soloader.SoLoader;
+
++import com.reactnativenavigation.NavigationApplication;
++import com.reactnativenavigation.react.NavigationPackage;
++import com.reactnativenavigation.react.NavigationReactNativeHost;
++import com.reactnativenavigation.react.ReactGateway;
+
++/**
++ * Add this line if you use `react-native-code-push`
++ */
++import com.microsoft.codepush.react.CodePush;
+
+import java.util.Arrays;
+import java.util.List;
+
+-public class MainApplication extends Application implements ReactApplication {
++public class MainApplication extends NavigationApplication {
++
++    @Override
++    protected ReactGateway createReactGateway() {
++        ReactNativeHost host = new NavigationReactNativeHost(this, isDebug(), createAdditionalReactPackages()) {
++            @Override
++            protected String getJSMainModuleName() {
++                return "index";
++            }
++
++            /**
++            * Add this block if you use `react-native-code-push`
++            */
++            @Override
++            protected String getJSBundleFile() {
++                return CodePush.getJSBundleFile();
++            }
++
++            @Override
++            protected List<ReactPackage> getPackages() {
++                @SuppressWarnings("UnnecessaryLocalVariable")
++                List<ReactPackage> packages = new PackageList(this).getPackages();
++                packages.add(new NavigationPackage(this));
++                /**
++                 * Add other packages that fail to be auto-detected here
++                 */
++                return packages;
++            }
++        };
++        return new ReactGateway(this, isDebug(), host);
++    }
++
++    @Override
++    public boolean isDebug() {
++        return BuildConfig.DEBUG;
++    }
++
++    @Override
++    public List<ReactPackage> createAdditionalReactPackages() {
++        /**
++         * We used function override above,
++         * so we just return an empty list here
++         */
++        return Arrays.<ReactPackage>asList();
++    }
+-...
++}
 ```
 
 ### 8. Force the same support library version across all dependencies (optional)
