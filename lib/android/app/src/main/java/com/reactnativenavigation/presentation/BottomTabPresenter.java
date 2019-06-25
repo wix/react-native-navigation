@@ -5,14 +5,19 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
-import com.reactnativenavigation.parse.*;
-import com.reactnativenavigation.utils.*;
-import com.reactnativenavigation.viewcontrollers.*;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.*;
-import com.reactnativenavigation.views.*;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.reactnativenavigation.parse.BottomTabOptions;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
+import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.Component;
 
-import java.util.*;
+import java.util.List;
+
+import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 public class BottomTabPresenter {
     private final Context context;
@@ -45,8 +50,6 @@ public class BottomTabPresenter {
     public void applyOptions() {
         for (int i = 0; i < tabs.size(); i++) {
             BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
-            bottomTabs.setBadge(i, tab.badge.get(""));
-            bottomTabs.setBadgeColor(tab.badgeColor.get(null));
             bottomTabs.setTitleTypeface(i, tab.fontFamily);
             bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
             bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
@@ -55,6 +58,7 @@ public class BottomTabPresenter {
             bottomTabs.setTitleInactiveTextSizeInSp(i, tab.fontSize.hasValue() ? Float.valueOf(tab.fontSize.get()) : null);
             bottomTabs.setTitleActiveTextSizeInSp(i, tab.selectedFontSize.hasValue() ? Float.valueOf(tab.selectedFontSize.get()) : null);
             if (tab.testId.hasValue()) bottomTabs.setTag(i, tab.testId.get());
+            applyBadge(i, tab);
         }
     }
 
@@ -62,8 +66,6 @@ public class BottomTabPresenter {
         int index = bottomTabFinder.findByComponent(child);
         if (index >= 0) {
             BottomTabOptions bto = options.bottomTabOptions;
-            if (bto.badge.hasValue()) bottomTabs.setBadge(index, bto.badge.get());
-            if (bto.badgeColor.hasValue()) bottomTabs.setBadgeColor(bto.badgeColor.get());
             if (bto.fontFamily != null) bottomTabs.setTitleTypeface(index, bto.fontFamily);
             if (bto.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(index, bto.selectedIconColor.get());
             if (bto.iconColor.hasValue()) bottomTabs.setIconInactiveColor(index, bto.iconColor.get());
@@ -77,6 +79,24 @@ public class BottomTabPresenter {
                 }
             });
             if (bto.testId.hasValue()) bottomTabs.setTag(index, bto.testId.get());
+            mergeBadge(index, bto);
         }
+    }
+
+    private void applyBadge(int tabIndex, BottomTabOptions tab) {
+        AHNotification.Builder builder = new AHNotification.Builder();
+        builder.setText(tab.badge.get(""));
+        builder.setBackgroundColor(tab.badgeColor.get(null));
+        builder.setSize(dpToPx(bottomTabs.getContext(), tab.badgeSize.get(AHNotification.NOTIFICATION_SIZE_DEFAULT)));
+        bottomTabs.setNotification(builder.build(), tabIndex);
+    }
+
+    private void mergeBadge(int index, BottomTabOptions bto) {
+        AHNotification.Builder builder = new AHNotification.Builder();
+        if (bto.badge.hasValue()) builder.setText(bto.badge.get(""));
+        if (bto.badgeColor.hasValue()) builder.setBackgroundColor(bto.badgeColor.get());
+        if (bto.badgeSize.hasValue()) builder.setSize(dpToPx(bottomTabs.getContext(), bto.badgeSize.get()));
+        AHNotification notification = builder.build();
+        if (notification.hasValue()) bottomTabs.setNotification(notification, index);
     }
 }

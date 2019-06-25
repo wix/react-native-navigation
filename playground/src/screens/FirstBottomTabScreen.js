@@ -35,7 +35,8 @@ class FirstBottomTabScreen extends React.Component {
         <Button label='Switch Tab by Index' testID={SWITCH_TAB_BY_INDEX_BTN} onPress={this.switchTabByIndex} />
         <Button label='Switch Tab by componentId' testID={SWITCH_TAB_BY_COMPONENT_ID_BTN} onPress={this.switchTabByComponentId} />
         <Button label='Set Badge' testID={SET_BADGE_BTN} onPress={() => this.setBadge('NEW')} />
-        <Button label='Clear Badge' testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge(null)} />
+        <Button label='Clear Badge' testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge('')} />
+        <Button label='Set Notification Dot' onPress={this.setNotificationDot} />
         <Button label='Hide Tabs' testID={HIDE_TABS_BTN} onPress={() => this.toggleTabs(false)} />
         <Button label='Show Tabs' testID={SHOW_TABS_BTN} onPress={() => this.toggleTabs(true)} />
         <Button label='Hide Tabs on Push' testID={HIDE_TABS_PUSH_BTN} onPress={this.hideTabsOnPush} />
@@ -55,9 +56,22 @@ class FirstBottomTabScreen extends React.Component {
     }
   });
 
-  setBadge = (badge) => Navigation.mergeOptions(this, {
-    bottomTab: { badge }
-  });
+  setBadge = (badge) => {
+    this.dotVisible = false;
+    Navigation.mergeOptions(this, {
+      bottomTab: { badge }
+    });
+  }
+
+  setNotificationDot = () => {
+    this.dotVisible = !this.dotVisible;
+    Navigation.mergeOptions(this, {
+      bottomTab: {
+        badgeSize: this.dotVisible ? 8 : 0,
+        badge: ''
+      }
+    });
+  }
 
   toggleTabs = (visible) => Navigation.mergeOptions(this, {
     bottomTabs: { visible }
