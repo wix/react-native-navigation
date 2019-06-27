@@ -1,4 +1,9 @@
 # Changelog
+# 2.21.1
+## Fixed
+### iOS
+* Fix `setStackRoot` options resolving [#8ced964](https://github.com/wix/react-native-navigation/commit/8ced96443f8c279821719e842f7580a988aeb47c) by [yogevbd](https://github.com/yogevbd)
+
 # 2.21.0
 ## Added
 * Title topMargin option [#069cb85](https://github.com/wix/react-native-navigation/commit/069cb85132dcc441c27c56e0f25e475c1d44eef2) by [guyca](https://github.com/guyca)

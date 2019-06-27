@@ -1,7 +1,7 @@
 package com.reactnativenavigation.utils;
 
-import android.content.*;
-import android.graphics.*;
+import android.content.Context;
+import android.graphics.Typeface;
 
 import com.reactnativenavigation.*;
 

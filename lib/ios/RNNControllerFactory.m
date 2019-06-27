@@ -188,7 +188,7 @@
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
 
-	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:[[RNNViewControllerPresenter alloc] init] eventEmitter:_eventEmitter childViewController:childVc type:type];
+	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:[[RNNViewControllerPresenter alloc] initWithComponentRegistry:_componentRegistry] eventEmitter:_eventEmitter childViewController:childVc type:type];
 	
 	return sideMenuChild;
 }
