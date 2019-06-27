@@ -198,7 +198,7 @@ public class StackController extends ParentController<StackLayout> {
                 @Override
                 public void onSuccess(String childId) {
                     destroyStack(stackToDestroy);
-                    for (int i = 0; i < children.size() - 1; i++) {
+                    for (int i = 0; i < children.size(); i++) {
                         stack.set(children.get(i).getId(), children.get(i), i);
                         children.get(i).setParentController(StackController.this);
                         if (i == 0) {
