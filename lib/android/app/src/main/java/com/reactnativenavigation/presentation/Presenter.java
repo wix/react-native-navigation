@@ -133,6 +133,7 @@ public class Presenter {
     private void mergeStatusBarOptions(View view, StatusBarOptions statusBar) {
         mergeStatusBarBackgroundColor(statusBar);
         mergeTextColorScheme(statusBar.textColorScheme);
+        mergeTranslucent(statusBar);
         mergeStatusBarVisible(view, statusBar.visible, statusBar.drawBehind);
     }
 
@@ -151,6 +152,15 @@ public class Presenter {
             view.setSystemUiVisibility(flags);
         } else {
             clearDarkTextColorScheme(view);
+        }
+    }
+
+    private void mergeTranslucent(StatusBarOptions options) {
+        Window window = activity.getWindow();
+        if (options.translucent.isTrue()) {
+            window.setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
+        } else if (options.translucent.isFalse()) {
+            window.clearFlags(FLAG_TRANSLUCENT_STATUS);
         }
     }
 
