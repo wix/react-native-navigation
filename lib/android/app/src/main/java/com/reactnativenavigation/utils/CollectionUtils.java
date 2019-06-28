@@ -98,6 +98,17 @@ public class CollectionUtils {
         return null;
     }
 
+    public static @Nullable <T> T first(@Nullable Collection<T> items, Filter<T> by, Functions.Func1<T> apply) {
+        if (isNullOrEmpty(items)) return null;
+        for (T item : items) {
+            if (by.filter(item)) {
+                apply.run(item);
+                return item;
+            }
+        }
+        return null;
+    }
+
     public static <T> T last(@Nullable List<T> items) {
         return CollectionUtils.isNullOrEmpty(items) ? null : items.get(items.size() - 1);
     }

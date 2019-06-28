@@ -41,12 +41,13 @@ public class TopBarAnimator {
         stackId = stack.getStackId();
     }
 
-    public void show(AnimationOptions options, int translationYStart) {
+    public void show(AnimationOptions options, int translationStartDy) {
         topBar.setVisibility(View.VISIBLE);
         if (options.hasValue() && (!options.id.hasValue() || options.id.get().equals(stackId))) {
+            options.setValueDy(TRANSLATION_Y, -translationStartDy, 0);
             showAnimator = options.getAnimation(topBar);
         } else {
-            showAnimator = getDefaultShowAnimator(translationYStart, DECELERATE, DURATION);
+            showAnimator = getDefaultShowAnimator(translationStartDy, DECELERATE, DURATION);
         }
         showInternal();
     }
@@ -67,11 +68,12 @@ public class TopBarAnimator {
         showAnimator.start();
     }
 
-    public void hide(AnimationOptions options, Runnable onAnimationEnd, float translationStart, float translationEndDy) {
+    public void hide(AnimationOptions options, Runnable onAnimationEnd, float translationStartDy, float translationEndDy) {
         if (options.hasValue() && (!options.id.hasValue() || options.id.get().equals(stackId))) {
+            options.setValueDy(TRANSLATION_Y, translationStartDy, -translationEndDy);
             hideAnimator = options.getAnimation(topBar);
         } else {
-            hideAnimator = getDefaultHideAnimator(translationStart, translationEndDy, DECELERATE, DURATION);
+            hideAnimator = getDefaultHideAnimator(translationStartDy, translationEndDy, DECELERATE, DURATION);
         }
         hideInternal(onAnimationEnd);
     }

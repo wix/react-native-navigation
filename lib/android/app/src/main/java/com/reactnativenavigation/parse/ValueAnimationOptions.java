@@ -35,14 +35,28 @@ public class ValueAnimationOptions {
     private Property<View, Float> animProp;
 
     private FloatParam from = new NullFloatParam();
+    private FloatParam fromDelta = new FloatParam(0f);
     private FloatParam to = new NullFloatParam();
+    private FloatParam toDelta = new FloatParam(0f);
     private Number duration = new NullNumber();
     private Number startDelay = new NullNumber();
     private Interpolation interpolation = Interpolation.NO_VALUE;
 
+    void setFromDelta(float fromDelta) {
+        this.fromDelta = new FloatParam(fromDelta);
+    }
+
+    void setToDelta(float toDelta) {
+        this.toDelta = new FloatParam(toDelta);
+    }
+
     Animator getAnimation(View view) {
         if (!from.hasValue() || !to.hasValue()) throw new IllegalArgumentException("Params 'from' and 'to' are mandatory");
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, animProp, from.get(), to.get());
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view,
+                animProp,
+                from.get() + fromDelta.get(),
+                to.get() + toDelta.get()
+        );
         animator.setInterpolator(interpolation.getInterpolator());
         if (duration.hasValue()) animator.setDuration(duration.get());
         if (startDelay.hasValue()) animator.setStartDelay(startDelay.get());
@@ -54,6 +68,10 @@ public class ValueAnimationOptions {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         return animProp.equals(((ValueAnimationOptions) o).animProp);
+    }
+
+    public boolean equals(Property<View, Float> animationProperty) {
+        return animProp.getName().equals(animationProperty.getName());
     }
 
     @Override
