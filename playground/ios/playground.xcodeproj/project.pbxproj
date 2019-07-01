@@ -27,6 +27,7 @@
 		7B8F30561E84151300110AEC /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8F2FC91E840F1A00110AEC /* libReactNativeNavigation.a */; };
 		7B8F30571E84151300110AEC /* libyoga.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8F2FDA1E840F3600110AEC /* libyoga.a */; };
 		E5046080227748EA00212BD8 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E504607F227748EA00212BD8 /* JavaScriptCore.framework */; };
+		E57EABBF22C9E94900ADE426 /* libKeyboardTrackingView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E57EAB9922C9E92500ADE426 /* libKeyboardTrackingView.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,6 +262,13 @@
 			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 			remoteInfo = "jsiexecutor-tvOS";
 		};
+		E57EAB9822C9E92500ADE426 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E57EAB9422C9E92500ADE426 /* KeyboardTrackingView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D834CED81CC64F2400FA5668;
+			remoteInfo = KeyboardTrackingView;
+		};
 		E8CB6AA71FF10BC4007C82EF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7B8F2FCA1E840F3600110AEC /* React.xcodeproj */;
@@ -314,6 +322,7 @@
 		7B8F303A1E8412B700110AEC /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
 		7B8F30401E8412E100110AEC /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		E504607F227748EA00212BD8 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		E57EAB9422C9E92500ADE426 /* KeyboardTrackingView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KeyboardTrackingView.xcodeproj; path = "../../node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingView.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -321,6 +330,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E57EABBF22C9E94900ADE426 /* libKeyboardTrackingView.a in Frameworks */,
 				E5046080227748EA00212BD8 /* JavaScriptCore.framework in Frameworks */,
 				7B8F30491E84151300110AEC /* libcxxreact.a in Frameworks */,
 				7B8F304B1E84151300110AEC /* libRCTActionSheet.a in Frameworks */,
@@ -481,6 +491,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				E57EAB9422C9E92500ADE426 /* KeyboardTrackingView.xcodeproj */,
 				7B8F2FC41E840F1A00110AEC /* ReactNativeNavigation.xcodeproj */,
 				7B8F2FCA1E840F3600110AEC /* React.xcodeproj */,
 				7B8F2FE51E840F6700110AEC /* RCTAnimation.xcodeproj */,
@@ -524,6 +535,14 @@
 				E504607F227748EA00212BD8 /* JavaScriptCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E57EAB9522C9E92500ADE426 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E57EAB9922C9E92500ADE426 /* libKeyboardTrackingView.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -573,6 +592,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = E57EAB9522C9E92500ADE426 /* Products */;
+					ProjectRef = E57EAB9422C9E92500ADE426 /* KeyboardTrackingView.xcodeproj */;
+				},
 				{
 					ProductGroup = 7B8F2FF61E8411A700110AEC /* Products */;
 					ProjectRef = 7B8F2FF51E8411A700110AEC /* RCTActionSheet.xcodeproj */;
@@ -859,6 +882,13 @@
 			fileType = archive.ar;
 			path = "libjsiexecutor-tvOS.a";
 			remoteRef = E504607A227748DD00212BD8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E57EAB9922C9E92500ADE426 /* libKeyboardTrackingView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libKeyboardTrackingView.a;
+			remoteRef = E57EAB9822C9E92500ADE426 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E8CB6AA81FF10BC4007C82EF /* libthird-party.a */ = {
