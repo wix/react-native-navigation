@@ -76,6 +76,10 @@ android {
             dimension "RNN.reactNativeVersion"
             buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
         }
+        reactNative60 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "60")
+        }
     }
 }
 
