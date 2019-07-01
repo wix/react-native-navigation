@@ -1,8 +1,8 @@
 package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;

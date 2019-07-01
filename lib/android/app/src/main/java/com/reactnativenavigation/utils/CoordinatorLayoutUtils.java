@@ -1,6 +1,6 @@
 package com.reactnativenavigation.utils;
 
-import android.support.design.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 

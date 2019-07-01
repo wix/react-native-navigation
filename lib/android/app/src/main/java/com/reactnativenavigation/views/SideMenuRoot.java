@@ -2,10 +2,10 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.RestrictTo;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.DrawerLayout;
+import androidx.annotation.RestrictTo;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;

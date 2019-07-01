@@ -2,7 +2,7 @@ package com.reactnativenavigation.mocks;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.facebook.react.ReactInstanceManager;

@@ -1,6 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
-import android.support.annotation.IntRange;
+import androidx.annotation.IntRange;
 
 import com.reactnativenavigation.viewcontrollers.ViewController;
 

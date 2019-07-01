@@ -1,7 +1,7 @@
 package com.reactnativenavigation.views.touch;
 
 import android.graphics.Rect;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;

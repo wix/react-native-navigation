@@ -96,9 +96,9 @@ allprojects { p ->
 def supportLibVersion = safeExtGet('supportLibVersion', DEFAULT_SUPPORT_LIB_VERSION)
 
 dependencies {
-    implementation "com.android.support:design:${supportLibVersion}"
-    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
-    implementation "com.android.support:support-v4:${supportLibVersion}"
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation 'com.github.wix-playground:ahbottomnavigation:2.4.15'
     implementation 'com.github.wix-playground:reflow-animator:1.0.4'

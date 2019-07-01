@@ -1,7 +1,7 @@
 package com.reactnativenavigation.presentation;
 
-import android.support.annotation.RestrictTo;
-import android.support.v4.widget.DrawerLayout;
+import androidx.annotation.RestrictTo;
+import androidx.drawerlayout.widget.DrawerLayout;
 import android.view.Gravity;
 
 import com.reactnativenavigation.parse.Options;

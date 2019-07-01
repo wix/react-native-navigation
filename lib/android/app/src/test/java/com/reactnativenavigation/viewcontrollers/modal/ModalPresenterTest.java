@@ -1,7 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
-import android.support.design.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;

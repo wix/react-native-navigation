@@ -3,7 +3,7 @@ package com.reactnativenavigation.viewcontrollers.externalcomponent;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.widget.FrameLayout;
 
 import com.facebook.react.ReactInstanceManager;

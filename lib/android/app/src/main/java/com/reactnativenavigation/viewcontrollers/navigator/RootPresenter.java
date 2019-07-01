@@ -1,7 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
