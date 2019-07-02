@@ -1,8 +1,4 @@
 #import "RNNRootViewController.h"
-#import <React/RCTConvert.h>
-#import "RNNAnimator.h"
-#import "RNNPushAnimation.h"
-#import "RNNReactView.h"
 #import "RNNAnimationsTransitionDelegate.h"
 #import "UIViewController+LayoutProtocol.h"
 
@@ -91,6 +87,10 @@
 
 - (UIViewController *)getCurrentChild {
 	return nil;
+}
+
+- (CGFloat)getTopBarHeight {
+    return [[self getCurrentChild] getTopBarHeight];
 }
 
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController {
