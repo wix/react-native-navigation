@@ -117,7 +117,6 @@ buildscript {
 allprojects {
 	repositories {
 +		google()
-+		mavenCentral()
 		mavenLocal()
 		jcenter()
 		maven {
@@ -133,8 +132,6 @@ allprojects {
 }
 
 ext {
--    buildToolsVersion = "26.0.3"
-+    buildToolsVersion = "27.0.3"
 -    minSdkVersion = 16
 +    minSdkVersion = 19
     compileSdkVersion = 26
@@ -171,17 +168,14 @@ android {
 
 dependencies {
 -    compile fileTree(dir: "libs", include: ["*.jar"])
--    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
 -    compile "com.facebook.react:react-native:+"  // From node_modules
 +    implementation fileTree(dir: "libs", include: ["*.jar"])
-+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
 +    implementation "com.facebook.react:react-native:+"  // From node_modules
 +    implementation project(':react-native-navigation')
 }
 ```
 
 ### 5 RNN and React Native version
-
 react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `android/app/build.gradle`.
 
 ```diff
@@ -205,8 +199,8 @@ android {
 >`reactNative55` - RN 0.55.x<Br>
 >`reactNative56` - RN 0.56.x<Br>
 >`reactNative57` - RN 0.57.0 - 0.57.4<Br>
->`reactNative57_5` - RN 0.57.5 and above<Br>
->`reactNative60` - RN 0.60.0
+>`reactNative57_5` - RN 0.57.5 - 0.59.9<Br>
+>`reactNative60` - RN 0.60.0 and above
 
 Now we need to instruct gradle how to build that flavor. To do so here two solutions:
 
@@ -327,82 +321,6 @@ import java.util.List;
 
 ```
 
-If you have upgraded to React Native 0.60, a new feature called `AutoLink` is introduced. Make changes to `MainApplication.java` to take advantage of this feature:
-
-```diff
-...
--import android.app.Application;
-
-+import com.facebook.react.PackageList;
--import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactPackage;
--import com.facebook.react.shell.MainReactPackage;
--import com.facebook.soloader.SoLoader;
-
-+import com.reactnativenavigation.NavigationApplication;
-+import com.reactnativenavigation.react.NavigationPackage;
-+import com.reactnativenavigation.react.NavigationReactNativeHost;
-+import com.reactnativenavigation.react.ReactGateway;
-
-+/**
-+ * Add this line if you use `react-native-code-push`
-+ */
-+import com.microsoft.codepush.react.CodePush;
-
-import java.util.Arrays;
-import java.util.List;
-
--public class MainApplication extends Application implements ReactApplication {
-+public class MainApplication extends NavigationApplication {
-+
-+    @Override
-+    protected ReactGateway createReactGateway() {
-+        ReactNativeHost host = new NavigationReactNativeHost(this, isDebug(), createAdditionalReactPackages()) {
-+            @Override
-+            protected String getJSMainModuleName() {
-+                return "index";
-+            }
-+
-+            /**
-+            * Add this block if you use `react-native-code-push`
-+            */
-+            @Override
-+            protected String getJSBundleFile() {
-+                return CodePush.getJSBundleFile();
-+            }
-+
-+            @Override
-+            protected List<ReactPackage> getPackages() {
-+                @SuppressWarnings("UnnecessaryLocalVariable")
-+                List<ReactPackage> packages = new PackageList(this).getPackages();
-+                packages.add(new NavigationPackage(this));
-+                /**
-+                 * Add other packages that fail to be auto-detected here
-+                 */
-+                return packages;
-+            }
-+        };
-+        return new ReactGateway(this, isDebug(), host);
-+    }
-+
-+    @Override
-+    public boolean isDebug() {
-+        return BuildConfig.DEBUG;
-+    }
-+
-+    @Override
-+    public List<ReactPackage> createAdditionalReactPackages() {
-+        /**
-+         * We used function override above,
-+         * so we just return an empty list here
-+         */
-+        return Arrays.<ReactPackage>asList();
-+    }
--...
-+}
-```
-
 ### 8. Force the same support library version across all dependencies (optional)
 
 Some of your dependencies might require a different version of one of Google's support library packages. This results in compilation errors similar to this:
@@ -442,8 +360,6 @@ dependencies {
 ## You can use react-native-navigation \o/
 
 Update `index.js` file
-
-
 ```diff
 +import { Navigation } from "react-native-navigation";
 -import {AppRegistry} from 'react-native';
