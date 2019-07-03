@@ -1,4 +1,61 @@
 # Changelog
+# 2.22.3
+## Fixed
+### iOS
+* Fix Constants.topBarHeight being zero if root ViewController isn't a NavigationViewController [#f19e523](https://github.com/wix/react-native-navigation/commit/f19e523afcc013681a601d2c9d4b0340f5459b59) by [guyca](https://github.com/guyca) 
+
+# 2.22.2
+## Added
+### iOS
+* Support changing javascript bundle location in runtime [#8959d68](https://github.com/wix/react-native-navigation/commit/8959d680d8efc8ca9f11d5ae7d78134c2f9a7959) by [yogevbd](https://github.com/yogevbd)
+
+## Fixed
+### iOS
+* Fix back button initialization on setStackRoot [#c0ad194](https://github.com/wix/react-native-navigation/commit/c0ad1945a3dbbc29192abdcc1c598516b391a10f) by [yogevbd](https://github.com/yogevbd)
+
+# 2.22.1
+## Fixed
+* Add width and height attributes to SideMenuSide type [#73d621d](https://github.com/wix/react-native-navigation/commit/73d621d48d24ba270dec42f82789bfbc911262cd) by [ball-hayden](https://github.com/ball-hayden)
+
+### iOS
+* Fixed crash when calling Navigation.constants() when root view isn't BottomTabs [#663b1c3](https://github.com/wix/react-native-navigation/commit/663b1c3f60cb474ebd9cdbda824121add1c34801) by [daveyjones](https://github.com/daveyjones)
+* Fixed crash when setting react component as left button [#29829ae](https://github.com/wix/react-native-navigation/commit/29829ae2aa972fa7df20cd50e0d43efa8991fbf2) by [MarianPalkus](https://github.com/MarianPalkus)
+
+### Android
+* Remove android * imports for support [#35a19b5](https://github.com/wix/react-native-navigation/commit/35a19b5f687b89dc414e65184995ebc69f847704) by [heroic](https://github.com/heroic)
+* Add back button to last child in setStackRoot [#898cf7a](https://github.com/wix/react-native-navigation/commit/898cf7ae2703656459f28e21123f3b0f8a40b22e) by [guyca](https://github.com/guyca)
+
+# 2.21.1
+## Fixed
+### iOS
+* Fix `setStackRoot` options resolving [#8ced964](https://github.com/wix/react-native-navigation/commit/8ced96443f8c279821719e842f7580a988aeb47c) by [yogevbd](https://github.com/yogevbd)
+
+# 2.21.0
+## Added
+* Title topMargin option [#069cb85](https://github.com/wix/react-native-navigation/commit/069cb85132dcc441c27c56e0f25e475c1d44eef2) by [guyca](https://github.com/guyca)
+
+## Fixed
+* Safer check around component listener trigger [#51d1b66](https://github.com/wix/react-native-navigation/commit/51d1b6676027c38d439dff03d23660ac8d617a5a) by [dozoisch](https://github.com/dozoisch)
+### Android
+* Emit SideMenu visibility events [#7ee9c12](https://github.com/wix/react-native-navigation/commit/7ee9c12d53dffe3461a3c4f6721619f9ceb5eb91) by [guyca](https://github.com/guyca)
+* Fix setStackRoot crash when called with the same id  [#3c08b1c](https://github.com/wix/react-native-navigation/commit/3c08b1c99559a3485fb8661ca98ce256db59adb8) by [guyca](https://github.com/guyca)
+* Fix crashes related to race conditions around ViewController.destroy  [#f2e46ea](https://github.com/wix/react-native-navigation/commit/f2e46ea4e7f6a32164ce0a0b1e1b697544177f33) by [guyca](https://github.com/guyca)
+
+# 2.20.2
+## Fixed
+### iOS
+* Fixed missing TopBar React component background [#d2d5d0f](https://github.com/wix/react-native-navigation/commit/d2d5d0fe7951e2c0c1e8d9fba247de392793a73b) by [yogevbd](https://github.com/yogevbd)
+
+# 2.20.1
+## Fixed
+* Include PassProps in ComponentDidAppearListener [#c226a7d](https://github.com/wix/react-native-navigation/commit/c226a7d55193c9c630e102dce35bc02243222921) by [yogevbd](https://github.com/yogevbd)
+
+# 2.20.0
+## Fixed
+* Include PassProps in layout parameter of CommandListener [#d3d01c2](https://github.com/wix/react-native-navigation/commit/d3d01c221f6c63ac36d8ef13a66e03fab980cf9f) by [yogevbd](https://github.com/yogevbd)
+### Android
+* Fix TopBar background React component flicker when pushing screens [#99032e0](https://github.com/wix/react-native-navigation/commit/99032e060d2e0a429d3da2775884f624e8cd5fd5) by [FRizzonelli](https://github.com/FRizzonelli)
+
 # 2.19.1
 ## Fixed
 ### Android

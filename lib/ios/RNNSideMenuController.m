@@ -1,6 +1,4 @@
 #import "RNNSideMenuController.h"
-#import "RNNSideMenuChildVC.h"
-#import "MMDrawerController.h"
 #import "MMDrawerVisualState.h"
 
 @interface RNNSideMenuController ()
@@ -92,7 +90,6 @@
 
 -(void)setControllers:(NSArray*)controllers {
 	for (id controller in controllers) {
-		
 		if ([controller isKindOfClass:[RNNSideMenuChildVC class]]) {
 			RNNSideMenuChildVC *child = (RNNSideMenuChildVC*)controller;
 			
@@ -133,12 +130,19 @@
 			return self.right;
 		default:
 			return self.center;
-			break;
 	}
 }
 
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild {
 	return self.center;
+}
+
+- (CGFloat)getTopBarHeight {
+    for(UIViewController * child in [self childViewControllers]) {
+        CGFloat childTopBarHeight = [child getTopBarHeight];
+        if (childTopBarHeight > 0) return childTopBarHeight;
+    }
+    return [super getTopBarHeight];
 }
 
 @end

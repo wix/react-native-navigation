@@ -58,6 +58,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public boolean isRendered() {
         if (isEmpty()) return false;
+        if (getCurrentChild().isDestroyed()) return false;
         ViewGroup currentChild = getCurrentChild().getView();
         if (currentChild instanceof Component) {
             return super.isRendered() && presenter.isRendered((Component) currentChild);
@@ -78,7 +79,7 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public void onAttachToParent() {
-        if (!isViewShown() && !isEmpty()) {
+        if (!isEmpty() && !getCurrentChild().isDestroyed() && !isViewShown()) {
             presenter.applyChildOptions(resolveCurrentOptions(), (Component) getCurrentChild().getView());
         }
     }
@@ -193,6 +194,7 @@ public class StackController extends ParentController<StackLayout> {
                 }
             });
         } else {
+            backButtonHelper.addToPushedChild(last(children));
             push(last(children), new CommandListenerAdapter() {
                 @Override
                 public void onSuccess(String childId) {

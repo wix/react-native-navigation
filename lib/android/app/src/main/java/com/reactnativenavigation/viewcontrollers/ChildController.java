@@ -68,6 +68,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
             performOnParentController(parent -> parent.onChildDestroyed((Component) getView()));
         }
         super.destroy();
+        childRegistry.onChildDestroyed(this);
     }
 
     protected boolean isRoot() {

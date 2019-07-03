@@ -31,7 +31,6 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 		super(context);
 		this.reactView = reactView;
         addView(reactView.asView(), MATCH_PARENT, MATCH_PARENT);
-        setContentDescription("ComponentLayout");
         touchDelegate = new OverlayTouchDelegate(reactView);
     }
 
@@ -96,7 +95,11 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
     public void drawBelowTopBar(TopBar topBar) {
         if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            layoutParams.topMargin = ViewUtils.getHeight(topBar);
+            if (topBar.getLayoutParams() instanceof MarginLayoutParams) {
+                layoutParams.topMargin = ViewUtils.getHeight(topBar) + ((MarginLayoutParams) topBar.getLayoutParams()).topMargin;
+            } else {
+                layoutParams.topMargin = ViewUtils.getHeight(topBar);
+            }
             try {
                 setLayoutParams(layoutParams);
             } catch (IllegalStateException ignored) { }

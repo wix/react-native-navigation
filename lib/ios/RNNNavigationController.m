@@ -21,6 +21,10 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	return self.topViewController;
 }
 
+- (CGFloat)getTopBarHeight {
+    return self.navigationBar.frame.size.height;
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.getCurrentChild.supportedInterfaceOrientations;
 }

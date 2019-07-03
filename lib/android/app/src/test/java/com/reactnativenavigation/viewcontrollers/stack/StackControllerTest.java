@@ -292,6 +292,18 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void setRoot_backButtonIsAddedToAllChildren() {
+        Robolectric.getForegroundThreadScheduler().pause();
+
+        activity.setContentView(uut.getView());
+        disablePushAnimation(child1, child2);
+
+        uut.setRoot(Arrays.asList(child1, child2), new CommandListenerAdapter());
+        assertThat(child1.options.topBar.buttons.back.visible.get(false)).isFalse();
+        assertThat(child2.options.topBar.buttons.back.visible.get(false)).isTrue();
+    }
+
+    @Test
     public void setRoot_doesNotCrashWhenCalledInQuickSuccession() {
         disablePushAnimation(child1);
         uut.setRoot(Collections.singletonList(child1), new CommandListenerAdapter());
@@ -1057,24 +1069,39 @@ public class StackControllerTest extends BaseTest {
         verify(presenter).applyChildOptions(any(), eq(component));
     }
 
+    @Test
+    public void onAttachToParent_doesNotCrashWhenCalledAfterDestroy() {
+        Robolectric.getForegroundThreadScheduler().pause();
+        StackController spy = spy(createStack());
+
+        StackLayout view = spy.getView();
+        spy.push(child1, new CommandListenerAdapter());
+        activity.setContentView(view);
+
+        child1.destroy();
+        ShadowLooper.idleMainLooper();
+
+        verify(spy).onAttachToParent();
+    }
+
     private void assertContainsOnlyId(String... ids) {
         assertThat(uut.size()).isEqualTo(ids.length);
         assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, String>) ViewController::getId).containsOnly(ids);
     }
 
     private StackController createStack() {
-        return createStack("stack", new ArrayList<>());
+        return createStackBuilder("stack", new ArrayList<>()).build();
     }
 
     private StackController createStack(String id) {
-        return createStack(id, new ArrayList<>());
+        return createStackBuilder(id, new ArrayList<>()).build();
     }
 
     private StackController createStack(List<ViewController> children) {
-        return createStack("stack", children);
+        return createStackBuilder("stack", children).build();
     }
 
-    private StackController createStack(String id, List<ViewController> children) {
+    private StackControllerBuilder createStackBuilder(String id, List<ViewController> children) {
         createTopBarController();
         return TestUtils.newStackController(activity)
                 .setChildren(children)
@@ -1083,8 +1110,7 @@ public class StackControllerTest extends BaseTest {
                 .setChildRegistry(childRegistry)
                 .setAnimator(animator)
                 .setStackPresenter(presenter)
-                .setBackButtonHelper(backButtonHelper)
-                .build();
+                .setBackButtonHelper(backButtonHelper);
     }
 
     private void createTopBarController() {

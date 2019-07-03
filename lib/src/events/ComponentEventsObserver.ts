@@ -94,7 +94,7 @@ export class ComponentEventsObserver {
 
   private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {
     _.forEach(this.listeners[event.componentId], (component) => {
-      if (component[method]) {
+      if (component && component[method]) {
         component[method](event);
       }
     });

@@ -36,6 +36,10 @@
     return [RNNLayoutManager findComponentForId:componentId];
 }
 
++ (void)setJSCodeLocation:(NSURL *)jsCodeLocation {
+	[[ReactNativeNavigation sharedInstance].bridgeManager setJSCodeLocation:jsCodeLocation];
+}
+
 # pragma mark - instance
 
 + (instancetype) sharedInstance {

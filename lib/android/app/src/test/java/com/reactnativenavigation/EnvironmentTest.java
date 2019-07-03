@@ -1,7 +1,7 @@
 package com.reactnativenavigation;
 
-import android.support.design.widget.*;
-import android.support.v7.app.*;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.react.common.*;
 
