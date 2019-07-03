@@ -31,7 +31,7 @@ module.exports = {
   enterText: (text) => {
     exec.execSync(`adb shell input text ${text}`);
   },
-  swipeUp = () => {
+  swipeUp: () => {
     exec.execSync('adb shell input touchscreen swipe 300 1200 500 0 100');
   }
 };
