@@ -70,6 +70,10 @@
 	return nil;
 }
 
+- (CGFloat)getTopBarHeight {
+    return 0;
+}
+
 - (void)onChildWillAppear {
 	[self.presenter applyOptions:self.resolveOptions];
 	[((UISplitViewController *)self.parentViewController) onChildWillAppear];

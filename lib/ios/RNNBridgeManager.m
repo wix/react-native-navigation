@@ -57,6 +57,10 @@
 	return self;
 }
 
+- (void)setJSCodeLocation:(NSURL *)jsCodeLocation {
+	_jsCodeLocation = jsCodeLocation;
+}
+
 - (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
 	[_store registerExternalComponent:name callback:callback];
 }

@@ -26,29 +26,6 @@
 		263905B61E4C6F440023D7D3 /* MMExampleDrawerVisualStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905921E4C6F440023D7D3 /* MMExampleDrawerVisualStateManager.m */; };
 		263905B71E4C6F440023D7D3 /* UIViewController+MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905931E4C6F440023D7D3 /* UIViewController+MMDrawerController.h */; };
 		263905B81E4C6F440023D7D3 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905941E4C6F440023D7D3 /* UIViewController+MMDrawerController.m */; };
-		263905B91E4C6F440023D7D3 /* RCCDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905951E4C6F440023D7D3 /* RCCDrawerController.h */; };
-		263905BA1E4C6F440023D7D3 /* RCCDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905961E4C6F440023D7D3 /* RCCDrawerController.m */; };
-		263905BB1E4C6F440023D7D3 /* RCCDrawerHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905971E4C6F440023D7D3 /* RCCDrawerHelper.h */; };
-		263905BC1E4C6F440023D7D3 /* RCCDrawerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905981E4C6F440023D7D3 /* RCCDrawerHelper.m */; };
-		263905BD1E4C6F440023D7D3 /* RCCDrawerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905991E4C6F440023D7D3 /* RCCDrawerProtocol.h */; };
-		263905BE1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639059A1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.h */; };
-		263905BF1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2639059B1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.m */; };
-		263905C01E4C6F440023D7D3 /* SidebarAirbnbAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639059E1E4C6F440023D7D3 /* SidebarAirbnbAnimation.h */; };
-		263905C11E4C6F440023D7D3 /* SidebarAirbnbAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2639059F1E4C6F440023D7D3 /* SidebarAirbnbAnimation.m */; };
-		263905C21E4C6F440023D7D3 /* SidebarAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A01E4C6F440023D7D3 /* SidebarAnimation.h */; };
-		263905C31E4C6F440023D7D3 /* SidebarAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A11E4C6F440023D7D3 /* SidebarAnimation.m */; };
-		263905C41E4C6F440023D7D3 /* SidebarFacebookAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A21E4C6F440023D7D3 /* SidebarFacebookAnimation.h */; };
-		263905C51E4C6F440023D7D3 /* SidebarFacebookAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A31E4C6F440023D7D3 /* SidebarFacebookAnimation.m */; };
-		263905C61E4C6F440023D7D3 /* SidebarFeedlyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A41E4C6F440023D7D3 /* SidebarFeedlyAnimation.h */; };
-		263905C71E4C6F440023D7D3 /* SidebarFeedlyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A51E4C6F440023D7D3 /* SidebarFeedlyAnimation.m */; };
-		263905C81E4C6F440023D7D3 /* SidebarFlipboardAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A61E4C6F440023D7D3 /* SidebarFlipboardAnimation.h */; };
-		263905C91E4C6F440023D7D3 /* SidebarFlipboardAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A71E4C6F440023D7D3 /* SidebarFlipboardAnimation.m */; };
-		263905CA1E4C6F440023D7D3 /* SidebarLuvocracyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A81E4C6F440023D7D3 /* SidebarLuvocracyAnimation.h */; };
-		263905CB1E4C6F440023D7D3 /* SidebarLuvocracyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A91E4C6F440023D7D3 /* SidebarLuvocracyAnimation.m */; };
-		263905CC1E4C6F440023D7D3 /* SidebarWunderlistAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905AA1E4C6F440023D7D3 /* SidebarWunderlistAnimation.h */; };
-		263905CD1E4C6F440023D7D3 /* SidebarWunderlistAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905AB1E4C6F440023D7D3 /* SidebarWunderlistAnimation.m */; };
-		263905CE1E4C6F440023D7D3 /* TheSidebarController.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905AC1E4C6F440023D7D3 /* TheSidebarController.h */; };
-		263905CF1E4C6F440023D7D3 /* TheSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905AD1E4C6F440023D7D3 /* TheSidebarController.m */; };
 		263905D61E4C94970023D7D3 /* RNNSideMenuController.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905D41E4C94970023D7D3 /* RNNSideMenuController.h */; };
 		263905D71E4C94970023D7D3 /* RNNSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905D51E4C94970023D7D3 /* RNNSideMenuController.m */; };
 		263905E61E4CAC950023D7D3 /* RNNSideMenuChildVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905E41E4CAC950023D7D3 /* RNNSideMenuChildVC.h */; };
@@ -367,29 +344,6 @@
 		263905921E4C6F440023D7D3 /* MMExampleDrawerVisualStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMExampleDrawerVisualStateManager.m; sourceTree = "<group>"; };
 		263905931E4C6F440023D7D3 /* UIViewController+MMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MMDrawerController.h"; sourceTree = "<group>"; };
 		263905941E4C6F440023D7D3 /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
-		263905951E4C6F440023D7D3 /* RCCDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCDrawerController.h; sourceTree = "<group>"; };
-		263905961E4C6F440023D7D3 /* RCCDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCDrawerController.m; sourceTree = "<group>"; };
-		263905971E4C6F440023D7D3 /* RCCDrawerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCDrawerHelper.h; sourceTree = "<group>"; };
-		263905981E4C6F440023D7D3 /* RCCDrawerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCDrawerHelper.m; sourceTree = "<group>"; };
-		263905991E4C6F440023D7D3 /* RCCDrawerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCDrawerProtocol.h; sourceTree = "<group>"; };
-		2639059A1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCTheSideBarManagerViewController.h; sourceTree = "<group>"; };
-		2639059B1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCTheSideBarManagerViewController.m; sourceTree = "<group>"; };
-		2639059E1E4C6F440023D7D3 /* SidebarAirbnbAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarAirbnbAnimation.h; sourceTree = "<group>"; };
-		2639059F1E4C6F440023D7D3 /* SidebarAirbnbAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarAirbnbAnimation.m; sourceTree = "<group>"; };
-		263905A01E4C6F440023D7D3 /* SidebarAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarAnimation.h; sourceTree = "<group>"; };
-		263905A11E4C6F440023D7D3 /* SidebarAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarAnimation.m; sourceTree = "<group>"; };
-		263905A21E4C6F440023D7D3 /* SidebarFacebookAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarFacebookAnimation.h; sourceTree = "<group>"; };
-		263905A31E4C6F440023D7D3 /* SidebarFacebookAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarFacebookAnimation.m; sourceTree = "<group>"; };
-		263905A41E4C6F440023D7D3 /* SidebarFeedlyAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarFeedlyAnimation.h; sourceTree = "<group>"; };
-		263905A51E4C6F440023D7D3 /* SidebarFeedlyAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarFeedlyAnimation.m; sourceTree = "<group>"; };
-		263905A61E4C6F440023D7D3 /* SidebarFlipboardAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarFlipboardAnimation.h; sourceTree = "<group>"; };
-		263905A71E4C6F440023D7D3 /* SidebarFlipboardAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarFlipboardAnimation.m; sourceTree = "<group>"; };
-		263905A81E4C6F440023D7D3 /* SidebarLuvocracyAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarLuvocracyAnimation.h; sourceTree = "<group>"; };
-		263905A91E4C6F440023D7D3 /* SidebarLuvocracyAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarLuvocracyAnimation.m; sourceTree = "<group>"; };
-		263905AA1E4C6F440023D7D3 /* SidebarWunderlistAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarWunderlistAnimation.h; sourceTree = "<group>"; };
-		263905AB1E4C6F440023D7D3 /* SidebarWunderlistAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarWunderlistAnimation.m; sourceTree = "<group>"; };
-		263905AC1E4C6F440023D7D3 /* TheSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TheSidebarController.h; sourceTree = "<group>"; };
-		263905AD1E4C6F440023D7D3 /* TheSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TheSidebarController.m; sourceTree = "<group>"; };
 		263905D41E4C94970023D7D3 /* RNNSideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNSideMenuController.h; sourceTree = "<group>"; };
 		263905D51E4C94970023D7D3 /* RNNSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuController.m; sourceTree = "<group>"; };
 		263905E41E4CAC950023D7D3 /* RNNSideMenuChildVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNSideMenuChildVC.h; sourceTree = "<group>"; };
@@ -749,14 +703,6 @@
 			isa = PBXGroup;
 			children = (
 				263905891E4C6F440023D7D3 /* MMDrawerController */,
-				263905951E4C6F440023D7D3 /* RCCDrawerController.h */,
-				263905961E4C6F440023D7D3 /* RCCDrawerController.m */,
-				263905971E4C6F440023D7D3 /* RCCDrawerHelper.h */,
-				263905981E4C6F440023D7D3 /* RCCDrawerHelper.m */,
-				263905991E4C6F440023D7D3 /* RCCDrawerProtocol.h */,
-				2639059A1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.h */,
-				2639059B1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.m */,
-				2639059C1E4C6F440023D7D3 /* TheSidebarController */,
 			);
 			path = RNNSideMenu;
 			sourceTree = "<group>";
@@ -777,37 +723,6 @@
 				263905941E4C6F440023D7D3 /* UIViewController+MMDrawerController.m */,
 			);
 			path = MMDrawerController;
-			sourceTree = "<group>";
-		};
-		2639059C1E4C6F440023D7D3 /* TheSidebarController */ = {
-			isa = PBXGroup;
-			children = (
-				2639059D1E4C6F440023D7D3 /* Animations */,
-				263905AC1E4C6F440023D7D3 /* TheSidebarController.h */,
-				263905AD1E4C6F440023D7D3 /* TheSidebarController.m */,
-			);
-			path = TheSidebarController;
-			sourceTree = "<group>";
-		};
-		2639059D1E4C6F440023D7D3 /* Animations */ = {
-			isa = PBXGroup;
-			children = (
-				2639059E1E4C6F440023D7D3 /* SidebarAirbnbAnimation.h */,
-				2639059F1E4C6F440023D7D3 /* SidebarAirbnbAnimation.m */,
-				263905A01E4C6F440023D7D3 /* SidebarAnimation.h */,
-				263905A11E4C6F440023D7D3 /* SidebarAnimation.m */,
-				263905A21E4C6F440023D7D3 /* SidebarFacebookAnimation.h */,
-				263905A31E4C6F440023D7D3 /* SidebarFacebookAnimation.m */,
-				263905A41E4C6F440023D7D3 /* SidebarFeedlyAnimation.h */,
-				263905A51E4C6F440023D7D3 /* SidebarFeedlyAnimation.m */,
-				263905A61E4C6F440023D7D3 /* SidebarFlipboardAnimation.h */,
-				263905A71E4C6F440023D7D3 /* SidebarFlipboardAnimation.m */,
-				263905A81E4C6F440023D7D3 /* SidebarLuvocracyAnimation.h */,
-				263905A91E4C6F440023D7D3 /* SidebarLuvocracyAnimation.m */,
-				263905AA1E4C6F440023D7D3 /* SidebarWunderlistAnimation.h */,
-				263905AB1E4C6F440023D7D3 /* SidebarWunderlistAnimation.m */,
-			);
-			path = Animations;
 			sourceTree = "<group>";
 		};
 		5012242C2173E0A4000F5F98 /* Parent ViewControllers */ = {
@@ -1235,9 +1150,7 @@
 				263905B01E4C6F440023D7D3 /* MMDrawerController+Subclass.h in Headers */,
 				E8AEDB4A1F5C0BAF000F5A6A /* RNNInteractivePopAnimator.h in Headers */,
 				263905B71E4C6F440023D7D3 /* UIViewController+MMDrawerController.h in Headers */,
-				263905BB1E4C6F440023D7D3 /* RCCDrawerHelper.h in Headers */,
 				C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */,
-				263905CC1E4C6F440023D7D3 /* SidebarWunderlistAnimation.h in Headers */,
 				507F43F41FF4FCFE00D9425B /* HMSegmentedControl.h in Headers */,
 				501CD31F214A5B6900A6E225 /* RNNLayoutInfo.h in Headers */,
 				50A00C37200F84D6000F01A6 /* RNNOverlayOptions.h in Headers */,
@@ -1253,14 +1166,12 @@
 				50CB3B691FDE911400AA153B /* RNNSideMenuOptions.h in Headers */,
 				5012240A21735959000F5F98 /* RNNSideMenuPresenter.h in Headers */,
 				50E02BDD21A6EE7900A43942 /* SideMenuOpenGestureModeParser.h in Headers */,
-				263905BD1E4C6F440023D7D3 /* RCCDrawerProtocol.h in Headers */,
 				5038A3B5216DF602009280BC /* UINavigationController+RNNOptions.h in Headers */,
 				50E5F78D223F9FAF002AFEAD /* RNNElementTransitionOptions.h in Headers */,
 				5038A3C1216E1E66009280BC /* RNNFontAttributesCreator.h in Headers */,
 				5016E8EF20209690009D4F7C /* RNNCustomTitleView.h in Headers */,
 				50415CBA20553B8E00BB682E /* RNNScreenTransition.h in Headers */,
 				5039558B2174829400B0A663 /* IntNumberParser.h in Headers */,
-				263905C21E4C6F440023D7D3 /* SidebarAnimation.h in Headers */,
 				5038A3BD216E1490009280BC /* RNNTabBarItemCreator.h in Headers */,
 				E8E518361F83B94A000467AC /* RNNViewLocation.h in Headers */,
 				505EDD34214E7B7B0071C7DE /* RNNLeafProtocol.h in Headers */,
@@ -1269,7 +1180,6 @@
 				507F43C51FF4F17C00D9425B /* RNNTopTabsViewController.h in Headers */,
 				501223D72173590F000F5F98 /* RNNNavigationControllerPresenter.h in Headers */,
 				50495946216F5FB5006D2B81 /* TextParser.h in Headers */,
-				263905C61E4C6F440023D7D3 /* SidebarFeedlyAnimation.h in Headers */,
 				505EDD3C214FA8000071C7DE /* RNNViewControllerPresenter.h in Headers */,
 				502CB46E20CD1DDA0019B2FE /* RNNBackButtonOptions.h in Headers */,
 				50495939216E5750006D2B81 /* Bool.h in Headers */,
@@ -1277,21 +1187,17 @@
 				5038A3D2216E364C009280BC /* Text.h in Headers */,
 				261F0E641E6EC94900989DE2 /* RNNModalManager.h in Headers */,
 				5012242621737278000F5F98 /* NullImage.h in Headers */,
-				263905C01E4C6F440023D7D3 /* SidebarAirbnbAnimation.h in Headers */,
 				5038A3B9216DFCFD009280BC /* UITabBarController+RNNOptions.h in Headers */,
 				50644A2020E11A720026709C /* Constants.h in Headers */,
 				5012241E217366D4000F5F98 /* ColorParser.h in Headers */,
 				E8367B801F7A8A4700675C05 /* VICMAImageView.h in Headers */,
 				263905E61E4CAC950023D7D3 /* RNNSideMenuChildVC.h in Headers */,
-				263905C41E4C6F440023D7D3 /* SidebarFacebookAnimation.h in Headers */,
 				50F5DFC51F407AA0001A00BC /* RNNNavigationController.h in Headers */,
 				5047E4F42267568800908DD3 /* RNNExternalComponentStore.h in Headers */,
 				21B85E5F1F44482A00B314B5 /* RNNNavigationButtons.h in Headers */,
 				7BEF0D181E437684003E96B0 /* RNNRootViewController.h in Headers */,
 				7B1126A61E2D2B6C00F9B03B /* RNNBridgeModule.h in Headers */,
 				E8DA24401F97459B00CD552B /* RNNElementFinder.h in Headers */,
-				263905BE1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.h in Headers */,
-				263905CE1E4C6F440023D7D3 /* TheSidebarController.h in Headers */,
 				50AB0B1C2255F8640039DAED /* UIViewController+LayoutProtocol.h in Headers */,
 				50D031342005149000386B3D /* RNNOverlayManager.h in Headers */,
 				50E5F7952240EBD6002AFEAD /* RNNAnimationsTransitionDelegate.h in Headers */,
@@ -1309,12 +1215,10 @@
 				5049594E216F6277006D2B81 /* NumberParser.h in Headers */,
 				50BE951320B5A787004F5DF5 /* RNNStatusBarOptions.h in Headers */,
 				50570BEA2063E09B006A1B5C /* RNNTitleViewHelper.h in Headers */,
-				263905CA1E4C6F440023D7D3 /* SidebarLuvocracyAnimation.h in Headers */,
 				50495956216F6B3D006D2B81 /* DictionaryParser.h in Headers */,
 				4534E72520CB6724009F8185 /* RNNLargeTitleOptions.h in Headers */,
 				390AD477200F499D00A8250D /* RNNSwizzles.h in Headers */,
 				263905B11E4C6F440023D7D3 /* MMDrawerController.h in Headers */,
-				263905B91E4C6F440023D7D3 /* RCCDrawerController.h in Headers */,
 				263905B31E4C6F440023D7D3 /* MMDrawerVisualState.h in Headers */,
 				50451D092042E20600695F00 /* RNNAnimationsOptions.h in Headers */,
 				5048862D20BE976D000908DE /* RNNLayoutOptions.h in Headers */,
@@ -1340,7 +1244,6 @@
 				5047E4F022674AD400908DD3 /* RNNLayoutManager.h in Headers */,
 				263905D61E4C94970023D7D3 /* RNNSideMenuController.h in Headers */,
 				503955972174864E00B0A663 /* NullDouble.h in Headers */,
-				263905C81E4C6F440023D7D3 /* SidebarFlipboardAnimation.h in Headers */,
 				7BEF0D1C1E43771B003E96B0 /* RNNLayoutNode.h in Headers */,
 				50E02BD821A6EE0F00A43942 /* SideMenuOpenMode.h in Headers */,
 				507F43C91FF4F9CC00D9425B /* RNNTopTabOptions.h in Headers */,
@@ -1481,7 +1384,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				263905C71E4C6F440023D7D3 /* SidebarFeedlyAnimation.m in Sources */,
 				50C4A497206BDDBB00DB292E /* RNNSubtitleOptions.m in Sources */,
 				50AB0B1D2255F8640039DAED /* UIViewController+LayoutProtocol.m in Sources */,
 				263905B41E4C6F440023D7D3 /* MMDrawerVisualState.m in Sources */,
@@ -1492,13 +1394,11 @@
 				5012241B21736678000F5F98 /* Image.m in Sources */,
 				50495943216F5E5D006D2B81 /* NullBool.m in Sources */,
 				5038A3C7216E2D93009280BC /* Number.m in Sources */,
-				263905C51E4C6F440023D7D3 /* SidebarFacebookAnimation.m in Sources */,
 				50451D0E2042F70900695F00 /* RNNTransition.m in Sources */,
 				5048862E20BE976D000908DE /* RNNLayoutOptions.m in Sources */,
 				501CD320214A5B6900A6E225 /* RNNLayoutInfo.m in Sources */,
 				7BEF0D191E437684003E96B0 /* RNNRootViewController.m in Sources */,
 				50415CBB20553B8E00BB682E /* RNNScreenTransition.m in Sources */,
-				263905C31E4C6F440023D7D3 /* SidebarAnimation.m in Sources */,
 				E8A5CD531F464F0400E89D0D /* RNNAnimator.m in Sources */,
 				50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.m in Sources */,
 				261F0E6B1E6F028A00989DE2 /* RNNNavigationStackManager.m in Sources */,
@@ -1506,7 +1406,6 @@
 				503955982174864E00B0A663 /* NullDouble.m in Sources */,
 				E8DA24411F97459B00CD552B /* RNNElementFinder.m in Sources */,
 				50570B272061473D006A1B5C /* RNNTitleOptions.m in Sources */,
-				263905BF1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.m in Sources */,
 				5047E4F122674AD400908DD3 /* RNNLayoutManager.m in Sources */,
 				5012241F217366D4000F5F98 /* ColorParser.m in Sources */,
 				651E1F8D21FD642100DFEA19 /* RNNSplitViewControllerPresenter.m in Sources */,
@@ -1517,7 +1416,6 @@
 				7B1126A01E2D263F00F9B03B /* RNNEventEmitter.m in Sources */,
 				A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */,
 				5050465521F8F4490035497A /* RNNReactComponentRegistry.m in Sources */,
-				263905CB1E4C6F440023D7D3 /* SidebarLuvocracyAnimation.m in Sources */,
 				50570BEB2063E09B006A1B5C /* RNNTitleViewHelper.m in Sources */,
 				263905E71E4CAC950023D7D3 /* RNNSideMenuChildVC.m in Sources */,
 				50495957216F6B3D006D2B81 /* DictionaryParser.m in Sources */,
@@ -1551,17 +1449,14 @@
 				504AFE651FFE53070076E904 /* RNNOptions.m in Sources */,
 				5053CE802175FB1900D0386B /* RNNDefaultOptionsHelper.m in Sources */,
 				50495947216F5FB5006D2B81 /* TextParser.m in Sources */,
-				263905BA1E4C6F440023D7D3 /* RCCDrawerController.m in Sources */,
 				50F5DFC21F407A8C001A00BC /* RNNTabBarController.m in Sources */,
 				50887CA920F26BFE00D06111 /* RNNOverlayWindow.m in Sources */,
 				5038A3CF216E35E0009280BC /* Dictionary.m in Sources */,
 				C2A57A1D21E815F80066711C /* InteractivePopGestureDelegate.m in Sources */,
-				263905BC1E4C6F440023D7D3 /* RCCDrawerHelper.m in Sources */,
 				4534E72620CB6724009F8185 /* RNNLargeTitleOptions.m in Sources */,
 				507E7D58201DDD3000444E6C /* RNNSharedElementAnimationOptions.m in Sources */,
 				2145452A1F4DC85F006E8DA1 /* RCTHelpers.m in Sources */,
 				2DCD9196200014A900EDC75D /* RNNBridgeManager.m in Sources */,
-				263905C11E4C6F440023D7D3 /* SidebarAirbnbAnimation.m in Sources */,
 				263905D71E4C94970023D7D3 /* RNNSideMenuController.m in Sources */,
 				50EB4ED82068EBE000D6ED34 /* RNNBackgroundOptions.m in Sources */,
 				507F43CA1FF4F9CC00D9425B /* RNNTopTabOptions.m in Sources */,
@@ -1570,10 +1465,8 @@
 				214545251F4DC125006E8DA1 /* RNNUIBarButtonItem.m in Sources */,
 				263905B81E4C6F440023D7D3 /* UIViewController+MMDrawerController.m in Sources */,
 				505EDD3D214FA8000071C7DE /* RNNViewControllerPresenter.m in Sources */,
-				263905CD1E4C6F440023D7D3 /* SidebarWunderlistAnimation.m in Sources */,
 				E33AC20820B5C4F90090DB8A /* RNNSplitViewOptions.m in Sources */,
 				E33AC20020B5BA0B0090DB8A /* RNNSplitViewController.m in Sources */,
-				263905CF1E4C6F440023D7D3 /* TheSidebarController.m in Sources */,
 				5038A3C2216E1E66009280BC /* RNNFontAttributesCreator.m in Sources */,
 				506317AB220B547400B26FC3 /* UIImage+insets.m in Sources */,
 				E8A430121F9CB87B00B61A20 /* RNNAnimatedView.m in Sources */,
@@ -1616,7 +1509,6 @@
 				21B85E5D1F44480200B314B5 /* RNNNavigationButtons.m in Sources */,
 				E8E518371F83B94A000467AC /* RNNViewLocation.m in Sources */,
 				E3458D3E20BD9CE40023149B /* RNNPreviewOptions.m in Sources */,
-				263905C91E4C6F440023D7D3 /* SidebarFlipboardAnimation.m in Sources */,
 				5012242B217372B3000F5F98 /* ImageParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

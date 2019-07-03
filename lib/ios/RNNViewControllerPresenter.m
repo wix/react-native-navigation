@@ -28,6 +28,12 @@
 	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController componentRegistry:_componentRegistry];
 }
 
+- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
+	[super applyOptionsOnWillMoveToParentViewController:options];
+	UIViewController* viewController = self.bindedViewController;
+	[viewController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
+}
+
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
 	
@@ -149,6 +155,10 @@
 	
 	if (newOptions.topBar.title.component.name.hasValue) {
 		[self setCustomNavigationTitleView:newOptions perform:nil];
+	}
+	
+	if (newOptions.topBar.backButton.icon.hasValue || newOptions.topBar.backButton.showTitle.hasValue || newOptions.topBar.backButton.color.hasValue || newOptions.topBar.backButton.title.hasValue) {
+		[viewController rnn_setBackButtonIcon:[newOptions.topBar.backButton.icon getWithDefaultValue:nil] withColor:[newOptions.topBar.backButton.color getWithDefaultValue:nil] title:[newOptions.topBar.backButton.showTitle getWithDefaultValue:YES] ? [newOptions.topBar.backButton.title getWithDefaultValue:nil] : @""];
 	}
 }
 
