@@ -593,6 +593,14 @@ export interface SideMenuSide {
    * Enable or disable the side menu
    */
   enabled?: boolean;
+  /**
+   * Set the width of the side menu
+   */
+  width?: number;
+  /**
+   * Set the height of the side menu
+   */
+  height?: number;
 }
 
 export interface OptionsSideMenu {

@@ -1,9 +1,9 @@
 package com.reactnativenavigation.presentation;
 
-import android.content.*;
-import android.graphics.drawable.*;
-import android.support.annotation.*;
-import android.support.v4.content.*;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 
 import com.reactnativenavigation.parse.*;
 import com.reactnativenavigation.utils.*;

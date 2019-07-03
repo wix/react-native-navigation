@@ -1,4 +1,35 @@
 # Changelog
+# 2.22.3
+## Fixed
+### iOS
+* Fix Constants.topBarHeight being zero if root ViewController isn't a NavigationViewController [#f19e523](https://github.com/wix/react-native-navigation/commit/f19e523afcc013681a601d2c9d4b0340f5459b59) by [guyca](https://github.com/guyca) 
+
+# 2.22.2
+## Added
+### iOS
+* Support changing javascript bundle location in runtime [#8959d68](https://github.com/wix/react-native-navigation/commit/8959d680d8efc8ca9f11d5ae7d78134c2f9a7959) by [yogevbd](https://github.com/yogevbd)
+
+## Fixed
+### iOS
+* Fix back button initialization on setStackRoot [#c0ad194](https://github.com/wix/react-native-navigation/commit/c0ad1945a3dbbc29192abdcc1c598516b391a10f) by [yogevbd](https://github.com/yogevbd)
+
+# 2.22.1
+## Fixed
+* Add width and height attributes to SideMenuSide type [#73d621d](https://github.com/wix/react-native-navigation/commit/73d621d48d24ba270dec42f82789bfbc911262cd) by [ball-hayden](https://github.com/ball-hayden)
+
+### iOS
+* Fixed crash when calling Navigation.constants() when root view isn't BottomTabs [#663b1c3](https://github.com/wix/react-native-navigation/commit/663b1c3f60cb474ebd9cdbda824121add1c34801) by [daveyjones](https://github.com/daveyjones)
+* Fixed crash when setting react component as left button [#29829ae](https://github.com/wix/react-native-navigation/commit/29829ae2aa972fa7df20cd50e0d43efa8991fbf2) by [MarianPalkus](https://github.com/MarianPalkus)
+
+### Android
+* Remove android * imports for support [#35a19b5](https://github.com/wix/react-native-navigation/commit/35a19b5f687b89dc414e65184995ebc69f847704) by [heroic](https://github.com/heroic)
+* Add back button to last child in setStackRoot [#898cf7a](https://github.com/wix/react-native-navigation/commit/898cf7ae2703656459f28e21123f3b0f8a40b22e) by [guyca](https://github.com/guyca)
+
+# 2.21.1
+## Fixed
+### iOS
+* Fix `setStackRoot` options resolving [#8ced964](https://github.com/wix/react-native-navigation/commit/8ced96443f8c279821719e842f7580a988aeb47c) by [yogevbd](https://github.com/yogevbd)
+
 # 2.21.0
 ## Added
 * Title topMargin option [#069cb85](https://github.com/wix/react-native-navigation/commit/069cb85132dcc441c27c56e0f25e475c1d44eef2) by [guyca](https://github.com/guyca)

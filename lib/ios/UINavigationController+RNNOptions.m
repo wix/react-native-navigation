@@ -1,6 +1,5 @@
 #import "UINavigationController+RNNOptions.h"
 #import "RNNFontAttributesCreator.h"
-#import "UIImage+tint.h"
 
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
@@ -94,25 +93,6 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			[blur removeFromSuperview];
 		}
 	}
-}
-
-- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
-	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-	if (icon) {
-		backItem.image = color
-		? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-		: icon;
-		
-		[self.navigationBar setBackIndicatorImage:[UIImage new]];
-		[self.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
-	}
-	
-	UIViewController *lastViewControllerInStack = self.viewControllers.count > 1 ? [self.viewControllers objectAtIndex:self.viewControllers.count-2] : self.topViewController;
-	
-	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
-	backItem.tintColor = color;
-	
-	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
 - (void)rnn_setBackButtonColor:(UIColor *)color {

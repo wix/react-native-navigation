@@ -194,6 +194,7 @@ public class StackController extends ParentController<StackLayout> {
                 }
             });
         } else {
+            backButtonHelper.addToPushedChild(last(children));
             push(last(children), new CommandListenerAdapter() {
                 @Override
                 public void onSuccess(String childId) {

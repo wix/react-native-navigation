@@ -292,6 +292,18 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void setRoot_backButtonIsAddedToAllChildren() {
+        Robolectric.getForegroundThreadScheduler().pause();
+
+        activity.setContentView(uut.getView());
+        disablePushAnimation(child1, child2);
+
+        uut.setRoot(Arrays.asList(child1, child2), new CommandListenerAdapter());
+        assertThat(child1.options.topBar.buttons.back.visible.get(false)).isFalse();
+        assertThat(child2.options.topBar.buttons.back.visible.get(false)).isTrue();
+    }
+
+    @Test
     public void setRoot_doesNotCrashWhenCalledInQuickSuccession() {
         disablePushAnimation(child1);
         uut.setRoot(Collections.singletonList(child1), new CommandListenerAdapter());

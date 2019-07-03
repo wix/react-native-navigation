@@ -55,23 +55,23 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)setRoot:(NSDictionary*)layout commandId:(NSString*)commandId completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-
+	
 	if (@available(iOS 9, *)) {
-	    if(_controllerFactory.defaultOptions.layout.direction.hasValue) {
-	        if ([_controllerFactory.defaultOptions.layout.direction.get isEqualToString:@"rtl"]) {
-                [[RCTI18nUtil sharedInstance] allowRTL:YES];
-                [[RCTI18nUtil sharedInstance] forceRTL:YES];
-                [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
-                [[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
-            } else {
-                [[RCTI18nUtil sharedInstance] allowRTL:NO];
-                [[RCTI18nUtil sharedInstance] forceRTL:NO];
-                [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
-                [[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
-            }
-	    }
+		if(_controllerFactory.defaultOptions.layout.direction.hasValue) {
+			if ([_controllerFactory.defaultOptions.layout.direction.get isEqualToString:@"rtl"]) {
+				[[RCTI18nUtil sharedInstance] allowRTL:YES];
+				[[RCTI18nUtil sharedInstance] forceRTL:YES];
+				[[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+				[[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+			} else {
+				[[RCTI18nUtil sharedInstance] allowRTL:NO];
+				[[RCTI18nUtil sharedInstance] forceRTL:NO];
+				[[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+				[[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+			}
+		}
 	}
-
+	
 	[_modalManager dismissAllModalsAnimated:NO];
 	
 	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
@@ -171,11 +171,11 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)setStackRoot:(NSString*)componentId commandId:(NSString*)commandId children:(NSArray*)children completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
- 	NSArray *childViewControllers = [_controllerFactory createChildrenLayout:children];
+	NSArray<UIViewController *> *childViewControllers = [_controllerFactory createChildrenLayout:children];
 	for (UIViewController<RNNLayoutProtocol>* viewController in childViewControllers) {
 		[viewController renderTreeAndWait:NO perform:nil];
 	}
-	RNNNavigationOptions* options = [childViewControllers.lastObject getCurrentChild].resolveOptions;
+	RNNNavigationOptions* options = childViewControllers.lastObject.resolveOptions;
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
 	[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
@@ -236,7 +236,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}];
 	
 	[_stackManager popToRoot:vc animated:[vc.resolveOptions.animations.pop.enable getWithDefaultValue:YES] completion:^(NSArray *poppedViewControllers) {
-
+		
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
 	}];
@@ -269,7 +269,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
 	[modalToDismiss.getCurrentChild overrideOptions:options];
-		
+	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal commandId:commandId params:@{@"componentId": componentId}];
