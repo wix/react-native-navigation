@@ -3,7 +3,7 @@ const Android = require('./AndroidUtils');
 
 const { elementByLabel } = Utils;
 
-describe('Android phone locked tests', () => {
+xdescribe(':android: Android phone locked tests', () => {
   beforeEach(async () => {
     await device.relaunchApp();
   });
