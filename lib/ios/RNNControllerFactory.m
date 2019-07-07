@@ -1,20 +1,10 @@
 #import "RNNControllerFactory.h"
-#import "RNNLayoutNode.h"
 #import "RNNSplitViewController.h"
-#import "RNNSplitViewOptions.h"
 #import "RNNSideMenuController.h"
-#import "RNNSideMenuChildVC.h"
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
 #import "RNNTopTabsViewController.h"
-#import "RNNLayoutInfo.h"
 #import "RNNRootViewController.h"
-#import "UIViewController+SideMenuController.h"
-#import "RNNViewControllerPresenter.h"
-#import "RNNNavigationControllerPresenter.h"
-#import "RNNTabBarPresenter.h"
-#import "RNNSideMenuPresenter.h"
-#import "RNNSplitViewControllerPresenter.h"
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
@@ -117,7 +107,7 @@
 	
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
 	
-	return (UIViewController *)component;
+	return component;
 }
 
 - (UIViewController *)createExternalComponent:(RNNLayoutNode*)node {
@@ -153,7 +143,14 @@
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
-	RNNTabBarController* tabsController = [[RNNTabBarController alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:presenter eventEmitter:_eventEmitter childViewControllers:childViewControllers];
+	RNNTabBarController* tabsController = [[RNNTabBarController alloc] initWithLayoutInfo:layoutInfo
+            creator:_creator
+            options:options
+			defaultOptions:_defaultOptions
+			presenter:presenter
+			eventEmitter:_eventEmitter
+			childViewControllers:childViewControllers
+	];
 	
 	return tabsController;
 }
