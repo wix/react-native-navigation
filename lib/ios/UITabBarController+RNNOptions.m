@@ -74,4 +74,14 @@
 	}
 }
 
+- (void)rnn_forEachTabView:(void (^)(UIView *, int tabIndex))performOnTab {
+    int tabIndex = 0;
+    for (UIView * tab in self.tabBar.subviews) {
+        if ([NSStringFromClass([tab class]) isEqualToString:@"UITabBarButton"]) {
+            performOnTab(tab, tabIndex);
+            tabIndex++;
+        }
+    }
+}
+
 @end

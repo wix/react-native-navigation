@@ -1,5 +1,4 @@
 #import "RNNTabBarItemCreator.h"
-#import <React/RCTConvert.h>
 #import "UIImage+tint.h"
 
 @implementation RNNTabBarItemCreator
@@ -13,7 +12,6 @@
 	tabItem.image = [self getIconImage:icon withTint:iconColor];
 	tabItem.selectedImage = [self getSelectedIconImage:selectedIcon selectedIconColor:selectedIconColor];
 	tabItem.title = [bottomTabOptions.text getWithDefaultValue:@""];
-	tabItem.tag = bottomTabOptions.tag;
 	tabItem.accessibilityIdentifier = [bottomTabOptions.testID getWithDefaultValue:nil];
 	
 	NSDictionary* iconInsets = [bottomTabOptions.iconInsets getWithDefaultValue:nil];

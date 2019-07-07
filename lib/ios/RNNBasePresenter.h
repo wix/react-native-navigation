@@ -4,9 +4,9 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @interface RNNBasePresenter : NSObject
 
-@property (nonatomic, weak) id bindedViewController;
+@property(nonatomic, weak) id bindedViewController;
 
-@property (nonatomic, strong) NSString* bindedComponentId;
+@property(nonatomic, strong) NSString *bindedComponentId;
 
 - (void)bindViewController:(UIViewController *)bindedViewController;
 
@@ -18,8 +18,11 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options;
 
+- (void)applyBadgeSize:(UIViewController *)child;
+
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
+- (void)viewDidLayoutSubviews;
 @end

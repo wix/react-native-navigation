@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+@class RNNBottomTabOptions;
+
 @interface UIViewController (RNNOptions)
 
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage;
@@ -18,7 +20,7 @@
 
 - (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor;
 
-- (void)rnn_setTabBarItemBadge:(NSString *)badge;
+- (void)rnn_setTabBarItemBadge:(RNNBottomTabOptions *)bottomTab;
 
 - (void)rnn_setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;
 

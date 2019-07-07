@@ -17,6 +17,9 @@ const {
 class FirstBottomTabScreen extends React.Component {
   static options() {
     return {
+      layout: {
+        orientation: ['portrait', 'landscape']
+      },
       topBar: {
         title: {
           text: 'First Tab'
@@ -24,9 +27,15 @@ class FirstBottomTabScreen extends React.Component {
       },
       bottomTab: {
         icon: require('../../img/whatshot.png'),
-        text: 'Tab 1'
+        text: 'Tab 1',
+        badgeSize: 6
       }
     };
+  }
+
+  constructor(props) {
+    super(props);
+    this.dotVisible = true;
   }
 
   render() {
@@ -57,7 +66,8 @@ class FirstBottomTabScreen extends React.Component {
   });
 
   setBadge = (badge) => {
-    this.dotVisible = false;
+    this.badgeVisible = !!badge;
+    if (this.badgeVisible) this.dotVisible = false;
     Navigation.mergeOptions(this, {
       bottomTab: { badge }
     });
@@ -65,9 +75,10 @@ class FirstBottomTabScreen extends React.Component {
 
   setNotificationDot = () => {
     this.dotVisible = !this.dotVisible;
-    Navigation.mergeOptions(this, {
+    // Navigation.mergeOptions('SecondTabBottomTabsLayoutScreen', {
+      Navigation.mergeOptions(this, {
       bottomTab: {
-        badgeSize: this.dotVisible ? 8 : 0,
+        badgeSize: this.dotVisible ? 6 : 0,
         badge: ''
       }
     });

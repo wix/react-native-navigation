@@ -5,6 +5,7 @@
 @property (nonatomic) NSUInteger tag;
 @property (nonatomic, strong) Text* text;
 @property (nonatomic, strong) Text* badge;
+@property (nonatomic, strong) Number* badgeSize;
 @property (nonatomic, strong) Text* fontFamily;
 @property (nonatomic, strong) Text* testID;
 @property (nonatomic, strong) Color* badgeColor;
