@@ -151,10 +151,11 @@
 
 - (void)applyBadgeSize:(UIViewController *)child {
     RNNNavigationOptions *options = [[self boundViewController] resolveChildOptions:child];
-    if (![options.bottomTab.badgeSize hasValue]) return;
+    if ([options.bottomTab.badgeSize hasValue] == false) return;
 
-    if (options.bottomTab.badgeSize.get.floatValue == 0 && [child tabBarItem].tag > 0) {
-        [[[[[self boundViewController] tabBarController] tabBar] viewWithTag:[child tabBarItem].tag] removeFromSuperview];
+    if (options.bottomTab.badgeSize.get.floatValue <= 0 && [child tabBarItem].tag > 0) {
+        UIView *view = [[[[self boundViewController] tabBarController] tabBar] viewWithTag:[child tabBarItem].tag];
+        [view removeFromSuperview];
         [child tabBarItem].tag = -1;
         return;
     }
@@ -164,6 +165,7 @@
     UITabBarController *bottomTabs = [self getTabBarController];
     int index = (int) [[bottomTabs childViewControllers] indexOfObject:child];
     UITabBar *tabBar = [bottomTabs tabBar];
+    UIView * tab = [tabBar getTabView:index];
     UIView *icon = [tabBar getTabIcon:index];
 
     float size = [options.bottomTab.badgeSize.get floatValue];
@@ -175,7 +177,7 @@
     badge.tag = arc4random();
 
     [child tabBarItem].tag = badge.tag;
-    [child.tabBarController.tabBar addSubview:badge];
+    [tab addSubview:badge];
 
     [NSLayoutConstraint activateConstraints:@[
             [badge.leftAnchor constraintEqualToAnchor:icon.rightAnchor constant:-size / 2],
