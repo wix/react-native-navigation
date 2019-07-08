@@ -97,6 +97,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 - (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor {
 	if (@available(iOS 10.0, *)) {
 		self.tabBarItem.badgeColor = badgeColor;
+		[self.tabBarItem setBadgeTextAttributes:<#(nullable NSDictionary<NSAttributedStringKey, id> *)textAttributes#> forState:<#(UIControlState)state#>];
 	}
 }
 

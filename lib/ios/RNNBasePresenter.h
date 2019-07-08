@@ -4,7 +4,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @interface RNNBasePresenter : NSObject
 
-@property(nonatomic, weak) id bindedViewController;
+@property(nonatomic, weak) id boundViewController;
 
 @property(nonatomic, strong) NSString *bindedComponentId;
 

@@ -14,7 +14,7 @@
 
 - (void)bindViewController:(UIViewController <RNNLayoutProtocol> *)bindedViewController {
     self.bindedComponentId = bindedViewController.layoutInfo.componentId;
-    _bindedViewController = bindedViewController;
+    _boundViewController = bindedViewController;
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
@@ -26,7 +26,7 @@
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
-    UIViewController *viewController = self.bindedViewController;
+    UIViewController *viewController = self.boundViewController;
 
     if (options.bottomTab.text.hasValue) {
         UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:options.bottomTab];
@@ -70,7 +70,7 @@
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
-    UIViewController *viewController = self.bindedViewController;
+    UIViewController *viewController = self.boundViewController;
 
     if (options.bottomTab.badge.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
         [viewController rnn_setTabBarItemBadge:options.bottomTab];
@@ -82,7 +82,7 @@
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
-    UIViewController *viewController = self.bindedViewController;
+    UIViewController *viewController = self.boundViewController;
     if (newOptions.bottomTab.badge.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
         [viewController rnn_setTabBarItemBadge:newOptions.bottomTab];
     }
@@ -150,44 +150,42 @@
 }
 
 - (void)applyBadgeSize:(UIViewController *)child {
-    RNNNavigationOptions *options = [[self bindedViewController] resolveChildOptions:child];
-    if ([options.bottomTab.badgeSize hasValue]) {
-        if (options.bottomTab.badgeSize.get.floatValue <= 0) {
-            if ([child tabBarItem].tag > 0) {
-                [[[[[self bindedViewController] tabBarController] tabBar] viewWithTag:[child tabBarItem].tag] removeFromSuperview];
-                [child tabBarItem].tag = -1;
-            }
-            return;
-        }
+    RNNNavigationOptions *options = [[self boundViewController] resolveChildOptions:child];
+    if (![options.bottomTab.badgeSize hasValue]) return;
 
-        if ([child tabBarItem].tag > 0) return;
-
-        UITabBarController *bottomTabs = [self getTabBarController];
-        int index = (int) [[bottomTabs childViewControllers] indexOfObject:child];
-        UITabBar *tabBar = [bottomTabs tabBar];
-        UIView *icon = [tabBar getTabIcon:index];
-
-        float size = [options.bottomTab.badgeSize.get floatValue];
-        UIView *badge = [UIView new];
-        badge.translatesAutoresizingMaskIntoConstraints = NO;
-
-        badge.layer.cornerRadius = size / 2;
-        badge.backgroundColor = UIColor.redColor;
-        badge.tag = arc4random();
-
-        [child tabBarItem].tag = badge.tag;
-        [child.tabBarController.tabBar addSubview:badge];
-
-        [NSLayoutConstraint activateConstraints:@[
-                [badge.leftAnchor constraintEqualToAnchor:icon.rightAnchor constant:-size / 2],
-                [badge.topAnchor constraintEqualToAnchor:icon.topAnchor constant:-size / 2],
-                [badge.widthAnchor constraintEqualToConstant:size],
-                [badge.heightAnchor constraintEqualToConstant:size]
-        ]];
+    if (options.bottomTab.badgeSize.get.floatValue == 0 && [child tabBarItem].tag > 0) {
+        [[[[[self boundViewController] tabBarController] tabBar] viewWithTag:[child tabBarItem].tag] removeFromSuperview];
+        [child tabBarItem].tag = -1;
+        return;
     }
+
+    if ([child tabBarItem].tag > 0) return;
+
+    UITabBarController *bottomTabs = [self getTabBarController];
+    int index = (int) [[bottomTabs childViewControllers] indexOfObject:child];
+    UITabBar *tabBar = [bottomTabs tabBar];
+    UIView *icon = [tabBar getTabIcon:index];
+
+    float size = [options.bottomTab.badgeSize.get floatValue];
+    UIView *badge = [UIView new];
+    badge.translatesAutoresizingMaskIntoConstraints = NO;
+
+    badge.layer.cornerRadius = size / 2;
+    badge.backgroundColor = UIColor.redColor;
+    badge.tag = arc4random();
+
+    [child tabBarItem].tag = badge.tag;
+    [child.tabBarController.tabBar addSubview:badge];
+
+    [NSLayoutConstraint activateConstraints:@[
+            [badge.leftAnchor constraintEqualToAnchor:icon.rightAnchor constant:-size / 2],
+            [badge.topAnchor constraintEqualToAnchor:icon.topAnchor constant:-size / 2],
+            [badge.widthAnchor constraintEqualToConstant:size],
+            [badge.heightAnchor constraintEqualToConstant:size]
+    ]];
 }
 
 - (UITabBarController *)getTabBarController {
-    return [[self bindedViewController] isKindOfClass:[UITabBarController class]] ? [self bindedViewController] : [[self bindedViewController] tabBarController];
+    return [[self boundViewController] isKindOfClass:[UITabBarController class]] ? [self boundViewController] : [[self boundViewController] tabBarController];
 }
 @end

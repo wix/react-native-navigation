@@ -18,6 +18,4 @@
 
 - (void)rnn_setTabBarVisible:(BOOL)visible animated:(BOOL)animated;
 
-- (void)rnn_forEachTabView:(void (^)(UIView *, int tabIndex))performOnTab;
-
 @end

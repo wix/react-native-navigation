@@ -1,16 +1,17 @@
 #import "RNNTabBarPresenter.h"
 #import "UITabBarController+RNNOptions.h"
 #import "UIViewController+LayoutProtocol.h"
+#import "UIViewController+Utils.h"
 
 @implementation RNNTabBarPresenter
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
-    UITabBarController *tabBarController = self.bindedViewController;
+    UITabBarController *tabBarController = self.boundViewController;
     [tabBarController rnn_setCurrentTabIndex:[options.bottomTabs.currentTabIndex getWithDefaultValue:0]];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
-    UITabBarController *tabBarController = self.bindedViewController;
+    UITabBarController *tabBarController = self.boundViewController;
 
     [tabBarController rnn_setTabBarTestID:[options.bottomTabs.testID getWithDefaultValue:nil]];
     [tabBarController rnn_setTabBarBackgroundColor:[options.bottomTabs.backgroundColor getWithDefaultValue:nil]];
@@ -23,7 +24,7 @@
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
     [super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
 
-    UITabBarController *tabBarController = self.bindedViewController;
+    UITabBarController *tabBarController = self.boundViewController;
 
     if (newOptions.bottomTabs.currentTabIndex.hasValue) {
         [tabBarController rnn_setCurrentTabIndex:newOptions.bottomTabs.currentTabIndex.get];
@@ -71,10 +72,7 @@
 }
 
 - (void)applyBadgeSize {
-    UITabBarController *tabBarController = self.bindedViewController;
-    [tabBarController rnn_forEachTabView:^(UIView *tab, int tabIndex) {
-        [super applyBadgeSize:tabBarController.childViewControllers[(NSUInteger) tabIndex]];
-    }];
+    [self.boundViewController forEachChild:^(UIViewController * child) {[self applyBadgeSize:child];}];
 }
 
 @end

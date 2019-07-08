@@ -24,7 +24,7 @@
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
 	
-	RNNNavigationController* navigationController = self.bindedViewController;
+	RNNNavigationController* navigationController = self.boundViewController;
 	
 	self.interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
 	self.interactivePopGestureDelegate.navigationController = navigationController;
@@ -59,7 +59,7 @@
 }
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options {
-	RNNNavigationController* navigationController = self.bindedViewController;
+	RNNNavigationController* navigationController = self.boundViewController;
 	[navigationController setTopBarBackgroundColor:[options.topBar.background.color getWithDefaultValue:nil]];
 	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:@(17)] color:[options.topBar.title.color getWithDefaultValue:[UIColor blackColor]]];
 	[navigationController rnn_setNavigationBarLargeTitleVisible:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
@@ -68,7 +68,7 @@
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
 	[super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
 	
-	RNNNavigationController* navigationController = self.bindedViewController;
+	RNNNavigationController* navigationController = self.boundViewController;
 	
 	if (newOptions.popGesture.hasValue) {
 		[navigationController rnn_setInteractivePopGestureEnabled:newOptions.popGesture.get];
@@ -168,7 +168,7 @@
 }
 
 - (void)setCustomNavigationBarView:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	RNNNavigationController* navigationController = self.bindedViewController;
+	RNNNavigationController* navigationController = self.boundViewController;
 	if (![options.topBar.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
 		readyBlock();
 		readyBlock = nil;
@@ -194,7 +194,7 @@
 }
 
 - (void)setCustomNavigationComponentBackground:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	RNNNavigationController* navigationController = self.bindedViewController;
+	RNNNavigationController* navigationController = self.boundViewController;
 	if (![options.topBar.background.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
 		readyBlock();
 		readyBlock = nil;
@@ -214,7 +214,7 @@
 }
 
 - (void)presentBackgroundComponent {
-	RNNNavigationController* navigationController = self.bindedViewController;
+	RNNNavigationController* navigationController = self.boundViewController;
 	if (_customTopBarBackground) {
 		[_customTopBarBackground removeFromSuperview];
 	}

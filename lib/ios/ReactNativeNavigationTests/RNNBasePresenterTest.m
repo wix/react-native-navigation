@@ -39,7 +39,7 @@
 - (void)testApplyOptions_shouldSetTabBarItemBadgeWithValue {
 	OCMStub([self.mockBindedViewController parentViewController]).andReturn([UITabBarController new]);
 	self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
-	[[self.mockBindedViewController expect] rnn_setTabBarItemBadge:@"badge"];
+	[[self.mockBindedViewController expect] rnn_setTabBarItemBadge:self.options.bottomTab];
 	[self.uut applyOptions:self.options];
 	[self.mockBindedViewController verify];
 }
@@ -47,7 +47,7 @@
 - (void)testApplyOptions_setTabBarItemBadgeShouldNotCalledOnUITabBarController {
 	[self.uut bindViewController:self.mockBindedViewController];
 	self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
-	[[self.mockBindedViewController reject] rnn_setTabBarItemBadge:@"badge"];
+	[[self.mockBindedViewController reject] rnn_setTabBarItemBadge:[[RNNBottomTabOptions alloc] initWithDict:@{@"badge": @"badge"}]];
 	[self.uut applyOptions:self.options];
 	[self.mockBindedViewController verify];
 }

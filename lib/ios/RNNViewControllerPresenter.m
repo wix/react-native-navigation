@@ -25,19 +25,19 @@
 
 - (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)bindedViewController {
 	[super bindViewController:bindedViewController];
-	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.bindedViewController componentRegistry:_componentRegistry];
+	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.boundViewController componentRegistry:_componentRegistry];
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
 	[super applyOptionsOnWillMoveToParentViewController:options];
-	UIViewController* viewController = self.bindedViewController;
+	UIViewController* viewController = self.boundViewController;
 	[viewController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
 	
-	UIViewController* viewController = self.bindedViewController;
+	UIViewController* viewController = self.boundViewController;
 	[viewController rnn_setBackgroundImage:[options.backgroundImage getWithDefaultValue:nil]];
 	[viewController rnn_setNavigationItemTitle:[options.topBar.title.text getWithDefaultValue:nil]];
 	[viewController rnn_setTopBarPrefersLargeTitle:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
@@ -65,7 +65,7 @@
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
 	[super applyOptionsOnInit:options];
 	
-	UIViewController* viewController = self.bindedViewController;
+	UIViewController* viewController = self.boundViewController;
 	[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[options.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]];
 	[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[options.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
 	[viewController rnn_setDrawBehindTopBar:[options.topBar.drawBehind getWithDefaultValue:NO]];
@@ -79,7 +79,7 @@
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
 	[super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
 	
-	UIViewController* viewController = self.bindedViewController;
+	UIViewController* viewController = self.boundViewController;
 	
 	if (newOptions.backgroundImage.hasValue) {
 		[viewController rnn_setBackgroundImage:newOptions.backgroundImage.get];
@@ -167,7 +167,7 @@
 }
 
 - (void)setCustomNavigationTitleView:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	UIViewController<RNNLayoutProtocol>* viewController = self.bindedViewController;
+	UIViewController<RNNLayoutProtocol>* viewController = self.boundViewController;
 	if (![options.topBar.title.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
 		readyBlock();
 		readyBlock = nil;
@@ -191,7 +191,7 @@
 
 - (void)setTitleViewWithSubtitle:(RNNNavigationOptions *)options {
 	if (!_customTitleView && options.topBar.subtitle.text.hasValue) {
-		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.bindedViewController];
+		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.boundViewController];
 		[_titleViewHelper setup];
 	} else if (_titleViewHelper) {
 		if (options.topBar.title.text.hasValue) {

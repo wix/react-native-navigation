@@ -34,7 +34,9 @@
 		26916C991E4B9E7700D13680 /* RNNReactRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */; };
 		2DCD9195200014A900EDC75D /* RNNBridgeManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DCD9193200014A900EDC75D /* RNNBridgeManager.h */; };
 		2DCD9196200014A900EDC75D /* RNNBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD9194200014A900EDC75D /* RNNBridgeManager.m */; };
+		309871343F09F2C6776DFA67 /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987D981545DCBBCCAB34F0 /* UIViewController+Utils.m */; };
 		309874B40D202C9718F15CBD /* UIView+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 309877F25920CFE113FADEE0 /* UIView+Utils.h */; };
+		309877B0B5AAA7788F56F3D9 /* UIViewController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 30987CF6993B89E85C0BCEE4 /* UIViewController+Utils.h */; };
 		309879260BC6FD19E7A7F33A /* UIView+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987F787A14D232AB091E7E /* UIView+Utils.m */; };
 		30987BDAD5C84B7CF8C73AE7 /* UITabBar+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 30987C81CD660B9DD77A3FEA /* UITabBar+Utils.h */; };
 		30987FFE550A3534BB9066A1 /* UITabBar+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987EBB1AE9276A5BF04CD0 /* UITabBar+Utils.m */; };
@@ -359,6 +361,8 @@
 		2DCD9194200014A900EDC75D /* RNNBridgeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBridgeManager.m; sourceTree = "<group>"; };
 		309877F25920CFE113FADEE0 /* UIView+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utils.h"; sourceTree = "<group>"; };
 		30987C81CD660B9DD77A3FEA /* UITabBar+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBar+Utils.h"; sourceTree = "<group>"; };
+		30987CF6993B89E85C0BCEE4 /* UIViewController+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
+		30987D981545DCBBCCAB34F0 /* UIViewController+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utils.m"; sourceTree = "<group>"; };
 		30987EBB1AE9276A5BF04CD0 /* UITabBar+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+Utils.m"; sourceTree = "<group>"; };
 		30987F787A14D232AB091E7E /* UIView+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utils.m"; sourceTree = "<group>"; };
 		390AD475200F499D00A8250D /* RNNSwizzles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSwizzles.h; sourceTree = "<group>"; };
@@ -1268,6 +1272,7 @@
 				50706E6D20CE7CA5003345C3 /* UIImage+tint.h in Headers */,
 				30987BDAD5C84B7CF8C73AE7 /* UITabBar+Utils.h in Headers */,
 				309874B40D202C9718F15CBD /* UIView+Utils.h in Headers */,
+				309877B0B5AAA7788F56F3D9 /* UIViewController+Utils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1523,6 +1528,7 @@
 				5012242B217372B3000F5F98 /* ImageParser.m in Sources */,
 				30987FFE550A3534BB9066A1 /* UITabBar+Utils.m in Sources */,
 				309879260BC6FD19E7A7F33A /* UIView+Utils.m in Sources */,
+				309871343F09F2C6776DFA67 /* UIViewController+Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
