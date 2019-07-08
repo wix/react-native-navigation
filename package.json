@@ -39,7 +39,9 @@
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
     "local-docs": "node ./scripts/local-docs",
-    "gen-docs": "ts-node ./scripts/gen-docs/Main"
+    "gen-docs": "ts-node ./scripts/gen-docs/Main",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "peerDependencies": {
     "react": "*",
@@ -50,7 +52,8 @@
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
-    "tslib": "1.9.3"
+    "tslib": "1.9.3",
+    "snyk": "^1.192.3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-export-default-from": "7.2.0",
@@ -151,5 +154,6 @@
         "name": "Pixel_2_API_26"
       }
     }
-  }
+  },
+  "snyk": true
 }
