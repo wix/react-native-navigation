@@ -62,7 +62,7 @@
 	}
 	
 	else if (node.isTabs) {
-		result = [self createTabs:node];
+		result = [self createBottomTabs:node];
 	}
 	
 	else if (node.isTopTabs) {
@@ -120,7 +120,7 @@
 	RNNRootViewController* component = [[RNNRootViewController alloc] initExternalComponentWithLayoutInfo:layoutInfo eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
 	[component bindViewController:externalVC];
 	
-	return (UIViewController *)component;
+	return component;
 }
 
 
@@ -136,10 +136,10 @@
 	return stack;
 }
 
--(UIViewController *)createTabs:(RNNLayoutNode*)node {
+-(UIViewController *)createBottomTabs:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNTabBarPresenter* presenter = [[RNNTabBarPresenter alloc] init];
+	RNNTabBarPresenter* presenter = [RNNTabBarPresenter new];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	

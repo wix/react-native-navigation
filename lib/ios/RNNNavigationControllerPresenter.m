@@ -225,7 +225,7 @@
 }
 
 - (void)dealloc {
-	[_componentRegistry removeComponent:self.bindedComponentId];
+	[_componentRegistry removeComponent:self.boundComponentId];
 }
 
 @end

@@ -206,7 +206,7 @@
 }
 
 - (void)dealloc {
-	[_componentRegistry clearComponentsForParentId:self.bindedComponentId];
+	[_componentRegistry clearComponentsForParentId:self.boundComponentId];
 }
 
 

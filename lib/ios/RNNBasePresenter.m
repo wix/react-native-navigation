@@ -3,19 +3,17 @@
 #import "RNNTabBarItemCreator.h"
 #import "RNNReactComponentRegistry.h"
 #import "UIViewController+LayoutProtocol.h"
-#import "UITabBar+Utils.h"
-#import "UIView+Utils.h"
 #import "DotIndicatorOptions.h"
+#import "UITabBar+Utils.h"
 
 @interface RNNBasePresenter ()
 @end
 
-
 @implementation RNNBasePresenter
 
-- (void)bindViewController:(UIViewController <RNNLayoutProtocol> *)bindedViewController {
-    self.bindedComponentId = bindedViewController.layoutInfo.componentId;
-    _boundViewController = bindedViewController;
+- (void)bindViewController:(UIViewController <RNNLayoutProtocol> *)boundViewController {
+    self.boundComponentId = boundViewController.layoutInfo.componentId;
+    _boundViewController = boundViewController;
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {

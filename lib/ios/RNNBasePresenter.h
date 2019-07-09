@@ -6,9 +6,9 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @property(nonatomic, weak) id boundViewController;
 
-@property(nonatomic, strong) NSString *bindedComponentId;
+@property(nonatomic, strong) NSString *boundComponentId;
 
-- (void)bindViewController:(UIViewController *)bindedViewController;
+- (void)bindViewController:(UIViewController *)boundViewController;
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions;
 

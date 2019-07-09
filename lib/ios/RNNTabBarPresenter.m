@@ -72,8 +72,9 @@
 }
 
 - (void)applyDotIndicator {
-    [self.boundViewController forEachChild:^(UIViewController * child) {
-        [self applyDotIndicator:child];}];
+    [self.boundViewController forEachChild:^(UIViewController *child) {
+        [self applyDotIndicator:child];
+    }];
 }
 
 @end
