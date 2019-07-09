@@ -56,23 +56,23 @@
 
 - (void)testViewDidLayoutSubviews_appliesBadgeOnNextRunLoop {
     id uut = [self uut];
-    [[uut expect] applyBadgeSize];
+    [[uut expect] applyDotIndicator];
     [uut viewDidLayoutSubviews];
     [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
     [uut verify];
 }
 
-- (void)testApplyBadgeSize_callsAppliesBadgeWithEachChild {
+- (void)testApplyDotIndicator_callsAppliesBadgeWithEachChild {
     id uut = [self uut];
     id child1 = [OCMockObject partialMockForObject:[UIViewController new]];
     id child2 = [OCMockObject partialMockForObject:[UIViewController new]];
 
-    [[uut expect] applyBadgeSize:child1];
-    [[uut expect] applyBadgeSize:child2];
+    [[uut expect] applyDotIndicator:child1];
+    [[uut expect] applyDotIndicator:child2];
     [[self boundViewController] addChildViewController:child1];
     [[self boundViewController] addChildViewController:child2];
 
-    [uut applyBadgeSize];
+    [uut applyDotIndicator];
     [uut verify];
 }
 

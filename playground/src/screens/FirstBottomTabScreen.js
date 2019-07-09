@@ -28,7 +28,7 @@ class FirstBottomTabScreen extends React.Component {
       bottomTab: {
         icon: require('../../img/whatshot.png'),
         text: 'Tab 1',
-        badgeSize: 6
+        dotIndicator: { visible: true }
       }
     };
   }
@@ -76,10 +76,9 @@ class FirstBottomTabScreen extends React.Component {
   setNotificationDot = () => {
     this.dotVisible = !this.dotVisible;
     // Navigation.mergeOptions('SecondTabBottomTabsLayoutScreen', {
-      Navigation.mergeOptions(this, {
+    Navigation.mergeOptions(this, {
       bottomTab: {
-        badgeSize: this.dotVisible ? 6 : 0,
-        badge: ''
+        dotIndicator: { visible: this.dotVisible }
       }
     });
   }

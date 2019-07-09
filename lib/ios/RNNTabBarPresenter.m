@@ -67,12 +67,13 @@
 
 - (void)viewDidLayoutSubviews {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self applyBadgeSize];
+        [self applyDotIndicator];
     });
 }
 
-- (void)applyBadgeSize {
-    [self.boundViewController forEachChild:^(UIViewController * child) {[self applyBadgeSize:child];}];
+- (void)applyDotIndicator {
+    [self.boundViewController forEachChild:^(UIViewController * child) {
+        [self applyDotIndicator:child];}];
 }
 
 @end

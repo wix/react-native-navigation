@@ -5,6 +5,7 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "UITabBar+Utils.h"
 #import "UIView+Utils.h"
+#import "DotIndicatorOptions.h"
 
 @interface RNNBasePresenter ()
 @end
@@ -91,8 +92,8 @@
         [viewController rnn_setTabBarItemBadgeColor:newOptions.bottomTab.badgeColor.get];
     }
 
-    if (newOptions.bottomTab.badgeSize.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
-        [self applyBadgeSize:viewController];
+    if ([newOptions.bottomTab.dotIndicator hasValue] && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
+        [self applyDotIndicator:viewController];
     }
 
     if (newOptions.bottomTab.text.hasValue) {
@@ -149,11 +150,11 @@
 
 }
 
-- (void)applyBadgeSize:(UIViewController *)child {
-    RNNNavigationOptions *options = [[self boundViewController] resolveChildOptions:child];
-    if ([options.bottomTab.badgeSize hasValue] == false) return;
+- (void)applyDotIndicator:(UIViewController *)child {
+    DotIndicatorOptions *options = [[self boundViewController] resolveChildOptions:child].bottomTab.dotIndicator;
+    if (![options hasValue]) return;
 
-    if (options.bottomTab.badgeSize.get.floatValue <= 0 && [child tabBarItem].tag > 0) {
+    if ([options.visible isFalse] && [child tabBarItem].tag > 0) {
         UIView *view = [[[[self boundViewController] tabBarController] tabBar] viewWithTag:[child tabBarItem].tag];
         [view removeFromSuperview];
         [child tabBarItem].tag = -1;
@@ -165,15 +166,15 @@
     UITabBarController *bottomTabs = [self getTabBarController];
     int index = (int) [[bottomTabs childViewControllers] indexOfObject:child];
     UITabBar *tabBar = [bottomTabs tabBar];
-    UIView * tab = [tabBar getTabView:index];
+    UIView *tab = [tabBar getTabView:index];
     UIView *icon = [tabBar getTabIcon:index];
 
-    float size = [options.bottomTab.badgeSize.get floatValue];
+    float size = [[options.size getWithDefaultValue:@6] floatValue];
     UIView *badge = [UIView new];
     badge.translatesAutoresizingMaskIntoConstraints = NO;
 
     badge.layer.cornerRadius = size / 2;
-    badge.backgroundColor = UIColor.redColor;
+    badge.backgroundColor = [options.color getWithDefaultValue:[UIColor redColor]];
     badge.tag = arc4random();
 
     [child tabBarItem].tag = badge.tag;

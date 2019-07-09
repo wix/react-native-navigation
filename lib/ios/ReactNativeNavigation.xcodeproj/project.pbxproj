@@ -36,9 +36,13 @@
 		2DCD9196200014A900EDC75D /* RNNBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD9194200014A900EDC75D /* RNNBridgeManager.m */; };
 		309871343F09F2C6776DFA67 /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987D981545DCBBCCAB34F0 /* UIViewController+Utils.m */; };
 		309874B40D202C9718F15CBD /* UIView+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 309877F25920CFE113FADEE0 /* UIView+Utils.h */; };
+		30987680135A8C78E62D5B8E /* DotIndicatorOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 30987122507D8CBF16624F93 /* DotIndicatorOptions.h */; };
 		309877B0B5AAA7788F56F3D9 /* UIViewController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 30987CF6993B89E85C0BCEE4 /* UIViewController+Utils.h */; };
 		309879260BC6FD19E7A7F33A /* UIView+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987F787A14D232AB091E7E /* UIView+Utils.m */; };
+		30987AB5137F264FA06DA289 /* DotIndicatorOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 309876223177761614786DCC /* DotIndicatorOptions.m */; };
 		30987BDAD5C84B7CF8C73AE7 /* UITabBar+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 30987C81CD660B9DD77A3FEA /* UITabBar+Utils.h */; };
+		30987CA5048A48D6CE76B06C /* DotIndicatorParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 309871FBA64AD937CEF3E191 /* DotIndicatorParser.h */; };
+		30987D71FB4FEEAC8D8978E8 /* DotIndicatorParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 309874E37C7E9764C7B694E5 /* DotIndicatorParser.m */; };
 		30987FFE550A3534BB9066A1 /* UITabBar+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987EBB1AE9276A5BF04CD0 /* UITabBar+Utils.m */; };
 		390AD477200F499D00A8250D /* RNNSwizzles.h in Headers */ = {isa = PBXBuildFile; fileRef = 390AD475200F499D00A8250D /* RNNSwizzles.h */; };
 		390AD478200F499D00A8250D /* RNNSwizzles.m in Sources */ = {isa = PBXBuildFile; fileRef = 390AD476200F499D00A8250D /* RNNSwizzles.m */; };
@@ -359,6 +363,10 @@
 		26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNReactRootViewCreator.m; sourceTree = "<group>"; };
 		2DCD9193200014A900EDC75D /* RNNBridgeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBridgeManager.h; sourceTree = "<group>"; };
 		2DCD9194200014A900EDC75D /* RNNBridgeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBridgeManager.m; sourceTree = "<group>"; };
+		30987122507D8CBF16624F93 /* DotIndicatorOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotIndicatorOptions.h; sourceTree = "<group>"; };
+		309871FBA64AD937CEF3E191 /* DotIndicatorParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotIndicatorParser.h; sourceTree = "<group>"; };
+		309874E37C7E9764C7B694E5 /* DotIndicatorParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DotIndicatorParser.m; sourceTree = "<group>"; };
+		309876223177761614786DCC /* DotIndicatorOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DotIndicatorOptions.m; sourceTree = "<group>"; };
 		309877F25920CFE113FADEE0 /* UIView+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utils.h"; sourceTree = "<group>"; };
 		30987C81CD660B9DD77A3FEA /* UITabBar+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBar+Utils.h"; sourceTree = "<group>"; };
 		30987CF6993B89E85C0BCEE4 /* UIViewController+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
@@ -832,6 +840,8 @@
 				5039558A2174829400B0A663 /* IntNumberParser.m */,
 				503955992174867000B0A663 /* DoubleParser.h */,
 				5039559A2174867000B0A663 /* DoubleParser.m */,
+				309874E37C7E9764C7B694E5 /* DotIndicatorParser.m */,
+				309871FBA64AD937CEF3E191 /* DotIndicatorParser.h */,
 			);
 			name = Parsers;
 			sourceTree = "<group>";
@@ -895,6 +905,8 @@
 				E3458D3D20BD9CE40023149B /* RNNPreviewOptions.m */,
 				506317AC220B550600B26FC3 /* RNNInsetsOptions.h */,
 				506317AD220B550600B26FC3 /* RNNInsetsOptions.m */,
+				309876223177761614786DCC /* DotIndicatorOptions.m */,
+				30987122507D8CBF16624F93 /* DotIndicatorOptions.h */,
 			);
 			name = Options;
 			sourceTree = "<group>";
@@ -1273,6 +1285,8 @@
 				30987BDAD5C84B7CF8C73AE7 /* UITabBar+Utils.h in Headers */,
 				309874B40D202C9718F15CBD /* UIView+Utils.h in Headers */,
 				309877B0B5AAA7788F56F3D9 /* UIViewController+Utils.h in Headers */,
+				30987680135A8C78E62D5B8E /* DotIndicatorOptions.h in Headers */,
+				30987CA5048A48D6CE76B06C /* DotIndicatorParser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1529,6 +1543,8 @@
 				30987FFE550A3534BB9066A1 /* UITabBar+Utils.m in Sources */,
 				309879260BC6FD19E7A7F33A /* UIView+Utils.m in Sources */,
 				309871343F09F2C6776DFA67 /* UIViewController+Utils.m in Sources */,
+				30987AB5137F264FA06DA289 /* DotIndicatorOptions.m in Sources */,
+				30987D71FB4FEEAC8D8978E8 /* DotIndicatorParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

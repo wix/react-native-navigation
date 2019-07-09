@@ -18,7 +18,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options;
 
-- (void)applyBadgeSize:(UIViewController *)child;
+- (void)applyDotIndicator:(UIViewController *)child;
 
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions;
 
