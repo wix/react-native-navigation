@@ -30,11 +30,11 @@ public class BottomTabOptions {
         options.selectedIconColor = ColorParser.parse(json, "selectedIconColor");
         options.badge = TextParser.parse(json, "badge");
         options.badgeColor = ColorParser.parse(json, "badgeColor");
-        options.badgeSize = NumberParser.parse(json, "badgeSize");
         options.testId = TextParser.parse(json, "testID");
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         options.fontSize = NumberParser.parse(json, "fontSize");
         options.selectedFontSize = NumberParser.parse(json, "selectedFontSize");
+        options.dotIndicator = DotIndicatorOptions.parse(json.optJSONObject("dotIndicator"));
         return options;
     }
 
@@ -47,7 +47,7 @@ public class BottomTabOptions {
     public Text testId = new NullText();
     public Text badge = new NullText();
     public Colour badgeColor = new NullColor();
-    public Number badgeSize = new NullNumber();
+    public DotIndicatorOptions dotIndicator = new DotIndicatorOptions();
     public Number fontSize = new NullNumber();
     public Number selectedFontSize = new NullNumber();
     @Nullable public Typeface fontFamily;
@@ -62,11 +62,11 @@ public class BottomTabOptions {
         if (other.selectedIconColor.hasValue()) selectedIconColor = other.selectedIconColor;
         if (other.badge.hasValue()) badge = other.badge;
         if (other.badgeColor.hasValue()) badgeColor = other.badgeColor;
-        if (other.badgeSize.hasValue()) badgeSize = other.badgeSize;
         if (other.testId.hasValue()) testId = other.testId;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.selectedFontSize.hasValue()) selectedFontSize = other.selectedFontSize;
         if (other.fontFamily != null) fontFamily = other.fontFamily;
+        if (other.dotIndicator.hasValue()) dotIndicator = other.dotIndicator;
     }
 
     void mergeWithDefault(final BottomTabOptions defaultOptions) {
@@ -78,10 +78,10 @@ public class BottomTabOptions {
         if (!selectedIconColor.hasValue()) selectedIconColor = defaultOptions.selectedIconColor;
         if (!badge.hasValue()) badge = defaultOptions.badge;
         if (!badgeColor.hasValue()) badgeColor = defaultOptions.badgeColor;
-        if (!badgeSize.hasValue()) badgeSize = defaultOptions.badgeSize;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (!selectedFontSize.hasValue()) selectedFontSize = defaultOptions.selectedFontSize;
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
         if (!testId.hasValue()) testId = defaultOptions.testId;
+        if (!dotIndicator.hasValue()) dotIndicator = defaultOptions.dotIndicator;
     }
 }
