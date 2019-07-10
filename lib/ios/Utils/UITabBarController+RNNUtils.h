@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface UITabBar (Utils)
+@interface UITabBarController (RNNUtils)
 - (UIView *)getTabView:(int)tabIndex;
 
 - (UIView *)getTabIcon:(int)tabIndex;

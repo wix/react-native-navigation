@@ -4,7 +4,6 @@
 #import "RNNReactComponentRegistry.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "DotIndicatorOptions.h"
-#import "UITabBar+Utils.h"
 #import "RNNDotIndicatorPresenter.h"
 
 @interface RNNBasePresenter ()

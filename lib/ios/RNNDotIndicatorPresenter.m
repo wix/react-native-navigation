@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "RNNDotIndicatorPresenter.h"
-#import "UITabBar+Utils.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "DotIndicatorOptions.h"
+#import "UITabBarController+RNNUtils.h"
 
 @implementation RNNDotIndicatorPresenter
 
@@ -10,32 +10,24 @@
     DotIndicatorOptions *options = [child resolveChildOptions:child].bottomTab.dotIndicator;
     if (![options hasValue]) return;
 
-    if ([options.visible isFalse] && [child tabBarItem].tag > 0) {
-        UIView *view = [[[child tabBarController] tabBar] viewWithTag:[child tabBarItem].tag];
-        [view removeFromSuperview];
-        [child tabBarItem].tag = -1;
+    if ([self shouldRemoveIndicator:child options:options]) {
+        [self remove:child];
         return;
     }
+    if ([self hasVisibleIndicator:child]) return;
 
-    if ([child tabBarItem].tag > 0) return;
+    UIView *badge = [self createIndicator:options];
+    [child tabBarItem].tag = badge.tag;
 
     UITabBarController *bottomTabs = [self getTabBarController:child];
     int index = (int) [[bottomTabs childViewControllers] indexOfObject:child];
-    UITabBar *tabBar = [bottomTabs tabBar];
-    UIView *tab = [tabBar getTabView:index];
-    UIView *icon = [tabBar getTabIcon:index];
+    [[bottomTabs getTabView:index] addSubview:badge];
+    [self applyConstraints:options badge:badge tabBar:bottomTabs index:index];
+}
 
+- (void)applyConstraints:(DotIndicatorOptions *)options badge:(UIView *)badge tabBar:(UITabBarController *)bottomTabs index:(int)index {
+    UIView *icon = [bottomTabs getTabIcon:index];
     float size = [[options.size getWithDefaultValue:@6] floatValue];
-    UIView *badge = [UIView new];
-    badge.translatesAutoresizingMaskIntoConstraints = NO;
-
-    badge.layer.cornerRadius = size / 2;
-    badge.backgroundColor = [options.color getWithDefaultValue:[UIColor redColor]];
-    badge.tag = arc4random();
-
-    [child tabBarItem].tag = badge.tag;
-    [tab addSubview:badge];
-
     [NSLayoutConstraint activateConstraints:@[
             [badge.leftAnchor constraintEqualToAnchor:icon.rightAnchor constant:-size / 2],
             [badge.topAnchor constraintEqualToAnchor:icon.topAnchor constant:-size / 2],
@@ -44,7 +36,30 @@
     ]];
 }
 
-- (UITabBarController *)getTabBarController:(id) viewController {
+- (UIView *)createIndicator:(DotIndicatorOptions *)options {
+    UIView *badge = [UIView new];
+    badge.translatesAutoresizingMaskIntoConstraints = NO;
+    badge.layer.cornerRadius = [[options.size getWithDefaultValue:@6] floatValue] / 2;
+    badge.backgroundColor = [options.color getWithDefaultValue:[UIColor redColor]];
+    badge.tag = arc4random();
+    return badge;
+}
+
+- (signed char)hasVisibleIndicator:(UIViewController *)child {
+    return [child tabBarItem].tag > 0;
+}
+
+- (void)remove:(UIViewController *)child {
+    UIView *view = [[[child tabBarController] tabBar] viewWithTag:[child tabBarItem].tag];
+    [view removeFromSuperview];
+    [child tabBarItem].tag = -1;
+}
+
+- (signed char)shouldRemoveIndicator:(UIViewController *)child options:(DotIndicatorOptions *)options {
+    return [options.visible isFalse] && [child tabBarItem].tag > 0;
+}
+
+- (UITabBarController *)getTabBarController:(id)viewController {
     return [viewController isKindOfClass:[UITabBarController class]] ? viewController : [viewController tabBarController];
 }
 
