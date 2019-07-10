@@ -5,11 +5,19 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "DotIndicatorOptions.h"
 #import "UITabBar+Utils.h"
+#import "RNNDotIndicatorPresenter.h"
 
 @interface RNNBasePresenter ()
+@property(nonatomic, strong) RNNDotIndicatorPresenter* dotIndicatorPresenter;
 @end
 
 @implementation RNNBasePresenter
+
+-(instancetype)init {
+    self = [super init];
+    self.dotIndicatorPresenter = [RNNDotIndicatorPresenter new];
+    return self;
+}
 
 - (void)bindViewController:(UIViewController <RNNLayoutProtocol> *)boundViewController {
     self.boundComponentId = boundViewController.layoutInfo.componentId;
@@ -91,7 +99,7 @@
     }
 
     if ([newOptions.bottomTab.dotIndicator hasValue] && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
-        [self applyDotIndicator:viewController];
+        [[self dotIndicatorPresenter] apply:viewController];
     }
 
     if (newOptions.bottomTab.text.hasValue) {
@@ -149,44 +157,6 @@
 }
 
 - (void)applyDotIndicator:(UIViewController *)child {
-    DotIndicatorOptions *options = [[self boundViewController] resolveChildOptions:child].bottomTab.dotIndicator;
-    if (![options hasValue]) return;
-
-    if ([options.visible isFalse] && [child tabBarItem].tag > 0) {
-        UIView *view = [[[[self boundViewController] tabBarController] tabBar] viewWithTag:[child tabBarItem].tag];
-        [view removeFromSuperview];
-        [child tabBarItem].tag = -1;
-        return;
-    }
-
-    if ([child tabBarItem].tag > 0) return;
-
-    UITabBarController *bottomTabs = [self getTabBarController];
-    int index = (int) [[bottomTabs childViewControllers] indexOfObject:child];
-    UITabBar *tabBar = [bottomTabs tabBar];
-    UIView *tab = [tabBar getTabView:index];
-    UIView *icon = [tabBar getTabIcon:index];
-
-    float size = [[options.size getWithDefaultValue:@6] floatValue];
-    UIView *badge = [UIView new];
-    badge.translatesAutoresizingMaskIntoConstraints = NO;
-
-    badge.layer.cornerRadius = size / 2;
-    badge.backgroundColor = [options.color getWithDefaultValue:[UIColor redColor]];
-    badge.tag = arc4random();
-
-    [child tabBarItem].tag = badge.tag;
-    [tab addSubview:badge];
-
-    [NSLayoutConstraint activateConstraints:@[
-            [badge.leftAnchor constraintEqualToAnchor:icon.rightAnchor constant:-size / 2],
-            [badge.topAnchor constraintEqualToAnchor:icon.topAnchor constant:-size / 2],
-            [badge.widthAnchor constraintEqualToConstant:size],
-            [badge.heightAnchor constraintEqualToConstant:size]
-    ]];
-}
-
-- (UITabBarController *)getTabBarController {
-    return [[self boundViewController] isKindOfClass:[UITabBarController class]] ? [self boundViewController] : [[self boundViewController] tabBarController];
+    [[self dotIndicatorPresenter] apply:child];
 }
 @end
