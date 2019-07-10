@@ -283,7 +283,7 @@ export interface OptionsTopBarButton {
   /**
    * Set the button text
    */
-  text?: string;
+  text?: string | number;
   /**
    * Set the button font family
    */

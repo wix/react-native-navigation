@@ -71,7 +71,13 @@
 
 -(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary defaultStyle:(RNNButtonOptions *)defaultStyle insets:(UIEdgeInsets)insets {
 	NSString* buttonId = dictionary[@"id"];
-	NSString* title = [self getValue:dictionary[@"text"] withDefault:[defaultStyle.text getWithDefaultValue:nil]];
+	id titleValue = [self getValue:dictionary[@"text"] withDefault:[defaultStyle.text getWithDefaultValue:nil]];
+	NSString *title = nil;
+	if ([titleValue isKindOfClass:[NSNumber class]]) {
+			title = [NSString stringWithFormat:@"%C", [titleValue unsignedShortValue]];
+	} else if ([titleValue isKindOfClass:[NSString class]]){
+			title = titleValue;
+	}
 	NSDictionary* component = dictionary[@"component"];
 	NSString* systemItemName = dictionary[@"systemItem"];
 	
