@@ -6,8 +6,7 @@
 
 @implementation RNNDotIndicatorPresenter
 
-- (void)apply:(UIViewController *)child {
-    DotIndicatorOptions *options = [child resolveChildOptions:child].bottomTab.dotIndicator;
+- (void)apply:(UIViewController *)child: (DotIndicatorOptions *) options {
     if (![options hasValue]) return;
 
     if ([self shouldRemoveIndicator:child options:options]) {

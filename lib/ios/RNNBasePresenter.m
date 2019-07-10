@@ -98,7 +98,7 @@
     }
 
     if ([newOptions.bottomTab.dotIndicator hasValue] && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
-        [[self dotIndicatorPresenter] apply:viewController];
+        [[self dotIndicatorPresenter] apply:viewController:newOptions.bottomTab.dotIndicator];
     }
 
     if (newOptions.bottomTab.text.hasValue) {
@@ -156,6 +156,6 @@
 }
 
 - (void)applyDotIndicator:(UIViewController *)child {
-    [[self dotIndicatorPresenter] apply:child];
+    [[self dotIndicatorPresenter] apply:child:[child resolveOptions].bottomTab.dotIndicator];
 }
 @end
