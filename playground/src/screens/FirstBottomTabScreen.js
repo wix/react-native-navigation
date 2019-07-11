@@ -49,6 +49,7 @@ class FirstBottomTabScreen extends React.Component {
         <Button label='Hide Tabs' testID={HIDE_TABS_BTN} onPress={() => this.toggleTabs(false)} />
         <Button label='Show Tabs' testID={SHOW_TABS_BTN} onPress={() => this.toggleTabs(true)} />
         <Button label='Hide Tabs on Push' testID={HIDE_TABS_PUSH_BTN} onPress={this.hideTabsOnPush} />
+        <Button label='Push' onPress={this.push} />
       </Root>
     );
   }
@@ -90,6 +91,8 @@ class FirstBottomTabScreen extends React.Component {
   hideTabsOnPush = () => Navigation.push(this, component(Screens.Pushed, {
     bottomTabs: { visible: false }
   }));
+
+  push = () => Navigation.push(this, Screens.Pushed);
 }
 
 module.exports = FirstBottomTabScreen;

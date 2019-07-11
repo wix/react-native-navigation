@@ -3,7 +3,6 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "DotIndicatorOptions.h"
 #import "UITabBarController+RNNUtils.h"
-#import "BottomTabsViewFinder.h"
 
 @implementation RNNDotIndicatorPresenter
 
