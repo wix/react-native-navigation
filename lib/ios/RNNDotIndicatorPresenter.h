@@ -5,5 +5,5 @@
 
 
 @interface RNNDotIndicatorPresenter : NSObject
-- (void)apply:(UIViewController *)child: (DotIndicatorOptions *) options;
+- (void)apply:(UIViewController *)child :(DotIndicatorOptions *)options;
 @end

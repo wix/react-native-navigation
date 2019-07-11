@@ -76,7 +76,7 @@
 }
 
 - (void)testWillMoveToParent_shouldNotInvokePresenterApplyOptionsOnWillMoveToNilParent {
-    [[self.mockTabBarPresenter reject] applyOptionsOnWillMoveToParentViewController:[(RNNTabBarController *) self.uut options]];
+    [[self.mockTabBarPresenter reject] applyOptionsOnWillMoveToParentViewController:[self.uut options]];
     [self.uut willMoveToParentViewController:nil];
     [self.mockTabBarPresenter verify];
 }
@@ -90,8 +90,8 @@
 - (void)testMergeOptions_shouldInvokePresenterMergeOptions {
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
-    [(RNNTabBarPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options currentOptions:[(RNNTabBarController *) self.uut options] defaultOptions:nil];
-    [(RNNTabBarController *) self.uut mergeOptions:options];
+    [(RNNTabBarPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options currentOptions:[self.uut options] defaultOptions:nil];
+    [self.uut mergeOptions:options];
     [self.mockTabBarPresenter verify];
 }
 
@@ -101,7 +101,7 @@
 
     OCMStub([self.uut parentViewController]).andReturn(parentMock);
     [((RNNRootViewController *) [parentMock expect]) mergeOptions:options];
-    [(RNNTabBarController *) self.uut mergeOptions:options];
+    [self.uut mergeOptions:options];
     [parentMock verify];
 }
 

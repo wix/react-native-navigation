@@ -41,6 +41,7 @@
 		309877B0B5AAA7788F56F3D9 /* UIViewController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 30987CF6993B89E85C0BCEE4 /* UIViewController+Utils.h */; };
 		309877F473AECC05FB3B9362 /* UITabBarController+RNNUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 30987FED6F982D322416CAF2 /* UITabBarController+RNNUtils.h */; };
 		309879260BC6FD19E7A7F33A /* UIView+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987F787A14D232AB091E7E /* UIView+Utils.m */; };
+		30987A33E891E784B84CFCC3 /* RNNTestBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3098727A36771B4902A14FEA /* RNNTestBase.m */; };
 		30987AB5137F264FA06DA289 /* DotIndicatorOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 309876223177761614786DCC /* DotIndicatorOptions.m */; };
 		30987AFDE159314AEC9AC18B /* UITabBarController+RNNUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987F749DCD552D95979721 /* UITabBarController+RNNUtils.m */; };
 		30987B23F288EB3A78B7F27C /* RNNDotIndicatorPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987E66AA7AB38E7370F8C8 /* RNNDotIndicatorPresenter.m */; };
@@ -283,6 +284,7 @@
 		E33AC20020B5BA0B0090DB8A /* RNNSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC1FF20B5BA0B0090DB8A /* RNNSplitViewController.m */; };
 		E33AC20820B5C4F90090DB8A /* RNNSplitViewOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC20720B5C4F90090DB8A /* RNNSplitViewOptions.m */; };
 		E3458D3E20BD9CE40023149B /* RNNPreviewOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E3458D3D20BD9CE40023149B /* RNNPreviewOptions.m */; };
+		E57D1C6322D5CA2400BF7FEE /* RNNDotIndicatorPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987758777622B7D6CCD695 /* RNNDotIndicatorPresenterTest.m */; };
 		E8367B801F7A8A4700675C05 /* VICMAImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = E8367B7E1F7A8A4700675C05 /* VICMAImageView.h */; };
 		E8367B811F7A8A4700675C05 /* VICMAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8367B7F1F7A8A4700675C05 /* VICMAImageView.m */; };
 		E83BAD681F2734B500A9F3DD /* RNNNavigationOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E83BAD671F2734B500A9F3DD /* RNNNavigationOptionsTest.m */; };
@@ -366,9 +368,12 @@
 		2DCD9193200014A900EDC75D /* RNNBridgeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBridgeManager.h; sourceTree = "<group>"; };
 		2DCD9194200014A900EDC75D /* RNNBridgeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBridgeManager.m; sourceTree = "<group>"; };
 		30987122507D8CBF16624F93 /* DotIndicatorOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotIndicatorOptions.h; sourceTree = "<group>"; };
+		309871B5745A207D2102609E /* RNNTestBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNTestBase.h; sourceTree = "<group>"; };
 		309871FBA64AD937CEF3E191 /* DotIndicatorParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotIndicatorParser.h; sourceTree = "<group>"; };
+		3098727A36771B4902A14FEA /* RNNTestBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTestBase.m; sourceTree = "<group>"; };
 		309874E37C7E9764C7B694E5 /* DotIndicatorParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DotIndicatorParser.m; sourceTree = "<group>"; };
 		309876223177761614786DCC /* DotIndicatorOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DotIndicatorOptions.m; sourceTree = "<group>"; };
+		30987758777622B7D6CCD695 /* RNNDotIndicatorPresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNDotIndicatorPresenterTest.m; sourceTree = "<group>"; };
 		309877F25920CFE113FADEE0 /* UIView+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utils.h"; sourceTree = "<group>"; };
 		309878B02F15ECDD1A286722 /* RNNDotIndicatorPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNDotIndicatorPresenter.h; sourceTree = "<group>"; };
 		30987CF6993B89E85C0BCEE4 /* UIViewController+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
@@ -1032,6 +1037,8 @@
 				509B247F217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m */,
 				50AB0B1E22562FA10039DAED /* UIViewController+LayoutProtocolTest.m */,
 				505963F622676A0000EBB63C /* RNNLayoutManagerTest.m */,
+				30987758777622B7D6CCD695 /* RNNDotIndicatorPresenterTest.m */,
+				3098712A7C7419F1D395AB46 /* utils */,
 			);
 			path = ReactNativeNavigationTests;
 			sourceTree = "<group>";
@@ -1390,6 +1397,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				502F0E142178CF8200367CC3 /* UIViewController+RNNOptionsTest.m in Sources */,
+				E57D1C6322D5CA2400BF7FEE /* RNNDotIndicatorPresenterTest.m in Sources */,
 				5038A377216CF252009280BC /* UITabBarController+RNNOptionsTest.m in Sources */,
 				E83BAD7C1F27643000A9F3DD /* RNNTestRootViewCreator.m in Sources */,
 				502F0E162178D09600367CC3 /* RNNBasePresenterTest.m in Sources */,
@@ -1414,6 +1422,7 @@
 				50CE8503217C6C9B00084EBF /* RNNSideMenuPresenterTest.m in Sources */,
 				E8DA243D1F973C1900CD552B /* RNNTransitionStateHolderTest.m in Sources */,
 				7B49FECC1E95098500DEB3EA /* RNNExternalComponentStoreTest.m in Sources */,
+				30987A33E891E784B84CFCC3 /* RNNTestBase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
