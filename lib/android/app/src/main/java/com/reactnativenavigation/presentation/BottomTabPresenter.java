@@ -103,10 +103,10 @@ public class BottomTabPresenter {
 
     private void mergeBadge(int index, BottomTabOptions tab) {
         AHNotification.Builder builder = new AHNotification.Builder();
-        if (tab.badge.hasValue()) builder.setText(tab.badge.get(""));
+        if (tab.badge.hasValue()) builder.setText(tab.badge.get(null));
         if (tab.badgeColor.hasValue()) builder.setBackgroundColor(tab.badgeColor.get());
         AHNotification notification = builder.build();
-        if (notification.hasValue()) bottomTabs.setNotification(notification, index);
+        if (tab.badge.hasValue()) bottomTabs.setNotification(notification, index);
     }
 
     private void mergeDotIndicator(int index, DotIndicatorOptions dotIndicator) {
