@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
+import com.reactnativenavigation.parse.parsers.FontTextParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -37,7 +38,7 @@ public class Button {
     private static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
         Button button = new Button();
         button.id = json.optString("id");
-        button.text = TextParser.parse(json, "text");
+        button.text = FontTextParser.parse(json, "text");
         button.enabled = BoolParser.parse(json, "enabled");
         button.disableIconTint = BoolParser.parse(json, "disableIconTint");
         button.showAsAction = parseShowAsAction(json);

@@ -281,13 +281,17 @@ export interface OptionsTopBarButton {
    */
   systemItem?: SystemItemIcon;
   /**
-   * Set the button text
+   * Set the button text, if provided a number, parsed as a unicode character
    */
   text?: string | number;
   /**
    * Set the button font family
    */
   fontFamily?: string;
+  /**
+   * Set the size of the text
+   */
+  fontSize?: number;
   /**
    * Set the button enabled or disabled
    * @default true
