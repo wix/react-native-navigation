@@ -61,9 +61,26 @@
     XCTAssertEqualObjects([indicator1 superview], [_bottomTabs getTabView:0]);
 }
 
+- (void)testApply_itRemovesPreviousDotIndicator {
+    NSUInteger childCountBeforeApplyingIndicator = [[_bottomTabs getTabView:0] subviews].count;
+    [self applyIndicator];
+    NSUInteger childCountAfterApplyingIndicatorOnce = [[_bottomTabs getTabView:0] subviews].count;
+    XCTAssertEqual(childCountBeforeApplyingIndicator + 1, childCountAfterApplyingIndicatorOnce);
+
+    [self applyIndicator:[UIColor greenColor]];
+    NSUInteger childCountAfterApplyingIndicatorTwice = [[_bottomTabs getTabView:0] subviews].count;
+    XCTAssertEqual([[self getIndicator] backgroundColor], [UIColor greenColor]);
+    XCTAssertEqual(childCountAfterApplyingIndicatorOnce, childCountAfterApplyingIndicatorTwice);
+}
+
 - (void)applyIndicator {
+    [self applyIndicator:[UIColor redColor]];
+}
+
+- (void)applyIndicator:(UIColor *) color {
     DotIndicatorOptions *options = [DotIndicatorOptions new];
     options.visible = [[Bool alloc] initWithBOOL:YES];
+    options.color = [[Color alloc] initWithValue:color];
     [[self uut] apply:self.child :options];
 }
 
