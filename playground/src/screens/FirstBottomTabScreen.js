@@ -76,7 +76,6 @@ class FirstBottomTabScreen extends React.Component {
 
   setNotificationDot = () => {
     this.dotVisible = !this.dotVisible;
-    // Navigation.mergeOptions('SecondTabBottomTabsLayoutScreen', {
     Navigation.mergeOptions(this, {
       bottomTab: {
         dotIndicator: { visible: this.dotVisible }
