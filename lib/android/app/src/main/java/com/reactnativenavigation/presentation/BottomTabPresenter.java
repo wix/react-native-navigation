@@ -87,26 +87,26 @@ public class BottomTabPresenter {
     }
 
     private void applyDotIndicator(int tabIndex, DotIndicatorOptions dotIndicator) {
-        AHNotification.Builder builder = new AHNotification.Builder();
-        builder.setText("");
-        builder.setBackgroundColor(dotIndicator.color.get(null));
-        builder.setSize(dotIndicator.size.get(defaultDotIndicatorSize));
+        AHNotification.Builder builder = new AHNotification.Builder()
+                .setText("")
+                .setBackgroundColor(dotIndicator.color.get(null))
+                .setSize(dotIndicator.size.get(defaultDotIndicatorSize));
         bottomTabs.setNotification(builder.build(), tabIndex);
     }
 
     private void applyBadge(int tabIndex, BottomTabOptions tab) {
-        AHNotification.Builder builder = new AHNotification.Builder();
-        builder.setText(tab.badge.get(""));
-        builder.setBackgroundColor(tab.badgeColor.get(null));
+        AHNotification.Builder builder = new AHNotification.Builder()
+                .setText(tab.badge.get(""))
+                .setBackgroundColor(tab.badgeColor.get(null));
         bottomTabs.setNotification(builder.build(), tabIndex);
     }
 
     private void mergeBadge(int index, BottomTabOptions tab) {
+        if (!tab.badge.hasValue()) return;
         AHNotification.Builder builder = new AHNotification.Builder();
-        if (tab.badge.hasValue()) builder.setText(tab.badge.get(null));
+        if (tab.badge.hasValue()) builder.setText(tab.badge.get());
         if (tab.badgeColor.hasValue()) builder.setBackgroundColor(tab.badgeColor.get());
-        AHNotification notification = builder.build();
-        if (tab.badge.hasValue()) bottomTabs.setNotification(notification, index);
+        bottomTabs.setNotification(builder.build(), index);
     }
 
     private void mergeDotIndicator(int index, DotIndicatorOptions dotIndicator) {
