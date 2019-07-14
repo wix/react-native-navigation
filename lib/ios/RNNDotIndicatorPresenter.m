@@ -9,8 +9,8 @@
 - (void)apply:(UIViewController *)child :(DotIndicatorOptions *)options {
     if (![options hasValue]) return;
 
-    if ([self shouldRemoveIndicator:child options:options]) {
-        [self remove:child];
+    if ([options.visible isFalse]) {
+        if ([child tabBarItem].tag > 0) [self remove:child];
         return;
     }
     if ([self currentIndicatorEquals:child :options]) return;
@@ -67,10 +67,6 @@
     UIView *view = [[[child tabBarController] tabBar] viewWithTag:[child tabBarItem].tag];
     [view removeFromSuperview];
     [child tabBarItem].tag = -1;
-}
-
-- (signed char)shouldRemoveIndicator:(UIViewController *)child options:(DotIndicatorOptions *)options {
-    return [options.visible isFalse] && [child tabBarItem].tag > 0;
 }
 
 - (UITabBarController *)getTabBarController:(id)viewController {

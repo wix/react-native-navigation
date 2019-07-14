@@ -35,10 +35,18 @@
     XCTAssertTrue([self tabHasIndicator]);
 }
 
-- (void)testApply_indicatorIsRemovedIsNotVisible {
+- (void)testApply_indicatorIsRemovedIfNotVisible {
     [self applyIndicator];
     XCTAssertTrue([self tabHasIndicator]);
 
+    DotIndicatorOptions *options = [DotIndicatorOptions new];
+    options.visible = [[Bool alloc] initWithBOOL:NO];
+    [[self uut] apply:self.child :options];
+
+    XCTAssertFalse([self tabHasIndicator]);
+}
+
+- (void)testApply_invisibleIndicatorIsNotAdded {
     DotIndicatorOptions *options = [DotIndicatorOptions new];
     options.visible = [[Bool alloc] initWithBOOL:NO];
     [[self uut] apply:self.child :options];
@@ -71,6 +79,20 @@
     NSUInteger childCountAfterApplyingIndicatorTwice = [[_bottomTabs getTabView:0] subviews].count;
     XCTAssertEqual([[self getIndicator] backgroundColor], [UIColor greenColor]);
     XCTAssertEqual(childCountAfterApplyingIndicatorOnce, childCountAfterApplyingIndicatorTwice);
+}
+
+- (void)testApply_itRemovesPreviousIndicator {
+    DotIndicatorOptions *options = [DotIndicatorOptions new];
+    options.visible = [[Bool alloc] initWithBOOL:YES];
+    options.color = [[Color alloc] initWithValue:[UIColor redColor]];
+    options.size = [[Number alloc] initWithValue:[[NSNumber alloc] initWithInt:8]];
+
+    [[self uut] apply:self.child :options];
+    XCTAssertTrue([self tabHasIndicator]);
+
+    options.visible = [[Bool alloc] initWithBOOL:NO];
+    [[self uut] apply:self.child :options];
+    XCTAssertFalse([self tabHasIndicator]);
 }
 
 - (void)applyIndicator {
