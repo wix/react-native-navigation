@@ -42,7 +42,6 @@ class LayoutsScreen extends React.Component {
         stack(Screens.FirstBottomTabsScreen),
         stack({
           component: {
-            id: 'SecondTabBottomTabsLayoutScreen',
             name: Screens.SecondBottomTabsScreen
           }
         }, 'SecondTab'
