@@ -96,7 +96,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:support-v4:${supportLibVersion}"
 
-    implementation 'com.github.wix-playground:ahbottomnavigation:2.4.13'
+    implementation 'com.github.wix-playground:ahbottomnavigation:2.4.15'
     implementation 'com.github.wix-playground:reflow-animator:1.0.4'
     implementation 'com.github.clans:fab:1.6.4'
 

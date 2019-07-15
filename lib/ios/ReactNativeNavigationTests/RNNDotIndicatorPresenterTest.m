@@ -24,6 +24,11 @@
     [self setupTopLevelUI:self.bottomTabs];
 }
 
+- (void)tearDown {
+    [self tearDownTopLevelUI:_bottomTabs];
+    [super tearDown];
+}
+
 - (void)testApply_doesNothingIfDoesNotHaveValue {
     DotIndicatorOptions *empty = [DotIndicatorOptions new];
     [[self uut] apply:self.child :empty];
@@ -93,6 +98,34 @@
     options.visible = [[Bool alloc] initWithBOOL:NO];
     [[self uut] apply:self.child :options];
     XCTAssertFalse([self tabHasIndicator]);
+}
+
+- (void)testApply_indicatorIsAlignedToTopRightOfIcon {
+    DotIndicatorOptions *options = [DotIndicatorOptions new];
+    options.visible = [[Bool alloc] initWithBOOL:YES];
+    options.size = [[Number alloc] initWithValue:[[NSNumber alloc] initWithInt:8]];
+    [[self uut] apply:self.child :options];
+    UIView *indicator = [self getIndicator];
+    UIView * icon = [_bottomTabs getTabIcon:0];
+
+    NSArray<NSLayoutConstraint *> *alignmentConstraints = [_bottomTabs getTabView:0].constraints;
+    XCTAssertEqual([alignmentConstraints count], 2);
+    XCTAssertEqual([alignmentConstraints[0] constant], -4);
+    XCTAssertEqual([alignmentConstraints[0] firstItem], indicator);
+    XCTAssertEqual([alignmentConstraints[0] secondItem], icon);
+    XCTAssertEqual([alignmentConstraints[0] firstAttribute], NSLayoutAttributeLeft);
+    XCTAssertEqual([alignmentConstraints[0] secondAttribute], NSLayoutAttributeRight);
+
+    XCTAssertEqual([alignmentConstraints[1] constant], -4);
+    XCTAssertEqual([alignmentConstraints[1] firstItem], indicator);
+    XCTAssertEqual([alignmentConstraints[1] secondItem], icon);
+    XCTAssertEqual([alignmentConstraints[1] firstAttribute], NSLayoutAttributeTop);
+    XCTAssertEqual([alignmentConstraints[1] secondAttribute], NSLayoutAttributeTop);
+
+    NSArray *sizeConstraints = indicator.constraints;
+    XCTAssertEqual([sizeConstraints count], 2);
+    XCTAssertEqual([sizeConstraints[0] constant], 8);
+    XCTAssertEqual([sizeConstraints[1] constant], 8);
 }
 
 - (void)applyIndicator {

@@ -7,18 +7,13 @@
 @implementation RNNTestBase
 
 - (void)setupTopLevelUI:(UIViewController *)withViewController {
-    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-    _window.rootViewController = withViewController;
-    [_window setHidden:NO];
-    [withViewController viewWillAppear:NO];
-    [withViewController viewDidAppear:NO];
+    [withViewController viewDidLoad];
+    [withViewController viewWillAppear:YES];
+    [withViewController viewDidAppear:YES];
 }
 
-- (void)tearDownTopLevelUI {
-    [_window.rootViewController viewWillDisappear:NO];
-    [_window.rootViewController viewDidDisappear:NO];
-    [_window setHidden:YES];
-    _window.rootViewController = nil;
-    self.window = nil;
+- (void)tearDownTopLevelUI:(UIViewController *)withViewController {
+    [withViewController viewWillDisappear:YES];
+    [withViewController viewDidDisappear:YES];
 }
 @end

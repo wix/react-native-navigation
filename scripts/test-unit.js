@@ -32,7 +32,7 @@ function runIosUnitTests() {
             -project playground.xcodeproj
             -sdk iphonesimulator
             -configuration ${conf}
-            -derivedDataPath ./DerivedData/playground
+            -derivedDataPath ./playground/ios/DerivedData/playground
             -quiet
             -UseModernBuildSystem=NO
             ONLY_ACTIVE_ARCH=YES`);
@@ -45,7 +45,7 @@ function runIosUnitTests() {
             -sdk iphonesimulator
             -configuration ${conf}
             -destination 'platform=iOS Simulator,name=iPhone X'
-            -derivedDataPath ./DerivedData/playground
+            -derivedDataPath ./playground/ios/DerivedData/playground
             ONLY_ACTIVE_ARCH=YES`);
 }
 

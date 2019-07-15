@@ -5,5 +5,5 @@
 @interface RNNTestBase : XCTestCase
 - (void)setupTopLevelUI:(UIViewController *)withViewController;
 
-- (void)tearDownTopLevelUI;
+- (void)tearDownTopLevelUI:(UIViewController *)withViewController;
 @end
