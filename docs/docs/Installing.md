@@ -17,7 +17,7 @@
 
 2b. If you're seeing an error message in Xcode such as:
 ```
-ReactNativeNavigation.h not found
+'ReactNativeNavigation/ReactNativeNavigation.h' file not found.
 ```
 You may also need to add a Header Search Path: ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-3)).
 ```objectivec
