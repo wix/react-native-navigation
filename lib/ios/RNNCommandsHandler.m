@@ -175,13 +175,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	for (UIViewController<RNNLayoutProtocol>* viewController in childViewControllers) {
 		[viewController renderTreeAndWait:NO perform:nil];
 	}
-    UIViewController *toVC = childViewControllers.lastObject;
+        UIViewController *newVC = childViewControllers.lastObject;
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
-	RNNNavigationOptions* options = toVC.resolveOptions;
+	RNNNavigationOptions* options = newVC.resolveOptions;
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
 
-	[toVC renderTreeAndWait:([options.animations.setStackRoot.waitForRender getWithDefaultValue:NO]) perform:^{
-		[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
+	[newVC renderTreeAndWait:([options.animations.setStackRoot.waitForRender getWithDefaultValue:NO]) perform:^{
+		[_stackManager setStackChildren:childViewControllers fromViewController:newVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
 			[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot commandId:commandId params:@{@"componentId": componentId}];
 			completion();
 		} rejection:rejection];
