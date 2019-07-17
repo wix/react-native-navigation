@@ -175,7 +175,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	for (UIViewController<RNNLayoutProtocol>* viewController in childViewControllers) {
 		[viewController renderTreeAndWait:NO perform:nil];
 	}
-	UIViewController *toVC = childViewControllers.lastObject
+    UIViewController *toVC = childViewControllers.lastObject;
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
 	RNNNavigationOptions* options = toVC.resolveOptions;
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
