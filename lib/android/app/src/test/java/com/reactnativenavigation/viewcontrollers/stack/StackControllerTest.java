@@ -3,7 +3,6 @@ package com.reactnativenavigation.viewcontrollers.stack;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -37,6 +36,7 @@ import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 import com.reactnativenavigation.views.stack.StackBehaviour;
+import com.reactnativenavigation.views.topbar.ScrollDIsabledBehavior;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.assertj.core.api.iterable.Extractor;
@@ -54,6 +54,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.ViewUtils.topMargin;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -126,6 +128,12 @@ public class StackControllerTest extends BaseTest {
         assertThat(uut.getChildControllers().size()).isEqualTo(4);
         assertThat(uut.getView().getChildCount()).isEqualTo(2);
         assertThat(uut.getView().getChildAt(0)).isEqualTo(child4.getView());
+    }
+
+    @Test
+    public void createView_topBarScrollIsDisabled() {
+        CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) uut.getTopBar().getLayoutParams()).getBehavior();
+        assertThat(behavior instanceof ScrollDIsabledBehavior).isTrue();
     }
 
     @Test
