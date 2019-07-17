@@ -309,6 +309,11 @@ export interface OptionsTopBarButton {
    * Set testID for reference in E2E tests
    */
   testID?: string;
+  /**
+   * (Android only) Set showAsAction value
+   * @see {@link https://developer.android.com/guide/topics/resources/menu-resource|Android developer guide: Menu resource} 
+   */
+  showAsAction?: 'ifRoom' | 'withText' | 'always' | 'never';
 }
 
 export interface OptionsTopBar {
@@ -588,6 +593,14 @@ export interface SideMenuSide {
    * Enable or disable the side menu
    */
   enabled?: boolean;
+  /**
+   * Set the width of the side menu
+   */
+  width?: number;
+  /**
+   * Set the height of the side menu
+   */
+  height?: number;
 }
 
 export interface OptionsSideMenu {

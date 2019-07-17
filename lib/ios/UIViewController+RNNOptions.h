@@ -34,6 +34,8 @@
 
 - (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside;
 
+- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title;
+
 - (BOOL)isModal;
 
 @end

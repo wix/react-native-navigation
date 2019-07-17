@@ -33,6 +33,8 @@ const compId = (selfOrCompId) => {
   return get(selfOrCompId, 'props.componentId', selfOrCompId);
 }
 
+const constants = Navigation.constants;
+
 module.exports = {
   mergeOptions,
   push,
@@ -49,5 +51,6 @@ module.exports = {
   setDefaultOptions: Navigation.setDefaultOptions.bind(Navigation),
   setRoot: Navigation.setRoot.bind(Navigation),
   TouchablePreview: Navigation.TouchablePreview,
-  setStackRoot
+  setStackRoot,
+  constants
 }

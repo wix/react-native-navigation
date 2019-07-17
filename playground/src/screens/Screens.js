@@ -1,5 +1,6 @@
 module.exports = {
   ExternalComponent: 'ExternalComponent',
+  ContextScreen: 'ContextScreen',
   Pushed: 'Pushed',
   Layouts: 'Layouts',
   Options: 'Options',

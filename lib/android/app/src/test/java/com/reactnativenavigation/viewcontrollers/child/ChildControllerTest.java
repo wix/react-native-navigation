@@ -78,4 +78,10 @@ public class ChildControllerTest extends BaseTest {
         uut.mergeOptions(Options.EMPTY);
         verify(presenter, times(0)).mergeOptions(any(), any());
     }
+
+    @Test
+    public void destroy() {
+        uut.destroy();
+        verify(childRegistry).onChildDestroyed(uut);
+    }
 }

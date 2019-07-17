@@ -173,6 +173,36 @@
 	XCTAssertEqual(self.uut.bindedComponentId, @"componentId");
 }
 
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withTitle {
+	Text* title = [[Text alloc] initWithValue:@"Title"];
+	self.options.topBar.backButton.title = title;
+	[[(id)self.bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:title.get];
+	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
+	[(id)self.bindedViewController verify];
+}
+
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withHideTitle {
+	Text* title = [[Text alloc] initWithValue:@"Title"];
+	self.options.topBar.backButton.title = title;
+	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
+	[[(id)self.bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:@""];
+	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
+	[(id)self.bindedViewController verify];
+}
+
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withIcon {
+	Image* image = [[Image alloc] initWithValue:[UIImage new]];
+	self.options.topBar.backButton.icon = image;
+	[[(id)self.bindedViewController expect] rnn_setBackButtonIcon:image.get withColor:nil title:nil];
+	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
+	[(id)self.bindedViewController verify];
+}
+
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withDefaultValues {
+	[[(id)self.bindedViewController expect] rnn_setBackButtonIcon:nil withColor:nil title:nil];
+	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
+	[(id)self.bindedViewController verify];
+}
 
 
 - (RNNLayoutInfo *)createLayoutInfoWithComponentId:(NSString *)componentId {

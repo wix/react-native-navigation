@@ -76,7 +76,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         root.addView(content);
         root.addView(border);
         addView(root, MATCH_PARENT, WRAP_CONTENT);
-        if (BuildConfig.DEBUG) setContentDescription("TopBar");
     }
 
     private LinearLayout createContentLayout() {
@@ -120,6 +119,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setTitleHeight(int height) {
         titleBar.setHeight(height);
+    }
+
+    public void setTitleTopMargin(int topMargin) {
+        titleBar.setTopMargin(topMargin);
     }
 
     public void setTitle(String title) {

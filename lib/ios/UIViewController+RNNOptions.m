@@ -1,5 +1,6 @@
 #import "UIViewController+RNNOptions.h"
 #import <React/RCTRootView.h>
+#import "UIImage+tint.h"
 
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
@@ -160,6 +161,25 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		RCTRootView* rootView = (RCTRootView*)self.view;
 		rootView.passThroughTouches = !interceptTouchOutside;
 	}
+}
+
+- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
+	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+	if (icon) {
+		backItem.image = color
+		? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+		: icon;
+		
+		[self.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
+		[self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
+	}
+	
+	UIViewController *lastViewControllerInStack = self.navigationController.viewControllers.count > 1 ? [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] : self.navigationController.topViewController;
+	
+	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
+	backItem.tintColor = color;
+	
+	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
 @end
