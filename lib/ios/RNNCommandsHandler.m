@@ -178,6 +178,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	UIViewController *toVC = childViewControllers.lastObject
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
 	RNNNavigationOptions* options = toVC.resolveOptions;
+	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
 
 	[toVC renderTreeAndWait:([options.animations.setStackRoot.waitForRender getWithDefaultValue:NO]) perform:^{
 		[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
