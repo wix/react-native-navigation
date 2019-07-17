@@ -175,16 +175,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	for (UIViewController<RNNLayoutProtocol>* viewController in childViewControllers) {
 		[viewController renderTreeAndWait:NO perform:nil];
 	}
-<<<<<<< HEAD
-	
-	UIViewController *newVC = childViewControllers.lastObject;
-=======
-	RNNNavigationOptions* options = childViewControllers.lastObject.resolveOptions;
->>>>>>> ae84e684f4e6dc5c5c8256d2eb54f2e9ef9e763c
+	UIViewController *toVC = childViewControllers.lastObject
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
-	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
-	[newVC renderTreeAndWait:([newVC.resolveOptions.animations.setStackRoot.waitForRender getWithDefaultValue:NO]) perform:^{
-		[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[newVC.resolveOptions.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
+	RNNNavigationOptions* options = toVC.resolveOptions;
+
+	[toVC renderTreeAndWait:([options.animations.setStackRoot.waitForRender getWithDefaultValue:NO]) perform:^{
+		[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
 			[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot commandId:commandId params:@{@"componentId": componentId}];
 			completion();
 		} rejection:rejection];
