@@ -145,7 +145,7 @@
     id img = [OCMockObject partialMockForObject:[UIImage new]];
 
     options.bottomTab.icon = [[Image alloc] initWithValue:img];
-    return [OCMockObject partialMockForObject:[[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:options defaultOptions:nil]];
+    return [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:options defaultOptions:nil];
 }
 
 - (BOOL)tabHasIndicator {

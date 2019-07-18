@@ -64,8 +64,8 @@
 
 - (void)testApplyDotIndicator_callsAppliesBadgeWithEachChild {
     id uut = [self uut];
-    id child1 = [OCMockObject partialMockForObject:[UIViewController new]];
-    id child2 = [OCMockObject partialMockForObject:[UIViewController new]];
+    id child1 = [UIViewController new];
+    id child2 = [UIViewController new];
 
     [[uut expect] applyDotIndicator:child1];
     [[uut expect] applyDotIndicator:child2];
