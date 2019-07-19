@@ -177,13 +177,6 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		[self.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
 		[self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
 	}
-	
-	UIViewController *lastViewControllerInStack = self.navigationController.viewControllers.count > 1 ? [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] : self.navigationController.topViewController;
-	
-	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
-	backItem.tintColor = color;
-	
-	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
 @end
