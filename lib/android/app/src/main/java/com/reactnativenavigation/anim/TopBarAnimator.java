@@ -16,6 +16,7 @@ import com.reactnativenavigation.views.topbar.TopBar;
 
 import static android.view.View.TRANSLATION_Y;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.utils.ViewUtils.getHeight;
 
 public class TopBarAnimator {
 
@@ -109,7 +110,7 @@ public class TopBarAnimator {
     }
 
     private AnimatorSet getDefaultShowAnimator(float translationStart, TimeInterpolator interpolator, int duration) {
-        ObjectAnimator showAnimator = ObjectAnimator.ofFloat(topBar, TRANSLATION_Y, -topBar.getHeight() - translationStart, 0);
+        ObjectAnimator showAnimator = ObjectAnimator.ofFloat(topBar, TRANSLATION_Y, -getHeight(topBar) - translationStart, 0);
         showAnimator.setInterpolator(interpolator);
         showAnimator.setDuration(duration);
         AnimatorSet set = new AnimatorSet();

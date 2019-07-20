@@ -1,11 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.app.Activity;
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.VisibleForTesting;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -31,6 +26,12 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
@@ -377,7 +378,7 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public int getTopInset(ViewController child) {
-        return resolveChildOptions(child).topBar.drawBehind.isTrue() ? 0 : topBarController.getHeight();
+        return resolveChildOptions(child).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

@@ -1,8 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.topbar;
 
 import android.content.Context;
-import androidx.annotation.VisibleForTesting;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 
 import com.reactnativenavigation.anim.TopBarAnimator;
@@ -10,6 +8,9 @@ import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
+
+import androidx.annotation.VisibleForTesting;
+import androidx.viewpager.widget.ViewPager;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.ViewUtils.isVisible;
@@ -77,13 +78,9 @@ public class TopBarController {
         hideAnimate(options, () -> {}, translationStart, translationEnd);
     }
 
-    public void hideAnimate(AnimationOptions options, Runnable onAnimationEnd, float translationStart, float translationEnd) {
+    private void hideAnimate(AnimationOptions options, Runnable onAnimationEnd, float translationStart, float translationEnd) {
         if (!isVisible(topBar)) return;
         animator.hide(options, onAnimationEnd, translationStart, translationEnd);
-    }
-
-    public boolean isAnimating() {
-        return animator.isAnimating();
     }
 
     public void resetViewProperties() {

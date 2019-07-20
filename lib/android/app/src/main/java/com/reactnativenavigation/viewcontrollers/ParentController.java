@@ -1,11 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +11,12 @@ import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.views.Component;
 
 import java.util.Collection;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
@@ -60,6 +61,10 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @CheckResult
     public Options resolveCurrentOptions(Options defaultOptions) {
         return resolveCurrentOptions().withDefaultOptions(defaultOptions);
+    }
+
+    public boolean isCurrentChild(ViewController child) {
+        return getCurrentChild() == child;
     }
 
     protected abstract ViewController getCurrentChild();

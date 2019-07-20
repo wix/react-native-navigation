@@ -2,8 +2,6 @@ package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.ModalAnimator;
@@ -11,6 +9,9 @@ import com.reactnativenavigation.parse.ModalPresentationStyle;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 

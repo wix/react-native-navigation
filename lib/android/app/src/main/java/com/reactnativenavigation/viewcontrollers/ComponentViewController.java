@@ -1,9 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
@@ -12,6 +9,10 @@ import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
@@ -63,6 +64,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void applyOptions(Options options) {
+        if (isRoot()) applyTopInset();
         super.applyOptions(options);
         getView().applyOptions(options);
         presenter.applyOptions(getView(), resolveCurrentOptions(presenter.defaultOptions));

@@ -2,7 +2,6 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,7 +15,9 @@ import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import java.util.List;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 
 @SuppressLint("ViewConstructor")
 public class ComponentLayout extends CoordinatorLayout implements ReactComponent, TitleBarButtonController.OnClickListener {
@@ -27,7 +28,7 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     public ComponentLayout(Context context, IReactView reactView) {
 		super(context);
 		this.reactView = reactView;
-        addView(reactView.asView(), MATCH_PARENT, MATCH_PARENT);
+        addView(reactView.asView(), matchParentLP());
         touchDelegate = new OverlayTouchDelegate(reactView);
     }
 
