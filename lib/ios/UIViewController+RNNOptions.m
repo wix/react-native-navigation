@@ -1,6 +1,7 @@
 #import "UIViewController+RNNOptions.h"
 #import <React/RCTRootView.h>
 #import "UIImage+tint.h"
+#import "RNNBottomTabOptions.h"
 
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
@@ -80,14 +81,17 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setTabBarItemBadge:(NSString *)badge {
-	UITabBarItem *tabBarItem = self.tabBarItem;
-	
-	if ([badge isKindOfClass:[NSNull class]] || [badge isEqualToString:@""]) {
-		tabBarItem.badgeValue = nil;
-	} else {
-		tabBarItem.badgeValue = badge;
-	}
+- (void)rnn_setTabBarItemBadge:(RNNBottomTabOptions *)bottomTab {
+    UITabBarItem *tabBarItem = self.tabBarItem;
+
+    NSString *badge = [bottomTab.badge get];
+    if ([badge isKindOfClass:[NSNull class]] || [badge isEqualToString:@""]) {
+        tabBarItem.badgeValue = nil;
+    } else {
+        tabBarItem.badgeValue = badge;
+        [[self.tabBarController.tabBar viewWithTag:tabBarItem.tag] removeFromSuperview];
+        tabBarItem.tag = -1;
+    }
 }
 
 - (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor {

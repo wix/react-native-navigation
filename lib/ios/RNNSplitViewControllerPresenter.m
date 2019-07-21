@@ -8,7 +8,7 @@
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
 	
-	UISplitViewController* splitViewController = self.bindedViewController;
+	UISplitViewController* splitViewController = self.boundViewController;
 	[splitViewController rnn_setDisplayMode:options.splitView.displayMode];
 	[splitViewController rnn_setPrimaryEdge:options.splitView.primaryEdge];
 	[splitViewController rnn_setMinWidth:options.splitView.minWidth];
@@ -19,7 +19,7 @@
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
 	[super applyOptionsOnInit:initialOptions];
 	
-	UISplitViewController* splitViewController = self.bindedViewController;
+	UISplitViewController* splitViewController = self.boundViewController;
 	[splitViewController rnn_setDisplayMode:initialOptions.splitView.displayMode];
 	[splitViewController rnn_setPrimaryEdge:initialOptions.splitView.primaryEdge];
 	[splitViewController rnn_setMinWidth:initialOptions.splitView.minWidth];
@@ -29,7 +29,7 @@
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
 	[super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
 	
-	UISplitViewController* splitViewController = self.bindedViewController;
+	UISplitViewController* splitViewController = self.boundViewController;
 
 	if (newOptions.splitView.displayMode) {
 		[splitViewController rnn_setDisplayMode:newOptions.splitView.displayMode];

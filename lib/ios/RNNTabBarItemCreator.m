@@ -1,5 +1,4 @@
 #import "RNNTabBarItemCreator.h"
-#import <React/RCTConvert.h>
 #import "UIImage+tint.h"
 
 @implementation RNNTabBarItemCreator
