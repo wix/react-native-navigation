@@ -13,6 +13,7 @@ It is a tab-based app and utilizes Split Layout for iOS tablets, 3D touch and mo
 
 ## Starter Kits
 * [atoami/react-native-navigation-redux-starter-kit](https://github.com/atoami/react-native-navigation-redux-starter-kit) - React Native Navigation(v2) Starter Kit with Redux, Saga, ESLint, Babel and Jest 😎
+* [alexwasner/react-native-mobx-firebase-starter](https://github.com/alexwasner/react-native-mobx-firebase-starter) - A React Native starter app with React Native Navigation(v2), MobX, Firebase, Lottie and More 🤓
 
 ### Playground
 
