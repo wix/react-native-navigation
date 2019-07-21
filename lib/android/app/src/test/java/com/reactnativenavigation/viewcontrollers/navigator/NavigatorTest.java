@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
@@ -164,6 +165,13 @@ public class NavigatorTest extends BaseTest {
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.setRoot(child2, new CommandListenerAdapter(), reactInstanceManager);
         assertIsChild(uut.getRootLayout(), child2.getView());
+    }
+
+    @Test
+    public void setRoot_destroysModals() {
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.setRoot(child2, new CommandListenerAdapter(), reactInstanceManager);
+        assertTrue(child1.isDestroyed());
     }
 
     @Test
