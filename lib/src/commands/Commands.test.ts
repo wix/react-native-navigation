@@ -27,7 +27,7 @@ describe('Commands', () => {
     commandsObserver = new CommandsObserver(uniqueIdProvider);
 
     const mockedOptionsProcessor = mock(OptionsProcessor);
-    const optionsProcessor = instance(mockedOptionsProcessor);
+    const optionsProcessor = instance(mockedOptionsProcessor) as OptionsProcessor;
 
     uut = new Commands(
       instance(mockedNativeCommandsSender),
@@ -366,7 +366,7 @@ describe('Commands', () => {
       mockedLayoutTreeParser = mock(LayoutTreeParser);
       mockedLayoutTreeCrawler = mock(LayoutTreeCrawler);
       commandsObserver.register(cb);
-      const mockedOptionsProcessor = mock(OptionsProcessor);
+      const mockedOptionsProcessor = mock(OptionsProcessor) as OptionsProcessor;
       anotherMockedUniqueIdProvider = mock(UniqueIdProvider);
       when(anotherMockedUniqueIdProvider.generate(anything())).thenCall(
         (prefix) => `${prefix}+UNIQUE_ID`
