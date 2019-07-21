@@ -3,6 +3,7 @@ const React = require('react');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
 const Navigation = require('./../services/Navigation');
+const { stack } = require('../commons/Layouts');
 const Screens = require('./Screens');
 const {
   PUSH_BTN,
@@ -15,6 +16,7 @@ const {
   DISMISS_ALL_PREVIOUS_MODAL_BTN,
   DISMISS_ALL_MODALS_BTN,
   DISMISS_FIRST_MODAL_BTN,
+  SET_ROOT
 } = require('../testIDs');
 
 class ModalScreen extends React.Component {
@@ -46,6 +48,7 @@ class ModalScreen extends React.Component {
         <Button label='Dismiss All Modals' testID={DISMISS_ALL_MODALS_BTN} onPress={this.dismissAllModals} />
         {this.props.previousModalIds && (<Button label='Dismiss First Modal' testID={DISMISS_FIRST_MODAL_BTN} onPress={this.dismissFirstModal} />)}
         <Button label='Push screen' testID={PUSH_BTN} onPress={this.pushScreen} />
+        <Button label='Set Root' testID={SET_ROOT} onPress={this.setRoot} />
       </Root>
     );
   }
@@ -82,6 +85,8 @@ class ModalScreen extends React.Component {
   });
 
   pushScreen = () => Navigation.push(this, Screens.Pushed);
+
+  setRoot = () => Navigation.setRoot(stack(Screens.Pushed));
 
   getModalPosition = () => this.props.modalPosition || 1;
 
