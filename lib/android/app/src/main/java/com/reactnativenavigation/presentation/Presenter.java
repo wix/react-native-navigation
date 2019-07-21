@@ -101,7 +101,11 @@ public class Presenter {
 
     private void setStatusBarVisible(Bool visible) {
         View decorView = activity.getWindow().getDecorView();
-        decorView.setSystemUiVisibility(visible.isFalse() ? View.SYSTEM_UI_FLAG_FULLSCREEN : 0);
+        int flags = decorView.getSystemUiVisibility();
+        if (visible.isFalse()) {
+            flags |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        }
+        decorView.setSystemUiVisibility(flags);
     }
 
     private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
