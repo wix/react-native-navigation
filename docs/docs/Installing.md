@@ -15,6 +15,15 @@
 
 2. In Xcode, in Project Navigator (left pane), click on your project (top), then click on your *target* row (on the "project and targets list", which is on the left column of the right pane) and select the `Build Phases` tab (right pane). In the `Link Binary With Libraries` section add `libReactNativeNavigation.a` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-2)).
 
+2b. If you're seeing an error message in Xcode such as:
+```
+'ReactNativeNavigation/ReactNativeNavigation.h' file not found.
+```
+You may also need to add a Header Search Path: ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-3)).
+```objectivec
+$(SRCROOT)/../node_modules/react-native-navigation/lib/ios
+```
+
 3. In Xcode, you will need to edit this file: `AppDelegate.m`. This function is the main entry point for your app:
 
 	```objectivec

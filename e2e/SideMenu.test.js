@@ -36,4 +36,10 @@ describe('SideMenu', () => {
     await elementById(TestIDs.CLOSE_RIGHT_SIDE_MENU_BTN).tap();
     await expect(elementById(TestIDs.CLOSE_RIGHT_SIDE_MENU_BTN)).toBeNotVisible();
   });
+
+  it('should rotate', async () => {
+    await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+    await device.setOrientation('landscape');
+    await expect(elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN)).toBeVisible();
+  });
 });

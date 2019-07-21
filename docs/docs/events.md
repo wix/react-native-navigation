@@ -59,7 +59,7 @@ screenEventListener.remove();
 |**passProps**| props passed to the component|
 
 ## componentDidDisappear
-Called each time this component disappears from screen (detached from the view heirarchy)
+Called each time this component disappears from screen (detached from the view hierarchy)
 
 ```js
 class MyComponent extends Component {
@@ -115,7 +115,7 @@ commandListener.remove();
 |**params**|`commandId`: Each command is assigned a unique Id<br>`componentId`: Optional, the componentId passed to the command<br>`layout`: Optional, If the command invoked created a screen. Slim representation of the component and its options |
 
 ## registerCommandCompletedListener
-Invoked when a command finishes executing in native. If the command contains animations, for example pushed screen animation,) the listener is invoked after the animation ends.
+Invoked when a command finishes executing in native. If the command contains animations, for example pushed screen animation, the listener is invoked after the animation ends.
 
 ```js
 // Subscribe

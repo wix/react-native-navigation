@@ -32,7 +32,7 @@ describe('BottomTabs', () => {
     await expect(element(by.text('NEW'))).toBeVisible();
   });
 
-  it(':ios: set Tab Bar badge null on a current Tab should reset badge', async () => {
+  it('set empty string badge on a current Tab should clear badge', async () => {
     await elementById(TestIDs.SET_BADGE_BTN).tap();
     await expect(element(by.text('NEW'))).toBeVisible();
     await elementById(TestIDs.CLEAR_BADGE_BTN).tap();

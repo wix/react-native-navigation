@@ -1,6 +1,5 @@
 #import <React/RCTBundleURLProvider.h>
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
-#import <React/RCTRootView.h>
 
 #import "AppDelegate.h"
 #import "RNNCustomViewController.h"
