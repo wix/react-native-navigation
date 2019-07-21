@@ -118,6 +118,11 @@ Navigation.mergeOptions(this.props.componentId, {
     text: 'Tab 1',
     badge: '2',
     badgeColor: 'red',
+    dotIndicator: {
+      color: 'green', // default red
+      size: 8, // default 6
+      visible: true // default false
+    }
     testID: 'bottomTabTestID',
     icon: require('tab.png'),
     iconColor: 'red',
