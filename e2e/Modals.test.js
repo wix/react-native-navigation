@@ -118,6 +118,12 @@ describe('modal', () => {
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
   });
 
+  it('setRoot dismisses modals', async () => {
+    await elementById(TestIDs.SET_ROOT).tap();
+    await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeNotVisible();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+  });
+
   it(':android: override hardware back button in modal with stack', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.ADD_BACK_HANDLER).tap();
