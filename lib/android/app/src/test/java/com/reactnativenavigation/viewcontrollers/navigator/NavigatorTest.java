@@ -52,6 +52,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @Config(qualifiers = "xxhdpi")
@@ -164,6 +165,20 @@ public class NavigatorTest extends BaseTest {
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.setRoot(child2, new CommandListenerAdapter(), reactInstanceManager);
         assertIsChild(uut.getRootLayout(), child2.getView());
+    }
+
+    @Test
+    public void setRoot_WithWaitForRender() {
+        ViewController primaryView = spy(child2);
+        uut.setRoot(primaryView, new CommandListenerAdapter(), reactInstanceManager);
+        child3.options.animations.setRoot.waitForRender = new Bool(true);
+        ViewController secondaryView = spy(child3);
+        CommandListenerAdapter listener = spy(new CommandListenerAdapter());
+        uut.setRoot(secondaryView, listener, reactInstanceManager);
+        verify(secondaryView).addOnAppearedListener(any());
+        verifyZeroInteractions(listener);
+        assertThat(primaryView.isViewShown()).isEqualTo(true);
+        secondaryView.onViewAppeared();
     }
 
     @Test
