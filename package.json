@@ -155,13 +155,13 @@
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
         "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug",
         "type": "android.emulator",
-        "name": "Nexus_5_API_25"
+        "name": "Nexus_5X_API_23"
       },
       "android.emu.release.locked": {
         "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
         "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
         "type": "android.emulator",
-        "name": "Nexus_5_API_25"
+        "name": "Nexus_5X_API_23"
       }
     }
   }
