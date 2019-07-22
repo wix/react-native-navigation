@@ -8,6 +8,7 @@
 #import "RNNSplitViewController.h"
 #import "RNNNavigationButtons.h"
 #import "RNNSplitViewOptions.h"
+#import "RNNToolbarOptions.h"
 #import "UIViewController+RNNOptions.h"
 #import "UINavigationController+RNNOptions.h"
 
@@ -29,6 +30,7 @@
 	self.statusBar = [[RNNStatusBarOptions alloc] initWithDict:dict[@"statusBar"]];
 	self.preview = [[RNNPreviewOptions alloc] initWithDict:dict[@"preview"]];
 	self.layout = [[RNNLayoutOptions alloc] initWithDict:dict[@"layout"]];
+	self.toolbar = [[RNNToolbarOptions alloc] initWithDict:dict[@"toolbar"]];
 	
 	self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
 	

@@ -12,6 +12,7 @@
 @property (weak, nonatomic) UIViewController<RNNLayoutProtocol>* viewController;
 @property (strong, nonatomic) RNNButtonOptions* defaultLeftButtonStyle;
 @property (strong, nonatomic) RNNButtonOptions* defaultRightButtonStyle;
+@property (strong, nonatomic) RNNButtonOptions* defaultToolbarButtonStyle;
 @property (strong, nonatomic) RNNReactComponentRegistry* componentRegistry;
 @end
 
@@ -38,6 +39,13 @@
 	}
 }
 
+- (void) applyToolbarButtons:(NSArray *)toolbarButtons defaultToolbarButtonStyle:(RNNButtonOptions *)defaultToolbarButtonStyle {
+    _defaultToolbarButtonStyle = defaultToolbarButtonStyle;
+    if (toolbarButtons) {
+        [self setButtons:toolbarButtons side:@"toolbar" animated:NO defaultStyle:_defaultToolbarButtonStyle insets:[self toolbarButtonInsets:_defaultToolbarButtonStyle.iconInsets]];
+    }
+}
+
 -(void)setButtons:(NSArray*)buttons side:(NSString*)side animated:(BOOL)animated defaultStyle:(RNNButtonOptions *)defaultStyle insets:(UIEdgeInsets)insets {
 	NSMutableArray *barButtonItems = [NSMutableArray new];
 	NSArray* resolvedButtons = [self resolveButtons:buttons];
@@ -59,6 +67,10 @@
 	if ([side isEqualToString:@"right"]) {
 		[self.viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
 	}
+	
+	if ([side isEqualToString:@"toolbar"]) {
+    [self.viewController setToolbarItems:barButtonItems animated:animated];
+  }
 }
 
 - (NSArray *)resolveButtons:(id)buttons {
@@ -206,6 +218,13 @@
 - (UIEdgeInsets)rightButtonInsets:(RNNInsetsOptions *)defaultInsets {
 	return UIEdgeInsetsMake([defaultInsets.top getWithDefaultValue:0],
 					 [defaultInsets.left getWithDefaultValue:15],
+					 [defaultInsets.bottom getWithDefaultValue:0],
+					 [defaultInsets.right getWithDefaultValue:0]);
+}
+
+- (UIEdgeInsets)toolbarButtonInsets:(RNNInsetsOptions *)defaultInsets {
+  return UIEdgeInsetsMake([defaultInsets.top getWithDefaultValue:0],
+					 [defaultInsets.left getWithDefaultValue:0],
 					 [defaultInsets.bottom getWithDefaultValue:0],
 					 [defaultInsets.right getWithDefaultValue:0]);
 }

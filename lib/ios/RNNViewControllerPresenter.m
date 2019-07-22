@@ -74,6 +74,10 @@
 	if ((options.topBar.leftButtons || options.topBar.rightButtons)) {
 		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:options.topBar.leftButtonStyle defaultRightButtonStyle:options.topBar.rightButtonStyle];
 	}
+	
+  if (options.toolbar.buttons) {
+    [_navigationButtons applyToolbarButtons:options.toolbar.buttons defaultToolbarButtonStyle:options.toolbar.buttonStyle];
+  }
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
@@ -145,6 +149,10 @@
 		RNNNavigationOptions* buttonsResolvedOptions = [(RNNNavigationOptions *)[currentOptions overrideOptions:newOptions] withDefault:defaultOptions];
 		[_navigationButtons applyLeftButtons:newOptions.topBar.leftButtons rightButtons:newOptions.topBar.rightButtons defaultLeftButtonStyle:buttonsResolvedOptions.topBar.leftButtonStyle defaultRightButtonStyle:buttonsResolvedOptions.topBar.rightButtonStyle];
 	}
+
+  if (newOptions.toolbar.buttons) {
+    [_navigationButtons applyToolbarButtons:newOptions.toolbar.buttons defaultToolbarButtonStyle:newOptions.toolbar.buttonStyle];
+  }
 	
 	if (newOptions.overlay.interceptTouchOutside.hasValue) {
 		RCTRootView* rootView = (RCTRootView*)viewController.view;

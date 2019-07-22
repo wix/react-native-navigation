@@ -42,12 +42,17 @@
 	[_presenter applyOptions:self.resolveOptions];
 	[_presenter renderComponents:self.resolveOptions perform:nil];
 	
+  if (self.options.toolbar.buttons) {
+    [self.navigationController setToolbarHidden:NO animated:NO];
+  }
+
 	[self.parentViewController onChildWillAppear];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self.eventEmitter sendComponentDidAppear:self.layoutInfo.componentId componentName:self.layoutInfo.name];
+	[self.navigationController setToolbarHidden:YES animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

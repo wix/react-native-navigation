@@ -862,6 +862,10 @@ export interface OptionsCustomTransitionAnimation {
   duration?: number;
 }
 
+export interface ToolbarOptions {
+  buttons: OptionsTopBarButton[];
+}
+
 export interface Options {
   /**
    * Configure the status bar
@@ -906,6 +910,10 @@ export interface Options {
    * Configure the overlay
    */
   overlay?: OverlayOptions;
+  /**
+   * Configure the bottom toolbar (iOS)
+   */
+  toolbar?: ToolbarOptions;
   /**
    * Animation used for navigation commands that modify the layout
    * hierarchy can be controlled in options.
