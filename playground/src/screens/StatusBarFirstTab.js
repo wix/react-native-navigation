@@ -53,7 +53,8 @@ class StatusBarFirstTab extends React.Component {
     Navigation.mergeOptions(this, {
       bottomTabs: {
         visible: this.visible,
-        drawBehind: !this.visible
+        drawBehind: !this.visible,
+        animate: true
       }
     });
   };
