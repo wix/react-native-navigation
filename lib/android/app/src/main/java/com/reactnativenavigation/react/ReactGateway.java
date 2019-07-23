@@ -37,7 +37,7 @@ public class ReactGateway {
 	}
 
 	public void onActivityCreated(NavigationActivity activity) {
-		initializer.onActivityCreated(activity);
+		initializer.onActivityCreated();
         jsDevReloadHandler.setReloadListener(activity);
 	}
 
