@@ -2,12 +2,10 @@ package com.reactnativenavigation.presentation;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
 
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.DotIndicatorOptions;
-import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
@@ -16,6 +14,8 @@ import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.views.BottomTabs;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
@@ -34,8 +34,6 @@ public class BottomTabPresenter {
         this.bottomTabFinder = new BottomTabFinder(tabs);
         this.imageLoader = imageLoader;
         this.defaultOptions = defaultOptions;
-        defaultSelectedTextColor = defaultOptions.bottomTabOptions.selectedIconColor.get(ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationAccent));
-        defaultTextColor = defaultOptions.bottomTabOptions.iconColor.get(ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationInactive));
         defaultDotIndicatorSize = dpToPx(context, 6);
     }
 

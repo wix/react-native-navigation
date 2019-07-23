@@ -1,7 +1,5 @@
 package com.reactnativenavigation.parse;
 
-import android.support.annotation.Nullable;
-
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullBool;
@@ -13,6 +11,8 @@ import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
 
 import org.json.JSONObject;
+
+import androidx.annotation.Nullable;
 
 public class DotIndicatorOptions {
     public static DotIndicatorOptions parse(@Nullable JSONObject json) {
