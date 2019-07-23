@@ -20,7 +20,7 @@ const renderFooter = (props) => props.componentId && <View style={styles.footer}
 </View>;
 
 const renderInput = () => showTextInputToTestKeyboardInteraction && <TextInput placeholder='Input' style={{ borderWidth: 1, borderRadius: 10, height: 40, width: 100 }} />;
-const renderFooterText = (props) => { props.footer && <Text style={styles.footerText}>{props.footer}</Text> };
+const renderFooterText = (props) => props.footer && <Text style={styles.footerText}>{props.footer}</Text>;
 const renderComponentId = (props) => <Text style={styles.footerText}>{`this.props.componentId = ${props.componentId}`}</Text>;
 
 const styles = StyleSheet.create({

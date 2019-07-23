@@ -381,7 +381,7 @@ public class StackPresenter {
     }
 
     private void mergeTopBarOptions(Options options, StackController stack, ViewController child) {
-        AnimationsOptions animationsOptions = options.withDefaultOptions(defaultOptions).animations;
+        AnimationsOptions animationsOptions = options.copy().withDefaultOptions(defaultOptions).animations;
         TopBarOptions topBarOptions = options.topBar;
         final View component = child.getView();
         if (topBarOptions.height.hasValue()) topBar.setHeight(topBarOptions.height.get());

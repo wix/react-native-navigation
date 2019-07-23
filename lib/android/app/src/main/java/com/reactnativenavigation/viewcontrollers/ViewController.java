@@ -1,12 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -30,6 +24,13 @@ import com.reactnativenavigation.views.element.Element;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
@@ -159,9 +160,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             task.run((StackController) parentController);
         } else if (this instanceof StackController) {
             task.run((StackController) this);
-        } else if (parentController != null){
-            parentController.performOnParentStack(task);
-        }
+        } else performOnParentController(parent -> parent.performOnParentStack(task));
     }
 
     public T getView() {

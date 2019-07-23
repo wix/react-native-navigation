@@ -1,10 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
@@ -25,6 +21,11 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class Navigator extends ParentController {
 
@@ -137,10 +138,6 @@ public class Navigator extends ParentController {
             public void onSuccess(String childId) {
                 if (removeSplashView) contentLayout.removeViewAt(0);
                 super.onSuccess(childId);
-            }
-
-            private void removePreviousContentView() {
-                contentLayout.removeViewAt(0);
             }
         }, reactInstanceManager);
     }

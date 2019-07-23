@@ -21,7 +21,6 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -65,7 +64,7 @@ public class BottomTabPresenterTest extends BaseTest {
         for (int i = 0; i < 2; i++) {
             Options options = tabs.get(i).options;
             uut.mergeChildOptions(options, tabs.get(i));
-            verify(bottomTabs, times(1)).setBadge(i, options.bottomTabOptions.badge.get());
+            verify(bottomTabs, times(1)).setNotification(any(AHNotification.class), eq(i));
             verify(bottomTabs, times(1)).setIconActiveColor(eq(i), anyInt());
             verify(bottomTabs, times(1)).setIconInactiveColor(eq(i), anyInt());
         }
@@ -75,7 +74,7 @@ public class BottomTabPresenterTest extends BaseTest {
     @Test
     public void mergeChildOptions_onlySetsDefinedOptions() {
         uut.mergeChildOptions(child3.options, child3);
-        verify(bottomTabs, times(0)).setBadge(eq(2), anyString());
+        verify(bottomTabs, times(0)).setNotification(any(AHNotification.class), anyInt());
         verify(bottomTabs, times(0)).setIconInactiveColor(eq(2), anyInt());
         verify(bottomTabs, times(0)).setIconActiveColor(eq(2), anyInt());
         verifyNoMoreInteractions(bottomTabs);

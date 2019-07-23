@@ -6,7 +6,6 @@ def safeExtGet(prop, fallback) {
 
 def DEFAULT_COMPILE_SDK_VERSION = 28
 def DEFAULT_MIN_SDK_VERSION = 19
-def DEFAULT_SUPPORT_LIB_VERSION = '28.0.0'
 def DEFAULT_TARGET_SDK_VERSION = 28
 
 android {
@@ -93,11 +92,9 @@ allprojects { p ->
     }
 }
 
-def supportLibVersion = safeExtGet('supportLibVersion', DEFAULT_SUPPORT_LIB_VERSION)
-
 dependencies {
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation 'com.github.wix-playground:ahbottomnavigation:2.4.15'
@@ -112,5 +109,5 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.3-beta-1"
     testImplementation 'org.assertj:assertj-core:3.8.0'
     testImplementation 'com.squareup.assertj:assertj-android:1.1.1'
-    testImplementation 'org.mockito:mockito-core:2.27.0'
+    testImplementation 'org.mockito:mockito-core:2.28.2'
 }

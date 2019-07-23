@@ -49,10 +49,6 @@ public class BottomTabs extends AHBottomNavigation {
         super.createItems();
     }
 
-    public void setBadge(int bottomTabIndex, String badge) {
-        setNotification(badge, bottomTabIndex);
-    }
-
     @Override
     public void setCurrentItem(@IntRange(from = 0) int position) {
         super.setCurrentItem(position);
