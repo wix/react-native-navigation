@@ -1,5 +1,7 @@
 package com.reactnativenavigation.parse.params;
 
+import static com.reactnativenavigation.utils.ObjectUtils.equalsNotNull;
+
 public abstract class Param<T> {
     protected T value;
 
@@ -20,5 +22,9 @@ public abstract class Param<T> {
 
     public boolean hasValue() {
         return value != null;
+    }
+
+    public boolean equals(Param other) {
+        return value == other.value || equalsNotNull(value, other.value);
     }
 }

@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Button {
     public String instanceId = "btn" + CompatUtils.generateViewId();
@@ -33,6 +34,22 @@ public class Button {
     public Text icon = new NullText();
     public Text testId = new NullText();
     public Component component = new Component();
+
+    public boolean equals(Button other) {
+        return Objects.equals(id, other.id) &&
+               text.equals(other.text) &&
+               enabled.equals(other.enabled) &&
+               disableIconTint.equals(other.disableIconTint) &&
+               showAsAction.equals(other.showAsAction) &&
+               color.equals(other.color) &&
+               disabledColor.equals(other.disabledColor) &&
+               fontSize.equals(other.fontSize) &&
+               fontWeight.equals(other.fontWeight) &&
+               Objects.equals(fontFamily, other.fontFamily) &&
+               icon.equals(other.icon) &&
+               testId.equals(other.testId) &&
+               component.equals(other.component);
+    }
 
     private static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
         Button button = new Button();

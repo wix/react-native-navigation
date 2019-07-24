@@ -26,7 +26,6 @@ public class TopBarTest extends BaseTest {
     private TopBarAnimator animator;
     private Activity activity;
 
-    @SuppressWarnings("Convert2Lambda")
     @Override
     public void beforeEach() {
         activity = newActivity();
