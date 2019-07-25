@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 
@@ -47,7 +49,7 @@ public class LayoutFactory {
 	private final ReactInstanceManager reactInstanceManager;
     private EventEmitter eventEmitter;
     private Map<String, ExternalComponentCreator> externalComponentCreators;
-    private @NonNull Options defaultOptions;
+    private @NonNull Options defaultOptions = new Options();
     private TypefaceLoader typefaceManager;
 
     public void setDefaultOptions(@NonNull Options defaultOptions) {
@@ -232,6 +234,7 @@ public class LayoutFactory {
         return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parse(typefaceManager, node.getOptions()), new Presenter(activity, defaultOptions));
     }
 
+    @Nonnull
     @RestrictTo(RestrictTo.Scope.TESTS)
     public Options getDefaultOptions() {
         return defaultOptions;

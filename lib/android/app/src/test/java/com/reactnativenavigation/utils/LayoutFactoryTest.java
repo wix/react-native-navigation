@@ -25,11 +25,17 @@ public class LayoutFactoryTest extends BaseTest {
         assertThat(uut.create(component())).isNotNull();
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void defaultOptionsAreNotNull() {
         assertThat(uut.getDefaultOptions()).isNotNull();
-        //noinspection ConstantConditions
-        uut.setDefaultOptions(null);
+        boolean exceptionThrown = false;
+        try {
+            //noinspection ConstantConditions
+            uut.setDefaultOptions(null);
+        } catch (AssertionError exception) {
+            exceptionThrown = true;
+        }
+        assertThat(exceptionThrown).isTrue();
     }
 
     private LayoutNode component() throws JSONException {
