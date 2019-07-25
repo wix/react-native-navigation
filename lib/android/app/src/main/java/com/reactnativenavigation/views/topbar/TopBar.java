@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
@@ -29,6 +28,7 @@ import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
@@ -36,6 +36,7 @@ import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private View border;
     private View component;
     private float elevation = -1;
+    private List<TitleBarButtonController> rightButtons = new ArrayList<>();
 
     public TopBar(final Context context, StackLayout parentView) {
         super(context);
@@ -218,6 +220,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setRightButtons(List<TitleBarButtonController> rightButtons) {
+        if (CollectionUtils.equals(this.rightButtons, rightButtons)) return;
+        this.rightButtons = rightButtons;
         titleBar.setRightButtons(rightButtons);
     }
 
