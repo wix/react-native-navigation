@@ -12,6 +12,7 @@ import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.utils.Assertions;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
@@ -35,19 +36,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+
 import static com.reactnativenavigation.parse.Options.parse;
 
 public class LayoutFactory {
-
 	private Activity activity;
     private ChildControllersRegistry childRegistry;
 	private final ReactInstanceManager reactInstanceManager;
     private EventEmitter eventEmitter;
     private Map<String, ExternalComponentCreator> externalComponentCreators;
-    private Options defaultOptions;
+    private @NonNull Options defaultOptions;
     private TypefaceLoader typefaceManager;
 
-    public void setDefaultOptions(Options defaultOptions) {
+    public void setDefaultOptions(@NonNull Options defaultOptions) {
+        Assertions.assertNotNull(defaultOptions);
         this.defaultOptions = defaultOptions;
     }
 
@@ -226,5 +230,10 @@ public class LayoutFactory {
             tabs.add(tabController);
         }
         return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parse(typefaceManager, node.getOptions()), new Presenter(activity, defaultOptions));
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public Options getDefaultOptions() {
+        return defaultOptions;
     }
 }
