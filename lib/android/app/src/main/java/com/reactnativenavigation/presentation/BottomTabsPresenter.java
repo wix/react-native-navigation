@@ -10,7 +10,6 @@ import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
@@ -18,6 +17,8 @@ import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.Component;
 
 import java.util.List;
+
+import static com.reactnativenavigation.utils.ViewUtils.getHeight;
 
 public class BottomTabsPresenter {
     private final BottomTabFinder bottomTabFinder;
@@ -111,13 +112,8 @@ public class BottomTabsPresenter {
         MarginLayoutParams lp = (MarginLayoutParams) tab.getLayoutParams();
         if (options.drawBehind.isTrue()) {
             lp.bottomMargin = 0;
-        }
-        if (options.visible.isTrueOrUndefined() && options.drawBehind.isFalseOrUndefined()) {
-            if (bottomTabs.getHeight() == 0) {
-                UiUtils.runOnPreDrawOnce(bottomTabs, () -> lp.bottomMargin = bottomTabs.getHeight());
-            } else {
-                lp.bottomMargin = bottomTabs.getHeight();
-            }
+        } else if (options.visible.isTrueOrUndefined()) {
+            lp.bottomMargin = getHeight(bottomTabs);
         }
     }
 
@@ -126,13 +122,8 @@ public class BottomTabsPresenter {
         MarginLayoutParams lp = (MarginLayoutParams) tab.getLayoutParams();
         if (options.drawBehind.isTrue()) {
             lp.bottomMargin = 0;
-        }
-        if (options.visible.isTrue() && options.drawBehind.isFalse()) {
-            if (bottomTabs.getHeight() == 0) {
-                UiUtils.runOnPreDrawOnce(bottomTabs, () -> lp.bottomMargin = bottomTabs.getHeight());
-            } else {
-                lp.bottomMargin = bottomTabs.getHeight();
-            }
+        } else if (options.visible.isTrue() && options.drawBehind.isFalse()) {
+            lp.bottomMargin = getHeight(bottomTabs);
         }
     }
 

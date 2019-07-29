@@ -402,7 +402,6 @@ public class BottomTabsControllerTest extends BaseTest {
             public void ensureViewIsCreated() {
                 super.ensureViewIsCreated();
                 uut.getView().layout(0, 0, 1000, 1000);
-                uut.getBottomTabs().layout(0, 0, 1000, 100);
             }
 
             @NonNull
