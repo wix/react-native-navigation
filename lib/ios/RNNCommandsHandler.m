@@ -77,7 +77,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
 	
 	[vc renderTreeAndWait:[vc.resolveOptions.animations.setRoot.waitForRender getWithDefaultValue:NO] perform:^{
+		if(_controllerFactory.defaultOptions.layout.backgroundColor.hasValue) {
+			[vc rnn_setBackgroundColor:_controllerFactory.defaultOptions.layout.backgroundColor.get];
+		}
+
 		_mainWindow.rootViewController = vc;
+
 		[_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId params:@{@"layout": layout}];
 		completion() ;
 	}];
