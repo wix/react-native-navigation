@@ -7,7 +7,6 @@ const CustomDialogWithScroll = require('./complexlayouts/CustomDialogWithScroll'
 const TopTabScreen = require('./TopTabScreen');
 const TopTabOptionsScreen = require('./TopTabOptionsScreen');
 const CustomTextButton = require('./CustomTextButton');
-const TopBarBackground = require('./TopBarBackground');
 const KeyboardScreen = require('./KeyboardScreen');
 const Screens = require('./Screens');
 
@@ -41,6 +40,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Stack, () => require('./StackScreen'));
   Navigation.registerComponent(Screens.StatusBarOptions, () => require('./StatusBarOptionsScreen'));
   Navigation.registerComponent(Screens.StatusBarFirstTab, () => require('./StatusBarFirstTab'));
+  Navigation.registerComponent(Screens.TopBarBackground, () => require('../components/TopBarBackground'));
 
   const { ContextProvider } = require('../context');
   const ContextScreen = require('./ContextScreen');
@@ -59,7 +59,6 @@ function registerScreens() {
   Navigation.registerComponent('navigation.playground.TopTabScreen', () => TopTabScreen);
   Navigation.registerComponent('navigation.playground.TopTabOptionsScreen', () => TopTabOptionsScreen);
   Navigation.registerComponent('CustomTextButton', () => CustomTextButton);
-  Navigation.registerComponent('TopBarBackground', () => TopBarBackground);
   Navigation.registerComponent('navigation.playground.KeyboardScreen', () => KeyboardScreen);
 }
 

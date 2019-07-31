@@ -10,26 +10,9 @@ class TopBarBackground extends Component {
 
   constructor(props) {
     super(props);
-    this.subscription = Navigation.events().bindComponent(this);
+    Navigation.events().bindComponent(this);
     this.state = {};
-    this.dots = new Array(55).fill('').map((ignored, i) => <View key={'dot' + i} style={[styles.dot, {backgroundColor: this.props.color}]}/>);
-  }
-
-  componentDidAppear() {
-    console.log('RNN', 'TBB.componentDidAppear');
-  }
-
-  componentDidDisappear() {
-    console.log('RNN', `TBB.componentDidDisappear`);
-  }
-
-  componentDidMount() {
-    console.log('RNN', `TBB.componentDidMount`);
-  }
-
-  componentWillUnmount() {
-    console.log('RNN', `TBB.componentWillUnmount`);
-    this.subscription.remove();
+    this.dots = new Array(55).fill('').map((ignored, i) => <View key={'dot' + i} style={[styles.dot, {backgroundColor: this.props.color || '#d3d3d3'}]}/>);
   }
 
   render() {
