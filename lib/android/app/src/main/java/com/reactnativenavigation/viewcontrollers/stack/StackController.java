@@ -346,6 +346,7 @@ public class StackController extends ParentController<StackLayout> {
     private void onNavigationButtonPressed(String buttonId) {
         if (Constants.BACK_BUTTON_ID.equals(buttonId)) {
             pop(Options.EMPTY, new CommandListenerAdapter());
+            sendOnNavigationButtonPressed(Constants.BACK_BUTTON_ID);
         } else {
             sendOnNavigationButtonPressed(buttonId);
         }
