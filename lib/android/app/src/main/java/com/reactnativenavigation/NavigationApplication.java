@@ -68,7 +68,7 @@ public abstract class NavigationApplication extends Application implements React
      * the default implementation of {@link #createReactGateway()}
      */
 	@Nullable
-	public abstract List<ReactPackage> createAdditionalReactPackages();
+	public abstract List<ReactPackage> createAdditionalReactPackages(ReactNativeHost host);
 
     /**
      * Register a native View which can be displayed using the given {@code name}
