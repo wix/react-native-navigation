@@ -33,9 +33,13 @@
 	return [(RNNNavigationOptions *)[self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
 }
 
+- (RNNNavigationOptions *)resolveChildOptions:(UIViewController *) child {
+	return [(RNNNavigationOptions *)[self.options mergeInOptions:child.resolveOptions.copy] withDefault:self.defaultOptions];
+}
+
 - (void)mergeOptions:(RNNNavigationOptions *)options {
 	[self.presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
-	[((UIViewController *)self.parentViewController) mergeOptions:options];
+	[self.parentViewController mergeOptions:options];
 }
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {

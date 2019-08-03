@@ -1,20 +1,10 @@
 #import "RNNControllerFactory.h"
-#import "RNNLayoutNode.h"
 #import "RNNSplitViewController.h"
-#import "RNNSplitViewOptions.h"
 #import "RNNSideMenuController.h"
-#import "RNNSideMenuChildVC.h"
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
 #import "RNNTopTabsViewController.h"
-#import "RNNLayoutInfo.h"
 #import "RNNRootViewController.h"
-#import "UIViewController+SideMenuController.h"
-#import "RNNViewControllerPresenter.h"
-#import "RNNNavigationControllerPresenter.h"
-#import "RNNTabBarPresenter.h"
-#import "RNNSideMenuPresenter.h"
-#import "RNNSplitViewControllerPresenter.h"
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
@@ -72,7 +62,7 @@
 	}
 	
 	else if (node.isTabs) {
-		result = [self createTabs:node];
+		result = [self createBottomTabs:node];
 	}
 	
 	else if (node.isTopTabs) {
@@ -117,7 +107,7 @@
 	
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
 	
-	return (UIViewController *)component;
+	return component;
 }
 
 - (UIViewController *)createExternalComponent:(RNNLayoutNode*)node {
@@ -130,7 +120,7 @@
 	RNNRootViewController* component = [[RNNRootViewController alloc] initExternalComponentWithLayoutInfo:layoutInfo eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
 	[component bindViewController:externalVC];
 	
-	return (UIViewController *)component;
+	return component;
 }
 
 
@@ -146,14 +136,21 @@
 	return stack;
 }
 
--(UIViewController *)createTabs:(RNNLayoutNode*)node {
+-(UIViewController *)createBottomTabs:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNTabBarPresenter* presenter = [[RNNTabBarPresenter alloc] init];
+	RNNTabBarPresenter* presenter = [RNNTabBarPresenter new];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
-	RNNTabBarController* tabsController = [[RNNTabBarController alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:presenter eventEmitter:_eventEmitter childViewControllers:childViewControllers];
+	RNNTabBarController* tabsController = [[RNNTabBarController alloc] initWithLayoutInfo:layoutInfo
+            creator:_creator
+            options:options
+			defaultOptions:_defaultOptions
+			presenter:presenter
+			eventEmitter:_eventEmitter
+			childViewControllers:childViewControllers
+	];
 	
 	return tabsController;
 }

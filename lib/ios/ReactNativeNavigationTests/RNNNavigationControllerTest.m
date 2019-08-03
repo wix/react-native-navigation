@@ -152,6 +152,44 @@
 	[(id)self.uut.options verify];
 }
 
+- (void)testSetTopBarBackgroundColor_ShouldSetBackgroundColor {
+	UIColor* color = UIColor.redColor;
+	[self.uut setTopBarBackgroundColor:color];
+	XCTAssertEqual(self.uut.navigationBar.barTintColor, color);
+}
+
+- (void)testSetTopBarBackgroundColor_ShouldSetTransparentBackgroundColor {
+	UIColor* transparentColor = UIColor.clearColor;
+	[self.uut setTopBarBackgroundColor:transparentColor];
+
+	XCTAssertEqual(self.uut.navigationBar.backgroundColor, transparentColor);
+	XCTAssertTrue(self.uut.navigationBar.translucent);
+	XCTAssertNotNil(self.uut.navigationBar.shadowImage);
+	XCTAssertNotNil([self.uut.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault]);
+}
+
+- (void)testSetTopBarBackgroundColor_ShouldRemoveTransparentView {
+	UIColor* transparentColor = UIColor.clearColor;
+	UIColor* redColor = UIColor.redColor;
+	
+	[self.uut setTopBarBackgroundColor:transparentColor];
+	XCTAssertNotNil([self.uut.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]);
+	[self.uut setTopBarBackgroundColor:redColor];
+	XCTAssertNil([self.uut.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]);
+}
+
+- (void)testSetTopBarBackgroundColor_NilColorShouldResetNavigationBar {
+	UIColor* transparentColor = UIColor.clearColor;
+	UIColor* redColor = UIColor.redColor;
+	
+	[self.uut setTopBarBackgroundColor:transparentColor];
+	[self.uut setTopBarBackgroundColor:redColor];
+	[self.uut setTopBarBackgroundColor:nil];
+	
+	XCTAssertNil([self.uut.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]);
+	XCTAssertNil(self.uut.navigationBar.barTintColor);
+}
+
 - (RNNNavigationController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
 	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator options:options defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init] eventEmitter:nil childViewControllers:@[_vc1]];
 	return nav;

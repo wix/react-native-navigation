@@ -1,8 +1,50 @@
 # Changelog
+# 2.26.1
+
+## Fixed
+### iOS
+* Fix transparent topBar background color transition [#147cf4c](https://github.com/wix/react-native-navigation/commit/147cf4cafca83f0903b68a47d3812009a11d3018) by [yogevbd](https://github.com/yogevbd)
+
+# 2.26.0
+
+## Fixed
+### Android
+* Apply TopBar buttons only if they are different than current buttons [#f15e9b3](https://github.com/wix/react-native-navigation/commit/f15e9b3a2a8c661d10c93d9c2f9a7155de979240) by [guyca](https://github.com/guyca)
+
+# 2.25.0
+
+## Fixed
+### Android
+* Ensure appLaunched event is emitted only when app is resumed [#21584fd](https://github.com/wix/react-native-navigation/commit/21584fd4a525d7a8085caf18d624668cc5865d93) by [guyca](https://github.com/guyca)
+
+# 2.24.0
+## Added
+* Add return type to Navigation.constants() [#66ab3cd](https://github.com/wix/react-native-navigation/commit/66ab3cd695be68e7d7536fde4c61bad4e7067281) by [danilobuerger](https://github.com/danilobuerger)
+
+## Fixed
+### Android
+* Destroy modals on setRoot [#f06787d](https://github.com/wix/react-native-navigation/commit/f06787dec9997cd51c52bef4d319ef32bca64f48) by [guyca](https://github.com/guyca)
+
+### iOS
+* Fixed react component button flicker [#77ee4df](https://github.com/wix/react-native-navigation/commit/77ee4df6c9e3824c418fbba6ed9fe82711b5d520) by [yogevbd](https://github.com/yogevbd)
+* Fix bug that reverts navbar title size to 17 [#e677f97](https://github.com/wix/react-native-navigation/commit/e677f97cb775e43af1352caf38c03dd352851b47) by [dcvz](https://github.com/dcvz)
+
+# 2.23.0
+## Added
+* BottomTab dot indicator [#f425155](https://github.com/wix/react-native-navigation/commit/f42515524d88a5f4f12a35684ab288dad6af1b1d) by [guyca](https://github.com/guyca)
+
+## Fixed
+### Android
+* Fix margin top topbar when statusbar drawBehind [#234c59c](https://github.com/wix/react-native-navigation/commit/234c59ce7b35acc6ba53bc7a43f4c688bfb6e11e) by [isuhar](https://github.com/isuhar)
+
+### iOS
+* Fix SideMenu size after screen rotation [#a591fe4](https://github.com/wix/react-native-navigation/commit/a591fe4476ca152a336022e2570431b677f60225) by [lionerez1](https://github.com/lionerez1)
+* Set nil as default UITabBarItem.title value [#76d832b](https://github.com/wix/react-native-navigation/commit/76d832b683b3daca530340acdcfbc30acf36b568) by [danilobuerger](https://github.com/danilobuerger)
+
 # 2.22.3
 ## Fixed
 ### iOS
-* Fix Constants.topBarHeight being zero if root ViewController isn't a NavigationViewController [#f19e523](https://github.com/wix/react-native-navigation/commit/f19e523afcc013681a601d2c9d4b0340f5459b59) by [guyca](https://github.com/guyca) 
+* Fix Constants.topBarHeight being zero if root ViewController isn't a NavigationViewController [#f19e523](https://github.com/wix/react-native-navigation/commit/f19e523afcc013681a601d2c9d4b0340f5459b59) by [guyca](https://github.com/guyca)
 
 # 2.22.2
 ## Added

@@ -8,6 +8,10 @@
 	return self;
 }
 
+- (void)viewDidLayoutSubviews {
+	[self.presenter viewDidLayoutSubviews];
+}
+
 - (UIViewController *)getCurrentChild {
 	return self.selectedViewController;
 }

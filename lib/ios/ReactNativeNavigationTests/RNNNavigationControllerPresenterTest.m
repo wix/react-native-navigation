@@ -47,14 +47,14 @@
 	_options.topBar.largeTitle.visible = [[Bool alloc] initWithBOOL:YES];
 	
 	[self.uut applyOptionsBeforePopping:self.options];
-	XCTAssertTrue([[self.uut.bindedViewController navigationBar] prefersLargeTitles]);
+	XCTAssertTrue([[self.uut.boundViewController navigationBar] prefersLargeTitles]);
 }
 
 - (void)testApplyOptionsBeforePoppingShouldSetDefaultLargeTitleFalseForPoppingViewController {
 	_options.topBar.largeTitle.visible = nil;
 	
 	[self.uut applyOptionsBeforePopping:self.options];
-	XCTAssertFalse([[self.uut.bindedViewController navigationBar] prefersLargeTitles]);
+	XCTAssertFalse([[self.uut.boundViewController navigationBar] prefersLargeTitles]);
 }
 
 @end

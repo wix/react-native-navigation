@@ -33,6 +33,7 @@ public class Navigator extends ParentController {
     private final OverlayManager overlayManager;
     private final RootPresenter rootPresenter;
     private ViewController root;
+    private ViewController previousRoot;
     private final FrameLayout rootLayout;
     private final FrameLayout modalsLayout;
     private final FrameLayout overlaysLayout;
@@ -50,7 +51,7 @@ public class Navigator extends ParentController {
         return defaultOptions;
     }
 
-    public FrameLayout getRootLayout() {
+    FrameLayout getRootLayout() {
         return rootLayout;
     }
 
@@ -122,13 +123,19 @@ public class Navigator extends ParentController {
         root = null;
     }
 
+    private void destroyPreviousRoot() {
+        if (previousRoot != null) previousRoot.destroy();
+        previousRoot = null;
+    }
+
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
 
     }
 
     public void setRoot(final ViewController viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
-        destroyRoot();
+        previousRoot = root;
+        modalStack.destroy();
         final boolean removeSplashView = isRootNotCreated();
         if (isRootNotCreated()) getView();
         root = viewController;
@@ -137,12 +144,13 @@ public class Navigator extends ParentController {
             public void onSuccess(String childId) {
                 if (removeSplashView) removePreviousContentView();
                 super.onSuccess(childId);
+                destroyPreviousRoot();
+            }
+
+            private void removePreviousContentView() {
+                contentLayout.removeViewAt(0);
             }
         }, reactInstanceManager);
-    }
-
-    private void removePreviousContentView() {
-        contentLayout.removeViewAt(0);
     }
 
     public void mergeOptions(final String componentId, Options options) {

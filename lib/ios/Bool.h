@@ -10,4 +10,6 @@
 
 - (BOOL)getWithDefaultValue:(BOOL)value;
 
+- (bool) isFalse;
+
 @end

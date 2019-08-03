@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JSONParser {
-    public static JSONObject parse(ReadableMap map) {
+    public JSONObject parse(ReadableMap map) {
         try {
             ReadableMapKeySetIterator it = map.keySetIterator();
             JSONObject result = new JSONObject();
@@ -41,7 +41,7 @@ public class JSONParser {
         }
     }
 
-    public static JSONArray parse(ReadableArray arr) {
+    public JSONArray parse(ReadableArray arr) {
         JSONArray result = new JSONArray();
         for (int i = 0; i < arr.size(); i++) {
             switch (arr.getType(i)) {

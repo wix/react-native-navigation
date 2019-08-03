@@ -34,6 +34,7 @@ public class BottomTabOptions {
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         options.fontSize = NumberParser.parse(json, "fontSize");
         options.selectedFontSize = NumberParser.parse(json, "selectedFontSize");
+        options.dotIndicator = DotIndicatorOptions.parse(json.optJSONObject("dotIndicator"));
         return options;
     }
 
@@ -46,6 +47,7 @@ public class BottomTabOptions {
     public Text testId = new NullText();
     public Text badge = new NullText();
     public Colour badgeColor = new NullColor();
+    public DotIndicatorOptions dotIndicator = new DotIndicatorOptions();
     public Number fontSize = new NullNumber();
     public Number selectedFontSize = new NullNumber();
     @Nullable public Typeface fontFamily;
@@ -64,6 +66,7 @@ public class BottomTabOptions {
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.selectedFontSize.hasValue()) selectedFontSize = other.selectedFontSize;
         if (other.fontFamily != null) fontFamily = other.fontFamily;
+        if (other.dotIndicator.hasValue()) dotIndicator = other.dotIndicator;
     }
 
     void mergeWithDefault(final BottomTabOptions defaultOptions) {
@@ -79,5 +82,6 @@ public class BottomTabOptions {
         if (!selectedFontSize.hasValue()) selectedFontSize = defaultOptions.selectedFontSize;
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
         if (!testId.hasValue()) testId = defaultOptions.testId;
+        if (!dotIndicator.hasValue()) dotIndicator = defaultOptions.dotIndicator;
     }
 }

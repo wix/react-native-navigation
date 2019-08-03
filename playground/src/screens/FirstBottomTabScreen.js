@@ -17,6 +17,9 @@ const {
 class FirstBottomTabScreen extends React.Component {
   static options() {
     return {
+      layout: {
+        orientation: ['portrait', 'landscape']
+      },
       topBar: {
         title: {
           text: 'First Tab'
@@ -24,9 +27,15 @@ class FirstBottomTabScreen extends React.Component {
       },
       bottomTab: {
         icon: require('../../img/whatshot.png'),
-        text: 'Tab 1'
+        text: 'Tab 1',
+        dotIndicator: { visible: true }
       }
     };
+  }
+
+  constructor(props) {
+    super(props);
+    this.dotVisible = true;
   }
 
   render() {
@@ -35,10 +44,12 @@ class FirstBottomTabScreen extends React.Component {
         <Button label='Switch Tab by Index' testID={SWITCH_TAB_BY_INDEX_BTN} onPress={this.switchTabByIndex} />
         <Button label='Switch Tab by componentId' testID={SWITCH_TAB_BY_COMPONENT_ID_BTN} onPress={this.switchTabByComponentId} />
         <Button label='Set Badge' testID={SET_BADGE_BTN} onPress={() => this.setBadge('NEW')} />
-        <Button label='Clear Badge' testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge(null)} />
+        <Button label='Clear Badge' testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge('')} />
+        <Button label='Set Notification Dot' onPress={this.setNotificationDot} />
         <Button label='Hide Tabs' testID={HIDE_TABS_BTN} onPress={() => this.toggleTabs(false)} />
         <Button label='Show Tabs' testID={SHOW_TABS_BTN} onPress={() => this.toggleTabs(true)} />
         <Button label='Hide Tabs on Push' testID={HIDE_TABS_PUSH_BTN} onPress={this.hideTabsOnPush} />
+        <Button label='Push' onPress={this.push} />
       </Root>
     );
   }
@@ -55,9 +66,22 @@ class FirstBottomTabScreen extends React.Component {
     }
   });
 
-  setBadge = (badge) => Navigation.mergeOptions(this, {
-    bottomTab: { badge }
-  });
+  setBadge = (badge) => {
+    this.badgeVisible = !!badge;
+    if (this.badgeVisible) this.dotVisible = false;
+    Navigation.mergeOptions(this, {
+      bottomTab: { badge }
+    });
+  }
+
+  setNotificationDot = () => {
+    this.dotVisible = !this.dotVisible;
+    Navigation.mergeOptions(this, {
+      bottomTab: {
+        dotIndicator: { visible: this.dotVisible }
+      }
+    });
+  }
 
   toggleTabs = (visible) => Navigation.mergeOptions(this, {
     bottomTabs: { visible }
@@ -66,6 +90,8 @@ class FirstBottomTabScreen extends React.Component {
   hideTabsOnPush = () => Navigation.push(this, component(Screens.Pushed, {
     bottomTabs: { visible: false }
   }));
+
+  push = () => Navigation.push(this, Screens.Pushed);
 }
 
 module.exports = FirstBottomTabScreen;

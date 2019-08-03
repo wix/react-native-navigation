@@ -110,6 +110,7 @@ public class UiUtils {
     }
 
     public static int dpToPx(Context context, int dp) {
+        if (dp <= 0) return dp;
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return (int) (dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));

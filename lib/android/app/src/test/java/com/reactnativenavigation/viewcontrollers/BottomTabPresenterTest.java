@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.graphics.Color;
 
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
@@ -19,6 +20,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -53,7 +55,7 @@ public class BottomTabPresenterTest extends BaseTest {
     public void present() {
         uut.applyOptions();
         for (int i = 0; i < tabs.size(); i++) {
-            verify(bottomTabs, times(1)).setBadge(i, tabs.get(i).options.bottomTabOptions.badge.get(""));
+            verify(bottomTabs, times(1)).setNotification(any(AHNotification.class), eq(i));
             verify(bottomTabs, times(1)).setTitleInactiveColor(i, tabs.get(i).options.bottomTabOptions.textColor.get(null));
             verify(bottomTabs, times(1)).setTitleActiveColor(i, tabs.get(i).options.bottomTabOptions.selectedTextColor.get(null));
         }
@@ -64,7 +66,7 @@ public class BottomTabPresenterTest extends BaseTest {
         for (int i = 0; i < 2; i++) {
             Options options = tabs.get(i).options;
             uut.mergeChildOptions(options, (Component) tabs.get(i).getView());
-            verify(bottomTabs, times(1)).setBadge(i, options.bottomTabOptions.badge.get());
+            verify(bottomTabs, times(1)).setNotification(any(AHNotification.class), eq(i));
             verify(bottomTabs, times(1)).setIconActiveColor(eq(i), anyInt());
             verify(bottomTabs, times(1)).setIconInactiveColor(eq(i), anyInt());
         }

@@ -1,4 +1,5 @@
 #import <XCTest/XCTest.h>
+#import <OCMockObject.h>
 #import "UITabBarController+RNNOptions.h"
 
 @interface UITabBarController_RNNOptionsTest : XCTestCase
@@ -11,7 +12,7 @@
 
 - (void)setUp {
     [super setUp];
-	self.uut = [UITabBarController new];
+	self.uut = [OCMockObject partialMockForObject:[UITabBarController new]];
 }
 
 - (void)test_tabBarTranslucent_true {

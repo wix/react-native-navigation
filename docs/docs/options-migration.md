@@ -512,7 +512,7 @@ Use iOS 11 large title
 # Android Options
 
 ## topBarElevationShadowEnabled
-TopBar elevation in dp. Set this value to `0` to disable the TopBa's shadow.
+TopBar elevation in dp. Set this value to `0` to disable the TopBar's shadow.
 
 ```js
 topBar: {
