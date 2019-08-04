@@ -178,7 +178,9 @@ public class StackPresenterTest extends BaseTest {
         verify(topBar, times(0)).setLeftButtons(any());
 
         Options options = new Options();
-        options.topBar.buttons.right = new ArrayList<>();
+        Button button = new Button();
+        button.text = new Text("btn");
+        options.topBar.buttons.right = new ArrayList<>(Collections.singleton(button));
         uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         verify(topBar, times(1)).setRightButtons(any());
 

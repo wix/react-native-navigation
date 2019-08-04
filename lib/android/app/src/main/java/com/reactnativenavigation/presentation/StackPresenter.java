@@ -23,6 +23,7 @@ import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.utils.ButtonPresenter;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.UiUtils;
@@ -69,6 +70,7 @@ public class StackPresenter {
     private Map<Component, TopBarBackgroundViewController> backgroundControllers = new HashMap();
     private Map<Component, Map<String, TitleBarButtonController>> componentRightButtons = new HashMap();
     private Map<Component, Map<String, TitleBarButtonController>> componentLeftButtons = new HashMap();
+    private List<TitleBarButtonController> currentRightButtons = new ArrayList<>();
 
     public StackPresenter(Activity activity,
                           TitleBarReactViewCreator titleViewCreator,
@@ -278,8 +280,12 @@ public class StackPresenter {
         if (rightButtons != null) {
             List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllers(componentRightButtons.get(child), rightButtons);
             componentRightButtons.put(child, keyBy(rightButtonControllers, TitleBarButtonController::getButtonInstanceId));
-            topBar.setRightButtons(rightButtonControllers);
+            if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
+                currentRightButtons = rightButtonControllers;
+                topBar.setRightButtons(rightButtonControllers);
+            }
         } else {
+            currentRightButtons = null;
             topBar.clearRightButtons();
         }
 
@@ -370,7 +376,12 @@ public class StackPresenter {
             if (previousLeftButtons != null) forEach(previousLeftButtons.values(), TitleBarButtonController::destroy);
         }
 
-        if (buttons.right != null) topBar.setRightButtons(rightButtonControllers);
+        if (buttons.right != null) {
+            if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
+                currentRightButtons = rightButtonControllers;
+                topBar.setRightButtons(rightButtonControllers);
+            }
+        }
         if (buttons.left != null) topBar.setLeftButtons(leftButtonControllers);
         if (buttons.back.hasValue()) topBar.setBackButton(createButtonController(buttons.back));
 
