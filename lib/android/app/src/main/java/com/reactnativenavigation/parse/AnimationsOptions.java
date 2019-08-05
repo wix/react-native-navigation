@@ -38,7 +38,7 @@ public class AnimationsOptions {
     void mergeWithDefault(AnimationsOptions defaultOptions) {
         push.mergeWithDefault(defaultOptions.push);
         pop.mergeWithDefault(defaultOptions.pop);
-        setStackRoot.mergeWith(defaultOptions.setStackRoot);
+        setStackRoot.mergeWithDefault(defaultOptions.setStackRoot);
         setRoot.mergeWithDefault(defaultOptions.setRoot);
         showModal.mergeWithDefault(defaultOptions.showModal);
         dismissModal.mergeWithDefault(defaultOptions.dismissModal);
