@@ -1,13 +1,13 @@
 package com.reactnativenavigation.parse;
 
+
 import org.json.JSONObject;
 
 public class AnimationsOptions {
 
     public static AnimationsOptions parse(JSONObject json) {
         AnimationsOptions options = new AnimationsOptions();
-        if (json == null)
-            return options;
+        if (json == null) return options;
 
         options.push = NestedAnimationsOptions.parse(json.optJSONObject("push"));
         options.pop = NestedAnimationsOptions.parse(json.optJSONObject("pop"));

@@ -174,9 +174,8 @@ public class StackController extends ParentController<StackLayout> {
 
     public void setRoot(List<ViewController> children, CommandListener listener) {
         animator.cancelPushAnimations();
-
         final ViewController toRemove = stack.peek();
-        IdStack<ViewController> stackToDestroy = stack;
+        IdStack stackToDestroy = stack;
         stack = new IdStack<>();
 
         ViewController child = last(children);
