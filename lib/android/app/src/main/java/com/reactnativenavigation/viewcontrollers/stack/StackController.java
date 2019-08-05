@@ -172,34 +172,30 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-    private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
-        view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
-        presenter.applyLayoutParamsOptions(resolvedOptions, view);
-        if (size() == 1) presenter.applyInitialChildLayoutOptions(resolvedOptions);
-        getView().addView(view, getView().getChildCount() - 1);
-    }
-
     public void setRoot(List<ViewController> children, CommandListener listener) {
         animator.cancelPushAnimations();
+
+        final ViewController toRemove = stack.peek();
         IdStack<ViewController> stackToDestroy = stack;
         stack = new IdStack<>();
-        stack.set(stackToDestroy.peekId(), stackToDestroy.peek(), 0);
+
+        ViewController child = last(children);
         if (children.size() == 1) {
-            backButtonHelper.clear(last(children));
-            push(last(children), new CommandListenerAdapter() {
-                @Override
-                public void onSuccess(String childId) {
-                    destroyStack(stackToDestroy);
-                    listener.onSuccess(childId);
-                }
-            });
+            backButtonHelper.clear(child);
         } else {
-            backButtonHelper.addToPushedChild(last(children));
-            push(last(children), new CommandListenerAdapter() {
-                @Override
-                public void onSuccess(String childId) {
-                    destroyStack(stackToDestroy);
+            backButtonHelper.addToPushedChild(child);
+        }
+
+        child.setParentController(this);
+        stack.push(child.getId(), child);
+        Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
+        addChildToStack(child, child.getView(), resolvedOptions);
+
+        CommandListener listenerAdapter = new CommandListenerAdapter() {
+            @Override
+            public void onSuccess(String childId) {
+                destroyStack(stackToDestroy);
+                if (children.size() > 1) {
                     for (int i = 0; i < children.size() - 1; i++) {
                         stack.set(children.get(i).getId(), children.get(i), i);
                         children.get(i).setParentController(StackController.this);
@@ -209,10 +205,34 @@ public class StackController extends ParentController<StackLayout> {
                             backButtonHelper.addToPushedChild(children.get(i));
                         }
                     }
-                    listener.onSuccess(childId);
                 }
-            });
+                listener.onSuccess(childId);
+            }
+        };
+
+        if (toRemove != null && resolvedOptions.animations.setStackRoot.enabled.isTrueOrUndefined()) {
+            if (resolvedOptions.animations.setStackRoot.waitForRender.isTrue()) {
+                child.getView().setAlpha(0);
+                child.addOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.setStackRoot, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
+                    listenerAdapter.onSuccess(child.getId());
+                }));
+            } else {
+                animator.push(child.getView(), resolvedOptions.animations.setStackRoot, () -> {
+                    listenerAdapter.onSuccess(child.getId());
+                });
+            }
+        } else {
+            listenerAdapter.onSuccess(child.getId());
         }
+    }
+
+
+    private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
+        view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
+        presenter.applyLayoutParamsOptions(resolvedOptions, view);
+        if (size() == 1) presenter.applyInitialChildLayoutOptions(resolvedOptions);
+        getView().addView(view, getView().getChildCount() - 1);
     }
 
     private void destroyStack(IdStack stack) {
