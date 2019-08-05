@@ -182,8 +182,9 @@ public class StackController extends ParentController<StackLayout> {
 
     public void setRoot(List<ViewController> children, CommandListener listener) {
         animator.cancelPushAnimations();
-        IdStack stackToDestroy = stack;
+        IdStack<ViewController> stackToDestroy = stack;
         stack = new IdStack<>();
+        stack.set(stackToDestroy.peekId(), stackToDestroy.peek(), 0);
         if (children.size() == 1) {
             backButtonHelper.clear(last(children));
             push(last(children), new CommandListenerAdapter() {
