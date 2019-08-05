@@ -10,6 +10,8 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBri
 
 + (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions;
 
++ (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions  mainWindow:(UIWindow *)mainWindow;
+
 + (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate;
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
