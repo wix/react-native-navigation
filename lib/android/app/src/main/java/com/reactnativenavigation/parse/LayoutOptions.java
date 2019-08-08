@@ -4,12 +4,8 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
-import com.reactnativenavigation.parse.parsers.TextParser;
-
 
 import org.json.JSONObject;
 
@@ -22,7 +18,7 @@ public class LayoutOptions {
         result.componentBackgroundColor = ColorParser.parse(json, "componentBackgroundColor");
         result.topMargin = NumberParser.parse(json, "topMargin");
         result.orientation = OrientationOptions.parse(json);
-        result.direction = TextParser.parse(json, "direction");
+        result.direction = LayoutDirection.fromString(json.optString("direction", ""));
 
         return result;
     }
@@ -31,7 +27,7 @@ public class LayoutOptions {
     public Colour componentBackgroundColor = new NullColor();
     public Number topMargin = new NullNumber();
     public OrientationOptions orientation = new OrientationOptions();
-    public Text direction = new NullText();
+    public LayoutDirection direction = LayoutDirection.DEFAULT;
 
     public void mergeWith(LayoutOptions other) {
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;

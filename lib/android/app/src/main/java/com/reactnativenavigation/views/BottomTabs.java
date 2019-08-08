@@ -4,10 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntRange;
+import android.widget.LinearLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.reactnativenavigation.parse.LayoutDirection;
 import com.reactnativenavigation.utils.CompatUtils;
+
+import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 
 @SuppressLint("ViewConstructor")
 public class BottomTabs extends AHBottomNavigation {
@@ -39,7 +43,7 @@ public class BottomTabs extends AHBottomNavigation {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-
+        // NOOP - don't recreate views on size change
     }
 
     public void superCreateItems() {
@@ -74,5 +78,10 @@ public class BottomTabs extends AHBottomNavigation {
             item.setDrawable(icon);
             refresh();
         }
+    }
+
+    public void setLayoutDirection(LayoutDirection direction) {
+         LinearLayout tabsContainer = findChildByClass(this, LinearLayout.class);
+        if (tabsContainer != null) tabsContainer.setLayoutDirection(direction.get());
     }
 }

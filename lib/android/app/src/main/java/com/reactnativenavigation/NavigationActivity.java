@@ -21,7 +21,7 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
-import com.reactnativenavigation.viewcontrollers.navigator.RootPresenter;
+import com.reactnativenavigation.presentation.RootPresenter;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
@@ -33,7 +33,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addDefaultSplashLayout();
-        navigator = new Navigator(this, new ChildControllersRegistry(), new ModalStack(this), new OverlayManager(), new RootPresenter(this));
+        navigator = new Navigator(this,
+                new ChildControllersRegistry(),
+                new ModalStack(this),
+                new OverlayManager(),
+                new RootPresenter(this)
+        );
         navigator.bindViews();
         getReactGateway().onActivityCreated(this);
     }

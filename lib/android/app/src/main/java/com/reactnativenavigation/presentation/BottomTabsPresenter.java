@@ -50,56 +50,59 @@ public class BottomTabsPresenter {
     }
 
     public void mergeOptions(Options options) {
-        mergeBottomTabsOptions(options.bottomTabsOptions, options.animations);
+        mergeBottomTabsOptions(options);
     }
 
     public void applyOptions(Options options) {
-        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
+        applyBottomTabsOptions(options.copy().withDefaultOptions(defaultOptions));
     }
 
     public void applyChildOptions(Options options, Component child) {
         int tabIndex = bottomTabFinder.findByComponent(child);
         if (tabIndex >= 0) {
             Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-            applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
+            applyBottomTabsOptions(withDefaultOptions);
             applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
         }
     }
 
     public void mergeChildOptions(Options options, Component child) {
-        mergeBottomTabsOptions(options.bottomTabsOptions, options.animations);
+        mergeBottomTabsOptions(options);
         int tabIndex = bottomTabFinder.findByComponent(child);
         if (tabIndex >= 0) mergeDrawBehind(options.bottomTabsOptions, tabIndex);
     }
 
-    private void mergeBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animations) {
-        if (options.titleDisplayMode.hasValue()) {
-            bottomTabs.setTitleState(options.titleDisplayMode.toState());
+    private void mergeBottomTabsOptions(Options options) {
+        BottomTabsOptions bottomTabsOptions = options.bottomTabsOptions;
+        AnimationsOptions animations = options.animations;
+
+        if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction);
+        if (bottomTabsOptions.titleDisplayMode.hasValue()) {
+            bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.toState());
         }
-        if (options.backgroundColor.hasValue()) {
-            bottomTabs.setBackgroundColor(options.backgroundColor.get());
+        if (bottomTabsOptions.backgroundColor.hasValue()) {
+            bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get());
         }
-        if (options.currentTabIndex.hasValue()) {
-            int tabIndex = options.currentTabIndex.get();
+        if (bottomTabsOptions.currentTabIndex.hasValue()) {
+            int tabIndex = bottomTabsOptions.currentTabIndex.get();
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
-        if (options.testId.hasValue()) {
-            bottomTabs.setTag(options.testId.get());
+        if (bottomTabsOptions.testId.hasValue()) {
+            bottomTabs.setTag(bottomTabsOptions.testId.get());
         }
-        if (options.currentTabId.hasValue()) {
-            int tabIndex = bottomTabFinder.findByControllerId(options.currentTabId.get());
+        if (bottomTabsOptions.currentTabId.hasValue()) {
+            int tabIndex = bottomTabFinder.findByControllerId(bottomTabsOptions.currentTabId.get());
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
-        if (options.visible.isTrue()) {
-            if (options.animate.isTrueOrUndefined()) {
+        if (bottomTabsOptions.visible.isTrue()) {
+            if (bottomTabsOptions.animate.isTrueOrUndefined()) {
                 animator.show(animations);
             } else {
                 bottomTabs.restoreBottomNavigation(false);
             }
         }
-        if (options.visible.isFalse()) {
-            if (options.animate.isTrueOrUndefined()) {
+        if (bottomTabsOptions.visible.isFalse()) {
+            if (bottomTabsOptions.animate.isTrueOrUndefined()) {
                 animator.hide(animations);
             } else {
                 bottomTabs.hideBottomNavigation(false);
@@ -127,34 +130,38 @@ public class BottomTabsPresenter {
         }
     }
 
-    private void applyBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animationsOptions) {
-        bottomTabs.setTitleState(options.titleDisplayMode.get(TitleState.SHOW_WHEN_ACTIVE));
-        bottomTabs.setBackgroundColor(options.backgroundColor.get(Color.WHITE));
-        if (options.currentTabIndex.hasValue()) {
-            int tabIndex = options.currentTabIndex.get();
+    private void applyBottomTabsOptions(Options options) {
+        BottomTabsOptions bottomTabsOptions = options.bottomTabsOptions;
+        AnimationsOptions animationsOptions = options.animations;
+
+        bottomTabs.setLayoutDirection(options.layout.direction);
+        bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.get(TitleState.SHOW_WHEN_ACTIVE));
+        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE));
+        if (bottomTabsOptions.currentTabIndex.hasValue()) {
+            int tabIndex = bottomTabsOptions.currentTabIndex.get();
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
-        if (options.testId.hasValue()) bottomTabs.setTag(options.testId.get());
-        if (options.currentTabId.hasValue()) {
-            int tabIndex = bottomTabFinder.findByControllerId(options.currentTabId.get());
+        if (bottomTabsOptions.testId.hasValue()) bottomTabs.setTag(bottomTabsOptions.testId.get());
+        if (bottomTabsOptions.currentTabId.hasValue()) {
+            int tabIndex = bottomTabFinder.findByControllerId(bottomTabsOptions.currentTabId.get());
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
-        if (options.visible.isTrueOrUndefined()) {
-            if (options.animate.isTrueOrUndefined()) {
+        if (bottomTabsOptions.visible.isTrueOrUndefined()) {
+            if (bottomTabsOptions.animate.isTrueOrUndefined()) {
                 animator.show(animationsOptions);
             } else {
                 bottomTabs.restoreBottomNavigation(false);
             }
         }
-        if (options.visible.isFalse()) {
-            if (options.animate.isTrueOrUndefined()) {
+        if (bottomTabsOptions.visible.isFalse()) {
+            if (bottomTabsOptions.animate.isTrueOrUndefined()) {
                 animator.hide(animationsOptions);
             } else {
                 bottomTabs.hideBottomNavigation(false);
             }
         }
-        if (options.elevation.hasValue()) {
-            bottomTabs.setUseElevation(true, options.elevation.get().floatValue());
+        if (bottomTabsOptions.elevation.hasValue()) {
+            bottomTabs.setUseElevation(true, bottomTabsOptions.elevation.get().floatValue());
         }
     }
 }

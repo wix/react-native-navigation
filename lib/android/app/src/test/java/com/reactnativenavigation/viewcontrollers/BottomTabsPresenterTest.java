@@ -40,7 +40,7 @@ public class BottomTabsPresenterTest extends BaseTest {
     }
 
     @Test
-    public void mergeChildOptions_onlyDeclaredOptionsAreApplied() { // default options are not applies on merge
+    public void mergeChildOptions_onlyDeclaredOptionsAreApplied() { // default options are not applied on merge
         Options defaultOptions = new Options();
         defaultOptions.bottomTabsOptions.visible = new Bool(false);
         uut.setDefaultOptions(defaultOptions);

@@ -26,6 +26,7 @@ import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.parse.LayoutDirection;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -330,5 +331,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setOverflowButtonColor(int color) {
         titleBar.setOverflowButtonColor(color);
+    }
+
+    public void setLayoutDirection(LayoutDirection direction) {
+        titleBar.setLayoutDirection(direction.get());
     }
 }

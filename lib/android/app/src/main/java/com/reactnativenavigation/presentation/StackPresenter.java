@@ -127,7 +127,7 @@ public class StackPresenter {
     public void mergeOptions(Options options, Component currentChild) {
         mergeOrientation(options.layout.orientation);
 //        mergeButtons(topBar, withDefault.topBar.buttons, child);
-        mergeTopBarOptions(options.topBar, options.animations, currentChild);
+        mergeTopBarOptions(options, currentChild);
         mergeTopTabsOptions(options.topTabs);
         mergeTopTabOptions(options.topTabOptions);
     }
@@ -141,7 +141,7 @@ public class StackPresenter {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefault.layout.orientation);
         applyButtons(withDefault.topBar, child);
-        applyTopBarOptions(withDefault.topBar, withDefault.animations, child, options);
+        applyTopBarOptions(withDefault, child, options);
         applyTopTabsOptions(withDefault.topTabs);
         applyTopTabOptions(withDefault.topTabOptions);
     }
@@ -164,55 +164,59 @@ public class StackPresenter {
         if (buttons != null) forEach(buttons.values(), ViewController::destroy);
     }
 
-    private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
-        topBar.setHeight(options.height.get(UiUtils.getTopBarHeightDp(activity)));
-        topBar.setElevation(options.elevation.get(DEFAULT_ELEVATION));
+    private void applyTopBarOptions(Options options, Component component, Options componentOptions) {
+        TopBarOptions topBarOptions = options.topBar;
+        AnimationsOptions animationOptions = options.animations;
+
+        topBar.setLayoutDirection(options.layout.direction);
+        topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+        topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBar.getLayoutParams() instanceof MarginLayoutParams) {
-            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, options.topMargin.get(0));
+            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get(0));
         }
 
-        topBar.setTitleHeight(options.title.height.get(UiUtils.getTopBarHeightDp(activity)));
-        topBar.setTitle(options.title.text.get(""));
-        topBar.setTitleTopMargin(options.title.topMargin.get(0));
+        topBar.setTitleHeight(topBarOptions.title.height.get(UiUtils.getTopBarHeightDp(activity)));
+        topBar.setTitle(topBarOptions.title.text.get(""));
+        topBar.setTitleTopMargin(topBarOptions.title.topMargin.get(0));
 
-        if (options.title.component.hasValue()) {
+        if (topBarOptions.title.component.hasValue()) {
             if (titleControllers.containsKey(component)) {
                 topBar.setTitleComponent(titleControllers.get(component).getView());
             } else {
                 TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
-                controller.setWaitForRender(options.title.component.waitForRender);
+                controller.setWaitForRender(topBarOptions.title.component.waitForRender);
                 titleControllers.put(component, controller);
-                controller.setComponent(options.title.component);
-                controller.getView().setLayoutParams(getComponentLayoutParams(options.title.component));
+                controller.setComponent(topBarOptions.title.component);
+                controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
                 topBar.setTitleComponent(controller.getView());
             }
         }
 
-        topBar.setTitleFontSize(options.title.fontSize.get(defaultTitleFontSize));
-        topBar.setTitleTextColor(options.title.color.get(DEFAULT_TITLE_COLOR));
-        topBar.setTitleTypeface(options.title.fontFamily);
-        topBar.setTitleAlignment(options.title.alignment);
+        topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
+        topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
+        topBar.setTitleTypeface(topBarOptions.title.fontFamily);
+        topBar.setTitleAlignment(topBarOptions.title.alignment);
 
-        topBar.setSubtitle(options.subtitle.text.get(""));
-        topBar.setSubtitleFontSize(options.subtitle.fontSize.get(defaultSubtitleFontSize));
-        topBar.setSubtitleColor(options.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
-        topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
-        topBar.setSubtitleAlignment(options.subtitle.alignment);
+        topBar.setSubtitle(topBarOptions.subtitle.text.get(""));
+        topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get(defaultSubtitleFontSize));
+        topBar.setSubtitleColor(topBarOptions.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
+        topBar.setSubtitleFontFamily(topBarOptions.subtitle.fontFamily);
+        topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
 
-        topBar.setBorderHeight(options.borderHeight.get(0d));
-        topBar.setBorderColor(options.borderColor.get(DEFAULT_BORDER_COLOR));
+        topBar.setBorderHeight(topBarOptions.borderHeight.get(0d));
+        topBar.setBorderColor(topBarOptions.borderColor.get(DEFAULT_BORDER_COLOR));
 
-        topBar.setBackgroundColor(options.background.color.get(Color.WHITE));
+        topBar.setBackgroundColor(topBarOptions.background.color.get(Color.WHITE));
 
-        if (options.background.component.hasValue()) {
-            View createdComponent = findBackgroundComponent(options.background.component);
+        if (topBarOptions.background.component.hasValue()) {
+            View createdComponent = findBackgroundComponent(topBarOptions.background.component);
             if (createdComponent != null) {
                 topBar.setBackgroundComponent(createdComponent);
             } else {
                 TopBarBackgroundViewController controller = new TopBarBackgroundViewController(activity, topBarBackgroundViewCreator);
-                controller.setWaitForRender(options.background.waitForRender);
+                controller.setWaitForRender(topBarOptions.background.waitForRender);
                 backgroundControllers.put(component, controller);
-                controller.setComponent(options.background.component);
+                controller.setComponent(topBarOptions.background.component);
                 controller.getView().setLayoutParams(new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
                 topBar.setBackgroundComponent(controller.getView());
             }
@@ -220,18 +224,18 @@ public class StackPresenter {
             topBar.clearBackgroundComponent();
         }
 
-        if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
-        applyTopBarVisibility(options, animationOptions, componentOptions);
-        if (options.drawBehind.isTrue() && !componentOptions.layout.topMargin.hasValue()) {
+        if (topBarOptions.testId.hasValue()) topBar.setTestId(topBarOptions.testId.get());
+        applyTopBarVisibility(topBarOptions, animationOptions, componentOptions);
+        if (topBarOptions.drawBehind.isTrue() && !componentOptions.layout.topMargin.hasValue()) {
             component.drawBehindTopBar();
-        } else if (options.drawBehind.isFalseOrUndefined()) {
+        } else if (topBarOptions.drawBehind.isFalseOrUndefined()) {
             component.drawBelowTopBar(topBar);
         }
-        if (options.hideOnScroll.isTrue()) {
+        if (topBarOptions.hideOnScroll.isTrue()) {
             if (component instanceof IReactView) {
                 topBar.enableCollapse(((IReactView) component).getScrollEventListener());
             }
-        } else if (options.hideOnScroll.isFalseOrUndefined()) {
+        } else if (topBarOptions.hideOnScroll.isFalseOrUndefined()) {
             topBar.disableCollapse();
         }
     }
@@ -351,7 +355,7 @@ public class StackPresenter {
         TopBarOptions topBar = toMerge.copy().mergeWith(resolvedOptions).withDefaultOptions(defaultOptions).topBar;
         mergeOrientation(toMerge.layout.orientation);
         mergeButtons(topBar, toMerge.topBar.buttons, child);
-        mergeTopBarOptions(toMerge.topBar, toMerge.animations, child);
+        mergeTopBarOptions(toMerge, child);
         mergeTopTabsOptions(toMerge.topTabs);
         mergeTopTabOptions(toMerge.topTabOptions);
     }
@@ -403,78 +407,82 @@ public class StackPresenter {
         return result;
     }
 
-    private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
-        if (options.height.hasValue()) topBar.setHeight(options.height.get());
-        if (options.elevation.hasValue()) topBar.setElevation(options.elevation.get());
-        if (options.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
-            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, options.topMargin.get());
+    private void mergeTopBarOptions(Options options, Component component) {
+        TopBarOptions topBarOptions = options.topBar;
+        AnimationsOptions animationsOptions = options.animations;
+
+        if (options.layout.direction.hasValue()) topBar.setLayoutDirection(options.layout.direction);
+        if (topBarOptions.height.hasValue()) topBar.setHeight(topBarOptions.height.get());
+        if (topBarOptions.elevation.hasValue()) topBar.setElevation(topBarOptions.elevation.get());
+        if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
+            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());
         }
 
-        if (options.title.height.hasValue()) topBar.setTitleHeight(options.title.height.get());
-        if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        if (options.title.topMargin.hasValue()) topBar.setTitleTopMargin(options.title.topMargin.get());
+        if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
+        if (topBarOptions.title.text.hasValue()) topBar.setTitle(topBarOptions.title.text.get());
+        if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
 
-        if (options.title.component.hasValue()) {
+        if (topBarOptions.title.component.hasValue()) {
             if (titleControllers.containsKey(component)) {
                 topBar.setTitleComponent(titleControllers.get(component).getView());
             } else {
                 TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
                 titleControllers.put(component, controller);
-                controller.setComponent(options.title.component);
-                controller.getView().setLayoutParams(getComponentLayoutParams(options.title.component));
+                controller.setComponent(topBarOptions.title.component);
+                controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
                 topBar.setTitleComponent(controller.getView());
             }
         }
 
-        if (options.title.color.hasValue()) topBar.setTitleTextColor(options.title.color.get());
-        if (options.title.fontSize.hasValue()) topBar.setTitleFontSize(options.title.fontSize.get());
-        if (options.title.fontFamily != null) topBar.setTitleTypeface(options.title.fontFamily);
+        if (topBarOptions.title.color.hasValue()) topBar.setTitleTextColor(topBarOptions.title.color.get());
+        if (topBarOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(topBarOptions.title.fontSize.get());
+        if (topBarOptions.title.fontFamily != null) topBar.setTitleTypeface(topBarOptions.title.fontFamily);
 
-        if (options.subtitle.text.hasValue()) topBar.setSubtitle(options.subtitle.text.get());
-        if (options.subtitle.color.hasValue()) topBar.setSubtitleColor(options.subtitle.color.get());
-        if (options.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(options.subtitle.fontSize.get());
-        if (options.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
+        if (topBarOptions.subtitle.text.hasValue()) topBar.setSubtitle(topBarOptions.subtitle.text.get());
+        if (topBarOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(topBarOptions.subtitle.color.get());
+        if (topBarOptions.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get());
+        if (topBarOptions.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(topBarOptions.subtitle.fontFamily);
 
-        if (options.background.color.hasValue()) topBar.setBackgroundColor(options.background.color.get());
+        if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.get());
 
-        if (options.background.component.hasValue()) {
+        if (topBarOptions.background.component.hasValue()) {
             if (backgroundControllers.containsKey(component)) {
                 topBar.setBackgroundComponent(backgroundControllers.get(component).getView());
             } else {
                 TopBarBackgroundViewController controller = new TopBarBackgroundViewController(activity, topBarBackgroundViewCreator);
                 backgroundControllers.put(component, controller);
-                controller.setComponent(options.background.component);
+                controller.setComponent(topBarOptions.background.component);
                 controller.getView().setLayoutParams(new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
                 topBar.setBackgroundComponent(controller.getView());
             }
         }
 
-        if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
+        if (topBarOptions.testId.hasValue()) topBar.setTestId(topBarOptions.testId.get());
 
-        if (options.visible.isFalse()) {
-            if (options.animate.isTrueOrUndefined()) {
+        if (topBarOptions.visible.isFalse()) {
+            if (topBarOptions.animate.isTrueOrUndefined()) {
                 topBar.hideAnimate(animationsOptions.pop.topBar);
             } else {
                 topBar.hide();
             }
         }
-        if (options.visible.isTrue()) {
-            if (options.animate.isTrueOrUndefined()) {
+        if (topBarOptions.visible.isTrue()) {
+            if (topBarOptions.animate.isTrueOrUndefined()) {
                 topBar.showAnimate(animationsOptions.push.topBar);
             } else {
                 topBar.show();
             }
         }
-        if (options.drawBehind.isTrue()) {
+        if (topBarOptions.drawBehind.isTrue()) {
             component.drawBehindTopBar();
         }
-        if (options.drawBehind.isFalse()) {
+        if (topBarOptions.drawBehind.isFalse()) {
             component.drawBelowTopBar(topBar);
         }
-        if (options.hideOnScroll.isTrue() && component instanceof IReactView) {
+        if (topBarOptions.hideOnScroll.isTrue() && component instanceof IReactView) {
             topBar.enableCollapse(((IReactView) component).getScrollEventListener());
         }
-        if (options.hideOnScroll.isFalse()) {
+        if (topBarOptions.hideOnScroll.isFalse()) {
             topBar.disableCollapse();
         }
     }

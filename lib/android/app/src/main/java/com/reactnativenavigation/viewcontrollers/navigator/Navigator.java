@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.presentation.RootPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
