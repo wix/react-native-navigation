@@ -25,7 +25,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 27, application = TestApplication.class)
+@Config(sdk = 28, application = TestApplication.class)
 public abstract class BaseTest {
     @Before
     public void beforeEach() {
