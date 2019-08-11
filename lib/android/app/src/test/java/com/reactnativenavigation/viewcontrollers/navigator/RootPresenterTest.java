@@ -41,6 +41,7 @@ public class RootPresenterTest extends BaseTest {
     private Options defaultOptions;
     private ReactInstanceManager reactInstanceManager;
 
+
     @Override
     public void beforeEach() {
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
