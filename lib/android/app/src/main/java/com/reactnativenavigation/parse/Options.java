@@ -1,14 +1,14 @@
 package com.reactnativenavigation.parse;
 
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
-
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
+
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 
 public class Options {
     public static final Options EMPTY = new Options();

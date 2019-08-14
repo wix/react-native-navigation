@@ -1,13 +1,12 @@
 package com.reactnativenavigation.parse;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.ComponentPresenter;
+import com.reactnativenavigation.presentation.ExternalComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
@@ -36,6 +35,9 @@ import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
 import static com.reactnativenavigation.parse.Options.parse;
 
@@ -168,6 +170,7 @@ public class LayoutFactory {
                 externalComponentCreators.get(externalComponent.name.get()),
                 reactInstanceManager,
                 new EventEmitter(reactInstanceManager.getCurrentReactContext()),
+                new ExternalComponentPresenter(),
                 parse(typefaceManager, node.getOptions())
         );
     }

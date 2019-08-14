@@ -1,7 +1,7 @@
 package com.reactnativenavigation.parse.params;
 
 import android.graphics.Typeface;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.MenuItem;
 
 import com.reactnativenavigation.parse.Component;

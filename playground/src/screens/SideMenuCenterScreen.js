@@ -16,9 +16,22 @@ class SideMenuCenterScreen extends React.Component {
         testID: CENTER_SCREEN_HEADER,
         title: {
           text: 'Center'
+        },
+        leftButtons: {
+          id: 'sideMenu',
+          icon: require('../../img/menu.png')
         }
       }
     };
+  }
+
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  navigationButtonPressed({ buttonId }) {
+    if (buttonId === 'sideMenu') this.open('left');
   }
 
   render() {

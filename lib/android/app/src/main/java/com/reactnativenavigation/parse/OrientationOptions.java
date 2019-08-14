@@ -1,6 +1,6 @@
 package com.reactnativenavigation.parse;
 
-import android.support.annotation.CheckResult;
+import androidx.annotation.CheckResult;
 
 import com.reactnativenavigation.parse.params.Orientation;
 

@@ -1,8 +1,8 @@
 package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
@@ -12,7 +12,6 @@ import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.ViewVisibilityListenerAdapter;
-import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
 import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 
@@ -88,14 +87,14 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     }
 
     @Override
-    public void applyChildOptions(Options options, Component child) {
+    public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         performOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(this.options.copy(), child));
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, ViewController childController, Component child) {
-        super.mergeChildOptions(options, childController, child);
+    public void mergeChildOptions(Options options, ViewController child) {
+        super.mergeChildOptions(options, child);
         performOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(options.copy(), child));
     }
 

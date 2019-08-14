@@ -7,17 +7,16 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
 
-import javax.annotation.Nullable;
-
 import static android.view.View.TRANSLATION_Y;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.utils.ViewUtils.getHeight;
 
 public class TopBarAnimator {
 
@@ -25,73 +24,67 @@ public class TopBarAnimator {
     private static final int DURATION = 300;
     private static final TimeInterpolator DECELERATE = new DecelerateInterpolator();
     private static final TimeInterpolator LINEAR = new LinearInterpolator();
-    private static final TimeInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
 
     private TopBar topBar;
     private String stackId;
     private Animator hideAnimator;
     private Animator showAnimator;
 
-    public TopBarAnimator(TopBar topBar) {
+    public TopBarAnimator() {
+    }
+
+    TopBarAnimator(TopBar topBar) {
         this.topBar = topBar;
     }
 
-    public TopBarAnimator(TopBar topBar, @Nullable String stackId) {
+    public void bindView(TopBar topBar, StackLayout stack) {
         this.topBar = topBar;
-        this.stackId = stackId;
+        stackId = stack.getStackId();
     }
 
-    public void show(AnimationOptions options) {
+    public void show(AnimationOptions options, int translationStartDy) {
         topBar.setVisibility(View.VISIBLE);
         if (options.hasValue() && (!options.id.hasValue() || options.id.get().equals(stackId))) {
+            options.setValueDy(TRANSLATION_Y, -translationStartDy, 0);
             showAnimator = options.getAnimation(topBar);
         } else {
-            showAnimator = getDefaultShowAnimator(-1 * ViewUtils.getHeight(topBar), DECELERATE, DURATION);
+            showAnimator = getDefaultShowAnimator(translationStartDy, DECELERATE, DURATION);
         }
-        show();
+        showInternal();
     }
 
     public void show(float startTranslation) {
         showAnimator = getDefaultShowAnimator(startTranslation, LINEAR, DEFAULT_COLLAPSE_DURATION);
-        show();
+        showInternal();
     }
 
-    private void show() {
+    private void showInternal() {
         showAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 topBar.setVisibility(View.VISIBLE);
             }
         });
-        topBar.resetAnimationOptions();
         if (isAnimatingHide()) hideAnimator.cancel();
         showAnimator.start();
     }
 
-    private AnimatorSet getDefaultShowAnimator(float startTranslation, TimeInterpolator interpolator, int duration) {
-        ObjectAnimator showAnimator = ObjectAnimator.ofFloat(topBar, TRANSLATION_Y, startTranslation, 0);
-        showAnimator.setInterpolator(interpolator);
-        showAnimator.setDuration(duration);
-        AnimatorSet set = new AnimatorSet();
-        set.play(showAnimator);
-        return set;
-    }
-
-    public void hide(AnimationOptions options, Runnable onAnimationEnd) {
+    public void hide(AnimationOptions options, Runnable onAnimationEnd, float translationStartDy, float translationEndDy) {
         if (options.hasValue() && (!options.id.hasValue() || options.id.get().equals(stackId))) {
+            options.setValueDy(TRANSLATION_Y, translationStartDy, -translationEndDy);
             hideAnimator = options.getAnimation(topBar);
         } else {
-            hideAnimator = getDefaultHideAnimator(0, ACCELERATE_DECELERATE, DURATION);
+            hideAnimator = getDefaultHideAnimator(translationStartDy, translationEndDy, DECELERATE, DURATION);
         }
-        hide(onAnimationEnd);
+        hideInternal(onAnimationEnd);
     }
 
-    void hide(float startTranslation) {
-        hideAnimator = getDefaultHideAnimator(startTranslation, LINEAR, DEFAULT_COLLAPSE_DURATION);
-        hide(() -> {});
+    public void hide(float translationStart, float translationEndDy) {
+        hideAnimator = getDefaultHideAnimator(translationStart, translationEndDy, LINEAR, DEFAULT_COLLAPSE_DURATION);
+        hideInternal(() -> {});
     }
 
-    private void hide(Runnable onAnimationEnd) {
+    private void hideInternal(Runnable onAnimationEnd) {
         hideAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -103,18 +96,32 @@ public class TopBarAnimator {
         hideAnimator.start();
     }
 
-    private Animator getDefaultHideAnimator(float startTranslation, TimeInterpolator interpolator, int duration) {
-        ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(topBar, TRANSLATION_Y, startTranslation, -1 * topBar.getMeasuredHeight());
-        hideAnimator.setInterpolator(interpolator);
-        hideAnimator.setDuration(duration);
-        return hideAnimator;
-    }
-
     public boolean isAnimatingHide() {
         return hideAnimator != null && hideAnimator.isRunning();
     }
 
     public boolean isAnimatingShow() {
          return showAnimator != null && showAnimator.isRunning();
+    }
+
+    public boolean isAnimating() {
+        return perform(showAnimator, false, Animator::isRunning) ||
+               perform(hideAnimator, false, Animator::isRunning);
+    }
+
+    private AnimatorSet getDefaultShowAnimator(float translationStart, TimeInterpolator interpolator, int duration) {
+        ObjectAnimator showAnimator = ObjectAnimator.ofFloat(topBar, TRANSLATION_Y, -getHeight(topBar) - translationStart, 0);
+        showAnimator.setInterpolator(interpolator);
+        showAnimator.setDuration(duration);
+        AnimatorSet set = new AnimatorSet();
+        set.play(showAnimator);
+        return set;
+    }
+
+    private Animator getDefaultHideAnimator(float translationStart, float translationEndDy, TimeInterpolator interpolator, int duration) {
+        ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(topBar, TRANSLATION_Y, translationStart, -topBar.getMeasuredHeight() - translationEndDy);
+        hideAnimator.setInterpolator(interpolator);
+        hideAnimator.setDuration(duration);
+        return hideAnimator;
     }
 }

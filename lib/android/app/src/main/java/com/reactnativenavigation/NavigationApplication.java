@@ -1,8 +1,8 @@
 package com.reactnativenavigation;
 
 import android.app.Application;
-import android.support.annotation.Nullable;
-import android.support.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;

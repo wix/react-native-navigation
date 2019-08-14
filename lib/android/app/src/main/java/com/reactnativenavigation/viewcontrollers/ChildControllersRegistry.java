@@ -2,6 +2,8 @@ package com.reactnativenavigation.viewcontrollers;
 
 import java.util.ArrayDeque;
 
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 public class ChildControllersRegistry {
     private ArrayDeque<ChildController> children = new ArrayDeque<>();
 
@@ -19,7 +21,7 @@ public class ChildControllersRegistry {
     }
 
     private boolean isTopChild(ChildController child) {
-        return children.peek().equals(child);
+        return perform(children.peek(), false, c -> c.equals(child));
     }
 
     public int size() {

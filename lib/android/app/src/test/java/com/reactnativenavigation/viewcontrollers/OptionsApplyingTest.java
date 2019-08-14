@@ -17,7 +17,6 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
@@ -34,12 +33,8 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import org.junit.Test;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.widget.RelativeLayout.BELOW;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 public class OptionsApplyingTest extends BaseTest {
     private Activity activity;
@@ -144,31 +139,6 @@ public class OptionsApplyingTest extends BaseTest {
     }
 
     @Test
-    public void appliesTopBarTextColor() {
-        assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
-        uut.options.topBar.title.text = new Text("the title");
-        uut.options.topBar.title.color = new Colour(Color.RED);
-        stack.push(uut, new CommandListenerAdapter());
-
-        assertThat(stack.getTopBar().getTitleTextView()).isNotEqualTo(null);
-        assertThat(stack.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
-    }
-
-    @SuppressWarnings("MagicNumber")
-    @Test
-    public void appliesTopBarTextSize() {
-        assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
-        initialNavigationOptions.topBar.title.text = new Text("the title");
-
-        uut.options.topBar.title.text = new Text("the title");
-        uut.options.topBar.title.fontSize = new Fraction(18);
-        stack.push(uut, new CommandListenerAdapter());
-
-        assertThat(stack.getTopBar().getTitleTextView()).isNotEqualTo(null);
-        assertThat(stack.getTopBar().getTitleTextView().getTextSize()).isEqualTo(18);
-    }
-
-    @Test
     public void appliesTopBarVisible() {
         stack.push(uut, new CommandListenerAdapter());
 
@@ -182,43 +152,5 @@ public class OptionsApplyingTest extends BaseTest {
         uut.mergeOptions(opts);
 
         assertThat(stack.getTopBar().getVisibility()).isEqualTo(View.GONE);
-    }
-
-    @Test
-    public void appliesDrawUnder() {
-        uut.options.topBar.title.text = new Text("the title");
-        uut.options.topBar.drawBehind = new Bool(false);
-        uut.ensureViewIsCreated();
-        stack.ensureViewIsCreated();
-        stack.push(uut, new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                uut.onViewAppeared();
-                RelativeLayout.LayoutParams uutLayoutParams = (RelativeLayout.LayoutParams) uut.getComponent().asView().getLayoutParams();
-                assertThat(uutLayoutParams.topMargin).isNotEqualTo(0);
-
-                Options opts = new Options();
-                opts.topBar.drawBehind = new Bool(true);
-                uut.mergeOptions(opts);
-
-                uutLayoutParams = (RelativeLayout.LayoutParams) (uut.getComponent().asView()).getLayoutParams();
-                assertThat(uutLayoutParams.getRule(BELOW)).isNotEqualTo(stack.getTopBar().getId());
-            }
-        });
-    }
-
-    @Test
-    public void appliesTopBarComponent() {
-        uut.options.topBar.background.component.name = new Text("someComponent");
-        uut.options.topBar.background.component.componentId = new Text("id");
-        stack.push(uut, new CommandListenerAdapter());
-        verify(topBar, times(1)).setBackgroundComponent(any());
-    }
-
-    @Test
-    public void appliesSubtitle() {
-        uut.options.topBar.subtitle.text = new Text("sub");
-        stack.push(uut, new CommandListenerAdapter());
-        assertThat(stack.getTopBar().getTitleBar().getSubtitle()).isEqualTo("sub");
     }
 }

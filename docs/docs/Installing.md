@@ -45,18 +45,18 @@ $(SRCROOT)/../node_modules/react-native-navigation/lib/ios
 	{
 		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 		[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
-		
+
 		return YES;
 	}
 
 	@end
 	```
 
-3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h"`: 
+3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h"`:
 ```
 ! 'RCTBundleURLProvider.h' file not found
 ```
-This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu. 
+This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu.
 
 To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
 
@@ -117,7 +117,6 @@ buildscript {
 allprojects {
 	repositories {
 +		google()
-+		mavenCentral()
 		mavenLocal()
 		jcenter()
 		maven {
@@ -133,8 +132,6 @@ allprojects {
 }
 
 ext {
--    buildToolsVersion = "26.0.3"
-+    buildToolsVersion = "27.0.3"
 -    minSdkVersion = 16
 +    minSdkVersion = 19
     compileSdkVersion = 26
@@ -171,17 +168,14 @@ android {
 
 dependencies {
 -    compile fileTree(dir: "libs", include: ["*.jar"])
--    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
 -    compile "com.facebook.react:react-native:+"  // From node_modules
 +    implementation fileTree(dir: "libs", include: ["*.jar"])
-+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
 +    implementation "com.facebook.react:react-native:+"  // From node_modules
 +    implementation project(':react-native-navigation')
 }
 ```
 
 ### 5 RNN and React Native version
-
 react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `android/app/build.gradle`.
 
 ```diff
@@ -205,11 +199,12 @@ android {
 >`reactNative55` - RN 0.55.x<Br>
 >`reactNative56` - RN 0.56.x<Br>
 >`reactNative57` - RN 0.57.0 - 0.57.4<Br>
->`reactNative57_5` - RN 0.57.5 and above<Br>
+>`reactNative57_5` - RN 0.57.5 - 0.59.9<Br>
+>`reactNative60` - RN 0.60.0 and above
 
 Now we need to instruct gradle how to build that flavor. To do so here two solutions:
 
-#### 5.1 Build app with gradle command 
+#### 5.1 Build app with gradle command
 
 **prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:assembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
 
@@ -258,7 +253,7 @@ This file is located in `android/app/src/main/java/com/<yourproject>/MainActivit
 -import com.facebook.react.ReactActivity;
 +import com.reactnativenavigation.NavigationActivity;
 
--public class MainActivity extends ReactActivity { 
+-public class MainActivity extends ReactActivity {
 +public class MainActivity extends NavigationActivity {
 -    @Override
 -    protected String getMainComponentName() {
@@ -272,7 +267,7 @@ If you have any **react-native** related methods, you can safely delete them.
 ### 7. Update `MainApplication.java`
 
 This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
-	
+
 ```diff
 ...
 import android.app.Application;
@@ -292,7 +287,7 @@ import java.util.List;
 
 -public class MainApplication extends Application implements ReactApplication {
 +public class MainApplication extends NavigationApplication {
-+    
++
 +    @Override
 +    protected ReactGateway createReactGateway() {
 +        ReactNativeHost host = new NavigationReactNativeHost(this, isDebug(), createAdditionalReactPackages()) {
@@ -316,7 +311,7 @@ import java.util.List;
 +            // eg. new VectorIconsPackage()
 +        );
 +    }
-+  
++
 +    @Override
 +    public List<ReactPackage> createAdditionalReactPackages() {
 +        return getPackages();
@@ -365,8 +360,6 @@ dependencies {
 ## You can use react-native-navigation \o/
 
 Update `index.js` file
-
-
 ```diff
 +import { Navigation } from "react-native-navigation";
 -import {AppRegistry} from 'react-native';
