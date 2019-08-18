@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.FabOptions;
@@ -104,6 +105,48 @@ public class FabPresenter {
 
     private void setParams(View fab, FabOptions options) {
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (viewGroup instanceof CoordinatorLayout) {
+            CoordinatorLayout.LayoutParams layoutParamsCoordinator = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParamsCoordinator.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            layoutParamsCoordinator.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            layoutParamsCoordinator.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            layoutParamsCoordinator.topMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+
+            layoutParamsCoordinator.gravity =  Gravity.TOP|Gravity.LEFT|Gravity.START;
+            if (options.alignVertically.hasValue() && options.alignHorizontally.hasValue()) {
+                if ("top".equals(options.alignVertically.get()) && "right".equals(options.alignHorizontally.get())) {
+                    layoutParamsCoordinator.gravity =  Gravity.TOP|Gravity.RIGHT|Gravity.END;
+                }
+                if ("top".equals(options.alignVertically.get()) && "left".equals(options.alignHorizontally.get())) {
+                    layoutParamsCoordinator.gravity =  Gravity.TOP|Gravity.LEFT|Gravity.START;
+                }
+                if ("bottom".equals(options.alignVertically.get()) && "right".equals(options.alignHorizontally.get())) {
+                    layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.RIGHT|Gravity.END;
+                }
+                if ("bottom".equals(options.alignVertically.get()) && "left".equals(options.alignHorizontally.get())) {
+                    layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.LEFT|Gravity.START;
+                }
+            } else {
+                if (options.alignHorizontally.hasValue()) {
+                    if ("right".equals(options.alignHorizontally.get())) {
+                        layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.RIGHT|Gravity.END;
+                    }
+                    if ("left".equals(options.alignHorizontally.get())) {
+                        layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.LEFT|Gravity.START;
+                    }
+                }
+                if (options.alignVertically.hasValue()) {
+                    if ("top".equals(options.alignVertically.get())) {
+                        layoutParamsCoordinator.gravity =  Gravity.TOP|Gravity.RIGHT|Gravity.END;
+                    }
+                    if ("bottom".equals(options.alignVertically.get())) {
+                        layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.RIGHT|Gravity.END;
+                    }
+                }
+            }
+            
+            layoutParams = layoutParamsCoordinator;
+        }
         if (viewGroup instanceof RelativeLayout) {
             RelativeLayout.LayoutParams layoutParamsRelative = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParamsRelative.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
