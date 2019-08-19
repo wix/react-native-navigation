@@ -2,7 +2,7 @@ package com.reactnativenavigation.views.element.animators;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.support.annotation.CallSuper;
+import androidx.annotation.CallSuper;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Transition;

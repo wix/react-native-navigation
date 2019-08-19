@@ -32,7 +32,7 @@ public class LayoutFactoryTest extends BaseTest {
         try {
             //noinspection ConstantConditions
             uut.setDefaultOptions(null);
-        } catch (AssertionError error) {
+        } catch (AssertionError exception) {
             exceptionThrown = true;
         }
         assertThat(exceptionThrown).isTrue();

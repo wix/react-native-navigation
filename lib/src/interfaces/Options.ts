@@ -57,6 +57,7 @@ export interface OptionsStatusBar {
 }
 
 export interface OptionsLayout {
+  fitSystemWindows?: boolean;
   /**
    * Set the screen background color
    */

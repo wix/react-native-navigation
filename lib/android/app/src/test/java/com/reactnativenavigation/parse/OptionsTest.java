@@ -2,7 +2,7 @@ package com.reactnativenavigation.parse;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;

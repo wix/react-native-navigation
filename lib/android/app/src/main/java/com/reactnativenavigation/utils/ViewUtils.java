@@ -1,7 +1,7 @@
 package com.reactnativenavigation.utils;
 
 import android.graphics.Point;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -13,6 +13,8 @@ import com.reactnativenavigation.utils.Functions.Func1;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ViewUtils {
     @Nullable
@@ -71,7 +73,7 @@ public class ViewUtils {
     }
 
     public static boolean isChildOf(ViewGroup parent, View child) {
-        if (parent == child) return true;
+        if (parent == child) return false;
 
         for (int i = 0; i < parent.getChildCount(); i++) {
             View view = parent.getChildAt(i);
@@ -137,5 +139,13 @@ public class ViewUtils {
         if (parent != null) {
             ((ViewManager) parent).removeView(view);
         }
+    }
+
+    public static boolean isVisible(View view) {
+        return perform(view, false, v -> v.getVisibility() == View.VISIBLE);
+    }
+
+    public static int topMargin(View view) {
+        return ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin;
     }
 }

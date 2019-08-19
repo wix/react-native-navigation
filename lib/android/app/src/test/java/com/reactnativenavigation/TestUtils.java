@@ -21,17 +21,18 @@ import com.reactnativenavigation.views.topbar.TopBar;
 
 public class TestUtils {
     public static StackControllerBuilder newStackController(Activity activity) {
+        TopBarController topBarController = new TopBarController() {
+            @Override
+            protected TopBar createTopBar(Context context, StackLayout stackLayout) {
+                TopBar topBar = super.createTopBar(context, stackLayout);
+                topBar.layout(0, 0, 1000, UiUtils.getTopBarHeight(context));
+                return topBar;
+            }
+        };
         return new StackControllerBuilder(activity)
                 .setId("stack")
                 .setChildRegistry(new ChildControllersRegistry())
-                .setTopBarController(new TopBarController() {
-                    @Override
-                    protected TopBar createTopBar(Context context, StackLayout stackLayout) {
-                        TopBar topBar = super.createTopBar(context, stackLayout);
-                        topBar.layout(0, 0, 1000, UiUtils.getTopBarHeight(context));
-                        return topBar;
-                    }
-                })
+                .setTopBarController(topBarController)
                 .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new RenderChecker(), new Options()))
                 .setInitialOptions(new Options());
     }

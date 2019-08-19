@@ -5,7 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -34,6 +34,8 @@ class BaseAnimator {
         set.setDuration(DURATION);
         ObjectAnimator translationY = ObjectAnimator.ofFloat(view, TRANSLATION_Y, this.translationY, 0);
         ObjectAnimator alpha = ObjectAnimator.ofFloat(view, ALPHA, 0, 1);
+        translationY.setDuration(DURATION);
+        alpha.setDuration(DURATION);
         set.playTogether(translationY, alpha);
         return set;
     }

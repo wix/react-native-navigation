@@ -4,7 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 import android.view.View;
 import android.view.ViewGroup;
 

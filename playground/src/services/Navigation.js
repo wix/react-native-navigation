@@ -2,7 +2,7 @@ const { isString, get } = require('lodash');
 const { stack, component } = require('../commons/Layouts');
 const { Navigation } = require('react-native-navigation');
 
-const push = (selfOrCompId, screen) => Navigation.push(compId(selfOrCompId), isString(screen) ? component(screen) : screen);
+const push = (selfOrCompId, screen, options) => Navigation.push(compId(selfOrCompId), isString(screen) ? component(screen, options) : screen);
 
 const pushExternalComponent = (self, name, passProps) => Navigation.push(self.props.componentId, {
   externalComponent: {
@@ -13,7 +13,7 @@ const pushExternalComponent = (self, name, passProps) => Navigation.push(self.pr
 
 const pop = (selfOrCompId) => Navigation.pop(compId(selfOrCompId));
 
-const showModal = (screen) => Navigation.showModal(isString(screen) ? stack(screen) : screen);
+const showModal = (screen, options) => Navigation.showModal(isString(screen) ? stack(component(screen, options)) : screen);
 
 const dismissModal = (selfOrCompId) => Navigation.dismissModal(compId(selfOrCompId));
 

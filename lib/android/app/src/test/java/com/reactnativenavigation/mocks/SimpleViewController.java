@@ -2,22 +2,21 @@ package com.reactnativenavigation.mocks;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.MotionEvent;
-import android.widget.RelativeLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ChildController;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.views.ReactComponent;
-import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.mockito.Mockito;
+
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class SimpleViewController extends ChildController<SimpleViewController.SimpleView> {
 
@@ -42,10 +41,11 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public void destroy() {
-        if (!isDestroyed()) performOnParentController(parent -> parent.onChildDestroyed(getView()));
+        if (!isDestroyed()) performOnParentController(parent -> parent.onChildDestroyed(this));
         super.destroy();
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "SimpleViewController " + getId();
@@ -53,34 +53,20 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public void mergeOptions(Options options) {
-        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, this));
         super.mergeOptions(options);
+    }
+
+    @Override
+    public int getTopInset() {
+        int statusBarInset = resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : 63;
+        return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 
     public static class SimpleView extends ReactView implements ReactComponent {
 
         public SimpleView(@NonNull Context context) {
             super(context, Mockito.mock(ReactInstanceManager.class), "compId", "compName");
-        }
-
-        @Override
-        public void drawBehindTopBar() {
-            if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-                if (layoutParams.topMargin == 0) return;
-                layoutParams.topMargin = 0;
-                setLayoutParams(layoutParams);
-            }
-        }
-
-        @Override
-        public void drawBelowTopBar(TopBar topBar) {
-            if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-                if (layoutParams.topMargin == ViewUtils.getHeight(topBar)) return;
-                layoutParams.topMargin = ViewUtils.getHeight(topBar);
-//                setLayoutParams(layoutParams);
-            }
         }
 
         @Override
