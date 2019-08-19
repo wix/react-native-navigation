@@ -17,8 +17,8 @@
 
 @implementation RNNViewControllerPresenter
 
-- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
-	self = [self init];
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry:(RNNNavigationOptions *)defaultOptions {
+	self = [self initWithDefaultOptions:defaultOptions];
 	_componentRegistry = componentRegistry;
 	return self;
 }
@@ -76,8 +76,8 @@
 	}
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
-	[super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions {
+	[super mergeOptions:newOptions currentOptions:currentOptions];
 	
 	UIViewController* viewController = self.boundViewController;
 	
@@ -142,7 +142,7 @@
 	}
 	
 	if (newOptions.topBar.leftButtons || newOptions.topBar.rightButtons) {
-		RNNNavigationOptions* buttonsResolvedOptions = [(RNNNavigationOptions *)[currentOptions overrideOptions:newOptions] withDefault:defaultOptions];
+		RNNNavigationOptions* buttonsResolvedOptions = (RNNNavigationOptions *)[currentOptions overrideOptions:newOptions];
 		[_navigationButtons applyLeftButtons:newOptions.topBar.leftButtons rightButtons:newOptions.topBar.rightButtons defaultLeftButtonStyle:buttonsResolvedOptions.topBar.leftButtonStyle defaultRightButtonStyle:buttonsResolvedOptions.topBar.rightButtonStyle];
 	}
 	
@@ -151,7 +151,7 @@
 		rootView.passThroughTouches = !newOptions.overlay.interceptTouchOutside.get;
 	}
 	
-	[self setTitleViewWithSubtitle:(RNNNavigationOptions *)[[currentOptions overrideOptions:newOptions] mergeOptions:defaultOptions]];
+	[self setTitleViewWithSubtitle:(RNNNavigationOptions *)[currentOptions overrideOptions:newOptions]];
 	
 	if (newOptions.topBar.title.component.name.hasValue) {
 		[self setCustomNavigationTitleView:newOptions perform:nil];

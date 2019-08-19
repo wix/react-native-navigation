@@ -28,7 +28,7 @@
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
+	[_presenter mergeOptions:options currentOptions:self.options];
 	[self.parentViewController mergeOptions:options];
 }
 

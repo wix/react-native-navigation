@@ -20,7 +20,7 @@
 
 - (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor;
 
-- (void)rnn_setTabBarItemBadge:(RNNBottomTabOptions *)bottomTab;
+- (void)rnn_setTabBarItemBadge:(NSString *)badge;
 
 - (void)rnn_setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;
 

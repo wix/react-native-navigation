@@ -15,8 +15,8 @@
 @end
 @implementation RNNNavigationControllerPresenter
 
-- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry {
-	self = [super init];
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry:(RNNNavigationOptions *)defaultOptions {
+	self = [super initWithDefaultOptions:defaultOptions];
 	_componentRegistry = componentRegistry;
 	return self;
 }
@@ -65,8 +65,8 @@
 	[navigationController rnn_setNavigationBarLargeTitleVisible:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
-	[super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions {
+	[super mergeOptions:newOptions currentOptions:currentOptions];
 	
 	RNNNavigationController* navigationController = self.boundViewController;
 	

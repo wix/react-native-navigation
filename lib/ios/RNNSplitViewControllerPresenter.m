@@ -5,6 +5,11 @@
 
 @implementation RNNSplitViewControllerPresenter
 
+-(instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+	self = [super initWithDefaultOptions:defaultOptions];
+	return self;
+}
+
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
 	
@@ -26,8 +31,8 @@
 	[splitViewController rnn_setMaxWidth:initialOptions.splitView.maxWidth];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
-	[super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions {
+	[super mergeOptions:newOptions currentOptions:currentOptions];
 	
 	UISplitViewController* splitViewController = self.boundViewController;
 

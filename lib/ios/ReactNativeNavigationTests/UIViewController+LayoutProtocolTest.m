@@ -4,6 +4,8 @@
 #import "UIViewController+RNNOptions.h"
 #import "RNNViewControllerPresenter.h"
 #import "RCTConvert+Modal.h"
+#import "RNNTabBarController.h"
+#import "RNNNavigationController.h"
 
 @interface UIViewController_LayoutProtocolTest : XCTestCase
 
@@ -76,6 +78,25 @@
 	
 	[uut rnn_setBackButtonIcon:nil withColor:nil title:title];
 	XCTAssertEqual(title, uut.navigationItem.backBarButtonItem.title);
+}
+
+- (void)testResolveOptions {
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+
+	RNNNavigationOptions* childOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	RNNNavigationOptions* parentOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+		parentOptions.bottomTab.text =  [[Text alloc] initWithValue:@"text"];
+		parentOptions.bottomTab.selectedIconColor =  [[Color alloc] initWithValue:UIColor.redColor];
+	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+		defaultOptions.bottomTab.text = [[Text alloc] initWithValue:@"default text"];
+		defaultOptions.bottomTab.selectedIconColor = [[Color alloc] initWithValue:UIColor.blueColor];
+
+	UIViewController* child = [[UIViewController alloc] initWithLayoutInfo:nil creator:nil options:childOptions defaultOptions:defaultOptions presenter:presenter eventEmitter:nil childViewControllers:nil];
+    RNNNavigationController* parent = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:nil options:parentOptions defaultOptions:defaultOptions presenter:presenter eventEmitter:nil childViewControllers:@[child]];
+
+    XCTAssertEqual([parent getCurrentChild], child);
+	XCTAssertEqual([[parent resolveOptions].bottomTab.text get], @"text");
+	XCTAssertEqual([[parent resolveOptions].bottomTab.selectedIconColor get], UIColor.redColor);
 }
 
 @end
