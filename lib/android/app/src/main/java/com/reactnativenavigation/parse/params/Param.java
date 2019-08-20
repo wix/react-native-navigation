@@ -24,8 +24,8 @@ public abstract class Param<T> {
         return value != null;
     }
 
-    public boolean ignore() {
-        return false;
+    public boolean canApplyValue() {
+        return true;
     }
 
     public boolean equals(Param other) {

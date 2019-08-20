@@ -4,8 +4,8 @@ import android.graphics.Color;
 
 import javax.annotation.Nonnull;
 
-public class IgnoreColour extends Colour {
-    public IgnoreColour() {
+public class DontApplyColour extends Colour {
+    public DontApplyColour() {
         super(Color.TRANSPARENT);
     }
 
@@ -15,8 +15,8 @@ public class IgnoreColour extends Colour {
     }
 
     @Override
-    public boolean ignore() {
-        return true;
+    public boolean canApplyValue() {
+        return false;
     }
 
     @Nonnull
