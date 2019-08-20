@@ -48,11 +48,8 @@ function start() {
                 options: {
                   bottomTab: {
                     text: 'Layouts',
-                    icon: require('../img/Icon-87.png'),
-                    selectedIconColor: 'green',
-                    iconColor: 'red',
+                    icon: require('../img/layouts.png'),
                     fontSize: 10,
-                    textColor: 'red',
                     testID: testIDs.LAYOUTS_TAB
                   }
                 }

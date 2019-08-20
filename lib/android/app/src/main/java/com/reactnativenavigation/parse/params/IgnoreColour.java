@@ -4,23 +4,18 @@ import android.graphics.Color;
 
 import javax.annotation.Nonnull;
 
-public class NoColour extends Colour {
-    public NoColour() {
+public class IgnoreColour extends Colour {
+    public IgnoreColour() {
         super(Color.TRANSPARENT);
     }
 
     @Override
-    public Integer get() {
-        return null;
-    }
-
-    @Override
-    public Integer get(Integer defaultValue) {
-        return null;
-    }
-
-    @Override
     public boolean hasValue() {
+        return true;
+    }
+
+    @Override
+    public boolean ignore() {
         return true;
     }
 

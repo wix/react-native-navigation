@@ -24,6 +24,10 @@ public abstract class Param<T> {
         return value != null;
     }
 
+    public boolean ignore() {
+        return false;
+    }
+
     public boolean equals(Param other) {
         return value == other.value || equalsNotNull(value, other.value);
     }

@@ -1,7 +1,7 @@
 package com.reactnativenavigation.parse.parsers;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.params.NoColour;
+import com.reactnativenavigation.parse.params.IgnoreColour;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +15,6 @@ public class ColorParseTest extends BaseTest {
     public void nullIsParsedAsNoColor() throws JSONException {
         JSONObject json = new JSONObject();
         json.put("color", "NoColor");
-        assertThat(ColorParser.parse(json, "color")).isInstanceOf(NoColour.class);
+        assertThat(ColorParser.parse(json, "color")).isInstanceOf(IgnoreColour.class);
     }
 }
