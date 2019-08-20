@@ -1,4 +1,91 @@
 # Changelog
+# 3.1.0
+## Added
+* Support passing null color to StatusBar backgroundColor and bottom tab icon color [#3519837](https://github.com/wix/react-native-navigation/commit/3519837cc2a82cb14ec1849bfc358865e407f556) by [guyca](https://github.com/guyca)
+
+## Fixed
+### Android
+* Removed the legacy support lib [#8663669](https://github.com/wix/react-native-navigation/commit/8663669ed92f34bedf7bdbdb8a9b1a64be5b8cdf) by [SudoPlz](https://github.com/SudoPlz) 
+* Apply layout direction directly on views [#fffd2d2](https://github.com/wix/react-native-navigation/commit/fffd2d23f169d11ddb7c9348e2070c3385844e34) by [guyca](https://github.com/guyca)
+
+# 3.0.0
+## Android
+* Support RN 0.60
+* Migrate to AndroidX
+* Improve draw behind StatusBar<br>
+  Added `statusBar.translucent` boolean property
+* BottomTabs are not pushed upwards when keyboard opens
+* Removed SyncUiImplementation
+  [SyncUiImplementation](https://github.com/wix/react-native-navigation/blob/master/lib/android/app/src/reactNative57WixFork/java/com/reactnativenavigation/react/SyncUiImplementation.java) was used to overcome a bug in RN's UiImplementation. This workaround was added to RN's `UiImplementation` in RN 0.60 and can be removed from RNN.
+
+  If you're using `SyncUiImplementation` your app will fail to compile after upgrading to v3. Simply remove the following code from your `MainApplication.java`
+  ```diff
+  - import com.facebook.react.uimanager.UIImplementationProvider;
+  - import com.reactnativenavigation.react.SyncUiImplementation;
+
+
+  - @override
+  - protected UIImplementationProvider getUIImplementationProvider() {
+  -     return new SyncUiImplementation.Provider();
+  - }
+  ```
+* BottomTab badge and dot indicator are not animated by default.
+  * The following option will show a badge with animation
+    ```js
+    bottomTab: {
+      badge: 'new,
+      animateBadge: true
+    }
+    ```
+
+  * The following option will show a dot indicator with animation
+    ```js
+    bottomTab: {
+      dotIndicator: {
+        visible: true,
+        animate: true
+      }
+    }
+    ```
+* Stack, BottomTabs and SideMenu are drawn behind StatusBar.<br>
+While parent controllers are drawn behind the StatusBar, their background isn't.
+This means that when transitioning from a destinations drawn under the StatusBar to a destination drawn behind it, the application's default background color will be visible behind the StatusBar.
+If you application's theme is dark, you might want to change the `windowBackground` property to mitigate this:
+Add the following to your application's `style.xml`
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <resources>
+      <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+          <item name="android:windowBackground">@color/backgroundColor</item>
+      </style>
+
+      <!--This is your application's default background color.
+      It will be visible when the app is first opened (while the splash layout is visible)
+      and when transitioning between a destination a screen drawn under the StatusBar to
+      a destination drawn behind it-->
+      <item name="backgroundColor" type="color">#f00</item>
+  </resources>
+  ```
+
+
+
+
+
+
+
+
+
+
+
+
+# 2.27.0
+## Added
+* Support passing null color to StatusBar backgroundColor and bottom tab icon color [#3519837](https://github.com/wix/react-native-navigation/commit/3519837cc2a82cb14ec1849bfc358865e407f556) by [guyca](https://github.com/guyca)
+
+## Fixed
+### Android
+* Apply layout direction directly on views [#fffd2d2](https://github.com/wix/react-native-navigation/commit/fffd2d23f169d11ddb7c9348e2070c3385844e34) by [guyca](https://github.com/guyca)
+
 # 2.26.1
 
 ## Fixed
