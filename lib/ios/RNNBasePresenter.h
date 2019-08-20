@@ -8,6 +8,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @property(nonatomic, strong) NSString *boundComponentId;
 
+- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
+
 - (void)bindViewController:(UIViewController *)boundViewController;
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions;
@@ -20,7 +22,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)applyDotIndicator:(UIViewController *)child;
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions;
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions;
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 

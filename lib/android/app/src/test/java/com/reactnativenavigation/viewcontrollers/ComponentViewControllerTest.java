@@ -7,10 +7,12 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.ComponentLayout;
-import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;
 
@@ -26,13 +28,16 @@ public class ComponentViewControllerTest extends BaseTest {
     private ComponentLayout view;
     private ComponentPresenter presenter;
     private Options resolvedOptions = new Options();
+    private StackController parent;
+    private Activity activity;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
-        Activity activity = newActivity();
+        activity = newActivity();
+        StatusBarUtils.saveStatusBarHeight(63);
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
-        ParentController<StackLayout> parentController = TestUtils.newStackController(activity).build();
+        parent = TestUtils.newStackController(activity).build();
         Presenter presenter = new Presenter(activity, new Options());
         this.presenter = spy(new ComponentPresenter(Options.EMPTY));
         uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter, this.presenter) {
@@ -41,8 +46,8 @@ public class ComponentViewControllerTest extends BaseTest {
                 return resolvedOptions;
             }
         };
-        uut.setParentController(parentController);
-        parentController.ensureViewIsCreated();
+        uut.setParentController(parent);
+        parent.ensureViewIsCreated();
     }
 
     @Test
@@ -116,5 +121,38 @@ public class ComponentViewControllerTest extends BaseTest {
         Options options = new Options();
         uut.mergeOptions(options);
         verify(presenter).mergeOptions(uut.getView(), options);
+    }
+
+    @Test
+    public void applyTopInset_delegatesToPresenter() {
+        addToParent(activity, uut);
+        uut.applyTopInset();
+        verify(presenter).applyTopInsets(uut.getView(), uut.getTopInset());
+    }
+
+    @Test
+    public void getTopInset_returnsStatusBarHeight() {
+        //noinspection ConstantConditions
+        uut.setParentController(null);
+        assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
+    }
+
+    @Test
+    public void getTopInset_resolveWithParent() {
+        assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity) + parent.getTopInset(uut));
+    }
+
+    @Test
+    public void getTopInset_drawBehind() {
+        uut.options.statusBar.drawBehind = new Bool(true);
+        uut.options.topBar.drawBehind = new Bool(true);
+        assertThat(uut.getTopInset()).isEqualTo(0);
+    }
+
+    @Test
+    public void applyBottomInset_delegatesToPresenter() {
+        addToParent(activity, uut);
+        uut.applyBottomInset();
+        verify(presenter).applyBottomInset(uut.getView(), uut.getBottomInset());
     }
 }

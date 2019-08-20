@@ -14,8 +14,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (RNNNavigationOptions *)resolveOptions;
 
-- (RNNNavigationOptions *)resolveChildOptions:(UIViewController *) child;
-
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)overrideOptions:(RNNNavigationOptions *)options;

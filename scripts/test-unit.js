@@ -13,7 +13,7 @@ function run() {
 }
 
 function runAndroidUnitTests() {
-  const conf = release ? 'testReactNative57_5ReleaseUnitTest' : 'testReactNative57_5DebugUnitTest';
+  const conf = release ? 'testReactNative60ReleaseUnitTest' : 'testReactNative60DebugUnitTest';
   if (android && process.env.JENKINS_CI) {
     const sdkmanager = '/usr/local/share/android-sdk/tools/bin/sdkmanager';
     exec.execSync(`yes | ${sdkmanager} --licenses`);

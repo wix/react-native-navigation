@@ -1,19 +1,34 @@
 const React = require('react');
-const { View, Text, StyleSheet } = require('react-native');
+const { TextInput } = require('react-native');
+const { SafeAreaView, View, Text, StyleSheet, ScrollView, } = require('react-native');
+const { KeyboardAwareInsetsView } = require('react-native-keyboard-tracking-view');
+const { showTextInputToTestKeyboardInteraction } = require('../flags');
 
 module.exports = (props) =>
-  <View style={[props.style, styles.root]}>
-    {props.children}
-    {props.componentId && <View style={styles.footer}>
-      {props.footer && <Text style={styles.footerText}>{props.footer}</Text>}
-      <Text style={styles.footerText}>{`this.props.componentId = ${props.componentId}`}</Text>
-    </View>}
-  </View>;
+  <SafeAreaView style={styles.root}>
+    <ScrollView contentContainerStyle={[styles.scrollView, props.style]}>
+      {props.children}
+      {renderFooter(props)}
+    </ScrollView>
+    {showTextInputToTestKeyboardInteraction && <KeyboardAwareInsetsView />}
+  </SafeAreaView>
+
+const renderFooter = (props) => props.componentId && <View style={styles.footer}>
+  {renderInput()}
+  {renderFooterText(props)}
+  {renderComponentId(props)}
+</View>;
+
+const renderInput = () => showTextInputToTestKeyboardInteraction && <TextInput placeholder='Input' style={{ borderWidth: 1, borderRadius: 10, height: 40, width: 100 }} />;
+const renderFooterText = (props) => props.footer && <Text style={styles.footerText}>{props.footer}</Text>;
+const renderComponentId = (props) => <Text style={styles.footerText}>{`this.props.componentId = ${props.componentId}`}</Text>;
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
-    flexDirection: 'column',
+    flex: 1
+  },
+  scrollView: {
+    flexGrow: 1,
     alignItems: 'center',
     padding: 16
   },

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.reactnativenavigation.anim.FabAnimator;

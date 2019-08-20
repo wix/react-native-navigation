@@ -173,15 +173,21 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	NSArray<UIViewController *> *childViewControllers = [_controllerFactory createChildrenLayout:children];
 	for (UIViewController<RNNLayoutProtocol>* viewController in childViewControllers) {
-		[viewController renderTreeAndWait:NO perform:nil];
+		if (![viewController isEqual:childViewControllers.lastObject]) {
+			[viewController renderTreeAndWait:NO perform:nil];
+		}
 	}
-	RNNNavigationOptions* options = childViewControllers.lastObject.resolveOptions;
+	UIViewController *newVC = childViewControllers.lastObject;
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
+	RNNNavigationOptions* options = newVC.resolveOptions;
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
-	[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
-		[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot commandId:commandId params:@{@"componentId": componentId}];
-		completion();
-	} rejection:rejection];
+
+	[newVC renderTreeAndWait:([options.animations.setStackRoot.waitForRender getWithDefaultValue:NO]) perform:^{
+		[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
+			[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot commandId:commandId params:@{@"componentId": componentId}];
+			completion();
+		} rejection:rejection];
+	}]; 
 }
 
 - (void)pop:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary*)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {

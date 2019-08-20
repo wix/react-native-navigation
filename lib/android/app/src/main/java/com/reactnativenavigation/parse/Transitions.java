@@ -1,6 +1,6 @@
 package com.reactnativenavigation.parse;
 
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

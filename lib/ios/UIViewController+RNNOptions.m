@@ -81,10 +81,9 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setTabBarItemBadge:(RNNBottomTabOptions *)bottomTab {
+- (void)rnn_setTabBarItemBadge:(NSString *)badge {
     UITabBarItem *tabBarItem = self.tabBarItem;
 
-    NSString *badge = [bottomTab.badge get];
     if ([badge isKindOfClass:[NSNull class]] || [badge isEqualToString:@""]) {
         tabBarItem.badgeValue = nil;
     } else {

@@ -1,10 +1,10 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestActivity;
 import com.reactnativenavigation.TestUtils;
@@ -16,8 +16,9 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
-import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.OverlayManager;
+import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.presentation.RootPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
@@ -34,8 +35,6 @@ import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.BottomTabs;
 
-import com.facebook.react.ReactInstanceManager;
-
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -45,6 +44,8 @@ import org.robolectric.annotation.Config;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -495,19 +496,16 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pushedStackCanBePopped() {
-        child1.options.animations.push.enabled = new Bool(false);
-        child2.options.animations.push.enabled = new Bool(false);
         StackController spy = spy(parentController);
-        StackController parent = newStack();
-        parent.ensureViewIsCreated();
-        uut.setRoot(parent, new CommandListenerAdapter(), reactInstanceManager);
-        parent.push(spy, new CommandListenerAdapter());
-
+        disablePushAnimation(spy, child1, child2);
         spy.push(child1, new CommandListenerAdapter());
         spy.push(child2, new CommandListenerAdapter());
-        assertThat(spy.getChildControllers().size()).isEqualTo(2);
-        child1.ensureViewIsCreated();
-        child2.ensureViewIsCreated();
+
+        StackController parent = newStack();
+        parent.push(spy, new CommandListenerAdapter());
+        parent.options.animations.setRoot.enabled = new Bool(false);
+
+        uut.setRoot(parent, new CommandListenerAdapter(), reactInstanceManager);
 
         CommandListenerAdapter listener = new CommandListenerAdapter() {
             @Override
@@ -515,6 +513,7 @@ public class NavigatorTest extends BaseTest {
                 assertThat(spy.getChildControllers().size()).isEqualTo(1);
             }
         };
+        disablePopAnimation(child2);
         uut.pop("child2", Options.EMPTY, listener);
         verify(spy, times(1)).pop(Options.EMPTY, listener);
     }

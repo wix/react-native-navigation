@@ -1,6 +1,6 @@
 package com.reactnativenavigation.parse.parsers;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.parse.LayoutNode;
 

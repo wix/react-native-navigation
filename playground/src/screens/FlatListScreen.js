@@ -26,14 +26,14 @@ class FlatListScreen extends Component {
           {
             id: 'sideMenu',
             color: 'red',
-            icon: require('../images/two.png'),
+            icon: require('../../img/two.png'),
           }
         ],
         rightButtons: [
           {
             id: 'toggle',
             color: 'red',
-            icon: require('../images/one.png'),
+            icon: require('../../img/one.png'),
           },
         ],
       },

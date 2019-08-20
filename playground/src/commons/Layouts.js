@@ -6,8 +6,8 @@ const stack = (rawChildren, id) => {
   return { stack: { children, id } };
 }
 
-const component = (component, options) => {
-  return isString(component) ? { component: { name: component, options } } : component;
+const component = (component, options, passProps) => {
+  return isString(component) ? { component: { name: component, options, passProps } } : component;
 }
 
 module.exports = {

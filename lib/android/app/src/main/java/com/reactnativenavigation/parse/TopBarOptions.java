@@ -134,4 +134,8 @@ public class TopBarOptions {
             subtitle.text = new NullText();
         }
     }
+
+    public boolean isHiddenOrDrawBehind() {
+        return drawBehind.isTrue() || visible.isFalse();
+    }
 }

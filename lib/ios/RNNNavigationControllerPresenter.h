@@ -5,9 +5,9 @@
 
 @interface RNNNavigationControllerPresenter : RNNBasePresenter
 
-@property (nonatomic, strong) InteractivePopGestureDelegate *interactivePopGestureDelegate;
+@property(nonatomic, strong) InteractivePopGestureDelegate *interactivePopGestureDelegate;
 
-- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry;
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry :(RNNNavigationOptions *)defaultOptions;
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
 

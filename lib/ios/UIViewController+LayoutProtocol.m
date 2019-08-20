@@ -24,21 +24,16 @@
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
 	[self.presenter applyOptionsOnInit:self.resolveOptions];
-	
 
 	return self;
 }
 
 - (RNNNavigationOptions *)resolveOptions {
-	return [(RNNNavigationOptions *)[self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
-}
-
-- (RNNNavigationOptions *)resolveChildOptions:(UIViewController *) child {
-	return [(RNNNavigationOptions *)[self.options mergeInOptions:child.resolveOptions.copy] withDefault:self.defaultOptions];
+    return (RNNNavigationOptions *) [self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-	[self.presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
+	[self.presenter mergeOptions:options currentOptions:self.options];
 	[self.parentViewController mergeOptions:options];
 }
 

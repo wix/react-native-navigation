@@ -1,7 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import android.support.v7.widget.ActionMenuView;
+import androidx.appcompat.widget.ActionMenuView;
 import android.view.View;
 import android.widget.TextView;
 

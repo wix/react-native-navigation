@@ -5,6 +5,11 @@
 
 @implementation RNNTabBarPresenter
 
+-(instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+    self = [super initWithDefaultOptions:defaultOptions];
+    return self;
+}
+
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
     UITabBarController *tabBarController = self.boundViewController;
     [tabBarController rnn_setCurrentTabIndex:[options.bottomTabs.currentTabIndex getWithDefaultValue:0]];
@@ -21,8 +26,8 @@
     [tabBarController rnn_setTabBarVisible:[options.bottomTabs.visible getWithDefaultValue:YES] animated:[options.bottomTabs.animate getWithDefaultValue:NO]];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
-    [super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions {
+    [super mergeOptions:newOptions currentOptions:currentOptions];
 
     UITabBarController *tabBarController = self.boundViewController;
 

@@ -49,6 +49,7 @@ function start() {
                   bottomTab: {
                     text: 'Layouts',
                     icon: require('../img/layouts.png'),
+                    fontSize: 10,
                     testID: testIDs.LAYOUTS_TAB
                   }
                 }

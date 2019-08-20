@@ -3,6 +3,11 @@
 
 @implementation RNNSideMenuPresenter
 
+-(instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+	self = [super initWithDefaultOptions:defaultOptions];
+	return self;
+}
+
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
 		
@@ -53,8 +58,8 @@
 		[sideMenuController setOpenDrawerGestureModeMask:[[initialOptions.sideMenu.openGestureMode getWithDefaultValue:@(MMOpenDrawerGestureModeAll)] integerValue]];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
-	[super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions {
+	[super mergeOptions:newOptions currentOptions:currentOptions];
 	
 	RNNSideMenuController* sideMenuController = self.boundViewController;
 	

@@ -3,8 +3,15 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "DotIndicatorOptions.h"
 #import "UITabBarController+RNNUtils.h"
+#import "RNNNavigationOptions.h"
 
 @implementation RNNDotIndicatorPresenter
+
+-(instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+    self = [super init];
+    _defaultOptions = defaultOptions;
+    return self;
+}
 
 - (void)apply:(UIViewController *)child :(DotIndicatorOptions *)options {
     if (![options hasValue]) return;

@@ -90,7 +90,7 @@
 - (void)testMergeOptions_shouldInvokePresenterMergeOptions {
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
-    [(RNNTabBarPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options currentOptions:[self.uut options] defaultOptions:nil];
+    [(RNNTabBarPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options currentOptions:[self.uut options]];
     [self.uut mergeOptions:options];
     [self.mockTabBarPresenter verify];
 }

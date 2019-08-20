@@ -1,6 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 import android.view.View;
 import android.view.ViewGroup;
 

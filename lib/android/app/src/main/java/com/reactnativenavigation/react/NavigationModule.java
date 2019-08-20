@@ -1,8 +1,5 @@
 package com.reactnativenavigation.react;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -21,6 +18,7 @@ import com.reactnativenavigation.parse.parsers.JSONParser;
 import com.reactnativenavigation.parse.parsers.LayoutNodeParser;
 import com.reactnativenavigation.utils.NativeCommandListener;
 import com.reactnativenavigation.utils.Now;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
@@ -28,6 +26,11 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
     private static final String NAME = "RNNBridgeModule";
@@ -75,8 +78,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         WritableMap constants = Arguments.createMap();
         constants.putString(Constants.BACK_BUTTON_JS_KEY, Constants.BACK_BUTTON_ID);
         constants.putDouble(Constants.BOTTOM_TABS_HEIGHT_KEY, Constants.BOTTOM_TABS_HEIGHT);
-        constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, UiUtils.pxToDp(ctx, UiUtils.getStatusBarHeight(ctx)));
-        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, UiUtils.pxToDp(ctx, UiUtils.getTopBarHeight(ctx)));
+        constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, pxToDp(ctx, StatusBarUtils.getStatusBarHeight(ctx)));
+        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, pxToDp(ctx, UiUtils.getTopBarHeight(ctx)));
         promise.resolve(constants);
     }
 

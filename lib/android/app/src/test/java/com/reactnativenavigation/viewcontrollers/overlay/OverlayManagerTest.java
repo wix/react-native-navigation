@@ -47,6 +47,7 @@ public class OverlayManagerTest extends BaseTest {
         uut.show(root, overlay1, listener);
         verify(listener, times(1)).onSuccess(OVERLAY_ID_1);
         assertThat(overlay1.getView().getParent()).isEqualTo(root);
+        assertMatchParent(overlay1.getView());
     }
 
     @Test

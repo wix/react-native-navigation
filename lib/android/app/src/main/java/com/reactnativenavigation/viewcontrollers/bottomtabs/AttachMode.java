@@ -1,24 +1,23 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
-import android.support.annotation.VisibleForTesting;
-import android.view.*;
-import android.widget.*;
+import androidx.annotation.VisibleForTesting;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.reactnativenavigation.parse.*;
-import com.reactnativenavigation.presentation.*;
-import com.reactnativenavigation.viewcontrollers.*;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
+import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.views.bottomtabs.BottomTabsBehaviour;
 
-import java.util.*;
+import java.util.List;
 
-import static android.view.ViewGroup.LayoutParams.*;
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public abstract class AttachMode {
     protected final ViewGroup parent;
     protected final BottomTabsPresenter presenter;
     protected final List<ViewController> tabs;
     final ViewController initialTab;
-    private final Options resolved;
-
 
     public static AttachMode get(ViewGroup parent, List<ViewController> tabs, BottomTabsPresenter presenter, Options resolved) {
         switch (resolved.bottomTabsOptions.tabsAttachMode) {
@@ -37,7 +36,6 @@ public abstract class AttachMode {
         this.parent = parent;
         this.tabs = tabs;
         this.presenter = presenter;
-        this.resolved = resolved;
         initialTab = tabs.get(resolved.bottomTabsOptions.currentTabIndex.get(0));
     }
 
@@ -54,9 +52,7 @@ public abstract class AttachMode {
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public void attach(ViewController tab) {
         ViewGroup view = tab.getView();
-        view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        presenter.applyLayoutParamsOptions(resolved, tabs.indexOf(tab));
         view.setVisibility(tab == initialTab ? View.VISIBLE : View.INVISIBLE);
-        parent.addView(view);
+        parent.addView(view, matchParentWithBehaviour(new BottomTabsBehaviour(tab.getParentController())));
     }
 }

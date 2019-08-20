@@ -1,7 +1,7 @@
 package com.reactnativenavigation.anim;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 
