@@ -106,6 +106,7 @@ class Options extends Component {
     });
   }
 
+  setReactTitleViewCallCount = 0;
   setReactTitleView = () => Navigation.mergeOptions(this, {
     topBar: {
       title: {
@@ -113,7 +114,7 @@ class Options extends Component {
           name: Screens.ReactTitleView,
           alignment: 'center',
           passProps: {
-            text: 'Press Me'
+            text: 'Press Me ' + this.setReactTitleViewCallCount++
           }
         }
       }

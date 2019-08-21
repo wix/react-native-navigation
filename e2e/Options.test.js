@@ -71,7 +71,14 @@ describe('Options', () => {
 
   it('set title component', async () => {
     await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
-    await expect(elementByLabel('Press Me')).toBeVisible();
+    await expect(elementByLabel('Press Me 0')).toBeVisible();
+  });
+
+  it('change title component', async () => {
+    await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
+    await expect(elementByLabel('Press Me 0')).toBeVisible();
+    await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
+    await expect(elementByLabel('Press Me 1')).toBeVisible();
   });
 
   it('Popping screen with yellow box should not crash', async () => {
