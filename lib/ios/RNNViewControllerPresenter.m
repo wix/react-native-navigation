@@ -155,6 +155,9 @@
 	
 	if (newOptions.topBar.title.component.name.hasValue) {
 		[self setCustomNavigationTitleView:newOptions perform:nil];
+	} else {
+		[_customTitleView removeFromSuperview];
+		_customTitleView = nil;
 	}
 	
 	if (newOptions.topBar.backButton.icon.hasValue || newOptions.topBar.backButton.showTitle.hasValue || newOptions.topBar.backButton.color.hasValue || newOptions.topBar.backButton.title.hasValue) {
@@ -190,10 +193,20 @@
 }
 
 - (void)setTitleViewWithSubtitle:(RNNNavigationOptions *)options {
-	if (!_customTitleView && options.topBar.subtitle.text.hasValue) {
+	if (!_customTitleView) {
 		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.boundViewController];
+
+		if (options.topBar.title.text.hasValue) {
+			[_titleViewHelper setTitleOptions:options.topBar.title];
+		}
+		if (options.topBar.subtitle.text.hasValue) {
+			[_titleViewHelper setSubtitleOptions:options.topBar.subtitle];
+		}
+
 		[_titleViewHelper setup];
-	} else if (_titleViewHelper) {
+	} else {
+		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.bindedViewController];
+		
 		if (options.topBar.title.text.hasValue) {
 			[_titleViewHelper setTitleOptions:options.topBar.title];
 		}
