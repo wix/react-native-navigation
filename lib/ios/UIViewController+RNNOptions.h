@@ -1,8 +1,11 @@
 #import <UIKit/UIKit.h>
 
 @class RNNBottomTabOptions;
+@class RNNNavigationOptions;
 
 @interface UIViewController (RNNOptions)
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage;
 

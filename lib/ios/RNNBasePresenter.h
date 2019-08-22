@@ -8,9 +8,13 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @property(nonatomic, strong) NSString *boundComponentId;
 
+@property(nonatomic, strong) RNNNavigationOptions * defaultOptions;
+
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)bindViewController:(UIViewController *)boundViewController;
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions;
 
