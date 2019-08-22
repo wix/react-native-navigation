@@ -1,9 +1,7 @@
 #import "RNNNavigationControllerPresenter.h"
 #import "UINavigationController+RNNOptions.h"
 #import "RNNNavigationController.h"
-#import <React/RCTConvert.h>
 #import "RNNCustomTitleView.h"
-#import "UIViewController+LayoutProtocol.h"
 
 @interface RNNNavigationControllerPresenter() {
 	RNNReactComponentRegistry* _componentRegistry;
@@ -25,44 +23,43 @@
 	[super applyOptions:options];
 	
 	RNNNavigationController* navigationController = self.boundViewController;
+	RNNNavigationOptions * withDefault = [options withDefault:[self defaultOptions]];
 	
 	self.interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
 	self.interactivePopGestureDelegate.navigationController = navigationController;
 	self.interactivePopGestureDelegate.originalDelegate = navigationController.interactivePopGestureRecognizer.delegate;
 	navigationController.interactivePopGestureRecognizer.delegate = self.interactivePopGestureDelegate;
 	
-	[navigationController rnn_setInteractivePopGestureEnabled:[options.popGesture getWithDefaultValue:YES]];
-	[navigationController rnn_setRootBackgroundImage:[options.rootBackgroundImage getWithDefaultValue:nil]];
-	[navigationController rnn_setNavigationBarTestID:[options.topBar.testID getWithDefaultValue:nil]];
-	[navigationController rnn_setNavigationBarVisible:[options.topBar.visible getWithDefaultValue:YES] animated:[options.topBar.animate getWithDefaultValue:YES]];
-	[navigationController rnn_hideBarsOnScroll:[options.topBar.hideOnScroll getWithDefaultValue:NO]];
-	[navigationController rnn_setNavigationBarNoBorder:[options.topBar.noBorder getWithDefaultValue:NO]];
-	[navigationController rnn_setBarStyle:[RCTConvert UIBarStyle:[options.topBar.barStyle getWithDefaultValue:@"default"]]];
-	[navigationController rnn_setNavigationBarTranslucent:[options.topBar.background.translucent getWithDefaultValue:NO]];
-	[navigationController rnn_setNavigationBarClipsToBounds:[options.topBar.background.clipToBounds getWithDefaultValue:NO]];
-	[navigationController rnn_setNavigationBarBlur:[options.topBar.background.blur getWithDefaultValue:NO]];
-	[navigationController setTopBarBackgroundColor:[options.topBar.background.color getWithDefaultValue:nil]];
-	[navigationController rnn_setNavigationBarLargeTitleVisible:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
-	[navigationController rnn_setNavigationBarLargeTitleFontFamily:[options.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[options.topBar.largeTitle.color getWithDefaultValue:nil]];
-	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:nil] color:[options.topBar.title.color getWithDefaultValue:nil]];
-	[navigationController rnn_setBackButtonColor:[options.topBar.backButton.color getWithDefaultValue:nil]];
-}
-
-- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
-	[super applyOptionsOnWillMoveToParentViewController:options];
+	[navigationController rnn_setInteractivePopGestureEnabled:[withDefault.popGesture getWithDefaultValue:YES]];
+	[navigationController rnn_setRootBackgroundImage:[withDefault.rootBackgroundImage getWithDefaultValue:nil]];
+	[navigationController rnn_setNavigationBarTestID:[withDefault.topBar.testID getWithDefaultValue:nil]];
+	[navigationController rnn_setNavigationBarVisible:[withDefault.topBar.visible getWithDefaultValue:YES] animated:[withDefault.topBar.animate getWithDefaultValue:YES]];
+	[navigationController rnn_hideBarsOnScroll:[withDefault.topBar.hideOnScroll getWithDefaultValue:NO]];
+	[navigationController rnn_setNavigationBarNoBorder:[withDefault.topBar.noBorder getWithDefaultValue:NO]];
+	[navigationController rnn_setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle getWithDefaultValue:@"default"]]];
+	[navigationController rnn_setNavigationBarTranslucent:[withDefault.topBar.background.translucent getWithDefaultValue:NO]];
+	[navigationController rnn_setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds getWithDefaultValue:NO]];
+	[navigationController rnn_setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
+	[navigationController setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
+	[navigationController rnn_setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
+	[navigationController rnn_setNavigationBarLargeTitleFontFamily:[withDefault.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.largeTitle.color getWithDefaultValue:nil]];
+	[navigationController rnn_setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
+	[navigationController rnn_setBackButtonColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil]];
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
-	if (options.topBar.background.component.name.hasValue) {
+	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+	if (withDefault.topBar.background.component.name.hasValue) {
 		[self presentBackgroundComponent];
 	}
 }
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options {
+	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 	RNNNavigationController* navigationController = self.boundViewController;
-	[navigationController setTopBarBackgroundColor:[options.topBar.background.color getWithDefaultValue:nil]];
-	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:nil] color:[options.topBar.title.color getWithDefaultValue:[UIColor blackColor]]];
-	[navigationController rnn_setNavigationBarLargeTitleVisible:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
+	[navigationController setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
+	[navigationController rnn_setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:[UIColor blackColor]]];
+	[navigationController rnn_setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions {

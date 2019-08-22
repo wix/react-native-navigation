@@ -8,7 +8,6 @@
 
 @interface RNNBasePresenter ()
 @property(nonatomic, strong) RNNDotIndicatorPresenter* dotIndicatorPresenter;
-@property(nonatomic, strong) RNNNavigationOptions* defaultOptions;
 @end
 @implementation RNNBasePresenter
 
@@ -22,6 +21,10 @@
 - (void)bindViewController:(UIViewController <RNNLayoutProtocol> *)boundViewController {
     self.boundComponentId = boundViewController.layoutInfo.componentId;
     _boundViewController = boundViewController;
+}
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+    _defaultOptions = defaultOptions;
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {

@@ -56,9 +56,9 @@ describe('Options', () => {
     await elementById(TestIDs.HIDE_TOPBAR_DEFAULT_OPTIONS).tap();
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
-    await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
-    await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
   });
 
   it('default options should not override static options', async () => {

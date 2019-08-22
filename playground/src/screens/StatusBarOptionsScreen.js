@@ -31,18 +31,20 @@ class StatusBarOptions extends React.Component {
 
   render() {
     return (
-      <Root componentId={this.props.componentId} style={style.root}>
+      <View style={style.container}>
         <Image
-          style={style.image}
-          source={require('../../img/city.png')}
-          fadeDuration={0}
-        />
-        <Button label='Full Screen Modal' onPress={this.fullScreenModal} />
-        <Button label='Push' onPress={this.push} />
-        <Button label='BottomTabs' onPress={this.bottomTabs} />
-        <Button label='Open Left' onPress={() => this.open('left')} />
-        <Button label='Open Right' onPress={() => this.open('right')} />
-      </Root>
+            style={style.image}
+            source={require('../../img/city.png')}
+            fadeDuration={0}
+          />
+        <Root componentId={this.props.componentId} style={style.root}>
+          <Button label='Full Screen Modal' onPress={this.fullScreenModal} />
+          <Button label='Push' onPress={this.push} />
+          <Button label='BottomTabs' onPress={this.bottomTabs} />
+          <Button label='Open Left' onPress={() => this.open('left')} />
+          <Button label='Open Right' onPress={() => this.open('right')} />
+        </Root>
+      </View>
     );
   }
 
@@ -61,6 +63,10 @@ const style = StyleSheet.create({
   root: {
     paddingTop: 0,
     paddingHorizontal: 0
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'column'
   },
   image: {
     height: 250,

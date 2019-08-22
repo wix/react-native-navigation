@@ -1,4 +1,8 @@
 # Changelog
+# 3.1.1
+## Fixed
+### Android
+* Fix defaultOptions not being applied if called after setRoot [#338b096](https://github.com/wix/react-native-navigation/commit/338b0961f9bee9fa20583efe0f165e3cefa14c92) by [guyca](https://github.com/guyca)
 # 3.1.0
 ## Added
 * Support passing null color to StatusBar backgroundColor and bottom tab icon color [#3519837](https://github.com/wix/react-native-navigation/commit/3519837cc2a82cb14ec1849bfc358865e407f556) by [guyca](https://github.com/guyca)
@@ -67,16 +71,10 @@ Add the following to your application's `style.xml`
   </resources>
   ```
 
-
-
-
-
-
-
-
-
-
-
+# 2.27.1
+## Fixed
+### Android
+* Fix defaultOptions not being applied if called after setRoot [#338b096](https://github.com/wix/react-native-navigation/commit/338b0961f9bee9fa20583efe0f165e3cefa14c92) by [guyca](https://github.com/guyca)
 
 # 2.27.0
 ## Added

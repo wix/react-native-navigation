@@ -2,8 +2,6 @@
 #import "UIViewController+RNNOptions.h"
 #import "UITabBarController+RNNOptions.h"
 #import "RCTConvert+Modal.h"
-#import "RNNReactView.h"
-#import "RNNCustomTitleView.h"
 #import "RNNTitleViewHelper.h"
 #import "UIViewController+LayoutProtocol.h"
 
@@ -31,48 +29,51 @@
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
 	[super applyOptionsOnWillMoveToParentViewController:options];
 	UIViewController* viewController = self.boundViewController;
-	[viewController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
+	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+	[viewController rnn_setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES] ? [withDefault.topBar.backButton.title getWithDefaultValue:nil] : @""];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	[super applyOptions:options];
 	
 	UIViewController* viewController = self.boundViewController;
-	[viewController rnn_setBackgroundImage:[options.backgroundImage getWithDefaultValue:nil]];
-	[viewController rnn_setNavigationItemTitle:[options.topBar.title.text getWithDefaultValue:nil]];
-	[viewController rnn_setTopBarPrefersLargeTitle:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
-	[viewController rnn_setTabBarItemBadgeColor:[options.bottomTab.badgeColor getWithDefaultValue:nil]];
-	[viewController rnn_setStatusBarBlur:[options.statusBar.blur getWithDefaultValue:NO]];
-	[viewController rnn_setStatusBarStyle:[options.statusBar.style getWithDefaultValue:@"default"] animated:[options.statusBar.animate getWithDefaultValue:YES]];
-	[viewController rnn_setBackButtonVisible:[options.topBar.backButton.visible getWithDefaultValue:YES]];
-	[viewController rnn_setInterceptTouchOutside:[options.overlay.interceptTouchOutside getWithDefaultValue:YES]];
+	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+	[viewController rnn_setBackgroundImage:[withDefault.backgroundImage getWithDefaultValue:nil]];
+	[viewController rnn_setNavigationItemTitle:[withDefault.topBar.title.text getWithDefaultValue:nil]];
+	[viewController rnn_setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
+	[viewController rnn_setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor getWithDefaultValue:nil]];
+	[viewController rnn_setStatusBarBlur:[withDefault.statusBar.blur getWithDefaultValue:NO]];
+	[viewController rnn_setStatusBarStyle:[withDefault.statusBar.style getWithDefaultValue:@"default"] animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
+	[viewController rnn_setBackButtonVisible:[withDefault.topBar.backButton.visible getWithDefaultValue:YES]];
+	[viewController rnn_setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside getWithDefaultValue:YES]];
 	
-	if (options.layout.backgroundColor.hasValue) {
-		[viewController rnn_setBackgroundColor:options.layout.backgroundColor.get];
+	if (withDefault.layout.backgroundColor.hasValue) {
+		[viewController rnn_setBackgroundColor:withDefault.layout.backgroundColor.get];
 	}
 	
-	if (options.topBar.searchBar.hasValue) {
+	if (withDefault.topBar.searchBar.hasValue) {
 		BOOL hideNavBarOnFocusSearchBar = YES;
-		if (options.topBar.hideNavBarOnFocusSearchBar.hasValue) {
-			hideNavBarOnFocusSearchBar = options.topBar.hideNavBarOnFocusSearchBar.get;
+		if (withDefault.topBar.hideNavBarOnFocusSearchBar.hasValue) {
+			hideNavBarOnFocusSearchBar = withDefault.topBar.hideNavBarOnFocusSearchBar.get;
 		}
-		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar: hideNavBarOnFocusSearchBar];
+		[viewController rnn_setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar: hideNavBarOnFocusSearchBar];
 	}
 	
-	[self setTitleViewWithSubtitle:options];
+	[self setTitleViewWithSubtitle:withDefault];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
 	[super applyOptionsOnInit:options];
 	
 	UIViewController* viewController = self.boundViewController;
-	[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[options.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]];
-	[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[options.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
-	[viewController rnn_setDrawBehindTopBar:[options.topBar.drawBehind getWithDefaultValue:NO]];
-	[viewController rnn_setDrawBehindTabBar:[options.bottomTabs.drawBehind getWithDefaultValue:NO] || ![options.bottomTabs.visible getWithDefaultValue:YES]];
+	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+	[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[withDefault.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]];
+	[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[withDefault.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
+	[viewController rnn_setDrawBehindTopBar:[withDefault.topBar.drawBehind getWithDefaultValue:NO]];
+	[viewController rnn_setDrawBehindTabBar:[withDefault.bottomTabs.drawBehind getWithDefaultValue:NO] || ![withDefault.bottomTabs.visible getWithDefaultValue:YES]];
 	
-	if ((options.topBar.leftButtons || options.topBar.rightButtons)) {
-		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:options.topBar.leftButtonStyle defaultRightButtonStyle:options.topBar.rightButtonStyle];
+	if ((withDefault.topBar.leftButtons || withDefault.topBar.rightButtons)) {
+		[_navigationButtons applyLeftButtons:withDefault.topBar.leftButtons rightButtons:withDefault.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
 	}
 }
 

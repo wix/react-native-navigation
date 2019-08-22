@@ -2,11 +2,16 @@
 #import <React/RCTRootView.h>
 #import "UIImage+tint.h"
 #import "RNNBottomTabOptions.h"
+#import "RNNNavigationOptions.h"
 
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
 
 @implementation UIViewController (RNNOptions)
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+
+}
 
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage {
 	if (backgroundImage) {

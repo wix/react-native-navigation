@@ -1,15 +1,12 @@
 #import "RNNCommandsHandler.h"
-#import "RNNNavigationOptions.h"
 #import "RNNRootViewController.h"
-#import "RNNSplitViewController.h"
-#import "RNNElementFinder.h"
-#import "React/RCTUIManager.h"
 #import "RNNErrorHandler.h"
 #import "RNNDefaultOptionsHelper.h"
 #import "UIViewController+RNNOptions.h"
 #import "React/RCTI18nUtil.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "RNNLayoutManager.h"
+#import "UIViewController+Utils.h"
 
 static NSString* const setRoot	= @"setRoot";
 static NSString* const setStackRoot	= @"setStackRoot";
@@ -86,7 +83,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)mergeOptions:(NSString*)componentId options:(NSDictionary*)mergeOptions completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNLayoutProtocol>* vc = (UIViewController<RNNLayoutProtocol>*)[RNNLayoutManager findComponentForId:componentId];
+	UIViewController<RNNLayoutProtocol>* vc = [RNNLayoutManager findComponentForId:componentId];
 	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
 	if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] || [vc isKindOfClass:[RNNRootViewController class]]) {
 		[CATransaction begin];
@@ -106,7 +103,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController *rootViewController = UIApplication.sharedApplication.delegate.window.rootViewController;
 	[RNNDefaultOptionsHelper recrusivelySetDefaultOptions:defaultOptions onRootViewController:rootViewController];
-	
+
 	completion();
 }
 

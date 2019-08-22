@@ -27,6 +27,10 @@
 	[viewController didMoveToParentViewController:self];
 }
 
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+	[_presenter setDefaultOptions:defaultOptions];
+}
+
 - (void)mergeOptions:(RNNNavigationOptions *)options {
 	[_presenter mergeOptions:options currentOptions:self.options];
 	[self.parentViewController mergeOptions:options];

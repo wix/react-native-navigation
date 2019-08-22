@@ -34,6 +34,10 @@
 	return self;
 }
 
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+	[self.presenter setDefaultOptions:defaultOptions];
+}
+
 - (void)setAnimationType:(NSString *)animationType {
 	MMDrawerControllerDrawerVisualStateBlock animationTypeStateBlock = nil;
 	if ([animationType isEqualToString:@"door"]) animationTypeStateBlock = [MMDrawerVisualState swingingDoorVisualStateBlock];
