@@ -54,6 +54,7 @@
     "tslib": "1.9.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-export-default-from": "7.2.0",
     "@babel/plugin-proposal-export-namespace-from": "7.2.0",
     "@types/hoist-non-react-statics": "^3.0.1",
