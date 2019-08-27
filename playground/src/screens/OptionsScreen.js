@@ -67,7 +67,6 @@ class Options extends Component {
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
         <Button label='Hide TopBar in DefaultOptions' testID={HIDE_TOPBAR_DEFAULT_OPTIONS} onPress={this.hideTopBarInDefaultOptions} />
         <Button label='Set React Title View' testID={SET_REACT_TITLE_VIEW} onPress={this.setReactTitleView} />
-        <Button label='Set Title' testID={SET_REACT_TITLE_VIEW} onPress={this.setTitle} />
         <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
         <Button label='StatusBar' onPress={this.statusBarScreen} />
       </Root>
@@ -117,14 +116,6 @@ class Options extends Component {
             text: 'Press Me'
           }
         }
-      }
-    }
-  });
-
-  setTitle = () => Navigation.mergeOptions(this, {
-    topBar: {
-      title: {
-        text: 'Title'
       }
     }
   });
