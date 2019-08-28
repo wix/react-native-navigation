@@ -24,7 +24,7 @@ class ContextScreen extends React.Component {
           {ctx => <Text style={styles.text}>Provider value: {ctx.title}</Text>}
         </GlobalContext.Consumer>
         <GlobalContext.Consumer>
-          {ctx => <Button title={`clicked ${ctx.count}`} onPress={() => ctx.count++} />}
+          {ctx => <Button title={`clicked ${ctx.count}`} onPress={() => ctx.incrementCount()} />}
         </GlobalContext.Consumer>
       </Root>
     );

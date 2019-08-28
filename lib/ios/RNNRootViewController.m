@@ -27,8 +27,12 @@
 	[viewController didMoveToParentViewController:self];
 }
 
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+	[_presenter setDefaultOptions:defaultOptions];
+}
+
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
+	[_presenter mergeOptions:options currentOptions:self.options];
 	[self.parentViewController mergeOptions:options];
 }
 
@@ -112,21 +116,11 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if (self.resolveOptions.statusBar.visible.hasValue) {
-		return ![self.resolveOptions.statusBar.visible get];
-	} else if ([self.resolveOptions.statusBar.hideWithTopBar getWithDefaultValue:NO]) {
-		return self.navigationController.isNavigationBarHidden;
-	}
-	
-	return NO;
+	return [_presenter isStatusBarVisibility:self.navigationController resolvedOptions:self.resolveOptions];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	if ([[self.resolveOptions.statusBar.style getWithDefaultValue:@"default"] isEqualToString:@"light"]) {
-		return UIStatusBarStyleLightContent;
-	} else {
-		return UIStatusBarStyleDefault;
-	}
+	return [_presenter getStatusBarStyle:[self resolveOptions]];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

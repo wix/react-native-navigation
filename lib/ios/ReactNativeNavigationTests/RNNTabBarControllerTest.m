@@ -90,7 +90,7 @@
 - (void)testMergeOptions_shouldInvokePresenterMergeOptions {
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
-    [(RNNTabBarPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options currentOptions:[self.uut options] defaultOptions:nil];
+    [(RNNTabBarPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options currentOptions:[self.uut options]];
     [self.uut mergeOptions:options];
     [self.mockTabBarPresenter verify];
 }
@@ -126,15 +126,9 @@
 }
 
 - (void)testPreferredStatusBarStyle_shouldInvokeSelectedViewControllerPreferredStatusBarStyle {
-    [[self.mockChildViewController expect] preferredStatusBarStyle];
+    [[self.mockTabBarPresenter expect] getStatusBarStyle:[OCMArg any]];
     [self.uut preferredStatusBarStyle];
-    [self.mockChildViewController verify];
-}
-
-- (void)testPreferredStatusBarStyle_shouldInvokeOnSelectedViewController {
-    [[self.mockChildViewController expect] preferredStatusBarStyle];
-    [self.uut preferredStatusBarStyle];
-    [self.mockChildViewController verify];
+    [self.mockTabBarPresenter verify];
 }
 
 - (void)testTabBarControllerDidSelectViewControllerDelegate_shouldInvokeSendBottomTabSelectedEvent {

@@ -548,7 +548,7 @@
 
 - (void)testMergeOptionsShouldCallPresenterMergeOptions {
 	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	[[(id)self.uut.presenter expect] mergeOptions:newOptions currentOptions:self.uut.options defaultOptions:self.uut.defaultOptions];
+	[[(id)self.uut.presenter expect] mergeOptions:newOptions currentOptions:self.uut.options];
 	[self.uut mergeOptions:newOptions];
 	[(id)self.uut.presenter verify];
 }

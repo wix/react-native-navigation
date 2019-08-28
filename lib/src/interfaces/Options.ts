@@ -312,7 +312,7 @@ export interface OptionsTopBarButton {
   testID?: string;
   /**
    * (Android only) Set showAsAction value
-   * @see {@link https://developer.android.com/guide/topics/resources/menu-resource|Android developer guide: Menu resource} 
+   * @see {@link https://developer.android.com/guide/topics/resources/menu-resource|Android developer guide: Menu resource}
    */
   showAsAction?: 'ifRoom' | 'withText' | 'always' | 'never';
 }
@@ -513,7 +513,18 @@ export interface OptionsBottomTabs {
   elevation?: AndroidDensityNumber;
 }
 
+export interface DotIndicatorOptions {
+    // default red
+    color?: Color,
+    // default 6
+    size?: number,
+    // default false
+    visible?: boolean,
+}
+
 export interface OptionsBottomTab {
+    dotIndicator?: DotIndicatorOptions,
+
   /**
    * Set the text to display below the icon
    */

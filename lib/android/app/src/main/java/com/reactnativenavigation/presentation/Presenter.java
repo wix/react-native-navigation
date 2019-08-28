@@ -111,7 +111,7 @@ public class Presenter {
     }
 
     private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && statusBar.backgroundColor.canApplyValue()) {
             int defaultColor = statusBar.visible.isTrueOrUndefined() ? Color.BLACK : Color.TRANSPARENT;
             activity.getWindow().setStatusBarColor(statusBar.backgroundColor.get(defaultColor));
         }

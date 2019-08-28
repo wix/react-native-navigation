@@ -46,7 +46,7 @@
 	RNNOptions* newOptions = [[[self class] alloc] initWithDict:@{}];
 	[newOptions mergeOptions:defaultOptions overrideOptions:YES];
 	[newOptions mergeOptions:self overrideOptions:YES];
-	
+
 	return newOptions;
 }
 
