@@ -112,7 +112,7 @@ public class FabPresenter {
             layoutParamsCoordinator.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
             layoutParamsCoordinator.topMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
 
-            layoutParamsCoordinator.gravity =  Gravity.TOP|Gravity.LEFT|Gravity.START;
+            layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.RIGHT|Gravity.END;
             if (options.alignVertically.hasValue() && options.alignHorizontally.hasValue()) {
                 if ("top".equals(options.alignVertically.get()) && "right".equals(options.alignHorizontally.get())) {
                     layoutParamsCoordinator.gravity =  Gravity.TOP|Gravity.RIGHT|Gravity.END;
