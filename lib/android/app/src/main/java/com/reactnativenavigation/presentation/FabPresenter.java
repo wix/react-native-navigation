@@ -216,6 +216,53 @@ public class FabPresenter {
 
     private void mergeParams(View fab, FabOptions options) {
         ViewGroup.LayoutParams layoutParams = fab.getLayoutParams();
+        
+         if (viewGroup instanceof CoordinatorLayout) {
+            CoordinatorLayout.LayoutParams layoutParamsCoordinator = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+            if (layoutParamsCoordinator == null) {
+                layoutParamsCoordinator = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                layoutParamsCoordinator.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+                layoutParamsCoordinator.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+                layoutParamsCoordinator.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+                layoutParamsCoordinator.topMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            }
+
+            layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.RIGHT|Gravity.END;
+            if (options.alignVertically.hasValue() && options.alignHorizontally.hasValue()) {
+                if ("top".equals(options.alignVertically.get()) && "right".equals(options.alignHorizontally.get())) {
+                    layoutParamsCoordinator.gravity =  Gravity.TOP|Gravity.RIGHT|Gravity.END;
+                }
+                if ("top".equals(options.alignVertically.get()) && "left".equals(options.alignHorizontally.get())) {
+                    layoutParamsCoordinator.gravity =  Gravity.TOP|Gravity.LEFT|Gravity.START;
+                }
+                if ("bottom".equals(options.alignVertically.get()) && "right".equals(options.alignHorizontally.get())) {
+                    layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.RIGHT|Gravity.END;
+                }
+                if ("bottom".equals(options.alignVertically.get()) && "left".equals(options.alignHorizontally.get())) {
+                    layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.LEFT|Gravity.START;
+                }
+            } else {
+                if (options.alignHorizontally.hasValue()) {
+                    if ("right".equals(options.alignHorizontally.get())) {
+                        layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.RIGHT|Gravity.END;
+                    }
+                    if ("left".equals(options.alignHorizontally.get())) {
+                        layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.LEFT|Gravity.START;
+                    }
+                }
+                if (options.alignVertically.hasValue()) {
+                    if ("top".equals(options.alignVertically.get())) {
+                        layoutParamsCoordinator.gravity =  Gravity.TOP|Gravity.RIGHT|Gravity.END;
+                    }
+                    if ("bottom".equals(options.alignVertically.get())) {
+                        layoutParamsCoordinator.gravity =  Gravity.BOTTOM|Gravity.RIGHT|Gravity.END;
+                    }
+                }
+            }
+
+            layoutParams = layoutParamsCoordinator;
+        }
         if (viewGroup instanceof RelativeLayout) {
             RelativeLayout.LayoutParams layoutParamsRelative = (RelativeLayout.LayoutParams) fab.getLayoutParams();
             if (layoutParamsRelative == null) {
