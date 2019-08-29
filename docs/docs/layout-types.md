@@ -39,13 +39,20 @@ const stack = {
 ```
 
 ## bottomTabs
+The bottomTabs displays tabs at the bottom of the window for selecting between the different modes and for displaying the views for that mode. It has children property which gets an array of component objects to display (every component object represent a different tab)
+
+the component object can be wrapped inside a stack object what will add the display component a navigation wrapper - that will enable you to push components above it
 
 ```js
 const bottomTabs = {
   children: [
     {
       stack: {
-        children: [],
+        children: [
+          component: {
+            name: 'firstTabScreen',
+          }
+        ],
         options: {
           bottomTab: {
             text: 'Tab 1',
@@ -55,8 +62,12 @@ const bottomTabs = {
       }
     },
     {
-      component: {
-        name: 'secondTabScreen',
+      stack: {
+        children: [
+          component: {
+            name: 'secondTabScreen',
+          }
+        ],
         options: {
           bottomTab: {
             text: 'Tab 2',
