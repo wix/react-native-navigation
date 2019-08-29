@@ -13,8 +13,12 @@
 	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 	RNNSideMenuController* sideMenuController = self.boundViewController;
 
-	[sideMenuController side:MMDrawerSideLeft enabled:[withDefault.sideMenu.left.enabled getWithDefaultValue:YES]];
-	[sideMenuController side:MMDrawerSideRight enabled:[withDefault.sideMenu.right.enabled getWithDefaultValue:YES]];
+	if (options.sideMenu.left.enabled.hasValue) {
+		[sideMenuController side:MMDrawerSideLeft enabled:[options.sideMenu.left.enabled getWithDefaultValue:YES]];
+	}
+	if (options.sideMenu.right.enabled.hasValue) {
+		[sideMenuController side:MMDrawerSideRight enabled:[options.sideMenu.right.enabled getWithDefaultValue:YES]];
+	}
 	
 	[sideMenuController setShouldStretchLeftDrawer:[withDefault.sideMenu.left.shouldStretchDrawer getWithDefaultValue:YES]];
 	[sideMenuController setShouldStretchRightDrawer:[withDefault.sideMenu.right.shouldStretchDrawer getWithDefaultValue:YES]];
