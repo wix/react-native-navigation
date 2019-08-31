@@ -89,13 +89,33 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     @Override
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
-        performOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(this.options.copy(), child));
+        performOnParentController(parentController ->
+                ((ParentController) parentController).applyChildOptions(
+                        this.options.copy()
+                                .clearTopBarOptions()
+                                .clearAnimationOptions()
+                                .clearFabOptions()
+                                .clearTopTabOptions()
+                                .clearTopTabsOptions(),
+                        child
+                )
+        );
     }
 
     @CallSuper
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
-        performOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(options.copy(), child));
+        performOnParentController(parentController ->
+                ((ParentController) parentController).mergeChildOptions(
+                        options.copy()
+                                .clearTopBarOptions()
+                                .clearAnimationOptions()
+                                .clearFabOptions()
+                                .clearTopTabOptions()
+                                .clearTopTabsOptions(),
+                        child
+                )
+        );
     }
 
     public void switchToTab(int index) {
