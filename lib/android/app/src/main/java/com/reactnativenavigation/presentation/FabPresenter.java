@@ -473,4 +473,12 @@ public class FabPresenter {
             params.gravity = params.gravity & ~gravityParam;
         }
     }
+
+    public void applyBottomInset(int bottomInset) {
+        if (viewGroup != null & (fab != null | fabMenu != null )) {
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+            lp.bottomMargin = bottomInset + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            fab.requestLayout();
+        }
+    }
 }

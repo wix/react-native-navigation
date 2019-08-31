@@ -381,6 +381,12 @@ public class StackController extends ParentController<StackLayout> {
         return resolveChildOptions(child).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
     }
 
+    @Override
+    public void applyBottomInset() {
+        super.applyBottomInset();
+        fabOptionsPresenter.applyBottomInset(getBottomInset());
+    }
+
     @RestrictTo(RestrictTo.Scope.TESTS)
     public TopBar getTopBar() {
         return topBarController.getView();
