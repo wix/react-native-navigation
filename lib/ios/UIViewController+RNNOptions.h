@@ -1,8 +1,11 @@
 #import <UIKit/UIKit.h>
 
 @class RNNBottomTabOptions;
+@class RNNNavigationOptions;
 
 @interface UIViewController (RNNOptions)
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage;
 
@@ -20,7 +23,7 @@
 
 - (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor;
 
-- (void)rnn_setTabBarItemBadge:(RNNBottomTabOptions *)bottomTab;
+- (void)rnn_setTabBarItemBadge:(NSString *)badge;
 
 - (void)rnn_setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;
 

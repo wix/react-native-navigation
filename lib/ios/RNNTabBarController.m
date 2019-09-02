@@ -44,7 +44,7 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return self.selectedViewController.preferredStatusBarStyle;
+	return [[self presenter] getStatusBarStyle:self.resolveOptions];
 }
 
 #pragma mark UITabBarControllerDelegate

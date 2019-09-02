@@ -20,12 +20,12 @@ export class OptionsProcessor {
 
   private processObject(objectToProcess: object) {
     _.forEach(objectToProcess, (value, key) => {
+      this.processColor(key, value, objectToProcess);
       if (!value) {
         return;
       }
 
       this.processComponent(key, value, objectToProcess);
-      this.processColor(key, value, objectToProcess);
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
 
@@ -37,7 +37,7 @@ export class OptionsProcessor {
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (_.isEqual(key, 'color') || _.endsWith(key, 'Color')) {
-      options[key] = this.colorService.toNativeColor(value);
+      options[key] = value === null ? 'NoColor' : this.colorService.toNativeColor(value);
     }
   }
 
