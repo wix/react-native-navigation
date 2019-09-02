@@ -29,7 +29,8 @@ export default () => {
 For more information about how to set up redux read the [react-redux docs](https://react-redux.js.org/)
 
 ## react-native-vector-icons
-This liabry can be used to set icons as the following example does.
+
+This library can be used to set icons as the following example does.
 For available icons read the [react-native-vector-icons docs](https://github.com/oblador/react-native-vector-icons).
 
 ```js
