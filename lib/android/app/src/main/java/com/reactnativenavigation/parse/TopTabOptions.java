@@ -1,7 +1,7 @@
 package com.reactnativenavigation.parse;
 
 import android.graphics.Typeface;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Text;

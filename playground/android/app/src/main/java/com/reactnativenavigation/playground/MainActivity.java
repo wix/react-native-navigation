@@ -1,7 +1,7 @@
 package com.reactnativenavigation.playground;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.reactnativenavigation.NavigationActivity;

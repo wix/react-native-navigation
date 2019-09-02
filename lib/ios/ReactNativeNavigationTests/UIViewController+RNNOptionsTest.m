@@ -17,23 +17,20 @@
 }
 
 - (void)test_setTabBarItemBadge_shouldSetValidValue {
-    NSDictionary *dict = @{@"badge": @"badge"};
-    RNNBottomTabOptions * options = [[RNNBottomTabOptions alloc] initWithDict:dict];
-    [self.uut rnn_setTabBarItemBadge:options];
+    [self.uut rnn_setTabBarItemBadge:@"badge"];
     XCTAssertEqual([self.uut tabBarItem].badgeValue, @"badge");
 }
 
 - (void)test_setTabBarItemBadge_shouldResetWhenValueIsEmptyString {
-    [self.uut rnn_setTabBarItemBadge:[[RNNBottomTabOptions alloc] initWithDict:@{@"badge": @"badge"}]];
+    [self.uut rnn_setTabBarItemBadge:@"badge"];
 
-    RNNBottomTabOptions * optionsWithEmptyBadge = [[RNNBottomTabOptions alloc] initWithDict:@{@"badge": @""}];
-    [self.uut rnn_setTabBarItemBadge:optionsWithEmptyBadge];
+    [self.uut rnn_setTabBarItemBadge:@""];
     XCTAssertEqual([self.uut tabBarItem].badgeValue, nil);
 }
 
 - (void)test_setTabBarItemBadge_shouldResetWhenValueIsNullObject {
-    [self.uut rnn_setTabBarItemBadge:[[RNNBottomTabOptions alloc] initWithDict:@{@"badge": @"badge"}]];
-    [self.uut rnn_setTabBarItemBadge:[[RNNBottomTabOptions alloc] initWithDict:@{@"badge": [NSNull new]}]];
+    [self.uut rnn_setTabBarItemBadge:@"badge"];
+    [self.uut rnn_setTabBarItemBadge:(id) [NSNull new]];
     XCTAssertEqual([self.uut tabBarItem].badgeValue, nil);
 }
 

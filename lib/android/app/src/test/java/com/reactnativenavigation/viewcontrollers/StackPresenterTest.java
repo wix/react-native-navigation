@@ -1,17 +1,17 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.mocks.TestComponentLayout;
-import com.reactnativenavigation.mocks.TestReactView;
+import com.reactnativenavigation.mocks.Mocks;
+import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
@@ -30,20 +30,27 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.utils.TitleBarHelper;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBarReactView;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -58,9 +65,10 @@ import static org.mockito.Mockito.when;
 public class StackPresenterTest extends BaseTest {
 
     private static final Options EMPTY_OPTIONS = new Options();
+    private StackController parent;
     private StackPresenter uut;
-    private TestComponentLayout child;
-    private TestComponentLayout otherChild;
+    private ViewController child;
+    private ViewController otherChild;
     private Activity activity;
     private TopBar topBar;
     private RenderChecker renderChecker;
@@ -69,18 +77,11 @@ public class StackPresenterTest extends BaseTest {
     private Button textBtn2 = TitleBarHelper.textualButton("btn2");
     private Button componentBtn1 = TitleBarHelper.reactViewButton("btn1_");
     private Button componentBtn2 = TitleBarHelper.reactViewButton("btn2_");
+    private TopBarController topBarController;
 
     @Override
     public void beforeEach() {
         activity = spy(newActivity());
-        //noinspection Convert2Lambda
-        TitleBarButtonController.OnClickListener onClickListener = spy(new TitleBarButtonController.OnClickListener() {
-            @Override
-            public void onPress(String buttonId) {
-                Log.i("TopBarTest", "onPress: " + buttonId);
-            }
-        });
-
         TitleBarReactViewCreatorMock titleViewCreator = new TitleBarReactViewCreatorMock() {
             @Override
             public TitleBarReactView create(Activity activity, String componentId, String componentName) {
@@ -90,10 +91,22 @@ public class StackPresenterTest extends BaseTest {
         renderChecker = spy(new RenderChecker());
         uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), ImageLoaderMock.mock(), renderChecker, new Options()));
         topBar = mockTopBar();
-        uut.bindView(topBar);
-        uut.setButtonOnClickListener(onClickListener);
-        child = spy(new TestComponentLayout(activity, new TestReactView(activity)));
-        otherChild = new TestComponentLayout(activity, new TestReactView(activity));
+        topBarController = spy(new TopBarController() {
+            @Override
+            protected TopBar createTopBar(Context context, StackLayout stackLayout) {
+                return topBar;
+            }
+        });
+
+        parent = TestUtils.newStackController(activity)
+                .setTopBarController(topBarController)
+                .setStackPresenter(uut)
+                .build();
+        parent.ensureViewIsCreated();
+
+        ChildControllersRegistry childRegistry = new ChildControllersRegistry();
+        child = spy(new SimpleViewController(activity, childRegistry, "child1", Options.EMPTY));
+        otherChild = spy(new SimpleViewController(activity, childRegistry, "child1", Options.EMPTY));
     }
 
     @Test
@@ -102,15 +115,15 @@ public class StackPresenterTest extends BaseTest {
         o1.topBar.title.component = component(Alignment.Default);
         o1.topBar.background.component = component(Alignment.Default);
         o1.topBar.buttons.right = new ArrayList(Collections.singletonList(componentBtn1));
-        uut.applyChildOptions(o1, child);
+        uut.applyChildOptions(o1, parent, child);
 
-        uut.isRendered(child);
+        uut.isRendered(child.getView());
         ArgumentCaptor<Collection<ViewController>> controllers = ArgumentCaptor.forClass(Collection.class);
         verify(renderChecker).areRendered(controllers.capture());
         ArrayList<ViewController> items = new ArrayList(controllers.getValue());
-        assertThat(items.contains(uut.getComponentButtons(child).get(0))).isTrue();
-        assertThat(items.contains(uut.getTitleComponents().get(child))).isTrue();
-        assertThat(items.contains(uut.getBackgroundComponents().get(child))).isTrue();
+        assertThat(items.contains(uut.getComponentButtons(child.getView()).get(0))).isTrue();
+        assertThat(items.contains(uut.getTitleComponents().get(child.getView()))).isTrue();
+        assertThat(items.contains(uut.getBackgroundComponents().get(child.getView()))).isTrue();
         assertThat(items.size()).isEqualTo(3);
     }
 
@@ -118,29 +131,29 @@ public class StackPresenterTest extends BaseTest {
     public void applyChildOptions_setTitleComponent() {
         Options options = new Options();
         options.topBar.title.component = component(Alignment.Default);
-        uut.applyChildOptions(options, child);
-        verify(topBar).setTitleComponent(uut.getTitleComponents().get(child).getView());
+        uut.applyChildOptions(options, parent, child);
+        verify(topBar).setTitleComponent(uut.getTitleComponents().get(child.getView()).getView());
     }
 
     @Test
     public void applyChildOptions_setTitleComponentCreatesOnce() {
         Options options = new Options();
         options.topBar.title.component = component(Alignment.Default);
-        uut.applyChildOptions(options, child);
+        uut.applyChildOptions(options, parent, child);
 
-        uut.applyChildOptions(new Options(), otherChild);
+        uut.applyChildOptions(Options.EMPTY, parent, otherChild);
 
-        TitleBarReactViewController titleController = uut.getTitleComponents().get(child);
-        uut.applyChildOptions(options, child);
+        TitleBarReactViewController titleController = uut.getTitleComponents().get(child.getView());
+        uut.applyChildOptions(options, parent, child);
         assertThat(uut.getTitleComponents().size()).isOne();
-        assertThat(uut.getTitleComponents().get(child)).isEqualTo(titleController);
+        assertThat(uut.getTitleComponents().get(child.getView())).isEqualTo(titleController);
     }
 
     @Test
     public void applyChildOptions_setTitleComponentAlignment() {
         Options options = new Options();
         options.topBar.title.component = component(Alignment.Center);
-        uut.applyChildOptions(options, child);
+        uut.applyChildOptions(options, parent, child);
         ArgumentCaptor<View> captor = ArgumentCaptor.forClass(View.class);
         verify(topBar).setTitleComponent(captor.capture());
 
@@ -152,9 +165,9 @@ public class StackPresenterTest extends BaseTest {
     public void onChildDestroyed_destroyTitleComponent() {
         Options options = new Options();
         options.topBar.title.component = component(Alignment.Default);
-        uut.applyChildOptions(options, child);
+        uut.applyChildOptions(options, parent, child);
 
-        TitleBarReactView titleView = uut.getTitleComponents().get(child).getView();
+        TitleBarReactView titleView = uut.getTitleComponents().get(child.getView()).getView();
         uut.onChildDestroyed(child);
         verify(titleView).destroy();
     }
@@ -162,30 +175,31 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void mergeOrientation() throws Exception {
         Options options = new Options();
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         verify(uut, times(0)).applyOrientation(any());
 
         JSONObject orientation = new JSONObject().put("orientation", "landscape");
         options.layout.orientation = OrientationOptions.parse(orientation);
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         verify(uut, times(1)).applyOrientation(options.layout.orientation);
     }
 
     @Test
     public void mergeButtons() {
-        uut.mergeChildOptions(EMPTY_OPTIONS, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(EMPTY_OPTIONS, EMPTY_OPTIONS, parent, child);
         verify(topBar, times(0)).setRightButtons(any());
         verify(topBar, times(0)).setLeftButtons(any());
 
         Options options = new Options();
+
         Button button = new Button();
         button.text = new Text("btn");
         options.topBar.buttons.right = new ArrayList<>(Collections.singleton(button));
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         verify(topBar, times(1)).setRightButtons(any());
 
         options.topBar.buttons.left = new ArrayList<>();
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         verify(topBar, times(1)).setLeftButtons(any());
     }
 
@@ -193,12 +207,12 @@ public class StackPresenterTest extends BaseTest {
     public void mergeButtons_previousRightButtonsAreDestroyed() {
         Options options = new Options();
         options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
-        uut.applyChildOptions(options, child);
-        List<TitleBarButtonController> initialButtons = uut.getComponentButtons(child);
+        uut.applyChildOptions(options, parent, child);
+        List<TitleBarButtonController> initialButtons = uut.getComponentButtons(child.getView());
         forEach(initialButtons, ViewController::ensureViewIsCreated);
 
         options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn2));
-        uut.mergeChildOptions(options, new Options(), child);
+        uut.mergeChildOptions(options, Options.EMPTY, parent, child);
         for (TitleBarButtonController button : initialButtons) {
             assertThat(button.isDestroyed()).isTrue();
         }
@@ -209,13 +223,13 @@ public class StackPresenterTest extends BaseTest {
         Options a = new Options();
         a.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
         a.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
-        uut.applyChildOptions(a, child);
-        List<TitleBarButtonController> initialButtons = uut.getComponentButtons(child);
+        uut.applyChildOptions(a, parent, child);
+        List<TitleBarButtonController> initialButtons = uut.getComponentButtons(child.getView());
         forEach(initialButtons, ViewController::ensureViewIsCreated);
 
         Options b = new Options();
         b.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn2));
-        uut.mergeChildOptions(b, new Options(), child);
+        uut.mergeChildOptions(b, Options.EMPTY, parent, child);
         assertThat(initialButtons.get(0).isDestroyed()).isTrue();
         assertThat(initialButtons.get(1).isDestroyed()).isFalse();
     }
@@ -225,13 +239,13 @@ public class StackPresenterTest extends BaseTest {
         Options a = new Options();
         a.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
         a.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
-        uut.applyChildOptions(a, child);
-        List<TitleBarButtonController> initialButtons = uut.getComponentButtons(child);
+        uut.applyChildOptions(a, parent, child);
+        List<TitleBarButtonController> initialButtons = uut.getComponentButtons(child.getView());
         forEach(initialButtons, ViewController::ensureViewIsCreated);
 
         Options b = new Options();
         b.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
-        uut.mergeChildOptions(b, new Options(), child);
+        uut.mergeChildOptions(b, Options.EMPTY, parent, child);
         assertThat(initialButtons.get(0).isDestroyed()).isFalse();
         assertThat(initialButtons.get(1).isDestroyed()).isTrue();
     }
@@ -239,7 +253,7 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void mergeTopBarOptions() {
         Options options = new Options();
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         assertTopBarOptions(options, 0);
 
         TitleOptions title = new TitleOptions();
@@ -262,19 +276,18 @@ public class StackPresenterTest extends BaseTest {
         options.topBar.hideOnScroll = new Bool(false);
         options.topBar.validate();
 
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
 
         assertTopBarOptions(options, 1);
 
         options.topBar.drawBehind = new Bool(true);
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
-        verify(child, times(1)).drawBehindTopBar();
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
     }
 
     @Test
     public void mergeTopTabsOptions() {
         Options options = new Options();
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         verify(topBar, times(0)).applyTopTabsColors(any(), any());
         verify(topBar, times(0)).applyTopTabsFontSize(any());
         verify(topBar, times(0)).setTopTabsVisible(anyBoolean());
@@ -283,7 +296,7 @@ public class StackPresenterTest extends BaseTest {
         options.topTabs.unselectedTabColor = new Colour(1);
         options.topTabs.fontSize = new Number(1);
         options.topTabs.visible = new Bool(true);
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         verify(topBar, times(1)).applyTopTabsColors(options.topTabs.selectedTabColor, options.topTabs.unselectedTabColor);
         verify(topBar, times(1)).applyTopTabsFontSize(options.topTabs.fontSize);
         verify(topBar, times(1)).setTopTabsVisible(anyBoolean());
@@ -292,13 +305,13 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void mergeTopTabOptions() {
         Options options = new Options();
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
 
         verify(topBar, times(0)).setTopTabFontFamily(anyInt(), any());
 
         options.topTabOptions.tabIndex = 1;
         options.topTabOptions.fontFamily = Typeface.DEFAULT_BOLD;
-        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
 
         verify(topBar, times(1)).setTopTabFontFamily(1, Typeface.DEFAULT_BOLD);
     }
@@ -310,7 +323,7 @@ public class StackPresenterTest extends BaseTest {
         options.topBar.animate = new Bool(true);
 
         uut.applyInitialChildLayoutOptions(options);
-        verify(topBar).hide();
+        verify(topBarController).hide();
     }
 
     @Test
@@ -321,7 +334,7 @@ public class StackPresenterTest extends BaseTest {
 
         Options childOptions = new Options();
         childOptions.topBar.title.text = new Text("someText");
-        uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, child);
+        uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, parent, child);
 
         verify(topBar, times(0)).setBackgroundColor(anyInt());
     }
@@ -343,7 +356,7 @@ public class StackPresenterTest extends BaseTest {
         options.topBar.buttons.left = new ArrayList<>();
         options.topBar.buttons.left.add(leftButton);
 
-        uut.applyChildOptions(options, child);
+        uut.applyChildOptions(options, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
         verify(topBar).setRightButtons(rightCaptor.capture());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(options.topBar.rightButtonColor.get());
@@ -363,10 +376,10 @@ public class StackPresenterTest extends BaseTest {
         o.topBar.background.component.name = new Text("comp");
         o.topBar.background.component.componentId = new Text("compId");
 
-        uut.applyChildOptions(o, Mockito.mock(com.reactnativenavigation.views.Component.class));
+        uut.applyChildOptions(o, parent, Mocks.viewController());
         assertThat(uut.getBackgroundComponents().size()).isOne();
 
-        uut.applyChildOptions(o, Mockito.mock(com.reactnativenavigation.views.Component.class));
+        uut.applyChildOptions(o, parent, Mocks.viewController());
         assertThat(uut.getBackgroundComponents().size()).isOne();
     }
 
@@ -388,7 +401,7 @@ public class StackPresenterTest extends BaseTest {
         options2.topBar.buttons.left = new ArrayList<>();
         options2.topBar.buttons.left.add(leftButton);
 
-        uut.mergeChildOptions(options2, appliedOptions, child);
+        uut.mergeChildOptions(options2, appliedOptions, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
         verify(topBar, times(1)).setRightButtons(rightCaptor.capture());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get());
@@ -420,7 +433,7 @@ public class StackPresenterTest extends BaseTest {
         options2.topBar.buttons.left = new ArrayList<>();
         options2.topBar.buttons.left.add(leftButton);
 
-        uut.mergeChildOptions(options2, resolvedOptions, child);
+        uut.mergeChildOptions(options2, resolvedOptions, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
         verify(topBar).setRightButtons(rightCaptor.capture());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get());
@@ -439,7 +452,7 @@ public class StackPresenterTest extends BaseTest {
         Options options = new Options();
         options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(textBtn1));
         options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(textBtn1));
-        uut.applyChildOptions(options, child);
+        uut.applyChildOptions(options, parent, child);
 
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
         ArgumentCaptor<List<TitleBarButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
@@ -455,9 +468,9 @@ public class StackPresenterTest extends BaseTest {
         Options options = new Options();
         options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(textBtn1));
         options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(textBtn2));
-        uut.applyChildOptions(options, child);
+        uut.applyChildOptions(options, parent, child);
 
-        List<TitleBarButtonController> componentButtons = uut.getComponentButtons(child);
+        List<TitleBarButtonController> componentButtons = uut.getComponentButtons(child.getView());
         assertThat(componentButtons.size()).isEqualTo(2);
         assertThat(componentButtons.get(0).getButton().text.get()).isEqualTo(textBtn1.text.get());
         assertThat(componentButtons.get(1).getButton().text.get()).isEqualTo(textBtn2.text.get());
@@ -469,11 +482,11 @@ public class StackPresenterTest extends BaseTest {
         options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(textBtn1));
         options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(textBtn2));
 
-        uut.applyChildOptions(options, child);
-        List<TitleBarButtonController> buttons1 = uut.getComponentButtons(child);
+        uut.applyChildOptions(options, parent, child);
+        List<TitleBarButtonController> buttons1 = uut.getComponentButtons(child.getView());
 
-        uut.applyChildOptions(options, child);
-        List<TitleBarButtonController> buttons2 = uut.getComponentButtons(child);
+        uut.applyChildOptions(options, parent, child);
+        List<TitleBarButtonController> buttons2 = uut.getComponentButtons(child.getView());
         for (int i = 0; i < 2; i++) {
             assertThat(buttons1.get(i)).isEqualTo(buttons2.get(i));
         }
@@ -484,11 +497,11 @@ public class StackPresenterTest extends BaseTest {
         Options options = new Options();
         options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
         options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
-        uut.applyChildOptions(options, child);
-        List<TitleBarButtonController> buttons = uut.getComponentButtons(child);
+        uut.applyChildOptions(options, parent, child);
+        List<TitleBarButtonController> buttons = uut.getComponentButtons(child.getView());
         forEach(buttons, ViewController::ensureViewIsCreated);
 
-        uut.applyChildOptions(options, otherChild);
+        uut.applyChildOptions(options, parent, otherChild);
         for (TitleBarButtonController button : buttons) {
             assertThat(button.isDestroyed()).isFalse();
         }
@@ -499,15 +512,39 @@ public class StackPresenterTest extends BaseTest {
         Options options = new Options();
         options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
         options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
-        uut.applyChildOptions(options, child);
-        List<TitleBarButtonController> buttons = uut.getComponentButtons(child);
+        uut.applyChildOptions(options, parent, child);
+        List<TitleBarButtonController> buttons = uut.getComponentButtons(child.getView());
         forEach(buttons, ViewController::ensureViewIsCreated);
 
         uut.onChildDestroyed(child);
         for (TitleBarButtonController button : buttons) {
             assertThat(button.isDestroyed()).isTrue();
         }
-        assertThat(uut.getComponentButtons(child, null)).isNull();
+        assertThat(uut.getComponentButtons(child.getView(), null)).isNull();
+    }
+
+    @Test
+    public void applyTopInsets_topBarIsDrawnUnderStatusBarIfDrawBehindIsTrue() {
+        Options options = new Options();
+        options.statusBar.drawBehind = new Bool(true);
+        uut.applyTopInsets(parent, child);
+
+        assertThat(topBar.getY()).isEqualTo(0);
+    }
+
+    @Test
+    public void applyTopInsets_topBarIsDrawnUnderStatusBarIfStatusBarIsHidden() {
+        Options options = new Options();
+        options.statusBar.visible = new Bool(false);
+        uut.applyTopInsets(parent, Mocks.viewController());
+
+        assertThat(topBar.getY()).isEqualTo(0);
+    }
+
+    @Test
+    public void applyTopInsets_delegatesToChild() {
+        uut.applyTopInsets(parent, child);
+        verify(child).applyTopInset();
     }
 
     private void assertTopBarOptions(Options options, int t) {
@@ -525,9 +562,7 @@ public class StackPresenterTest extends BaseTest {
         verify(topBar, times(t)).setTitleTypeface(any());
         verify(topBar, times(t)).setSubtitleColor(anyInt());
         verify(topBar, times(t)).setTestId(any());
-        verify(topBar, times(t)).hide();
-        verify(child, times(t)).drawBelowTopBar(topBar);
-        verify(child, times(0)).drawBehindTopBar();
+        verify(topBarController, times(t)).hide();
     }
 
     private TopBar mockTopBar() {
@@ -536,6 +571,7 @@ public class StackPresenterTest extends BaseTest {
         toolbar.addView(new ActionMenuView(activity));
         when(topBar.getTitleBar()).then(invocation -> toolbar);
         when(topBar.getContext()).then(invocation -> activity);
+        when(topBar.getLayoutParams()).thenReturn(new ViewGroup.MarginLayoutParams(MATCH_PARENT, WRAP_CONTENT));
         return topBar;
     }
 

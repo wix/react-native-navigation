@@ -1,7 +1,7 @@
 package com.reactnativenavigation.views.element;
 
 import android.animation.Animator;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 
 import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.parse.Transitions;

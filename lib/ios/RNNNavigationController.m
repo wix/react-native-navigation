@@ -1,10 +1,14 @@
 #import "RNNNavigationController.h"
 #import "RNNRootViewController.h"
-#import "InteractivePopGestureDelegate.h"
 
 const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationController
+
+-(void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+	[super setDefaultOptions:defaultOptions];
+	[self.presenter setDefaultOptions:defaultOptions];
+}
 
 - (void)viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
@@ -28,7 +32,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return self.getCurrentChild.preferredStatusBarStyle;
+	return [_presenter getStatusBarStyle:self.resolveOptions];
 }
 
 - (UIModalPresentationStyle)modalPresentationStyle {

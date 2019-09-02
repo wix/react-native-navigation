@@ -40,7 +40,7 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return self.child.preferredStatusBarStyle;
+	return [[self presenter] getStatusBarStyle:[self resolveOptions]];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

@@ -1,6 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;

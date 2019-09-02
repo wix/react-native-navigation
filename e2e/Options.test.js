@@ -56,9 +56,9 @@ describe('Options', () => {
     await elementById(TestIDs.HIDE_TOPBAR_DEFAULT_OPTIONS).tap();
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
-    await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
-    await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
   });
 
   it('default options should not override static options', async () => {
@@ -72,6 +72,13 @@ describe('Options', () => {
   it('set title component', async () => {
     await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
     await expect(elementByLabel('Press Me')).toBeVisible();
+  });
+
+  it('set title after setting react component', async () => {
+    await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
+    await expect(elementByLabel('Press Me')).toBeVisible();
+    await elementById(TestIDs.CHANGE_TITLE_BTN).tap();
+    await expect(elementByLabel('Title Changed')).toBeVisible();
   });
 
   it('Popping screen with yellow box should not crash', async () => {

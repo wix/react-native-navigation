@@ -1,6 +1,6 @@
 package com.reactnativenavigation.parse.params;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState;
 

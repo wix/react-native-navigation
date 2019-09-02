@@ -1,7 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -13,17 +13,20 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
-import com.reactnativenavigation.views.ReactComponent;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,7 +39,6 @@ public class ParentControllerTest extends BaseTest {
     private ChildControllersRegistry childRegistry;
     private List<ViewController> children;
     private ParentController uut;
-    private Presenter presenter;
 
     @Override
     public void beforeEach() {
@@ -46,7 +48,7 @@ public class ParentControllerTest extends BaseTest {
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        presenter = spy(new Presenter(activity, new Options()));
+        Presenter presenter = new Presenter(activity, new Options());
         uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
 
             @Override
@@ -144,11 +146,9 @@ public class ParentControllerTest extends BaseTest {
         child1.ensureViewIsCreated();
         child1.onViewAppeared();
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
-        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
         verify(uut, times(1)).clearOptions();
-        verify(uut, times(1)).applyChildOptions(optionsCaptor.capture(), viewCaptor.capture());
+        verify(uut, times(1)).applyChildOptions(optionsCaptor.capture(), eq(child1));
         assertThat(optionsCaptor.getValue().topBar.title.text.get()).isEqualTo("new title");
-        assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
     }
 
     @Test
@@ -163,25 +163,6 @@ public class ParentControllerTest extends BaseTest {
         child1.ensureViewIsCreated();
         child1.onViewAppeared();
         assertThat(uut.initialOptions.topBar.title.text.get()).isEqualTo(INITIAL_TITLE);
-    }
-
-    @Test
-    public void applyChildOptions_appliesRootOptionsIfRoot() {
-        addToParent(activity, uut);
-
-        Options options = new Options();
-        SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
-        uut.applyChildOptions(options, child1.getView());
-        verify(presenter, times(1)).applyRootOptions(uut.getView(), options);
-    }
-
-    @Test
-    public void applyChildOptions_doesNotApplyRootOptionsIfHasParent() {
-        Options options = new Options();
-        uut.setParentController(Mockito.mock(ParentController.class));
-        SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
-        uut.applyChildOptions(options, child1.getView());
-        verify(presenter, times(0)).applyRootOptions(uut.getView(), options);
     }
 
     @Test
@@ -224,5 +205,49 @@ public class ParentControllerTest extends BaseTest {
         Mockito.when(spy.resolveCurrentOptions()).thenReturn(currentOptions);
         spy.resolveCurrentOptions(defaultOptions);
         verify(currentOptions).withDefaultOptions(defaultOptions);
+    }
+
+    @Test
+    public void applyTopInset() {
+        children.addAll(createChildren());
+        uut.applyTopInset();
+        forEach(children, c-> verify(c).applyTopInset());
+    }
+
+    @Test
+    public void getTopInset() {
+        assertThat(uut.getTopInset()).isZero();
+    }
+
+    @Test
+    public void getTopInsetForChild() {
+        ParentController parent = Mockito.mock(ParentController.class);
+        when(parent.getTopInset(any())).thenReturn(123);
+        uut.setParentController(parent);
+
+        assertThat(uut.getTopInset(Mockito.mock(ViewController.class))).isEqualTo(123);
+    }
+
+    @Test
+    public void applyBottomInset() {
+        children.addAll(createChildren());
+        uut.applyBottomInset();
+        forEach(children, c-> verify(c).applyBottomInset());
+    }
+
+    @Test
+    public void getBottomInsetForChild() {
+        ParentController parent = Mockito.mock(ParentController.class);
+        when(parent.getBottomInset(any())).thenReturn(123);
+        uut.setParentController(parent);
+
+        assertThat(uut.getBottomInset(Mockito.mock(ViewController.class))).isEqualTo(123);
+    }
+
+    private List<ViewController> createChildren() {
+        return Arrays.asList(
+                spy(new SimpleViewController(activity, childRegistry, "child1", new Options())),
+                spy(new SimpleViewController(activity, childRegistry, "child2", new Options()))
+        );
     }
 }

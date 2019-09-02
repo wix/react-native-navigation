@@ -15,4 +15,12 @@
 	return self;
 }
 
+- (BOOL)hasValue {
+	return self.icon.hasValue ||
+			self.showTitle.hasValue ||
+			self.color.hasValue ||
+			self.title.hasValue;
+}
+
+
 @end

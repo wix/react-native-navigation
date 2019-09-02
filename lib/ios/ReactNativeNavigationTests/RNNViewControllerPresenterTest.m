@@ -2,7 +2,6 @@
 #import <OCMock/OCMock.h>
 #import "RNNViewControllerPresenter.h"
 #import "UIViewController+RNNOptions.h"
-#import "RNNReactView.h"
 #import "RNNRootViewController.h"
 
 @interface RNNViewControllerPresenterTest : XCTestCase
@@ -19,7 +18,7 @@
 - (void)setUp {
     [super setUp];
 	self.componentRegistry = [OCMockObject partialMockForObject:[RNNReactComponentRegistry new]];
-	self.uut = [[RNNViewControllerPresenter alloc] initWithComponentRegistry:self.componentRegistry];
+	self.uut = [[RNNViewControllerPresenter alloc] initWithComponentRegistry:self.componentRegistry:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	self.bindedViewController = [OCMockObject partialMockForObject:[RNNRootViewController new]];
 	[self.uut bindViewController:self.bindedViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];

@@ -7,22 +7,24 @@
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
     UITabBarController *tabBarController = self.boundViewController;
-    [tabBarController rnn_setCurrentTabIndex:[options.bottomTabs.currentTabIndex getWithDefaultValue:0]];
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+    [tabBarController rnn_setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex getWithDefaultValue:0]];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
     UITabBarController *tabBarController = self.boundViewController;
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
-    [tabBarController rnn_setTabBarTestID:[options.bottomTabs.testID getWithDefaultValue:nil]];
-    [tabBarController rnn_setTabBarBackgroundColor:[options.bottomTabs.backgroundColor getWithDefaultValue:nil]];
-    [tabBarController rnn_setTabBarTranslucent:[options.bottomTabs.translucent getWithDefaultValue:NO]];
-    [tabBarController rnn_setTabBarHideShadow:[options.bottomTabs.hideShadow getWithDefaultValue:NO]];
-    [tabBarController rnn_setTabBarStyle:[RCTConvert UIBarStyle:[options.bottomTabs.barStyle getWithDefaultValue:@"default"]]];
-    [tabBarController rnn_setTabBarVisible:[options.bottomTabs.visible getWithDefaultValue:YES] animated:[options.bottomTabs.animate getWithDefaultValue:NO]];
+    [tabBarController rnn_setTabBarTestID:[withDefault.bottomTabs.testID getWithDefaultValue:nil]];
+    [tabBarController rnn_setTabBarBackgroundColor:[withDefault.bottomTabs.backgroundColor getWithDefaultValue:nil]];
+    [tabBarController rnn_setTabBarTranslucent:[withDefault.bottomTabs.translucent getWithDefaultValue:NO]];
+    [tabBarController rnn_setTabBarHideShadow:[withDefault.bottomTabs.hideShadow getWithDefaultValue:NO]];
+    [tabBarController rnn_setTabBarStyle:[RCTConvert UIBarStyle:[withDefault.bottomTabs.barStyle getWithDefaultValue:@"default"]]];
+    [tabBarController rnn_setTabBarVisible:[withDefault.bottomTabs.visible getWithDefaultValue:YES] animated:[withDefault.bottomTabs.animate getWithDefaultValue:NO]];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions {
-    [super mergeOptions:newOptions currentOptions:currentOptions defaultOptions:defaultOptions];
+- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions {
+    [super mergeOptions:newOptions currentOptions:currentOptions];
 
     UITabBarController *tabBarController = self.boundViewController;
 

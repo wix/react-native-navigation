@@ -3,7 +3,7 @@ package com.reactnativenavigation.presentation;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.views.ComponentLayout;
 
-public class ComponentPresenter {
+public class ComponentPresenter extends ComponentPresenterBase {
     public Options defaultOptions;
 
     public ComponentPresenter(Options defaultOptions) {

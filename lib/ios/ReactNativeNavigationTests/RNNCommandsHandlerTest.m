@@ -120,20 +120,20 @@
 	initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"the title"];
 	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
 	RNNTestRootViewCreator* creator = [[RNNTestRootViewCreator alloc] init];
-
+	
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
-
+	
 	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:creator options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init] eventEmitter:nil childViewControllers:@[vc]];
 	
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
-
+	
 	[self.uut setReadyToReceiveCommands:true];
-
+	
 	NSDictionary* dictFromJs = @{@"topBar": @{@"background" : @{@"color" : @(0xFFFF0000)}}};
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-
+	
 	[self.uut mergeOptions:@"componentId" options:dictFromJs completion:^{
 		XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 		XCTAssertTrue([nav.navigationBar.barTintColor isEqual:expectedColor]);
@@ -193,7 +193,7 @@
 - (void)testShowOverlay_invokeNavigationCommandEventWithLayout {
 	[self.uut setReadyToReceiveCommands:true];
 	OCMStub([self.overlayManager showOverlayWindow:[OCMArg any]]);
-	id mockedVC = [OCMockObject partialMockForObject:self.vc1];	
+	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
 	NSDictionary* layout = @{};
@@ -216,10 +216,10 @@
 	[self.uut setReadyToReceiveCommands:true];
 	NSString* componentId = @"componentId";
 	UIViewController* returnedView = [UIViewController new];
-
+	
 	id classMock = OCMClassMock([RNNLayoutManager class]);
 	OCMStub(ClassMethod([classMock findComponentForId:componentId])).andReturn(returnedView);
-
+	
 	[[self.overlayManager expect] dismissOverlay:returnedView];
 	[self.uut dismissOverlay:componentId commandId:@"" completion:^{} rejection:^(NSString *code, NSString *message, NSError *error) {}];
 	[self.overlayManager verify];
@@ -287,6 +287,43 @@
 		
 	}];
 	XCTAssertTrue([_nvc.viewControllers isEqual:newViewControllers]);
+}
+
+- (void)testSetStackRoot_callRenderTreeAndWaitOnce {
+	id vc1Mock = [OCMockObject partialMockForObject:_vc1];
+	id vc2Mock = [OCMockObject partialMockForObject:_vc2];
+	NSArray* newViewControllers = @[vc1Mock, vc2Mock];
+	
+	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
+	[self.uut setReadyToReceiveCommands:true];
+	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
+		
+	} rejection:^(NSString *code, NSString *message, NSError *error) {
+		
+	}];
+	
+	[[vc1Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
+	[[vc2Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
+}
+
+- (void)testSetStackRoot_waitForRender {
+	_vc2.options.animations.setStackRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+	id vc1Mock = OCMPartialMock(_vc1);
+	id vc2Mock = OCMPartialMock(_vc2);
+	
+	NSArray* newViewControllers = @[vc1Mock, vc2Mock];
+	
+	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
+	
+	[self.uut setReadyToReceiveCommands:true];
+	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
+		
+	} rejection:^(NSString *code, NSString *message, NSError *error) {
+		
+	}];
+	
+	[[vc1Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
+	[[vc2Mock expect] renderTreeAndWait:YES perform:[OCMArg any]];
 }
 
 - (void)testSetRoot_waitForRenderTrue {

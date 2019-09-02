@@ -1,6 +1,7 @@
 package com.reactnativenavigation.parse.params;
 
-import android.support.annotation.ColorInt;
+import android.graphics.Color;
+import androidx.annotation.ColorInt;
 
 public class Colour extends Param<Integer>{
 
@@ -12,5 +13,9 @@ public class Colour extends Param<Integer>{
     @Override
     public String toString() {
         return String.format("#%06X", (0xFFFFFF & get()));
+    }
+
+    public boolean hasTransparency() {
+        return hasValue() && Color.alpha(value) < 1;
     }
 }

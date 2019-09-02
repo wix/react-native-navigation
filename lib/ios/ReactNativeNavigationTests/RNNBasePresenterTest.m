@@ -8,8 +8,8 @@
 
 @property(nonatomic, strong) RNNBasePresenter *uut;
 @property(nonatomic, strong) RNNNavigationOptions *options;
-@property(nonatomic, strong) RNNRootViewController *bindedViewController;
-@property(nonatomic, strong) id mockBindedViewController;
+@property(nonatomic, strong) RNNRootViewController *boundViewController;
+@property(nonatomic, strong) id mockBoundViewController;
 
 @end
 
@@ -18,46 +18,76 @@
 - (void)setUp {
     [super setUp];
     self.uut = [[RNNBasePresenter alloc] init];
-    self.bindedViewController = [RNNRootViewController new];
-    self.mockBindedViewController = [OCMockObject partialMockForObject:self.bindedViewController];
-    [self.uut bindViewController:self.mockBindedViewController];
+    self.boundViewController = [RNNRootViewController new];
+    self.mockBoundViewController = [OCMockObject partialMockForObject:self.boundViewController];
+    [self.uut bindViewController:self.mockBoundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
 - (void)tearDown {
     [super tearDown];
-    [self.mockBindedViewController stopMocking];
-    self.bindedViewController = nil;
+    [self.mockBoundViewController stopMocking];
+    self.boundViewController = nil;
 }
 
 - (void)testApplyOptions_shouldSetTabBarItemBadgeOnlyWhenParentIsUITabBarController {
-    [[self.mockBindedViewController reject] rnn_setTabBarItemBadge:[OCMArg any]];
+    [[self.mockBoundViewController reject] rnn_setTabBarItemBadge:[OCMArg any]];
     [self.uut applyOptions:self.options];
-    [self.mockBindedViewController verify];
+    [self.mockBoundViewController verify];
 }
 
 - (void)testApplyOptions_shouldSetTabBarItemBadgeWithValue {
-    OCMStub([self.mockBindedViewController parentViewController]).andReturn([UITabBarController new]);
+    OCMStub([self.mockBoundViewController parentViewController]).andReturn([UITabBarController new]);
     self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
-    [[self.mockBindedViewController expect] rnn_setTabBarItemBadge:self.options.bottomTab];
+    [[self.mockBoundViewController expect] rnn_setTabBarItemBadge:self.options.bottomTab.badge.get];
     [self.uut applyOptions:self.options];
-    [self.mockBindedViewController verify];
+    [self.mockBoundViewController verify];
 }
 
 - (void)testApplyOptions_setTabBarItemBadgeShouldNotCalledOnUITabBarController {
-    [self.uut bindViewController:self.mockBindedViewController];
+    [self.uut bindViewController:self.mockBoundViewController];
     self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
-    [[self.mockBindedViewController reject] rnn_setTabBarItemBadge:[[RNNBottomTabOptions alloc] initWithDict:@{@"badge": @"badge"}]];
+    [[self.mockBoundViewController reject] rnn_setTabBarItemBadge:[[RNNBottomTabOptions alloc] initWithDict:@{@"badge": @"badge"}]];
     [self.uut applyOptions:self.options];
-    [self.mockBindedViewController verify];
+    [self.mockBoundViewController verify];
 }
 
 - (void)testApplyOptions_setTabBarItemBadgeShouldWhenNoValue {
-    [self.uut bindViewController:self.mockBindedViewController];
+    [self.uut bindViewController:self.mockBoundViewController];
     self.options.bottomTab.badge = nil;
-    [[self.mockBindedViewController reject] rnn_setTabBarItemBadge:[OCMArg any]];
+    [[self.mockBoundViewController reject] rnn_setTabBarItemBadge:[OCMArg any]];
     [self.uut applyOptions:self.options];
-    [self.mockBindedViewController verify];
+    [self.mockBoundViewController verify];
 }
+
+- (void)testGetPreferredStatusBarStyle_returnLightIfLight {
+    RNNNavigationOptions * lightOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    lightOptions.statusBar.style = [[Text alloc] initWithValue:@"light"];
+
+    XCTAssertEqual([_uut getStatusBarStyle:lightOptions], UIStatusBarStyleLightContent);
+}
+
+- (void)testGetPreferredStatusBarStyle_returnDefaultIfDark {
+    RNNNavigationOptions * darkOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    darkOptions.statusBar.style = [[Text alloc] initWithValue:@"dark"];
+
+    XCTAssertEqual([_uut getStatusBarStyle:darkOptions], UIStatusBarStyleDefault);
+}
+
+- (void)testGetPreferredStatusBarStyle_returnDefaultIfNil {
+    RNNNavigationOptions * options = [[RNNNavigationOptions alloc] initEmptyOptions];
+
+    XCTAssertEqual([_uut getStatusBarStyle:options], UIStatusBarStyleDefault);
+}
+
+- (void)testGetPreferredStatusBarStyle_considersDefaultOptions {
+    RNNNavigationOptions * options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions * lightOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    lightOptions.statusBar.style = [[Text alloc] initWithValue:@"light"];
+    [_uut setDefaultOptions:lightOptions];
+
+    XCTAssertEqual([_uut getStatusBarStyle:options], UIStatusBarStyleLightContent);
+}
+
 
 @end

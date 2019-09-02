@@ -1,7 +1,5 @@
 package com.reactnativenavigation.parse;
 
-import android.support.annotation.Nullable;
-
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullBool;
@@ -14,6 +12,8 @@ import com.reactnativenavigation.parse.parsers.NumberParser;
 
 import org.json.JSONObject;
 
+import androidx.annotation.Nullable;
+
 public class DotIndicatorOptions {
     public static DotIndicatorOptions parse(@Nullable JSONObject json) {
         DotIndicatorOptions options = new DotIndicatorOptions();
@@ -22,6 +22,7 @@ public class DotIndicatorOptions {
         options.color = ColorParser.parse(json, "color");
         options.size = NumberParser.parse(json, "size");
         options.visible = BoolParser.parse(json, "visible");
+        options.animate = BoolParser.parse(json, "animate");
 
         return options;
     }
@@ -29,6 +30,7 @@ public class DotIndicatorOptions {
     public Colour color = new NullColor();
     public Number size = new NullNumber();
     public Bool visible = new NullBool();
+    public Bool animate = new NullBool();
 
     public boolean hasValue() {
         return visible.hasValue();

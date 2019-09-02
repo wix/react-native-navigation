@@ -5,11 +5,17 @@ class RnnButton extends React.PureComponent {
     return (
       <Button
         {...this.props}
-        style={{
-          marginBottom: 8,
-        }}
+        style={this.getStyle()}
       />
     )
+  }
+
+  getStyle() {
+    const style = {marginBottom: 8};
+    if (!this.props.testID) {
+      style.backgroundColor = '#65C888';
+    }
+    return style;
   }
 }
 
