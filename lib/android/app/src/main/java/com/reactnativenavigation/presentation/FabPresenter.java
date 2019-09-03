@@ -390,10 +390,10 @@ public class FabPresenter {
 
     private void applyFabMenuOptions(FabMenu fabMenu, FabOptions options) {
         if (options.visible.isTrueOrUndefined()) {
-            fabMenu.showMenuButton(true);
+            fabMenu.showMenu(true);
         }
         if (options.visible.isFalse()) {
-            fabMenu.hideMenuButton(true);
+            fabMenu.hideMenu(true);
         }
 
         if (options.backgroundColor.hasValue()) {
@@ -427,10 +427,10 @@ public class FabPresenter {
 
     private void mergeFabMenuOptions(FabMenu fabMenu, FabOptions options) {
         if (options.visible.isTrue()) {
-            fabMenu.showMenuButton(true);
+            fabMenu.showMenu(true);
         }
         if (options.visible.isFalse()) {
-            fabMenu.hideMenuButton(true);
+            fabMenu.hideMenu(true);
         }
 
         if (options.backgroundColor.hasValue()) {
