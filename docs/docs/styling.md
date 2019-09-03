@@ -155,7 +155,6 @@ Navigation.mergeOptions(this.props.componentId, {
     icon: require('add.png'),
     iconColor: 'white',
     alignHorizontally: 'left', // one of 'left', 'right'
-    alignVertically: 'top', // one of 'top', 'bottom'
     hideOnScroll: false,
     size: 24,
     actions: [{
