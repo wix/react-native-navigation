@@ -234,15 +234,6 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-
-    private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
-        view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
-        presenter.applyLayoutParamsOptions(resolvedOptions, view);
-        if (size() == 1) presenter.applyInitialChildLayoutOptions(resolvedOptions);
-        getView().addView(view, getView().getChildCount() - 1);
-    }
-
     private void destroyStack(IdStack stack) {
         for (String s : (Iterable<String>) stack) {
             ((ViewController) stack.get(s)).destroy();
