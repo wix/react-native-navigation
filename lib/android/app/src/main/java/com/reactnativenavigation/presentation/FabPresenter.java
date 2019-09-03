@@ -475,10 +475,15 @@ public class FabPresenter {
     }
 
     public void applyBottomInset(int bottomInset) {
-        if (viewGroup != null & (fab != null | fabMenu != null )) {
+        if (viewGroup != null & fab != null) {
             CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
             lp.bottomMargin = bottomInset + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
             fab.requestLayout();
+        }
+        if (viewGroup != null & fabMenu != null ) {
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabMenu.getLayoutParams();
+            lp.bottomMargin = bottomInset + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            fabMenu.requestLayout();
         }
     }
 }
