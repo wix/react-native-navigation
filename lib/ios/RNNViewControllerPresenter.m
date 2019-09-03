@@ -161,9 +161,11 @@
 		[_customTitleView removeFromSuperview];
 		_customTitleView = nil;
 	}
-	
-	if (newOptions.topBar.backButton.icon.hasValue || newOptions.topBar.backButton.showTitle.hasValue || newOptions.topBar.backButton.color.hasValue || newOptions.topBar.backButton.title.hasValue) {
-		[viewController rnn_setBackButtonIcon:[newOptions.topBar.backButton.icon getWithDefaultValue:nil] withColor:[newOptions.topBar.backButton.color getWithDefaultValue:nil] title:[newOptions.topBar.backButton.showTitle getWithDefaultValue:YES] ? [newOptions.topBar.backButton.title getWithDefaultValue:nil] : @""];
+
+	if (newOptions.topBar.backButton.hasValue) {
+		UIViewController *lastViewControllerInStack = viewController.navigationController.viewControllers.count > 1 ? viewController.navigationController.viewControllers[viewController.navigationController.viewControllers.count - 2] : viewController.navigationController.topViewController;
+	    RNNNavigationOptions * resolvedOptions	= (RNNNavigationOptions *) [[currentOptions overrideOptions:newOptions] withDefault:[self defaultOptions]];
+		[lastViewControllerInStack applyBackButton:resolvedOptions.topBar.backButton];
 	}
 }
 

@@ -70,10 +70,19 @@ Add the following to your application's `style.xml`
       <item name="backgroundColor" type="color">#f00</item>
   </resources>
   ```
+# 2.27.3
+## Fixed
+### iOS
+* Fix merging back button [#1800e70](https://github.com/wix/react-native-navigation/commit/1800e708a8483bc4e56873e826f2d72f02d659b9) by [guyca](https://github.com/guyca)
+
+# 2.27.2
+## Fixed
+### iOS
+* Fix TopBar, title, buttons and StatusBar which broke in the previous release [#8044b2d](https://github.com/wix/react-native-navigation/commit/8044b2d12cfd2b937bfbe846d98f9034a88aa254) by [guyca](https://github.com/guyca)
 
 # 2.27.1
 ## Fixed
-### Android
+### iOS
 * Fix defaultOptions not being applied if called after setRoot [#338b096](https://github.com/wix/react-native-navigation/commit/338b0961f9bee9fa20583efe0f165e3cefa14c92) by [guyca](https://github.com/guyca)
 
 # 2.27.0

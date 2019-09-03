@@ -3,6 +3,7 @@
 #import "UIImage+tint.h"
 #import "RNNBottomTabOptions.h"
 #import "RNNNavigationOptions.h"
+#import "RNNBackButtonOptions.h"
 
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
@@ -177,17 +178,34 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		backItem.image = color
 		? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
 		: icon;
-		
+
 		[self.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
 		[self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
 	}
 	
-	UIViewController *lastViewControllerInStack = self.navigationController.viewControllers.count > 1 ? [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] : self.navigationController.topViewController;
+	UIViewController *lastViewControllerInStack = self.navigationController.viewControllers.count > 1 ? self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2] : self.navigationController.topViewController;
 	
 	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
 	backItem.tintColor = color;
 	
 	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
+}
+
+- (void)applyBackButton:(RNNBackButtonOptions *)backButton {
+	UIBarButtonItem *backItem = [UIBarButtonItem new];
+	if (backButton.icon.hasValue) {
+		UIColor *color = [backButton.color getWithDefaultValue:nil];
+		backItem.image = color ?
+				[[backButton.icon.get withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] :
+				backButton.icon.get;
+
+		[self.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
+        [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
+	}
+
+	if ([backButton.showTitle getWithDefaultValue:YES]) backItem.title = [backButton.title getWithDefaultValue:nil];
+	if (backButton.color.hasValue) backItem.tintColor = [backButton.color get];
+	self.navigationItem.backBarButtonItem = backItem;
 }
 
 @end
