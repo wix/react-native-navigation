@@ -225,6 +225,4 @@
 - (void)dealloc {
 	[_componentRegistry clearComponentsForParentId:self.boundComponentId];
 }
-
-
 @end

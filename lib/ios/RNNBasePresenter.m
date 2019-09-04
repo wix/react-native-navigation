@@ -174,6 +174,10 @@
     }
 }
 
+- (UIInterfaceOrientationMask)getOrientation:(RNNNavigationOptions *)options {
+    return [options withDefault:[self defaultOptions]].layout.supportedOrientations;
+}
+
 - (BOOL)isStatusBarVisibility:(UINavigationController *)stack resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     RNNNavigationOptions *withDefault = [resolvedOptions withDefault:[self defaultOptions]];
     if (withDefault.statusBar.visible.hasValue) {
