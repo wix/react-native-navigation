@@ -42,11 +42,9 @@ public class RootPresenter {
         if (options.animations.setRoot.waitForRender.isTrue()) {
             root.getView().setAlpha(0);
             root.addOnAppearedListener(() -> {
-                try {
+                if (!root.isDestroyed()) {
                     root.getView().setAlpha(1);
                     animateSetRootAndReportSuccess(root, listener, options);
-                } catch (RuntimeException e) {
-                    listener.onError(e.getMessage());
                 }
             });
         } else {
