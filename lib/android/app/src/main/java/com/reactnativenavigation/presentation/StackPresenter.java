@@ -166,7 +166,7 @@ public class StackPresenter {
 
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
-        topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+        topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)), componentOptions.topTabs.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = topBarOptions.topMargin.get(StatusBarUtils.getStatusBarHeight(activity));
@@ -404,7 +404,7 @@ public class StackPresenter {
         TopBarOptions topBarOptions = options.topBar;
         final View component = child.getView();
         if (options.layout.direction.hasValue()) topBar.setLayoutDirection(options.layout.direction);
-        if (topBarOptions.height.hasValue()) topBar.setHeight(topBarOptions.height.get());
+        if (topBarOptions.height.hasValue() && options.topTabs.height.hasValue()) topBar.setHeight(topBarOptions.height.get(), options.topTabs.height.get());
         if (topBarOptions.elevation.hasValue()) topBar.setElevation(topBarOptions.elevation.get());
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());

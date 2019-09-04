@@ -38,6 +38,10 @@ public class TopTabs extends TabLayout {
         styleHelper.applyTopTabsFontSize(fontSize);
     }
 
+    public int isVisible() {
+        return getVisibility();
+    }
+
     public void setVisibility(TopBar topBar, boolean visible) {
         if (visible && getTabCount() > 0) {
             if (getParent() == null) {

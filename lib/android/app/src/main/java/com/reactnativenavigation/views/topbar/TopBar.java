@@ -104,8 +104,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return titleBar;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(int topBarHeight, int topTabsHeight) {
         int pixelHeight = UiUtils.dpToPx(getContext(), height);
+        if (topTabs.isVisible() == VISIBLE) pixelHeight += UiUtils.dpToPx(getContext(), topTabsHeight);
         if (pixelHeight == getLayoutParams().height) return;
         ViewGroup.LayoutParams lp = getLayoutParams();
         lp.height = pixelHeight;
