@@ -373,11 +373,9 @@
 -(void)testOrientationTabsController_portrait {
 	NSArray* supportedOrientations = @[@"portrait"];
 	self.options.layout.orientation = supportedOrientations;
-	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
-	NSMutableArray* controllers = [NSMutableArray new];
+	NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
+    __unused RNNTabBarController* vc = [[RNNTabBarController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[RNNViewControllerPresenter new] eventEmitter:nil childViewControllers:controllers];
 
-	[controllers addObject:self.uut];
-	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
 
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskPortrait;
@@ -387,11 +385,9 @@
 -(void)testOrientationTabsController_portraitAndLandscape {
 	NSArray* supportedOrientations = @[@"portrait", @"landscape"];
 	self.options.layout.orientation = supportedOrientations;
-	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
-	NSMutableArray* controllers = [NSMutableArray new];
+    NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
+    __unused RNNTabBarController* vc = [[RNNTabBarController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[RNNViewControllerPresenter new] eventEmitter:nil childViewControllers:controllers];
 
-	[controllers addObject:self.uut];
-	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
 
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape);
@@ -401,11 +397,9 @@
 -(void)testOrientationTabsController_all {
 	NSArray* supportedOrientations = @[@"all"];
 	self.options.layout.orientation = supportedOrientations;
-	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
-	NSMutableArray* controllers = [NSMutableArray new];
+	NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
+	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[RNNViewControllerPresenter new] eventEmitter:nil childViewControllers:controllers];
 
-	[controllers addObject:self.uut];
-	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
 
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
@@ -417,7 +411,7 @@
 	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNViewControllerPresenter new] options:self.options defaultOptions:nil];
 	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:_creator options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:@[self.uut]];
 
-	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
+	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*) nav.topViewController.navigationItem.rightBarButtonItems[0];
 	NSString* expectedButtonId = @"testId";
 	NSString* expectedTitle = @"test";
 	XCTAssertTrue([button.buttonId isEqualToString:expectedButtonId]);
@@ -441,7 +435,6 @@
 
 	//TODO: Determine how to tests buttonColor,buttonFontSize and buttonFontWeight?
 }
-
 
 -(void)testLeftButtonsWithTitle_withoutStyle {
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test"}];

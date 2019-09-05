@@ -2,10 +2,9 @@
 
 @class RNNBottomTabOptions;
 @class RNNNavigationOptions;
+@class RNNBackButtonOptions;
 
 @interface UIViewController (RNNOptions)
-
-- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage;
 
@@ -40,6 +39,8 @@
 - (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside;
 
 - (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title;
+
+- (void)applyBackButton:(RNNBackButtonOptions *)backButton;
 
 - (BOOL)isModal;
 
