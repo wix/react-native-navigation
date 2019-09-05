@@ -11,18 +11,21 @@ import java.util.HashSet;
 
 
 public class FabMenu extends FloatingActionMenu implements FabAnimator {
-
-    private String id = "";
+    private String id;
     private HashSet<Fab> actions = new HashSet<>();
-
     private FabCollapseBehaviour collapseBehaviour;
 
     public FabMenu(Context context, String id) {
         super(context);
+
         this.id = id;
         collapseBehaviour = new FabCollapseBehaviour(this);
         onFinishInflate();
         setOnMenuButtonClickListener(v -> toggle(true));
+    }
+
+    public String getFabId() {
+        return id;
     }
 
     @Override
@@ -45,9 +48,5 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
 
     public HashSet<Fab> getActions() {
         return actions;
-    }
-
-    public String getFabId() {
-        return id;
     }
 }

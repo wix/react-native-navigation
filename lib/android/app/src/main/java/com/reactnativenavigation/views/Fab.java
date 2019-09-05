@@ -19,44 +19,18 @@ import java.util.List;
 
 
 public class Fab extends FloatingActionButton implements FabAnimator {
-
-    private String id = "";
+    private String id;
     private FabCollapseBehaviour collapseBehaviour;
 
     public Fab(Context context, String id) {
         super(context);
-        collapseBehaviour = new FabCollapseBehaviour(this);
+
         this.id = id;
+        collapseBehaviour = new FabCollapseBehaviour(this);
     }
 
-    public void applyIcon(String icon, Colour color) {
-        new ImageLoader().loadIcons(getContext(), Collections.singletonList(icon), new ImageLoadingListenerAdapter() {
-            @Override
-            public void onComplete(@NonNull List<Drawable> drawables) {
-                if (color.hasValue()) drawables.get(0).setColorFilter(new PorterDuffColorFilter(color.get(), PorterDuff.Mode.SRC_IN));
-                setImageDrawable(drawables.get(0));
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                error.printStackTrace();
-            }
-        });
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Fab fab = (Fab) o;
-
-        return id.equals(fab.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
+    public String getFabId() {
+        return id;
     }
 
     @Override
@@ -77,7 +51,18 @@ public class Fab extends FloatingActionButton implements FabAnimator {
         collapseBehaviour.disableCollapse();
     }
 
-    public String getFabId() {
-        return id;
+    public void applyIcon(String icon, Colour color) {
+        new ImageLoader().loadIcons(getContext(), Collections.singletonList(icon), new ImageLoadingListenerAdapter() {
+            @Override
+            public void onComplete(@NonNull List<Drawable> drawables) {
+                if (color.hasValue()) drawables.get(0).setColorFilter(new PorterDuffColorFilter(color.get(), PorterDuff.Mode.SRC_IN));
+                setImageDrawable(drawables.get(0));
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                error.printStackTrace();
+            }
+        });
     }
 }

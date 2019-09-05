@@ -446,7 +446,7 @@ export interface OptionsFab {
   alignHorizontally?: 'left' | 'right';
   alignVertically?: 'top' | 'bottom';
   hideOnScroll?: boolean;
-  size?: number;
+  size?: 'mini' | 'normal';
   actions?: OptionsFab[];
 }
 

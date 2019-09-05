@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 
 public class FabCollapseBehaviour implements ScrollEventListener.OnScrollListener, ScrollEventListener.OnDragListener {
-
     private FabAnimator fabAnimator;
     private ScrollEventListener scrollEventListener;
 
