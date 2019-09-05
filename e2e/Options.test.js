@@ -88,7 +88,7 @@ describe('Options', () => {
     await expect(elementByLabel('Styling Options')).toBeVisible();
   });
 
-  it('Reseting buttons should unmount button react view', async () => {
+  it(':ios: Reseting buttons should unmount button react view', async () => {
     await elementById(TestIDs.SHOW_LIFECYCLE_BTN).tap();
     await elementById(TestIDs.RESET_BUTTONS).tap();
     await expect(elementByLabel('Button component unmounted')).toBeVisible();
