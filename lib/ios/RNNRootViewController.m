@@ -33,7 +33,7 @@
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
 	[_presenter mergeOptions:options currentOptions:self.options];
-	[self.parentViewController mergeOptions:options];
+	[self.parentViewController mergeChildOptions:options];
 }
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
@@ -121,10 +121,6 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return [_presenter getStatusBarStyle:[self resolveOptions]];
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.resolveOptions.layout.supportedOrientations;
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{

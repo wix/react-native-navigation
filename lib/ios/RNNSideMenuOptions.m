@@ -1,5 +1,4 @@
 #import "RNNSideMenuOptions.h"
-#import "RNNSideMenuController.h"
 #import "SideMenuOpenGestureModeParser.h"
 
 @implementation RNNSideMenuOptions
