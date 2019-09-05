@@ -382,6 +382,12 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
+    public void applyTopInset() {
+        super.applyTopInset();
+        fabOptionsPresenter.applyTopInset(getTopInset(getCurrentChild()));
+    }
+
+    @Override
     public void applyBottomInset() {
         super.applyBottomInset();
         fabOptionsPresenter.applyBottomInset(getBottomInset());

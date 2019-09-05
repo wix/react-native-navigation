@@ -345,6 +345,19 @@ public class FabPresenter {
         }
     }
 
+    public void applyTopInset(int topInset) {
+        if (viewGroup != null & fab != null) {
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+            lp.topMargin = topInset + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            fab.requestLayout();
+        }
+        if (viewGroup != null & fabMenu != null ) {
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabMenu.getLayoutParams();
+            lp.topMargin = topInset + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            fabMenu.requestLayout();
+        }
+    }
+
     public void applyBottomInset(int bottomInset) {
         if (viewGroup != null & fab != null) {
             CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
