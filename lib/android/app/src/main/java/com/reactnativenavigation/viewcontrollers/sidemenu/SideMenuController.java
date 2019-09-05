@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.utils.CommandListener;
@@ -106,6 +107,10 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     public void mergeOptions(Options options) {
         super.mergeOptions(options);
         presenter.mergeOptions(options.sideMenuRootOptions);
+        this.options.sideMenuRootOptions.left.visible = new NullBool();
+        this.options.sideMenuRootOptions.right.visible = new NullBool();
+        this.initialOptions.sideMenuRootOptions.left.visible = new NullBool();
+        this.initialOptions.sideMenuRootOptions.right.visible = new NullBool();
     }
 
     @Override
