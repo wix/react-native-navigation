@@ -48,6 +48,16 @@
 	}
 }
 
+- (void)removeChildComponent:(NSString *)childId {
+	NSMutableDictionary* parent;
+	while ((parent = _componentStore.objectEnumerator.nextObject)) {
+		if ([parent objectForKey:childId]) {
+			[parent removeObjectForKey:childId];
+			return;
+		}
+	}
+}
+
 - (void)clear {
 	[_componentStore removeAllObjects];
 }
