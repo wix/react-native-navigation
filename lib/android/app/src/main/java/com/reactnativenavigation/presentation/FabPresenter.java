@@ -5,20 +5,14 @@ import androidx.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.FabOptions;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.ReactComponent;
-
-import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
-import static android.widget.RelativeLayout.ALIGN_PARENT_LEFT;
-import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
-import static android.widget.RelativeLayout.ALIGN_PARENT_TOP;
 import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
 import static com.github.clans.fab.FloatingActionButton.SIZE_NORMAL;
 
@@ -346,15 +340,19 @@ public class FabPresenter {
     }
 
     public void applyTopInset(int topInset) {
-        if (viewGroup != null & fab != null) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-            lp.topMargin = topInset + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            fab.requestLayout();
-        }
-        if (viewGroup != null & fabMenu != null ) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabMenu.getLayoutParams();
-            lp.topMargin = topInset + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            fabMenu.requestLayout();
+        if (viewGroup != null ) {
+            int statusBarHeight = StatusBarUtils.getStatusBarHeight(viewGroup.getContext());
+
+            if (fab != null) {
+                CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+                lp.topMargin = topInset + statusBarHeight + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+                fab.requestLayout();
+            }
+            if (fabMenu != null ) {
+                CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabMenu.getLayoutParams();
+                lp.topMargin = topInset + statusBarHeight + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+                fabMenu.requestLayout();
+            }
         }
     }
 
