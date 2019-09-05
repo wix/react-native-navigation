@@ -6,7 +6,7 @@
 #import "RNNEventEmitter.h"
 #import "RNNSplashScreen.h"
 #import "RNNBridgeModule.h"
-#import "RNNRootViewCreator.h"
+#import "RNNComponentViewCreator.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNReactComponentRegistry.h"
 
@@ -82,7 +82,7 @@
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
 	RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
 
-	id<RNNRootViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge];
+	id<RNNComponentViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge];
 	_componentRegistry = [[RNNReactComponentRegistry alloc] initWithCreator:rootViewCreator];
 	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter store:_store componentRegistry:_componentRegistry andBridge:bridge];
 	

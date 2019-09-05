@@ -1,6 +1,6 @@
-#import "RNNTabBarController.h"
+#import "RNNBottomTabsController.h"
 
-@implementation RNNTabBarController {
+@implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
 }
 

@@ -6,39 +6,35 @@
 
 @interface UIViewController (RNNOptions)
 
-- (void)rnn_setBackgroundImage:(UIImage *)backgroundImage;
+- (void)setBackgroundImage:(UIImage *)backgroundImage;
 
-- (void)rnn_setModalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle;
+- (void)setSearchBarWithPlaceholder:(NSString *)placeholder hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar;
 
-- (void)rnn_setModalTransitionStyle:(UIModalTransitionStyle)modalTransitionStyle;
+- (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden;
 
-- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar;
+- (void)setDrawBehindTopBar:(BOOL)drawBehind;
 
-- (void)rnn_setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden;
+- (void)setDrawBehindTabBar:(BOOL)drawBehindTabBar;
 
-- (void)rnn_setDrawBehindTopBar:(BOOL)drawBehind;
+- (void)setTabBarItemBadgeColor:(UIColor *)badgeColor;
 
-- (void)rnn_setDrawBehindTabBar:(BOOL)drawBehindTabBar;
+- (void)setTabBarItemBadge:(NSString *)badge;
 
-- (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor;
+- (void)setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;
 
-- (void)rnn_setTabBarItemBadge:(NSString *)badge;
+- (void)setNavigationItemTitle:(NSString *)title;
 
-- (void)rnn_setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;
+- (void)setStatusBarStyle:(NSString *)style animated:(BOOL)animated;
 
-- (void)rnn_setNavigationItemTitle:(NSString *)title;
+- (void)setStatusBarBlur:(BOOL)blur;
 
-- (void)rnn_setStatusBarStyle:(NSString *)style animated:(BOOL)animated;
+- (void)setBackButtonVisible:(BOOL)visible;
 
-- (void)rnn_setStatusBarBlur:(BOOL)blur;
+- (void)setBackgroundColor:(UIColor *)backgroundColor;
 
-- (void)rnn_setBackButtonVisible:(BOOL)visible;
+- (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside;
 
-- (void)rnn_setBackgroundColor:(UIColor *)backgroundColor;
-
-- (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside;
-
-- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title;
+- (void)setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title;
 
 - (void)applyBackButton:(RNNBackButtonOptions *)backButton;
 

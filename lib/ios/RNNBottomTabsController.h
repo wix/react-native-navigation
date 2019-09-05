@@ -1,9 +1,9 @@
 #import <UIKit/UIKit.h>
 #import "RNNEventEmitter.h"
-#import "RNNTabBarPresenter.h"
+#import "RNNBottomTabsPresenter.h"
 #import "UIViewController+LayoutProtocol.h"
 
-@interface RNNTabBarController : UITabBarController <RNNLayoutProtocol, UITabBarControllerDelegate>
+@interface RNNBottomTabsController : UITabBarController <RNNLayoutProtocol, UITabBarControllerDelegate>
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 

@@ -25,6 +25,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 @property (nonatomic, strong) RNNEventEmitter* eventEmitter;
-@property (nonatomic) id<RNNRootViewCreator> creator;
+@property (nonatomic) id<RNNComponentViewCreator> creator;
 
 @end

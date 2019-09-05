@@ -26,7 +26,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)applyDotIndicator:(UIViewController *)child;
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions;
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 

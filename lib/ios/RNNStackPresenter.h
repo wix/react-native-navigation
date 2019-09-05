@@ -1,9 +1,9 @@
 #import "RNNBasePresenter.h"
-#import "RNNRootViewCreator.h"
+#import "RNNComponentViewCreator.h"
 #import "RNNReactComponentRegistry.h"
 #import "InteractivePopGestureDelegate.h"
 
-@interface RNNNavigationControllerPresenter : RNNBasePresenter
+@interface RNNStackPresenter : RNNBasePresenter
 
 @property(nonatomic, strong) InteractivePopGestureDelegate *interactivePopGestureDelegate;
 

@@ -1,7 +1,7 @@
 #import "RNNReactComponentRegistry.h"
 
 @interface RNNReactComponentRegistry () {
-	id<RNNRootViewCreator> _creator;
+	id<RNNComponentViewCreator> _creator;
 	NSMapTable* _componentStore;
 }
 
@@ -9,7 +9,7 @@
 
 @implementation RNNReactComponentRegistry
 
-- (instancetype)initWithCreator:(id<RNNRootViewCreator>)creator {
+- (instancetype)initWithCreator:(id<RNNComponentViewCreator>)creator {
 	self = [super init];
 	_creator = creator;
 	_componentStore = [NSMapTable new];

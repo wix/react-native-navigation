@@ -3,7 +3,7 @@
 #import <React/RCTConvert.h>
 #import "RCTHelpers.h"
 #import "UIImage+tint.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "UIImage+insets.h"
 #import "UIViewController+LayoutProtocol.h"
 
