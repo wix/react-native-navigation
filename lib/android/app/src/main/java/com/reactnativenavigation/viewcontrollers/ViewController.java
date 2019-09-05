@@ -67,7 +67,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
-    protected FabPresenter fabOptionsPresenter;
 
     public boolean isDestroyed() {
         return isDestroyed;
@@ -77,7 +76,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.activity = activity;
         this.id = id;
         this.yellowBoxDelegate = yellowBoxDelegate;
-        fabOptionsPresenter = new FabPresenter();
         this.initialOptions = initialOptions;
         options = initialOptions.copy();
     }
@@ -135,7 +133,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public void setDefaultOptions(Options defaultOptions) {
-        
+
     }
 
     public Activity getActivity() {
@@ -303,16 +301,16 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public boolean isViewShown() {
         return !isDestroyed &&
-               getView().isShown() &&
-               view != null &&
-               isRendered();
+                getView().isShown() &&
+                view != null &&
+                isRendered();
     }
 
     public boolean isRendered() {
         return view != null && (
                 waitForRender.isFalseOrUndefined() ||
-                !(view instanceof Renderable) ||
-                ((Renderable) view).isRendered()
+                        !(view instanceof Renderable) ||
+                        ((Renderable) view).isRendered()
         );
     }
 

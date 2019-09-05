@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
@@ -16,6 +17,7 @@ import com.reactnativenavigation.views.Component;
 public abstract class ChildController<T extends ViewGroup> extends ViewController<T>  {
     private final Presenter presenter;
     private final ChildControllersRegistry childRegistry;
+    protected FabPresenter fabOptionsPresenter;
 
     public ChildControllersRegistry getChildRegistry() {
         return childRegistry;
@@ -25,6 +27,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
         super(activity, id, new NoOpYellowBoxDelegate(), initialOptions);
         this.presenter = presenter;
         this.childRegistry = childRegistry;
+        fabOptionsPresenter = new FabPresenter();
     }
 
     @Override
