@@ -90,15 +90,15 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         performOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(
-                        this.options.copy()
-                                .clearTopBarOptions()
-                                .clearAnimationOptions()
-                                .clearFabOptions()
-                                .clearTopTabOptions()
-                                .clearTopTabsOptions(),
-                        child
-                )
+            ((ParentController) parentController).applyChildOptions(
+                this.options.copy()
+                    .clearTopBarOptions()
+                    .clearAnimationOptions()
+                    .clearFabOptions()
+                    .clearTopTabOptions()
+                    .clearTopTabsOptions(),
+                child
+            )
         );
     }
 
@@ -106,15 +106,15 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
         performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(
-                        options.copy()
-                                .clearTopBarOptions()
-                                .clearAnimationOptions()
-                                .clearFabOptions()
-                                .clearTopTabOptions()
-                                .clearTopTabsOptions(),
-                        child
-                )
+            ((ParentController) parentController).mergeChildOptions(
+                options.copy()
+                    .clearTopBarOptions()
+                    .clearAnimationOptions()
+                    .clearFabOptions()
+                    .clearTopTabOptions()
+                    .clearTopTabsOptions(),
+                child
+            )
         );
     }
 
