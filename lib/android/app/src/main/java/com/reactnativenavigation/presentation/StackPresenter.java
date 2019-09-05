@@ -166,7 +166,7 @@ public class StackPresenter {
 
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
-        topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)), componentOptions.topTabs.height.get(UiUtils.inferTopTabsHeightFromTabs()));
+        topBar.setHeight();
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = topBarOptions.topMargin.get(StatusBarUtils.getStatusBarHeight(activity));
@@ -326,7 +326,7 @@ public class StackPresenter {
         topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         topBar.applyTopTabsFontSize(options.fontSize);
         topBar.setTopTabsVisible(options.visible.isTrueOrUndefined());
-        topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
+        topBar.setTopTabsHeight(options.height.get(UiUtils.inferTopTabsHeightFromTabs()));
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
@@ -404,7 +404,7 @@ public class StackPresenter {
         TopBarOptions topBarOptions = options.topBar;
         final View component = child.getView();
         if (options.layout.direction.hasValue()) topBar.setLayoutDirection(options.layout.direction);
-        if (topBarOptions.height.hasValue() && options.topTabs.height.hasValue()) topBar.setHeight(topBarOptions.height.get(), options.topTabs.height.get());
+        if (topBarOptions.height.hasValue() && options.topTabs.height.hasValue()) topBar.setHeight();
         if (topBarOptions.elevation.hasValue()) topBar.setElevation(topBarOptions.elevation.get());
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());
@@ -478,7 +478,7 @@ public class StackPresenter {
         if (options.selectedTabColor.hasValue() && options.unselectedTabColor.hasValue()) topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         if (options.fontSize.hasValue()) topBar.applyTopTabsFontSize(options.fontSize);
         if (options.visible.hasValue()) topBar.setTopTabsVisible(options.visible.isTrue());
-        if (options.height.hasValue()) topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
+        if (options.height.hasValue()) topBar.setTopTabsHeight(options.height.get(UiUtils.inferTopTabsHeightFromTabs()));
     }
 
     private void mergeTopTabOptions(TopTabOptions topTabOptions) {
