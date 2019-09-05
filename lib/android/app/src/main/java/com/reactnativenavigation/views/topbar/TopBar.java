@@ -22,6 +22,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
@@ -105,8 +106,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setHeight(int topBarHeight, int topTabsHeight) {
-        int pixelHeight = UiUtils.dpToPx(getContext(), height);
-        if (topTabs.isVisible() == VISIBLE) pixelHeight += UiUtils.dpToPx(getContext(), topTabsHeight);
+        int pixelHeight = ViewUtils.getHeight(titleBar);
+        if (topTabs.isVisible() == VISIBLE) pixelHeight += ViewUtils.getHeight(topTabs);
         if (pixelHeight == getLayoutParams().height) return;
         ViewGroup.LayoutParams lp = getLayoutParams();
         lp.height = pixelHeight;
@@ -196,7 +197,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setTopTabsHeight(int height) {
-        if (topTabs.getLayoutParams().height == height) return;
+        if (topTabs.getLayoutParams().height == UiUtils.dpToPx(getContext(), height)) return;
         topTabs.getLayoutParams().height = height > 0 ? UiUtils.dpToPx(getContext(), height) : height;
         topTabs.setLayoutParams(topTabs.getLayoutParams());
     }
