@@ -10,10 +10,6 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 @implementation UIViewController (RNNOptions)
 
-- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-
-}
-
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage {
 	if (backgroundImage) {
 		UIImageView* backgroundImageView = (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
@@ -21,7 +17,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 			backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
 			[self.view insertSubview:backgroundImageView atIndex:0];
 		}
-		
+
 		backgroundImageView.layer.masksToBounds = YES;
 		backgroundImageView.image = backgroundImage;
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
@@ -36,7 +32,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	self.modalTransitionStyle = modalTransitionStyle;
 }
 
-- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder 
+- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder
 						hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar {
 	if (@available(iOS 11.0, *)) {
 		if (!self.navigationItem.searchController) {
@@ -52,7 +48,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 			search.hidesNavigationBarDuringPresentation = hideNavBarOnFocusSearchBar;
 			self.navigationItem.searchController = search;
 			[self.navigationItem setHidesSearchBarWhenScrolling:NO];
-			
+
 			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
 			self.definesPresentationContext = YES;
 		}
@@ -161,7 +157,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		return YES;
 	if([[[self tabBarController] presentingViewController] isKindOfClass:[UITabBarController class]])
 		return YES;
-	
+
 	return NO;
 }
 
@@ -182,12 +178,12 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		[self.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
 		[self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
 	}
-	
+
 	UIViewController *lastViewControllerInStack = self.navigationController.viewControllers.count > 1 ? self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2] : self.navigationController.topViewController;
-	
+
 	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
 	backItem.tintColor = color;
-	
+
 	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 

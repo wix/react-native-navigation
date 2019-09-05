@@ -102,7 +102,7 @@
 - (void)testMergeOptions_invokedOnParentViewController {
     id parent = [OCMockObject partialMockForObject:[RNNNavigationController new]];
     RNNNavigationOptions * toMerge = [[RNNNavigationOptions alloc] initEmptyOptions];
-    [(UIViewController *) [parent expect] mergeOptions:toMerge];
+    [(UIViewController *) [parent expect] mergeChildOptions:toMerge];
 
     RNNNavigationController* uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:nil];
     [parent addChildViewController:uut];
@@ -134,6 +134,15 @@
 
 	[uut mergeOptions:toMerge];
     [presenter verify];
+}
+
+- (void)testMergeOptions_mergedIntoCurrentOptions {
+	UIViewController* uut = [[UIViewController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:nil];
+	RNNNavigationOptions * toMerge = [[RNNNavigationOptions alloc] initEmptyOptions];
+	toMerge.topBar.title.text = [[Text alloc] initWithValue:@"merged"];
+
+	[uut mergeOptions:toMerge];
+	XCTAssertEqual(uut.resolveOptions.topBar.title.text.get, @"merged");
 }
 
 @end

@@ -66,12 +66,10 @@
 	
 	if (newOptions.sideMenu.left.enabled.hasValue) {
 		[sideMenuController side:MMDrawerSideLeft enabled:newOptions.sideMenu.left.enabled.get];
-		[newOptions.sideMenu.left.enabled consume];
 	}
 	
 	if (newOptions.sideMenu.right.enabled.hasValue) {
 		[sideMenuController side:MMDrawerSideRight enabled:newOptions.sideMenu.right.enabled.get];
-		[newOptions.sideMenu.right.enabled consume];
 	}
 	
 	if (newOptions.sideMenu.left.visible.hasValue) {

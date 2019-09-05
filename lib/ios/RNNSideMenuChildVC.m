@@ -43,8 +43,4 @@
 	return [[self presenter] getStatusBarStyle:[self resolveOptions]];
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.child.supportedInterfaceOrientations;
-}
-
 @end

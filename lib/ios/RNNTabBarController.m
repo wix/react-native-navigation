@@ -24,10 +24,6 @@
     return [super getTopBarHeight];
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.selectedViewController.supportedInterfaceOrientations;
-}
-
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
 		UIViewController<RNNLayoutProtocol>* vc = child;

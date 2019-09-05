@@ -29,8 +29,14 @@
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
+    [self.options overrideOptions:options];
 	[self.presenter mergeOptions:options currentOptions:self.resolveOptions];
-	[self.parentViewController mergeOptions:options];
+    [self.parentViewController mergeChildOptions:options];
+}
+
+- (void)mergeChildOptions:(RNNNavigationOptions *)options {
+	[self.presenter mergeOptions:options currentOptions:self.resolveOptions];
+	[self.parentViewController mergeChildOptions:options];
 }
 
 - (RNNNavigationOptions *)resolveOptions {
@@ -39,6 +45,10 @@
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
 	[self.options overrideOptions:options];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation:[self resolveOptions]];
 }
 
 - (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
