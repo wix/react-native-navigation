@@ -1,7 +1,7 @@
 #import "RNNReactComponentRegistry.h"
 
 @interface RNNReactComponentRegistry () {
-	id<RNNRootViewCreator> _creator;
+	id<RNNComponentViewCreator> _creator;
 	NSMapTable* _componentStore;
 }
 
@@ -9,7 +9,7 @@
 
 @implementation RNNReactComponentRegistry
 
-- (instancetype)initWithCreator:(id<RNNRootViewCreator>)creator {
+- (instancetype)initWithCreator:(id<RNNComponentViewCreator>)creator {
 	self = [super init];
 	_creator = creator;
 	_componentStore = [NSMapTable new];
@@ -45,6 +45,16 @@
 - (void)removeComponent:(NSString *)componentId {
 	if ([_componentStore objectForKey:componentId]) {
 		[_componentStore removeObjectForKey:componentId];
+	}
+}
+
+- (void)removeChildComponent:(NSString *)childId {
+	NSMutableDictionary* parent;
+	while ((parent = _componentStore.objectEnumerator.nextObject)) {
+		if ([parent objectForKey:childId]) {
+			[parent removeObjectForKey:childId];
+			return;
+		}
 	}
 }
 

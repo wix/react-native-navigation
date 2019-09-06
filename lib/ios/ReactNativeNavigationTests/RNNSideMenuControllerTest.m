@@ -1,6 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "RNNSideMenuController.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 
 @interface RNNSideMenuControllerTest : XCTestCase
 @property (nonatomic, strong) RNNSideMenuController *uut;
@@ -13,9 +13,9 @@
 
 - (void)setUp {
     [super setUp];
-	_leftVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNRootViewController new] type:RNNSideMenuChildTypeLeft];
-	_rightVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNRootViewController new] type:RNNSideMenuChildTypeRight];
-	_centerVC =[[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNRootViewController new] type:RNNSideMenuChildTypeCenter];
+	_leftVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNComponentViewController new] type:RNNSideMenuChildTypeLeft];
+	_rightVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNComponentViewController new] type:RNNSideMenuChildTypeRight];
+	_centerVC =[[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNComponentViewController new] type:RNNSideMenuChildTypeCenter];
 	self.uut = [[RNNSideMenuController alloc] initWithLayoutInfo:nil creator:nil childViewControllers:@[_leftVC, _centerVC, _rightVC] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil];
 }
 

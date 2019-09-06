@@ -3,7 +3,7 @@
 #import <React/RCTConvert.h>
 #import "RCTHelpers.h"
 #import "UIImage+tint.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "UIImage+insets.h"
 #import "UIViewController+LayoutProtocol.h"
 
@@ -103,7 +103,7 @@
 		componentOptions.name = [[Text alloc] initWithValue:component[@"name"]];
 		
 		RNNReactView *view = [_componentRegistry createComponentIfNotExists:componentOptions parentComponentId:self.viewController.layoutInfo.componentId reactViewReadyBlock:nil];
-		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
+		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view componentRegistry:_componentRegistry];
 	} else if (iconImage) {
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];
 	} else if (title) {

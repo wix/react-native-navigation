@@ -10,7 +10,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 @implementation UIViewController (RNNOptions)
 
-- (void)rnn_setBackgroundImage:(UIImage *)backgroundImage {
+- (void)setBackgroundImage:(UIImage *)backgroundImage {
 	if (backgroundImage) {
 		UIImageView* backgroundImageView = (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
 		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
@@ -24,16 +24,8 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setModalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle {
-	self.modalPresentationStyle = modalPresentationStyle;
-}
-
-- (void)rnn_setModalTransitionStyle:(UIModalTransitionStyle)modalTransitionStyle {
-	self.modalTransitionStyle = modalTransitionStyle;
-}
-
-- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder
-						hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar {
+- (void)setSearchBarWithPlaceholder:(NSString *)placeholder
+		 hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar {
 	if (@available(iOS 11.0, *)) {
 		if (!self.navigationItem.searchController) {
 			UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
@@ -55,17 +47,17 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden {
+- (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden {
 	if (@available(iOS 11.0, *)) {
 		self.navigationItem.hidesSearchBarWhenScrolling = searchBarHidden;
 	}
 }
 
-- (void)rnn_setNavigationItemTitle:(NSString *)title {
+- (void)setNavigationItemTitle:(NSString *)title {
 	self.navigationItem.title = title;
 }
 
-- (void)rnn_setDrawBehindTopBar:(BOOL)drawBehind {
+- (void)setDrawBehindTopBar:(BOOL)drawBehind {
 	if (drawBehind) {
 		[self setExtendedLayoutIncludesOpaqueBars:YES];
 		self.edgesForExtendedLayout |= UIRectEdgeTop;
@@ -74,7 +66,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setDrawBehindTabBar:(BOOL)drawBehindTabBar {
+- (void)setDrawBehindTabBar:(BOOL)drawBehindTabBar {
 	if (drawBehindTabBar) {
 		[self setExtendedLayoutIncludesOpaqueBars:YES];
 		self.edgesForExtendedLayout |= UIRectEdgeBottom;
@@ -83,7 +75,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setTabBarItemBadge:(NSString *)badge {
+- (void)setTabBarItemBadge:(NSString *)badge {
     UITabBarItem *tabBarItem = self.tabBarItem;
 
     if ([badge isKindOfClass:[NSNull class]] || [badge isEqualToString:@""]) {
@@ -95,13 +87,13 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     }
 }
 
-- (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor {
+- (void)setTabBarItemBadgeColor:(UIColor *)badgeColor {
 	if (@available(iOS 10.0, *)) {
 		self.tabBarItem.badgeColor = badgeColor;
 	}
 }
 
-- (void)rnn_setStatusBarStyle:(NSString *)style animated:(BOOL)animated {
+- (void)setStatusBarStyle:(NSString *)style animated:(BOOL)animated {
 	if (animated) {
 		[UIView animateWithDuration:[self statusBarAnimationDuration:animated] animations:^{
 			[self setNeedsStatusBarAppearanceUpdate];
@@ -111,7 +103,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle {
+- (void)setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle {
 	if (@available(iOS 11.0, *)) {
 		if (prefersLargeTitle) {
 			self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
@@ -122,7 +114,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 }
 
 
-- (void)rnn_setStatusBarBlur:(BOOL)blur {
+- (void)setStatusBarBlur:(BOOL)blur {
 	UIView* curBlurView = [self.view viewWithTag:BLUR_STATUS_TAG];
 	if (blur) {
 		if (!curBlurView) {
@@ -138,11 +130,11 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setBackgroundColor:(UIColor *)backgroundColor {
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
 	self.view.backgroundColor = backgroundColor;
 }
 
-- (void)rnn_setBackButtonVisible:(BOOL)visible {
+- (void)setBackButtonVisible:(BOOL)visible {
 	self.navigationItem.hidesBackButton = !visible;
 }
 
@@ -161,14 +153,14 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	return NO;
 }
 
-- (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside {
+- (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside {
 	if ([self.view isKindOfClass:[RCTRootView class]]) {
 		RCTRootView* rootView = (RCTRootView*)self.view;
 		rootView.passThroughTouches = !interceptTouchOutside;
 	}
 }
 
-- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
+- (void)setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
 	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
 	if (icon) {
 		backItem.image = color

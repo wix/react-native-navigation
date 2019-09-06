@@ -1,9 +1,9 @@
-#import "RNNNavigationController.h"
-#import "RNNRootViewController.h"
+#import "RNNStackController.h"
+#import "RNNComponentViewController.h"
 
 const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
-@implementation RNNNavigationController
+@implementation RNNStackController
 
 -(void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
 	[super setDefaultOptions:defaultOptions];
@@ -38,8 +38,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
 	if (self.viewControllers.count > 1) {
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
-		if ([controller isKindOfClass:[RNNRootViewController class]]) {
-			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
+		if ([controller isKindOfClass:[RNNComponentViewController class]]) {
+			RNNComponentViewController *rnnController = (RNNComponentViewController *)controller;
 			[self.presenter applyOptionsBeforePopping:rnnController.resolveOptions];
 		}
 	}

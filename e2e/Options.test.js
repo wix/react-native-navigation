@@ -88,6 +88,12 @@ describe('Options', () => {
     await expect(elementByLabel('Styling Options')).toBeVisible();
   });
 
+  it(':ios: Reseting buttons should unmount button react view', async () => {
+    await elementById(TestIDs.SHOW_LIFECYCLE_BTN).tap();
+    await elementById(TestIDs.RESET_BUTTONS).tap();
+    await expect(elementByLabel('Button component unmounted')).toBeVisible();
+  });
+
   xit('hides topBar onScroll down and shows it on scroll up', async () => {
     await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(TestIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
