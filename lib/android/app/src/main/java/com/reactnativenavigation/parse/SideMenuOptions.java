@@ -38,6 +38,7 @@ public class SideMenuOptions {
     }
 
     public void mergeWithDefault(SideMenuOptions defaultOptions) {
+        if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!animate.hasValue()) animate = defaultOptions.animate;
         if (!enabled.hasValue()) enabled = defaultOptions.enabled;
         if (!height.hasValue()) height = defaultOptions.height;
