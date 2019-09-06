@@ -2,7 +2,6 @@ package com.reactnativenavigation.views.toptabs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,7 +14,10 @@ import com.reactnativenavigation.views.Component;
 
 import java.util.List;
 
+import androidx.viewpager.widget.ViewPager;
+
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 @SuppressLint("ViewConstructor")
 public class TopTabsViewPager extends ViewPager implements Component, TitleBarButtonController.OnClickListener {
@@ -60,9 +62,7 @@ public class TopTabsViewPager extends ViewPager implements Component, TitleBarBu
     }
 
     public void destroy() {
-        for (ViewController tab : tabs) {
-            tab.destroy();
-        }
+        forEach(tabs, ViewController::destroy);
     }
 
     public boolean isCurrentView(View view) {

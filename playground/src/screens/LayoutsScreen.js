@@ -30,9 +30,12 @@ class LayoutsScreen extends React.Component {
         <Button label='Stack' testID={STACK_BTN} onPress={this.stack} />
         <Button label='BottomTabs' testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label='SideMenu' testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
+        <Button label='TopTabs' onPress={this.topTabs} />
       </Root>
     );
   }
+
+  topTabs = () => Navigation.showModal(Screens.TopTabs);
 
   stack = () => Navigation.showModal(Screens.Stack);
 
