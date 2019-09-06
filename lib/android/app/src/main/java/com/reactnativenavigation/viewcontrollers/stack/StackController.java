@@ -183,27 +183,23 @@ public class StackController extends ParentController<StackLayout> {
 
     public void setRoot(List<ViewController> children, CommandListener listener) {
         animator.cancelPushAnimations();
-        final ViewController toRemove = stack.peek();
         IdStack stackToDestroy = stack;
         stack = new IdStack<>();
-
-        ViewController child = last(children);
         if (children.size() == 1) {
-            backButtonHelper.clear(child);
+            backButtonHelper.clear(last(children));
+            push(last(children), new CommandListenerAdapter() {
+                @Override
+                public void onSuccess(String childId) {
+                    destroyStack(stackToDestroy);
+                    listener.onSuccess(childId);
+                }
+            });
         } else {
-            backButtonHelper.addToPushedChild(child);
-        }
-
-        child.setParentController(this);
-        stack.push(child.getId(), child);
-        Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
-        addChildToStack(child, child.getView(), resolvedOptions);
-
-        CommandListener listenerAdapter = new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                destroyStack(stackToDestroy);
-                if (children.size() > 1) {
+            backButtonHelper.addToPushedChild(last(children));
+            push(last(children), new CommandListenerAdapter() {
+                @Override
+                public void onSuccess(String childId) {
+                    destroyStack(stackToDestroy);
                     for (int i = 0; i < children.size() - 1; i++) {
                         stack.set(children.get(i).getId(), children.get(i), i);
                         children.get(i).setParentController(StackController.this);
@@ -213,24 +209,9 @@ public class StackController extends ParentController<StackLayout> {
                             backButtonHelper.addToPushedChild(children.get(i));
                         }
                     }
+                    listener.onSuccess(childId);
                 }
-                listener.onSuccess(childId);
-            }
-        };
-
-        if (toRemove != null && resolvedOptions.animations.setStackRoot.enabled.isTrueOrUndefined()) {
-            if (resolvedOptions.animations.setStackRoot.waitForRender.isTrue()) {
-                child.getView().setAlpha(0);
-                child.addOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.setStackRoot, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
-                    listenerAdapter.onSuccess(child.getId());
-                }));
-            } else {
-                animator.push(child.getView(), resolvedOptions.animations.setStackRoot, () -> {
-                    listenerAdapter.onSuccess(child.getId());
-                });
-            }
-        } else {
-            listenerAdapter.onSuccess(child.getId());
+            });
         }
     }
 

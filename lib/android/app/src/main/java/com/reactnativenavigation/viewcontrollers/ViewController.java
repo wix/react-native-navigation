@@ -301,16 +301,16 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public boolean isViewShown() {
         return !isDestroyed &&
-                getView().isShown() &&
-                view != null &&
-                isRendered();
+            getView().isShown() &&
+            view != null &&
+            isRendered();
     }
 
     public boolean isRendered() {
         return view != null && (
-                waitForRender.isFalseOrUndefined() ||
-                        !(view instanceof Renderable) ||
-                        ((Renderable) view).isRendered()
+            waitForRender.isFalseOrUndefined() ||
+            !(view instanceof Renderable) ||
+            ((Renderable) view).isRendered()
         );
     }
 
