@@ -20,7 +20,7 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
-import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
+import com.reactnativenavigation.views.toptabs.TopTabsLayout;
 
 import org.junit.Test;
 import org.mockito.Mockito;

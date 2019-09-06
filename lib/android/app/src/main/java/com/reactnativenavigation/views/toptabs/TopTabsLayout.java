@@ -18,12 +18,12 @@ import java.util.List;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 @SuppressLint("ViewConstructor")
-public class TopTabsViewPager extends ViewPager implements Component, TitleBarButtonController.OnClickListener {
+public class TopTabsLayout extends ViewPager implements Component, TitleBarButtonController.OnClickListener {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
     private List<ViewController> tabs;
 
-    public TopTabsViewPager(Context context, List<ViewController> tabs, TopTabsAdapter adapter) {
+    public TopTabsLayout(Context context, List<ViewController> tabs, TopTabsAdapter adapter) {
         super(context);
         this.tabs = tabs;
         initTabs(adapter);

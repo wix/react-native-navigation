@@ -13,12 +13,12 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.ViewVisibilityListenerAdapter;
 import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
-import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
+import com.reactnativenavigation.views.toptabs.TopTabsLayout;
 
 import java.util.Collection;
 import java.util.List;
 
-public class TopTabsController extends ParentController<TopTabsViewPager> {
+public class TopTabsController extends ParentController<TopTabsLayout> {
 
     private List<ViewController> tabs;
     private TopTabsLayoutCreator viewCreator;
@@ -45,9 +45,9 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
 
     @NonNull
     @Override
-    protected TopTabsViewPager createView() {
+    protected TopTabsLayout createView() {
         view = viewCreator.create();
-        return (TopTabsViewPager) view;
+        return (TopTabsLayout) view;
     }
 
     @NonNull
