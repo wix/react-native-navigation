@@ -4,11 +4,12 @@ const SideMenuCenter = 'SideMenuCenter';
 const SideMenuRight = 'SideMenuRight';
 const StatusBarOptions = 'StatusBarOptions';
 const StatusBarFirstTab = 'StatusBarFirstTab'
+const Pushed = 'Pushed';
 
 module.exports = {
   ExternalComponent: 'ExternalComponent',
   ContextScreen: 'ContextScreen',
-  Pushed: 'Pushed',
+  Pushed,
   Layouts: 'Layouts',
   Options: 'Options',
   Stack: 'Stack',
@@ -91,6 +92,35 @@ module.exports = {
               }
             }
           }
+        }
+      ]
+    }
+  },
+  TopTabs: {
+    stack : {
+      options: {
+        topBar: {
+          background: {
+            color: 'red'
+          }
+        }
+      },
+      children: [
+        {
+          topTabs: {
+            children: [
+              stack(component(Pushed, {
+                topTab: {
+                  title: 'Tab1'
+                }
+              })),
+              stack(component(Pushed, {
+                topTab: {
+                  title: 'Tab2'
+                }
+              }))
+            ]
+          } 
         }
       ]
     }
