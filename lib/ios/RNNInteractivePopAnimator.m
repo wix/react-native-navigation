@@ -2,7 +2,7 @@
 #import "RNNAnimator.h"
 #import "RNNAnimatedView.h"
 #import "RNNElementView.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "VICMAImageView.h"
 
 @interface  RNNInteractivePopAnimator()
@@ -68,7 +68,7 @@
 			[UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				self.imageSnapshot.frame = self.topFrame;
 			} completion:^(BOOL finished) {
-				self.nc.delegate = (RNNRootViewController*)self.vc;
+				self.nc.delegate = (RNNComponentViewController*)self.vc;
 			}];
 		} else {
 			[UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{

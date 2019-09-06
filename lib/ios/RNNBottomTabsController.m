@@ -1,6 +1,6 @@
-#import "RNNTabBarController.h"
+#import "RNNBottomTabsController.h"
 
-@implementation RNNTabBarController {
+@implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
 }
 
@@ -22,10 +22,6 @@
         if (childTopBarHeight > 0) return childTopBarHeight;
     }
     return [super getTopBarHeight];
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.selectedViewController.supportedInterfaceOrientations;
 }
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {

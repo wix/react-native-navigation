@@ -1,20 +1,20 @@
 #import "RNNLayoutNode.h"
-#import "RNNRootViewCreator.h"
+#import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
 #import "RNNAnimator.h"
 #import "RNNUIBarButtonItem.h"
 #import "RNNLayoutInfo.h"
 #import "RNNLayoutProtocol.h"
-#import "RNNViewControllerPresenter.h"
+#import "RNNComponentPresenter.h"
 
 typedef void (^PreviewCallback)(UIViewController *vc);
 
-@interface RNNRootViewController : UIViewController	<RNNLayoutProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
+@interface RNNComponentViewController : UIViewController	<RNNLayoutProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, strong) RNNViewControllerPresenter* presenter;
+@property (nonatomic, strong) RNNComponentPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
@@ -23,15 +23,15 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 @property (nonatomic, copy) PreviewCallback previewCallback;
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
-				   rootViewCreator:(id<RNNRootViewCreator>)creator
+				   rootViewCreator:(id<RNNComponentViewCreator>)creator
 					  eventEmitter:(RNNEventEmitter*)eventEmitter
-						 presenter:(RNNViewControllerPresenter *)presenter
+						 presenter:(RNNComponentPresenter *)presenter
 						   options:(RNNNavigationOptions *)options
 					defaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (instancetype)initExternalComponentWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 									   eventEmitter:(RNNEventEmitter*)eventEmitter
-										  presenter:(RNNViewControllerPresenter *)presenter
+										  presenter:(RNNComponentPresenter *)presenter
 											options:(RNNNavigationOptions *)options
 									 defaultOptions:(RNNNavigationOptions *)defaultOptions;
 

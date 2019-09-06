@@ -1,12 +1,12 @@
 #import <XCTest/XCTest.h>
-#import "RNNTabBarController.h"
-#import "RNNRootViewController.h"
-#import "RNNNavigationController.h"
+#import "RNNBottomTabsController.h"
+#import "RNNComponentViewController.h"
+#import "RNNStackController.h"
 #import <OCMock/OCMock.h>
 
 @interface RNNTabBarControllerTest : XCTestCase
 
-@property(nonatomic, strong) RNNTabBarController * uut;
+@property(nonatomic, strong) RNNBottomTabsController * uut;
 @property(nonatomic, strong) id mockChildViewController;
 @property(nonatomic, strong) id mockEventEmitter;
 @property(nonatomic, strong) id mockTabBarPresenter;
@@ -18,13 +18,13 @@
 - (void)setUp {
     [super setUp];
 
-    id tabBarClassMock = OCMClassMock([RNNTabBarController class]);
-    OCMStub([tabBarClassMock parentViewController]).andReturn([OCMockObject partialMockForObject:[RNNTabBarController new]]);
+    id tabBarClassMock = OCMClassMock([RNNBottomTabsController class]);
+    OCMStub([tabBarClassMock parentViewController]).andReturn([OCMockObject partialMockForObject:[RNNBottomTabsController new]]);
 
-    self.mockTabBarPresenter = [OCMockObject partialMockForObject:[[RNNTabBarPresenter alloc] init]];
-    self.mockChildViewController = [OCMockObject partialMockForObject:[RNNRootViewController new]];
+    self.mockTabBarPresenter = [OCMockObject partialMockForObject:[[RNNBottomTabsPresenter alloc] init]];
+    self.mockChildViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
     self.mockEventEmitter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
-    self.uut = [OCMockObject partialMockForObject:[[RNNTabBarController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:self.mockTabBarPresenter eventEmitter:self.mockEventEmitter childViewControllers:@[[[UIViewController alloc] init]]]];
+    self.uut = [OCMockObject partialMockForObject:[[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:self.mockTabBarPresenter eventEmitter:self.mockEventEmitter childViewControllers:@[[[UIViewController alloc] init]]]];
     OCMStub([self.uut selectedViewController]).andReturn(self.mockChildViewController);
 }
 
@@ -36,17 +36,17 @@
     UIViewController *vc1 = [[UIViewController alloc] init];
     UIViewController *vc2 = [[UIViewController alloc] init];
 
-    RNNTabBarController *uut = [[RNNTabBarController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNViewControllerPresenter alloc] init] eventEmitter:nil childViewControllers:@[vc1, vc2]];
+    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNComponentPresenter alloc] init] eventEmitter:nil childViewControllers:@[vc1, vc2]];
     XCTAssertTrue(uut.viewControllers.count == 2);
 }
 
 - (void)testInitWithLayoutInfo_shouldInitializeDependencies {
     RNNLayoutInfo *layoutInfo = [RNNLayoutInfo new];
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
-    RNNTabBarPresenter *presenter = [[RNNTabBarPresenter alloc] init];
+    RNNBottomTabsPresenter *presenter = [[RNNBottomTabsPresenter alloc] init];
     NSArray *childViewControllers = @[[UIViewController new]];
 
-    RNNTabBarController *uut = [[RNNTabBarController alloc] initWithLayoutInfo:layoutInfo creator:nil options:options defaultOptions:nil presenter:presenter eventEmitter:nil childViewControllers:childViewControllers];
+    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo creator:nil options:options defaultOptions:nil presenter:presenter eventEmitter:nil childViewControllers:childViewControllers];
     XCTAssertTrue(uut.layoutInfo == layoutInfo);
     XCTAssertTrue(uut.options == options);
     XCTAssertTrue(uut.presenter == presenter);
@@ -56,12 +56,12 @@
 - (void)testInitWithEventEmmiter_shouldInitializeDependencies {
     RNNLayoutInfo *layoutInfo = [RNNLayoutInfo new];
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
-    RNNTabBarPresenter *presenter = [[RNNTabBarPresenter alloc] init];
+    RNNBottomTabsPresenter *presenter = [[RNNBottomTabsPresenter alloc] init];
     RNNEventEmitter *eventEmmiter = [RNNEventEmitter new];
 
     NSArray *childViewControllers = @[[UIViewController new]];
 
-    RNNTabBarController *uut = [[RNNTabBarController alloc] initWithLayoutInfo:layoutInfo creator:nil options:options defaultOptions:nil presenter:presenter eventEmitter:eventEmmiter childViewControllers:childViewControllers];
+    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo creator:nil options:options defaultOptions:nil presenter:presenter eventEmitter:eventEmmiter childViewControllers:childViewControllers];
     XCTAssertTrue(uut.layoutInfo == layoutInfo);
     XCTAssertTrue(uut.options == options);
     XCTAssertTrue(uut.presenter == presenter);
@@ -70,7 +70,7 @@
 }
 
 - (void)testInitWithLayoutInfo_shouldSetDelegate {
-    RNNTabBarController *uut = [[RNNTabBarController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNBasePresenter alloc] init] eventEmitter:nil childViewControllers:nil];
+    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNBasePresenter alloc] init] eventEmitter:nil childViewControllers:nil];
 
     XCTAssertTrue(uut.delegate == uut);
 }
@@ -90,23 +90,23 @@
 - (void)testMergeOptions_shouldInvokePresenterMergeOptions {
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
-    [(RNNTabBarPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options currentOptions:[self.uut options]];
+    [(RNNBottomTabsPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options resolvedOptions:[self.uut options]];
     [self.uut mergeOptions:options];
     [self.mockTabBarPresenter verify];
 }
 
 - (void)testMergeOptions_shouldInvokeParentMergeOptions {
-    id parentMock = [OCMockObject partialMockForObject:[RNNRootViewController new]];
+    id parentMock = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
     OCMStub([self.uut parentViewController]).andReturn(parentMock);
-    [((RNNRootViewController *) [parentMock expect]) mergeOptions:options];
+    [((RNNComponentViewController *) [parentMock expect]) mergeChildOptions:options];
     [self.uut mergeOptions:options];
     [parentMock verify];
 }
 
 - (void)testOnChildAppear_shouldInvokeParentOnChildAppear {
-    id parentMock = [OCMockObject partialMockForObject:[RNNNavigationController new]];
+    id parentMock = [OCMockObject partialMockForObject:[RNNStackController new]];
 
     OCMStub([self.uut parentViewController]).andReturn(parentMock);
 
@@ -122,7 +122,7 @@
 }
 
 - (void)testGetCurrentChild_shouldReturnSelectedViewController {
-    XCTAssertEqual([self.uut getCurrentChild], [(RNNTabBarController *) self.uut selectedViewController]);
+    XCTAssertEqual([self.uut getCurrentChild], [(RNNBottomTabsController *) self.uut selectedViewController]);
 }
 
 - (void)testPreferredStatusBarStyle_shouldInvokeSelectedViewControllerPreferredStatusBarStyle {
@@ -144,9 +144,9 @@
     RNNLayoutInfo *layoutInfo = [RNNLayoutInfo new];
     layoutInfo.componentId = @"componentId";
 
-    RNNRootViewController *vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
+    RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
 
-    RNNTabBarController *uut = [[RNNTabBarController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:[RNNTabBarPresenter new] eventEmitter:nil childViewControllers:@[[UIViewController new], vc]];
+    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:[RNNBottomTabsPresenter new] eventEmitter:nil childViewControllers:@[[UIViewController new], vc]];
     [uut setSelectedIndexByComponentID:@"componentId"];
     XCTAssertTrue(uut.selectedIndex == 1);
 }
@@ -155,8 +155,8 @@
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
     options.bottomTabs.currentTabIndex = [[IntNumber alloc] initWithValue:@(1)];
 
-    RNNRootViewController *vc = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
-    RNNTabBarController *uut = [[RNNTabBarController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:nil presenter:[RNNTabBarPresenter new] eventEmitter:nil childViewControllers:@[[UIViewController new], vc]];
+    RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
+    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:nil presenter:[RNNBottomTabsPresenter new] eventEmitter:nil childViewControllers:@[[UIViewController new], vc]];
 
     XCTAssertTrue(uut.selectedIndex == 1);
 }

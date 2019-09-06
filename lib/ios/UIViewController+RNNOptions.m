@@ -3,40 +3,29 @@
 #import "UIImage+tint.h"
 #import "RNNBottomTabOptions.h"
 #import "RNNNavigationOptions.h"
+#import "RNNBackButtonOptions.h"
 
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
 
 @implementation UIViewController (RNNOptions)
 
-- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-
-}
-
-- (void)rnn_setBackgroundImage:(UIImage *)backgroundImage {
+- (void)setBackgroundImage:(UIImage *)backgroundImage {
 	if (backgroundImage) {
 		UIImageView* backgroundImageView = (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
 		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
 			backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
 			[self.view insertSubview:backgroundImageView atIndex:0];
 		}
-		
+
 		backgroundImageView.layer.masksToBounds = YES;
 		backgroundImageView.image = backgroundImage;
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
 }
 
-- (void)rnn_setModalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle {
-	self.modalPresentationStyle = modalPresentationStyle;
-}
-
-- (void)rnn_setModalTransitionStyle:(UIModalTransitionStyle)modalTransitionStyle {
-	self.modalTransitionStyle = modalTransitionStyle;
-}
-
-- (void)rnn_setSearchBarWithPlaceholder:(NSString *)placeholder 
-						hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar {
+- (void)setSearchBarWithPlaceholder:(NSString *)placeholder
+		 hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar {
 	if (@available(iOS 11.0, *)) {
 		if (!self.navigationItem.searchController) {
 			UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
@@ -51,24 +40,24 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 			search.hidesNavigationBarDuringPresentation = hideNavBarOnFocusSearchBar;
 			self.navigationItem.searchController = search;
 			[self.navigationItem setHidesSearchBarWhenScrolling:NO];
-			
+
 			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
 			self.definesPresentationContext = YES;
 		}
 	}
 }
 
-- (void)rnn_setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden {
+- (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden {
 	if (@available(iOS 11.0, *)) {
 		self.navigationItem.hidesSearchBarWhenScrolling = searchBarHidden;
 	}
 }
 
-- (void)rnn_setNavigationItemTitle:(NSString *)title {
+- (void)setNavigationItemTitle:(NSString *)title {
 	self.navigationItem.title = title;
 }
 
-- (void)rnn_setDrawBehindTopBar:(BOOL)drawBehind {
+- (void)setDrawBehindTopBar:(BOOL)drawBehind {
 	if (drawBehind) {
 		[self setExtendedLayoutIncludesOpaqueBars:YES];
 		self.edgesForExtendedLayout |= UIRectEdgeTop;
@@ -77,7 +66,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setDrawBehindTabBar:(BOOL)drawBehindTabBar {
+- (void)setDrawBehindTabBar:(BOOL)drawBehindTabBar {
 	if (drawBehindTabBar) {
 		[self setExtendedLayoutIncludesOpaqueBars:YES];
 		self.edgesForExtendedLayout |= UIRectEdgeBottom;
@@ -86,7 +75,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setTabBarItemBadge:(NSString *)badge {
+- (void)setTabBarItemBadge:(NSString *)badge {
     UITabBarItem *tabBarItem = self.tabBarItem;
 
     if ([badge isKindOfClass:[NSNull class]] || [badge isEqualToString:@""]) {
@@ -98,13 +87,13 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     }
 }
 
-- (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor {
+- (void)setTabBarItemBadgeColor:(UIColor *)badgeColor {
 	if (@available(iOS 10.0, *)) {
 		self.tabBarItem.badgeColor = badgeColor;
 	}
 }
 
-- (void)rnn_setStatusBarStyle:(NSString *)style animated:(BOOL)animated {
+- (void)setStatusBarStyle:(NSString *)style animated:(BOOL)animated {
 	if (animated) {
 		[UIView animateWithDuration:[self statusBarAnimationDuration:animated] animations:^{
 			[self setNeedsStatusBarAppearanceUpdate];
@@ -114,7 +103,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle {
+- (void)setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle {
 	if (@available(iOS 11.0, *)) {
 		if (prefersLargeTitle) {
 			self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
@@ -125,7 +114,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 }
 
 
-- (void)rnn_setStatusBarBlur:(BOOL)blur {
+- (void)setStatusBarBlur:(BOOL)blur {
 	UIView* curBlurView = [self.view viewWithTag:BLUR_STATUS_TAG];
 	if (blur) {
 		if (!curBlurView) {
@@ -141,11 +130,11 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
-- (void)rnn_setBackgroundColor:(UIColor *)backgroundColor {
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
 	self.view.backgroundColor = backgroundColor;
 }
 
-- (void)rnn_setBackButtonVisible:(BOOL)visible {
+- (void)setBackButtonVisible:(BOOL)visible {
 	self.navigationItem.hidesBackButton = !visible;
 }
 
@@ -160,34 +149,51 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		return YES;
 	if([[[self tabBarController] presentingViewController] isKindOfClass:[UITabBarController class]])
 		return YES;
-	
+
 	return NO;
 }
 
-- (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside {
+- (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside {
 	if ([self.view isKindOfClass:[RCTRootView class]]) {
 		RCTRootView* rootView = (RCTRootView*)self.view;
 		rootView.passThroughTouches = !interceptTouchOutside;
 	}
 }
 
-- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
+- (void)setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
 	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
 	if (icon) {
 		backItem.image = color
 		? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
 		: icon;
-		
+
 		[self.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
 		[self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
 	}
-	
-	UIViewController *lastViewControllerInStack = self.navigationController.viewControllers.count > 1 ? [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] : self.navigationController.topViewController;
-	
+
+	UIViewController *lastViewControllerInStack = self.navigationController.viewControllers.count > 1 ? self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2] : self.navigationController.topViewController;
+
 	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
 	backItem.tintColor = color;
-	
+
 	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
+}
+
+- (void)applyBackButton:(RNNBackButtonOptions *)backButton {
+	UIBarButtonItem *backItem = [UIBarButtonItem new];
+	if (backButton.icon.hasValue) {
+		UIColor *color = [backButton.color getWithDefaultValue:nil];
+		backItem.image = color ?
+				[[backButton.icon.get withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] :
+				backButton.icon.get;
+
+		[self.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
+        [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
+	}
+
+	if ([backButton.showTitle getWithDefaultValue:YES]) backItem.title = [backButton.title getWithDefaultValue:nil];
+	if (backButton.color.hasValue) backItem.tintColor = [backButton.color get];
+	self.navigationItem.backBarButtonItem = backItem;
 }
 
 @end

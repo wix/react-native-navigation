@@ -3,8 +3,8 @@
 #import "RNNCommandsHandler.h"
 #import "RNNNavigationOptions.h"
 #import "RNNTestRootViewCreator.h"
-#import "RNNRootViewController.h"
-#import "RNNNavigationController.h"
+#import "RNNComponentViewController.h"
+#import "RNNStackController.h"
 #import "RNNErrorHandler.h"
 #import <OCMock/OCMock.h>
 #import "RNNLayoutManager.h"
@@ -23,7 +23,7 @@
 
 @end
 
-@interface MockUINavigationController : RNNNavigationController
+@interface MockUINavigationController : RNNStackController
 @property (nonatomic, strong) NSArray* willReturnVCs;
 @end
 
@@ -43,9 +43,9 @@
 
 @property (nonatomic, strong) RNNCommandsHandler* uut;
 @property (nonatomic, strong) id modalManager;
-@property (nonatomic, strong) RNNRootViewController* vc1;
-@property (nonatomic, strong) RNNRootViewController* vc2;
-@property (nonatomic, strong) RNNRootViewController* vc3;
+@property (nonatomic, strong) RNNComponentViewController* vc1;
+@property (nonatomic, strong) RNNComponentViewController* vc2;
+@property (nonatomic, strong) RNNComponentViewController* vc3;
 @property (nonatomic, strong) MockUINavigationController* nvc;
 @property (nonatomic, strong) id mainWindow;
 @property (nonatomic, strong) id sharedApplication;
@@ -65,9 +65,9 @@
 	self.modalManager = [OCMockObject partialMockForObject:[RNNModalManager new]];
 	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:nil componentRegistry:nil andBridge:nil]];
 	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:self.modalManager overlayManager:self.overlayManager mainWindow:_mainWindow];
-	self.vc1 = [RNNRootViewController new];
-	self.vc2 = [RNNRootViewController new];
-	self.vc3 = [RNNRootViewController new];
+	self.vc1 = [RNNComponentViewController new];
+	self.vc2 = [RNNComponentViewController new];
+	self.vc3 = [RNNComponentViewController new];
 	_nvc = [[MockUINavigationController alloc] init];
 	[_nvc setViewControllers:@[self.vc1, self.vc2, self.vc3]];
 	OCMStub([self.sharedApplication keyWindow]).andReturn(self.mainWindow);
@@ -121,10 +121,10 @@
 	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
 	RNNTestRootViewCreator* creator = [[RNNTestRootViewCreator alloc] init];
 	
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
+	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] init];
+	RNNComponentViewController* vc = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
 	
-	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil creator:creator options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNNavigationControllerPresenter alloc] init] eventEmitter:nil childViewControllers:@[vc]];
+	RNNStackController* nav = [[RNNStackController alloc] initWithLayoutInfo:nil creator:creator options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNStackPresenter alloc] init] eventEmitter:nil childViewControllers:@[vc]];
 	
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
@@ -144,10 +144,10 @@
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"the title"];
 	
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
+	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] init];
+	RNNComponentViewController* vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
 	
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
+	__unused RNNStackController* nav = [[RNNStackController alloc] initWithRootViewController:vc];
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 	
@@ -182,7 +182,7 @@
 
 - (void)testShowOverlay_withCreatedLayout {
 	[self.uut setReadyToReceiveCommands:true];
-	UIViewController* layoutVC = [RNNRootViewController new];
+	UIViewController* layoutVC = [RNNComponentViewController new];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(layoutVC);
 	
 	[[self.overlayManager expect] showOverlayWindow:[OCMArg any]];
