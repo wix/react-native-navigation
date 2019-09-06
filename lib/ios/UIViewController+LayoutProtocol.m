@@ -5,7 +5,7 @@
 @implementation UIViewController (LayoutProtocol)
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
-						   creator:(id<RNNRootViewCreator>)creator
+						   creator:(id<RNNComponentViewCreator>)creator
 						   options:(RNNNavigationOptions *)options
 					defaultOptions:(RNNNavigationOptions *)defaultOptions
 						 presenter:(RNNBasePresenter *)presenter
@@ -29,8 +29,14 @@
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-	[self.presenter mergeOptions:options currentOptions:self.resolveOptions];
-	[self.parentViewController mergeOptions:options];
+    [self.options overrideOptions:options];
+    [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+    [self.parentViewController mergeChildOptions:options];
+}
+
+- (void)mergeChildOptions:(RNNNavigationOptions *)options {
+    [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+	[self.parentViewController mergeChildOptions:options];
 }
 
 - (RNNNavigationOptions *)resolveOptions {
@@ -39,6 +45,10 @@
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
 	[self.options overrideOptions:options];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation:[self resolveOptions]];
 }
 
 - (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
@@ -126,11 +136,11 @@
 	objc_setAssociatedObject(self, @selector(eventEmitter), eventEmitter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (id<RNNRootViewCreator>)creator {
+- (id<RNNComponentViewCreator>)creator {
 	return objc_getAssociatedObject(self, @selector(creator));
 }
 
-- (void)setCreator:(id<RNNRootViewCreator>)creator {
+- (void)setCreator:(id<RNNComponentViewCreator>)creator {
 	objc_setAssociatedObject(self, @selector(creator), creator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

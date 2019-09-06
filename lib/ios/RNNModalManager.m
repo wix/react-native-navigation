@@ -1,5 +1,5 @@
 #import "RNNModalManager.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "RNNAnimationsTransitionDelegate.h"
 #import "RNNLayoutProtocol.h"
 

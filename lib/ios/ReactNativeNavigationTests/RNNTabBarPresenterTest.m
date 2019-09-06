@@ -1,12 +1,12 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "RNNTabBarPresenter.h"
+#import "RNNBottomTabsPresenter.h"
 #import "UITabBarController+RNNOptions.h"
-#import "RNNTabBarController.h"
+#import "RNNBottomTabsController.h"
 
 @interface RNNTabBarPresenterTest : XCTestCase
 
-@property(nonatomic, strong) RNNTabBarPresenter *uut;
+@property(nonatomic, strong) RNNBottomTabsPresenter *uut;
 @property(nonatomic, strong) RNNNavigationOptions *options;
 @property(nonatomic, strong) id boundViewController;
 
@@ -16,20 +16,20 @@
 
 - (void)setUp {
     [super setUp];
-    self.uut = [OCMockObject partialMockForObject:[RNNTabBarPresenter new]];
-    self.boundViewController = [OCMockObject partialMockForObject:[RNNTabBarController new]];
+    self.uut = [OCMockObject partialMockForObject:[RNNBottomTabsPresenter new]];
+    self.boundViewController = [OCMockObject partialMockForObject:[RNNBottomTabsController new]];
     [self.uut bindViewController:self.boundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
 - (void)testApplyOptions_shouldSetDefaultEmptyOptions {
     RNNNavigationOptions *emptyOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-    [[self.boundViewController expect] rnn_setTabBarTestID:nil];
-    [[self.boundViewController expect] rnn_setTabBarBackgroundColor:nil];
-    [[self.boundViewController expect] rnn_setTabBarTranslucent:NO];
-    [[self.boundViewController expect] rnn_setTabBarHideShadow:NO];
-    [[self.boundViewController expect] rnn_setTabBarStyle:UIBarStyleDefault];
-    [[self.boundViewController expect] rnn_setTabBarVisible:YES animated:NO];
+    [[self.boundViewController expect] setTabBarTestID:nil];
+    [[self.boundViewController expect] setTabBarBackgroundColor:nil];
+    [[self.boundViewController expect] setTabBarTranslucent:NO];
+    [[self.boundViewController expect] setTabBarHideShadow:NO];
+    [[self.boundViewController expect] setTabBarStyle:UIBarStyleDefault];
+    [[self.boundViewController expect] setTabBarVisible:YES animated:NO];
     [self.uut applyOptions:emptyOptions];
     [self.boundViewController verify];
 }
@@ -43,12 +43,12 @@
     initialOptions.bottomTabs.visible = [[Bool alloc] initWithValue:@(0)];
     initialOptions.bottomTabs.barStyle = [[Text alloc] initWithValue:@"black"];
 
-    [[self.boundViewController expect] rnn_setTabBarTestID:@"testID"];
-    [[self.boundViewController expect] rnn_setTabBarBackgroundColor:[UIColor redColor]];
-    [[self.boundViewController expect] rnn_setTabBarTranslucent:NO];
-    [[self.boundViewController expect] rnn_setTabBarHideShadow:YES];
-    [[self.boundViewController expect] rnn_setTabBarStyle:UIBarStyleBlack];
-    [[self.boundViewController expect] rnn_setTabBarVisible:NO animated:NO];
+    [[self.boundViewController expect] setTabBarTestID:@"testID"];
+    [[self.boundViewController expect] setTabBarBackgroundColor:[UIColor redColor]];
+    [[self.boundViewController expect] setTabBarTranslucent:NO];
+    [[self.boundViewController expect] setTabBarHideShadow:YES];
+    [[self.boundViewController expect] setTabBarStyle:UIBarStyleBlack];
+    [[self.boundViewController expect] setTabBarVisible:NO animated:NO];
 
     [self.uut applyOptions:initialOptions];
     [self.boundViewController verify];

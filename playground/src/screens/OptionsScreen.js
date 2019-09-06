@@ -1,5 +1,5 @@
 const React = require('react');
-const { Component } = require('react');
+const {Component} = require('react');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
 const Navigation = require('../services/Navigation');
@@ -16,7 +16,9 @@ const {
   PUSH_BTN,
   HIDE_TOPBAR_DEFAULT_OPTIONS,
   SHOW_YELLOW_BOX_BTN,
-  SET_REACT_TITLE_VIEW
+  SET_REACT_TITLE_VIEW,
+  RESET_BUTTONS,
+  SHOW_LIFECYCLE_BTN
 } = require('../testIDs');
 
 class Options extends Component {
@@ -69,9 +71,35 @@ class Options extends Component {
         <Button label='Set React Title View' testID={SET_REACT_TITLE_VIEW} onPress={this.setReactTitleView} />
         <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
         <Button label='StatusBar' onPress={this.statusBarScreen} />
+        <Button label='Show Lifecycle button' testID={SHOW_LIFECYCLE_BTN} onPress={this.showLifecycleButton} />
+        <Button label='Remove all buttons' testID={RESET_BUTTONS} onPress={this.resetButtons} />
       </Root>
     );
   }
+
+  showLifecycleButton = () => Navigation.mergeOptions(this, {
+    topBar: {
+      rightButtons: [
+        {
+          id: 'ROUND',
+          testID: ROUND_BUTTON,
+          component: {
+            name: Screens.LifecycleButton,
+            passProps: {
+              title: 'Two'
+            }
+          }
+        }
+      ]
+    }
+  });
+
+  resetButtons = () => Navigation.mergeOptions(this, {
+    topBar: {
+      rightButtons: [],
+      leftButtons: []
+    }
+  });
 
   changeTitle = () => Navigation.mergeOptions(this, {
     topBar: {
