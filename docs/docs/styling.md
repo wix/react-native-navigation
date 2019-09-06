@@ -124,7 +124,7 @@ Navigation.mergeOptions(this.props.componentId, {
       visible: true // default false
     }
     testID: 'bottomTabTestID',
-    icon: require('tab.png'),
+    icon: require('tab.png'), // required
     iconColor: 'red',
     selectedIconColor: 'blue',
     textColor: 'red',
@@ -152,11 +152,12 @@ Navigation.mergeOptions(this.props.componentId, {
     clickColor: 'blue',
     rippleColor: 'yellow',
     visible: true,
-    icon: require('add.png'),
+    icon: require('add.png'), // FabMenu unsupported
     iconColor: 'white',
-    alignHorizontally: 'left', // one of 'left', 'right'
+    alignHorizontally: 'left', // one of 'left', 'right', 'center'
+    alignVertically: 'bottom', // one of 'top', 'bottom'; FabMenu just 'bottom'
     hideOnScroll: false,
-    size: 24,
+    size: 'normal', // one of 'mini', 'normal'
     actions: [{
       id: 'fab-1',  // required
       backgroundColor: 'green',
@@ -165,7 +166,7 @@ Navigation.mergeOptions(this.props.componentId, {
       visible: true,
       icon: require('add.png'),
       iconColor: 'white',
-      size: 24;
+      size: 'normal', // one of 'mini', 'normal'
     }];
   },
   overlay: {

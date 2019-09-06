@@ -443,7 +443,7 @@ export interface OptionsFab {
   visible?: boolean;
   icon?: ImageRequireSource;
   iconColor?: Color;
-  alignHorizontally?: 'left' | 'right';
+  alignHorizontally?: 'left' | 'right' | 'center';
   alignVertically?: 'top' | 'bottom';
   hideOnScroll?: boolean;
   size?: 'mini' | 'normal';
