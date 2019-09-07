@@ -42,7 +42,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     private TopTabsController uut;
     private List<ViewController> tabControllers = new ArrayList<>(SIZE);
     private final Options options = new Options();
-    private TopTabsViewPager topTabsLayout;
+    private TopTabsLayout topTabsLayout;
     private Activity activity;
     private ChildControllersRegistry childRegistry;
 
@@ -55,7 +55,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         List<Options> tabOptions = createOptions();
         tabControllers = createTabsControllers(activity, tabOptions);
 
-        topTabsLayout = spy(new TopTabsViewPager(activity, tabControllers, new TopTabsAdapter(tabControllers)));
+        topTabsLayout = spy(new TopTabsLayout(activity, tabControllers, new TopTabsAdapter(tabControllers)));
         TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
         Mockito.when(layoutCreator.create()).thenReturn(topTabsLayout);
         Presenter presenter = new Presenter(activity, new Options());
@@ -108,7 +108,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     @Test
     public void componentViewDestroyedOnDestroy() {
         uut.ensureViewIsCreated();
-        TopTabsViewPager topTabs = uut.getView();
+        TopTabsLayout topTabs = uut.getView();
         for (int i = 0; i < SIZE; i++) {
             verify(tab(topTabs, i), times(0)).destroy();
         }
@@ -231,7 +231,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         verify(tabControllers.get(1), times(1)).sendOnNavigationButtonPressed("btn1");
     }
 
-    private IReactView tab(TopTabsViewPager topTabs, final int index) {
+    private IReactView tab(TopTabsLayout topTabs, final int index) {
         return (IReactView) ((ViewGroup) topTabs.getChildAt(index)).getChildAt(0);
     }
 
