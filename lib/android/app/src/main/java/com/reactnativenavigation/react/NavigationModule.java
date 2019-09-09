@@ -1,6 +1,6 @@
 package com.reactnativenavigation.react;
-import android.content.Intent;
-import android.os.Bundle;
+
+import com.reactnativenavigation.utils.LaunchArgsParser;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -75,23 +75,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getLaunchArgs(String commandId,Promise promise) {
-        NavigationActivity activity = activity();
-        if (activity != null ) {
-            Intent intent = activity.getIntent();
-            if (intent != null) {
-                Bundle launchArgs = intent.getBundleExtra("launchArgs");
-                if(launchArgs != null){
-                    WritableMap writableMap = Arguments.fromBundle(launchArgs);
-                    promise.resolve(writableMap);
-                }else{
-                    promise.resolve(Arguments.createMap());
-                }
-            } else {
-                promise.resolve(Arguments.createMap());
-            }
-        } else {
-            promise.resolve(Arguments.createMap());
-        }
+        promise.resolve(LaunchArgsParser.parse(activity()));
     }
     
     @ReactMethod
