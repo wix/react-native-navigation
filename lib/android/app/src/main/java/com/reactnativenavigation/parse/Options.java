@@ -1,6 +1,5 @@
 package com.reactnativenavigation.parse;
 
-import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.utils.TypefaceLoader;
@@ -131,11 +130,6 @@ public class Options {
         return this;
     }
 
-    public Options clearSideMenuOptions() {
-        sideMenuRootOptions = new SideMenuRootOptions();
-        return this;
-    }
-
     public Options clearAnimationOptions() {
         animations = new AnimationsOptions();
         return this;
@@ -147,8 +141,6 @@ public class Options {
     }
 
     public Options clearOneTimeOptions() {
-        sideMenuRootOptions.left.visible = new NullBool();
-        sideMenuRootOptions.right.visible = new NullBool();
         bottomTabsOptions.currentTabId = new NullText();
         bottomTabsOptions.currentTabIndex = new NullNumber();
         return this;

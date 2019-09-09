@@ -1,4 +1,34 @@
 # Changelog
+# 3.2.0
+## Added
+### Android
+* Add animation support for setStackRoot [#d0a17fa](https://github.com/wix/react-native-navigation/commit/d0a17fabf4f5360b0f54797867a7a49960a1937d) by [Jazqa](https://github.com/Jazqa)
+
+## Fixed
+* Don't cache values for constants() call [#a99e138](https://github.com/wix/react-native-navigation/commit/a99e138839abc8ab84b67489ef9a83a6874778da) by [ItsNoHax](https://github.com/ItsNoHax)
+
+### iOS
+* Fix applying merged backButton options [#aef5b2e](https://github.com/wix/react-native-navigation/commit/aef5b2e3bd60acb33847c0ab3b66b8fc51fef703) by [guyca](https://github.com/guyca)
+* Remove duplicate setDefaultOptions in UIViewController categories [#0d31e30](https://github.com/wix/react-native-navigation/commit/0d31e30800dc3e7314cfbf1dcf6b645614b781f4) by [danilobuerger](https://github.com/danilobuerger)
+* Don't consume SideMenu enabled option after applying it in mergeOptions [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* supportedInterfaceOrientations didn't take default orientation value into account [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* SideMenu always returned the centre ViewController as the current child and didn't take open SideMenu into account  [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* Stop recursive double setting of default options [#d5c92b1](https://github.com/wix/react-native-navigation/commit/d5c92b1609d5fc1a75c51065791e5aad2a80b654) by [danilobuerger](https://github.com/danilobuerger)
+* Immediately unmount buttons removed by mergeOptions, instead of unmounting them when screen is unmounted [#65dde34](https://github.com/wix/react-native-navigation/commit/65dde342fb087bd122bc19de308cbf283485aac7) by [yogevbd](https://github.com/yogevbd)
+
+## Android
+* Catch rare RuntimeException in setRoot when waitForRender = true [#b048581](https://github.com/wix/react-native-navigation/commit/b04858190e1fc2a1fe22f67879a6c7ca3769c297) by [rawrmaan](https://github.com/rawrmaan)
+* Fix SideMenu enabled property issues [#92fcf70](https://github.com/wix/react-native-navigation/commit/92fcf70773a3614c48e3ac844e81cb16d1ff8d2a) by [Royce](https://github.com/Royce)
+
+
+# 3.1.2
+## Fixed
+* Add @babel/core to devDependencies [#fdec91d](https://github.com/wix/react-native-navigation/commit/fdec91dc39364aaa23a48dfc4d1d44e73a6f2e21) by [ItsNoHax](https://github.com/ItsNoHax)
+
+### iOS
+* Fix replacing react title with text title not working [#b434b4f](https://github.com/wix/react-native-navigation/commit/b434b4f82a6f0642af9d11ad8dda6ec8e9c5603a) by [FRizzonelli](https://github.com/FRizzonelli)
+* Fix merging TopBar title, buttons and status bar options, broke in 3.1.1 [#5409a62](https://github.com/wix/react-native-navigation/commit/5409a625d9d272c5c0a7d9b10ed0df5ff51c6155) by [guyca](https://github.com/guyca)
+
 # 3.1.1
 ## Fixed
 ### Android
@@ -70,6 +100,21 @@ Add the following to your application's `style.xml`
       <item name="backgroundColor" type="color">#f00</item>
   </resources>
   ```
+# 2.27.5
+## Fixed
+### iOS
+* Stop recursive double setting of default options  [#3da2ca8](https://github.com/wix/react-native-navigation/commit/3da2ca8afc7597b46cad500828dffc0102c034a6) by [danilobuerger](https://github.com/danilobuerger)
+* Fix infinite loop while trying to remove react buttons [#88fd1f1](https://github.com/wix/react-native-navigation/commit/88fd1f15d0bc22d8c53c7e518eb0bb178e15ea6c) by [guyca](https://github.com/guyca)
+
+# 2.27.4
+## Fixed
+### iOS
+* Immediately unmount buttons removed by mergeOptions, instead of unmounting them when screen is unmounted [#65dde34](https://github.com/wix/react-native-navigation/commit/65dde342fb087bd122bc19de308cbf283485aac7) by [yogevbd](https://github.com/yogevbd)
+* Don't consume SideMenu enabled option after applying it in mergeOptions [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* supportedInterfaceOrientations didn't take default orientation value into account [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* SideMenu always returned the centre ViewController as the current child and didn't take open SideMenu into account  [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* Remove duplicate setDefaultOptions in UIViewController categories [#452c4e6](https://github.com/wix/react-native-navigation/commit/452c4e692fe700600447f19282bd42b07dcc9bb4) by [danilobuerger](https://github.com/danilobuerger)
+
 # 2.27.3
 ## Fixed
 ### iOS
