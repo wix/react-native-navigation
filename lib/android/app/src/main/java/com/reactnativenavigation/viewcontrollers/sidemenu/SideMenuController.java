@@ -95,7 +95,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     @Override
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
-        presenter.mergeChildOptions(options.sideMenuRootOptions);
+        presenter.mergeOptions(options.sideMenuRootOptions);
     }
 
     @Override

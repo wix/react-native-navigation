@@ -38,11 +38,6 @@ public class SideMenuPresenter {
         mergeVisibility(options);
     }
 
-    public void mergeChildOptions(SideMenuRootOptions options) {
-        mergeLockMode(options);
-        mergeVisibility(options);
-    }
-
     public void applyChildOptions(Options options) {
         applyLockMode(options.sideMenuRootOptions);
         mergeVisibility(options.sideMenuRootOptions);

@@ -19,10 +19,10 @@
 - (RNNReactView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
 	NSMutableDictionary* parentComponentDict = [self componentsForParentId:parentComponentId];
 	
-	RNNReactView* reactView = [parentComponentDict objectForKey:component.componentId.get];
+	RNNReactView* reactView = parentComponentDict[component.componentId.get];
 	if (!reactView) {
 		reactView = (RNNReactView *)[_creator createRootViewFromComponentOptions:component reactViewReadyBlock:reactViewReadyBlock];
-		[parentComponentDict setObject:reactView forKey:component.componentId.get];
+		parentComponentDict[component.componentId.get] = reactView;
 	} else if (reactViewReadyBlock) {
 		reactViewReadyBlock();
 	}
@@ -50,8 +50,9 @@
 
 - (void)removeChildComponent:(NSString *)childId {
 	NSMutableDictionary* parent;
-	while ((parent = _componentStore.objectEnumerator.nextObject)) {
-		if ([parent objectForKey:childId]) {
+	NSEnumerator *enumerator = _componentStore.objectEnumerator;
+	while ((parent = enumerator.nextObject)) {
+		if (parent[childId]) {
 			[parent removeObjectForKey:childId];
 			return;
 		}
