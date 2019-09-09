@@ -49,8 +49,8 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
                 .withDefaultOptions(initialOptions);
     }
 
-    public Options resolveChildOptions(ViewController child) {
-	    if (child == this) return resolveCurrentOptions();
+    public Options resolveChildOptions(@Nullable ViewController child) {
+	    if (child == this || child == null) return resolveCurrentOptions();
         return child
                 .resolveCurrentOptions()
                 .copy()
