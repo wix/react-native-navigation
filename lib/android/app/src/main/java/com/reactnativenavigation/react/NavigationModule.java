@@ -73,6 +73,27 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getLaunchArgs(String commandId,Promise promise) {
+        NavigationActivity activity = activity();
+        if (activity != null ) {
+            Intent intent = activity.getIntent();
+            if (intent != null) {
+                Bundle launchArgs = intent.getBundleExtra("launchArgs");
+                if(launchArgs != null){
+                    WritableMap writableMap = Arguments.fromBundle(launchArgs);
+                    promise.resolve(writableMap);
+                }else{
+                    promise.resolve(Arguments.createMap());
+                }
+            } else {
+                promise.resolve(Arguments.createMap());
+            }
+        } else {
+            promise.resolve(Arguments.createMap());
+        }
+    }
+    
+    @ReactMethod
     public void getConstants(Promise promise) {
         ReactApplicationContext ctx = getReactApplicationContext();
         WritableMap constants = Arguments.createMap();
