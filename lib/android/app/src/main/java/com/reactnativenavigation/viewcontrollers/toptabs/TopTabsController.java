@@ -125,4 +125,11 @@ public class TopTabsController extends ParentController<TopTabsLayout> {
     private void performOnCurrentTab(Func1<ViewController> task) {
         task.run(tabs.get(getView().getCurrentItem()));
     }
+
+    @Override
+    public void destroy() {
+        getView().destroy();
+
+        super.destroy();
+    }
 }
