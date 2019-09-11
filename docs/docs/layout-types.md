@@ -38,6 +38,84 @@ const stack = {
 }
 ```
 
+### api
+### TopBar buttons
+#### Android:
+* LeftButtons just support one button 
+* RightButtons support three visable buttons, more getting replaced with a menu button 
+```js
+options: {
+  topBar: {
+    visible: true,
+    leftButtons: [
+      {
+        id: 'back',
+        icon: {
+          uri: 'back',
+        },
+      },
+    ],
+    rightButtons: [
+      {
+        id: 'search',
+        icon: {
+          uri: 'search',
+        },
+      },
+    ],
+  },
+},
+```
+### Customizations
+#### Custom TopBar Title
+It's possible to set a custom topBar title to implement a searchbar for example.
+```js
+options: {
+  topBar: {
+    visible: true,
+    title: {
+      component: {
+        id: 'app.Search.SearchInput',
+        name: 'app.Search.SearchInput', // required
+        alignment: 'center', // 'center' or 'fill'
+        passProps: {
+
+        },
+      },
+    },
+  },
+},
+```
+
+### Back button
+Push a ModalStack which requires a back button on the first screen.
+```js
+options: {
+  topBar: {
+    visible: true,
+    leftButtons: [
+      {
+        id: 'back',
+        icon: {
+          uri: 'back',
+        },
+      },
+    ],
+  },
+},
+```
+Catch the button press event inside the ModalScreen.
+
+```js
+navigationButtonPressed = ({ buttonId }) => {
+  const { componentId } = this.props;
+  if (buttonId === 'back') {
+    Navigation.dismissModal(componentId);
+  }
+}
+```
+
+
 ## bottomTabs
 
 ```js
