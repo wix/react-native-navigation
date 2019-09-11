@@ -82,6 +82,13 @@ public class SideMenuControllerTest extends BaseTest {
     }
 
     @Test
+    public void applyOptions() {
+        Options options = new Options();
+        uut.applyOptions(options);
+        verify(presenter).applyOptions(options);
+    }
+
+    @Test
     public void getCurrentChild() {
         setLeftRight(left, right);
 
@@ -158,7 +165,7 @@ public class SideMenuControllerTest extends BaseTest {
     public void mergeChildOptions() {
         Options options = new Options();
         uut.mergeChildOptions(options, child);
-        verify(presenter).mergeChildOptions(options.sideMenuRootOptions);
+        verify(presenter).mergeOptions(options.sideMenuRootOptions);
     }
 
     @Test

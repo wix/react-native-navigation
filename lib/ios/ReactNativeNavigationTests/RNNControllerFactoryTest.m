@@ -1,17 +1,17 @@
 
 #import <XCTest/XCTest.h>
 #import "RNNControllerFactory.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "RNNSideMenuController.h"
 #import "RNNSideMenuChildVC.h"
-#import "RNNNavigationController.h"
-#import "RNNTabBarController.h"
+#import "RNNStackController.h"
+#import "RNNBottomTabsController.h"
 #import "RNNTopTabsViewController.h"
 #import "RNNSplitViewController.h"
 
 @interface RNNControllerFactoryTest : XCTestCase
 
-@property (nonatomic, strong) id<RNNRootViewCreator> creator;
+@property (nonatomic, strong) id<RNNComponentViewCreator> creator;
 @property (nonatomic, strong) RNNControllerFactory *factory;
 @property (nonatomic, strong) RNNExternalComponentStore *store;
 
@@ -40,7 +40,7 @@
 							 @"data": @{},
 							 @"children": @[]};
 	id ans = [self.factory createLayout:layout];
-	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
+	XCTAssertTrue([ans isMemberOfClass:[RNNComponentViewController class]]);
 }
 
 - (void)testCreateLayout_ExternalComponentLayout {
@@ -53,7 +53,7 @@
 							  @"data": @{@"name": @"externalComponent"},
 							  @"children": @[]};
 	id ans = [self.factory createLayout:layout];
-	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
+	XCTAssertTrue([ans isMemberOfClass:[RNNComponentViewController class]]);
 }
 
 - (void)testCreateLayout_ComponentStackLayout {
@@ -62,7 +62,7 @@
 							 @"data": @{},
 							 @"children": @[]};
 	id ans = [self.factory createLayout:layout];
-	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
+	XCTAssertTrue([ans isMemberOfClass:[RNNStackController class]]);
 }
 
 - (void)testCreateLayout_SplitViewLayout {
@@ -91,11 +91,11 @@
 									   @"type": @"Component",
 									   @"data": @{},
 									   @"children": @[]}]};
-	RNNNavigationController* ans = (RNNNavigationController*) [self.factory createLayout:layout];
+	RNNStackController* ans = (RNNStackController*) [self.factory createLayout:layout];
 	
-	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
+	XCTAssertTrue([ans isMemberOfClass:[RNNStackController class]]);
 	XCTAssertTrue(ans.childViewControllers.count == 1);
-	XCTAssertTrue([ans.childViewControllers[0] isMemberOfClass:[RNNRootViewController class]]);
+	XCTAssertTrue([ans.childViewControllers[0] isMemberOfClass:[RNNComponentViewController class]]);
 }
 
 - (void)testCreateLayout_BottomTabsLayout {
@@ -112,15 +112,15 @@
 												 @"type": @"Component",
 												 @"data": @{},
 												 @"children": @[]}]}]};
-	RNNTabBarController* tabBar = (RNNTabBarController*) [self.factory createLayout:layout];
+	RNNBottomTabsController* tabBar = (RNNBottomTabsController*) [self.factory createLayout:layout];
 	
-	XCTAssertTrue([tabBar isMemberOfClass:[RNNTabBarController class]]);
+	XCTAssertTrue([tabBar isMemberOfClass:[RNNBottomTabsController class]]);
 	XCTAssertTrue(tabBar.childViewControllers.count == 1);
-	XCTAssertTrue([tabBar.childViewControllers[0] isMemberOfClass:[RNNNavigationController class]]);
+	XCTAssertTrue([tabBar.childViewControllers[0] isMemberOfClass:[RNNStackController class]]);
 	
 	UINavigationController *navController = tabBar.childViewControllers[0];
 	XCTAssertTrue(navController.childViewControllers.count == 1);
-	XCTAssertTrue([navController.childViewControllers[0] isMemberOfClass:[RNNRootViewController class]]);
+	XCTAssertTrue([navController.childViewControllers[0] isMemberOfClass:[RNNComponentViewController class]]);
 }
 
 - (void)testCreateLayout_TopTabsLayout {
@@ -177,15 +177,15 @@
 	XCTAssertTrue([ans.center isMemberOfClass:[RNNSideMenuChildVC class]]);
 	RNNSideMenuChildVC *center = (RNNSideMenuChildVC*)ans.center;
 	XCTAssertTrue(center.type == RNNSideMenuChildTypeCenter);
-	XCTAssertTrue([center.child isMemberOfClass:[RNNRootViewController class]]);
+	XCTAssertTrue([center.child isMemberOfClass:[RNNComponentViewController class]]);
 	
 	RNNSideMenuChildVC *left = (RNNSideMenuChildVC*)ans.left;
 	XCTAssertTrue(left.type == RNNSideMenuChildTypeLeft);
-	XCTAssertTrue([left.child isMemberOfClass:[RNNRootViewController class]]);
+	XCTAssertTrue([left.child isMemberOfClass:[RNNComponentViewController class]]);
 	
 	RNNSideMenuChildVC *right = (RNNSideMenuChildVC*)ans.right;
 	XCTAssertTrue(right.type == RNNSideMenuChildTypeRight);
-	XCTAssertTrue([right.child isMemberOfClass:[RNNRootViewController class]]);
+	XCTAssertTrue([right.child isMemberOfClass:[RNNComponentViewController class]]);
 }
 
 @end
