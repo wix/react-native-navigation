@@ -74,7 +74,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getLaunchArgs(String commandId,Promise promise) {
+    public void getLaunchArgs(String commandId, Promise promise) {
         promise.resolve(LaunchArgsParser.parse(activity()));
     }
     
