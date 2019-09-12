@@ -17,7 +17,7 @@ import com.reactnativenavigation.views.Component;
 public abstract class ChildController<T extends ViewGroup> extends ViewController<T>  {
     private final Presenter presenter;
     private final ChildControllersRegistry childRegistry;
-    protected FabPresenter fabOptionsPresenter;
+    protected FabPresenter fabPresenter;
 
     public ChildControllersRegistry getChildRegistry() {
         return childRegistry;
@@ -27,7 +27,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
         super(activity, id, new NoOpYellowBoxDelegate(), initialOptions);
         this.presenter = presenter;
         this.childRegistry = childRegistry;
-        fabOptionsPresenter = new FabPresenter();
+        fabPresenter = new FabPresenter();
     }
 
     @Override

@@ -99,7 +99,7 @@ public class StackController extends ParentController<StackLayout> {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
         if (child.getView() instanceof ReactComponent) {
-            fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child.getView(), getView());
+            fabPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child.getView(), getView());
         }
         performOnParentController(parentController ->
             ((ParentController) parentController).applyChildOptions(
@@ -120,7 +120,7 @@ public class StackController extends ParentController<StackLayout> {
         if (child.isViewShown() && peek() == child) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), this, child);
             if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
-                fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
+                fabPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
             }
         }
         performOnParentController(parentController ->
@@ -403,13 +403,13 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void applyTopInset() {
         super.applyTopInset();
-        fabOptionsPresenter.applyTopInset(getTopInset(getCurrentChild()));
+        fabPresenter.applyTopInset(getTopInset(getCurrentChild()));
     }
 
     @Override
     public void applyBottomInset() {
         super.applyBottomInset();
-        fabOptionsPresenter.applyBottomInset(getBottomInset());
+        fabPresenter.applyBottomInset(getBottomInset());
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

@@ -14,4 +14,14 @@ public class CoordinatorLayoutUtils {
         lp.setBehavior(behavior);
         return lp;
     }
+
+    public void addGravityParam(CoordinatorLayout.LayoutParams params, int gravityParam) {
+        params.gravity = params.gravity | gravityParam;
+    }
+
+    public void removeGravityParam(CoordinatorLayout.LayoutParams params, int gravityParam) {
+        if ((params.gravity & gravityParam) == gravityParam) {
+            params.gravity = params.gravity & ~gravityParam;
+        }
+    }
 }
