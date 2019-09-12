@@ -110,8 +110,6 @@ public class FabPresenter {
                 UiUtils.dpToPx(fab.getContext(), 16)
         );
 
-        layoutParamsCoordinator.gravity =  Gravity.BOTTOM + Gravity.END;
-
         if (options.alignHorizontally.hasValue()) {
             if ("right".equals(options.alignHorizontally.get())) {
                 layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.RIGHT;
