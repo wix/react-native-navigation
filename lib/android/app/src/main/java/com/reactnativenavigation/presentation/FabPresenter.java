@@ -10,6 +10,8 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.*;
+import com.reactnativenavigation.viewcontrollers.ParentController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.ReactComponent;
@@ -23,9 +25,9 @@ public class FabPresenter {
     private Fab fab;
     private FabMenu fabMenu;
 
-    public void applyOptions(FabOptions options, @NonNull ReactComponent component, @NonNull CoordinatorLayout parent) {
-        this.component = component;
-        this.parent = parent;
+    public void applyOptions(FabOptions options, @NonNull ViewController child, @NonNull ParentController parent) {
+        bindView(child, parent);
+
 
         if (options.id.hasValue()) {
             if (fabMenu != null && fabMenu.getFabId().equals(options.id.get())) {
@@ -46,9 +48,8 @@ public class FabPresenter {
         }
     }
 
-    public void mergeOptions(FabOptions options, @NonNull ReactComponent component, @NonNull CoordinatorLayout parent) {
-        this.parent = parent;
-        this.component = component;
+    public void mergeOptions(FabOptions options, @NonNull ViewController child, @NonNull ParentController parent) {
+        bindView(child, parent);
 
         if (options.id.hasValue()) {
             if (fabMenu != null && fabMenu.getFabId().equals(options.id.get())) {
@@ -368,5 +369,9 @@ public class FabPresenter {
             fabMenu.requestLayout();
         }
     }
-    
+
+    public void bindView(ViewController child, ParentController parent) {
+        this.component = (ReactComponent) child.getView();
+        this.parent = (CoordinatorLayout) parent.getView();
+    }
 }

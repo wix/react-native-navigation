@@ -99,7 +99,7 @@ public class StackController extends ParentController<StackLayout> {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
         if (child.getView() instanceof ReactComponent) {
-            fabPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child.getView(), getView());
+            fabPresenter.applyOptions(this.options.fabOptions, child, this);
         }
         performOnParentController(parentController ->
             ((ParentController) parentController).applyChildOptions(
@@ -120,7 +120,7 @@ public class StackController extends ParentController<StackLayout> {
         if (child.isViewShown() && peek() == child) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), this, child);
             if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
-                fabPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
+                fabPresenter.mergeOptions(options.fabOptions, child, this);
             }
         }
         performOnParentController(parentController ->
