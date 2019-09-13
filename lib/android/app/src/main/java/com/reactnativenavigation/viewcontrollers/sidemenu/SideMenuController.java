@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.utils.CommandListener;
@@ -33,8 +34,8 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     private float prevLeftSlideOffset = 0;
     private float prevRightSlideOffset = 0;
 
-    public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions, SideMenuPresenter sideMenuOptionsPresenter, Presenter presenter) {
-		super(activity, childRegistry, id, presenter, initialOptions);
+    public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions, SideMenuPresenter sideMenuOptionsPresenter, Presenter presenter, FabPresenter fabPresenter) {
+		super(activity, childRegistry, id, presenter, fabPresenter, initialOptions);
         this.presenter = sideMenuOptionsPresenter;
     }
 

@@ -3,14 +3,17 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.view.View;
 
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.ComponentPresenter;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -32,8 +35,9 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
                                    final ReactViewCreator viewCreator,
                                    final Options initialOptions,
                                    final Presenter presenter,
+                                   final FabPresenter fabPresenter,
                                    final ComponentPresenter componentPresenter) {
-        super(activity, childRegistry, id, presenter, initialOptions);
+        super(activity, childRegistry, id, presenter, fabPresenter, initialOptions);
         this.componentName = componentName;
         this.viewCreator = viewCreator;
         this.presenter = componentPresenter;
@@ -60,6 +64,12 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
         getView().sendOnNavigationButtonPressed(buttonId);
+    }
+
+    @Nullable
+    @Override
+    public ScrollEventListener getScrollEventListener() {
+        return perform(view, null, ComponentLayout::getScrollEventListener);
     }
 
     @Override

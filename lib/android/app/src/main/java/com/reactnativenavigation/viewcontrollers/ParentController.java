@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.views.Component;
@@ -23,8 +24,8 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public abstract class ParentController<T extends ViewGroup> extends ChildController {
 
-	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options initialOptions) {
-		super(activity, childRegistry, id, presenter, initialOptions);
+	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, FabPresenter fabPresenter, Options initialOptions) {
+		super(activity, childRegistry, id, presenter, fabPresenter, initialOptions);
 	}
 
     @Override

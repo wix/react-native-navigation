@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.reactnativenavigation.anim.FabAnimator;
@@ -16,6 +15,9 @@ import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 
 public class Fab extends FloatingActionButton implements FabAnimator {
@@ -43,7 +45,8 @@ public class Fab extends FloatingActionButton implements FabAnimator {
         hide(true);
     }
 
-    public void enableCollapse(@NonNull ScrollEventListener scrollEventListener) {
+    public void enableCollapse(@Nullable ScrollEventListener scrollEventListener) {
+        if (scrollEventListener == null) return;
         collapseBehaviour.enableCollapse(scrollEventListener);
     }
 

@@ -61,7 +61,7 @@ public class Options {
         result.bottomTabOptions.mergeWith(bottomTabOptions);
         result.bottomTabsOptions.mergeWith(bottomTabsOptions);
         result.overlayOptions = overlayOptions;
-        result.fabOptions.mergeWith(fabOptions);
+        result.fabOptions = fabOptions.copy();
         result.sideMenuRootOptions.mergeWith(sideMenuRootOptions);
         result.animations.mergeWith(animations);
         result.modal.mergeWith(modal);
@@ -132,11 +132,6 @@ public class Options {
 
     public Options clearAnimationOptions() {
         animations = new AnimationsOptions();
-        return this;
-    }
-
-    public Options clearFabOptions() {
-        fabOptions = new FabOptions();
         return this;
     }
 

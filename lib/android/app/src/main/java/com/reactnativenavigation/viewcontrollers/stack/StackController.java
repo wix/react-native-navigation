@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.Constants;
@@ -18,7 +19,6 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -45,8 +45,8 @@ public class StackController extends ParentController<StackLayout> {
     private BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter) {
-        super(activity, childRegistry, id, presenter, initialOptions);
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
+        super(activity, childRegistry, id, presenter, fabPresenter, initialOptions);
         this.topBarController = topBarController;
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
@@ -98,15 +98,11 @@ public class StackController extends ParentController<StackLayout> {
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
-        if (child.getView() instanceof ReactComponent) {
-            fabPresenter.applyOptions(this.options.fabOptions, child, this);
-        }
         performOnParentController(parentController ->
             ((ParentController) parentController).applyChildOptions(
                 this.options.copy()
                     .clearTopBarOptions()
                     .clearAnimationOptions()
-                    .clearFabOptions()
                     .clearTopTabOptions()
                     .clearTopTabsOptions(),
                 child
@@ -119,16 +115,12 @@ public class StackController extends ParentController<StackLayout> {
         super.mergeChildOptions(options, child);
         if (child.isViewShown() && peek() == child) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), this, child);
-            if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
-                fabPresenter.mergeOptions(options.fabOptions, child, this);
-            }
         }
         performOnParentController(parentController ->
             ((ParentController) parentController).mergeChildOptions(
                 options.copy()
                     .clearTopBarOptions()
                     .clearAnimationOptions()
-                    .clearFabOptions()
                     .clearTopTabOptions()
                     .clearTopTabsOptions(),
                 child
@@ -398,18 +390,6 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public int getTopInset(ViewController child) {
         return resolveChildOptions(child).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
-    }
-
-    @Override
-    public void applyTopInset() {
-        super.applyTopInset();
-        fabPresenter.applyTopInset(getTopInset(getCurrentChild()));
-    }
-
-    @Override
-    public void applyBottomInset() {
-        super.applyBottomInset();
-        fabPresenter.applyBottomInset(getBottomInset());
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

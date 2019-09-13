@@ -6,10 +6,10 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
-import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.StringUtils;
@@ -44,6 +44,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isFirstLayout = true;
     private Bool waitForRender = new NullBool();
 
+    @Nullable
+    public ScrollEventListener getScrollEventListener() {
+        return null;
+    }
+
     public interface ViewVisibilityListener {
         /**
          * @return true if the event is consumed, false otherwise
@@ -77,6 +82,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.id = id;
         this.yellowBoxDelegate = yellowBoxDelegate;
         this.initialOptions = initialOptions;
+        initialOptions.fabOptions.layoutId = id;
         options = initialOptions.copy();
     }
 

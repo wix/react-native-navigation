@@ -3,6 +3,7 @@ package com.reactnativenavigation.utils;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class CoordinatorLayoutUtils {
     public static CoordinatorLayout.LayoutParams matchParentLP() {
@@ -15,13 +16,10 @@ public class CoordinatorLayoutUtils {
         return lp;
     }
 
-    public void addGravityParam(CoordinatorLayout.LayoutParams params, int gravityParam) {
-        params.gravity = params.gravity | gravityParam;
-    }
-
-    public void removeGravityParam(CoordinatorLayout.LayoutParams params, int gravityParam) {
-        if ((params.gravity & gravityParam) == gravityParam) {
-            params.gravity = params.gravity & ~gravityParam;
-        }
+    public static CoordinatorLayout.LayoutParams wrapContent(int margin, int gravity) {
+        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        lp.setMargins(margin, margin, margin, margin);
+        lp.gravity = gravity;
+        return lp;
     }
 }

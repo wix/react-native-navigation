@@ -1,375 +1,213 @@
 package com.reactnativenavigation.presentation;
 
 
-import androidx.annotation.NonNull;
+import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.FabOptions;
-import com.reactnativenavigation.utils.StatusBarUtils;
-import com.reactnativenavigation.utils.*;
-import com.reactnativenavigation.viewcontrollers.ParentController;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.CoordinatorLayoutUtils;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
-import com.reactnativenavigation.views.ReactComponent;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
 import static com.github.clans.fab.FloatingActionButton.SIZE_NORMAL;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 public class FabPresenter {
-    private ReactComponent component;
-    private CoordinatorLayout parent;
-
     private Fab fab;
     private FabMenu fabMenu;
+    private final int margin;
+    private Options defaultOptions;
 
-    public void applyOptions(FabOptions options, @NonNull ViewController child, @NonNull ParentController parent) {
-        bindView(child, parent);
+    public void setDefaultOptions(Options defaultOptions) {
+        this.defaultOptions = defaultOptions;
+    }
 
+    public FabPresenter(Context context, Options defaultOptions) {
+        this.defaultOptions = defaultOptions;
+        margin = UiUtils.dpToPx(context, 16);
+    }
 
-        if (options.id.hasValue()) {
-            if (fabMenu != null && fabMenu.getFabId().equals(options.id.get())) {
+    public void applyOptions(ViewController view, FabOptions options) {
+        FabOptions withDefault = options.copy().mergeWithDefault(defaultOptions.fabOptions);
+        if (withDefault.hasValue() && view.getId().equals(withDefault.layoutId)) {
+            if (fabMenu != null && fabMenu.getFabId().equals(withDefault.id.get())) {
                 fabMenu.bringToFront();
-                applyFabMenuOptions(fabMenu, options);
-                setParams(fabMenu, options);
-            } else if (fab != null && fab.getFabId().equals(options.id.get())) {
+                applyFabMenuOptions(fabMenu, withDefault, view);
+                fabMenu.setLayoutParams(createLayoutParams(withDefault));
+            } else if (fab != null && fab.getFabId().equals(withDefault.id.get())) {
                 fab.bringToFront();
-                applyFabOptions(fab, options);
-                setParams(fab, options);
-                fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
+                applyFabOptions(fab, withDefault, view);
+                fab.setLayoutParams(createLayoutParams(withDefault));
+                fab.setOnClickListener(v -> view.sendOnNavigationButtonPressed(withDefault.id.get()));
             } else {
-                createFab(options);
+                view.getView().addView(createFab(withDefault, view));
             }
         } else {
-            removeFab();
-            removeFabMenu();
+            removeFab(view);
+            removeFabMenu(view);
         }
     }
 
-    public void mergeOptions(FabOptions options, @NonNull ViewController child, @NonNull ParentController parent) {
-        bindView(child, parent);
-
-        if (options.id.hasValue()) {
+    public void mergeOptions(ViewController view, FabOptions options) {
+        if (options.hasValue()) {
             if (fabMenu != null && fabMenu.getFabId().equals(options.id.get())) {
-                mergeParams(fabMenu, options);
+                fabMenu.setLayoutParams(createLayoutParams(options));
                 fabMenu.bringToFront();
-                mergeFabMenuOptions(fabMenu, options);
+                mergeFabMenuOptions(fabMenu, options, view);
             } else if (fab != null && fab.getFabId().equals(options.id.get())) {
-                mergeParams(fab, options);
+                fab.setLayoutParams(createLayoutParams(options));
                 fab.bringToFront();
-                mergeFabOptions(fab, options);
-                fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
+                mergeFabOptions(fab, options, view);
+                fab.setOnClickListener(v -> view.sendOnNavigationButtonPressed(options.id.get()));
             } else {
-                createFab(options);
+                view.getView().addView(createFab(options, view));
             }
         }
     }
 
-    private void createFab(FabOptions options) {
+    private View createFab(FabOptions options, ViewController view) {
         if (options.actionsArray.size() > 0) {
-            fabMenu = new FabMenu(parent.getContext(), options.id.get());
-            setParams(fabMenu, options);
-            applyFabMenuOptions(fabMenu, options);
-            parent.addView(fabMenu);
+            fabMenu = new FabMenu(view.getActivity(), options.id.get());
+            fabMenu.setLayoutParams(createLayoutParams(options));
+            applyFabMenuOptions(fabMenu, options, view);
+            return fabMenu;
         } else {
-            fab = new Fab(parent.getContext(), options.id.get());
-            setParams(fab, options);
-            applyFabOptions(fab, options);
-            fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
-            parent.addView(fab);
+            fab = new Fab(view.getActivity(), options.id.get());
+            fab.setLayoutParams(createLayoutParams(options));
+            applyFabOptions(fab, options, view);
+            fab.setOnClickListener(v -> view.sendOnNavigationButtonPressed(options.id.get()));
+            return fab;
         }
     }
 
-    private void removeFabMenu() {
+    private void removeFabMenu(ViewController view) {
         if (fabMenu != null) {
             fabMenu.hideMenuButton(true);
-            parent.removeView(fabMenu);
+            view.getView().removeView(fabMenu);
             fabMenu = null;
         }
     }
 
-    private void removeFab() {
+    private void removeFab(ViewController view) {
         if (fab != null) {
             fab.hide(true);
-            parent.removeView(fab);
+            view.getView().removeView(fab);
             fab = null;
         }
     }
 
-    private void setParams(View fab, FabOptions options) {
-        CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+    private CoordinatorLayout.LayoutParams createLayoutParams(FabOptions options) {
+        CoordinatorLayout.LayoutParams lp = CoordinatorLayoutUtils.wrapContent(margin, Gravity.BOTTOM);
+        FabOptions withDefault = options.copy().mergeWithDefault(defaultOptions.fabOptions);
 
-        CoordinatorLayout.LayoutParams layoutParamsCoordinator = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-
-        layoutParamsCoordinator.setMargins(
-                UiUtils.dpToPx(fab.getContext(), 16),
-                UiUtils.dpToPx(fab.getContext(), 16),
-                UiUtils.dpToPx(fab.getContext(), 16),
-                UiUtils.dpToPx(fab.getContext(), 16)
-        );
-
-        if (options.alignHorizontally.hasValue()) {
-            if ("right".equals(options.alignHorizontally.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.RIGHT;
-            }
-            else if ("left".equals(options.alignHorizontally.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.LEFT;
-            }
-            else if ("center".equals(options.alignHorizontally.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.CENTER_HORIZONTAL;
-            }
-            else if ("start".equals(options.alignHorizontally.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.START;
-
-            }
-            else {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.END;
-            }
+        switch (withDefault.alignHorizontally.get("end")) {
+            case "right":
+                lp.gravity = lp.gravity | Gravity.RIGHT;
+                break;
+            case "left":
+                lp.gravity = lp.gravity | Gravity.LEFT;
+                break;
+            case "center":
+                lp.gravity = lp.gravity | Gravity.CENTER_HORIZONTAL;
+                break;
+            case "start":
+                lp.gravity = lp.gravity | Gravity.START;
+                break;
+            default:
+            case "end":
+                lp.gravity = lp.gravity | Gravity.END;
+                break;
         }
-        else {
-            layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.END;
-        }
-
-        if (options.alignVertically.hasValue()) {
-            if ("top".equals(options.alignVertically.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.TOP;
-            }
-            else {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.BOTTOM;
-            }
-        }
-        else {
-            layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.BOTTOM;
-        }
-
-        layoutParams = layoutParamsCoordinator;
-
-        fab.setLayoutParams(layoutParams);
+        return lp;
     }
 
-    private void mergeParams(View fab, FabOptions options) {
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-
-        CoordinatorLayout.LayoutParams layoutParamsCoordinator = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-
-        layoutParamsCoordinator.setMargins(
-                UiUtils.dpToPx(fab.getContext(), 16),
-                UiUtils.dpToPx(fab.getContext(), 16),
-                UiUtils.dpToPx(fab.getContext(), 16),
-                UiUtils.dpToPx(fab.getContext(), 16)
-        );
-
-        if (options.alignHorizontally.hasValue()) {
-            if ("right".equals(options.alignHorizontally.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.RIGHT;
-            }
-            else if ("left".equals(options.alignHorizontally.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.LEFT;
-            }
-            else if ("center".equals(options.alignHorizontally.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.CENTER_HORIZONTAL;
-            }
-            else if ("start".equals(options.alignHorizontally.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.START;
-
-            }
-            else {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.END;
-            }
-        }
-        else {
-            layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.END;
-        }
-
-        if (options.alignVertically.hasValue()) {
-            if ("top".equals(options.alignVertically.get())) {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.TOP;
-            }
-            else {
-                layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.BOTTOM;
-            }
-        }
-        else {
-            layoutParamsCoordinator.gravity = layoutParamsCoordinator.gravity | Gravity.BOTTOM;
-        }
-
-        layoutParams = layoutParamsCoordinator;
-
-        fab.setLayoutParams(layoutParams);
+    private void applyFabOptions(Fab fab, FabOptions options, ViewController view) {
+        if (options.visible.isTrueOrUndefined()) fab.show(true);
+        if (options.visible.isFalse()) fab.hide(true);
+        if (options.backgroundColor.hasValue()) fab.setColorNormal(options.backgroundColor.get());
+        if (options.clickColor.hasValue()) fab.setColorPressed(options.clickColor.get());
+        if (options.rippleColor.hasValue()) fab.setColorRipple(options.rippleColor.get());
+        if (options.icon.hasValue()) fab.applyIcon(options.icon.get(), options.iconColor);
+        if (options.size.hasValue()) fab.setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
+        if (options.hideOnScroll.isTrue()) fab.enableCollapse(view.getScrollEventListener());
+        if (options.hideOnScroll.isFalseOrUndefined()) fab.disableCollapse();
     }
 
-    private void applyFabOptions(Fab fab, FabOptions options) {
-        if (options.visible.isTrueOrUndefined()) {
-            fab.show(true);
-        }
-        if (options.visible.isFalse()) {
-            fab.hide(true);
-        }
-        if (options.backgroundColor.hasValue()) {
-            fab.setColorNormal(options.backgroundColor.get());
-        }
-        if (options.clickColor.hasValue()) {
-            fab.setColorPressed(options.clickColor.get());
-        }
-        if (options.rippleColor.hasValue()) {
-            fab.setColorRipple(options.rippleColor.get());
-        }
-        if (options.icon.hasValue()) {
-            fab.applyIcon(options.icon.get(), options.iconColor);
-        }
-        if (options.size.hasValue()) {
-            fab.setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
-        }
-        if (options.hideOnScroll.isTrue()) {
-            fab.enableCollapse(component.getScrollEventListener());
-        }
-        if (options.hideOnScroll.isFalseOrUndefined()) {
-            fab.disableCollapse();
-        }
+    private void mergeFabOptions(Fab fab, FabOptions options, ViewController view) {
+        if (options.visible.isTrue()) fab.show(true);
+        if (options.visible.isFalse()) fab.hide(true);
+        if (options.backgroundColor.hasValue()) fab.setColorNormal(options.backgroundColor.get());
+        if (options.clickColor.hasValue()) fab.setColorPressed(options.clickColor.get());
+        if (options.rippleColor.hasValue()) fab.setColorRipple(options.rippleColor.get());
+        if (options.icon.hasValue()) fab.applyIcon(options.icon.get(), options.iconColor);
+        if (options.size.hasValue()) fab.setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
+        if (options.hideOnScroll.isTrue()) fab.enableCollapse(view.getScrollEventListener());
+        if (options.hideOnScroll.isFalse()) fab.disableCollapse();
     }
 
-    private void mergeFabOptions(Fab fab, FabOptions options) {
-        if (options.visible.isTrue()) {
-            fab.show(true);
-        }
-        if (options.visible.isFalse()) {
-            fab.hide(true);
-        }
-        if (options.backgroundColor.hasValue()) {
-            fab.setColorNormal(options.backgroundColor.get());
-        }
-        if (options.clickColor.hasValue()) {
-            fab.setColorPressed(options.clickColor.get());
-        }
-        if (options.rippleColor.hasValue()) {
-            fab.setColorRipple(options.rippleColor.get());
-        }
-        if (options.icon.hasValue()) {
-            fab.applyIcon(options.icon.get(), options.iconColor);
-        }
-        if (options.size.hasValue()) {
-            fab.setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
-        }
-        if (options.hideOnScroll.isTrue()) {
-            fab.enableCollapse(component.getScrollEventListener());
-        }
-        if (options.hideOnScroll.isFalse()) {
-            fab.disableCollapse();
-        }
-    }
+    private void applyFabMenuOptions(FabMenu fabMenu, FabOptions options, ViewController child) {
+        if (options.visible.isTrueOrUndefined()) fabMenu.showMenu(true);
+        if (options.visible.isFalse()) fabMenu.hideMenu(true);
 
-    private void applyFabMenuOptions(FabMenu fabMenu, FabOptions options) {
-        if (options.visible.isTrueOrUndefined()) {
-            fabMenu.showMenu(true);
-        }
-        if (options.visible.isFalse()) {
-            fabMenu.hideMenu(true);
-        }
+        if (options.backgroundColor.hasValue()) fabMenu.setMenuButtonColorNormal(options.backgroundColor.get());
+        if (options.clickColor.hasValue()) fabMenu.setMenuButtonColorPressed(options.clickColor.get());
+        if (options.rippleColor.hasValue()) fabMenu.setMenuButtonColorRipple(options.rippleColor.get());
 
-        if (options.backgroundColor.hasValue()) {
-            fabMenu.setMenuButtonColorNormal(options.backgroundColor.get());
-        }
-        if (options.clickColor.hasValue()) {
-            fabMenu.setMenuButtonColorPressed(options.clickColor.get());
-        }
-        if (options.rippleColor.hasValue()) {
-            fabMenu.setMenuButtonColorRipple(options.rippleColor.get());
-        }
-        for (Fab fabStored : fabMenu.getActions()) {
-            fabMenu.removeMenuButton(fabStored);
-        }
+        forEach(fabMenu.getActions(), fabMenu::removeMenuButton);
         fabMenu.getActions().clear();
         for (FabOptions fabOption : options.actionsArray) {
-            Fab fab = new Fab(parent.getContext(), fabOption.id.get());
-            applyFabOptions(fab, fabOption);
-            fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
+            Fab fab = new Fab(child.getActivity(), fabOption.id.get());
+            applyFabOptions(fab, fabOption, child);
+            fab.setOnClickListener(v -> child.sendOnNavigationButtonPressed(options.id.get()));
 
             fabMenu.getActions().add(fab);
             fabMenu.addMenuButton(fab);
         }
-        if (options.hideOnScroll.isTrue()) {
-            fabMenu.enableCollapse(component.getScrollEventListener());
-        }
-        if (options.hideOnScroll.isFalseOrUndefined()) {
-            fabMenu.disableCollapse();
-        }
+        if (options.hideOnScroll.isTrue()) fabMenu.enableCollapse(child.getScrollEventListener());
+        if (options.hideOnScroll.isFalseOrUndefined()) fabMenu.disableCollapse();
     }
 
-    private void mergeFabMenuOptions(FabMenu fabMenu, FabOptions options) {
-        if (options.visible.isTrue()) {
-            fabMenu.showMenu(true);
-        }
-        if (options.visible.isFalse()) {
-            fabMenu.hideMenu(true);
-        }
+    private void mergeFabMenuOptions(FabMenu fabMenu, FabOptions options, ViewController child) {
+        if (options.visible.isTrue()) fabMenu.showMenu(true);
+        if (options.visible.isFalse()) fabMenu.hideMenu(true);
 
-        if (options.backgroundColor.hasValue()) {
-            fabMenu.setMenuButtonColorNormal(options.backgroundColor.get());
-        }
-        if (options.clickColor.hasValue()) {
-            fabMenu.setMenuButtonColorPressed(options.clickColor.get());
-        }
-        if (options.rippleColor.hasValue()) {
-            fabMenu.setMenuButtonColorRipple(options.rippleColor.get());
-        }
+        if (options.backgroundColor.hasValue()) fabMenu.setMenuButtonColorNormal(options.backgroundColor.get());
+        if (options.clickColor.hasValue()) fabMenu.setMenuButtonColorPressed(options.clickColor.get());
+        if (options.rippleColor.hasValue()) fabMenu.setMenuButtonColorRipple(options.rippleColor.get());
         if (options.actionsArray.size() > 0) {
-            for (Fab fabStored : fabMenu.getActions()) {
-                fabMenu.removeMenuButton(fabStored);
-            }
+            forEach(fabMenu.getActions(), fabMenu::removeMenuButton);
             fabMenu.getActions().clear();
+
             for (FabOptions fabOption : options.actionsArray) {
-                Fab fab = new Fab(parent.getContext(), fabOption.id.get());
-                applyFabOptions(fab, fabOption);
-                fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
+                Fab fab = new Fab(child.getActivity(), fabOption.id.get());
+                applyFabOptions(fab, fabOption, child);
+                fab.setOnClickListener(v -> child.sendOnNavigationButtonPressed(options.id.get()));
 
                 fabMenu.getActions().add(fab);
                 fabMenu.addMenuButton(fab);
             }
         }
-        if (options.hideOnScroll.isTrue()) {
-            fabMenu.enableCollapse(component.getScrollEventListener());
-        }
-        if (options.hideOnScroll.isFalse()) {
-            fabMenu.disableCollapse();
-        }
-    }
-
-    public void applyTopInset(int topInset) {
-        if (parent == null) return;
-
-        int statusBarHeight = StatusBarUtils.getStatusBarHeight(parent.getContext());
-
-        if (fab != null) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-            lp.topMargin = topInset + statusBarHeight + (int) UiUtils.dpToPx(fab.getContext(), 16);
-            fab.requestLayout();
-        }
-        if (fabMenu != null ) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabMenu.getLayoutParams();
-            lp.topMargin = topInset + statusBarHeight + (int) UiUtils.dpToPx(fab.getContext(), 16);
-            fabMenu.requestLayout();
-        }
+        if (options.hideOnScroll.isTrue()) fabMenu.enableCollapse(child.getScrollEventListener());
+        if (options.hideOnScroll.isFalse()) fabMenu.disableCollapse();
     }
 
     public void applyBottomInset(int bottomInset) {
-        if (parent == null) return;
-
         if (fab != null) {
             CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-            lp.bottomMargin = bottomInset + (int) UiUtils.dpToPx(fab.getContext(), 16);
+            lp.bottomMargin = bottomInset + margin;
             fab.requestLayout();
         }
         if (fabMenu != null ) {
             CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabMenu.getLayoutParams();
-            lp.bottomMargin = bottomInset + (int) UiUtils.dpToPx(fab.getContext(), 16);
+            lp.bottomMargin = bottomInset + margin;
             fabMenu.requestLayout();
         }
-    }
-
-    public void bindView(ViewController child, ParentController parent) {
-        this.component = (ReactComponent) child.getView();
-        this.parent = (CoordinatorLayout) parent.getView();
     }
 }

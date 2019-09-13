@@ -189,8 +189,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     private Options parse(@Nullable ReadableMap mergeOptions) {
-        return mergeOptions ==
-               null ? Options.EMPTY : Options.parse(new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
+        return mergeOptions == null ? Options.EMPTY : Options.parse(new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
     }
 
     private void handle(Runnable task) {

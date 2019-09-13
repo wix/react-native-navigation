@@ -1,11 +1,10 @@
 package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
@@ -18,13 +17,16 @@ import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+
 public class TopTabsController extends ParentController<TopTabsViewPager> {
 
     private List<ViewController> tabs;
     private TopTabsLayoutCreator viewCreator;
 
-    public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options, Presenter presenter) {
-        super(activity, childRegistry, id, presenter, options);
+    public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options, Presenter presenter, FabPresenter fabPresenter) {
+        super(activity, childRegistry, id, presenter, fabPresenter, options);
         this.viewCreator = viewCreator;
         this.tabs = tabs;
         for (ViewController tab : tabs) {
