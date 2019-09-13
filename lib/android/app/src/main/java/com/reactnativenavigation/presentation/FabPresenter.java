@@ -13,6 +13,7 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
 
+import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
@@ -32,6 +33,11 @@ public class FabPresenter {
     public FabPresenter(Context context, Options defaultOptions) {
         this.defaultOptions = defaultOptions;
         margin = UiUtils.dpToPx(context, 16);
+    }
+
+    public void applyBottomInset(int bottomInset) {
+        applyBottomInsets(fab, bottomInset);
+        applyBottomInsets(fabMenu, bottomInset);
     }
 
     public void applyOptions(ViewController view, FabOptions options) {
@@ -199,16 +205,10 @@ public class FabPresenter {
         if (options.hideOnScroll.isFalse()) fabMenu.disableCollapse();
     }
 
-    public void applyBottomInset(int bottomInset) {
-        if (fab != null) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-            lp.bottomMargin = bottomInset + margin;
-            fab.requestLayout();
-        }
-        if (fabMenu != null ) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabMenu.getLayoutParams();
-            lp.bottomMargin = bottomInset + margin;
-            fabMenu.requestLayout();
-        }
+    private void applyBottomInsets(@Nullable View view, int bottomInset) {
+        if (view == null) return;
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+        lp.bottomMargin = bottomInset + margin;
+        view.requestLayout();
     }
 }
