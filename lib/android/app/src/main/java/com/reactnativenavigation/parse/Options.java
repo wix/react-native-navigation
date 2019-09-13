@@ -140,4 +140,8 @@ public class Options {
         bottomTabsOptions.currentTabIndex = new NullNumber();
         return this;
     }
+
+    public void setLayoutId(String layoutId) {
+        fabOptions.layoutId = layoutId;
+    }
 }

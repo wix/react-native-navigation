@@ -82,7 +82,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.id = id;
         this.yellowBoxDelegate = yellowBoxDelegate;
         this.initialOptions = initialOptions;
-        initialOptions.fabOptions.layoutId = id;
+        initialOptions.setLayoutId(id);
         options = initialOptions.copy();
     }
 
