@@ -35,8 +35,9 @@ public class FabPresenter {
     }
 
     public void applyOptions(ViewController view, FabOptions options) {
+        if (!view.getId().equals(options.layoutId)) return;
         FabOptions withDefault = options.copy().mergeWithDefault(defaultOptions.fabOptions);
-        if (withDefault.hasValue() && view.getId().equals(withDefault.layoutId)) {
+        if (withDefault.hasValue()) {
             if (fabMenu != null && fabMenu.getFabId().equals(withDefault.id.get())) {
                 fabMenu.bringToFront();
                 applyFabMenuOptions(fabMenu, withDefault, view);
