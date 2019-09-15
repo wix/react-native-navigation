@@ -48,7 +48,8 @@
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return [self.presenter getOrientation:[self resolveOptions]];
+	UIInterfaceOrientationMask interfaceOrientationMask = self.presenter ? [self.presenter getOrientation:[self resolveOptions]] : [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
+	return interfaceOrientationMask;
 }
 
 - (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
