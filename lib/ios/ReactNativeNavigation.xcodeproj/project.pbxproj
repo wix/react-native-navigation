@@ -202,6 +202,7 @@
 		50887CA920F26BFE00D06111 /* RNNOverlayWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 50887CA720F26BFD00D06111 /* RNNOverlayWindow.m */; };
 		50887CAA20F26BFE00D06111 /* RNNOverlayWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 50887CA820F26BFE00D06111 /* RNNOverlayWindow.h */; };
 		508EBDBD2278746400BEC144 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508EBDBA2278742700BEC144 /* JavaScriptCore.framework */; };
+		50967F5B232FC2C200BEEA92 /* RNNFontAttributesCreatorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50967F5A232FC2C200BEEA92 /* RNNFontAttributesCreatorTest.m */; };
 		509B2480217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 509B247F217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m */; };
 		509B258F2178BE7A00C83C23 /* RNNStackPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 509B258E2178BE7A00C83C23 /* RNNStackPresenterTest.m */; };
 		50A00C37200F84D6000F01A6 /* RNNOverlayOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */; };
@@ -549,6 +550,7 @@
 		50887CA720F26BFD00D06111 /* RNNOverlayWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayWindow.m; sourceTree = "<group>"; };
 		50887CA820F26BFE00D06111 /* RNNOverlayWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNOverlayWindow.h; sourceTree = "<group>"; };
 		508EBDBA2278742700BEC144 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		50967F5A232FC2C200BEEA92 /* RNNFontAttributesCreatorTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNFontAttributesCreatorTest.m; sourceTree = "<group>"; };
 		509B247F217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+RNNOptionsTest.m"; sourceTree = "<group>"; };
 		509B258E2178BE7A00C83C23 /* RNNStackPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNStackPresenterTest.m; sourceTree = "<group>"; };
 		50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayOptions.h; sourceTree = "<group>"; };
@@ -1036,6 +1038,7 @@
 			children = (
 				E5F6C3BC22DB51E00093C2CE /* utils */,
 				7B49FEC61E95098500DEB3EA /* RNNControllerFactoryTest.m */,
+				50967F5A232FC2C200BEEA92 /* RNNFontAttributesCreatorTest.m */,
 				7B49FEC71E95098500DEB3EA /* RNNExternalComponentStoreTest.m */,
 				7B49FEC81E95098500DEB3EA /* RNNModalManagerTest.m */,
 				7B49FEC91E95098500DEB3EA /* RNNCommandsHandlerTest.m */,
@@ -1477,6 +1480,7 @@
 				506F630D216A599300AD0D0A /* RNNTabBarControllerTest.m in Sources */,
 				7B49FECB1E95098500DEB3EA /* RNNControllerFactoryTest.m in Sources */,
 				50206A6D21AFE75400B7BB1A /* RNNSideMenuParserTest.m in Sources */,
+				50967F5B232FC2C200BEEA92 /* RNNFontAttributesCreatorTest.m in Sources */,
 				509B258F2178BE7A00C83C23 /* RNNStackPresenterTest.m in Sources */,
 				7B49FECD1E95098500DEB3EA /* RNNModalManagerTest.m in Sources */,
 				5085DD2D21DCF75A0032E64B /* RNNSideMenuControllerTest.m in Sources */,
