@@ -1,5 +1,6 @@
 #import "RNNTabBarItemCreator.h"
 #import "UIImage+tint.h"
+#import "RNNFontAttributesCreator.h"
 
 @implementation RNNTabBarItemCreator
 
@@ -32,7 +33,7 @@
 	
 	
 	
-	[self appendTitleAttributes:tabItem textColor:[bottomTabOptions.textColor getWithDefaultValue:nil] selectedTextColor:[bottomTabOptions.selectedTextColor getWithDefaultValue:nil] fontFamily:[bottomTabOptions.fontFamily getWithDefaultValue:nil] fontSize:[bottomTabOptions.fontSize getWithDefaultValue:nil]];
+	[self appendTitleAttributes:tabItem textColor:[bottomTabOptions.textColor getWithDefaultValue:nil] selectedTextColor:[bottomTabOptions.selectedTextColor getWithDefaultValue:nil] fontFamily:[bottomTabOptions.fontFamily getWithDefaultValue:nil] fontSize:[bottomTabOptions.fontSize getWithDefaultValue:nil] fontWeight:[bottomTabOptions.fontWeight getWithDefaultValue:nil]];
 	
 	return tabItem;
 }
@@ -61,43 +62,13 @@
 	return nil;
 }
 
-+ (void)appendTitleAttributes:(UITabBarItem *)tabItem textColor:(UIColor *)textColor selectedTextColor:(UIColor *)selectedTextColor fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize {
-	NSMutableDictionary* selectedAttributes = [NSMutableDictionary dictionaryWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]];
-	if (selectedTextColor) {
-		selectedAttributes[NSForegroundColorAttributeName] = selectedTextColor;
-	} else {
-		selectedAttributes[NSForegroundColorAttributeName] = [UIColor blackColor];
-	}
-	
-	selectedAttributes[NSFontAttributeName] = [self tabBarTextFont:fontFamily fontSize:fontSize];
++ (void)appendTitleAttributes:(UITabBarItem *)tabItem textColor:(UIColor *)textColor selectedTextColor:(UIColor *)selectedTextColor fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight {
+	NSDictionary* selectedAttributes = [RNNFontAttributesCreator createWithDictionary:[tabItem titleTextAttributesForState:UIControlStateSelected] fontFamily:fontFamily fontSize:fontSize defaultFontSize:@(10) fontWeight:fontWeight color:selectedTextColor defaultColor:[UIColor blackColor]];
 	[tabItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
 	
 	
-	NSMutableDictionary* normalAttributes = [NSMutableDictionary dictionaryWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]];
-	if (textColor) {
-		normalAttributes[NSForegroundColorAttributeName] = textColor;
-	} else {
-		normalAttributes[NSForegroundColorAttributeName] = [UIColor blackColor];
-	}
-	
-	normalAttributes[NSFontAttributeName] = [self tabBarTextFont:fontFamily fontSize:fontSize];
+	NSDictionary* normalAttributes = [RNNFontAttributesCreator createWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal] fontFamily:fontFamily fontSize:fontSize defaultFontSize:@(10) fontWeight:fontWeight color:textColor defaultColor:[UIColor blackColor]];
 	[tabItem setTitleTextAttributes:normalAttributes forState:UIControlStateNormal];
-}
-
-+(UIFont *)tabBarTextFont:(NSString *)fontFamily fontSize:(NSNumber *)fontSize {
-	if (fontFamily) {
-		return [UIFont fontWithName:fontFamily size:[self fontSize:fontSize]];
-	}
-	else if (fontSize) {
-		return [UIFont systemFontOfSize:[self fontSize:fontSize]];
-	}
-	else {
-		return nil;
-	}
-}
-
-+ (CGFloat)fontSize:(NSNumber *)fontSize {
-	return fontSize ? [fontSize floatValue] : 10;
 }
 
 @end

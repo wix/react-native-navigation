@@ -565,6 +565,7 @@
 		50CE8502217C6C9B00084EBF /* RNNSideMenuPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuPresenterTest.m; sourceTree = "<group>"; };
 		50D031322005149000386B3D /* RNNOverlayManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayManager.h; sourceTree = "<group>"; };
 		50D031332005149000386B3D /* RNNOverlayManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayManager.m; sourceTree = "<group>"; };
+		50DA74CF232F80FE004A00C1 /* RCTConvert+UIFontWeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIFontWeight.h"; sourceTree = "<group>"; };
 		50E02BD521A6E54B00A43942 /* RCTConvert+SideMenuOpenGestureMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+SideMenuOpenGestureMode.h"; sourceTree = "<group>"; };
 		50E02BD621A6EE0F00A43942 /* SideMenuOpenMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SideMenuOpenMode.h; sourceTree = "<group>"; };
 		50E02BD721A6EE0F00A43942 /* SideMenuOpenMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SideMenuOpenMode.m; sourceTree = "<group>"; };
@@ -735,6 +736,7 @@
 				5038A3BF216E1E66009280BC /* RNNFontAttributesCreator.h */,
 				5038A3C0216E1E66009280BC /* RNNFontAttributesCreator.m */,
 				505EDD48214FDA800071C7DE /* RCTConvert+Modal.h */,
+				50DA74CF232F80FE004A00C1 /* RCTConvert+UIFontWeight.h */,
 				50E02BD521A6E54B00A43942 /* RCTConvert+SideMenuOpenGestureMode.h */,
 				7365070F21E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h */,
 				7365071021E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.m */,

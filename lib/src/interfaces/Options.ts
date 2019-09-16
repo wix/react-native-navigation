@@ -3,6 +3,7 @@ import { ImageRequireSource, Insets } from 'react-native';
 
 type Color = string;
 type FontFamily = string;
+type FontWeight = 'regular' | 'bold' | 'thin' | 'ultraLight' | 'light' | 'medium' | 'semibold' | 'heavy' | 'black';
 type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
 type SystemItemIcon = 'done' | 'cancel' | 'edit'
@@ -119,6 +120,11 @@ export interface OptionsTopBarLargeTitle {
    * Set the font family of large title's text
    */
   fontFamily?: FontFamily;
+  /**
+   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * #### (iOS specific)
+   */
+  fontWeight?: FontWeight;
 }
 
 export interface OptionsTopBarTitle {
@@ -140,6 +146,11 @@ export interface OptionsTopBarTitle {
    * Make sure that the font is available
    */
   fontFamily?: FontFamily;
+  /**
+   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * #### (iOS specific)
+   */
+  fontWeight?: FontWeight;
   /**
    * Custom component as the title view
    */
@@ -190,6 +201,11 @@ export interface OptionsTopBarSubtitle {
    * Set subtitle font family
    */
   fontFamily?: FontFamily;
+  /**
+   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * #### (iOS specific)
+   */
+  fontWeight?: FontWeight;
   /**
    * Set subtitle alignment
    */
@@ -289,6 +305,11 @@ export interface OptionsTopBarButton {
    * Set the button font family
    */
   fontFamily?: string;
+  /**
+   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * #### (iOS specific)
+   */
+  fontWeight?: FontWeight;
   /**
    * Set the button enabled or disabled
    * @default true
@@ -565,6 +586,11 @@ export interface OptionsBottomTab {
    * Set the text font family
    */
   fontFamily?: FontFamily;
+    /**
+   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * #### (iOS specific)
+   */
+  fontWeight?: FontWeight;
   /**
    * Set the text font size
    */

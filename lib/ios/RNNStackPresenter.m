@@ -41,8 +41,8 @@
 	[stack setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
 	[stack setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
 	[stack setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
-	[stack setNavigationBarLargeTitleFontFamily:[withDefault.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.largeTitle.color getWithDefaultValue:nil]];
-	[stack setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
+	[stack setNavigationBarLargeTitleFontFamily:[withDefault.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.largeTitle.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.largeTitle.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.largeTitle.color getWithDefaultValue:nil]];
+	[stack setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.title.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
 	[stack setBackButtonColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil]];
 }
 
@@ -57,7 +57,7 @@
 	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 	RNNStackController* navigationController = self.boundViewController;
 	[navigationController setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
-	[navigationController setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:[UIColor blackColor]]];
+	[navigationController setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.title.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:[UIColor blackColor]]];
 	[navigationController setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
 }
 
@@ -119,12 +119,13 @@
 
 	RNNLargeTitleOptions *largeTitleOptions = options.topBar.largeTitle;
 	if (largeTitleOptions.color.hasValue || largeTitleOptions.fontSize.hasValue || largeTitleOptions.fontFamily.hasValue) {
-		[stack setNavigationBarLargeTitleFontFamily:[options.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[options.topBar.largeTitle.color getWithDefaultValue:nil]];
+		[stack setNavigationBarLargeTitleFontFamily:[options.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.largeTitle.fontSize getWithDefaultValue:nil] fontWeight:[options.topBar.largeTitle.fontWeight getWithDefaultValue:nil] color:[options.topBar.largeTitle.color getWithDefaultValue:nil]];
 	}
 
 	RNNNavigationOptions * withDefault = (RNNNavigationOptions *) [[options mergeInOptions:resolvedOptions] withDefault:[self defaultOptions]];
 	[stack setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil]
 							 fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil]
+						   fontWeight:[withDefault.topBar.title.fontWeight getWithDefaultValue:nil]
 								color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
 	
 	if (options.topBar.component.name.hasValue) {

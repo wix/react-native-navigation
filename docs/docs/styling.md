@@ -82,6 +82,7 @@ Navigation.mergeOptions(this.props.componentId, {
       fontSize: 14,
       color: 'red',
       fontFamily: 'Helvetica',
+      fontWeight: 'regular', // Available on iOS only, will ignore fontFamily style and use the iOS system fonts instead. Supported weights are: 'regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy' and 'black'.
       component: {
         name: 'example.CustomTopBarTitle',
         alignment: 'center'
@@ -92,6 +93,7 @@ Navigation.mergeOptions(this.props.componentId, {
       fontSize: 14,
       color: 'red',
       fontFamily: 'Helvetica',
+      fontWeight: 'regular', // Available on iOS only, will ignore fontFamily style and use the iOS system fonts instead. Supported weights are: 'regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy' and 'black'.
       alignment: 'center'
     },
     backButton: {
@@ -130,6 +132,7 @@ Navigation.mergeOptions(this.props.componentId, {
     textColor: 'red',
     selectedTextColor: 'blue',
     fontFamily: 'Helvetica',
+    fontWeight: 'regular', // Available on iOS only, will ignore fontFamily style and use the iOS system fonts instead. Supported weights are: 'regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy' and 'black'.
     fontSize: 10
   },
   sideMenu: {
@@ -216,7 +219,8 @@ Navigation.mergeOptions(this.props.componentId, {
       visible: true,
       fontSize: 30,
       color: 'red',
-      fontFamily: 'Helvetica'
+      fontFamily: 'Helvetica',
+      fontWeight: 'regular' // Available on iOS only, will ignore fontFamily style and use the iOS system fonts instead. Supported weights are: 'regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy' and 'black'.
     },
   },
   sideMenu: {
