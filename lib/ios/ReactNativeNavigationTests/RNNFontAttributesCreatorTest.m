@@ -68,5 +68,15 @@
 	XCTAssertEqual(font.pointSize, fontSize.floatValue);
 }
 
+- (void)testCreateWithFontFamily_shouldCreateSystemFontWhenOnlySizeAvailable {
+	NSNumber* fontSize = @(20);
+	
+	NSDictionary* attributes = [RNNFontAttributesCreator createWithFontFamily:nil fontSize:fontSize fontWeight:nil color:nil];
+	UIFont* font = attributes[NSFontAttributeName];
+	NSString* systemFontFamilyName = [[UIFont systemFontOfSize:20] familyName];
+	XCTAssertEqual(font.pointSize, fontSize.floatValue);
+	XCTAssertTrue([font.familyName isEqualToString:systemFontFamilyName]);
+}
+
 
 @end

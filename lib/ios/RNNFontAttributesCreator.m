@@ -28,6 +28,8 @@
 			titleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:resolvedFontSize weight:[RCTConvert UIFontWeight:fontWeight]];
 		} else if (fontFamily){
 			titleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:fontFamily size:resolvedFontSize];
+		} else {
+			titleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:resolvedFontSize];
 		}
 	}
 	
