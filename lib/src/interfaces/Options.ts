@@ -847,6 +847,10 @@ export interface StackAnimationOptions {
  */
 export interface AnimationOptions {
   /**
+   * Configure the setStackRoot animation
+   */
+  setStackRoot?: ScreenAnimationOptions;
+  /**
    * Configure the setRoot animation
    */
   setRoot?: ScreenAnimationOptions;
