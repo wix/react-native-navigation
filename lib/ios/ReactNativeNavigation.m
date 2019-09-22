@@ -50,7 +50,7 @@
 			instance = [[ReactNativeNavigation alloc] init];
 		}
 	});
-	
+
 	return instance;
 }
 
@@ -60,16 +60,16 @@
 
 -(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate {
 	UIWindow* mainWindow = [self initializeKeyWindow];
-	
+
 	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate mainWindow:mainWindow];
 	[RNNSplashScreen showOnWindow:mainWindow];
 }
 
 - (UIWindow *)initializeKeyWindow {
 	UIWindow* keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	keyWindow.backgroundColor = [UIColor whiteColor];
+	keyWindow.backgroundColor = [UIColor blackColor];
 	UIApplication.sharedApplication.delegate.window = keyWindow;
-	
+
 	return keyWindow;
 }
 
