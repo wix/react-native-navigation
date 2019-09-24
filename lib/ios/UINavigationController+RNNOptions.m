@@ -5,6 +5,28 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 @implementation UINavigationController (RNNOptions)
 
+- (UINavigationBarAppearance*)getNavigaitonBarStandardAppearance  API_AVAILABLE(ios(13.0)) {
+	if (!self.navigationBar.standardAppearance) {
+		self.navigationBar.standardAppearance = [UINavigationBarAppearance new];
+	}
+	return self.navigationBar.standardAppearance;
+}
+
+- (UINavigationBarAppearance*)getNavigaitonBarCompactAppearance  API_AVAILABLE(ios(13.0)) {
+	if (!self.navigationBar.compactAppearance) {
+		self.navigationBar.compactAppearance = [UINavigationBarAppearance new];
+	}
+	return self.navigationBar.compactAppearance;
+}
+
+- (UINavigationBarAppearance*)getNavigaitonBarScrollEdgeAppearance  API_AVAILABLE(ios(13.0)) {
+	if (!self.navigationBar.scrollEdgeAppearance) {
+		self.navigationBar.scrollEdgeAppearance = [UINavigationBarAppearance new];
+	}
+	return self.navigationBar.scrollEdgeAppearance;
+}
+
+
 - (void)setInteractivePopGestureEnabled:(BOOL)enabled {
 	self.interactivePopGestureRecognizer.enabled = enabled;
 }
@@ -36,8 +58,18 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 - (void)setNavigationBarNoBorder:(BOOL)noBorder {
 	if (noBorder) {
 		[self.navigationBar setShadowImage:[[UIImage alloc] init]];
+		if (@available(iOS 13.0, *)) {
+			[self getNavigaitonBarStandardAppearance].shadowImage =  [[UIImage alloc] init];
+			[self getNavigaitonBarCompactAppearance].shadowImage = [[UIImage alloc] init];
+			[self getNavigaitonBarScrollEdgeAppearance].shadowImage = [[UIImage alloc] init];
+		}
 	} else {
 		[self.navigationBar setShadowImage:nil];
+		if (@available(iOS 13.0, *)) {
+			[self getNavigaitonBarStandardAppearance].shadowImage =  nil;
+			[self getNavigaitonBarCompactAppearance].shadowImage = nil;
+			[self getNavigaitonBarScrollEdgeAppearance].shadowImage = nil;
+		}
 	}
 }
 
@@ -50,10 +82,15 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	
 	if (fontAttributes.allKeys.count > 0) {
 		self.navigationBar.titleTextAttributes = fontAttributes;
+		if (@available(iOS 13.0, *)) {
+			[self getNavigaitonBarStandardAppearance].titleTextAttributes =  fontAttributes;
+			[self getNavigaitonBarCompactAppearance].titleTextAttributes = fontAttributes;
+			[self getNavigaitonBarScrollEdgeAppearance].titleTextAttributes = fontAttributes;
+		}
 	}
 }
 
-- (void)setNavigationBarLargeTitleVisible:(BOOL)visible {
+- (void)setNavigationBarLargeTitleVisible:(BOOL)visible API_AVAILABLE(ios(11.0)) {
 	if (@available(iOS 11.0, *)) {
 		if (visible){
 			self.navigationBar.prefersLargeTitles = YES;
@@ -63,10 +100,15 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	}
 }
 
-- (void)setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color {
+- (void)setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color API_AVAILABLE(ios(11.0)) {
 	if (@available(iOS 11.0, *)) {
 		NSDictionary* fontAttributes = [RNNFontAttributesCreator createWithFontFamily:fontFamily fontSize:fontSize fontWeight:fontWeight color:color];
 		self.navigationBar.largeTitleTextAttributes = fontAttributes;
+		if (@available(iOS 13.0, *)) {
+			[self getNavigaitonBarStandardAppearance].largeTitleTextAttributes =  fontAttributes;
+			[self getNavigaitonBarCompactAppearance].largeTitleTextAttributes = fontAttributes;
+			[self getNavigaitonBarScrollEdgeAppearance].largeTitleTextAttributes = fontAttributes;
+		}
 	}
 }
 
