@@ -177,16 +177,16 @@ public class StackPresenter {
         topBar.setTitleTopMargin(topBarOptions.title.topMargin.get(0));
 
         if (topBarOptions.title.component.hasValue()) {
-            // if (titleControllers.containsKey(component)) {
+            if (titleControllers.containsKey(component)) {
                 topBar.setTitleComponent(titleControllers.get(component).getView());
-            // } else {
+            } else {
                 TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
                 controller.setWaitForRender(topBarOptions.title.component.waitForRender);
                 titleControllers.put(component, controller);
                 controller.setComponent(topBarOptions.title.component);
                 controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
                 topBar.setTitleComponent(controller.getView());
-            // }
+            }
         }
 
         topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
@@ -415,15 +415,15 @@ public class StackPresenter {
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
 
         if (topBarOptions.title.component.hasValue()) {
-            if (titleControllers.containsKey(component)) {
-                topBar.setTitleComponent(titleControllers.get(component).getView());
-            } else {
+            // if (titleControllers.containsKey(component)) {
+                // topBar.setTitleComponent(titleControllers.get(component).getView());
+            // } else {
                 TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
                 titleControllers.put(component, controller);
                 controller.setComponent(topBarOptions.title.component);
                 controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
                 topBar.setTitleComponent(controller.getView());
-            }
+            // }
         }
 
         if (topBarOptions.title.color.hasValue()) topBar.setTitleTextColor(topBarOptions.title.color.get());
