@@ -68,6 +68,9 @@
 	UIViewController* viewController = self.boundViewController;
 	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 	[viewController setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[withDefault.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]];
+	if (@available(iOS 13.0, *)) {
+		[viewController setModalInPresentation: [withDefault.modalInPresentation getWithDefaultValue:NO]];
+	}
 	[viewController setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[withDefault.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
 	[viewController setDrawBehindTopBar:[withDefault.topBar.drawBehind getWithDefaultValue:NO]];
 	[viewController setDrawBehindTabBar:[withDefault.bottomTabs.drawBehind getWithDefaultValue:NO] || ![withDefault.bottomTabs.visible getWithDefaultValue:YES]];
@@ -89,6 +92,12 @@
 	
 	if (options.modalPresentationStyle.hasValue) {
 		[viewController setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:options.modalPresentationStyle.get]];
+	}
+
+	if (options.modalInPresentation.hasValue) {
+		if (@available(iOS 13.0, *)) {
+			[viewController setModalInPresentation:options.modalInPresentation.get];
+		}
 	}
 	
 	if (options.modalTransitionStyle.hasValue) {

@@ -35,6 +35,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) Image* backgroundImage;
 @property (nonatomic, strong) Image* rootBackgroundImage;
 @property (nonatomic, strong) Text* modalPresentationStyle;
+@property (nonatomic, strong) Bool* modalInPresentation;
 @property (nonatomic, strong) Text* modalTransitionStyle;
 
 - (instancetype)initEmptyOptions;

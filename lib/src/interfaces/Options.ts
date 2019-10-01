@@ -920,6 +920,12 @@ export interface Options {
    */
   modalTransitionStyle?: OptionsModalTransitionStyle;
   /**
+   * In case of a "pageSheet" modalPresentationStyle, can you dismiss the modal by swiping
+   * 
+   * #### (iOS specific)
+   */
+  modalInPresentation?: boolean;
+  /**
    * Configure the top bar
    */
   topBar?: OptionsTopBar;
