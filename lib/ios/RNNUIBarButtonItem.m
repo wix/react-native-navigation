@@ -31,13 +31,14 @@
 
 -(instancetype)init:(NSString*)buttonId withCustomView:(RCTRootView *)reactView componentRegistry:(RNNReactComponentRegistry *)componentRegistry {
 	self = [super initWithCustomView:reactView];
-	
+
 	self.componentRegistry = componentRegistry;
 	reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
 	reactView.delegate = self;
 	reactView.backgroundColor = [UIColor clearColor];
 	reactView.hidden = YES;
-	
+	reactView.translatesAutoresizingMaskIntoConstraints = NO;
+
 	self.widthConstraint = [NSLayoutConstraint constraintWithItem:reactView
 														attribute:NSLayoutAttributeWidth
 														relatedBy:NSLayoutRelationEqual
@@ -56,7 +57,7 @@
 	self.buttonId = buttonId;
 	return self;
 }
-	
+
 - (instancetype)init:(NSString*)buttonId withSystemItem:(NSString *)systemItemName {
 	UIBarButtonSystemItem systemItem = [RCTConvert UIBarButtonSystemItem:systemItemName];
 	self = [super initWithBarButtonSystemItem:systemItem target:nil action:nil];
