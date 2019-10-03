@@ -63,7 +63,7 @@
     "@types/react": "16.x.x",
     "@types/react-native": "0.57.7",
     "@types/react-test-renderer": "16.x.x",
-    "detox": "12.x.x",
+    "detox": "14.x.x",
     "react-native-ui-lib": "3.24.2",
     "handlebars": "4.x.x",
     "jest": "24.0.0-alpha.6",
@@ -122,7 +122,7 @@
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "type": "ios.none",
-        "name": "iPhone X",
+        "name": "iPhone 11",
         "session": {
           "server": "ws://localhost:8099",
           "sessionId": "playground"
@@ -132,13 +132,13 @@
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
         "type": "ios.simulator",
-        "name": "iPhone X"
+        "name": "iPhone 11"
       },
       "ios.sim.release": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app",
         "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
         "type": "ios.simulator",
-        "name": "iPhone X"
+        "name": "iPhone 11"
       },
       "android.emu.debug": {
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
