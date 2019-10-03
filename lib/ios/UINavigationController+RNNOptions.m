@@ -141,6 +141,10 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	self.navigationBar.tintColor = color;
 }
 
+- (void)setTintColor:(UIColor *)color {
+    self.navigationBar.tintColor = color;
+}
+
 - (void)setNavigationBarClipsToBounds:(BOOL)clipsToBounds {
 	self.navigationBar.clipsToBounds = clipsToBounds;
 }

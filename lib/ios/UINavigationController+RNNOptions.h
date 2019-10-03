@@ -30,4 +30,8 @@
 
 - (void)setBackButtonColor:(UIColor *)color;
 
+/// Change tintColor on UINavigaitonBar
+/// @param color tintColor
+- (void)setTintColor:(UIColor *)color;
+
 @end
