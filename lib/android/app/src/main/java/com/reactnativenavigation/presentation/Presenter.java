@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
+import com.reactnativenavigation.parse.NavigationBarOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.StatusBarOptions;
@@ -84,6 +85,7 @@ public class Presenter {
     }
 
     private void applyStatusBarOptions(Options options) {
+        setNavigationBarBackgroundColor(options.navigationBar);
         setStatusBarBackgroundColor(options.statusBar);
         setTextColorScheme(options.statusBar.textColorScheme);
         setTranslucent(options.statusBar);
@@ -114,6 +116,13 @@ public class Presenter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && statusBar.backgroundColor.canApplyValue()) {
             int defaultColor = statusBar.visible.isTrueOrUndefined() ? Color.BLACK : Color.TRANSPARENT;
             activity.getWindow().setStatusBarColor(statusBar.backgroundColor.get(defaultColor));
+        }
+    }
+
+    private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && navigationBar.backgroundColor.canApplyValue()) {
+            int defaultColor = activity.getWindow().getNavigationBarColor();
+            activity.getWindow().setNavigationBarColor(navigationBar.backgroundColor.get(defaultColor));
         }
     }
 
