@@ -31,7 +31,7 @@ public class OverlayTouchDelegate {
                 return handleDown(event);
             default:
                 reactView.dispatchTouchEventToJs(event);
-                return false;
+                return interceptTouchOutside.isFalseOrUndefined();
 
         }
     }
