@@ -121,6 +121,21 @@ export interface LayoutSplitView {
   options?: Options;
 }
 
+export interface TopTabsChildren {
+  /**
+   * Set stack
+   */
+  stack?: LayoutStack;
+  /**
+   * Set component
+   */
+  component?: LayoutComponent;
+  /**
+   * Set the external component
+   */
+  externalComponent?: ExternalComponent;
+}
+
 export interface TopTabs {
   /**
    * Set the layout's id so Navigation.mergeOptions can be used to update options
@@ -129,7 +144,7 @@ export interface TopTabs {
   /**
    * Set the children screens
    */
-  children?: any[];
+  children?: TopTabsChildren[];
   /**
    * Configure top tabs
    */
@@ -141,8 +156,8 @@ export interface LayoutRoot {
    * Set the root
    */
   root: Layout;
-  modals?: any;
-  overlays?: any;
+  modals?: Layout[];
+  overlays?: Layout[];
 }
 
 export interface ExternalComponent {
