@@ -1,10 +1,13 @@
 #import <UIKit/UIKit.h>
 
+@class Bool;
 @class RNNBottomTabOptions;
 @class RNNNavigationOptions;
 @class RNNBackButtonOptions;
 
 @interface UIViewController (RNNOptions)
+
+@property (nonatomic, strong) Bool* showHomeIndicator;
 
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage;
 
@@ -39,6 +42,8 @@
 - (void)rnn_setInterceptTouchOutside:(BOOL)interceptTouchOutside;
 
 - (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title;
+
+- (void)rnn_setShowHomeIndicator:(BOOL)showHomeIndicator;
 
 - (void)applyBackButton:(RNNBackButtonOptions *)backButton;
 

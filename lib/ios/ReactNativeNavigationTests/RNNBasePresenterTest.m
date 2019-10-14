@@ -89,5 +89,31 @@
     XCTAssertEqual([_uut getStatusBarStyle:options], UIStatusBarStyleLightContent);
 }
 
+- (void)testSetShowHomeIndicator_preferHomeIndicatorVisible {
+	RNNNavigationOptions * homeIndicatorOptions = [[RNNNavigationOptions alloc] initWithDict:@{@"layout":@{@"showHomeIndicator":@1}}];
+	XCTAssertNotNil(homeIndicatorOptions.layout.showHomeIndicator);
+	XCTAssertEqual([homeIndicatorOptions.layout.showHomeIndicator get], YES);
+	
+	[_uut applyOptions:homeIndicatorOptions];
+	if (@available(iOS 11.0, *)) {
+		XCTAssertEqual([_boundViewController prefersHomeIndicatorAutoHidden], NO);
+	} else {
+		// Fallback on earlier versions
+	}
+}
+
+- (void)testSetShowHomeIndicator_preferHomeIndicatorHidden {
+	RNNNavigationOptions * homeIndicatorOptions = [[RNNNavigationOptions alloc] initWithDict:@{@"layout":@{@"showHomeIndicator":@0}}];
+	XCTAssertNotNil(homeIndicatorOptions.layout.showHomeIndicator);
+	XCTAssertEqual([homeIndicatorOptions.layout.showHomeIndicator get], NO);
+	
+	[_uut applyOptions:homeIndicatorOptions];
+	if (@available(iOS 11.0, *)) {
+		XCTAssertEqual([_boundViewController prefersHomeIndicatorAutoHidden], YES);
+	} else {
+		// Fallback on earlier versions
+	}
+}
+
 
 @end

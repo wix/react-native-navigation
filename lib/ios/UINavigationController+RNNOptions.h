@@ -1,6 +1,10 @@
 #import <UIKit/UIKit.h>
 
+@class Bool;
+
 @interface UINavigationController (RNNOptions)
+
+@property (nonatomic, strong) Bool* showHomeIndicator;
 
 - (void)rnn_setInteractivePopGestureEnabled:(BOOL)enabled;
 
@@ -29,5 +33,7 @@
 - (void)rnn_setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color;
 
 - (void)rnn_setBackButtonColor:(UIColor *)color;
+
+- (void)rnn_setShowHomeIndicator:(BOOL)showHomeIndicator;
 
 @end

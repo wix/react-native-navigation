@@ -1,9 +1,20 @@
+#import <objc/runtime.h>
 #import "UINavigationController+RNNOptions.h"
 #import "RNNFontAttributesCreator.h"
+#import "Bool.h"
 
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
+static void * RNNOptionsPropertyKey = &RNNOptionsPropertyKey;
 
 @implementation UINavigationController (RNNOptions)
+
+- (Bool*) showHomeIndicator {
+	return objc_getAssociatedObject(self, RNNOptionsPropertyKey);
+}
+
+- (void) setShowHomeIndicator:(Bool*)homeIndicator {
+	objc_setAssociatedObject(self, RNNOptionsPropertyKey, homeIndicator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 - (void)rnn_setInteractivePopGestureEnabled:(BOOL)enabled {
 	self.interactivePopGestureRecognizer.enabled = enabled;
@@ -101,6 +112,22 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 - (void)rnn_setNavigationBarClipsToBounds:(BOOL)clipsToBounds {
 	self.navigationBar.clipsToBounds = clipsToBounds;
+}
+
+- (void)rnn_setShowHomeIndicator:(BOOL)showHomeIndicator {
+	self.showHomeIndicator = [[Bool alloc] initWithBOOL:showHomeIndicator];
+	if (@available(iOS 11.0, *)) {
+		 [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+	}
+	
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+   if ([self respondsToSelector:@selector(showHomeIndicator)]) {
+	   return [self.showHomeIndicator isFalse];
+   } else {
+	   return NO;
+   }
 }
 
 @end

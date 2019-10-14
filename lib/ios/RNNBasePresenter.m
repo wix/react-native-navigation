@@ -28,7 +28,10 @@
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
-
+	UIViewController *viewController = self.boundViewController;
+	if (initialOptions.layout.showHomeIndicator.hasValue) {
+		[viewController rnn_setShowHomeIndicator:[initialOptions.layout.showHomeIndicator get]];
+	}
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
@@ -78,6 +81,10 @@
         UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
         viewController.tabBarItem = tabItem;
     }
+	
+	if (withDefault.layout.showHomeIndicator.hasValue) {
+		[viewController rnn_setShowHomeIndicator:[withDefault.layout.showHomeIndicator get]];
+	}
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
@@ -91,6 +98,10 @@
     if (withDefault.bottomTab.badgeColor.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
         [viewController rnn_setTabBarItemBadgeColor:withDefault.bottomTab.badgeColor.get];
     }
+	
+	if (withDefault.layout.showHomeIndicator.hasValue) {
+		[viewController rnn_setShowHomeIndicator:[withDefault.layout.showHomeIndicator get]];
+	}
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions {
@@ -148,6 +159,10 @@
         UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
         viewController.tabBarItem = tabItem;
     }
+	
+	if (newOptions.layout.showHomeIndicator.hasValue) {
+		[viewController rnn_setShowHomeIndicator:[newOptions.layout.showHomeIndicator get]];
+	}
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {

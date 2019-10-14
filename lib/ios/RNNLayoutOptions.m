@@ -10,7 +10,8 @@
 	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
 	self.direction = [TextParser parse:dict key:@"direction"];
 	self.orientation = dict[@"orientation"];
-
+	self.showHomeIndicator = [BoolParser parse:dict key:@"showHomeIndicator"];
+	
 	return self;
 }
 

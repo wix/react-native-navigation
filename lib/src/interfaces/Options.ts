@@ -82,6 +82,12 @@ export interface OptionsLayout {
    * only works with DefaultOptions
    */
   direction?: 'rtl' | 'ltr';
+
+  /**
+   * When set to false will cause home indicator bar on iOS fade-out when there is no interaction with the screen.
+   * see Apple docs in regards to UIViewController prefersHomeIndicatorAutoHidden
+   */
+  showHomeIndicator?: boolean;
 }
 
 export enum OptionsModalPresentationStyle {

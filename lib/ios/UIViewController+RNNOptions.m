@@ -1,5 +1,6 @@
 #import "UIViewController+RNNOptions.h"
 #import <React/RCTRootView.h>
+#import <objc/runtime.h>
 #import "UIImage+tint.h"
 #import "RNNBottomTabOptions.h"
 #import "RNNNavigationOptions.h"
@@ -7,8 +8,18 @@
 
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
+static void * RNNOptionsPropertyKey = &RNNOptionsPropertyKey;
 
 @implementation UIViewController (RNNOptions)
+
+- (Bool*) showHomeIndicator {
+	return objc_getAssociatedObject(self, RNNOptionsPropertyKey);
+}
+
+- (void) setShowHomeIndicator:(Bool*)homeIndicator {
+	objc_setAssociatedObject(self, RNNOptionsPropertyKey, homeIndicator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage {
 	if (backgroundImage) {
@@ -187,6 +198,14 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
+- (void)rnn_setShowHomeIndicator:(BOOL)showHomeIndicator {
+	self.showHomeIndicator = [[Bool alloc] initWithBOOL:showHomeIndicator];
+	if (@available(iOS 11.0, *)) {
+		 [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+	}
+	
+}
+
 - (void)applyBackButton:(RNNBackButtonOptions *)backButton {
 	UIBarButtonItem *backItem = [UIBarButtonItem new];
 	if (backButton.icon.hasValue) {
@@ -202,6 +221,14 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	if ([backButton.showTitle getWithDefaultValue:YES]) backItem.title = [backButton.title getWithDefaultValue:nil];
 	if (backButton.color.hasValue) backItem.tintColor = [backButton.color get];
 	self.navigationItem.backBarButtonItem = backItem;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+	if ([self respondsToSelector:@selector(showHomeIndicator)]) {
+		return [self.showHomeIndicator isFalse];
+	} else {
+		return NO;
+	}
 }
 
 @end
