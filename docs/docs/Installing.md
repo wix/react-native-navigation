@@ -316,6 +316,8 @@ If you have any **react-native** related methods, you can safely delete them.
 
 This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
 
+*  For React Native < 0.60
+
 ```diff
 ...
 import android.app.Application;
@@ -363,6 +365,54 @@ import java.util.List;
 +    @Override
 +    public List<ReactPackage> createAdditionalReactPackages() {
 +        return getPackages();
++    }
+- ...
++}
+
+```
+
+*  For React Native >= 0.60
+
+```diff
+...
+import android.app.Application;
+
+-import android.app.Application;
+-import android.content.Context;
+ import com.facebook.react.PackageList;
+-import com.facebook.react.ReactApplication;
+ import com.facebook.react.ReactNativeHost;
+ import com.facebook.react.ReactPackage;
+-import com.facebook.soloader.SoLoader;
+-import java.lang.reflect.InvocationTargetException;
+-import java.util.List;
++import com.reactnativenavigation.NavigationApplication;
++import com.reactnativenavigation.react.NavigationReactNativeHost;
+
+-public class MainApplication extends Application implements ReactApplication {
++public class MainApplication extends NavigationApplication {
++
++    @Override
++    protected ReactNativeHost createReactNativeHost() {
++        return new NavigationReactNativeHost(this) {
++            @Override
++            protected String getJSMainModuleName() {
++                return "index";
++            }
++        };
++    }
++
++    @Override
++    public boolean isDebug() {
++        return BuildConfig.DEBUG;
++    }
++
++    @Override
++    public List<ReactPackage> createAdditionalReactPackages() {
++        @SuppressWarnings("UnnecessaryLocalVariable")
++        List<ReactPackage> packages = new PackageList(this).getPackages();
++        // Add packages here that cannot yet be autolinked.
++        return packages;
 +    }
 - ...
 +}
