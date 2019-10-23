@@ -153,8 +153,6 @@
 		rootView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
 	}
 
-	[self setTitleViewWithSubtitle:withDefault];
-
 	if (options.topBar.title.component.name.hasValue) {
 		[self setCustomNavigationTitleView:options perform:nil];
 	} else {
@@ -162,6 +160,8 @@
 		_customTitleView = nil;
 	}
 
+	[self setTitleViewWithSubtitle:withDefault];
+	
 	if (options.topBar.backButton.hasValue) {
 		UIViewController *lastViewControllerInStack = viewController.navigationController.viewControllers.count > 1 ? viewController.navigationController.viewControllers[viewController.navigationController.viewControllers.count - 2] : viewController.navigationController.topViewController;
 	    RNNNavigationOptions * resolvedOptions	= (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
@@ -198,7 +198,7 @@
 }
 
 - (void)setTitleViewWithSubtitle:(RNNNavigationOptions *)options {
-	if (_titleViewHelper || options.topBar.subtitle.text.hasValue) {
+	if (!_customTitleView) {
 		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.boundViewController];
 
 		if (options.topBar.title.text.hasValue) {
