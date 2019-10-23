@@ -15,7 +15,7 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
-	
+
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:dict[@"topBar"]];
 	self.bottomTabs = [[RNNBottomTabsOptions alloc] initWithDict:dict[@"bottomTabs"]];
 	self.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:dict[@"bottomTab"]];
@@ -29,15 +29,15 @@
 	self.statusBar = [[RNNStatusBarOptions alloc] initWithDict:dict[@"statusBar"]];
 	self.preview = [[RNNPreviewOptions alloc] initWithDict:dict[@"preview"]];
 	self.layout = [[RNNLayoutOptions alloc] initWithDict:dict[@"layout"]];
-	
+
 	self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
-	
+
 	self.backgroundImage = [ImageParser parse:dict key:@"backgroundImage"];
 	self.rootBackgroundImage = [ImageParser parse:dict key:@"rootBackgroundImage"];
 	self.modalPresentationStyle = [[Text alloc] initWithValue:dict[@"modalPresentationStyle"]];
-	self.modalInPresentation = [[Bool alloc] initWithValue:dict[@"modalInPresentation"]];
+	self.disableDismissGesture = [[Bool alloc] initWithValue:dict[@"disableDismissGesture"]];
 	self.modalTransitionStyle = [[Text alloc] initWithValue:dict[@"modalTransitionStyle"]];
-	
+
 	return self;
 }
 
@@ -49,7 +49,7 @@
 - (RNNNavigationOptions *)copy {
 	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	[newOptions overrideOptions:self];
-	
+
 	return newOptions;
 }
 
