@@ -29,6 +29,10 @@
 	UIViewController* topVC = [self topPresentedVC];
 	topVC.definesPresentationContext = YES;
 	
+	if (viewController.presentationController) {
+		viewController.presentationController.delegate = self;
+	}
+	
 	RNNAnimationsTransitionDelegate* tr = [[RNNAnimationsTransitionDelegate alloc] initWithScreenTransition:viewController.resolveOptions.animations.showModal isDismiss:NO];
 	if (hasCustomAnimation) {
 		viewController.transitioningDelegate = tr;
@@ -103,6 +107,10 @@
 - (void)dismissedModal:(UIViewController *)viewController {
 	[_presentedModals removeObject:viewController.navigationController ? viewController.navigationController : viewController];
 	[_delegate dismissedModal:viewController];
+}
+
+- (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController {
+	[_presentedModals removeObject:presentationController.presentedViewController];
 }
 
 -(UIViewController*)topPresentedVC {

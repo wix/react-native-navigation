@@ -46,11 +46,11 @@
 	[viewController setStatusBarStyle:[withDefault.statusBar.style getWithDefaultValue:@"default"] animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
 	[viewController setBackButtonVisible:[withDefault.topBar.backButton.visible getWithDefaultValue:YES]];
 	[viewController setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside getWithDefaultValue:YES]];
-	
+
 	if (withDefault.layout.backgroundColor.hasValue) {
 		[viewController setBackgroundColor:withDefault.layout.backgroundColor.get];
 	}
-	
+
 	if (withDefault.topBar.searchBar.hasValue) {
 		BOOL hideNavBarOnFocusSearchBar = YES;
 		if (withDefault.topBar.hideNavBarOnFocusSearchBar.hasValue) {
@@ -58,7 +58,7 @@
 		}
 		[viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
 	}
-	
+
 	[self setTitleViewWithSubtitle:withDefault];
 }
 
@@ -153,8 +153,6 @@
 		rootView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
 	}
 
-	[self setTitleViewWithSubtitle:withDefault];
-
 	if (options.topBar.title.component.name.hasValue) {
 		[self setCustomNavigationTitleView:options perform:nil];
 	} else {
@@ -162,6 +160,8 @@
 		_customTitleView = nil;
 	}
 
+	[self setTitleViewWithSubtitle:withDefault];
+	
 	if (options.topBar.backButton.hasValue) {
 		UIViewController *lastViewControllerInStack = viewController.navigationController.viewControllers.count > 1 ? viewController.navigationController.viewControllers[viewController.navigationController.viewControllers.count - 2] : viewController.navigationController.topViewController;
 	    RNNNavigationOptions * resolvedOptions	= (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
@@ -208,17 +208,6 @@
 			[_titleViewHelper setSubtitleOptions:options.topBar.subtitle];
 		}
 
-		[_titleViewHelper setup];
-	} else {
-		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.boundViewController];
-		
-		if (options.topBar.title.text.hasValue) {
-			[_titleViewHelper setTitleOptions:options.topBar.title];
-		}
-		if (options.topBar.subtitle.text.hasValue) {
-			[_titleViewHelper setSubtitleOptions:options.topBar.subtitle];
-		}
-		
 		[_titleViewHelper setup];
 	}
 }
