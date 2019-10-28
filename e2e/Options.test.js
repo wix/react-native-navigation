@@ -104,4 +104,9 @@ describe('Options', () => {
     await element(by.id(TestIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
   });
+
+  it('change button props without rendering all buttons', async () => {
+    await elementById(TestIDs.CHANGE_BUTTON_PROPS).tap();
+    await expect(elementByLabel('new title')).toBeVisible();
+  });
 });

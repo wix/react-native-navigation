@@ -18,7 +18,8 @@ const {
   SHOW_YELLOW_BOX_BTN,
   SET_REACT_TITLE_VIEW,
   RESET_BUTTONS,
-  SHOW_LIFECYCLE_BTN
+  SHOW_LIFECYCLE_BTN,
+  CHANGE_BUTTON_PROPS
 } = require('../testIDs');
 
 class Options extends Component {
@@ -41,6 +42,7 @@ class Options extends Component {
             id: 'ROUND',
             testID: ROUND_BUTTON,
             component: {
+              id: 'ROUND_COMPONENT',
               name: Screens.RoundButton,
               passProps: {
                 title: 'Two'
@@ -73,6 +75,7 @@ class Options extends Component {
         <Button label='StatusBar' onPress={this.statusBarScreen} />
         <Button label='Show Lifecycle button' testID={SHOW_LIFECYCLE_BTN} onPress={this.showLifecycleButton} />
         <Button label='Remove all buttons' testID={RESET_BUTTONS} onPress={this.resetButtons} />
+        <Button label='Change Button Props'  testID={CHANGE_BUTTON_PROPS} onPress={this.changeButtonProps} />
       </Root>
     );
   }
@@ -149,6 +152,14 @@ class Options extends Component {
   });
 
   statusBarScreen = () => Navigation.showModal(Screens.StatusBar);
+
+  changeButtonProps = () => {
+    Navigation.mergeOptions('ROUND_COMPONENT', {
+      passProps: {
+        title: 'new title'
+      }
+    });
+  }
 }
 
 module.exports = Options;
