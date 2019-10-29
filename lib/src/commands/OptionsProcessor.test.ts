@@ -136,7 +136,7 @@ describe('navigation options', () => {
     expect(options.topBar.background.component.passProps).toBeUndefined();
   });
 
-  it('calls store when button has passProps and id', () => {
+  it('calls store when component has passProps component id and values', () => {
     const props = { prop: 'updated prop' };
     const options = { passProps: props };
 

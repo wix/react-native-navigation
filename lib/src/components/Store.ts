@@ -8,7 +8,6 @@ export class Store {
 
   setPropsForId(componentId: string, props: any) {
     this.propsById[componentId] = props;
-
     const component = this.componentsInstancesById[componentId];
 
     if (component) {
@@ -20,7 +19,7 @@ export class Store {
     return this.propsById[componentId] || {};
   }
 
-  cleanId(componentId: string) {
+  clearComponent(componentId: string) {
     delete this.propsById[componentId];
     delete this.componentsInstancesById[componentId];
   }

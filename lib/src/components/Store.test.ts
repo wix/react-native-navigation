@@ -29,15 +29,15 @@ describe('Store', () => {
     expect(uut.getComponentClassForName('example.mycomponent')).toEqual(MyWrappedComponent);
   });
 
-  it('clean props by component id', () => {
+  it('clear props by component id when clear component', () => {
     uut.setPropsForId('refUniqueId', { foo: 'bar' });
-    uut.cleanId('refUniqueId');
+    uut.clearComponent('refUniqueId');
     expect(uut.getPropsForId('refUniqueId')).toEqual({});
   });
 
-  it('clean instance by component id', () => {
+  it('clear instance by component id when clear component', () => {
     uut.setComponentInstance('refUniqueId', ({} as IWrappedComponent));
-    uut.cleanId('refUniqueId');
+    uut.clearComponent('refUniqueId');
     expect(uut.getComponentInstance('refUniqueId')).toEqual(undefined);
   });
 
@@ -46,7 +46,7 @@ describe('Store', () => {
     expect(uut.getComponentInstance('component1')).toEqual({});
   });
 
-  it('calls component setProps when set propd by id', () => {
+  it('calls component setProps when set props by id', () => {
     const instance: any = {setProps: jest.fn()};
     const props = { foo: 'bar' };
 

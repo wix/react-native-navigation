@@ -1020,7 +1020,7 @@ setRoot: {
    */
   blurOnUnmount?: boolean;
   /**
-   * Configure the overlay
+   * Props to pass to a component
    */
   passProps?: Record<string, any>;
 }

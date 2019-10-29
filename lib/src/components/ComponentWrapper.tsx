@@ -11,7 +11,7 @@ interface HocState { componentId: string; allProps: {}; }
 interface HocProps { componentId: string; }
 
 export interface IWrappedComponent extends React.Component {
-  setProps(newProps: any): void;
+  setProps(newProps: Record<string, any>): void;
 }
 
 export class ComponentWrapper {
@@ -47,7 +47,7 @@ export class ComponentWrapper {
       }
 
       componentWillUnmount() {
-        store.cleanId(this.state.componentId);
+        store.clearComponent(this.state.componentId);
         componentEventsObserver.unmounted(this.state.componentId);
       }
 
