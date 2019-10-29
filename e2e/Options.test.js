@@ -27,31 +27,6 @@ describe('Options', () => {
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
   });
 
-  it('sets right buttons', async () => {
-    await expect(elementById(TestIDs.BUTTON_ONE)).toBeVisible();
-    await expect(elementById(TestIDs.ROUND_BUTTON)).toBeVisible();
-  });
-
-  it('set left buttons', async () => {
-    await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
-  });
-
-  it('pass props to custom button component', async () => {
-    await expect(elementByLabel('Two')).toExist();
-  });
-
-  it('pass props to custom button component should exist after push pop', async () => {
-    await expect(elementByLabel('Two')).toExist();
-    await elementById(TestIDs.PUSH_BTN).tap();
-    await elementById(TestIDs.POP_BTN).tap();
-    await expect(elementByLabel('Two')).toExist();
-  });
-
-  it('custom button is clickable', async () => {
-    await elementByLabel('Two').tap();
-    await expect(elementByLabel('Thanks for that :)')).toExist();
-  });
-
   it('default options should apply to all screens in stack', async () => {
     await elementById(TestIDs.HIDE_TOPBAR_DEFAULT_OPTIONS).tap();
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
@@ -88,12 +63,6 @@ describe('Options', () => {
     await expect(elementByLabel('Styling Options')).toBeVisible();
   });
 
-  it(':ios: Reseting buttons should unmount button react view', async () => {
-    await elementById(TestIDs.SHOW_LIFECYCLE_BTN).tap();
-    await elementById(TestIDs.RESET_BUTTONS).tap();
-    await expect(elementByLabel('Button component unmounted')).toBeVisible();
-  });
-
   xit('hides topBar onScroll down and shows it on scroll up', async () => {
     await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(TestIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
@@ -103,10 +72,5 @@ describe('Options', () => {
     await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
     await element(by.id(TestIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
-  });
-
-  it('change button props without rendering all buttons', async () => {
-    await elementById(TestIDs.CHANGE_BUTTON_PROPS).tap();
-    await expect(elementByLabel('Three')).toBeVisible();
   });
 });
