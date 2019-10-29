@@ -107,6 +107,6 @@ describe('Options', () => {
 
   it('change button props without rendering all buttons', async () => {
     await elementById(TestIDs.CHANGE_BUTTON_PROPS).tap();
-    await expect(elementByLabel('new title')).toBeVisible();
+    await expect(elementByLabel('Three')).toBeVisible();
   });
 });

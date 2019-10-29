@@ -156,7 +156,7 @@ class Options extends Component {
   changeButtonProps = () => {
     Navigation.mergeOptions('ROUND_COMPONENT', {
       passProps: {
-        title: 'new title'
+        title: 'Three'
       }
     });
   }
