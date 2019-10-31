@@ -96,13 +96,18 @@ describe('ComponentWrapper', () => {
 
   it('updates props from store into inner component', () => {
     const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
-    const tree = renderer.create(<TestParent ChildClass={NavigationComponent} />);
-    store.setPropsForId('component1', { myProp: 'hello' });
-    expect(myComponentProps.foo).toEqual(undefined);
+    renderer.create(<TestParent ChildClass={NavigationComponent} />);
     expect(myComponentProps.myProp).toEqual(undefined);
+    store.setPropsForId('component1', { myProp: 'hello' });
+    expect(myComponentProps.myProp).toEqual('hello');
+  });
+
+  it('updates props from state into inner component', () => {
+    const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
+    const tree = renderer.create(<TestParent ChildClass={NavigationComponent} />);
+    expect(myComponentProps.foo).toEqual(undefined);
     (tree.getInstance() as any).setState({ propsFromState: { foo: 'yo' } });
     expect(myComponentProps.foo).toEqual('yo');
-    expect(myComponentProps.myProp).toEqual('hello');
   });
 
   it('protects id from change', () => {
@@ -157,6 +162,12 @@ describe('ComponentWrapper', () => {
     expect(tree.root.findByType(MyComponent).props).toEqual({componentId: 'component123'});
   });
 
+  it('sets component instance in store when constructed', () => {
+    const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
+    renderer.create(<NavigationComponent componentId={'component1'} />);
+    expect(store.getComponentInstance('component1')).toBeTruthy();
+  });
+
   describe(`register with redux store`, () => {
     class MyReduxComp extends React.Component<any> {
       static options() {
@@ -179,7 +190,7 @@ describe('ComponentWrapper', () => {
     const ConnectedComp = require('react-redux').connect(mapStateToProps)(MyReduxComp);
     const ReduxProvider = require('react-redux').Provider;
     const initialState: RootState = { txt: 'it just works' };
-    const reduxStore = require('redux').createStore((state = initialState) => state);
+    const reduxStore = require('redux').createStore((state: RootState = initialState) => state);
 
     it(`wraps the component with a react-redux provider with passed store`, () => {
       const NavigationComponent = uut.wrap(componentName, () => ConnectedComp, store, componentEventsObserver, undefined, ReduxProvider, reduxStore);
