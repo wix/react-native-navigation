@@ -57,7 +57,7 @@
 	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 	RNNStackController* navigationController = self.boundViewController;
 	[navigationController setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
-	[navigationController setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.title.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:[UIColor blackColor]]];
+	[navigationController setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.title.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
 	[navigationController setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
 }
 

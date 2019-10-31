@@ -258,6 +258,9 @@ Navigation.mergeOptions(this.props.componentId, {
     drawBehind: true,
     visible: false
   },
+  navigationBar: {
+    backgroundColor: 'red',
+  },
   layout: {
     topMargin: (await Navigation.constants()).statusBarHeight, // Set the layout's top margin
     orientation: ['portrait', 'landscape'] | ['sensorLandscape'], // An array of supported orientations

@@ -55,7 +55,7 @@ export class Commands {
 
   public mergeOptions(componentId: string, options: Options) {
     const input = _.cloneDeep(options);
-    this.optionsProcessor.processOptions(input);
+    this.optionsProcessor.processOptions(input, componentId);
 
     this.nativeCommandsSender.mergeOptions(componentId, input);
     this.commandsObserver.notify('mergeOptions', { componentId, options });
@@ -64,7 +64,7 @@ export class Commands {
   public showModal(layout: Layout) {
     const layoutCloned = _.cloneDeep(layout);
     const layoutNode = this.layoutTreeParser.parse(layoutCloned);
-    
+
     const commandId = this.uniqueIdProvider.generate('showModal');
     this.commandsObserver.notify('showModal', { commandId, layout: layoutNode });
     this.layoutTreeCrawler.crawl(layoutNode);
