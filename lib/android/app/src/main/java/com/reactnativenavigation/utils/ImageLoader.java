@@ -7,8 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.StrictMode;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.facebook.react.views.imagehelper.ResourceDrawableIdHelper;
 import com.reactnativenavigation.NavigationApplication;
@@ -19,6 +17,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class ImageLoader {
 
@@ -33,7 +34,8 @@ public class ImageLoader {
     private static final String FILE_SCHEME = "file";
 
     @Nullable
-    public Drawable loadIcon(Context context, String uri) {
+    public Drawable loadIcon(Context context, @Nullable String uri) {
+        if (uri == null) return null;
         try {
             return getDrawable(context, uri);
         } catch (IOException e) {
@@ -64,7 +66,7 @@ public class ImageLoader {
     }
 
     @NonNull
-    private Drawable getDrawable(Context context, String source) throws IOException {
+    private Drawable getDrawable(Context context, @NonNull String source) throws IOException {
         Drawable drawable;
         if (isLocalFile(Uri.parse(source))) {
             drawable = loadFile(source);

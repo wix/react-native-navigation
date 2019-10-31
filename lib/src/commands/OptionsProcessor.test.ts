@@ -135,4 +135,14 @@ describe('navigation options', () => {
     expect(options.topBar.title.component.passProps).toBeUndefined();
     expect(options.topBar.background.component.passProps).toBeUndefined();
   });
+
+  it('calls store when component has passProps component id and values', () => {
+    const props = { prop: 'updated prop' };
+    const options = { passProps: props };
+
+    uut.processOptions(options, 'component1');
+
+    verify(mockedStore.setPropsForId('component1', props)).called();
+    expect(options.passProps).toBeUndefined();
+  });
 });

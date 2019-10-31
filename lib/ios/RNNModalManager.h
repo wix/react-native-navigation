@@ -12,7 +12,7 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, N
 
 @end
 
-@interface RNNModalManager : NSObject
+@interface RNNModalManager : NSObject <UIAdaptivePresentationControllerDelegate>
 
 @property (nonatomic, weak) id<RNNModalManagerDelegate> delegate;
 

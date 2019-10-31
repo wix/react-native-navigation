@@ -14,17 +14,19 @@ export class OptionsProcessor {
     private assetService: AssetService,
   ) {}
 
-  public processOptions(options: Options) {
-    this.processObject(options);
+  public processOptions(options: Options, componentId?: string) {
+    this.processObject(options, componentId);
   }
 
-  private processObject(objectToProcess: object) {
+  private processObject(objectToProcess: object, componentId?: string) {
     _.forEach(objectToProcess, (value, key) => {
       this.processColor(key, value, objectToProcess);
+
       if (!value) {
         return;
       }
 
+      this.processProps(key, value, objectToProcess, componentId);
       this.processComponent(key, value, objectToProcess);
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
@@ -70,6 +72,13 @@ export class OptionsProcessor {
         this.store.setPropsForId(value.componentId, value.passProps);
       }
       options[key].passProps = undefined;
+    }
+  }
+
+  private processProps(key: string, value: any, options: Record<string, any>, componentId?: string) {
+    if (key === 'passProps' && componentId && value) {
+      this.store.setPropsForId(componentId, value);
+      options[key] = undefined;
     }
   }
 }

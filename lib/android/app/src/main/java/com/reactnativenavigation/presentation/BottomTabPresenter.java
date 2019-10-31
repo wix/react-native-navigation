@@ -89,6 +89,12 @@ public class BottomTabPresenter {
                         bottomTabs.setIcon(index, drawable);
                     }
                 });
+                if (tab.selectedIcon.hasValue()) imageLoader.loadIcon(context, tab.selectedIcon.get(), new ImageLoadingListenerAdapter() {
+                    @Override
+                    public void onComplete(@NonNull Drawable drawable) {
+                        bottomTabs.setSelectedIcon(index, drawable);
+                    }
+                });
                 if (tab.testId.hasValue()) bottomTabs.setTag(index, tab.testId.get());
                 if (shouldApplyDot(tab)) mergeDotIndicator(index, tab.dotIndicator); else mergeBadge(index, tab);
             }

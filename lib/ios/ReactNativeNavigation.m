@@ -67,7 +67,11 @@
 
 - (UIWindow *)initializeKeyWindow {
 	UIWindow* keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	keyWindow.backgroundColor = [UIColor whiteColor];
+	if (@available(iOS 13.0, *)) {
+		keyWindow.backgroundColor = [UIColor systemBackgroundColor];
+	} else {
+		keyWindow.backgroundColor = [UIColor whiteColor];
+	}
 	UIApplication.sharedApplication.delegate.window = keyWindow;
 	
 	return keyWindow;

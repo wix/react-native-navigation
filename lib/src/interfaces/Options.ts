@@ -536,15 +536,15 @@ export interface OptionsBottomTabs {
 
 export interface DotIndicatorOptions {
     // default red
-    color?: Color,
+    color?: Color;
     // default 6
-    size?: number,
+    size?: number;
     // default false
-    visible?: boolean,
+    visible?: boolean;
 }
 
 export interface OptionsBottomTab {
-    dotIndicator?: DotIndicatorOptions,
+    dotIndicator?: DotIndicatorOptions;
 
   /**
    * Set the text to display below the icon
@@ -1019,4 +1019,8 @@ setRoot: {
    * @default false
    */
   blurOnUnmount?: boolean;
+  /**
+   * Props to pass to a component
+   */
+  passProps?: Record<string, any>;
 }
