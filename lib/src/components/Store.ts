@@ -6,10 +6,9 @@ export class Store {
   private propsById: Record<string, any> = {};
   private componentsInstancesById: Record<string, IWrappedComponent> = {};
 
-  setPropsForId(componentId: string, props: any) {
+  updateProps(componentId: string, props: any) {
     this.propsById[componentId] = props;
     const component = this.componentsInstancesById[componentId];
-
     if (component) {
       this.componentsInstancesById[componentId].setProps(props);
     }

@@ -79,7 +79,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options);
 
-    verify(mockedStore.setPropsForId('CustomComponent1', passProps)).called();
+    verify(mockedStore.updateProps('CustomComponent1', passProps)).called();
   });
 
   it('generates componentId for component id was not passed', () => {
@@ -108,7 +108,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options);
 
-    verify(mockedStore.setPropsForId('1', passProps)).called();
+    verify(mockedStore.updateProps('1', passProps)).called();
   });
 
   it('do not touch passProps when id for button is missing', () => {
@@ -134,15 +134,5 @@ describe('navigation options', () => {
     expect(options.topBar.leftButtons[0].passProps).toBeUndefined();
     expect(options.topBar.title.component.passProps).toBeUndefined();
     expect(options.topBar.background.component.passProps).toBeUndefined();
-  });
-
-  it('calls store when component has passProps component id and values', () => {
-    const props = { prop: 'updated prop' };
-    const options = { passProps: props };
-
-    uut.processOptions(options, 'component1');
-
-    verify(mockedStore.setPropsForId('component1', props)).called();
-    expect(options.passProps).toBeUndefined();
   });
 });

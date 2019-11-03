@@ -14,12 +14,12 @@ describe('Store', () => {
   });
 
   it('holds props by id', () => {
-    uut.setPropsForId('component1', { a: 1, b: 2 });
+    uut.updateProps('component1', { a: 1, b: 2 });
     expect(uut.getPropsForId('component1')).toEqual({ a: 1, b: 2 });
   });
 
   it('defensive for invalid Id and props', () => {
-    uut.setPropsForId('component1', undefined);
+    uut.updateProps('component1', undefined);
     expect(uut.getPropsForId('component1')).toEqual({});
   });
 
@@ -30,7 +30,7 @@ describe('Store', () => {
   });
 
   it('clear props by component id when clear component', () => {
-    uut.setPropsForId('refUniqueId', { foo: 'bar' });
+    uut.updateProps('refUniqueId', { foo: 'bar' });
     uut.clearComponent('refUniqueId');
     expect(uut.getPropsForId('refUniqueId')).toEqual({});
   });
@@ -51,12 +51,12 @@ describe('Store', () => {
     const props = { foo: 'bar' };
 
     uut.setComponentInstance('component1', instance);
-    uut.setPropsForId('component1', props);
+    uut.updateProps('component1', props);
 
     expect(instance.setProps).toHaveBeenCalledWith(props);
   });
 
   it('not throw exeption when set props by id component not found', () => {
-    expect(() => uut.setPropsForId('component1', { foo: 'bar' })).not.toThrow();
+    expect(() => uut.updateProps('component1', { foo: 'bar' })).not.toThrow();
   });
 });
