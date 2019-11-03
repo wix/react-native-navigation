@@ -7,9 +7,11 @@ import { Layout, LayoutRoot } from '../interfaces/Layout';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { OptionsProcessor } from './OptionsProcessor';
+import { Store } from '../components/Store';
 
 export class Commands {
   constructor(
+    private readonly store: Store,
     private readonly nativeCommandsSender: NativeCommandsSender,
     private readonly layoutTreeParser: LayoutTreeParser,
     private readonly layoutTreeCrawler: LayoutTreeCrawler,
@@ -34,12 +36,12 @@ export class Commands {
     this.commandsObserver.notify('setRoot', { commandId, layout: { root, modals, overlays } });
 
     this.layoutTreeCrawler.crawl(root);
-    modals.forEach(modalLayout => {
+    modals.forEach((modalLayout) => {
       this.layoutTreeCrawler.crawl(modalLayout);
     });
-    overlays.forEach(overlayLayout => {
+    overlays.forEach((overlayLayout) => {
       this.layoutTreeCrawler.crawl(overlayLayout);
-    })
+    });
 
     const result = this.nativeCommandsSender.setRoot(commandId, { root, modals, overlays });
     return result;
@@ -55,10 +57,16 @@ export class Commands {
 
   public mergeOptions(componentId: string, options: Options) {
     const input = _.cloneDeep(options);
-    this.optionsProcessor.processOptions(input, componentId);
+    this.optionsProcessor.processOptions(input);
 
     this.nativeCommandsSender.mergeOptions(componentId, input);
     this.commandsObserver.notify('mergeOptions', { componentId, options });
+  }
+
+  public updateProps(componentId: string, props: object) {
+    const input = _.cloneDeep(props);
+    this.store.updateProps(componentId, input);
+    this.commandsObserver.notify('updateProps', { componentId, props });
   }
 
   public showModal(layout: Layout) {
@@ -125,12 +133,12 @@ export class Commands {
       const layout = this.layoutTreeParser.parse(simpleApi);
       return layout;
     });
-  
+
     const commandId = this.uniqueIdProvider.generate('setStackRoot');
     this.commandsObserver.notify('setStackRoot', { commandId, componentId, layout: input });
-    input.forEach(layoutNode => {
+    input.forEach((layoutNode) => {
       this.layoutTreeCrawler.crawl(layoutNode);
-    })
+    });
 
     const result = this.nativeCommandsSender.setStackRoot(commandId, componentId, input);
     return result;
@@ -139,7 +147,7 @@ export class Commands {
   public showOverlay(simpleApi: Layout) {
     const input = _.cloneDeep(simpleApi);
     const layout = this.layoutTreeParser.parse(input);
-    
+
     const commandId = this.uniqueIdProvider.generate('showOverlay');
     this.commandsObserver.notify('showOverlay', { commandId, layout });
     this.layoutTreeCrawler.crawl(layout);
