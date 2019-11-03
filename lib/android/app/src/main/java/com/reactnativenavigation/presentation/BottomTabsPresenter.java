@@ -72,7 +72,10 @@ public class BottomTabsPresenter {
             bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.toState());
         }
         if (bottomTabsOptions.backgroundColor.hasValue()) {
-            bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get());
+            @ColorInt int backgroundColor = bottomTabsOptions.backgroundColor.get();
+
+            bottomTabs.setBackgroundColor(backgroundColor);
+            bottomTabs.setDefaultBackgroundColor(backgroundColor);
         }
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             int tabIndex = bottomTabsOptions.currentTabIndex.get();
@@ -115,7 +118,11 @@ public class BottomTabsPresenter {
 
         bottomTabs.setLayoutDirection(options.layout.direction);
         bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.get(TitleState.SHOW_WHEN_ACTIVE));
-        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE));
+
+        @ColorInt int backgroundColor = bottomTabsOptions.backgroundColor.get(Color.WHITE);
+        bottomTabs.setBackgroundColor(backgroundColor);
+        bottomTabs.setDefaultBackgroundColor(backgroundColor);
+
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             int tabIndex = bottomTabsOptions.currentTabIndex.get();
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
