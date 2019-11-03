@@ -137,6 +137,7 @@ describe('Commands', () => {
       uut.updateProps('theComponentId', {someProp: 'someValue'});
       verify(mockedStore.updateProps('theComponentId', deepEqual({someProp: 'someValue'})));
     });
+
     it('notifies commands observer', () => {
       uut.updateProps('theComponentId', {someProp: 'someValue'});
       verify(commandsObserver.notify('updateProps', deepEqual({componentId: 'theComponentId', props: {someProp: 'someValue'}})));
