@@ -15,6 +15,7 @@ import com.reactnativenavigation.views.BottomTabs;
 
 import java.util.List;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
 
 public class BottomTabsPresenter {
