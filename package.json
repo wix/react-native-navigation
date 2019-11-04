@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "3.2.0",
+  "version": "3.4.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -20,6 +20,7 @@
   "typings": "lib/dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./lib/dist && tsc",
+    "watch": "rm -rf ./lib/dist && tsc --watch",
     "xcode": "open playground/ios/playground.xcodeproj",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",

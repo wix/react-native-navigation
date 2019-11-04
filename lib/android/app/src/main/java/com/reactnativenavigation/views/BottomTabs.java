@@ -75,7 +75,15 @@ public class BottomTabs extends AHBottomNavigation {
     public void setIcon(int index, Drawable icon) {
         AHBottomNavigationItem item = getItem(index);
         if (!item.getDrawable(getContext()).equals(icon)) {
-            item.setDrawable(icon);
+            item.setIcon(icon);
+            refresh();
+        }
+    }
+
+    public void setSelectedIcon(int index, Drawable icon) {
+        AHBottomNavigationItem item = getItem(index);
+        if (!item.getDrawable(getContext()).equals(icon)) {
+            item.setSelectedIcon(icon);
             refresh();
         }
     }

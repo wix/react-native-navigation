@@ -2,7 +2,6 @@ package com.reactnativenavigation.mocks;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.facebook.react.ReactInstanceManager;
@@ -15,6 +14,8 @@ import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.views.ReactComponent;
 
 import org.mockito.Mockito;
+
+import androidx.annotation.NonNull;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
@@ -49,12 +50,6 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
     @Override
     public String toString() {
         return "SimpleViewController " + getId();
-    }
-
-    @Override
-    public void mergeOptions(Options options) {
-        performOnParentController(parentController -> parentController.mergeChildOptions(options, this));
-        super.mergeOptions(options);
     }
 
     @Override

@@ -39,7 +39,7 @@ export class LayoutTreeCrawler {
   }
 
   private savePropsToStore(node: LayoutNode) {
-    this.store.setPropsForId(node.id, node.data.passProps);
+    this.store.updateProps(node.id, node.data.passProps);
   }
 
   private isComponentWithOptions(component: any): component is ComponentWithOptions {

@@ -39,6 +39,7 @@ const constants = Navigation.constants;
 
 module.exports = {
   mergeOptions,
+  updateProps: Navigation.updateProps.bind(Navigation),
   push,
   pushExternalComponent,
   pop,

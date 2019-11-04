@@ -1,6 +1,7 @@
 dist
 .vscode/
 package-lock.json
+.history/
 
 ############
 # Node

@@ -536,15 +536,15 @@ export interface OptionsBottomTabs {
 
 export interface DotIndicatorOptions {
     // default red
-    color?: Color,
+    color?: Color;
     // default 6
-    size?: number,
+    size?: number;
     // default false
-    visible?: boolean,
+    visible?: boolean;
 }
 
 export interface OptionsBottomTab {
-    dotIndicator?: DotIndicatorOptions,
+    dotIndicator?: DotIndicatorOptions;
 
   /**
    * Set the text to display below the icon
@@ -565,7 +565,7 @@ export interface OptionsBottomTab {
   /**
    * Set the tab icon
    */
-  icon?: ImageRequireSource;
+  icon: ImageRequireSource;
   /**
    * Set the icon tint
    */
@@ -847,6 +847,10 @@ export interface StackAnimationOptions {
  */
 export interface AnimationOptions {
   /**
+   * Configure the setStackRoot animation
+   */
+  setStackRoot?: ScreenAnimationOptions;
+  /**
    * Configure the setRoot animation
    */
   setRoot?: ScreenAnimationOptions;
@@ -1025,4 +1029,8 @@ setRoot: {
    * @default false
    */
   blurOnUnmount?: boolean;
+  /**
+   * Props to pass to a component
+   */
+  passProps?: Record<string, any>;
 }
