@@ -148,6 +148,8 @@ const bottomTabs = {
 }
 ```
 
+!> Note! On Android an `icon` is required when using `bottomTabs`.
+
 ### Selecting tabs programmatically
 
 The selected index is a style property which can be updated using the `mergeOptions` command. In order to update the BottomTabs options, Pass the BottomTabs `componentId` or the `componentId` of one of its children.

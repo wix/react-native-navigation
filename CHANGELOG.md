@@ -1,7 +1,7 @@
 # Changelog
 # 3.3.0
 ## Added
-* Support updating component props with Navigation.mergeOptions [#291f161](https://github.com/wix/react-native-navigation/commit/291f16177d2f67a474d3a980a503a85d0acf2b2a) by [justtal](https://github.com/justtal)
+* **[experimental]** Support updating component props with Navigation.mergeOptions [#291f161](https://github.com/wix/react-native-navigation/commit/291f16177d2f67a474d3a980a503a85d0acf2b2a) by [justtal](https://github.com/justtal)
 ### Android
 * Add support for getLaunchArgs [#16646e7](https://github.com/wix/react-native-navigation/commit/16646e7c88d78f1ddd7fb6ae434ef968ac051f06) by [swabbass](https://github.com/swabbass)
 * Support bottomTab.selectedIcon [#45e8389](https://github.com/wix/react-native-navigation/commit/45e8389b2b7d282878a80c49b146ddeb4ec2cd89) by [guyca](https://github.com/guyca)

@@ -204,7 +204,7 @@ describe('ComponentEventsObserver', () => {
       componentName: 'doesnt matter'
     }
     renderer.create(<BoundScreen componentId={event.componentId} />);
-    mockStore.setPropsForId(event.componentId, event.passProps)
+    mockStore.updateProps(event.componentId, event.passProps)
     expect(didAppearFn).not.toHaveBeenCalled();
 
     uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });

@@ -88,7 +88,7 @@ describe('ComponentWrapper', () => {
   });
 
   it('pulls props from the store and injects them into the inner component', () => {
-    store.setPropsForId('component123', { numberProp: 1, stringProp: 'hello', objectProp: { a: 2 } });
+    store.updateProps('component123', { numberProp: 1, stringProp: 'hello', objectProp: { a: 2 } });
     const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
     renderer.create(<NavigationComponent componentId={'component123'} />);
     expect(myComponentProps).toEqual({ componentId: 'component123', numberProp: 1, stringProp: 'hello', objectProp: { a: 2 } });
@@ -98,7 +98,7 @@ describe('ComponentWrapper', () => {
     const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
     renderer.create(<TestParent ChildClass={NavigationComponent} />);
     expect(myComponentProps.myProp).toEqual(undefined);
-    store.setPropsForId('component1', { myProp: 'hello' });
+    store.updateProps('component1', { myProp: 'hello' });
     expect(myComponentProps.myProp).toEqual('hello');
   });
 
@@ -128,7 +128,7 @@ describe('ComponentWrapper', () => {
   });
 
   it('cleans props from store on unMount', () => {
-    store.setPropsForId('component123', { foo: 'bar' });
+    store.updateProps('component123', { foo: 'bar' });
     const NavigationComponent = uut.wrap(componentName, () => MyComponent, store, componentEventsObserver);
     const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
     expect(store.getPropsForId('component123')).toEqual({ foo: 'bar' });

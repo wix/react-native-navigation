@@ -565,7 +565,7 @@ export interface OptionsBottomTab {
   /**
    * Set the tab icon
    */
-  icon?: ImageRequireSource;
+  icon: ImageRequireSource;
   /**
    * Set the icon tint
    */
