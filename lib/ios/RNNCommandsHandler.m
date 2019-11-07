@@ -7,6 +7,7 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "RNNLayoutManager.h"
 #import "UIViewController+Utils.h"
+#import "RNNStackController.m"
 
 static NSString* const setRoot	= @"setRoot";
 static NSString* const setStackRoot	= @"setStackRoot";
@@ -114,6 +115,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	if ([[newVc.resolveOptions.preview.reactTag getWithDefaultValue:@(0)] floatValue] > 0) {
 		UIViewController* vc = [RNNLayoutManager findComponentForId:componentId];
+		
+		if ([vc isKindOfClass:[RNNStackController class]]) {
+			// If the view controller is a stack, then get the top view as current view controller
+			// to enable preview so that the next condition will work
+			vc = vc.getCurrentChild;
+		}
 		
 		if([vc isKindOfClass:[RNNComponentViewController class]]) {
 			RNNComponentViewController* rootVc = (RNNComponentViewController*)vc;
