@@ -21,8 +21,8 @@
 	return self;
 }
 
-- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)bindedViewController {
-	[super bindViewController:bindedViewController];
+- (void)boundViewController:(UIViewController *)boundViewController {
+	[super boundViewController:boundViewController];
 	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.boundViewController componentRegistry:_componentRegistry];
 }
 
@@ -80,9 +80,9 @@
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)currentOptions {
     [super mergeOptions:options resolvedOptions:currentOptions];
 	RNNNavigationOptions * withDefault	= (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
-
 	UIViewController* viewController = self.boundViewController;
-	
+	[self removeTitleComponentIfNeeded:options];
+
 	if (options.backgroundImage.hasValue) {
 		[viewController setBackgroundImage:options.backgroundImage.get];
 	}
@@ -155,9 +155,6 @@
 
 	if (options.topBar.title.component.name.hasValue) {
 		[self setCustomNavigationTitleView:options perform:nil];
-	} else {
-		[_customTitleView removeFromSuperview];
-		_customTitleView = nil;
 	}
 
 	[self setTitleViewWithSubtitle:withDefault];
@@ -166,6 +163,13 @@
 		UIViewController *lastViewControllerInStack = viewController.navigationController.viewControllers.count > 1 ? viewController.navigationController.viewControllers[viewController.navigationController.viewControllers.count - 2] : viewController.navigationController.topViewController;
 	    RNNNavigationOptions * resolvedOptions	= (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
 		[lastViewControllerInStack applyBackButton:resolvedOptions.topBar.backButton];
+	}
+}
+
+- (void)removeTitleComponentIfNeeded:(RNNNavigationOptions *)options {
+	if (options.topBar.title.text.hasValue && !options.topBar.component.hasValue) {
+		[_customTitleView removeFromSuperview];
+		_customTitleView = nil;
 	}
 }
 
