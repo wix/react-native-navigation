@@ -27,6 +27,7 @@
     "clean": "node ./scripts/clean",
     "prestart": "npm run build",
     "start": "node ./scripts/start",
+    "start-windows": "node ./scripts/start-windows",
     "pretest-js": "npm run build",
     "test-js": "node ./scripts/test-js",
     "test-unit-ios": "node ./scripts/test-unit --ios",
