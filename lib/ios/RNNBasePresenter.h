@@ -12,7 +12,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
-- (void)bindViewController:(UIViewController *)boundViewController;
+- (void)boundViewController:(UIViewController *)boundViewController;
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 

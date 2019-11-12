@@ -3,8 +3,10 @@
 #import "RNNComponentPresenter.h"
 #import "UIViewController+RNNOptions.h"
 #import "RNNComponentViewController.h"
+#import "UIViewController+LayoutProtocol.h"
+#import "RNNTitleViewHelper.h"
 
-@interface RNNViewControllerPresenterTest : XCTestCase
+@interface RNNComponentPresenterTest : XCTestCase
 
 @property (nonatomic, strong) RNNComponentPresenter *uut;
 @property (nonatomic, strong) RNNNavigationOptions *options;
@@ -13,14 +15,14 @@
 
 @end
 
-@implementation RNNViewControllerPresenterTest
+@implementation RNNComponentPresenterTest
 
 - (void)setUp {
     [super setUp];
 	self.componentRegistry = [OCMockObject partialMockForObject:[RNNReactComponentRegistry new]];
 	self.uut = [[RNNComponentPresenter alloc] initWithComponentRegistry:self.componentRegistry:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	self.boundViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
-	[self.uut bindViewController:self.boundViewController];
+	[self.uut boundViewController:self.boundViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
@@ -71,7 +73,7 @@
 
 - (void)testBindViewControllerShouldCreateNavigationButtonsCreator {
 	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] init];
-	[presenter bindViewController:self.boundViewController];
+	[presenter boundViewController:self.boundViewController];
 	XCTAssertNotNil(presenter.navigationButtons);
 }
 
@@ -136,7 +138,7 @@
 - (void)testReactViewShouldBeReleasedOnDealloc {
 	RNNComponentViewController* bindViewController = [RNNComponentViewController new];
 	bindViewController.layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
-	[self.uut bindViewController:bindViewController];
+	[self.uut boundViewController:bindViewController];
 	
 	self.options.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"componentName"}];
 	
@@ -145,22 +147,21 @@
 	[(id)self.componentRegistry verify];
 }
 
-- (void)testBindViewControllerShouldSetBindedComponentId {
+- (void)testBindViewControllerShouldSetBoundComponentId {
 	RNNComponentViewController* bindViewController = [RNNComponentViewController new];
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] init];
 	layoutInfo.componentId = @"componentId";
 	bindViewController.layoutInfo = layoutInfo;
-	
-	[self.uut bindViewController:bindViewController];
+
+	[self.uut boundViewController:bindViewController];
 	XCTAssertEqual(self.uut.boundComponentId, @"componentId");
 }
 
-- (void)testRenderComponentsCreateReactViewWithBindedComponentId {
-	RNNComponentViewController* bindedViewController = [RNNComponentViewController new];
+- (void)testRenderComponentsCreateReactViewWithBoundComponentId {
+	RNNComponentViewController* boundViewController = [RNNComponentViewController new];
 	RNNLayoutInfo* layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
-	bindedViewController.layoutInfo = layoutInfo;
-	
-	[self.uut bindViewController:bindedViewController];
+	boundViewController.layoutInfo = layoutInfo;
+	[self.uut boundViewController:boundViewController];
 	
 	self.options.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"titleComponent"}];
 	
@@ -172,7 +173,7 @@
 	XCTAssertEqual(self.uut.boundComponentId, @"componentId");
 }
 
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withTitle {
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withTitle {
 	Text* title = [[Text alloc] initWithValue:@"Title"];
 	self.options.topBar.backButton.title = title;
 	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:title.get];
@@ -180,7 +181,7 @@
 	[(id)self.boundViewController verify];
 }
 
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withHideTitle {
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withHideTitle {
 	Text* title = [[Text alloc] initWithValue:@"Title"];
 	self.options.topBar.backButton.title = title;
 	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
@@ -189,7 +190,7 @@
 	[(id)self.boundViewController verify];
 }
 
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withIcon {
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withIcon {
 	Image* image = [[Image alloc] initWithValue:[UIImage new]];
 	self.options.topBar.backButton.icon = image;
 	[[(id) self.boundViewController expect] setBackButtonIcon:image.get withColor:nil title:nil];
@@ -197,16 +198,56 @@
 	[(id)self.boundViewController verify];
 }
 
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withDefaultValues {
+- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withDefaultValues {
 	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:nil];
 	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
 	[(id)self.boundViewController verify];
 }
 
+- (void)testRemoveTitleComponentIfNeeded_componentIsRemovedIfTitleTextIsDefined {
+	id mockTitle = [OCMockObject niceMockForClass:[RNNReactView class]];
+    OCMStub([self.componentRegistry createComponentIfNotExists:[OCMArg any] parentComponentId:[OCMArg any] reactViewReadyBlock:nil]).andReturn(mockTitle);
+
+	RNNComponentOptions* component = [RNNComponentOptions new];
+	component.name = [[Text alloc] initWithValue:@"componentName"];
+	component.componentId = [[Text alloc] initWithValue:@"someId"];
+	_options.topBar.title.component = component;
+
+	[self.uut mergeOptions:_options resolvedOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    XCTAssertNotNil(self.boundViewController.navigationItem.titleView);
+	XCTAssertEqual(self.boundViewController.navigationItem.titleView, mockTitle);
+
+	[[mockTitle expect] removeFromSuperview];
+    _options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    _options.topBar.title.text = [[Text alloc] initWithValue:@""];
+	[self.uut mergeOptions:_options resolvedOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    XCTAssertNotEqual(self.boundViewController.navigationItem.titleView, mockTitle);
+	[mockTitle verify];
+}
+
+- (void)testRemoveTitleComponentIfNeeded_componentIsNotRemovedIfMergeOptionsIsCalledWithoutTitleText {
+    id mockTitle = [OCMockObject niceMockForClass:[RNNReactView class]];
+    OCMStub([self.componentRegistry createComponentIfNotExists:[OCMArg any] parentComponentId:[OCMArg any] reactViewReadyBlock:nil]).andReturn(mockTitle);
+
+    RNNComponentOptions* component = [RNNComponentOptions new];
+    component.name = [[Text alloc] initWithValue:@"componentName"];
+    component.componentId = [[Text alloc] initWithValue:@"someId"];
+    _options.topBar.title.component = component;
+
+    [self.uut mergeOptions:_options resolvedOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    XCTAssertNotNil(self.boundViewController.navigationItem.titleView);
+    XCTAssertEqual(self.boundViewController.navigationItem.titleView, mockTitle);
+
+
+    _options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    _options.bottomTabs.visible = [[Bool alloc] initWithBOOL:NO];
+    [self.uut mergeOptions:_options resolvedOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    XCTAssertEqual(self.boundViewController.navigationItem.titleView, mockTitle);
+}
 
 - (RNNLayoutInfo *)createLayoutInfoWithComponentId:(NSString *)componentId {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] init];
-	layoutInfo.componentId = @"componentId";
+	layoutInfo.componentId = componentId;
 	return layoutInfo;
 }
 

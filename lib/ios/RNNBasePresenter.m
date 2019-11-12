@@ -18,7 +18,7 @@
     return self;
 }
 
-- (void)bindViewController:(UIViewController <RNNLayoutProtocol> *)boundViewController {
+- (void)boundViewController:(UIViewController *)boundViewController {
     self.boundComponentId = boundViewController.layoutInfo.componentId;
     _boundViewController = boundViewController;
 }
