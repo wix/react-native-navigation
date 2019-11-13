@@ -296,7 +296,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     void runOnPreDraw(Func1<T> task) {
-        UiUtils.runOnPreDrawOnce(getView(), () -> task.run(getView()));
+        if (!isDestroyed) UiUtils.runOnPreDrawOnce(getView(), task);
     }
 
     public abstract void sendOnNavigationButtonPressed(String buttonId);

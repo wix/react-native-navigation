@@ -79,7 +79,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options);
 
-    verify(mockedStore.setPropsForId('CustomComponent1', passProps)).called();
+    verify(mockedStore.updateProps('CustomComponent1', passProps)).called();
   });
 
   it('generates componentId for component id was not passed', () => {
@@ -108,7 +108,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options);
 
-    verify(mockedStore.setPropsForId('1', passProps)).called();
+    verify(mockedStore.updateProps('1', passProps)).called();
   });
 
   it('do not touch passProps when id for button is missing', () => {

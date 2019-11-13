@@ -11,6 +11,7 @@ module.exports = {
   Pushed: 'Pushed',
   Layouts: 'Layouts',
   Options: 'Options',
+  Buttons: 'Buttons',
   Stack: 'Stack',
   Modal: 'Modal',
   FullScreenModal: 'FullScreenModal',

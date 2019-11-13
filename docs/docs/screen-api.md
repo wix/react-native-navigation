@@ -1,7 +1,7 @@
 # Screen API
 
 This API is relevant when in a screen component context - it allows a screen to push other screens, pop screens, change its navigator style, etc. Access to this API is available through the `Navigation` module and expect to receive the current presented component id from screen `props.componentId`.
-Component must initialize in stack in order to push another component.
+Component must initialize in a stack in order to push another component.
 
 ## push(componentId, layout)
 
