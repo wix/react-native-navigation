@@ -58,8 +58,9 @@ public class EventEmitter {
         emit(BottomTabSelected, event);
     }
 
-    public void emitCommandCompleted(String commandId, long completionTime) {
+    public void emitCommandCompleted(String commandName, String commandId, long completionTime) {
         WritableMap event = Arguments.createMap();
+        event.putString("commandName", commandName);
         event.putString("commandId", commandId);
         event.putDouble("completionTime", completionTime);
         emit(CommandCompleted, event);
