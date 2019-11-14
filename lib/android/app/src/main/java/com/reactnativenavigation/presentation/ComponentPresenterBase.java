@@ -7,7 +7,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 public class ComponentPresenterBase {
     public void applyTopInsets(@NonNull View view, int topInsets) {
         MarginLayoutParams lp = (MarginLayoutParams) view.getLayoutParams();
-        if (lp.topMargin != topInsets) {
+        if (lp != null && lp.topMargin != topInsets) {
             lp.topMargin = topInsets;
             view.requestLayout();
         }
@@ -15,7 +15,7 @@ public class ComponentPresenterBase {
 
     public void applyBottomInset(@NonNull View view, int bottomInset) {
         MarginLayoutParams lp = (MarginLayoutParams) view.getLayoutParams();
-        if (lp.bottomMargin!= bottomInset) {
+        if (lp != null && lp.bottomMargin!= bottomInset) {
             lp.bottomMargin = bottomInset;
             view.requestLayout();
         }
