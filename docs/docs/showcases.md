@@ -23,8 +23,15 @@ The playground example is a place where we showcase and test all features of rea
 git clone https://github.com/wix/react-native-navigation
 cd react-native-navigation
 npm install
-npm run xcode # Opens XCode
-npm start # Starts the packager
 
-# Run the app in Simulator or on Device from within XCode
+# for iOS:
+npm run xcode # Opens XCode
+npm start # Starts the packager on linux like systems
+
+# for Android:
+# 1. open Android Studio inside ".\playground"
+# 2. start a emulator
+npm run start-windows # Start the packager if you are on a windows system
+
+# Run the app in Simulator or on Device from within XCode/Android Studio
 ```
