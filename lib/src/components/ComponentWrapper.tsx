@@ -10,6 +10,10 @@ import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 interface HocState { componentId: string; allProps: {}; }
 interface HocProps { componentId: string; }
 
+export interface IWrappedComponent extends React.Component {
+  setProps(newProps: Record<string, any>): void;
+}
+
 export class ComponentWrapper {
   wrap(
     componentName: string | number,
@@ -35,10 +39,15 @@ export class ComponentWrapper {
           componentId: props.componentId,
           allProps: {}
         };
+        store.setComponentInstance(props.componentId, this);
+      }
+
+      public setProps(newProps: any) {
+        this.setState({allProps: newProps});
       }
 
       componentWillUnmount() {
-        store.cleanId(this.state.componentId);
+        store.clearComponent(this.state.componentId);
         componentEventsObserver.unmounted(this.state.componentId);
       }
 

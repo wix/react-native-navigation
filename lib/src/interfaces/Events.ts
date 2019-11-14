@@ -1,4 +1,5 @@
 export interface CommandCompletedEvent {
+  commandName: string;
   commandId: string;
   completionTime: number;
   params: any;

@@ -21,8 +21,8 @@
 	return self;
 }
 
-- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)bindedViewController {
-	[super bindViewController:bindedViewController];
+- (void)boundViewController:(UIViewController *)boundViewController {
+	[super boundViewController:boundViewController];
 	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.boundViewController componentRegistry:_componentRegistry];
 }
 
@@ -46,11 +46,11 @@
 	[viewController setStatusBarStyle:[withDefault.statusBar.style getWithDefaultValue:@"default"] animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
 	[viewController setBackButtonVisible:[withDefault.topBar.backButton.visible getWithDefaultValue:YES]];
 	[viewController setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside getWithDefaultValue:YES]];
-	
+
 	if (withDefault.layout.backgroundColor.hasValue) {
 		[viewController setBackgroundColor:withDefault.layout.backgroundColor.get];
 	}
-	
+
 	if (withDefault.topBar.searchBar.hasValue) {
 		BOOL hideNavBarOnFocusSearchBar = YES;
 		if (withDefault.topBar.hideNavBarOnFocusSearchBar.hasValue) {
@@ -58,7 +58,7 @@
 		}
 		[viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
 	}
-	
+
 	[self setTitleViewWithSubtitle:withDefault];
 }
 
@@ -80,9 +80,9 @@
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)currentOptions {
     [super mergeOptions:options resolvedOptions:currentOptions];
 	RNNNavigationOptions * withDefault	= (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
-
 	UIViewController* viewController = self.boundViewController;
-	
+	[self removeTitleComponentIfNeeded:options];
+
 	if (options.backgroundImage.hasValue) {
 		[viewController setBackgroundImage:options.backgroundImage.get];
 	}
@@ -153,19 +153,23 @@
 		rootView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
 	}
 
-	[self setTitleViewWithSubtitle:withDefault];
-
 	if (options.topBar.title.component.name.hasValue) {
 		[self setCustomNavigationTitleView:options perform:nil];
-	} else {
-		[_customTitleView removeFromSuperview];
-		_customTitleView = nil;
 	}
 
+	[self setTitleViewWithSubtitle:withDefault];
+	
 	if (options.topBar.backButton.hasValue) {
 		UIViewController *lastViewControllerInStack = viewController.navigationController.viewControllers.count > 1 ? viewController.navigationController.viewControllers[viewController.navigationController.viewControllers.count - 2] : viewController.navigationController.topViewController;
 	    RNNNavigationOptions * resolvedOptions	= (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
 		[lastViewControllerInStack applyBackButton:resolvedOptions.topBar.backButton];
+	}
+}
+
+- (void)removeTitleComponentIfNeeded:(RNNNavigationOptions *)options {
+	if (options.topBar.title.text.hasValue && !options.topBar.component.hasValue) {
+		[_customTitleView removeFromSuperview];
+		_customTitleView = nil;
 	}
 }
 
@@ -208,17 +212,6 @@
 			[_titleViewHelper setSubtitleOptions:options.topBar.subtitle];
 		}
 
-		[_titleViewHelper setup];
-	} else {
-		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.boundViewController];
-		
-		if (options.topBar.title.text.hasValue) {
-			[_titleViewHelper setTitleOptions:options.topBar.title];
-		}
-		if (options.topBar.subtitle.text.hasValue) {
-			[_titleViewHelper setSubtitleOptions:options.topBar.subtitle];
-		}
-		
 		[_titleViewHelper setup];
 	}
 }

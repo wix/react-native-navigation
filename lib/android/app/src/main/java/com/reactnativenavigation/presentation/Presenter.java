@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
+import com.reactnativenavigation.parse.NavigationBarOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.StatusBarOptions;
@@ -39,6 +40,7 @@ public class Presenter {
 
     public void mergeOptions(View view, Options options) {
         mergeStatusBarOptions(view, options.statusBar);
+        mergeNavigationBarOptions(options.navigationBar);
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -46,6 +48,7 @@ public class Presenter {
         applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
         applyStatusBarOptions(withDefaultOptions);
+        applyNavigationBarOptions(withDefaultOptions.navigationBar);
     }
 
     public void onViewBroughtToFront(Options options) {
@@ -185,6 +188,21 @@ public class Presenter {
             } else {
                 view.setSystemUiVisibility(~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             }
+        }
+    }
+
+    private void applyNavigationBarOptions(NavigationBarOptions options) {
+        setNavigationBarBackgroundColor(options);
+    }
+
+    private void mergeNavigationBarOptions(NavigationBarOptions options) {
+        setNavigationBarBackgroundColor(options);
+    }
+
+    private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && navigationBar.backgroundColor.canApplyValue()) {
+            int defaultColor = activity.getWindow().getNavigationBarColor();
+            activity.getWindow().setNavigationBarColor(navigationBar.backgroundColor.get(defaultColor));
         }
     }
 }

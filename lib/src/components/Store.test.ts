@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Store } from './Store';
+import { IWrappedComponent } from './ComponentWrapper';
 
 describe('Store', () => {
   let uut: Store;
@@ -13,12 +14,12 @@ describe('Store', () => {
   });
 
   it('holds props by id', () => {
-    uut.setPropsForId('component1', { a: 1, b: 2 });
+    uut.updateProps('component1', { a: 1, b: 2 });
     expect(uut.getPropsForId('component1')).toEqual({ a: 1, b: 2 });
   });
 
   it('defensive for invalid Id and props', () => {
-    uut.setPropsForId('component1', undefined);
+    uut.updateProps('component1', undefined);
     expect(uut.getPropsForId('component1')).toEqual({});
   });
 
@@ -28,11 +29,34 @@ describe('Store', () => {
     expect(uut.getComponentClassForName('example.mycomponent')).toEqual(MyWrappedComponent);
   });
 
-  it('clean by component id', () => {
-    uut.setPropsForId('refUniqueId', { foo: 'bar' });
-
-    uut.cleanId('refUniqueId');
-
+  it('clear props by component id when clear component', () => {
+    uut.updateProps('refUniqueId', { foo: 'bar' });
+    uut.clearComponent('refUniqueId');
     expect(uut.getPropsForId('refUniqueId')).toEqual({});
+  });
+
+  it('clear instance by component id when clear component', () => {
+    uut.setComponentInstance('refUniqueId', ({} as IWrappedComponent));
+    uut.clearComponent('refUniqueId');
+    expect(uut.getComponentInstance('refUniqueId')).toEqual(undefined);
+  });
+
+  it('holds component instance by id', () => {
+    uut.setComponentInstance('component1', ({} as IWrappedComponent));
+    expect(uut.getComponentInstance('component1')).toEqual({});
+  });
+
+  it('calls component setProps when set props by id', () => {
+    const instance: any = {setProps: jest.fn()};
+    const props = { foo: 'bar' };
+
+    uut.setComponentInstance('component1', instance);
+    uut.updateProps('component1', props);
+
+    expect(instance.setProps).toHaveBeenCalledWith(props);
+  });
+
+  it('not throw exeption when set props by id component not found', () => {
+    expect(() => uut.updateProps('component1', { foo: 'bar' })).not.toThrow();
   });
 });
