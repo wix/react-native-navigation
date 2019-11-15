@@ -11,18 +11,20 @@
 
 > Make sure your Xcode is updated. We recommend editing `.h` and `.m` files in Xcode as the IDE will usually point out common errors.
 
+### Native Installation
+
 1. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#manual-linking)).
 
 2. In Xcode, in Project Navigator (left pane), click on your project (top), then click on your *target* row (on the "project and targets list", which is on the left column of the right pane) and select the `Build Phases` tab (right pane). In the `Link Binary With Libraries` section add `libReactNativeNavigation.a` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-2)).
 
-2b. If you're seeing an error message in Xcode such as:
-```
-'ReactNativeNavigation/ReactNativeNavigation.h' file not found.
-```
-You may also need to add a Header Search Path: ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-3)).
-```objectivec
-$(SRCROOT)/../node_modules/react-native-navigation/lib/ios
-```
+	a. If you're seeing an error message in Xcode such as:
+	```
+	'ReactNativeNavigation/ReactNativeNavigation.h' file not found.
+	```
+	You may also need to add a Header Search Path: ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-3)).
+	```objectivec
+	$(SRCROOT)/../node_modules/react-native-navigation/lib/ios
+	```
 
 3. In Xcode, you will need to edit this file: `AppDelegate.m`. This function is the main entry point for your app:
 
@@ -52,25 +54,71 @@ $(SRCROOT)/../node_modules/react-native-navigation/lib/ios
 	@end
 	```
 
-3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h"`:
-```
-! 'RCTBundleURLProvider.h' file not found
-```
-This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu.
+a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h"`: 
+	```
+	! 'RCTBundleURLProvider.h' file not found
+	```
+	This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu. 
+	To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
 
-To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
+	b. If, in Xcode, you see the following warning message in `AppDelegate.m` next to `#import "@implementation AppDelegate"`:
+	```
+	Class 'AppDelegate' does not conform to protocol 'RCTBridgeDelegate'
+	```
+	You can remove `RCTBridgeDelegate` from this file: `AppDelegate.h`:
+	```diff
+	- #import <React/RCTBridgeDelegate.h>
+	- @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
+	+ @interface AppDelegate : UIResponder <UIApplicationDelegate>
+		...
+	```
 
-3b. If, in Xcode, you see the following warning message in `AppDelegate.m` next to `#import "@implementation AppDelegate"`:
-```
-Class 'AppDelegate' does not conform to protocol 'RCTBridgeDelegate'
-```
-You can remove `RCTBridgeDelegate` from this file: `AppDelegate.h`:
+### Installation with CocoaPods
+
+Projects generated using newer versions of react-native use CocoaPods by default. In that case it's easier to install react-native-navigation using CocoaPods.
+
+1. Add the following to `Podfile`:
+
 ```diff
-- #import <React/RCTBridgeDelegate.h>
-- @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
-+ @interface AppDelegate : UIResponder <UIApplicationDelegate>
-	...
+platform :ios, '9.0'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+target 'YourApp' do
+  # Pods for YourApp
+  pod 'React', :path => '../node_modules/react-native/'
+  pod 'React-Core', :path => '../node_modules/react-native/React'
+  pod 'React-DevSupport', :path => '../node_modules/react-native/React'
+  pod 'React-fishhook', :path => '../node_modules/react-native/Libraries/fishhook'
+  pod 'React-RCTActionSheet', :path => '../node_modules/react-native/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', :path => '../node_modules/react-native/Libraries/NativeAnimation'
+  pod 'React-RCTBlob', :path => '../node_modules/react-native/Libraries/Blob'
+  pod 'React-RCTImage', :path => '../node_modules/react-native/Libraries/Image'
+  pod 'React-RCTLinking', :path => '../node_modules/react-native/Libraries/LinkingIOS'
+  pod 'React-RCTNetwork', :path => '../node_modules/react-native/Libraries/Network'
+  pod 'React-RCTSettings', :path => '../node_modules/react-native/Libraries/Settings'
+  pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
+  pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
+  pod 'React-RCTWebSocket', :path => '../node_modules/react-native/Libraries/WebSocket'
+
+  pod 'React-cxxreact', :path => '../node_modules/react-native/ReactCommon/cxxreact'
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
+  pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', :path => '../node_modules/react-native/ReactCommon/jsinspector'
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
++ pod 'ReactNativeNavigation', :podspec => '../node_modules/react-native-navigation/ReactNativeNavigation.podspec'
+
+  use_native_modules!
+end
 ```
+
+2. `cd ios && pod install`
+
+3. Follow 3 and 3b in the Native Installation section.
 
 ## Android
 

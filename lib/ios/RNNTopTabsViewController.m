@@ -1,7 +1,7 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNSegmentedControl.h"
 #import "ReactNativeNavigation.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @interface RNNTopTabsViewController () {
@@ -60,7 +60,7 @@
 
 - (void)setViewControllers:(NSArray *)viewControllers {
 	_viewControllers = viewControllers;
-	for (RNNRootViewController* childVc in viewControllers) {
+	for (RNNComponentViewController* childVc in viewControllers) {
 		[childVc.view setFrame:_contentView.bounds];
 //		[childVc.options.topTab applyOn:childVc];
 		[self addChildViewController:childVc];

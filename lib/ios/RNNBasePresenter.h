@@ -8,7 +8,13 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @property(nonatomic, strong) NSString *boundComponentId;
 
-- (void)bindViewController:(UIViewController *)boundViewController;
+@property(nonatomic, strong) RNNNavigationOptions * defaultOptions;
+
+- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
+
+- (void)boundViewController:(UIViewController *)boundViewController;
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions;
 
@@ -20,9 +26,15 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)applyDotIndicator:(UIViewController *)child;
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions;
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
 - (void)viewDidLayoutSubviews;
+
+- (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions;
+
+- (UIInterfaceOrientationMask)getOrientation:(RNNNavigationOptions *)options;
+
+- (BOOL)isStatusBarVisibility:(UINavigationController *)stack resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
 @end

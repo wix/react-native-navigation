@@ -7,6 +7,7 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.DotIndicatorOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Param;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;
@@ -52,8 +53,8 @@ public class BottomTabPresenter {
             for (int i = 0; i < tabs.size(); i++) {
                 BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
                 bottomTabs.setTitleTypeface(i, tab.fontFamily);
-                bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
-                bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
+                if (tab.selectedIconColor.canApplyValue()) bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
+                if (tab.iconColor.canApplyValue()) bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
                 bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
                 bottomTabs.setTitleInactiveColor(i, tab.textColor.get(null));
                 bottomTabs.setTitleInactiveTextSizeInSp(i, tab.fontSize.hasValue() ? Float.valueOf(tab.fontSize.get()) : null);
@@ -78,8 +79,8 @@ public class BottomTabPresenter {
             if (index >= 0) {
                 BottomTabOptions tab = options.bottomTabOptions;
                 if (tab.fontFamily != null) bottomTabs.setTitleTypeface(index, tab.fontFamily);
-                if (tab.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
-                if (tab.iconColor.hasValue()) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
+                if (canMerge(tab.selectedIconColor)) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
+                if (canMerge(tab.iconColor)) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
                 if (tab.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, tab.selectedTextColor.get());
                 if (tab.textColor.hasValue()) bottomTabs.setTitleInactiveColor(index, tab.textColor.get());
                 if (tab.text.hasValue()) bottomTabs.setText(index, tab.text.get());
@@ -87,6 +88,12 @@ public class BottomTabPresenter {
                     @Override
                     public void onComplete(@NonNull Drawable drawable) {
                         bottomTabs.setIcon(index, drawable);
+                    }
+                });
+                if (tab.selectedIcon.hasValue()) imageLoader.loadIcon(context, tab.selectedIcon.get(), new ImageLoadingListenerAdapter() {
+                    @Override
+                    public void onComplete(@NonNull Drawable drawable) {
+                        bottomTabs.setSelectedIcon(index, drawable);
                     }
                 });
                 if (tab.testId.hasValue()) bottomTabs.setTag(index, tab.testId.get());
@@ -136,5 +143,9 @@ public class BottomTabPresenter {
 
     private boolean shouldApplyDot(BottomTabOptions tab) {
         return tab.dotIndicator.visible.hasValue() && !tab.badge.hasValue();
+    }
+
+    private boolean canMerge(Param p) {
+        return p.hasValue() && p.canApplyValue();
     }
 }

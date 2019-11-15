@@ -12,4 +12,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame;
 
+- (NSString *)componentId;
+
 @end

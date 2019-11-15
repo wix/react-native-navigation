@@ -20,12 +20,13 @@ export class OptionsProcessor {
 
   private processObject(objectToProcess: object) {
     _.forEach(objectToProcess, (value, key) => {
+      this.processColor(key, value, objectToProcess);
+
       if (!value) {
         return;
       }
 
       this.processComponent(key, value, objectToProcess);
-      this.processColor(key, value, objectToProcess);
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
 
@@ -37,7 +38,7 @@ export class OptionsProcessor {
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (_.isEqual(key, 'color') || _.endsWith(key, 'Color')) {
-      options[key] = this.colorService.toNativeColor(value);
+      options[key] = value === null ? 'NoColor' : this.colorService.toNativeColor(value);
     }
   }
 
@@ -56,7 +57,7 @@ export class OptionsProcessor {
     if (_.endsWith(key, 'Buttons')) {
       _.forEach(value, (button) => {
         if (button.passProps && button.id) {
-          this.store.setPropsForId(button.id, button.passProps);
+          this.store.updateProps(button.id, button.passProps);
           button.passProps = undefined;
         }
       });
@@ -67,7 +68,7 @@ export class OptionsProcessor {
     if (_.isEqual(key, 'component')) {
       value.componentId = value.id ? value.id : this.uniqueIdProvider.generate('CustomComponent');
       if (value.passProps) {
-        this.store.setPropsForId(value.componentId, value.passProps);
+        this.store.updateProps(value.componentId, value.passProps);
       }
       options[key].passProps = undefined;
     }

@@ -5,7 +5,7 @@
 @implementation UIViewController (LayoutProtocol)
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
-						   creator:(id<RNNRootViewCreator>)creator
+						   creator:(id<RNNComponentViewCreator>)creator
 						   options:(RNNNavigationOptions *)options
 					defaultOptions:(RNNNavigationOptions *)defaultOptions
 						 presenter:(RNNBasePresenter *)presenter
@@ -22,28 +22,34 @@
 		[self performSelector:@selector(setViewControllers:) withObject:childViewControllers];
 	}
 	self.presenter = presenter;
-	[self.presenter bindViewController:self];
+    [self.presenter boundViewController:self];
 	[self.presenter applyOptionsOnInit:self.resolveOptions];
-	
 
 	return self;
 }
 
-- (RNNNavigationOptions *)resolveOptions {
-	return [(RNNNavigationOptions *)[self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
-}
-
-- (RNNNavigationOptions *)resolveChildOptions:(UIViewController *) child {
-	return [(RNNNavigationOptions *)[self.options mergeInOptions:child.resolveOptions.copy] withDefault:self.defaultOptions];
-}
-
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-	[self.presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
-	[self.parentViewController mergeOptions:options];
+    [self.options overrideOptions:options];
+    [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+    [self.parentViewController mergeChildOptions:options];
+}
+
+- (void)mergeChildOptions:(RNNNavigationOptions *)options {
+    [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+	[self.parentViewController mergeChildOptions:options];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+    return (RNNNavigationOptions *) [self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy];
 }
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
 	[self.options overrideOptions:options];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+	UIInterfaceOrientationMask interfaceOrientationMask = self.presenter ? [self.presenter getOrientation:[self resolveOptions]] : [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
+	return interfaceOrientationMask;
 }
 
 - (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
@@ -131,11 +137,11 @@
 	objc_setAssociatedObject(self, @selector(eventEmitter), eventEmitter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (id<RNNRootViewCreator>)creator {
+- (id<RNNComponentViewCreator>)creator {
 	return objc_getAssociatedObject(self, @selector(creator));
 }
 
-- (void)setCreator:(id<RNNRootViewCreator>)creator {
+- (void)setCreator:(id<RNNComponentViewCreator>)creator {
 	objc_setAssociatedObject(self, @selector(creator), creator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

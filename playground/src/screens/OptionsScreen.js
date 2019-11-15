@@ -1,22 +1,19 @@
 const React = require('react');
-const { Component } = require('react');
+const {Component} = require('react');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
 const Navigation = require('../services/Navigation');
 const Screens = require('./Screens');
-const Colors = require('../commons/Colors');
 const {
   CHANGE_TITLE_BTN,
   HIDE_TOP_BAR_BTN,
   SHOW_TOP_BAR_BTN,
   TOP_BAR,
-  ROUND_BUTTON,
-  BUTTON_ONE,
-  LEFT_BUTTON,
   PUSH_BTN,
   HIDE_TOPBAR_DEFAULT_OPTIONS,
   SHOW_YELLOW_BOX_BTN,
-  SET_REACT_TITLE_VIEW
+  SET_REACT_TITLE_VIEW,
+  GOTO_BUTTONS_SCREEN
 } = require('../testIDs');
 
 class Options extends Component {
@@ -27,33 +24,7 @@ class Options extends Component {
         testID: TOP_BAR,
         title: {
           text: 'Styling Options'
-        },
-        rightButtons: [
-          {
-            id: 'ONE',
-            testID: BUTTON_ONE,
-            text: 'One',
-            color: Colors.primary
-          },
-          {
-            id: 'ROUND',
-            testID: ROUND_BUTTON,
-            component: {
-              name: Screens.RoundButton,
-              passProps: {
-                title: 'Two'
-              }
-            }
-          }
-        ],
-        leftButtons: [
-          {
-            id: 'LEFT',
-            testID: LEFT_BUTTON,
-            icon: require('../../img/clear.png'),
-            color: Colors.primary
-          }
-        ]
+        }
       }
     };
   }
@@ -69,6 +40,7 @@ class Options extends Component {
         <Button label='Set React Title View' testID={SET_REACT_TITLE_VIEW} onPress={this.setReactTitleView} />
         <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
         <Button label='StatusBar' onPress={this.statusBarScreen} />
+        <Button label='Buttons Screen' testID={GOTO_BUTTONS_SCREEN} onPress={this.goToButtonsScreen} />
       </Root>
     );
   }
@@ -121,6 +93,8 @@ class Options extends Component {
   });
 
   statusBarScreen = () => Navigation.showModal(Screens.StatusBar);
+
+  goToButtonsScreen = () => Navigation.push(this, Screens.Buttons);
 }
 
 module.exports = Options;

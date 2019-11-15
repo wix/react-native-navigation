@@ -1,10 +1,10 @@
 #import "RNNNavigationOptions.h"
 #import <React/RCTConvert.h>
-#import "RNNNavigationController.h"
-#import "RNNTabBarController.h"
+#import "RNNStackController.h"
+#import "RNNBottomTabsController.h"
 #import "RNNTopBarOptions.h"
 #import "RNNSideMenuController.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "RNNSplitViewController.h"
 #import "RNNNavigationButtons.h"
 #import "RNNSplitViewOptions.h"
@@ -45,7 +45,7 @@
 	return self;
 }
 
-- (RNNOptions *)copy {
+- (RNNNavigationOptions *)copy {
 	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	[newOptions overrideOptions:self];
 	

@@ -15,6 +15,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.Component;
 
@@ -110,6 +111,24 @@ public class ViewControllerTest extends BaseTest {
     public void findControllerById_SelfOrNull() {
         assertThat(uut.findController("456")).isNull();
         assertThat(uut.findController("uut")).isEqualTo(uut);
+    }
+
+    @Test
+    public void runOnPreDraw() {
+        Functions.Func1<View> task = Mockito.mock(Functions.Func1.class);
+        uut.runOnPreDraw(task);
+        dispatchPreDraw(uut.getView());
+        verify(task).run(uut.getView());
+    }
+
+    @Test
+    public void runOnPreDraw_doesNotInvokeTaskIfControllerIsDestroyed() {
+        Functions.Func1<View> task = Mockito.mock(Functions.Func1.class);
+        uut.runOnPreDraw(task);
+        View view = uut.getView();
+        uut.destroy();
+        dispatchPreDraw(view);
+        verify(task, times(1)).run(view);
     }
 
     @Test

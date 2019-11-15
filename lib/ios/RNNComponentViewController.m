@@ -1,12 +1,12 @@
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "RNNAnimationsTransitionDelegate.h"
 #import "UIViewController+LayoutProtocol.h"
 
-@implementation RNNRootViewController
+@implementation RNNComponentViewController
 
 @synthesize previewCallback;
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo rootViewCreator:(id<RNNRootViewCreator>)creator eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNViewControllerPresenter *)presenter options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo rootViewCreator:(id<RNNComponentViewCreator>)creator eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNComponentPresenter *)presenter options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions {
 	self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:nil];
 	
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.resolveOptions.customTransition];
@@ -16,7 +16,7 @@
 	return self;
 }
 
-- (instancetype)initExternalComponentWithLayoutInfo:(RNNLayoutInfo *)layoutInfo eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNViewControllerPresenter *)presenter options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions {
+- (instancetype)initExternalComponentWithLayoutInfo:(RNNLayoutInfo *)layoutInfo eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNComponentPresenter *)presenter options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions {
 	self = [self initWithLayoutInfo:layoutInfo rootViewCreator:nil eventEmitter:eventEmitter presenter:presenter options:options defaultOptions:defaultOptions];
 	return self;
 }
@@ -27,9 +27,8 @@
 	[viewController didMoveToParentViewController:self];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[_presenter mergeOptions:options currentOptions:self.options defaultOptions:self.defaultOptions];
-	[self.parentViewController mergeOptions:options];
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+	[_presenter setDefaultOptions:defaultOptions];
 }
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
@@ -112,29 +111,15 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if (self.resolveOptions.statusBar.visible.hasValue) {
-		return ![self.resolveOptions.statusBar.visible get];
-	} else if ([self.resolveOptions.statusBar.hideWithTopBar getWithDefaultValue:NO]) {
-		return self.navigationController.isNavigationBarHidden;
-	}
-	
-	return NO;
+	return [_presenter isStatusBarVisibility:self.navigationController resolvedOptions:self.resolveOptions];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	if ([[self.resolveOptions.statusBar.style getWithDefaultValue:@"default"] isEqualToString:@"light"]) {
-		return UIStatusBarStyleLightContent;
-	} else {
-		return UIStatusBarStyleDefault;
-	}
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.resolveOptions.layout.supportedOrientations;
+	return [_presenter getStatusBarStyle:[self resolveOptions]];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
-	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
+	RNNComponentViewController* vc =  (RNNComponentViewController*)viewController;
 	if (![[vc.self.resolveOptions.topBar.backButton.transition getWithDefaultValue:@""] isEqualToString:@"custom"]){
 		navigationController.delegate = nil;
 	}

@@ -78,6 +78,12 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
 	}
 
     @Override
+    public void applyOptions(Options options) {
+        super.applyOptions(options);
+        presenter.applyOptions(options);
+    }
+
+    @Override
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions());
@@ -89,10 +95,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     @Override
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
-        presenter.mergeChildOptions(options.sideMenuRootOptions);
-        performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(options.copy().clearSideMenuOptions(), child)
-        );
+        presenter.mergeOptions(options.sideMenuRootOptions);
     }
 
     @Override
