@@ -639,6 +639,12 @@ export interface SideMenuSide {
    * Set the height of the side menu
    */
   height?: number;
+  /**
+   * Stretch sideMenu contents when opened past the width
+   * #### (iOS specific)
+   * @default true
+   */
+  shouldStretchDrawer?: boolean;
 }
 
 export interface OptionsSideMenu {

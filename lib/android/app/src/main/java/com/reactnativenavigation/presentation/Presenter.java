@@ -40,6 +40,7 @@ public class Presenter {
 
     public void mergeOptions(View view, Options options) {
         mergeStatusBarOptions(view, options.statusBar);
+        mergeNavigationBarOptions(options.navigationBar);
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -47,6 +48,7 @@ public class Presenter {
         applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
         applyStatusBarOptions(withDefaultOptions);
+        applyNavigationBarOptions(withDefaultOptions.navigationBar);
     }
 
     public void onViewBroughtToFront(Options options) {
@@ -85,7 +87,6 @@ public class Presenter {
     }
 
     private void applyStatusBarOptions(Options options) {
-        setNavigationBarBackgroundColor(options.navigationBar);
         setStatusBarBackgroundColor(options.statusBar);
         setTextColorScheme(options.statusBar.textColorScheme);
         setTranslucent(options.statusBar);
@@ -116,13 +117,6 @@ public class Presenter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && statusBar.backgroundColor.canApplyValue()) {
             int defaultColor = statusBar.visible.isTrueOrUndefined() ? Color.BLACK : Color.TRANSPARENT;
             activity.getWindow().setStatusBarColor(statusBar.backgroundColor.get(defaultColor));
-        }
-    }
-
-    private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && navigationBar.backgroundColor.canApplyValue()) {
-            int defaultColor = activity.getWindow().getNavigationBarColor();
-            activity.getWindow().setNavigationBarColor(navigationBar.backgroundColor.get(defaultColor));
         }
     }
 
@@ -194,6 +188,21 @@ public class Presenter {
             } else {
                 view.setSystemUiVisibility(~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             }
+        }
+    }
+
+    private void applyNavigationBarOptions(NavigationBarOptions options) {
+        setNavigationBarBackgroundColor(options);
+    }
+
+    private void mergeNavigationBarOptions(NavigationBarOptions options) {
+        setNavigationBarBackgroundColor(options);
+    }
+
+    private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && navigationBar.backgroundColor.canApplyValue()) {
+            int defaultColor = activity.getWindow().getNavigationBarColor();
+            activity.getWindow().setNavigationBarColor(navigationBar.backgroundColor.get(defaultColor));
         }
     }
 }

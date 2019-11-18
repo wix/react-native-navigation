@@ -17,7 +17,7 @@
     [super setUp];
 	self.uut = [[RNNSideMenuPresenter alloc] init];
 	self.bindedViewController = [OCMockObject partialMockForObject:[RNNSideMenuController new]];
-	[self.uut bindViewController:self.bindedViewController];
+    [self.uut boundViewController:self.bindedViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 

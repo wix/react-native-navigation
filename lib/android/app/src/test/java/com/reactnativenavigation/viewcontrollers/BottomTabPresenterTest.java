@@ -9,6 +9,7 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.parse.params.DontApplyColour;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.views.BottomTabs;
@@ -98,6 +99,16 @@ public class BottomTabPresenterTest extends BaseTest {
         verify(bottomTabs, times(0)).setIconInactiveColor(eq(2), anyInt());
         verify(bottomTabs, times(0)).setIconActiveColor(eq(2), anyInt());
         verifyNoMoreInteractions(bottomTabs);
+    }
+
+    @Test
+    public void mergeChildOptions_nullColorsAreNotMerged() {
+        Options options = new Options();
+        options.bottomTabOptions.iconColor = new DontApplyColour();
+        options.bottomTabOptions.selectedIconColor = new DontApplyColour();
+        uut.mergeChildOptions(options, child3);
+        verify(bottomTabs, times(0)).setIconActiveColor(anyInt(), anyInt());
+        verify(bottomTabs, times(0)).setIconInactiveColor(anyInt(), anyInt());
     }
 
     private Options createTab1Options() {
