@@ -79,6 +79,10 @@ public class BottomTabsOptions {
         if (!tabsAttachMode.hasValue()) tabsAttachMode = defaultOptions.tabsAttachMode;
     }
 
+    public boolean isHiddenOrDrawBehind() {
+        return visible.isFalse() || drawBehind.isTrue();
+    }
+
     public void clearOneTimeOptions() {
         currentTabId = new NullText();
         currentTabIndex = new NullNumber();
