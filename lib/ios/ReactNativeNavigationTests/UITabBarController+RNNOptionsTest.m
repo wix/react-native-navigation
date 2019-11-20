@@ -1,6 +1,7 @@
 #import <XCTest/XCTest.h>
-#import <OCMockObject.h>
+#import <OCMock/OCMock.h>
 #import "UITabBarController+RNNOptions.h"
+#import "UITabBar+centered.h"
 
 @interface UITabBarController_RNNOptionsTest : XCTestCase
 
@@ -13,6 +14,7 @@
 - (void)setUp {
     [super setUp];
 	self.uut = [OCMockObject partialMockForObject:[UITabBarController new]];
+	OCMStub([self.uut tabBar]).andReturn([OCMockObject partialMockForObject:[UITabBar new]]);
 }
 
 - (void)test_tabBarTranslucent_true {
@@ -37,6 +39,18 @@
 - (void)test_tabBarHideShadow_false {
 	[self.uut setTabBarHideShadow:NO];
 	XCTAssertFalse(self.uut.tabBar.clipsToBounds);
+}
+
+- (void)test_setTabItemImagesCentered_true {
+	[[(id)self.uut.tabBar expect] centerTabItems];
+	[self.uut setTabItemImagesCentered:YES];
+	[(id)self.uut.tabBar verify];
+}
+
+- (void)test_setTabItemImagesCentered_false {
+	[[(id)self.uut.tabBar reject] centerTabItems];
+	[self.uut setTabItemImagesCentered:NO];
+	[(id)self.uut.tabBar verify];
 }
 
 - (void)test_tabBarBackgroundColor {

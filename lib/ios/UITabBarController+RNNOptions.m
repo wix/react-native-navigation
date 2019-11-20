@@ -1,5 +1,6 @@
 #import "UITabBarController+RNNOptions.h"
 #import "RNNBottomTabsController.h"
+#import "UITabBar+centered.h"
 
 @implementation UITabBarController (RNNOptions)
 
@@ -71,6 +72,12 @@
 		 {
 			 self.tabBar.hidden = YES;
 		 }];
+	}
+}
+
+- (void)setTabItemImagesCentered:(BOOL)centered {
+	if (centered) {
+		[self.tabBar centerTabItems];
 	}
 }
 
