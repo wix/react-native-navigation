@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "RNNStackController.h"
-#import "RNNComponentViewController.h"
+#import <ReactNativeNavigation/RNNStackController.h>
+#import <ReactNativeNavigation/RNNComponentViewController.h>
 #import "RNNTestRootViewCreator.h"
 
 @interface RNNNavigationControllerTest : XCTestCase

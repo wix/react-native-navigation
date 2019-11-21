@@ -2,7 +2,7 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import "RNNLayoutManager.h"
-#import "UIViewController+LayoutProtocol.m"
+#import "UIViewController+LayoutProtocol.h"
 
 @interface RNNLayoutManagerTest : XCTestCase
 
@@ -29,6 +29,7 @@
 	UIApplication* sharedApplication = [OCMockObject mockForClass:[UIApplication class]];
 	id mockedApplicationClass = OCMClassMock([UIApplication class]);
 	OCMStub(ClassMethod([mockedApplicationClass sharedApplication])).andReturn(sharedApplication);
+	OCMStub(sharedApplication.keyWindow).andReturn(_firstWindow);
 	OCMStub([sharedApplication windows]).andReturn(windows);
 }
 

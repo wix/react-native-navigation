@@ -29,7 +29,7 @@ function runIosUnitTests() {
             RCT_NO_LAUNCH_PACKAGER=true
             xcodebuild build build-for-testing
             -scheme "ReactNativeNavigation"
-            -project playground.xcodeproj
+            -workspace playground.xcworkspace
             -sdk iphonesimulator
             -configuration ${conf}
             -derivedDataPath ./playground/ios/DerivedData/playground
@@ -41,7 +41,7 @@ function runIosUnitTests() {
             RCT_NO_LAUNCH_PACKAGER=true
             xcodebuild test-without-building
             -scheme "ReactNativeNavigation"
-            -project playground.xcodeproj
+            -workspace playground.xcworkspace
             -sdk iphonesimulator
             -configuration ${conf}
             -destination 'platform=iOS Simulator,name=iPhone 11'

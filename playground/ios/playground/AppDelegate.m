@@ -2,7 +2,7 @@
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
 #import "AppDelegate.h"
-#import "RNNCustomViewController.h"
+#import <ReactNativeNavigation/RNNCustomViewController.h>
 
 @implementation AppDelegate
 
