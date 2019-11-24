@@ -41,9 +41,9 @@
 	XCTAssertFalse(self.uut.tabBar.clipsToBounds);
 }
 
-- (void)test_setTabItemImagesCentered {
+- (void)test_centerTabItems {
 	[[(id)self.uut.tabBar expect] centerTabItems];
-	[self.uut setTabItemImagesCentered];
+	[self.uut centerTabItems];
 	[(id)self.uut.tabBar verify];
 }
 

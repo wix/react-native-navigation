@@ -10,7 +10,7 @@
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [bottomTabs setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex getWithDefaultValue:0]];
 	if ([[withDefault.bottomTabs.titleDisplayMode getWithDefaultValue:@"alwaysShow"] isEqualToString:@"alwaysHide"]) {
-		[bottomTabs setTabItemImagesCentered];
+		[bottomTabs centerTabItems];
 	}
 }
 

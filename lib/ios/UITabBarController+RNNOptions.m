@@ -75,7 +75,7 @@
 	}
 }
 
-- (void)setTabItemImagesCentered {
+- (void)centerTabItems {
 	[self.tabBar centerTabItems];
 }
 
