@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface UITabBar (centered)
+@interface UITabBar (utils)
 
 - (void)centerTabItems;
 

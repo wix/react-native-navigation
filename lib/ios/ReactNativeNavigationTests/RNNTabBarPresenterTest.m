@@ -57,7 +57,7 @@
 - (void)testApplyOptionsOnInit_alwaysShow_shouldNotCenterTabImages {
 	RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
 	initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysShow"];
-	[[self.boundViewController expect] setTabItemImagesCentered:NO];
+	[[self.boundViewController reject] setTabItemImagesCentered];
 	[self.uut applyOptionsOnInit:initialOptions];
 	[self.boundViewController verify];
 }
@@ -65,7 +65,7 @@
 - (void)testApplyOptions_shouldApplyOptionsOnInit_alwaysHide_shouldCenterTabImages {
 	RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
 	initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysHide"];
-	[[self.boundViewController expect] setTabItemImagesCentered:YES];
+	[[self.boundViewController expect] setTabItemImagesCentered];
 	[self.uut applyOptionsOnInit:initialOptions];
 	[self.boundViewController verify];
 }

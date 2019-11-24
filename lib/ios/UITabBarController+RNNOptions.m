@@ -1,6 +1,6 @@
 #import "UITabBarController+RNNOptions.h"
 #import "RNNBottomTabsController.h"
-#import "UITabBar+centered.h"
+#import "UITabBar+utils.h"
 
 @implementation UITabBarController (RNNOptions)
 
@@ -75,10 +75,8 @@
 	}
 }
 
-- (void)setTabItemImagesCentered:(BOOL)centered {
-	if (centered) {
-		[self.tabBar centerTabItems];
-	}
+- (void)setTabItemImagesCentered {
+	[self.tabBar centerTabItems];
 }
 
 - (void)forEachTab:(void (^)(UIView *, UIViewController * tabViewController, int tabIndex))performOnTab {

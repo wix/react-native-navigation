@@ -9,7 +9,9 @@
     UITabBarController *bottomTabs = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [bottomTabs setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex getWithDefaultValue:0]];
-	[bottomTabs setTabItemImagesCentered:[[withDefault.bottomTabs.titleDisplayMode getWithDefaultValue:@"alwaysShow"] isEqualToString:@"alwaysHide"]];
+	if ([[withDefault.bottomTabs.titleDisplayMode getWithDefaultValue:@"alwaysShow"] isEqualToString:@"alwaysHide"]) {
+		[bottomTabs setTabItemImagesCentered];
+	}
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {

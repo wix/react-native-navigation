@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import "UITabBarController+RNNOptions.h"
-#import "UITabBar+centered.h"
+#import "UITabBar+utils.h"
 
 @interface UITabBarController_RNNOptionsTest : XCTestCase
 
@@ -41,15 +41,9 @@
 	XCTAssertFalse(self.uut.tabBar.clipsToBounds);
 }
 
-- (void)test_setTabItemImagesCentered_true {
+- (void)test_setTabItemImagesCentered {
 	[[(id)self.uut.tabBar expect] centerTabItems];
-	[self.uut setTabItemImagesCentered:YES];
-	[(id)self.uut.tabBar verify];
-}
-
-- (void)test_setTabItemImagesCentered_false {
-	[[(id)self.uut.tabBar reject] centerTabItems];
-	[self.uut setTabItemImagesCentered:NO];
+	[self.uut setTabItemImagesCentered];
 	[(id)self.uut.tabBar verify];
 }
 
