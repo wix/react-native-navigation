@@ -50,7 +50,7 @@
 	if (_fillParent) {
 		return UILayoutFittingExpandedSize;
 	} else {
-		return self.contentView.intrinsicContentSize;
+		return [super intrinsicContentSize];
 	}
 }
 
