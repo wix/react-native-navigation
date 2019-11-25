@@ -104,7 +104,23 @@
 }
 
 - (void)onBridgeWillReload {
-	UIApplication.sharedApplication.delegate.window.rootViewController =  nil;
+	[self clearVisibleModals];
+	[_componentRegistry clear];
+	UIApplication.sharedApplication.delegate.window.rootViewController = nil;
+}
+
+- (void)clearVisibleModals {
+	UIViewController* rootViewController = UIApplication.sharedApplication.delegate.window.rootViewController;
+	if (rootViewController.presentedViewController) {
+		dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+		[rootViewController dismissViewControllerAnimated:NO completion:^{
+			dispatch_semaphore_signal(sem);
+		}];
+		
+		while (dispatch_semaphore_wait(sem, DISPATCH_TIME_NOW)) {
+			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0]];
+		}
+	}
 }
 
 @end
