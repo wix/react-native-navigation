@@ -18,7 +18,13 @@ class NavigationScreen  extends React.Component {
     return {
       topBar: {
         title: {
-          text: 'Navigation'
+          component: {
+            name: Screens.ReactTitleView,
+            alignment: 'center',
+            passProps: {
+              text: 'Press Me'
+            }
+          }
         }
       },
       bottomTab: {

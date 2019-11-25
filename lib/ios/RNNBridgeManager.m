@@ -16,6 +16,7 @@
 @property (nonatomic, strong, readwrite) RNNExternalComponentStore *store;
 @property (nonatomic, strong, readwrite) RNNReactComponentRegistry *componentRegistry;
 @property (nonatomic, strong, readonly) RNNOverlayManager *overlayManager;
+@property (nonatomic, strong, readonly) RNNModalManager *modalManager;
 
 @end
 
@@ -39,6 +40,8 @@
 		_delegate = delegate;
 		
 		_overlayManager = [RNNOverlayManager new];
+		_modalManager = [RNNModalManager new];
+		
 		_store = [RNNExternalComponentStore new];
 		_bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:_launchOptions];
 		
@@ -88,7 +91,7 @@
 	_componentRegistry = [[RNNReactComponentRegistry alloc] initWithCreator:rootViewCreator];
 	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter store:_store componentRegistry:_componentRegistry andBridge:bridge];
 
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:_overlayManager mainWindow:_mainWindow];
+	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:_modalManager overlayManager:_overlayManager mainWindow:_mainWindow];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 
 	return [@[bridgeModule,eventEmitter] arrayByAddingObjectsFromArray:[self extraModulesFromDelegate]];
@@ -106,24 +109,10 @@
 }
 
 - (void)onBridgeWillReload {
-	[self clearVisibleModals];
 	[_overlayManager dismissAllOverlays];
+	[_modalManager dismissAllModalsSynchronosly];
 	[_componentRegistry clear];
 	UIApplication.sharedApplication.delegate.window.rootViewController = nil;
-}
-
-- (void)clearVisibleModals {
-	UIViewController* rootViewController = UIApplication.sharedApplication.delegate.window.rootViewController;
-	if (rootViewController.presentedViewController) {
-		dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-		[rootViewController dismissViewControllerAnimated:NO completion:^{
-			dispatch_semaphore_signal(sem);
-		}];
-		
-		while (dispatch_semaphore_wait(sem, DISPATCH_TIME_NOW)) {
-			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0]];
-		}
-	}
 }
 
 @end
