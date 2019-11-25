@@ -36,7 +36,7 @@ def all_pods
   pod 'glog', :podspec => '../../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../../node_modules/react-native/third-party-podspecs/Folly.podspec'
   
-  pod 'ReactNativeNavigation', :podspec => '../../ReactNativeNavigation.podspec'
+  pod 'ReactNativeNavigation', :path => '../../'
   pod 'ReactNativeKeyboardTrackingView', :path => '../../node_modules/react-native-keyboard-tracking-view'
 end
 

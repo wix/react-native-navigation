@@ -254,7 +254,7 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `../../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../../node_modules/react-native/ReactCommon`)
   - ReactNativeKeyboardTrackingView (from `../../node_modules/react-native-keyboard-tracking-view`)
-  - ReactNativeNavigation (from `../../ReactNativeNavigation.podspec`)
+  - ReactNativeNavigation (from `../../`)
   - Yoga (from `../../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -314,7 +314,7 @@ EXTERNAL SOURCES:
   ReactNativeKeyboardTrackingView:
     :path: "../../node_modules/react-native-keyboard-tracking-view"
   ReactNativeNavigation:
-    :podspec: "../../ReactNativeNavigation.podspec"
+    :path: "../../"
   Yoga:
     :path: "../../node_modules/react-native/ReactCommon/yoga"
 
@@ -349,6 +349,6 @@ SPEC CHECKSUMS:
   ReactNativeNavigation: bed6f504aa1a4dadd151503bf99d0ef96d06847f
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: e9ff0689b4b55a42be96dbd54f61c351d129a4b2
+PODFILE CHECKSUM: 8a6eee15d75935b9144e5228ce8fa2a5b98079e7
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.7.1
