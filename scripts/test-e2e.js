@@ -17,6 +17,7 @@ function run() {
     const workers = multi ? 3 : 1;
 
     if (!android) {
+        exec.execSync('npm run build');
         exec.execSync('npm run pod-install');
     }
     if (!skipBuild) {
