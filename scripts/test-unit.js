@@ -25,6 +25,7 @@ function runAndroidUnitTests() {
 function runIosUnitTests() {
   const conf = release ? `Release` : `Debug`;
 
+  exec.execSync('npm run pod-install');
   exec.execSync(`cd ./playground/ios &&
             RCT_NO_LAUNCH_PACKAGER=true
             xcodebuild build build-for-testing

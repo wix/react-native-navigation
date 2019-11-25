@@ -16,6 +16,9 @@ function run() {
     const headless$ = android ? headless ? `--headless` : `` : ``;
     const workers = multi ? 3 : 1;
 
+    if (!android) {
+        exec.execSync('npm run pod-install');
+    }
     if (!skipBuild) {
         exec.execSync(`detox build --configuration ${configuration}`);
     }
