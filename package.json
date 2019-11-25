@@ -21,7 +21,7 @@
   "scripts": {
     "build": "rm -rf ./lib/dist && tsc",
     "watch": "rm -rf ./lib/dist && tsc --watch",
-    "xcode": "open playground/ios/playground.xcodeproj",
+    "xcode": "open playground/ios/playground.xcworkspace",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
     "clean": "node ./scripts/clean",
