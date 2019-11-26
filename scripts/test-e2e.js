@@ -6,6 +6,7 @@ const release = _.includes(process.argv, '--release');
 const skipBuild = _.includes(process.argv, '--skipBuild');
 const headless = _.includes(process.argv, '--headless');
 const multi = _.includes(process.argv, '--multi');
+const verbose = _.includes(process.argv, '--verbose');
 
 run();
 
@@ -15,6 +16,7 @@ function run() {
     const configuration = `${prefix}.${suffix}`;
     const headless$ = android ? headless ? `--headless` : `` : ``;
     const workers = multi ? 3 : 1;
+    const loglevel = verbose ? '--loglevel verbose' : '';
 
     if (!android) {
         exec.execSync('npm run build');
@@ -23,5 +25,5 @@ function run() {
     if (!skipBuild) {
         exec.execSync(`detox build --configuration ${configuration}`);
     }
-    exec.execSync(`detox test --configuration ${configuration} ${headless$} ${!android ? `-w ${workers}` : ``}`); //-f "ScreenStyle.test.js" --loglevel trace
+    exec.execSync(`detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel}`); //-f "ScreenStyle.test.js" --loglevel trace
 }
