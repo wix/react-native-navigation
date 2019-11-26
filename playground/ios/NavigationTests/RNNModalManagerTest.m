@@ -51,7 +51,7 @@
 	[_modalManager showModal:_vc3 animated:NO completion:nil];
 	
 	_modalManager.delegate = self;
-	[_modalManager dismissAllModalsAnimated:NO];
+	[_modalManager dismissAllModalsAnimated:NO completion:nil];
 	
 	XCTAssertTrue(_modalDismissedCount == 3);
 }
@@ -87,7 +87,7 @@
 	[_modalManager dismissModal:_vc2 completion:nil];
 	
 	XCTAssertTrue(_modalDismissedCount == 1);
-	[_modalManager dismissAllModalsAnimated:NO];
+	[_modalManager dismissAllModalsAnimated:NO completion:nil];
 	XCTAssertTrue(_modalDismissedCount == 2);
 }
 

@@ -50,6 +50,7 @@
 		390AD478200F499D00A8250D /* RNNSwizzles.m in Sources */ = {isa = PBXBuildFile; fileRef = 390AD476200F499D00A8250D /* RNNSwizzles.m */; };
 		4534E72520CB6724009F8185 /* RNNLargeTitleOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4534E72320CB6724009F8185 /* RNNLargeTitleOptions.h */; };
 		4534E72620CB6724009F8185 /* RNNLargeTitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */; };
+		5008641223856A2D00A55BE9 /* UITabBar+utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5008641023856A2C00A55BE9 /* UITabBar+utils.m */; };
 		501214C9217741A000435148 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 501214C8217741A000435148 /* libOCMock.a */; };
 		501223D72173590F000F5F98 /* RNNStackPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 501223D52173590F000F5F98 /* RNNStackPresenter.h */; };
 		501223D82173590F000F5F98 /* RNNStackPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 501223D62173590F000F5F98 /* RNNStackPresenter.m */; };
@@ -399,6 +400,8 @@
 		390AD476200F499D00A8250D /* RNNSwizzles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSwizzles.m; sourceTree = "<group>"; };
 		4534E72320CB6724009F8185 /* RNNLargeTitleOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNLargeTitleOptions.h; sourceTree = "<group>"; };
 		4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNLargeTitleOptions.m; sourceTree = "<group>"; };
+		5008641023856A2C00A55BE9 /* UITabBar+utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+utils.m"; sourceTree = "<group>"; };
+		5008641123856A2D00A55BE9 /* UITabBar+utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITabBar+utils.h"; sourceTree = "<group>"; };
 		501214C8217741A000435148 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		501223D52173590F000F5F98 /* RNNStackPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNStackPresenter.h; sourceTree = "<group>"; };
 		501223D62173590F000F5F98 /* RNNStackPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNStackPresenter.m; sourceTree = "<group>"; };
@@ -733,6 +736,8 @@
 				50706E6C20CE7CA5003345C3 /* UIImage+tint.m */,
 				506317A8220B547400B26FC3 /* UIImage+insets.h */,
 				506317A9220B547400B26FC3 /* UIImage+insets.m */,
+				5008641123856A2D00A55BE9 /* UITabBar+utils.h */,
+				5008641023856A2C00A55BE9 /* UITabBar+utils.m */,
 				5038A372216CDDB6009280BC /* UIViewController+SideMenuController.h */,
 				5038A373216CDDB6009280BC /* UIViewController+SideMenuController.m */,
 				5038A3BF216E1E66009280BC /* RNNFontAttributesCreator.h */,
@@ -1604,6 +1609,7 @@
 				501224072173592D000F5F98 /* RNNBottomTabsPresenter.m in Sources */,
 				50A00C38200F84D6000F01A6 /* RNNOverlayOptions.m in Sources */,
 				5039559C2174867000B0A663 /* DoubleParser.m in Sources */,
+				5008641223856A2D00A55BE9 /* UITabBar+utils.m in Sources */,
 				E5F6C3A822DB4D0F0093C2CE /* UIView+Utils.m in Sources */,
 				5049593F216F5D73006D2B81 /* BoolParser.m in Sources */,
 				50EB93421FE14A3E00BD8EEE /* RNNBottomTabOptions.m in Sources */,

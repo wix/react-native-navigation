@@ -1,5 +1,6 @@
 #import "UITabBarController+RNNOptions.h"
 #import "RNNBottomTabsController.h"
+#import "UITabBar+utils.h"
 
 @implementation UITabBarController (RNNOptions)
 
@@ -72,6 +73,10 @@
 			 self.tabBar.hidden = YES;
 		 }];
 	}
+}
+
+- (void)centerTabItems {
+	[self.tabBar centerTabItems];
 }
 
 - (void)forEachTab:(void (^)(UIView *, UIViewController * tabViewController, int tabIndex))performOnTab {

@@ -1,6 +1,6 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "RNNComponentViewController.h"
+#import <ReactNativeNavigation/RNNComponentViewController.h>
 #import "RNNReactRootViewCreator.h"
 #import "RNNTestRootViewCreator.h"
 #import <React/RCTConvert.h>

@@ -25,14 +25,16 @@ function runAndroidUnitTests() {
 function runIosUnitTests() {
   const conf = release ? `Release` : `Debug`;
 
+  exec.execSync('npm run build');
+  exec.execSync('npm run pod-install');
   exec.execSync(`cd ./playground/ios &&
             RCT_NO_LAUNCH_PACKAGER=true
             xcodebuild build build-for-testing
-            -scheme "ReactNativeNavigation"
-            -project playground.xcodeproj
+            -scheme "playground"
+            -workspace playground.xcworkspace
             -sdk iphonesimulator
             -configuration ${conf}
-            -derivedDataPath ./playground/ios/DerivedData/playground
+            -derivedDataPath ./DerivedData/playground
             -quiet
             -UseModernBuildSystem=NO
             ONLY_ACTIVE_ARCH=YES`);
@@ -40,12 +42,12 @@ function runIosUnitTests() {
   exec.execSync(`cd ./playground/ios &&
             RCT_NO_LAUNCH_PACKAGER=true
             xcodebuild test-without-building
-            -scheme "ReactNativeNavigation"
-            -project playground.xcodeproj
+            -scheme "playground"
+            -workspace playground.xcworkspace
             -sdk iphonesimulator
             -configuration ${conf}
             -destination 'platform=iOS Simulator,name=iPhone 11'
-            -derivedDataPath ./playground/ios/DerivedData/playground
+            -derivedDataPath ./DerivedData/playground
             ONLY_ACTIVE_ARCH=YES`);
 }
 

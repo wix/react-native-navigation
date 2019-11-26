@@ -54,6 +54,22 @@
     [self.boundViewController verify];
 }
 
+- (void)testApplyOptionsOnInit_alwaysShow_shouldNotCenterTabImages {
+	RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysShow"];
+	[[self.boundViewController reject] centerTabItems];
+	[self.uut applyOptionsOnInit:initialOptions];
+	[self.boundViewController verify];
+}
+
+- (void)testApplyOptions_shouldApplyOptionsOnInit_alwaysHide_shouldCenterTabImages {
+	RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysHide"];
+	[[self.boundViewController expect] centerTabItems];
+	[self.uut applyOptionsOnInit:initialOptions];
+	[self.boundViewController verify];
+}
+
 - (void)testViewDidLayoutSubviews_appliesBadgeOnNextRunLoop {
     id uut = [self uut];
     [[uut expect] applyDotIndicator];

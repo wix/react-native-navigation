@@ -481,6 +481,12 @@ export interface OptionsBottomTabs {
    */
   animate?: boolean;
   /**
+   * Use large icons when possible, even when three tabs without titles are displayed
+   * #### (android specific)
+   * @default false
+   */
+  preferLargeIcons?: boolean;
+  /**
    * Switch to another screen within the bottom tabs via index (starting from 0)
    */
   currentTabIndex?: number;
@@ -564,8 +570,9 @@ export interface OptionsBottomTab {
   testID?: string;
   /**
    * Set the tab icon
+   * Note: On Android `icon` is required
    */
-  icon: ImageRequireSource;
+  icon?: ImageRequireSource;
   /**
    * Set the icon tint
    */

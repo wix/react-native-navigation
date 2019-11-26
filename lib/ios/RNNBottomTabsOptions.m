@@ -20,6 +20,7 @@
 	self.currentTabId = [TextParser parse:dict key:@"currentTabId"];
 	self.barStyle = [TextParser parse:dict key:@"barStyle"];
 	self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
+	self.titleDisplayMode = [TextParser parse:dict key:@"titleDisplayMode"];
 	
 	return self;
 }

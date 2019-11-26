@@ -18,4 +18,6 @@
 
 - (void)setTabBarVisible:(BOOL)visible animated:(BOOL)animated;
 
+- (void)centerTabItems;
+
 @end
