@@ -156,6 +156,9 @@
 	UIColor* color = UIColor.redColor;
 	[self.uut setTopBarBackgroundColor:color];
 	XCTAssertEqual(self.uut.navigationBar.barTintColor, color);
+	XCTAssertEqual(self.uut.navigationBar.standardAppearance.backgroundColor, color);
+	XCTAssertEqual(self.uut.navigationBar.compactAppearance.backgroundColor, color);
+	XCTAssertEqual(self.uut.navigationBar.scrollEdgeAppearance.backgroundColor, color);
 }
 
 - (void)testSetTopBarBackgroundColor_ShouldSetTransparentBackgroundColor {
@@ -166,6 +169,9 @@
 	XCTAssertTrue(self.uut.navigationBar.translucent);
 	XCTAssertNotNil(self.uut.navigationBar.shadowImage);
 	XCTAssertNotNil([self.uut.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault]);
+	XCTAssertNil(self.uut.navigationBar.standardAppearance.backgroundColor);
+	XCTAssertNil(self.uut.navigationBar.compactAppearance.backgroundColor);
+	XCTAssertNil(self.uut.navigationBar.scrollEdgeAppearance.backgroundColor);
 }
 
 - (void)testSetTopBarBackgroundColor_ShouldRemoveTransparentView {
@@ -188,6 +194,9 @@
 	
 	XCTAssertNil([self.uut.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]);
 	XCTAssertNil(self.uut.navigationBar.barTintColor);
+	XCTAssertNil(self.uut.navigationBar.standardAppearance.backgroundColor);
+	XCTAssertNil(self.uut.navigationBar.compactAppearance.backgroundColor);
+	XCTAssertNil(self.uut.navigationBar.scrollEdgeAppearance.backgroundColor);
 }
 
 - (RNNStackController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {

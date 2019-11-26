@@ -208,6 +208,8 @@
 		509B258F2178BE7A00C83C23 /* RNNStackPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 509B258E2178BE7A00C83C23 /* RNNStackPresenterTest.m */; };
 		50A00C37200F84D6000F01A6 /* RNNOverlayOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */; };
 		50A00C38200F84D6000F01A6 /* RNNOverlayOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */; };
+		50A409CA238D444900D5FF7D /* UINavigationBar+utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A409C8238D444900D5FF7D /* UINavigationBar+utils.h */; };
+		50A409CB238D444900D5FF7D /* UINavigationBar+utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A409C9238D444900D5FF7D /* UINavigationBar+utils.m */; };
 		50AB0B1C2255F8640039DAED /* UIViewController+LayoutProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 50AB0B1A2255F8640039DAED /* UIViewController+LayoutProtocol.h */; };
 		50AB0B1D2255F8640039DAED /* UIViewController+LayoutProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AB0B1B2255F8640039DAED /* UIViewController+LayoutProtocol.m */; };
 		50AB0B1F22562FA10039DAED /* UIViewController+LayoutProtocolTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AB0B1E22562FA10039DAED /* UIViewController+LayoutProtocolTest.m */; };
@@ -558,6 +560,8 @@
 		509B258E2178BE7A00C83C23 /* RNNStackPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNStackPresenterTest.m; sourceTree = "<group>"; };
 		50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayOptions.h; sourceTree = "<group>"; };
 		50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayOptions.m; sourceTree = "<group>"; };
+		50A409C8238D444900D5FF7D /* UINavigationBar+utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+utils.h"; sourceTree = "<group>"; };
+		50A409C9238D444900D5FF7D /* UINavigationBar+utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+utils.m"; sourceTree = "<group>"; };
 		50AB0B1A2255F8640039DAED /* UIViewController+LayoutProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LayoutProtocol.h"; sourceTree = "<group>"; };
 		50AB0B1B2255F8640039DAED /* UIViewController+LayoutProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LayoutProtocol.m"; sourceTree = "<group>"; };
 		50AB0B1E22562FA10039DAED /* UIViewController+LayoutProtocolTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LayoutProtocolTest.m"; sourceTree = "<group>"; };
@@ -1173,6 +1177,8 @@
 				E5F6C39F22DB4D0E0093C2CE /* UIView+Utils.m */,
 				E5F6C39D22DB4D0E0093C2CE /* UIViewController+Utils.h */,
 				E5F6C39E22DB4D0E0093C2CE /* UIViewController+Utils.m */,
+				50A409C8238D444900D5FF7D /* UINavigationBar+utils.h */,
+				50A409C9238D444900D5FF7D /* UINavigationBar+utils.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1326,6 +1332,7 @@
 				E8E518321F83B3E0000467AC /* RNNUtils.h in Headers */,
 				50E5F791223FA04C002AFEAD /* RNNAnimationConfigurationOptions.h in Headers */,
 				5049594E216F6277006D2B81 /* NumberParser.h in Headers */,
+				50A409CA238D444900D5FF7D /* UINavigationBar+utils.h in Headers */,
 				50BE951320B5A787004F5DF5 /* RNNStatusBarOptions.h in Headers */,
 				50570BEA2063E09B006A1B5C /* RNNTitleViewHelper.h in Headers */,
 				50495956216F6B3D006D2B81 /* DictionaryParser.h in Headers */,
@@ -1512,6 +1519,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50C4A497206BDDBB00DB292E /* RNNSubtitleOptions.m in Sources */,
+				50A409CB238D444900D5FF7D /* UINavigationBar+utils.m in Sources */,
 				50AB0B1D2255F8640039DAED /* UIViewController+LayoutProtocol.m in Sources */,
 				263905B41E4C6F440023D7D3 /* MMDrawerVisualState.m in Sources */,
 				5012240B21735959000F5F98 /* RNNSideMenuPresenter.m in Sources */,
