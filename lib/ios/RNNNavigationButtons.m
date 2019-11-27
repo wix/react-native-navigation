@@ -72,8 +72,8 @@
         return buttonItem.customView;
     }];
     
-	for (RNNReactView* buttonView in removedButtonViews) {
-		[_componentRegistry removeChildComponent:buttonView.componentId];
+	for (RNNReactView* reactView in removedButtonViews) {
+		[_componentRegistry removeChildComponent:reactView.componentId];
 	}
 }
 
