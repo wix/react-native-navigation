@@ -52,13 +52,27 @@
 			self.viewController.navigationController.navigationBar.tintColor = color;
 		}
 	}
-	
+    
 	if ([side isEqualToString:@"left"]) {
+		[self detachReactViews:barButtonItems oldButtons:self.viewController.navigationItem.leftBarButtonItems];
 		[self.viewController.navigationItem setLeftBarButtonItems:barButtonItems animated:animated];
 	}
 	
 	if ([side isEqualToString:@"right"]) {
+		[self detachReactViews:barButtonItems oldButtons:self.viewController.navigationItem.rightBarButtonItems];
 		[self.viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
+	}
+}
+
+- (void)detachReactViews:(NSArray<UIBarButtonItem *> *)newButtons oldButtons:(NSArray<UIBarButtonItem *> *)oldButtons {
+	for (RNNUIBarButtonItem* barButtonItem in oldButtons) {
+		RNNReactView* reactView = barButtonItem.customView;
+		if ([reactView isKindOfClass:[RNNReactView class]]) {
+			NSArray* result = [newButtons filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"customView == %@", reactView]];
+			if (!result.count) {
+				[_componentRegistry removeChildComponent:reactView.componentId];
+			}
+		}
 	}
 }
 

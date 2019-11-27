@@ -48,6 +48,17 @@
 	}
 }
 
+- (void)removeChildComponent:(NSString *)childId {
+	NSMapTable* parent;
+	NSEnumerator *enumerator = _componentStore.objectEnumerator;
+	while ((parent = enumerator.nextObject)) {
+		if ([parent objectForKey:childId]) {
+			[parent removeObjectForKey:childId];
+			return;
+		}
+	}
+}
+
 - (void)clear {
 	[_componentStore removeAllObjects];
 }
