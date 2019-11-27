@@ -3,21 +3,21 @@
 @implementation NSArray (utils)
 
 - (NSArray*)intersect:(NSArray *)array withPropertyName:(NSString *)propertyName {
-    NSMutableArray* result = [NSMutableArray new];
+    NSMutableArray* intersection = [NSMutableArray new];
     for (NSObject* object in array) {
         NSArray* filteredArray = [self filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%@ == %@", propertyName, object]];
-        [result addObjectsFromArray:filteredArray];
+        [intersection addObjectsFromArray:filteredArray];
     }
     
-    return [NSArray arrayWithArray:result];
+    return [NSArray arrayWithArray:intersection];
 }
 
 - (NSArray*)difference:(NSArray *)array withPropertyName:(NSString *)propertyName {
     NSMutableArray* diff = [NSMutableArray arrayWithArray:self];
-    NSArray* intersect = [self intersect:array withPropertyName:propertyName];
-    [diff removeObjectsInArray:intersect];
+    NSArray* intersection = [self intersect:array withPropertyName:propertyName];
+    [diff removeObjectsInArray:intersection];
     
-    return diff;
+    return [NSArray arrayWithArray:diff];
 }
 
 @end
