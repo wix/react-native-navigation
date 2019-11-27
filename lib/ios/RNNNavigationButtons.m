@@ -66,13 +66,14 @@
 }
 
 - (void)clearPreviousButtonViews:(NSArray<UIBarButtonItem *> *)newButtons oldButtons:(NSArray<UIBarButtonItem *> *)oldButtons {
-    NSArray* removedButtons = [oldButtons difference:newButtons withPropertyName:@"customView"];
+    NSArray* removedButtonViews = [[[oldButtons difference:newButtons withPropertyName:@"customView"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UIBarButtonItem*  _Nullable buttonItem, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [buttonItem.customView isKindOfClass:[RNNReactView class]];
+    }]] mapObjectsUsingBlock:^id(UIBarButtonItem* buttonItem, NSUInteger idx) {
+        return buttonItem.customView;
+    }];
     
-	for (UIBarButtonItem* barButtonItem in removedButtons) {
-		RNNReactView* reactView = barButtonItem.customView;
-        if ([reactView isKindOfClass:[RNNReactView class]]) {
-            [_componentRegistry removeChildComponent:reactView.componentId];
-        }
+	for (RNNReactView* buttonView in removedButtonViews) {
+		[_componentRegistry removeChildComponent:buttonView.componentId];
 	}
 }
 
