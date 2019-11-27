@@ -7,6 +7,7 @@
 #import "UIImage+insets.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "RNNFontAttributesCreator.h"
+#import "NSArray+utils.h"
 
 @interface RNNNavigationButtons()
 
@@ -65,14 +66,13 @@
 }
 
 - (void)clearPreviousButtonViews:(NSArray<UIBarButtonItem *> *)newButtons oldButtons:(NSArray<UIBarButtonItem *> *)oldButtons {
-	for (RNNUIBarButtonItem* barButtonItem in oldButtons) {
+    NSArray* removedButtons = [oldButtons difference:newButtons withPropertyName:@"customView"];
+    
+	for (UIBarButtonItem* barButtonItem in removedButtons) {
 		RNNReactView* reactView = barButtonItem.customView;
-		if ([reactView isKindOfClass:[RNNReactView class]]) {
-			NSArray* result = [newButtons filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"customView == %@", reactView]];
-			if (!result.count) {
-				[_componentRegistry removeChildComponent:reactView.componentId];
-			}
-		}
+        if ([reactView isKindOfClass:[RNNReactView class]]) {
+            [_componentRegistry removeChildComponent:reactView.componentId];
+        }
 	}
 }
 
