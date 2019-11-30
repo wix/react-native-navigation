@@ -4,6 +4,4 @@
 
 - (void)rnn_setBackgroundColor:(UIColor *)color;
 
-- (void)rnn_setBackgroundColorTransparent;
-
 @end

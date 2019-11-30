@@ -123,7 +123,7 @@
 	[_vc1 overrideOptions:_options];
 	
 	[self.uut popViewControllerAnimated:NO];
-	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, self.uut.navigationBar.barTintColor);
+	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, self.uut.navigationBar.standardAppearance.backgroundColor);
 }
 
 - (void)testPopViewControllerSetDefaultTopBarBackgroundForPoppingViewController {
@@ -155,7 +155,6 @@
 - (void)testSetTopBarBackgroundColor_ShouldSetBackgroundColor {
 	UIColor* color = UIColor.redColor;
 	[self.uut setTopBarBackgroundColor:color];
-	XCTAssertEqual(self.uut.navigationBar.barTintColor, color);
 	XCTAssertEqual(self.uut.navigationBar.standardAppearance.backgroundColor, color);
 	XCTAssertEqual(self.uut.navigationBar.compactAppearance.backgroundColor, color);
 	XCTAssertEqual(self.uut.navigationBar.scrollEdgeAppearance.backgroundColor, color);
@@ -165,23 +164,10 @@
 	UIColor* transparentColor = UIColor.clearColor;
 	[self.uut setTopBarBackgroundColor:transparentColor];
 
-	XCTAssertEqual(self.uut.navigationBar.backgroundColor, transparentColor);
 	XCTAssertTrue(self.uut.navigationBar.translucent);
-	XCTAssertNotNil(self.uut.navigationBar.shadowImage);
-	XCTAssertNotNil([self.uut.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault]);
 	XCTAssertNil(self.uut.navigationBar.standardAppearance.backgroundColor);
 	XCTAssertNil(self.uut.navigationBar.compactAppearance.backgroundColor);
 	XCTAssertNil(self.uut.navigationBar.scrollEdgeAppearance.backgroundColor);
-}
-
-- (void)testSetTopBarBackgroundColor_ShouldRemoveTransparentView {
-	UIColor* transparentColor = UIColor.clearColor;
-	UIColor* redColor = UIColor.redColor;
-	
-	[self.uut setTopBarBackgroundColor:transparentColor];
-	XCTAssertNotNil([self.uut.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]);
-	[self.uut setTopBarBackgroundColor:redColor];
-	XCTAssertNil([self.uut.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]);
 }
 
 - (void)testSetTopBarBackgroundColor_NilColorShouldResetNavigationBar {
