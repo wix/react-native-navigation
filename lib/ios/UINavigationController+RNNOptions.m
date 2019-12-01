@@ -1,5 +1,7 @@
 #import "UINavigationController+RNNOptions.h"
 #import "RNNFontAttributesCreator.h"
+#import "UIImage+tint.h"
+#import "UINavigationBar+utils.h"
 
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
@@ -101,6 +103,26 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 - (void)setNavigationBarClipsToBounds:(BOOL)clipsToBounds {
 	self.navigationBar.clipsToBounds = clipsToBounds;
+}
+
+- (void)setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title showTitle:(BOOL)showTitle {
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    if (icon) {
+        icon = color
+        ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+        : icon;
+    }
+    
+    [self.navigationBar rnn_setBackIndicatorImage:icon];
+
+    UIViewController *lastViewControllerInStack = self.viewControllers.count > 1 ? self.viewControllers[self.viewControllers.count - 2] : self.topViewController;
+
+    if (showTitle) {
+        backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
+    }
+    backItem.tintColor = color;
+
+    lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
 @end

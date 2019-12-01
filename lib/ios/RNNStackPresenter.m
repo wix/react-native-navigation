@@ -44,6 +44,7 @@
 	[stack setNavigationBarLargeTitleFontFamily:[withDefault.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.largeTitle.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.largeTitle.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.largeTitle.color getWithDefaultValue:nil]];
 	[stack setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.title.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
 	[stack setBackButtonColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil]];
+    [stack setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES]];
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
@@ -59,6 +60,7 @@
 	[navigationController setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
 	[navigationController setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.title.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
 	[navigationController setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
+    [navigationController setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES]];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
@@ -135,6 +137,10 @@
 	if (options.topBar.background.component.name.hasValue) {
 		[self setCustomNavigationComponentBackground:options perform:nil];
 	}
+    
+    if (options.topBar.backButton.hasValue) {
+        [stack setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES]];
+    }
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {

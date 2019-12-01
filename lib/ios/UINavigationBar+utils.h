@@ -6,4 +6,6 @@
 
 - (void)rnn_setBackgroundColorTransparent;
 
+- (void)rnn_setBackIndicatorImage:(UIImage *)image;
+
 @end

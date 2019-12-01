@@ -57,6 +57,16 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
     }
 }
 
+- (void)rnn_setBackIndicatorImage:(UIImage *)image {
+    if (@available(iOS 13.0, *)) {
+        [[self getNavigaitonBarStandardAppearance] setBackIndicatorImage:image transitionMaskImage:image];
+        [[self getNavigaitonBarCompactAppearance] setBackIndicatorImage:image transitionMaskImage:image];
+        [[self getNavigaitonBarScrollEdgeAppearance] setBackIndicatorImage:image transitionMaskImage:image];
+    } else {
+        [self setBackIndicatorImage:image];
+        [self setBackIndicatorTransitionMaskImage:image];
+    }
+}
 
 - (UINavigationBarAppearance*)getNavigaitonBarStandardAppearance  API_AVAILABLE(ios(13.0)) {
     if (!self.standardAppearance) {
