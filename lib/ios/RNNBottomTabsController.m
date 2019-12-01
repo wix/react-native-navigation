@@ -16,12 +16,8 @@
 	return self.selectedViewController;
 }
 
-- (CGFloat)getTopBarHeight {
-    for(UIViewController * child in [self childViewControllers]) {
-        CGFloat childTopBarHeight = [child getTopBarHeight];
-        if (childTopBarHeight > 0) return childTopBarHeight;
-    }
-    return [super getTopBarHeight];
+- (CGFloat)getBottomTabsHeight {
+    return self.tabBar.frame.size.height;
 }
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {

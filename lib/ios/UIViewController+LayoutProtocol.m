@@ -81,6 +81,20 @@
 }
 
 - (CGFloat)getTopBarHeight {
+    for(UIViewController * child in [self childViewControllers]) {
+        CGFloat childTopBarHeight = [child getTopBarHeight];
+        if (childTopBarHeight > 0) return childTopBarHeight;
+    }
+    
+    return 0;
+}
+
+- (CGFloat)getBottomTabsHeight {
+    for(UIViewController * child in [self childViewControllers]) {
+        CGFloat childBottomTabsHeight = [child getBottomTabsHeight];
+        if (childBottomTabsHeight > 0) return childBottomTabsHeight;
+    }
+    
     return 0;
 }
 

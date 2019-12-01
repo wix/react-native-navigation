@@ -88,10 +88,6 @@
 	return nil;
 }
 
-- (CGFloat)getTopBarHeight {
-    return [[self getCurrentChild] getTopBarHeight];
-}
-
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController {
 	[self.eventEmitter sendOnSearchBarUpdated:self.layoutInfo.componentId
 										 text:searchController.searchBar.text

@@ -21,7 +21,9 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild;
 
-- (CGFloat) getTopBarHeight;
+- (CGFloat)getTopBarHeight;
+
+- (CGFloat)getBottomTabsHeight;
 
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 
