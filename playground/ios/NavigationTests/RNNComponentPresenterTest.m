@@ -173,37 +173,6 @@
 	XCTAssertEqual(self.uut.boundComponentId, @"componentId");
 }
 
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withTitle {
-	Text* title = [[Text alloc] initWithValue:@"Title"];
-	self.options.topBar.backButton.title = title;
-	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:title.get];
-	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-	[(id)self.boundViewController verify];
-}
-
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withHideTitle {
-	Text* title = [[Text alloc] initWithValue:@"Title"];
-	self.options.topBar.backButton.title = title;
-	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
-	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:@""];
-	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-	[(id)self.boundViewController verify];
-}
-
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withIcon {
-	Image* image = [[Image alloc] initWithValue:[UIImage new]];
-	self.options.topBar.backButton.icon = image;
-	[[(id) self.boundViewController expect] setBackButtonIcon:image.get withColor:nil title:nil];
-	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-	[(id)self.boundViewController verify];
-}
-
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withDefaultValues {
-	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:nil];
-	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-	[(id)self.boundViewController verify];
-}
-
 - (void)testRemoveTitleComponentIfNeeded_componentIsRemovedIfTitleTextIsDefined {
 	id mockTitle = [OCMockObject niceMockForClass:[RNNReactView class]];
     OCMStub([self.componentRegistry createComponentIfNotExists:[OCMArg any] parentComponentId:[OCMArg any] reactViewReadyBlock:nil]).andReturn(mockTitle);

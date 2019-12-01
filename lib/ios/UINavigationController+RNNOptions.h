@@ -30,4 +30,6 @@
 
 - (void)setBackButtonColor:(UIColor *)color;
 
+- (void)setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title showTitle:(BOOL)showTitle;
+
 @end

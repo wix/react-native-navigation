@@ -4,6 +4,17 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation UINavigationBar (utils)
 
+- (void)rnn_setBackIndicatorImage:(UIImage *)image {
+    if (@available(iOS 13.0, *)) {
+        [[self getNavigaitonBarStandardAppearance] setBackIndicatorImage:image transitionMaskImage:image];
+        [[self getNavigaitonBarCompactAppearance] setBackIndicatorImage:image transitionMaskImage:image];
+        [[self getNavigaitonBarScrollEdgeAppearance] setBackIndicatorImage:image transitionMaskImage:image];
+    } else {
+        [self setBackIndicatorImage:image];
+        [self setBackIndicatorTransitionMaskImage:image];
+    }
+}
+
 - (void)rnn_setBackgroundColor:(UIColor *)color {
     CGFloat bgColorAlpha = CGColorGetAlpha(color.CGColor);
     
