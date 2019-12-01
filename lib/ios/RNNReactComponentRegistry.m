@@ -17,12 +17,12 @@
 }
 
 - (RNNReactView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-	NSMutableDictionary* parentComponentDict = [self componentsForParentId:parentComponentId];
+	NSMapTable* parentComponentDict = [self componentsForParentId:parentComponentId];
 	
-	RNNReactView* reactView = parentComponentDict[component.componentId.get];
+	RNNReactView* reactView = [parentComponentDict objectForKey:component.componentId.get];
 	if (!reactView) {
 		reactView = (RNNReactView *)[_creator createRootViewFromComponentOptions:component reactViewReadyBlock:reactViewReadyBlock];
-		parentComponentDict[component.componentId.get] = reactView;
+        [parentComponentDict setObject:reactView forKey:component.componentId.get];
 	} else if (reactViewReadyBlock) {
 		reactViewReadyBlock();
 	}
@@ -30,9 +30,9 @@
 	return reactView;
 }
 
-- (NSMutableDictionary *)componentsForParentId:(NSString *)parentComponentId {
+- (NSMapTable *)componentsForParentId:(NSString *)parentComponentId {
 	if (![_componentStore objectForKey:parentComponentId]) {
-		[_componentStore setObject:[NSMutableDictionary new] forKey:parentComponentId];;
+		[_componentStore setObject:[NSMapTable weakToStrongObjectsMapTable] forKey:parentComponentId];;
 	}
 	
 	return [_componentStore objectForKey:parentComponentId];;
@@ -49,10 +49,10 @@
 }
 
 - (void)removeChildComponent:(NSString *)childId {
-	NSMutableDictionary* parent;
+	NSMapTable* parent;
 	NSEnumerator *enumerator = _componentStore.objectEnumerator;
 	while ((parent = enumerator.nextObject)) {
-		if (parent[childId]) {
+		if ([parent objectForKey:childId]) {
 			[parent removeObjectForKey:childId];
 			return;
 		}
