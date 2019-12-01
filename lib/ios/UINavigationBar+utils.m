@@ -50,6 +50,17 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
     }
 }
 
+- (void)rnn_showBorder:(BOOL)showBorder {
+    if (@available(iOS 13.0, *)) {
+        UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
+        [[self getNavigaitonBarStandardAppearance] setShadowColor:shadowColor];
+        [[self getNavigaitonBarCompactAppearance] setShadowColor:shadowColor];
+        [[self getNavigaitonBarScrollEdgeAppearance] setShadowColor:shadowColor];
+    } else {
+        [self setShadowImage:showBorder ? nil : [UIImage new]];
+    }
+}
+
 - (void)removeTransparentView {
     UIView *transparentView = [self viewWithTag:TOP_BAR_TRANSPARENT_TAG];
     if (transparentView){

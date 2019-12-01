@@ -8,4 +8,6 @@
 
 - (void)rnn_setBackIndicatorImage:(UIImage *)image;
 
+- (void)rnn_showBorder:(BOOL)showBorder;
+
 @end
