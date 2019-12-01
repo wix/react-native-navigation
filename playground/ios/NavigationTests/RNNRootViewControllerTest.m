@@ -471,7 +471,7 @@
 	self.options.topBar.noBorder = [[Bool alloc] initWithValue:topBarNoBorderInput];
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
-	XCTAssertNotNil(self.uut.navigationController.navigationBar.shadowImage);
+	XCTAssertNil(self.uut.navigationController.navigationBar.standardAppearance.shadowColor);
 }
 
 -(void)testTopBarNoBorderOff {
@@ -479,7 +479,7 @@
 	self.options.topBar.noBorder = [[Bool alloc] initWithValue:topBarNoBorderInput];
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
-	XCTAssertNil(self.uut.navigationController.navigationBar.shadowImage);
+	XCTAssertEqual(self.uut.navigationController.navigationBar.standardAppearance.shadowColor, [UINavigationBarAppearance new].shadowColor);
 }
 
 -(void)testStatusBarBlurOn {
