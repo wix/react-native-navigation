@@ -34,6 +34,7 @@
 	reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
 	reactView.delegate = self;
 	reactView.backgroundColor = [UIColor clearColor];
+    reactView.hidden = CGRectEqualToRect(reactView.frame, CGRectZero);
     
 	[NSLayoutConstraint deactivateConstraints:reactView.constraints];
 	self.widthConstraint = [NSLayoutConstraint constraintWithItem:reactView
@@ -67,6 +68,7 @@
 	self.heightConstraint.constant = rootView.intrinsicContentSize.height;
 	[rootView setNeedsUpdateConstraints];
 	[rootView updateConstraintsIfNeeded];
+    rootView.hidden = NO;
 }
 
 - (void)onButtonPressed {
