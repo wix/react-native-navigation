@@ -161,11 +161,34 @@
 	RNNComponentViewController* boundViewController = [RNNComponentViewController new];
 	RNNLayoutInfo* layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
 	boundViewController.layoutInfo = layoutInfo;
+	boundViewController.defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
 	[self.uut boundViewController:boundViewController];
 	
-	self.options.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"titleComponent"}];
+	self.options.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"titleComponent", @"componentId": @"id"}];
 	
-	[[(id)self.componentRegistry expect] createComponentIfNotExists:self.options.topBar.title.component parentComponentId:self.uut.boundComponentId reactViewReadyBlock:[OCMArg any]];
+	[[(id)self.componentRegistry expect] createComponentIfNotExists:[OCMArg checkWithBlock:^BOOL(RNNComponentOptions* options) {
+		return [options.name.get isEqual:@"titleComponent"] &&
+		[options.componentId.get isEqual:@"id"];
+	}] parentComponentId:self.uut.boundComponentId reactViewReadyBlock:[OCMArg any]];
+	[self.uut renderComponents:self.options perform:nil];
+	[(id)self.componentRegistry verify];
+	
+	
+	XCTAssertEqual(self.uut.boundComponentId, @"componentId");
+}
+
+- (void)testRenderComponentsCreateReactViewFromDefaultOptions {
+	RNNComponentViewController* boundViewController = [RNNComponentViewController new];
+	boundViewController.layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
+	self.uut.defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	[self.uut boundViewController:boundViewController];
+	
+	self.uut.defaultOptions.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"titleComponent", @"componentId": @"id"}];
+	
+	[[(id)self.componentRegistry expect] createComponentIfNotExists:[OCMArg checkWithBlock:^BOOL(RNNComponentOptions* options) {
+		return [options.name.get isEqual:@"titleComponent"] &&
+		[options.componentId.get isEqual:@"id"];
+	}] parentComponentId:self.uut.boundComponentId reactViewReadyBlock:[OCMArg any]];
 	[self.uut renderComponents:self.options perform:nil];
 	[(id)self.componentRegistry verify];
 	
