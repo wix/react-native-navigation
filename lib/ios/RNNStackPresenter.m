@@ -198,14 +198,15 @@
 }
 
 - (void)setCustomNavigationComponentBackground:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 	RNNStackController* stack = self.boundViewController;
-	if (![options.topBar.background.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
+	if (![withDefault.topBar.background.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
 		readyBlock();
 		readyBlock = nil;
 	}
-	if (options.topBar.background.component.name.hasValue) {
+	if (withDefault.topBar.background.component.name.hasValue) {
 		NSString* currentChildComponentId = [stack getCurrentChild].layoutInfo.componentId;
-		RNNReactView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.background.component parentComponentId:currentChildComponentId reactViewReadyBlock:readyBlock];
+		RNNReactView *reactView = [_componentRegistry createComponentIfNotExists:withDefault.topBar.background.component parentComponentId:currentChildComponentId reactViewReadyBlock:readyBlock];
 		_customTopBarBackgroundReactView = reactView;
 		
 	} else {
