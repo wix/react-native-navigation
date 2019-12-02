@@ -28,6 +28,7 @@
 }
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+    _defaultOptions = defaultOptions;
 	[_presenter setDefaultOptions:defaultOptions];
 }
 
