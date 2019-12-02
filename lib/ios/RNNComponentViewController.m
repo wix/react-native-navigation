@@ -28,6 +28,7 @@
 }
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+    _defaultOptions = defaultOptions;
 	[_presenter setDefaultOptions:defaultOptions];
 }
 
@@ -86,10 +87,6 @@
 
 - (UIViewController *)getCurrentChild {
 	return nil;
-}
-
-- (CGFloat)getTopBarHeight {
-    return [[self getCurrentChild] getTopBarHeight];
 }
 
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController {

@@ -161,11 +161,15 @@
 	RNNComponentViewController* boundViewController = [RNNComponentViewController new];
 	RNNLayoutInfo* layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
 	boundViewController.layoutInfo = layoutInfo;
+	boundViewController.defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
 	[self.uut boundViewController:boundViewController];
 	
-	self.options.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"titleComponent"}];
+	self.options.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"titleComponent", @"componentId": @"id"}];
 	
-	[[(id)self.componentRegistry expect] createComponentIfNotExists:self.options.topBar.title.component parentComponentId:self.uut.boundComponentId reactViewReadyBlock:[OCMArg any]];
+	[[(id)self.componentRegistry expect] createComponentIfNotExists:[OCMArg checkWithBlock:^BOOL(RNNComponentOptions* options) {
+		return [options.name.get isEqual:@"titleComponent"] &&
+		[options.componentId.get isEqual:@"id"];
+	}] parentComponentId:self.uut.boundComponentId reactViewReadyBlock:[OCMArg any]];
 	[self.uut renderComponents:self.options perform:nil];
 	[(id)self.componentRegistry verify];
 	
@@ -173,35 +177,23 @@
 	XCTAssertEqual(self.uut.boundComponentId, @"componentId");
 }
 
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withTitle {
-	Text* title = [[Text alloc] initWithValue:@"Title"];
-	self.options.topBar.backButton.title = title;
-	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:title.get];
-	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-	[(id)self.boundViewController verify];
-}
-
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withHideTitle {
-	Text* title = [[Text alloc] initWithValue:@"Title"];
-	self.options.topBar.backButton.title = title;
-	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
-	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:@""];
-	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-	[(id)self.boundViewController verify];
-}
-
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withIcon {
-	Image* image = [[Image alloc] initWithValue:[UIImage new]];
-	self.options.topBar.backButton.icon = image;
-	[[(id) self.boundViewController expect] setBackButtonIcon:image.get withColor:nil title:nil];
-	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-	[(id)self.boundViewController verify];
-}
-
-- (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBoundViewController_withDefaultValues {
-	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:nil];
-	[self.uut applyOptionsOnWillMoveToParentViewController:self.options];
-	[(id)self.boundViewController verify];
+- (void)testRenderComponentsCreateReactViewFromDefaultOptions {
+	RNNComponentViewController* boundViewController = [RNNComponentViewController new];
+	boundViewController.layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
+	self.uut.defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	[self.uut boundViewController:boundViewController];
+	
+	self.uut.defaultOptions.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"titleComponent", @"componentId": @"id"}];
+	
+	[[(id)self.componentRegistry expect] createComponentIfNotExists:[OCMArg checkWithBlock:^BOOL(RNNComponentOptions* options) {
+		return [options.name.get isEqual:@"titleComponent"] &&
+		[options.componentId.get isEqual:@"id"];
+	}] parentComponentId:self.uut.boundComponentId reactViewReadyBlock:[OCMArg any]];
+	[self.uut renderComponents:self.options perform:nil];
+	[(id)self.componentRegistry verify];
+	
+	
+	XCTAssertEqual(self.uut.boundComponentId, @"componentId");
 }
 
 - (void)testRemoveTitleComponentIfNeeded_componentIsRemovedIfTitleTextIsDefined {

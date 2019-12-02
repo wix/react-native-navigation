@@ -54,12 +54,25 @@
 	}
 }
 
--(void)dismissAllModalsAnimated:(BOOL)animated {
+- (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion {
 	UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
-	[root dismissViewControllerAnimated:animated completion:nil];
+	[root dismissViewControllerAnimated:animated completion:completion];
 	[_delegate dismissedMultipleModals:_presentedModals];
 	[_pendingModalIdsToDismiss removeAllObjects];
 	[_presentedModals removeAllObjects];
+}
+
+- (void)dismissAllModalsSynchronosly {
+	if (_presentedModals.count) {
+		dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+		[self dismissAllModalsAnimated:NO completion:^{
+			dispatch_semaphore_signal(sem);
+		}];
+		
+		while (dispatch_semaphore_wait(sem, DISPATCH_TIME_NOW)) {
+			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0]];
+		}
+	}
 }
 
 #pragma mark - private

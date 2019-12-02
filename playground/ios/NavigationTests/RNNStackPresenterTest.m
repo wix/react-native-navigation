@@ -57,4 +57,35 @@
 	XCTAssertFalse([[self.uut.boundViewController navigationBar] prefersLargeTitles]);
 }
 
+- (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withTitle {
+	Text* title = [[Text alloc] initWithValue:@"Title"];
+	self.options.topBar.backButton.title = title;
+	[[_boundViewController expect] setBackButtonIcon:nil withColor:nil title:title.get showTitle:YES];
+	[self.uut applyOptions:self.options];
+	[_boundViewController verify];
+}
+
+- (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withHideTitle {
+	Text* title = [[Text alloc] initWithValue:@"Title"];
+	self.options.topBar.backButton.title = title;
+	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
+	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:title.get showTitle:self.options.topBar.backButton.showTitle.get];
+	[self.uut applyOptions:self.options];
+	[(id)self.boundViewController verify];
+}
+
+- (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withIcon {
+	Image* image = [[Image alloc] initWithValue:[UIImage new]];
+	self.options.topBar.backButton.icon = image;
+	[[(id) self.boundViewController expect] setBackButtonIcon:image.get withColor:nil title:nil showTitle:YES];
+	[self.uut applyOptions:self.options];
+	[(id)self.boundViewController verify];
+}
+
+- (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withDefaultValues {
+	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:nil showTitle:YES];
+	[self.uut applyOptions:self.options];
+	[(id)self.boundViewController verify];
+}
+
 @end

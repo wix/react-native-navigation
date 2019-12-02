@@ -1,6 +1,6 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "RNNComponentViewController.h"
+#import <ReactNativeNavigation/RNNComponentViewController.h>
 #import "RNNReactRootViewCreator.h"
 #import "RNNTestRootViewCreator.h"
 #import <React/RCTConvert.h>
@@ -60,7 +60,7 @@
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 
-	XCTAssertTrue([self.uut.navigationController.navigationBar.barTintColor isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.backgroundColor isEqual:expectedColor]);
 }
 
 -(void)testTopBarBackgroundColorWithoutNavigationController{
@@ -175,16 +175,6 @@
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([self.uut.tabBarItem.badgeValue isEqualToString:tabBadgeInput]);
 
-}
-
--(void)testTopBarTransparent_BOOL_True {
-	UIColor* transparentColor = [RCTConvert UIColor:@(0x00000000)];
-	self.options.topBar.background.color = [[Color alloc] initWithValue:transparentColor];
-	__unused RNNStackController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
-	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
-	XCTAssertTrue(transparentView);
-	XCTAssertTrue([NSStringFromCGRect(transparentView.frame) isEqual: NSStringFromCGRect(CGRectZero)]);
 }
 
 -(void)testTopBarTransparent_BOOL_false {
@@ -471,7 +461,7 @@
 	self.options.topBar.noBorder = [[Bool alloc] initWithValue:topBarNoBorderInput];
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
-	XCTAssertNotNil(self.uut.navigationController.navigationBar.shadowImage);
+	XCTAssertNil(self.uut.navigationController.navigationBar.standardAppearance.shadowColor);
 }
 
 -(void)testTopBarNoBorderOff {
@@ -479,7 +469,7 @@
 	self.options.topBar.noBorder = [[Bool alloc] initWithValue:topBarNoBorderInput];
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
-	XCTAssertNil(self.uut.navigationController.navigationBar.shadowImage);
+	XCTAssertEqual(self.uut.navigationController.navigationBar.standardAppearance.shadowColor, [UINavigationBarAppearance new].shadowColor);
 }
 
 -(void)testStatusBarBlurOn {

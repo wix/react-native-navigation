@@ -29,6 +29,7 @@
 	self.interactivePopGestureDelegate.originalDelegate = stack.interactivePopGestureRecognizer.delegate;
 	stack.interactivePopGestureRecognizer.delegate = self.interactivePopGestureDelegate;
 
+    [stack setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
 	[stack setInteractivePopGestureEnabled:[withDefault.popGesture getWithDefaultValue:YES]];
 	[stack setRootBackgroundImage:[withDefault.rootBackgroundImage getWithDefaultValue:nil]];
 	[stack setNavigationBarTestId:[withDefault.topBar.testID getWithDefaultValue:nil]];
@@ -39,11 +40,11 @@
 	[stack setNavigationBarTranslucent:[withDefault.topBar.background.translucent getWithDefaultValue:NO]];
 	[stack setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds getWithDefaultValue:NO]];
 	[stack setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
-	[stack setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
 	[stack setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
 	[stack setNavigationBarLargeTitleFontFamily:[withDefault.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.largeTitle.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.largeTitle.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.largeTitle.color getWithDefaultValue:nil]];
 	[stack setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.title.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
 	[stack setBackButtonColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil]];
+    [stack setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES]];
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
@@ -59,12 +60,17 @@
 	[navigationController setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
 	[navigationController setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] fontWeight:[withDefault.topBar.title.fontWeight getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
 	[navigationController setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
+    [navigationController setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES]];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     [super mergeOptions:options resolvedOptions:resolvedOptions];
 	RNNStackController* stack = self.boundViewController;
 
+    if (options.topBar.background.color.hasValue) {
+        [stack setTopBarBackgroundColor:options.topBar.background.color.get];
+    }
+    
 	if (options.popGesture.hasValue) {
 		[stack setInteractivePopGestureEnabled:options.popGesture.get];
 	}
@@ -105,10 +111,6 @@
 		[stack setNavigationBarBlur:[options.topBar.background.blur get]];
 	}
 	
-	if (options.topBar.background.color.hasValue) {
-		[stack setTopBarBackgroundColor:options.topBar.background.color.get];
-	}
-	
 	if (options.topBar.largeTitle.visible.hasValue) {
 		[stack setNavigationBarLargeTitleVisible:options.topBar.largeTitle.visible.get];
 	}
@@ -135,6 +137,10 @@
 	if (options.topBar.background.component.name.hasValue) {
 		[self setCustomNavigationComponentBackground:options perform:nil];
 	}
+    
+    if (options.topBar.backButton.hasValue) {
+        [stack setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES]];
+    }
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
@@ -192,14 +198,15 @@
 }
 
 - (void)setCustomNavigationComponentBackground:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 	RNNStackController* stack = self.boundViewController;
-	if (![options.topBar.background.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
+	if (![withDefault.topBar.background.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
 		readyBlock();
 		readyBlock = nil;
 	}
-	if (options.topBar.background.component.name.hasValue) {
+	if (withDefault.topBar.background.component.name.hasValue) {
 		NSString* currentChildComponentId = [stack getCurrentChild].layoutInfo.componentId;
-		RNNReactView *reactView = [_componentRegistry createComponentIfNotExists:options.topBar.background.component parentComponentId:currentChildComponentId reactViewReadyBlock:readyBlock];
+		RNNReactView *reactView = [_componentRegistry createComponentIfNotExists:withDefault.topBar.background.component parentComponentId:currentChildComponentId reactViewReadyBlock:readyBlock];
 		_customTopBarBackgroundReactView = reactView;
 		
 	} else {

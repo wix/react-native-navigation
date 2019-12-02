@@ -30,6 +30,7 @@ public class BottomTabsOptions {
 		options.currentTabIndex = NumberParser.parse(json,"currentTabIndex");
 		options.visible = BoolParser.parse(json,"visible");
         options.drawBehind = BoolParser.parse(json, "drawBehind");
+        options.preferLargeIcons = BoolParser.parse(json, "preferLargeIcons");
 		options.animate = BoolParser.parse(json,"animate");
         options.elevation = FractionParser.parse(json, "elevation");
         options.testId = TextParser.parse(json, "testID");
@@ -43,6 +44,7 @@ public class BottomTabsOptions {
 	public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
 	public Bool animate = new NullBool();
+    public Bool preferLargeIcons = new NullBool();
 	public Number currentTabIndex = new NullNumber();
 	public Fraction elevation = new NullFraction();
 	public Text currentTabId = new NullText();
@@ -56,6 +58,7 @@ public class BottomTabsOptions {
 		if (other.visible.hasValue()) visible = other.visible;
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
 		if (other.animate.hasValue()) animate = other.animate;
+        if (other.preferLargeIcons.hasValue()) preferLargeIcons = other.preferLargeIcons;
         if (other.elevation.hasValue()) elevation = other.elevation;
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
         if (other.testId.hasValue()) testId = other.testId;
@@ -69,10 +72,15 @@ public class BottomTabsOptions {
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;
         if (!animate.hasValue()) animate = defaultOptions.animate;
+        if (!preferLargeIcons.hasValue()) preferLargeIcons = defaultOptions.preferLargeIcons;
         if (!elevation.hasValue()) elevation = defaultOptions.elevation;
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
         if (!titleDisplayMode.hasValue()) titleDisplayMode = defaultOptions.titleDisplayMode;
         if (!tabsAttachMode.hasValue()) tabsAttachMode = defaultOptions.tabsAttachMode;
+    }
+
+    public boolean isHiddenOrDrawBehind() {
+        return visible.isFalse() || drawBehind.isTrue();
     }
 
     public void clearOneTimeOptions() {

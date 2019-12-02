@@ -1,7 +1,6 @@
 #import "RNNStackController.h"
 #import "RNNComponentViewController.h"
-
-const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
+#import "UINavigationBar+utils.h"
 
 @implementation RNNStackController
 
@@ -52,35 +51,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (void)setTopBarBackgroundColor:(UIColor *)backgroundColor {
-	if (backgroundColor) {
-		CGFloat bgColorAlpha = CGColorGetAlpha(backgroundColor.CGColor);
-		
-		if (bgColorAlpha == 0.0) {
-			if (![self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]){
-				UIView *transparentView = [[UIView alloc] initWithFrame:CGRectZero];
-				transparentView.backgroundColor = [UIColor clearColor];
-				transparentView.tag = TOP_BAR_TRANSPARENT_TAG;
-				[self.navigationBar insertSubview:transparentView atIndex:0];
-			}
-			self.navigationBar.translucent = YES;
-			[self.navigationBar setBackgroundColor:[UIColor clearColor]];
-			self.navigationBar.shadowImage = [UIImage new];
-			[self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-		} else {
-			self.navigationBar.barTintColor = backgroundColor;
-			UIView *transparentView = [self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
-			if (transparentView){
-				[transparentView removeFromSuperview];
-			}
-		}
-	} else {
-		UIView *transparentView = [self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
-		if (transparentView){
-			[transparentView removeFromSuperview];
-		}
-		
-		self.navigationBar.barTintColor = nil;
-	}
+	[self.navigationBar rnn_setBackgroundColor:backgroundColor];
 }
 
 @end

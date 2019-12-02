@@ -145,12 +145,4 @@
     return options;
 }
 
-- (CGFloat)getTopBarHeight {
-    for(UIViewController * child in [self childViewControllers]) {
-        CGFloat childTopBarHeight = [child getTopBarHeight];
-        if (childTopBarHeight > 0) return childTopBarHeight;
-    }
-    return [super getTopBarHeight];
-}
-
 @end

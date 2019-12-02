@@ -70,7 +70,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		}
 	}
 	
-	[_modalManager dismissAllModalsAnimated:NO];
+	[_modalManager dismissAllModalsAnimated:NO completion:nil];
 	
 	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
 	
@@ -298,7 +298,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		completion();
 	}];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-	[_modalManager dismissAllModalsAnimated:[options.animations.dismissModal.enable getWithDefaultValue:YES]];
+	[_modalManager dismissAllModalsAnimated:[options.animations.dismissModal.enable getWithDefaultValue:YES] completion:nil];
 	
 	[CATransaction commit];
 }

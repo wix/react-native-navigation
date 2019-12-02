@@ -1,11 +1,11 @@
 #import <XCTest/XCTest.h>
 #import <objc/runtime.h>
-#import "RNNCommandsHandler.h"
-#import "RNNNavigationOptions.h"
+#import <ReactNativeNavigation/RNNCommandsHandler.h>
+#import <ReactNativeNavigation/RNNNavigationOptions.h>
 #import "RNNTestRootViewCreator.h"
-#import "RNNComponentViewController.h"
-#import "RNNStackController.h"
-#import "RNNErrorHandler.h"
+#import <ReactNativeNavigation/RNNComponentViewController.h>
+#import <ReactNativeNavigation/RNNStackController.h>
+#import <ReactNativeNavigation/RNNErrorHandler.h>
 #import <OCMock/OCMock.h>
 #import "RNNLayoutManager.h"
 

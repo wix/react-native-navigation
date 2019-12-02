@@ -2,7 +2,9 @@
 #import "RCTHelpers.h"
 #import <React/RCTUIManager.h>
 
-@implementation RNNReactView
+@implementation RNNReactView {
+	BOOL _fillParent;
+}
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties availableSize:(CGSize)availableSize reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
 	self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
@@ -44,10 +46,19 @@
 	}
 }
 
+- (CGSize)intrinsicContentSize {
+	if (_fillParent) {
+		return UILayoutFittingExpandedSize;
+	} else {
+		return [super intrinsicContentSize];
+	}
+}
+
 - (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame {
 	if ([alignment isEqualToString:@"fill"]) {
+		_fillParent = YES;
+		self.translatesAutoresizingMaskIntoConstraints = NO;
 		self.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
-		[self setFrame:frame];
 	} else {
 		self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
 		__weak RNNReactView *weakSelf = self;

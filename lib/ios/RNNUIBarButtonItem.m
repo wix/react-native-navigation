@@ -7,7 +7,6 @@
 
 @property (nonatomic, strong) NSLayoutConstraint *widthConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
-@property (nonatomic, weak) RNNReactComponentRegistry *componentRegistry;
 
 @end
 
@@ -29,29 +28,28 @@
 	return self;
 }
 
--(instancetype)init:(NSString*)buttonId withCustomView:(RCTRootView *)reactView componentRegistry:(RNNReactComponentRegistry *)componentRegistry {
+-(instancetype)init:(NSString*)buttonId withCustomView:(RCTRootView *)reactView {
 	self = [super initWithCustomView:reactView];
 	
-	self.componentRegistry = componentRegistry;
 	reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
 	reactView.delegate = self;
 	reactView.backgroundColor = [UIColor clearColor];
-	reactView.hidden = YES;
-	
+    
+	[NSLayoutConstraint deactivateConstraints:reactView.constraints];
 	self.widthConstraint = [NSLayoutConstraint constraintWithItem:reactView
 														attribute:NSLayoutAttributeWidth
 														relatedBy:NSLayoutRelationEqual
 														   toItem:nil
 														attribute:NSLayoutAttributeNotAnAttribute
 													   multiplier:1.0
-														 constant:1.0];
+														 constant:reactView.intrinsicContentSize.width];
 	self.heightConstraint = [NSLayoutConstraint constraintWithItem:reactView
 														 attribute:NSLayoutAttributeHeight
 														 relatedBy:NSLayoutRelationEqual
 														   	toItem:nil
 														 attribute:NSLayoutAttributeNotAnAttribute
 													   	multiplier:1.0
-														  constant:1.0];
+														  constant:reactView.intrinsicContentSize.height];
 	[NSLayoutConstraint activateConstraints:@[self.widthConstraint, self.heightConstraint]];
 	self.buttonId = buttonId;
 	return self;
@@ -65,7 +63,6 @@
 }
 
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
-	rootView.hidden = NO;
 	self.widthConstraint.constant = rootView.intrinsicContentSize.width;
 	self.heightConstraint.constant = rootView.intrinsicContentSize.height;
 	[rootView setNeedsUpdateConstraints];
@@ -76,13 +73,6 @@
 	[self.target performSelector:self.action
 					  withObject:self
 					  afterDelay:0];
-}
-
-- (void)dealloc {
-	if ([self.customView isKindOfClass:[RNNReactView class]]) {
-		RNNReactView* customView = self.customView;
-		[self.componentRegistry removeChildComponent:customView.componentId];
-	}
 }
 
 @end

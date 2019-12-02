@@ -28,9 +28,6 @@
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
 	[super applyOptionsOnWillMoveToParentViewController:options];
-	UIViewController* viewController = self.boundViewController;
-	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
-	[viewController setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES] ? [withDefault.topBar.backButton.title getWithDefaultValue:nil] : @""];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
@@ -158,12 +155,6 @@
 	}
 
 	[self setTitleViewWithSubtitle:withDefault];
-	
-	if (options.topBar.backButton.hasValue) {
-		UIViewController *lastViewControllerInStack = viewController.navigationController.viewControllers.count > 1 ? viewController.navigationController.viewControllers[viewController.navigationController.viewControllers.count - 2] : viewController.navigationController.topViewController;
-	    RNNNavigationOptions * resolvedOptions	= (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
-		[lastViewControllerInStack applyBackButton:resolvedOptions.topBar.backButton];
-	}
 }
 
 - (void)removeTitleComponentIfNeeded:(RNNNavigationOptions *)options {
@@ -174,7 +165,8 @@
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[self setCustomNavigationTitleView:options perform:readyBlock];
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+	[self setCustomNavigationTitleView:withDefault perform:readyBlock];
 }
 
 - (void)setCustomNavigationTitleView:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
