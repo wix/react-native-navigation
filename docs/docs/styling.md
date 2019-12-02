@@ -68,7 +68,7 @@ Navigation.mergeOptions(this.props.componentId, {
     backgroundColor: 'white',
     orientation: ['portrait', 'landscape'] // An array of supported orientations
   },
-  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popover', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
+  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'default', 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popover', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
   topBar: {
     visible: true,
     animate: false, // Controls whether TopBar visibility changes should be animated

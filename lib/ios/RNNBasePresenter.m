@@ -31,7 +31,7 @@
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
     UIViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [initialOptions withDefault:[self defaultOptions]];
-    [viewController setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[withDefault.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]];
+    [viewController setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[withDefault.modalPresentationStyle getWithDefaultValue:@"default"]]];
     [viewController setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[withDefault.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
 }
 
