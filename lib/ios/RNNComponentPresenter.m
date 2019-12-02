@@ -165,7 +165,8 @@
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[self setCustomNavigationTitleView:options perform:readyBlock];
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+	[self setCustomNavigationTitleView:withDefault perform:readyBlock];
 }
 
 - (void)setCustomNavigationTitleView:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
