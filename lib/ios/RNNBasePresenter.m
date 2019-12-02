@@ -5,6 +5,7 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "DotIndicatorOptions.h"
 #import "RNNDotIndicatorPresenter.h"
+#import "RCTConvert+Modal.h"
 
 @interface RNNBasePresenter ()
 @property(nonatomic, strong) RNNDotIndicatorPresenter* dotIndicatorPresenter;
@@ -28,7 +29,14 @@
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
-
+    UIViewController* viewController = self.boundViewController;
+    RNNNavigationOptions *withDefault = [initialOptions withDefault:[self defaultOptions]];
+    [viewController setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[withDefault.modalPresentationStyle getWithDefaultValue:@"default"]]];
+    [viewController setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[withDefault.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
+    
+    if (@available(iOS 13.0, *)) {
+        viewController.modalInPresentation = ![withDefault.modal.swipeToDismiss getWithDefaultValue:YES];
+    }
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {

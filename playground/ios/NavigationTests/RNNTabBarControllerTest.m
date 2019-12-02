@@ -3,6 +3,7 @@
 #import "RNNComponentViewController.h"
 #import "RNNStackController.h"
 #import <OCMock/OCMock.h>
+#import "RCTConvert+Modal.h"
 
 @interface RNNTabBarControllerTest : XCTestCase
 
@@ -73,6 +74,13 @@
     RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNBasePresenter alloc] init] eventEmitter:nil childViewControllers:nil];
 
     XCTAssertTrue(uut.delegate == uut);
+}
+
+- (void)testInitWithLayoutInfo_shouldCreateWithDefaultStyles {
+    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNBottomTabsPresenter alloc] init] eventEmitter:nil childViewControllers:nil];
+	
+    XCTAssertEqual(uut.modalPresentationStyle, UIModalPresentationPageSheet);
+	XCTAssertEqual(uut.modalTransitionStyle, UIModalTransitionStyleCoverVertical);
 }
 
 - (void)testWillMoveToParent_shouldNotInvokePresenterApplyOptionsOnWillMoveToNilParent {
@@ -160,5 +168,6 @@
 
     XCTAssertTrue(uut.selectedIndex == 1);
 }
+
 
 @end

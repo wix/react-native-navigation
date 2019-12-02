@@ -683,6 +683,14 @@ export interface OverlayOptions {
   handleKeyboardEvents?: boolean;
 }
 
+export interface ModalOptions {
+  /**
+   * Control wether this modal should be dismiss using swipe gesture when the modalPresentationStyle = 'pageSheet'
+   * #### (iOS specific)
+   */
+  swipeToDismiss?: boolean;
+}
+
 export interface OptionsPreviewAction {
   /**
    * Reference ID to get callbacks from
@@ -961,6 +969,10 @@ export interface Options {
    * Configure the overlay
    */
   overlay?: OverlayOptions;
+  /**
+   * Configure the modal
+   */
+  modal?: ModalOptions;
   /**
    * Animation used for navigation commands that modify the layout
    * hierarchy can be controlled in options.

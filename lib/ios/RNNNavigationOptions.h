@@ -11,6 +11,7 @@
 #import "RNNPreviewOptions.h"
 #import "RNNLayoutOptions.h"
 #import "RNNSplitViewOptions.h"
+#import "RNNModalOptions.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 
@@ -29,6 +30,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) RNNPreviewOptions* preview;
 @property (nonatomic, strong) RNNLayoutOptions* layout;
 @property (nonatomic, strong) RNNSplitViewOptions* splitView;
+@property (nonatomic, strong) RNNModalOptions* modal;
 
 @property (nonatomic, strong) Bool* popGesture;
 @property (nonatomic, strong) Image* backgroundImage;
