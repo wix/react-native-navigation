@@ -13,7 +13,6 @@
 #import "RNNSplitViewOptions.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
-extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 
 @interface RNNNavigationOptions : RNNOptions
 

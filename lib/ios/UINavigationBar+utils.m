@@ -1,6 +1,5 @@
 #import "UINavigationBar+utils.h"
 
-const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation UINavigationBar (utils)
 
@@ -34,7 +33,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
         [self getNavigaitonBarScrollEdgeAppearance].backgroundColor = color;
     } else {
         [super setBackgroundColor:color];
-        [self removeTransparentView];
+        self.barTintColor = color;
     }
 }
 
@@ -49,13 +48,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
         [self getNavigaitonBarScrollEdgeAppearance].backgroundEffect = nil;
         
     } else {
-        if (![self viewWithTag:TOP_BAR_TRANSPARENT_TAG]){
-            UIView *transparentView = [[UIView alloc] initWithFrame:CGRectZero];
-            transparentView.backgroundColor = [UIColor clearColor];
-            transparentView.tag = TOP_BAR_TRANSPARENT_TAG;
-            [self insertSubview:transparentView atIndex:0];
-        }
-        
         [self setBackgroundColor:[UIColor clearColor]];
         self.shadowImage = [UIImage new];
         [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
@@ -70,13 +62,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
         [[self getNavigaitonBarScrollEdgeAppearance] setShadowColor:shadowColor];
     } else {
         [self setShadowImage:showBorder ? nil : [UIImage new]];
-    }
-}
-
-- (void)removeTransparentView {
-    UIView *transparentView = [self viewWithTag:TOP_BAR_TRANSPARENT_TAG];
-    if (transparentView){
-        [transparentView removeFromSuperview];
     }
 }
 
