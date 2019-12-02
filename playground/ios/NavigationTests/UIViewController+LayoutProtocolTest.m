@@ -26,7 +26,7 @@
     RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] init];
     RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
     RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-    defaultOptions.modalPresentationStyle = [[Text alloc] initWithValue:@"fullScreen"];
+    defaultOptions.modalPresentationStyle = [[Text alloc] initWithValue:@"default"];
 
     UIViewController* uut = [[UIViewController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:nil childViewControllers:nil];
     XCTAssertEqual(uut.modalPresentationStyle, [RCTConvert UIModalPresentationStyle:@"default"]);
