@@ -5,6 +5,7 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "DotIndicatorOptions.h"
 #import "RNNDotIndicatorPresenter.h"
+#import "RCTConvert+Modal.h"
 
 @interface RNNBasePresenter ()
 @property(nonatomic, strong) RNNDotIndicatorPresenter* dotIndicatorPresenter;
@@ -28,7 +29,10 @@
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
-
+    UIViewController* viewController = self.boundViewController;
+    RNNNavigationOptions *withDefault = [initialOptions withDefault:[self defaultOptions]];
+    [viewController setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[withDefault.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]];
+    [viewController setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[withDefault.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {

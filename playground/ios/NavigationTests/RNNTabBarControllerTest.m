@@ -75,6 +75,13 @@
     XCTAssertTrue(uut.delegate == uut);
 }
 
+- (void)testInitWithLayoutInfo_shouldCreateWithDefaultStyles {
+    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNBottomTabsPresenter alloc] init] eventEmitter:nil childViewControllers:nil];
+	
+    XCTAssertEqual(uut.modalPresentationStyle, UIModalPresentationFullScreen);
+	XCTAssertEqual(uut.modalTransitionStyle, UIModalTransitionStyleCoverVertical);
+}
+
 - (void)testWillMoveToParent_shouldNotInvokePresenterApplyOptionsOnWillMoveToNilParent {
     [[self.mockTabBarPresenter reject] applyOptionsOnWillMoveToParentViewController:[self.uut options]];
     [self.uut willMoveToParentViewController:nil];
@@ -160,5 +167,6 @@
 
     XCTAssertTrue(uut.selectedIndex == 1);
 }
+
 
 @end
