@@ -175,6 +175,9 @@ Navigation.mergeOptions(this.props.componentId, {
     interceptTouchOutside: true,
     handleKeyboardEvents: true
   },
+  modal: {
+    swipeToDismiss: true
+  }
   preview: {
     reactTag: 0, // result from findNodeHandle(ref)
     width: 100,
