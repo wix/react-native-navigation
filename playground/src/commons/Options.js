@@ -21,7 +21,8 @@ const setDefaultOptions = () => Navigation.setDefaultOptions({
   },
   animations: {
     ...useSlowOpenScreenAnimations ? slowOpenScreenAnimations : {}   
-  }
+  },
+  modalPresentationStyle: 'fullScreen'
 });
 
 const slowOpenScreenAnimations = {

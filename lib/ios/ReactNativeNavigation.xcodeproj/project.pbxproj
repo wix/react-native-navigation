@@ -208,6 +208,8 @@
 		509B258F2178BE7A00C83C23 /* RNNStackPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 509B258E2178BE7A00C83C23 /* RNNStackPresenterTest.m */; };
 		50A00C37200F84D6000F01A6 /* RNNOverlayOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */; };
 		50A00C38200F84D6000F01A6 /* RNNOverlayOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */; };
+		50A246372395399700A192C5 /* RNNModalOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A246352395399700A192C5 /* RNNModalOptions.h */; };
+		50A246382395399700A192C5 /* RNNModalOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A246362395399700A192C5 /* RNNModalOptions.m */; };
 		50A409CA238D444900D5FF7D /* UINavigationBar+utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A409C8238D444900D5FF7D /* UINavigationBar+utils.h */; };
 		50A409CB238D444900D5FF7D /* UINavigationBar+utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A409C9238D444900D5FF7D /* UINavigationBar+utils.m */; };
 		50AB0B1C2255F8640039DAED /* UIViewController+LayoutProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 50AB0B1A2255F8640039DAED /* UIViewController+LayoutProtocol.h */; };
@@ -562,6 +564,8 @@
 		509B258E2178BE7A00C83C23 /* RNNStackPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNStackPresenterTest.m; sourceTree = "<group>"; };
 		50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayOptions.h; sourceTree = "<group>"; };
 		50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayOptions.m; sourceTree = "<group>"; };
+		50A246352395399700A192C5 /* RNNModalOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNModalOptions.h; sourceTree = "<group>"; };
+		50A246362395399700A192C5 /* RNNModalOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalOptions.m; sourceTree = "<group>"; };
 		50A409C8238D444900D5FF7D /* UINavigationBar+utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+utils.h"; sourceTree = "<group>"; };
 		50A409C9238D444900D5FF7D /* UINavigationBar+utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+utils.m"; sourceTree = "<group>"; };
 		50AB0B1A2255F8640039DAED /* UIViewController+LayoutProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LayoutProtocol.h"; sourceTree = "<group>"; };
@@ -963,6 +967,8 @@
 				506317AD220B550600B26FC3 /* RNNInsetsOptions.m */,
 				309876223177761614786DCC /* DotIndicatorOptions.m */,
 				30987122507D8CBF16624F93 /* DotIndicatorOptions.h */,
+				50A246352395399700A192C5 /* RNNModalOptions.h */,
+				50A246362395399700A192C5 /* RNNModalOptions.m */,
 			);
 			name = Options;
 			sourceTree = "<group>";
@@ -1384,6 +1390,7 @@
 				5049595A216F6B46006D2B81 /* NullDictionary.h in Headers */,
 				501224062173592D000F5F98 /* RNNBottomTabsPresenter.h in Headers */,
 				50706E6D20CE7CA5003345C3 /* UIImage+tint.h in Headers */,
+				50A246372395399700A192C5 /* RNNModalOptions.h in Headers */,
 				309874B40D202C9718F15CBD /* UIView+Utils.h in Headers */,
 				309877B0B5AAA7788F56F3D9 /* UIViewController+Utils.h in Headers */,
 				30987680135A8C78E62D5B8E /* DotIndicatorOptions.h in Headers */,
@@ -1568,6 +1575,7 @@
 				7BA500751E2544B9001B9E1B /* ReactNativeNavigation.m in Sources */,
 				50E5F7962240EBD6002AFEAD /* RNNAnimationsTransitionDelegate.m in Sources */,
 				5038A3BA216DFCFD009280BC /* UITabBarController+RNNOptions.m in Sources */,
+				50A246382395399700A192C5 /* RNNModalOptions.m in Sources */,
 				263905B21E4C6F440023D7D3 /* MMDrawerController.m in Sources */,
 				50644A2120E11A720026709C /* Constants.m in Sources */,
 				501223D82173590F000F5F98 /* RNNStackPresenter.m in Sources */,

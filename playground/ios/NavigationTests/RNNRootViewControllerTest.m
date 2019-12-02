@@ -177,15 +177,6 @@
 
 }
 
--(void)testTopBarTransparent_BOOL_false {
-	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
-	__unused RNNStackController* nav = [self createNavigationController];
-	self.options.topBar.background.color = [[Color alloc] initWithValue:inputColor];
-	[self.uut viewWillAppear:false];
-	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
-	XCTAssertFalse(transparentView);
-}
-
 -(void)testTopBarLargeTitle_default {
 	[self.uut viewWillAppear:false];
 

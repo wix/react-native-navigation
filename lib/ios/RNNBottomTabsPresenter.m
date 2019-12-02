@@ -6,6 +6,7 @@
 @implementation RNNBottomTabsPresenter
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
+    [super applyOptionsOnInit:options];
     UITabBarController *bottomTabs = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [bottomTabs setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex getWithDefaultValue:0]];

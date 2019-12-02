@@ -178,7 +178,6 @@
 	[self.uut setTopBarBackgroundColor:redColor];
 	[self.uut setTopBarBackgroundColor:nil];
 	
-	XCTAssertNil([self.uut.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]);
 	XCTAssertNil(self.uut.navigationBar.barTintColor);
 	XCTAssertNil(self.uut.navigationBar.standardAppearance.backgroundColor);
 	XCTAssertNil(self.uut.navigationBar.compactAppearance.backgroundColor);
