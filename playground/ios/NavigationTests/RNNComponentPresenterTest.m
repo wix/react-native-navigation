@@ -5,6 +5,7 @@
 #import "RNNComponentViewController.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "RNNTitleViewHelper.h"
+#import "RCTConvert+Modal.h"
 
 @interface RNNComponentPresenterTest : XCTestCase
 
@@ -78,7 +79,7 @@
 }
 
 - (void)testApplyOptionsOnInit_shouldSetModalPresentationStyleWithDefault {
-    [(UIViewController *) [(id) self.boundViewController expect] setModalPresentationStyle:UIModalPresentationFullScreen];
+    [(UIViewController *) [(id) self.boundViewController expect] setModalPresentationStyle:[RCTConvert defaultModalPresentationStyle]];
 	[self.uut applyOptionsOnInit:self.options];
 	[(id)self.boundViewController verify];
 }

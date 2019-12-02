@@ -2,6 +2,8 @@
 
 @interface RCTConvert (Modal)
 
++ (UIModalPresentationStyle)defaultModalPresentationStyle;
+
 @end
 
 @implementation RCTConvert (Modal)

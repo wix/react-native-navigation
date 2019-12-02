@@ -29,7 +29,7 @@
     defaultOptions.modalPresentationStyle = [[Text alloc] initWithValue:@"fullScreen"];
 
     UIViewController* uut = [[UIViewController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:nil childViewControllers:nil];
-    XCTAssertEqual(uut.modalPresentationStyle, [RCTConvert UIModalPresentationStyle:@"fullScreen"]);
+    XCTAssertEqual(uut.modalPresentationStyle, [RCTConvert UIModalPresentationStyle:@"default"]);
 }
 
 - (void)testInitWithLayoutInfoShouldSetChildViewControllers {
