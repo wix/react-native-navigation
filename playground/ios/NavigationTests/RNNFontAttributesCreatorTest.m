@@ -44,38 +44,41 @@
 	XCTAssertEqual(font.pointSize, defaultFontSize.floatValue);
 }
 
-- (void)testCreateWithDictionary_shouldCreateAttributes {
+- (void)testcreateFromDictionary_shouldCreateAttributes {
 	NSString* familyName = @"Helvetica";
 	NSNumber* fontSize = @(20);
 	UIColor* fontColor = UIColor.blueColor;
 	
-	NSDictionary* attributes = [RNNFontAttributesCreator createWithDictionary:@{} fontFamily:familyName fontSize:fontSize defaultFontSize:nil fontWeight:nil color:fontColor defaultColor:nil];
+	NSDictionary* attributes = [RNNFontAttributesCreator createFromDictionary:@{} fontFamily:familyName fontSize:fontSize defaultFontSize:nil fontWeight:nil color:fontColor defaultColor:nil];
 	UIFont* font = attributes[NSFontAttributeName];
 	XCTAssertEqual(attributes[NSForegroundColorAttributeName], fontColor);
     XCTAssertTrue([familyName isEqualToString:font.familyName]);
 	XCTAssertEqual(font.pointSize, fontSize.floatValue);
 }
 
-- (void)testCreateWithDictionary_shouldMergeWithDictionary {
+- (void)testcreateFromDictionary_shouldMergeWithDictionary {
 	NSString* familyName = @"Helvetica";
 	NSNumber* fontSize = @(20);
 	NSDictionary* dictionary = @{NSForegroundColorAttributeName: UIColor.redColor};
 	
-	NSDictionary* attributes = [RNNFontAttributesCreator createWithDictionary:dictionary fontFamily:familyName fontSize:fontSize defaultFontSize:nil fontWeight:nil color:nil defaultColor:nil];
+	NSDictionary* attributes = [RNNFontAttributesCreator createFromDictionary:dictionary fontFamily:familyName fontSize:fontSize defaultFontSize:nil fontWeight:nil color:nil defaultColor:nil];
 	UIFont* font = attributes[NSFontAttributeName];
 	XCTAssertEqual(attributes[NSForegroundColorAttributeName], UIColor.redColor);
     XCTAssertTrue([familyName isEqualToString:font.familyName]);
 	XCTAssertEqual(font.pointSize, fontSize.floatValue);
 }
 
-- (void)testCreateWithFontFamily_shouldCreateSystemFontWhenOnlySizeAvailable {
+- (void)testCreateWithFontFamily_shouldNotChangeFontFamilyWhenOnlySizeAvailable {
 	NSNumber* fontSize = @(20);
+	UIFont* initialFont = [UIFont systemFontOfSize:10 weight:UIFontWeightHeavy];
+	NSMutableDictionary* initialAttributes = [NSMutableDictionary new];
+	initialAttributes[NSFontAttributeName] = initialFont;
 	
-	NSDictionary* attributes = [RNNFontAttributesCreator createWithFontFamily:nil fontSize:fontSize fontWeight:nil color:nil];
+	NSDictionary* attributes = [RNNFontAttributesCreator createFromDictionary:initialAttributes fontFamily:nil fontSize:fontSize defaultFontSize:nil fontWeight:nil color:nil defaultColor:nil];
+	
 	UIFont* font = attributes[NSFontAttributeName];
-	NSString* systemFontFamilyName = [[UIFont systemFontOfSize:20] familyName];
 	XCTAssertEqual(font.pointSize, fontSize.floatValue);
-	XCTAssertTrue([font.familyName isEqualToString:systemFontFamilyName]);
+	XCTAssertTrue([font.familyName isEqualToString:initialFont.familyName]);
 }
 
 

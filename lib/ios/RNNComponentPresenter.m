@@ -194,7 +194,7 @@
 }
 
 - (void)setTitleViewWithSubtitle:(RNNNavigationOptions *)options {
-	if (!_customTitleView) {
+	if (!_customTitleView && ![options.topBar.largeTitle.visible getWithDefaultValue:NO]) {
 		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.topBar.title subTitleOptions:options.topBar.subtitle viewController:self.boundViewController];
 
 		if (options.topBar.title.text.hasValue) {

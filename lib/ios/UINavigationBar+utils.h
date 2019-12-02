@@ -8,4 +8,8 @@
 
 - (void)rnn_showBorder:(BOOL)showBorder;
 
+- (void)rnn_setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color;
+
+- (void)rnn_setNavigationBarTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color;
+
 @end

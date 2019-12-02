@@ -1,4 +1,5 @@
 #import "UINavigationBar+utils.h"
+#import "RNNFontAttributesCreator.h"
 
 const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
@@ -24,6 +25,43 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
     } else {
         self.translucent = NO;
         [self setBackgroundColor:color];
+    }
+}
+
+- (void)rnn_setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color {
+    NSDictionary* fontAttributes;
+    if (@available(iOS 13.0, *)) {
+        fontAttributes = [RNNFontAttributesCreator createFromDictionary:self.standardAppearance.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:color defaultColor:nil];
+        [[self getNavigaitonBarStandardAppearance] setLargeTitleTextAttributes:fontAttributes];
+        [[self getNavigaitonBarCompactAppearance] setLargeTitleTextAttributes:fontAttributes];
+        [[self getNavigaitonBarScrollEdgeAppearance] setLargeTitleTextAttributes:fontAttributes];
+    } else if (@available(iOS 11.0, *)) {
+        fontAttributes = [RNNFontAttributesCreator createFromDictionary:self.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:color defaultColor:nil];
+        self.largeTitleTextAttributes = fontAttributes;
+    }
+}
+
+- (void)rnn_setNavigationBarTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color {
+    NSDictionary* fontAttributes;
+    if (@available(iOS 13.0, *)) {
+        fontAttributes = [RNNFontAttributesCreator createFromDictionary:self.standardAppearance.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:color defaultColor:nil];
+        [[self getNavigaitonBarStandardAppearance] setTitleTextAttributes:fontAttributes];
+        [[self getNavigaitonBarCompactAppearance] setTitleTextAttributes:fontAttributes];
+        [[self getNavigaitonBarScrollEdgeAppearance] setTitleTextAttributes:fontAttributes];
+    } else if (@available(iOS 11.0, *)) {
+        fontAttributes = [RNNFontAttributesCreator createFromDictionary:self.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:color defaultColor:nil];
+        self.titleTextAttributes = fontAttributes;
+    }
+}
+
+- (void)rnn_showBorder:(BOOL)showBorder {
+    if (@available(iOS 13.0, *)) {
+        UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
+        [[self getNavigaitonBarStandardAppearance] setShadowColor:shadowColor];
+        [[self getNavigaitonBarCompactAppearance] setShadowColor:shadowColor];
+        [[self getNavigaitonBarScrollEdgeAppearance] setShadowColor:shadowColor];
+    } else {
+        [self setShadowImage:showBorder ? nil : [UIImage new]];
     }
 }
 
@@ -59,17 +97,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
         [self setBackgroundColor:[UIColor clearColor]];
         self.shadowImage = [UIImage new];
         [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    }
-}
-
-- (void)rnn_showBorder:(BOOL)showBorder {
-    if (@available(iOS 13.0, *)) {
-        UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
-        [[self getNavigaitonBarStandardAppearance] setShadowColor:shadowColor];
-        [[self getNavigaitonBarCompactAppearance] setShadowColor:shadowColor];
-        [[self getNavigaitonBarScrollEdgeAppearance] setShadowColor:shadowColor];
-    } else {
-        [self setShadowImage:showBorder ? nil : [UIImage new]];
     }
 }
 

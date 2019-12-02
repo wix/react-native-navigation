@@ -44,11 +44,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 }
 
 - (void)setNavigationBarFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color {
-	NSDictionary* fontAttributes = [RNNFontAttributesCreator createWithFontFamily:fontFamily fontSize:fontSize fontWeight:fontWeight color:color];
-	
-	if (fontAttributes.allKeys.count > 0) {
-		self.navigationBar.titleTextAttributes = fontAttributes;
-	}
+    [self.navigationBar rnn_setNavigationBarTitleFontFamily:fontFamily fontSize:fontSize fontWeight:fontWeight color:color];
 }
 
 - (void)setNavigationBarLargeTitleVisible:(BOOL)visible {
@@ -62,10 +58,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 }
 
 - (void)setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color {
-	if (@available(iOS 11.0, *)) {
-		NSDictionary* fontAttributes = [RNNFontAttributesCreator createWithFontFamily:fontFamily fontSize:fontSize fontWeight:fontWeight color:color];
-		self.navigationBar.largeTitleTextAttributes = fontAttributes;
-	}
+    [self.navigationBar rnn_setNavigationBarLargeTitleFontFamily:fontFamily fontSize:fontSize fontWeight:fontWeight color:color];
 }
 
 - (void)setNavigationBarTranslucent:(BOOL)translucent {
