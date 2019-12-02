@@ -29,7 +29,7 @@
     defaultOptions.modalPresentationStyle = [[Text alloc] initWithValue:@"default"];
 
     UIViewController* uut = [[UIViewController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:nil childViewControllers:nil];
-    XCTAssertEqual(uut.modalPresentationStyle, [RCTConvert UIModalPresentationStyle:@"default"]);
+    XCTAssertEqual(uut.modalPresentationStyle, UIModalPresentationPageSheet);
 }
 
 - (void)testInitWithLayoutInfoShouldSetChildViewControllers {
