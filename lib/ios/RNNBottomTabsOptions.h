@@ -18,5 +18,6 @@
 @property (nonatomic, strong) Text* barStyle;
 @property (nonatomic, strong) Text* fontFamily;
 @property (nonatomic, strong) Text* titleDisplayMode;
+@property (nonatomic, strong) Text* tabsAttachMode;
 
 @end

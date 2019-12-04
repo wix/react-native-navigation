@@ -72,12 +72,14 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_modalManager dismissAllModalsAnimated:NO completion:nil];
 	
 	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
-	
-	[vc renderTreeAndWait:[vc.resolveOptions.animations.setRoot.waitForRender getWithDefaultValue:NO] perform:^{
-		_mainWindow.rootViewController = vc;
-		[_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId params:@{@"layout": layout}];
-		completion() ;
-	}];
+    vc.waitForRender = [vc.resolveOptions.animations.setRoot.waitForRender getWithDefaultValue:NO];
+    [vc setReactViewReadyCallback:^{
+        _mainWindow.rootViewController = vc;
+        [_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId params:@{@"layout": layout}];
+        completion();
+    }];
+    
+	[vc render];
 }
 
 - (void)mergeOptions:(NSString*)componentId options:(NSDictionary*)mergeOptions completion:(RNNTransitionCompletionBlock)completion {
@@ -118,7 +120,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		if([vc isKindOfClass:[RNNComponentViewController class]]) {
 			RNNComponentViewController* rootVc = (RNNComponentViewController*)vc;
 			rootVc.previewController = newVc;
-			[newVc renderTreeAndWait:NO perform:nil];
+			[newVc render];
 			
 			rootVc.previewCallback = ^(UIViewController *vcc) {
 				RNNComponentViewController* rvc  = (RNNComponentViewController*)vcc;
@@ -155,12 +157,15 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		}
 	} else {
 		id animationDelegate = (newVc.resolveOptions.animations.push.hasCustomAnimation || newVc.resolveOptions.customTransition.animations) ? newVc : nil;
-		[newVc renderTreeAndWait:([newVc.resolveOptions.animations.push.waitForRender getWithDefaultValue:NO] || animationDelegate) perform:^{
-			[_stackManager push:newVc onTop:fromVC animated:[newVc.resolveOptions.animations.push.enable getWithDefaultValue:YES] animationDelegate:animationDelegate completion:^{
-				[_eventEmitter sendOnNavigationCommandCompletion:push commandId:commandId params:@{@"componentId": componentId}];
-				completion();
-			} rejection:rejection];
-		}];
+        newVc.waitForRender = ([newVc.resolveOptions.animations.push.waitForRender getWithDefaultValue:NO] || animationDelegate);
+        [newVc setReactViewReadyCallback:^{
+            [_stackManager push:newVc onTop:fromVC animated:[newVc.resolveOptions.animations.push.enable getWithDefaultValue:YES] animationDelegate:animationDelegate completion:^{
+                [_eventEmitter sendOnNavigationCommandCompletion:push commandId:commandId params:@{@"componentId": componentId}];
+                completion();
+            } rejection:rejection];
+        }];
+        
+        [newVc render];
 	}
 }
 
@@ -170,7 +175,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	NSArray<UIViewController *> *childViewControllers = [_controllerFactory createChildrenLayout:children];
 	for (UIViewController<RNNLayoutProtocol>* viewController in childViewControllers) {
 		if (![viewController isEqual:childViewControllers.lastObject]) {
-			[viewController renderTreeAndWait:NO perform:nil];
+			[viewController render];
 		}
 	}
 	UIViewController *newVC = childViewControllers.lastObject;
@@ -178,12 +183,15 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNNavigationOptions* options = newVC.resolveOptions;
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
 
-	[newVC renderTreeAndWait:([options.animations.setStackRoot.waitForRender getWithDefaultValue:NO]) perform:^{
-		[_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
-			[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot commandId:commandId params:@{@"componentId": componentId}];
-			completion();
-		} rejection:rejection];
-	}]; 
+    newVC.waitForRender = ([options.animations.setStackRoot.waitForRender getWithDefaultValue:NO]);
+    [newVC setReactViewReadyCallback:^{
+        [_stackManager setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
+            [weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot commandId:commandId params:@{@"componentId": componentId}];
+            completion();
+        } rejection:rejection];
+    }];
+
+    [newVC render];
 }
 
 - (void)pop:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary*)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
@@ -251,12 +259,14 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController *newVc = [_controllerFactory createLayout:layout];
 	
-	[newVc renderTreeAndWait:[newVc.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO] perform:^{
-		[_modalManager showModal:newVc animated:[newVc.resolveOptions.animations.showModal.enable getWithDefaultValue:YES] hasCustomAnimation:newVc.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
-			[_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId params:@{@"layout": layout}];
-			completion(newVc.layoutInfo.componentId);
-		}];
-	}];
+    newVc.waitForRender = [newVc.resolveOptions.animations.showModal.waitForRender getWithDefaultValue:NO];
+    [newVc setReactViewReadyCallback:^{
+        [_modalManager showModal:newVc animated:[newVc.resolveOptions.animations.showModal.enable getWithDefaultValue:YES] hasCustomAnimation:newVc.resolveOptions.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
+            [_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId params:@{@"layout": layout}];
+            completion(newVc.layoutInfo.componentId);
+        }];
+    }];
+	[newVc render];
 }
 
 - (void)dismissModal:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
@@ -300,18 +310,18 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController* overlayVC = [_controllerFactory createLayout:layout];
-	[overlayVC renderTreeAndWait:NO perform:^{
-		UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-		overlayWindow.rootViewController = overlayVC;
-		if ([overlayVC.resolveOptions.overlay.handleKeyboardEvents getWithDefaultValue:NO]) {
-			[_overlayManager showOverlayWindowAsKeyWindow:overlayWindow];
-		} else {
-			[_overlayManager showOverlayWindow:overlayWindow];
-		}
-		
-		[_eventEmitter sendOnNavigationCommandCompletion:showOverlay commandId:commandId params:@{@"layout": layout}];
-		completion();
-	}];
+    [overlayVC setReactViewReadyCallback:^{UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        overlayWindow.rootViewController = overlayVC;
+        if ([overlayVC.resolveOptions.overlay.handleKeyboardEvents getWithDefaultValue:NO]) {
+            [self->_overlayManager showOverlayWindowAsKeyWindow:overlayWindow];
+        } else {
+            [self->_overlayManager showOverlayWindow:overlayWindow];
+        }
+        
+        [self->_eventEmitter sendOnNavigationCommandCompletion:showOverlay commandId:commandId params:@{@"layout": layout}];
+        completion();
+        
+    }];
 }
 
 - (void)dismissOverlay:(NSString*)componentId commandId:(NSString*)commandId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {

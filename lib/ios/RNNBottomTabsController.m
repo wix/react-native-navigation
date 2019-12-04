@@ -1,4 +1,6 @@
 #import "RNNBottomTabsController.h"
+#import "RCTConvert+RNNOptions.h"
+#import "UITabBarController+RNNUtils.h"
 
 @implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
@@ -6,6 +8,31 @@
 
 - (id<UITabBarControllerDelegate>)delegate {
 	return self;
+}
+
+- (void)render {
+    BottomTabsAttachMode tabsAttachMode = [RCTConvert BottomTabsAttachMode:[[self.resolveOptions withDefault:self.defaultOptions].bottomTabs.tabsAttachMode getWithDefaultValue:@"together"]];
+    switch (tabsAttachMode) {
+        case BottomTabsAttachModeTogether: {
+            [super render];
+        }
+            break;
+        case BottomTabsAttachModeAfterInitialTab: {
+            [self.selectedViewController setReactViewReadyCallback:^{
+                for (UIViewController* viewController in self.deselectedViewControllers) {
+                    [viewController render];
+                }
+            }];
+            [self.selectedViewController render];
+        }
+            break;
+        case BottomTabsAttachModeOnSwitchToTab: {
+            [self readyForPresentation];
+        }
+        break;
+        default:
+            break;
+    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -16,8 +43,18 @@
 	return self.selectedViewController;
 }
 
-- (CGFloat)getBottomTabsHeight {
-    return self.tabBar.frame.size.height;
+//- (NSArray<UIViewController *> *)getOtherChildren {
+//    self.childViewControllers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+//        return evaluatedObject
+//    }]
+//}
+
+- (CGFloat)getTopBarHeight {
+    for(UIViewController * child in [self childViewControllers]) {
+        CGFloat childTopBarHeight = [child getTopBarHeight];
+        if (childTopBarHeight > 0) return childTopBarHeight;
+    }
+    return [super getTopBarHeight];
 }
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {

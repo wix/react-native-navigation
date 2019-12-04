@@ -38,7 +38,6 @@
 
 - (void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
-	
 	[_presenter applyOptions:self.resolveOptions];
 	[_presenter renderComponents:self.resolveOptions perform:nil];
 	
@@ -59,30 +58,28 @@
 	[self.eventEmitter sendComponentDidDisappear:self.layoutInfo.componentId componentName:self.layoutInfo.name];
 }
 
+- (void)loadView {
+    [self renderReactViewIfNeeded];
+}
+
 - (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	if (self.isExternalViewController) {
-		if (readyBlock) {
-			readyBlock();
-		}
-		return;
-	}
-	
-	__block RNNReactViewReadyCompletionBlock readyBlockCopy = readyBlock;
-	UIView* reactView = [self.creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId availableSize:[UIScreen mainScreen].bounds.size reactViewReadyBlock:^{
-		[_presenter renderComponents:self.resolveOptions perform:^{
-			if (readyBlockCopy) {
-				readyBlockCopy();
-				readyBlockCopy = nil;
-			}
-		}];
-	}];
-	
-	self.view = reactView;
-	
-	if (!wait && readyBlock) {
-		readyBlockCopy();
-		readyBlockCopy = nil;
-	}
+		[self readyForPresentation];
+    } else {
+        [self renderReactViewIfNeeded];
+    }
+}
+
+- (void)renderReactViewIfNeeded {
+    if (!self.isViewLoaded) {
+        UIView* reactView = [self.creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId availableSize:[UIScreen mainScreen].bounds.size reactViewReadyBlock:^{
+            [self->_presenter renderComponents:self.resolveOptions perform:^{
+                [self readyForPresentation];
+            }];
+        }];
+        
+        self.view = reactView;
+    }
 }
 
 - (UIViewController *)getCurrentChild {

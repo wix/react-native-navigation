@@ -52,32 +52,44 @@
 	return interfaceOrientationMask;
 }
 
-- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+- (void)render {
+    if (!self.waitForRender) {
+        [self readyForPresentation];
+    }
+    UIViewController* firstChildViewController = self.childViewControllers.lastObject;
+    RNNNavigationOptions* resolvedOptions = self.resolveOptions;
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 		dispatch_group_t group = dispatch_group_create();
-		for (UIViewController* childViewController in self.childViewControllers) {
-			dispatch_group_enter(group);
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[childViewController renderTreeAndWait:wait perform:^{
-					dispatch_group_leave(group);
-				}];
-			});
-		}
+		dispatch_group_enter(group);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [firstChildViewController setReactViewReadyCallback:^{
+                dispatch_group_leave(group);
+            }];
+            [firstChildViewController render];
+        });
 		
 		dispatch_group_enter(group);
-		[self.presenter renderComponents:self.resolveOptions perform:^{
+		[self.presenter renderComponents:resolvedOptions perform:^{
 			dispatch_group_leave(group);
 		}];
 		dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
-			readyBlock();
+            [self readyForPresentation];
 		});
 	});
 }
 
+- (void)readyForPresentation {
+    [self.parentViewController readyForPresentation];
+    if (self.reactViewReadyCallback) {
+        self.reactViewReadyCallback();
+        self.reactViewReadyCallback = nil;
+    }
+}
+
 - (UIViewController *)getCurrentChild {
-	return nil;
+    return self;
 }
 
 - (CGFloat)getTopBarHeight {
@@ -159,6 +171,20 @@
 	objc_setAssociatedObject(self, @selector(creator), creator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (RNNReactViewReadyCompletionBlock)reactViewReadyCallback {
+    return objc_getAssociatedObject(self, @selector(reactViewReadyCallback));
+}
 
+- (void)setReactViewReadyCallback:(RNNReactViewReadyCompletionBlock)reactViewReadyCallback {
+    objc_setAssociatedObject(self, @selector(reactViewReadyCallback), reactViewReadyCallback, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)waitForRender {
+    return [objc_getAssociatedObject(self, @selector(waitForRender)) boolValue];
+}
+
+- (void)setWaitForRender:(BOOL)waitForRender {
+    objc_setAssociatedObject(self, @selector(waitForRender), [NSNumber numberWithBool:waitForRender], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 @end

@@ -13,7 +13,9 @@ const setDefaultOptions = () => Navigation.setDefaultOptions({
     direction: 'locale'
   },
   bottomTabs: {
-    titleDisplayMode: 'alwaysShow'
+    titleDisplayMode: 'alwaysShow',
+    tabsAttachMode: 'afterInitialTab',
+    currentTabIndex: 0
   },
   bottomTab: {
     selectedIconColor: Colors.primary,

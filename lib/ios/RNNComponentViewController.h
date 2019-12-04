@@ -10,7 +10,7 @@
 
 typedef void (^PreviewCallback)(UIViewController *vc);
 
-@interface RNNComponentViewController : UIViewController	<RNNLayoutProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
+@interface RNNComponentViewController : UIViewController <RNNLayoutProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;

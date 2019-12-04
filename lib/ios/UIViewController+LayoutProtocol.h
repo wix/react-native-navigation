@@ -6,7 +6,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @interface UIViewController (LayoutProtocol) <RNNLayoutProtocol>
 
-- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+- (void)render;
 
 - (UIViewController *)getCurrentChild;
 
@@ -20,11 +20,15 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)overrideOptions:(RNNNavigationOptions *)options;
 
+- (void)readyForPresentation;
+
 @property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 @property (nonatomic, strong) RNNEventEmitter* eventEmitter;
 @property (nonatomic) id<RNNComponentViewCreator> creator;
+@property (nonatomic) RNNReactViewReadyCompletionBlock _Nonnull reactViewReadyCallback;
+@property (nonatomic) BOOL waitForRender;
 
 @end

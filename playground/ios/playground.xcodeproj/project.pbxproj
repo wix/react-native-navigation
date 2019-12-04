@@ -43,6 +43,7 @@
 		E58D26602385888C003F36BA /* RNNModalManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26432385888C003F36BA /* RNNModalManagerTest.m */; };
 		E58D26612385888C003F36BA /* RNNTestNoColor.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26452385888C003F36BA /* RNNTestNoColor.m */; };
 		EFC0DF770EBAEFC23D0CB155 /* Pods_NavigationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E32151E3A71C2B7328BCB4 /* Pods_NavigationTests.framework */; };
+		FE548D2471FE535CFCE8B113 /* Pods_playground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50364D69238E7ECC000E62A2 /* Pods_playground.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4259AF43A23D928FE78B4A3A /* Pods-NavigationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationTests.debug.xcconfig"; path = "Target Support Files/Pods-NavigationTests/Pods-NavigationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4A3340545EAAF11C1F146864 /* Pods_playground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_playground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		50364D69238E7ECC000E62A2 /* Pods_playground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_playground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactNativeNavigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50451D33204451A800695F00 /* RNNCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNNCustomViewController.h; path = ../../../lib/ios/RNNCustomViewController.h; sourceTree = "<group>"; };
 		50451D34204451A800695F00 /* RNNCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNNCustomViewController.m; path = ../../../lib/ios/RNNCustomViewController.m; sourceTree = "<group>"; };
 		7F8E255E2E08F6ECE7DF6FE3 /* Pods-playground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.release.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.release.xcconfig"; sourceTree = "<group>"; };
@@ -114,6 +117,7 @@
 			files = (
 				E5046080227748EA00212BD8 /* JavaScriptCore.framework in Frameworks */,
 				9D204F3DC4FBCD81583BF99F /* Pods_playground.framework in Frameworks */,
+				FE548D2471FE535CFCE8B113 /* Pods_playground.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,6 +192,8 @@
 		E504607E227748E900212BD8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */,
+				50364D69238E7ECC000E62A2 /* Pods_playground.framework */,
 				E504607F227748EA00212BD8 /* JavaScriptCore.framework */,
 				4A3340545EAAF11C1F146864 /* Pods_playground.framework */,
 				84E32151E3A71C2B7328BCB4 /* Pods_NavigationTests.framework */,
