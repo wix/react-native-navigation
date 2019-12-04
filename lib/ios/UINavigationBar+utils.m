@@ -84,7 +84,7 @@
         [self getNavigaitonBarScrollEdgeAppearance].backgroundEffect = nil;
         
     } else {
-        self.backgroundColor = UIColor.clearColor;
+        self.barTintColor = UIColor.clearColor;
         self.shadowImage = [UIImage new];
         [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     }
