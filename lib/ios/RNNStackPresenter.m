@@ -29,15 +29,15 @@
 	self.interactivePopGestureDelegate.originalDelegate = stack.interactivePopGestureRecognizer.delegate;
 	stack.interactivePopGestureRecognizer.delegate = self.interactivePopGestureDelegate;
 
+    [stack setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle getWithDefaultValue:@"default"]]];
+    [stack setNavigationBarTranslucent:[withDefault.topBar.background.translucent getWithDefaultValue:NO]];
+    [stack setNavigationBarNoBorder:[withDefault.topBar.noBorder getWithDefaultValue:NO]];
     [stack setTopBarBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
 	[stack setInteractivePopGestureEnabled:[withDefault.popGesture getWithDefaultValue:YES]];
 	[stack setRootBackgroundImage:[withDefault.rootBackgroundImage getWithDefaultValue:nil]];
 	[stack setNavigationBarTestId:[withDefault.topBar.testID getWithDefaultValue:nil]];
 	[stack setNavigationBarVisible:[withDefault.topBar.visible getWithDefaultValue:YES] animated:[withDefault.topBar.animate getWithDefaultValue:YES]];
 	[stack hideBarsOnScroll:[withDefault.topBar.hideOnScroll getWithDefaultValue:NO]];
-	[stack setNavigationBarNoBorder:[withDefault.topBar.noBorder getWithDefaultValue:NO]];
-	[stack setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle getWithDefaultValue:@"default"]]];
-	[stack setNavigationBarTranslucent:[withDefault.topBar.background.translucent getWithDefaultValue:NO]];
 	[stack setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds getWithDefaultValue:NO]];
 	[stack setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
 	[stack setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
