@@ -1,4 +1,8 @@
-import * as _ from 'lodash';
+import isString from 'lodash/isString'
+import isNil from 'lodash/isNil'
+import uniqueId from 'lodash/uniqueId'
+import unset from 'lodash/unset'
+import forEach from 'lodash/forEach'
 import { EventSubscription } from '../interfaces/EventSubscription';
 import {
   ComponentDidAppearEvent,
@@ -47,20 +51,20 @@ export class ComponentEventsObserver {
   public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
     const computedComponentId = componentId || component.props.componentId;
 
-    if (!_.isString(computedComponentId)) {
+    if (!isString(computedComponentId)) {
       throw new Error(`bindComponent expects a component with a componentId in props or a componentId as the second argument`);
     }
-    if (_.isNil(this.listeners[computedComponentId])) {
+    if (isNil(this.listeners[computedComponentId])) {
       this.listeners[computedComponentId] = {};
     }
-    const key = _.uniqueId();
+    const key = uniqueId();
     this.listeners[computedComponentId][key] = component;
 
-    return { remove: () => _.unset(this.listeners[computedComponentId], key) };
+    return { remove: () => unset(this.listeners[computedComponentId], key) };
   }
 
   public unmounted(componentId: string) {
-    _.unset(this.listeners, componentId);
+    unset(this.listeners, componentId);
   }
 
   notifyComponentDidAppear(event: ComponentDidAppearEvent) {
@@ -93,7 +97,7 @@ export class ComponentEventsObserver {
   }
 
   private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {
-    _.forEach(this.listeners[event.componentId], (component) => {
+    forEach(this.listeners[event.componentId], (component) => {
       if (component && component[method]) {
         component[method](event);
       }
