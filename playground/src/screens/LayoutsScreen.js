@@ -25,9 +25,6 @@ class LayoutsScreen extends React.Component {
   }
 
   render() {
-    for (let i = 0; i < 10000; i++) {
-      console.log("");
-    }
     return (
       <Root componentId={this.props.componentId}>
         <Button label='Stack' testID={STACK_BTN} onPress={this.stack} />
