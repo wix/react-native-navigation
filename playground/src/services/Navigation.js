@@ -1,4 +1,6 @@
-const { isString, get } = require('lodash');
+const get = require('lodash-es/get');
+const isString= require('lodash-es/isString');
+
 const { stack, component } = require('../commons/Layouts');
 const { Navigation } = require('react-native-navigation');
 

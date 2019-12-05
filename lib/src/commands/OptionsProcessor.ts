@@ -1,8 +1,8 @@
-import isEqual from 'lodash/isEqual'
-import isObject from 'lodash/isObject'
-import isArray from 'lodash/isArray'
-import endsWith from 'lodash/endsWith'
-import forEach from 'lodash/forEach'
+import isEqual from 'lodash-es/isEqual'
+import isObject from 'lodash-es/isObject'
+import isArray from 'lodash-es/isArray'
+import endsWith from 'lodash-es/endsWith'
+import forEach from 'lodash-es/forEach'
 
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
