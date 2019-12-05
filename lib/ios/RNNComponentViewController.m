@@ -16,17 +16,6 @@
 	return self;
 }
 
-- (instancetype)initExternalComponentWithLayoutInfo:(RNNLayoutInfo *)layoutInfo eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNComponentPresenter *)presenter options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions {
-	self = [self initWithLayoutInfo:layoutInfo rootViewCreator:nil eventEmitter:eventEmitter presenter:presenter options:options defaultOptions:defaultOptions];
-	return self;
-}
-
-- (void)bindViewController:(UIViewController *)viewController {
-	[self addChildViewController:viewController];
-	[self.view addSubview:viewController.view];
-	[viewController didMoveToParentViewController:self];
-}
-
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
     _defaultOptions = defaultOptions;
 	[_presenter setDefaultOptions:defaultOptions];
@@ -57,15 +46,14 @@
 }
 
 - (void)loadView {
-    [self renderReactViewIfNeeded];
+	[self renderReactViewIfNeeded];
 }
 
 - (void)render {
-	if (self.isExternalViewController || !self.waitForRender) {
-		[self readyForPresentation];
-    } else {
+    if (!self.waitForRender)
+        [self readyForPresentation];
+    else
         [self renderReactViewIfNeeded];
-    }
 }
 
 - (void)renderReactViewIfNeeded {
@@ -94,10 +82,6 @@
 
 -(BOOL)isCustomTransitioned {
 	return self.resolveOptions.customTransition.animations != nil;
-}
-
-- (BOOL)isExternalViewController {
-	return !self.creator;
 }
 
 - (BOOL)prefersStatusBarHidden {

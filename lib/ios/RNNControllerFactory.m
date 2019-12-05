@@ -5,6 +5,7 @@
 #import "RNNBottomTabsController.h"
 #import "RNNTopTabsViewController.h"
 #import "RNNComponentViewController.h"
+#import "RNNExternalViewController.h"
 
 @implementation RNNControllerFactory {
 	id<RNNComponentViewCreator> _creator;
@@ -117,8 +118,7 @@
 	
 	UIViewController* externalVC = [_store getExternalComponent:layoutInfo bridge:_bridge];
 	
-	RNNComponentViewController* component = [[RNNComponentViewController alloc] initExternalComponentWithLayoutInfo:layoutInfo eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
-	[component bindViewController:externalVC];
+    RNNExternalViewController* component = [[RNNExternalViewController alloc] initWithLayoutInfo:layoutInfo eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions viewController:externalVC];
 	
 	return component;
 }
@@ -135,7 +135,7 @@
 	return stack;
 }
 
--(UIViewController *)createBottomTabs:(RNNLayoutNode*)node {
+- (UIViewController *)createBottomTabs:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 	RNNBottomTabsPresenter* presenter = [[RNNBottomTabsPresenter alloc] initWithDefaultOptions:_defaultOptions];

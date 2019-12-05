@@ -29,16 +29,6 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 						   options:(RNNNavigationOptions *)options
 					defaultOptions:(RNNNavigationOptions *)defaultOptions;
 
-- (instancetype)initExternalComponentWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
-									   eventEmitter:(RNNEventEmitter*)eventEmitter
-										  presenter:(RNNComponentPresenter *)presenter
-											options:(RNNNavigationOptions *)options
-									 defaultOptions:(RNNNavigationOptions *)defaultOptions;
-
-- (BOOL)isExternalViewController;
-
 - (void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem;
-
-- (void)bindViewController:(UIViewController *)viewController;
 
 @end

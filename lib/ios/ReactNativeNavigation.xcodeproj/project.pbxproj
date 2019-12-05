@@ -219,6 +219,8 @@
 		50AB0B1F22562FA10039DAED /* UIViewController+LayoutProtocolTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AB0B1E22562FA10039DAED /* UIViewController+LayoutProtocolTest.m */; };
 		50BAFE4623984FCC00798674 /* BottomTabsAttacher.h in Headers */ = {isa = PBXBuildFile; fileRef = 50BAFE4423984FCC00798674 /* BottomTabsAttacher.h */; };
 		50BAFE4723984FCC00798674 /* BottomTabsAttacher.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BAFE4523984FCC00798674 /* BottomTabsAttacher.m */; };
+		50BAFE4B2399405800798674 /* RNNExternalViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50BAFE492399405800798674 /* RNNExternalViewController.h */; };
+		50BAFE4C2399405800798674 /* RNNExternalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BAFE4A2399405800798674 /* RNNExternalViewController.m */; };
 		50BE951220B5A787004F5DF5 /* RNNStatusBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BE951020B5A787004F5DF5 /* RNNStatusBarOptions.m */; };
 		50BE951320B5A787004F5DF5 /* RNNStatusBarOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50BE951120B5A787004F5DF5 /* RNNStatusBarOptions.h */; };
 		50C4A496206BDDBB00DB292E /* RNNSubtitleOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C4A494206BDDBB00DB292E /* RNNSubtitleOptions.h */; };
@@ -579,6 +581,8 @@
 		50AB0B1E22562FA10039DAED /* UIViewController+LayoutProtocolTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LayoutProtocolTest.m"; sourceTree = "<group>"; };
 		50BAFE4423984FCC00798674 /* BottomTabsAttacher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsAttacher.h; sourceTree = "<group>"; };
 		50BAFE4523984FCC00798674 /* BottomTabsAttacher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsAttacher.m; sourceTree = "<group>"; };
+		50BAFE492399405800798674 /* RNNExternalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNExternalViewController.h; sourceTree = "<group>"; };
+		50BAFE4A2399405800798674 /* RNNExternalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNExternalViewController.m; sourceTree = "<group>"; };
 		50BE951020B5A787004F5DF5 /* RNNStatusBarOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNStatusBarOptions.m; sourceTree = "<group>"; };
 		50BE951120B5A787004F5DF5 /* RNNStatusBarOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNStatusBarOptions.h; sourceTree = "<group>"; };
 		50C4A494206BDDBB00DB292E /* RNNSubtitleOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSubtitleOptions.h; sourceTree = "<group>"; };
@@ -837,6 +841,7 @@
 				505EDD47214FC4A60071C7DE /* RNNLayoutProtocol.h */,
 				50AB0B1A2255F8640039DAED /* UIViewController+LayoutProtocol.h */,
 				50AB0B1B2255F8640039DAED /* UIViewController+LayoutProtocol.m */,
+				26916C941E4B9CCC00D13680 /* RNNComponentViewCreator.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -1011,6 +1016,17 @@
 			name = HMSegmentControl;
 			sourceTree = "<group>";
 		};
+		50BAFE482399403200798674 /* Child View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7BEF0D161E437684003E96B0 /* RNNComponentViewController.h */,
+				7BEF0D171E437684003E96B0 /* RNNComponentViewController.m */,
+				50BAFE492399405800798674 /* RNNExternalViewController.h */,
+				50BAFE4A2399405800798674 /* RNNExternalViewController.m */,
+			);
+			name = "Child View Controllers";
+			sourceTree = "<group>";
+		};
 		50D031312005146C00386B3D /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1039,6 +1055,7 @@
 				505EDD39214FA7E80071C7DE /* Presenters */,
 				5012242C2173E0A4000F5F98 /* Parent ViewControllers */,
 				5012242D2173E0E0000F5F98 /* Protocols */,
+				50BAFE482399403200798674 /* Child View Controllers */,
 				50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */,
 				50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */,
 				50BAFE4423984FCC00798674 /* BottomTabsAttacher.h */,
@@ -1047,15 +1064,12 @@
 				501CD31E214A5B6900A6E225 /* RNNLayoutInfo.m */,
 				501E0215213E7EA3003365C5 /* RNNReactView.h */,
 				501E0216213E7EA3003365C5 /* RNNReactView.m */,
-				26916C941E4B9CCC00D13680 /* RNNComponentViewCreator.h */,
 				26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */,
 				26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */,
 				7BA500761E254908001B9E1B /* RNNSplashScreen.h */,
 				7BA500771E254908001B9E1B /* RNNSplashScreen.m */,
 				7BEF0D1A1E43771B003E96B0 /* RNNLayoutNode.h */,
 				7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */,
-				7BEF0D161E437684003E96B0 /* RNNComponentViewController.h */,
-				7BEF0D171E437684003E96B0 /* RNNComponentViewController.m */,
 				7BC9346C1E26886E00EFA125 /* RNNControllerFactory.h */,
 				7BC9346D1E26886E00EFA125 /* RNNControllerFactory.m */,
 				21B85E5E1F44482A00B314B5 /* RNNNavigationButtons.h */,
@@ -1337,6 +1351,7 @@
 				E8367B801F7A8A4700675C05 /* VICMAImageView.h in Headers */,
 				263905E61E4CAC950023D7D3 /* RNNSideMenuChildVC.h in Headers */,
 				50F5DFC51F407AA0001A00BC /* RNNStackController.h in Headers */,
+				50BAFE4B2399405800798674 /* RNNExternalViewController.h in Headers */,
 				5047E4F42267568800908DD3 /* RNNExternalComponentStore.h in Headers */,
 				21B85E5F1F44482A00B314B5 /* RNNNavigationButtons.h in Headers */,
 				7BEF0D181E437684003E96B0 /* RNNComponentViewController.h in Headers */,
@@ -1636,6 +1651,7 @@
 				505EDD3D214FA8000071C7DE /* RNNComponentPresenter.m in Sources */,
 				E33AC20820B5C4F90090DB8A /* RNNSplitViewOptions.m in Sources */,
 				E33AC20020B5BA0B0090DB8A /* RNNSplitViewController.m in Sources */,
+				50BAFE4C2399405800798674 /* RNNExternalViewController.m in Sources */,
 				5038A3C2216E1E66009280BC /* RNNFontAttributesCreator.m in Sources */,
 				506317AB220B547400B26FC3 /* UIImage+insets.m in Sources */,
 				E8A430121F9CB87B00B61A20 /* RNNAnimatedView.m in Sources */,
