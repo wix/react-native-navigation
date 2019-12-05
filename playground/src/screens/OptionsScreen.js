@@ -30,9 +30,6 @@ class Options extends Component {
   }
 
   render() {
-    for (let i = 0; i < 10000; i++) {
-      console.log("");
-    }
     return (
       <Root componentId={this.props.componentId} style={{}}>
         <Button label='Change title' testID={CHANGE_TITLE_BTN} onPress={this.changeTitle} />
