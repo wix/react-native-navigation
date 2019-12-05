@@ -328,8 +328,6 @@
 		
 	}];
 	
-//	[[vc1Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
-//	[[vc2Mock expect] renderTreeAndWait:YES perform:[OCMArg any]];
 	[[vc1Mock expect] render];
 	[[vc2Mock expect] render];
 }
