@@ -43,6 +43,10 @@
     return (RNNNavigationOptions *) [self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy];
 }
 
+- (RNNNavigationOptions *)resolveOptionsWithDefault {
+    return [(RNNNavigationOptions *) [self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
+}
+
 - (void)overrideOptions:(RNNNavigationOptions *)options {
 	[self.options overrideOptions:options];
 }
@@ -56,40 +60,31 @@
     if (!self.waitForRender) {
         [self readyForPresentation];
     }
-    UIViewController* firstChildViewController = self.childViewControllers.lastObject;
-    RNNNavigationOptions* resolvedOptions = self.resolveOptions;
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-		dispatch_group_t group = dispatch_group_create();
-		dispatch_group_enter(group);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [firstChildViewController setReactViewReadyCallback:^{
-                dispatch_group_leave(group);
-            }];
-            [firstChildViewController render];
-        });
-		
-		dispatch_group_enter(group);
-		[self.presenter renderComponents:resolvedOptions perform:^{
-			dispatch_group_leave(group);
-		}];
-		dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
+    
+    [self.presentedComponentViewController setReactViewReadyCallback:^{
+        [self.presenter renderComponents:self.resolveOptionsWithDefault perform:^{
             [self readyForPresentation];
-		});
-	});
+        }];
+    }];
+    
+    [self.presentedComponentViewController render];
 }
 
 - (void)readyForPresentation {
-    [self.parentViewController readyForPresentation];
     if (self.reactViewReadyCallback) {
         self.reactViewReadyCallback();
         self.reactViewReadyCallback = nil;
     }
+    
+    [self.parentViewController readyForPresentation];
 }
 
 - (UIViewController *)getCurrentChild {
-    return self;
+    return nil;
+}
+
+- (UIViewController *)presentedComponentViewController {
+    return self.getCurrentChild ? self.getCurrentChild.presentedComponentViewController : self;
 }
 
 - (CGFloat)getTopBarHeight {
@@ -180,7 +175,7 @@
 }
 
 - (BOOL)waitForRender {
-    return [objc_getAssociatedObject(self, @selector(waitForRender)) boolValue];
+    return [objc_getAssociatedObject(self.parentViewController ?: self, @selector(waitForRender)) boolValue];
 }
 
 - (void)setWaitForRender:(BOOL)waitForRender {

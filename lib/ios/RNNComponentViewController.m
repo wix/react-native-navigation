@@ -36,11 +36,9 @@
 	[self.options overrideOptions:options];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[_presenter applyOptions:self.resolveOptions];
-	[_presenter renderComponents:self.resolveOptions perform:nil];
-	
 	[self.parentViewController onChildWillAppear];
 }
 
@@ -62,8 +60,8 @@
     [self renderReactViewIfNeeded];
 }
 
-- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (self.isExternalViewController) {
+- (void)render {
+	if (self.isExternalViewController || !self.waitForRender) {
 		[self readyForPresentation];
     } else {
         [self renderReactViewIfNeeded];
@@ -72,13 +70,11 @@
 
 - (void)renderReactViewIfNeeded {
     if (!self.isViewLoaded) {
-        UIView* reactView = [self.creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId availableSize:[UIScreen mainScreen].bounds.size reactViewReadyBlock:^{
+        self.view = [self.creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId reactViewReadyBlock:^{
             [self->_presenter renderComponents:self.resolveOptions perform:^{
                 [self readyForPresentation];
             }];
         }];
-        
-        self.view = reactView;
     }
 }
 

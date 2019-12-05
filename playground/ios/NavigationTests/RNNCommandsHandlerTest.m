@@ -65,14 +65,17 @@
 	self.modalManager = [OCMockObject partialMockForObject:[RNNModalManager new]];
 	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:nil componentRegistry:nil andBridge:nil]];
 	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:self.modalManager overlayManager:self.overlayManager mainWindow:_mainWindow];
-	self.vc1 = [RNNComponentViewController new];
-	self.vc2 = [RNNComponentViewController new];
-	self.vc3 = [RNNComponentViewController new];
+	self.vc1 = self.generateComponent;
+	self.vc2 = self.generateComponent;
+	self.vc3 = self.generateComponent;
 	_nvc = [[MockUINavigationController alloc] init];
 	[_nvc setViewControllers:@[self.vc1, self.vc2, self.vc3]];
 	OCMStub([self.sharedApplication keyWindow]).andReturn(self.mainWindow);
 }
 
+- (RNNComponentViewController *)generateComponent {
+	return [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil presenter:[RNNComponentPresenter new] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil];
+}
 
 - (void)testAssertReadyForEachMethodThrowsExceptoins {
 	NSArray* methods = [self getPublicMethodNamesForObject:self.uut];
@@ -182,7 +185,7 @@
 
 - (void)testShowOverlay_withCreatedLayout {
 	[self.uut setReadyToReceiveCommands:true];
-	UIViewController* layoutVC = [RNNComponentViewController new];
+	UIViewController* layoutVC = self.generateComponent;
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(layoutVC);
 	
 	[[self.overlayManager expect] showOverlayWindow:[OCMArg any]];
@@ -264,9 +267,10 @@
 	[self.uut setReadyToReceiveCommands:true];
 	id classMock = OCMClassMock([RNNLayoutManager class]);
 	OCMStub(ClassMethod([classMock findComponentForId:@"vc1"])).andReturn(_nvc);
+	self.vc2.options.animations.setStackRoot.enable = [[Bool alloc] initWithBOOL:NO];
 	
 	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
-		
+
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
 	}];
@@ -281,8 +285,10 @@
 	OCMStub(ClassMethod([classMock findComponentForId:@"vc1"])).andReturn(_nvc);
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
 	[self.uut setReadyToReceiveCommands:true];
+	
+	_vc3.options.animations.setStackRoot.enable = [[Bool alloc] initWithBOOL:NO];
 	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
-		
+	
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
 	}];
@@ -302,8 +308,8 @@
 		
 	}];
 	
-	[[vc1Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
-	[[vc2Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
+	[[vc1Mock expect] render];
+	[[vc2Mock expect] render];
 }
 
 - (void)testSetStackRoot_waitForRender {
@@ -322,8 +328,10 @@
 		
 	}];
 	
-	[[vc1Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
-	[[vc2Mock expect] renderTreeAndWait:YES perform:[OCMArg any]];
+//	[[vc1Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
+//	[[vc2Mock expect] renderTreeAndWait:YES perform:[OCMArg any]];
+	[[vc1Mock expect] render];
+	[[vc2Mock expect] render];
 }
 
 - (void)testSetRoot_waitForRenderTrue {
@@ -334,7 +342,7 @@
 	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
-	[[mockedVC expect] renderTreeAndWait:YES perform:[OCMArg any]];
+	[[mockedVC expect] render];
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
 	[mockedVC verify];
 }
@@ -347,7 +355,7 @@
 	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
-	[[mockedVC expect] renderTreeAndWait:NO perform:[OCMArg any]];
+	[[mockedVC expect] render];
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
 	[mockedVC verify];
 }

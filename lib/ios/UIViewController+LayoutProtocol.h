@@ -10,11 +10,15 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (UIViewController *)getCurrentChild;
 
+- (UIViewController *)presentedComponentViewController;
+
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options;
 
 - (RNNNavigationOptions *)resolveOptions;
+
+- (RNNNavigationOptions *)resolveOptionsWithDefault;
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
@@ -28,7 +32,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 @property (nonatomic, strong) RNNEventEmitter* eventEmitter;
 @property (nonatomic) id<RNNComponentViewCreator> creator;
-@property (nonatomic) RNNReactViewReadyCompletionBlock _Nonnull reactViewReadyCallback;
+@property (nonatomic) RNNReactViewReadyCompletionBlock reactViewReadyCallback;
 @property (nonatomic) BOOL waitForRender;
 
 @end

@@ -6,11 +6,10 @@
 	BOOL _fillParent;
 }
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties availableSize:(CGSize)availableSize reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
 	self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentDidAppear:) name:RCTContentDidAppearNotification object:nil];
 	 _reactViewReadyBlock = reactViewReadyBlock;
-	[bridge.uiManager setAvailableSize:availableSize forRootView:self];
 	
 	return self;
 }

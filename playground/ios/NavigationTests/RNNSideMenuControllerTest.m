@@ -1,9 +1,11 @@
 #import <XCTest/XCTest.h>
 #import "RNNSideMenuController.h"
 #import "RNNComponentViewController.h"
+#import "RNNTestRootViewCreator.h"
 
 @interface RNNSideMenuControllerTest : XCTestCase
 @property (nonatomic, strong) RNNSideMenuController *uut;
+@property (nonatomic, strong) RNNTestRootViewCreator *creator;
 @property (nonatomic, strong) RNNSideMenuChildVC *centerVC;
 @property (nonatomic, strong) RNNSideMenuChildVC *leftVC;
 @property (nonatomic, strong) RNNSideMenuChildVC *rightVC;
@@ -13,10 +15,15 @@
 
 - (void)setUp {
     [super setUp];
-	_leftVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNComponentViewController new] type:RNNSideMenuChildTypeLeft];
-	_rightVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNComponentViewController new] type:RNNSideMenuChildTypeRight];
-	_centerVC =[[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:[RNNComponentViewController new] type:RNNSideMenuChildTypeCenter];
+	_creator = [[RNNTestRootViewCreator alloc] init];
+	_leftVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:self.generateComponent type:RNNSideMenuChildTypeLeft];
+	_rightVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:self.generateComponent type:RNNSideMenuChildTypeRight];
+	_centerVC =[[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:self.generateComponent type:RNNSideMenuChildTypeCenter];
 	self.uut = [[RNNSideMenuController alloc] initWithLayoutInfo:nil creator:nil childViewControllers:@[_leftVC, _centerVC, _rightVC] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil];
+}
+
+- (RNNComponentViewController *)generateComponent {
+	return [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:_creator eventEmitter:nil presenter:[RNNComponentPresenter new] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil];
 }
 
 - (void)testSetSideMenuWidthShouldUpdateLeftReactViewFrameWidth {

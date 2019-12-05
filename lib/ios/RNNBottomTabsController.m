@@ -1,9 +1,16 @@
 #import "RNNBottomTabsController.h"
-#import "RCTConvert+RNNOptions.h"
 #import "UITabBarController+RNNUtils.h"
+#import "BottomTabsAttacher.h"
 
 @implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
+    BottomTabsAttacher* _bottomTabsAttacher;
+}
+
+- (instancetype)init {
+    self = [super init];
+    _bottomTabsAttacher = [[BottomTabsAttacher alloc] init];
+    return self;
 }
 
 - (id<UITabBarControllerDelegate>)delegate {
@@ -11,28 +18,8 @@
 }
 
 - (void)render {
-    BottomTabsAttachMode tabsAttachMode = [RCTConvert BottomTabsAttachMode:[[self.resolveOptions withDefault:self.defaultOptions].bottomTabs.tabsAttachMode getWithDefaultValue:@"together"]];
-    switch (tabsAttachMode) {
-        case BottomTabsAttachModeTogether: {
-            [super render];
-        }
-            break;
-        case BottomTabsAttachModeAfterInitialTab: {
-            [self.selectedViewController setReactViewReadyCallback:^{
-                for (UIViewController* viewController in self.deselectedViewControllers) {
-                    [viewController render];
-                }
-            }];
-            [self.selectedViewController render];
-        }
-            break;
-        case BottomTabsAttachModeOnSwitchToTab: {
-            [self readyForPresentation];
-        }
-        break;
-        default:
-            break;
-    }
+    BottomTabsAttachMode attachMode = [RCTConvert BottomTabsAttachMode:[self.resolveOptionsWithDefault.bottomTabs.tabsAttachMode getWithDefaultValue:@"together"]];
+    [_bottomTabsAttacher attach:self withMode:attachMode];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -42,12 +29,6 @@
 - (UIViewController *)getCurrentChild {
 	return self.selectedViewController;
 }
-
-//- (NSArray<UIViewController *> *)getOtherChildren {
-//    self.childViewControllers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-//        return evaluatedObject
-//    }]
-//}
 
 - (CGFloat)getTopBarHeight {
     for(UIViewController * child in [self childViewControllers]) {
