@@ -2,7 +2,7 @@
 const exec = require('shell-utils').exec;
 const semver = require('semver');
 const fs = require('fs');
-const includes = require('lodash-es/includes');
+const includes = require('lodash/includes');
 const path = require('path');
 
 // Workaround JS

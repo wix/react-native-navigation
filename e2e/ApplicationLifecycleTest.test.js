@@ -1,7 +1,7 @@
 const Utils = require('./Utils');
 const Android = require('./AndroidUtils');
 const TestIDs = require('../playground/src/testIDs');
-const includes = require('lodash-es/includes');
+const includes = require('lodash/includes');
 
 const { elementByLabel, elementById, sleep } = Utils;
 const IS_RELEASE = includes(process.argv, '--release');

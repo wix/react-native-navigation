@@ -1,4 +1,4 @@
-import isArray from 'lodash-es/isArray';
+import isArray from 'lodash/isArray';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { UniqueIdProvider } from './adapters/UniqueIdProvider';

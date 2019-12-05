@@ -1,5 +1,5 @@
-import merge from 'lodash-es/merge'
-import isFunction from 'lodash-es/isFunction'
+import merge from 'lodash/merge'
+import isFunction from 'lodash/isFunction'
 import { LayoutType } from './LayoutType';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Store } from '../components/Store';

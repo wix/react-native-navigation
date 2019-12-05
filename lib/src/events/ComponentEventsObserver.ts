@@ -1,8 +1,8 @@
-import isString from 'lodash-es/isString'
-import isNil from 'lodash-es/isNil'
-import uniqueId from 'lodash-es/uniqueId'
-import unset from 'lodash-es/unset'
-import forEach from 'lodash-es/forEach'
+import isString from 'lodash/isString'
+import isNil from 'lodash/isNil'
+import uniqueId from 'lodash/uniqueId'
+import unset from 'lodash/unset'
+import forEach from 'lodash/forEach'
 import { EventSubscription } from '../interfaces/EventSubscription';
 import {
   ComponentDidAppearEvent,

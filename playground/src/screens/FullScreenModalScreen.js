@@ -1,5 +1,5 @@
-const concat = require('lodash-es/concat');
-const last = require('lodash-es/last');
+const concat = require('lodash/concat');
+const last = require('lodash/last');
 const React = require('react');
 const Root = require('../components/Root');
 const Button = require('../components/Button')

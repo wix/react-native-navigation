@@ -1,4 +1,4 @@
-import uniqueId from 'lodash-es/uniqueId';
+import uniqueId from 'lodash/uniqueId';
 
 export class UniqueIdProvider {
   generate(prefix?: string): string {

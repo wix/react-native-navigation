@@ -1,5 +1,5 @@
-const eq = require('lodash-es/eq');
-const isEqual = require('lodash-es/isEqual');
+const eq = require('lodash/eq');
+const isEqual = require('lodash/isEqual');
 
 describe('testing that the environment is working properly', () => {
   it('object spread', () => {

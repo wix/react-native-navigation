@@ -1,8 +1,5 @@
 const exec = require('shell-utils').exec;
-const includes = require('lodash-es/includes');
-const chain = require('lodash-es/chain');
-const split = require('lodash-es/split');
-const filter = require('lodash-es/filter');
+const { includes, chain, split, filter } = require('lodash');
 
 const fix = includes(process.argv, '--fix') ? '--fix' : '';
 

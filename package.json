@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "hoist-non-react-statics": "3.x.x",
-    "lodash-es": "4.17.x",
+    "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
     "tslib": "1.9.3"
@@ -64,8 +64,7 @@
     "@react-native-community/eslint-config": "0.0.3",
     "@types/hoist-non-react-statics": "^3.0.1",
     "@types/jest": "24.x.x",
-    "@types/lodash": "4.x.x",
-    "@types/lodash-es": "^4.17.3",
+    "@types/lodash": "^4.14.149",
     "@types/react": "16.x.x",
     "@types/react-native": "0.57.7",
     "@types/react-test-renderer": "16.x.x",
@@ -73,6 +72,7 @@
     "detox": "14.x.x",
     "handlebars": "4.x.x",
     "jest": "24.9.x",
+    "lodash": "^4.17.15",
     "metro-react-native-babel-preset": "0.57.x",
     "react": "16.9.0",
     "react-native": "0.61.4",

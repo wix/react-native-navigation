@@ -1,4 +1,4 @@
-import concat from 'lodash-es/concat'
+import concat from 'lodash/concat'
 import * as Handlebars from 'handlebars';
 import * as fs from 'fs';
 import { ClassContext } from './ClassParser';

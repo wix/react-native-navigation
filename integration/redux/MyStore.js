@@ -1,6 +1,6 @@
 const redux = require('redux');
-const merge = require('lodash-es/merge');
-const get = require('lodash-es/get');
+const merge = require('lodash/merge');
+const get = require('lodash/get');
 
 const initialState = {
   person: {

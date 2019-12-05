@@ -1,4 +1,4 @@
-const concat = require('lodash-es/concat');
+const concat = require('lodash/concat');
 const React = require('react');
 const { BackHandler } = require('react-native');
 const Navigation = require('../services/Navigation');

@@ -1,6 +1,6 @@
-import forEach from 'lodash-es/forEach'
-import filter from 'lodash-es/filter'
-import invoke from 'lodash-es/invoke'
+import forEach from 'lodash/forEach'
+import filter from 'lodash/filter'
+import invoke from 'lodash/invoke'
 import { mock, verify, instance, deepEqual, when, anything, anyString } from 'ts-mockito';
 
 import { LayoutTreeParser } from './LayoutTreeParser';

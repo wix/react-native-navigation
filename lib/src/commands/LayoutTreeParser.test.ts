@@ -1,4 +1,4 @@
-import keys from 'lodash-es/keys';
+import keys from 'lodash/keys';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutType } from './LayoutType';
 import { Options } from '../interfaces/Options';
