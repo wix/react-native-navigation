@@ -8,6 +8,7 @@
 #import <ReactNativeNavigation/RNNErrorHandler.h>
 #import <OCMock/OCMock.h>
 #import "RNNLayoutManager.h"
+#import "RNNBottomTabsController.h"
 
 @interface MockUIApplication : NSObject
 
@@ -356,6 +357,56 @@
 	[[mockedVC expect] render];
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
 	[mockedVC verify];
+}
+
+- (void)testSetRoot_withBottomTabsAttachModeTogether {
+	[self.uut setReadyToReceiveCommands:true];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.bottomTabs.tabsAttachMode = [[Text alloc] initWithValue:@"together"];
+	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2]];
+
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+	
+	[self.uut setRoot:@{} commandId:@"" completion:^{}];
+	XCTAssertTrue(_vc1.isViewLoaded);
+	XCTAssertTrue(_vc2.isViewLoaded);
+}
+
+- (void)testSetRoot_withBottomTabsAttachModeOnSwitchToTab {
+	[self.uut setReadyToReceiveCommands:true];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.bottomTabs.tabsAttachMode = [[Text alloc] initWithValue:@"onSwitchToTab"];
+	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2]];
+
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+	
+	[self.uut setRoot:@{} commandId:@"" completion:^{}];
+	XCTAssertTrue(_vc1.isViewLoaded);
+	XCTAssertFalse(_vc2.isViewLoaded);
+	[tabBarController setSelectedIndex:1];
+	XCTAssertTrue(_vc2.isViewLoaded);
+}
+
+- (void)testSetRoot_withBottomTabsAttachModeAfterInitialTab {
+	[self.uut setReadyToReceiveCommands:true];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.bottomTabs.tabsAttachMode = [[Text alloc] initWithValue:@"afterInitialTab"];
+	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2]];
+
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+
+	[self.uut setRoot:@{} commandId:@"" completion:^{
+		XCTAssertFalse(self->_vc2.isViewLoaded);
+	}];
+
+	XCTAssertTrue(_vc1.isViewLoaded);
+	XCTAssertTrue(_vc2.isViewLoaded);
 }
 
 - (void)testShowModal_shouldShowAnimated {

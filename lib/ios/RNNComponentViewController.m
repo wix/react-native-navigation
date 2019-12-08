@@ -63,6 +63,8 @@
                 [self readyForPresentation];
             }];
         }];
+    } else {
+        [self readyForPresentation];
     }
 }
 
