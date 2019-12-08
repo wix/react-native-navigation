@@ -1,7 +1,6 @@
 #import "UINavigationBar+utils.h"
 #import "RNNFontAttributesCreator.h"
 
-
 @implementation UINavigationBar (utils)
 
 - (void)rnn_setBackIndicatorImage:(UIImage *)image {
@@ -70,7 +69,6 @@
         [self getNavigaitonBarCompactAppearance].backgroundColor = color;
         [self getNavigaitonBarScrollEdgeAppearance].backgroundColor = color;
     } else {
-        [super setBackgroundColor:color];
         self.barTintColor = color;
     }
 }
@@ -86,7 +84,7 @@
         [self getNavigaitonBarScrollEdgeAppearance].backgroundEffect = nil;
         
     } else {
-        [self setBackgroundColor:[UIColor clearColor]];
+        self.barTintColor = UIColor.clearColor;
         self.shadowImage = [UIImage new];
         [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     }
