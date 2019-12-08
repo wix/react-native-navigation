@@ -1,10 +1,20 @@
 #import "BottomTabsAttacher.h"
 #import "UITabBarController+RNNUtils.h"
+#import "RCTConvert+RNNOptions.h"
+#import "UIViewController+LayoutProtocol.h"
 
-@implementation BottomTabsAttacher
+@implementation BottomTabsAttacher {
+    BottomTabsAttachMode _attachMode;
+}
 
-- (void)attach:(RNNBottomTabsController *)bottomTabsController withMode:(BottomTabsAttachMode)tabsAttachMode {
-    switch (tabsAttachMode) {
+- (instancetype)initWithOptions:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions {
+    self = [super init];
+    _attachMode = [RCTConvert BottomTabsAttachMode:[[options withDefault:defaultOptions].bottomTabs.tabsAttachMode getWithDefaultValue:@"together"]];
+    return self;
+}
+
+- (void)attach:(UITabBarController *)bottomTabsController {
+    switch (_attachMode) {
         case BottomTabsAttachModeTogether: {
             for (UIViewController* childViewController in bottomTabsController.childViewControllers) {
                 [childViewController render];

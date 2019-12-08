@@ -1,6 +1,5 @@
 #import "RNNBottomTabsController.h"
 #import "UITabBarController+RNNUtils.h"
-#import "BottomTabsAttacher.h"
 
 @implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
@@ -13,13 +12,25 @@
     return self;
 }
 
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+                           creator:(id<RNNComponentViewCreator>)creator
+                           options:(RNNNavigationOptions *)options
+                    defaultOptions:(RNNNavigationOptions *)defaultOptions
+                         presenter:(RNNBasePresenter *)presenter
+                      eventEmitter:(RNNEventEmitter *)eventEmitter
+              childViewControllers:(NSArray *)childViewControllers
+                bottomTabsAttacher:(BottomTabsAttacher *)bottomTabsAttacher {
+    self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
+    _bottomTabsAttacher = bottomTabsAttacher;
+    return self;
+}
+
 - (id<UITabBarControllerDelegate>)delegate {
 	return self;
 }
 
 - (void)render {
-    BottomTabsAttachMode attachMode = [RCTConvert BottomTabsAttachMode:[self.resolveOptionsWithDefault.bottomTabs.tabsAttachMode getWithDefaultValue:@"together"]];
-    [_bottomTabsAttacher attach:self withMode:attachMode];
+    [_bottomTabsAttacher attach:self];
 }
 
 - (void)viewDidLayoutSubviews {

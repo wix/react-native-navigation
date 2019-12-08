@@ -1,8 +1,10 @@
 #import <Foundation/Foundation.h>
-#import "RNNBottomTabsController.h"
+#import "RNNNavigationOptions.h"
 
 @interface BottomTabsAttacher : NSObject
 
-- (void)attach:(RNNBottomTabsController *)bottomTabsController withMode:(BottomTabsAttachMode)tabsAttachMode;
+- (instancetype)initWithOptions:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions;
+
+- (void)attach:(UITabBarController *)bottomTabsController;
 
 @end

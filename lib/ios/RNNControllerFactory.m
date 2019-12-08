@@ -136,18 +136,21 @@
 }
 
 - (UIViewController *)createBottomTabs:(RNNLayoutNode*)node {
-	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
-	RNNBottomTabsPresenter* presenter = [[RNNBottomTabsPresenter alloc] initWithDefaultOptions:_defaultOptions];
-	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
-	return [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo
-																					  creator:_creator
-																					  options:options
-																			   defaultOptions:_defaultOptions
-																					presenter:presenter
-																				 eventEmitter:_eventEmitter
-																		 childViewControllers:childViewControllers
-	];
+    RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
+    RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+    RNNBottomTabsPresenter* presenter = [[RNNBottomTabsPresenter alloc] initWithDefaultOptions:_defaultOptions];
+    BottomTabsAttacher* bottomTabsAttacher = [[BottomTabsAttacher alloc] initWithOptions:options defaultOptions:_defaultOptions];
+    ;
+    NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
+    return [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo
+                                                       creator:_creator
+                                                       options:options
+                                                defaultOptions:_defaultOptions
+                                                     presenter:presenter
+                                                  eventEmitter:_eventEmitter
+                                          childViewControllers:childViewControllers
+                                            bottomTabsAttacher:bottomTabsAttacher
+            ];
 }
 
 - (UIViewController *)createTopTabs:(RNNLayoutNode*)node {

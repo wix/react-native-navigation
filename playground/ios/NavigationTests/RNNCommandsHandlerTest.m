@@ -365,7 +365,8 @@
 	options.bottomTabs.tabsAttachMode = [[Text alloc] initWithValue:@"together"];
 	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
 
-	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2]];
+	BottomTabsAttacher* bottomTabsAttacher = [[BottomTabsAttacher alloc] initWithOptions:options defaultOptions:nil];
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2] bottomTabsAttacher:bottomTabsAttacher];
 
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 	
@@ -379,8 +380,9 @@
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
 	options.bottomTabs.tabsAttachMode = [[Text alloc] initWithValue:@"onSwitchToTab"];
 	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
-
-	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2]];
+	
+	BottomTabsAttacher* bottomTabsAttacher = [[BottomTabsAttacher alloc] initWithOptions:options defaultOptions:nil];
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2] bottomTabsAttacher:bottomTabsAttacher];
 
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 	
@@ -397,7 +399,8 @@
 	options.bottomTabs.tabsAttachMode = [[Text alloc] initWithValue:@"afterInitialTab"];
 	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
 
-	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2]];
+	BottomTabsAttacher* bottomTabsAttacher = [[BottomTabsAttacher alloc] initWithOptions:options defaultOptions:nil];
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2] bottomTabsAttacher:bottomTabsAttacher];
 
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 
