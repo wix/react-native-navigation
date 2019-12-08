@@ -3,13 +3,7 @@
 
 @implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
-    BottomTabsAttacher* _bottomTabsAttacher;
-}
-
-- (instancetype)init {
-    self = [super init];
-    _bottomTabsAttacher = [[BottomTabsAttacher alloc] init];
-    return self;
+    BottomTabsBaseAttacher* _bottomTabsAttacher;
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
@@ -19,7 +13,7 @@
                          presenter:(RNNBasePresenter *)presenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers
-                bottomTabsAttacher:(BottomTabsAttacher *)bottomTabsAttacher {
+                bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher {
     self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
     _bottomTabsAttacher = bottomTabsAttacher;
     return self;

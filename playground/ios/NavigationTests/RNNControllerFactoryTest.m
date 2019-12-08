@@ -24,7 +24,7 @@
 	[super setUp];
 	self.creator = nil;
 	self.store = [RNNExternalComponentStore new];
-	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator eventEmitter:nil store:self.store componentRegistry:nil andBridge:nil];
+	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator eventEmitter:nil store:self.store componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
 }
 
 - (void)tearDown {

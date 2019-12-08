@@ -3,7 +3,7 @@
 #import "RNNBottomTabsPresenter.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "RCTConvert+RNNOptions.h"
-#import "BottomTabsAttacher.h"
+#import "BottomTabsBaseAttacher.h"
 
 @interface RNNBottomTabsController : UITabBarController <RNNLayoutProtocol, UITabBarControllerDelegate>
 
@@ -14,7 +14,7 @@
                          presenter:(RNNBasePresenter *)presenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers
-                bottomTabsAttacher:(BottomTabsAttacher *)bottomTabsAttacher;
+                bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher;
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 
