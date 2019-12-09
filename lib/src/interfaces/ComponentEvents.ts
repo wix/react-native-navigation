@@ -33,3 +33,7 @@ export interface PreviewCompletedEvent extends ComponentEvent {
   componentName?: string;
   previewComponentId?: string;
 }
+
+export interface ScreenPoppedEvent extends ComponentEvent {
+  componentId: string;
+}

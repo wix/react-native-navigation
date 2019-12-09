@@ -35,15 +35,24 @@
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
-	if (self.viewControllers.count > 1) {
-		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
-		if ([controller isKindOfClass:[RNNComponentViewController class]]) {
-			RNNComponentViewController *rnnController = (RNNComponentViewController *)controller;
-			[self.presenter applyOptionsBeforePopping:rnnController.resolveOptions];
-		}
-	}
-	
+    [self prepareForPop];
+    [self sendScreenPoppedEvent];
+    
 	return [super popViewControllerAnimated:animated];
+}
+
+- (void)sendScreenPoppedEvent {
+    [self.eventEmitter sendScreenPoppedEvent:self.viewControllers.lastObject.layoutInfo.componentId];
+}
+
+- (void)prepareForPop {
+    if (self.viewControllers.count > 1) {
+        UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
+        if ([controller isKindOfClass:[RNNComponentViewController class]]) {
+            RNNComponentViewController *rnnController = (RNNComponentViewController *)controller;
+            [self.presenter applyOptionsBeforePopping:rnnController.resolveOptions];
+        }
+    }
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {

@@ -112,4 +112,11 @@ describe('EventsRegistry', () => {
     mockScreenEventsRegistry.bindComponent.mockReturnValueOnce(subscription);
     expect(uut.bindComponent({} as React.Component<any>)).toEqual(subscription);
   });
+
+  it('delegates screenPopped to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerScreenPoppedListener(cb);
+    expect(mockNativeEventsReceiver.registerScreenPoppedListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerScreenPoppedListener).toHaveBeenCalledWith(cb);
+  });
 });

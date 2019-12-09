@@ -145,6 +145,19 @@ const modalDismissedListener = Navigation.events().registerModalDismissedListene
 modalDismissedListener.remove();
 ```
 
+## registerScreenPoppedListener
+Invoked when screen is popped.
+
+```js
+// Subscribe
+const screenPoppedListener = Navigation.events().registerScreenPoppedListener(({ componentId }) => {
+
+});
+...
+// Unsubscribe
+screenPoppedListener.remove();
+```
+
 |       Parameter         | Description |
 |:--------------------:|:-----|
 |**componentId** | Id of the modal|
