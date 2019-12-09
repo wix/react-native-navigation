@@ -124,6 +124,7 @@
 
 - (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController {
 	[_presentedModals removeObject:presentationController.presentedViewController];
+    [_delegate dismissedModal:presentationController.presentedViewController];
 }
 
 -(UIViewController*)topPresentedVC {
