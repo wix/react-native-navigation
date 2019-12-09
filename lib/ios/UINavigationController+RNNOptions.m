@@ -114,4 +114,8 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
     lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
+- (CGFloat)getTopBarHeight {
+    return self.navigationBar.frame.size.height;
+}
+
 @end

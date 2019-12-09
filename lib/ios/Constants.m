@@ -8,7 +8,7 @@
 }
 
 + (CGFloat)topBarHeight {
-	return [UIApplication.sharedApplication.delegate.window.rootViewController getTopBarHeight];
+	return [RCTPresentedViewController() getTopBarHeight];
 }
 
 + (CGFloat)statusBarHeight {

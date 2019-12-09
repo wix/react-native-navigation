@@ -18,10 +18,6 @@
 	return self.topViewController;
 }
 
-- (CGFloat)getTopBarHeight {
-	return self.navigationBar.frame.size.height;
-}
-
 - (UINavigationController *)navigationController {
 	return self;
 }

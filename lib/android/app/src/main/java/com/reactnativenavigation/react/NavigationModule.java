@@ -79,7 +79,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
     
     @ReactMethod
-    public void getConstants(Promise promise) {
+    public void getNavigationConstants(Promise promise) {
         ReactApplicationContext ctx = getReactApplicationContext();
         WritableMap constants = Arguments.createMap();
         constants.putString(Constants.BACK_BUTTON_JS_KEY, Constants.BACK_BUTTON_ID);
