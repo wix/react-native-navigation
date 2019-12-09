@@ -1,4 +1,5 @@
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 
@@ -105,6 +106,27 @@
 - (void)testShowModal_CallPresentViewController {
 	[_modalManager showModal:_vc1 animated:NO completion:nil];
 	XCTAssertTrue(_modalManager.topPresentedVC.presentViewControllerCalls == 1);
+}
+
+- (void)testDismissModal_ShouldInvokeDelegateDismissedModal {
+	id mockDelegate = [OCMockObject mockForProtocol:@protocol(RNNModalManagerDelegate)];
+	_modalManager.delegate = mockDelegate;
+	[_modalManager showModal:_vc1 animated:NO completion:nil];
+	
+	[[mockDelegate expect] dismissedModal:_vc1];
+	[_modalManager dismissModal:_vc1 completion:nil];
+	[mockDelegate verify];
+}
+
+- (void)testPresentationControllerDidDismiss_ShouldInvokeDelegateDismissedModal {
+	id mockDelegate = [OCMockObject mockForProtocol:@protocol(RNNModalManagerDelegate)];
+	_modalManager.delegate = mockDelegate;
+	
+	UIPresentationController* presentationController = [[UIPresentationController alloc] initWithPresentedViewController:_vc2 presentingViewController:_vc1];
+	
+	[[mockDelegate expect] dismissedModal:_vc2];
+	[_modalManager presentationControllerDidDismiss:presentationController];
+	[mockDelegate verify];
 }
 
 #pragma mark RNNModalManagerDelegate
