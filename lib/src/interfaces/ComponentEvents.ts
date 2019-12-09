@@ -4,7 +4,7 @@ export interface ComponentEvent {
 
 export interface ComponentDidAppearEvent extends ComponentEvent {
   componentName: string;
-  passProps?: object
+  passProps?: object;
 }
 
 export interface ComponentDidDisappearEvent extends ComponentEvent {
@@ -17,6 +17,7 @@ export interface NavigationButtonPressedEvent extends ComponentEvent {
 
 export interface ModalDismissedEvent extends ComponentEvent {
   componentId: string;
+  modalsDismissed: number;
 }
 
 export interface SearchBarUpdatedEvent extends ComponentEvent {
