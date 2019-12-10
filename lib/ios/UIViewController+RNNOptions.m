@@ -1,7 +1,5 @@
 #import "UIViewController+RNNOptions.h"
 #import <React/RCTRootView.h>
-#import "UIImage+tint.h"
-#import "UINavigationBar+utils.h"
 #import "RNNBottomTabOptions.h"
 #import "RNNNavigationOptions.h"
 #import "RNNBackButtonOptions.h"
@@ -159,23 +157,6 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		RCTRootView* rootView = (RCTRootView*)self.view;
 		rootView.passThroughTouches = !interceptTouchOutside;
 	}
-}
-
-- (void)applyBackButton:(RNNBackButtonOptions *)backButton {
-	UIBarButtonItem *backItem = [UIBarButtonItem new];
-	if (backButton.icon.hasValue) {
-		UIColor *color = [backButton.color getWithDefaultValue:nil];
-		backItem.image = color ?
-				[[backButton.icon.get withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] :
-				backButton.icon.get;
-
-		[self.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
-        [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
-	}
-
-	if ([backButton.showTitle getWithDefaultValue:YES]) backItem.title = [backButton.title getWithDefaultValue:nil];
-	if (backButton.color.hasValue) backItem.tintColor = [backButton.color get];
-	self.navigationItem.backBarButtonItem = backItem;
 }
 
 @end

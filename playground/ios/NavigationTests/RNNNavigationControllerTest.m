@@ -152,38 +152,6 @@
 	[(id)self.uut.options verify];
 }
 
-- (void)testSetTopBarBackgroundColor_ShouldSetBackgroundColor {
-	UIColor* color = UIColor.redColor;
-	[self.uut setTopBarBackgroundColor:color];
-	XCTAssertEqual(self.uut.navigationBar.standardAppearance.backgroundColor, color);
-	XCTAssertEqual(self.uut.navigationBar.compactAppearance.backgroundColor, color);
-	XCTAssertEqual(self.uut.navigationBar.scrollEdgeAppearance.backgroundColor, color);
-}
-
-- (void)testSetTopBarBackgroundColor_ShouldSetTransparentBackgroundColor {
-	UIColor* transparentColor = UIColor.clearColor;
-	[self.uut setTopBarBackgroundColor:transparentColor];
-
-	XCTAssertTrue(self.uut.navigationBar.translucent);
-	XCTAssertNil(self.uut.navigationBar.standardAppearance.backgroundColor);
-	XCTAssertNil(self.uut.navigationBar.compactAppearance.backgroundColor);
-	XCTAssertNil(self.uut.navigationBar.scrollEdgeAppearance.backgroundColor);
-}
-
-- (void)testSetTopBarBackgroundColor_NilColorShouldResetNavigationBar {
-	UIColor* transparentColor = UIColor.clearColor;
-	UIColor* redColor = UIColor.redColor;
-	
-	[self.uut setTopBarBackgroundColor:transparentColor];
-	[self.uut setTopBarBackgroundColor:redColor];
-	[self.uut setTopBarBackgroundColor:nil];
-	
-	XCTAssertNil(self.uut.navigationBar.barTintColor);
-	XCTAssertNil(self.uut.navigationBar.standardAppearance.backgroundColor);
-	XCTAssertNil(self.uut.navigationBar.compactAppearance.backgroundColor);
-	XCTAssertNil(self.uut.navigationBar.scrollEdgeAppearance.backgroundColor);
-}
-
 - (RNNStackController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
 	RNNStackController* nav = [[RNNStackController alloc] initWithLayoutInfo:nil creator:_creator options:options defaultOptions:nil presenter:[[RNNStackPresenter alloc] init] eventEmitter:nil childViewControllers:@[_vc1]];
 	return nav;

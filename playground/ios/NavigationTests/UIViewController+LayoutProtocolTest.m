@@ -88,7 +88,7 @@
 
     RNNNavigationOptions * childOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
     childOptions.bottomTab.text = [[Text alloc] initWithValue:@"Child tab text"];
-    UIViewController* child = [[UIViewController alloc] initWithLayoutInfo:nil creator:nil options:childOptions defaultOptions:nil presenter:presenter eventEmitter:nil childViewControllers:nil];
+    UIViewController* child = [[UIViewController alloc] initWithLayoutInfo:nil creator:nil options:childOptions defaultOptions:nil presenter:[RNNComponentPresenter new] eventEmitter:nil childViewControllers:nil];
     RNNNavigationOptions * initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
     initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"Initial title"];
     RNNStackController* uut = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:initialOptions defaultOptions:nil presenter:presenter eventEmitter:nil childViewControllers:@[child]];

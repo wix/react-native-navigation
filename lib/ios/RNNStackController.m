@@ -1,6 +1,5 @@
 #import "RNNStackController.h"
 #import "RNNComponentViewController.h"
-#import "UINavigationBar+utils.h"
 
 @implementation RNNStackController
 
@@ -44,10 +43,6 @@
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
-}
-
-- (void)setTopBarBackgroundColor:(UIColor *)backgroundColor {
-	[self.navigationBar rnn_setBackgroundColor:backgroundColor];
 }
 
 @end
