@@ -1,7 +1,7 @@
-import * as _ from 'lodash';
+import uniqueId from 'lodash/uniqueId';
 
 export class UniqueIdProvider {
   generate(prefix?: string): string {
-    return _.uniqueId(prefix);
+    return uniqueId(prefix);
   }
 }

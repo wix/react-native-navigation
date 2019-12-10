@@ -1,4 +1,5 @@
-import * as _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep'
+import map from 'lodash/map'
 import { CommandsObserver } from '../events/CommandsObserver';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
@@ -21,14 +22,14 @@ export class Commands {
   ) {}
 
   public setRoot(simpleApi: LayoutRoot) {
-    const input = _.cloneDeep(simpleApi);
+    const input = cloneDeep(simpleApi);
     const root = this.layoutTreeParser.parse(input.root);
 
-    const modals = _.map(input.modals, (modal) => {
+    const modals = map(input.modals, (modal) => {
       return this.layoutTreeParser.parse(modal);
     });
 
-    const overlays = _.map(input.overlays, (overlay) => {
+    const overlays = map(input.overlays, (overlay) => {
       return this.layoutTreeParser.parse(overlay);
     });
 
@@ -48,7 +49,7 @@ export class Commands {
   }
 
   public setDefaultOptions(options: Options) {
-    const input = _.cloneDeep(options);
+    const input = cloneDeep(options);
     this.optionsProcessor.processOptions(input);
 
     this.nativeCommandsSender.setDefaultOptions(input);
@@ -56,7 +57,7 @@ export class Commands {
   }
 
   public mergeOptions(componentId: string, options: Options) {
-    const input = _.cloneDeep(options);
+    const input = cloneDeep(options);
     this.optionsProcessor.processOptions(input);
 
     this.nativeCommandsSender.mergeOptions(componentId, input);
@@ -64,13 +65,13 @@ export class Commands {
   }
 
   public updateProps(componentId: string, props: object) {
-    const input = _.cloneDeep(props);
+    const input = cloneDeep(props);
     this.store.updateProps(componentId, input);
     this.commandsObserver.notify('updateProps', { componentId, props });
   }
 
   public showModal(layout: Layout) {
-    const layoutCloned = _.cloneDeep(layout);
+    const layoutCloned = cloneDeep(layout);
     const layoutNode = this.layoutTreeParser.parse(layoutCloned);
 
     const commandId = this.uniqueIdProvider.generate('showModal');
@@ -96,7 +97,7 @@ export class Commands {
   }
 
   public push(componentId: string, simpleApi: Layout) {
-    const input = _.cloneDeep(simpleApi);
+    const input = cloneDeep(simpleApi);
     const layout = this.layoutTreeParser.parse(input);
 
     const commandId = this.uniqueIdProvider.generate('push');
@@ -129,7 +130,7 @@ export class Commands {
   }
 
   public setStackRoot(componentId: string, children: Layout[]) {
-    const input = _.map(_.cloneDeep(children), (simpleApi) => {
+    const input = map(cloneDeep(children), (simpleApi) => {
       const layout = this.layoutTreeParser.parse(simpleApi);
       return layout;
     });
@@ -145,7 +146,7 @@ export class Commands {
   }
 
   public showOverlay(simpleApi: Layout) {
-    const input = _.cloneDeep(simpleApi);
+    const input = cloneDeep(simpleApi);
     const layout = this.layoutTreeParser.parse(input);
 
     const commandId = this.uniqueIdProvider.generate('showOverlay');

@@ -1,5 +1,6 @@
 const redux = require('redux');
-const _ = require('lodash');
+const merge = require('lodash/merge');
+const get = require('lodash/get');
 
 const initialState = {
   person: {
@@ -10,10 +11,10 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'redux.MyStore.setName': {
-      return _.merge({}, state, { person: { name: action.name } });
+      return merge({}, state, { person: { name: action.name } });
     }
     case 'redux.MyStore.setAge': {
-      return _.merge({}, state, { person: { age: action.age } });
+      return merge({}, state, { person: { age: action.age } });
     }
     default: {
       return state;
@@ -23,7 +24,7 @@ const reducer = (state = initialState, action) => {
 
 const selectors = {
   getName(state) {
-    return _.get(state, 'person.name');
+    return get(state, 'person.name');
   },
 
   getAge(state) {

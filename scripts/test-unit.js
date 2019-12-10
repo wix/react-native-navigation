@@ -1,8 +1,8 @@
-const _ = require('lodash');
+const includes = require('lodash/includes');
 const exec = require('shell-utils').exec;
 
-const android = _.includes(process.argv, '--android');
-const release = _.includes(process.argv, '--release');
+const android = includes(process.argv, '--android');
+const release = includes(process.argv, '--release');
 
 function run() {
   if (android) {
