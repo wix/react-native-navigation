@@ -3,12 +3,6 @@
 #import "BottomTabsOnSwitchToTabAttacher.h"
 #import "BottomTabsAfterInitialTabAttacher.h"
 
-typedef NS_ENUM(NSInteger, BottomTabsAttachMode) {
-    BottomTabsAttachModeTogether = 0,
-    BottomTabsAttachModeAfterInitialTab,
-    BottomTabsAttachModeOnSwitchToTab
-};
-
 @implementation BottomTabsAttachModeFactory
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
@@ -18,7 +12,7 @@ typedef NS_ENUM(NSInteger, BottomTabsAttachMode) {
 }
 
 - (BottomTabsBaseAttacher *)fromOptions:(RNNNavigationOptions *)options {
-	BottomTabsAttachMode attachMode = [self.class BottomTabsAttachMode:[[options withDefault:_defaultOptions].bottomTabs.tabsAttachMode getWithDefaultValue:@"together"]];
+    AttachMode attachMode = [[options withDefault:_defaultOptions].bottomTabs.tabsAttachMode getWithDefaultValue:@"together"];
 	switch (attachMode) {
         case BottomTabsAttachModeAfterInitialTab: {
             return [BottomTabsAfterInitialTabAttacher new];
@@ -31,11 +25,5 @@ typedef NS_ENUM(NSInteger, BottomTabsAttachMode) {
             break;
     }
 }
-
-RCT_ENUM_CONVERTER(BottomTabsAttachMode,
-(@{@"together": @(BottomTabsAttachModeTogether),
-   @"afterInitialTab": @(BottomTabsAttachModeAfterInitialTab),
-   @"onSwitchToTab": @(BottomTabsAttachModeOnSwitchToTab)
-   }), BottomTabsAttachModeTogether, integerValue)
 
 @end

@@ -363,7 +363,7 @@
 - (void)testSetRoot_withBottomTabsAttachModeTogether {
 	[self.uut setReadyToReceiveCommands:true];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
-	options.bottomTabs.tabsAttachMode = [[Text alloc] initWithValue:@"together"];
+	options.bottomTabs.tabsAttachMode = [[BottomTabsAttachMode alloc] initWithValue:@"together"];
 	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
 
 	BottomTabsBaseAttacher* attacher = [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
@@ -379,7 +379,7 @@
 - (void)testSetRoot_withBottomTabsAttachModeOnSwitchToTab {
 	[self.uut setReadyToReceiveCommands:true];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
-	options.bottomTabs.tabsAttachMode = [[Text alloc] initWithValue:@"onSwitchToTab"];
+	options.bottomTabs.tabsAttachMode = [[BottomTabsAttachMode alloc] initWithValue:@"onSwitchToTab"];
 	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
 	
 	BottomTabsBaseAttacher* attacher = [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
@@ -397,7 +397,7 @@
 - (void)testSetRoot_withBottomTabsAttachModeAfterInitialTab {
 	[self.uut setReadyToReceiveCommands:true];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
-	options.bottomTabs.tabsAttachMode = [[Text alloc] initWithValue:@"afterInitialTab"];
+	options.bottomTabs.tabsAttachMode = [[BottomTabsAttachMode alloc] initWithValue:@"afterInitialTab"];
 	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
 
 	BottomTabsBaseAttacher* attacher = [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
