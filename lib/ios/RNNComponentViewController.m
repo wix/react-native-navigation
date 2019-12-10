@@ -11,8 +11,6 @@
 	
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.resolveOptions.customTransition];
 	
-	self.navigationController.delegate = self;
-	
 	return self;
 }
 
@@ -38,7 +36,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
-	
+    
 	[_presenter applyOptions:self.resolveOptions];
 	[_presenter renderComponents:self.resolveOptions perform:nil];
 	

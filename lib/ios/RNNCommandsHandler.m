@@ -196,10 +196,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	UINavigationController *nvc = vc.navigationController;
 	
 	if ([nvc topViewController] == vc) {
-		if (vc.resolveOptions.animations.pop) {
+		if (vc.resolveOptions.animations.pop.hasCustomAnimation) {
 			nvc.delegate = vc;
-		} else {
-			nvc.delegate = nil;
 		}
 	} else {
 		NSMutableArray * vcs = nvc.viewControllers.mutableCopy;

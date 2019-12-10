@@ -2,9 +2,17 @@
 #import "RNNComponentViewController.h"
 #import "UINavigationBar+utils.h"
 
-@implementation RNNStackController
+@implementation RNNStackController {
+    UIViewController* _presentedViewController;
+}
 
--(void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+- (instancetype)init {
+    self = [super init];
+    self.delegate = self;
+    return self;
+}
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
 	[super setDefaultOptions:defaultOptions];
 	[self.presenter setDefaultOptions:defaultOptions];
 }
@@ -36,13 +44,19 @@
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     [self prepareForPop];
-    [self sendScreenPoppedEvent];
-    
 	return [super popViewControllerAnimated:animated];
 }
 
-- (void)sendScreenPoppedEvent {
-    [self.eventEmitter sendScreenPoppedEvent:self.viewControllers.lastObject.layoutInfo.componentId];
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if ([self.viewControllers indexOfObject:_presentedViewController] < 0) {
+        [self sendScreenPoppedEvent:_presentedViewController];
+    }
+    
+    _presentedViewController = viewController;
+}
+
+- (void)sendScreenPoppedEvent:(UIViewController *)poppedScreen {
+    [self.eventEmitter sendScreenPoppedEvent:poppedScreen.layoutInfo.componentId];
 }
 
 - (void)prepareForPop {
