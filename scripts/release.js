@@ -2,7 +2,7 @@
 const exec = require('shell-utils').exec;
 const semver = require('semver');
 const fs = require('fs');
-const _ = require('lodash');
+const includes = require('lodash/includes');
 const path = require('path');
 
 // Workaround JS
@@ -82,7 +82,7 @@ function tryPublishAndTag(version) {
             console.log(`Released ${theCandidate}`);
             return;
         } catch (err) {
-            const alreadyPublished = _.includes(err.toString(), 'You cannot publish over the previously published version');
+            const alreadyPublished = includes(err.toString(), 'You cannot publish over the previously published version');
             if (!alreadyPublished) {
                 throw err;
             }

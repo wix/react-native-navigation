@@ -1,4 +1,6 @@
-import * as _ from 'lodash';
+import forEach from 'lodash/forEach'
+import filter from 'lodash/filter'
+import invoke from 'lodash/invoke'
 import { mock, verify, instance, deepEqual, when, anything, anyString } from 'ts-mockito';
 
 import { LayoutTreeParser } from './LayoutTreeParser';
@@ -398,7 +400,7 @@ describe('Commands', () => {
 
     function getAllMethodsOfUut() {
       const uutFns = Object.getOwnPropertyNames(Commands.prototype);
-      const methods = _.filter(uutFns, (fn) => fn !== 'constructor');
+      const methods = filter(uutFns, (fn) => fn !== 'constructor');
       expect(methods.length).toBeGreaterThan(1);
       return methods;
     }
@@ -445,11 +447,11 @@ describe('Commands', () => {
         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
         getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' }
       };
-      _.forEach(getAllMethodsOfUut(), (m) => {
+      forEach(getAllMethodsOfUut(), (m) => {
         it(`for ${m}`, () => {
           expect(argsForMethodName).toHaveProperty(m);
           expect(paramsForMethodName).toHaveProperty(m);
-          _.invoke(uut, m, ...argsForMethodName[m]);
+          invoke(uut, m, ...argsForMethodName[m]);
           expect(cb).toHaveBeenCalledTimes(1);
           expect(cb).toHaveBeenCalledWith(m, paramsForMethodName[m]);
         });

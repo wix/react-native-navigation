@@ -21,22 +21,22 @@ import androidx.viewpager.widget.ViewPager;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
-public abstract class ParentController<T extends ViewGroup> extends ChildController {
+public abstract class ParentController<T extends ViewGroup> extends ChildController<T> {
 
-	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options initialOptions) {
+    public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options initialOptions) {
 		super(activity, childRegistry, id, presenter, initialOptions);
 	}
 
     @Override
     public void setWaitForRender(Bool waitForRender) {
         super.setWaitForRender(waitForRender);
-        applyOnController(getCurrentChild(), controller -> ((ViewController) controller).setWaitForRender(waitForRender));
+        applyOnController(getCurrentChild(), currentChild -> currentChild.setWaitForRender(waitForRender));
     }
 
     @Override
     public void setDefaultOptions(Options defaultOptions) {
 	    super.setDefaultOptions(defaultOptions);
-	    forEach(getChildControllers(), (child) -> child.setDefaultOptions(defaultOptions));
+	    forEach(getChildControllers(), child -> child.setDefaultOptions(defaultOptions));
     }
 
     @Override
@@ -68,12 +68,6 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     }
 
     protected abstract ViewController getCurrentChild();
-
-    @NonNull
-	@Override
-	public T getView() {
-		return (T) super.getView();
-	}
 
 	@NonNull
 	@Override
@@ -127,8 +121,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, ViewController childController) {
-
+    public void mergeChildOptions(Options options, ViewController child) {
     }
 
 	@Override
@@ -140,7 +133,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 	@SuppressWarnings("WeakerAccess")
     @CallSuper
     protected void clearOptions() {
-	    performOnParentController(parent -> ((ParentController) parent).clearOptions());
+	    performOnParentController(ParentController::clearOptions);
         options = initialOptions.copy().clearOneTimeOptions();
     }
 
