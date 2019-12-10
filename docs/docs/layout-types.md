@@ -38,6 +38,84 @@ const stack = {
 }
 ```
 
+### api
+### TopBar buttons
+#### Android:
+* LeftButtons just support one button 
+* RightButtons support three visable buttons, more getting replaced with a menu button 
+```js
+options: {
+  topBar: {
+    visible: true,
+    leftButtons: [
+      {
+        id: 'back',
+        icon: {
+          uri: 'back',
+        },
+      },
+    ],
+    rightButtons: [
+      {
+        id: 'search',
+        icon: {
+          uri: 'search',
+        },
+      },
+    ],
+  },
+},
+```
+### Customizations
+#### Custom TopBar Title
+It's possible to set a custom topBar title to implement a searchbar for example.
+```js
+options: {
+  topBar: {
+    visible: true,
+    title: {
+      component: {
+        id: 'app.Search.SearchInput',
+        name: 'app.Search.SearchInput', // required
+        alignment: 'center', // 'center' or 'fill'
+        passProps: {
+
+        },
+      },
+    },
+  },
+},
+```
+
+### Back button
+Push a ModalStack which requires a back button on the first screen.
+```js
+options: {
+  topBar: {
+    visible: true,
+    leftButtons: [
+      {
+        id: 'back',
+        icon: {
+          uri: 'back',
+        },
+      },
+    ],
+  },
+},
+```
+Catch the button press event inside the ModalScreen.
+
+```js
+navigationButtonPressed = ({ buttonId }) => {
+  const { componentId } = this.props;
+  if (buttonId === 'back') {
+    Navigation.dismissModal(componentId);
+  }
+}
+```
+
+
 ## bottomTabs
 
 ```js
@@ -69,6 +147,8 @@ const bottomTabs = {
   options: {}
 }
 ```
+
+!> Note! On Android an `icon` is required when using `bottomTabs`.
 
 ### Selecting tabs programmatically
 
@@ -168,7 +248,8 @@ Navigation.mergeOptions('SecondScreenId', {
 
 ## sideMenu
 
-Expect center, left and right layouts. center: { stack: ... } is required to have a topBar in center screen of a sideMenu app.
+This layout allows to implement sidemenus, which can be opened by swiping from one side towards the other side.
+`left` and `right` are optional and contain the components, which gets rendered for the sidemenus. `center` is **required** and contains the main application, which **requires** to have a topBar aka `stack`.
 
 ```js
 const sideMenu = {
@@ -187,6 +268,38 @@ const sideMenu = {
     component: {}
   }
 }
+```
+
+### Opening the menu programmatically
+The  most common usecase is to open the sidemenus by pressing a [burger button in the topBar](https://wix.github.io/react-native-navigation/#/docs/layout-types?id=adding-a-hamburger-button). To achive this listen on the press event of the burger button and open the sidemenu by calling `Navigation.mergeOptions()` with `visible: true` for the sidemenu.
+```js
+navigationButtonPressed = ({ buttonId }) => {
+  const { componentId } = this.props;
+
+  if (buttonId === 'sideMenu') {
+    Navigation.mergeOptions(componentId, {
+      sideMenu: {
+        left: {
+          visible: true,
+        },
+      },
+    });
+  }
+}
+```
+
+### Adding a hamburger button
+For more information on how to add icons read [this article about react-native-vector-icons](https://wix.github.io/react-native-navigation/#/docs/third-party?id=react-native-vector-icons) or [this article about custom tab icons](https://wix.github.io/react-native-navigation/#/docs/styling?id=custom-tab-icons).
+
+```js
+leftButtons: [
+  {
+    id: 'sideMenu',
+    icon: {
+      uri: 'menu',
+    },
+  },
+],
 ```
 
 ## splitView (iOS only)

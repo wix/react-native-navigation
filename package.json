@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "2.26.3",
+  "version": "4.0.4",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -20,19 +20,22 @@
   "typings": "lib/dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./lib/dist && tsc",
-    "xcode": "open playground/ios/playground.xcodeproj",
+    "watch": "rm -rf ./lib/dist && tsc --watch",
+    "xcode": "open playground/ios/playground.xcworkspace",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
     "clean": "node ./scripts/clean",
     "prestart": "npm run build",
     "start": "node ./scripts/start",
+    "start-windows": "node ./scripts/start-windows",
     "pretest-js": "npm run build",
     "test-js": "node ./scripts/test-js",
+    "pod-install": "pod install --project-directory=playground/ios",
     "test-unit-ios": "node ./scripts/test-unit --ios",
     "test-unit-android": "node ./scripts/test-unit --android",
     "pretest-e2e-android": "npm run build",
     "test-e2e-android": "node ./scripts/test-e2e --android",
-    "test-e2e-android-locked": "node ./scripts/test-e2e-android-locked",
+    "test-e2e-android-multi": "npm run test-e2e-android -- --multi",
     "pretest-e2e-ios": "npm run build",
     "test-e2e-ios": "node ./scripts/test-e2e --ios",
     "test-e2e-ios-multi": "npm run test-e2e-ios -- --multi",
@@ -54,26 +57,31 @@
     "tslib": "1.9.3"
   },
   "devDependencies": {
+    "@babel/core": "7.6.4",
     "@babel/plugin-proposal-export-default-from": "7.2.0",
     "@babel/plugin-proposal-export-namespace-from": "7.2.0",
+    "@babel/types": "7.6.x",
+    "@react-native-community/eslint-config": "0.0.3",
     "@types/hoist-non-react-statics": "^3.0.1",
-    "@types/jest": "23.x.x",
-    "@types/lodash": "4.x.x",
+    "@types/jest": "24.x.x",
+    "@types/lodash": "^4.14.149",
     "@types/react": "16.x.x",
     "@types/react-native": "0.57.7",
     "@types/react-test-renderer": "16.x.x",
-    "detox": "12.x.x",
-    "react-native-ui-lib": "3.24.2",
+    "babel-jest": "24.9.x",
+    "detox": "14.x.x",
     "handlebars": "4.x.x",
-    "jest": "24.0.0-alpha.6",
-    "jsc-android": "236355.x.x",
-    "metro-react-native-babel-preset": "0.52.x",
-    "react": "16.8.3",
-    "react-native": "0.59.5",
+    "jest": "24.9.x",
+    "lodash": "^4.17.15",
+    "metro-react-native-babel-preset": "0.57.x",
+    "react": "16.9.0",
+    "react-native": "0.61.4",
+    "react-native-keyboard-tracking-view": "5.x.x",
     "react-native-typescript-transformer": "1.2.12",
-    "react-native-view-overflow": "0.0.3",
+    "react-native-ui-lib": "3.24.2",
+    "react-native-view-overflow": "0.0.4",
     "react-redux": "5.x.x",
-    "react-test-renderer": "16.6.1",
+    "react-test-renderer": "16.9.x",
     "redux": "3.x.x",
     "remx": "2.x.x",
     "semver": "5.x.x",
@@ -121,7 +129,7 @@
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "type": "ios.none",
-        "name": "iPhone X",
+        "name": "iPhone 11",
         "session": {
           "server": "ws://localhost:8099",
           "sessionId": "playground"
@@ -129,39 +137,27 @@
       },
       "ios.sim.debug": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
-        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
+        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
         "type": "ios.simulator",
-        "name": "iPhone X"
+        "name": "iPhone 11"
       },
       "ios.sim.release": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app",
-        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
+        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
         "type": "ios.simulator",
-        "name": "iPhone X"
+        "name": "iPhone 11"
       },
       "android.emu.debug": {
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
         "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug",
         "type": "android.emulator",
-        "name": "Pixel_2_API_26"
+        "name": "Nexus_5X_API_26"
       },
       "android.emu.release": {
         "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
         "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
         "type": "android.emulator",
-        "name": "Pixel_2_API_26"
-      },
-      "android.emu.debug.locked": {
-        "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
-        "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug",
-        "type": "android.emulator",
-        "name": "Nexus_5X_API_23"
-      },
-      "android.emu.release.locked": {
-        "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
-        "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
-        "type": "android.emulator",
-        "name": "Nexus_5X_API_23"
+        "name": "Nexus_5X_API_26"
       }
     }
   }

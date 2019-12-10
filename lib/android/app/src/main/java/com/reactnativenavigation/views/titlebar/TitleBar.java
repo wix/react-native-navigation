@@ -6,8 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +22,12 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
+
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.UiUtils.runOnPreDrawOnce;
+import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
@@ -138,6 +141,12 @@ public class TitleBar extends Toolbar {
             }
             isSubtitleChanged = false;
         }
+    }
+
+    @Override
+    public void setLayoutDirection(int layoutDirection) {
+        super.setLayoutDirection(layoutDirection);
+        perform(findChildByClass(this, ActionMenuView.class), buttonsContainer -> buttonsContainer.setLayoutDirection(layoutDirection));
     }
 
     @Nullable

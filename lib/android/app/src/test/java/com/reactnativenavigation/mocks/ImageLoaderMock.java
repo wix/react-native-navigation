@@ -3,7 +3,7 @@ package com.reactnativenavigation.mocks;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.utils.ImageLoader;
 
@@ -29,7 +29,7 @@ public class ImageLoaderMock {
         }
 
         @Override
-        public void setColorFilter(@android.support.annotation.Nullable ColorFilter colorFilter) {
+        public void setColorFilter(@androidx.annotation.Nullable ColorFilter colorFilter) {
 
         }
 

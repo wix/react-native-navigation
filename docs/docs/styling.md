@@ -68,7 +68,7 @@ Navigation.mergeOptions(this.props.componentId, {
     backgroundColor: 'white',
     orientation: ['portrait', 'landscape'] // An array of supported orientations
   },
-  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popover', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
+  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'default', 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popover', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
   topBar: {
     visible: true,
     animate: false, // Controls whether TopBar visibility changes should be animated
@@ -82,6 +82,7 @@ Navigation.mergeOptions(this.props.componentId, {
       fontSize: 14,
       color: 'red',
       fontFamily: 'Helvetica',
+      fontWeight: 'regular', // Available on iOS only, will ignore fontFamily style and use the iOS system fonts instead. Supported weights are: 'regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy' and 'black'.
       component: {
         name: 'example.CustomTopBarTitle',
         alignment: 'center'
@@ -92,6 +93,7 @@ Navigation.mergeOptions(this.props.componentId, {
       fontSize: 14,
       color: 'red',
       fontFamily: 'Helvetica',
+      fontWeight: 'regular', // Available on iOS only, will ignore fontFamily style and use the iOS system fonts instead. Supported weights are: 'regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy' and 'black'.
       alignment: 'center'
     },
     backButton: {
@@ -130,6 +132,7 @@ Navigation.mergeOptions(this.props.componentId, {
     textColor: 'red',
     selectedTextColor: 'blue',
     fontFamily: 'Helvetica',
+    fontWeight: 'regular', // Available on iOS only, will ignore fontFamily style and use the iOS system fonts instead. Supported weights are: 'regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy' and 'black'.
     fontSize: 10
   },
   sideMenu: {
@@ -146,10 +149,35 @@ Navigation.mergeOptions(this.props.componentId, {
       enabled: true
     }
   },
+  fab: {
+    id: 'fab',  // required
+    backgroundColor: 'green',
+    clickColor: 'blue',
+    rippleColor: 'yellow',
+    visible: true,
+    icon: require('add.png'),
+    iconColor: 'white',
+    alignHorizontally: 'left', // one of 'left', 'right'
+    hideOnScroll: false,
+    size: 24,
+    actions: [{
+      id: 'fab-1',  // required
+      backgroundColor: 'green',
+      clickColor: 'blue',
+      rippleColor: 'yellow'
+      visible: true,
+      icon: require('add.png'),
+      iconColor: 'white',
+      size: 24;
+    }];
+  },
   overlay: {
     interceptTouchOutside: true,
     handleKeyboardEvents: true
   },
+  modal: {
+    swipeToDismiss: true
+  }
   preview: {
     reactTag: 0, // result from findNodeHandle(ref)
     width: 100,
@@ -194,7 +222,8 @@ Navigation.mergeOptions(this.props.componentId, {
       visible: true,
       fontSize: 30,
       color: 'red',
-      fontFamily: 'Helvetica'
+      fontFamily: 'Helvetica',
+      fontWeight: 'regular' // Available on iOS only, will ignore fontFamily style and use the iOS system fonts instead. Supported weights are: 'regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy' and 'black'.
     },
   },
   sideMenu: {
@@ -231,6 +260,9 @@ Navigation.mergeOptions(this.props.componentId, {
     backgroundColor: 'red',
     drawBehind: true,
     visible: false
+  },
+  navigationBar: {
+    backgroundColor: 'red',
   },
   layout: {
     topMargin: (await Navigation.constants()).statusBarHeight, // Set the layout's top margin

@@ -1,6 +1,6 @@
 package com.reactnativenavigation.parse;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;

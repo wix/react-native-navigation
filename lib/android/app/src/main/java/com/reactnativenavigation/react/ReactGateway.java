@@ -8,6 +8,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.reactnativenavigation.NavigationActivity;
+import com.reactnativenavigation.utils.Functions.FuncR;
 
 import java.util.List;
 
@@ -22,15 +23,20 @@ public class ReactGateway {
 		this(application, isDebug, new NavigationReactNativeHost(application, isDebug, additionalReactPackages));
 	}
 
-	public ReactGateway(final Application application, final boolean isDebug, final ReactNativeHost host) {
+    @SuppressWarnings("WeakerAccess")
+    public ReactGateway(final Application application, final boolean isDebug, final ReactNativeHost host) {
+        this(application, isDebug, () -> host);
+    }
+
+    public ReactGateway(final Application application, final boolean isDebug, FuncR<ReactNativeHost> hostCreator) {
         SoLoader.init(application, false);
-		this.host = host;
-		initializer = new NavigationReactInitializer(host.getReactInstanceManager(), isDebug);
-		jsDevReloadHandler = new JsDevReloadHandler(host.getReactInstanceManager().getDevSupportManager());
+        this.host = hostCreator.run();
+        initializer = new NavigationReactInitializer(host.getReactInstanceManager(), isDebug);
+        jsDevReloadHandler = new JsDevReloadHandler(host.getReactInstanceManager().getDevSupportManager());
         if (host instanceof BundleDownloadListenerProvider) {
             ((BundleDownloadListenerProvider) host).setBundleLoaderListener(jsDevReloadHandler);
         }
-	}
+    }
 
 	public ReactNativeHost getReactNativeHost() {
 		return host;

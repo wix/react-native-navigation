@@ -60,7 +60,7 @@ class FirstBottomTabScreen extends React.Component {
     }
   });
 
-  switchTabByComponentId = () => Navigation.mergeOptions(this, {
+  switchTabByComponentId = () => Navigation.mergeOptions('SecondTab', {
     bottomTabs: {
       currentTabId: 'SecondTab'
     }
@@ -70,7 +70,7 @@ class FirstBottomTabScreen extends React.Component {
     this.badgeVisible = !!badge;
     if (this.badgeVisible) this.dotVisible = false;
     Navigation.mergeOptions(this, {
-      bottomTab: { badge }
+      bottomTab: { badge, animateBadge: true }
     });
   }
 
@@ -78,7 +78,7 @@ class FirstBottomTabScreen extends React.Component {
     this.dotVisible = !this.dotVisible;
     Navigation.mergeOptions(this, {
       bottomTab: {
-        dotIndicator: { visible: this.dotVisible }
+        dotIndicator: { visible: this.dotVisible, animate: true }
       }
     });
   }

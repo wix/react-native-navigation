@@ -1,6 +1,6 @@
 package com.reactnativenavigation.utils;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.Functions.FuncR1;

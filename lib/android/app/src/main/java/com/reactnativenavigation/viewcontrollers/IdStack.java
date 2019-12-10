@@ -1,6 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.utils.StringUtils;
 

@@ -28,8 +28,8 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
 
-        testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
-        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57_5"
+        testBuildType System.getProperty('testBuildType', 'debug')
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative60"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     signingConfigs {
@@ -45,30 +45,21 @@ android {
             signingConfig signingConfigs.release
         }
     }
-}
-
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == 'com.android.support') {
-            details.useVersion "28.0.0"
-        }
-    }
-}
-
-configurations.all {
-    resolutionStrategy {
-        force 'org.webkit:android-jsc:r236355'
+    packagingOptions {
+        pickFirst '**/libjsc.so'
+        pickFirst '**/libc++_shared.so'
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
+    //noinspection GradleDynamicVersion
+    implementation 'org.webkit:android-jsc-intl:+'
     implementation project(':react-native-navigation')
     implementation project(':react-native-view-overflow')
 

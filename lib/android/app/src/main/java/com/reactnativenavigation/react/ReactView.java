@@ -3,7 +3,7 @@ package com.reactnativenavigation.react;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 import android.view.MotionEvent;
 
 import com.facebook.react.ReactInstanceManager;

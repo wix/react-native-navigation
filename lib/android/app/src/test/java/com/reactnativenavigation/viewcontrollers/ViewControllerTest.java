@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -14,6 +15,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.Component;
 
@@ -109,6 +111,24 @@ public class ViewControllerTest extends BaseTest {
     public void findControllerById_SelfOrNull() {
         assertThat(uut.findController("456")).isNull();
         assertThat(uut.findController("uut")).isEqualTo(uut);
+    }
+
+    @Test
+    public void runOnPreDraw() {
+        Functions.Func1<View> task = Mockito.mock(Functions.Func1.class);
+        uut.runOnPreDraw(task);
+        dispatchPreDraw(uut.getView());
+        verify(task).run(uut.getView());
+    }
+
+    @Test
+    public void runOnPreDraw_doesNotInvokeTaskIfControllerIsDestroyed() {
+        Functions.Func1<View> task = Mockito.mock(Functions.Func1.class);
+        uut.runOnPreDraw(task);
+        View view = uut.getView();
+        uut.destroy();
+        dispatchPreDraw(view);
+        verify(task, times(1)).run(view);
     }
 
     @Test
@@ -269,6 +289,19 @@ public class ViewControllerTest extends BaseTest {
         uut.setWaitForRender(new NullBool());
         uut.view = mock(ViewGroup.class);
         assertThat(uut.isRendered()).isTrue();
+    }
+
+    @Test
+    public void getTopInset_noParent() {
+        uut.setParentController(null);
+        assertThat(uut.getTopInset()).isEqualTo(63);
+    }
+
+    @Test
+    public void onMeasureChild() {
+        ViewController spy = spy(uut);
+        spy.onMeasureChild(mock(CoordinatorLayout.class), spy.getView(), -1, -1, -1, -1);
+        verify(spy).applyTopInset();
     }
 }
 

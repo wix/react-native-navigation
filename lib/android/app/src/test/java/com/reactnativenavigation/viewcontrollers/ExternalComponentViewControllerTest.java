@@ -1,14 +1,15 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentActivity;
-import android.widget.FrameLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.ExternalComponent;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.ExternalComponentPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.FragmentCreatorMock;
@@ -44,6 +45,7 @@ public class ExternalComponentViewControllerTest extends BaseTest {
                 componentCreator,
                 reactInstanceManager,
                 emitter,
+                new ExternalComponentPresenter(),
                 new Options())
         );
     }
@@ -51,7 +53,7 @@ public class ExternalComponentViewControllerTest extends BaseTest {
     @Test
     public void createView_returnsFrameLayout() {
         ExternalComponentLayout view = uut.getView();
-        assertThat(FrameLayout.class.isAssignableFrom(view.getClass())).isTrue();
+        assertThat(CoordinatorLayout.class.isAssignableFrom(view.getClass())).isTrue();
     }
 
     @Test

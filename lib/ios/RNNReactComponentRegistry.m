@@ -1,7 +1,7 @@
 #import "RNNReactComponentRegistry.h"
 
 @interface RNNReactComponentRegistry () {
-	id<RNNRootViewCreator> _creator;
+	id<RNNComponentViewCreator> _creator;
 	NSMapTable* _componentStore;
 }
 
@@ -9,7 +9,7 @@
 
 @implementation RNNReactComponentRegistry
 
-- (instancetype)initWithCreator:(id<RNNRootViewCreator>)creator {
+- (instancetype)initWithCreator:(id<RNNComponentViewCreator>)creator {
 	self = [super init];
 	_creator = creator;
 	_componentStore = [NSMapTable new];
@@ -17,12 +17,12 @@
 }
 
 - (RNNReactView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-	NSMutableDictionary* parentComponentDict = [self componentsForParentId:parentComponentId];
+	NSMapTable* parentComponentDict = [self componentsForParentId:parentComponentId];
 	
 	RNNReactView* reactView = [parentComponentDict objectForKey:component.componentId.get];
 	if (!reactView) {
 		reactView = (RNNReactView *)[_creator createRootViewFromComponentOptions:component reactViewReadyBlock:reactViewReadyBlock];
-		[parentComponentDict setObject:reactView forKey:component.componentId.get];
+        [parentComponentDict setObject:reactView forKey:component.componentId.get];
 	} else if (reactViewReadyBlock) {
 		reactViewReadyBlock();
 	}
@@ -30,9 +30,9 @@
 	return reactView;
 }
 
-- (NSMutableDictionary *)componentsForParentId:(NSString *)parentComponentId {
+- (NSMapTable *)componentsForParentId:(NSString *)parentComponentId {
 	if (![_componentStore objectForKey:parentComponentId]) {
-		[_componentStore setObject:[NSMutableDictionary new] forKey:parentComponentId];;
+		[_componentStore setObject:[NSMapTable weakToStrongObjectsMapTable] forKey:parentComponentId];;
 	}
 	
 	return [_componentStore objectForKey:parentComponentId];;
@@ -45,6 +45,17 @@
 - (void)removeComponent:(NSString *)componentId {
 	if ([_componentStore objectForKey:componentId]) {
 		[_componentStore removeObjectForKey:componentId];
+	}
+}
+
+- (void)removeChildComponent:(NSString *)childId {
+	NSMapTable* parent;
+	NSEnumerator *enumerator = _componentStore.objectEnumerator;
+	while ((parent = enumerator.nextObject)) {
+		if ([parent objectForKey:childId]) {
+			[parent removeObjectForKey:childId];
+			return;
+		}
 	}
 }
 

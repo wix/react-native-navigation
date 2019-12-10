@@ -27,38 +27,13 @@ describe('Options', () => {
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
   });
 
-  it('sets right buttons', async () => {
-    await expect(elementById(TestIDs.BUTTON_ONE)).toBeVisible();
-    await expect(elementById(TestIDs.ROUND_BUTTON)).toBeVisible();
-  });
-
-  it('set left buttons', async () => {
-    await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
-  });
-
-  it('pass props to custom button component', async () => {
-    await expect(elementByLabel('Two')).toExist();
-  });
-
-  it('pass props to custom button component should exist after push pop', async () => {
-    await expect(elementByLabel('Two')).toExist();
-    await elementById(TestIDs.PUSH_BTN).tap();
-    await elementById(TestIDs.POP_BTN).tap();
-    await expect(elementByLabel('Two')).toExist();
-  });
-
-  it('custom button is clickable', async () => {
-    await elementByLabel('Two').tap();
-    await expect(elementByLabel('Thanks for that :)')).toExist();
-  });
-
   it('default options should apply to all screens in stack', async () => {
     await elementById(TestIDs.HIDE_TOPBAR_DEFAULT_OPTIONS).tap();
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
-    await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
-    await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
   });
 
   it('default options should not override static options', async () => {
@@ -72,6 +47,13 @@ describe('Options', () => {
   it('set title component', async () => {
     await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
     await expect(elementByLabel('Press Me')).toBeVisible();
+  });
+
+  it('set title after setting react component', async () => {
+    await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
+    await expect(elementByLabel('Press Me')).toBeVisible();
+    await elementById(TestIDs.CHANGE_TITLE_BTN).tap();
+    await expect(elementByLabel('Title Changed')).toBeVisible();
   });
 
   it('Popping screen with yellow box should not crash', async () => {

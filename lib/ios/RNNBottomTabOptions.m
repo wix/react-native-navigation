@@ -12,6 +12,7 @@
     self.badge = [TextParser parse:dict key:@"badge"];
     self.badgeColor = [ColorParser parse:dict key:@"badgeColor"];
     self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
+	self.fontWeight = [TextParser parse:dict key:@"fontWeight"];
     self.testID = [TextParser parse:dict key:@"testID"];
 
     self.dotIndicator = [DotIndicatorParser parse:dict];

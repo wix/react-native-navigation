@@ -1,5 +1,5 @@
 #import "RNNModalManager.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "RNNAnimationsTransitionDelegate.h"
 #import "RNNLayoutProtocol.h"
 
@@ -29,6 +29,10 @@
 	UIViewController* topVC = [self topPresentedVC];
 	topVC.definesPresentationContext = YES;
 	
+	if (viewController.presentationController) {
+		viewController.presentationController.delegate = self;
+	}
+	
 	RNNAnimationsTransitionDelegate* tr = [[RNNAnimationsTransitionDelegate alloc] initWithScreenTransition:viewController.resolveOptions.animations.showModal isDismiss:NO];
 	if (hasCustomAnimation) {
 		viewController.transitioningDelegate = tr;
@@ -50,12 +54,25 @@
 	}
 }
 
--(void)dismissAllModalsAnimated:(BOOL)animated {
+- (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion {
 	UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
-	[root dismissViewControllerAnimated:animated completion:nil];
+	[root dismissViewControllerAnimated:animated completion:completion];
 	[_delegate dismissedMultipleModals:_presentedModals];
 	[_pendingModalIdsToDismiss removeAllObjects];
 	[_presentedModals removeAllObjects];
+}
+
+- (void)dismissAllModalsSynchronosly {
+	if (_presentedModals.count) {
+		dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+		[self dismissAllModalsAnimated:NO completion:^{
+			dispatch_semaphore_signal(sem);
+		}];
+		
+		while (dispatch_semaphore_wait(sem, DISPATCH_TIME_NOW)) {
+			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0]];
+		}
+	}
 }
 
 #pragma mark - private
@@ -103,6 +120,11 @@
 - (void)dismissedModal:(UIViewController *)viewController {
 	[_presentedModals removeObject:viewController.navigationController ? viewController.navigationController : viewController];
 	[_delegate dismissedModal:viewController];
+}
+
+- (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController {
+	[_presentedModals removeObject:presentationController.presentedViewController];
+    [_delegate dismissedModal:presentationController.presentedViewController];
 }
 
 -(UIViewController*)topPresentedVC {

@@ -1,21 +1,20 @@
 const React = require('react');
-let ctx = {
+const _context = {
   title: 'Title from global context',
   count: 0
 };
-
-const stateAwareContext = (component) =>
-  new Proxy(ctx, {
-    set: function (obj, prop, value) {
-      obj[prop] = value;
-      component.setState({ context: stateAwareContext(component) });
-      return true;
-    }
-  });
+const contextWrapper = (component) => ({
+  ..._context,
+  incrementCount: () => {
+    _context.count++;
+    component.setState({ context: contextWrapper(component) })
+  }
+});
 
 const GlobalContext = React.createContext({});
 class ContextProvider extends React.Component {
-  state = {context :stateAwareContext(this)};
+  state = { context: contextWrapper(this) }
+
   render() {
     return (
       <GlobalContext.Provider value={this.state.context}>

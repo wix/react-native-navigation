@@ -1,6 +1,6 @@
 #import "RNNLayoutInfo.h"
 #import "RNNBasePresenter.h"
-#import "RNNRootViewCreator.h"
+#import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
@@ -10,7 +10,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @required
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
-						   creator:(id<RNNRootViewCreator>)creator
+						   creator:(id<RNNComponentViewCreator>)creator
 						   options:(RNNNavigationOptions *)options
 					defaultOptions:(RNNNavigationOptions *)defaultOptions
 						 presenter:(RNNBasePresenter *)presenter
@@ -21,7 +21,9 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild;
 
-- (CGFloat) getTopBarHeight;
+- (CGFloat)getTopBarHeight;
+
+- (CGFloat)getBottomTabsHeight;
 
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 

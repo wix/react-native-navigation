@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const concat = require('lodash/concat');
 const React = require('react');
 const { BackHandler } = require('react-native');
 const Navigation = require('../services/Navigation');
@@ -99,7 +99,7 @@ class PushedScreen extends React.Component {
         name: Screens.Pushed,
         passProps: {
           stackPosition: this.getStackPosition() + 1,
-          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+          previousScreenIds: concat([], this.props.previousScreenIds || [], this.props.componentId)
         },
         options: {
           animations: {
@@ -120,7 +120,7 @@ class PushedScreen extends React.Component {
         name: Screens.Pushed,
         passProps: {
           stackPosition: this.getStackPosition() + 1,
-          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+          previousScreenIds: concat([], this.props.previousScreenIds || [], this.props.componentId)
         },
         options: {
           animations: {
@@ -152,7 +152,7 @@ class PushedScreen extends React.Component {
   createPassProps = () => {
     return {
       stackPosition: this.getStackPosition() + 1,
-      previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+      previousScreenIds: concat([], this.props.previousScreenIds || [], this.props.componentId)
     }
   };
   getStackPosition = () => this.props.stackPosition || 1;

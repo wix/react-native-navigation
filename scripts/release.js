@@ -2,14 +2,14 @@
 const exec = require('shell-utils').exec;
 const semver = require('semver');
 const fs = require('fs');
-const _ = require('lodash');
+const includes = require('lodash/includes');
 const path = require('path');
 
 // Workaround JS
 const isRelease = process.env.RELEASE_BUILD === 'true';
 
-const ONLY_ON_BRANCH = 'origin/master';
-const VERSION_TAG = isRelease ? 'latest' : 'snapshot';
+const BRANCH = process.env.BRANCH;
+const VERSION_TAG = process.env.NPM_TAG || isRelease ? 'latest' : 'snapshot';
 const VERSION_INC = 'patch';
 
 function run() {
@@ -28,11 +28,6 @@ function validateEnv() {
 
     if (!process.env.JENKINS_MASTER) {
         console.log(`not publishing on a different build`);
-        return false;
-    }
-
-    if (process.env.GIT_BRANCH !== ONLY_ON_BRANCH) {
-        console.log(`not publishing on branch ${process.env.GIT_BRANCH}`);
         return false;
     }
 
@@ -87,7 +82,7 @@ function tryPublishAndTag(version) {
             console.log(`Released ${theCandidate}`);
             return;
         } catch (err) {
-            const alreadyPublished = _.includes(err.toString(), 'You cannot publish over the previously published version');
+            const alreadyPublished = includes(err.toString(), 'You cannot publish over the previously published version');
             if (!alreadyPublished) {
                 throw err;
             }
@@ -121,13 +116,13 @@ function readPackageJson() {
 }
 
 function updatePackageJsonGit(version) {
-    exec.execSync(`git checkout master`);
+    exec.execSync(`git checkout ${BRANCH}`);
     const packageJson = readPackageJson();
     packageJson.version = version;
     writePackageJson(packageJson);
     exec.execSync(`git add package.json`);
     exec.execSync(`git commit -m"Update package.json version to ${version} [ci skip]"`);
-    exec.execSync(`git push deploy master`);
+    exec.execSync(`git push deploy ${BRANCH}`);
 }
 
 run();

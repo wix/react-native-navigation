@@ -1,20 +1,24 @@
 package com.reactnativenavigation.parse;
 
 import android.graphics.Typeface;
-import android.support.annotation.Nullable;
 
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
+
+import androidx.annotation.Nullable;
 
 public class BottomTabOptions {
 
@@ -26,10 +30,12 @@ public class BottomTabOptions {
         options.textColor = ColorParser.parse(json, "textColor");
         options.selectedTextColor = ColorParser.parse(json, "selectedTextColor");
         if (json.has("icon")) options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
+        if (json.has("selectedIcon")) options.selectedIcon = TextParser.parse(json.optJSONObject("selectedIcon"), "uri");
         options.iconColor = ColorParser.parse(json, "iconColor");
         options.selectedIconColor = ColorParser.parse(json, "selectedIconColor");
         options.badge = TextParser.parse(json, "badge");
         options.badgeColor = ColorParser.parse(json, "badgeColor");
+        options.animateBadge = BoolParser.parse(json, "animateBadge");
         options.testId = TextParser.parse(json, "testID");
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         options.fontSize = NumberParser.parse(json, "fontSize");
@@ -42,11 +48,13 @@ public class BottomTabOptions {
     public Colour textColor = new NullColor();
     public Colour selectedTextColor = new NullColor();
     public Text icon = new NullText();
+    public Text selectedIcon = new NullText();
     public Colour iconColor = new NullColor();
     public Colour selectedIconColor = new NullColor();
     public Text testId = new NullText();
     public Text badge = new NullText();
     public Colour badgeColor = new NullColor();
+    public Bool animateBadge = new NullBool();
     public DotIndicatorOptions dotIndicator = new DotIndicatorOptions();
     public Number fontSize = new NullNumber();
     public Number selectedFontSize = new NullNumber();
@@ -58,10 +66,12 @@ public class BottomTabOptions {
         if (other.textColor.hasValue()) textColor = other.textColor;
         if (other.selectedTextColor.hasValue()) selectedTextColor = other.selectedTextColor;
         if (other.icon.hasValue()) icon = other.icon;
+        if (other.selectedIcon.hasValue()) selectedIcon = other.selectedIcon;
         if (other.iconColor.hasValue()) iconColor = other.iconColor;
         if (other.selectedIconColor.hasValue()) selectedIconColor = other.selectedIconColor;
         if (other.badge.hasValue()) badge = other.badge;
         if (other.badgeColor.hasValue()) badgeColor = other.badgeColor;
+        if (other.animateBadge.hasValue()) animateBadge = other.animateBadge;
         if (other.testId.hasValue()) testId = other.testId;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.selectedFontSize.hasValue()) selectedFontSize = other.selectedFontSize;
@@ -74,10 +84,12 @@ public class BottomTabOptions {
         if (!textColor.hasValue()) textColor = defaultOptions.textColor;
         if (!selectedTextColor.hasValue()) selectedTextColor = defaultOptions.selectedTextColor;
         if (!icon.hasValue()) icon = defaultOptions.icon;
+        if (!selectedIcon.hasValue()) selectedIcon = defaultOptions.selectedIcon;
         if (!iconColor.hasValue()) iconColor = defaultOptions.iconColor;
         if (!selectedIconColor.hasValue()) selectedIconColor = defaultOptions.selectedIconColor;
         if (!badge.hasValue()) badge = defaultOptions.badge;
         if (!badgeColor.hasValue()) badgeColor = defaultOptions.badgeColor;
+        if (!animateBadge.hasValue()) animateBadge = defaultOptions.animateBadge;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (!selectedFontSize.hasValue()) selectedFontSize = defaultOptions.selectedFontSize;
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;

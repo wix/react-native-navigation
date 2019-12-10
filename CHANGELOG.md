@@ -1,4 +1,241 @@
 # Changelog
+# 4.0.0
+## Added
+### iOS
+* **Support Xcode 11 - Xcode 10 is no longer supported**
+* Support centering bottomTab icons using bottomTabs.titleDisplayMode [#26d3d82](https://github.com/wix/react-native-navigation/commit/26d3d8219097fe1b22a9585526ab8a712af6a508) by [yogevbd](https://github.com/yogevbd)
+* Prevent creation of button react view with the same componentId [#1807c5b](https://github.com/wix/react-native-navigation/commit/1807c5b48d7b72e4f171dc105db6eff6291614e5) by [yogevbd](https://github.com/yogevbd)
+
+## Fixed
+* Change BottomTab.icon back to optional [#d8c34c3](https://github.com/wix/react-native-navigation/commit/d8c34c391097189819972ffd7f5454231ec9b2f3) by [guyca](https://github.com/guyca)
+
+### iOS
+* Remeasure title component after orientation change [#619af3e](https://github.com/wix/react-native-navigation/commit/619af3efe081f7069acfbe1149c7b0775f40faeb) by [yogevbd](https://github.com/yogevbd)
+* Fix memory leak when reloading the app [#9970853](https://github.com/wix/react-native-navigation/commit/9970853820bf303cb75fb4238050e46c9c65c49d) by [yogevbd](https://github.com/yogevbd)
+* Support UINavigationBarBehavior [#6f13d69](https://github.com/wix/react-native-navigation/commit/6f13d6963c6af655506a820b8bbddea4849152d4), [#9f43bca](https://github.com/wix/react-native-navigation/commit/9f43bca3573e8833eb8219c6e7a829d8d92faac0) by [yogevbd](https://github.com/yogevbd)
+
+### Android
+* Automatically apply DrawBehind when tabs are hidden [#002b7d8](https://github.com/wix/react-native-navigation/commit/002b7d8f331019f79421e7cd28bab9bf411d73e4) by [guyca](https://github.com/guyca)
+* Fix button disabled color has no effect [#b66ff1d](https://github.com/wix/react-native-navigation/commit/b66ff1d4b63196113ee0ba0129d33da39c2e134a) by [guyca](https://github.com/guyca)
+* Fix BottomTabs background color changing to white background sometimes [#57eb0db](https://github.com/wix/react-native-navigation/commit/57eb0db7da6d69c784a9b0cd5672a563901738a9) by [guyca](https://github.com/guyca)
+
+# 3.7.0
+## Added
+### Android
+* Add bottomTabs.preferLargeIcons option [#fd93167](https://github.com/wix/react-native-navigation/commit/fd93167dbe70975161c20832f43a499453f76804) by [guyca](https://github.com/guyca)
+
+# 3.6.0
+### Added
+* Start script for Windows [#764863f](https://github.com/wix/react-native-navigation/commit/764863f46be72f7b29499994e5349ea90084d450) by [Damar95](https://github.com/Damar95)
+
+## Fixed
+### Android
+* Include commandName in commandCompleted event [#b904608](https://github.com/wix/react-native-navigation/commit/b9046081ace89a2d3d0795c15920b6b2692c7702) by [jpgarcia](https://github.com/jpgarcia)
+* Fix crash when title component is destroyed right after being attached [#39ee170](https://github.com/wix/react-native-navigation/commit/39ee1701fd0e626961158d9c342b4c6b0bd3c05b) by [guyca](https://github.com/guyca)
+* Fix NPE when component appears under certain conditions [#35851fc](https://github.com/wix/react-native-navigation/commit/35851fc9893917338022f5eb06c25bfb21625d81) by [heroic](https://github.com/heroic)
+* Apply layout direction directly on TopBar buttons container [#14b5221](https://github.com/wix/react-native-navigation/commit/14b5221caa2529c0396134c5f7981f093a14b58b) by [guyca](https://github.com/guyca)
+
+# 3.5.1
+## Fixed
+### iOS
+* Fix title component disappearing after mergeOptions [#6d446a8](https://github.com/wix/react-native-navigation/commit/6d446a8882f92b82cd01b78992331d66c31b5abf) by [guyca](https://github.com/guyca)
+
+# 3.5.0
+## Fixed
+### Android
+* Allow navigationBarColor change within mergeOptions [#8720628](https://github.com/wix/react-native-navigation/commit/87206286bfb8fd235e5356da9542c62dfc44f356) by [danielang](https://github.com/danielang)
+* Fix crash when null was used as bottomTab.color [#c48ed74](https://github.com/wix/react-native-navigation/commit/c48ed747a163a2917820e62ab40d5047389f5fcb) by [guyca](https://github.com/guyca)
+
+# 3.4.0
+## Added
+* [stable] Introduce Navigation.updateProps command [#0eb0570](https://github.com/wix/react-native-navigation/commit/0eb0570840a26d4b848d7c763060a2b8faf1dc80) by [guyca](https://github.com/guyca)
+
+### Android
+* add support for navigationBarColor [#8af95da](https://github.com/wix/react-native-navigation/commit/8af95da24a0622829d514c8ed61507438491bc27) by [mcuelenaere](https://github.com/mcuelenaere)
+
+## Fixed
+* Added setStackRoot animation property to interface [#fcdbe79](https://github.com/wix/react-native-navigation/commit/fcdbe79dc3305cbf12396aa6283a1bf4a5f02889) by [nielsdB97](https://github.com/nielsdB97)
+
+# 3.3.0
+## Added
+* **[experimental]** Support updating component props with Navigation.mergeOptions [#291f161](https://github.com/wix/react-native-navigation/commit/291f16177d2f67a474d3a980a503a85d0acf2b2a) by [justtal](https://github.com/justtal)
+### Android
+* Add support for getLaunchArgs [#16646e7](https://github.com/wix/react-native-navigation/commit/16646e7c88d78f1ddd7fb6ae434ef968ac051f06) by [swabbass](https://github.com/swabbass)
+* Support bottomTab.selectedIcon [#45e8389](https://github.com/wix/react-native-navigation/commit/45e8389b2b7d282878a80c49b146ddeb4ec2cd89) by [guyca](https://github.com/guyca)
+### iOS
+* Added fontWeight option for iOS 13 [#6ab2345](https://github.com/wix/react-native-navigation/commit/6ab2345ad6e9ddd26ac1275537ec2791fa50c7c2) by [yogevbd](https://github.com/yogevbd)
+
+## Fixed
+### Android
+* Merge options with ParentViewControllers [#0dd3315](https://github.com/wix/react-native-navigation/commit/0dd331590770c33d067bfeae596aae7d4ff992ea) by [guyca](https://github.com/guyca)
+### iOS
+* Prefer new imageWithTintColor API when tinting an UIImage [#5d751f6](https://github.com/wix/react-native-navigation/commit/5d751f643ad80a67abccc51d75f1127e2b65824a) by [danilobuerger](https://github.com/danilobuerger)
+* Fixed disappearing StatusBar when displaying native ViewControllers [#58c76e1](https://github.com/wix/react-native-navigation/commit/58c76e1ec218741b461bca30e8126e952b87a180) by [yogevbd](https://github.com/yogevbd)
+* Fixed title layout issues on iOS 13 [#898e187](https://github.com/wix/react-native-navigation/commit/898e187d4cbea76b93709c95ad89e984e660b904), [#a3f176d](https://github.com/wix/react-native-navigation/commit/a3f176d56e94e5a5de0be079de9f63b180dc6f5a), [#094b9a7](https://github.com/wix/react-native-navigation/commit/094b9a7ef153d62ea9c195e342cafca4892c1428) by [yogevbd](https://github.com/yogevbd)
+* Fixed leaking pageSheet modals on iOS 13 [#2b4d897](https://github.com/wix/react-native-navigation/commit/2b4d897f19684e2c04c3050c3882f1558cb1efed) by [yogevbd](https://github.com/yogevbd)
+
+# 3.2.0
+## Added
+### Android
+* Add animation support for setStackRoot [#d0a17fa](https://github.com/wix/react-native-navigation/commit/d0a17fabf4f5360b0f54797867a7a49960a1937d) by [Jazqa](https://github.com/Jazqa)
+
+## Fixed
+* Don't cache values for constants() call [#a99e138](https://github.com/wix/react-native-navigation/commit/a99e138839abc8ab84b67489ef9a83a6874778da) by [ItsNoHax](https://github.com/ItsNoHax)
+
+### iOS
+* Fix applying merged backButton options [#aef5b2e](https://github.com/wix/react-native-navigation/commit/aef5b2e3bd60acb33847c0ab3b66b8fc51fef703) by [guyca](https://github.com/guyca)
+* Remove duplicate setDefaultOptions in UIViewController categories [#0d31e30](https://github.com/wix/react-native-navigation/commit/0d31e30800dc3e7314cfbf1dcf6b645614b781f4) by [danilobuerger](https://github.com/danilobuerger)
+* Don't consume SideMenu enabled option after applying it in mergeOptions [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* supportedInterfaceOrientations didn't take default orientation value into account [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* SideMenu always returned the centre ViewController as the current child and didn't take open SideMenu into account  [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* Stop recursive double setting of default options [#d5c92b1](https://github.com/wix/react-native-navigation/commit/d5c92b1609d5fc1a75c51065791e5aad2a80b654) by [danilobuerger](https://github.com/danilobuerger)
+* Immediately unmount buttons removed by mergeOptions, instead of unmounting them when screen is unmounted [#65dde34](https://github.com/wix/react-native-navigation/commit/65dde342fb087bd122bc19de308cbf283485aac7) by [yogevbd](https://github.com/yogevbd)
+
+## Android
+* Catch rare RuntimeException in setRoot when waitForRender = true [#b048581](https://github.com/wix/react-native-navigation/commit/b04858190e1fc2a1fe22f67879a6c7ca3769c297) by [rawrmaan](https://github.com/rawrmaan)
+* Fix SideMenu enabled property issues [#92fcf70](https://github.com/wix/react-native-navigation/commit/92fcf70773a3614c48e3ac844e81cb16d1ff8d2a) by [Royce](https://github.com/Royce)
+
+
+# 3.1.2
+## Fixed
+* Add @babel/core to devDependencies [#fdec91d](https://github.com/wix/react-native-navigation/commit/fdec91dc39364aaa23a48dfc4d1d44e73a6f2e21) by [ItsNoHax](https://github.com/ItsNoHax)
+
+### iOS
+* Fix replacing react title with text title not working [#b434b4f](https://github.com/wix/react-native-navigation/commit/b434b4f82a6f0642af9d11ad8dda6ec8e9c5603a) by [FRizzonelli](https://github.com/FRizzonelli)
+* Fix merging TopBar title, buttons and status bar options, broke in 3.1.1 [#5409a62](https://github.com/wix/react-native-navigation/commit/5409a625d9d272c5c0a7d9b10ed0df5ff51c6155) by [guyca](https://github.com/guyca)
+
+# 3.1.1
+## Fixed
+### Android
+* Fix defaultOptions not being applied if called after setRoot [#338b096](https://github.com/wix/react-native-navigation/commit/338b0961f9bee9fa20583efe0f165e3cefa14c92) by [guyca](https://github.com/guyca)
+# 3.1.0
+## Added
+* Support passing null color to StatusBar backgroundColor and bottom tab icon color [#3519837](https://github.com/wix/react-native-navigation/commit/3519837cc2a82cb14ec1849bfc358865e407f556) by [guyca](https://github.com/guyca)
+
+## Fixed
+### Android
+* Removed the legacy support lib [#8663669](https://github.com/wix/react-native-navigation/commit/8663669ed92f34bedf7bdbdb8a9b1a64be5b8cdf) by [SudoPlz](https://github.com/SudoPlz) 
+* Apply layout direction directly on views [#fffd2d2](https://github.com/wix/react-native-navigation/commit/fffd2d23f169d11ddb7c9348e2070c3385844e34) by [guyca](https://github.com/guyca)
+
+# 3.0.0
+## Android
+* Support RN 0.60
+* Migrate to AndroidX
+* Improve draw behind StatusBar<br>
+  Added `statusBar.translucent` boolean property
+* BottomTabs are not pushed upwards when keyboard opens
+* Removed SyncUiImplementation
+  [SyncUiImplementation](https://github.com/wix/react-native-navigation/blob/master/lib/android/app/src/reactNative57WixFork/java/com/reactnativenavigation/react/SyncUiImplementation.java) was used to overcome a bug in RN's UiImplementation. This workaround was added to RN's `UiImplementation` in RN 0.60 and can be removed from RNN.
+
+  If you're using `SyncUiImplementation` your app will fail to compile after upgrading to v3. Simply remove the following code from your `MainApplication.java`
+  ```diff
+  - import com.facebook.react.uimanager.UIImplementationProvider;
+  - import com.reactnativenavigation.react.SyncUiImplementation;
+
+
+  - @override
+  - protected UIImplementationProvider getUIImplementationProvider() {
+  -     return new SyncUiImplementation.Provider();
+  - }
+  ```
+* BottomTab badge and dot indicator are not animated by default.
+  * The following option will show a badge with animation
+    ```js
+    bottomTab: {
+      badge: 'new,
+      animateBadge: true
+    }
+    ```
+
+  * The following option will show a dot indicator with animation
+    ```js
+    bottomTab: {
+      dotIndicator: {
+        visible: true,
+        animate: true
+      }
+    }
+    ```
+* Stack, BottomTabs and SideMenu are drawn behind StatusBar.<br>
+While parent controllers are drawn behind the StatusBar, their background isn't.
+This means that when transitioning from a destinations drawn under the StatusBar to a destination drawn behind it, the application's default background color will be visible behind the StatusBar.
+If you application's theme is dark, you might want to change the `windowBackground` property to mitigate this:
+Add the following to your application's `style.xml`
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <resources>
+      <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+          <item name="android:windowBackground">@color/backgroundColor</item>
+      </style>
+
+      <!--This is your application's default background color.
+      It will be visible when the app is first opened (while the splash layout is visible)
+      and when transitioning between a destination a screen drawn under the StatusBar to
+      a destination drawn behind it-->
+      <item name="backgroundColor" type="color">#f00</item>
+  </resources>
+  ```
+# 2.29.0
+## Added
+* Introduce `Navigation.updateProps` command [#0eb0570](https://github.com/wix/react-native-navigation/commit/0eb0570840a26d4b848d7c763060a2b8faf1dc80) by [guyca](https://github.com/guyca)
+## Fixed
+### iOS
+* Fix compilation error on Xcode 10.x [#99ddcd8](https://github.com/wix/react-native-navigation/commit/99ddcd864005ce768ca7c0b34d2ecfa8246dc568) and [#83f03cd](https://github.com/wix/react-native-navigation/commit/83f03cd8f945152cda93c664d69bf36047989571) by [yogevbd](https://github.com/yogevbd)
+### Android
+* Don't merge null bottomTab.selectedIconColor and bottomTab.iconColor [#c48ed74](https://github.com/wix/react-native-navigation/commit/c48ed747a163a2917820e62ab40d5047389f5fcb) by [guyca](https://github.com/guyca)
+# 2.28.0
+## Added
+* Support updating component props with Navigation.mergeOptions [#291f161](https://github.com/wix/react-native-navigation/commit/291f16177d2f67a474d3a980a503a85d0acf2b2a) by [justtal](https://github.com/justtal)
+### Android
+* Support bottomTab.selectedIcon [#45e8389](https://github.com/wix/react-native-navigation/commit/45e8389b2b7d282878a80c49b146ddeb4ec2cd89) by [guyca](https://github.com/guyca)
+# 2.27.7
+## Added
+### iOS
+* Font weight option support on iOS [#f283e15](https://github.com/wix/react-native-navigation/commit/f283e155948c0ae190c1dde0fb3d78d5ac129af0) by [yogevbd](https://github.com/yogevbd)
+
+# 2.27.6
+## Fixed
+### iOS
+* Fix status bar disappear when presenting native camera screen on iOS [#6cfde5e](https://github.com/wix/react-native-navigation/commit/6cfde5e24c95506b6d31b2f40164fa3f196b72a6) by [yogevbd](https://github.com/yogevbd)
+
+# 2.27.5
+## Fixed
+### iOS
+* Stop recursive double setting of default options  [#3da2ca8](https://github.com/wix/react-native-navigation/commit/3da2ca8afc7597b46cad500828dffc0102c034a6) by [danilobuerger](https://github.com/danilobuerger)
+* Fix infinite loop while trying to remove react buttons [#88fd1f1](https://github.com/wix/react-native-navigation/commit/88fd1f15d0bc22d8c53c7e518eb0bb178e15ea6c) by [guyca](https://github.com/guyca)
+
+# 2.27.4
+## Fixed
+### iOS
+* Immediately unmount buttons removed by mergeOptions, instead of unmounting them when screen is unmounted [#65dde34](https://github.com/wix/react-native-navigation/commit/65dde342fb087bd122bc19de308cbf283485aac7) by [yogevbd](https://github.com/yogevbd)
+* Don't consume SideMenu enabled option after applying it in mergeOptions [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* supportedInterfaceOrientations didn't take default orientation value into account [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* SideMenu always returned the centre ViewController as the current child and didn't take open SideMenu into account  [#9faf458](https://github.com/wix/react-native-navigation/commit/9faf458cb451829e86809d9162728eed17a7f56c) by [guyca](https://github.com/guyca)
+* Remove duplicate setDefaultOptions in UIViewController categories [#452c4e6](https://github.com/wix/react-native-navigation/commit/452c4e692fe700600447f19282bd42b07dcc9bb4) by [danilobuerger](https://github.com/danilobuerger)
+
+# 2.27.3
+## Fixed
+### iOS
+* Fix merging back button [#1800e70](https://github.com/wix/react-native-navigation/commit/1800e708a8483bc4e56873e826f2d72f02d659b9) by [guyca](https://github.com/guyca)
+
+# 2.27.2
+## Fixed
+### iOS
+* Fix TopBar, title, buttons and StatusBar which broke in the previous release [#8044b2d](https://github.com/wix/react-native-navigation/commit/8044b2d12cfd2b937bfbe846d98f9034a88aa254) by [guyca](https://github.com/guyca)
+
+# 2.27.1
+## Fixed
+### iOS
+* Fix defaultOptions not being applied if called after setRoot [#338b096](https://github.com/wix/react-native-navigation/commit/338b0961f9bee9fa20583efe0f165e3cefa14c92) by [guyca](https://github.com/guyca)
+
+# 2.27.0
+## Added
+* Support passing null color to StatusBar backgroundColor and bottom tab icon color [#3519837](https://github.com/wix/react-native-navigation/commit/3519837cc2a82cb14ec1849bfc358865e407f556) by [guyca](https://github.com/guyca)
+
+## Fixed
+### Android
+* Apply layout direction directly on views [#fffd2d2](https://github.com/wix/react-native-navigation/commit/fffd2d23f169d11ddb7c9348e2070c3385844e34) by [guyca](https://github.com/guyca)
+
 # 2.26.1
 
 ## Fixed

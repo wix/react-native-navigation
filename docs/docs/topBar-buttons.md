@@ -15,6 +15,9 @@ The following options can be used to customise buttons.
   color: 'red',
   disabledColor: 'black',
   testID: 'buttonOneTestID',
+  fontFamily: 'Helvetica',
+  fontSize: 10
+  fontWeight: 'regular', // Available on iOS only, will ignore fontFamily style and use the iOS system fonts instead. Supported weights are: 'regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy' and 'black'.
   // Android only
   showAsAction: 'ifRoom', // See below for details.
   // iOS only

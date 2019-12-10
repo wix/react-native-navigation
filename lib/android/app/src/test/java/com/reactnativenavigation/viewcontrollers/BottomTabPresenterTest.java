@@ -9,21 +9,23 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.parse.params.DontApplyColour;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.views.BottomTabs;
-import com.reactnativenavigation.views.Component;
 
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,6 +37,8 @@ public class BottomTabPresenterTest extends BaseTest {
     private BottomTabPresenter uut;
     private BottomTabs bottomTabs;
     private List<ViewController> tabs;
+    private ViewController child1;
+    private ViewController child2;
     private ViewController child3;
 
     @Override
@@ -42,8 +46,8 @@ public class BottomTabPresenterTest extends BaseTest {
         Activity activity = newActivity();
         ChildControllersRegistry childRegistry = new ChildControllersRegistry();
         bottomTabs = Mockito.mock(BottomTabs.class);
-        ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", tab1Options));
-        ViewController child2 = spy(new SimpleViewController(activity, childRegistry, "child2", tab2Options));
+        child1 = spy(new SimpleViewController(activity, childRegistry, "child1", tab1Options));
+        child2 = spy(new SimpleViewController(activity, childRegistry, "child2", tab2Options));
         child3 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
         tabs = Arrays.asList(child1, child2, child3);
         uut = new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options());
@@ -62,10 +66,25 @@ public class BottomTabPresenterTest extends BaseTest {
     }
 
     @Test
+    public void mergeOptions_createTabsOnce() {
+        Options options = new Options();
+        options.bottomTabOptions.iconColor = new Colour(1);
+        options.bottomTabOptions.selectedIconColor = new Colour(1);
+        BottomTabPresenter spy = spy(uut);
+
+        spy.mergeOptions(options);
+
+        InOrder inOrder = inOrder(spy, child1, child2, child3, bottomTabs);
+        inOrder.verify(bottomTabs).disableItemsCreation();
+        forEach(tabs, tab -> inOrder.verify(spy).mergeChildOptions(options, tab));
+        inOrder.verify(bottomTabs).enableItemsCreation();
+    }
+
+    @Test
     public void mergeChildOptions() {
         for (int i = 0; i < 2; i++) {
             Options options = tabs.get(i).options;
-            uut.mergeChildOptions(options, (Component) tabs.get(i).getView());
+            uut.mergeChildOptions(options, tabs.get(i));
             verify(bottomTabs, times(1)).setNotification(any(AHNotification.class), eq(i));
             verify(bottomTabs, times(1)).setIconActiveColor(eq(i), anyInt());
             verify(bottomTabs, times(1)).setIconInactiveColor(eq(i), anyInt());
@@ -75,11 +94,21 @@ public class BottomTabPresenterTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_onlySetsDefinedOptions() {
-        uut.mergeChildOptions(child3.options, (Component) child3.getView());
-        verify(bottomTabs, times(0)).setBadge(eq(2), anyString());
+        uut.mergeChildOptions(child3.options, child3);
+        verify(bottomTabs, times(0)).setNotification(any(AHNotification.class), anyInt());
         verify(bottomTabs, times(0)).setIconInactiveColor(eq(2), anyInt());
         verify(bottomTabs, times(0)).setIconActiveColor(eq(2), anyInt());
         verifyNoMoreInteractions(bottomTabs);
+    }
+
+    @Test
+    public void mergeChildOptions_nullColorsAreNotMerged() {
+        Options options = new Options();
+        options.bottomTabOptions.iconColor = new DontApplyColour();
+        options.bottomTabOptions.selectedIconColor = new DontApplyColour();
+        uut.mergeChildOptions(options, child3);
+        verify(bottomTabs, times(0)).setIconActiveColor(anyInt(), anyInt());
+        verify(bottomTabs, times(0)).setIconInactiveColor(anyInt(), anyInt());
     }
 
     private Options createTab1Options() {

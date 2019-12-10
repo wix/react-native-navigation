@@ -3,7 +3,6 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.reactnativenavigation.BaseTest;
@@ -21,6 +20,8 @@ import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.junit.Test;
+
+import androidx.appcompat.widget.Toolbar;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

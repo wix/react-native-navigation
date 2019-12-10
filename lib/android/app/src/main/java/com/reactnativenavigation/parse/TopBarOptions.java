@@ -46,6 +46,8 @@ public class TopBarOptions {
 
         options.rightButtonColor = ColorParser.parse(json, "rightButtonColor");
         options.leftButtonColor = ColorParser.parse(json, "leftButtonColor");
+        options.leftButtonDisabledColor = ColorParser.parse(json, "leftButtonDisabledColor");
+        options.rightButtonDisabledColor = ColorParser.parse(json, "rightButtonDisabledColor");
 
         options.validate();
         return options;
@@ -133,5 +135,9 @@ public class TopBarOptions {
             title.text = new NullText();
             subtitle.text = new NullText();
         }
+    }
+
+    public boolean isHiddenOrDrawBehind() {
+        return drawBehind.isTrue() || visible.isFalse();
     }
 }

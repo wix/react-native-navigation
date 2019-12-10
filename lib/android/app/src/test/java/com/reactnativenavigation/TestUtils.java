@@ -2,6 +2,8 @@ package com.reactnativenavigation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
@@ -19,24 +21,36 @@ import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
 
+import org.mockito.Mockito;
+
 public class TestUtils {
     public static StackControllerBuilder newStackController(Activity activity) {
+        TopBarController topBarController = new TopBarController() {
+            @Override
+            protected TopBar createTopBar(Context context, StackLayout stackLayout) {
+                TopBar topBar = super.createTopBar(context, stackLayout);
+                topBar.layout(0, 0, 1000, UiUtils.getTopBarHeight(context));
+                return topBar;
+            }
+        };
         return new StackControllerBuilder(activity)
                 .setId("stack")
                 .setChildRegistry(new ChildControllersRegistry())
-                .setTopBarController(new TopBarController() {
-                    @Override
-                    protected TopBar createTopBar(Context context, StackLayout stackLayout) {
-                        TopBar topBar = super.createTopBar(context, stackLayout);
-                        topBar.layout(0, 0, 1000, UiUtils.getTopBarHeight(context));
-                        return topBar;
-                    }
-                })
+                .setTopBarController(topBarController)
                 .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new RenderChecker(), new Options()))
                 .setInitialOptions(new Options());
     }
 
     public static void hideBackButton(ViewController viewController) {
         viewController.options.topBar.buttons.back.visible = new Bool(false);
+    }
+
+    public static <T extends View> T spyOn(T child) {
+        ViewGroup parent = (ViewGroup) child.getParent();
+        int indexOf = parent.indexOfChild(child);
+        parent.removeView(child);
+        T spy = Mockito.spy(child);
+        parent.addView(spy, indexOf);
+        return spy;
     }
 }

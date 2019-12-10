@@ -18,6 +18,7 @@ import static org.mockito.Mockito.verify;
 
 public class ChildControllerTest extends BaseTest {
 
+    private ParentController parent;
     private ChildController uut;
     private ChildControllersRegistry childRegistry;
     private Presenter presenter;
@@ -33,6 +34,8 @@ public class ChildControllerTest extends BaseTest {
                 return resolvedOptions;
             }
         };
+        parent = Mockito.mock(ParentController.class);
+        uut.setParentController(parent);
     }
 
     @Test
@@ -50,21 +53,6 @@ public class ChildControllerTest extends BaseTest {
     }
 
     @Test
-    public void applyOptions_applyRootOptionsIfRoot() {
-        newActivity().setContentView(uut.getView());
-        verify(presenter).applyOptions(uut.getView(), resolvedOptions);
-        verify(presenter).applyRootOptions(uut.getView(), resolvedOptions);
-    }
-
-    @Test
-    public void applyOptions_doesNotApplyRootOptionsIfHasParent() {
-        Options options = new Options();
-        uut.setParentController(Mockito.mock(ParentController.class));
-        uut.applyOptions(options);
-        verify(presenter, times(0)).applyRootOptions(uut.getView(), options);
-    }
-
-    @Test
     public void mergeOptions() {
         newActivity().setContentView(uut.getView());
 
@@ -77,6 +65,13 @@ public class ChildControllerTest extends BaseTest {
     public void mergeOptions_emptyOptionsAreIgnored() {
         uut.mergeOptions(Options.EMPTY);
         verify(presenter, times(0)).mergeOptions(any(), any());
+    }
+
+    @Test
+    public void mergeOptions_mergeWithParentViewController() {
+        Options options = new Options();
+        uut.mergeOptions(options);
+        verify(uut.getParentController()).mergeChildOptions(options, uut);
     }
 
     @Test

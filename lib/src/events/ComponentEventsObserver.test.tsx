@@ -175,9 +175,9 @@ describe('ComponentEventsObserver', () => {
     expect(navigationButtonPressedFn).toHaveBeenCalledTimes(1);
     expect(navigationButtonPressedFn).toHaveBeenCalledWith({ buttonId: 'myButtonId', componentId: 'myCompId' });
 
-    uut.notifyModalDismissed({ componentId: 'myCompId' });
+    uut.notifyModalDismissed({ componentId: 'myCompId', modalsDismissed: 1 });
     expect(modalDismissedFn).toHaveBeenCalledTimes(1);
-    expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId' })
+    expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId', modalsDismissed: 1 })
 
     uut.notifySearchBarUpdated({ componentId: 'myCompId', text: 'theText', isFocused: true });
     expect(searchBarUpdatedFn).toHaveBeenCalledTimes(1);
@@ -204,7 +204,7 @@ describe('ComponentEventsObserver', () => {
       componentName: 'doesnt matter'
     }
     renderer.create(<BoundScreen componentId={event.componentId} />);
-    mockStore.setPropsForId(event.componentId, event.passProps)
+    mockStore.updateProps(event.componentId, event.passProps)
     expect(didAppearFn).not.toHaveBeenCalled();
 
     uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });

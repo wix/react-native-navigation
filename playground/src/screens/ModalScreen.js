@@ -1,4 +1,7 @@
-const _ = require('lodash');
+const last = require('lodash/last');
+const concat = require('lodash/concat');
+const forEach = require('lodash/forEach');
+const head = require('lodash/head');
 const React = require('react');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
@@ -22,11 +25,6 @@ const {
 class ModalScreen extends React.Component {
   static options() {
     return {
-      statusBar: {
-        visible: false,
-        drawBehind: true,
-        backgroundColor: 'transparent'
-      },
       topBar: {
         testID: MODAL_SCREEN_HEADER,
         title: {
@@ -47,7 +45,7 @@ class ModalScreen extends React.Component {
         {this.props.previousModalIds && (<Button label='Dismiss All Previous Modals' testID={DISMISS_ALL_PREVIOUS_MODAL_BTN} onPress={this.dismissAllPreviousModals} />)}
         <Button label='Dismiss All Modals' testID={DISMISS_ALL_MODALS_BTN} onPress={this.dismissAllModals} />
         {this.props.previousModalIds && (<Button label='Dismiss First Modal' testID={DISMISS_FIRST_MODAL_BTN} onPress={this.dismissFirstModal} />)}
-        <Button label='Push screen' testID={PUSH_BTN} onPress={this.pushScreen} />
+        <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
         <Button label='Set Root' testID={SET_ROOT} onPress={this.setRoot} />
       </Root>
     );
@@ -59,7 +57,7 @@ class ModalScreen extends React.Component {
         name: Screens.Modal,
         passProps: {
           modalPosition: this.getModalPosition() + 1,
-          previousModalIds: _.concat([], this.props.previousModalIds || [], this.props.componentId)
+          previousModalIds: concat([], this.props.previousModalIds || [], this.props.componentId)
         }
       }
     });
@@ -71,9 +69,9 @@ class ModalScreen extends React.Component {
 
   dismissUnknownModal = () => Navigation.dismissModal('unknown');
 
-  dismissAllPreviousModals = () => _.forEach(this.props.previousModalIds, (id) => Navigation.dismissModal(id));
+  dismissAllPreviousModals = () => forEach(this.props.previousModalIds, (id) => Navigation.dismissModal(id));
 
-  dismissFirstModal = () => Navigation.dismissModal(_.head(this.props.previousModalIds));
+  dismissFirstModal = () => Navigation.dismissModal(head(this.props.previousModalIds));
 
   dismissAllModals = () => Navigation.dismissAllModals();
 
@@ -84,12 +82,12 @@ class ModalScreen extends React.Component {
     }
   });
 
-  pushScreen = () => Navigation.push(this, Screens.Pushed);
+  push = () => Navigation.push(this, Screens.Pushed);
 
   setRoot = () => Navigation.setRoot(stack(Screens.Pushed));
 
   getModalPosition = () => this.props.modalPosition || 1;
 
-  getPreviousModalId = () => _.last(this.props.previousModalIds);
+  getPreviousModalId = () => last(this.props.previousModalIds);
 }
 module.exports = ModalScreen;
