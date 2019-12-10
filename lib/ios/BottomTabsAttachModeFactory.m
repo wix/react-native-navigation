@@ -3,6 +3,12 @@
 #import "BottomTabsOnSwitchToTabAttacher.h"
 #import "BottomTabsAfterInitialTabAttacher.h"
 
+typedef NS_ENUM(NSInteger, BottomTabsAttachMode) {
+    BottomTabsAttachModeTogether = 0,
+    BottomTabsAttachModeAfterInitialTab,
+    BottomTabsAttachModeOnSwitchToTab
+};
+
 @implementation BottomTabsAttachModeFactory
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
@@ -12,24 +18,24 @@
 }
 
 - (BottomTabsBaseAttacher *)fromOptions:(RNNNavigationOptions *)options {
-	BottomTabsAttachMode attachMode = [RCTConvert BottomTabsAttachMode:[[options withDefault:_defaultOptions].bottomTabs.tabsAttachMode getWithDefaultValue:@"together"]];
+	BottomTabsAttachMode attachMode = [self.class BottomTabsAttachMode:[[options withDefault:_defaultOptions].bottomTabs.tabsAttachMode getWithDefaultValue:@"together"]];
 	switch (attachMode) {
-        case BottomTabsAttachModeTogether: {
-            return [BottomTabsTogetherAttacher new];
-        }
-            break;
         case BottomTabsAttachModeAfterInitialTab: {
             return [BottomTabsAfterInitialTabAttacher new];
         }
-            break;
         case BottomTabsAttachModeOnSwitchToTab: {
             return [BottomTabsOnSwitchToTabAttacher new];
         }
-        break;
         default:
             return [BottomTabsTogetherAttacher new];
             break;
     }
 }
+
+RCT_ENUM_CONVERTER(BottomTabsAttachMode,
+(@{@"together": @(BottomTabsAttachModeTogether),
+   @"afterInitialTab": @(BottomTabsAttachModeAfterInitialTab),
+   @"onSwitchToTab": @(BottomTabsAttachModeOnSwitchToTab)
+   }), BottomTabsAttachModeTogether, integerValue)
 
 @end

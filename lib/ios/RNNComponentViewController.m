@@ -46,18 +46,11 @@
 }
 
 - (void)loadView {
-	[self renderReactViewIfNeeded];
+	[self render];
 }
 
 - (void)render {
-    if (!self.waitForRender)
-        [self readyForPresentation];
-    else
-        [self renderReactViewIfNeeded];
-}
-
-- (void)renderReactViewIfNeeded {
-    if (!self.isViewLoaded) {
+   if (!self.isViewLoaded) {
         self.view = [self.creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId reactViewReadyBlock:^{
             [self->_presenter renderComponents:self.resolveOptions perform:^{
                 [self readyForPresentation];

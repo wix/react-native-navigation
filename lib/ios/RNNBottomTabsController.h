@@ -2,7 +2,6 @@
 #import "RNNEventEmitter.h"
 #import "RNNBottomTabsPresenter.h"
 #import "UIViewController+LayoutProtocol.h"
-#import "RCTConvert+RNNOptions.h"
 #import "BottomTabsBaseAttacher.h"
 
 @interface RNNBottomTabsController : UITabBarController <RNNLayoutProtocol, UITabBarControllerDelegate>
