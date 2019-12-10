@@ -1,12 +1,12 @@
-const _ = require('lodash');
+const includes = require('lodash/includes');
 const exec = require('shell-utils').exec;
 
-const android = _.includes(process.argv, '--android');
-const release = _.includes(process.argv, '--release');
-const skipBuild = _.includes(process.argv, '--skipBuild');
-const headless = _.includes(process.argv, '--headless');
-const multi = _.includes(process.argv, '--multi');
-const verbose = _.includes(process.argv, '--verbose');
+const android = includes(process.argv, '--android');
+const release = includes(process.argv, '--release');
+const skipBuild = includes(process.argv, '--skipBuild');
+const headless = includes(process.argv, '--headless');
+const multi = includes(process.argv, '--multi');
+const verbose = includes(process.argv, '--verbose');
 
 run();
 

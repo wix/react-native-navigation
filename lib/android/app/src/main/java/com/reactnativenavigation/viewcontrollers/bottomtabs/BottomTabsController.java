@@ -109,11 +109,10 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), child);
-        performOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(
-                        this.options.copy()
-                                .clearBottomTabsOptions()
-                                .clearBottomTabOptions(),
+        performOnParentController(parent -> parent.applyChildOptions(
+                this.options.copy()
+                        .clearBottomTabsOptions()
+                        .clearBottomTabOptions(),
                         child
                 )
         );
@@ -124,9 +123,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         super.mergeChildOptions(options, child);
         presenter.mergeChildOptions(options, child);
         tabPresenter.mergeChildOptions(options, child);
-        performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), child)
-        );
+        performOnParentController(parent -> parent.mergeChildOptions(options.copy().clearBottomTabsOptions(), child));
     }
 
     @Override
@@ -165,7 +162,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         });
 	}
 
-    public int getSelectedIndex() {
+    int getSelectedIndex() {
 		return bottomTabs.getCurrentItem();
 	}
 
