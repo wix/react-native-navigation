@@ -101,8 +101,8 @@ public class StackController extends ParentController<StackLayout> {
         if (child.getView() instanceof ReactComponent) {
             fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child.getView(), getView());
         }
-        performOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(
+        performOnParentController(parent ->
+                parent.applyChildOptions(
                         this.options.copy()
                                 .clearTopBarOptions()
                                 .clearAnimationOptions()
@@ -123,8 +123,8 @@ public class StackController extends ParentController<StackLayout> {
                 fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
             }
         }
-        performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(
+        performOnParentController(parent ->
+                parent.mergeChildOptions(
                         options.copy()
                                 .clearTopBarOptions()
                                 .clearAnimationOptions()
@@ -221,13 +221,17 @@ public class StackController extends ParentController<StackLayout> {
         if (toRemove != null && resolvedOptions.animations.setStackRoot.enabled.isTrueOrUndefined()) {
             if (resolvedOptions.animations.setStackRoot.waitForRender.isTrue()) {
                 child.getView().setAlpha(0);
-                child.addOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.setStackRoot, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
-                    listenerAdapter.onSuccess(child.getId());
-                }));
+                child.addOnAppearedListener(() -> animator.push(
+                        child.getView(),
+                        resolvedOptions.animations.setStackRoot,
+                        resolvedOptions.transitions,
+                        toRemove.getElements(),
+                        child.getElements(),
+                        () -> listenerAdapter.onSuccess(child.getId())
+                    )
+                );
             } else {
-                animator.push(child.getView(), resolvedOptions.animations.setStackRoot, () -> {
-                    listenerAdapter.onSuccess(child.getId());
-                });
+                animator.push(child.getView(), resolvedOptions.animations.setStackRoot, () -> listenerAdapter.onSuccess(child.getId()));
             }
         } else {
             listenerAdapter.onSuccess(child.getId());
