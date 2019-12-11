@@ -8,6 +8,7 @@
 #import "ImageParser.h"
 #import "IntNumberParser.h"
 #import "DoubleParser.h"
+#import "EnumParser.h"
 
 @interface RNNOptions : NSObject
 
