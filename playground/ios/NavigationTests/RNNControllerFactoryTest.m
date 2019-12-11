@@ -8,6 +8,7 @@
 #import "RNNBottomTabsController.h"
 #import "RNNTopTabsViewController.h"
 #import "RNNSplitViewController.h"
+#import "RNNExternalViewController.h"
 
 @interface RNNControllerFactoryTest : XCTestCase
 
@@ -23,7 +24,7 @@
 	[super setUp];
 	self.creator = nil;
 	self.store = [RNNExternalComponentStore new];
-	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator eventEmitter:nil store:self.store componentRegistry:nil andBridge:nil];
+	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator eventEmitter:nil store:self.store componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
 }
 
 - (void)tearDown {
@@ -53,7 +54,8 @@
 							  @"data": @{@"name": @"externalComponent"},
 							  @"children": @[]};
 	id ans = [self.factory createLayout:layout];
-	XCTAssertTrue([ans isMemberOfClass:[RNNComponentViewController class]]);
+	XCTAssertTrue([ans isKindOfClass:[RNNComponentViewController class]]);
+	XCTAssertTrue([ans isMemberOfClass:[RNNExternalViewController class]]);
 }
 
 - (void)testCreateLayout_ComponentStackLayout {

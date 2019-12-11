@@ -8,6 +8,8 @@
 #import <ReactNativeNavigation/RNNErrorHandler.h>
 #import <OCMock/OCMock.h>
 #import "RNNLayoutManager.h"
+#import "RNNBottomTabsController.h"
+#import "BottomTabsAttachModeFactory.h"
 
 @interface MockUIApplication : NSObject
 
@@ -63,16 +65,19 @@
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
 	self.modalManager = [OCMockObject partialMockForObject:[RNNModalManager new]];
-	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:nil componentRegistry:nil andBridge:nil]];
+	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:nil componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]]];
 	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:self.modalManager overlayManager:self.overlayManager mainWindow:_mainWindow];
-	self.vc1 = [RNNComponentViewController new];
-	self.vc2 = [RNNComponentViewController new];
-	self.vc3 = [RNNComponentViewController new];
+	self.vc1 = self.generateComponent;
+	self.vc2 = self.generateComponent;
+	self.vc3 = self.generateComponent;
 	_nvc = [[MockUINavigationController alloc] init];
 	[_nvc setViewControllers:@[self.vc1, self.vc2, self.vc3]];
 	OCMStub([self.sharedApplication keyWindow]).andReturn(self.mainWindow);
 }
 
+- (RNNComponentViewController *)generateComponent {
+	return [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil presenter:[RNNComponentPresenter new] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil];
+}
 
 - (void)testAssertReadyForEachMethodThrowsExceptoins {
 	NSArray* methods = [self getPublicMethodNamesForObject:self.uut];
@@ -182,7 +187,7 @@
 
 - (void)testShowOverlay_withCreatedLayout {
 	[self.uut setReadyToReceiveCommands:true];
-	UIViewController* layoutVC = [RNNComponentViewController new];
+	UIViewController* layoutVC = self.generateComponent;
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(layoutVC);
 	
 	[[self.overlayManager expect] showOverlayWindow:[OCMArg any]];
@@ -264,9 +269,10 @@
 	[self.uut setReadyToReceiveCommands:true];
 	id classMock = OCMClassMock([RNNLayoutManager class]);
 	OCMStub(ClassMethod([classMock findComponentForId:@"vc1"])).andReturn(_nvc);
+	self.vc2.options.animations.setStackRoot.enable = [[Bool alloc] initWithBOOL:NO];
 	
 	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
-		
+
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
 	}];
@@ -281,8 +287,10 @@
 	OCMStub(ClassMethod([classMock findComponentForId:@"vc1"])).andReturn(_nvc);
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
 	[self.uut setReadyToReceiveCommands:true];
+	
+	_vc3.options.animations.setStackRoot.enable = [[Bool alloc] initWithBOOL:NO];
 	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
-		
+	
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
 	}];
@@ -302,8 +310,8 @@
 		
 	}];
 	
-	[[vc1Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
-	[[vc2Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
+	[[vc1Mock expect] render];
+	[[vc2Mock expect] render];
 }
 
 - (void)testSetStackRoot_waitForRender {
@@ -322,8 +330,8 @@
 		
 	}];
 	
-	[[vc1Mock expect] renderTreeAndWait:NO perform:[OCMArg any]];
-	[[vc2Mock expect] renderTreeAndWait:YES perform:[OCMArg any]];
+	[[vc1Mock expect] render];
+	[[vc2Mock expect] render];
 }
 
 - (void)testSetRoot_waitForRenderTrue {
@@ -334,7 +342,7 @@
 	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
-	[[mockedVC expect] renderTreeAndWait:YES perform:[OCMArg any]];
+	[[mockedVC expect] render];
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
 	[mockedVC verify];
 }
@@ -347,9 +355,62 @@
 	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
-	[[mockedVC expect] renderTreeAndWait:NO perform:[OCMArg any]];
+	[[mockedVC expect] render];
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
 	[mockedVC verify];
+}
+
+- (void)testSetRoot_withBottomTabsAttachModeTogether {
+	[self.uut setReadyToReceiveCommands:true];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.bottomTabs.tabsAttachMode = [[BottomTabsAttachMode alloc] initWithValue:@"together"];
+	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+
+	BottomTabsBaseAttacher* attacher = [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2] bottomTabsAttacher:attacher];
+
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+	
+	[self.uut setRoot:@{} commandId:@"" completion:^{}];
+	XCTAssertTrue(_vc1.isViewLoaded);
+	XCTAssertTrue(_vc2.isViewLoaded);
+}
+
+- (void)testSetRoot_withBottomTabsAttachModeOnSwitchToTab {
+	[self.uut setReadyToReceiveCommands:true];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.bottomTabs.tabsAttachMode = [[BottomTabsAttachMode alloc] initWithValue:@"onSwitchToTab"];
+	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+	
+	BottomTabsBaseAttacher* attacher = [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2] bottomTabsAttacher:attacher];
+
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+	
+	[self.uut setRoot:@{} commandId:@"" completion:^{}];
+	XCTAssertTrue(_vc1.isViewLoaded);
+	XCTAssertFalse(_vc2.isViewLoaded);
+	[tabBarController setSelectedIndex:1];
+	XCTAssertTrue(_vc2.isViewLoaded);
+}
+
+- (void)testSetRoot_withBottomTabsAttachModeAfterInitialTab {
+	[self.uut setReadyToReceiveCommands:true];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.bottomTabs.tabsAttachMode = [[BottomTabsAttachMode alloc] initWithValue:@"afterInitialTab"];
+	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+
+	BottomTabsBaseAttacher* attacher = [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2] bottomTabsAttacher:attacher];
+
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+
+	[self.uut setRoot:@{} commandId:@"" completion:^{
+		XCTAssertFalse(self->_vc2.isViewLoaded);
+	}];
+
+	XCTAssertTrue(_vc1.isViewLoaded);
+	XCTAssertTrue(_vc2.isViewLoaded);
 }
 
 - (void)testShowModal_shouldShowAnimated {
