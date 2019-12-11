@@ -10,6 +10,46 @@
     return self;
 }
 
+- (void)applyOptions:(RNNTopBarOptions *)options {
+    [self setTranslucent:[options.background.translucent getWithDefaultValue:NO]];
+    [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
+    [self setTitleAttributes:options.title];
+    [self setLargeTitleAttributes:options.largeTitle];
+    [self showBorder:![options.noBorder getWithDefaultValue:NO]];
+    [self setBackButtonIcon:[options.backButton.icon getWithDefaultValue:nil] withColor:[options.backButton.color getWithDefaultValue:nil] title:[options.backButton.title getWithDefaultValue:nil] showTitle:[options.backButton.showTitle getWithDefaultValue:YES]];
+}
+
+- (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options {
+    [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
+    [self setTitleAttributes:options.title];
+    [self setLargeTitleAttributes:options.largeTitle];
+}
+
+- (void)mergeOptions:(RNNTopBarOptions *)options defaultOptions:(RNNTopBarOptions *)defaultOptions {
+    if (options.background.color.hasValue) {
+        [self setBackgroundColor:options.background.color.get];
+    }
+    
+    if (options.noBorder.hasValue) {
+        [self showBorder:![options.noBorder get]];
+    }
+    
+    if (options.background.translucent.hasValue) {
+        [self setTranslucent:[options.background.translucent get]];
+    }
+    
+    RNNLargeTitleOptions* largeTitleOptions = options.largeTitle;
+    if (largeTitleOptions.color.hasValue || largeTitleOptions.fontSize.hasValue || largeTitleOptions.fontFamily.hasValue) {
+        [self setLargeTitleAttributes:largeTitleOptions];
+    }
+
+    [self setTitleAttributes:options.title];
+    
+    if (options.backButton.hasValue) {
+        [self setBackButtonIcon:[defaultOptions.backButton.icon getWithDefaultValue:nil] withColor:[defaultOptions.backButton.color getWithDefaultValue:nil] title:[defaultOptions.backButton.title getWithDefaultValue:nil] showTitle:[defaultOptions.backButton.showTitle getWithDefaultValue:YES]];
+    }
+}
+
 - (UINavigationController *)navigationController {
     return (UINavigationController *)self.boundViewController;
 }

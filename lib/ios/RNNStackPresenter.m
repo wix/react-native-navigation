@@ -49,12 +49,7 @@
 	[stack setNavigationBarVisible:[withDefault.topBar.visible getWithDefaultValue:YES] animated:[withDefault.topBar.animate getWithDefaultValue:YES]];
 	[stack hideBarsOnScroll:[withDefault.topBar.hideOnScroll getWithDefaultValue:NO]];
     
-    [_topBarPresenter setTranslucent:[withDefault.topBar.background.translucent getWithDefaultValue:NO]];
-    [_topBarPresenter setBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
-    [_topBarPresenter setTitleAttributes:withDefault.topBar.title];
-    [_topBarPresenter setLargeTitleAttributes:withDefault.topBar.largeTitle];
-    [_topBarPresenter showBorder:![withDefault.topBar.noBorder getWithDefaultValue:NO]];
-    [_topBarPresenter setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES]];
+    [_topBarPresenter applyOptions:withDefault.topBar];
     
     [stack setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
     [stack setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
@@ -73,18 +68,12 @@
 	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 	RNNStackController* navigationController = self.stackController;
 	[navigationController setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
-    [_topBarPresenter setBackgroundColor:[withDefault.topBar.background.color getWithDefaultValue:nil]];
-    [_topBarPresenter setTitleAttributes:withDefault.topBar.title];
-    [_topBarPresenter setLargeTitleAttributes:withDefault.topBar.largeTitle];
+    [_topBarPresenter applyOptionsBeforePopping:options.topBar];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     [super mergeOptions:options resolvedOptions:resolvedOptions];
 	RNNStackController* stack = self.stackController;
-
-    if (options.topBar.background.color.hasValue) {
-        [_topBarPresenter setBackgroundColor:options.topBar.background.color.get];
-    }
     
 	if (options.popGesture.hasValue) {
 		[stack setInteractivePopGestureEnabled:options.popGesture.get];
@@ -106,16 +95,8 @@
 		[stack hideBarsOnScroll:[options.topBar.hideOnScroll get]];
 	}
 	
-	if (options.topBar.noBorder.hasValue) {
-        [_topBarPresenter showBorder:![options.topBar.noBorder get]];
-	}
-	
 	if (options.topBar.barStyle.hasValue) {
 		[stack setBarStyle:[RCTConvert UIBarStyle:options.topBar.barStyle.get]];
-	}
-	
-	if (options.topBar.background.translucent.hasValue) {
-        [_topBarPresenter setTranslucent:[options.topBar.background.translucent get]];
 	}
 	
 	if (options.topBar.background.clipToBounds.hasValue) {
@@ -134,14 +115,6 @@
 		[stack setBackButtonColor:options.topBar.backButton.color.get];
 	}
 
-	RNNLargeTitleOptions *largeTitleOptions = options.topBar.largeTitle;
-	if (largeTitleOptions.color.hasValue || largeTitleOptions.fontSize.hasValue || largeTitleOptions.fontFamily.hasValue) {
-        [_topBarPresenter setLargeTitleAttributes:largeTitleOptions];
-	}
-
-	RNNNavigationOptions * withDefault = (RNNNavigationOptions *) [[options mergeInOptions:resolvedOptions] withDefault:[self defaultOptions]];
-    [_topBarPresenter setTitleAttributes:options.topBar.title];
-	
 	if (options.topBar.component.name.hasValue) {
 		[self setCustomNavigationBarView:options perform:nil];
 	}
@@ -150,9 +123,8 @@
 		[self setCustomNavigationComponentBackground:options perform:nil];
 	}
     
-    if (options.topBar.backButton.hasValue) {
-        [_topBarPresenter setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES]];
-    }
+    RNNNavigationOptions * withDefault = (RNNNavigationOptions *) [[options mergeInOptions:resolvedOptions] withDefault:[self defaultOptions]];
+    [_topBarPresenter mergeOptions:options.topBar defaultOptions:withDefault.topBar];
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
