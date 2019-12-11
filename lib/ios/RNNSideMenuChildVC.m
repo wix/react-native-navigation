@@ -17,8 +17,8 @@
 	return self;
 }
 
-- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[self.getCurrentChild renderTreeAndWait:wait perform:readyBlock];
+- (void)render {
+	[self.getCurrentChild render];
 }
 
 - (void)setChild:(UIViewController<RNNLayoutProtocol> *)child {
