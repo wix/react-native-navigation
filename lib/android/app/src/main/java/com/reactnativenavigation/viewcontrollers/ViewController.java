@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
@@ -84,6 +85,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public void setWaitForRender(Bool waitForRender) {
         this.waitForRender = waitForRender;
+    }
+
+    public ScrollEventListener getScrollEventListener() {
+        return null;
     }
 
     public void addOnAppearedListener(Runnable onAppearedListener) {

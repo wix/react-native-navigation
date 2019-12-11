@@ -19,11 +19,15 @@ const {
 class Options extends Component {
   static options() {
     return {
+      fab: {
+        id: 'fab',
+        icon: require('../../img/navicon_add.png'),
+        backgroundColor: Colors.secondary
+      },
       topBar: {
-        visible: true,
         testID: TOP_BAR,
         title: {
-          text: 'Styling Options'
+          text: 'Buttons'
         },
         rightButtons: [
           {
