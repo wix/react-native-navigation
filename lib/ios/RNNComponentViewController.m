@@ -16,17 +16,6 @@
 	return self;
 }
 
-- (instancetype)initExternalComponentWithLayoutInfo:(RNNLayoutInfo *)layoutInfo eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNComponentPresenter *)presenter options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions {
-	self = [self initWithLayoutInfo:layoutInfo rootViewCreator:nil eventEmitter:eventEmitter presenter:presenter options:options defaultOptions:defaultOptions];
-	return self;
-}
-
-- (void)bindViewController:(UIViewController *)viewController {
-	[self addChildViewController:viewController];
-	[self.view addSubview:viewController.view];
-	[viewController didMoveToParentViewController:self];
-}
-
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
     _defaultOptions = defaultOptions;
 	[_presenter setDefaultOptions:defaultOptions];
@@ -36,12 +25,9 @@
 	[self.options overrideOptions:options];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
 	[_presenter applyOptions:self.resolveOptions];
-	[_presenter renderComponents:self.resolveOptions perform:nil];
-	
 	[self.parentViewController onChildWillAppear];
 }
 
@@ -59,30 +45,27 @@
 	[self.eventEmitter sendComponentDidDisappear:self.layoutInfo.componentId componentName:self.layoutInfo.name];
 }
 
-- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (self.isExternalViewController) {
-		if (readyBlock) {
-			readyBlock();
-		}
-		return;
-	}
-	
-	__block RNNReactViewReadyCompletionBlock readyBlockCopy = readyBlock;
-	UIView* reactView = [self.creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId availableSize:[UIScreen mainScreen].bounds.size reactViewReadyBlock:^{
-		[_presenter renderComponents:self.resolveOptions perform:^{
-			if (readyBlockCopy) {
-				readyBlockCopy();
-				readyBlockCopy = nil;
-			}
-		}];
-	}];
-	
-	self.view = reactView;
-	
-	if (!wait && readyBlock) {
-		readyBlockCopy();
-		readyBlockCopy = nil;
-	}
+- (void)loadView {
+	[self renderReactViewIfNeeded];
+}
+
+- (void)render {
+    if (!self.waitForRender)
+        [self readyForPresentation];
+    else
+        [self renderReactViewIfNeeded];
+}
+
+- (void)renderReactViewIfNeeded {
+    if (!self.isViewLoaded) {
+        self.view = [self.creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId reactViewReadyBlock:^{
+            [self->_presenter renderComponents:self.resolveOptions perform:^{
+                [self readyForPresentation];
+            }];
+        }];
+    } else {
+        [self readyForPresentation];
+    }
 }
 
 - (UIViewController *)getCurrentChild {
@@ -101,10 +84,6 @@
 
 -(BOOL)isCustomTransitioned {
 	return self.resolveOptions.customTransition.animations != nil;
-}
-
-- (BOOL)isExternalViewController {
-	return !self.creator;
 }
 
 - (BOOL)prefersStatusBarHidden {

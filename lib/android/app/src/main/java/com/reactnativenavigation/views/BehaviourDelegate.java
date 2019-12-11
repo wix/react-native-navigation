@@ -1,24 +1,26 @@
 package com.reactnativenavigation.views;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class BehaviourDelegate<V extends ViewGroup> extends CoordinatorLayout.Behavior<V> {
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+public class BehaviourDelegate extends CoordinatorLayout.Behavior<ViewGroup> {
 
     private BehaviourAdapter delegate;
 
-    public BehaviourDelegate(BehaviourAdapter<V> delegate) {
+    public BehaviourDelegate(BehaviourAdapter delegate) {
         this.delegate = delegate;
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, V child, View dependency) {
+    public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull ViewGroup child, @NonNull View dependency) {
         return delegate.onDependentViewChanged(parent, child, dependency);
     }
 
     @Override
-    public boolean onMeasureChild(CoordinatorLayout parent, V child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+    public boolean onMeasureChild(@NonNull CoordinatorLayout parent, @NonNull ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         return delegate.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
     }
 }

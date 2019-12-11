@@ -37,7 +37,7 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener,
         ViewGroup.OnHierarchyChangeListener,
-        BehaviourAdapter<T> {
+        BehaviourAdapter {
 
     private final List<Runnable> onAppearedListeners = new ArrayList();
     private boolean appearEventPosted;
@@ -146,7 +146,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (view != null) task.run(view);
     }
 
-    protected void performOnParentController(Func1<ParentController> task) {
+    public void performOnParentController(Func1<ParentController> task) {
         if (parentController != null) task.run(parentController);
     }
 
@@ -326,13 +326,13 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @Override
     @CallSuper
-    public boolean onMeasureChild(CoordinatorLayout parent, T child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+    public boolean onMeasureChild(CoordinatorLayout parent, ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         perform(findController(child), ViewController::applyTopInset);
         return false;
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, T child, View dependency) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, ViewGroup child, View dependency) {
         return false;
     }
 

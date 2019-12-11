@@ -1,11 +1,30 @@
 #import "RNNBottomTabsController.h"
+#import "UITabBarController+RNNUtils.h"
 
 @implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
+    BottomTabsBaseAttacher* _bottomTabsAttacher;
+}
+
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+                           creator:(id<RNNComponentViewCreator>)creator
+                           options:(RNNNavigationOptions *)options
+                    defaultOptions:(RNNNavigationOptions *)defaultOptions
+                         presenter:(RNNBasePresenter *)presenter
+                      eventEmitter:(RNNEventEmitter *)eventEmitter
+              childViewControllers:(NSArray *)childViewControllers
+                bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher {
+    self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
+    _bottomTabsAttacher = bottomTabsAttacher;
+    return self;
 }
 
 - (id<UITabBarControllerDelegate>)delegate {
 	return self;
+}
+
+- (void)render {
+    [_bottomTabsAttacher attach:self];
 }
 
 - (void)viewDidLayoutSubviews {
