@@ -54,19 +54,6 @@
     return (UINavigationController *)self.boundViewController;
 }
 
-- (void)updateBackgroundAppearance {
-    if (_transparent) {
-        [self setBackgroundColorTransparent];
-    } else if (_backgroundColor) {
-        self.navigationController.navigationBar.barTintColor = _backgroundColor;
-    } else if (_translucent) {
-        self.navigationController.navigationBar.translucent = YES;
-    } else {
-        self.navigationController.navigationBar.translucent = NO;
-        self.navigationController.navigationBar.barTintColor = nil;
-    }
-}
-
 - (void)showBorder:(BOOL)showBorder {
     [self.navigationController.navigationBar setShadowImage:showBorder ? nil : [UIImage new]];
 }
@@ -79,6 +66,19 @@
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
     _backgroundColor = backgroundColor;
     [self updateBackgroundAppearance];
+}
+
+- (void)updateBackgroundAppearance {
+    if (_transparent) {
+        [self setBackgroundColorTransparent];
+    } else if (_backgroundColor) {
+        self.navigationController.navigationBar.barTintColor = _backgroundColor;
+    } else if (_translucent) {
+        self.navigationController.navigationBar.translucent = YES;
+    } else {
+        self.navigationController.navigationBar.translucent = NO;
+        self.navigationController.navigationBar.barTintColor = nil;
+    }
 }
 
 - (void)setBackgroundColorTransparent {

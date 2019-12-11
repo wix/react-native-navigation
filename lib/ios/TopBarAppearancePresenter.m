@@ -19,18 +19,6 @@
     return self;
 }
 
-- (void)updateBackgroundAppearance {
-    if (self.transparent) {
-        [_appearance configureWithTransparentBackground];
-    } else if (_backgroundColor) {
-        [_appearance setBackgroundColor:_backgroundColor];
-    } else if (_translucent) {
-        [_appearance configureWithDefaultBackground];
-    } else {
-        [_appearance configureWithOpaqueBackground];
-    }
-}
-
 - (void)setTranslucent:(BOOL)translucent {
     _translucent = translucent;
     [self updateBackgroundAppearance];
@@ -43,6 +31,18 @@
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
     _backgroundColor = backgroundColor;
     [self updateBackgroundAppearance];
+}
+
+- (void)updateBackgroundAppearance {
+    if (self.transparent) {
+        [_appearance configureWithTransparentBackground];
+    } else if (_backgroundColor) {
+        [_appearance setBackgroundColor:_backgroundColor];
+    } else if (_translucent) {
+        [_appearance configureWithDefaultBackground];
+    } else {
+        [_appearance configureWithOpaqueBackground];
+    }
 }
 
 - (BOOL)transparent {
