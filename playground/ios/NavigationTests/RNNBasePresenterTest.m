@@ -20,7 +20,7 @@
     self.uut = [[RNNBasePresenter alloc] init];
     self.boundViewController = [RNNComponentViewController new];
     self.mockBoundViewController = [OCMockObject partialMockForObject:self.boundViewController];
-    [self.uut boundViewController:self.mockBoundViewController];
+	[self.uut bindViewController:self.mockBoundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
@@ -45,7 +45,7 @@
 }
 
 - (void)testApplyOptions_setTabBarItemBadgeShouldNotCalledOnUITabBarController {
-    [self.uut boundViewController:self.mockBoundViewController];
+    [self.uut bindViewController:self.mockBoundViewController];
     self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
     [[self.mockBoundViewController reject] setTabBarItemBadge:[[RNNBottomTabOptions alloc] initWithDict:@{@"badge": @"badge"}]];
     [self.uut applyOptions:self.options];
@@ -53,7 +53,7 @@
 }
 
 - (void)testApplyOptions_setTabBarItemBadgeShouldWhenNoValue {
-    [self.uut boundViewController:self.mockBoundViewController];
+    [self.uut bindViewController:self.mockBoundViewController];
     self.options.bottomTab.badge = nil;
     [[self.mockBoundViewController reject] setTabBarItemBadge:[OCMArg any]];
     [self.uut applyOptions:self.options];

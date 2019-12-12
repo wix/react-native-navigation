@@ -18,7 +18,7 @@
     [super setUp];
     self.uut = [OCMockObject partialMockForObject:[RNNBottomTabsPresenter new]];
     self.boundViewController = [OCMockObject partialMockForObject:[RNNBottomTabsController new]];
-    [self.uut boundViewController:self.boundViewController];
+    [self.uut bindViewController:self.boundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 

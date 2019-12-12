@@ -22,7 +22,7 @@
 		[self performSelector:@selector(setViewControllers:) withObject:childViewControllers];
 	}
 	self.presenter = presenter;
-    [self.presenter boundViewController:self];
+    [self.presenter bindViewController:self];
 	[self.presenter applyOptionsOnInit:self.resolveOptions];
 
 	return self;

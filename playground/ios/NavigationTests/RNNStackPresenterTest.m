@@ -20,7 +20,7 @@
 	self.uut = [[RNNStackPresenter alloc] init];
 	RNNStackController* stackController = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:self.uut eventEmitter:nil childViewControllers:@[[UIViewController new], [UIViewController new]]];
 	self.boundViewController = [OCMockObject partialMockForObject:stackController];
-    [self.uut boundViewController:self.boundViewController];
+    [self.uut bindViewController:self.boundViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
@@ -48,13 +48,13 @@
 	_options.topBar.largeTitle.visible = [[Bool alloc] initWithBOOL:YES];
 	
 	[self.uut applyOptionsBeforePopping:self.options];
-	XCTAssertTrue([[self.uut.boundViewController navigationBar] prefersLargeTitles]);
+	XCTAssertTrue([[_boundViewController navigationBar] prefersLargeTitles]);
 }
 
 - (void)testApplyOptionsBeforePoppingShouldSetDefaultLargeTitleFalseForPoppingViewController {
 	_options.topBar.largeTitle.visible = nil;
 	[self.uut applyOptionsBeforePopping:self.options];
-	XCTAssertFalse([[self.uut.boundViewController navigationBar] prefersLargeTitles]);
+	XCTAssertFalse([[_boundViewController navigationBar] prefersLargeTitles]);
 }
 
 - (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withTitle {

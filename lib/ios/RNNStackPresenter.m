@@ -23,8 +23,8 @@
 	return self;
 }
 
-- (void)boundViewController:(UIViewController *)boundViewController {
-    [super boundViewController:boundViewController];
+- (void)bindViewController:(UIViewController *)boundViewController {
+    [super bindViewController:boundViewController];
     _topBarPresenter = [TopBarPresenterCreator createWithBoundedNavigationController:self.stackController];
 }
 
