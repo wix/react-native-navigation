@@ -18,7 +18,8 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.Fab;
+import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -35,6 +36,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.updateBottomMargin;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class StackController extends ParentController<StackLayout> {
@@ -98,9 +100,7 @@ public class StackController extends ParentController<StackLayout> {
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
-        if (child.getView() instanceof ReactComponent) {
-            fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child.getView(), getView());
-        }
+        fabOptionsPresenter.applyOptions(this.options.fabOptions, child, getView());
         performOnParentController(parent ->
                 parent.applyChildOptions(
                         this.options.copy()
@@ -119,8 +119,8 @@ public class StackController extends ParentController<StackLayout> {
         super.mergeChildOptions(options, child);
         if (child.isViewShown() && peek() == child) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), this, child);
-            if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
-                fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
+            if (options.fabOptions.hasValue()) {
+                fabOptionsPresenter.mergeOptions(options.fabOptions, child, getView());
             }
         }
         performOnParentController(parent ->
@@ -395,7 +395,10 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, ViewGroup child, View dependency) {
-        perform(findController(child), controller -> presenter.applyTopInsets(this, controller));
+        perform(findController(child), controller -> {
+            if (dependency instanceof TopBar) presenter.applyTopInsets(this, controller);
+            if (dependency instanceof Fab || dependency instanceof FabMenu) updateBottomMargin(dependency, getBottomInset());
+        });
         return false;
     }
 

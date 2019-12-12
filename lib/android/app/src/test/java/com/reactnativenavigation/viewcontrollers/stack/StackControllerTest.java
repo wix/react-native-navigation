@@ -1080,7 +1080,7 @@ public class StackControllerTest extends BaseTest {
     public void onDependentViewChanged_delegatesToPresenter() {
         CoordinatorLayout parent = Mockito.mock(CoordinatorLayout.class);
         uut.push(child1, new CommandListenerAdapter());
-        assertThat(uut.onDependentViewChanged(parent, child1.getView(), Mockito.mock(View.class))).isFalse();
+        assertThat(uut.onDependentViewChanged(parent, child1.getView(), Mockito.mock(TopBar.class))).isFalse();
         verify(presenter).applyTopInsets(eq(uut), eq(child1));
     }
 
