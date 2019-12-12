@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.BehaviourDelegate;
+import com.reactnativenavigation.views.Fab;
+import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,8 @@ public class StackBehaviour<V extends ViewGroup> extends BehaviourDelegate {
 
     @Override
     public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull ViewGroup child, @NonNull View dependency) {
-        return dependency instanceof TopBar;
+        return dependency instanceof TopBar ||
+               dependency instanceof Fab ||
+               dependency instanceof FabMenu;
     }
 }

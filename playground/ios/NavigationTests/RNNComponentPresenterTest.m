@@ -23,7 +23,7 @@
 	self.componentRegistry = [OCMockObject partialMockForObject:[RNNReactComponentRegistry new]];
 	self.uut = [[RNNComponentPresenter alloc] initWithComponentRegistry:self.componentRegistry:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	self.boundViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
-	[self.uut boundViewController:self.boundViewController];
+	[self.uut bindViewController:self.boundViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
@@ -74,7 +74,7 @@
 
 - (void)testBindViewControllerShouldCreateNavigationButtonsCreator {
 	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] init];
-	[presenter boundViewController:self.boundViewController];
+	[presenter bindViewController:self.boundViewController];
 	XCTAssertNotNil(presenter.navigationButtons);
 }
 
@@ -139,7 +139,7 @@
 - (void)testReactViewShouldBeReleasedOnDealloc {
 	RNNComponentViewController* bindViewController = [RNNComponentViewController new];
 	bindViewController.layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
-	[self.uut boundViewController:bindViewController];
+	[self.uut bindViewController:bindViewController];
 	
 	self.options.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"componentName"}];
 	
@@ -154,7 +154,7 @@
 	layoutInfo.componentId = @"componentId";
 	bindViewController.layoutInfo = layoutInfo;
 
-	[self.uut boundViewController:bindViewController];
+	[self.uut bindViewController:bindViewController];
 	XCTAssertEqual(self.uut.boundComponentId, @"componentId");
 }
 
@@ -163,7 +163,7 @@
 	RNNLayoutInfo* layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
 	boundViewController.layoutInfo = layoutInfo;
 	boundViewController.defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	[self.uut boundViewController:boundViewController];
+	[self.uut bindViewController:boundViewController];
 	
 	self.options.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"titleComponent", @"componentId": @"id"}];
 	
@@ -182,7 +182,7 @@
 	RNNComponentViewController* boundViewController = [RNNComponentViewController new];
 	boundViewController.layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
 	self.uut.defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	[self.uut boundViewController:boundViewController];
+	[self.uut bindViewController:boundViewController];
 	
 	self.uut.defaultOptions.topBar.title.component = [[RNNComponentOptions alloc] initWithDict:@{@"name": @"titleComponent", @"componentId": @"id"}];
 	

@@ -16,7 +16,7 @@
 	self = [super initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
 	
 	self.presenter = presenter;
-    [self.presenter boundViewController:self];
+    [self.presenter bindViewController:self];
 	
 	self.defaultOptions = defaultOptions;
 	self.options = options;

@@ -21,8 +21,8 @@
 	return self;
 }
 
-- (void)boundViewController:(UIViewController *)boundViewController {
-	[super boundViewController:boundViewController];
+- (void)bindViewController:(id)boundViewController {
+	[super bindViewController:boundViewController];
 	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.boundViewController componentRegistry:_componentRegistry];
 }
 

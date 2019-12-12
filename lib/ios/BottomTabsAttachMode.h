@@ -1,4 +1,4 @@
-#import "Text.h"
+#import "Enum.h"
 
 typedef NS_ENUM(NSInteger, AttachMode) {
     BottomTabsAttachModeTogether = 0,
@@ -6,7 +6,7 @@ typedef NS_ENUM(NSInteger, AttachMode) {
     BottomTabsAttachModeOnSwitchToTab
 };
 
-@interface BottomTabsAttachMode : Text
+@interface BottomTabsAttachMode : Enum
 
 - (AttachMode)get;
 

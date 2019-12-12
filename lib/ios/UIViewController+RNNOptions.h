@@ -34,8 +34,6 @@
 
 - (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside;
 
-- (void)applyBackButton:(RNNBackButtonOptions *)backButton;
-
 - (BOOL)isModal;
 
 @end

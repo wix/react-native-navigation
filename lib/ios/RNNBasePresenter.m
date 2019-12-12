@@ -19,7 +19,7 @@
     return self;
 }
 
-- (void)boundViewController:(UIViewController *)boundViewController {
+- (void)bindViewController:(UIViewController *)boundViewController {
     self.boundComponentId = boundViewController.layoutInfo.componentId;
     _boundViewController = boundViewController;
 }

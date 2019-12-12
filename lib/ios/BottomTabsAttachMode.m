@@ -3,12 +3,8 @@
 
 @implementation BottomTabsAttachMode
 
-- (AttachMode)get {
-    return [self.class AttachMode:[super get]];
-}
-
-- (AttachMode)getWithDefaultValue:(id)defaultValue {
-    return [self.class AttachMode:[super getWithDefaultValue:defaultValue]];
+- (AttachMode)convertString:(NSString *)string {
+    return [self.class AttachMode:string];
 }
 
 RCT_ENUM_CONVERTER(AttachMode,

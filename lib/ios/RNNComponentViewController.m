@@ -50,8 +50,8 @@
 - (void)render {
     if (!self.waitForRender)
         [self readyForPresentation];
-    else
-        [self renderReactViewIfNeeded];
+
+    [self renderReactViewIfNeeded];
 }
 
 - (void)renderReactViewIfNeeded {

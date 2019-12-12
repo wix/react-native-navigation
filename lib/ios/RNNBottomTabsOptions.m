@@ -20,7 +20,7 @@
 	self.barStyle = [TextParser parse:dict key:@"barStyle"];
 	self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
 	self.titleDisplayMode = [TextParser parse:dict key:@"titleDisplayMode"];
-    self.tabsAttachMode = [TextParser parse:dict key:@"tabsAttachMode"];
+    self.tabsAttachMode = (BottomTabsAttachMode *)[EnumParser parse:dict key:@"tabsAttachMode" ofClass:BottomTabsAttachMode.class];
 	
 	return self;
 }

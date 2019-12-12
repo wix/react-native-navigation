@@ -3,12 +3,13 @@
 #import "RNNStackPresenter.h"
 #import "UINavigationController+RNNOptions.h"
 #import "RNNStackController.h"
+#import "UIImage+Utils.h"
 
 @interface RNNStackPresenterTest : XCTestCase
 
 @property (nonatomic, strong) RNNStackPresenter *uut;
 @property (nonatomic, strong) RNNNavigationOptions *options;
-@property (nonatomic, strong) id boundViewController;
+@property (nonatomic, strong) RNNStackController* boundViewController;
 
 @end
 
@@ -17,75 +18,92 @@
 - (void)setUp {
 	[super setUp];
 	self.uut = [[RNNStackPresenter alloc] init];
-	self.boundViewController = [OCMockObject partialMockForObject:[RNNStackController new]];
-    [self.uut boundViewController:self.boundViewController];
+	RNNStackController* stackController = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:self.uut eventEmitter:nil childViewControllers:@[[UIViewController new], [UIViewController new]]];
+	self.boundViewController = [OCMockObject partialMockForObject:stackController];
+    [self.uut bindViewController:self.boundViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
 - (void)testApplyOptions_shouldSetBackButtonColor_withDefaultValues {
-	[[_boundViewController expect] setBackButtonColor:nil];
+	[[(id)_boundViewController expect] setBackButtonColor:nil];
 	[self.uut applyOptions:self.options];
-	[_boundViewController verify];
+	[(id)_boundViewController verify];
 }
 
 - (void)testApplyOptions_shouldSetBackButtonColor_withColor {
 	self.options.topBar.backButton.color = [[Color alloc] initWithValue:[UIColor redColor]];
-	[[_boundViewController expect] setBackButtonColor:[UIColor redColor]];
+	[[(id)_boundViewController expect] setBackButtonColor:[UIColor redColor]];
 	[self.uut applyOptions:self.options];
-	[_boundViewController verify];
+	[(id)_boundViewController verify];
 }
 
 - (void)testApplyOptionsBeforePoppingShouldSetTopBarBackgroundForPoppingViewController {
 	_options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
 	
-	[[_boundViewController expect] setTopBarBackgroundColor:_options.topBar.background.color.get];
 	[self.uut applyOptionsBeforePopping:self.options];
-	[_boundViewController verify];
+	XCTAssertTrue([_boundViewController.navigationBar.standardAppearance.backgroundColor isEqual:[UIColor redColor]]);
 }
 
 - (void)testApplyOptionsBeforePoppingShouldSetLargeTitleForPoppingViewController {
 	_options.topBar.largeTitle.visible = [[Bool alloc] initWithBOOL:YES];
 	
 	[self.uut applyOptionsBeforePopping:self.options];
-	XCTAssertTrue([[self.uut.boundViewController navigationBar] prefersLargeTitles]);
+	XCTAssertTrue([[_boundViewController navigationBar] prefersLargeTitles]);
 }
 
 - (void)testApplyOptionsBeforePoppingShouldSetDefaultLargeTitleFalseForPoppingViewController {
 	_options.topBar.largeTitle.visible = nil;
-	
 	[self.uut applyOptionsBeforePopping:self.options];
-	XCTAssertFalse([[self.uut.boundViewController navigationBar] prefersLargeTitles]);
+	XCTAssertFalse([[_boundViewController navigationBar] prefersLargeTitles]);
 }
 
 - (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withTitle {
 	Text* title = [[Text alloc] initWithValue:@"Title"];
 	self.options.topBar.backButton.title = title;
-	[[_boundViewController expect] setBackButtonIcon:nil withColor:nil title:title.get showTitle:YES];
 	[self.uut applyOptions:self.options];
-	[_boundViewController verify];
+	XCTAssertTrue([self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem.title isEqual:@"Title"]);
 }
 
 - (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withHideTitle {
 	Text* title = [[Text alloc] initWithValue:@"Title"];
 	self.options.topBar.backButton.title = title;
 	self.options.topBar.backButton.showTitle = [[Bool alloc] initWithValue:@(0)];
-	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:title.get showTitle:self.options.topBar.backButton.showTitle.get];
 	[self.uut applyOptions:self.options];
-	[(id)self.boundViewController verify];
-}
-
-- (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withIcon {
-	Image* image = [[Image alloc] initWithValue:[UIImage new]];
-	self.options.topBar.backButton.icon = image;
-	[[(id) self.boundViewController expect] setBackButtonIcon:image.get withColor:nil title:nil showTitle:YES];
-	[self.uut applyOptions:self.options];
-	[(id)self.boundViewController verify];
+	XCTAssertNil(self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem.title);
 }
 
 - (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withDefaultValues {
-	[[(id) self.boundViewController expect] setBackButtonIcon:nil withColor:nil title:nil showTitle:YES];
 	[self.uut applyOptions:self.options];
-	[(id)self.boundViewController verify];
+	XCTAssertTrue(self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem.title == nil);
+}
+
+- (void)testSetBackButtonIcon_withColor_shouldSetColor {
+	Color* color = [[Color alloc] initWithValue:UIColor.redColor];
+	self.options.topBar.backButton.color = color;
+	[self.uut applyOptions:self.options];
+	XCTAssertEqual(self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem.tintColor, UIColor.redColor);
+}
+
+- (void)testSetBackButtonIcon_withColor_shouldSetTitle {
+	Color* color = [[Color alloc] initWithValue:UIColor.redColor];
+	Text* title = [[Text alloc] initWithValue:@"Title"];
+	self.options.topBar.backButton.color = color;
+	self.options.topBar.backButton.title = title;
+	[self.uut applyOptions:self.options];
+	XCTAssertEqual(self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem.tintColor, UIColor.redColor);
+	XCTAssertEqual(self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem.title, @"Title");
+}
+
+- (void)testSetBackButtonIcon_withColor_shouldSetIcon {
+	Color* color = [[Color alloc] initWithValue:UIColor.redColor];
+	UIImage *image = [UIImage emptyImage];
+	
+	Image* icon = [[Image alloc] initWithValue:image];
+	self.options.topBar.backButton.color = color;
+	self.options.topBar.backButton.icon = icon;
+	[self.uut applyOptions:self.options];
+	XCTAssertEqual(self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem.tintColor, UIColor.redColor);
+	XCTAssertTrue([self.boundViewController.navigationBar.standardAppearance.backIndicatorImage isEqual:image]);
 }
 
 @end

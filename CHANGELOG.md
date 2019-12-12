@@ -1,4 +1,51 @@
 # Changelog
+# 4.0.5
+## Fixed
+* Fix conflict with React Native's getConstants [#5e6d6fc](https://github.com/wix/react-native-navigation/commit/5e6d6fce132fc37722867c3e43a0036f4fe085b8) by [guyca](https://github.com/guyca)
+* Use lodash submodules instead of lodash to reduce bundle size [#e53a9fe](https://github.com/wix/react-native-navigation/commit/e53a9feb20e5851d29f0913fc6c2704dbe00af2e) by (pontusab)[https://github.com/pontusab]
+* Replace lodash chain with flow to reduce bundle size [#bf354d7](https://github.com/wix/react-native-navigation/commit/bf354d7c77c889c7e2dc0be0fc29b6a54011ce9b) by [jinshin1013](https://github.com/jinshin1013)
+### iOS
+* Send ModalDismissed event [#4cb0e98](https://github.com/wix/react-native-navigation/commit/4cb0e98a6756317f8f61f5ee2b3d7530cd180f61) by [yogevbd](https://github.com/yogevbd)
+* Fix incorrect `constants.topBaeHeight` value when pageSheet modal is displayed [#9ef61a9](https://github.com/wix/react-native-navigation/commit/9ef61a9a1357312208463ef149a7951931043d1e) by [yogevbd](https://github.com/yogevbd)
+* Add BottomTabs.attachMode support [#60c4dfc](https://github.com/wix/react-native-navigation/commit/60c4dfcd72245de02836bd4858f311822cdf866d) by [yogevbd](https://github.com/yogevbd)
+
+### Android
+* Merge child options with SideMenu parent [#afbaa9a](https://github.com/wix/react-native-navigation/commit/afbaa9a4f53e05e6b00e1b8044a4a8a484ac3ea0) by [guyca](https://github.com/guyca)
+* Temporary fix to FAB position on screen [#4714983](https://github.com/wix/react-native-navigation/commit/47149835dcf707806bb211230e63a61d8cf9a1d5) by [guyca](https://github.com/guyca)
+
+# 4.0.4
+## Fixed
+### iOS
+* Fix large title issues [#65118b1](https://github.com/wix/react-native-navigation/commit/65118b1ed28dd5a4636dabd5952c515d18a0b802) by [yogevbd](https://github.com/yogevbd)
+
+# 4.0.3
+## Added
+### iOS
+* Introduce `modal.swipeToDismiss` option [#659a42c](https://github.com/wix/react-native-navigation/commit/
+
+## Fixed
+### iOS
+* Fix setting TopBar component in default options [#4a1b8b4](https://github.com/wix/react-native-navigation/commit/4a1b8b4a64546050f515f8dd00539f14e18e5f70) by [yogevbd](https://github.com/yogevbd)
+* Fix blinking react view button [#d502c69](https://github.com/wix/react-native-navigation/commit/d502c694438903ffb612fec16a0b72444b3bc3ed) by [yogevbd](https://github.com/yogevbd)
+* Let the system control modal presentation style [#659a42c](https://github.com/wix/react-native-navigation/commit/659a42cde14a3fb7653ebc40c906ec042761cd7c) by [yogevbd](https://github.com/yogevbd)
+* Fix black TopBar on iOS < 13 [#7cf2083](https://github.com/wix/react-native-navigation/commit/7cf208353f22a4f07760f166ba0afd5af24f2e91) by [yogevbd](https://github.com/yogevbd)
+
+# 4.0.2
+## Fixed
+### iOS
+* Fix glitchy pop animation [#0c6e2f0](https://github.com/wix/react-native-navigation/commit/0c6e2f00b1ee8122499df08f060d5f016868355e) by [yogevbd](https://github.com/yogevbd)
+
+# 4.0.1
+## Fixed
+### iOS
+* Fix double back button [#ed7c579](https://github.com/wix/react-native-navigation/commit/ed7c5795e1e7770c1eeb692b1fa300f3163d7503) by [yogevbd](https://github.com/yogevbd)
+* Fix transparent TopBar on iOS 13 [#b560265](https://github.com/wix/react-native-navigation/commit/b56026553dfcc5bf9ffe91e848fd3b7723561656) by [yogevbd](https://github.com/yogevbd)
+* Fix TopBar.noBorder on iOS 13 [#919fa12](https://github.com/wix/react-native-navigation/commit/919fa12780e1ace13d2b8ce7680795fd26b68f76), [#5b7ddec](https://github.com/wix/react-native-navigation/commit/5b7ddec1dad927e71dc31115111dec5d7e165449) by [yogevbd](https://github.com/yogevbd)
+* Fix crash when calling Navigation.constants() when BottomTabs don't exist [#2cd4752](https://github.com/wix/react-native-navigation/commit/2cd4752fa0a43a7c704846b3e3c8833a4c9eff36) by [yogevbd](https://github.com/yogevbd)
+
+### Android
+* Create react host after SoLoader.init [#ab2fa63](https://github.com/wix/react-native-navigation/commit/ab2fa632c23fcfbfbb1fbb04e91f7394289e95cb) by [guyca](https://github.com/guyca)
+
 # 4.0.0
 ## Added
 ### iOS

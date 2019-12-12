@@ -11,6 +11,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C86B8239FE9C400E0B631 /* UIImage+Utils.m */; };
 		50451D35204451A900695F00 /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50451D34204451A800695F00 /* RNNCustomViewController.m */; };
 		9D204F3DC4FBCD81583BF99F /* Pods_playground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3340545EAAF11C1F146864 /* Pods_playground.framework */; };
 		E5046080227748EA00212BD8 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E504607F227748EA00212BD8 /* JavaScriptCore.framework */; };
@@ -30,7 +31,6 @@
 		E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.m */; };
 		E58D26542385888C003F36BA /* RNNSideMenuControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26372385888B003F36BA /* RNNSideMenuControllerTest.m */; };
 		E58D26552385888C003F36BA /* RNNTransitionStateHolderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.m */; };
-		E58D26562385888C003F36BA /* UINavigationController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26392385888B003F36BA /* UINavigationController+RNNOptionsTest.m */; };
 		E58D26572385888C003F36BA /* RNNTabBarPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263A2385888C003F36BA /* RNNTabBarPresenterTest.m */; };
 		E58D26582385888C003F36BA /* UITabBarController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.m */; };
 		E58D26592385888C003F36BA /* RNNNavigationStackManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */; };
@@ -66,6 +66,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4259AF43A23D928FE78B4A3A /* Pods-NavigationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationTests.debug.xcconfig"; path = "Target Support Files/Pods-NavigationTests/Pods-NavigationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4A3340545EAAF11C1F146864 /* Pods_playground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_playground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		501C86B7239FE9C400E0B631 /* UIImage+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
+		501C86B8239FE9C400E0B631 /* UIImage+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
 		50364D69238E7ECC000E62A2 /* Pods_playground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_playground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactNativeNavigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50451D33204451A800695F00 /* RNNCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNNCustomViewController.h; path = ../../../lib/ios/RNNCustomViewController.h; sourceTree = "<group>"; };
@@ -96,7 +98,6 @@
 		E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuPresenterTest.m; sourceTree = "<group>"; };
 		E58D26372385888B003F36BA /* RNNSideMenuControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuControllerTest.m; sourceTree = "<group>"; };
 		E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTransitionStateHolderTest.m; sourceTree = "<group>"; };
-		E58D26392385888B003F36BA /* UINavigationController+RNNOptionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+RNNOptionsTest.m"; sourceTree = "<group>"; };
 		E58D263A2385888C003F36BA /* RNNTabBarPresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTabBarPresenterTest.m; sourceTree = "<group>"; };
 		E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+RNNOptionsTest.m"; sourceTree = "<group>"; };
 		E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationStackManagerTest.m; sourceTree = "<group>"; };
@@ -229,7 +230,6 @@
 				E58D26342385888B003F36BA /* RNNTestRootViewCreator.h */,
 				E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */,
 				E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.m */,
-				E58D26392385888B003F36BA /* UINavigationController+RNNOptionsTest.m */,
 				E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.m */,
 				E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.m */,
 				E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.m */,
@@ -244,6 +244,8 @@
 			children = (
 				E58D262F2385888B003F36BA /* RNNTestBase.m */,
 				E58D26302385888B003F36BA /* RNNTestBase.h */,
+				501C86B7239FE9C400E0B631 /* UIImage+Utils.h */,
+				501C86B8239FE9C400E0B631 /* UIImage+Utils.m */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -566,13 +568,13 @@
 				E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.m in Sources */,
 				E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.m in Sources */,
 				E58D264D2385888C003F36BA /* RNNOverlayManagerTest.m in Sources */,
+				501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */,
 				E58D265F2385888C003F36BA /* RNNBasePresenterTest.m in Sources */,
 				E58D26542385888C003F36BA /* RNNSideMenuControllerTest.m in Sources */,
 				E58D264A2385888C003F36BA /* RNNTabBarControllerTest.m in Sources */,
 				E58D26472385888C003F36BA /* RNNRootViewControllerTest.m in Sources */,
 				E58D26582385888C003F36BA /* UITabBarController+RNNOptionsTest.m in Sources */,
 				E58D265A2385888C003F36BA /* RNNTestRootViewCreator.m in Sources */,
-				E58D26562385888C003F36BA /* UINavigationController+RNNOptionsTest.m in Sources */,
 				E58D26492385888C003F36BA /* RNNFontAttributesCreatorTest.m in Sources */,
 				E58D26552385888C003F36BA /* RNNTransitionStateHolderTest.m in Sources */,
 				E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.m in Sources */,

@@ -7,6 +7,4 @@
 
 @property (nonatomic, retain) RNNStackPresenter* presenter;
 
-- (void)setTopBarBackgroundColor:(UIColor *)backgroundColor;
-
 @end
