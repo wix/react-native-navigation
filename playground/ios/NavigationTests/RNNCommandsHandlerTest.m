@@ -54,6 +54,7 @@
 @property (nonatomic, strong) id controllerFactory;
 @property (nonatomic, strong) id overlayManager;
 @property (nonatomic, strong) id eventEmmiter;
+@property (nonatomic, strong) id creator;
 
 @end
 
@@ -61,22 +62,25 @@
 
 - (void)setUp {
 	[super setUp];
+	self.creator = [OCMockObject partialMockForObject:[RNNTestRootViewCreator new]];
 	self.mainWindow = [OCMockObject partialMockForObject:[UIWindow new]];
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
 	self.modalManager = [OCMockObject partialMockForObject:[RNNModalManager new]];
 	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:nil componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]]];
 	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter stackManager:[RNNNavigationStackManager new] modalManager:self.modalManager overlayManager:self.overlayManager mainWindow:_mainWindow];
-	self.vc1 = self.generateComponent;
-	self.vc2 = self.generateComponent;
-	self.vc3 = self.generateComponent;
+	self.vc1 = [self generateComponentWithComponentId:@"1"];
+	self.vc2 = [self generateComponentWithComponentId:@"2"];
+	self.vc3 = [self generateComponentWithComponentId:@"3"];
 	_nvc = [[MockUINavigationController alloc] init];
 	[_nvc setViewControllers:@[self.vc1, self.vc2, self.vc3]];
 	OCMStub([self.sharedApplication keyWindow]).andReturn(self.mainWindow);
 }
 
-- (RNNComponentViewController *)generateComponent {
-	return [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil presenter:[RNNComponentPresenter new] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil];
+- (RNNComponentViewController *)generateComponentWithComponentId:(NSString *)componentId {
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] init];
+	layoutInfo.componentId = componentId;
+	return [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:nil presenter:[RNNComponentPresenter new] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil];
 }
 
 - (void)testAssertReadyForEachMethodThrowsExceptoins {
@@ -187,7 +191,7 @@
 
 - (void)testShowOverlay_withCreatedLayout {
 	[self.uut setReadyToReceiveCommands:true];
-	UIViewController* layoutVC = self.generateComponent;
+	UIViewController* layoutVC = [self generateComponentWithComponentId:nil];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(layoutVC);
 	
 	[[self.overlayManager expect] showOverlayWindow:[OCMArg any]];
@@ -364,7 +368,6 @@
 	[self.uut setReadyToReceiveCommands:true];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
 	options.bottomTabs.tabsAttachMode = [[BottomTabsAttachMode alloc] initWithValue:@"together"];
-	options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
 
 	BottomTabsBaseAttacher* attacher = [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
 	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2] bottomTabsAttacher:attacher];
@@ -374,6 +377,8 @@
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
 	XCTAssertTrue(_vc1.isViewLoaded);
 	XCTAssertTrue(_vc2.isViewLoaded);
+	XCTAssertEqual(_vc1.view.tag, 1);
+	XCTAssertEqual(_vc2.view.tag, 2);
 }
 
 - (void)testSetRoot_withBottomTabsAttachModeOnSwitchToTab {
