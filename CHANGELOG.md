@@ -6,7 +6,7 @@
 * Replace lodash chain with flow to reduce bundle size [#bf354d7](https://github.com/wix/react-native-navigation/commit/bf354d7c77c889c7e2dc0be0fc29b6a54011ce9b) by [jinshin1013](https://github.com/jinshin1013)
 ### iOS
 * Send ModalDismissed event [#4cb0e98](https://github.com/wix/react-native-navigation/commit/4cb0e98a6756317f8f61f5ee2b3d7530cd180f61) by [yogevbd](https://github.com/yogevbd)
-* Fix incorrect `constants.topBaeHeight` value when pageSheet modal is displayed [#9ef61a9](https://github.com/wix/react-native-navigation/commit/9ef61a9a1357312208463ef149a7951931043d1e) by [yogevbd](https://github.com/yogevbd)
+* Fix incorrect `constants.topBarHeight` value when pageSheet modal is displayed [#9ef61a9](https://github.com/wix/react-native-navigation/commit/9ef61a9a1357312208463ef149a7951931043d1e) by [yogevbd](https://github.com/yogevbd)
 * Add BottomTabs.attachMode support [#60c4dfc](https://github.com/wix/react-native-navigation/commit/60c4dfcd72245de02836bd4858f311822cdf866d) by [yogevbd](https://github.com/yogevbd)
 
 ### Android
