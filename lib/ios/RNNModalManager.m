@@ -1,7 +1,7 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "RNNAnimationsTransitionDelegate.h"
-#import "RNNLayoutProtocol.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @implementation RNNModalManager {
 	NSMutableArray* _pendingModalIdsToDismiss;
@@ -43,7 +43,7 @@
 			completion(nil);
 		}
 		
-		[_presentedModals addObject:viewController.navigationController ? viewController.navigationController : viewController];
+        [self->_presentedModals addObject:[viewController topMostViewController]];
 	}];
 }
 
@@ -118,13 +118,13 @@
 }
 
 - (void)dismissedModal:(UIViewController *)viewController {
-	[_presentedModals removeObject:viewController.navigationController ? viewController.navigationController : viewController];
-	[_delegate dismissedModal:viewController];
+	[_presentedModals removeObject:[viewController topMostViewController]];
+	[_delegate dismissedModal:viewController.presentedComponentViewController];
 }
 
 - (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController {
 	[_presentedModals removeObject:presentationController.presentedViewController];
-    [_delegate dismissedModal:presentationController.presentedViewController];
+    [_delegate dismissedModal:presentationController.presentedViewController.presentedComponentViewController];
 }
 
 -(UIViewController*)topPresentedVC {
