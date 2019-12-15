@@ -549,6 +549,8 @@ export interface DotIndicatorOptions {
     visible?: boolean;
 }
 
+export type ImageResource = string;
+
 export interface OptionsBottomTab {
     dotIndicator?: DotIndicatorOptions;
 
@@ -572,7 +574,7 @@ export interface OptionsBottomTab {
    * Set the tab icon
    * Note: On Android `icon` is required
    */
-  icon?: ImageRequireSource;
+  icon?: ImageRequireSource | ImageResource;
   /**
    * Set the icon tint
    */

@@ -12,7 +12,7 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-public class StackBehaviour<V extends ViewGroup> extends BehaviourDelegate {
+public class StackBehaviour extends BehaviourDelegate {
     public StackBehaviour(BehaviourAdapter delegate) {
         super(delegate);
     }

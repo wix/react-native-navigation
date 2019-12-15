@@ -1,8 +1,9 @@
-import isEqual from 'lodash/isEqual'
-import isObject from 'lodash/isObject'
-import isArray from 'lodash/isArray'
-import endsWith from 'lodash/endsWith'
-import forEach from 'lodash/forEach'
+import isEqual from 'lodash/isEqual';
+import isObject from 'lodash/isObject';
+import isArray from 'lodash/isArray';
+import isString from 'lodash/isString';
+import endsWith from 'lodash/endsWith';
+import forEach from 'lodash/forEach';
 
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
@@ -53,7 +54,7 @@ export class OptionsProcessor {
       endsWith(key, 'Icon') ||
       endsWith(key, 'Image')
     ) {
-      options[key] = this.assetService.resolveFromRequire(value);
+      options[key] = isString(value) ? value : this.assetService.resolveFromRequire(value);
     }
   }
 

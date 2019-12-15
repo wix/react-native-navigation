@@ -12,6 +12,7 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
+import com.reactnativenavigation.parse.parsers.IconParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
@@ -29,8 +30,8 @@ public class BottomTabOptions {
         options.text = TextParser.parse(json, "text");
         options.textColor = ColorParser.parse(json, "textColor");
         options.selectedTextColor = ColorParser.parse(json, "selectedTextColor");
-        if (json.has("icon")) options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
-        if (json.has("selectedIcon")) options.selectedIcon = TextParser.parse(json.optJSONObject("selectedIcon"), "uri");
+        options.icon = IconParser.parse(json, "icon");
+        options.selectedIcon = IconParser.parse(json, "selectedIcon");
         options.iconColor = ColorParser.parse(json, "iconColor");
         options.selectedIconColor = ColorParser.parse(json, "selectedIconColor");
         options.badge = TextParser.parse(json, "badge");
