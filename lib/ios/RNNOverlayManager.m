@@ -30,7 +30,7 @@
 }
 
 - (void)dismissAllOverlays {
-    for (RNNOverlayWindow* overlayWindow  in _overlayWindows) {
+    for (RNNOverlayWindow* overlayWindow  in [_overlayWindows reverseObjectEnumerator]) {
         [self detachOverlayWindow:overlayWindow];
     }
 }
