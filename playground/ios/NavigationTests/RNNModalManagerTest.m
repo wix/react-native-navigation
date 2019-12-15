@@ -2,6 +2,7 @@
 #import <OCMock/OCMock.h>
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
+#import "RNNStackController.h"
 
 @interface MockViewController : UIViewController
 
@@ -123,6 +124,18 @@
 	_modalManager.delegate = mockDelegate;
 	
 	UIPresentationController* presentationController = [[UIPresentationController alloc] initWithPresentedViewController:_vc2 presentingViewController:_vc1];
+	
+	[[mockDelegate expect] dismissedModal:_vc2];
+	[_modalManager presentationControllerDidDismiss:presentationController];
+	[mockDelegate verify];
+}
+
+- (void)testPresentationControllerDidDismiss_ShouldInvokeDelegateDismissedModalWithPresentedChild {
+	id mockDelegate = [OCMockObject mockForProtocol:@protocol(RNNModalManagerDelegate)];
+	_modalManager.delegate = mockDelegate;
+	RNNStackController* nav = [[RNNStackController alloc] initWithRootViewController:_vc2];
+	
+	UIPresentationController* presentationController = [[UIPresentationController alloc] initWithPresentedViewController:nav presentingViewController:_vc1];
 	
 	[[mockDelegate expect] dismissedModal:_vc2];
 	[_modalManager presentationControllerDidDismiss:presentationController];
