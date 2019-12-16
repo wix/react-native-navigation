@@ -1,0 +1,34 @@
+import { CommandsObserver } from '../events/CommandsObserver';
+import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { Options } from '../interfaces/Options';
+import { Layout, LayoutRoot } from '../interfaces/Layout';
+import { LayoutTreeParser } from './LayoutTreeParser';
+import { LayoutTreeCrawler } from './LayoutTreeCrawler';
+import { OptionsProcessor } from './OptionsProcessor';
+import { Store } from '../components/Store';
+export declare class Commands {
+    private readonly store;
+    private readonly nativeCommandsSender;
+    private readonly layoutTreeParser;
+    private readonly layoutTreeCrawler;
+    private readonly commandsObserver;
+    private readonly uniqueIdProvider;
+    private readonly optionsProcessor;
+    constructor(store: Store, nativeCommandsSender: NativeCommandsSender, layoutTreeParser: LayoutTreeParser, layoutTreeCrawler: LayoutTreeCrawler, commandsObserver: CommandsObserver, uniqueIdProvider: UniqueIdProvider, optionsProcessor: OptionsProcessor);
+    setRoot(simpleApi: LayoutRoot): Promise<any>;
+    setDefaultOptions(options: Options): void;
+    mergeOptions(componentId: string, options: Options): void;
+    updateProps(componentId: string, props: object): void;
+    showModal(layout: Layout): Promise<any>;
+    dismissModal(componentId: string, mergeOptions?: Options): Promise<any>;
+    dismissAllModals(mergeOptions?: Options): Promise<any>;
+    push(componentId: string, simpleApi: Layout): Promise<any>;
+    pop(componentId: string, mergeOptions?: Options): Promise<any>;
+    popTo(componentId: string, mergeOptions?: Options): Promise<any>;
+    popToRoot(componentId: string, mergeOptions?: Options): Promise<any>;
+    setStackRoot(componentId: string, children: Layout[]): Promise<any>;
+    showOverlay(simpleApi: Layout): Promise<any>;
+    dismissOverlay(componentId: string): Promise<any>;
+    getLaunchArgs(): Promise<any>;
+}
