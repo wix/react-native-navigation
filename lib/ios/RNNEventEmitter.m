@@ -24,7 +24,7 @@ static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 	return @[AppLaunched,
 			 CommandCompleted,
 			 BottomTabSelected,
-             BottomTabLongPressed,
+             		 BottomTabLongPressed,
 			 ComponentDidAppear,
 			 ComponentDidDisappear,
 			 NavigationButtonPressed,
@@ -74,8 +74,8 @@ static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 
 -(void)sendBottomTabLongPressed:(NSNumber *)selectedTabIndex {
     [self send:BottomTabLongPressed body:@{
-                                        @"selectedTabIndex": selectedTabIndex
-                                        }];
+                                        				  @"selectedTabIndex": selectedTabIndex
+                                        				  }];
 }
 
 -(void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId params:(NSDictionary*)params {
