@@ -378,6 +378,16 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void getBottomInset_defaultOptionsAreTakenIntoAccount() {
+        Options defaultOptions = new Options();
+        defaultOptions.bottomTabsOptions.visible = new Bool(false);
+
+        assertThat(uut.getBottomInset(child1)).isEqualTo(bottomTabs.getHeight());
+        uut.setDefaultOptions(defaultOptions);
+        assertThat(uut.getBottomInset(child1)).isZero();
+    }
+
+    @Test
     public void destroy() {
         uut.destroy();
         verify(tabsAttacher).destroy();

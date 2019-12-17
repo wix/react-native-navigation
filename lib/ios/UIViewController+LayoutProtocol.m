@@ -87,6 +87,13 @@
     return self.getCurrentChild ? self.getCurrentChild.presentedComponentViewController : self;
 }
 
+- (UIViewController *)topMostViewController {
+    if (self.parentViewController) {
+        return [self.parentViewController topMostViewController];
+    } else
+        return self;
+}
+
 - (CGFloat)getTopBarHeight {
     for(UIViewController * child in [self childViewControllers]) {
         CGFloat childTopBarHeight = [child getTopBarHeight];

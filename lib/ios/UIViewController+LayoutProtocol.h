@@ -12,6 +12,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (UIViewController *)presentedComponentViewController;
 
+- (UIViewController *)topMostViewController;
+
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options;
