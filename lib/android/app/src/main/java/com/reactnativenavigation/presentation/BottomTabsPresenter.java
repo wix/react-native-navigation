@@ -151,4 +151,8 @@ public class BottomTabsPresenter {
         lp.bottomMargin = bottomInset;
         bottomTabs.requestLayout();
     }
+
+    public int getBottomInset(Options resolvedOptions) {
+        return resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind() ? 0 : bottomTabs.getHeight();
+    }
 }
