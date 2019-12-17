@@ -179,6 +179,7 @@ public class LayoutFactory {
         return new StackControllerBuilder(activity)
                 .setChildren(createChildren(node.children))
                 .setChildRegistry(childRegistry)
+                .setEventEmitter(eventEmitter)
                 .setTopBarController(new TopBarController())
                 .setId(node.id)
                 .setInitialOptions(parse(typefaceManager, node.getOptions()))

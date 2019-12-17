@@ -22,6 +22,7 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.StatusBarUtils;
@@ -66,6 +67,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @LooperMode(LooperMode.Mode.PAUSED)
@@ -83,10 +85,12 @@ public class StackControllerTest extends BaseTest {
     private TopBarController topBarController;
     private StackPresenter presenter;
     private BackButtonHelper backButtonHelper;
+    private EventEmitter eventEmitter;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
+        eventEmitter = Mockito.mock(EventEmitter.class);
         backButtonHelper = spy(new BackButtonHelper());
         activity = newActivity();
         StatusBarUtils.saveStatusBarHeight(63);
@@ -402,6 +406,30 @@ public class StackControllerTest extends BaseTest {
                 });
             }
         });
+    }
+
+    @Test
+    public void pop_popEventIsEmitted() {
+        disablePushAnimation(child1, child2);
+        disablePopAnimation(child2);
+        uut.push(child1, new CommandListenerAdapter());
+        uut.push(child2, new CommandListenerAdapter());
+
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
+        verify(eventEmitter).emitScreenPoppedEvent(child2.getId());
+    }
+
+    @Test
+    public void popToRoot_popEventIsEmitted() {
+        disablePushAnimation(child1, child2, child3);
+        disablePopAnimation(child2, child3);
+        uut.push(child1, new CommandListenerAdapter());
+        uut.push(child2, new CommandListenerAdapter());
+        uut.push(child3, new CommandListenerAdapter());
+
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
+        verify(eventEmitter).emitScreenPoppedEvent(child3.getId());
+        verifyNoMoreInteractions(eventEmitter);
     }
 
     @Test
@@ -1136,6 +1164,7 @@ public class StackControllerTest extends BaseTest {
     private StackControllerBuilder createStackBuilder(String id, List<ViewController> children) {
         createTopBarController();
         return TestUtils.newStackController(activity)
+                .setEventEmitter(eventEmitter)
                 .setChildren(children)
                 .setId(id)
                 .setTopBarController(topBarController)

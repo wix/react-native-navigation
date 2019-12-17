@@ -9,6 +9,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.Constants;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -43,12 +44,14 @@ public class StackController extends ParentController<StackLayout> {
 
     private IdStack<ViewController> stack = new IdStack<>();
     private final NavigationAnimator animator;
+    private final EventEmitter eventEmitter;
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter) {
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
+        this.eventEmitter = eventEmitter;
         this.topBarController = topBarController;
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
@@ -277,6 +280,7 @@ public class StackController extends ParentController<StackLayout> {
     private void finishPopping(ViewController disappearing, CommandListener listener) {
         disappearing.destroy();
         listener.onSuccess(disappearing.getId());
+        eventEmitter.emitScreenPoppedEvent(disappearing.getId());
     }
 
     public void popTo(ViewController viewController, Options mergeOptions, CommandListener listener) {
