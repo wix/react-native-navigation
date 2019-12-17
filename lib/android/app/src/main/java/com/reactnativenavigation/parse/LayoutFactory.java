@@ -176,10 +176,9 @@ public class LayoutFactory {
     }
 
 	private ViewController createStack(LayoutNode node) {
-        return new StackControllerBuilder(activity)
+        return new StackControllerBuilder(activity, eventEmitter)
                 .setChildren(createChildren(node.children))
                 .setChildRegistry(childRegistry)
-                .setEventEmitter(eventEmitter)
                 .setTopBarController(new TopBarController())
                 .setId(node.id)
                 .setInitialOptions(parse(typefaceManager, node.getOptions()))

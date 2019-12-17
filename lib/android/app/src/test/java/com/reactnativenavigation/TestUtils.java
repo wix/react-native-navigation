@@ -12,6 +12,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
@@ -33,7 +34,7 @@ public class TestUtils {
                 return topBar;
             }
         };
-        return new StackControllerBuilder(activity)
+        return new StackControllerBuilder(activity, Mockito.mock(EventEmitter.class))
                 .setId("stack")
                 .setChildRegistry(new ChildControllersRegistry())
                 .setTopBarController(topBarController)

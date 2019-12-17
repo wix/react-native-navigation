@@ -29,8 +29,9 @@ public class StackControllerBuilder {
     private List<ViewController> children = new ArrayList<>();
     private EventEmitter eventEmitter;
 
-    public StackControllerBuilder(Activity activity) {
+    public StackControllerBuilder(Activity activity, EventEmitter eventEmitter) {
         this.activity = activity;
+        this.eventEmitter = eventEmitter;
         presenter = new Presenter(activity, new Options());
         animator = new NavigationAnimator(activity, new ElementTransitionManager());
     }

@@ -24,7 +24,6 @@ import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
@@ -387,12 +386,10 @@ public class StackControllerTest extends BaseTest {
     @Test
     public void pop_layoutHandlesChildWillDisappear() {
         TopBarController topBarController = new TopBarController();
-        uut = new StackControllerBuilder(activity)
-                        .setTopBarController(topBarController)
-                        .setId("uut")
-                        .setInitialOptions(new Options())
-                        .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new RenderChecker(), new Options()))
-                        .build();
+        uut = TestUtils.newStackController(activity)
+                .setTopBarController(topBarController)
+                .setId("uut")
+                .build();
         uut.ensureViewIsCreated();
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter() {
@@ -985,12 +982,9 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_updatesViewWithNewOptions() {
-        StackController uut = spy(new StackControllerBuilder(activity)
-                        .setTopBarController(new TopBarController())
-                        .setId("stack")
-                        .setInitialOptions(new Options())
-                        .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TitleBarReactViewCreatorMock(), ImageLoaderMock.mock(), new RenderChecker(), Options.EMPTY))
-                        .build());
+        StackController uut = spy(TestUtils.newStackController(activity)
+                .setId("stack")
+                .build());
         Options optionsToMerge = new Options();
         ViewController vc = mock(ViewController.class);
         uut.mergeChildOptions(optionsToMerge, vc);
@@ -999,11 +993,8 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_updatesParentControllerWithNewOptions() {
-        StackController uut = new StackControllerBuilder(activity)
-                        .setTopBarController(new TopBarController())
+        StackController uut = TestUtils.newStackController(activity)
                         .setId("stack")
-                        .setInitialOptions(new Options())
-                        .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TitleBarReactViewCreatorMock(), ImageLoaderMock.mock(), new RenderChecker(), Options.EMPTY))
                         .build();
         ParentController parentController = Mockito.mock(ParentController.class);
         uut.setParentController(parentController);
