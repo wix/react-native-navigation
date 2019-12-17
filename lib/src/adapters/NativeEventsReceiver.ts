@@ -8,7 +8,7 @@ import {
   PreviewCompletedEvent,
   ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
-import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
+import { CommandCompletedEvent, BottomTabSelectedEvent, BottomTabLongPressedEvent } from '../interfaces/Events';
 
 export class NativeEventsReceiver {
   private emitter: EventEmitter;
@@ -66,5 +66,9 @@ export class NativeEventsReceiver {
 
   public registerBottomTabSelectedListener(callback: (data: BottomTabSelectedEvent) => void): EmitterSubscription {
     return this.emitter.addListener('RNN.BottomTabSelected', callback);
+  }
+
+  public registerBottomTabLongPressedListener(callback: (data: BottomTabLongPressedEvent) => void): EmitterSubscription {
+    return this.emitter.addListener('RNN.BottomTabLongPressed', callback);
   }
 }

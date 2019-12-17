@@ -11,6 +11,7 @@ RCT_EXPORT_MODULE();
 static NSString* const AppLaunched				= @"RNN.AppLaunched";
 static NSString* const CommandCompleted			= @"RNN.CommandCompleted";
 static NSString* const BottomTabSelected		= @"RNN.BottomTabSelected";
+static NSString* const BottomTabLongPressed     = @"RNN.BottomTabLongPressed";
 static NSString* const ComponentDidAppear		= @"RNN.ComponentDidAppear";
 static NSString* const ComponentDidDisappear	= @"RNN.ComponentDidDisappear";
 static NSString* const NavigationButtonPressed	= @"RNN.NavigationButtonPressed";
@@ -23,6 +24,7 @@ static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 	return @[AppLaunched,
 			 CommandCompleted,
 			 BottomTabSelected,
+             BottomTabLongPressed,
 			 ComponentDidAppear,
 			 ComponentDidDisappear,
 			 NavigationButtonPressed,
@@ -68,6 +70,12 @@ static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 									  @"selectedTabIndex": selectedTabIndex,
 									  @"unselectedTabIndex": unselectedTabIndex
 									  }];
+}
+
+-(void)sendBottomTabLongPressed:(NSNumber *)selectedTabIndex {
+    [self send:BottomTabLongPressed body:@{
+                                        @"selectedTabIndex": selectedTabIndex
+                                        }];
 }
 
 -(void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId params:(NSDictionary*)params {

@@ -9,3 +9,7 @@ export interface BottomTabSelectedEvent {
   selectedTabIndex: number;
   unselectedTabIndex: number;
 }
+
+export interface BottomTabLongPressedEvent {
+  selectedTabIndex: number;
+}

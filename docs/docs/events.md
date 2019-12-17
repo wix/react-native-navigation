@@ -163,6 +163,19 @@ const bottomTabEventListener = Navigation.events().registerBottomTabSelectedList
 bottomTabEventListener.remove();
 ```
 
+## registerBottomTabLongPressedListener
+Invoked when a BottomTab is long pressed by the user.
+
+```js
+// Subscribe
+const bottomTabEventListener = Navigation.events().registerBottomTabLongPressedListener(({ selectedTabIndex }) => {
+
+});
+...
+// Unsubscribe
+bottomTabEventListener.remove();
+```
+
 |       Parameter         | Description |
 |:--------------------:|:-----|
 |**selectedTabIndex** | The index of the newly selected tab|
