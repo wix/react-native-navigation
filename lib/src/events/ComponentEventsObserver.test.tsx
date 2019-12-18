@@ -18,6 +18,7 @@ describe('ComponentEventsObserver', () => {
   const searchBarCancelPressedFn = jest.fn();
   const previewCompletedFn = jest.fn();
   const modalDismissedFn = jest.fn();
+  const screenPoppedFn = jest.fn();
   let subscription: EventSubscription;
   let uut: ComponentEventsObserver;
 
@@ -68,6 +69,10 @@ describe('ComponentEventsObserver', () => {
       previewCompletedFn(event);
     }
 
+    screenPopped(event: any) {
+      screenPoppedFn(event);
+    }
+
     render() {
       return 'Hello';
     }
@@ -113,6 +118,10 @@ describe('ComponentEventsObserver', () => {
 
     previewCompleted(event: any) {
       previewCompletedFn(event);
+    }
+
+    screenPopped(event: any) {
+      screenPoppedFn(event);
     }
 
     render() {
@@ -190,6 +199,10 @@ describe('ComponentEventsObserver', () => {
     uut.notifyPreviewCompleted({ componentId: 'myCompId' });
     expect(previewCompletedFn).toHaveBeenCalledTimes(1);
     expect(previewCompletedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
+
+    uut.notifyScreenPopped({ componentId: 'myCompId' });
+    expect(screenPoppedFn).toHaveBeenCalledTimes(1);
+    expect(screenPoppedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId' })
 
     tree.unmount();
     expect(willUnmountFn).toHaveBeenCalledTimes(1);

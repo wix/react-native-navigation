@@ -19,8 +19,6 @@ typedef void (^RNNAnimationBlock)(void);
 
 	if (animationDelegate) {
 		nvc.delegate = animationDelegate;
-	} else {
-		nvc.delegate = nil;
 	}
 	
 	[self performAnimationBlock:^{

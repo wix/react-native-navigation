@@ -11,8 +11,6 @@
 	
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.resolveOptions.customTransition];
 	
-	self.navigationController.delegate = self;
-	
 	return self;
 }
 

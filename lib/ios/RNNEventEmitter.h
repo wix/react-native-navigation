@@ -1,4 +1,3 @@
-
 #import <Foundation/Foundation.h>
 
 #import <React/RCTEventEmitter.h>
@@ -25,6 +24,8 @@
 - (void)sendOnPreviewCompleted:(NSString *)componentId previewComponentId:(NSString *)previewComponentId;
 
 - (void)sendModalsDismissedEvent:(NSString *)componentId numberOfModalsDismissed:(NSNumber *)modalsDismissed;
+
+- (void)sendScreenPoppedEvent:(NSString *)componentId;
 
 
 @end
