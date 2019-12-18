@@ -69,7 +69,7 @@
 }
 
 - (void)updateBackgroundAppearance {
-    if (_transparent) {
+    if (self.transparent) {
         [self setBackgroundColorTransparent];
     } else if (_backgroundColor) {
         self.navigationController.navigationBar.barTintColor = _backgroundColor;
@@ -123,6 +123,10 @@
     backItem.tintColor = color;
 
     lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
+}
+
+- (BOOL)transparent {
+    return (_backgroundColor && CGColorGetAlpha(_backgroundColor.CGColor) == 0.0);
 }
 
 @end

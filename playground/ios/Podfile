@@ -49,3 +49,8 @@ target 'NavigationTests' do
   pod 'OCMock'
 end
 
+target 'NavigationIOS12Tests' do
+  all_pods
+  pod 'OCMock'
+end
+

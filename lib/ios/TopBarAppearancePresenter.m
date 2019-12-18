@@ -45,10 +45,6 @@
     }
 }
 
-- (BOOL)transparent {
-    return (_backgroundColor && CGColorGetAlpha(_backgroundColor.CGColor) == 0.0);
-}
-
 - (void)showBorder:(BOOL)showBorder {
     UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
     _appearance.shadowColor = shadowColor;
