@@ -1,9 +1,17 @@
 #import "RNNStackController.h"
 #import "RNNComponentViewController.h"
 
-@implementation RNNStackController
+@implementation RNNStackController {
+    UIViewController* _presentedViewController;
+}
 
--(void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+- (instancetype)init {
+    self = [super init];
+    self.delegate = self;
+    return self;
+}
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
 	[super setDefaultOptions:defaultOptions];
 	[self.presenter setDefaultOptions:defaultOptions];
 }
@@ -30,15 +38,30 @@
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
-	if (self.viewControllers.count > 1) {
-		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
-		if ([controller isKindOfClass:[RNNComponentViewController class]]) {
-			RNNComponentViewController *rnnController = (RNNComponentViewController *)controller;
-			[self.presenter applyOptionsBeforePopping:rnnController.resolveOptions];
-		}
-	}
-	
+    [self prepareForPop];
 	return [super popViewControllerAnimated:animated];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if ([self.viewControllers indexOfObject:_presentedViewController] < 0) {
+        [self sendScreenPoppedEvent:_presentedViewController];
+    }
+    
+    _presentedViewController = viewController;
+}
+
+- (void)sendScreenPoppedEvent:(UIViewController *)poppedScreen {
+    [self.eventEmitter sendScreenPoppedEvent:poppedScreen.layoutInfo.componentId];
+}
+
+- (void)prepareForPop {
+    if (self.viewControllers.count > 1) {
+        UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
+        if ([controller isKindOfClass:[RNNComponentViewController class]]) {
+            RNNComponentViewController *rnnController = (RNNComponentViewController *)controller;
+            [self.presenter applyOptionsBeforePopping:rnnController.resolveOptions];
+        }
+    }
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {

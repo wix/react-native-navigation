@@ -11,7 +11,8 @@ import {
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent,
   PreviewCompletedEvent,
-  ModalDismissedEvent
+  ModalDismissedEvent,
+  ScreenPoppedEvent
 } from '../interfaces/ComponentEvents';
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 
@@ -65,4 +66,9 @@ export class EventsRegistry {
   public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
     return this.componentEventsObserver.bindComponent(component, componentId);
   }
+
+  public registerScreenPoppedListener(callback: (event: ScreenPoppedEvent) => void): EmitterSubscription {
+    return this.nativeEventsReceiver.registerScreenPoppedListener(callback);
+  }
+
 }
