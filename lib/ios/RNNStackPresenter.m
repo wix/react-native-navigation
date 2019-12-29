@@ -60,7 +60,9 @@
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
 	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 	if (withDefault.topBar.background.component.name.hasValue) {
-		[self presentBackgroundComponent];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self presentBackgroundComponent];
+        });
 	}
 }
 
