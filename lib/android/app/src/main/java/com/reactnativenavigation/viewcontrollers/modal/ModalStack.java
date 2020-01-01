@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.modal;
 import android.app.Activity;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.ModalAnimator;
@@ -50,6 +51,8 @@ public class ModalStack {
 
     public void showModal(ViewController viewController, ViewController root, CommandListener listener) {
         ViewController toRemove = isEmpty() ? root : peek();
+        // if (modals.size() != 0 && modals.get(modals.size() - 1).getId().equals(viewController.getId())) return;
+
         modals.add(viewController);
         presenter.showModal(viewController, toRemove, listener);
     }

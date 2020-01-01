@@ -8,6 +8,7 @@ const { stack, component } = require('../commons/Layouts');
 const {
   PUSH_BTN,
   PUSH_WITH_ID_BTN,
+  PUSH_STACK_WITH_ID_BTN,
   STACK_SCREEN_HEADER,
   PUSH_LIFECYCLE_BTN,
   POP_NONE_EXISTENT_SCREEN_BTN,
@@ -39,6 +40,7 @@ class StackScreen extends React.Component {
       <Root componentId={this.props.componentId}>
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
         <Button label='Push with ID' testID={PUSH_WITH_ID_BTN} onPress={this.pushWithId} />
+        <Button label='Add Stack with ID' testID={PUSH_STACK_WITH_ID_BTN} onPress={this.addStackWithId} />
         <Button label='Push Lifecycle Screen' testID={PUSH_LIFECYCLE_BTN} onPress={this.pushLifecycleScreen} />
         <Button label='Pop None Existent Screen' testID={POP_NONE_EXISTENT_SCREEN_BTN} onPress={this.popNoneExistent} />
         <Button label='Push Custom Back Button' testID={PUSH_CUSTOM_BACK_BTN} onPress={this.pushCustomBackButton} />
@@ -55,6 +57,19 @@ class StackScreen extends React.Component {
     component: {
       id: Screens.Pushed,
       name: Screens.Pushed,
+    },
+  });
+
+  addStackWithId = () => Navigation.showModal({
+    stack: {
+      id: Screens.Pushed + 'Stack',
+      name: Screens.Pushed + 'Stack',
+      children: [{
+        component: {
+          id: Screens.Pushed,
+          name: Screens.Pushed,
+        },
+      }],
     },
   });
 

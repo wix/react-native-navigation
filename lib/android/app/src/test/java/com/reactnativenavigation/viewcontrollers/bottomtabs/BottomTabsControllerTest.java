@@ -325,7 +325,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.selectTab(3);
 
         SimpleViewController stackChild = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
-        SimpleViewController stackChild2 = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
+        SimpleViewController stackChild2 = new SimpleViewController(activity, childRegistry, "stackChild2", new Options());
 
         disablePushAnimation(stackChild, stackChild2);
         hideBackButton(stackChild2);
