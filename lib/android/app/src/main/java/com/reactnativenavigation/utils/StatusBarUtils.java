@@ -32,6 +32,6 @@ public class StatusBarUtils {
 
     public static boolean isTranslucent(Window window) {
         WindowManager.LayoutParams lp = window.getAttributes();
-        return (lp.flags & FLAG_TRANSLUCENT_STATUS) == FLAG_TRANSLUCENT_STATUS;
+        return lp != null && (lp.flags & FLAG_TRANSLUCENT_STATUS) == FLAG_TRANSLUCENT_STATUS;
     }
 }
