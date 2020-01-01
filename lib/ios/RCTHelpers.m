@@ -167,7 +167,7 @@
 			[view.backgroundColor getRed:&r green:&g blue:&b alpha:&a];
 			
 			//identify the yellow view by its hard-coded color and height
-			if((lrint(r * 255) == 250) && (lrint(g * 255) == 186) && (lrint(b * 255) == 48) && (lrint(a * 100) == 95) && (view.frame.size.height == 46))
+			if((lrint(r * 255) == 250) && (lrint(g * 255) == 186) && (lrint(b * 255) == 48) && (lrint(a * 100) == 95) && (view.frame.size.height == 48))
 			{
 				UIView *yelloboxParentView = view;
 				while (view.superview != nil)
