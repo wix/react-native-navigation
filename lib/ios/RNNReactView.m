@@ -14,13 +14,14 @@
 	return self;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    #ifdef DEBUG
+        [RCTHelpers removeYellowBox:self];
+    #endif
+}
+
 - (void)contentDidAppear:(NSNotification *)notification {
-#ifdef DEBUG
-	if ([((RNNReactView *)notification.object).moduleName isEqualToString:self.moduleName]) {
-		[RCTHelpers removeYellowBox:self];
-	}
-#endif
-	
 	RNNReactView* appearedView = notification.object;
 	
 	 if (_reactViewReadyBlock && [appearedView.appProperties[@"componentId"] isEqual:self.componentId]) {
