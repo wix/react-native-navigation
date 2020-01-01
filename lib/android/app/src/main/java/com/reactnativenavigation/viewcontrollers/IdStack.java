@@ -19,7 +19,7 @@ public class IdStack<E> implements Iterable<String> {
 	private final Map<String, E> map = new HashMap<>();
 
 	public void push(String id, E item) {
-		deque.add(id);
+		if (size() == 0 || !last(deque).equals(id)) deque.add(id);
 		map.put(id, item);
 	}
 
