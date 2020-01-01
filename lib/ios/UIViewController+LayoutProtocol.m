@@ -114,7 +114,17 @@
 
 - (void)onChildWillAppear {
 	[self.presenter applyOptions:self.resolveOptions];
-	[((UISplitViewController *)self.parentViewController) onChildWillAppear];
+	[self.parentViewController onChildWillAppear];
+}
+
+- (void)componentDidAppear {
+    [self.presenter componentDidAppear];
+    [self.parentViewController componentDidAppear];
+}
+
+- (void)componentDidDisappear {
+    [self.presenter componentDidDisappear];
+    [self.parentViewController componentDidDisappear];
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {

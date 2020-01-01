@@ -16,18 +16,26 @@
 	return self;
 }
 
-- (RNNReactView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-	NSMapTable* parentComponentDict = [self componentsForParentId:parentComponentId];
-	
-	RNNReactView* reactView = [parentComponentDict objectForKey:component.componentId.get];
-	if (!reactView) {
-		reactView = (RNNReactView *)[_creator createRootViewFromComponentOptions:component reactViewReadyBlock:reactViewReadyBlock];
-        [parentComponentDict setObject:reactView forKey:component.componentId.get];
-	} else if (reactViewReadyBlock) {
-		reactViewReadyBlock();
-	}
-	
-	return reactView;
+- (RNNReactButtonView *)createComponentIfNotExists:(RNNComponentOptions *)component parentComponentId:(NSString *)parentComponentId componentType:(RNNComponentType)componentType reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+    RNNReactView* reactView = [self findComponent:component.componentId.get parentComponentId:parentComponentId];
+    if (!reactView) {
+        reactView = [_creator createRootView:component.name.get rootViewId:component.componentId.get ofType:componentType reactViewReadyBlock:reactViewReadyBlock];
+        [self storeComponent:reactView componentId:component.componentId.get parentComponentId:parentComponentId];
+    } else if (reactViewReadyBlock) {
+        reactViewReadyBlock();
+    }
+    
+    return (RNNReactButtonView *)reactView;
+}
+
+- (RNNReactView *)findComponent:(NSString *)componentId parentComponentId:(NSString *)parentComponentId {
+    NSMapTable* parentComponentDict = [self componentsForParentId:parentComponentId];
+    return [parentComponentDict objectForKey:componentId];
+}
+
+- (void)storeComponent:(RNNReactView *)component componentId:(NSString *)componentId parentComponentId:(NSString *)parentComponentId {
+    NSMapTable* parentComponentDict = [self componentsForParentId:parentComponentId];
+    [parentComponentDict setObject:component forKey:componentId];
 }
 
 - (NSMapTable *)componentsForParentId:(NSString *)parentComponentId {

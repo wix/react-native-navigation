@@ -44,17 +44,19 @@ static NSString* const ScreenPopped             = @"RNN.ScreenPopped";
     }
 }
 
-- (void)sendComponentDidAppear:(NSString *)componentId componentName:(NSString *)componentName {
+- (void)sendComponentDidAppear:(NSString *)componentId componentName:(NSString *)componentName componentType:(NSString *)componentType {
     [self send:ComponentDidAppear body:@{
         @"componentId":componentId,
-        @"componentName": componentName
+        @"componentName": componentName,
+        @"componentType": componentType
     }];
 }
 
-- (void)sendComponentDidDisappear:(NSString *)componentId componentName:(NSString *)componentName{
+- (void)sendComponentDidDisappear:(NSString *)componentId componentName:(NSString *)componentName componentType:(NSString *)componentType {
     [self send:ComponentDidDisappear body:@{
         @"componentId":componentId,
-        @"componentName": componentName
+        @"componentName": componentName,
+        @"componentType": componentType
     }];
 }
 

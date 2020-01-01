@@ -63,6 +63,31 @@
         [self clearPreviousButtonViews:barButtonItems oldButtons:self.viewController.navigationItem.rightBarButtonItems];
         [self.viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
     }
+    
+    [self notifyButtonsDidAppear:barButtonItems];
+}
+
+- (NSArray *)currentButtons {
+    NSArray* currentButtons = [self.viewController.navigationItem.leftBarButtonItems arrayByAddingObjectsFromArray:self.viewController.navigationItem.rightBarButtonItems];
+    return currentButtons;
+}
+
+- (void)componentDidAppear {
+    for (RNNUIBarButtonItem* barButtonItem in [self currentButtons]) {
+        [barButtonItem notifyDidAppear];
+    }
+}
+
+- (void)componentDidDisappear {
+    for (RNNUIBarButtonItem* barButtonItem in [self currentButtons]) {
+        [barButtonItem notifyDidDisappear];
+    }
+}
+
+- (void)notifyButtonsDidAppear:(NSArray *)barButtonItems {
+    for (RNNUIBarButtonItem* barButtonItem in barButtonItems) {
+        [barButtonItem notifyDidAppear];
+    }
 }
 
 - (void)clearPreviousButtonViews:(NSArray<UIBarButtonItem *> *)newButtons oldButtons:(NSArray<UIBarButtonItem *> *)oldButtons {
@@ -71,6 +96,7 @@
     for (UIBarButtonItem* buttonItem in removedButtons) {
         RNNReactView* reactView = buttonItem.customView;
         if ([reactView isKindOfClass:[RNNReactView class]]) {
+            [reactView componentDidDisappear];
             [_componentRegistry removeChildComponent:reactView.componentId];
         }
     }
@@ -117,7 +143,7 @@
         componentOptions.componentId = [[Text alloc] initWithValue:component[@"componentId"]];
         componentOptions.name = [[Text alloc] initWithValue:component[@"name"]];
         
-        RNNReactView *view = [_componentRegistry createComponentIfNotExists:componentOptions parentComponentId:self.viewController.layoutInfo.componentId reactViewReadyBlock:nil];
+        RNNReactButtonView *view = [_componentRegistry createComponentIfNotExists:componentOptions parentComponentId:self.viewController.layoutInfo.componentId componentType:RNNComponentTypeTopBarButton reactViewReadyBlock:nil];
         barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
     } else if (iconImage) {
         barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];

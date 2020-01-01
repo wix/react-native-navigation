@@ -28,6 +28,14 @@
     _defaultOptions = defaultOptions;
 }
 
+- (void)componentDidAppear {
+    
+}
+
+- (void)componentDidDisappear {
+    
+}
+
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
     UIViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [initialOptions withDefault:[self defaultOptions]];
