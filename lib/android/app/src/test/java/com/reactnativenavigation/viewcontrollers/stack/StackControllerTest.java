@@ -22,7 +22,7 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TitleBarHelper;

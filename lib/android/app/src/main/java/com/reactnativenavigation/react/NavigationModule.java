@@ -1,5 +1,6 @@
 package com.reactnativenavigation.react;
 
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.LaunchArgsParser;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;

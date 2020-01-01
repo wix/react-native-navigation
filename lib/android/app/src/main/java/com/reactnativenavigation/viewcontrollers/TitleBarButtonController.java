@@ -1,13 +1,9 @@
-    package com.reactnativenavigation.viewcontrollers;
+package com.reactnativenavigation.viewcontrollers;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.appcompat.widget.ActionMenuView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
@@ -16,6 +12,7 @@ import android.widget.TextView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.utils.ArrayUtils;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -27,6 +24,11 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 
 public class TitleBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
     public interface OnClickListener {
@@ -69,13 +71,13 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     @SuppressLint("MissingSuperCall")
     @Override
     public void onViewAppeared() {
-        getView().sendComponentStart();
+        getView().sendComponentStart(ComponentType.Button);
     }
 
     @SuppressLint("MissingSuperCall")
     @Override
     public void onViewDisappear() {
-        getView().sendComponentStop();
+        getView().sendComponentStop(ComponentType.Button);
     }
 
     @Override

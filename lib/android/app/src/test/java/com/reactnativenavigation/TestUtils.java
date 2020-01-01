@@ -12,7 +12,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;

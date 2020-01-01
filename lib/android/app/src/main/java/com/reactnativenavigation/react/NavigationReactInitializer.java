@@ -1,10 +1,11 @@
 package com.reactnativenavigation.react;
 
-import androidx.annotation.NonNull;
-
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
 import com.reactnativenavigation.NavigationActivity;
+import com.reactnativenavigation.react.events.EventEmitter;
+
+import androidx.annotation.NonNull;
 
 public class NavigationReactInitializer implements ReactInstanceManager.ReactInstanceEventListener {
 

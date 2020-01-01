@@ -6,7 +6,7 @@ import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
