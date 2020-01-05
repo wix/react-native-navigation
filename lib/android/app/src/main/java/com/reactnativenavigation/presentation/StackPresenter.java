@@ -21,7 +21,6 @@ import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.utils.CollectionUtils;
-import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.UiUtils;
@@ -65,7 +64,6 @@ public class StackPresenter {
     private TopBarController topBarController;
     private final TitleBarReactViewCreator titleViewCreator;
     private TitleBarButtonController.OnClickListener onClickListener;
-    private final ImageLoader imageLoader;
     private final RenderChecker renderChecker;
     private final TopBarBackgroundViewCreator topBarBackgroundViewCreator;
     private final ReactViewCreator buttonCreator;
@@ -76,19 +74,20 @@ public class StackPresenter {
     private Map<View, TopBarBackgroundViewController> backgroundControllers = new HashMap();
     private Map<View, Map<String, TitleBarButtonController>> componentRightButtons = new HashMap();
     private Map<View, Map<String, TitleBarButtonController>> componentLeftButtons = new HashMap();
+    private NavigationIconResolver iconResolver;
 
     public StackPresenter(Activity activity,
                           TitleBarReactViewCreator titleViewCreator,
                           TopBarBackgroundViewCreator topBarBackgroundViewCreator,
                           ReactViewCreator buttonCreator,
-                          ImageLoader imageLoader,
+                          NavigationIconResolver iconResolver,
                           RenderChecker renderChecker,
                           Options defaultOptions) {
         this.activity = activity;
         this.titleViewCreator = titleViewCreator;
         this.topBarBackgroundViewCreator = topBarBackgroundViewCreator;
         this.buttonCreator = buttonCreator;
-        this.imageLoader = imageLoader;
+        this.iconResolver = iconResolver;
         this.renderChecker = renderChecker;
         this.defaultOptions = defaultOptions;
         defaultTitleFontSize = UiUtils.dpToSp(activity, 18);
@@ -311,8 +310,7 @@ public class StackPresenter {
 
     private TitleBarButtonController createButtonController(Button button) {
         TitleBarButtonController controller = new TitleBarButtonController(activity,
-                new NavigationIconResolver(activity, imageLoader),
-                imageLoader,
+                iconResolver,
                 new ButtonPresenter(topBar.getTitleBar(), button),
                 button,
                 buttonCreator,
@@ -379,7 +377,13 @@ public class StackPresenter {
             }
         }
         if (buttons.left != null) topBar.setLeftButtons(leftButtonControllers);
-        if (buttons.back.hasValue()) topBar.setBackButton(createButtonController(buttons.back));
+        if (buttons.back.hasValue()) {
+            if (buttons.back.visible.isFalse()) {
+                topBar.clearLeftButtons();
+            } else {
+                topBar.setBackButton(createButtonController(buttons.back));
+            }
+        }
 
         if (options.rightButtonColor.hasValue()) topBar.setOverflowButtonColor(options.rightButtonColor.get());
     }

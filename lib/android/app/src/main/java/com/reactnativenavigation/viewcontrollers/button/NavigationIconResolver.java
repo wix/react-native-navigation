@@ -1,31 +1,29 @@
 package com.reactnativenavigation.viewcontrollers.button;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
 
-import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 
+import androidx.annotation.NonNull;
+
 public class NavigationIconResolver {
 
-    private Context context;
+    private Activity context;
     private ImageLoader imageLoader;
 
-    public NavigationIconResolver(Context context, ImageLoader imageLoader) {
+    public NavigationIconResolver(Activity context, ImageLoader imageLoader) {
         this.context = context;
         this.imageLoader = imageLoader;
     }
 
-    public void resolve(Button button, Integer direction, Func1<Drawable> onSuccess) {
-        if (button.icon.hasValue()) {
+    public void resolve(Button button, Func1<Drawable> onSuccess) {
+        if (button.hasIcon()) {
             imageLoader.loadIcon(context, button.icon.get(), new ImageLoadingListenerAdapter() {
                 @Override
                 public void onComplete(@NonNull Drawable icon) {
@@ -38,8 +36,7 @@ public class NavigationIconResolver {
                 }
             });
         } else if (Constants.BACK_BUTTON_ID.equals(button.id)) {
-            Boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
-            onSuccess.run(ContextCompat.getDrawable(context, isRTL ? R.drawable.ic_arrow_back_black_rtl_24dp : R.drawable.ic_arrow_back_black_24dp));
+            onSuccess.run(imageLoader.getBackButtonIcon(context));
         } else {
             Log.w("RNN", "Left button needs to have an icon");
         }

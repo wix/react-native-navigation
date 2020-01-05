@@ -22,7 +22,6 @@ import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
 import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -36,7 +35,6 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     private final NavigationIconResolver navigationIconResolver;
-    private final ImageLoader imageLoader;
     private ButtonPresenter optionsPresenter;
     private final Button button;
     private final ReactViewCreator viewCreator;
@@ -54,14 +52,12 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
 
     public TitleBarButtonController(Activity activity,
                                     NavigationIconResolver navigationIconResolver,
-                                    ImageLoader imageLoader,
                                     ButtonPresenter optionsPresenter,
                                     Button button,
                                     ReactViewCreator viewCreator,
                                     OnClickListener onClickListener) {
         super(activity, button.id, new YellowBoxDelegate(), new Options());
         this.navigationIconResolver = navigationIconResolver;
-        this.imageLoader = imageLoader;
         this.optionsPresenter = optionsPresenter;
         this.button = button;
         this.viewCreator = viewCreator;
@@ -104,8 +100,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public void applyNavigationIcon(Toolbar toolbar) {
-        Integer direction = getActivity().getWindow().getDecorView().getLayoutDirection();
-        navigationIconResolver.resolve(button, direction, icon -> {
+        navigationIconResolver.resolve(button, icon -> {
             setIconColor(icon);
             toolbar.setNavigationOnClickListener(view -> onPressListener.onPress(button.id));
             toolbar.setNavigationIcon(icon);
@@ -134,8 +129,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
             if (button.hasIcon()) {
                 loadIcon(new ImageLoadingListenerAdapter() {
                     @Override
-                    public void onComplete(@NonNull List<Drawable> icons) {
-                        Drawable icon = icons.get(0);
+                    public void onComplete(@NonNull Drawable icon) {
                         TitleBarButtonController.this.icon = icon;
                         setIconColor(icon);
                         menuItem.setIcon(icon);
@@ -151,7 +145,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     private void loadIcon(ImageLoader.ImagesLoadingListener callback) {
-        imageLoader.loadIcons(getActivity(), Collections.singletonList(button.icon.get()), callback);
+        navigationIconResolver.resolve(button, callback::onComplete);
     }
 
     private void setIconColor(Drawable icon) {
