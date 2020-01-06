@@ -39,6 +39,7 @@ class NavigationScreen  extends React.Component {
         <Button label='Static Events' testID={SHOW_STATIC_EVENTS_SCREEN} onPress={this.pushStaticEventsScreen} />
         <Button label='Orientation' testID={SHOW_ORIENTATION_SCREEN} onPress={this.orientation} />
         <Button label='React Context API' onPress={this.pushContextScreen} />
+        {false && <Button label='Shared Element' onPress={this.sharedElement} />}
         <Navigation.TouchablePreview
           touchableComponent={Button}
           onPressIn={this.preview}
@@ -54,6 +55,7 @@ class NavigationScreen  extends React.Component {
   pushStaticEventsScreen = () => Navigation.showModal(Screens.EventsScreen)
   orientation = () => Navigation.showModal(Screens.Orientation);
   pushContextScreen = () => Navigation.push(this, Screens.ContextScreen);
+  sharedElement = () => Navigation.showModal(Screens.CocktailsListScreen)
   preview = ({reactTag}) => {
     Navigation.push(this.props.componentId, {
       component: {

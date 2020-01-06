@@ -64,6 +64,12 @@ public class BottomTabs extends AHBottomNavigation {
         if (getTitleState() != titleState) super.setTitleState(titleState);
     }
 
+    @Override
+    public void setBackgroundColor(int color) {
+        super.setBackgroundColor(color);
+        if (getDefaultBackgroundColor() != color) setDefaultBackgroundColor(color);
+    }
+
     public void setText(int index, String text) {
         AHBottomNavigationItem item = getItem(index);
         if (!item.getTitle(getContext()).equals(text)) {

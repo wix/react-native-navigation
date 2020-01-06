@@ -14,10 +14,6 @@ public interface IReactView extends Destroyable {
 
     View asView();
 
-    void sendComponentStart();
-
-    void sendComponentStop();
-
     void sendOnNavigationButtonPressed(String buttonId);
 
     ScrollEventListener getScrollEventListener();

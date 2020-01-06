@@ -481,6 +481,12 @@ export interface OptionsBottomTabs {
    */
   animate?: boolean;
   /**
+   * Use large icons when possible, even when three tabs without titles are displayed
+   * #### (android specific)
+   * @default false
+   */
+  preferLargeIcons?: boolean;
+  /**
    * Switch to another screen within the bottom tabs via index (starting from 0)
    */
   currentTabIndex?: number;
@@ -543,6 +549,8 @@ export interface DotIndicatorOptions {
     visible?: boolean;
 }
 
+export type ImageResource = string;
+
 export interface OptionsBottomTab {
     dotIndicator?: DotIndicatorOptions;
 
@@ -564,8 +572,9 @@ export interface OptionsBottomTab {
   testID?: string;
   /**
    * Set the tab icon
+   * Note: On Android `icon` is required
    */
-  icon: ImageRequireSource;
+  icon?: ImageRequireSource | ImageResource;
   /**
    * Set the icon tint
    */
@@ -639,6 +648,12 @@ export interface SideMenuSide {
    * Set the height of the side menu
    */
   height?: number;
+  /**
+   * Stretch sideMenu contents when opened past the width
+   * #### (iOS specific)
+   * @default true
+   */
+  shouldStretchDrawer?: boolean;
 }
 
 export interface OptionsSideMenu {
@@ -668,6 +683,14 @@ export interface OverlayOptions {
    * Set this to true if your Overlay contains a TextInput.
    */
   handleKeyboardEvents?: boolean;
+}
+
+export interface ModalOptions {
+  /**
+   * Control wether this modal should be dismiss using swipe gesture when the modalPresentationStyle = 'pageSheet'
+   * #### (iOS specific)
+   */
+  swipeToDismiss?: boolean;
 }
 
 export interface OptionsPreviewAction {
@@ -948,6 +971,10 @@ export interface Options {
    * Configure the overlay
    */
   overlay?: OverlayOptions;
+  /**
+   * Configure the modal
+   */
+  modal?: ModalOptions;
   /**
    * Animation used for navigation commands that modify the layout
    * hierarchy can be controlled in options.

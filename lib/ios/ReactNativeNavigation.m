@@ -67,17 +67,7 @@
 
 - (UIWindow *)initializeKeyWindow {
 	UIWindow* keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	if (@available(iOS 13.0, *)) {
-#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
-		keyWindow.backgroundColor = [UIColor systemBackgroundColor];
-#else
-		keyWindow.backgroundColor = [UIColor whiteColor];
-#endif
-	} else {
-		keyWindow.backgroundColor = [UIColor whiteColor];
-	}
 	UIApplication.sharedApplication.delegate.window = keyWindow;
-	
 	return keyWindow;
 }
 

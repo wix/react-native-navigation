@@ -4,15 +4,13 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @interface RNNBasePresenter : NSObject
 
-@property(nonatomic, weak) id boundViewController;
+@property(nonatomic, weak, setter=bindViewController:) UIViewController* boundViewController;
 
 @property(nonatomic, strong) NSString *boundComponentId;
 
 @property(nonatomic, strong) RNNNavigationOptions * defaultOptions;
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
-
-- (void)boundViewController:(UIViewController *)boundViewController;
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
@@ -31,6 +29,10 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
 - (void)viewDidLayoutSubviews;
+
+- (void)componentDidAppear;
+
+- (void)componentDidDisappear;
 
 - (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions;
 

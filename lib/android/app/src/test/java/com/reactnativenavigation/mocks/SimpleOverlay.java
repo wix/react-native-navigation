@@ -37,16 +37,6 @@ public class SimpleOverlay extends RelativeLayout implements IReactView {
     }
 
     @Override
-    public void sendComponentStart() {
-
-    }
-
-    @Override
-    public void sendComponentStop() {
-
-    }
-
-    @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
 
     }

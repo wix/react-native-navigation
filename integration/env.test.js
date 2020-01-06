@@ -1,4 +1,5 @@
-const _ = require('lodash');
+const eq = require('lodash/eq');
+const isEqual = require('lodash/isEqual');
 
 describe('testing that the environment is working properly', () => {
   it('object spread', () => {
@@ -14,16 +15,16 @@ describe('testing that the environment is working properly', () => {
   });
 
   it('equality tests', () => {
-    expect(_.eq('hello', 'hello')).toBe(true);
-    expect(_.isEqual('hello', 'hello')).toBe(true);
+    expect(eq('hello', 'hello')).toBe(true);
+    expect(isEqual('hello', 'hello')).toBe(true);
 
-    expect(_.eq('hello', Object('hello'))).toBe(false);
-    expect(_.isEqual('hello', Object('hello'))).toBe(true);
+    expect(eq('hello', Object('hello'))).toBe(false);
+    expect(isEqual('hello', Object('hello'))).toBe(true);
 
     const a = {};
     const b = {};
 
-    expect(_.eq(a, b)).toBe(false);
-    expect(_.isEqual(a, b)).toBe(true);
+    expect(eq(a, b)).toBe(false);
+    expect(isEqual(a, b)).toBe(true);
   });
 });

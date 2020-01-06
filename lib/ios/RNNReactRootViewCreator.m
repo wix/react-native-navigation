@@ -4,35 +4,43 @@
 
 @implementation RNNReactRootViewCreator {
 	RCTBridge *_bridge;
+    RNNEventEmitter* _eventEmitter;
 }
 
-- (instancetype)initWithBridge:(RCTBridge*)bridge {
+- (instancetype)initWithBridge:(RCTBridge*)bridge eventEmitter:(RNNEventEmitter*)eventEmitter {
 	self = [super init];
-	
 	_bridge = bridge;
-	
+    _eventEmitter = eventEmitter;
 	return self;
 }
 
-- (RNNReactView*)createRootView:(NSString*)name rootViewId:(NSString*)rootViewId availableSize:(CGSize)availableSize reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-	if (!rootViewId) {
-		@throw [NSException exceptionWithName:@"MissingViewId" reason:@"Missing view id" userInfo:nil];
-	}
-	
-	RNNReactView *view = [[RNNReactView alloc] initWithBridge:_bridge
-												   moduleName:name
-											initialProperties:@{@"componentId": rootViewId}
-												availableSize:availableSize
-										  reactViewReadyBlock:reactViewReadyBlock];
-	return view;
+- (RNNReactView*)createRootView:(NSString*)name rootViewId:(NSString*)rootViewId ofType:(RNNComponentType)componentType reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+    [self verifyRootViewId:rootViewId];
+    return [[[self resolveComponentViewClass:componentType] alloc] initWithBridge:_bridge
+             moduleName:name
+      initialProperties:@{@"componentId": rootViewId}
+           eventEmitter:_eventEmitter
+    reactViewReadyBlock:reactViewReadyBlock];
 }
 
-- (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions {
-	return [self createRootView:componentOptions.name.get rootViewId:componentOptions.componentId.get availableSize:CGSizeZero reactViewReadyBlock:nil];
+- (Class)resolveComponentViewClass:(RNNComponentType)componentType {
+    switch (componentType) {
+        case RNNComponentTypeTopBarTitle:
+            return RNNReactTitleView.class;
+        case RNNComponentTypeTopBarButton:
+            return RNNReactButtonView.class;
+        case RNNComponentTypeTopBarBackground:
+            return RNNReactBackgroundView.class;
+        case RNNComponentTypeComponent:
+        default:
+            return RNNReactView.class;
+    }
 }
 
-- (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-	return [self createRootView:componentOptions.name.get rootViewId:componentOptions.componentId.get availableSize:CGSizeZero reactViewReadyBlock:reactViewReadyBlock];
+- (void)verifyRootViewId:(NSString *)rootViewId {
+    if (!rootViewId) {
+        @throw [NSException exceptionWithName:@"MissingViewId" reason:@"Missing view id" userInfo:nil];
+    }
 }
 
 @end

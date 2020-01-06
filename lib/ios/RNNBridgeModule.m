@@ -102,7 +102,7 @@ RCT_EXPORT_METHOD(getLaunchArgs:(NSString*)commandId :(RCTPromiseResolveBlock)re
 	resolve(args);
 }
 
-RCT_EXPORT_METHOD(getConstants:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getNavigationConstants:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
 	resolve([Constants getConstants]);
 }
 

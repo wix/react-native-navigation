@@ -1,9 +1,9 @@
 package com.reactnativenavigation.utils;
 
-import androidx.annotation.Nullable;
-
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.Functions.FuncR1;
+
+import androidx.annotation.Nullable;
 
 public class ObjectUtils {
     public static <T> void perform(@Nullable T obj, Func1<T> action) {

@@ -60,7 +60,7 @@ class StaticLifecycleOverlay extends Component {
     } else if (event.commandName) {
       return <Text style={styles.h2}>{`${event.commandName}`}</Text>;
     } else if (event.componentName) {
-      return <Text style={styles.h2}>{`${event.event} | ${event.componentName}`}</Text>;
+      return <Text style={styles.h2}>{`${event.event} | ${event.componentName} | ${event.componentType}`}</Text>;
     } else if (event.buttonId) {
       return <Text style={styles.h2}>{`${event.event} | ${event.buttonId}`}</Text>;
     } else {
@@ -82,6 +82,7 @@ class StaticLifecycleOverlay extends Component {
           {events}
         </View>
         {this.renderDismissButton()}
+        {this.renderClearButton()}
       </View>
     );
   }
@@ -93,6 +94,17 @@ class StaticLifecycleOverlay extends Component {
         onPress={() => Navigation.dismissOverlay(this.props.componentId)}
       >
         <Text testID={TestIDs.DISMISS_BTN} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  renderClearButton = () => {
+    return (
+      <TouchableOpacity
+        style={styles.clearBtn}
+        onPress={() => this.setState({events: []})}
+      >
+        <Text testID={TestIDs.CLEAR_OVERLAY_EVENTS_BTN} style={{ color: 'red', alignSelf: 'center' }}>Clear</Text>
       </TouchableOpacity>
     );
   }
@@ -111,6 +123,14 @@ const styles = {
   },
   dismissBtn: {
     position: 'absolute',
+    width: 35,
+    height: 35,
+    backgroundColor: 'white',
+    justifyContent: 'center'
+  },
+  clearBtn: {
+    position: 'absolute',
+    right: 0,
     width: 35,
     height: 35,
     backgroundColor: 'white',

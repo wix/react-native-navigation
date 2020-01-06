@@ -12,21 +12,13 @@
 
 - (void)hideBarsOnScroll:(BOOL)hideOnScroll;
 
-- (void)setNavigationBarNoBorder:(BOOL)noBorder;
-
 - (void)setBarStyle:(UIBarStyle)barStyle;
-
-- (void)setNavigationBarFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color;
-
-- (void)setNavigationBarTranslucent:(BOOL)translucent;
 
 - (void)setNavigationBarBlur:(BOOL)blur;
 
 - (void)setNavigationBarClipsToBounds:(BOOL)clipsToBounds;
 
 - (void)setNavigationBarLargeTitleVisible:(BOOL)visible;
-
-- (void)setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color;
 
 - (void)setBackButtonColor:(UIColor *)color;
 

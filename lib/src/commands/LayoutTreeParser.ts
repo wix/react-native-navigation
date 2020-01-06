@@ -2,7 +2,7 @@ import { LayoutType } from './LayoutType';
 import { LayoutNode } from './LayoutTreeCrawler';
 import {
   Layout,
-  TopTabs,
+  LayoutTopTabs,
   LayoutComponent,
   LayoutStack,
   LayoutBottomTabs,
@@ -36,7 +36,7 @@ export class LayoutTreeParser {
     throw new Error(`unknown LayoutType "${Object.keys(api)}"`);
   }
 
-  private topTabs(api: TopTabs): LayoutNode {
+  private topTabs(api: LayoutTopTabs): LayoutNode {
     return {
       id: api.id || this.uniqueIdProvider.generate(LayoutType.TopTabs),
       type: LayoutType.TopTabs,
@@ -103,7 +103,11 @@ export class LayoutTreeParser {
     return {
       id: api.id || this.uniqueIdProvider.generate(LayoutType.Component),
       type: LayoutType.Component,
-      data: { name: api.name.toString(), options: api.options, passProps: api.passProps },
+      data: {
+        name: api.name.toString(),
+        options: api.options,
+        passProps: api.passProps
+      },
       children: []
     };
   }
@@ -112,7 +116,11 @@ export class LayoutTreeParser {
     return {
       id: api.id || this.uniqueIdProvider.generate(LayoutType.ExternalComponent),
       type: LayoutType.ExternalComponent,
-      data: { name: api.name.toString(), options: api.options, passProps: api.passProps },
+      data: {
+        name: api.name.toString(),
+        options: api.options,
+        passProps: api.passProps
+      },
       children: []
     };
   }

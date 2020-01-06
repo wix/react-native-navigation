@@ -18,4 +18,11 @@
     UIView *tab = [self getTabView:tabIndex];
     return [tab findChildByClass:[UIImageView class]];
 }
+
+- (NSArray *)deselectedViewControllers {
+    NSMutableArray* childViewControllers = [NSMutableArray arrayWithArray:self.childViewControllers];
+    [childViewControllers removeObject:self.selectedViewController];
+    return [NSArray arrayWithArray:childViewControllers];
+}
+
 @end

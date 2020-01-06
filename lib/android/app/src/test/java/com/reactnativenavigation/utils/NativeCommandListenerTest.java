@@ -2,7 +2,7 @@ package com.reactnativenavigation.utils;
 
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.EventEmitter;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class NativeCommandListenerTest extends BaseTest {
+    private static final String COMMAND_NAME = "someCommandName";
     private static final String COMMAND_ID = "someCommand";
     private static final String CHILD_ID = "someChild";
     private static final long NOW = 1535374334;
@@ -27,7 +28,7 @@ public class NativeCommandListenerTest extends BaseTest {
     public void beforeEach() {
         promise = Mockito.mock(Promise.class);
         eventEmitter = Mockito.mock(EventEmitter.class);
-        uut = new NativeCommandListener(COMMAND_ID, promise, eventEmitter, mockNow());
+        uut = new NativeCommandListener(COMMAND_NAME, COMMAND_ID, promise, eventEmitter, mockNow());
     }
 
     @Test
@@ -39,7 +40,7 @@ public class NativeCommandListenerTest extends BaseTest {
     @Test
     public void onSuccess_emitsNavigationEvent() {
         uut.onSuccess(CHILD_ID);
-        verify(eventEmitter, times(1)).emitCommandCompleted(COMMAND_ID, NOW);
+        verify(eventEmitter, times(1)).emitCommandCompleted(COMMAND_NAME, COMMAND_ID, NOW);
     }
 
     @Test

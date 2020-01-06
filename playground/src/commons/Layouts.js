@@ -1,4 +1,5 @@
-const { isString, isArray } = require('lodash');
+const isString = require('lodash/isString');
+const isArray = require('lodash/isArray');
 
 const stack = (rawChildren, id) => {
   const childrenArray = isArray(rawChildren) ? rawChildren : [rawChildren];

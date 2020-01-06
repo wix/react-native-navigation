@@ -1,14 +1,18 @@
+export type ComponentType = 'Component' | 'TopBarTitle' | 'TopBarBackground' | 'TopBarButton';
+
 export interface ComponentEvent {
   componentId: string;
 }
 
 export interface ComponentDidAppearEvent extends ComponentEvent {
   componentName: string;
-  passProps?: object
+  passProps?: object;
+  componentType: ComponentType;
 }
 
 export interface ComponentDidDisappearEvent extends ComponentEvent {
   componentName: string;
+  componentType: ComponentType;
 }
 
 export interface NavigationButtonPressedEvent extends ComponentEvent {
@@ -17,6 +21,7 @@ export interface NavigationButtonPressedEvent extends ComponentEvent {
 
 export interface ModalDismissedEvent extends ComponentEvent {
   componentId: string;
+  modalsDismissed: number;
 }
 
 export interface SearchBarUpdatedEvent extends ComponentEvent {
@@ -31,4 +36,8 @@ export interface SearchBarCancelPressedEvent extends ComponentEvent {
 export interface PreviewCompletedEvent extends ComponentEvent {
   componentName?: string;
   previewComponentId?: string;
+}
+
+export interface ScreenPoppedEvent extends ComponentEvent {
+  componentId: string;
 }
