@@ -540,6 +540,15 @@ statusBar: {
 }
 ```
 
+## navigationBarColor
+NavigationBar color
+
+```js
+navigationBar: {
+  backgroundColor: 'red'
+}
+```
+
 ## drawUnderStatusBar
 Draw content behind the StatusBar
 
@@ -603,7 +612,6 @@ topBar: {
 * topBarShadowOffset
 * topBarShadowRadius
 * preferredContentSize
-* navigationBarColor
 * navBarSubTitleTextCentered
 * collapsingToolBarImage
 * collapsingToolBarCollapsedColor

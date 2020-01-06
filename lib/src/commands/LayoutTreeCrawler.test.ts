@@ -34,7 +34,7 @@ describe('LayoutTreeCrawler', () => {
       data: {}
     };
     uut.crawl(node);
-    verify(mockedStore.setPropsForId('testId', deepEqual({ myProp: 123 }))).called();
+    verify(mockedStore.updateProps('testId', deepEqual({ myProp: 123 }))).called();
   });
 
   it('Components: injects options from original component class static property', () => {

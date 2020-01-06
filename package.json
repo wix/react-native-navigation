@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "3.2.0",
+  "version": "3.5.1",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -20,6 +20,7 @@
   "typings": "lib/dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./lib/dist && tsc",
+    "watch": "rm -rf ./lib/dist && tsc --watch",
     "xcode": "open playground/ios/playground.xcodeproj",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
@@ -54,7 +55,8 @@
     "tslib": "1.9.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
+    "@babel/core": "7.6.4",
+    "@babel/types": "7.6.x",
     "@babel/plugin-proposal-export-default-from": "7.2.0",
     "@babel/plugin-proposal-export-namespace-from": "7.2.0",
     "@types/hoist-non-react-statics": "^3.0.1",

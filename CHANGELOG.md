@@ -1,4 +1,22 @@
 # Changelog
+# 3.3.0
+## Added
+* **[experimental]** Support updating component props with Navigation.mergeOptions [#291f161](https://github.com/wix/react-native-navigation/commit/291f16177d2f67a474d3a980a503a85d0acf2b2a) by [justtal](https://github.com/justtal)
+### Android
+* Add support for getLaunchArgs [#16646e7](https://github.com/wix/react-native-navigation/commit/16646e7c88d78f1ddd7fb6ae434ef968ac051f06) by [swabbass](https://github.com/swabbass)
+* Support bottomTab.selectedIcon [#45e8389](https://github.com/wix/react-native-navigation/commit/45e8389b2b7d282878a80c49b146ddeb4ec2cd89) by [guyca](https://github.com/guyca)
+### iOS
+* Added fontWeight option for iOS 13 [#6ab2345](https://github.com/wix/react-native-navigation/commit/6ab2345ad6e9ddd26ac1275537ec2791fa50c7c2) by [yogevbd](https://github.com/yogevbd)
+
+## Fixed
+### Android
+* Merge options with ParentViewControllers [#0dd3315](https://github.com/wix/react-native-navigation/commit/0dd331590770c33d067bfeae596aae7d4ff992ea) by [guyca](https://github.com/guyca)
+### iOS
+* Prefer new imageWithTintColor API when tinting an UIImage [#5d751f6](https://github.com/wix/react-native-navigation/commit/5d751f643ad80a67abccc51d75f1127e2b65824a) by [danilobuerger](https://github.com/danilobuerger)
+* Fixed disappearing StatusBar when displaying native ViewControllers [#58c76e1](https://github.com/wix/react-native-navigation/commit/58c76e1ec218741b461bca30e8126e952b87a180) by [yogevbd](https://github.com/yogevbd)
+* Fixed title layout issues on iOS 13 [#898e187](https://github.com/wix/react-native-navigation/commit/898e187d4cbea76b93709c95ad89e984e660b904), [#a3f176d](https://github.com/wix/react-native-navigation/commit/a3f176d56e94e5a5de0be079de9f63b180dc6f5a), [#094b9a7](https://github.com/wix/react-native-navigation/commit/094b9a7ef153d62ea9c195e342cafca4892c1428) by [yogevbd](https://github.com/yogevbd)
+* Fixed leaking pageSheet modals on iOS 13 [#2b4d897](https://github.com/wix/react-native-navigation/commit/2b4d897f19684e2c04c3050c3882f1558cb1efed) by [yogevbd](https://github.com/yogevbd)
+
 # 3.2.0
 ## Added
 ### Android
@@ -100,15 +118,28 @@ Add the following to your application's `style.xml`
       <item name="backgroundColor" type="color">#f00</item>
   </resources>
   ```
+# 2.29.0
+## Added
+* Introduce `Navigation.updateProps` command [#0eb0570](https://github.com/wix/react-native-navigation/commit/0eb0570840a26d4b848d7c763060a2b8faf1dc80) by [guyca](https://github.com/guyca)
+## Fixed
+### iOS
+* Fix compilation error on Xcode 10.x [#99ddcd8](https://github.com/wix/react-native-navigation/commit/99ddcd864005ce768ca7c0b34d2ecfa8246dc568) and [#83f03cd](https://github.com/wix/react-native-navigation/commit/83f03cd8f945152cda93c664d69bf36047989571) by [yogevbd](https://github.com/yogevbd)
+### Android
+* Don't merge null bottomTab.selectedIconColor and bottomTab.iconColor [#c48ed74](https://github.com/wix/react-native-navigation/commit/c48ed747a163a2917820e62ab40d5047389f5fcb) by [guyca](https://github.com/guyca)
+# 2.28.0
+## Added
+* Support updating component props with Navigation.mergeOptions [#291f161](https://github.com/wix/react-native-navigation/commit/291f16177d2f67a474d3a980a503a85d0acf2b2a) by [justtal](https://github.com/justtal)
+### Android
+* Support bottomTab.selectedIcon [#45e8389](https://github.com/wix/react-native-navigation/commit/45e8389b2b7d282878a80c49b146ddeb4ec2cd89) by [guyca](https://github.com/guyca)
 # 2.27.7
 ## Added
 ### iOS
-* Font weight option support on iOS [#f283e15](https://github.com/wix/react-native-navigation/commit/f283e155948c0ae190c1dde0fb3d78d5ac129af0) by [yogevbd]
+* Font weight option support on iOS [#f283e15](https://github.com/wix/react-native-navigation/commit/f283e155948c0ae190c1dde0fb3d78d5ac129af0) by [yogevbd](https://github.com/yogevbd)
 
 # 2.27.6
 ## Fixed
 ### iOS
-* Fix status bar disappear when presenting native camera screen on iOS [#6cfde5e](https://github.com/wix/react-native-navigation/commit/6cfde5e24c95506b6d31b2f40164fa3f196b72a6) by [yogevbd]
+* Fix status bar disappear when presenting native camera screen on iOS [#6cfde5e](https://github.com/wix/react-native-navigation/commit/6cfde5e24c95506b6d31b2f40164fa3f196b72a6) by [yogevbd](https://github.com/yogevbd)
 
 # 2.27.5
 ## Fixed
