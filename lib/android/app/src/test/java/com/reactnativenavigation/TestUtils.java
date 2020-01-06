@@ -12,11 +12,12 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
@@ -38,7 +39,7 @@ public class TestUtils {
                 .setId("stack")
                 .setChildRegistry(new ChildControllersRegistry())
                 .setTopBarController(topBarController)
-                .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new RenderChecker(), new Options()))
+                .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new IconResolver(activity, new ImageLoader()), new RenderChecker(), new Options()))
                 .setInitialOptions(new Options());
     }
 

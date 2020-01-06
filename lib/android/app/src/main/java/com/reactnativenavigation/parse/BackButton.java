@@ -65,4 +65,9 @@ public class BackButton extends Button {
         visible = new Bool(true);
         hasValue = true;
     }
+
+    public void setHidden() {
+        visible = new Bool(false);
+        hasValue = true;
+    }
 }

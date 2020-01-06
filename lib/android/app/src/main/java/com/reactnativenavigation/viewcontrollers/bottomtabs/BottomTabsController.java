@@ -12,7 +12,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;

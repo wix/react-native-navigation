@@ -1,8 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
@@ -10,7 +8,8 @@ import com.reactnativenavigation.parse.ExternalComponent;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.ExternalComponentPresenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.ComponentType;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.FragmentCreatorMock;
 import com.reactnativenavigation.views.ExternalComponentLayout;
@@ -18,6 +17,9 @@ import com.reactnativenavigation.views.ExternalComponentLayout;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.FragmentActivity;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -66,13 +68,13 @@ public class ExternalComponentViewControllerTest extends BaseTest {
     @Test
     public void onViewAppeared_appearEventIsEmitted() {
         uut.onViewAppeared();
-        verify(emitter).emitComponentDidAppear(uut.getId(), ec.name.get());
+        verify(emitter).emitComponentDidAppear(uut.getId(), ec.name.get(), ComponentType.Component);
     }
 
     @Test
     public void onViewDisappear_disappearEventIsEmitted() {
         uut.onViewDisappear();
-        verify(emitter).emitComponentDidDisappear(uut.getId(), ec.name.get());
+        verify(emitter).emitComponentDidDisappear(uut.getId(), ec.name.get(), ComponentType.Component);
     }
 
     private ExternalComponent createExternalComponent() {

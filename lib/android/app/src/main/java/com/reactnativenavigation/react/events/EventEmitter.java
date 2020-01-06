@@ -1,4 +1,4 @@
-package com.reactnativenavigation.react;
+package com.reactnativenavigation.react.events;
 
 import android.util.Log;
 
@@ -28,20 +28,22 @@ public class EventEmitter {
     }
 
     public void appLaunched() {
-        emit(AppLaunched);
+        emit(EventEmitter.AppLaunched, Arguments.createMap());
     }
 
-    public void emitComponentDidDisappear(String id, String componentName) {
+    public void emitComponentDidDisappear(String id, String componentName, ComponentType type) {
         WritableMap event = Arguments.createMap();
         event.putString("componentId", id);
         event.putString("componentName", componentName);
+        event.putString("componentType", type.getName());
         emit(ComponentDidDisappear, event);
     }
 
-    public void emitComponentDidAppear(String id, String componentName) {
+    public void emitComponentDidAppear(String id, String componentName, ComponentType type) {
         WritableMap event = Arguments.createMap();
         event.putString("componentId", id);
         event.putString("componentName", componentName);
+        event.putString("componentType", type.getName());
         emit(ComponentDidAppear, event);
     }
 
@@ -78,10 +80,6 @@ public class EventEmitter {
         WritableMap event = Arguments.createMap();
         event.putString("componentId", componentId);
         emit(ScreenPopped, event);
-    }
-
-    private void emit(String eventName) {
-        emit(eventName, Arguments.createMap());
     }
 
     private void emit(String eventName, WritableMap data) {

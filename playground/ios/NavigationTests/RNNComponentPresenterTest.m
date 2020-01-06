@@ -170,7 +170,7 @@
 	[[(id)self.componentRegistry expect] createComponentIfNotExists:[OCMArg checkWithBlock:^BOOL(RNNComponentOptions* options) {
 		return [options.name.get isEqual:@"titleComponent"] &&
 		[options.componentId.get isEqual:@"id"];
-	}] parentComponentId:self.uut.boundComponentId reactViewReadyBlock:[OCMArg any]];
+	}] parentComponentId:self.uut.boundComponentId componentType:RNNComponentTypeTopBarTitle reactViewReadyBlock:[OCMArg any]];
 	[self.uut renderComponents:self.options perform:nil];
 	[(id)self.componentRegistry verify];
 	
@@ -189,7 +189,7 @@
 	[[(id)self.componentRegistry expect] createComponentIfNotExists:[OCMArg checkWithBlock:^BOOL(RNNComponentOptions* options) {
 		return [options.name.get isEqual:@"titleComponent"] &&
 		[options.componentId.get isEqual:@"id"];
-	}] parentComponentId:self.uut.boundComponentId reactViewReadyBlock:[OCMArg any]];
+	}] parentComponentId:self.uut.boundComponentId componentType:RNNComponentTypeTopBarTitle reactViewReadyBlock:[OCMArg any]];
 	[self.uut renderComponents:self.options perform:nil];
 	[(id)self.componentRegistry verify];
 	
@@ -198,8 +198,8 @@
 }
 
 - (void)testRemoveTitleComponentIfNeeded_componentIsRemovedIfTitleTextIsDefined {
-	id mockTitle = [OCMockObject niceMockForClass:[RNNReactView class]];
-    OCMStub([self.componentRegistry createComponentIfNotExists:[OCMArg any] parentComponentId:[OCMArg any] reactViewReadyBlock:nil]).andReturn(mockTitle);
+	id mockTitle = [OCMockObject niceMockForClass:[RNNReactTitleView class]];
+    OCMStub([self.componentRegistry createComponentIfNotExists:[OCMArg any] parentComponentId:[OCMArg any] componentType:RNNComponentTypeTopBarTitle reactViewReadyBlock:nil]).andReturn(mockTitle);
 
 	RNNComponentOptions* component = [RNNComponentOptions new];
 	component.name = [[Text alloc] initWithValue:@"componentName"];
@@ -219,8 +219,8 @@
 }
 
 - (void)testRemoveTitleComponentIfNeeded_componentIsNotRemovedIfMergeOptionsIsCalledWithoutTitleText {
-    id mockTitle = [OCMockObject niceMockForClass:[RNNReactView class]];
-    OCMStub([self.componentRegistry createComponentIfNotExists:[OCMArg any] parentComponentId:[OCMArg any] reactViewReadyBlock:nil]).andReturn(mockTitle);
+    id mockTitle = [OCMockObject niceMockForClass:[RNNReactTitleView class]];
+    OCMStub([self.componentRegistry createComponentIfNotExists:[OCMArg any] parentComponentId:[OCMArg any]  componentType:RNNComponentTypeTopBarTitle reactViewReadyBlock:nil]).andReturn(mockTitle);
 
     RNNComponentOptions* component = [RNNComponentOptions new];
     component.name = [[Text alloc] initWithValue:@"componentName"];

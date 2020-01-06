@@ -148,7 +148,7 @@ describe('ComponentEventsObserver', () => {
     expect(tree.toJSON()).toBeDefined();
     expect(didAppearFn).not.toHaveBeenCalled();
 
-    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).toHaveBeenCalledTimes(1);
   });
 
@@ -158,11 +158,11 @@ describe('ComponentEventsObserver', () => {
 
     expect(tree.toJSON()).toBeDefined();
     
-    uut.notifyComponentDidAppear({ componentId: 'dontUseThisId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'dontUseThisId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).not.toHaveBeenCalled();
     
 
-    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).toHaveBeenCalledTimes(1);
   });
 
@@ -174,10 +174,10 @@ describe('ComponentEventsObserver', () => {
     expect(didDisappearFn).not.toHaveBeenCalled();
     expect(willUnmountFn).not.toHaveBeenCalled();
 
-    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).toHaveBeenCalledTimes(1);
 
-    uut.notifyComponentDidDisappear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidDisappear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didDisappearFn).toHaveBeenCalledTimes(1);
 
     uut.notifyNavigationButtonPressed({ componentId: 'myCompId', buttonId: 'myButtonId' });
@@ -211,6 +211,7 @@ describe('ComponentEventsObserver', () => {
   it(`componentDidAppear should receive component props from store`, () => {
     const event = {
       componentId: 'myCompId',
+      componentType: 'Component',
       passProps: {
         propA: 'propA'
       },
@@ -220,14 +221,14 @@ describe('ComponentEventsObserver', () => {
     mockStore.updateProps(event.componentId, event.passProps)
     expect(didAppearFn).not.toHaveBeenCalled();
 
-    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).toHaveBeenCalledTimes(1);
     expect(didAppearFn).toHaveBeenCalledWith(event);
   });
 
   it(`doesnt call other componentIds`, () => {
     renderer.create(<BoundScreen componentId={'myCompId'} />);
-    uut.notifyComponentDidAppear({ componentId: 'other', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'other', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).not.toHaveBeenCalled();
   });
 
@@ -235,18 +236,18 @@ describe('ComponentEventsObserver', () => {
     const tree = renderer.create(<SimpleScreen componentId={'myCompId'} />);
     expect((tree.getInstance() as any).componentDidAppear).toBeUndefined();
     uut.bindComponent(tree.getInstance() as any);
-    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
   });
 
   it(`returns unregister fn`, () => {
     renderer.create(<BoundScreen componentId={'123'} />);
 
-    uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).toHaveBeenCalledTimes(1);
 
     subscription.remove();
 
-    uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).toHaveBeenCalledTimes(1);
   });
 
@@ -256,7 +257,7 @@ describe('ComponentEventsObserver', () => {
 
     uut.unmounted('123');
 
-    uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).not.toHaveBeenCalled();
   });
 
@@ -272,20 +273,20 @@ describe('ComponentEventsObserver', () => {
     const result2 = uut.bindComponent(instance2);
     expect(result1).not.toEqual(result2);
 
-    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
 
     expect(instance1.componentDidAppear).toHaveBeenCalledTimes(1);
     expect(instance2.componentDidAppear).toHaveBeenCalledTimes(1);
 
     result2.remove();
 
-    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(instance1.componentDidAppear).toHaveBeenCalledTimes(2);
     expect(instance2.componentDidAppear).toHaveBeenCalledTimes(1);
 
     result1.remove();
 
-    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(instance1.componentDidAppear).toHaveBeenCalledTimes(2);
     expect(instance2.componentDidAppear).toHaveBeenCalledTimes(1);
   });

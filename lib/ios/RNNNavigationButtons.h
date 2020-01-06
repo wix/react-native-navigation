@@ -10,6 +10,10 @@
 
 -(void)applyLeftButtons:(NSArray*)leftButtons rightButtons:(NSArray*)rightButtons defaultLeftButtonStyle:(RNNButtonOptions *)defaultLeftButtonStyle defaultRightButtonStyle:(RNNButtonOptions *)defaultRightButtonStyle;
 
+- (void)componentDidAppear;
+
+- (void)componentDidDisappear;
+
 @end
 
 

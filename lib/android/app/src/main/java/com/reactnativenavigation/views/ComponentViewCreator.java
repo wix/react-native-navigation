@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.react.ReactComponentViewCreator;
+import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 
@@ -17,7 +18,7 @@ public class ComponentViewCreator implements ReactViewCreator {
 
 	@Override
 	public IReactView create(Activity activity, String componentId, String componentName) {
-        IReactView reactView = new ReactComponentViewCreator(instanceManager).create(activity, componentId, componentName);
+        ReactView reactView = new ReactComponentViewCreator(instanceManager).create(activity, componentId, componentName);
         return new ComponentLayout(activity, reactView);
 	}
 }
