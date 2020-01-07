@@ -35,7 +35,7 @@ class NavigationScreen extends React.Component {
       <Root componentId={this.props.componentId}>
         <Button label='Set Root' testID={SET_ROOT_BTN} onPress={this.setRoot} />
         <Button label='Modal' testID={MODAL_BTN} onPress={this.showModal} />
-        {Platform.OS === 'ios' && <Button label='PageShett modal' testID={MODAL_BTN} onPress={this.showPageSheetModal} />}
+        {Platform.OS === 'ios' && <Button label='PageSheet modal' testID={MODAL_BTN} onPress={this.showPageSheetModal} />}
         <Button label='Overlay' testID={OVERLAY_BTN} onPress={this.showOverlay} />
         <Button label='External Component' testID={EXTERNAL_COMP_BTN} onPress={this.externalComponent} />
         <Button label='Static Events' testID={SHOW_STATIC_EVENTS_SCREEN} onPress={this.pushStaticEventsScreen} />
