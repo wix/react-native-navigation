@@ -24,6 +24,10 @@ export interface ModalDismissedEvent extends ComponentEvent {
   modalsDismissed: number;
 }
 
+export interface ModalAttemptedToDismissEvent extends ComponentEvent {
+  componentId: string;
+}
+
 export interface SearchBarUpdatedEvent extends ComponentEvent {
   text: string;
   isFocused: boolean;

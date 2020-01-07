@@ -103,6 +103,7 @@
 	[skipMethods addObject:@"readyToReceiveCommands"];
 	[skipMethods addObject:@".cxx_destruct"];
 	[skipMethods addObject:@"dismissedModal:"];
+	[skipMethods addObject:@"attemptedToDismissModal:"];
 	[skipMethods addObject:@"dismissedMultipleModals:"];
 	
 	NSMutableArray* result = [NSMutableArray new];

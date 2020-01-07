@@ -12,7 +12,8 @@ import {
   SearchBarCancelPressedEvent,
   PreviewCompletedEvent,
   ModalDismissedEvent,
-  ScreenPoppedEvent
+  ScreenPoppedEvent,
+  ModalAttemptedToDismissEvent
 } from '../interfaces/ComponentEvents';
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 
@@ -45,6 +46,10 @@ export class EventsRegistry {
 
   public registerModalDismissedListener(callback: (event: ModalDismissedEvent) => void): EmitterSubscription {
     return this.nativeEventsReceiver.registerModalDismissedListener(callback);
+  }
+
+  public registerModalAttemptedToDismissListener(callback: (event: ModalAttemptedToDismissEvent) => void): EmitterSubscription {
+    return this.nativeEventsReceiver.registerModalAttemptedToDismissListener(callback);
   }
 
   public registerSearchBarUpdatedListener(callback: (event: SearchBarUpdatedEvent) => void): EmitterSubscription {

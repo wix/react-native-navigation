@@ -68,6 +68,13 @@ describe('EventsRegistry', () => {
     expect(mockNativeEventsReceiver.registerModalDismissedListener).toHaveBeenCalledWith(cb);
   });
 
+  it('delegates modalAttemptedToDimiss to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerModalAttemptedToDismissListener(cb);
+    expect(mockNativeEventsReceiver.registerModalAttemptedToDismissListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerModalAttemptedToDismissListener).toHaveBeenCalledWith(cb);
+  });
+
   it('delegates searchBarUpdated to nativeEventsReceiver', () => {
     const cb = jest.fn();
     uut.registerSearchBarUpdatedListener(cb);

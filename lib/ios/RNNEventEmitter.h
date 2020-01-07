@@ -24,6 +24,8 @@
 
 - (void)sendModalsDismissedEvent:(NSString *)componentId numberOfModalsDismissed:(NSNumber *)modalsDismissed;
 
+- (void)sendModalAttemptedToDismissEvent:(NSString *)componentId;
+
 - (void)sendScreenPoppedEvent:(NSString *)componentId;
 
 

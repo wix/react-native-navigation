@@ -145,6 +145,22 @@ const modalDismissedListener = Navigation.events().registerModalDismissedListene
 modalDismissedListener.remove();
 ```
 
+## registerModalAttemptedToDismissListener
+Invoked only on iOS pageSheet modal when swipeToDismiss flag is set to true and modal swiped down to dismiss.
+
+```js
+// Subscribe
+const modalAttemptedToDismissListener = Navigation.events().registerModalAttemptedToDismissListener(({ componentId }) => {
+
+});
+...
+// Unsubscribe
+modalDismissedListener.remove();
+```
+|       Parameter         | Description |
+|:--------------------:|:-----|
+|**componentId** | Id of the modal tried to dismiss|
+
 ## registerScreenPoppedListener
 Invoked when screen is popped.
 

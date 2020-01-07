@@ -354,6 +354,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_eventEmitter sendModalsDismissedEvent:viewController.layoutInfo.componentId numberOfModalsDismissed:@(1)];
 }
 
+- (void)attemptedToDismissModal:(UIViewController *)viewController {
+    [_eventEmitter sendModalAttemptedToDismissEvent:viewController.layoutInfo.componentId];
+}
+
 - (void)dismissedMultipleModals:(NSArray *)viewControllers {
 	if (viewControllers && viewControllers.count) {
 		[_eventEmitter sendModalsDismissedEvent:((UIViewController *)viewControllers.lastObject).layoutInfo.componentId numberOfModalsDismissed:@(viewControllers.count)];

@@ -13,7 +13,8 @@ import {
   ComponentEvent,
   PreviewCompletedEvent,
   ModalDismissedEvent,
-  ScreenPoppedEvent
+  ScreenPoppedEvent,
+  ModalAttemptedToDismissEvent
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { Store } from '../components/Store';
@@ -32,6 +33,7 @@ export class ComponentEventsObserver {
     this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
     this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
     this.notifyModalDismissed = this.notifyModalDismissed.bind(this);
+    this.notifyModalAttemptedToDismiss = this.notifyModalAttemptedToDismiss.bind(this);
     this.notifySearchBarUpdated = this.notifySearchBarUpdated.bind(this);
     this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
     this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
@@ -45,6 +47,7 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
     this.nativeEventsReceiver.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);
     this.nativeEventsReceiver.registerModalDismissedListener(this.notifyModalDismissed);
+    this.nativeEventsReceiver.registerModalAttemptedToDismissListener(this.notifyModalAttemptedToDismiss);
     this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
     this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
     this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
@@ -85,6 +88,10 @@ export class ComponentEventsObserver {
 
   notifyModalDismissed(event: ModalDismissedEvent) {
     this.triggerOnAllListenersByComponentId(event, 'modalDismissed');
+  }
+
+  notifyModalAttemptedToDismiss(event: ModalAttemptedToDismissEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'modalAttemptedToDismiss');
   }
 
   notifySearchBarUpdated(event: SearchBarUpdatedEvent) {

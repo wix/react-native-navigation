@@ -15,6 +15,7 @@ static NSString* const ComponentDidAppear		= @"RNN.ComponentDidAppear";
 static NSString* const ComponentDidDisappear	= @"RNN.ComponentDidDisappear";
 static NSString* const NavigationButtonPressed	= @"RNN.NavigationButtonPressed";
 static NSString* const ModalDismissed	        = @"RNN.ModalDismissed";
+static NSString* const ModalAttemptedToDismiss  = @"RNN.ModalAttemptedToDismiss";
 static NSString* const SearchBarUpdated 		= @"RNN.SearchBarUpdated";
 static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
 static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
@@ -31,7 +32,8 @@ static NSString* const ScreenPopped             = @"RNN.ScreenPopped";
              SearchBarUpdated,
              SearchBarCancelPressed,
              PreviewCompleted,
-             ScreenPopped];
+             ScreenPopped,
+             ModalAttemptedToDismiss];
 }
 
 # pragma mark public
@@ -110,6 +112,12 @@ static NSString* const ScreenPopped             = @"RNN.ScreenPopped";
     [self send:ModalDismissed body:@{
         @"componentId": componentId,
         @"modalsDismissed": modalsDismissed
+    }];
+}
+
+- (void)sendModalAttemptedToDismissEvent:(NSString *)componentId {
+    [self send:ModalAttemptedToDismiss body:@{
+        @"componentId": componentId,
     }];
 }
 

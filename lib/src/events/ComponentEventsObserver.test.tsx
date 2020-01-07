@@ -18,6 +18,7 @@ describe('ComponentEventsObserver', () => {
   const searchBarCancelPressedFn = jest.fn();
   const previewCompletedFn = jest.fn();
   const modalDismissedFn = jest.fn();
+  const modalAttemptedToDismissFn = jest.fn();
   const screenPoppedFn = jest.fn();
   let subscription: EventSubscription;
   let uut: ComponentEventsObserver;
@@ -55,6 +56,10 @@ describe('ComponentEventsObserver', () => {
 
     modalDismissed(event: any) {
       modalDismissedFn(event);
+    }
+
+    modalAttemptedToDismiss(event: any) {
+      modalAttemptedToDismissFn(event);
     }
 
     searchBarUpdated(event: any) {
@@ -108,6 +113,10 @@ describe('ComponentEventsObserver', () => {
       modalDismissedFn(event);
     }
 
+    modalAttemptedToDismiss(event: any) {
+      modalAttemptedToDismissFn(event);
+    }
+
     searchBarUpdated(event: any) {
       searchBarUpdatedFn(event);
     }
@@ -153,14 +162,14 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`bindComponent should use optional componentId if component has a componentId in props`, () => {
-    const tree = renderer.create(<UnboundScreen  componentId={'doNotUseThisId'} />);
+    const tree = renderer.create(<UnboundScreen componentId={'doNotUseThisId'} />);
     uut.bindComponent(tree.getInstance() as any, 'myCompId')
 
     expect(tree.toJSON()).toBeDefined();
-    
+
     uut.notifyComponentDidAppear({ componentId: 'dontUseThisId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).not.toHaveBeenCalled();
-    
+
 
     uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
     expect(didAppearFn).toHaveBeenCalledTimes(1);
@@ -187,6 +196,10 @@ describe('ComponentEventsObserver', () => {
     uut.notifyModalDismissed({ componentId: 'myCompId', modalsDismissed: 1 });
     expect(modalDismissedFn).toHaveBeenCalledTimes(1);
     expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId', modalsDismissed: 1 })
+
+    uut.notifyModalAttemptedToDismiss({ componentId: 'myCompId' });
+    expect(modalAttemptedToDismissFn).toHaveBeenCalledTimes(1);
+    expect(modalAttemptedToDismissFn).toHaveBeenLastCalledWith({ componentId: 'myCompId' })
 
     uut.notifySearchBarUpdated({ componentId: 'myCompId', text: 'theText', isFocused: true });
     expect(searchBarUpdatedFn).toHaveBeenCalledTimes(1);
