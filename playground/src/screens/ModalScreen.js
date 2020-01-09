@@ -39,13 +39,7 @@ class ModalScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.navigationEventListener = Navigation.events().bindComponent(this);
-  }
-
-  componentWillUnmount() {
-    if (this.navigationEventListener) {
-      this.navigationEventListener.remove();
-    }
+    Navigation.events().bindComponent(this);
   }
 
   modalAttemptedToDismiss() {
