@@ -145,7 +145,7 @@ const modalDismissedListener = Navigation.events().registerModalDismissedListene
 modalDismissedListener.remove();
 ```
 
-## registerModalAttemptedToDismissListener
+## registerModalAttemptedToDismissListener(iOS 13+ only)
 Invoked only on iOS pageSheet modal when swipeToDismiss flag is set to true and modal swiped down to dismiss.
 
 ```js
