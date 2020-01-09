@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
@@ -68,7 +69,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
         bottomTabs = createBottomTabs();
         tabsAttacher.init(root, resolveCurrentOptions());
-        presenter.bindView(bottomTabs, this);
+        presenter.bindView(bottomTabs, this, new BottomTabsAnimator(bottomTabs));
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
@@ -98,7 +99,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public void mergeOptions(Options options) {
-        presenter.mergeOptions(options);
+        presenter.mergeOptions(options, this);
         tabPresenter.mergeOptions(options);
         super.mergeOptions(options);
         this.options.bottomTabsOptions.clearOneTimeOptions();
