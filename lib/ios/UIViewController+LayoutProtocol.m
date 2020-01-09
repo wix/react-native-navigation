@@ -80,11 +80,18 @@
 }
 
 - (UIViewController *)getCurrentChild {
+    for (UIViewController* childViewController in self.childViewControllers.reverseObjectEnumerator.allObjects) {
+        if (childViewController.layoutInfo) {
+            return childViewController;
+        }
+    }
+    
     return nil;
 }
 
 - (UIViewController *)presentedComponentViewController {
-    return self.getCurrentChild ? self.getCurrentChild.presentedComponentViewController : self;
+    UIViewController* currentChild = self.getCurrentChild;
+    return currentChild ? currentChild.presentedComponentViewController : self;
 }
 
 - (UIViewController *)topMostViewController {

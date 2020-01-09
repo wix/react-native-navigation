@@ -24,8 +24,8 @@
     [super setUp];
 	_eventEmitter = [OCMockObject niceMockForClass:[RNNEventEmitter class]];
 	_creator = [[RNNTestRootViewCreator alloc] init];
-	_vc1 = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] init]] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
-	_vc2 = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNComponentPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+	_vc1 = [[RNNComponentViewController alloc] initWithLayoutInfo:[RNNLayoutInfo new] rootViewCreator:nil eventEmitter:nil presenter:[OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] init]] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+	_vc2 = [[RNNComponentViewController alloc] initWithLayoutInfo:[RNNLayoutInfo new] rootViewCreator:nil eventEmitter:nil presenter:[[RNNComponentPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	_vc2Mock = [OCMockObject partialMockForObject:_vc2];
 	_vc3 = [UIViewController new];
 	_options = [OCMockObject partialMockForObject:[[RNNNavigationOptions alloc] initEmptyOptions]];
@@ -51,6 +51,12 @@
 
 - (void)testGetLeafViewController_shouldReturnTopViewController {
 	XCTAssertTrue(self.uut.getCurrentChild == self.uut.topViewController);
+}
+
+- (void)testCurrentChild_shouldReturnLastChildWithLayoutInfo {
+	[self.uut addChildViewController:[UIViewController new]];
+	XCTAssertTrue(self.uut.getCurrentChild != self.uut.topViewController);
+	XCTAssertTrue(self.uut.getCurrentChild == self.uut.childViewControllers[self.uut.childViewControllers.count-2]);
 }
 
 - (void)testPreferredStatusBarStyle_shouldReturnLeafPreferredStatusBarStyle {

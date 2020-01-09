@@ -43,6 +43,9 @@
 	_vc1 = [RNNComponentViewController new];
 	_vc2 = [RNNComponentViewController new];
 	_vc3 = [RNNComponentViewController new];
+	_vc1.layoutInfo = [RNNLayoutInfo new];
+	_vc2.layoutInfo = [RNNLayoutInfo new];
+	_vc3.layoutInfo = [RNNLayoutInfo new];
 	_modalManager = [[MockModalManager alloc] init];
 	_modalManager.topPresentedVC = [MockViewController new];
 }
