@@ -105,7 +105,7 @@ public class ModalPresenter {
     }
 
     private void onDismissEnd(ViewController toDismiss, CommandListener listener) {
-        toDismiss.destroy();
         listener.onSuccess(toDismiss.getId());
+        toDismiss.destroy();
     }
 }
