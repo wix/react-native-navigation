@@ -7,9 +7,10 @@ import {
   SearchBarCancelPressedEvent,
   PreviewCompletedEvent,
   ModalDismissedEvent,
-  ScreenPoppedEvent
+  ScreenPoppedEvent,
+  ModalAttemptedToDismissEvent
 } from '../interfaces/ComponentEvents';
-import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
+import { CommandCompletedEvent, BottomTabSelectedEvent, BottomTabLongPressedEvent } from '../interfaces/Events';
 
 export class NativeEventsReceiver {
   private emitter: EventEmitter;
@@ -49,6 +50,10 @@ export class NativeEventsReceiver {
     return this.emitter.addListener('RNN.ModalDismissed', callback);
   }
 
+  public registerModalAttemptedToDismissListener(callback: (event: ModalAttemptedToDismissEvent) => void): EmitterSubscription {
+    return this.emitter.addListener('RNN.ModalAttemptedToDismiss', callback);
+  }
+
   public registerSearchBarUpdatedListener(callback: (event: SearchBarUpdatedEvent) => void): EmitterSubscription {
     return this.emitter.addListener('RNN.SearchBarUpdated', callback);
   }
@@ -67,6 +72,10 @@ export class NativeEventsReceiver {
 
   public registerBottomTabSelectedListener(callback: (data: BottomTabSelectedEvent) => void): EmitterSubscription {
     return this.emitter.addListener('RNN.BottomTabSelected', callback);
+  }
+
+  public registerBottomTabLongPressedListener(callback: (data: BottomTabLongPressedEvent) => void): EmitterSubscription {
+    return this.emitter.addListener('RNN.BottomTabLongPressed', callback);
   }
 
   public registerScreenPoppedListener(callback: (event: ScreenPoppedEvent) => void): EmitterSubscription {

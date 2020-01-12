@@ -28,7 +28,14 @@
 }
 
 - (void)viewDidLayoutSubviews {
-	[self.presenter viewDidLayoutSubviews];
+    [self.presenter viewDidLayoutSubviews];
+    
+    for (UIView *view in [[self tabBar] subviews]) {
+         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget: self action: @selector(handleLongPress:)];
+          if ([NSStringFromClass([view class]) isEqualToString:@"UITabBarButton"]) {
+              [view addGestureRecognizer: longPressGesture];
+          }
+    }
 }
 
 - (UIViewController *)getCurrentChild {
@@ -63,6 +70,13 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	[self.eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex) unselected:@(_currentTabIndex)];
 	_currentTabIndex = tabBarController.selectedIndex;
+}
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *) recognizer {
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        NSUInteger _index = [self.tabBar.subviews indexOfObject:(UIView *)recognizer.view];
+        [self.eventEmitter sendBottomTabLongPressed:@(_index)];
+    }
 }
 
 @end

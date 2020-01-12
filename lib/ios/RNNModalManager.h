@@ -8,6 +8,7 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, N
 @protocol RNNModalManagerDelegate <NSObject>
 
 - (void)dismissedModal:(UIViewController *)viewController;
+- (void)attemptedToDismissModal:(UIViewController *)viewController;
 - (void)dismissedMultipleModals:(NSArray *)viewControllers;
 
 @end

@@ -34,6 +34,18 @@ class ModalScreen extends React.Component {
     };
   }
 
+  state = {
+    dimissCounter: 0,
+  }
+
+  componentDidMount() {
+    Navigation.events().bindComponent(this);
+  }
+
+  modalAttemptedToDismiss() {
+    return this.setState(state => ({ dimissCounter: state.dimissCounter + 1 }))
+  }
+
   render() {
     return (
       <Root componentId={this.props.componentId} footer={`Modal Stack Position: ${this.getModalPosition()}`}>

@@ -127,6 +127,10 @@
     [_delegate dismissedModal:presentationController.presentedViewController.presentedComponentViewController];
 }
 
+- (void)presentationControllerDidAttemptToDismiss:(UIPresentationController *)presentationController {
+    [_delegate attemptedToDismissModal:presentationController.presentedViewController.presentedComponentViewController];
+}
+
 -(UIViewController*)topPresentedVC {
 	UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
 	while(root.presentedViewController) {
