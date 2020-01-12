@@ -7,7 +7,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState;
 import javax.annotation.Nullable;
 
 public enum TitleDisplayMode {
-    ALWAYS_SHOW(TitleState.ALWAYS_SHOW), SHOW_WHEN_ACTIVE(TitleState.SHOW_WHEN_ACTIVE), ALWAYS_HIDE(TitleState.ALWAYS_HIDE), UNDEFINED(null);
+    ALWAYS_SHOW(TitleState.ALWAYS_SHOW), SHOW_WHEN_ACTIVE(TitleState.SHOW_WHEN_ACTIVE), ALWAYS_HIDE(TitleState.ALWAYS_HIDE), SHOW_WHEN_ACTIVE_FORCE(TitleState.SHOW_WHEN_ACTIVE_FORCE), UNDEFINED(null);
 
     public static TitleDisplayMode fromString(String mode) {
         switch (mode) {
@@ -17,6 +17,8 @@ public enum TitleDisplayMode {
                 return SHOW_WHEN_ACTIVE;
             case Constants.ALWAYS_HIDE:
                 return ALWAYS_HIDE;
+            case Constants.SHOW_WHEN_ACTIVE_FORCE:
+                return SHOW_WHEN_ACTIVE_FORCE;
             default:
                 return UNDEFINED;
         }
@@ -45,6 +47,7 @@ public enum TitleDisplayMode {
     private static class Constants {
         static final String ALWAYS_SHOW = "alwaysShow";
         static final String SHOW_WHEN_ACTIVE = "showWhenActive";
+        static final String SHOW_WHEN_ACTIVE_FORCE = "showWhenActiveForce";
         static final String ALWAYS_HIDE = "alwaysHide";
     }
 }

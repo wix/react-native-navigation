@@ -285,7 +285,7 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTabs: {
     elevation: 8, // BottomTabs elevation in dp
-    titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
+    titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' | 'showWhenActiveForce' // Sets the title state for each tab. (showWhenActiveForce to be used when showWhenActive doesn't work, e.g. with three bottom tabs)
   },
   bottomTab: {
     selectedFontSize: 19 // Selected tab font size in sp
