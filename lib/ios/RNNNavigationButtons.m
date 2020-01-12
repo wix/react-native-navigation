@@ -160,6 +160,7 @@
         return nil;
     }
     
+    barButtonItem.accessibilityLabel = dictionary[@"accessibilityLabel"];
     barButtonItem.target = self.viewController;
     barButtonItem.action = @selector(onButtonPress:);
     
