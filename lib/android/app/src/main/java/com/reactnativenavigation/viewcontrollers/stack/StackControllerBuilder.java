@@ -6,6 +6,7 @@ import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
@@ -26,11 +27,18 @@ public class StackControllerBuilder {
     private Presenter presenter;
     private StackPresenter stackPresenter;
     private List<ViewController> children = new ArrayList<>();
+    private EventEmitter eventEmitter;
 
-    public StackControllerBuilder(Activity activity) {
+    public StackControllerBuilder(Activity activity, EventEmitter eventEmitter) {
         this.activity = activity;
+        this.eventEmitter = eventEmitter;
         presenter = new Presenter(activity, new Options());
         animator = new NavigationAnimator(activity, new ElementTransitionManager());
+    }
+
+    public StackControllerBuilder setEventEmitter(EventEmitter eventEmitter) {
+        this.eventEmitter = eventEmitter;
+        return this;
     }
 
     public StackControllerBuilder setChildren(ViewController... children) {
@@ -86,6 +94,7 @@ public class StackControllerBuilder {
         return new StackController(activity,
                 children,
                 childRegistry,
+                eventEmitter,
                 topBarController,
                 animator,
                 id,

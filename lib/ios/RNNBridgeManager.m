@@ -15,6 +15,8 @@
 @property (nonatomic, strong, readwrite) RCTBridge *bridge;
 @property (nonatomic, strong, readwrite) RNNExternalComponentStore *store;
 @property (nonatomic, strong, readwrite) RNNReactComponentRegistry *componentRegistry;
+@property (nonatomic, strong, readonly) RNNOverlayManager *overlayManager;
+@property (nonatomic, strong, readonly) RNNModalManager *modalManager;
 
 @end
 
@@ -36,6 +38,9 @@
 		_jsCodeLocation = jsCodeLocation;
 		_launchOptions = launchOptions;
 		_delegate = delegate;
+		
+		_overlayManager = [RNNOverlayManager new];
+		_modalManager = [RNNModalManager new];
 		
 		_store = [RNNExternalComponentStore new];
 		_bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:_launchOptions];
@@ -82,11 +87,11 @@
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
 	RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
 
-	id<RNNComponentViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge];
+	id<RNNComponentViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge eventEmitter:eventEmitter];
 	_componentRegistry = [[RNNReactComponentRegistry alloc] initWithCreator:rootViewCreator];
-	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter store:_store componentRegistry:_componentRegistry andBridge:bridge];
-	
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:[RNNModalManager new] overlayManager:[RNNOverlayManager new] mainWindow:_mainWindow];
+	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter store:_store componentRegistry:_componentRegistry andBridge:bridge bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
+
+	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:_modalManager overlayManager:_overlayManager mainWindow:_mainWindow];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 
 	return [@[bridgeModule,eventEmitter] arrayByAddingObjectsFromArray:[self extraModulesFromDelegate]];
@@ -104,7 +109,10 @@
 }
 
 - (void)onBridgeWillReload {
-	UIApplication.sharedApplication.delegate.window.rootViewController =  nil;
+	[_overlayManager dismissAllOverlays];
+	[_modalManager dismissAllModalsSynchronosly];
+	[_componentRegistry clear];
+	UIApplication.sharedApplication.delegate.window.rootViewController = nil;
 }
 
 @end

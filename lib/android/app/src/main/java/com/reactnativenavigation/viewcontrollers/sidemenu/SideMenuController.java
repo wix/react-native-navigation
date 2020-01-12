@@ -87,15 +87,14 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions());
-        performOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(this.options, child)
-        );
+        performOnParentController(parent -> parent.applyChildOptions(this.options, child));
     }
 
     @Override
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
         presenter.mergeOptions(options.sideMenuRootOptions);
+        performOnParentController(parent -> parent.mergeChildOptions(options, child));
     }
 
     @Override
@@ -120,7 +119,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         return options;
     }
 
-    public boolean isDrawerOpen(int gravity) {
+    private boolean isDrawerOpen(int gravity) {
         return !isDestroyed() && getView().isDrawerOpen(gravity);
     }
 

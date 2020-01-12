@@ -63,11 +63,11 @@
 }
 
 + (void)appendTitleAttributes:(UITabBarItem *)tabItem textColor:(UIColor *)textColor selectedTextColor:(UIColor *)selectedTextColor fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight {
-	NSDictionary* selectedAttributes = [RNNFontAttributesCreator createWithDictionary:[tabItem titleTextAttributesForState:UIControlStateSelected] fontFamily:fontFamily fontSize:fontSize defaultFontSize:@(10) fontWeight:fontWeight color:selectedTextColor defaultColor:[UIColor blackColor]];
+	NSDictionary* selectedAttributes = [RNNFontAttributesCreator createFromDictionary:[tabItem titleTextAttributesForState:UIControlStateSelected] fontFamily:fontFamily fontSize:fontSize defaultFontSize:@(10) fontWeight:fontWeight color:selectedTextColor defaultColor:[UIColor blackColor]];
 	[tabItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
 	
 	
-	NSDictionary* normalAttributes = [RNNFontAttributesCreator createWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal] fontFamily:fontFamily fontSize:fontSize defaultFontSize:@(10) fontWeight:fontWeight color:textColor defaultColor:[UIColor blackColor]];
+	NSDictionary* normalAttributes = [RNNFontAttributesCreator createFromDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal] fontFamily:fontFamily fontSize:fontSize defaultFontSize:@(10) fontWeight:fontWeight color:textColor defaultColor:[UIColor blackColor]];
 	[tabItem setTitleTextAttributes:normalAttributes forState:UIControlStateNormal];
 }
 

@@ -97,7 +97,7 @@ public class Presenter {
         Window window = activity.getWindow();
         if (options.translucent.isTrue()) {
             window.setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
-        } else {
+        } else if (StatusBarUtils.isTranslucent(window)) {
             window.clearFlags(FLAG_TRANSLUCENT_STATUS);
         }
     }
@@ -132,7 +132,7 @@ public class Presenter {
         }
     }
 
-    private static void clearDarkTextColorScheme(View view) {
+    private void clearDarkTextColorScheme(View view) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
         int flags = view.getSystemUiVisibility();
         flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
@@ -168,7 +168,7 @@ public class Presenter {
         Window window = activity.getWindow();
         if (options.translucent.isTrue()) {
             window.setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
-        } else if (options.translucent.isFalse()) {
+        } else if (options.translucent.isFalse() && StatusBarUtils.isTranslucent(window)) {
             window.clearFlags(FLAG_TRANSLUCENT_STATUS);
         }
     }

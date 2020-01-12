@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.ComponentPresenterBase;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.viewcontrollers.ChildController;
@@ -20,7 +21,7 @@ import androidx.annotation.NonNull;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class SimpleViewController extends ChildController<SimpleViewController.SimpleView> {
-
+    private ComponentPresenterBase presenter = new ComponentPresenterBase();
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options options) {
         this(activity, childRegistry, id, new Presenter(activity, new Options()), options);
@@ -58,6 +59,11 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 
+    @Override
+    public void applyBottomInset() {
+        if (view != null) presenter.applyBottomInset(view, getBottomInset());
+    }
+
     public static class SimpleView extends ReactView implements ReactComponent {
 
         public SimpleView(@NonNull Context context) {
@@ -81,16 +87,6 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
         @Override
         public void destroy() {
-
-        }
-
-        @Override
-        public void sendComponentStart() {
-
-        }
-
-        @Override
-        public void sendComponentStop() {
 
         }
 

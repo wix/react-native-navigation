@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import keys from 'lodash/keys';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutType } from './LayoutType';
 import { Options } from '../interfaces/Options';
@@ -89,7 +89,7 @@ describe('LayoutTreeParser', () => {
 
     it('bottom tabs', () => {
       const result = uut.parse(LayoutExamples.bottomTabs);
-      expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
+      expect(keys(result)).toEqual(['id', 'type', 'data', 'children']);
       expect(result.id).toEqual('myUniqueId');
       expect(result.type).toEqual(LayoutType.BottomTabs);
       expect(result.data).toEqual({});
@@ -101,7 +101,7 @@ describe('LayoutTreeParser', () => {
 
     it('side menus', () => {
       const result = uut.parse(LayoutExamples.sideMenu);
-      expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
+      expect(keys(result)).toEqual(['id', 'type', 'data', 'children']);
       expect(result.id).toEqual('myUniqueId');
       expect(result.type).toEqual(LayoutType.SideMenuRoot);
       expect(result.data).toEqual({});
@@ -119,7 +119,7 @@ describe('LayoutTreeParser', () => {
 
     it('top tabs', () => {
       const result = uut.parse(LayoutExamples.topTabs);
-      expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
+      expect(keys(result)).toEqual(['id', 'type', 'data', 'children']);
       expect(result.id).toEqual('myUniqueId');
       expect(result.type).toEqual(LayoutType.TopTabs);
       expect(result.data).toEqual({ options: LayoutExamples.options });

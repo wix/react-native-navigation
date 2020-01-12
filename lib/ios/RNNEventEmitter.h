@@ -1,6 +1,4 @@
-
 #import <Foundation/Foundation.h>
-
 #import <React/RCTEventEmitter.h>
 #import <React/RCTBridgeModule.h>
 
@@ -8,9 +6,9 @@
 
 - (void)sendOnAppLaunched;
 
-- (void)sendComponentDidAppear:(NSString*)componentId componentName:(NSString*)componentName;
+- (void)sendComponentDidAppear:(NSString*)componentId componentName:(NSString*)componentName componentType:(NSString *)componentType;
 
-- (void)sendComponentDidDisappear:(NSString*)componentId componentName:(NSString*)componentName;
+- (void)sendComponentDidDisappear:(NSString *)componentId componentName:(NSString *)componentName componentType:(NSString *)componentType;
 
 - (void)sendOnNavigationButtonPressed:(NSString*)componentId buttonId:(NSString*)buttonId;
 
@@ -25,6 +23,10 @@
 - (void)sendOnPreviewCompleted:(NSString *)componentId previewComponentId:(NSString *)previewComponentId;
 
 - (void)sendModalsDismissedEvent:(NSString *)componentId numberOfModalsDismissed:(NSNumber *)modalsDismissed;
+
+- (void)sendModalAttemptedToDismissEvent:(NSString *)componentId;
+
+- (void)sendScreenPoppedEvent:(NSString *)componentId;
 
 
 @end

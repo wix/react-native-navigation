@@ -1,5 +1,6 @@
 package com.reactnativenavigation.react;
 
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.LaunchArgsParser;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
@@ -79,7 +80,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
     
     @ReactMethod
-    public void getConstants(Promise promise) {
+    public void getNavigationConstants(Promise promise) {
         ReactApplicationContext ctx = getReactApplicationContext();
         WritableMap constants = Arguments.createMap();
         constants.putString(Constants.BACK_BUTTON_JS_KEY, Constants.BACK_BUTTON_ID);

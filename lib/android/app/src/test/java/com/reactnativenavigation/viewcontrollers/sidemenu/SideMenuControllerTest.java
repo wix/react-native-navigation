@@ -166,6 +166,7 @@ public class SideMenuControllerTest extends BaseTest {
         Options options = new Options();
         uut.mergeChildOptions(options, child);
         verify(presenter).mergeOptions(options.sideMenuRootOptions);
+        verify(parent).mergeChildOptions(options, child);
     }
 
     @Test

@@ -1,4 +1,6 @@
-const { isString, get } = require('lodash');
+const get = require('lodash/get');
+const isString= require('lodash/isString');
+
 const { stack, component } = require('../commons/Layouts');
 const { Navigation } = require('react-native-navigation');
 
@@ -27,7 +29,7 @@ const popToRoot = (self) => Navigation.popToRoot(self.props.componentId);
 
 const mergeOptions = (selfOrCompId, options) => Navigation.mergeOptions(compId(selfOrCompId), options);
 
-const setStackRoot = (self, root) => Navigation.setStackRoot(self.props.componentId, root);
+const setStackRoot = (selfOrCompId, root) => Navigation.setStackRoot(compId(selfOrCompId), root);
 
 const setRoot = (root) => Navigation.setRoot(root.root ? root : { root: component(root, {}) });
 

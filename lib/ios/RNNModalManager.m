@@ -1,7 +1,7 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "RNNAnimationsTransitionDelegate.h"
-#import "RNNLayoutProtocol.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @implementation RNNModalManager {
 	NSMutableArray* _pendingModalIdsToDismiss;
@@ -43,7 +43,7 @@
 			completion(nil);
 		}
 		
-		[_presentedModals addObject:viewController.navigationController ? viewController.navigationController : viewController];
+        [self->_presentedModals addObject:[viewController topMostViewController]];
 	}];
 }
 
@@ -54,12 +54,25 @@
 	}
 }
 
--(void)dismissAllModalsAnimated:(BOOL)animated {
+- (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion {
 	UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
-	[root dismissViewControllerAnimated:animated completion:nil];
+	[root dismissViewControllerAnimated:animated completion:completion];
 	[_delegate dismissedMultipleModals:_presentedModals];
 	[_pendingModalIdsToDismiss removeAllObjects];
 	[_presentedModals removeAllObjects];
+}
+
+- (void)dismissAllModalsSynchronosly {
+	if (_presentedModals.count) {
+		dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+		[self dismissAllModalsAnimated:NO completion:^{
+			dispatch_semaphore_signal(sem);
+		}];
+		
+		while (dispatch_semaphore_wait(sem, DISPATCH_TIME_NOW)) {
+			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0]];
+		}
+	}
 }
 
 #pragma mark - private
@@ -105,12 +118,17 @@
 }
 
 - (void)dismissedModal:(UIViewController *)viewController {
-	[_presentedModals removeObject:viewController.navigationController ? viewController.navigationController : viewController];
-	[_delegate dismissedModal:viewController];
+	[_presentedModals removeObject:[viewController topMostViewController]];
+	[_delegate dismissedModal:viewController.presentedComponentViewController];
 }
 
 - (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController {
 	[_presentedModals removeObject:presentationController.presentedViewController];
+    [_delegate dismissedModal:presentationController.presentedViewController.presentedComponentViewController];
+}
+
+- (void)presentationControllerDidAttemptToDismiss:(UIPresentationController *)presentationController {
+    [_delegate attemptedToDismissModal:presentationController.presentedViewController.presentedComponentViewController];
 }
 
 -(UIViewController*)topPresentedVC {

@@ -3,7 +3,6 @@ package com.reactnativenavigation.react;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.RestrictTo;
 import android.view.MotionEvent;
 
 import com.facebook.react.ReactInstanceManager;
@@ -13,12 +12,16 @@ import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.react.events.ComponentType;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.Renderable;
 import com.reactnativenavigation.views.element.Element;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.RestrictTo;
 
 @SuppressLint("ViewConstructor")
 public class ReactView extends ReactRootView implements IReactView, Renderable {
@@ -64,19 +67,17 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
 		unmountReactApplication();
 	}
 
-	@Override
-	public void sendComponentStart() {
+	public void sendComponentStart(ComponentType type) {
         ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
         if (currentReactContext != null) {
-            new EventEmitter(currentReactContext).emitComponentDidAppear(componentId, componentName);
+            new EventEmitter(currentReactContext).emitComponentDidAppear(componentId, componentName, type);
         }
 	}
 
-	@Override
-	public void sendComponentStop() {
+	public void sendComponentStop(ComponentType type) {
         ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
         if (currentReactContext != null) {
-            new EventEmitter(currentReactContext).emitComponentDidDisappear(componentId, componentName);
+            new EventEmitter(currentReactContext).emitComponentDidDisappear(componentId, componentName, type);
         }
 	}
 

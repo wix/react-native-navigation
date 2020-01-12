@@ -1,21 +1,23 @@
 package com.reactnativenavigation.viewcontrollers.externalcomponent;
 
 import android.app.Activity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.core.view.ViewCompat;
 import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.parse.ExternalComponent;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.ExternalComponentPresenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.ComponentType;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CoordinatorLayoutUtils;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.NoOpYellowBoxDelegate;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 import com.reactnativenavigation.views.ExternalComponentLayout;
+
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
@@ -60,13 +62,13 @@ public class ExternalComponentViewController extends ViewController<ExternalComp
     @Override
     public void onViewAppeared() {
         super.onViewAppeared();
-        emitter.emitComponentDidAppear(getId(), externalComponent.name.get());
+        emitter.emitComponentDidAppear(getId(), externalComponent.name.get(), ComponentType.Component);
     }
 
     @Override
     public void onViewDisappear() {
         super.onViewDisappear();
-        emitter.emitComponentDidDisappear(getId(), externalComponent.name.get());
+        emitter.emitComponentDidDisappear(getId(), externalComponent.name.get(), ComponentType.Component);
     }
 
     @Override

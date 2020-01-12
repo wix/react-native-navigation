@@ -1,4 +1,7 @@
-const _ = require('lodash');
+const last = require('lodash/last');
+const concat = require('lodash/concat');
+const forEach = require('lodash/forEach');
+const head = require('lodash/head');
 const React = require('react');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
@@ -31,6 +34,18 @@ class ModalScreen extends React.Component {
     };
   }
 
+  state = {
+    dimissCounter: 0,
+  }
+
+  componentDidMount() {
+    Navigation.events().bindComponent(this);
+  }
+
+  modalAttemptedToDismiss() {
+    return this.setState(state => ({ dimissCounter: state.dimissCounter + 1 }))
+  }
+
   render() {
     return (
       <Root componentId={this.props.componentId} footer={`Modal Stack Position: ${this.getModalPosition()}`}>
@@ -54,7 +69,7 @@ class ModalScreen extends React.Component {
         name: Screens.Modal,
         passProps: {
           modalPosition: this.getModalPosition() + 1,
-          previousModalIds: _.concat([], this.props.previousModalIds || [], this.props.componentId)
+          previousModalIds: concat([], this.props.previousModalIds || [], this.props.componentId)
         }
       }
     });
@@ -66,9 +81,9 @@ class ModalScreen extends React.Component {
 
   dismissUnknownModal = () => Navigation.dismissModal('unknown');
 
-  dismissAllPreviousModals = () => _.forEach(this.props.previousModalIds, (id) => Navigation.dismissModal(id));
+  dismissAllPreviousModals = () => forEach(this.props.previousModalIds, (id) => Navigation.dismissModal(id));
 
-  dismissFirstModal = () => Navigation.dismissModal(_.head(this.props.previousModalIds));
+  dismissFirstModal = () => Navigation.dismissModal(head(this.props.previousModalIds));
 
   dismissAllModals = () => Navigation.dismissAllModals();
 
@@ -85,6 +100,6 @@ class ModalScreen extends React.Component {
 
   getModalPosition = () => this.props.modalPosition || 1;
 
-  getPreviousModalId = () => _.last(this.props.previousModalIds);
+  getPreviousModalId = () => last(this.props.previousModalIds);
 }
 module.exports = ModalScreen;

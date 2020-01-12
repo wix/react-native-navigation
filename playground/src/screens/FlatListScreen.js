@@ -2,7 +2,6 @@ const React = require('react');
 const { Component } = require('react');
 const { SafeAreaView, FlatList, View, Text } = require('react-native');
 const { Navigation } = require('react-native-navigation');
-const testIDs = require('../testIDs');
 
 const FakeListData = require('../assets/FakeListData');
 

@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
@@ -17,7 +18,10 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -25,6 +29,7 @@ public class BottomTabsPresenterTest extends BaseTest {
     private List<ViewController> tabs;
     private BottomTabsPresenter uut;
     private BottomTabs bottomTabs;
+    private BottomTabsAnimator animator;
 
     @Override
     public void beforeEach() {
@@ -35,7 +40,8 @@ public class BottomTabsPresenterTest extends BaseTest {
         tabs = Arrays.asList(child1, child2);
         uut = new BottomTabsPresenter(tabs, new Options());
         bottomTabs = Mockito.mock(BottomTabs.class);
-        uut.bindView(bottomTabs, Mockito.mock(TabSelector.class));
+        animator = spy(new BottomTabsAnimator(bottomTabs));
+        uut.bindView(bottomTabs, Mockito.mock(TabSelector.class), animator);
     }
 
     @Test
@@ -49,5 +55,20 @@ public class BottomTabsPresenterTest extends BaseTest {
         uut.mergeChildOptions(options, tabs.get(0));
         verify(bottomTabs).setBackgroundColor(options.bottomTabsOptions.backgroundColor.get());
         verifyNoMoreInteractions(bottomTabs);
+    }
+
+    @Test
+    public void mergeChildOptions_visibilityIsAppliedOnlyIsChildIsShown() {
+        assertThat(tabs.get(0).isViewShown()).isFalse();
+        assertThat(bottomTabs.isHidden()).isFalse();
+
+        Options options = new Options();
+        options.bottomTabsOptions.visible = new Bool(false);
+        uut.mergeChildOptions(options, tabs.get(0));
+        verify(animator, times(0)).hide(any());
+
+        Mockito.when(tabs.get(0).isViewShown()).thenAnswer(ignored -> true);
+        uut.mergeChildOptions(options, tabs.get(0));
+        verify(animator).hide(any());
     }
 }
