@@ -29,7 +29,7 @@ const popToRoot = (self) => Navigation.popToRoot(self.props.componentId);
 
 const mergeOptions = (selfOrCompId, options) => Navigation.mergeOptions(compId(selfOrCompId), options);
 
-const setStackRoot = (self, root) => Navigation.setStackRoot(self.props.componentId, root);
+const setStackRoot = (selfOrCompId, root) => Navigation.setStackRoot(compId(selfOrCompId), root);
 
 const setRoot = (root) => Navigation.setRoot(root.root ? root : { root: component(root, {}) });
 

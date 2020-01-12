@@ -6,19 +6,19 @@ import android.view.View;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.react.ReactView;
+import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.views.ComponentLayout;
 
 public class TestComponentLayout extends ComponentLayout implements TitleBarButtonController.OnClickListener {
 
-    private IReactView reactView;
+    private ReactView reactView;
 
-    public TestComponentLayout(final Context context, IReactView reactView) {
+    public TestComponentLayout(final Context context, ReactView reactView) {
         super(context, reactView);
         this.reactView = reactView;
     }
-
 
     @Override
     public boolean isReady() {
@@ -36,12 +36,12 @@ public class TestComponentLayout extends ComponentLayout implements TitleBarButt
 
     @Override
     public void sendComponentStart() {
-        reactView.sendComponentStart();
+        reactView.sendComponentStart(ComponentType.Component);
     }
 
     @Override
     public void sendComponentStop() {
-        reactView.sendComponentStop();
+        reactView.sendComponentStop(ComponentType.Component);
     }
 
     @Override

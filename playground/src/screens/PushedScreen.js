@@ -14,7 +14,8 @@ const {
   POP_TO_ROOT_BTN,
   ADD_BACK_HANDLER,
   REMOVE_BACK_HANDLER,
-  SET_STACK_ROOT_BUTTON
+  SET_STACK_ROOT_BUTTON,
+  PUSH_OPTIONS_BUTTON
 } = require('../testIDs');
 const Screens = require('./Screens');
 
@@ -56,6 +57,7 @@ class PushedScreen extends React.Component {
         <Button label='Add BackHandler' testID={ADD_BACK_HANDLER} onPress={this.addBackHandler} />
         <Button label='Remove BackHandler' testID={REMOVE_BACK_HANDLER} onPress={this.removeBackHandler} />
         <Button label='Set Stack Root' testID={SET_STACK_ROOT_BUTTON} onPress={this.setStackRoot} />
+        <Button label='Push Options Screen' testID={PUSH_OPTIONS_BUTTON} onPress={this.pushOptionsScreen} />
       </Root>
     );
   }
@@ -86,6 +88,12 @@ class PushedScreen extends React.Component {
           pop: { enabled: false }
         }
       }
+    }
+  });
+
+  pushOptionsScreen = () => Navigation.push(this, {
+    component: {
+      name: Screens.Options
     }
   });
 

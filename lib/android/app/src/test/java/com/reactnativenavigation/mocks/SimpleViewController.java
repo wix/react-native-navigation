@@ -91,16 +91,6 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         }
 
         @Override
-        public void sendComponentStart() {
-
-        }
-
-        @Override
-        public void sendComponentStop() {
-
-        }
-
-        @Override
         public void sendOnNavigationButtonPressed(String buttonId) {
 
         }

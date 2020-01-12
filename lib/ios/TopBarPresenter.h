@@ -11,7 +11,8 @@
 
 - (instancetype)initWithNavigationController:(UINavigationController *)boundNavigationController;
 
-@property (nonatomic) BOOL transparent;
+- (BOOL)transparent;
+
 @property (nonatomic) BOOL translucent;
 @property (nonatomic, strong) UIColor* backgroundColor;
 

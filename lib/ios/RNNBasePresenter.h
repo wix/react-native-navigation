@@ -30,6 +30,10 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)viewDidLayoutSubviews;
 
+- (void)componentDidAppear;
+
+- (void)componentDidDisappear;
+
 - (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions;
 
 - (UIInterfaceOrientationMask)getOrientation:(RNNNavigationOptions *)options;

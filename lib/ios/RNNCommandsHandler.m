@@ -205,10 +205,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	UINavigationController *nvc = vc.navigationController;
 	
 	if ([nvc topViewController] == vc) {
-		if (vc.resolveOptionsWithDefault.animations.pop) {
+		if (vc.resolveOptions.animations.pop.hasCustomAnimation) {
 			nvc.delegate = vc;
-		} else {
-			nvc.delegate = nil;
 		}
 	} else {
 		NSMutableArray * vcs = nvc.viewControllers.mutableCopy;
@@ -354,6 +352,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)dismissedModal:(UIViewController *)viewController {
 	[_eventEmitter sendModalsDismissedEvent:viewController.layoutInfo.componentId numberOfModalsDismissed:@(1)];
+}
+
+- (void)attemptedToDismissModal:(UIViewController *)viewController {
+    [_eventEmitter sendModalAttemptedToDismissEvent:viewController.layoutInfo.componentId];
 }
 
 - (void)dismissedMultipleModals:(NSArray *)viewControllers {

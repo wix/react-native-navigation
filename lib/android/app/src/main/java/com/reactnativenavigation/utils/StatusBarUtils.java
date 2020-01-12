@@ -3,7 +3,10 @@ package com.reactnativenavigation.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.view.Window;
+import android.view.WindowManager;
 
+import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 public class StatusBarUtils {
@@ -27,4 +30,8 @@ public class StatusBarUtils {
         return statusBarHeight;
     }
 
+    public static boolean isTranslucent(Window window) {
+        WindowManager.LayoutParams lp = window.getAttributes();
+        return lp != null && (lp.flags & FLAG_TRANSLUCENT_STATUS) == FLAG_TRANSLUCENT_STATUS;
+    }
 }

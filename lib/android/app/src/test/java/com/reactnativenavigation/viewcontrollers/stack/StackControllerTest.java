@@ -22,8 +22,8 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
@@ -32,6 +32,7 @@ import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
@@ -66,6 +67,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @LooperMode(LooperMode.Mode.PAUSED)
@@ -83,16 +85,18 @@ public class StackControllerTest extends BaseTest {
     private TopBarController topBarController;
     private StackPresenter presenter;
     private BackButtonHelper backButtonHelper;
+    private EventEmitter eventEmitter;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
+        eventEmitter = Mockito.mock(EventEmitter.class);
         backButtonHelper = spy(new BackButtonHelper());
         activity = newActivity();
         StatusBarUtils.saveStatusBarHeight(63);
         animator = spy(new NavigationAnimator(activity, Mockito.mock(ElementTransitionManager.class)));
         childRegistry = new ChildControllersRegistry();
-        presenter = spy(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), ImageLoaderMock.mock(), new RenderChecker(), new Options()));
+        presenter = spy(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new IconResolver(activity, ImageLoaderMock.mock()), new RenderChecker(), new Options()));
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         child1a = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
@@ -383,12 +387,10 @@ public class StackControllerTest extends BaseTest {
     @Test
     public void pop_layoutHandlesChildWillDisappear() {
         TopBarController topBarController = new TopBarController();
-        uut = new StackControllerBuilder(activity)
-                        .setTopBarController(topBarController)
-                        .setId("uut")
-                        .setInitialOptions(new Options())
-                        .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new RenderChecker(), new Options()))
-                        .build();
+        uut = TestUtils.newStackController(activity)
+                .setTopBarController(topBarController)
+                .setId("uut")
+                .build();
         uut.ensureViewIsCreated();
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter() {
@@ -402,6 +404,30 @@ public class StackControllerTest extends BaseTest {
                 });
             }
         });
+    }
+
+    @Test
+    public void pop_popEventIsEmitted() {
+        disablePushAnimation(child1, child2);
+        disablePopAnimation(child2);
+        uut.push(child1, new CommandListenerAdapter());
+        uut.push(child2, new CommandListenerAdapter());
+
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
+        verify(eventEmitter).emitScreenPoppedEvent(child2.getId());
+    }
+
+    @Test
+    public void popToRoot_popEventIsEmitted() {
+        disablePushAnimation(child1, child2, child3);
+        disablePopAnimation(child2, child3);
+        uut.push(child1, new CommandListenerAdapter());
+        uut.push(child2, new CommandListenerAdapter());
+        uut.push(child3, new CommandListenerAdapter());
+
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
+        verify(eventEmitter).emitScreenPoppedEvent(child3.getId());
+        verifyNoMoreInteractions(eventEmitter);
     }
 
     @Test
@@ -957,12 +983,9 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_updatesViewWithNewOptions() {
-        StackController uut = spy(new StackControllerBuilder(activity)
-                        .setTopBarController(new TopBarController())
-                        .setId("stack")
-                        .setInitialOptions(new Options())
-                        .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TitleBarReactViewCreatorMock(), ImageLoaderMock.mock(), new RenderChecker(), Options.EMPTY))
-                        .build());
+        StackController uut = spy(TestUtils.newStackController(activity)
+                .setId("stack")
+                .build());
         Options optionsToMerge = new Options();
         ViewController vc = mock(ViewController.class);
         uut.mergeChildOptions(optionsToMerge, vc);
@@ -971,11 +994,8 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_updatesParentControllerWithNewOptions() {
-        StackController uut = new StackControllerBuilder(activity)
-                        .setTopBarController(new TopBarController())
+        StackController uut = TestUtils.newStackController(activity)
                         .setId("stack")
-                        .setInitialOptions(new Options())
-                        .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TitleBarReactViewCreatorMock(), ImageLoaderMock.mock(), new RenderChecker(), Options.EMPTY))
                         .build();
         ParentController parentController = Mockito.mock(ParentController.class);
         uut.setParentController(parentController);
@@ -1136,6 +1156,7 @@ public class StackControllerTest extends BaseTest {
     private StackControllerBuilder createStackBuilder(String id, List<ViewController> children) {
         createTopBarController();
         return TestUtils.newStackController(activity)
+                .setEventEmitter(eventEmitter)
                 .setChildren(children)
                 .setId(id)
                 .setTopBarController(topBarController)

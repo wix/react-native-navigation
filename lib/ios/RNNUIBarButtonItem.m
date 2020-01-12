@@ -63,6 +63,18 @@
 	return self;
 }
 
+- (void)notifyDidAppear {
+    if ([self.customView isKindOfClass:[RNNReactView class]]) {
+        [((RNNReactView *)self.customView) componentDidAppear];
+    }
+}
+
+- (void)notifyDidDisappear {
+    if ([self.customView isKindOfClass:[RNNReactView class]]) {
+        [((RNNReactView *)self.customView) componentDidDisappear];
+    }
+}
+
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
 	self.widthConstraint.constant = rootView.intrinsicContentSize.width;
 	self.heightConstraint.constant = rootView.intrinsicContentSize.height;

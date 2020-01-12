@@ -28,6 +28,10 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)readyForPresentation;
 
+- (void)componentDidAppear;
+
+- (void)componentDidDisappear;
+
 @property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNNavigationOptions* options;

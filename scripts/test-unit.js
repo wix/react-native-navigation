@@ -23,32 +23,36 @@ function runAndroidUnitTests() {
 }
 
 function runIosUnitTests() {
-  const conf = release ? `Release` : `Debug`;
-
   exec.execSync('npm run build');
   exec.execSync('npm run pod-install');
+  testTarget('playground', 'iPhone 11');
+  testTarget('playgroundIOS12', 'iPhone X', '12.2');
+}
+
+function testTarget(scheme, device, OS = 'latest') {
+  const conf = release ? `Release` : `Debug`;
   exec.execSync(`cd ./playground/ios &&
-            RCT_NO_LAUNCH_PACKAGER=true
-            xcodebuild build build-for-testing
-            -scheme "playground"
-            -workspace playground.xcworkspace
-            -sdk iphonesimulator
-            -configuration ${conf}
-            -derivedDataPath ./DerivedData/playground
-            -quiet
-            -UseModernBuildSystem=NO
-            ONLY_ACTIVE_ARCH=YES`);
+  RCT_NO_LAUNCH_PACKAGER=true
+  xcodebuild build build-for-testing
+  -scheme "${scheme}"
+  -workspace playground.xcworkspace
+  -sdk iphonesimulator
+  -configuration ${conf}
+  -derivedDataPath ./DerivedData/playground
+  -quiet
+  -UseModernBuildSystem=NO
+  ONLY_ACTIVE_ARCH=YES`);
 
   exec.execSync(`cd ./playground/ios &&
-            RCT_NO_LAUNCH_PACKAGER=true
-            xcodebuild test-without-building
-            -scheme "playground"
-            -workspace playground.xcworkspace
-            -sdk iphonesimulator
-            -configuration ${conf}
-            -destination 'platform=iOS Simulator,name=iPhone 11'
-            -derivedDataPath ./DerivedData/playground
-            ONLY_ACTIVE_ARCH=YES`);
+  RCT_NO_LAUNCH_PACKAGER=true
+  xcodebuild test-without-building
+  -scheme "${scheme}"
+  -workspace playground.xcworkspace
+  -sdk iphonesimulator
+  -configuration ${conf}
+  -destination 'platform=iOS Simulator,name=${device},OS=${OS}'
+  -derivedDataPath ./DerivedData/playground
+  ONLY_ACTIVE_ARCH=YES`);
 }
 
 run();

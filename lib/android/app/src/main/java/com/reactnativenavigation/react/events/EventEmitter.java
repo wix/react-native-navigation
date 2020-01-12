@@ -1,4 +1,4 @@
-package com.reactnativenavigation.react;
+package com.reactnativenavigation.react.events;
 
 import android.util.Log;
 
@@ -19,6 +19,7 @@ public class EventEmitter {
     private static final String ComponentDidDisappear = "RNN.ComponentDidDisappear";
     private static final String NavigationButtonPressed = "RNN.NavigationButtonPressed";
     private static final String ModalDismissed = "RNN.ModalDismissed";
+    private static final String ScreenPopped = "RNN.ScreenPopped";
     @Nullable
     private ReactContext reactContext;
 
@@ -27,20 +28,22 @@ public class EventEmitter {
     }
 
     public void appLaunched() {
-        emit(AppLaunched);
+        emit(EventEmitter.AppLaunched, Arguments.createMap());
     }
 
-    public void emitComponentDidDisappear(String id, String componentName) {
+    public void emitComponentDidDisappear(String id, String componentName, ComponentType type) {
         WritableMap event = Arguments.createMap();
         event.putString("componentId", id);
         event.putString("componentName", componentName);
+        event.putString("componentType", type.getName());
         emit(ComponentDidDisappear, event);
     }
 
-    public void emitComponentDidAppear(String id, String componentName) {
+    public void emitComponentDidAppear(String id, String componentName, ComponentType type) {
         WritableMap event = Arguments.createMap();
         event.putString("componentId", id);
         event.putString("componentName", componentName);
+        event.putString("componentType", type.getName());
         emit(ComponentDidAppear, event);
     }
 
@@ -73,8 +76,10 @@ public class EventEmitter {
         emit(ModalDismissed, event);
     }
 
-    private void emit(String eventName) {
-        emit(eventName, Arguments.createMap());
+    public void emitScreenPoppedEvent(String componentId) {
+        WritableMap event = Arguments.createMap();
+        event.putString("componentId", componentId);
+        emit(ScreenPopped, event);
     }
 
     private void emit(String eventName, WritableMap data) {

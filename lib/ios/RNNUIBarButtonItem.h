@@ -12,5 +12,8 @@
 -(instancetype)init:(NSString*)buttonId withCustomView:(RCTRootView *)reactView;
 -(instancetype)init:(NSString*)buttonId withSystemItem:(NSString*)systemItemName;
 
+- (void)notifyDidAppear;
+- (void)notifyDidDisappear;
+
 @end
 

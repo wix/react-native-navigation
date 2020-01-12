@@ -12,6 +12,8 @@ const Screens = require('./Screens');
 
 function registerScreens() {
   Navigation.registerComponent(Screens.Alert, () => require('./Alert'));
+  Navigation.registerComponent(Screens.CocktailDetailsScreen, () => require('./sharedElementTransition/CocktailDetailsScreen'));
+  Navigation.registerComponent(Screens.CocktailsListScreen, () => require('./sharedElementTransition/CocktailsList'));
   Navigation.registerComponent(Screens.EventsOverlay, () => require('./StaticLifecycleOverlay'));
   Navigation.registerComponent(Screens.EventsScreen, () => require('./StaticEventsScreen'));
   Navigation.registerComponent(Screens.ExternalComponent, () => require('./ExternalComponentScreen'));

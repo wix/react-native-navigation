@@ -11,7 +11,9 @@ import {
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent,
   PreviewCompletedEvent,
-  ModalDismissedEvent
+  ModalDismissedEvent,
+  ScreenPoppedEvent,
+  ModalAttemptedToDismissEvent
 } from '../interfaces/ComponentEvents';
 import { CommandCompletedEvent, BottomTabSelectedEvent, BottomTabLongPressedEvent } from '../interfaces/Events';
 
@@ -50,6 +52,10 @@ export class EventsRegistry {
     return this.nativeEventsReceiver.registerModalDismissedListener(callback);
   }
 
+  public registerModalAttemptedToDismissListener(callback: (event: ModalAttemptedToDismissEvent) => void): EmitterSubscription {
+    return this.nativeEventsReceiver.registerModalAttemptedToDismissListener(callback);
+  }
+
   public registerSearchBarUpdatedListener(callback: (event: SearchBarUpdatedEvent) => void): EmitterSubscription {
     return this.nativeEventsReceiver.registerSearchBarUpdatedListener(callback);
   }
@@ -69,4 +75,9 @@ export class EventsRegistry {
   public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
     return this.componentEventsObserver.bindComponent(component, componentId);
   }
+
+  public registerScreenPoppedListener(callback: (event: ScreenPoppedEvent) => void): EmitterSubscription {
+    return this.nativeEventsReceiver.registerScreenPoppedListener(callback);
+  }
+
 }

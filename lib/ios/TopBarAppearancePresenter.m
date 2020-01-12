@@ -9,8 +9,6 @@
 @implementation TopBarAppearancePresenter {
     UINavigationBarAppearance* _appearance;
 }
-@synthesize backgroundColor = _backgroundColor;
-@synthesize translucent = _translucent;
 
 - (instancetype)initWithNavigationController:(UINavigationController *)boundNavigationController {
     self = [super initWithNavigationController:boundNavigationController];
@@ -20,7 +18,7 @@
 }
 
 - (void)setTranslucent:(BOOL)translucent {
-    _translucent = translucent;
+    [super setTranslucent:translucent];
     [self updateBackgroundAppearance];
 }
 
@@ -28,25 +26,16 @@
     [self updateBackgroundAppearance];
 }
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor {
-    _backgroundColor = backgroundColor;
-    [self updateBackgroundAppearance];
-}
-
 - (void)updateBackgroundAppearance {
     if (self.transparent) {
         [_appearance configureWithTransparentBackground];
-    } else if (_backgroundColor) {
-        [_appearance setBackgroundColor:_backgroundColor];
-    } else if (_translucent) {
+    } else if (self.backgroundColor) {
+        [_appearance setBackgroundColor:self.backgroundColor];
+    } else if (self.translucent) {
         [_appearance configureWithDefaultBackground];
     } else {
         [_appearance configureWithOpaqueBackground];
     }
-}
-
-- (BOOL)transparent {
-    return (_backgroundColor && CGColorGetAlpha(_backgroundColor.CGColor) == 0.0);
 }
 
 - (void)showBorder:(BOOL)showBorder {

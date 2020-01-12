@@ -4,9 +4,10 @@
 #import "RCTConvert+Modal.h"
 #import "RNNTitleViewHelper.h"
 #import "UIViewController+LayoutProtocol.h"
+#import "RNNReactTitleView.h"
 
 @interface RNNComponentPresenter() {
-	RNNReactView* _customTitleView;
+	RNNReactTitleView* _customTitleView;
 	RNNTitleViewHelper* _titleViewHelper;
 	RNNReactComponentRegistry* _componentRegistry;
 }
@@ -24,6 +25,25 @@
 - (void)bindViewController:(id)boundViewController {
 	[super bindViewController:boundViewController];
 	_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self.boundViewController componentRegistry:_componentRegistry];
+}
+
+- (void)componentDidAppear {
+    RNNReactView* component = (RNNReactView *)self.boundViewController.view;
+    if ([component respondsToSelector:@selector(componentDidAppear)]) {
+        [component componentDidAppear];
+    }
+    [_customTitleView componentDidAppear];
+    [_navigationButtons componentDidAppear];
+}
+
+- (void)componentDidDisappear {
+    RNNReactView* component = (RNNReactView *)self.boundViewController.view;
+    if ([component respondsToSelector:@selector(componentDidDisappear)]) {
+        [component componentDidDisappear];
+    }
+    
+    [_customTitleView componentDidDisappear];
+    [_navigationButtons componentDidDisappear];
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
@@ -156,7 +176,8 @@
 }
 
 - (void)removeTitleComponentIfNeeded:(RNNNavigationOptions *)options {
-	if (options.topBar.title.text.hasValue && !options.topBar.component.hasValue) {
+	if (options.topBar.title.text.hasValue) {
+        [_customTitleView componentDidDisappear];
 		[_customTitleView removeFromSuperview];
 		_customTitleView = nil;
 	}
@@ -175,7 +196,7 @@
 	}
 	
 	if (options.topBar.title.component.name.hasValue) {
-		_customTitleView = [_componentRegistry createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId reactViewReadyBlock:readyBlock];
+        _customTitleView = (RNNReactTitleView *)[_componentRegistry createComponentIfNotExists:options.topBar.title.component parentComponentId:viewController.layoutInfo.componentId componentType:RNNComponentTypeTopBarTitle reactViewReadyBlock:readyBlock];
 		_customTitleView.backgroundColor = UIColor.clearColor;
 		NSString* alignment = [options.topBar.title.component.alignment getWithDefaultValue:@""];
 		[_customTitleView setAlignment:alignment inFrame:viewController.navigationController.navigationBar.frame];
@@ -183,6 +204,7 @@
 		
 		viewController.navigationItem.titleView = nil;
 		viewController.navigationItem.titleView = _customTitleView;
+        [_customTitleView componentDidAppear];
 	} else {
 		[_customTitleView removeFromSuperview];
 		if (readyBlock) {

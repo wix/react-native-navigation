@@ -1,4 +1,37 @@
 # Changelog
+# 4.2.0
+## Fixed
+### Android
+* Support hiding back button with mergeOptions [#3f17dc4](https://github.com/wix/react-native-navigation/commit/3f17dc4a82657c6cfdbdd82c95cbba6f2bf63f55) by [guyca](https://github.com/guyca)
+# 4.1.0
+## Added
+* Send componentType field in componentDidAppear and componentDidDisappear events [#3878b68](https://github.com/wix/react-native-navigation/commit/3878b683ccc045f6c732850833be0633a8ac1b0e) by [guyca](https://github.com/guyca) and [yogevbd](https://github.com/yogevbd)
+## Fixed
+* Add typing for children on TopTabs [#1f611c6](https://github.com/wix/react-native-navigation/commit/1f611c657ff946493aced56758399f7c240bf002) by [aalises](https://github.com/aalises)
+### Android
+* Apply translucent StatusBAr flag only if needed [#6782362](https://github.com/wix/react-native-navigation/commit/6782362035228463701003cc7fbbbc0af27d88d0) by [guyca](https://github.com/guyca)
+### iOS
+* Fix topBar.title.component measurement on iOS 10 [#82e4807](https://github.com/wix/react-native-navigation/commit/82e48079dc4ef24639b215af83d1344aa021c281) by [yogevbd](https://github.com/yogevbd)
+* Remove yellow boxes from title and button components [#b82d87f](https://github.com/wix/react-native-navigation/commit/b82d87f0c88d1dcd803af0f8507935a1d818bae3) by [yogevbd](https://github.com/yogevbd)
+
+# 4.0.9
+## Fixed
+### iOS
+* Force translucent on iOS 12 when background is transparent [#2ad41f3](https://github.com/wix/react-native-navigation/commit/2ad41f3adb9883fa20f1d52fcbbc6fd0750976f9) by [yogevbd](https://github.com/yogevbd)
+# 4.0.8
+## Fixed
+### iOS
+* Fix TopBar background color on iOS12 [#f202c7e](https://github.com/wix/react-native-navigation/commit/f202c7ec03bcc6cf9d2bc1c587064b78e111432a) by [yogevbd](https://github.com/yogevbd)
+# 4.0.7
+## Added
+* Add screenPopped event [#71af559](https://github.com/wix/react-native-navigation/commit/71af55968db11315cd10aac2e64cb1e24f37c0e0) by [yogevbd](https://github.com/yogevbd) and [guyca](https://github.com/guyca)
+
+## Fixed
+### Android
+* Fix incorrect bottom inset when hiding BottomTabs in default options [#d0c21e4](https://github.com/wix/react-native-navigation/commit/d0c21e4f6573189e634838a53c518f6bb8587080) by [guyca](https://github.com/guyca)
+### iOS
+* Fix topBar transparent background on iOS 12 [#cd3d347](https://github.com/wix/react-native-navigation/commit/cd3d3472fcb8e5588507bc16c438d53c581d7d2b) by [yogevbd](https://github.com/yogevbd)
+
 # 4.0.6
 ## Fixed
 * Fix native bottomTab.icon resource not working [#aa1870a](https://github.com/wix/react-native-navigation/commit/aa1870a743ff9e1611c643a5462ca84f81710fcd) by [guyca](https://github.com/guyca)
