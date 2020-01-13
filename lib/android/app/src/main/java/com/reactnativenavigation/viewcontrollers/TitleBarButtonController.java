@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 
 public class TitleBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
     public interface OnClickListener {
@@ -125,7 +126,9 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
         menuItem.setOnMenuItemClickListener(this);
         if (button.hasComponent()) {
             menuItem.setActionView(getView());
+            if (button.accessibilityLabel.hasValue()) getView().setContentDescription(button.accessibilityLabel.get());
         } else {
+            if (button.accessibilityLabel.hasValue()) MenuItemCompat.setContentDescription(menuItem, button.accessibilityLabel.get());
             if (button.hasIcon()) {
                 loadIcon(new ImageLoadingListenerAdapter() {
                     @Override
