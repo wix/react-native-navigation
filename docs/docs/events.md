@@ -137,13 +137,18 @@ Invoked when modal dismissed.
 
 ```js
 // Subscribe
-const modalDismissedListener = Navigation.events().registerModalDismissedListener(({ componentId, modalsDismissed }) => {
+const modalDismissedListener = Navigation.events().registerModalDismissedListener(({ componentId, componentName, modalsDismissed }) => {
 
 });
 ...
 // Unsubscribe
 modalDismissedListener.remove();
 ```
+|       Parameter         | Description |
+|:--------------------:|:-----|
+|**componentId**| Id of the disappearing component|
+|**componentName**|Registered name used when registering the component with `Navigation.registerComponent()`|
+|**modalsDismissed**|Number of modals dismissed.|
 
 ## registerModalAttemptedToDismissListener(iOS 13+ only)
 Invoked only on iOS pageSheet modal when swipeToDismiss flag is set to true and modal swiped down to dismiss.
