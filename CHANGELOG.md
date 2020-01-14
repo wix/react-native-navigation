@@ -1,4 +1,19 @@
 # Changelog
+# 4.4.0
+## Added
+### Android
+* Added TitleState showWhenActiveForce option for bottomTabs [#cf18e2d](https://github.com/wix/react-native-navigation/commit/cf18e2d3c98785c28d42b486b70e05b75404ca54) by [BenJeau](https://github.com/BenJeau)
+
+## Fixed
+### Android
+* Apply BottomTabs visibility only if child is visible [#6ffb301](https://github.com/wix/react-native-navigation/commit/6ffb3011f7e3db11c9dac9d4c9d01b8345079c2e) by [guyca](https://github.com/guyca)
+
+## Fixed
+# 4.3.0
+## Fixed
+### iOS
+* Fixed pushing external ViewControllers to stack inside a modal [#4b14c87](https://github.com/wix/react-native-navigation/commit/4b14c8798b4f9bf99ce36dd29b2df8e8ff5bf109) by [yogevbd](https://github.com/yogevbd)
+
 # 4.2.0
 ## Fixed
 ### Android

@@ -53,7 +53,8 @@ class Options extends Component {
             id: 'LEFT',
             testID: LEFT_BUTTON,
             icon: require('../../img/clear.png'),
-            color: Colors.primary
+            color: Colors.primary,
+            accessibilityLabel: 'Close button'
           }
         ]
       }

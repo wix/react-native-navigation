@@ -302,6 +302,10 @@ export interface OptionsTopBarButton {
    */
   text?: string;
   /**
+   * Overrides the text that's read by the screen reader when the user interacts with the element
+   */
+  accessibilityLabel?: string;
+  /**
    * Set the button font family
    */
   fontFamily?: string;
