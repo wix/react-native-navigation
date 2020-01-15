@@ -73,21 +73,31 @@
 }
 
 - (void)componentDidAppear {
-    for (RNNUIBarButtonItem* barButtonItem in [self currentButtons]) {
-        [barButtonItem notifyDidAppear];
+    for (UIBarButtonItem* barButtonItem in [self currentButtons]) {
+	  if ([self isRNNUIBarButton:barButtonItem]) {
+		  [(RNNUIBarButtonItem *)barButtonItem notifyDidAppear];
+	  }
     }
 }
 
 - (void)componentDidDisappear {
-    for (RNNUIBarButtonItem* barButtonItem in [self currentButtons]) {
-        [barButtonItem notifyDidDisappear];
+    for (UIBarButtonItem* barButtonItem in [self currentButtons]) {
+	  if ([self isRNNUIBarButton:barButtonItem]) {
+		  [(RNNUIBarButtonItem *)barButtonItem notifyDidDisappear];
+	  }
     }
 }
 
 - (void)notifyButtonsDidAppear:(NSArray *)barButtonItems {
-    for (RNNUIBarButtonItem* barButtonItem in barButtonItems) {
-        [barButtonItem notifyDidAppear];
+    for (UIBarButtonItem* barButtonItem in barButtonItems) {
+	  if ([self isRNNUIBarButton:barButtonItem]) {
+		  [(RNNUIBarButtonItem *)barButtonItem notifyDidAppear];
+	  }
     }
+}
+
+- (BOOL)isRNNUIBarButton:(UIBarButtonItem *)barButtonItem {
+    return [barButtonItem isKindOfClass:[RNNUIBarButtonItem class]];
 }
 
 - (void)clearPreviousButtonViews:(NSArray<UIBarButtonItem *> *)newButtons oldButtons:(NSArray<UIBarButtonItem *> *)oldButtons {
