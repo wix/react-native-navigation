@@ -245,6 +245,18 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void push_rejectIfStackContainsChildWithId() {
+        disablePushAnimation(child1);
+        uut.push(child1, new CommandListenerAdapter());
+        assertThat(uut.size()).isEqualTo(1);
+
+        CommandListenerAdapter listener = spy(new CommandListenerAdapter());
+        uut.push(child1a, listener);
+        verify(listener).onError(any());
+        assertThat(uut.size()).isEqualTo(1);
+    }
+
+    @Test
     public void animateSetRoot() {
         disablePushAnimation(child1, child2, child3);
         assertThat(uut.isEmpty()).isTrue();
