@@ -146,6 +146,10 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     public void push(ViewController child, CommandListener listener) {
+        if (findController(child.getId()) != null) {
+            listener.onError("A stack can't contain two children with the same id");
+            return;
+        }
         final ViewController toRemove = stack.peek();
         if (size() > 0) backButtonHelper.addToPushedChild(child);
         child.setParentController(this);
