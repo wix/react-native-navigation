@@ -63,6 +63,19 @@ describe('Options', () => {
     await expect(elementByLabel('Styling Options')).toBeVisible();
   });
 
+  it('Merging options to invisible component in stack should not affect current component', async () => {
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await elementById(TestIDs.HIDE_PREVIOUS_SCREEN_TOP_BAR).tap();
+    await expect(elementByLabel('Pushed Screen')).toBeVisible();
+  });
+
+  it('Merging options to invisible component should affect the invisible component', async () => {
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await elementById(TestIDs.HIDE_PREVIOUS_SCREEN_TOP_BAR).tap();
+    await elementById(TestIDs.POP_BTN).tap();
+    await expect(elementByLabel('Styling Options')).toBeNotVisible();
+  });
+
   xit('hides topBar onScroll down and shows it on scroll up', async () => {
     await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(TestIDs.SCROLLVIEW_SCREEN_BUTTON).tap();

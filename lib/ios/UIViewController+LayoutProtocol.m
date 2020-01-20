@@ -31,12 +31,12 @@
 - (void)mergeOptions:(RNNNavigationOptions *)options {
     [self.options overrideOptions:options];
     [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
-    [self.parentViewController mergeChildOptions:options];
+    [self.parentViewController mergeChild:self options:options];
 }
 
-- (void)mergeChildOptions:(RNNNavigationOptions *)options {
+- (void)mergeChild:(UIViewController *)child options:(RNNNavigationOptions *)options {
     [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
-	[self.parentViewController mergeChildOptions:options];
+    [self.parentViewController mergeChild:child options:options];
 }
 
 - (RNNNavigationOptions *)resolveOptions {
