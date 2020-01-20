@@ -83,7 +83,7 @@
 	return [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:nil presenter:[RNNComponentPresenter new] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil];
 }
 
-- (void)testAssertReadyForEachMethodThrowsExceptoins {
+- (void)testAssertReadyForEachMethodThrowsExceptions {
 	NSArray* methods = [self getPublicMethodNamesForObject:self.uut];
 	[self.uut setReadyToReceiveCommands:false];
 	for (NSString* methodName in methods) {
@@ -94,7 +94,7 @@
 	}
 }
 
-- (void)testAssertExecuteOnBackgroundThreadEachMethodThrowsExceptoins {
+- (void)testAssertExecuteOnBackgroundThreadEachMethodThrowsExceptions {
 	NSArray* methods = [self getPublicMethodNamesForObject:self.uut];
 	[self.uut setReadyToReceiveCommands:true];
 	for (NSString* methodName in methods) {
@@ -107,7 +107,7 @@
 			XCTAssertThrowsSpecificNamed(func(self.uut,s, nil, nil, nil, nil, nil), NSException, @"NSInternalInconsistencyException", @"This function must be called on the main queue");
 			[expectation fulfill];
 		});
-		[self waitForExpectationsWithTimeout:1 handler:nil];
+		[self waitForExpectationsWithTimeout:100 handler:nil];
 	}
 }
 
