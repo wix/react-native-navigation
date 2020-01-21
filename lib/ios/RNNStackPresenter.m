@@ -22,13 +22,13 @@
 - (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry defaultOptions:(RNNNavigationOptions *)defaultOptions {
 	self = [super initWithDefaultOptions:defaultOptions];
 	_componentRegistry = componentRegistry;
+    _interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
 	return self;
 }
 
 - (void)bindViewController:(UINavigationController *)boundViewController {
     [super bindViewController:boundViewController];
     _topBarPresenter = [TopBarPresenterCreator createWithBoundedNavigationController:self.stackController];
-    _interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
     _interactivePopGestureDelegate.navigationController = boundViewController;
     _interactivePopGestureDelegate.originalDelegate = boundViewController.interactivePopGestureRecognizer.delegate;
 }
