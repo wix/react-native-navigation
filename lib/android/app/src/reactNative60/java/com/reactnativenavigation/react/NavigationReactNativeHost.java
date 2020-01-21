@@ -36,7 +36,7 @@ public class NavigationReactNativeHost extends ReactNativeHost implements Bundle
     };
 
     public NavigationReactNativeHost(NavigationApplication application) {
-        this(application, application.isDebug(), application.createAdditionalReactPackages());
+        this(application, application.isDebug(), application.getReactNativeHost().getReactInstanceManager().getPackages());
     }
 
     @SuppressWarnings("WeakerAccess")

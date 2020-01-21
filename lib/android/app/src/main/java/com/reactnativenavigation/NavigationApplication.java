@@ -39,20 +39,11 @@ public abstract class NavigationApplication extends Application implements React
      * @return a singleton {@link ReactGateway}
      */
 	protected ReactGateway createReactGateway() {
-	    return new ReactGateway(this, isDebug(), this::createReactNativeHost);
+	    return new ReactGateway(this, getReactNativeHost().getUseDeveloperSupport(), getReactNativeHost());
     }
-
-    protected ReactNativeHost createReactNativeHost() {
-        return new NavigationReactNativeHost(this);
-    }
-
+    
 	public ReactGateway getReactGateway() {
 		return reactGateway;
-	}
-
-	@Override
-	public ReactNativeHost getReactNativeHost() {
-		return getReactGateway().getReactNativeHost();
 	}
 
     /**
@@ -62,14 +53,9 @@ public abstract class NavigationApplication extends Application implements React
 
     }
 
-	public abstract boolean isDebug();
-
-    /**
-     * Create a list of additional {@link ReactPackage}s to include. This method will only be called by
-     * the default implementation of {@link #createReactGateway()}
-     */
-	@Nullable
-	public abstract List<ReactPackage> createAdditionalReactPackages();
+    public boolean isDebug() {
+        return getReactNativeHost().getUseDeveloperSupport();
+    };
 
     /**
      * Register a native View which can be displayed using the given {@code name}
