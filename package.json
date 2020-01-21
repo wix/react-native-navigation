@@ -78,7 +78,6 @@
     "react-native-keyboard-tracking-view": "5.x.x",
     "react-native-typescript-transformer": "1.2.12",
     "react-native-ui-lib": "3.24.2",
-    "react-native-view-overflow": "0.0.4",
     "react-redux": "5.x.x",
     "react-test-renderer": "16.9.x",
     "redux": "3.x.x",

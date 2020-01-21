@@ -125,7 +125,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setStackRoot(String commandId, String onComponentId, ReadableArray children, Promise promise) {
         handle(() -> {
-            ArrayList<ViewController> _children = new ArrayList();
+            ArrayList<ViewController> _children = new ArrayList<>();
             for (int i = 0; i < children.size(); i++) {
                 final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(children.getMap(i)));
                 _children.add(layoutFactory.create(layoutTree));

@@ -15,6 +15,8 @@ module.exports = {
   Layouts: 'Layouts',
   Modal: 'Modal',
   Options: 'Options',
+  Buttons: 'Buttons',
+  SharedElement: 'SharedElement',
   Pushed: 'Pushed',
   Stack: 'Stack',
   SetRoot: 'SetRoot',

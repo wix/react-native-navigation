@@ -28,6 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.UiUtils.runOnPreDrawOnce;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
+import static com.reactnativenavigation.utils.ViewUtils.findChildrenByClass;
 
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
@@ -109,11 +110,10 @@ public class TitleBar extends Toolbar {
 
     public void alignTextView(Alignment alignment, TextView view) {
         if (StringUtils.isEmpty(view.getText())) return;
-        Integer direction = view.getParent().getLayoutDirection();
+        int direction = view.getParent().getLayoutDirection();
         boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
 
         if (alignment == Alignment.Center) {
-            //noinspection IntegerDivisionInFloatingPointContext
             view.setX((getWidth() - view.getWidth()) / 2);
         } else if (leftButtonController != null) {
             view.setX(isRTL ? (getWidth() - view.getWidth()) - getContentInsetStartWithNavigation() : getContentInsetStartWithNavigation());
@@ -128,17 +128,13 @@ public class TitleBar extends Toolbar {
 
         if(changed || isTitleChanged) {
             TextView title = findTitleTextView();
-            if (title != null) {
-                this.alignTextView(titleAlignment, title);
-            }
+            if (title != null) this.alignTextView(titleAlignment, title);
             isTitleChanged = false;
         }
 
         if(changed || isSubtitleChanged) {
             TextView subtitle = findSubtitleTextView();
-            if (subtitle != null) {
-                this.alignTextView(subtitleAlignment, subtitle);
-            }
+            if (subtitle != null) this.alignTextView(subtitleAlignment, subtitle);
             isSubtitleChanged = false;
         }
     }
@@ -151,13 +147,13 @@ public class TitleBar extends Toolbar {
 
     @Nullable
     public TextView findTitleTextView() {
-        List<TextView> children = ViewUtils.findChildrenByClass(this, TextView.class, textView -> textView.getText().equals(getTitle()));
+        List<TextView> children = findChildrenByClass(this, TextView.class, textView -> textView.getText().equals(getTitle()));
         return children.isEmpty() ? null : children.get(0);
     }
 
     @Nullable
     public TextView findSubtitleTextView() {
-        List<TextView> children = ViewUtils.findChildrenByClass(this, TextView.class, textView -> textView.getText().equals(getSubtitle()));
+        List<TextView> children = findChildrenByClass(this, TextView.class, textView -> textView.getText().equals(getSubtitle()));
         return children.isEmpty() ? null : children.get(0);
     }
 

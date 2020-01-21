@@ -13,7 +13,8 @@ const {
   HIDE_TOPBAR_DEFAULT_OPTIONS,
   SHOW_YELLOW_BOX_BTN,
   SET_REACT_TITLE_VIEW,
-  GOTO_BUTTONS_SCREEN
+  GOTO_BUTTONS_SCREEN,
+  GOTO_SHARED_ELEMENT_SCREEN
 } = require('../testIDs');
 
 class Options extends Component {
@@ -41,6 +42,7 @@ class Options extends Component {
         <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
         <Button label='StatusBar' onPress={this.statusBarScreen} />
         <Button label='Buttons Screen' testID={GOTO_BUTTONS_SCREEN} onPress={this.goToButtonsScreen} />
+        <Button label='Shared element' testID={GOTO_SHARED_ELEMENT_SCREEN} onPress={this.goToSharedElementScreen} />
       </Root>
     );
   }
@@ -102,6 +104,8 @@ class Options extends Component {
   statusBarScreen = () => Navigation.showModal(Screens.StatusBar);
 
   goToButtonsScreen = () => Navigation.push(this, Screens.Buttons);
+
+  goToSharedElementScreen = () => Navigation.push(this, Screens.SharedElement);
 }
 
 module.exports = Options;

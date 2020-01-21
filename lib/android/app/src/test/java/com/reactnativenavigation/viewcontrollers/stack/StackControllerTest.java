@@ -223,7 +223,7 @@ public class StackControllerTest extends BaseTest {
         child2.options.animations.push.waitForRender = new Bool(true);
         uut.push(child2, new CommandListenerAdapter());
         verify(child2).addOnAppearedListener(any());
-        verify(animator, times(0)).push(eq(child1.getView()), eq(child1.options.animations.push), any());
+        verify(animator, times(0)).push(eq(child1), eq(child2), any(), any());
     }
 
     @Test
@@ -506,7 +506,7 @@ public class StackControllerTest extends BaseTest {
         x.put("from", 0);
         x.put("to", 1000);
         content.put("x", x);
-        mergeOptions.animations.pop.content = AnimationOptions.parse(content);
+        mergeOptions.animations.pop.content = new AnimationOptions(content);
 
         uut.pop(mergeOptions, new CommandListenerAdapter());
         ArgumentCaptor<NestedAnimationsOptions> captor = ArgumentCaptor.forClass(NestedAnimationsOptions.class);
@@ -533,7 +533,7 @@ public class StackControllerTest extends BaseTest {
         x.put("from", 0);
         x.put("to", 1000);
         content.put("x", x);
-        defaultOptions.animations.pop.content = AnimationOptions.parse(content);
+        defaultOptions.animations.pop.content = new AnimationOptions(content);
         uut.setDefaultOptions(defaultOptions);
 
         uut.pop(Options.EMPTY, new CommandListenerAdapter());

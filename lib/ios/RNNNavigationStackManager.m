@@ -6,7 +6,7 @@ typedef void (^RNNAnimationBlock)(void);
 
 @implementation RNNNavigationStackManager
 
-- (void)push:(UIViewController *)newTop onTop:(UIViewController *)onTopViewController animated:(BOOL)animated animationDelegate:(id)animationDelegate completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)push:(UIViewController *)newTop onTop:(UIViewController *)onTopViewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	UINavigationController *nvc = onTopViewController.navigationController;
 
 	if([[RCTI18nUtil sharedInstance] isRTL]) {
@@ -16,10 +16,6 @@ typedef void (^RNNAnimationBlock)(void);
 		nvc.view.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
 		nvc.navigationBar.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
 	}
-
-	if (animationDelegate) {
-		nvc.delegate = animationDelegate;
-	}
 	
 	[self performAnimationBlock:^{
 		[nvc pushViewController:newTop animated:animated];
@@ -27,20 +23,27 @@ typedef void (^RNNAnimationBlock)(void);
 }
 
 - (void)pop:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
-	if (!viewController.view.window) {
-		animated = NO;
-	}
-	
-	__block UIViewController *poppedVC = nil;
-	[self performAnimationBlock:^{
-		poppedVC = [viewController.navigationController popViewControllerAnimated:animated];
-	} completion:^{
-		if (poppedVC) {
-			completion();
-		} else {
-			[RNNErrorHandler reject:rejection withErrorCode:1012 errorDescription:@"popping component failed"];
-		}
-	}];
+    UINavigationController *nvc = viewController.navigationController;
+    if ([nvc.viewControllers indexOfObject:viewController] < 0) {
+        [RNNErrorHandler reject:rejection withErrorCode:1012 errorDescription:@"popping component failed"];
+        return;
+    }
+    
+    if ([nvc topViewController] != viewController) {
+        NSMutableArray * vcs = nvc.viewControllers.mutableCopy;
+        [vcs removeObject:viewController];
+        [self performAnimationBlock:^{
+            [nvc setViewControllers:vcs animated:animated];
+        } completion:^{
+            completion();
+        }];
+    } else {
+        [self performAnimationBlock:^{
+            [viewController.navigationController popViewControllerAnimated:animated];
+        } completion:^{
+            completion();
+        }];
+    }
 }
 
 - (void)popTo:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection; {

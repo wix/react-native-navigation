@@ -100,7 +100,7 @@ public class ModalPresenterTest extends BaseTest {
     public void showModal_resolvesDefaultOptions() throws JSONException {
         Options defaultOptions = new Options();
         JSONObject disabledShowModalAnimation = new JSONObject().put("enabled", false);
-        defaultOptions.animations.showModal = AnimationOptions.parse(disabledShowModalAnimation);
+        defaultOptions.animations.showModal = new AnimationOptions(disabledShowModalAnimation);
 
         uut.setDefaultOptions(defaultOptions);
         uut.showModal(modal1, root, new CommandListenerAdapter());

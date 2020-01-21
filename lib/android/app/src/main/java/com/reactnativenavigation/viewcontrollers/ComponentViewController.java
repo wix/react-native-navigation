@@ -84,7 +84,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @NonNull
     @Override
     protected ComponentLayout createView() {
-        view = (ComponentLayout) viewCreator.create(getActivity(), getId(), componentName);
+        ComponentLayout view = (ComponentLayout) viewCreator.create(getActivity(), getId(), componentName);
         return (ComponentLayout) view.asView();
     }
 

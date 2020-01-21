@@ -1,6 +1,5 @@
 package com.reactnativenavigation.playground;
 
-import com.entria.views.RNViewOverflowPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 

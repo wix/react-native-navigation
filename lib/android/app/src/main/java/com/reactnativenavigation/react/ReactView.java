@@ -39,10 +39,16 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
 		this.componentId = componentId;
 		this.componentName = componentName;
 		jsTouchDispatcher = new JSTouchDispatcher(this);
-		start();
 	}
 
-	private void start() {
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        start();
+    }
+
+    private void start() {
+        if (isAttachedToReactInstance) return;
 		setEventListener(reactRootView -> {
             reactRootView.setEventListener(null);
             isAttachedToReactInstance = true;

@@ -9,6 +9,7 @@
 #import "IntNumberParser.h"
 #import "DoubleParser.h"
 #import "EnumParser.h"
+#import "TimeIntervalParser.h"
 
 @interface RNNOptions : NSObject
 

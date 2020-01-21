@@ -12,9 +12,9 @@ public class AnimationsOptions {
         options.push = NestedAnimationsOptions.parse(json.optJSONObject("push"));
         options.pop = NestedAnimationsOptions.parse(json.optJSONObject("pop"));
         options.setStackRoot = NestedAnimationsOptions.parse(json.optJSONObject("setStackRoot"));
-        options.setRoot = AnimationOptions.parse(json.optJSONObject("setRoot"));
-        options.showModal = AnimationOptions.parse(json.optJSONObject("showModal"));
-        options.dismissModal = AnimationOptions.parse(json.optJSONObject("dismissModal"));
+        options.setRoot = new AnimationOptions(json.optJSONObject("setRoot"));
+        options.showModal = new AnimationOptions(json.optJSONObject("showModal"));
+        options.dismissModal = new AnimationOptions(json.optJSONObject("dismissModal"));
 
         return options;
     }

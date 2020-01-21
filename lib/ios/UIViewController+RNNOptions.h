@@ -12,10 +12,6 @@
 
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden;
 
-- (void)setDrawBehindTopBar:(BOOL)drawBehind;
-
-- (void)setDrawBehindTabBar:(BOOL)drawBehindTabBar;
-
 - (void)setTabBarItemBadgeColor:(UIColor *)badgeColor;
 
 - (void)setTabBarItemBadge:(NSString *)badge;

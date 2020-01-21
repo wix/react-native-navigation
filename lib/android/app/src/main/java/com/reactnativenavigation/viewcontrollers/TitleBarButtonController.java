@@ -20,6 +20,7 @@ import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.button.IconResolver;
+import com.reactnativenavigation.viewcontrollers.viewcontrolleroverlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
                                     Button button,
                                     ReactViewCreator viewCreator,
                                     OnClickListener onClickListener) {
-        super(activity, button.id, new YellowBoxDelegate(), new Options());
+        super(activity, button.id, new YellowBoxDelegate(), new Options(), new ViewControllerOverlay(activity));
         this.navigationIconResolver = navigationIconResolver;
         this.optionsPresenter = optionsPresenter;
         this.button = button;

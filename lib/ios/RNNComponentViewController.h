@@ -2,7 +2,6 @@
 #import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
-#import "RNNAnimator.h"
 #import "RNNUIBarButtonItem.h"
 #import "RNNLayoutInfo.h"
 #import "RNNLayoutProtocol.h"
@@ -18,9 +17,10 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
-@property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) UIViewController* previewController;
 @property (nonatomic, copy) PreviewCallback previewCallback;
+
+@property (nonatomic) CGSize availableSize;
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 				   rootViewCreator:(id<RNNComponentViewCreator>)creator

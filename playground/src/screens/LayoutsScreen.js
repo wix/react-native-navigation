@@ -19,7 +19,8 @@ class LayoutsScreen extends React.Component {
         testID: WELCOME_SCREEN_HEADER,
         title: {
           text: 'React Native Navigation'
-        }
+        },
+        drawBehind: false
       }
     };
   }

@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class UiUtils {
     private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
@@ -29,6 +30,17 @@ public class UiUtils {
                 view.getViewTreeObserver().removeOnPreDrawListener(this);
                 task.run();
                 return true;
+            }
+        });
+    }
+
+    public static void doOnLayout(@Nullable final View view, final Runnable task) {
+        if (view == null) return;
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                task.run();
             }
         });
     }
