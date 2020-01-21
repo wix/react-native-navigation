@@ -21,14 +21,14 @@ describe('External Component', () => {
     await expect(elementByLabel('External component in deep stack')).toBeVisible();
   });
 
-  test('Dismiss modal from external component should not crash', async () => {
+  test(':ios: Dismiss modal from external component should not crash', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('This is an external component')).toBeVisible();
     await elementById(TestIDs.EXTERNAL_DISMISS_MODAL_BTN).tap();
     await expect(elementById(TestIDs.NAVIGATION_SCREEN)).toBeVisible();
   });
 
-  test('Dismiss modal from external component should not crash when registered to modalDismissed event', async () => {
+  test(':ios: Dismiss modal from external component should not crash when registered to modalDismissed event', async () => {
     await elementById(TestIDs.REGISTER_MODAL_DISMISS_EVENT_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('This is an external component')).toBeVisible();
