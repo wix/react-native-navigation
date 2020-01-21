@@ -48,7 +48,6 @@ class PushedScreen extends React.Component {
 
   render() {
     const stackPosition = this.getStackPosition();
-    console.warn(this.props.previousScreenIds)
     return (
       <Root componentId={this.props.componentId} footer={`Stack Position: ${stackPosition}`}>
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />

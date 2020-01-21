@@ -22,11 +22,11 @@
 	[self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
 }
 
-- (void)mergeChild:(UIViewController *)child options:(RNNNavigationOptions *)options {
+- (void)mergeChildOptions:(UIViewController *)child options:(RNNNavigationOptions *)options {
     if (child.isLastInStack) {
         [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
     }
-    [self.parentViewController mergeChild:child options:options];
+    [self.parentViewController mergeChildOptions:child options:options];
 }
 
 - (UINavigationController *)navigationController {
