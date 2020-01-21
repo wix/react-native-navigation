@@ -102,7 +102,7 @@
 		IMP imp = [self.uut methodForSelector:s];
 		void (*func)(id, SEL, id, id, id, id, id) = (void *)imp;
 		
-		XCTestExpectation *expectation = [self expectationWithDescription:[NSString stringWithFormat:@"Testing %@ throws on background queue", methodName]];
+		XCTestExpectation *expectation = [self expectationWithDescription:@"Testing function throws on background queue"];
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			XCTAssertThrowsSpecificNamed(func(self.uut,s, nil, nil, nil, nil, nil), NSException, @"NSInternalInconsistencyException", @"This function must be called on the main queue");
 			[expectation fulfill];
