@@ -83,7 +83,7 @@
 	return [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:nil presenter:[RNNComponentPresenter new] options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil];
 }
 
-- (void)testAssertReadyForEachMethodThrowsExceptoins {
+- (void)testAssertReadyForEachMethodThrowsExceptions {
 	NSArray* methods = [self getPublicMethodNamesForObject:self.uut];
 	[self.uut setReadyToReceiveCommands:false];
 	for (NSString* methodName in methods) {
@@ -94,7 +94,7 @@
 	}
 }
 
--(NSArray*) getPublicMethodNamesForObject:(NSObject*)obj{
+- (NSArray*)getPublicMethodNamesForObject:(NSObject*)obj {
 	NSMutableArray* skipMethods = [NSMutableArray new];
 	
 	[skipMethods addObject:@"initWithControllerFactory:eventEmitter:stackManager:modalManager:overlayManager:mainWindow:"];
