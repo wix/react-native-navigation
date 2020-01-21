@@ -65,7 +65,14 @@ class Options extends Component {
     }
   });
 
-  push = () => Navigation.push(this, Screens.Pushed);
+  push = () => Navigation.push(this, {
+    component: {
+      name: Screens.Pushed,
+      passProps: {
+        previousScreenIds: [this.props.componentId]
+      }
+    }
+  });
 
   hideTopBarInDefaultOptions = () => {
     Navigation.setDefaultOptions({
