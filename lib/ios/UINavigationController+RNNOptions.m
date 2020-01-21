@@ -5,10 +5,6 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 @implementation UINavigationController (RNNOptions)
 
-- (void)setInteractivePopGestureEnabled:(BOOL)enabled {
-	self.interactivePopGestureRecognizer.enabled = enabled;
-}
-
 - (void)setRootBackgroundImage:(UIImage *)backgroundImage {
 	UIImageView* backgroundImageView = (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
 	if (![backgroundImageView isKindOfClass:[UIImageView class]]) {

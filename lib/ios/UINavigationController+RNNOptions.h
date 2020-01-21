@@ -2,8 +2,6 @@
 
 @interface UINavigationController (RNNOptions)
 
-- (void)setInteractivePopGestureEnabled:(BOOL)enabled;
-
 - (void)setRootBackgroundImage:(UIImage *)backgroundImage;
 
 - (void)setNavigationBarTestId:(NSString *)testID;

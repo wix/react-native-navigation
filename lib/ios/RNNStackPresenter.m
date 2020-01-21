@@ -4,12 +4,14 @@
 #import "RNNCustomTitleView.h"
 #import "TopBarPresenterCreator.h"
 #import "RNNReactBackgroundView.h"
+#import "InteractivePopGestureDelegate.h"
 
 @interface RNNStackPresenter() {
 	RNNReactComponentRegistry* _componentRegistry;
 	UIView* _customTopBarBackground;
 	RNNReactView* _topBarBackgroundReactView;
     TopBarPresenter* _topBarPresenter;
+    InteractivePopGestureDelegate *_interactivePopGestureDelegate;
 }
 
 @property (nonatomic, weak) RNNStackController* stackController;
@@ -23,9 +25,12 @@
 	return self;
 }
 
-- (void)bindViewController:(UIViewController *)boundViewController {
+- (void)bindViewController:(UINavigationController *)boundViewController {
     [super bindViewController:boundViewController];
     _topBarPresenter = [TopBarPresenterCreator createWithBoundedNavigationController:self.stackController];
+    _interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
+    _interactivePopGestureDelegate.navigationController = boundViewController;
+    _interactivePopGestureDelegate.originalDelegate = boundViewController.interactivePopGestureRecognizer.delegate;
 }
 
 - (void)componentDidAppear {
@@ -45,13 +50,10 @@
 	RNNStackController* stack = self.stackController;
 	RNNNavigationOptions * withDefault = [options withDefault:[self defaultOptions]];
 	
-	self.interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
-	self.interactivePopGestureDelegate.navigationController = stack;
-	self.interactivePopGestureDelegate.originalDelegate = stack.interactivePopGestureRecognizer.delegate;
-	stack.interactivePopGestureRecognizer.delegate = self.interactivePopGestureDelegate;
+    [_interactivePopGestureDelegate setEnabled:[withDefault.popGesture getWithDefaultValue:YES]];
+	stack.interactivePopGestureRecognizer.delegate = _interactivePopGestureDelegate;
 
     [stack setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle getWithDefaultValue:@"default"]]];
-	[stack setInteractivePopGestureEnabled:[withDefault.popGesture getWithDefaultValue:YES]];
 	[stack setRootBackgroundImage:[withDefault.rootBackgroundImage getWithDefaultValue:nil]];
 	[stack setNavigationBarTestId:[withDefault.topBar.testID getWithDefaultValue:nil]];
 	[stack setNavigationBarVisible:[withDefault.topBar.visible getWithDefaultValue:YES] animated:[withDefault.topBar.animate getWithDefaultValue:YES]];
@@ -84,7 +86,7 @@
 	RNNStackController* stack = self.stackController;
     
 	if (options.popGesture.hasValue) {
-		[stack setInteractivePopGestureEnabled:options.popGesture.get];
+		[_interactivePopGestureDelegate setEnabled:options.popGesture.get];
 	}
 	
 	if (options.rootBackgroundImage.hasValue) {
