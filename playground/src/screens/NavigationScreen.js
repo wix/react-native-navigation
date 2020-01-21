@@ -11,7 +11,8 @@ const {
   SHOW_STATIC_EVENTS_SCREEN,
   SHOW_ORIENTATION_SCREEN,
   SET_ROOT_BTN,
-  PAGE_SHEET_MODAL_BTN
+  PAGE_SHEET_MODAL_BTN,
+  NAVIGATION_SCREEN
 } = require('../testIDs');
 const Screens = require('./Screens');
 
@@ -33,7 +34,7 @@ class NavigationScreen extends React.Component {
 
   render() {
     return (
-      <Root componentId={this.props.componentId}>
+      <Root componentId={this.props.componentId} testID={NAVIGATION_SCREEN}>
         <Button label='Set Root' testID={SET_ROOT_BTN} onPress={this.setRoot} />
         <Button label='Modal' testID={MODAL_BTN} onPress={this.showModal} />
         {Platform.OS === 'ios' && <Button label='PageSheet modal' testID={PAGE_SHEET_MODAL_BTN} onPress={this.showPageSheetModal} />}

@@ -484,6 +484,7 @@
 		502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RNNOptionsTest.m"; sourceTree = "<group>"; };
 		502F0E152178D09600367CC3 /* RNNBasePresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBasePresenterTest.m; sourceTree = "<group>"; };
 		502F0E172179C39900367CC3 /* RNNTabBarPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTabBarPresenterTest.m; sourceTree = "<group>"; };
+		5030B62D23D60002008F1642 /* RNNAssert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNAssert.h; sourceTree = "<group>"; };
 		50344D2623A03DB4004B6A7C /* BottomTabsAttachMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsAttachMode.h; sourceTree = "<group>"; };
 		50344D2723A03DB4004B6A7C /* BottomTabsAttachMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsAttachMode.m; sourceTree = "<group>"; };
 		5038A372216CDDB6009280BC /* UIViewController+SideMenuController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SideMenuController.h"; sourceTree = "<group>"; };
@@ -1305,6 +1306,7 @@
 				E5F6C39E22DB4D0E0093C2CE /* UIViewController+Utils.m */,
 				50DE2E43238EA14E005CD5F4 /* NSArray+utils.h */,
 				50DE2E44238EA14E005CD5F4 /* NSArray+utils.m */,
+				5030B62D23D60002008F1642 /* RNNAssert.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";

@@ -1,6 +1,7 @@
 #import "RNNUtils.h"
 
 @implementation RNNUtils
+
 +(double)getDoubleOrKey:(NSDictionary*)dict withKey:(NSString*)key withDefault:(double)defaultResult {
 	if ([dict objectForKey:key]) {
 		return [dict[key] doubleValue];
@@ -27,6 +28,17 @@
 
 + (NSNumber *)getCurrentTimestamp {
 	return [NSNumber numberWithLong:[[NSDate date] timeIntervalSince1970] * 1000];
+}
+
+
+BOOL RNNIsMainQueue() {
+  static void *mainQueueKey = &mainQueueKey;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    dispatch_queue_set_specific(dispatch_get_main_queue(),
+                                mainQueueKey, mainQueueKey, NULL);
+  });
+  return dispatch_get_specific(mainQueueKey) == mainQueueKey;
 }
 
 @end
