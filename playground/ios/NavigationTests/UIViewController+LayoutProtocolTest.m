@@ -66,7 +66,7 @@
 	RNNStackController* uut = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:nil];
 	
     RNNNavigationOptions * toMerge = [[RNNNavigationOptions alloc] initEmptyOptions];
-	[(UIViewController *) [parent expect] mergeChildOptions:uut options:toMerge];
+	[(UIViewController *) [parent expect] mergeChildOptions:toMerge child:uut];
     
     [parent addChildViewController:uut];
 

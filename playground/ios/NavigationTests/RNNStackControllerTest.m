@@ -173,7 +173,7 @@
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
 	
 	[[_presenter expect] mergeOptions:options resolvedOptions:[OCMArg any]];
-	[self.uut mergeChildOptions:self.uut.childViewControllers.lastObject options:options];
+	[self.uut mergeChildOptions:options child:self.uut.childViewControllers.lastObject];
 	[_presenter verify];
 }
 
@@ -181,7 +181,7 @@
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
 	
 	[[_presenter reject] mergeOptions:options resolvedOptions:self.uut.resolveOptions];
-	[self.uut mergeChildOptions:self.uut.childViewControllers.firstObject options:options];
+	[self.uut mergeChildOptions:options child:self.uut.childViewControllers.firstObject];
 	[_presenter verify];
 }
 

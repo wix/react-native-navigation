@@ -110,7 +110,7 @@
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
     OCMStub([self.uut parentViewController]).andReturn(parentMock);
-    [((RNNComponentViewController *) [parentMock expect]) mergeChildOptions:self.originalUut options:options];
+    [((RNNComponentViewController *) [parentMock expect]) mergeChildOptions:options child:self.originalUut];
     [self.uut mergeOptions:options];
     [parentMock verify];
 }
