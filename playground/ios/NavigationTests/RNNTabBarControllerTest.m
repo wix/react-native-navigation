@@ -7,6 +7,7 @@
 
 @interface RNNTabBarControllerTest : XCTestCase
 
+@property(nonatomic, strong) RNNBottomTabsController * originalUut;
 @property(nonatomic, strong) RNNBottomTabsController * uut;
 @property(nonatomic, strong) id mockChildViewController;
 @property(nonatomic, strong) id mockEventEmitter;
@@ -25,7 +26,8 @@
     self.mockTabBarPresenter = [OCMockObject partialMockForObject:[[RNNBottomTabsPresenter alloc] init]];
     self.mockChildViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
     self.mockEventEmitter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
-    self.uut = [OCMockObject partialMockForObject:[[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:self.mockTabBarPresenter eventEmitter:self.mockEventEmitter childViewControllers:@[[[UIViewController alloc] init]]]];
+	self.originalUut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:self.mockTabBarPresenter eventEmitter:self.mockEventEmitter childViewControllers:@[[[UIViewController alloc] init]]];
+    self.uut = [OCMockObject partialMockForObject:self.originalUut];
     OCMStub([self.uut selectedViewController]).andReturn(self.mockChildViewController);
 }
 
@@ -104,11 +106,11 @@
 }
 
 - (void)testMergeOptions_shouldInvokeParentMergeOptions {
-    id parentMock = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
+    id parentMock = [OCMockObject niceMockForClass:[RNNComponentViewController class]];
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
     OCMStub([self.uut parentViewController]).andReturn(parentMock);
-    [((RNNComponentViewController *) [parentMock expect]) mergeChildOptions:options];
+    [((RNNComponentViewController *) [parentMock expect]) mergeChildOptions:options child:self.originalUut];
     [self.uut mergeOptions:options];
     [parentMock verify];
 }

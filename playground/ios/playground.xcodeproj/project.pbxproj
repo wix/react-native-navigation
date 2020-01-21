@@ -39,7 +39,7 @@
 		E58D26592385888C003F36BA /* RNNNavigationStackManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */; };
 		E58D265A2385888C003F36BA /* RNNTestRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */; };
 		E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.m */; };
-		E58D265C2385888C003F36BA /* RNNNavigationControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263F2385888C003F36BA /* RNNNavigationControllerTest.m */; };
+		E58D265C2385888C003F36BA /* RNNStackControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263F2385888C003F36BA /* RNNStackControllerTest.m */; };
 		E58D265D2385888C003F36BA /* RNNControllerFactoryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26402385888C003F36BA /* RNNControllerFactoryTest.m */; };
 		E58D265E2385888C003F36BA /* RNNCommandsHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26412385888C003F36BA /* RNNCommandsHandlerTest.m */; };
 		E58D265F2385888C003F36BA /* RNNBasePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26422385888C003F36BA /* RNNBasePresenterTest.m */; };
@@ -119,7 +119,7 @@
 		E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationStackManagerTest.m; sourceTree = "<group>"; };
 		E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTestRootViewCreator.m; sourceTree = "<group>"; };
 		E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RNNOptionsTest.m"; sourceTree = "<group>"; };
-		E58D263F2385888C003F36BA /* RNNNavigationControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationControllerTest.m; sourceTree = "<group>"; };
+		E58D263F2385888C003F36BA /* RNNStackControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNStackControllerTest.m; sourceTree = "<group>"; };
 		E58D26402385888C003F36BA /* RNNControllerFactoryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNControllerFactoryTest.m; sourceTree = "<group>"; };
 		E58D26412385888C003F36BA /* RNNCommandsHandlerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNCommandsHandlerTest.m; sourceTree = "<group>"; };
 		E58D26422385888C003F36BA /* RNNBasePresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNBasePresenterTest.m; sourceTree = "<group>"; };
@@ -253,7 +253,7 @@
 				E58D26282385888B003F36BA /* RNNFontAttributesCreatorTest.m */,
 				E58D262A2385888B003F36BA /* RNNLayoutManagerTest.m */,
 				E58D26432385888C003F36BA /* RNNModalManagerTest.m */,
-				E58D263F2385888C003F36BA /* RNNNavigationControllerTest.m */,
+				E58D263F2385888C003F36BA /* RNNStackControllerTest.m */,
 				E58D26322385888B003F36BA /* RNNNavigationOptionsTest.m */,
 				E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */,
 				E58D262C2385888B003F36BA /* RNNOptionsTest.h */,
@@ -755,7 +755,7 @@
 				E58D264E2385888C003F36BA /* RNNTestBase.m in Sources */,
 				E58D26612385888C003F36BA /* RNNTestNoColor.m in Sources */,
 				E58D265D2385888C003F36BA /* RNNControllerFactoryTest.m in Sources */,
-				E58D265C2385888C003F36BA /* RNNNavigationControllerTest.m in Sources */,
+				E58D265C2385888C003F36BA /* RNNStackControllerTest.m in Sources */,
 				E58D26482385888C003F36BA /* RNNDotIndicatorPresenterTest.m in Sources */,
 				E58D26522385888C003F36BA /* RNNComponentPresenterTest.m in Sources */,
 				E58D26572385888C003F36BA /* RNNTabBarPresenterTest.m in Sources */,

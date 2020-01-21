@@ -1,5 +1,6 @@
 #import "RNNStackController.h"
 #import "RNNComponentViewController.h"
+#import "UIViewController+Utils.h"
 
 @implementation RNNStackController {
     UIViewController* _presentedViewController;
@@ -19,6 +20,13 @@
 - (void)viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 	[self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
+}
+
+- (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
+    if (child.isLastInStack) {
+        [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+    }
+    [self.parentViewController mergeChildOptions:options child:child];
 }
 
 - (UINavigationController *)navigationController {

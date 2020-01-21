@@ -15,7 +15,8 @@ const {
   ADD_BACK_HANDLER,
   REMOVE_BACK_HANDLER,
   SET_STACK_ROOT_BUTTON,
-  PUSH_OPTIONS_BUTTON
+  PUSH_OPTIONS_BUTTON,
+  HIDE_PREVIOUS_SCREEN_TOP_BAR
 } = require('../testIDs');
 const Screens = require('./Screens');
 
@@ -58,6 +59,7 @@ class PushedScreen extends React.Component {
         <Button label='Remove BackHandler' testID={REMOVE_BACK_HANDLER} onPress={this.removeBackHandler} />
         <Button label='Set Stack Root' testID={SET_STACK_ROOT_BUTTON} onPress={this.setStackRoot} />
         <Button label='Push Options Screen' testID={PUSH_OPTIONS_BUTTON} onPress={this.pushOptionsScreen} />
+        <Button label='Hide previous screen top bar' testID={HIDE_PREVIOUS_SCREEN_TOP_BAR} onPress={this.hidePreviousScreenTopBar} />
       </Root>
     );
   }
@@ -100,6 +102,12 @@ class PushedScreen extends React.Component {
   popToFirstScreen = () => Navigation.popTo(this.props.previousScreenIds[0]);
 
   popToRoot = () => Navigation.popToRoot(this);
+
+  hidePreviousScreenTopBar = () => Navigation.mergeOptions(this.props.previousScreenIds[this.getStackPosition() - 1], {
+    topBar: {
+      visible: false
+    }
+  });
 
   setStackRoot = () => Navigation.setStackRoot(this, [
     {
