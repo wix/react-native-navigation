@@ -202,7 +202,27 @@ public class Presenter {
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && navigationBar.backgroundColor.canApplyValue()) {
             int defaultColor = activity.getWindow().getNavigationBarColor();
-            activity.getWindow().setNavigationBarColor(navigationBar.backgroundColor.get(defaultColor));
+            int color = navigationBar.backgroundColor.get(defaultColor);
+            activity.getWindow().setNavigationBarColor(color);
+            setNavigationBarButtonsColor(color);
         }
+    }
+
+    private void setNavigationBarButtonsColor(int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            View decorView = activity.getWindow().getDecorView();
+            int flags = decorView.getSystemUiVisibility();
+            if (isColorLight(color)) {
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
+            decorView.setSystemUiVisibility(flags);
+        }
+    }
+
+    private boolean isColorLight(int color) {
+        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return darkness < 0.5;
     }
 }
