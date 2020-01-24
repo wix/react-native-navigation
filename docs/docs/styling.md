@@ -149,28 +149,6 @@ Navigation.mergeOptions(this.props.componentId, {
       enabled: true
     }
   },
-  fab: {
-    id: 'fab',  // required
-    backgroundColor: 'green',
-    clickColor: 'blue',
-    rippleColor: 'yellow',
-    visible: true,
-    icon: require('add.png'),
-    iconColor: 'white',
-    alignHorizontally: 'left', // one of 'left', 'right'
-    hideOnScroll: false,
-    size: 24,
-    actions: [{
-      id: 'fab-1',  // required
-      backgroundColor: 'green',
-      clickColor: 'blue',
-      rippleColor: 'yellow'
-      visible: true,
-      icon: require('add.png'),
-      iconColor: 'white',
-      size: 24;
-    }];
-  },
   overlay: {
     interceptTouchOutside: true,
     handleKeyboardEvents: true
@@ -289,7 +267,29 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTab: {
     selectedFontSize: 19 // Selected tab font size in sp
-  }
+  },
+  fab: {
+    id: 'fab',  // required
+    backgroundColor: 'green',
+    clickColor: 'blue',
+    rippleColor: 'yellow',
+    visible: true,
+    icon: require('add.png'),
+    iconColor: 'white',
+    alignHorizontally: 'left', // one of 'left', 'right'
+    hideOnScroll: false,
+    size: 24,
+    actions: [{
+      id: 'fab-1',  // required
+      backgroundColor: 'green',
+      clickColor: 'blue',
+      rippleColor: 'yellow',
+      visible: true,
+      icon: require('add.png'),
+      iconColor: 'white',
+      size: 24,
+    }]
+  },
 }
 ```
 
