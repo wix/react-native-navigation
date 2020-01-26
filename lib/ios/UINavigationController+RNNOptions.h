@@ -16,7 +16,7 @@
 
 - (void)setNavigationBarClipsToBounds:(BOOL)clipsToBounds;
 
-- (void)setNavigationBarLargeTitleVisible:(BOOL)visible;
+- (void)setNavigationBarLargeTitleVisible;
 
 - (void)setBackButtonColor:(UIColor *)color;
 
