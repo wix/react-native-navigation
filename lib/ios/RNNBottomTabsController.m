@@ -79,4 +79,16 @@
     }
 }
 
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+    NSUInteger _index = [tabBarController.viewControllers indexOfObject:viewController];
+    [self.eventEmitter sendBottomTabPressed:@(_index)];
+    
+    if([[viewController resolveOptions].bottomTab.selectTabOnPress getWithDefaultValue:YES]){
+        return YES;
+    }
+
+    return NO;
+}
+
 @end

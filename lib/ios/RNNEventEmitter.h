@@ -30,5 +30,7 @@
 
 - (void)sendScreenPoppedEvent:(NSString *)componentId;
 
+- (void)sendBottomTabPressed:(NSNumber *)tabIndex;
+
 
 @end

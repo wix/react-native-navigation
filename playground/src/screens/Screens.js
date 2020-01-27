@@ -3,7 +3,7 @@ const SideMenuLeft = 'SideMenuLeft';
 const SideMenuCenter = 'SideMenuCenter';
 const SideMenuRight = 'SideMenuRight';
 const StatusBarOptions = 'StatusBarOptions';
-const StatusBarFirstTab = 'StatusBarFirstTab'
+const StatusBarFirstTab = 'StatusBarFirstTab';
 
 module.exports = {
   Buttons: 'Buttons',
@@ -44,14 +44,16 @@ module.exports = {
   },
   StatusBar: {
     sideMenu: {
-      left: component(SideMenuLeft,
+      left: component(
+        SideMenuLeft,
         {
           statusBar: {
             drawBehind: true,
             translucent: true
           }
         },
-        { marginTop: 20 }),
+        { marginTop: 20 }
+      ),
       center: stack(StatusBarOptions),
       right: component(SideMenuRight)
     }
@@ -69,24 +71,26 @@ module.exports = {
               }
             },
             left: component(SideMenuLeft),
-            center: stack(component(StatusBarFirstTab, {
-              statusBar: {
-                translucent: true,
-                drawBehind: true,
-              },
-              topBar: {
-                drawBehind: true,
-                elevation: 0,
-                background: {
-                  color: 'transparent'
+            center: stack(
+              component(StatusBarFirstTab, {
+                statusBar: {
+                  translucent: true,
+                  drawBehind: true
+                },
+                topBar: {
+                  drawBehind: true,
+                  elevation: 0,
+                  background: {
+                    color: 'transparent'
+                  }
                 }
-              }
-            }))
+              })
+            )
           }
         },
         {
           component: {
-            id: "Pushed.tab2",
+            id: 'Pushed.tab2',
             name: 'Pushed',
             options: {
               bottomTab: {
@@ -106,5 +110,6 @@ module.exports = {
   Alert: 'Alert',
   Orientation: 'Orientation',
   OrientationDetect: 'OrientationDetect',
-  Search: 'Search'
-}
+  Search: 'Search',
+  TabModal: 'TabModal'
+};
