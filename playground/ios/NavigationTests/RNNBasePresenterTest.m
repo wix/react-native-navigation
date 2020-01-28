@@ -96,6 +96,17 @@
 	XCTAssertTrue(_boundViewController.modalInPresentation);
 }
 
-
+- (void)testMergeOptions_shouldSetTabBarItemColorWithDefaultOptions {
+	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	defaultOptions.bottomTab.selectedIconColor = [Color withColor:UIColor.greenColor];
+	self.uut.defaultOptions = defaultOptions;
+	
+	RNNNavigationOptions* mergeOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	mergeOptions.bottomTab.text = [[Text alloc] initWithValue:@"title"];
+    OCMStub([self.mockBoundViewController parentViewController]).andReturn([UITabBarController new]);
+	
+    [self.uut mergeOptions:mergeOptions resolvedOptions:self.options];
+	XCTAssertEqual(self.uut.boundViewController.tabBarItem.title, @"title");
+}
 
 @end
