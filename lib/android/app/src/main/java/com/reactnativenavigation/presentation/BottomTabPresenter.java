@@ -103,6 +103,7 @@ public class BottomTabPresenter {
     }
 
     private void applyDotIndicator(int tabIndex, DotIndicatorOptions dotIndicator) {
+        if(dotIndicator.visible.isFalse()) return;
         AHNotification.Builder builder = new AHNotification.Builder()
                 .setText("")
                 .setBackgroundColor(dotIndicator.color.get(null))
