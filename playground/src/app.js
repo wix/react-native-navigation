@@ -2,12 +2,12 @@
 const { Navigation } = require('react-native-navigation');
 const { registerScreens } = require('./screens');
 const { Platform } = require('react-native');
-const { setDefaultOptions } = require('./commons/Options');
+const { setDefaultOptions } = require('./commons/Options')
 const testIDs = require('./testIDs');
 const Screens = require('./screens/Screens');
 
 if (Platform.OS === 'android') {
-  alert = title => {
+  alert = (title) => {
     Navigation.showOverlay({
       component: {
         name: Screens.Alert,
@@ -29,24 +29,6 @@ if (Platform.OS === 'android') {
 
 function start() {
   registerScreens();
-
-  Navigation.events().registerBottomTabPressedListener(({ tabIndex }) => {
-    if (tabIndex === 3) {
-      // Open modal
-      Navigation.showModal({
-        stack: {
-          children: [
-            {
-              component: {
-                name: 'TabModal'
-              }
-            }
-          ]
-        }
-      });
-    }
-  });
-
   Navigation.events().registerAppLaunchedListener(async () => {
     setDefaultOptions();
 
@@ -103,24 +85,6 @@ function start() {
                   {
                     component: {
                       name: 'Navigation'
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              stack: {
-                children: [
-                  {
-                    component: {
-                      name: 'TabModal',
-                      options: {
-                        bottomTab: {
-                          icon: require('../img/navicon_add.png'),
-                          text: 'Add',
-                          selectTabOnPress: false
-                        }
-                      }
                     }
                   }
                 ]
