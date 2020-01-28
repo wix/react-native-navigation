@@ -19,7 +19,7 @@
 - (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame {
     if ([alignment isEqualToString:@"fill"]) {
         _fillParent = YES;
-        self.frame = frame;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
         self.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
     } else {
         self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;

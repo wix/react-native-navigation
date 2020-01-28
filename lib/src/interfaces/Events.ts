@@ -13,3 +13,7 @@ export interface BottomTabSelectedEvent {
 export interface BottomTabLongPressedEvent {
   selectedTabIndex: number;
 }
+
+export interface BottomTabPressedEvent {
+  tabIndex: number;
+}

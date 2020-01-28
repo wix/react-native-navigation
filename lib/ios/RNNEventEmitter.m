@@ -21,12 +21,14 @@ static NSString* const SearchBarUpdated 		= @"RNN.SearchBarUpdated";
 static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
 static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 static NSString* const ScreenPopped             = @"RNN.ScreenPopped";
+static NSString* const BottomTabPressed         = @"RNN.BottomTabPressed";
 
 -(NSArray<NSString *> *)supportedEvents {
 	return @[AppLaunched,
 			 CommandCompleted,
 			 BottomTabSelected,
        BottomTabLongPressed,
+       BottomTabPressed,
 			 ComponentDidAppear,
 			 ComponentDidDisappear,
 			 NavigationButtonPressed,
@@ -82,6 +84,12 @@ static NSString* const ScreenPopped             = @"RNN.ScreenPopped";
     [self send:BottomTabLongPressed body:@{
                                         				  @"selectedTabIndex": selectedTabIndex
                                         				  }];
+}
+
+-(void)sendBottomTabPressed:(NSNumber *)tabIndex {
+    [self send:BottomTabPressed body:@{
+                                        @"tabIndex": tabIndex
+                                        }];
 }
 
 -(void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId params:(NSDictionary*)params {

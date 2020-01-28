@@ -144,10 +144,18 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
-        eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
-        if (wasSelected) return false;
-        selectTab(index);
-        return false;
+        BottomTabOptions options = tabs.get(index).resolveCurrentOptions().bottomTabOptions;
+
+        eventEmitter.emitBottomTabPressed(index);
+
+        if (options.selectTabOnPress.get(true)){
+            eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
+            if (wasSelected) return false;
+            selectTab(index);
+            return false;
+        } else {
+            return false;
+        }
 	}
 
 	private List<AHBottomNavigationItem> createTabs() {

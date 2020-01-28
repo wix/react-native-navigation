@@ -27,6 +27,7 @@
     self.textColor = [ColorParser parse:dict key:@"textColor"];
     self.fontSize = [NumberParser parse:dict key:@"fontSize"];
     self.visible = [BoolParser parse:dict key:@"visible"];
+    self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
 
     return self;
 }

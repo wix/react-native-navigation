@@ -21,6 +21,7 @@
 @property(nonatomic, strong) Color *textColor;
 @property(nonatomic, strong) Number *fontSize;
 @property(nonatomic, strong) Bool *visible;
+@property(nonatomic, strong) Bool *selectTabOnPress;
 
 
 @end
