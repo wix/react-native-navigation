@@ -116,8 +116,10 @@
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
-    UIViewController *viewController = self.boundViewController;
-    if (options.bottomTab.badge.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
+    UIViewController* viewController = self.boundViewController;
+    RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:_defaultOptions] overrideOptions:options];
+    
+    if (options.bottomTab.badge.hasValue) {
         [viewController setTabBarItemBadge:options.bottomTab.badge.get];
     }
 
@@ -130,44 +132,37 @@
     }
 
     if (options.bottomTab.text.hasValue) {
-        RNNNavigationOptions *buttonsResolvedOptions = (RNNNavigationOptions *) [resolvedOptions overrideOptions:options];
-        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
+        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
         viewController.tabBarItem = tabItem;
     }
 
     if (options.bottomTab.icon.hasValue) {
-        RNNNavigationOptions *buttonsResolvedOptions = (RNNNavigationOptions *) [resolvedOptions overrideOptions:options];
-        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
+        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
         viewController.tabBarItem = tabItem;
     }
 
     if (options.bottomTab.selectedIcon.hasValue) {
-        RNNNavigationOptions *buttonsResolvedOptions = (RNNNavigationOptions *) [resolvedOptions overrideOptions:options];
-        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
+        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
         viewController.tabBarItem = tabItem;
     }
 
     if (options.bottomTab.textColor.hasValue) {
-        RNNNavigationOptions *buttonsResolvedOptions = (RNNNavigationOptions *) [resolvedOptions overrideOptions:options];
-        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
+        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
         viewController.tabBarItem = tabItem;
     }
 
     if (options.bottomTab.selectedTextColor.hasValue) {
-        RNNNavigationOptions *buttonsResolvedOptions = (RNNNavigationOptions *) [resolvedOptions overrideOptions:options];
-        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
+        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
         viewController.tabBarItem = tabItem;
     }
 
     if (options.bottomTab.iconColor.hasValue) {
-        RNNNavigationOptions *buttonsResolvedOptions = (RNNNavigationOptions *) [resolvedOptions overrideOptions:options];
-        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
+        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
         viewController.tabBarItem = tabItem;
     }
 
     if (options.bottomTab.selectedIconColor.hasValue) {
-        RNNNavigationOptions *buttonsResolvedOptions = (RNNNavigationOptions *) [resolvedOptions overrideOptions:options];
-        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:buttonsResolvedOptions.bottomTab];
+        UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
         viewController.tabBarItem = tabItem;
     }
 }
