@@ -1,4 +1,5 @@
 #import "RNNNavigationOptions.h"
+#import "RNNReactComponentRegistry.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
@@ -8,9 +9,13 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @property(nonatomic, strong) NSString *boundComponentId;
 
-@property(nonatomic, strong) RNNNavigationOptions * defaultOptions;
+@property(nonatomic, strong) RNNNavigationOptions* defaultOptions;
+
+@property(nonatomic, strong) RNNReactComponentRegistry* componentRegistry;
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
+
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry defaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 

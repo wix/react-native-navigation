@@ -49,7 +49,7 @@
 	layoutInfo.componentId = self.componentId;
 	layoutInfo.name = self.pageName;
 	
-	id presenter = [OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] init]];
+	id presenter = [OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil]];
 	self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:presenter options:self.options defaultOptions:nil];
 }
 
