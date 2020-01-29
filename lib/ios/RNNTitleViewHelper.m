@@ -104,7 +104,7 @@
 	subtitleLabel.backgroundColor = [UIColor clearColor];
 	subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	
-	NSDictionary* fontAttributes = [RNNFontAttributesCreator createWithFontFamily:[_subtitleOptions.fontFamily getWithDefaultValue:nil] fontSize:[_subtitleOptions.fontSize getWithDefaultValue:nil] fontWeight:[_subtitleOptions.fontWeight getWithDefaultValue:nil] color:[_subtitleOptions.color getWithDefaultValue:nil]];
+	NSDictionary* fontAttributes = [RNNFontAttributesCreator createWithFontFamily:[_subtitleOptions.fontFamily getWithDefaultValue:nil] fontSize:[_subtitleOptions.fontSize getWithDefaultValue:@(12)] fontWeight:[_subtitleOptions.fontWeight getWithDefaultValue:nil] color:[_subtitleOptions.color getWithDefaultValue:nil]];
 	[subtitleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.subtitle attributes:fontAttributes]];
 	
 	
@@ -136,7 +136,7 @@
 	
 	titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	
-	NSDictionary* fontAttributes = [RNNFontAttributesCreator createWithFontFamily:[_titleOptions.fontFamily getWithDefaultValue:nil] fontSize:[_titleOptions.fontSize getWithDefaultValue:nil] fontWeight:[_titleOptions.fontWeight getWithDefaultValue:nil] color:[_subtitleOptions.color getWithDefaultValue:nil]];
+	NSDictionary* fontAttributes = [RNNFontAttributesCreator createWithFontFamily:[_titleOptions.fontFamily getWithDefaultValue:nil] fontSize:[_titleOptions.fontSize getWithDefaultValue:@(16)] fontWeight:[_titleOptions.fontWeight getWithDefaultValue:nil] color:[_subtitleOptions.color getWithDefaultValue:nil]];
 	[titleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.title attributes:fontAttributes]];
 	
 	CGSize labelSize = [titleLabel.text sizeWithAttributes:fontAttributes];
