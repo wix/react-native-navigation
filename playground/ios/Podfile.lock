@@ -19,7 +19,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - OCMock (3.5)
+  - OCMock (3.4.3)
   - RCTRequired (0.61.4)
   - RCTTypeSafety (0.61.4):
     - FBLazyVector (= 0.61.4)
@@ -232,7 +232,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - OCMock
+  - OCMock (~> 3.4.3)
   - RCTRequired (from `../../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../../node_modules/react-native/`)
@@ -327,7 +327,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 51477b84b1bf7ab6f9ef307c24e3dd675391be44
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  OCMock: 4ab4577fc941af31f4a0398f6e7e230cf21fc72a
+  OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   RCTRequired: f3b3fb6f4723e8e52facb229d0c75fdc76773849
   RCTTypeSafety: 2ec60de6abb1db050b56ecc4b60188026078fd10
   React: 10e0130b57e55a7cd8c3dee37c1261102ce295f4
@@ -351,6 +351,6 @@ SPEC CHECKSUMS:
   ReactNativeNavigation: 33657becf06c9c3a805ecb50dce8010fb887a1bb
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 781f49751a12b13af3e83d5dfc4b122aa5770543
+PODFILE CHECKSUM: 5c62edab091f646585eb22c1de3ce35b08f09e9f
 
 COCOAPODS: 1.8.4

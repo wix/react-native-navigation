@@ -46,11 +46,11 @@ end
 
 target 'NavigationTests' do
   all_pods
-  pod 'OCMock'
+  pod 'OCMock', '~> 3.4.3'
 end
 
 target 'NavigationIOS12Tests' do
   all_pods
-  pod 'OCMock'
+  pod 'OCMock', '~> 3.4.3'
 end
 
