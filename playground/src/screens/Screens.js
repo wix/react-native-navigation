@@ -6,14 +6,17 @@ const StatusBarOptions = 'StatusBarOptions';
 const StatusBarFirstTab = 'StatusBarFirstTab'
 
 module.exports = {
-  ExternalComponent: 'ExternalComponent',
+  Buttons: 'Buttons',
+  CocktailDetailsScreen: 'CocktailDetailsScreen',
+  CocktailsListScreen: 'CocktailsListScreen',
   ContextScreen: 'ContextScreen',
-  Pushed: 'Pushed',
-  Layouts: 'Layouts',
-  Options: 'Options',
-  Stack: 'Stack',
-  Modal: 'Modal',
+  ExternalComponent: 'ExternalComponent',
   FullScreenModal: 'FullScreenModal',
+  Layouts: 'Layouts',
+  Modal: 'Modal',
+  Options: 'Options',
+  Pushed: 'Pushed',
+  Stack: 'Stack',
   SetRoot: 'SetRoot',
   Overlay: 'Overlay',
   OverlayAlert: 'OverlayAlert',

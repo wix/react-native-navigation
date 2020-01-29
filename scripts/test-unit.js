@@ -1,8 +1,8 @@
-const _ = require('lodash');
+const includes = require('lodash/includes');
 const exec = require('shell-utils').exec;
 
-const android = _.includes(process.argv, '--android');
-const release = _.includes(process.argv, '--release');
+const android = includes(process.argv, '--android');
+const release = includes(process.argv, '--release');
 
 function run() {
   if (android) {
@@ -23,30 +23,36 @@ function runAndroidUnitTests() {
 }
 
 function runIosUnitTests() {
+  exec.execSync('npm run build');
+  exec.execSync('npm run pod-install');
+  testTarget('playground', 'iPhone 11');
+  testTarget('playgroundIOS12', 'iPhone X', '12.2');
+}
+
+function testTarget(scheme, device, OS = 'latest') {
   const conf = release ? `Release` : `Debug`;
+  exec.execSync(`cd ./playground/ios &&
+  RCT_NO_LAUNCH_PACKAGER=true
+  xcodebuild build build-for-testing
+  -scheme "${scheme}"
+  -workspace playground.xcworkspace
+  -sdk iphonesimulator
+  -configuration ${conf}
+  -derivedDataPath ./DerivedData/playground
+  -quiet
+  -UseModernBuildSystem=NO
+  ONLY_ACTIVE_ARCH=YES`);
 
   exec.execSync(`cd ./playground/ios &&
-            RCT_NO_LAUNCH_PACKAGER=true
-            xcodebuild build build-for-testing
-            -scheme "ReactNativeNavigation"
-            -project playground.xcodeproj
-            -sdk iphonesimulator
-            -configuration ${conf}
-            -derivedDataPath ./playground/ios/DerivedData/playground
-            -quiet
-            -UseModernBuildSystem=NO
-            ONLY_ACTIVE_ARCH=YES`);
-
-  exec.execSync(`cd ./playground/ios &&
-            RCT_NO_LAUNCH_PACKAGER=true
-            xcodebuild test-without-building
-            -scheme "ReactNativeNavigation"
-            -project playground.xcodeproj
-            -sdk iphonesimulator
-            -configuration ${conf}
-            -destination 'platform=iOS Simulator,name=iPhone 11'
-            -derivedDataPath ./playground/ios/DerivedData/playground
-            ONLY_ACTIVE_ARCH=YES`);
+  RCT_NO_LAUNCH_PACKAGER=true
+  xcodebuild test-without-building
+  -scheme "${scheme}"
+  -workspace playground.xcworkspace
+  -sdk iphonesimulator
+  -configuration ${conf}
+  -destination 'platform=iOS Simulator,name=${device},OS=${OS}'
+  -derivedDataPath ./DerivedData/playground
+  ONLY_ACTIVE_ARCH=YES`);
 }
 
 run();

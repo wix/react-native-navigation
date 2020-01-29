@@ -5,7 +5,7 @@ const { KeyboardAwareInsetsView } = require('react-native-keyboard-tracking-view
 const { showTextInputToTestKeyboardInteraction } = require('../flags');
 
 module.exports = (props) =>
-  <SafeAreaView style={styles.root}>
+  <SafeAreaView style={styles.root} testID={props.testID}>
     <ScrollView contentContainerStyle={[styles.scrollView, props.style]}>
       {props.children}
       {renderFooter(props)}

@@ -1,13 +1,9 @@
-    package com.reactnativenavigation.viewcontrollers;
+package com.reactnativenavigation.viewcontrollers;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.appcompat.widget.ActionMenuView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
@@ -16,25 +12,30 @@ import android.widget.TextView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.utils.ArrayUtils;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
+import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
-import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 
 public class TitleBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
     public interface OnClickListener {
         void onPress(String buttonId);
     }
 
-    private final NavigationIconResolver navigationIconResolver;
-    private final ImageLoader imageLoader;
+    private final IconResolver navigationIconResolver;
     private ButtonPresenter optionsPresenter;
     private final Button button;
     private final ReactViewCreator viewCreator;
@@ -51,15 +52,13 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public TitleBarButtonController(Activity activity,
-                                    NavigationIconResolver navigationIconResolver,
-                                    ImageLoader imageLoader,
+                                    IconResolver navigationIconResolver,
                                     ButtonPresenter optionsPresenter,
                                     Button button,
                                     ReactViewCreator viewCreator,
                                     OnClickListener onClickListener) {
         super(activity, button.id, new YellowBoxDelegate(), new Options());
         this.navigationIconResolver = navigationIconResolver;
-        this.imageLoader = imageLoader;
         this.optionsPresenter = optionsPresenter;
         this.button = button;
         this.viewCreator = viewCreator;
@@ -69,13 +68,13 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     @SuppressLint("MissingSuperCall")
     @Override
     public void onViewAppeared() {
-        getView().sendComponentStart();
+        getView().sendComponentStart(ComponentType.Button);
     }
 
     @SuppressLint("MissingSuperCall")
     @Override
     public void onViewDisappear() {
-        getView().sendComponentStop();
+        getView().sendComponentStop(ComponentType.Button);
     }
 
     @Override
@@ -102,12 +101,12 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public void applyNavigationIcon(Toolbar toolbar) {
-        Integer direction = getActivity().getWindow().getDecorView().getLayoutDirection();
-        navigationIconResolver.resolve(button, direction, icon -> {
+        navigationIconResolver.resolve(button, icon -> {
             setIconColor(icon);
             toolbar.setNavigationOnClickListener(view -> onPressListener.onPress(button.id));
             toolbar.setNavigationIcon(icon);
             setLeftButtonTestId(toolbar);
+            if (button.accessibilityLabel.hasValue()) toolbar.setNavigationContentDescription(button.accessibilityLabel.get());
         });
     }
 
@@ -128,12 +127,13 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
         menuItem.setOnMenuItemClickListener(this);
         if (button.hasComponent()) {
             menuItem.setActionView(getView());
+            if (button.accessibilityLabel.hasValue()) getView().setContentDescription(button.accessibilityLabel.get());
         } else {
+            if (button.accessibilityLabel.hasValue()) MenuItemCompat.setContentDescription(menuItem, button.accessibilityLabel.get());
             if (button.hasIcon()) {
                 loadIcon(new ImageLoadingListenerAdapter() {
                     @Override
-                    public void onComplete(@NonNull List<Drawable> icons) {
-                        Drawable icon = icons.get(0);
+                    public void onComplete(@NonNull Drawable icon) {
                         TitleBarButtonController.this.icon = icon;
                         setIconColor(icon);
                         menuItem.setIcon(icon);
@@ -149,7 +149,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     private void loadIcon(ImageLoader.ImagesLoadingListener callback) {
-        imageLoader.loadIcons(getActivity(), Collections.singletonList(button.icon.get()), callback);
+        navigationIconResolver.resolve(button, callback::onComplete);
     }
 
     private void setIconColor(Drawable icon) {

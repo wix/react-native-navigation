@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const concat = require('lodash/concat');
 const React = require('react');
 const { BackHandler } = require('react-native');
 const Navigation = require('../services/Navigation');
@@ -14,7 +14,9 @@ const {
   POP_TO_ROOT_BTN,
   ADD_BACK_HANDLER,
   REMOVE_BACK_HANDLER,
-  SET_STACK_ROOT_BUTTON
+  SET_STACK_ROOT_BUTTON,
+  PUSH_OPTIONS_BUTTON,
+  HIDE_PREVIOUS_SCREEN_TOP_BAR
 } = require('../testIDs');
 const Screens = require('./Screens');
 
@@ -56,6 +58,8 @@ class PushedScreen extends React.Component {
         <Button label='Add BackHandler' testID={ADD_BACK_HANDLER} onPress={this.addBackHandler} />
         <Button label='Remove BackHandler' testID={REMOVE_BACK_HANDLER} onPress={this.removeBackHandler} />
         <Button label='Set Stack Root' testID={SET_STACK_ROOT_BUTTON} onPress={this.setStackRoot} />
+        <Button label='Push Options Screen' testID={PUSH_OPTIONS_BUTTON} onPress={this.pushOptionsScreen} />
+        <Button label='Hide previous screen top bar' testID={HIDE_PREVIOUS_SCREEN_TOP_BAR} onPress={this.hidePreviousScreenTopBar} />
       </Root>
     );
   }
@@ -89,9 +93,21 @@ class PushedScreen extends React.Component {
     }
   });
 
+  pushOptionsScreen = () => Navigation.push(this, {
+    component: {
+      name: Screens.Options
+    }
+  });
+
   popToFirstScreen = () => Navigation.popTo(this.props.previousScreenIds[0]);
 
   popToRoot = () => Navigation.popToRoot(this);
+
+  hidePreviousScreenTopBar = () => Navigation.mergeOptions(this.props.previousScreenIds[this.getStackPosition() - 1], {
+    topBar: {
+      visible: false
+    }
+  });
 
   setStackRoot = () => Navigation.setStackRoot(this, [
     {
@@ -99,7 +115,7 @@ class PushedScreen extends React.Component {
         name: Screens.Pushed,
         passProps: {
           stackPosition: this.getStackPosition() + 1,
-          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+          previousScreenIds: concat([], this.props.previousScreenIds || [], this.props.componentId)
         },
         options: {
           animations: {
@@ -120,7 +136,7 @@ class PushedScreen extends React.Component {
         name: Screens.Pushed,
         passProps: {
           stackPosition: this.getStackPosition() + 1,
-          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+          previousScreenIds: concat([], this.props.previousScreenIds || [], this.props.componentId)
         },
         options: {
           animations: {
@@ -152,7 +168,7 @@ class PushedScreen extends React.Component {
   createPassProps = () => {
     return {
       stackPosition: this.getStackPosition() + 1,
-      previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+      previousScreenIds: concat([], this.props.previousScreenIds || [], this.props.componentId)
     }
   };
   getStackPosition = () => this.props.stackPosition || 1;

@@ -1,4 +1,6 @@
-import * as _ from 'lodash';
+import forEach from 'lodash/forEach'
+import filter from 'lodash/filter'
+import invoke from 'lodash/invoke'
 import { mock, verify, instance, deepEqual, when, anything, anyString } from 'ts-mockito';
 
 import { LayoutTreeParser } from './LayoutTreeParser';
@@ -30,6 +32,7 @@ describe('Commands', () => {
     const optionsProcessor = instance(mockedOptionsProcessor) as OptionsProcessor;
 
     uut = new Commands(
+      mockedStore,
       instance(mockedNativeCommandsSender),
       new LayoutTreeParser(uniqueIdProvider),
       new LayoutTreeCrawler(instance(mockedStore), optionsProcessor),
@@ -128,6 +131,18 @@ describe('Commands', () => {
           deepEqual({ blurOnUnmount: true })
         )
       ).called();
+    });
+  });
+
+  describe('updateProps', () => {
+    it('delegates to store', () => {
+      uut.updateProps('theComponentId', {someProp: 'someValue'});
+      verify(mockedStore.updateProps('theComponentId', deepEqual({someProp: 'someValue'})));
+    });
+
+    it('notifies commands observer', () => {
+      uut.updateProps('theComponentId', {someProp: 'someValue'});
+      verify(commandsObserver.notify('updateProps', deepEqual({componentId: 'theComponentId', props: {someProp: 'someValue'}})));
     });
   });
 
@@ -373,6 +388,7 @@ describe('Commands', () => {
       );
 
       uut = new Commands(
+        mockedStore,
         mockedNativeCommandsSender,
         instance(mockedLayoutTreeParser),
         instance(mockedLayoutTreeCrawler),
@@ -384,7 +400,7 @@ describe('Commands', () => {
 
     function getAllMethodsOfUut() {
       const uutFns = Object.getOwnPropertyNames(Commands.prototype);
-      const methods = _.filter(uutFns, (fn) => fn !== 'constructor');
+      const methods = filter(uutFns, (fn) => fn !== 'constructor');
       expect(methods.length).toBeGreaterThan(1);
       return methods;
     }
@@ -394,6 +410,7 @@ describe('Commands', () => {
         setRoot: [{}],
         setDefaultOptions: [{}],
         mergeOptions: ['id', {}],
+        updateProps: ['id', {}],
         showModal: [{}],
         dismissModal: ['id', {}],
         dismissAllModals: [{}],
@@ -413,6 +430,7 @@ describe('Commands', () => {
         },
         setDefaultOptions: { options: {} },
         mergeOptions: { componentId: 'id', options: {} },
+        updateProps: { componentId: 'id', props: {} },
         showModal: { commandId: 'showModal+UNIQUE_ID', layout: null },
         dismissModal: { commandId: 'dismissModal+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
         dismissAllModals: { commandId: 'dismissAllModals+UNIQUE_ID', mergeOptions: {} },
@@ -429,11 +447,11 @@ describe('Commands', () => {
         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
         getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' }
       };
-      _.forEach(getAllMethodsOfUut(), (m) => {
+      forEach(getAllMethodsOfUut(), (m) => {
         it(`for ${m}`, () => {
           expect(argsForMethodName).toHaveProperty(m);
           expect(paramsForMethodName).toHaveProperty(m);
-          _.invoke(uut, m, ...argsForMethodName[m]);
+          invoke(uut, m, ...argsForMethodName[m]);
           expect(cb).toHaveBeenCalledTimes(1);
           expect(cb).toHaveBeenCalledWith(m, paramsForMethodName[m]);
         });

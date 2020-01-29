@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
@@ -68,7 +69,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
         bottomTabs = createBottomTabs();
         tabsAttacher.init(root, resolveCurrentOptions());
-        presenter.bindView(bottomTabs, this);
+        presenter.bindView(bottomTabs, this, new BottomTabsAnimator(bottomTabs));
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
@@ -98,7 +99,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public void mergeOptions(Options options) {
-        presenter.mergeOptions(options);
+        presenter.mergeOptions(options, this);
         tabPresenter.mergeOptions(options);
         super.mergeOptions(options);
         this.options.bottomTabsOptions.clearOneTimeOptions();
@@ -109,11 +110,10 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), child);
-        performOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(
-                        this.options.copy()
-                                .clearBottomTabsOptions()
-                                .clearBottomTabOptions(),
+        performOnParentController(parent -> parent.applyChildOptions(
+                this.options.copy()
+                        .clearBottomTabsOptions()
+                        .clearBottomTabOptions(),
                         child
                 )
         );
@@ -124,9 +124,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         super.mergeChildOptions(options, child);
         presenter.mergeChildOptions(options, child);
         tabPresenter.mergeChildOptions(options, child);
-        performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), child)
-        );
+        performOnParentController(parent -> parent.mergeChildOptions(options.copy().clearBottomTabsOptions(), child));
     }
 
     @Override
@@ -146,10 +144,18 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
-        eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
-        if (wasSelected) return false;
-        selectTab(index);
-        return false;
+        BottomTabOptions options = tabs.get(index).resolveCurrentOptions().bottomTabOptions;
+
+        eventEmitter.emitBottomTabPressed(index);
+
+        if (options.selectTabOnPress.get(true)){
+            eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
+            if (wasSelected) return false;
+            selectTab(index);
+            return false;
+        } else {
+            return false;
+        }
 	}
 
 	private List<AHBottomNavigationItem> createTabs() {
@@ -159,12 +165,13 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
             return new AHBottomNavigationItem(
                     options.text.get(""),
                     imageLoader.loadIcon(getActivity(), options.icon.get()),
+                    imageLoader.loadIcon(getActivity(), options.selectedIcon.get(null)),
                     options.testId.get("")
             );
         });
 	}
 
-    public int getSelectedIndex() {
+    int getSelectedIndex() {
 		return bottomTabs.getCurrentItem();
 	}
 
@@ -176,8 +183,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public int getBottomInset(ViewController child) {
-        int bottomTabsInset = resolveChildOptions(child).bottomTabsOptions.drawBehind.isTrue() ? 0 : bottomTabs.getHeight();
-        return bottomTabsInset + perform(getParentController(), 0, p -> p.getBottomInset(this));
+        return presenter.getBottomInset(resolveChildOptions(child)) + perform(getParentController(), 0, p -> p.getBottomInset(this));
     }
 
     @Override

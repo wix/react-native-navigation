@@ -1,4 +1,4 @@
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { UniqueIdProvider } from './adapters/UniqueIdProvider';
@@ -58,6 +58,7 @@ export class NavigationRoot {
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
     this.commands = new Commands(
+      this.store,
       this.nativeCommandsSender,
       this.layoutTreeParser,
       this.layoutTreeCrawler,
@@ -110,6 +111,13 @@ export class NavigationRoot {
    */
   public mergeOptions(componentId: string, options: Options): void {
     this.commands.mergeOptions(componentId, options);
+  }
+
+  /**
+   * Update a mounted component's props
+   */
+  public updateProps(componentId: string, props: object) {
+    this.commands.updateProps(componentId, props);
   }
 
   /**

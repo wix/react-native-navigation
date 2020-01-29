@@ -21,7 +21,6 @@ import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.utils.CollectionUtils;
-import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.UiUtils;
@@ -30,7 +29,7 @@ import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
+import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
@@ -65,7 +64,6 @@ public class StackPresenter {
     private TopBarController topBarController;
     private final TitleBarReactViewCreator titleViewCreator;
     private TitleBarButtonController.OnClickListener onClickListener;
-    private final ImageLoader imageLoader;
     private final RenderChecker renderChecker;
     private final TopBarBackgroundViewCreator topBarBackgroundViewCreator;
     private final ReactViewCreator buttonCreator;
@@ -76,19 +74,20 @@ public class StackPresenter {
     private Map<View, TopBarBackgroundViewController> backgroundControllers = new HashMap();
     private Map<View, Map<String, TitleBarButtonController>> componentRightButtons = new HashMap();
     private Map<View, Map<String, TitleBarButtonController>> componentLeftButtons = new HashMap();
+    private IconResolver iconResolver;
 
     public StackPresenter(Activity activity,
                           TitleBarReactViewCreator titleViewCreator,
                           TopBarBackgroundViewCreator topBarBackgroundViewCreator,
                           ReactViewCreator buttonCreator,
-                          ImageLoader imageLoader,
+                          IconResolver iconResolver,
                           RenderChecker renderChecker,
                           Options defaultOptions) {
         this.activity = activity;
         this.titleViewCreator = titleViewCreator;
         this.topBarBackgroundViewCreator = topBarBackgroundViewCreator;
         this.buttonCreator = buttonCreator;
-        this.imageLoader = imageLoader;
+        this.iconResolver = iconResolver;
         this.renderChecker = renderChecker;
         this.defaultOptions = defaultOptions;
         defaultTitleFontSize = UiUtils.dpToSp(activity, 18);
@@ -311,8 +310,7 @@ public class StackPresenter {
 
     private TitleBarButtonController createButtonController(Button button) {
         TitleBarButtonController controller = new TitleBarButtonController(activity,
-                new NavigationIconResolver(activity, imageLoader),
-                imageLoader,
+                iconResolver,
                 new ButtonPresenter(topBar.getTitleBar(), button),
                 button,
                 buttonCreator,
@@ -379,7 +377,13 @@ public class StackPresenter {
             }
         }
         if (buttons.left != null) topBar.setLeftButtons(leftButtonControllers);
-        if (buttons.back.hasValue()) topBar.setBackButton(createButtonController(buttons.back));
+        if (buttons.back.hasValue()) {
+            if (buttons.back.visible.isFalse()) {
+                topBar.clearLeftButtons();
+            } else {
+                topBar.setBackButton(createButtonController(buttons.back));
+            }
+        }
 
         if (options.rightButtonColor.hasValue()) topBar.setOverflowButtonColor(options.rightButtonColor.get());
     }
@@ -538,5 +542,9 @@ public class StackPresenter {
         int topMargin = UiUtils.dpToPx(activity, withDefault.topBar.topMargin.get(0));
         int statusBarInset = withDefault.statusBar.visible.isTrueOrUndefined() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0;
         return topMargin + statusBarInset;
+    }
+
+    public int getTopInset(Options resolvedOptions) {
+        return resolvedOptions.withDefaultOptions(defaultOptions).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
     }
 }

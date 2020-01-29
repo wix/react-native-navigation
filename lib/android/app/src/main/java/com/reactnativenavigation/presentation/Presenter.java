@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
+import com.reactnativenavigation.parse.NavigationBarOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.StatusBarOptions;
@@ -39,6 +40,7 @@ public class Presenter {
 
     public void mergeOptions(View view, Options options) {
         mergeStatusBarOptions(view, options.statusBar);
+        mergeNavigationBarOptions(options.navigationBar);
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -46,6 +48,7 @@ public class Presenter {
         applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
         applyStatusBarOptions(withDefaultOptions);
+        applyNavigationBarOptions(withDefaultOptions.navigationBar);
     }
 
     public void onViewBroughtToFront(Options options) {
@@ -94,7 +97,7 @@ public class Presenter {
         Window window = activity.getWindow();
         if (options.translucent.isTrue()) {
             window.setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
-        } else {
+        } else if (StatusBarUtils.isTranslucent(window)) {
             window.clearFlags(FLAG_TRANSLUCENT_STATUS);
         }
     }
@@ -129,7 +132,7 @@ public class Presenter {
         }
     }
 
-    private static void clearDarkTextColorScheme(View view) {
+    private void clearDarkTextColorScheme(View view) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
         int flags = view.getSystemUiVisibility();
         flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
@@ -165,7 +168,7 @@ public class Presenter {
         Window window = activity.getWindow();
         if (options.translucent.isTrue()) {
             window.setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
-        } else if (options.translucent.isFalse()) {
+        } else if (options.translucent.isFalse() && StatusBarUtils.isTranslucent(window)) {
             window.clearFlags(FLAG_TRANSLUCENT_STATUS);
         }
     }
@@ -186,5 +189,40 @@ public class Presenter {
                 view.setSystemUiVisibility(~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             }
         }
+    }
+
+    private void applyNavigationBarOptions(NavigationBarOptions options) {
+        setNavigationBarBackgroundColor(options);
+    }
+
+    private void mergeNavigationBarOptions(NavigationBarOptions options) {
+        setNavigationBarBackgroundColor(options);
+    }
+
+    private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && navigationBar.backgroundColor.canApplyValue()) {
+            int defaultColor = activity.getWindow().getNavigationBarColor();
+            int color = navigationBar.backgroundColor.get(defaultColor);
+            activity.getWindow().setNavigationBarColor(color);
+            setNavigationBarButtonsColor(color);
+        }
+    }
+
+    private void setNavigationBarButtonsColor(int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            View decorView = activity.getWindow().getDecorView();
+            int flags = decorView.getSystemUiVisibility();
+            if (isColorLight(color)) {
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
+            decorView.setSystemUiVisibility(flags);
+        }
+    }
+
+    private boolean isColorLight(int color) {
+        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return darkness < 0.5;
     }
 }

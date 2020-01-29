@@ -35,14 +35,14 @@ public class BottomTabsPresenter {
         this.defaultOptions = defaultOptions;
     }
 
-    public void bindView(BottomTabs bottomTabs, TabSelector tabSelector) {
+    public void bindView(BottomTabs bottomTabs, TabSelector tabSelector, BottomTabsAnimator animator) {
         this.bottomTabs = bottomTabs;
         this.tabSelector = tabSelector;
-        animator = new BottomTabsAnimator(bottomTabs);
+        this.animator = animator;
     }
 
-    public void mergeOptions(Options options) {
-        mergeBottomTabsOptions(options);
+    public void mergeOptions(Options options, ViewController view) {
+        mergeBottomTabsOptions(options, view);
     }
 
     public void applyOptions(Options options) {
@@ -58,16 +58,17 @@ public class BottomTabsPresenter {
     }
 
     public void mergeChildOptions(Options options, ViewController child) {
-        mergeBottomTabsOptions(options);
+        mergeBottomTabsOptions(options, child);
         int tabIndex = bottomTabFinder.findByControllerId(child.getId());
         if (tabIndex >= 0) mergeDrawBehind(tabIndex);
     }
 
-    private void mergeBottomTabsOptions(Options options) {
+    private void mergeBottomTabsOptions(Options options, ViewController view) {
         BottomTabsOptions bottomTabsOptions = options.bottomTabsOptions;
         AnimationsOptions animations = options.animations;
 
         if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction);
+        if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get());
         if (bottomTabsOptions.titleDisplayMode.hasValue()) {
             bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.toState());
         }
@@ -85,18 +86,20 @@ public class BottomTabsPresenter {
             int tabIndex = bottomTabFinder.findByControllerId(bottomTabsOptions.currentTabId.get());
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
-        if (bottomTabsOptions.visible.isTrue()) {
-            if (bottomTabsOptions.animate.isTrueOrUndefined()) {
-                animator.show(animations);
-            } else {
-                bottomTabs.restoreBottomNavigation(false);
+        if (view.isViewShown()) {
+            if (bottomTabsOptions.visible.isTrue()) {
+                if (bottomTabsOptions.animate.isTrueOrUndefined()) {
+                    animator.show(animations);
+                } else {
+                    bottomTabs.restoreBottomNavigation(false);
+                }
             }
-        }
-        if (bottomTabsOptions.visible.isFalse()) {
-            if (bottomTabsOptions.animate.isTrueOrUndefined()) {
-                animator.hide(animations);
-            } else {
-                bottomTabs.hideBottomNavigation(false);
+            if (bottomTabsOptions.visible.isFalse()) {
+                if (bottomTabsOptions.animate.isTrueOrUndefined()) {
+                    animator.hide(animations);
+                } else {
+                    bottomTabs.hideBottomNavigation(false);
+                }
             }
         }
     }
@@ -114,6 +117,7 @@ public class BottomTabsPresenter {
         AnimationsOptions animationsOptions = options.animations;
 
         bottomTabs.setLayoutDirection(options.layout.direction);
+        bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons.get(false));
         bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.get(TitleState.SHOW_WHEN_ACTIVE));
         bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE));
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
@@ -148,5 +152,9 @@ public class BottomTabsPresenter {
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) bottomTabs.getLayoutParams();
         lp.bottomMargin = bottomInset;
         bottomTabs.requestLayout();
+    }
+
+    public int getBottomInset(Options resolvedOptions) {
+        return resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind() ? 0 : bottomTabs.getHeight();
     }
 }

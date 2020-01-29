@@ -11,5 +11,6 @@
 @property (nonatomic, strong) Image* icon;
 @property (nonatomic, strong) Bool* enabled;
 @property (nonatomic, strong) RNNInsetsOptions* iconInsets;
+@property(nonatomic, strong) Bool *selectTabOnPress;
 
 @end

@@ -7,6 +7,7 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.DotIndicatorOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Param;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;
@@ -78,8 +79,8 @@ public class BottomTabPresenter {
             if (index >= 0) {
                 BottomTabOptions tab = options.bottomTabOptions;
                 if (tab.fontFamily != null) bottomTabs.setTitleTypeface(index, tab.fontFamily);
-                if (tab.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
-                if (tab.iconColor.hasValue()) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
+                if (canMerge(tab.selectedIconColor)) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
+                if (canMerge(tab.iconColor)) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
                 if (tab.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, tab.selectedTextColor.get());
                 if (tab.textColor.hasValue()) bottomTabs.setTitleInactiveColor(index, tab.textColor.get());
                 if (tab.text.hasValue()) bottomTabs.setText(index, tab.text.get());
@@ -89,6 +90,12 @@ public class BottomTabPresenter {
                         bottomTabs.setIcon(index, drawable);
                     }
                 });
+                if (tab.selectedIcon.hasValue()) imageLoader.loadIcon(context, tab.selectedIcon.get(), new ImageLoadingListenerAdapter() {
+                    @Override
+                    public void onComplete(@NonNull Drawable drawable) {
+                        bottomTabs.setSelectedIcon(index, drawable);
+                    }
+                });
                 if (tab.testId.hasValue()) bottomTabs.setTag(index, tab.testId.get());
                 if (shouldApplyDot(tab)) mergeDotIndicator(index, tab.dotIndicator); else mergeBadge(index, tab);
             }
@@ -96,6 +103,7 @@ public class BottomTabPresenter {
     }
 
     private void applyDotIndicator(int tabIndex, DotIndicatorOptions dotIndicator) {
+        if(dotIndicator.visible.isFalse()) return;
         AHNotification.Builder builder = new AHNotification.Builder()
                 .setText("")
                 .setBackgroundColor(dotIndicator.color.get(null))
@@ -136,5 +144,9 @@ public class BottomTabPresenter {
 
     private boolean shouldApplyDot(BottomTabOptions tab) {
         return tab.dotIndicator.visible.hasValue() && !tab.badge.hasValue();
+    }
+
+    private boolean canMerge(Param p) {
+        return p.hasValue() && p.canApplyValue();
     }
 }

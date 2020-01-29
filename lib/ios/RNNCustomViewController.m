@@ -12,9 +12,25 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    [self addTestLabel];
-    [[self view] setBackgroundColor:UIColor.whiteColor];
+	[super viewDidLoad];
+	[self addTestLabel];
+	[self addDismissModalButton];
+	[self addNavigationBarButtons];
+	
+	[[self view] setBackgroundColor:UIColor.whiteColor];
+}
+
+- (void)dismissModal {
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)addDismissModalButton {
+	UIButton* dismissModalButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.center.x - 70, 300, 140, 50)];
+	dismissModalButton.backgroundColor = UIColor.systemBlueColor;
+	dismissModalButton.accessibilityIdentifier = @"EXTERNAL_DISMISS_MODAL_BTN";
+	[dismissModalButton setTitle:@"Dismiss modal" forState:UIControlStateNormal];
+	[dismissModalButton addTarget:self action:@selector(dismissModal) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:dismissModalButton];
 }
 
 - (void)addTestLabel {
@@ -25,6 +41,16 @@
 	label.text = _text;
 	label.accessibilityIdentifier = @"TestLabel";
 	[self.view addSubview:label];
+}
+
+- (void)addNavigationBarButtons {
+	UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Right button" style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonPressed)];
+	rightButton.accessibilityIdentifier = @"EXTERNAL_TOP_BAR_RIGHT_BTN";
+	self.navigationItem.rightBarButtonItem = rightButton;
+}
+
+- (void)rightButtonPressed {
+	
 }
 
 @end

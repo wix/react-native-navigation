@@ -3,15 +3,42 @@ import { ImageRequireSource, Insets } from 'react-native';
 
 type Color = string;
 type FontFamily = string;
-type FontWeight = 'regular' | 'bold' | 'thin' | 'ultraLight' | 'light' | 'medium' | 'semibold' | 'heavy' | 'black';
+type FontWeight =
+  | 'regular'
+  | 'bold'
+  | 'thin'
+  | 'ultraLight'
+  | 'light'
+  | 'medium'
+  | 'semibold'
+  | 'heavy'
+  | 'black';
 type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
-type SystemItemIcon = 'done' | 'cancel' | 'edit'
-  | 'save' | 'add' | 'flexibleSpace' | 'fixedSpace'
-  | 'compose' | 'reply' | 'action' | 'organize'
-  | 'bookmarks' | 'search' | 'refresh' | 'stop'
-  | 'camera' | 'trash' | 'play' | 'pause'
-  | 'rewind' | 'fastForward' | 'undo' | 'redo';
+type SystemItemIcon =
+  | 'done'
+  | 'cancel'
+  | 'edit'
+  | 'save'
+  | 'add'
+  | 'flexibleSpace'
+  | 'fixedSpace'
+  | 'compose'
+  | 'reply'
+  | 'action'
+  | 'organize'
+  | 'bookmarks'
+  | 'search'
+  | 'refresh'
+  | 'stop'
+  | 'camera'
+  | 'trash'
+  | 'play'
+  | 'pause'
+  | 'rewind'
+  | 'fastForward'
+  | 'undo'
+  | 'redo';
 
 export interface OptionsSplitView {
   /**
@@ -55,6 +82,11 @@ export interface OptionsStatusBar {
    * #### (Android specific)
    */
   drawBehind?: boolean;
+  /**
+   * If it's set to false, pressing a tab won't select the tab
+   * instead it will emit a bottomTabPressedEvent
+   */
+  selectTabOnPress?: boolean;
 }
 
 export interface OptionsLayout {
@@ -280,8 +312,8 @@ export interface OptionsTopBarButton {
    */
   icon?: ImageRequireSource;
   /**
-  * Set the button icon insets
-  */
+   * Set the button icon insets
+   */
   iconInsets?: IconInsets;
   /**
    * Set the button as a custom component
@@ -301,6 +333,10 @@ export interface OptionsTopBarButton {
    * Set the button text
    */
   text?: string;
+  /**
+   * Overrides the text that's read by the screen reader when the user interacts with the element
+   */
+  accessibilityLabel?: string;
   /**
    * Set the button font family
    */
@@ -481,6 +517,12 @@ export interface OptionsBottomTabs {
    */
   animate?: boolean;
   /**
+   * Use large icons when possible, even when three tabs without titles are displayed
+   * #### (android specific)
+   * @default false
+   */
+  preferLargeIcons?: boolean;
+  /**
    * Switch to another screen within the bottom tabs via index (starting from 0)
    */
   currentTabIndex?: number;
@@ -526,7 +568,11 @@ export interface OptionsBottomTabs {
    * Control the text display mode below the tab icon
    * #### (Android specific)
    */
-  titleDisplayMode?: 'alwaysShow' | 'showWhenActive' | 'alwaysHide';
+  titleDisplayMode?:
+    | 'alwaysShow'
+    | 'showWhenActive'
+    | 'alwaysHide'
+    | 'showWhenActiveForce';
   /**
    * Set the elevation of the Bottom Tabs in dp
    * #### (Android specific)
@@ -535,16 +581,18 @@ export interface OptionsBottomTabs {
 }
 
 export interface DotIndicatorOptions {
-    // default red
-    color?: Color,
-    // default 6
-    size?: number,
-    // default false
-    visible?: boolean,
+  // default red
+  color?: Color;
+  // default 6
+  size?: number;
+  // default false
+  visible?: boolean;
 }
 
+export type ImageResource = string;
+
 export interface OptionsBottomTab {
-    dotIndicator?: DotIndicatorOptions,
+  dotIndicator?: DotIndicatorOptions;
 
   /**
    * Set the text to display below the icon
@@ -564,8 +612,9 @@ export interface OptionsBottomTab {
   testID?: string;
   /**
    * Set the tab icon
+   * Note: On Android `icon` is required
    */
-  icon?: ImageRequireSource;
+  icon?: ImageRequireSource | ImageResource;
   /**
    * Set the icon tint
    */
@@ -586,7 +635,7 @@ export interface OptionsBottomTab {
    * Set the text font family
    */
   fontFamily?: FontFamily;
-    /**
+  /**
    * Set the font weight, ignore fontFamily and use the iOS system fonts instead
    * #### (iOS specific)
    */
@@ -639,6 +688,12 @@ export interface SideMenuSide {
    * Set the height of the side menu
    */
   height?: number;
+  /**
+   * Stretch sideMenu contents when opened past the width
+   * #### (iOS specific)
+   * @default true
+   */
+  shouldStretchDrawer?: boolean;
 }
 
 export interface OptionsSideMenu {
@@ -668,6 +723,14 @@ export interface OverlayOptions {
    * Set this to true if your Overlay contains a TextInput.
    */
   handleKeyboardEvents?: boolean;
+}
+
+export interface ModalOptions {
+  /**
+   * Control wether this modal should be dismiss using swipe gesture when the modalPresentationStyle = 'pageSheet'
+   * #### (iOS specific)
+   */
+  swipeToDismiss?: boolean;
 }
 
 export interface OptionsPreviewAction {
@@ -847,6 +910,10 @@ export interface StackAnimationOptions {
  */
 export interface AnimationOptions {
   /**
+   * Configure the setStackRoot animation
+   */
+  setStackRoot?: ScreenAnimationOptions;
+  /**
    * Configure the setRoot animation
    */
   setRoot?: ScreenAnimationOptions;
@@ -945,6 +1012,10 @@ export interface Options {
    */
   overlay?: OverlayOptions;
   /**
+   * Configure the modal
+   */
+  modal?: ModalOptions;
+  /**
    * Animation used for navigation commands that modify the layout
    * hierarchy can be controlled in options.
    *
@@ -1019,4 +1090,8 @@ setRoot: {
    * @default false
    */
   blurOnUnmount?: boolean;
+  /**
+   * Props to pass to a component
+   */
+  passProps?: Record<string, any>;
 }

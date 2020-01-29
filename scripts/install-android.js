@@ -1,7 +1,7 @@
-const _ = require('lodash');
+const includes = require('lodash/includes')
 const exec = require('shell-utils').exec;
 
-const release = _.includes(process.argv, '--release');
+const release = includes(process.argv, '--release');
 
 run();
 

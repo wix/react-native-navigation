@@ -14,6 +14,7 @@ It is a tab-based app and utilizes Split Layout for iOS tablets, 3D touch and mo
 ## Starter Kits
 * [atoami/react-native-navigation-redux-starter-kit](https://github.com/atoami/react-native-navigation-redux-starter-kit) - React Native Navigation(v2) Starter Kit with Redux, Saga, ESLint, Babel and Jest 😎
 * [alexwasner/react-native-mobx-firebase-starter](https://github.com/alexwasner/react-native-mobx-firebase-starter) - A React Native starter app with React Native Navigation(v2), MobX, Firebase, Lottie and More 🤓
+* [kanzitelli/react-native-navigation-starter](https://github.com/kanzitelli/react-native-navigation-starter) - Simple yet practical starter with React Native Navigation (**v4**), [MobX-State-Tree](https://github.com/mobxjs/mobx-state-tree) and [Redux](https://github.com/reduxjs/redux) (pick one) and more goodies inside such as Typescript, [RNN Hooks](https://github.com/underscopeio/react-native-navigation-hooks), [RN Vector Icons](https://github.com/oblador/react-native-vector-icons), [RN Gesture Handler](https://github.com/kmagiera/react-native-gesture-handler). As an example, basic Reddit App implemented in two ways: using [MobX-State-Tree](https://github.com/mobxjs/mobx-state-tree) in `/srcMobX` and using [Redux](https://github.com/reduxjs/redux) in `/srcRedux`.
 
 ### Playground
 
@@ -23,8 +24,15 @@ The playground example is a place where we showcase and test all features of rea
 git clone https://github.com/wix/react-native-navigation
 cd react-native-navigation
 npm install
-npm run xcode # Opens XCode
-npm start # Starts the packager
 
-# Run the app in Simulator or on Device from within XCode
+# for iOS:
+npm run xcode # Opens XCode
+npm start # Starts the packager on linux like systems
+
+# for Android:
+# 1. open Android Studio inside ".\playground"
+# 2. start a emulator
+npm run start-windows # Start the packager if you are on a windows system
+
+# Run the app in Simulator or on Device from within XCode/Android Studio
 ```

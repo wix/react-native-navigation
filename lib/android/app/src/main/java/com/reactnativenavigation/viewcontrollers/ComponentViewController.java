@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.view.View;
 
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
@@ -43,6 +44,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     public void setDefaultOptions(Options defaultOptions) {
         super.setDefaultOptions(defaultOptions);
         presenter.setDefaultOptions(defaultOptions);
+    }
+
+    @Override
+    public ScrollEventListener getScrollEventListener() {
+        return perform(view, null, ComponentLayout::getScrollEventListener);
     }
 
     @Override
@@ -87,7 +93,6 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (options == Options.EMPTY) return;
         presenter.mergeOptions(getView(), options);
         super.mergeOptions(options);
-        performOnParentController(parentController -> parentController.mergeChildOptions(options, this));
     }
 
     @Override

@@ -1,11 +1,18 @@
 #import "RNNStackController.h"
 #import "RNNComponentViewController.h"
+#import "UIViewController+Utils.h"
 
-const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
+@implementation RNNStackController {
+    UIViewController* _presentedViewController;
+}
 
-@implementation RNNStackController
+- (instancetype)init {
+    self = [super init];
+    self.delegate = self;
+    return self;
+}
 
--(void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
 	[super setDefaultOptions:defaultOptions];
 	[self.presenter setDefaultOptions:defaultOptions];
 }
@@ -15,12 +22,11 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	[self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
 }
 
-- (UIViewController *)getCurrentChild {
-	return self.topViewController;
-}
-
-- (CGFloat)getTopBarHeight {
-	return self.navigationBar.frame.size.height;
+- (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
+    if (child.isLastInStack) {
+        [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+    }
+    [self.parentViewController mergeChildOptions:options child:child];
 }
 
 - (UINavigationController *)navigationController {
@@ -36,51 +42,34 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
-	if (self.viewControllers.count > 1) {
-		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
-		if ([controller isKindOfClass:[RNNComponentViewController class]]) {
-			RNNComponentViewController *rnnController = (RNNComponentViewController *)controller;
-			[self.presenter applyOptionsBeforePopping:rnnController.resolveOptions];
-		}
-	}
-	
+    [self prepareForPop];
 	return [super popViewControllerAnimated:animated];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if ([self.viewControllers indexOfObject:_presentedViewController] < 0) {
+        [self sendScreenPoppedEvent:_presentedViewController];
+    }
+    
+    _presentedViewController = viewController;
+}
+
+- (void)sendScreenPoppedEvent:(UIViewController *)poppedScreen {
+    [self.eventEmitter sendScreenPoppedEvent:poppedScreen.layoutInfo.componentId];
+}
+
+- (void)prepareForPop {
+    if (self.viewControllers.count > 1) {
+        UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
+        if ([controller isKindOfClass:[RNNComponentViewController class]]) {
+            RNNComponentViewController *rnnController = (RNNComponentViewController *)controller;
+            [self.presenter applyOptionsBeforePopping:rnnController.resolveOptions];
+        }
+    }
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
-}
-
-- (void)setTopBarBackgroundColor:(UIColor *)backgroundColor {
-	if (backgroundColor) {
-		CGFloat bgColorAlpha = CGColorGetAlpha(backgroundColor.CGColor);
-		
-		if (bgColorAlpha == 0.0) {
-			if (![self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]){
-				UIView *transparentView = [[UIView alloc] initWithFrame:CGRectZero];
-				transparentView.backgroundColor = [UIColor clearColor];
-				transparentView.tag = TOP_BAR_TRANSPARENT_TAG;
-				[self.navigationBar insertSubview:transparentView atIndex:0];
-			}
-			self.navigationBar.translucent = YES;
-			[self.navigationBar setBackgroundColor:[UIColor clearColor]];
-			self.navigationBar.shadowImage = [UIImage new];
-			[self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-		} else {
-			self.navigationBar.barTintColor = backgroundColor;
-			UIView *transparentView = [self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
-			if (transparentView){
-				[transparentView removeFromSuperview];
-			}
-		}
-	} else {
-		UIView *transparentView = [self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
-		if (transparentView){
-			[transparentView removeFromSuperview];
-		}
-		
-		self.navigationBar.barTintColor = nil;
-	}
 }
 
 @end

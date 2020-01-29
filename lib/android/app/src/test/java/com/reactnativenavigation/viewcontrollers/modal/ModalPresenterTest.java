@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
@@ -20,11 +19,15 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -238,5 +241,20 @@ public class ModalPresenterTest extends BaseTest {
         CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
         uut.dismissModal(modal1, root, root, listener);
         verify(listener).onError(any());
+    }
+
+    @Test
+    public void dismissModal_successIsReportedBeforeViewIsDestroyed() {
+        disableShowModalAnimation(modal1);
+        disableDismissModalAnimation(modal1);
+        CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
+        ViewController modal = spy(modal1);
+        InOrder inOrder = inOrder(listener, modal);
+
+        uut.showModal(modal, root, new CommandListenerAdapter());
+
+        uut.dismissModal(modal, root, root, listener);
+        inOrder.verify(listener).onSuccess(modal.getId());
+        inOrder.verify(modal).destroy();
     }
 }

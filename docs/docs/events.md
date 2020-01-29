@@ -145,6 +145,35 @@ const modalDismissedListener = Navigation.events().registerModalDismissedListene
 modalDismissedListener.remove();
 ```
 
+## registerModalAttemptedToDismissListener(iOS 13+ only)
+Invoked only on iOS pageSheet modal when swipeToDismiss flag is set to true and modal swiped down to dismiss.
+
+```js
+// Subscribe
+const modalAttemptedToDismissListener = Navigation.events().registerModalAttemptedToDismissListener(({ componentId }) => {
+
+});
+...
+// Unsubscribe
+modalDismissedListener.remove();
+```
+|       Parameter         | Description |
+|:--------------------:|:-----|
+|**componentId** | Id of the modal tried to dismiss|
+
+## registerScreenPoppedListener
+Invoked when screen is popped.
+
+```js
+// Subscribe
+const screenPoppedListener = Navigation.events().registerScreenPoppedListener(({ componentId }) => {
+
+});
+...
+// Unsubscribe
+screenPoppedListener.remove();
+```
+
 |       Parameter         | Description |
 |:--------------------:|:-----|
 |**componentId** | Id of the modal|
@@ -156,6 +185,19 @@ Invoked when a BottomTab is selected by the user.
 ```js
 // Subscribe
 const bottomTabEventListener = Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
+
+});
+...
+// Unsubscribe
+bottomTabEventListener.remove();
+```
+
+## registerBottomTabLongPressedListener
+Invoked when a BottomTab is long pressed by the user.
+
+```js
+// Subscribe
+const bottomTabEventListener = Navigation.events().registerBottomTabLongPressedListener(({ selectedTabIndex }) => {
 
 });
 ...

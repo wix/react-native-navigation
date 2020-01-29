@@ -9,6 +9,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.Constants;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -18,7 +19,8 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.Fab;
+import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -35,18 +37,21 @@ import androidx.viewpager.widget.ViewPager;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.updateBottomMargin;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class StackController extends ParentController<StackLayout> {
 
     private IdStack<ViewController> stack = new IdStack<>();
     private final NavigationAnimator animator;
+    private final EventEmitter eventEmitter;
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter) {
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
+        this.eventEmitter = eventEmitter;
         this.topBarController = topBarController;
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
@@ -98,11 +103,9 @@ public class StackController extends ParentController<StackLayout> {
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
-        if (child.getView() instanceof ReactComponent) {
-            fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child.getView(), getView());
-        }
-        performOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(
+        fabOptionsPresenter.applyOptions(this.options.fabOptions, child, getView());
+        performOnParentController(parent ->
+                parent.applyChildOptions(
                         this.options.copy()
                                 .clearTopBarOptions()
                                 .clearAnimationOptions()
@@ -119,12 +122,12 @@ public class StackController extends ParentController<StackLayout> {
         super.mergeChildOptions(options, child);
         if (child.isViewShown() && peek() == child) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), this, child);
-            if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
-                fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
+            if (options.fabOptions.hasValue()) {
+                fabOptionsPresenter.mergeOptions(options.fabOptions, child, getView());
             }
         }
-        performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(
+        performOnParentController(parent ->
+                parent.mergeChildOptions(
                         options.copy()
                                 .clearTopBarOptions()
                                 .clearAnimationOptions()
@@ -143,6 +146,10 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     public void push(ViewController child, CommandListener listener) {
+        if (findController(child.getId()) != null) {
+            listener.onError("A stack can't contain two children with the same id");
+            return;
+        }
         final ViewController toRemove = stack.peek();
         if (size() > 0) backButtonHelper.addToPushedChild(child);
         child.setParentController(this);
@@ -221,13 +228,17 @@ public class StackController extends ParentController<StackLayout> {
         if (toRemove != null && resolvedOptions.animations.setStackRoot.enabled.isTrueOrUndefined()) {
             if (resolvedOptions.animations.setStackRoot.waitForRender.isTrue()) {
                 child.getView().setAlpha(0);
-                child.addOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.setStackRoot, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
-                    listenerAdapter.onSuccess(child.getId());
-                }));
+                child.addOnAppearedListener(() -> animator.push(
+                        child.getView(),
+                        resolvedOptions.animations.setStackRoot,
+                        resolvedOptions.transitions,
+                        toRemove.getElements(),
+                        child.getElements(),
+                        () -> listenerAdapter.onSuccess(child.getId())
+                    )
+                );
             } else {
-                animator.push(child.getView(), resolvedOptions.animations.setStackRoot, () -> {
-                    listenerAdapter.onSuccess(child.getId());
-                });
+                animator.push(child.getView(), resolvedOptions.animations.setStackRoot, () -> listenerAdapter.onSuccess(child.getId()));
             }
         } else {
             listenerAdapter.onSuccess(child.getId());
@@ -273,6 +284,7 @@ public class StackController extends ParentController<StackLayout> {
     private void finishPopping(ViewController disappearing, CommandListener listener) {
         disappearing.destroy();
         listener.onSuccess(disappearing.getId());
+        eventEmitter.emitScreenPoppedEvent(disappearing.getId());
     }
 
     public void popTo(ViewController viewController, Options mergeOptions, CommandListener listener) {
@@ -391,13 +403,16 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, ViewGroup child, View dependency) {
-        perform(findController(child), controller -> presenter.applyTopInsets(this, controller));
+        perform(findController(child), controller -> {
+            if (dependency instanceof TopBar) presenter.applyTopInsets(this, controller);
+            if (dependency instanceof Fab || dependency instanceof FabMenu) updateBottomMargin(dependency, getBottomInset());
+        });
         return false;
     }
 
     @Override
     public int getTopInset(ViewController child) {
-        return resolveChildOptions(child).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
+        return presenter.getTopInset(resolveChildOptions(child));
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

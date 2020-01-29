@@ -68,7 +68,7 @@ Navigation.mergeOptions(this.props.componentId, {
     backgroundColor: 'white',
     orientation: ['portrait', 'landscape'] // An array of supported orientations
   },
-  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popover', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
+  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'default', 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popover', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
   topBar: {
     visible: true,
     animate: false, // Controls whether TopBar visibility changes should be animated
@@ -149,32 +149,13 @@ Navigation.mergeOptions(this.props.componentId, {
       enabled: true
     }
   },
-  fab: {
-    id: 'fab',  // required
-    backgroundColor: 'green',
-    clickColor: 'blue',
-    rippleColor: 'yellow',
-    visible: true,
-    icon: require('add.png'),
-    iconColor: 'white',
-    alignHorizontally: 'left', // one of 'left', 'right'
-    hideOnScroll: false,
-    size: 24,
-    actions: [{
-      id: 'fab-1',  // required
-      backgroundColor: 'green',
-      clickColor: 'blue',
-      rippleColor: 'yellow'
-      visible: true,
-      icon: require('add.png'),
-      iconColor: 'white',
-      size: 24;
-    }];
-  },
   overlay: {
     interceptTouchOutside: true,
     handleKeyboardEvents: true
   },
+  modal: {
+    swipeToDismiss: true
+  }
   preview: {
     reactTag: 0, // result from findNodeHandle(ref)
     width: 100,
@@ -258,6 +239,9 @@ Navigation.mergeOptions(this.props.componentId, {
     drawBehind: true,
     visible: false
   },
+  navigationBar: {
+    backgroundColor: 'red',
+  },
   layout: {
     topMargin: (await Navigation.constants()).statusBarHeight, // Set the layout's top margin
     orientation: ['portrait', 'landscape'] | ['sensorLandscape'], // An array of supported orientations
@@ -279,11 +263,33 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTabs: {
     elevation: 8, // BottomTabs elevation in dp
-    titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
+    titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' | 'showWhenActiveForce' // Sets the title state for each tab. (showWhenActiveForce to be used when showWhenActive doesn't work, e.g. with three bottom tabs)
   },
   bottomTab: {
     selectedFontSize: 19 // Selected tab font size in sp
-  }
+  },
+  fab: {
+    id: 'fab',  // required
+    backgroundColor: 'green',
+    clickColor: 'blue',
+    rippleColor: 'yellow',
+    visible: true,
+    icon: require('add.png'),
+    iconColor: 'white',
+    alignHorizontally: 'left', // one of 'left', 'right'
+    hideOnScroll: false,
+    size: 24,
+    actions: [{
+      id: 'fab-1',  // required
+      backgroundColor: 'green',
+      clickColor: 'blue',
+      rippleColor: 'yellow',
+      visible: true,
+      icon: require('add.png'),
+      iconColor: 'white',
+      size: 24,
+    }]
+  },
 }
 ```
 

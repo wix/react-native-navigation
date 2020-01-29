@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
@@ -17,6 +18,7 @@ public class BackButton extends Button {
 
         result.hasValue = true;
         result.visible = BoolParser.parse(json, "visible");
+        result.accessibilityLabel = TextParser.parse(json, "accessibilityLabel", "Navigate Up");
         if (json.has("icon")) result.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         result.id = json.optString("id", Constants.BACK_BUTTON_ID);
         result.enabled = BoolParser.parse(json, "enabled");
@@ -30,6 +32,7 @@ public class BackButton extends Button {
 
     BackButton() {
         id = Constants.BACK_BUTTON_ID;
+        accessibilityLabel = new Text("Navigate Up");
     }
 
     public Bool visible = new NullBool();
@@ -41,6 +44,7 @@ public class BackButton extends Button {
 
     public void mergeWith(BackButton other) {
         if (!Constants.BACK_BUTTON_ID.equals(other.id)) id = other.id;
+        if (other.accessibilityLabel.hasValue()) accessibilityLabel = other.accessibilityLabel;
         if (other.icon.hasValue()) icon = other.icon;
         if (other.visible.hasValue()) visible = other.visible;
         if (other.color.hasValue()) color = other.color;
@@ -52,6 +56,7 @@ public class BackButton extends Button {
 
     void mergeWithDefault(final BackButton defaultOptions) {
         if (Constants.BACK_BUTTON_ID.equals(id)) id = defaultOptions.id;
+        if (!accessibilityLabel.hasValue()) accessibilityLabel = defaultOptions.accessibilityLabel;
         if (!icon.hasValue()) icon = defaultOptions.icon;
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!color.hasValue()) color = defaultOptions.color;
@@ -63,6 +68,11 @@ public class BackButton extends Button {
 
     public void setVisible() {
         visible = new Bool(true);
+        hasValue = true;
+    }
+
+    public void setHidden() {
+        visible = new Bool(false);
         hasValue = true;
     }
 }

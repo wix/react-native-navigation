@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import concat from 'lodash/concat'
 import * as Handlebars from 'handlebars';
 import * as fs from 'fs';
 import { ClassContext } from './ClassParser';
@@ -34,7 +34,7 @@ export class MarkdownWriter {
     const files2 = interfaceContexts.map(mapper);
     const files3 = enumContexts.map(mapper);
 
-    const menuMarkdown = this.menuFn({ files: _.concat(files, files2, files3) });
+    const menuMarkdown = this.menuFn({ files: concat(files, files2, files3) });
     fs.writeFileSync(`${this.outputDir}/_sidebar.md`, menuMarkdown, { encoding: 'utf8' });
     fs.writeFileSync(`${this.outputDir}/README.md`, menuMarkdown, { encoding: 'utf8' });
   }

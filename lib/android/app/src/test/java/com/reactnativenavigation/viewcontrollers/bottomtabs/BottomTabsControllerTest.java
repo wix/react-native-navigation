@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
@@ -17,7 +18,7 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
@@ -27,6 +28,7 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -84,7 +86,7 @@ public class BottomTabsControllerTest extends BaseTest {
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", tabOptions));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", tabOptions));
         child3 = spy(new SimpleViewController(activity, childRegistry, "child3", tabOptions));
-        child4 = spy(createStack("someStack"));
+        child4 = spy(createStack());
         child5 = spy(new SimpleViewController(activity, childRegistry, "child5", tabOptions));
         when(child5.handleBack(any())).thenReturn(true);
         tabs = createTabs();
@@ -208,17 +210,34 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void mergeOptions_drawBehind() {
-        assertThat(uut.getBottomInset()).isEqualTo(uut.getBottomTabs().getHeight());
+        assertThat(uut.getBottomInset(child1)).isEqualTo(uut.getBottomTabs().getHeight());
 
         Options o1 = new Options();
         o1.bottomTabsOptions.drawBehind = new Bool(true);
         child1.mergeOptions(o1);
-        assertThat(uut.getBottomInset()).isEqualTo(0);
+        assertThat(uut.getBottomInset(child1)).isEqualTo(0);
 
         Options o2 = new Options();
         o2.topBar.title.text = new Text("Some text");
         child1.mergeOptions(o1);
-        assertThat(uut.getBottomInset()).isEqualTo(0);
+        assertThat(uut.getBottomInset(child1)).isEqualTo(0);
+    }
+
+    @Test
+    public void mergeOptions_drawBehind_stack() {
+        uut.selectTab(3);
+
+        SimpleViewController stackChild = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
+        disablePushAnimation(stackChild);
+        child4.push(stackChild, new CommandListenerAdapter());
+
+        assertThat(((MarginLayoutParams) stackChild.getView().getLayoutParams()).bottomMargin).isEqualTo(bottomTabs.getHeight());
+
+        Options o1 = new Options();
+        o1.bottomTabsOptions.drawBehind = new Bool(true);
+        stackChild.mergeOptions(o1);
+
+        assertThat(((MarginLayoutParams) stackChild.getView().getLayoutParams()).bottomMargin).isEqualTo(0);
     }
 
     @Test
@@ -306,7 +325,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.selectTab(3);
 
         SimpleViewController stackChild = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
-        SimpleViewController stackChild2 = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
+        SimpleViewController stackChild2 = new SimpleViewController(activity, childRegistry, "stackChild2", new Options());
 
         disablePushAnimation(stackChild, stackChild2);
         hideBackButton(stackChild2);
@@ -359,6 +378,16 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void getBottomInset_defaultOptionsAreTakenIntoAccount() {
+        Options defaultOptions = new Options();
+        defaultOptions.bottomTabsOptions.visible = new Bool(false);
+
+        assertThat(uut.getBottomInset(child1)).isEqualTo(bottomTabs.getHeight());
+        uut.setDefaultOptions(defaultOptions);
+        assertThat(uut.getBottomInset(child1)).isZero();
+    }
+
+    @Test
     public void destroy() {
         uut.destroy();
         verify(tabsAttacher).destroy();
@@ -369,9 +398,9 @@ public class BottomTabsControllerTest extends BaseTest {
         return Arrays.asList(child1, child2, child3, child4, child5);
     }
 
-    private StackController createStack(String id) {
+    private StackController createStack() {
         return TestUtils.newStackController(activity)
-                .setId(id)
+                .setId("someStack")
                 .setInitialOptions(tabOptions)
                 .build();
     }
@@ -399,6 +428,14 @@ public class BottomTabsControllerTest extends BaseTest {
             public void ensureViewIsCreated() {
                 super.ensureViewIsCreated();
                 uut.getView().layout(0, 0, 1000, 1000);
+            }
+
+            @NonNull
+            @Override
+            protected BottomTabsLayout createView() {
+                BottomTabsLayout view = super.createView();
+                bottomTabs.getLayoutParams().height = 100;
+                return view;
             }
 
             @NonNull

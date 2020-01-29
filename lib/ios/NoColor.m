@@ -1,6 +1,4 @@
 #import "NoColor.h"
-#import "Color.h"
-
 
 @implementation NoColor
 
@@ -9,14 +7,11 @@
 }
 
 - (UIColor *)get {
-//    return nil;
-    return UIColor.cyanColor;
+    return nil;
 }
 
 - (UIColor *)getWithDefaultValue:(id)defaultValue {
-    return UIColor.cyanColor;
-//    return nil;
+    return nil;
 }
-
 
 @end
