@@ -83,6 +83,14 @@ public class EventEmitter {
         emit(ModalDismissed, event);
     }
 
+    public void emitModalDismissed(String id, String componentName, int modalsDismissed) {
+        WritableMap event = Arguments.createMap();
+        event.putString("componentId", id);
+        event.putString("componentName", componentName);
+        event.putInt("modalsDismissed", modalsDismissed);
+        emit(ModalDismissed, event);
+    }
+
     public void emitScreenPoppedEvent(String componentId) {
         WritableMap event = Arguments.createMap();
         event.putString("componentId", componentId);
