@@ -12,10 +12,16 @@
 @end
 @implementation RNNBasePresenter
 
--(instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
     self = [super init];
     _defaultOptions = defaultOptions;
     self.dotIndicatorPresenter = [[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:_defaultOptions];
+    return self;
+}
+
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry defaultOptions:(RNNNavigationOptions *)defaultOptions {
+    self = [self initWithDefaultOptions:defaultOptions];
+    _componentRegistry = componentRegistry;
     return self;
 }
 
