@@ -1,7 +1,7 @@
 package com.reactnativenavigation.parse.params;
 
 import android.content.pm.ActivityInfo;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public enum Orientation {
     Portrait("portrait", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT),

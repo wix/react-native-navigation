@@ -167,6 +167,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 @property (nonatomic, copy) MMDrawerGestureCompletionBlock gestureStart;
 @property (nonatomic, copy) MMDrawerGestureCompletionBlock gestureCompletion;
 @property (nonatomic, assign, getter = isAnimatingDrawer) BOOL animatingDrawer;
+@property (nonatomic, strong) UIGestureRecognizer *pan;
 
 @end
 
@@ -810,12 +811,12 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
 #pragma mark Rotation
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     //If a rotation begins, we are going to cancel the current gesture and reset transform and anchor points so everything works correctly
     BOOL gestureInProgress = NO;
-    for(UIGestureRecognizer * gesture in self.view.gestureRecognizers){
-        if(gesture.state == UIGestureRecognizerStateChanged){
+    for(UIGestureRecognizer * gesture in self.view.gestureRecognizers) {
+        if(gesture.state == UIGestureRecognizerStateChanged) {
             [gesture setEnabled:NO];
             [gesture setEnabled:YES];
             gestureInProgress = YES;
@@ -824,6 +825,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             [self resetDrawerVisualStateForDrawerSide:self.openSide];
         }
     }
+	
     if ([self needsManualForwardingOfRotationEvents]){
         for(UIViewController * childViewController in self.childViewControllers){
             [childViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -866,14 +868,24 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     return YES;
 }
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+	
     if ([self needsManualForwardingOfRotationEvents]){
-        for(UIViewController * childViewController in self.childViewControllers){
+        for(UIViewController * childViewController in self.childViewControllers) {
             [childViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
         }
     }
 }
+
+-(bool)hasPan
+{
+    for (UIGestureRecognizer *recognizer in self.view.gestureRecognizers) {
+        if(recognizer == _pan) { return YES; }
+    }
+    return NO;
+}
+
 
 #pragma mark - Setters
 -(void)setRightDrawerViewController:(UIViewController *)rightDrawerViewController{
@@ -1012,6 +1024,18 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 -(void)setAnimatingDrawer:(BOOL)animatingDrawer{
     _animatingDrawer = animatingDrawer;
     [self.view setUserInteractionEnabled:!animatingDrawer];
+}
+
+- (void)setLeftSideEnabled:(BOOL)leftSideEnabled
+{
+    _leftSideEnabled = leftSideEnabled;
+    [self updatePanHandlersState];
+}
+
+- (void)setRightSideEnabled:(BOOL)rightSideEnabled
+{
+    _rightSideEnabled = rightSideEnabled;
+    [self updatePanHandlersState];
 }
 
 #pragma mark - Getters
@@ -1184,6 +1208,15 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     }
 }
 
+- (void)updatePanHandlersState
+{
+    if(_leftSideEnabled == NO && _rightSideEnabled == NO) {
+        if([self hasPan]) { [self.view removeGestureRecognizer:_pan]; }
+    } else {
+        if(![self hasPan]) { [self.view addGestureRecognizer:_pan]; }
+    }
+}
+
 #pragma mark - iOS 7 Status Bar Helpers
 -(UIViewController*)childViewControllerForStatusBarStyle{
     return [self childViewControllerForSide:self.openSide];
@@ -1343,9 +1376,9 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
 
 #pragma mark - Helpers
 -(void)setupGestureRecognizers{
-    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureCallback:)];
-    [pan setDelegate:self];
-    [self.view addGestureRecognizer:pan];
+    _pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureCallback:)];
+    [_pan setDelegate:self];
+    [self.view addGestureRecognizer:_pan];
     
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureCallback:)];
     [tap setDelegate:self];

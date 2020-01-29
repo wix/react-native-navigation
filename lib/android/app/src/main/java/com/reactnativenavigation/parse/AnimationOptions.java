@@ -20,8 +20,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-public class AnimationOptions {
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 
+public class AnimationOptions {
     public static AnimationOptions parse(JSONObject json) {
         AnimationOptions options = new AnimationOptions();
         if (json == null) return options;
@@ -78,9 +79,7 @@ public class AnimationOptions {
         if (!hasAnimation()) return defaultAnimation;
         AnimatorSet animationSet = new AnimatorSet();
         List<Animator> animators = new ArrayList<>();
-        for (ValueAnimationOptions options : valueOptions) {
-            animators.add(options.getAnimation(view));
-        }
+        forEach(valueOptions, options -> animators.add(options.getAnimation(view)));
         animationSet.playTogether(animators);
         return animationSet;
     }
@@ -109,5 +108,12 @@ public class AnimationOptions {
 
     public boolean hasAnimation() {
         return !valueOptions.isEmpty();
+    }
+
+    public void setValueDy(Property<View, Float> animation, float fromDelta, float toDelta) {
+        first(valueOptions, o -> o.equals(animation), param -> {
+            param.setFromDelta(fromDelta);
+            param.setToDelta(toDelta);
+        });
     }
 }

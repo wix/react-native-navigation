@@ -22,7 +22,7 @@ public class JSONParserTest extends BaseTest {
         input.putMap("keyMap", new JavaOnlyMap());
         input.putNull("bla");
 
-        JSONObject result = JSONParser.parse(input);
+        JSONObject result = new JSONParser().parse(input);
 
 
         assertThat(result.keys()).containsOnly(
@@ -52,7 +52,7 @@ public class JSONParserTest extends BaseTest {
         input.pushMap(new JavaOnlyMap());
         input.pushNull();
 
-        JSONArray result = JSONParser.parse(input);
+        JSONArray result = new JSONParser().parse(input);
         assertThat(result.length()).isEqualTo(6);
         assertThat(result.get(0)).isEqualTo("Hello");
         assertThat(result.get(1)).isEqualTo(123);

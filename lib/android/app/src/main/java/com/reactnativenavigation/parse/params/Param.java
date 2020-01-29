@@ -1,10 +1,23 @@
 package com.reactnativenavigation.parse.params;
 
+import static com.reactnativenavigation.utils.ObjectUtils.equalsNotNull;
+
 public abstract class Param<T> {
     protected T value;
+    private boolean consumed;
 
     Param(T value) {
         this.value = value;
+    }
+
+    public T getAndConsume() {
+        T value = get();
+        consumed = true;
+        return value;
+    }
+
+    public void consume() {
+        consumed = true;
     }
 
     public T get() {
@@ -19,6 +32,14 @@ public abstract class Param<T> {
     }
 
     public boolean hasValue() {
-        return value != null;
+        return value != null && !consumed;
+    }
+
+    public boolean canApplyValue() {
+        return true;
+    }
+
+    public boolean equals(Param other) {
+        return value == other.value || equalsNotNull(value, other.value);
     }
 }

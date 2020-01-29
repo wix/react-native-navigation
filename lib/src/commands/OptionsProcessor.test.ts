@@ -8,11 +8,11 @@ import { AssetService } from '../adapters/AssetResolver';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
-  const mockedStore = mock(Store);
-  const store = instance(mockedStore);
+  const mockedStore = mock(Store) as Store;
+  const store = instance(mockedStore) as Store;
 
   beforeEach(() => {
-    const mockedAssetService = mock(AssetService);
+    const mockedAssetService = mock(AssetService) as AssetService;
     when(mockedAssetService.resolveFromRequire(anyNumber())).thenReturn({
       height: 100,
       scale: 1,
@@ -21,7 +21,7 @@ describe('navigation options', () => {
     });
     const assetService = instance(mockedAssetService);
 
-    const mockedColorService = mock(ColorService);
+    const mockedColorService = mock(ColorService) as ColorService;
     when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
     const colorService = instance(mockedColorService);
 
@@ -79,7 +79,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options);
 
-    verify(mockedStore.setPropsForId('CustomComponent1', passProps)).called();
+    verify(mockedStore.updateProps('CustomComponent1', passProps)).called();
   });
 
   it('generates componentId for component id was not passed', () => {
@@ -108,7 +108,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options);
 
-    verify(mockedStore.setPropsForId('1', passProps)).called();
+    verify(mockedStore.updateProps('1', passProps)).called();
   });
 
   it('do not touch passProps when id for button is missing', () => {

@@ -21,7 +21,8 @@ public class SideMenuRootOptions {
         right.mergeWith(other.right);
     }
 
-    public void mergeWithDefault(SideMenuRootOptions sideMenuRootOptions) {
-
+    public void mergeWithDefault(SideMenuRootOptions defaultOptions) {
+        left.mergeWithDefault(defaultOptions.left);
+        right.mergeWithDefault(defaultOptions.right);
     }
 }

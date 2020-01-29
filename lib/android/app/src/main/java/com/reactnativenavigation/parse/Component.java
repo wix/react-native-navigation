@@ -44,4 +44,11 @@ public class Component {
     public boolean hasValue() {
         return name.hasValue();
     }
+
+    public boolean equals(Component other) {
+        return name.equals(other.name) &&
+               componentId.equals(other.componentId) &&
+               alignment.equals(other.alignment) &&
+               waitForRender.equals(other.waitForRender);
+    }
 }

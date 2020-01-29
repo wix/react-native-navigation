@@ -6,17 +6,21 @@ import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.ComponentPresenter;
+import com.reactnativenavigation.presentation.ExternalComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.presentation.StackPresenter;
-import com.reactnativenavigation.react.EventEmitter;
+import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.utils.Assertions;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
 import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuController;
@@ -33,25 +37,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+
 import static com.reactnativenavigation.parse.Options.parse;
 
 public class LayoutFactory {
-
-	private final Activity activity;
-    private final ChildControllersRegistry childRegistry;
+	private Activity activity;
+    private ChildControllersRegistry childRegistry;
 	private final ReactInstanceManager reactInstanceManager;
     private EventEmitter eventEmitter;
     private Map<String, ExternalComponentCreator> externalComponentCreators;
-    private Options defaultOptions;
-    private final TypefaceLoader typefaceManager;
+    private @NonNull Options defaultOptions = new Options();
+    private TypefaceLoader typefaceManager;
 
-    public LayoutFactory(Activity activity, ChildControllersRegistry childRegistry, final ReactInstanceManager reactInstanceManager, EventEmitter eventEmitter, Map<String, ExternalComponentCreator> externalComponentCreators, Options defaultOptions) {
-		this.activity = activity;
-        this.childRegistry = childRegistry;
-        this.reactInstanceManager = reactInstanceManager;
-        this.eventEmitter = eventEmitter;
-        this.externalComponentCreators = externalComponentCreators;
+    public void setDefaultOptions(@NonNull Options defaultOptions) {
+        Assertions.assertNotNull(defaultOptions);
         this.defaultOptions = defaultOptions;
+    }
+
+    public LayoutFactory(final ReactInstanceManager reactInstanceManager) {
+        this.reactInstanceManager = reactInstanceManager;
+    }
+
+    public void init(Activity activity, EventEmitter eventEmitter, ChildControllersRegistry childRegistry, Map<String, ExternalComponentCreator> externalComponentCreators) {
+        this.activity = activity;
+        this.eventEmitter = eventEmitter;
+        this.childRegistry = childRegistry;
+        this.externalComponentCreators = externalComponentCreators;
         typefaceManager = new TypefaceLoader(activity);
     }
 
@@ -157,12 +170,14 @@ public class LayoutFactory {
                 externalComponent,
                 externalComponentCreators.get(externalComponent.name.get()),
                 reactInstanceManager,
+                new EventEmitter(reactInstanceManager.getCurrentReactContext()),
+                new ExternalComponentPresenter(),
                 parse(typefaceManager, node.getOptions())
         );
     }
 
 	private ViewController createStack(LayoutNode node) {
-        return new StackControllerBuilder(activity)
+        return new StackControllerBuilder(activity, eventEmitter)
                 .setChildren(createChildren(node.children))
                 .setChildRegistry(childRegistry)
                 .setTopBarController(new TopBarController())
@@ -172,7 +187,7 @@ public class LayoutFactory {
                         new TitleBarReactViewCreator(reactInstanceManager),
                         new TopBarBackgroundViewCreator(reactInstanceManager),
                         new TitleBarButtonCreator(reactInstanceManager),
-                        new ImageLoader(),
+                        new IconResolver(activity, new ImageLoader()),
                         new RenderChecker(),
                         defaultOptions
                 ))
@@ -193,6 +208,7 @@ public class LayoutFactory {
         for (int i = 0; i < node.children.size(); i++) {
             tabs.add(create(node.children.get(i)));
         }
+        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions);
         return new BottomTabsController(activity,
                 tabs,
                 childRegistry,
@@ -201,7 +217,8 @@ public class LayoutFactory {
                 node.id,
                 parse(typefaceManager, node.getOptions()),
                 new Presenter(activity, defaultOptions),
-                new BottomTabsPresenter(tabs, defaultOptions),
+                new BottomTabsAttacher(tabs, bottomTabsPresenter),
+                bottomTabsPresenter,
                 new BottomTabPresenter(activity, tabs, new ImageLoader(), defaultOptions));
 	}
 
@@ -214,5 +231,11 @@ public class LayoutFactory {
             tabs.add(tabController);
         }
         return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parse(typefaceManager, node.getOptions()), new Presenter(activity, defaultOptions));
+    }
+
+    @NonNull
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public Options getDefaultOptions() {
+        return defaultOptions;
     }
 }

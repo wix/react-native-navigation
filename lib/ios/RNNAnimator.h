@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNAnimationOptions.h"
+#import "RNNSharedElementAnimationOptions.h"
 
 @interface RNNAnimator : NSObject <UIViewControllerAnimatedTransitioning>
 
--(instancetype)initWithTransitionOptions:(RNNAnimationOptions *)transitionOptions;
+-(instancetype)initWithTransitionOptions:(RNNSharedElementAnimationOptions *)transitionOptions;
 
 @end

@@ -5,26 +5,36 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.reactnativenavigation.parse.LayoutFactory;
 
-import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+
+import static java.util.Collections.singletonList;
 
 public class NavigationPackage implements ReactPackage {
 
-	private ReactNativeHost reactNativeHost;
+    private ReactNativeHost reactNativeHost;
 
-	@SuppressWarnings("WeakerAccess")
     public NavigationPackage(final ReactNativeHost reactNativeHost) {
-		this.reactNativeHost = reactNativeHost;
-	}
+        this.reactNativeHost = reactNativeHost;
+    }
 
-	@Override
-	public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-		return Collections.singletonList(new NavigationModule(reactContext, reactNativeHost.getReactInstanceManager()));
-	}
+    @NonNull
+    @Override
+    public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
+        return singletonList(new NavigationModule(
+                        reactContext,
+                        reactNativeHost.getReactInstanceManager(),
+                        new LayoutFactory(reactNativeHost.getReactInstanceManager())
+                )
+        );
+    }
 
-	@Override
-	public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Collections.singletonList(new ElementViewManager());
+    @NonNull
+    @Override
+    public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
+        return singletonList(new ElementViewManager());
     }
 }

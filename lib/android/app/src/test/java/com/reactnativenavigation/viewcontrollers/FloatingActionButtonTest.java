@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +17,8 @@ import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;
+
+import androidx.annotation.NonNull;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 

@@ -1,7 +1,7 @@
 const React = require('react');
 const { PureComponent } = require('react');
 
-const { Text, Button, View, Platform } = require('react-native');
+const { Text, Button, View } = require('react-native');
 const { Navigation } = require('react-native-navigation');
 
 const testIDs = require('../testIDs');

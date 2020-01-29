@@ -4,16 +4,19 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.views.BehaviourDelegate;
 
 import java.util.HashMap;
+
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public class OverlayManager {
     private final HashMap<String, ViewController> overlayRegistry = new HashMap<>();
 
     public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
         overlayRegistry.put(overlay.getId(), overlay);
-        overlay.setOnAppearedListener(() -> listener.onSuccess(overlay.getId()));
-        overlaysContainer.addView(overlay.getView());
+        overlay.addOnAppearedListener(() -> listener.onSuccess(overlay.getId()));
+        overlaysContainer.addView(overlay.getView(), matchParentWithBehaviour(new BehaviourDelegate(overlay)));
     }
 
     public void dismiss(String componentId, CommandListener listener) {

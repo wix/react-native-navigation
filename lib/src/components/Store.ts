@@ -1,27 +1,41 @@
-import * as _ from 'lodash';
 import { ComponentProvider } from 'react-native';
+import { IWrappedComponent } from './ComponentWrapper';
 
 export class Store {
   private componentsByName: Record<string, ComponentProvider> = {};
   private propsById: Record<string, any> = {};
+  private componentsInstancesById: Record<string, IWrappedComponent> = {};
 
-  setPropsForId(componentId: string, props: any) {
-    _.set(this.propsById, componentId, props);
+  updateProps(componentId: string, props: any) {
+    this.propsById[componentId] = props;
+    const component = this.componentsInstancesById[componentId];
+    if (component) {
+      this.componentsInstancesById[componentId].setProps(props);
+    }
   }
 
   getPropsForId(componentId: string) {
-    return _.get(this.propsById, componentId, {});
+    return this.propsById[componentId] || {};
   }
 
-  cleanId(componentId: string) {
-    _.unset(this.propsById, componentId);
+  clearComponent(componentId: string) {
+    delete this.propsById[componentId];
+    delete this.componentsInstancesById[componentId];
   }
 
   setComponentClassForName(componentName: string | number, ComponentClass: ComponentProvider) {
-    _.set(this.componentsByName, componentName.toString(), ComponentClass);
+    this.componentsByName[componentName.toString()] = ComponentClass;
   }
 
   getComponentClassForName(componentName: string | number): ComponentProvider | undefined {
-    return _.get(this.componentsByName, componentName.toString());
+    return this.componentsByName[componentName.toString()];
+  }
+
+  setComponentInstance(id: string, component: IWrappedComponent): void {
+    this.componentsInstancesById[id] = component;
+  }
+
+  getComponentInstance(id: string): IWrappedComponent {
+    return this.componentsInstancesById[id];
   }
 }

@@ -1,34 +1,32 @@
 package com.reactnativenavigation.presentation;
 
 
-import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.FabOptions;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
-import com.reactnativenavigation.views.ReactComponent;
 
-import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
-import static android.widget.RelativeLayout.ALIGN_PARENT_LEFT;
-import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
-import static android.widget.RelativeLayout.ALIGN_PARENT_TOP;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
 import static com.github.clans.fab.FloatingActionButton.SIZE_NORMAL;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class FabPresenter {
     private ViewGroup viewGroup;
-    private ReactComponent component;
+    private ViewController component;
 
     private Fab fab;
     private FabMenu fabMenu;
 
-    public void applyOptions(FabOptions options, @NonNull ReactComponent component, @NonNull ViewGroup viewGroup) {
+    public void applyOptions(FabOptions options, @NonNull ViewController component, @NonNull ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
         this.component = component;
 
@@ -51,10 +49,9 @@ public class FabPresenter {
         }
     }
 
-    public void mergeOptions(FabOptions options, @NonNull ReactComponent component, @NonNull ViewGroup viewGroup) {
+    public void mergeOptions(FabOptions options, @NonNull ViewController component, @NonNull ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
         this.component = component;
-
         if (options.id.hasValue()) {
             if (fabMenu != null && fabMenu.getFabId().equals(options.id.get())) {
                 mergeParams(fabMenu, options);
@@ -103,139 +100,44 @@ public class FabPresenter {
     }
 
     private void setParams(View fab, FabOptions options) {
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        if (viewGroup instanceof RelativeLayout) {
-            RelativeLayout.LayoutParams layoutParamsRelative = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParamsRelative.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            layoutParamsRelative.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            layoutParamsRelative.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            layoutParamsRelative.topMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            if (options.alignHorizontally.hasValue()) {
-                if ("right".equals(options.alignHorizontally.get())) {
-                    layoutParamsRelative.removeRule(ALIGN_PARENT_LEFT);
-                    layoutParamsRelative.addRule(ALIGN_PARENT_RIGHT);
-                }
-                if ("left".equals(options.alignHorizontally.get())) {
-                    layoutParamsRelative.removeRule(ALIGN_PARENT_RIGHT);
-                    layoutParamsRelative.addRule(ALIGN_PARENT_LEFT);
-                }
-            } else {
-                layoutParamsRelative.addRule(ALIGN_PARENT_RIGHT);
+        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        lp.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+        lp.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+        lp.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+        fab.setTag(R.id.fab_bottom_margin, lp.bottomMargin);
+        lp.gravity = Gravity.BOTTOM;
+        if (options.alignHorizontally.hasValue()) {
+            if ("right".equals(options.alignHorizontally.get())) {
+                lp.gravity |= Gravity.RIGHT;
             }
-            if (options.alignVertically.hasValue()) {
-                if ("top".equals(options.alignVertically.get())) {
-                    layoutParamsRelative.removeRule(ALIGN_PARENT_BOTTOM);
-                    layoutParamsRelative.addRule(ALIGN_PARENT_TOP);
-                }
-                if ("bottom".equals(options.alignVertically.get())) {
-                    layoutParamsRelative.removeRule(ALIGN_PARENT_TOP);
-                    layoutParamsRelative.addRule(ALIGN_PARENT_BOTTOM);
-                }
-            } else {
-                layoutParamsRelative.addRule(ALIGN_PARENT_BOTTOM);
+            if ("left".equals(options.alignHorizontally.get())) {
+                lp.gravity |= Gravity.LEFT;
             }
-            layoutParams = layoutParamsRelative;
+        } else {
+            lp.gravity |= Gravity.RIGHT;
         }
-        if (viewGroup instanceof FrameLayout) {
-            FrameLayout.LayoutParams layoutParamsFrame = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParamsFrame.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            layoutParamsFrame.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            layoutParamsFrame.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            layoutParamsFrame.topMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            if (options.alignHorizontally.hasValue()) {
-                if ("right".equals(options.alignHorizontally.get())) {
-                    removeGravityParam(layoutParamsFrame, Gravity.LEFT);
-                    setGravityParam(layoutParamsFrame, Gravity.RIGHT);
-                }
-                if ("left".equals(options.alignHorizontally.get())) {
-                    removeGravityParam(layoutParamsFrame, Gravity.RIGHT);
-                    setGravityParam(layoutParamsFrame, Gravity.LEFT);
-                }
-            } else {
-                setGravityParam(layoutParamsFrame, Gravity.RIGHT);
-            }
-            if (options.alignVertically.hasValue()) {
-                if ("top".equals(options.alignVertically.get())) {
-                    removeGravityParam(layoutParamsFrame, Gravity.BOTTOM);
-                    setGravityParam(layoutParamsFrame, Gravity.TOP);
-                }
-                if ("bottom".equals(options.alignVertically.get())) {
-                    removeGravityParam(layoutParamsFrame, Gravity.TOP);
-                    setGravityParam(layoutParamsFrame, Gravity.BOTTOM);
-                }
-            } else {
-                setGravityParam(layoutParamsFrame, Gravity.BOTTOM);
-            }
-            layoutParams = layoutParamsFrame;
-        }
-        fab.setLayoutParams(layoutParams);
+        fab.setLayoutParams(lp);
     }
 
     private void mergeParams(View fab, FabOptions options) {
-        ViewGroup.LayoutParams layoutParams = fab.getLayoutParams();
-        if (viewGroup instanceof RelativeLayout) {
-            RelativeLayout.LayoutParams layoutParamsRelative = (RelativeLayout.LayoutParams) fab.getLayoutParams();
-            if (layoutParamsRelative == null) {
-                layoutParamsRelative = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParamsRelative.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-                layoutParamsRelative.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-                layoutParamsRelative.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-                layoutParamsRelative.topMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) perform(
+                fab,
+                new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT),
+                View::getLayoutParams
+        );
+        fab.setTag(R.id.fab_bottom_margin, lp.leftMargin);
+        lp.gravity = Gravity.BOTTOM;
+        if (options.alignHorizontally.hasValue()) {
+            if ("right".equals(options.alignHorizontally.get())) {
+                lp.gravity |= Gravity.RIGHT;
             }
-            if (options.alignHorizontally.hasValue()) {
-                if ("right".equals(options.alignHorizontally.get())) {
-                    layoutParamsRelative.removeRule(ALIGN_PARENT_LEFT);
-                    layoutParamsRelative.addRule(ALIGN_PARENT_RIGHT);
-                }
-                if ("left".equals(options.alignHorizontally.get())) {
-                    layoutParamsRelative.removeRule(ALIGN_PARENT_RIGHT);
-                    layoutParamsRelative.addRule(ALIGN_PARENT_LEFT);
-                }
+            if ("left".equals(options.alignHorizontally.get())) {
+                lp.gravity |= Gravity.RIGHT;
             }
-            if (options.alignVertically.hasValue()) {
-                if ("top".equals(options.alignVertically.get())) {
-                    layoutParamsRelative.removeRule(ALIGN_PARENT_BOTTOM);
-                    layoutParamsRelative.addRule(ALIGN_PARENT_TOP);
-                }
-                if ("bottom".equals(options.alignVertically.get())) {
-                    layoutParamsRelative.removeRule(ALIGN_PARENT_TOP);
-                    layoutParamsRelative.addRule(ALIGN_PARENT_BOTTOM);
-                }
-            }
-            layoutParams = layoutParamsRelative;
+        } else {
+            lp.gravity |= Gravity.RIGHT;
         }
-        if (viewGroup instanceof FrameLayout) {
-            FrameLayout.LayoutParams layoutParamsFrame = (FrameLayout.LayoutParams) fab.getLayoutParams();
-            if (layoutParamsFrame == null) {
-                layoutParamsFrame = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParamsFrame.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-                layoutParamsFrame.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-                layoutParamsFrame.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-                layoutParamsFrame.topMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-            }
-            if (options.alignHorizontally.hasValue()) {
-                if ("right".equals(options.alignHorizontally.get())) {
-                    removeGravityParam(layoutParamsFrame, Gravity.LEFT);
-                    setGravityParam(layoutParamsFrame, Gravity.RIGHT);
-                }
-                if ("left".equals(options.alignHorizontally.get())) {
-                    removeGravityParam(layoutParamsFrame, Gravity.RIGHT);
-                    setGravityParam(layoutParamsFrame, Gravity.LEFT);
-                }
-            }
-            if (options.alignVertically.hasValue()) {
-                if ("top".equals(options.alignVertically.get())) {
-                    removeGravityParam(layoutParamsFrame, Gravity.BOTTOM);
-                    setGravityParam(layoutParamsFrame, Gravity.TOP);
-                }
-                if ("bottom".equals(options.alignVertically.get())) {
-                    removeGravityParam(layoutParamsFrame, Gravity.TOP);
-                    setGravityParam(layoutParamsFrame, Gravity.BOTTOM);
-                }
-            }
-            layoutParams = layoutParamsFrame;
-        }
-        fab.setLayoutParams(layoutParams);
+        fab.setLayoutParams(lp);
     }
 
     private void applyFabOptions(Fab fab, FabOptions options) {
@@ -371,16 +273,6 @@ public class FabPresenter {
         }
         if (options.hideOnScroll.isFalse()) {
             fabMenu.disableCollapse();
-        }
-    }
-
-    private void setGravityParam(FrameLayout.LayoutParams params, int gravityParam) {
-        params.gravity = params.gravity | gravityParam;
-    }
-
-    private void removeGravityParam(FrameLayout.LayoutParams params, int gravityParam) {
-        if ((params.gravity & gravityParam) == gravityParam) {
-            params.gravity = params.gravity & ~gravityParam;
         }
     }
 }

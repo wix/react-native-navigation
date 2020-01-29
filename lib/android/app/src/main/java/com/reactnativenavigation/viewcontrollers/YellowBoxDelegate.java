@@ -1,8 +1,10 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.reactnativenavigation.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +24,11 @@ public class YellowBoxDelegate {
     }
 
     public void onChildViewAdded(View parent, View child) {
-        if (yellowBoxHelper.isYellowBox(parent, child)) {
-            onYellowBoxAdded(parent);
-        }
+        UiUtils.runOnPreDrawOnce(child, () -> {
+            if (yellowBoxHelper.isYellowBox(parent, child)) {
+                onYellowBoxAdded(parent);
+            }
+        });
     }
 
     void onYellowBoxAdded(View parent) {

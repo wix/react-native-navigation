@@ -45,7 +45,7 @@ This event can be observed globally as well:
 
 ```js
 // Subscribe
-const screenEventListener = Navigation.events().registerComponentDidAppearListener(({ componentId, componentName }) => {
+const screenEventListener = Navigation.events().registerComponentDidAppearListener(({ componentId, componentName, passProps }) => {
 
 });
 ...
@@ -56,9 +56,10 @@ screenEventListener.remove();
 |:--------------------:|:-----|
 |**componentId**| Id of the appearing component|
 |**componentName**|Registered name used when registering the component with `Navigation.registerComponent()`|
+|**passProps**| props passed to the component|
 
 ## componentDidDisappear
-Called each time this component disappears from screen (detached from the view heirarchy)
+Called each time this component disappears from screen (detached from the view hierarchy)
 
 ```js
 class MyComponent extends Component {
@@ -114,7 +115,7 @@ commandListener.remove();
 |**params**|`commandId`: Each command is assigned a unique Id<br>`componentId`: Optional, the componentId passed to the command<br>`layout`: Optional, If the command invoked created a screen. Slim representation of the component and its options |
 
 ## registerCommandCompletedListener
-Invoked when a command finishes executing in native. If the command contains animations, for example pushed screen animation,) the listener is invoked after the animation ends.
+Invoked when a command finishes executing in native. If the command contains animations, for example pushed screen animation, the listener is invoked after the animation ends.
 
 ```js
 // Subscribe
@@ -131,12 +132,72 @@ commandCompletedListener.remove();
 |**commandId** | Id of the completed command|
 |**completionTime**|Timestamp when the command, and consecutive animations, completed.|
 
+## registerModalDismissedListener
+Invoked when modal dismissed.
+
+```js
+// Subscribe
+const modalDismissedListener = Navigation.events().registerModalDismissedListener(({ componentId, modalsDismissed }) => {
+
+});
+...
+// Unsubscribe
+modalDismissedListener.remove();
+```
+
+## registerModalAttemptedToDismissListener(iOS 13+ only)
+Invoked only on iOS pageSheet modal when swipeToDismiss flag is set to true and modal swiped down to dismiss.
+
+```js
+// Subscribe
+const modalAttemptedToDismissListener = Navigation.events().registerModalAttemptedToDismissListener(({ componentId }) => {
+
+});
+...
+// Unsubscribe
+modalDismissedListener.remove();
+```
+|       Parameter         | Description |
+|:--------------------:|:-----|
+|**componentId** | Id of the modal tried to dismiss|
+
+## registerScreenPoppedListener
+Invoked when screen is popped.
+
+```js
+// Subscribe
+const screenPoppedListener = Navigation.events().registerScreenPoppedListener(({ componentId }) => {
+
+});
+...
+// Unsubscribe
+screenPoppedListener.remove();
+```
+
+|       Parameter         | Description |
+|:--------------------:|:-----|
+|**componentId** | Id of the modal|
+|**modalsDismissed**| Number of modal which were dismissed|
+
 ## registerBottomTabSelectedListener
 Invoked when a BottomTab is selected by the user.
 
 ```js
 // Subscribe
 const bottomTabEventListener = Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
+
+});
+...
+// Unsubscribe
+bottomTabEventListener.remove();
+```
+
+## registerBottomTabLongPressedListener
+Invoked when a BottomTab is long pressed by the user.
+
+```js
+// Subscribe
+const bottomTabEventListener = Navigation.events().registerBottomTabLongPressedListener(({ selectedTabIndex }) => {
 
 });
 ...

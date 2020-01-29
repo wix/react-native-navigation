@@ -2,7 +2,7 @@
 #import "RNNTransition.h"
 
 @interface  RNNAnimator()
-@property (nonatomic, strong) RNNAnimationOptions* transitionOptions;
+@property (nonatomic, strong) RNNSharedElementAnimationOptions* transitionOptions;
 @property (nonatomic) BOOL backButton;
 @property (nonatomic, weak) UIViewController* fromVC;
 @property (nonatomic, weak) UIViewController* toVC;
@@ -10,7 +10,7 @@
 
 @implementation RNNAnimator
 
--(instancetype)initWithTransitionOptions:(RNNAnimationOptions *)transitionOptions {
+-(instancetype)initWithTransitionOptions:(RNNSharedElementAnimationOptions *)transitionOptions {
 	self = [super init];
 	if (transitionOptions.animations) {
 		[self setupTransition:transitionOptions];
@@ -21,7 +21,7 @@
 	return self;
 }
 
--(void)setupTransition:(RNNAnimationOptions *)transitionOptions {
+-(void)setupTransition:(RNNSharedElementAnimationOptions *)transitionOptions {
 	self.transitionOptions = transitionOptions;
 	if (!transitionOptions.animations) {
 		[[NSException exceptionWithName:NSInvalidArgumentException reason:@"No animations" userInfo:nil] raise];

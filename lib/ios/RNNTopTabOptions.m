@@ -1,5 +1,4 @@
 #import "RNNTopTabOptions.h"
-#import "RNNRootViewController.h"
 
 @implementation RNNTopTabOptions
 

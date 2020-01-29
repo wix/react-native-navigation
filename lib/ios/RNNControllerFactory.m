@@ -1,65 +1,68 @@
 #import "RNNControllerFactory.h"
-#import "RNNLayoutNode.h"
 #import "RNNSplitViewController.h"
-#import "RNNSplitViewOptions.h"
 #import "RNNSideMenuController.h"
-#import "RNNSideMenuChildVC.h"
-#import "RNNNavigationController.h"
-#import "RNNTabBarController.h"
+#import "RNNStackController.h"
+#import "RNNBottomTabsController.h"
 #import "RNNTopTabsViewController.h"
-#import "RNNLayoutInfo.h"
-#import "RNNRootViewController.h"
-#import "UIViewController+SideMenuController.h"
-#import "RNNViewControllerPresenter.h"
-#import "RNNNavigationControllerPresenter.h"
-#import "RNNTabBarPresenter.h"
-#import "RNNSideMenuPresenter.h"
+#import "RNNComponentViewController.h"
+#import "RNNExternalViewController.h"
+#import "BottomTabsBaseAttacher.h"
+#import "BottomTabsAttachModeFactory.h"
 
 @implementation RNNControllerFactory {
-	id<RNNRootViewCreator> _creator;
-	RNNStore *_store;
+	id<RNNComponentViewCreator> _creator;
+	RNNExternalComponentStore *_store;
 	RCTBridge *_bridge;
+	RNNReactComponentRegistry* _componentRegistry;
+    BottomTabsAttachModeFactory* _bottomTabsAttachModeFactory;
 }
 
 # pragma mark public
 
 
-- (instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
-						   eventEmitter:(RNNEventEmitter*)eventEmitter
-							  andBridge:(RCTBridge *)bridge {
+- (instancetype)initWithRootViewCreator:(id <RNNComponentViewCreator>)creator
+                           eventEmitter:(RNNEventEmitter*)eventEmitter
+                                  store:(RNNExternalComponentStore *)store
+                      componentRegistry:(RNNReactComponentRegistry *)componentRegistry
+                              andBridge:(RCTBridge *)bridge
+            bottomTabsAttachModeFactory:(BottomTabsAttachModeFactory *)bottomTabsAttachModeFactory {
 	
 	self = [super init];
 	
 	_creator = creator;
 	_eventEmitter = eventEmitter;
 	_bridge = bridge;
-	
+	_store = store;
+	_componentRegistry = componentRegistry;
+    _bottomTabsAttachModeFactory = bottomTabsAttachModeFactory;
+
 	return self;
 }
 
-- (UIViewController<RNNParentProtocol> *)createLayout:(NSDictionary*)layout saveToStore:(RNNStore *)store {
-	_store = store;
-	UIViewController<RNNParentProtocol>* layoutViewController = [self fromTree:layout];
-	_store = nil;
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+    _defaultOptions = defaultOptions;
+    _bottomTabsAttachModeFactory.defaultOptions = defaultOptions;
+}
+
+- (UIViewController *)createLayout:(NSDictionary*)layout {
+	UIViewController* layoutViewController = [self fromTree:layout];
 	return layoutViewController;
 }
 
-- (NSArray<RNNLayoutProtocol> *)createChildrenLayout:(NSArray*)children saveToStore:(RNNStore *)store {
-	_store = store;
+- (NSArray<RNNLayoutProtocol> *)createChildrenLayout:(NSArray*)children {
 	NSMutableArray<RNNLayoutProtocol>* childViewControllers = [NSMutableArray<RNNLayoutProtocol> new];
 	for (NSDictionary* layout in children) {
 		[childViewControllers addObject:[self fromTree:layout]];
 	}
-	_store = nil;
 	return childViewControllers;
 }
 
 # pragma mark private
 
-- (UIViewController<RNNParentProtocol> *)fromTree:(NSDictionary*)json {
+- (UIViewController *)fromTree:(NSDictionary*)json {
 	RNNLayoutNode* node = [RNNLayoutNode create:json];
 	
-	UIViewController<RNNParentProtocol> *result;
+	UIViewController *result;
 	
 	if (node.isComponent) {
 		result = [self createComponent:node];
@@ -70,7 +73,7 @@
 	}
 	
 	else if (node.isTabs) {
-		result = [self createTabs:node];
+		result = [self createBottomTabs:node];
 	}
 	
 	else if (node.isTopTabs) {
@@ -104,112 +107,106 @@
 	if (!result) {
 		@throw [NSException exceptionWithName:@"UnknownControllerType" reason:[@"Unknown controller type " stringByAppendingString:node.type] userInfo:nil];
 	}
-
-	[_store setComponent:result componentId:node.nodeId];
 	
 	return result;
 }
 
-- (UIViewController<RNNParentProtocol> *)createComponent:(RNNLayoutNode*)node {
+- (UIViewController *)createComponent:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
+	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions];
 	
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-
+	RNNComponentViewController* component = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
 	
-	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
-	
-	if (!component.isExternalViewController) {
-		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
-		[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
-	}
-	
-	return (UIViewController<RNNParentProtocol> *)component;
+	return component;
 }
 
-- (UIViewController<RNNParentProtocol> *)createExternalComponent:(RNNLayoutNode*)node {
+- (UIViewController *)createExternalComponent:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithDefaultOptions:_defaultOptions];
 	
 	UIViewController* externalVC = [_store getExternalComponent:layoutInfo bridge:_bridge];
 	
-	RNNRootViewController* component = [[RNNRootViewController alloc] initExternalComponentWithLayoutInfo:layoutInfo eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions];
-	[component bindViewController:externalVC];
+    RNNExternalViewController* component = [[RNNExternalViewController alloc] initWithLayoutInfo:layoutInfo eventEmitter:_eventEmitter presenter:presenter options:options defaultOptions:_defaultOptions viewController:externalVC];
 	
-	return (UIViewController<RNNParentProtocol> *)component;
+	return component;
 }
 
-
-- (UIViewController<RNNParentProtocol> *)createStack:(RNNLayoutNode*)node {
-	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] init];
-	
+- (UIViewController *)createStack:(RNNLayoutNode*)node {
+	RNNStackPresenter* presenter = [[RNNStackPresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions];
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 	
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
-	RNNNavigationController* stack = [[RNNNavigationController alloc] initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter];
+	RNNStackController* stack = [[RNNStackController alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:presenter eventEmitter:_eventEmitter childViewControllers:childViewControllers];
 	
 	return stack;
 }
 
--(UIViewController<RNNParentProtocol> *)createTabs:(RNNLayoutNode*)node {
-	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNTabBarPresenter* presenter = [[RNNTabBarPresenter alloc] init];
-
-	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
-	
-	RNNTabBarController* tabsController = [[RNNTabBarController alloc] initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter eventEmitter:_eventEmitter];
-	
-	return tabsController;
+- (UIViewController *)createBottomTabs:(RNNLayoutNode*)node {
+    RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
+    RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+    RNNBottomTabsPresenter* presenter = [[RNNBottomTabsPresenter alloc] initWithDefaultOptions:_defaultOptions];
+	BottomTabsBaseAttacher* bottomTabsAttacher = [_bottomTabsAttachModeFactory fromOptions:options];
+    
+    NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
+    return [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo
+                                                       creator:_creator
+                                                       options:options
+                                                defaultOptions:_defaultOptions
+                                                     presenter:presenter
+                                                  eventEmitter:_eventEmitter
+                                          childViewControllers:childViewControllers
+                                            bottomTabsAttacher:bottomTabsAttacher
+            ];
 }
 
-- (UIViewController<RNNParentProtocol> *)createTopTabs:(RNNLayoutNode*)node {
+- (UIViewController *)createTopTabs:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithDefaultOptions :_defaultOptions];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
-	RNNTopTabsViewController* topTabsController = [[RNNTopTabsViewController alloc] initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter];
+	RNNTopTabsViewController* topTabsController = [[RNNTopTabsViewController alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:presenter eventEmitter:_eventEmitter childViewControllers:childViewControllers];
 	
 	return topTabsController;
 }
 
-- (UIViewController<RNNParentProtocol> *)createSideMenu:(RNNLayoutNode*)node {
+- (UIViewController *)createSideMenu:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNSideMenuPresenter* presenter = [[RNNSideMenuPresenter alloc] init];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+	RNNSideMenuPresenter* presenter = [[RNNSideMenuPresenter alloc] initWithDefaultOptions:_defaultOptions];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
-	RNNSideMenuController *sideMenu = [[RNNSideMenuController alloc] initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter];
+	RNNSideMenuController *sideMenu = [[RNNSideMenuController alloc] initWithLayoutInfo:layoutInfo creator:_creator childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter eventEmitter:_eventEmitter];
 	
 	return sideMenu;
 }
 
 
-- (UIViewController<RNNParentProtocol> *)createSideMenuChild:(RNNLayoutNode*)node type:(RNNSideMenuChildType)type {
-	UIViewController<RNNParentProtocol>* childVc = [self fromTree:node.children[0]];
+- (UIViewController *)createSideMenuChild:(RNNLayoutNode*)node type:(RNNSideMenuChildType)type {
+	UIViewController* childVc = [self fromTree:node.children[0]];
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 
-	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:layoutInfo childViewControllers:@[childVc] options:options defaultOptions:_defaultOptions presenter:[[RNNViewControllerPresenter alloc] init] type:type];
+	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:[[RNNComponentPresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions] eventEmitter:_eventEmitter childViewController:childVc type:type];
 	
 	return sideMenuChild;
 }
 
-- (UIViewController<RNNParentProtocol> *)createSplitView:(RNNLayoutNode*)node {
+- (UIViewController *)createSplitView:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];;
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+	RNNSplitViewControllerPresenter* presenter = [[RNNSplitViewControllerPresenter alloc] initWithDefaultOptions:_defaultOptions];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 
-	RNNSplitViewController* splitViewController = [[RNNSplitViewController alloc] initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options defaultOptions:_defaultOptions presenter:presenter];
-
+	RNNSplitViewController* splitViewController = [[RNNSplitViewController alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:presenter eventEmitter:_eventEmitter childViewControllers:childViewControllers];
+	
 	return splitViewController;
 }
 

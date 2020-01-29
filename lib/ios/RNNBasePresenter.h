@@ -1,17 +1,47 @@
 #import "RNNNavigationOptions.h"
+#import "RNNReactComponentRegistry.h"
+
+typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @interface RNNBasePresenter : NSObject
 
-@property (nonatomic, weak) id bindedViewController;
+@property(nonatomic, weak, setter=bindViewController:) UIViewController* boundViewController;
 
-- (void)bindViewController:(UIViewController *)bindedViewController;
+@property(nonatomic, strong) NSString *boundComponentId;
+
+@property(nonatomic, strong) RNNNavigationOptions* defaultOptions;
+
+@property(nonatomic, strong) RNNReactComponentRegistry* componentRegistry;
+
+- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
+
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry defaultOptions:(RNNNavigationOptions *)defaultOptions;
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions;
+
+- (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options;
 
 - (void)applyOptions:(RNNNavigationOptions *)options;
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options;
 
-- (void)mergeOptions:(RNNNavigationOptions *)newOptions currentOptions:(RNNNavigationOptions *)currentOptions defaultOptions:(RNNNavigationOptions *)defaultOptions;
+- (void)applyDotIndicator:(UIViewController *)child;
 
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
+
+- (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+
+- (void)viewDidLayoutSubviews;
+
+- (void)componentDidAppear;
+
+- (void)componentDidDisappear;
+
+- (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions;
+
+- (UIInterfaceOrientationMask)getOrientation:(RNNNavigationOptions *)options;
+
+- (BOOL)isStatusBarVisibility:(UINavigationController *)stack resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
 @end

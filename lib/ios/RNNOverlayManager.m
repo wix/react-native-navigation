@@ -16,18 +16,29 @@
 	[_overlayWindows addObject:overlayWindow];
 	overlayWindow.rootViewController.view.backgroundColor = [UIColor clearColor];
 	[overlayWindow setWindowLevel:UIWindowLevelNormal];
-	[overlayWindow makeKeyAndVisible];
+	[overlayWindow setHidden: NO];
+}
+
+- (void)showOverlayWindowAsKeyWindow:(RNNOverlayWindow *)overlayWindow {
+	[self showOverlayWindow:overlayWindow];
+	[overlayWindow makeKeyWindow];
 }
 
 - (void)dismissOverlay:(UIViewController*)viewController {
 	RNNOverlayWindow* overlayWindow = [self findWindowByRootViewController:viewController];
-	[overlayWindow.previousWindow makeKeyWindow];
 	[self detachOverlayWindow:overlayWindow];
+}
+
+- (void)dismissAllOverlays {
+    for (RNNOverlayWindow* overlayWindow  in [_overlayWindows reverseObjectEnumerator]) {
+        [self detachOverlayWindow:overlayWindow];
+    }
 }
 
 #pragma mark - private
 
-- (void)detachOverlayWindow:(UIWindow *)overlayWindow {
+- (void)detachOverlayWindow:(RNNOverlayWindow *)overlayWindow {
+    [overlayWindow.previousWindow makeKeyWindow];
 	[overlayWindow setHidden:YES];
 	[overlayWindow setRootViewController:nil];
 	[_overlayWindows removeObject:overlayWindow];

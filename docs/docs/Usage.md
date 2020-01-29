@@ -37,7 +37,7 @@ Navigation.events().registerAppLaunchedListener(() => {
 });
 ```
 
-As specified in the [LayoutTypes](./layout-types.md) part of the documentation, we use the layout type `component` here, which renders a React component but does not allow you to navigate to others.
+As specified in the [LayoutTypes](docs/layout-types) part of the documentation, we use the layout type `component` here, which renders a React component but does not allow you to navigate to others.
 
 If you want to navigate, use a `stack` layout type:
 ```js

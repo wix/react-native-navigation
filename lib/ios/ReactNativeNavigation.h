@@ -16,6 +16,8 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBri
 
 + (UIViewController *)findViewController:(NSString *)componentId;
 
++ (void)setJSCodeLocation:(NSURL *)jsCodeLocation;
+
 + (RCTBridge *)getBridge;
 
 @end

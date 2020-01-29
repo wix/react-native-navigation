@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.views.titlebar.TitleBarReactView;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
@@ -21,13 +22,15 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
     @Override
     public void onViewAppeared() {
         super.onViewAppeared();
-        runOnPreDraw(view -> view.setLayoutParams(view.getLayoutParams()));
-        getView().sendComponentStart();
+        if (!isDestroyed()) {
+            runOnPreDraw(view -> view.setLayoutParams(view.getLayoutParams()));
+            getView().sendComponentStart(ComponentType.Title);
+        }
     }
 
     @Override
     public void onViewDisappear() {
-        getView().sendComponentStop();
+        getView().sendComponentStop(ComponentType.Title);
         super.onViewDisappear();
     }
 

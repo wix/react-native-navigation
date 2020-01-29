@@ -1,25 +1,29 @@
-const _ = require('lodash');
+const includes = require('lodash/includes');
 const exec = require('shell-utils').exec;
 
-const android = _.includes(process.argv, '--android');
-const release = _.includes(process.argv, '--release');
-const skipBuild = _.includes(process.argv, '--skipBuild');
-const headless = _.includes(process.argv, '--headless');
-const multi = _.includes(process.argv, '--multi');
+const android = includes(process.argv, '--android');
+const release = includes(process.argv, '--release');
+const skipBuild = includes(process.argv, '--skipBuild');
+const headless = includes(process.argv, '--headless');
+const multi = includes(process.argv, '--multi');
+const verbose = includes(process.argv, '--verbose');
 
 run();
 
 function run() {
-    const platform = android ? `android` : `ios`;
     const prefix = android ? `android.emu` : `ios.sim`;
     const suffix = release ? `release` : `debug`;
     const configuration = `${prefix}.${suffix}`;
-    const cleanup = process.env.CI ? `--cleanup` : ``;
     const headless$ = android ? headless ? `--headless` : `` : ``;
     const workers = multi ? 3 : 1;
+    const loglevel = verbose ? '--loglevel verbose' : '';
 
+    if (!android) {
+        exec.execSync('npm run build');
+        exec.execSync('npm run pod-install');
+    }
     if (!skipBuild) {
         exec.execSync(`detox build --configuration ${configuration}`);
     }
-    exec.execSync(`detox test --configuration ${configuration} --platform ${platform} ${cleanup} ${headless$} ${!android ? `-w ${workers}` : ``}`); //-f "ScreenStyle.test.js" --loglevel trace
+    exec.execSync(`detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel}`); //-f "ScreenStyle.test.js" --loglevel trace
 }

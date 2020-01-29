@@ -1,4 +1,4 @@
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { UniqueIdProvider } from './adapters/UniqueIdProvider';
@@ -11,7 +11,7 @@ import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { SharedElement } from './adapters/SharedElement';
 import { CommandsObserver } from './events/CommandsObserver';
-import { Constants } from './adapters/Constants';
+import { Constants, NavigationConstants } from './adapters/Constants';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
@@ -44,7 +44,7 @@ export class NavigationRoot {
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
-    this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
+    this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver, this.store);
     const appRegistryService = new AppRegistryService();
     this.componentRegistry = new ComponentRegistry(
       this.store,
@@ -58,6 +58,7 @@ export class NavigationRoot {
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
     this.commands = new Commands(
+      this.store,
       this.nativeCommandsSender,
       this.layoutTreeParser,
       this.layoutTreeCrawler,
@@ -113,9 +114,16 @@ export class NavigationRoot {
   }
 
   /**
+   * Update a mounted component's props
+   */
+  public updateProps(componentId: string, props: object) {
+    this.commands.updateProps(componentId, props);
+  }
+
+  /**
    * Show a screen as a modal.
    */
-  public showModal(layout: Layout): Promise<any> {
+  public showModal<P>(layout: Layout<P>): Promise<any> {
     return this.commands.showModal(layout);
   }
 
@@ -164,7 +172,7 @@ export class NavigationRoot {
   /**
    * Sets new root component to stack.
    */
-  public setStackRoot(componentId: string, layout: Layout | Layout[]): Promise<any> {
+  public setStackRoot<P>(componentId: string, layout: Layout<P> | Array<Layout<P>>): Promise<any> {
     const children: Layout[] = isArray(layout) ? layout : [layout];
     return this.commands.setStackRoot(componentId, children);
   }
@@ -172,7 +180,7 @@ export class NavigationRoot {
   /**
    * Show overlay on top of the entire app
    */
-  public showOverlay(layout: Layout): Promise<any> {
+  public showOverlay<P>(layout: Layout<P>): Promise<any> {
     return this.commands.showOverlay(layout);
   }
 
@@ -200,7 +208,7 @@ export class NavigationRoot {
   /**
    * Constants coming from native
    */
-  public async constants(): Promise<any> {
+  public async constants(): Promise<NavigationConstants> {
     return await Constants.get();
   }
 }

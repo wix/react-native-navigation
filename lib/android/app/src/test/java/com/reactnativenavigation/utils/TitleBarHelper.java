@@ -1,8 +1,6 @@
 package com.reactnativenavigation.utils;
 
 import android.app.Activity;
-import android.support.v7.view.menu.ActionMenuItemView;
-import android.support.v7.widget.Toolbar;
 
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
@@ -10,8 +8,11 @@ import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
-import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
+import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.views.titlebar.TitleBar;
+
+import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.Toolbar;
 
 public class TitleBarHelper {
     public static ActionMenuItemView getRightButton(Toolbar toolbar, int index) {
@@ -44,8 +45,7 @@ public class TitleBarHelper {
 
     public static TitleBarButtonController createButtonController(Activity activity, TitleBar titleBar, Button button) {
         return new TitleBarButtonController(activity,
-                new NavigationIconResolver(activity, ImageLoaderMock.mock()),
-                ImageLoaderMock.mock(),
+                new IconResolver(activity, ImageLoaderMock.mock()),
                 new ButtonPresenter(titleBar, button),
                 button,
                 new TopBarButtonCreatorMock(),

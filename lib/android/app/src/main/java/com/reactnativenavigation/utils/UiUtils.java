@@ -2,24 +2,27 @@ package com.reactnativenavigation.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 public class UiUtils {
-    private static final int STATUS_BAR_HEIGHT_M = 24;
-    private static final int STATUS_BAR_HEIGHT_L = 25;
     private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
 
-    private static int statusBarHeight = -1;
     private static int topBarHeight = -1;
 
-    public static void runOnPreDrawOnce(final View view, final Runnable task) {
+    public static <T extends View> void runOnPreDrawOnce(@Nullable final T view, final Functions.Func1<T> task) {
+        if (view == null) return;
+        runOnPreDrawOnce(view, () -> task.run(view));
+    }
+
+    public static void runOnPreDrawOnce(@Nullable final View view, final Runnable task) {
+        if (view == null) return;
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -68,18 +71,6 @@ public class UiUtils {
         return metrics;
     }
 
-    public static int getStatusBarHeight(Context context) {
-        if (statusBarHeight > 0) {
-            return statusBarHeight;
-        }
-        final Resources resources = context.getResources();
-        final int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-        statusBarHeight = resourceId > 0 ?
-                resources.getDimensionPixelSize(resourceId) :
-                dpToPx(context, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? STATUS_BAR_HEIGHT_M : STATUS_BAR_HEIGHT_L);
-        return statusBarHeight;
-    }
-
     public static int getTopBarHeightDp(Context context) {
         return (int) UiUtils.pxToDp(context, getTopBarHeight(context));
     }
@@ -103,6 +94,7 @@ public class UiUtils {
     }
 
     public static int dpToPx(Context context, int dp) {
+        if (dp <= 0) return dp;
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return (int) (dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));

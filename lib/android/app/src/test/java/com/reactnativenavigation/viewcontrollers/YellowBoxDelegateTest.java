@@ -53,6 +53,7 @@ public class YellowBoxDelegateTest extends BaseTest {
     @Test
     public void onChildViewAdded() {
         uut.onChildViewAdded(parent, yellowBox);
+        dispatchPreDraw(yellowBox);
         verify(yellowBoxHelper).isYellowBox(parent, yellowBox);
     }
 

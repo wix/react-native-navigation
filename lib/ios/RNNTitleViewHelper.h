@@ -12,6 +12,8 @@
 
 @interface RNNTitleViewHelper : NSObject
 
+@property (nonatomic, strong) RNNTitleOptions *titleOptions;
+@property (nonatomic, strong) RNNSubtitleOptions *subtitleOptions;
 
 - (instancetype)initWithTitleViewOptions:(RNNOptions*)titleOptions
 						 subTitleOptions:(RNNOptions*)subtitleOptions

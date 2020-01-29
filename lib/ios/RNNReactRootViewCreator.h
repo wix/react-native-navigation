@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
-#import "RNNRootViewCreator.h"
-
+#import "RNNComponentViewCreator.h"
+#import "RNNEventEmitter.h"
 #import <React/RCTBridge.h>
 
-@interface RNNReactRootViewCreator : NSObject <RNNRootViewCreator>
+@interface RNNReactRootViewCreator : NSObject <RNNComponentViewCreator>
 
--(instancetype)initWithBridge:(RCTBridge*)bridge;
+-(instancetype)initWithBridge:(RCTBridge*)bridge eventEmitter:(RNNEventEmitter*)eventEmitter;
 
 @end

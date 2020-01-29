@@ -1,4 +1,4 @@
-import { Options, OptionsSplitView } from './Options';
+import { Options } from './Options';
 
 export interface LayoutComponent<P = {}> {
   /**
@@ -24,6 +24,10 @@ export interface LayoutStackChildren {
    * Set component
    */
   component?: LayoutComponent;
+  /**
+   * Set the external component
+   */
+  externalComponent?: ExternalComponent;
 }
 
 export interface LayoutStack {
@@ -42,7 +46,7 @@ export interface LayoutStack {
   options?: Options;
 }
 
-export interface LayoutBottomTabsChildren {
+export interface LayoutTabsChildren {
   /**
    * Set stack
    */
@@ -51,6 +55,10 @@ export interface LayoutBottomTabsChildren {
    * Set component
    */
   component?: LayoutComponent;
+  /**
+   * Set the external component
+   */
+  externalComponent?: ExternalComponent;
 }
 
 export interface LayoutBottomTabs {
@@ -62,7 +70,7 @@ export interface LayoutBottomTabs {
   /**
    * Set the children screens
    */
-  children?: LayoutBottomTabsChildren[];
+  children?: LayoutTabsChildren[];
   /**
    * Set the bottom tabs options
    */
@@ -110,10 +118,10 @@ export interface LayoutSplitView {
   /**
    * Configure split view
    */
-  options?: OptionsSplitView;
+  options?: Options;
 }
 
-export interface TopTabs {
+export interface LayoutTopTabs {
   /**
    * Set the layout's id so Navigation.mergeOptions can be used to update options
    */
@@ -121,7 +129,7 @@ export interface TopTabs {
   /**
    * Set the children screens
    */
-  children?: any[];
+  children?: LayoutTabsChildren[];
   /**
    * Configure top tabs
    */
@@ -180,7 +188,7 @@ export interface Layout<P = {}> {
   /**
    * Set the top tabs
    */
-  topTabs?: TopTabs;
+  topTabs?: LayoutTopTabs;
   /**
    * Set the external component
    */

@@ -2,7 +2,6 @@ const React = require('react');
 const { Component } = require('react');
 const { SafeAreaView, FlatList, View, Text } = require('react-native');
 const { Navigation } = require('react-native-navigation');
-const testIDs = require('../testIDs');
 
 const FakeListData = require('../assets/FakeListData');
 
@@ -26,14 +25,14 @@ class FlatListScreen extends Component {
           {
             id: 'sideMenu',
             color: 'red',
-            icon: require('../images/two.png'),
+            icon: require('../../img/two.png'),
           }
         ],
         rightButtons: [
           {
             id: 'toggle',
             color: 'red',
-            icon: require('../images/one.png'),
+            icon: require('../../img/one.png'),
           },
         ],
       },

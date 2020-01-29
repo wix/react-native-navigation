@@ -1,42 +1,65 @@
 #import "RNNReactView.h"
 #import "RCTHelpers.h"
+#import <React/RCTUIManager.h>
 
-@implementation RNNReactView
+@implementation RNNReactView {
+    BOOL _isAppeared;
+}
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties {
+- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties eventEmitter:(RNNEventEmitter *)eventEmitter reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
 	self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
-	
-#ifdef DEBUG
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentDidAppear:) name:RCTContentDidAppearNotification object:nil];
-#endif
-	
+	 _reactViewReadyBlock = reactViewReadyBlock;
+    _eventEmitter = eventEmitter;
+    
 	return self;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    #ifdef DEBUG
+        [RCTHelpers removeYellowBox:self];
+    #endif
+}
+
 - (void)contentDidAppear:(NSNotification *)notification {
-	if ([((RNNReactView *)notification.object).moduleName isEqualToString:self.moduleName]) {
-		[RCTHelpers removeYellowBox:self];
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
-	}
+	RNNReactView* appearedView = notification.object;
+	 if ([appearedView.appProperties[@"componentId"] isEqual:self.componentId]) {
+         [self reactViewReady];
+	 }
 }
 
-- (void)setRootViewDidChangeIntrinsicSize:(void (^)(CGSize))rootViewDidChangeIntrinsicSize {
-	_rootViewDidChangeIntrinsicSize = rootViewDidChangeIntrinsicSize;
-	self.delegate = self;
+- (void)reactViewReady {
+    if (_reactViewReadyBlock) {
+        _reactViewReadyBlock();
+        _reactViewReadyBlock = nil;
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
-	if (_rootViewDidChangeIntrinsicSize) {
-		_rootViewDidChangeIntrinsicSize(rootView.intrinsicContentSize);
-	}
+
+- (void)componentDidAppear {
+    if (!_isAppeared) {
+        [_eventEmitter sendComponentDidAppear:self.componentId componentName:self.moduleName componentType:self.componentType];
+    }
+    
+    _isAppeared = YES;
 }
 
-- (void)setAlignment:(NSString *)alignment {
-	if ([alignment isEqualToString:@"fill"]) {
-		self.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
-	} else {
-		self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
-	}
+- (void)componentDidDisappear {
+    if (_isAppeared) {
+        [_eventEmitter sendComponentDidDisappear:self.componentId componentName:self.moduleName componentType:self.componentType];
+    }
+    
+    _isAppeared = NO;
+}
+
+- (NSString *)componentId {
+	return self.appProperties[@"componentId"];
+}
+
+- (NSString *)componentType {
+    return ComponentTypeScreen;
 }
 
 @end

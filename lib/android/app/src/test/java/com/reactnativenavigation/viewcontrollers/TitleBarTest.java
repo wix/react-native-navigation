@@ -2,8 +2,10 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.Constants;
@@ -12,18 +14,25 @@ import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import androidx.appcompat.widget.ActionMenuView;
+
+import static com.reactnativenavigation.utils.Assertions.assertNotNull;
 import static com.reactnativenavigation.utils.TitleBarHelper.createButtonController;
+import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class TitleBarTest extends BaseTest {
 
@@ -31,14 +40,12 @@ public class TitleBarTest extends BaseTest {
     private Button leftButton;
     private Button textButton;
     private Button customButton;
-    private Map<String, TitleBarButtonController> buttonControllers;
     private Activity activity;
 
     @Override
     public void beforeEach() {
         activity = newActivity();
         createButtons();
-        buttonControllers = new HashMap<>();
         uut = spy(new TitleBar(activity));
     }
 
@@ -92,6 +99,18 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
+    public void setLeftButton_titleIsAligned() {
+        uut.setTitle("Title");
+        TextView title = new TextView(activity);
+        uut.addView(title);
+        when(uut.findTitleTextView()).thenReturn(title);
+
+        uut.setLeftButtons(Collections.singletonList(Mockito.mock(TitleBarButtonController.class)));
+        dispatchPreDraw(title);
+        verify(uut).alignTextView(any(), eq(title));
+    }
+
+    @Test
     public void setRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
         uut.setLeftButtons(new ArrayList<>());
         uut.setRightButtons(rightButtons(textButton, customButton));
@@ -106,6 +125,13 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
+    public void addView_overflowIsEnabledForButtonsContainer() {
+        ActionMenuView buttonsContainer = mock(ActionMenuView.class);
+        uut.addView(buttonsContainer);
+        verify(buttonsContainer).setClipChildren(false);
+    }
+
+    @Test
     public void clear() {
         View title = new View(activity);
         uut.setComponent(title);
@@ -116,6 +142,15 @@ public class TitleBarTest extends BaseTest {
         assertThat(uut.getMenu().size()).isZero();
         assertThat(uut.getNavigationIcon()).isNull();
         verify(uut).removeView(title);
+    }
+
+    @Test
+    public void setLayoutDirection_directionIsExplicitlyAppliedToButtonsContainer() {
+        ActionMenuView buttonsContainer = findChildByClass(uut, ActionMenuView.class);
+        assertNotNull(buttonsContainer);
+        ActionMenuView spy = TestUtils.spyOn(buttonsContainer);
+        uut.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        verify(spy).setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
     }
 
     private List<TitleBarButtonController> leftButton(Button leftButton) {

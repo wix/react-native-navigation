@@ -4,6 +4,7 @@ import { mock, instance, verify, anyFunction } from 'ts-mockito';
 import { ComponentWrapper } from './ComponentWrapper';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 import { AppRegistryService } from '../adapters/AppRegistryService';
+import { ComponentProvider } from 'react-native';
 
 const DummyComponent = () => null;
 
@@ -43,7 +44,7 @@ describe('ComponentRegistry', () => {
   });
 
   it('should not invoke generator', () => {
-    const generator = jest.fn(() => {});
+    const generator: ComponentProvider = jest.fn(() => DummyComponent);
     uut.registerComponent('example.MyComponent.name', generator);
     expect(generator).toHaveBeenCalledTimes(0);
   });

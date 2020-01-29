@@ -34,7 +34,7 @@ describe('LayoutTreeCrawler', () => {
       data: {}
     };
     uut.crawl(node);
-    verify(mockedStore.setPropsForId('testId', deepEqual({ myProp: 123 }))).called();
+    verify(mockedStore.updateProps('testId', deepEqual({ myProp: 123 }))).called();
   });
 
   it('Components: injects options from original component class static property', () => {
@@ -44,6 +44,25 @@ describe('LayoutTreeCrawler', () => {
           static options(): Options {
             return { popGesture: true };
           }
+        }
+    );
+    const node = {
+      id: 'testId',
+      type: LayoutType.Component,
+      data: { name: 'theComponentName', options: {} },
+      children: []
+    };
+    uut.crawl(node);
+    expect(node.data.options).toEqual({ popGesture: true });
+  });
+
+  it('Components: injects options from original component class static property', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static options = {
+            popGesture: true
+          };
         }
     );
     const node = {

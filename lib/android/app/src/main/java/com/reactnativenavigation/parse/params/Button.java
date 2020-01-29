@@ -1,7 +1,6 @@
 package com.reactnativenavigation.parse.params;
 
 import android.graphics.Typeface;
-import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
 import com.reactnativenavigation.parse.Component;
@@ -16,11 +15,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
+import androidx.annotation.Nullable;
 
 public class Button {
     public String instanceId = "btn" + CompatUtils.generateViewId();
 
     @Nullable public String id;
+    public Text accessibilityLabel = new NullText();
     public Text text = new NullText();
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
@@ -34,9 +37,27 @@ public class Button {
     public Text testId = new NullText();
     public Component component = new Component();
 
+    public boolean equals(Button other) {
+        return Objects.equals(id, other.id) &&
+               accessibilityLabel.equals(other.accessibilityLabel) &&
+               text.equals(other.text) &&
+               enabled.equals(other.enabled) &&
+               disableIconTint.equals(other.disableIconTint) &&
+               showAsAction.equals(other.showAsAction) &&
+               color.equals(other.color) &&
+               disabledColor.equals(other.disabledColor) &&
+               fontSize.equals(other.fontSize) &&
+               fontWeight.equals(other.fontWeight) &&
+               Objects.equals(fontFamily, other.fontFamily) &&
+               icon.equals(other.icon) &&
+               testId.equals(other.testId) &&
+               component.equals(other.component);
+    }
+
     private static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
         Button button = new Button();
         button.id = json.optString("id");
+        button.accessibilityLabel = TextParser.parse(json, "accessibilityLabel");
         button.text = TextParser.parse(json, "text");
         button.enabled = BoolParser.parse(json, "enabled");
         button.disableIconTint = BoolParser.parse(json, "disableIconTint");
@@ -116,6 +137,7 @@ public class Button {
 
     public void mergeWith(Button other) {
         if (other.text.hasValue()) text = other.text;
+        if (other.accessibilityLabel.hasValue()) accessibilityLabel = other.accessibilityLabel;
         if (other.enabled.hasValue()) enabled = other.enabled;
         if (other.disableIconTint.hasValue()) disableIconTint = other.disableIconTint;
         if (other.color.hasValue()) color = other.color;
@@ -133,6 +155,7 @@ public class Button {
 
     public void mergeWithDefault(Button defaultOptions) {
         if (!text.hasValue()) text = defaultOptions.text;
+        if (!accessibilityLabel.hasValue()) accessibilityLabel = defaultOptions.accessibilityLabel;
         if (!enabled.hasValue()) enabled = defaultOptions.enabled;
         if (!disableIconTint.hasValue()) disableIconTint = defaultOptions.disableIconTint;
         if (!color.hasValue()) color = defaultOptions.color;

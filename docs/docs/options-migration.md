@@ -371,7 +371,7 @@ topBar: {
 ```
 
 ## modalPresentationStyle
-Controls he behavior of screens displayed modally. 
+Controls the behavior of screens displayed modally. 
 
 ### Options supported on iOS
 * overCurrentContext - Content is displayed over the previous screen. Useful for **transparent modals**
@@ -419,6 +419,7 @@ Translucent TopBar, Setting `drawBehind: true` is required for this property to 
 
 ```js
 topBar: {
+  drawBehind: true,
   background: {
     translucent: true
   }
@@ -435,12 +436,14 @@ topBar: {
 ```
 
 ## navBarBlur
-Blue the area behind the TopBar, Setting `drawBehind: true` is required for this property to work as expected.
+Blur the area behind the TopBar, Setting `drawBehind: true` and  topBar background `transparent: true` is required for this property to work as expected.
 
 ```js
 topBar: {
+  drawBehind: true,
   background: {
-    blur: true
+    blur: true,
+    transparent: true
   }
 }  
 ```
@@ -509,7 +512,7 @@ Use iOS 11 large title
 # Android Options
 
 ## topBarElevationShadowEnabled
-TopBar elevation in dp. Set this value to `0` to disable the TopBa's shadow.
+TopBar elevation in dp. Set this value to `0` to disable the TopBar's shadow.
 
 ```js
 topBar: {
@@ -533,6 +536,15 @@ StatusBar color
 
 ```js
 statusBar: {
+  backgroundColor: 'red'
+}
+```
+
+## navigationBarColor
+NavigationBar color
+
+```js
+navigationBar: {
   backgroundColor: 'red'
 }
 ```
@@ -600,7 +612,6 @@ topBar: {
 * topBarShadowOffset
 * topBarShadowRadius
 * preferredContentSize
-* navigationBarColor
 * navBarSubTitleTextCentered
 * collapsingToolBarImage
 * collapsingToolBarCollapsedColor

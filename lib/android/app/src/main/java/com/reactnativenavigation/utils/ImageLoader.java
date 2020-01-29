@@ -1,5 +1,6 @@
 package com.reactnativenavigation.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,11 +8,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.facebook.react.views.imagehelper.ResourceDrawableIdHelper;
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.R;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +20,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 public class ImageLoader {
 
@@ -32,8 +37,14 @@ public class ImageLoader {
 
     private static final String FILE_SCHEME = "file";
 
+    public Drawable getBackButtonIcon(Activity context) {
+        boolean isRTL = context.getWindow().getDecorView().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+        return ContextCompat.getDrawable(context, isRTL ? R.drawable.ic_arrow_back_black_rtl_24dp : R.drawable.ic_arrow_back_black_24dp);
+    }
+
     @Nullable
-    public Drawable loadIcon(Context context, String uri) {
+    public Drawable loadIcon(Context context, @Nullable String uri) {
+        if (uri == null) return null;
         try {
             return getDrawable(context, uri);
         } catch (IOException e) {
@@ -64,18 +75,17 @@ public class ImageLoader {
     }
 
     @NonNull
-    private Drawable getDrawable(Context context, String source) throws IOException {
+    private Drawable getDrawable(Context context, @NonNull String source) throws IOException {
         Drawable drawable;
-
         if (isLocalFile(Uri.parse(source))) {
             drawable = loadFile(source);
         } else {
             drawable = loadResource(source);
-            if (drawable == null || NavigationApplication.instance.isDebug()) {
+            if (drawable == null && NavigationApplication.instance.isDebug()) {
                 drawable = readJsDevImage(context, source);
             }
         }
-
+        if (drawable == null) throw new RuntimeException("Could not load image " + source);
         return drawable;
     }
 

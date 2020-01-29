@@ -3,7 +3,6 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.reactnativenavigation.BaseTest;
@@ -17,10 +16,12 @@ import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ButtonPresenter;
-import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
+import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.junit.Test;
+
+import androidx.appcompat.widget.Toolbar;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,7 +51,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         getTitleBar().layout(0, 0, 1080, 200);
 
         optionsPresenter = spy(new ButtonPresenter(getTitleBar(), button));
-        uut = new TitleBarButtonController(activity, new NavigationIconResolver(activity, ImageLoaderMock.mock()), ImageLoaderMock.mock(), optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
+        uut = new TitleBarButtonController(activity, new IconResolver(activity, ImageLoaderMock.mock()), optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
 
         stackController.ensureViewIsCreated();
     }
@@ -86,7 +87,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         button.disabledColor = new Colour(Color.BLACK);
         uut.addToMenu(getTitleBar(), 0);
 
-        verify(optionsPresenter, times(1)).tint(any(), eq(Color.BLACK));
+        verify(optionsPresenter).tint(any(), eq(Color.BLACK));
     }
 
     @Test

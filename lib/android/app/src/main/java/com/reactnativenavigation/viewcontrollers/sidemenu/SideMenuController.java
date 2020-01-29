@@ -1,35 +1,37 @@
 package com.reactnativenavigation.viewcontrollers.sidemenu;
 
 import android.app.Activity;
-import android.content.res.Resources;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.DrawerLayout.LayoutParams;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuOptions;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.SideMenu;
+import com.reactnativenavigation.views.SideMenuRoot;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout.LayoutParams;
 
-public class SideMenuController extends ParentController<DrawerLayout> implements DrawerLayout.DrawerListener {
+public class SideMenuController extends ParentController<SideMenuRoot> implements DrawerLayout.DrawerListener {
 
 	private ViewController center;
 	private ViewController left;
 	private ViewController right;
     private SideMenuPresenter presenter;
+    private float prevLeftSlideOffset = 0;
+    private float prevRightSlideOffset = 0;
 
     public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions, SideMenuPresenter sideMenuOptionsPresenter, Presenter presenter) {
 		super(activity, childRegistry, id, presenter, initialOptions);
@@ -38,21 +40,26 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 
     @Override
     protected ViewController getCurrentChild() {
-	    if (getView().isDrawerOpen(Gravity.LEFT)) {
-            return left;
-        } else if (getView().isDrawerOpen(Gravity.RIGHT)) {
-            return right;
+        if (!isDestroyed()) {
+            if (getView().isDrawerOpen(Gravity.LEFT)) {
+                return left;
+            } else if (getView().isDrawerOpen(Gravity.RIGHT)) {
+                return right;
+            }
         }
         return center;
     }
 
     @NonNull
 	@Override
-	protected DrawerLayout createView() {
-        DrawerLayout sideMenu = new DrawerLayout(getActivity());
+	protected SideMenuRoot createView() {
+        SideMenu sideMenu = new SideMenu(getActivity());
         presenter.bindView(sideMenu);
         sideMenu.addDrawerListener(this);
-        return sideMenu;
+
+        SideMenuRoot root = new SideMenuRoot(getActivity());
+        root.addSideMenu(sideMenu, this);
+        return root;
 	}
 
     @Override
@@ -71,21 +78,30 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 	}
 
     @Override
-    public void applyChildOptions(Options options, Component child) {
-        super.applyChildOptions(options, child);
-        presenter.applyChildOptions(resolveCurrentOptions());
-        performOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(this.options, child)
-        );
+    public void applyOptions(Options options) {
+        super.applyOptions(options);
+        presenter.applyOptions(options);
     }
 
     @Override
-    public void mergeChildOptions(Options options, ViewController childController, Component child) {
-        super.mergeChildOptions(options, childController, child);
-        presenter.mergeChildOptions(options.sideMenuRootOptions);
-        performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(options.copy().clearSideMenuOptions(), childController, child)
-        );
+    public void applyChildOptions(Options options, ViewController child) {
+        super.applyChildOptions(options, child);
+        presenter.applyChildOptions(resolveCurrentOptions());
+        performOnParentController(parent -> parent.applyChildOptions(this.options, child));
+    }
+
+    @Override
+    public void mergeChildOptions(Options options, ViewController child) {
+        super.mergeChildOptions(options, child);
+        presenter.mergeOptions(options.sideMenuRootOptions);
+        performOnParentController(parent -> parent.mergeChildOptions(options, child));
+    }
+
+    @Override
+    public void onViewAppeared() {
+        super.onViewAppeared();
+        if (left != null) left.performOnView(view -> ((View) view).requestLayout());
+        if (right != null) right.performOnView(view -> ((View) view).requestLayout());
     }
 
     @Override
@@ -97,20 +113,43 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
     @Override
     public Options resolveCurrentOptions() {
         Options options = super.resolveCurrentOptions();
-        if (getView().isDrawerOpen(Gravity.LEFT) || getView().isDrawerOpen(Gravity.RIGHT)) {
+        if (isDrawerOpen(Gravity.LEFT) || isDrawerOpen(Gravity.RIGHT)) {
             options = options.mergeWith(center.resolveCurrentOptions());
         }
         return options;
     }
 
+    private boolean isDrawerOpen(int gravity) {
+        return !isDestroyed() && getView().isDrawerOpen(gravity);
+    }
+
     @Override
     public void onDrawerOpened(@NonNull View drawerView) {
-        (left != null && drawerView.equals(left.getView()) ? left : right).onViewAppeared();
+        ViewController view = this.getMatchingView(drawerView);
+        view.mergeOptions(this.getOptionsWithVisibility(this.viewIsLeft(drawerView), true));
     }
 
     @Override
     public void onDrawerClosed(@NonNull View drawerView) {
-        (left != null && drawerView.equals(left.getView()) ? left : right).onViewDisappear();
+        ViewController view = this.getMatchingView(drawerView);
+        view.mergeOptions(this.getOptionsWithVisibility(this.viewIsLeft(drawerView), false));
+    }
+
+    @Override
+    public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+        int gravity = getSideMenuGravity(drawerView);
+        if (gravity == Gravity.LEFT) {
+            dispatchSideMenuVisibilityEvents(left, prevLeftSlideOffset, slideOffset);
+            prevLeftSlideOffset = slideOffset;
+        } else if (gravity == Gravity.RIGHT) {
+            dispatchSideMenuVisibilityEvents(right, prevRightSlideOffset, slideOffset);
+            prevRightSlideOffset = slideOffset;
+        }
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 
     @Override
@@ -118,49 +157,59 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
         return presenter.handleBack() || center.handleBack(listener) || super.handleBack(listener);
     }
 
+    @Nullable
+    @Override
+    public ViewController findController(View child) {
+        return getView().isSideMenu(child) ? this : super.findController(child);
+    }
+
     public void setCenterController(ViewController centerController) {
-		this.center = centerController;
-		View childView = centerController.getView();
-		getView().addView(childView);
+		center = centerController;
+        getView().setCenter(center);
 	}
 
     public void setLeftController(ViewController controller) {
-        this.left = controller;
-        int height = this.getHeight(options.sideMenuRootOptions.left);
-        int width = this.getWidth(options.sideMenuRootOptions.left);
-        getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.LEFT));
+        left = controller;
+        getView().setLeft(left, options);
     }
 
     public void setRightController(ViewController controller) {
-        this.right = controller;
-        int height = this.getHeight(options.sideMenuRootOptions.right);
-        int width = this.getWidth(options.sideMenuRootOptions.right);
-        getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.RIGHT));
+        right = controller;
+        getView().setRight(right, options);
     }
 
-    private int getWidth(SideMenuOptions sideMenuOptions) {
-        int width = MATCH_PARENT;
-        if (sideMenuOptions.width.hasValue()) {
-            width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.width.get(), Resources.getSystem().getDisplayMetrics());
+    private ViewController getMatchingView (View drawerView) {
+        return this.viewIsLeft(drawerView) ? left : right;
+    }
+
+    private boolean viewIsLeft (View drawerView) {
+        return (left != null && drawerView.equals(left.getView()));
+    }
+
+    private int getSideMenuGravity(View drawerView) {
+        return ((LayoutParams) drawerView.getLayoutParams()).gravity;
+    }
+
+    private Options getOptionsWithVisibility(boolean isLeft, boolean visible ) {
+        Options options = new Options();
+        if (isLeft) {
+            options.sideMenuRootOptions.left.visible = new Bool(visible);
+        } else {
+            options.sideMenuRootOptions.right.visible = new Bool(visible);
         }
-        return width;
+        return options;
     }
 
-    private int getHeight(SideMenuOptions sideMenuOptions) {
-        int height = MATCH_PARENT;
-        if (sideMenuOptions.height.hasValue()) {
-            height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.height.get(), Resources.getSystem().getDisplayMetrics());
+    private void dispatchSideMenuVisibilityEvents(ViewController drawer, float prevOffset, float offset) {
+        if (prevOffset == 0 && offset > 0) {
+            drawer.onViewAppeared();
+        } else if (prevOffset > 0 && offset == 0) {
+            drawer.onViewDisappear();
         }
-        return height;
     }
 
-    @Override
-    public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
-    }
-
-    @Override
-    public void onDrawerStateChanged(int newState) {
-
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    SideMenu getSideMenu() {
+        return presenter.getSideMenu();
     }
 }

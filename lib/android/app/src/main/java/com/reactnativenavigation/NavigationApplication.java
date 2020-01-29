@@ -1,8 +1,6 @@
 package com.reactnativenavigation;
 
 import android.app.Application;
-import android.support.annotation.Nullable;
-import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -14,6 +12,9 @@ import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalCompo
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public abstract class NavigationApplication extends Application implements ReactApplication {
 
@@ -38,7 +39,7 @@ public abstract class NavigationApplication extends Application implements React
      * @return a singleton {@link ReactGateway}
      */
 	protected ReactGateway createReactGateway() {
-	    return new ReactGateway(this, isDebug(), createReactNativeHost());
+	    return new ReactGateway(this, isDebug(), this::createReactNativeHost);
     }
 
     protected ReactNativeHost createReactNativeHost() {

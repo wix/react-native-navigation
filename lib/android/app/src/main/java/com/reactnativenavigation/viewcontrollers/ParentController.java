@@ -1,11 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import android.support.annotation.CallSuper;
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
@@ -16,24 +12,31 @@ import com.reactnativenavigation.views.Component;
 
 import java.util.Collection;
 
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import androidx.annotation.CallSuper;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 
-public abstract class ParentController<T extends ViewGroup> extends ChildController {
+import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
-	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options initialOptions) {
+public abstract class ParentController<T extends ViewGroup> extends ChildController<T> {
+
+    public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options initialOptions) {
 		super(activity, childRegistry, id, presenter, initialOptions);
 	}
 
     @Override
     public void setWaitForRender(Bool waitForRender) {
         super.setWaitForRender(waitForRender);
-        applyOnController(getCurrentChild(), controller -> ((ViewController) controller).setWaitForRender(waitForRender));
+        applyOnController(getCurrentChild(), currentChild -> currentChild.setWaitForRender(waitForRender));
     }
 
     @Override
     public void setDefaultOptions(Options defaultOptions) {
 	    super.setDefaultOptions(defaultOptions);
-	    forEach(getChildControllers(), (child) -> child.setDefaultOptions(defaultOptions));
+	    forEach(getChildControllers(), child -> child.setDefaultOptions(defaultOptions));
     }
 
     @Override
@@ -46,19 +49,25 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
                 .withDefaultOptions(initialOptions);
     }
 
+    public Options resolveChildOptions(ViewController child) {
+	    if (child == this) return resolveCurrentOptions();
+        return child
+                .resolveCurrentOptions()
+                .copy()
+                .withDefaultOptions(initialOptions);
+    }
+
     @Override
     @CheckResult
     public Options resolveCurrentOptions(Options defaultOptions) {
         return resolveCurrentOptions().withDefaultOptions(defaultOptions);
     }
 
-    protected abstract ViewController getCurrentChild();
+    public boolean isCurrentChild(ViewController child) {
+        return getCurrentChild() == child;
+    }
 
-    @NonNull
-	@Override
-	public T getView() {
-		return (T) super.getView();
-	}
+    protected abstract ViewController getCurrentChild();
 
 	@NonNull
 	@Override
@@ -81,6 +90,20 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 		return null;
 	}
 
+    @Nullable
+    @Override
+    public ViewController findController(View child) {
+        ViewController fromSuper = super.findController(child);
+        if (fromSuper != null) return fromSuper;
+
+        for (ViewController childController : getChildControllers()) {
+            ViewController fromChild = childController.findController(child);
+            if (fromChild != null) return fromChild;
+        }
+
+        return null;
+    }
+
     @Override
     public boolean containsComponent(Component component) {
         if (super.containsComponent(component)) {
@@ -93,29 +116,24 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     }
 
     @CallSuper
-    public void applyChildOptions(Options options, Component child) {
+    public void applyChildOptions(Options options, ViewController child) {
         this.options = initialOptions.mergeWith(options);
-        if (isRoot()) {
-            presenter.applyRootOptions(getView(), options);
-        }
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, ViewController childController, Component child) {
-
+    public void mergeChildOptions(Options options, ViewController child) {
     }
 
 	@Override
 	public void destroy() {
 		super.destroy();
-		for (ViewController child : getChildControllers()) {
-			child.destroy();
-		}
+		forEach(getChildControllers(), ViewController::destroy);
 	}
 
-	@CallSuper
+	@SuppressWarnings("WeakerAccess")
+    @CallSuper
     protected void clearOptions() {
-	    performOnParentController(parent -> ((ParentController) parent).clearOptions());
+	    performOnParentController(ParentController::clearOptions);
         options = initialOptions.copy().clearOneTimeOptions();
     }
 
@@ -132,7 +150,25 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return getCurrentChild() != null && getCurrentChild().isRendered();
     }
 
-    public void onChildDestroyed(Component child) {
+    public void onChildDestroyed(ViewController child) {
 
+    }
+
+    @Override
+    public void applyTopInset() {
+	    forEach(getChildControllers(), ViewController::applyTopInset);
+    }
+
+    public int getTopInset(ViewController child) {
+        return perform(getParentController(), 0, p -> p.getTopInset(child));
+    }
+
+    @Override
+    public void applyBottomInset() {
+        forEach(getChildControllers(), ViewController::applyBottomInset);
+    }
+
+    public int getBottomInset(ViewController child) {
+        return perform(getParentController(), 0, p -> p.getBottomInset(child));
     }
 }

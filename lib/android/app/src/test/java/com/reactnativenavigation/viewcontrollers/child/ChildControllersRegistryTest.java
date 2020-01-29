@@ -44,4 +44,15 @@ public class ChildControllersRegistryTest extends BaseTest {
         verify(child1, times(1)).onViewBroughtToFront();
         assertThat(uut.size()).isOne();
     }
+
+    @Test
+    public void onChildDestroyed() {
+        child1.destroy();
+        assertThat(uut.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void onViewDisappear_doesNotCrashIfNoViewsHaveAppeared() {
+        uut.onViewDisappear(child1);
+    }
 }

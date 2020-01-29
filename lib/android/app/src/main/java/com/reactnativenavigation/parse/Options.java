@@ -1,13 +1,13 @@
 package com.reactnativenavigation.parse;
 
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
-
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
+
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 
 public class Options {
     public static final Options EMPTY = new Options();
@@ -27,6 +27,7 @@ public class Options {
         result.sideMenuRootOptions = SideMenuRootOptions.parse(json.optJSONObject("sideMenu"));
         result.animations = AnimationsOptions.parse(json.optJSONObject("animations"));
         result.modal = ModalOptions.parse(json);
+        result.navigationBar = NavigationBarOptions.parse(json.optJSONObject("navigationBar"));
         result.statusBar = StatusBarOptions.parse(json.optJSONObject("statusBar"));
         result.layout = LayoutOptions.parse(json.optJSONObject("layout"));
         result.transitions = Transitions.parse(json.optJSONObject("customTransition"));
@@ -44,6 +45,7 @@ public class Options {
     @NonNull public AnimationsOptions animations = new AnimationsOptions();
     @NonNull public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
     @NonNull public ModalOptions modal = new ModalOptions();
+    @NonNull public NavigationBarOptions navigationBar = new NavigationBarOptions();
     @NonNull public StatusBarOptions statusBar = new StatusBarOptions();
     @NonNull public LayoutOptions layout = new LayoutOptions();
     @NonNull public Transitions transitions = new Transitions();
@@ -65,6 +67,7 @@ public class Options {
         result.sideMenuRootOptions.mergeWith(sideMenuRootOptions);
         result.animations.mergeWith(animations);
         result.modal.mergeWith(modal);
+        result.navigationBar.mergeWith(navigationBar);
         result.statusBar.mergeWith(statusBar);
         result.layout.mergeWith(layout);
         result.transitions.mergeWith(transitions);
@@ -83,6 +86,7 @@ public class Options {
         result.animations.mergeWith(other.animations);
         result.sideMenuRootOptions.mergeWith(other.sideMenuRootOptions);
         result.modal.mergeWith(other.modal);
+        result.navigationBar.mergeWith(other.navigationBar);
         result.statusBar.mergeWith(other.statusBar);
         result.layout.mergeWith(other.layout);
         result.transitions.mergeWith(transitions);
@@ -99,6 +103,7 @@ public class Options {
         animations.mergeWithDefault(defaultOptions.animations);
         sideMenuRootOptions.mergeWithDefault(defaultOptions.sideMenuRootOptions);
         modal.mergeWithDefault(defaultOptions.modal);
+        navigationBar.mergeWithDefault(defaultOptions.navigationBar);
         statusBar.mergeWithDefault(defaultOptions.statusBar);
         layout.mergeWithDefault(defaultOptions.layout);
         transitions.mergeWithDefault(defaultOptions.transitions);
@@ -127,11 +132,6 @@ public class Options {
 
     public Options clearBottomTabOptions() {
         bottomTabOptions = new BottomTabOptions();
-        return this;
-    }
-
-    public Options clearSideMenuOptions() {
-        sideMenuRootOptions = new SideMenuRootOptions();
         return this;
     }
 
