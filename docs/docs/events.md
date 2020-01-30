@@ -133,7 +133,30 @@ commandCompletedListener.remove();
 |**completionTime**|Timestamp when the command, and consecutive animations, completed.|
 
 ## registerModalDismissedListener
-Invoked when modal dismissed.
+
+Called each time this component (Modal) is dismissed. 
+
+```js
+class MyComponent extends Component {
+
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  modalDismissed({ componentId, componentName, modalsDismissed }) {
+
+  }
+}
+```
+
+This event can be observed globally as well:
 
 ```js
 // Subscribe
