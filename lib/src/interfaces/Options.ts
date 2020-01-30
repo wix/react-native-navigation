@@ -82,11 +82,6 @@ export interface OptionsStatusBar {
    * #### (Android specific)
    */
   drawBehind?: boolean;
-  /**
-   * If it's set to false, pressing a tab won't select the tab
-   * instead it will emit a bottomTabPressedEvent
-   */
-  selectTabOnPress?: boolean;
 }
 
 export interface OptionsLayout {
@@ -669,6 +664,11 @@ export interface OptionsBottomTab {
    * #### (Android specific)
    */
   selectedFontSize?: number;
+  /**
+   * If it's set to false, pressing a tab won't select the tab
+   * instead it will emit a bottomTabPressedEvent
+   */
+  selectTabOnPress?: boolean;
 }
 
 export interface SideMenuSide {
