@@ -13,6 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C86B8239FE9C400E0B631 /* UIImage+Utils.m */; };
 		50451D35204451A900695F00 /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50451D34204451A800695F00 /* RNNCustomViewController.m */; };
+		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */; };
 		50996C6823AA477400008F89 /* RNNRootViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50996C6723AA477400008F89 /* RNNRootViewControllerTest.m */; };
 		50996C6923AA487800008F89 /* RNNTestRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */; };
 		67C681D42B662A53F29C19DA /* Pods_NavigationIOS12Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEE0B5D45FD34FBABC6586CF /* Pods_NavigationIOS12Tests.framework */; };
@@ -83,6 +84,7 @@
 		50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactNativeNavigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50451D33204451A800695F00 /* RNNCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNNCustomViewController.h; path = ../../../lib/ios/RNNCustomViewController.h; sourceTree = "<group>"; };
 		50451D34204451A800695F00 /* RNNCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNNCustomViewController.m; path = ../../../lib/ios/RNNCustomViewController.m; sourceTree = "<group>"; };
+		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNExternalViewControllerTests.m; sourceTree = "<group>"; };
 		50996C5D23AA46DD00008F89 /* NavigationIOS12Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationIOS12Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50996C6123AA46DD00008F89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50996C6723AA477400008F89 /* RNNRootViewControllerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNRootViewControllerTest.m; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.m */,
 				E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.m */,
 				E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.m */,
+				50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */,
 				E58D262E2385888B003F36BA /* utils */,
 				E58D261F238587F4003F36BA /* Info.plist */,
 			);
@@ -735,6 +738,7 @@
 			files = (
 				E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.m in Sources */,
 				E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.m in Sources */,
+				50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */,
 				E58D264D2385888C003F36BA /* RNNOverlayManagerTest.m in Sources */,
 				501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */,
 				E58D265F2385888C003F36BA /* RNNBasePresenterTest.m in Sources */,
