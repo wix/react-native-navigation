@@ -1,4 +1,15 @@
 # Changelog
+# 4.7.0
+## Added
+* On tab press event - handle tab selection in Js [#b153142](https://github.com/wix/react-native-navigation/commit/b1531428a0a9608b5d1c84547f228d5de0c1aca2) by [pontusab](https://github.com/pontusab)
+* RN 0.62 support on Android [#4bfa7c5](https://github.com/wix/react-native-navigation/commit/4bfa7c5092ac0ca6708b4bd61bd63e59601e8f3e) by [safaiyeh](https://github.com/safaiyeh)
+## Fixed
+### Android
+* Fix dotIndicator not respecting initial visibility option [#d9bd03f](https://github.com/wix/react-native-navigation/commit/d9bd03fea7465acadb6ef17613f8fe98e8be4eb1) by [itsam](https://github.com/itsam)
+### iOS
+* Set default fontsize value for title and subtitle [#0741799](https://github.com/wix/react-native-navigation/commit/0741799281a43380bc419886a19a8e72fc32d042) by [maryjenel](https://github.com/maryjenel)
+* Respect default options when updating bottomTab options [#513138e](https://github.com/wix/react-native-navigation/commit/513138ebd9c620ba9e8d2b8a4a154ced790de1b2) by [yogevbd](https://github.com/yogevbd)
+
 # 4.6.0
 ## Added
 ### Android
@@ -15,7 +26,6 @@
 * Invoke all commands on the main thread [#8843224](https://github.com/wix/react-native-navigation/commit/8843224a9aed33a9fd92323db48ab80f50cae72f) by [yogevbd](https://github.com/yogevbd)
 * Resolve navigationItem from external component [#d81b0bf](https://github.com/wix/react-native-navigation/commit/d81b0bf3cf929136218a71dbc74dcbf0cc668886) by [yogevbd](https://github.com/yogevbd)
 * Fix popGesture freezes the app [#37473f8](https://github.com/wix/react-native-navigation/commit/37473f88e9bfdc847f25cd21e5ca521e31157268) by [yogevbd](https://github.com/yogevbd)
-
 
 # 4.5.4
 * Fix title.component fill parent [#7e6b2be](https://github.com/wix/react-native-navigation/commit/7e6b2be676382db74bd393940ddfdea3a3847e2c) by [yogevbd](https://github.com/yogevbd)
