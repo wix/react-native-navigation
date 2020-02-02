@@ -41,4 +41,9 @@ describe('External Component', () => {
     await elementById(TestIDs.EXTERNAL_DISMISS_MODAL_BTN).tap();
     await expect(elementById(TestIDs.NAVIGATION_SCREEN)).toBeVisible();
   });
+
+  test(':ios: External component should receive options', async () => {
+    await elementById(TestIDs.MODAL_BTN).tap();
+    await expect(elementByLabel('External Component')).toBeVisible();
+  });
 });

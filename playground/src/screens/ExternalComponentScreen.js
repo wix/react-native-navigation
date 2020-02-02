@@ -51,6 +51,13 @@ class ExternalComponentScreen extends React.Component {
           name: Screens.NativeScreen,
           passProps: {
             text: 'External component in deep stack'
+          },
+          options: {
+            topBar: {
+              title: {
+                text: 'External Component'
+              }
+            }
           }
         }
       }
