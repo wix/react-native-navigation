@@ -19,7 +19,7 @@ jobs:
           node-version: 12
 
       - name: Install
-        run: npm run install
+        run: npm install
 
       - name: Pretest
         run: npm run pretest-js
