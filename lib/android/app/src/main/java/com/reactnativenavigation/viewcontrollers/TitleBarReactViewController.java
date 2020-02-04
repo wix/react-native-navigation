@@ -47,7 +47,7 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
 
     @Override
     public String getCurrentComponentName() {
-        return component.name.get();
+        return null;
     }
 
     public void setComponent(Component component) {

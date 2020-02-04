@@ -90,7 +90,7 @@ public class ExternalComponentViewController extends ViewController<ExternalComp
 
     @Override
     public String getCurrentComponentName() {
-        return null;
+        return externalComponent.name.get();
     }
 
     public FragmentActivity getActivity() {
