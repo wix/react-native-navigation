@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  ci:
+  js:
     name: Install and Test JS
     runs-on: ubuntu-latest
     steps:
