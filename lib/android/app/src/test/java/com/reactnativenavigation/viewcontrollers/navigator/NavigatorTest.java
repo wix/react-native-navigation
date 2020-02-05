@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.ReactInstanceManager;
@@ -119,6 +120,14 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void setContentLayout() {
+        ViewGroup contentLayout = Mockito.mock(ViewGroup.class);
+        uut.setContentLayout(contentLayout);
+
+        verify(overlayManager).setContentLayout(contentLayout);
+    }
+
+    @Test
     public void bindViews() {
         verify(rootPresenter).setRootContainer(uut.getRootLayout());
         verify(modalStack).setModalsLayout(uut.getModalsLayout());
@@ -149,11 +158,11 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void setRoot_clearsSplashLayout() {
         FrameLayout content = activity.findViewById(android.R.id.content);
-        assertThat(content.getChildCount()).isEqualTo(4); // 3 frame layouts and the default splash layout
+        assertThat(content.getChildCount()).isEqualTo(3); // 2 frame layouts (root and modal containers) and the default splash layout
 
         uut.setRoot(child2, new CommandListenerAdapter(), reactInstanceManager);
 
-        assertThat(content.getChildCount()).isEqualTo(3);
+        assertThat(content.getChildCount()).isEqualTo(2);
     }
 
     @Test
