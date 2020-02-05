@@ -39,7 +39,7 @@ jobs:
             brew install applesimutils
 
       - name: Unit Tests
-          run: npm run test-unit-ios
+        run: npm run test-unit-ios
 
   ios-e2e:
     name: iOS e2e Tests
@@ -56,7 +56,7 @@ jobs:
           brew install applesimutils
 
       - name: Pretest e2e
-          run: npm run pretest-e2e-ios
+        run: npm run pretest-e2e-ios
 
       - name: e2e Tests
-          run: npm run test-e2e-ios-multi
+        run: npm run test-e2e-ios-multi
