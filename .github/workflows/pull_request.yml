@@ -7,17 +7,14 @@ on:
 
 jobs:
   js:
-    name: Install and Test JS
+    name: JS Tests
     runs-on: ubuntu-latest
     steps:
-
-      - uses: actions/checkout@v1
-
+      - uses: actions/checkout@v2
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 12
-
       - name: Install
         run: npm install
 
@@ -26,3 +23,40 @@ jobs:
 
       - name: Test JS
         run: npm run test-js
+
+  ios-unit:
+    name: iOS Unit Tests
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - name: Install
+        run: npm install
+
+      - name: iOS Environment
+        run: |
+            brew tap wix/brew
+            brew install applesimutils
+
+      - name: Unit Tests
+          run: npm run test-unit-ios
+
+  ios-e2e:
+    name: iOS e2e Tests
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - name: Install
+        run: npm install
+
+      - name: iOS Environment
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+
+      - name: Pretest e2e
+          run: npm run pretest-e2e-ios
+
+      - name: e2e Tests
+          run: npm run test-e2e-ios-multi
