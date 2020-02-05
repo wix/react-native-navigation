@@ -51,6 +51,10 @@
 	[self.options overrideOptions:options];
 }
 
+- (BOOL)extendedLayoutIncludesOpaqueBars {
+    return YES;
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	UIInterfaceOrientationMask interfaceOrientationMask = self.presenter ? [self.presenter getOrientation:[self resolveOptions]] : [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
 	return interfaceOrientationMask;

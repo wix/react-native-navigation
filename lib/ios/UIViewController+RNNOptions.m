@@ -58,7 +58,6 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 - (void)setDrawBehindTopBar:(BOOL)drawBehind {
 	if (drawBehind) {
-		[self setExtendedLayoutIncludesOpaqueBars:YES];
 		self.edgesForExtendedLayout |= UIRectEdgeTop;
 	} else {
 		self.edgesForExtendedLayout &= ~UIRectEdgeTop;
@@ -67,7 +66,6 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 - (void)setDrawBehindTabBar:(BOOL)drawBehindTabBar {
 	if (drawBehindTabBar) {
-		[self setExtendedLayoutIncludesOpaqueBars:YES];
 		self.edgesForExtendedLayout |= UIRectEdgeBottom;
 	} else {
 		self.edgesForExtendedLayout &= ~UIRectEdgeBottom;
