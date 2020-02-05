@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.ReactInstanceManager;
@@ -116,6 +117,14 @@ public class NavigatorTest extends BaseTest {
 
         activityController.visible();
         activityController.postCreate(Bundle.EMPTY);
+    }
+
+    @Test
+    public void setContentLayout() {
+        ViewGroup contentLayout = Mockito.mock(ViewGroup.class);
+        uut.setContentLayout(contentLayout);
+
+        verify(overlayManager).setContentLayout(contentLayout);
     }
 
     @Test

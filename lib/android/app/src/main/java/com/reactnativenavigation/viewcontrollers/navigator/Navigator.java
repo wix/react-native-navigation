@@ -64,9 +64,9 @@ public class Navigator extends ParentController {
 
     public void setContentLayout(ViewGroup contentLayout) {
         this.contentLayout = contentLayout;
+        overlayManager.setContentLayout(contentLayout);
         contentLayout.addView(rootLayout);
         contentLayout.addView(modalsLayout);
-        contentLayout.addView(overlaysLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
