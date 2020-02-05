@@ -134,7 +134,7 @@ commandCompletedListener.remove();
 
 ## registerModalDismissedListener
 
-Called each time this component (Modal) is dismissed. 
+Invoked when modal dismissed.
 
 ```js
 class MyComponent extends Component {
@@ -169,7 +169,7 @@ modalDismissedListener.remove();
 ```
 |       Parameter         | Description |
 |:--------------------:|:-----|
-|**componentId**| Id of the disappearing component|
+|**componentId**| Id of the dismissing modal|
 |**componentName**|Registered name used when registering the component with `Navigation.registerComponent()`|
 |**modalsDismissed**|Number of modals dismissed.|
 
