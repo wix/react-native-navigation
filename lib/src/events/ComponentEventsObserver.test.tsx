@@ -197,10 +197,6 @@ describe('ComponentEventsObserver', () => {
     expect(modalDismissedFn).toHaveBeenCalledTimes(1);
     expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId', componentName: 'myCompName', modalsDismissed: 1 })
 
-    uut.notifyModalDismissed({ componentId: 'myCompId', modalsDismissed: 1 });
-    expect(modalDismissedFn).toHaveBeenCalledTimes(2);
-    expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId', modalsDismissed: 1 })
-
     uut.notifyModalAttemptedToDismiss({ componentId: 'myCompId' });
     expect(modalAttemptedToDismissFn).toHaveBeenCalledTimes(1);
     expect(modalAttemptedToDismissFn).toHaveBeenLastCalledWith({ componentId: 'myCompId' })
