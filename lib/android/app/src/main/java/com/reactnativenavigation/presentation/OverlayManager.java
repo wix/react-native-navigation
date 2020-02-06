@@ -10,18 +10,16 @@ import com.reactnativenavigation.views.BehaviourDelegate;
 
 import java.util.HashMap;
 
+import androidx.annotation.Nullable;
+
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public class OverlayManager {
     private final HashMap<String, ViewController> overlayRegistry = new HashMap<>();
-    private ViewGroup contentLayout;
 
-    public void setContentLayout(ViewGroup contentLayout) {
-        this.contentLayout = contentLayout;
-    }
-
-    public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
+    public void show(@Nullable ViewGroup contentLayout, ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
+        if (contentLayout == null) return;
         if (overlaysContainer.getParent() == null) contentLayout.addView(overlaysContainer);
         overlayRegistry.put(overlay.getId(), overlay);
         overlay.addOnAppearedListener(() -> listener.onSuccess(overlay.getId()));
@@ -40,7 +38,6 @@ public class OverlayManager {
 
     public void destroy() {
         forEach(overlayRegistry.values(), this::destroyOverlay);
-        contentLayout = null;
     }
 
     public int size() {
