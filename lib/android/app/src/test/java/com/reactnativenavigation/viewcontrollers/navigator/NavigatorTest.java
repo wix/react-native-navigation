@@ -123,8 +123,6 @@ public class NavigatorTest extends BaseTest {
     public void setContentLayout() {
         ViewGroup contentLayout = Mockito.mock(ViewGroup.class);
         uut.setContentLayout(contentLayout);
-
-        verify(overlayManager).setContentLayout(contentLayout);
     }
 
     @Test
