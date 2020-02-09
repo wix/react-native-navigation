@@ -20,13 +20,13 @@
 }
 
 + (NSDictionary *)createFromDictionary:(NSDictionary *)attributesDictionary fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize fontWeight:(NSString *)fontWeight color:(UIColor *)color {
-	NSMutableDictionary* titleTextAttributes = [NSMutableDictionary dictionaryWithDictionary:attributesDictionary];\
+	NSMutableDictionary* titleTextAttributes = [NSMutableDictionary dictionaryWithDictionary:attributesDictionary];
     UIFont* currentFont = attributesDictionary[NSFontAttributeName];
     
 	CGFloat resolvedFontSize = [self resolveFontSize:currentFont fontSize:fontSize];
-    if (color) {
-        titleTextAttributes[NSForegroundColorAttributeName] = color;
-    }
+    
+    titleTextAttributes[NSForegroundColorAttributeName] = color;
+    
     if (fontWeight) {
         titleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:resolvedFontSize weight:[RCTConvert UIFontWeight:fontWeight]];
     } else if (fontFamily){

@@ -56,16 +56,24 @@
 	XCTAssertEqual(font.pointSize, fontSize.floatValue);
 }
 
-- (void)testcreateFromDictionary_shouldMergeWithDictionary {
+- (void)testCreateFromDictionary_shouldMergeWithDictionary {
 	NSString* familyName = @"Helvetica";
 	NSNumber* fontSize = @(20);
 	NSDictionary* dictionary = @{NSForegroundColorAttributeName: UIColor.redColor};
 	
 	NSDictionary* attributes = [RNNFontAttributesCreator createFromDictionary:dictionary fontFamily:familyName fontSize:fontSize defaultFontSize:nil fontWeight:nil color:nil defaultColor:nil];
 	UIFont* font = attributes[NSFontAttributeName];
-	XCTAssertEqual(attributes[NSForegroundColorAttributeName], UIColor.redColor);
     XCTAssertTrue([familyName isEqualToString:font.familyName]);
 	XCTAssertEqual(font.pointSize, fontSize.floatValue);
+}
+
+- (void)testCreateFromDictionary_shouldOverrideColor {
+	NSString* familyName = @"Helvetica";
+	NSNumber* fontSize = @(20);
+	NSDictionary* dictionary = @{NSForegroundColorAttributeName: UIColor.redColor};
+	
+	NSDictionary* attributes = [RNNFontAttributesCreator createFromDictionary:dictionary fontFamily:familyName fontSize:fontSize defaultFontSize:nil fontWeight:nil color:nil defaultColor:nil];
+	XCTAssertEqual(attributes[NSForegroundColorAttributeName], nil);
 }
 
 - (void)testCreateWithFontFamily_shouldNotChangeFontFamilyWhenOnlySizeAvailable {

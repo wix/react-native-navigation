@@ -159,7 +159,7 @@
 		rootView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
 	}
 	
-	[_topBarTitlePresenter mergeOptions:options.topBar resolvedOptions:currentOptions.topBar];
+	[_topBarTitlePresenter mergeOptions:options.topBar resolvedOptions:withDefault.topBar];
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {

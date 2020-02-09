@@ -24,7 +24,14 @@
 }
 
 - (void)mergeOptions:(RNNTopBarOptions *)options resolvedOptions:(RNNTopBarOptions *)resolvedOptions {
-    [self updateTitleWithOptions:options];
+    if (options.title.component.hasValue) {
+        [self setCustomNavigationTitleView:resolvedOptions perform:nil];
+    } else if (options.subtitle.text.hasValue) {
+        [self setTitleViewWithSubtitle:resolvedOptions];
+    } else if (options.title.text.hasValue) {
+        [self removeTitleComponents];
+        self.boundViewController.navigationItem.title = resolvedOptions.title.text.get;
+    }
 }
 
 - (void)setTitleViewWithSubtitle:(RNNTopBarOptions *)options {
