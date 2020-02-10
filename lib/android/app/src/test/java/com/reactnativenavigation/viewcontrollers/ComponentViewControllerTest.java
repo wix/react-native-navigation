@@ -10,6 +10,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.utils.NavigationBarUtils;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.ComponentLayout;
@@ -36,6 +37,7 @@ public class ComponentViewControllerTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         StatusBarUtils.saveStatusBarHeight(63);
+        NavigationBarUtils.saveNavigationBarHeight(186);
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
         parent = TestUtils.newStackController(activity).build();
         Presenter presenter = new Presenter(activity, new Options());
@@ -147,6 +149,38 @@ public class ComponentViewControllerTest extends BaseTest {
         uut.options.statusBar.drawBehind = new Bool(true);
         uut.options.topBar.drawBehind = new Bool(true);
         assertThat(uut.getTopInset()).isEqualTo(0);
+    }
+
+    @Test
+    public void getBottomInset_resolveWithParent() {
+        assertThat(uut.getBottomInset()).isEqualTo(NavigationBarUtils.getNavigationBarHeight(activity) + parent.getBottomInset(uut));
+    }
+
+    @Test
+    public void getBottomInset_returnsStatusBarHeight() {
+        //noinspection ConstantConditions
+        uut.setParentController(null);
+        assertThat(uut.getBottomInset()).isEqualTo(NavigationBarUtils.getNavigationBarHeight(activity));
+    }
+
+    @Test
+    public void getBottomInset_drawBehind() {
+        uut.options.statusBar.drawBehind = new Bool(true);
+        uut.options.topBar.drawBehind = new Bool(true);
+        assertThat(uut.getBottomInset()).isEqualTo(0);
+    }
+
+    @Test
+    public void getBottomInset_invisibleStatusBar() {
+        uut.options.statusBar.visible = new Bool(false);
+        uut.options.statusBar.drawBehind = new Bool(true);
+        assertThat(uut.getBottomInset()).isEqualTo(0);
+    }
+
+    @Test
+    public void getBottomInset_visibleStatusBar() {
+        uut.options.statusBar.visible = new Bool(true);
+        assertThat(uut.getBottomInset()).isEqualTo(NavigationBarUtils.getNavigationBarHeight(activity));
     }
 
     @Test
