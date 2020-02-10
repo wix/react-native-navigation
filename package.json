@@ -105,6 +105,7 @@
       "!lib/src/**/*.js",
       "integration/**/*.js",
       "lib/src/**/*.ts",
+      "lib/src/**/*.tsx",
       "!lib/src/index.ts",
       "!lib/src/types.ts",
       "!lib/src/Navigation.ts",
