@@ -90,7 +90,6 @@ describe('navigation options', () => {
     const options = { topBar: { title: { component: { name: 'a' } } } };
 
     uut.processOptions(options);
-    console.log(options)
     expect(options).toEqual({
       topBar: { title: { component: { name: 'a', componentId: 'CustomComponent1' } } },
     });
