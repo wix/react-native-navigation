@@ -98,17 +98,20 @@
     },
     "roots": [
       "<rootDir>/node_modules/",
-      "<rootDir>/lib/dist/",
+      "<rootDir>/lib/src/",
       "<rootDir>/integration/"
     ],
     "collectCoverageFrom": [
-      "lib/dist/**/*.js",
+      "!lib/src/**/*.js",
       "integration/**/*.js",
-      "!lib/dist/index.js",
-      "!lib/dist/Navigation.js",
-      "!lib/dist/adapters/**/*",
-      "!lib/dist/interfaces/**/*",
-      "!lib/dist/**/*.test.*",
+      "lib/src/**/*.ts",
+      "lib/src/**/*.tsx",
+      "!lib/src/index.ts",
+      "!lib/src/types.ts",
+      "!lib/src/Navigation.ts",
+      "!lib/src/adapters/**/*",
+      "!lib/src/interfaces/**/*",
+      "!lib/src/**/*.test.*",
       "!integration/**/*.test.*",
       "!integration/*.test.*"
     ],
