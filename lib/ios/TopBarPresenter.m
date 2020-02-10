@@ -25,7 +25,7 @@
     [self setLargeTitleAttributes:options.largeTitle];
 }
 
-- (void)mergeOptions:(RNNTopBarOptions *)options defaultOptions:(RNNTopBarOptions *)defaultOptions {
+- (void)mergeOptions:(RNNTopBarOptions *)options withDefault:(RNNTopBarOptions *)withDefault {
     if (options.background.color.hasValue) {
         [self setBackgroundColor:options.background.color.get];
     }
@@ -43,10 +43,12 @@
         [self setLargeTitleAttributes:largeTitleOptions];
     }
 
-    [self setTitleAttributes:options.title];
+    if (options.title.hasValue) {
+        [self setTitleAttributes:withDefault.title];
+    }
     
     if (options.backButton.hasValue) {
-        [self setBackButtonIcon:[defaultOptions.backButton.icon getWithDefaultValue:nil] withColor:[defaultOptions.backButton.color getWithDefaultValue:nil] title:[defaultOptions.backButton.title getWithDefaultValue:nil] showTitle:[defaultOptions.backButton.showTitle getWithDefaultValue:YES]];
+        [self setBackButtonIcon:[withDefault.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.backButton.color getWithDefaultValue:nil] title:[withDefault.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.backButton.showTitle getWithDefaultValue:YES]];
     }
 }
 
