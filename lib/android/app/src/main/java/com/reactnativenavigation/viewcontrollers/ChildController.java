@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.utils.NavigationBarUtils;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import com.reactnativenavigation.views.Component;
@@ -92,6 +93,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
 
     private WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         StatusBarUtils.saveStatusBarHeight(insets.getSystemWindowInsetTop());
+        NavigationBarUtils.saveNavigationBarHeight(insets.getSystemWindowInsetBottom());
         return applyWindowInsets(findController(view), insets);
     }
 

@@ -7,6 +7,7 @@ import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.utils.NavigationBarUtils;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
@@ -104,6 +105,14 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     public int getTopInset() {
         int statusBarInset = resolveCurrentOptions().statusBar.isHiddenOrDrawBehind() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
+    }
+
+    @Override
+    public int getBottomInset() {
+        int navigationBarInset = resolveCurrentOptions().statusBar.isHiddenOrDrawBehind()
+                ? 0
+                : NavigationBarUtils.getNavigationBarHeight(getActivity());
+        return navigationBarInset + perform(getParentController(), 0, p -> p.getBottomInset(this));
     }
 
     @Override
