@@ -16,7 +16,7 @@
     [self setTitleAttributes:options.title];
     [self setLargeTitleAttributes:options.largeTitle];
     [self showBorder:![options.noBorder getWithDefaultValue:NO]];
-    [self setBackButtonIcon:[options.backButton.icon getWithDefaultValue:nil] withColor:[options.backButton.color getWithDefaultValue:nil] title:[options.backButton.title getWithDefaultValue:nil] showTitle:[options.backButton.showTitle getWithDefaultValue:YES]];
+    [self setBackButtonOptions:[options.backButton.icon getWithDefaultValue:nil] withColor:[options.backButton.color getWithDefaultValue:nil] title:[options.backButton.title getWithDefaultValue:nil] showTitle:[options.backButton.showTitle getWithDefaultValue:YES] fontFamily:[options.backButton.fontFamily getWithDefaultValue:nil]];
 }
 
 - (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options {
@@ -48,7 +48,7 @@
     }
     
     if (options.backButton.hasValue) {
-        [self setBackButtonIcon:[withDefault.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.backButton.color getWithDefaultValue:nil] title:[withDefault.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.backButton.showTitle getWithDefaultValue:YES]];
+        [self setBackButtonOptions:[options.backButton.icon getWithDefaultValue:nil] withColor:[options.backButton.color getWithDefaultValue:nil] title:[options.backButton.title getWithDefaultValue:nil] showTitle:[options.backButton.showTitle getWithDefaultValue:YES] fontFamily:[options.backButton.fontFamily getWithDefaultValue:nil]];
     }
 }
 
@@ -111,8 +111,8 @@
     }
 }
 
-- (void)setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title showTitle:(BOOL)showTitle {
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+- (void)setBackButtonOptions:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title showTitle:(BOOL)showTitle fontFamily:(NSString *)fontFamily {
+	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     NSArray* stackChildren = self.navigationController.viewControllers;
     icon = color
     ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
@@ -125,7 +125,8 @@
         backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
     }
     backItem.tintColor = color;
-
+	[backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:17.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
+	[backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:17.0], NSFontAttributeName, nil] forState:UIControlStateSelected];
     lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 

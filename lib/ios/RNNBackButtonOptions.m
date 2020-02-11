@@ -11,7 +11,8 @@
 	self.color = [ColorParser parse:dict key:@"color"];
 	self.showTitle = [BoolParser parse:dict key:@"showTitle"];
 	self.visible = [BoolParser parse:dict key:@"visible"];
-	
+	self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
+
 	return self;
 }
 
@@ -19,6 +20,7 @@
 	return self.icon.hasValue ||
 			self.showTitle.hasValue ||
 			self.color.hasValue ||
+			self.fontFamily.hasValue ||
 			self.title.hasValue;
 }
 

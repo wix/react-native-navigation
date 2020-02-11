@@ -4,6 +4,7 @@
 
 @property (nonatomic, strong) Image* icon;
 @property (nonatomic, strong) Text* title;
+@property (nonatomic, strong) Text* fontFamily;
 @property (nonatomic, strong) Text* transition;
 @property (nonatomic, strong) Color* color;
 @property (nonatomic, strong) Bool* showTitle;

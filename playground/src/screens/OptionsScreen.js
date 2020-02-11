@@ -36,6 +36,7 @@ class Options extends Component {
         <Button label='Hide TopBar' testID={HIDE_TOP_BAR_BTN} onPress={this.hideTopBar} />
         <Button label='Show TopBar' testID={SHOW_TOP_BAR_BTN} onPress={this.showTopBar} />
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
+        <Button label='Set Back Button Font' onPress={this.setBackFont} />
         <Button label='Hide TopBar in DefaultOptions' testID={HIDE_TOPBAR_DEFAULT_OPTIONS} onPress={this.hideTopBarInDefaultOptions} />
         <Button label='Set React Title View' testID={SET_REACT_TITLE_VIEW} onPress={this.setReactTitleView} />
         <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
@@ -49,6 +50,14 @@ class Options extends Component {
     topBar: {
       title: {
         text: 'Title Changed'
+      }
+    }
+  });
+
+  setBackFont = () => Navigation.mergeOptions(this, {
+    topBar: {
+      backButton: {
+        fontFamily: 'AmericanTypewriter'
       }
     }
   });
