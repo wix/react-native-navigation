@@ -6,6 +6,10 @@ import { mock, when, anyString, instance, anyNumber, verify } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 
+jest.mock('lodash/uniqueId', () => {
+  return (prefix: string) => `${prefix}1`
+})
+
 describe('navigation options', () => {
   let uut: OptionsProcessor;
   const mockedStore = mock(Store) as Store;
@@ -86,7 +90,6 @@ describe('navigation options', () => {
     const options = { topBar: { title: { component: { name: 'a' } } } };
 
     uut.processOptions(options);
-
     expect(options).toEqual({
       topBar: { title: { component: { name: 'a', componentId: 'CustomComponent1' } } },
     });

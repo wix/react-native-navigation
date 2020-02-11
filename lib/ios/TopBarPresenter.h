@@ -7,7 +7,7 @@
 
 - (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options;
 
-- (void)mergeOptions:(RNNTopBarOptions *)options defaultOptions:(RNNTopBarOptions *)defaultOptions;
+- (void)mergeOptions:(RNNTopBarOptions *)options withDefault:(RNNTopBarOptions *)defaultOptions;
 
 - (instancetype)initWithNavigationController:(UINavigationController *)boundNavigationController;
 
