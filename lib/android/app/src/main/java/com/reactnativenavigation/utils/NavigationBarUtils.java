@@ -17,7 +17,7 @@ public class NavigationBarUtils {
         final Resources resources = context.getResources();
         final int orientation = resources.getConfiguration().orientation;
         final int resourceId = resources.getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android");
-        if(resourceId > 0) {
+        if (resourceId > 0) {
             navigationBarHeight = resources.getDimensionPixelSize(resourceId);
         }
 
