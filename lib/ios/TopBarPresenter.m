@@ -126,7 +126,7 @@
     }
     backItem.tintColor = color;
 	[backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:17.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
-	[backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:17.0], NSFontAttributeName, nil] forState:UIControlStateSelected];
+	[backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:17.0], NSFontAttributeName, nil] forState:UIControlStateHighlighted];
     lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
