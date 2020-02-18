@@ -1,4 +1,185 @@
 # Changelog
+# 5.0.0
+This release is focuses on shared element transition and on improving the installation process of the library.
+
+## Upgrading from V4
+### Remove missingDimensionStrategy from app/build.gradle
+Since RNN supports multiple react-native versions, the library has multiple flavors, each targeting a different RN version. We now chose the appropriate flavor based on the react-native version installed in node_modules.
+```diff
+-missingDimensionStrategy "RNN.reactNativeVersion", "reactNativeXX" // Where XX is the minor number of the react-native version you're using
+```
+
+### Declare Kotlin version in build.gradle
+We're starting to migrate RNN to Kotlin. All new code is written in Kotlin and existing code will be gradually converted to Kotlin. This requires you to declare the Kotlin version you're using in your project.
+```diff
+buildscript {
+    ext {
++        kotlinVersion = "1.3.61" // Or any other kotlin version following 1.3.x
++        RNNKotlinVersion = kotlinVersion
++        RNNKotlinStdlib = "kotlin-stdlib-jdk8"
+    }
+    dependencies {
++        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"    
+    }
+}
+```
+
+### Update MainApplication.java
+In an effort to simplify RNN's integrations process as much as possible, we're minimizing the changes required to both MainApplication and MainActivity.
+```diff
++import com.facebook.react.PackageList;
+
+public class MainApplication extends NavigationApplication {
+-    @Override
+-    protected ReactNativeHost createReactNativeHost() {
+-    return new NavigationReactNativeHost(this) {  
++    private final ReactNativeHost mReactNativeHost =
+            new NavigationReactNativeHost(this) {
+                @Override
+                protected String getJSMainModuleName() {
+                    return "index";
+                }
+
++                @Override
++                public boolean getUseDeveloperSupport() {
++                    return BuildConfig.DEBUG;
++                }
+
++                @Override
++                public List<ReactPackage> getPackages() {
++                    ArrayList<ReactPackage> packages = new PackageList(this).getPackages();
++                    return packages;
++                }
++            }
+-    }
+
++    @Override
++    public ReactNativeHost getReactNativeHost() {
++        return mReactNativeHost;
++    }
+
+-    @Override
+-    public boolean isDebug() {
+-        return BuildConfig.DEBUG;
+-    }
+
+-    @Nullable
+-    @Override
+-    public List<ReactPackage> createAdditionalReactPackages() {
+-        List<ReactPackage> packages = new ArrayList<>();
+-        return packages;
+-    }
+}
+```
+
+### Update settings.gradle
+Since RNN now supports auto linking, declaring the dependency manually is no longer needed.
+```diff
+-include ':react-native-navigation'
+-project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../../lib/android/app/')
+```
+
+### Make sure your app supports auto linking
+#### Update `app/build.gradle`
+Add these lines to the bottom of your `app/build.gradle` file.
+```diff
++apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
++applyNativeModulesAppBuildGradle(project)
+```
+#### Update `settings.gradle`
+```diff
+include ':app'
++include ':react-native-navigation'
++project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../../lib/android/app/')
+```
+
+### Remove RNN pod from podspec
+As RNN is now autolinked, remove its pod from your podspec file. This will ensure the correct version is linked when running `pod install`
+```diff
+- pod 'ReactNativeNavigation', :podspec => '../node_modules/react-native-navigation/ReactNativeNavigation.podspec'
+```
+
+## Breaking Changes
+### Modal animation parity
+show and dismiss animation api have been fixed and are now in parity with Android api.
+If you've defined a custom modal animation, you can now consolidate the animation declarations.
+
+<table>
+<tr>
+  <td>New Android + iOS API</td>
+  <td>Unsupported iOS API</td>
+</tr>
+<tr>
+<td>
+
+  ```js
+  options: {
+    animations: {
+      showModal: {
+        alpha: {
+          from: 0,
+          to: 1,
+          duration: 250,
+        }
+      }
+    }
+  }
+  ```
+</td>
+<td>
+
+  ```js
+  options: {
+    animations: {
+      showModal: {
+        content: {
+          alpha: {
+            from: 0,
+            to: 1,
+            duration: 250
+          }
+        }
+      }
+    }
+  }
+  ```
+</td>
+</tr>
+</table>
+
+### drawBehind is deprecated on iOS
+> ❗️topBar and bottomTabs drawBehind option will be removed in the next major version.
+
+The drawBehind option has been an anti pattern on iOS from the start and was introduced only for parity with Android api.
+On iOS, when a ScrollView or a SafeAreaView are used as screen root; the system handles insets automatically.
+As adoption of notch devices increases, developers use these views regularly, rendering the drawBehind option useless.
+
+>**During the migration phase, leave Android options unchanged and set `drawBehind: true` to both TopBar and BottomTabs in default options.**
+
+### Android: Animation values are now declared in dp
+If you're animating `translationY` or `translationX` pass these values in dp instead of pixels.
+This is especially relevant to values returned by `await Navigation.constants()` api as these values are returned in dp. Now, if you'd like to use them in animations, you can do so without converting to pixels.
+
+# 4.8.1
+## Fixed
+### Android
+* Fix NPE when showing Overlay [#bfde34a](https://github.com/wix/react-native-navigation/commit/bfde34a5862c971587583aa52cb450cf526d5c66) by [guyca](https://github.com/guyca)
+### iOS
+* Fix overlays touch interception on new iPads [#433f48b](https://github.com/wix/react-native-navigation/commit/433f48b59d9be5aa328361654341afa8414c2e21) by [yogevbd](https://github.com/yogevbd)
+
+# 4.8.0
+## Fixed
+### Android
+* Support react-native-youtube [#ffbd288](https://github.com/wix/react-native-navigation/commit/ffbd2882b24109ff8f2b51ca3c8c88822cc9afb7) by [guyca](https://github.com/guyca)
+### iOS
+* Fix wrong SafeAreaView margins when using bottomTabs.drawBehind: true [#527fd49](https://github.com/wix/react-native-navigation/commit/527fd49f2f1517143032a8b14f6ab17d2f74c032) by [yogevbd](https://github.com/yogevbd)
+
+# 4.7.1
+## Fixed
+* Move selectTabOnPress prop to correct interface [#d6ead65](https://github.com/wix/react-native-navigation/commit/d6ead65c9331f12d3f79fc3b5bb7e0a0de80816e) by [phanghos](https://github.com/phanghos)
+### iOS
+* Fix external components layout measurement [#1961181](https://github.com/wix/react-native-navigation/commit/196118186fb788200dafcc1e11cd9f7d6e3f6dda) by [yogevbd](https://github.com/yogevbd)
+
 # 4.7.0
 ## Added
 * On tab press event - handle tab selection in Js [#b153142](https://github.com/wix/react-native-navigation/commit/b1531428a0a9608b5d1c84547f228d5de0c1aca2) by [pontusab](https://github.com/pontusab)
