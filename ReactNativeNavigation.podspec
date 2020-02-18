@@ -19,5 +19,7 @@ Pod::Spec.new do |s|
   s.exclude_files  = "lib/ios/ReactNativeNavigationTests/**/*.*", "lib/ios/OCMock/**/*.*"
 
   s.dependency 'React'
+  s.dependency 'React-RCTImage'
+  s.dependency 'React-RCTText'
   s.frameworks = 'UIKit'
 end

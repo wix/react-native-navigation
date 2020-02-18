@@ -1,19 +1,43 @@
 const React = require('react');
-const { Component } = require('react');
-const { SafeAreaView, FlatList, View, Image, Text, StyleSheet } = require('react-native');
+const { Image, Platform, SafeAreaView, StyleSheet, Text, View } = require('react-native');
 
-class CocktailDetailsScreen extends Component {
+class CocktailDetailsScreen extends React.Component {
+  static options() {
+    return {
+      ...Platform.select({
+        android: {
+          statusBar: {
+            style: 'dark',
+            backgroundColor: 'white'
+          }
+        }
+      }),
+      topBar: {
+        title: {
+          text: 'Cocktails'
+        }
+      }
+    }
+  }
+
   render() {
     return (
-      <View style={styles.root}>
-        <View style={[styles.header, {backgroundColor: this.props.color}]}>
-          <Text style={styles.title}>{this.props.name}</Text>
-        </View>
-        <Image
-          source={this.props.image}
-          style={styles.image}
+      <SafeAreaView style={styles.root}>
+        <View nativeID={'backdrop'} style={[styles.backdrop, { backgroundColor: this.props.color }]}/> 
+        <View style={styles.header}>
+          <Image
+            source={this.props.image}
+            nativeID={`image${this.props.id}Dest`}
+            style={styles.image}
           />
-      </View>
+          <Text style={styles.title} nativeID={`title${this.props.id}Dest`}>{this.props.name}</Text>
+        </View>
+        <Text
+          nativeID='description'
+          style={styles.description}>
+          {this.props.description}
+        </Text>
+      </SafeAreaView >
     );
   }
 }
@@ -21,26 +45,41 @@ class CocktailDetailsScreen extends Component {
 module.exports = CocktailDetailsScreen;
 const SIZE = 120;
 const HEADER = 150;
+const IMAGE_OFFSET = 52
 const styles = StyleSheet.create({
   root: {
-    
+    marginTop: 0
   },
   header: {
+    marginTop: -HEADER,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    height: HEADER,
+  },
+  backdrop: {
     height: HEADER,
     width: '100%',
-    flexDirection: 'column-reverse'
+    zIndex: 0
   },
   title: {
     fontSize: 32,
     color: 'whitesmoke',
-    marginLeft: 24,
-    marginBottom: 16
+    marginLeft: 16,
+    marginBottom: 16,
+    zIndex: 2
+  },
+  description: {
+    fontSize: 15,
+    letterSpacing: 0.2,
+    lineHeight: 25,
+    marginTop: 32,
+    marginHorizontal: 24
   },
   image: {
     height: SIZE,
     width: SIZE,
-    position: 'absolute',
-    right: 24,
-    top: HEADER / 2
+    zIndex: 1,
+    marginLeft: 24,
+    marginBottom: -24
   }
 });

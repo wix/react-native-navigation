@@ -9,7 +9,10 @@ const path = require('path');
 const isRelease = process.env.RELEASE_BUILD === 'true';
 
 const BRANCH = process.env.BRANCH;
-const VERSION_TAG = process.env.NPM_TAG || isRelease ? 'latest' : 'snapshot';
+let VERSION_TAG = process.env.NPM_TAG;
+if (!VERSION_TAG) {
+  VERSION_TAG = isRelease ? 'latest' : 'snapshot';
+}
 const VERSION_INC = 'patch';
 
 function run() {

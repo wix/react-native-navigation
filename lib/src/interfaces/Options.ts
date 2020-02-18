@@ -39,6 +39,7 @@ type SystemItemIcon =
   | 'fastForward'
   | 'undo'
   | 'redo';
+type Interpolation = 'linear' | 'accelerateDecelerate' | 'decelerate' | 'accelerate' | 'decelerateAccelerate';
 
 export interface OptionsSplitView {
   /**
@@ -487,6 +488,40 @@ export interface OptionsTopBar {
   topMargin?: number;
 }
 
+export interface SharedElementTransition {
+  fromId: string;
+  toId: string;
+  duration?: number;
+  interpolation: Interpolation;
+}
+
+export interface ElementTransition {
+  id: string;
+  alpha?: AppearingElementAnimation | DisappearingElementAnimation;
+  translationX?: AppearingElementAnimation | DisappearingElementAnimation;
+  translationY?: AppearingElementAnimation | DisappearingElementAnimation;
+  scaleX?: AppearingElementAnimation | DisappearingElementAnimation;
+  scaleY?: AppearingElementAnimation | DisappearingElementAnimation;
+  rotationX?: AppearingElementAnimation | DisappearingElementAnimation;
+  rotationY?: AppearingElementAnimation | DisappearingElementAnimation;
+  x?: AppearingElementAnimation | DisappearingElementAnimation;
+  y?: AppearingElementAnimation | DisappearingElementAnimation;
+}
+
+export interface AppearingElementAnimation extends ElementAnimation {
+  from: number;
+}
+
+export interface DisappearingElementAnimation extends ElementAnimation {
+  to: number;
+}
+
+export interface ElementAnimation {
+  duration: number;
+  startDelay?: number;
+  interpolation: Interpolation;
+}
+
 export interface OptionsFab {
   id: string;
   backgroundColor?: Color;
@@ -810,13 +845,21 @@ export interface OptionsAnimationPropertyConfig {
  */
 export interface ScreenAnimationOptions {
   /**
-   * Animate the element over translateX
+   * Animate the element over x value
    */
   x?: OptionsAnimationPropertyConfig;
   /**
-   * Animate the element over translateY
+   * Animate the element over y value
    */
   y?: OptionsAnimationPropertyConfig;
+  /**
+   * Animate the element over translateX
+   */
+  translationX?: OptionsAnimationPropertyConfig;
+  /**
+   * Animate the element over translateY
+   */
+  translationY?: OptionsAnimationPropertyConfig;
   /**
    * Animate the element over opacity
    */
@@ -903,6 +946,14 @@ export interface StackAnimationOptions {
    * Configure animations for the content (Screen)
    */
   content?: ViewAnimationOptions;
+  /**
+   * Animations to be applied on elements which are shared between the appearing and disappearing screens
+   */
+  sharedElementTransitions?: SharedElementTransition[];
+  /**
+   * Animations to be applied on views in the appearing or disappearing screens
+   */
+  elementTransitions?: ElementTransition[];
 }
 
 /**
@@ -912,11 +963,11 @@ export interface AnimationOptions {
   /**
    * Configure the setStackRoot animation
    */
-  setStackRoot?: ScreenAnimationOptions;
+  setStackRoot?: ViewAnimationOptions;
   /**
    * Configure the setRoot animation
    */
-  setRoot?: ScreenAnimationOptions;
+  setRoot?: ViewAnimationOptions;
   /**
    * Configure what animates when a screen is pushed
    */
@@ -928,43 +979,11 @@ export interface AnimationOptions {
   /**
    * Configure what animates when modal is shown
    */
-  showModal?: ScreenAnimationOptions;
+  showModal?: ViewAnimationOptions;
   /**
    * Configure what animates when modal is dismissed
    */
-  dismissModal?: ScreenAnimationOptions;
-}
-
-export interface OptionsCustomTransition {
-  animations: OptionsCustomTransitionAnimation[];
-  duration?: number;
-}
-
-export interface OptionsCustomTransitionAnimation {
-  /**
-   * Animation type, only support sharedElement currently
-   */
-  type: 'sharedElement';
-  /**
-   * Transition from element Id
-   */
-  fromId: string;
-  /**
-   * Transition to element Id
-   */
-  toId: string;
-  /**
-   * Animation delay
-   */
-  startDelay?: number;
-  /**
-   * Animation spring Velocity
-   */
-  springVelocity?: number;
-  /**
-   * Animation duration
-   */
-  duration?: number;
+  dismissModal?: ViewAnimationOptions;
 }
 
 export interface Options {
@@ -1042,27 +1061,6 @@ setRoot: {
 ```
    */
   animations?: AnimationOptions;
-
-  /**
-   * Custom Transition used for animate shared element between two screens
-   * Example:
-  ```js
-  Navigation.push(this.props.componentId, {
-    component: {
-      name: 'second.screen',
-      options: {
-        customTransition: {
-          animations: [
-            { type: 'sharedElement', fromId: 'image1', toId: 'image2', startDelay: 0, springVelocity: 0.2, duration: 0.5 }
-          ],
-          duration: 0.8
-        }
-      }
-    }
-  });
-  ```
-  */
-  customTransition?: OptionsCustomTransition;
   /**
    * Preview configuration for Peek and Pop
    * #### (iOS specific)

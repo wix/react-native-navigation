@@ -87,10 +87,11 @@ public class Presenter {
     }
 
     private void applyStatusBarOptions(Options options) {
-        setStatusBarBackgroundColor(options.statusBar);
-        setTextColorScheme(options.statusBar.textColorScheme);
-        setTranslucent(options.statusBar);
-        setStatusBarVisible(options.statusBar.visible);
+        StatusBarOptions statusBar = options.copy().withDefaultOptions(defaultOptions).statusBar;
+        setStatusBarBackgroundColor(statusBar);
+        setTextColorScheme(statusBar.textColorScheme);
+        setTranslucent(statusBar);
+        setStatusBarVisible(statusBar.visible);
     }
 
     private void setTranslucent(StatusBarOptions options) {
@@ -181,6 +182,7 @@ public class Presenter {
             } else {
                 flags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN;
             }
+            if (flags != view.getSystemUiVisibility()) view.requestLayout();
             view.setSystemUiVisibility(flags);
         } else if (drawBehind.hasValue()) {
             if (drawBehind.isTrue()) {

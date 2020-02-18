@@ -4,17 +4,14 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactPackage;
-import com.reactnativenavigation.react.NavigationReactNativeHost;
+import com.facebook.soloader.SoLoader;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public abstract class NavigationApplication extends Application implements ReactApplication {
 
@@ -26,6 +23,7 @@ public abstract class NavigationApplication extends Application implements React
 	public void onCreate() {
 		super.onCreate();
         instance = this;
+        SoLoader.init(this, false);
         reactGateway = createReactGateway();
 	}
 
@@ -39,20 +37,11 @@ public abstract class NavigationApplication extends Application implements React
      * @return a singleton {@link ReactGateway}
      */
 	protected ReactGateway createReactGateway() {
-	    return new ReactGateway(this, isDebug(), this::createReactNativeHost);
+	    return new ReactGateway(getReactNativeHost());
     }
-
-    protected ReactNativeHost createReactNativeHost() {
-        return new NavigationReactNativeHost(this);
-    }
-
+    
 	public ReactGateway getReactGateway() {
 		return reactGateway;
-	}
-
-	@Override
-	public ReactNativeHost getReactNativeHost() {
-		return getReactGateway().getReactNativeHost();
 	}
 
     /**
@@ -61,15 +50,6 @@ public abstract class NavigationApplication extends Application implements React
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
     }
-
-	public abstract boolean isDebug();
-
-    /**
-     * Create a list of additional {@link ReactPackage}s to include. This method will only be called by
-     * the default implementation of {@link #createReactGateway()}
-     */
-	@Nullable
-	public abstract List<ReactPackage> createAdditionalReactPackages();
 
     /**
      * Register a native View which can be displayed using the given {@code name}

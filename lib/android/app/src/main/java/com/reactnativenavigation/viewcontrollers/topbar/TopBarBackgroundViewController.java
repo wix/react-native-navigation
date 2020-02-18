@@ -8,6 +8,7 @@ import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.YellowBoxDelegate;
+import com.reactnativenavigation.viewcontrollers.viewcontrolleroverlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.topbar.TopBarBackgroundView;
 import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
 
@@ -17,7 +18,7 @@ public class TopBarBackgroundViewController extends ViewController<TopBarBackgro
     private Component component;
 
     public TopBarBackgroundViewController(Activity activity, TopBarBackgroundViewCreator viewCreator) {
-        super(activity, CompatUtils.generateViewId() + "", new YellowBoxDelegate(), new Options());
+        super(activity, CompatUtils.generateViewId() + "", new YellowBoxDelegate(), new Options(), new ViewControllerOverlay(activity));
         this.viewCreator = viewCreator;
     }
 

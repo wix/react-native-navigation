@@ -1,6 +1,4 @@
 #import "RNNReactView.h"
-#import "RCTHelpers.h"
-#import <React/RCTUIManager.h>
 
 @implementation RNNReactView {
     BOOL _isAppeared;
@@ -13,13 +11,6 @@
     _eventEmitter = eventEmitter;
     
 	return self;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    #ifdef DEBUG
-        [RCTHelpers removeYellowBox:self];
-    #endif
 }
 
 - (void)contentDidAppear:(NSNotification *)notification {
@@ -59,7 +50,7 @@
 }
 
 - (NSString *)componentType {
-    return ComponentTypeScreen;
+    @throw [NSException exceptionWithName:@"componentType not implemented" reason:@"Should always subclass RNNReactView" userInfo:nil];
 }
 
 @end

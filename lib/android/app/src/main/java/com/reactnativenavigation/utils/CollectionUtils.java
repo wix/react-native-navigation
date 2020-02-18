@@ -67,13 +67,13 @@ public class CollectionUtils {
 
     public static <T> List<T> merge(@Nullable Collection<T> a, @Nullable Collection<T> b) {
         if (a == null && b == null) return null;
-        List<T> result = new ArrayList(get(a));
+        List<T> result = new ArrayList<>(get(a));
         result.addAll(get(b));
         return result;
     }
 
     public static <T> void forEach(@Nullable Collection<T> items, Apply<T> apply) {
-        if (items != null) forEach(new ArrayList(items), 0, apply);
+        if (items != null) forEach(new ArrayList<>(items), 0, apply);
     }
 
     public static <T> void forEach(@Nullable T[] items, Apply<T> apply) {
@@ -144,11 +144,11 @@ public class CollectionUtils {
     }
 
     public static @NonNull <T> Collection<T> get(@Nullable Collection<T> t) {
-        return t == null ? Collections.EMPTY_LIST : t;
+        return t == null ? Collections.emptyList() : t;
     }
 
     public static @NonNull <T> Collection<T> get(@Nullable Map<?, T> t) {
-        return t == null ? Collections.EMPTY_LIST : t.values();
+        return t == null ? Collections.emptyList() : t.values();
     }
 
     public static <T> boolean equals(@Nullable Collection<T> a, @Nullable Collection<T> b) {

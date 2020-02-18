@@ -1,5 +1,5 @@
-#import "RNNReactTitleView.h"
+#import "RNNComponentView.h"
 
-@interface RNNReactBackgroundView : RNNReactTitleView
+@interface RNNReactBackgroundView : RNNComponentView
 
 @end

@@ -7,4 +7,6 @@
 @property (nonatomic, strong) NSNumber* springDamping;
 @property (nonatomic, strong) NSNumber* springVelocity;
 
+- (BOOL)hasValue;
+
 @end

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.NavigationAnimator;
+import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
@@ -155,23 +156,15 @@ public class StackController extends ParentController<StackLayout> {
         child.setParentController(this);
         stack.push(child.getId(), child);
         Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
-        addChildToStack(child, child.getView(), resolvedOptions);
+        addChildToStack(child, resolvedOptions);
 
         if (toRemove != null) {
-            if (resolvedOptions.animations.push.enabled.isTrueOrUndefined()) {
-                if (resolvedOptions.animations.push.waitForRender.isTrue()) {
-                    child.getView().setAlpha(0);
-                    child.addOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
-                        getView().removeView(toRemove.getView());
-                        listener.onSuccess(child.getId());
-                    }));
+            NestedAnimationsOptions animation = resolvedOptions.animations.push;
+            if (animation.enabled.isTrueOrUndefined()) {
+                if (animation.waitForRender.isTrue() || resolvedOptions.animations.push.sharedElements.hasValue()) {
+                    animator.push(child, toRemove, resolvedOptions, () -> onPushAnimationComplete(child, toRemove, listener));
                 } else {
-                    animator.push(child.getView(), resolvedOptions.animations.push, () -> {
-                        if (!toRemove.equals(peek())) {
-                            getView().removeView(toRemove.getView());
-                        }
-                        listener.onSuccess(child.getId());
-                    });
+                    animator.push(child, toRemove, resolvedOptions, () -> onPushAnimationComplete(child, toRemove, listener));
                 }
             } else {
                 getView().removeView(toRemove.getView());
@@ -182,10 +175,15 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-    private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
+    private void onPushAnimationComplete(ViewController toAdd, ViewController toRemove, CommandListener listener) {
+        if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
+        listener.onSuccess(toAdd.getId());
+    }
+
+    private void addChildToStack(ViewController child, Options resolvedOptions) {
         child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
         if (size() == 1) presenter.applyInitialChildLayoutOptions(resolvedOptions);
-        getView().addView(view, getView().getChildCount() - 1, matchParentWithBehaviour(new StackBehaviour(this)));
+        getView().addView(child.getView(), getView().getChildCount() - 1, matchParentWithBehaviour(new StackBehaviour(this)));
     }
 
     public void setRoot(List<ViewController> children, CommandListener listener) {
@@ -204,7 +202,7 @@ public class StackController extends ParentController<StackLayout> {
         child.setParentController(this);
         stack.push(child.getId(), child);
         Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
-        addChildToStack(child, child.getView(), resolvedOptions);
+        addChildToStack(child, resolvedOptions);
 
         CommandListener listenerAdapter = new CommandListenerAdapter() {
             @Override
@@ -229,16 +227,14 @@ public class StackController extends ParentController<StackLayout> {
             if (resolvedOptions.animations.setStackRoot.waitForRender.isTrue()) {
                 child.getView().setAlpha(0);
                 child.addOnAppearedListener(() -> animator.push(
-                        child.getView(),
-                        resolvedOptions.animations.setStackRoot,
-                        resolvedOptions.transitions,
-                        toRemove.getElements(),
-                        child.getElements(),
+                        child,
+                        toRemove,
+                        resolvedOptions,
                         () -> listenerAdapter.onSuccess(child.getId())
                     )
                 );
             } else {
-                animator.push(child.getView(), resolvedOptions.animations.setStackRoot, () -> listenerAdapter.onSuccess(child.getId()));
+                animator.push(child, toRemove, resolvedOptions, () -> listenerAdapter.onSuccess(child.getId()));
             }
         } else {
             listenerAdapter.onSuccess(child.getId());

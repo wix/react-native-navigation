@@ -4,10 +4,15 @@ import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
+import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.util.HashMap;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -18,6 +23,12 @@ public class LayoutFactoryTest extends BaseTest {
     @Override
     public void beforeEach() {
         uut = new LayoutFactory(mock(ReactInstanceManager.class));
+        uut.init(
+                newActivity(),
+                Mockito.mock(EventEmitter.class),
+                new ChildControllersRegistry(),
+                new HashMap<>()
+        );
     }
 
     @Test

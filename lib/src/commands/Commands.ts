@@ -50,7 +50,7 @@ export class Commands {
 
   public setDefaultOptions(options: Options) {
     const input = cloneDeep(options);
-    this.optionsProcessor.processOptions(input);
+    this.optionsProcessor.processDefaultOptions(input);
 
     this.nativeCommandsSender.setDefaultOptions(input);
     this.commandsObserver.notify('setDefaultOptions', { options });

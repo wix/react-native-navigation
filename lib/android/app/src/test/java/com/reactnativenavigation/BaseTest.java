@@ -2,8 +2,6 @@ package com.reactnativenavigation;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,6 +12,7 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
@@ -21,8 +20,12 @@ import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, application = TestApplication.class)
@@ -111,5 +114,11 @@ public abstract class BaseTest {
         for (ViewController controller : controllers) {
             new CoordinatorLayout(context).addView(controller.getView());
         }
+    }
+
+    protected View mockView(Activity activity) {
+        View mock = Mockito.mock(View.class);
+        when(mock.getContext()).thenReturn(activity);
+        return mock;
     }
 }

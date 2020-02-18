@@ -1,6 +1,5 @@
 #import "RNNInteractivePopAnimator.h"
-#import "RNNAnimator.h"
-#import "RNNAnimatedView.h"
+#import "StackTransitionDelegate.h"
 #import "RNNElementView.h"
 #import "RNNComponentViewController.h"
 #import "VICMAImageView.h"
@@ -74,9 +73,6 @@
 			[UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				self.imageSnapshot.frame = self.originFrame;
 				self.imageSnapshot.contentMode = UIViewContentModeScaleAspectFill;
-				if ([self.bottomView resizeMode]) {
-					self.imageSnapshot.contentMode = [RNNAnimatedView contentModefromString:[self.bottomView resizeMode]];
-				}
 			} completion:^(BOOL finished) {
 				self.nc.delegate = nil;
 			}];
@@ -100,57 +96,54 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-	self.totalTranslate = 0;
-	self.transitionContext = transitionContext;
-	UIViewController* toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-	UIViewController* fromVC  = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-	UIView* componentView = [transitionContext containerView];
-
-	toVC.view.frame = fromVC.view.frame;
-	UIView* topViewContent = [self.topView subviews][0];
-	UIImage* image = [[self.topView subviews][0] image];
-	UIView* imageSnapshot = [[VICMAImageView alloc] initWithImage:image];
-	CGPoint fromSharedViewFrameOrigin = [topViewContent.superview convertPoint:topViewContent.frame.origin toView:fromVC.view];
-	CGRect fromOriginRect = CGRectMake(fromSharedViewFrameOrigin.x, fromSharedViewFrameOrigin.y, topViewContent.frame.size.width, topViewContent.frame.size.height);
-	self.topFrame = fromOriginRect;
-	imageSnapshot.contentMode = UIViewContentModeScaleAspectFill;
-	if ([self.topView resizeMode]) {
-		imageSnapshot.contentMode = [RNNAnimatedView contentModefromString:[self.topView resizeMode]];
-	}
-	imageSnapshot.frame = fromOriginRect;
-	self.imageSnapshot = imageSnapshot;
-	[self.bottomView setHidden:YES];
-	UIView* toSnapshot = [toVC.view snapshotViewAfterScreenUpdates:true];
-	toSnapshot.frame = fromVC.view.frame;
-	[componentView insertSubview:(UIView *)toSnapshot atIndex:1];
-	[componentView addSubview:self.imageSnapshot];
-	toSnapshot.alpha = 0.0;
-	[self.topView setHidden:YES];
-	[UIView animateKeyframesWithDuration:(NSTimeInterval)[self transitionDuration:transitionContext]
-								   delay:0
-								 options: UIViewKeyframeAnimationOptionAllowUserInteraction
-							  animations:^{
-								  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-									  fromVC.view.alpha = 0;
-									  toSnapshot.alpha = 1;
-								  }];
-							  }
-							  completion:^(BOOL finished) {
-								  [self.bottomView setHidden:NO];
-								  [toSnapshot removeFromSuperview];
-								  [self.imageSnapshot removeFromSuperview];
-								  self.totalTranslate = 0;
-								  if (![transitionContext transitionWasCancelled]) {
-									  [componentView addSubview: toVC.view];
-									  [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-
-								  }
-								  if ([transitionContext transitionWasCancelled]) {
-									  [self.topView setHidden:NO];
-									  [componentView addSubview: fromVC.view];
-									  [transitionContext completeTransition:NO];
-								  }
-							  }];
+//	self.totalTranslate = 0;
+//	self.transitionContext = transitionContext;
+//	UIViewController* toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+//	UIViewController* fromVC  = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+//	UIView* componentView = [transitionContext containerView];
+//
+//	toVC.view.frame = fromVC.view.frame;
+//	UIView* topViewContent = self.topView.view;
+//	UIImage* image = [[self.topView subviews][0] image];
+//	UIView* imageSnapshot = [[VICMAImageView alloc] initWithImage:image];
+//	CGPoint fromSharedViewFrameOrigin = [topViewContent.superview convertPoint:topViewContent.frame.origin toView:fromVC.view];
+//	CGRect fromOriginRect = CGRectMake(fromSharedViewFrameOrigin.x, fromSharedViewFrameOrigin.y, topViewContent.frame.size.width, topViewContent.frame.size.height);
+//	self.topFrame = fromOriginRect;
+//	imageSnapshot.contentMode = UIViewContentModeScaleAspectFill;
+//	imageSnapshot.frame = fromOriginRect;
+//	self.imageSnapshot = imageSnapshot;
+//	[self.bottomView setHidden:YES];
+//	UIView* toSnapshot = [toVC.view snapshotViewAfterScreenUpdates:true];
+//	toSnapshot.frame = fromVC.view.frame;
+//	[componentView insertSubview:(UIView *)toSnapshot atIndex:1];
+//	[componentView addSubview:self.imageSnapshot];
+//	toSnapshot.alpha = 0.0;
+//	[self.topView setHidden:YES];
+//	[UIView animateKeyframesWithDuration:(NSTimeInterval)[self transitionDuration:transitionContext]
+//								   delay:0
+//								 options: UIViewKeyframeAnimationOptionAllowUserInteraction
+//							  animations:^{
+//								  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+//									  fromVC.view.alpha = 0;
+//									  toSnapshot.alpha = 1;
+//								  }];
+//							  }
+//							  completion:^(BOOL finished) {
+//								  [self.bottomView setHidden:NO];
+//								  [toSnapshot removeFromSuperview];
+//								  [self.imageSnapshot removeFromSuperview];
+//								  self.totalTranslate = 0;
+//								  if (![transitionContext transitionWasCancelled]) {
+//									  [componentView addSubview: toVC.view];
+//									  [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+//
+//								  }
+//								  if ([transitionContext transitionWasCancelled]) {
+//									  [self.topView setHidden:NO];
+//									  [componentView addSubview: fromVC.view];
+//									  [transitionContext completeTransition:NO];
+//								  }
+//							  }];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController

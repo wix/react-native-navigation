@@ -24,7 +24,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) RNNTopTabOptions* topTab;
 @property (nonatomic, strong) RNNSideMenuOptions* sideMenu;
 @property (nonatomic, strong) RNNOverlayOptions* overlay;
-@property (nonatomic, strong) RNNSharedElementAnimationOptions* customTransition;
 @property (nonatomic, strong) RNNAnimationsOptions* animations;
 @property (nonatomic, strong) RNNStatusBarOptions* statusBar;
 @property (nonatomic, strong) RNNPreviewOptions* preview;

@@ -67,11 +67,11 @@
     XCTAssertEqual([_uut getStatusBarStyle:lightOptions], UIStatusBarStyleLightContent);
 }
 
-- (void)testGetPreferredStatusBarStyle_returnDefaultIfDark {
+- (void)testGetPreferredStatusBarStyle_returnDark {
     RNNNavigationOptions * darkOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
     darkOptions.statusBar.style = [[Text alloc] initWithValue:@"dark"];
 
-    XCTAssertEqual([_uut getStatusBarStyle:darkOptions], UIStatusBarStyleDefault);
+    XCTAssertEqual([_uut getStatusBarStyle:darkOptions], UIStatusBarStyleDarkContent);
 }
 
 - (void)testGetPreferredStatusBarStyle_returnDefaultIfNil {

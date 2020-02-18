@@ -122,10 +122,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
 	
 	if ([[newVc.resolveOptionsWithDefault.preview.reactTag getWithDefaultValue:@(0)] floatValue] > 0) {
-		UIViewController* vc = [RNNLayoutManager findComponentForId:componentId];
-		
-		if([vc isKindOfClass:[RNNComponentViewController class]]) {
-			RNNComponentViewController* rootVc = (RNNComponentViewController*)vc;
+		if ([fromVC isKindOfClass:[RNNComponentViewController class]]) {
+			RNNComponentViewController* rootVc = (RNNComponentViewController*)fromVC;
 			rootVc.previewController = newVc;
 			[newVc render];
 			
@@ -156,18 +154,16 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			if (newVc.resolveOptionsWithDefault.preview.width.hasValue || newVc.resolveOptionsWithDefault.preview.height.hasValue) {
 				newVc.preferredContentSize = size;
 			}
-			
 			RCTExecuteOnMainQueue(^{
 				UIView *view = [[ReactNativeNavigation getBridge].uiManager viewForReactTag:newVc.resolveOptionsWithDefault.preview.reactTag.get];
 				[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];
 			});
 		}
 	} else {
-		id animationDelegate = (newVc.resolveOptionsWithDefault.animations.push.hasCustomAnimation || newVc.resolveOptionsWithDefault.customTransition.animations) ? newVc : nil;
-        newVc.waitForRender = ([newVc.resolveOptionsWithDefault.animations.push.waitForRender getWithDefaultValue:NO] || animationDelegate);
+        newVc.waitForRender = newVc.resolveOptionsWithDefault.animations.push.shouldWaitForRender;
         [newVc setReactViewReadyCallback:^{
-            [_stackManager push:newVc onTop:fromVC animated:[newVc.resolveOptionsWithDefault.animations.push.enable getWithDefaultValue:YES] animationDelegate:animationDelegate completion:^{
-                [_eventEmitter sendOnNavigationCommandCompletion:push commandId:commandId params:@{@"componentId": componentId}];
+            [self->_stackManager push:newVc onTop:fromVC animated:[newVc.resolveOptionsWithDefault.animations.push.enable getWithDefaultValue:YES] completion:^{
+                [self->_eventEmitter sendOnNavigationCommandCompletion:push commandId:commandId params:@{@"componentId": componentId}];
                 completion();
             } rejection:rejection];
         }];
@@ -209,18 +205,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNComponentViewController *vc = (RNNComponentViewController*)[RNNLayoutManager findComponentForId:componentId];
 	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
 	[vc overrideOptions:options];
-	
-	UINavigationController *nvc = vc.navigationController;
-	
-	if ([nvc topViewController] == vc) {
-		if (vc.resolveOptions.animations.pop.hasCustomAnimation) {
-			nvc.delegate = vc;
-		}
-	} else {
-		NSMutableArray * vcs = nvc.viewControllers.mutableCopy;
-		[vcs removeObject:vc];
-		[nvc setViewControllers:vcs animated:[vc.resolveOptionsWithDefault.animations.pop.enable getWithDefaultValue:YES]];
-	}
 	
 	[_stackManager pop:vc animated:[vc.resolveOptionsWithDefault.animations.pop.enable getWithDefaultValue:YES] completion:^{
 		[_eventEmitter sendOnNavigationCommandCompletion:pop commandId:commandId params:@{@"componentId": componentId}];
@@ -270,10 +254,9 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
     RNNAssertMainQueue();
 	
 	UIViewController *newVc = [_controllerFactory createLayout:layout];
-	
     newVc.waitForRender = [newVc.resolveOptionsWithDefault.animations.showModal.waitForRender getWithDefaultValue:NO];
     [newVc setReactViewReadyCallback:^{
-        [_modalManager showModal:newVc animated:[newVc.resolveOptionsWithDefault.animations.showModal.enable getWithDefaultValue:YES] hasCustomAnimation:newVc.resolveOptionsWithDefault.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
+        [_modalManager showModal:newVc animated:[newVc.resolveOptionsWithDefault.animations.showModal.enable getWithDefaultValue:YES] completion:^(NSString *componentId) {
             [self->_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId params:@{@"layout": layout}];
             completion(newVc.layoutInfo.componentId);
         }];

@@ -58,12 +58,12 @@
 	XCTAssertFalse(self.boundViewController.navigationItem.hidesBackButton);
 }
 
-- (void)testApplyOptions_drawBehindTabBarTrueWhenVisibleFalse {
-	self.options.bottomTabs.visible = [[Bool alloc] initWithValue:@(0)];
-	[[(id) self.boundViewController expect] setDrawBehindTabBar:YES];
-	[self.uut applyOptionsOnInit:self.options];
-	[(id)self.boundViewController verify];
-}
+//- (void)testApplyOptions_drawBehindTabBarTrueWhenVisibleFalse {
+//	self.options.bottomTabs.visible = [[Bool alloc] initWithValue:@(0)];
+//	[[(id) self.boundViewController expect] setDrawBehindTabBar:YES];
+//	[self.uut applyOptionsOnInit:self.options];
+//	[(id)self.boundViewController verify];
+//}
 
 - (void)testApplyOptions_setOverlayTouchOutsideIfHasValue {
     self.options.overlay.interceptTouchOutside = [[Bool alloc] initWithBOOL:YES];
@@ -104,37 +104,37 @@
 	[(id)self.boundViewController verify];
 }
 
--(void)testApplyOptionsOnInit_TopBarDrawUnder_true {
-    self.options.topBar.drawBehind = [[Bool alloc] initWithValue:@(1)];
-
-	[[(id) self.boundViewController expect] setDrawBehindTopBar:YES];
-    [self.uut applyOptionsOnInit:self.options];
-    [(id)self.boundViewController verify];
-}
-
--(void)testApplyOptionsOnInit_TopBarDrawUnder_false {
-    self.options.topBar.drawBehind = [[Bool alloc] initWithValue:@(0)];
-
-	[[(id) self.boundViewController expect] setDrawBehindTopBar:NO];
-    [self.uut applyOptionsOnInit:self.options];
-    [(id)self.boundViewController verify];
-}
-
--(void)testApplyOptionsOnInit_BottomTabsDrawUnder_true {
-    self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(1)];
-
-	[[(id) self.boundViewController expect] setDrawBehindTabBar:YES];
-    [self.uut applyOptionsOnInit:self.options];
-    [(id)self.boundViewController verify];
-}
-
--(void)testApplyOptionsOnInit_BottomTabsDrawUnder_false {
-    self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(0)];
-
-	[[(id) self.boundViewController expect] setDrawBehindTabBar:NO];
-    [self.uut applyOptionsOnInit:self.options];
-    [(id)self.boundViewController verify];
-}
+//-(void)testApplyOptionsOnInit_TopBarDrawUnder_true {
+//    self.options.topBar.drawBehind = [[Bool alloc] initWithValue:@(1)];
+//
+//	[[(id) self.boundViewController expect] setDrawBehindTopBar:YES];
+//    [self.uut applyOptionsOnInit:self.options];
+//    [(id)self.boundViewController verify];
+//}
+//
+//-(void)testApplyOptionsOnInit_TopBarDrawUnder_false {
+//    self.options.topBar.drawBehind = [[Bool alloc] initWithValue:@(0)];
+//
+//	[[(id) self.boundViewController expect] setDrawBehindTopBar:NO];
+//    [self.uut applyOptionsOnInit:self.options];
+//    [(id)self.boundViewController verify];
+//}
+//
+//-(void)testApplyOptionsOnInit_BottomTabsDrawUnder_true {
+//    self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(1)];
+//
+//	[[(id) self.boundViewController expect] setDrawBehindTabBar:YES];
+//    [self.uut applyOptionsOnInit:self.options];
+//    [(id)self.boundViewController verify];
+//}
+//
+//-(void)testApplyOptionsOnInit_BottomTabsDrawUnder_false {
+//    self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(0)];
+//
+//	[[(id) self.boundViewController expect] setDrawBehindTabBar:NO];
+//    [self.uut applyOptionsOnInit:self.options];
+//    [(id)self.boundViewController verify];
+//}
 
 - (void)testReactViewShouldBeReleasedOnDealloc {
 	RNNComponentViewController* bindViewController = [RNNComponentViewController new];

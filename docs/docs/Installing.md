@@ -77,8 +77,8 @@
 
 Projects generated using newer versions of react-native use CocoaPods by default. In that case it's easier to install react-native-navigation using CocoaPods.
 
-1. Add the following to `Podfile`:
-
+1. Update your `Podfile`:
+If you're upgrading to v5 from a previous RNN version, make sure to remove manual linking of RNN
 ```diff
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
@@ -110,7 +110,7 @@ target 'YourApp' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-+ pod 'ReactNativeNavigation', :podspec => '../node_modules/react-native-navigation/ReactNativeNavigation.podspec'
+- pod 'ReactNativeNavigation', :podspec => '../node_modules/react-native-navigation/ReactNativeNavigation.podspec'
 
   use_native_modules!
 end
@@ -223,36 +223,7 @@ dependencies {
 }
 ```
 
-### 5 RNN and React Native version
-react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `android/app/build.gradle`.
-
-```diff
-android {
-    ...
-    defaultConfig {
-        applicationId "com.yourproject"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57" // See note below!
-        versionCode 1
-        versionName "1.0"
-        ...
-    }
-    ...
-}
-```
-
-!>Important note about `missingDimensionStrategy`<Br>
->`reactNative51` - RN 0.54.x and below<Br>
->`reactNative55` - RN 0.55.x<Br>
->`reactNative56` - RN 0.56.x<Br>
->`reactNative57` - RN 0.57.0 - 0.57.4<Br>
->`reactNative57_5` - RN 0.57.5 - 0.59.9<Br>
->`reactNative60` - RN 0.60.0 and above
-
-Now we need to instruct gradle how to build that flavor. To do so here two solutions:
-
-#### 5.1 Build app with gradle command
+#### 5.0 Build app with gradle command
 
 **prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:assembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
 
@@ -265,7 +236,7 @@ Now we need to instruct gradle how to build that flavor. To do so here two solut
 
 Now run `npm run android` to build your application
 
-#### 5.2 Ignore other RNN flavors
+#### 5.1 Ignore other RNN flavors
 
 If you don't want to run `npm run android` and want to keep the default `react-native run-android` command, you need to specify to graddle to ignore the other flavors RNN provides.
 

@@ -1,5 +1,5 @@
-#import "RNNReactView.h"
+#import "RNNComponentView.h"
 
-@interface RNNReactButtonView : RNNReactView
+@interface RNNReactButtonView : RNNComponentView
 
 @end

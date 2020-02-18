@@ -1,10 +1,6 @@
 package com.reactnativenavigation.playground;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -12,25 +8,19 @@ import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalCompo
 
 import org.json.JSONObject;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
 public class FragmentComponent implements ExternalComponent {
     private final FrameLayout content;
 
     FragmentComponent(FragmentActivity activity, JSONObject props) {
-        content = new FrameLayout(activity) {
-            @Override
-            protected void onAttachedToWindow() {
-                super.onAttachedToWindow();
-                addFragmentAfterContainerIsAttached(activity, props);
-            }
-        };
+        content = new FrameLayout(activity);
         content.setId(R.id.fragment_screen_content);
-    }
-
-    private void addFragmentAfterContainerIsAttached(FragmentActivity activity, JSONObject props) {
-        FragmentManager fm = activity.getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.add(R.id.fragment_screen_content, createFragment(props));
-        transaction.commitAllowingStateLoss();
+        activity.getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_screen_content, createFragment(props))
+                .commitAllowingStateLoss();
     }
 
     @NonNull

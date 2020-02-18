@@ -1,3 +1,4 @@
+import clone from 'lodash/clone';
 import isEqual from 'lodash/isEqual';
 import isObject from 'lodash/isObject';
 import isArray from 'lodash/isArray';
@@ -10,6 +11,7 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Options } from '../interfaces/Options';
+import { Deprecations } from './Deprecations';
 
 export class OptionsProcessor {
   constructor(
@@ -17,13 +19,22 @@ export class OptionsProcessor {
     private uniqueIdProvider: UniqueIdProvider,
     private colorService: ColorService,
     private assetService: AssetService,
+    private deprecations: Deprecations
   ) {}
 
   public processOptions(options: Options) {
-    this.processObject(options);
+    this.processObject(options, clone(options), (key, parentOptions) => {
+      this.deprecations.onProcessOptions(key, parentOptions);
+    });
   }
 
-  private processObject(objectToProcess: object) {
+  public processDefaultOptions(options: Options) {
+    this.processObject(options, clone(options), (key, parentOptions) => {
+      this.deprecations.onProcessDefaultOptions(key, parentOptions);
+    });
+  }
+
+  private processObject(objectToProcess: object, parentOptions: object, onProcess: (key: string, parentOptions: object) => void) {
     forEach(objectToProcess, (value, key) => {
       this.processColor(key, value, objectToProcess);
 
@@ -35,8 +46,10 @@ export class OptionsProcessor {
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
 
+      onProcess(key, parentOptions);
+
       if (!isEqual(key, 'passProps') && (isObject(value) || isArray(value))) {
-        this.processObject(value);
+        this.processObject(value, parentOptions, onProcess);
       }
     });
   }

@@ -62,6 +62,7 @@
 
 - (void)setUp {
 	[super setUp];
+	self.sharedApplication = [OCMockObject mockForClass:[UIApplication class]];
 	self.creator = [OCMockObject partialMockForObject:[RNNTestRootViewCreator new]];
 	self.mainWindow = [OCMockObject partialMockForObject:[UIWindow new]];
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
@@ -427,7 +428,7 @@
 	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
-	[[self.modalManager expect] showModal:mockedVC animated:YES hasCustomAnimation:NO completion:[OCMArg any]];
+	[[self.modalManager expect] showModal:mockedVC animated:YES completion:[OCMArg any]];
 	[self.uut showModal:@{} commandId:@"showModal" completion:^(NSString *componentId) {
 		
 	}];

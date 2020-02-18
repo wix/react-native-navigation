@@ -13,6 +13,7 @@ import com.reactnativenavigation.utils.CoordinatorLayoutUtils;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.NoOpYellowBoxDelegate;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontrolleroverlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.BehaviourDelegate;
 import com.reactnativenavigation.views.ExternalComponentLayout;
 
@@ -29,7 +30,7 @@ public class ExternalComponentViewController extends ViewController<ExternalComp
     private final ExternalComponentPresenter presenter;
 
     public ExternalComponentViewController(Activity activity, String id, ExternalComponent externalComponent, ExternalComponentCreator componentCreator, ReactInstanceManager reactInstanceManager, EventEmitter emitter, ExternalComponentPresenter presenter, Options initialOptions) {
-        super(activity, id, new NoOpYellowBoxDelegate(), initialOptions);
+        super(activity, id, new NoOpYellowBoxDelegate(), initialOptions, new ViewControllerOverlay(activity));
         this.externalComponent = externalComponent;
         this.componentCreator = componentCreator;
         this.reactInstanceManager = reactInstanceManager;

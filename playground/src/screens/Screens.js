@@ -16,6 +16,8 @@ module.exports = {
   Modal: 'Modal',
   Options: 'Options',
   Pushed: 'Pushed',
+  Buttons: 'Buttons',
+  SharedElement: 'SharedElement',
   Stack: 'Stack',
   SetRoot: 'SetRoot',
   Overlay: 'Overlay',

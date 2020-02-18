@@ -1,13 +1,14 @@
 package com.reactnativenavigation.utils;
 
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 public class ImageLoadingListenerAdapter implements ImageLoader.ImagesLoadingListener {
     @Override
-    public void onComplete(@NonNull List<Drawable> drawables) {
+    public void onComplete(@NonNull List<? extends Drawable> drawables) {
 
     }
 
