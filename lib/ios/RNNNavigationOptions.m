@@ -29,6 +29,7 @@
 	self.preview = [[RNNPreviewOptions alloc] initWithDict:dict[@"preview"]];
 	self.layout = [[RNNLayoutOptions alloc] initWithDict:dict[@"layout"]];
     self.modal = [[RNNModalOptions alloc] initWithDict:dict[@"modal"]];
+	self.deprecations = [[DeprecationOptions alloc] initWithDict:dict[@"deprecations"]];
 	
 	self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
 	
