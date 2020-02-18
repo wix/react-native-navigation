@@ -151,6 +151,7 @@ buildscript {
 +        mavenCentral()
 	}
 	dependencies {
++        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61" // Or whatever Kotlin version you've specified above
 +        classpath 'com.android.tools.build:gradle:3.5.3' // Or higher
 -        classpath 'com.android.tools.build:gradle:2.2.3'
 	}
