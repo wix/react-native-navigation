@@ -7,11 +7,19 @@
 ## npm
 * `npm install --save react-native-navigation`
 
-## iOS
+## Installing with react-native link
+If you're using RN 0.60 or higher, you can link RNN automatically with react-native link. Otherwise, follow the manual installation steps. Unlike most other libraries, react-native-navigation requires you to make a few changes to native files. To make all the necessary changes, run `react-native link react-native-navigation` in your project's root folder. Make sure to commit the changes introduced by the link script.
+
+If the link script completed successfully, you're good to go! If one of the steps failed, you'll need to complete the relevant step in the manual installation steps bellow.
+
+## Manual Installation
+If installation with react-native link did not work, follow the manual installation steps.
+
+### iOS
 
 > Make sure your Xcode is updated. We recommend editing `.h` and `.m` files in Xcode as the IDE will usually point out common errors.
 
-### Native Installation
+#### Native Installation
 
 1. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#manual-linking)).
 
@@ -73,12 +81,13 @@
   		...
   	```
 
-### Installation with CocoaPods
+#### Installation with CocoaPods
 
 Projects generated using newer versions of react-native use CocoaPods by default. In that case it's easier to install react-native-navigation using CocoaPods.
 
 1. Update your `Podfile`:
-If you're upgrading to v5 from a previous RNN version, make sure to remove manual linking of RNN
+**If you're upgrading to v5 from a previous RNN version**, make sure to remove manual linking of RNN
+
 ```diff
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
@@ -118,46 +127,31 @@ end
 
 2. `cd ios && pod install`
 
-3. Follow 3 and 3b in the Native Installation section.
-
-## Android
+### Android
 
 > Make sure your Android Studio installation is updated. We recommend editing `gradle` and `java` files in Android Studio as the IDE will suggest fixes and point out errors, this way you avoid most common pitfalls.
 
-### 1. Add the following in `android/settings.gradle`:
-
-```groovy
-include ':react-native-navigation'
-project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
-```
-
-### 2. Make sure you're using the new gradle plugin, edit `android/gradle/wrapper/gradle-wrapper.properties`
-
-```diff
-distributionBase=GRADLE_USER_HOME
-distributionPath=wrapper/dists
-zipStoreBase=GRADLE_USER_HOME
-zipStorePath=wrapper/dists
-+distributionUrl=https\://services.gradle.org/distributions/gradle-4.4-all.zip
--distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
-```
-
-### 3 Update `android/build.gradle`:
+#### 1 Update `android/build.gradle`:
 
 ```diff
 buildscript {
+  ext {
+-   minSdkVersion = 16
++   minSdkVersion = 19 // Or higher
+    compileSdkVersion = 26
+    targetSdkVersion = 26
+    supportLibVersion = "26.1.0"
++   RNNKotlinVersion = "1.3.61" // Or any version above 1.3.x
++   RNNKotlinStdlib = "kotlin-stdlib-jdk8"
+  }
 	repositories {
-+        google()
+        google()
+        jcenter()
 +        mavenLocal()
 +        mavenCentral()
-+        jcenter()
--        maven {
--            url 'https://maven.google.com/'
--            name 'Google'
--        }
 	}
 	dependencies {
-+        classpath 'com.android.tools.build:gradle:3.0.1'
++        classpath 'com.android.tools.build:gradle:3.5.3' // Or higher
 -        classpath 'com.android.tools.build:gradle:2.2.3'
 	}
 }
@@ -178,54 +172,113 @@ allprojects {
 +		maven { url 'https://jitpack.io' }
 	}
 }
-
-ext {
--    minSdkVersion = 16
-+    minSdkVersion = 19
-    compileSdkVersion = 26
-    targetSdkVersion = 26
-    supportLibVersion = "26.1.0"
-}
-
-
 ```
+#### 2 Update `MainActivity.java`
 
-### 4 Update project dependencies in `android/app/build.gradle`.
+`MainActivity.java` should extend `com.reactnativenavigation.NavigationActivity` instead of `ReactActivity`.
+
+This file is located in `android/app/src/main/java/com/<yourproject>/MainActivity.java`.
 
 ```diff
-android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+-import com.facebook.react.ReactActivity;
++import com.reactnativenavigation.NavigationActivity;
 
-    defaultConfig {
-        applicationId "com.yourproject"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
-    }
-+	compileOptions {
-+		sourceCompatibility JavaVersion.VERSION_1_8
-+		targetCompatibility JavaVersion.VERSION_1_8
-+	}
-	...
-}
-
-dependencies {
--    compile fileTree(dir: "libs", include: ["*.jar"])
--    compile "com.facebook.react:react-native:+"  // From node_modules
-+    implementation fileTree(dir: "libs", include: ["*.jar"])
-+    implementation "com.facebook.react:react-native:+"  // From node_modules
-+    implementation project(':react-native-navigation')
+-public class MainActivity extends ReactActivity {
++public class MainActivity extends NavigationActivity {
+-    @Override
+-    protected String getMainComponentName() {
+-        return "yourproject";
+-    }
 }
 ```
 
-#### 5.0 Build app with gradle command
+If you have any **react-native** related methods, you can safely delete them.
 
-**prefered solution** The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:assembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
+#### 3 Update `MainApplication.java`
+
+This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
+
+```diff
+...
+import android.app.Application;
+
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactPackage;
+import com.facebook.react.shell.MainReactPackage;
+import com.facebook.soloader.SoLoader;
+
++import com.reactnativenavigation.NavigationApplication;
++import com.reactnativenavigation.react.NavigationReactNativeHost;
+
+-public class MainApplication extends Application implements ReactApplication {
++public class MainApplication extends NavigationApplication {
+
+private final ReactNativeHost mReactNativeHost =
+-      new ReactNativeHost(this) {
++      new NavigationReactNativeHost(this) {
+        @Override
+        public boolean getUseDeveloperSupport() {
+          return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+          @SuppressWarnings("UnnecessaryLocalVariable")
+          List<ReactPackage> packages = new PackageList(this).getPackages();
+          // Packages that cannot be autolinked yet can be added manually here, for example:
+          // packages.add(new MyReactNativePackage());
+          return packages;
+        }
+
+        @Override
+        protected String getJSMainModuleName() {
+          return "index";
+        }
+      };
+
+  @Override
+  public ReactNativeHost getReactNativeHost() {
+    return mReactNativeHost;
+  }
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+-    SoLoader.init(this, /* native exopackage */ false);
+    initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+  }
+}
+```
+
+## You can use react-native-navigation \o/
+
+Update `index.js` file
+```diff
++import { Navigation } from "react-native-navigation";
+-import {AppRegistry} from 'react-native';
+import App from "./App";
+-import {name as appName} from './app.json';
+
+-AppRegistry.registerComponent(appName, () => App);
++Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => App);
+
++Navigation.events().registerAppLaunchedListener(() => {
++  Navigation.setRoot({
++    root: {
++      component: {
++        name: "navigation.playground.WelcomeScreen"
++      }
++    }
++  });
++});
+```
+
+⚠️ we use the layout type `component` here, which renders a React component but does not allow you to navigate to others. See [Usage](docs/Usage.md) and [LayoutTypes](docs/layout-types.md) for more options.
+
+## Troubleshooting
+### Build app with gradle command
+**prefered solution** - The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:assembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
 
 ```
 "scripts": {
@@ -236,9 +289,8 @@ dependencies {
 
 Now run `npm run android` to build your application
 
-#### 5.1 Ignore other RNN flavors
-
-If you don't want to run `npm run android` and want to keep the default `react-native run-android` command, you need to specify to graddle to ignore the other flavors RNN provides.
+### Ignore other RNN flavors
+If you don't want to run `npm run android` and want to keep the default `react-native run-android` command, you need to instruct gradle to ignore the other flavors RNN provides.
 
 To do so edit `android/build.gradle` and add:
 
@@ -261,87 +313,7 @@ To do so edit `android/build.gradle` and add:
 
 **Note**: As more build variants come available in the future, you will need to adjust the list (`names.contains("reactNative51") || names.contains("reactNative55")`). This is why we recommend the first solution.
 
-
-### 6. Update `MainActivity.java`
-
-`MainActivity.java` should extend `com.reactnativenavigation.NavigationActivity` instead of `ReactActivity`.
-
-This file is located in `android/app/src/main/java/com/<yourproject>/MainActivity.java`.
-
-```diff
--import com.facebook.react.ReactActivity;
-+import com.reactnativenavigation.NavigationActivity;
-
--public class MainActivity extends ReactActivity {
-+public class MainActivity extends NavigationActivity {
--    @Override
--    protected String getMainComponentName() {
--        return "yourproject";
--    }
-}
-```
-
-If you have any **react-native** related methods, you can safely delete them.
-
-### 7. Update `MainApplication.java`
-
-This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
-
-```diff
-...
-import android.app.Application;
-
-import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
-import com.facebook.soloader.SoLoader;
-
-+import com.reactnativenavigation.NavigationApplication;
-+import com.reactnativenavigation.react.NavigationReactNativeHost;
-+import com.reactnativenavigation.react.ReactGateway;
-
-import java.util.Arrays;
-import java.util.List;
-
--public class MainApplication extends Application implements ReactApplication {
-+public class MainApplication extends NavigationApplication {
-+
-+    @Override
-+    protected ReactGateway createReactGateway() {
-+        ReactNativeHost host = new NavigationReactNativeHost(this, isDebug(), createAdditionalReactPackages()) {
-+            @Override
-+            protected String getJSMainModuleName() {
-+                return "index";
-+            }
-+        };
-+        return new ReactGateway(this, isDebug(), host);
-+    }
-+
-+    @Override
-+    public boolean isDebug() {
-+        return BuildConfig.DEBUG;
-+    }
-+
-+    protected List<ReactPackage> getPackages() {
-+        // Add additional packages you require here
-+        // No need to add RnnPackage and MainReactPackage
-+        return Arrays.<ReactPackage>asList(
-+            // eg. new VectorIconsPackage()
-+        );
-+    }
-+
-+    @Override
-+    public List<ReactPackage> createAdditionalReactPackages() {
-+        return getPackages();
-+    }
-- ...
-+}
-
-```
-
-### 8. Force the same support library version across all dependencies (optional)
-
+### Force the same support library version across all dependencies
 Some of your dependencies might require a different version of one of Google's support library packages. This results in compilation errors similar to this:
 
 ```
@@ -375,28 +347,3 @@ dependencies {
 }
 
 ```
-
-## You can use react-native-navigation \o/
-
-Update `index.js` file
-```diff
-+import { Navigation } from "react-native-navigation";
--import {AppRegistry} from 'react-native';
-import App from "./App";
--import {name as appName} from './app.json';
-
--AppRegistry.registerComponent(appName, () => App);
-+Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => App);
-
-+Navigation.events().registerAppLaunchedListener(() => {
-+  Navigation.setRoot({
-+    root: {
-+      component: {
-+        name: "navigation.playground.WelcomeScreen"
-+      }
-+    }
-+  });
-+});
-```
-
-⚠️ we use the layout type `component` here, which renders a React component but does not allow you to navigate to others. See [Usage](docs/Usage.md) and [LayoutTypes](docs/layout-types.md) for more options.
