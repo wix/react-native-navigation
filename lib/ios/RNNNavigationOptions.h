@@ -13,6 +13,7 @@
 #import "RNNSplitViewOptions.h"
 #import "RNNModalOptions.h"
 #import "DeprecationOptions.h"
+#import "WindowOptions.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 
@@ -32,6 +33,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) RNNSplitViewOptions* splitView;
 @property (nonatomic, strong) RNNModalOptions* modal;
 @property (nonatomic, strong) DeprecationOptions* deprecations;
+@property (nonatomic, strong) WindowOptions* window;
 
 @property (nonatomic, strong) Bool* popGesture;
 @property (nonatomic, strong) Image* backgroundImage;
