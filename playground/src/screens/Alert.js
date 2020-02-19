@@ -1,52 +1,53 @@
 const React = require('react');
-const { PureComponent } = require('react');
-
 const { Text, Button, View } = require('react-native');
 const { Navigation } = require('react-native-navigation');
-
 const testIDs = require('../testIDs');
 
-class Alert extends PureComponent {
+function Alert({ componentId, title, message }) {
+  const onCLickOk = () => Navigation.dismissOverlay(componentId);
 
-  render() {
-    return (
-      <View style={styles.root} key={'overlay'}>
-        <View style={styles.alert}>
-          <Text style={styles.h1} testID={testIDs.DIALOG_HEADER}>{this.props.title}</Text>
-          <View style={styles.buttonContainer}>
-            <Button title='OK' testID={testIDs.OK_BUTTON} onPress={() => this.onCLickOk()} />
-          </View>
-        </View>
+  return (
+    <View style={styles.root} key={'overlay'}>
+      <View style={styles.alert}>
+        <Text style={styles.title} testID={testIDs.DIALOG_HEADER}>{title}</Text>
+        <Text style={styles.message}>{message}</Text>
+        <Button title='OK' testID={testIDs.OK_BUTTON} onPress={onCLickOk} />
       </View>
-    );
-  }
-
-  onCLickOk() {
-    Navigation.dismissOverlay(this.props.componentId);
-  }
+    </View>
+  );
 }
 
 const styles = {
   root: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 1
+    backgroundColor: '#00000050',
   },
   alert: {
     alignItems: 'center',
-    backgroundColor: '#efefef',
+    backgroundColor: 'whitesmoke',
     width: 250,
-    height: 100,
-    elevation: 4
+    elevation: 4,
+    padding: 16
   },
-  buttonContainer: {
-    width: '50%',
-    alignItems: 'center'
-  },
-  h1: {
+  title: {
     fontSize: 18,
-    margin: 10
+  },
+  message: {
+    marginVertical: 8
   }
 };
+
+Alert.options = (props) => {
+  return ({
+    layout: {
+      componentBackgroundColor: 'transparent'
+    },
+    overlay: {
+      interceptTouchOutside: true
+    }
+  });
+}
 
 module.exports = Alert;

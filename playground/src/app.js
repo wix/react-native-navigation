@@ -7,25 +7,16 @@ const testIDs = require('./testIDs');
 const Screens = require('./screens/Screens');
 
 if (Platform.OS === 'android') {
-  alert = (title) => {
-    Navigation.showOverlay({
-      component: {
-        name: Screens.Alert,
-        passProps: {
-          title
-        },
-        options: {
-          layout: {
-            componentBackgroundColor: 'transparent'
-          },
-          overlay: {
-            interceptTouchOutside: true
-          }
-        }
+  alert = (title, message) => Navigation.showOverlay({
+    component: {
+      name: Screens.Alert,
+      passProps: {
+        title,
+        message
       }
-    });
-  };
-}
+    }
+  });
+};
 
 function start() {
   registerScreens();
