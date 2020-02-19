@@ -34,18 +34,6 @@
     XCTAssertEqual([self.uut tabBarItem].badgeValue, nil);
 }
 
-//- (void)testSetDrawBehindTopBarTrue_shouldSetExtendedLayoutTrue {
-//    [[self.uut expect] setExtendedLayoutIncludesOpaqueBars:YES];
-//    [self.uut setDrawBehindTopBar:YES];
-//    [self.uut verify];
-//}
-//
-//- (void)testSetDrawBehindTabBarTrue_shouldSetExtendedLayoutTrue {
-//    [[self.uut expect] setExtendedLayoutIncludesOpaqueBars:YES];
-//    [self.uut setDrawBehindTabBar:YES];
-//    [self.uut verify];
-//}
-//
 //- (void)testSetDrawBehindTopBarFalse_shouldNotCallExtendedLayout {
 //    [[self.uut reject] setExtendedLayoutIncludesOpaqueBars:NO];
 //    [self.uut setDrawBehindTopBar:NO];
