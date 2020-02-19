@@ -59,7 +59,13 @@
 	[viewController setStatusBarStyle:[withDefault.statusBar.style getWithDefaultValue:@"default"] animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
 	[viewController setBackButtonVisible:[withDefault.topBar.backButton.visible getWithDefaultValue:YES]];
 	[viewController setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside getWithDefaultValue:YES]];
-
+    
+    if (@available(iOS 13.0, *)) {
+        [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor getWithDefaultValue:UIColor.systemBackgroundColor]];
+    } else {
+        [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor getWithDefaultValue:viewController.view.backgroundColor]];
+    }
+    
 	if (withDefault.topBar.searchBar.hasValue) {
 		BOOL hideNavBarOnFocusSearchBar = YES;
 		if (withDefault.topBar.hideNavBarOnFocusSearchBar.hasValue) {
@@ -123,7 +129,11 @@
 	if (options.topBar.largeTitle.visible.hasValue) {
 		[viewController setTopBarPrefersLargeTitle:options.topBar.largeTitle.visible.get];
 	}
-
+    
+    if (options.layout.componentBackgroundColor.hasValue) {
+        [viewController setBackgroundColor:options.layout.componentBackgroundColor.get];
+    }
+    
 	if (options.bottomTab.badgeColor.hasValue) {
 		[viewController setTabBarItemBadgeColor:options.bottomTab.badgeColor.get];
 	}
