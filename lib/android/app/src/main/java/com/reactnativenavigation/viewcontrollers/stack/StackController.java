@@ -96,7 +96,7 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public void mergeOptions(Options options) {
-        presenter.mergeOptions(options, this, getCurrentChild());
+        if (isViewShown()) presenter.mergeOptions(options, this, getCurrentChild());
         super.mergeOptions(options);
     }
 
