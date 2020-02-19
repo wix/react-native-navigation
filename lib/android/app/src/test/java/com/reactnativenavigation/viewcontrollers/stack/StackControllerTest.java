@@ -1040,6 +1040,12 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void mergeOptions_doesNotMergeOptionsIfViewIsNotVisible() {
+        uut.mergeOptions(Options.EMPTY);
+        verify(presenter, times(0)).mergeOptions(any(), any(), any());
+    }
+
+    @Test
     public void mergeChildOptions_updatesParentControllerWithNewOptions() {
         StackController uut = TestUtils.newStackController(activity)
                         .setId("stack")
