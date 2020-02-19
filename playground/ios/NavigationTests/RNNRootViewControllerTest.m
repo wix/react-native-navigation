@@ -130,14 +130,6 @@
 	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
-- (void)testbackgroundColor_validColor{
-	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
-	self.options.layout.backgroundColor = [[Color alloc] initWithValue:inputColor];
-	[self.uut viewWillAppear:false];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.view.backgroundColor isEqual:expectedColor]);
-}
-
 - (void)testTopBarTextFontFamily_validFont{
 	NSString* inputFont = @"HelveticaNeue";
 	__unused RNNStackController* nav = [self createNavigationController];

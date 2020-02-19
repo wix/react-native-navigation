@@ -65,6 +65,8 @@
     [stack setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
     [stack setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds getWithDefaultValue:NO]];
     [stack setBackButtonColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil]];
+	
+	[stack.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
@@ -128,6 +130,10 @@
     if (options.topBar.background.component.name.hasValue) {
         [self setCustomNavigationComponentBackground:options perform:nil];
     }
+	
+	if (options.layout.backgroundColor.hasValue) {
+		[stack.view setBackgroundColor:options.layout.backgroundColor.get];
+	}
     
     RNNNavigationOptions * withDefault = (RNNNavigationOptions *) [[options mergeInOptions:resolvedOptions] withDefault:[self defaultOptions]];
     [_topBarPresenter mergeOptions:options.topBar withDefault:withDefault.topBar];

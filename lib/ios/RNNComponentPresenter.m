@@ -60,10 +60,6 @@
 	[viewController setBackButtonVisible:[withDefault.topBar.backButton.visible getWithDefaultValue:YES]];
 	[viewController setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside getWithDefaultValue:YES]];
 
-	if (withDefault.layout.backgroundColor.hasValue) {
-		[viewController setBackgroundColor:withDefault.layout.backgroundColor.get];
-	}
-
 	if (withDefault.topBar.searchBar.hasValue) {
 		BOOL hideNavBarOnFocusSearchBar = YES;
 		if (withDefault.topBar.hideNavBarOnFocusSearchBar.hasValue) {
@@ -130,10 +126,6 @@
 
 	if (options.bottomTab.badgeColor.hasValue) {
 		[viewController setTabBarItemBadgeColor:options.bottomTab.badgeColor.get];
-	}
-	
-	if (options.layout.backgroundColor.hasValue) {
-		[viewController setBackgroundColor:options.layout.backgroundColor.get];
 	}
 	
 	if (options.bottomTab.visible.hasValue) {
