@@ -1,9 +1,8 @@
 const { Navigation } = require('react-native-navigation');
 const Colors = require('./Colors');
 const { Dimensions, PixelRatio } = require('react-native');
-const height = PixelRatio.getPixelSizeForLayoutSize(Dimensions.get('window').height) * 0.7;
+const height = Math.round(Dimensions.get('window').height) * 0.7;
 const { useSlowOpenScreenAnimations } = require('../flags');
-
 const SHOW_DURATION = 230 * 8;
 
 const setDefaultOptions = () => Navigation.setDefaultOptions({
@@ -49,7 +48,7 @@ const slowOpenScreenAnimations = {
         to: 1,
         duration: SHOW_DURATION,
       },
-      y: {
+      translationY: {
         from: height,
         to: 0,
         duration: SHOW_DURATION,

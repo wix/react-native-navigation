@@ -33,34 +33,45 @@ public class NavigationAnimator extends BaseAnimator {
     }
 
     public void push(ViewController appearing, ViewController disappearing, Options options, Runnable onAnimationEnd) {
+        AnimatorSet set = createPushAnimator(appearing, onAnimationEnd);
+        runningPushAnimations.put(appearing.getView(), set);
+        if (options.animations.push.sharedElements.hasValue()) {
+            pushWithElementTransition(appearing, disappearing, options, set);
+        } else {
+            pushWithoutElementTransitions(appearing, options, set);
+        }
+    }
+
+    private AnimatorSet createPushAnimator(ViewController appearing, Runnable onAnimationEnd) {
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            private boolean isCancelled;
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                isCancelled = true;
+                runningPushAnimations.remove(appearing.getView());
+                onAnimationEnd.run();
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (!isCancelled) {
+                    runningPushAnimations.remove(appearing.getView());
+                    onAnimationEnd.run();
+                }
+            }
+        });
+        return set;
+    }
+
+    private void pushWithElementTransition(ViewController appearing, ViewController disappearing, Options options, AnimatorSet set) {
         appearing.getView().setAlpha(0);
         transitionManager.createTransitions(
                 options.animations.push,
                 disappearing,
                 appearing,
                 transitionSet -> {
-                    AnimatorSet set = new AnimatorSet();
-                    runningPushAnimations.put(appearing.getView(), set);
-                    set.addListener(new AnimatorListenerAdapter() {
-                        private boolean isCancelled;
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-                            isCancelled = true;
-                            runningPushAnimations.remove(appearing.getView());
-                            onAnimationEnd.run();
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            if (!isCancelled) {
-                                runningPushAnimations.remove(appearing.getView());
-                                onAnimationEnd.run();
-                            }
-                        }
-                    });
-
-
                     if (transitionSet.isEmpty()) {
                         set.playTogether(options.animations.push.content.getAnimation(appearing.getView(), getDefaultPushAnimation(appearing.getView())));
                     } else {
@@ -74,6 +85,20 @@ public class NavigationAnimator extends BaseAnimator {
                     set.start();
                 }
         );
+    }
+
+    private void pushWithoutElementTransitions(ViewController appearing, Options options, AnimatorSet set) {
+        if (options.animations.push.waitForRender.isTrue()) {
+            appearing.getView().setAlpha(0);
+            appearing.addOnAppearedListener(() -> {
+                appearing.getView().setAlpha(1);
+                set.playTogether(options.animations.push.content.getAnimation(appearing.getView(), getDefaultPushAnimation(appearing.getView())));
+                set.start();
+            });
+        } else {
+            set.playTogether(options.animations.push.content.getAnimation(appearing.getView(), getDefaultPushAnimation(appearing.getView())));
+            set.start();
+        }
     }
 
     public void pop(View view, NestedAnimationsOptions pop, Runnable onAnimationEnd) {
