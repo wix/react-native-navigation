@@ -30,6 +30,7 @@
 	self.layout = [[RNNLayoutOptions alloc] initWithDict:dict[@"layout"]];
     self.modal = [[RNNModalOptions alloc] initWithDict:dict[@"modal"]];
 	self.deprecations = [[DeprecationOptions alloc] initWithDict:dict[@"deprecations"]];
+	self.window = [[WindowOptions alloc] initWithDict:dict[@"window"]];
 	
 	self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
 	
