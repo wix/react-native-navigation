@@ -62,6 +62,9 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	} else {
 		self.edgesForExtendedLayout &= ~UIRectEdgeTop;
 	}
+    
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
 }
 
 - (void)setDrawBehindTabBar:(BOOL)drawBehindTabBar {
@@ -70,6 +73,9 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	} else {
 		self.edgesForExtendedLayout &= ~UIRectEdgeBottom;
 	}
+    
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
 }
 
 - (void)setTabBarItemBadge:(NSString *)badge {
