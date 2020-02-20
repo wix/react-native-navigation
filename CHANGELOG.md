@@ -1,4 +1,29 @@
 # Changelog
+# 6.0.0
+This release changes how layout.backgroundColor work on iOS to add parity with Android.
+* layout.backgroundColor - applies background color to parent layouts (Stack, BottomTabs, SideMenu etc)
+* layout.componentBackgroundColor - applies background color only to components
+
+## Fixed
+### Android
+* Fix custom push animations not working [#c9232cb](https://github.com/wix/react-native-navigation/commit/c9232cb9e49e02cd1975d16de01fa2a6186032b0) by [guyca](https://github.com/guyca)
+### iOS
+* Remove draw behind deprecation [#950642d](https://github.com/wix/react-native-navigation/commit/950642d48b2ec67f510ae6b3eefaaeb1ebfcf43d) by [yogevbd](https://github.com/yogevbd)
+* Fix layout.backgroundColor being applied to components, it's now applied to parent layouts  [#950642d](https://github.com/wix/react-native-navigation/commit/950642d48b2ec67f510ae6b3eefaaeb1ebfcf43d) by [yogevbd](https://github.com/yogevbd)
+* Implement layout.componentBackgroundColor which is applied only to component ViewControllers [#950642d](https://github.com/wix/react-native-navigation/commit/950642d48b2ec67f510ae6b3eefaaeb1ebfcf43d) by [yogevbd](https://github.com/yogevbd)
+
+# 5.1.1
+## Fixed
+### iOS
+* Apply extendedLayoutIncludesOpaqueBars true on all viewControllers (this commit was originally added to v4 and was left out of v5 my mistake) [#9fefeca](https://github.com/wix/react-native-navigation/commit/9fefeca9be9844fc80f839a532c97f5c4fa1d299)
+### Android
+* Fix crash when mergeOptions were called before stack view was created [#defc2aa](https://github.com/wix/react-native-navigation/commit/defc2aaa6e7c845c05cabe8c5753cc6a68ab5830) by [guyca](https://github.com/guyca)
+
+# 5.1.0
+## Added
+### iOS
+* Add window.backgroundColor option [#c99ecf9](https://github.com/wix/react-native-navigation/commit/c99ecf9b145f453a9674c965d1634bcdece973b6) by [yogevbd](https://github.com/yogevbd)
+
 # 5.0.0
 This release is focuses on shared element transition and on improving the installation process of the library.
 
