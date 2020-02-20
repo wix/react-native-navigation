@@ -7,7 +7,7 @@
 
 @property (nonatomic, strong) RNNSideMenuPresenter *uut;
 @property (nonatomic, strong) RNNNavigationOptions *options;
-@property (nonatomic, strong) id bindedViewController;
+@property (nonatomic, strong) id boundViewController;
 
 @end
 
@@ -16,25 +16,25 @@
 - (void)setUp {
     [super setUp];
 	self.uut = [[RNNSideMenuPresenter alloc] init];
-	self.bindedViewController = [OCMockObject partialMockForObject:[RNNSideMenuController new]];
-    [self.uut bindViewController:self.bindedViewController];
+	self.boundViewController = [OCMockObject partialMockForObject:[RNNSideMenuController new]];
+    [self.uut bindViewController:self.boundViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
 - (void)testApplyOptionsShouldSetDefaultValues {
-	[[self.bindedViewController expect] side:MMDrawerSideLeft enabled:YES];
-	[[self.bindedViewController expect] side:MMDrawerSideRight enabled:YES];
-	[[self.bindedViewController expect] setShouldStretchLeftDrawer:YES];
-	[[self.bindedViewController expect] setShouldStretchRightDrawer:YES];
-	[[self.bindedViewController expect] setAnimationVelocityLeft:840.0f];
-	[[self.bindedViewController expect] setAnimationVelocityRight:840.0f];
-	[[self.bindedViewController reject] side:MMDrawerSideLeft width:0];
-	[[self.bindedViewController reject] side:MMDrawerSideRight width:0];
-  	[[self.bindedViewController expect] setAnimationType:nil];
+	[[self.boundViewController expect] side:MMDrawerSideLeft enabled:YES];
+	[[self.boundViewController expect] side:MMDrawerSideRight enabled:YES];
+	[[self.boundViewController expect] setShouldStretchLeftDrawer:YES];
+	[[self.boundViewController expect] setShouldStretchRightDrawer:YES];
+	[[self.boundViewController expect] setAnimationVelocityLeft:840.0f];
+	[[self.boundViewController expect] setAnimationVelocityRight:840.0f];
+	[[self.boundViewController reject] side:MMDrawerSideLeft width:0];
+	[[self.boundViewController reject] side:MMDrawerSideRight width:0];
+  	[[self.boundViewController expect] setAnimationType:nil];
     
 	[self.uut applyOptions:self.options];
 
-	[self.bindedViewController verify];
+	[self.boundViewController verify];
 }
 
 - (void)testApplyOptionsShouldSetInitialValues {
@@ -45,41 +45,49 @@
 	self.options.sideMenu.right.animationVelocity = [[Double alloc] initWithValue:@(100.0f)];
 	self.options.sideMenu.left.animationVelocity = [[Double alloc] initWithValue:@(100.0f)];
 	
-	[[self.bindedViewController expect] side:MMDrawerSideLeft enabled:NO];
-	[[self.bindedViewController expect] side:MMDrawerSideRight enabled:NO];
-	[[self.bindedViewController expect] setShouldStretchLeftDrawer:NO];
-	[[self.bindedViewController expect] setShouldStretchRightDrawer:NO];
-	[[self.bindedViewController expect] setAnimationVelocityLeft:100.0f];
-	[[self.bindedViewController expect] setAnimationVelocityRight:100.0f];
+	[[self.boundViewController expect] side:MMDrawerSideLeft enabled:NO];
+	[[self.boundViewController expect] side:MMDrawerSideRight enabled:NO];
+	[[self.boundViewController expect] setShouldStretchLeftDrawer:NO];
+	[[self.boundViewController expect] setShouldStretchRightDrawer:NO];
+	[[self.boundViewController expect] setAnimationVelocityLeft:100.0f];
+	[[self.boundViewController expect] setAnimationVelocityRight:100.0f];
 	
 	[self.uut applyOptions:self.options];
 	
-	[self.bindedViewController verify];
+	[self.boundViewController verify];
 }
 
 - (void)testApplyOptionsOnInitShouldSetWidthOptions {
 	self.options.sideMenu.right.width = [[Double alloc] initWithValue:@(100.0f)];
 	self.options.sideMenu.left.width = [[Double alloc] initWithValue:@(100.0f)];
 
-	[[self.bindedViewController expect] side:MMDrawerSideLeft width:100.0f];
-	[[self.bindedViewController expect] side:MMDrawerSideRight width:100.0f];
+	[[self.boundViewController expect] side:MMDrawerSideLeft width:100.0f];
+	[[self.boundViewController expect] side:MMDrawerSideRight width:100.0f];
 	
 	[self.uut applyOptionsOnInit:self.options];
 	
-	[self.bindedViewController verify];
+	[self.boundViewController verify];
 }
 
 - (void)testApplyOptionsOnInitShouldSetDefaultDrawerGestureMode {
-	[[self.bindedViewController expect] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+	[[self.boundViewController expect] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
 	[self.uut applyOptionsOnInit:self.options];
-	[self.bindedViewController verify];
+	[self.boundViewController verify];
 }
 
 - (void)testApplyOptionsOnInitShouldSetBezelDrawerGestureMode {
 	self.options.sideMenu.openGestureMode = [[SideMenuOpenMode alloc] initWithValue:@(MMOpenDrawerGestureModeNone)];
-	[[self.bindedViewController expect] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+	[[self.boundViewController expect] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
 	[self.uut applyOptionsOnInit:self.options];
-	[self.bindedViewController verify];
+	[self.boundViewController verify];
+}
+
+- (void)testBackgroundColor_validColor {
+	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
+	self.options.layout.backgroundColor = [[Color alloc] initWithValue:inputColor];
+	[self.uut applyOptions:self.options];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	XCTAssertTrue([((UIViewController *)self.boundViewController).view.backgroundColor isEqual:expectedColor]);
 }
 
 @end

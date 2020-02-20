@@ -41,6 +41,8 @@
 		[sideMenu side:MMDrawerSideRight visible:withDefault.sideMenu.right.visible.get];
 		[withDefault.sideMenu.right.visible consume];
 	}
+    
+    [sideMenu.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
@@ -108,6 +110,10 @@
 	if (options.sideMenu.animationType.hasValue) {
 		[sideMenu setAnimationType:options.sideMenu.animationType.get];
 	}
+    
+    if (options.layout.backgroundColor.hasValue) {
+        [sideMenu.view setBackgroundColor:options.layout.backgroundColor.get];
+    }
 }
 
 @end

@@ -59,11 +59,13 @@
 	[viewController setStatusBarStyle:[withDefault.statusBar.style getWithDefaultValue:@"default"] animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
 	[viewController setBackButtonVisible:[withDefault.topBar.backButton.visible getWithDefaultValue:YES]];
 	[viewController setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside getWithDefaultValue:YES]];
-
-	if (withDefault.layout.backgroundColor.hasValue) {
-		[viewController setBackgroundColor:withDefault.layout.backgroundColor.get];
-	}
-
+    
+    if (@available(iOS 13.0, *)) {
+        [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor getWithDefaultValue:UIColor.systemBackgroundColor]];
+    } else {
+        [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor getWithDefaultValue:viewController.view.backgroundColor]];
+    }
+    
 	if (withDefault.topBar.searchBar.hasValue) {
 		BOOL hideNavBarOnFocusSearchBar = YES;
 		if (withDefault.topBar.hideNavBarOnFocusSearchBar.hasValue) {
@@ -81,10 +83,8 @@
 	UIViewController* viewController = self.boundViewController;
 	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     
-	if (![withDefault.deprecations.deprecateDrawBehind getWithDefaultValue:NO]) {
-		[viewController setDrawBehindTopBar:[withDefault.topBar.drawBehind getWithDefaultValue:NO]];
-		[viewController setDrawBehindTabBar:[withDefault.bottomTabs.drawBehind getWithDefaultValue:NO] || ![withDefault.bottomTabs.visible getWithDefaultValue:YES]];
-	}
+	[viewController setDrawBehindTopBar:[withDefault.topBar.drawBehind getWithDefaultValue:NO]];
+    [viewController setDrawBehindTabBar:[withDefault.bottomTabs.drawBehind getWithDefaultValue:NO] || ![withDefault.bottomTabs.visible getWithDefaultValue:YES]];
     
 	if ((withDefault.topBar.leftButtons || withDefault.topBar.rightButtons)) {
 		[_navigationButtons applyLeftButtons:withDefault.topBar.leftButtons rightButtons:withDefault.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
@@ -116,7 +116,7 @@
 		[viewController setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
 	}
 
-	if (options.topBar.drawBehind.hasValue && ![withDefault.deprecations.deprecateDrawBehind getWithDefaultValue:NO]) {
+	if (options.topBar.drawBehind.hasValue) {
 		[viewController setDrawBehindTopBar:options.topBar.drawBehind.get];
   }
 
@@ -127,13 +127,13 @@
 	if (options.topBar.largeTitle.visible.hasValue) {
 		[viewController setTopBarPrefersLargeTitle:options.topBar.largeTitle.visible.get];
 	}
-
+    
+    if (options.layout.componentBackgroundColor.hasValue) {
+        [viewController setBackgroundColor:options.layout.componentBackgroundColor.get];
+    }
+    
 	if (options.bottomTab.badgeColor.hasValue) {
 		[viewController setTabBarItemBadgeColor:options.bottomTab.badgeColor.get];
-	}
-	
-	if (options.layout.backgroundColor.hasValue) {
-		[viewController setBackgroundColor:options.layout.backgroundColor.get];
 	}
 	
 	if (options.bottomTab.visible.hasValue) {
