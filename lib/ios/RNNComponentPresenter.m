@@ -118,9 +118,13 @@
 
 	if (options.topBar.drawBehind.hasValue) {
 		[viewController setDrawBehindTopBar:options.topBar.drawBehind.get];
-  }
+    }
+    
+    if (options.bottomTabs.drawBehind.hasValue) {
+        [viewController setDrawBehindTabBar:options.bottomTabs.drawBehind.get];
+    }
 
-  if (options.topBar.title.text.hasValue) {
+    if (options.topBar.title.text.hasValue) {
 		[viewController setNavigationItemTitle:options.topBar.title.text.get];
 	}
 
