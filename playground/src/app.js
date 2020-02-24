@@ -23,7 +23,6 @@ function start() {
   Navigation.events().registerAppLaunchedListener(async () => {
     setDefaultOptions();
     setRoot();
-    // showSETModal();
   });
 }
 
@@ -90,10 +89,6 @@ function setRoot() {
       }
     }
   });
-}
-
-function showSETModal() {
-  Navigation.showModal(Screens.CocktailsListScreen);
 }
 
 module.exports = {

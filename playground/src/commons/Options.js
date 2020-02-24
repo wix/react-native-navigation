@@ -1,9 +1,13 @@
 const { Navigation } = require('react-native-navigation');
 const Colors = require('./Colors');
-const { Dimensions, PixelRatio } = require('react-native');
+const { Dimensions } = require('react-native');
 const height = Math.round(Dimensions.get('window').height) * 0.7;
-const { useSlowOpenScreenAnimations } = require('../flags');
-const SHOW_DURATION = 230 * 8;
+const width = Math.round(Dimensions.get('window').width);
+const {
+  useSlowOpenScreenAnimations,
+  useSlideAnimation: useSlideAnimation
+} = require('../flags');
+const SHOW_DURATION = 230 * 3;
 
 const setDefaultOptions = () => Navigation.setDefaultOptions({
   layout: {
@@ -19,10 +23,46 @@ const setDefaultOptions = () => Navigation.setDefaultOptions({
     selectedTextColor: Colors.primary
   },
   animations: {
-    ...useSlowOpenScreenAnimations ? slowOpenScreenAnimations : {}   
+    ...useSlideAnimation ?
+        slideAnimations :
+        useSlowOpenScreenAnimations ?
+          slowOpenScreenAnimations :
+          {}
   },
   modalPresentationStyle: 'fullScreen'
 });
+
+const slideAnimations = {
+  push: {
+    waitForRender: true,
+    content: {
+      translationX: {
+        from: width,
+        to: 0,
+        duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300
+      },
+      alpha: {
+        from: 0.7,
+        to: 1,
+        duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300
+      }
+    }
+  },
+  pop: {
+    content: {
+      translationX: {
+        from: 0,
+        to: width,
+        duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300
+      },
+      alpha: {
+        from: 1,
+        to: 0.3,
+        duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300
+      }
+    }
+  }
+}
 
 const slowOpenScreenAnimations = {
   showModal: {
