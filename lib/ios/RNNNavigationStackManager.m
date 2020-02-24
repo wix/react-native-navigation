@@ -7,7 +7,7 @@ typedef void (^RNNAnimationBlock)(void);
 @implementation RNNNavigationStackManager
 
 - (void)push:(UIViewController *)newTop onTop:(UIViewController *)onTopViewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
-	UINavigationController *nvc = onTopViewController.navigationController;
+	UINavigationController* nvc = [self navigationControllerFromViewController:onTopViewController];
 
 	if([[RCTI18nUtil sharedInstance] isRTL]) {
 		nvc.view.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
@@ -23,7 +23,7 @@ typedef void (^RNNAnimationBlock)(void);
 }
 
 - (void)pop:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
-    UINavigationController *nvc = viewController.navigationController;
+    UINavigationController* nvc = [self navigationControllerFromViewController:viewController];
     if ([nvc.viewControllers indexOfObject:viewController] < 0) {
         [RNNErrorHandler reject:rejection withErrorCode:1012 errorDescription:@"popping component failed"];
         return;
@@ -39,7 +39,7 @@ typedef void (^RNNAnimationBlock)(void);
         }];
     } else {
         [self performAnimationBlock:^{
-            [viewController.navigationController popViewControllerAnimated:animated];
+            [nvc popViewControllerAnimated:animated];
         } completion:^{
             completion();
         }];
@@ -49,9 +49,11 @@ typedef void (^RNNAnimationBlock)(void);
 - (void)popTo:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection; {
 	__block NSArray* poppedVCs;
 	
-	if ([viewController.navigationController.childViewControllers containsObject:viewController]) {
+    UINavigationController* nvc = [self navigationControllerFromViewController:viewController];
+    
+	if ([nvc.childViewControllers containsObject:viewController]) {
 		[self performAnimationBlock:^{
-			poppedVCs = [viewController.navigationController popToViewController:viewController animated:animated];
+			poppedVCs = [nvc popToViewController:viewController animated:animated];
 		} completion:^{
 			if (completion) {
 				completion(poppedVCs);
@@ -65,19 +67,29 @@ typedef void (^RNNAnimationBlock)(void);
 - (void)popToRoot:(UIViewController*)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
 	__block NSArray* poppedVCs;
 	
+    UINavigationController* nvc = [self navigationControllerFromViewController:viewController];
+    
 	[self performAnimationBlock:^{
-		poppedVCs = [viewController.navigationController popToRootViewControllerAnimated:animated];
+		poppedVCs = [nvc popToRootViewControllerAnimated:animated];
 	} completion:^{
 		completion(poppedVCs);
 	}];
 }
 
 - (void)setStackChildren:(NSArray<UIViewController *> *)children fromViewController:(UIViewController *)fromViewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
-	UINavigationController* nvc = fromViewController.navigationController;
+	UINavigationController* nvc = [self navigationControllerFromViewController:fromViewController];
 	
 	[self performAnimationBlock:^{
 		[nvc setViewControllers:children animated:animated];
 	} completion:completion];
+}
+
+- (UINavigationController *)navigationControllerFromViewController:(UIViewController *)viewController {
+    if ([viewController isKindOfClass:UINavigationController.class]) {
+        return (UINavigationController *)viewController;
+    } else {
+        return viewController.navigationController;
+    }
 }
 
 # pragma mark Private
