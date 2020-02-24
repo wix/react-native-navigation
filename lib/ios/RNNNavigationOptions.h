@@ -12,6 +12,8 @@
 #import "RNNLayoutOptions.h"
 #import "RNNSplitViewOptions.h"
 #import "RNNModalOptions.h"
+#import "DeprecationOptions.h"
+#import "WindowOptions.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 
@@ -24,13 +26,14 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) RNNTopTabOptions* topTab;
 @property (nonatomic, strong) RNNSideMenuOptions* sideMenu;
 @property (nonatomic, strong) RNNOverlayOptions* overlay;
-@property (nonatomic, strong) RNNSharedElementAnimationOptions* customTransition;
 @property (nonatomic, strong) RNNAnimationsOptions* animations;
 @property (nonatomic, strong) RNNStatusBarOptions* statusBar;
 @property (nonatomic, strong) RNNPreviewOptions* preview;
 @property (nonatomic, strong) RNNLayoutOptions* layout;
 @property (nonatomic, strong) RNNSplitViewOptions* splitView;
 @property (nonatomic, strong) RNNModalOptions* modal;
+@property (nonatomic, strong) DeprecationOptions* deprecations;
+@property (nonatomic, strong) WindowOptions* window;
 
 @property (nonatomic, strong) Bool* popGesture;
 @property (nonatomic, strong) Image* backgroundImage;

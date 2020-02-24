@@ -8,6 +8,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
+import com.reactnativenavigation.viewcontrollers.viewcontrolleroverlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.Component;
 
 import androidx.annotation.CallSuper;
@@ -23,7 +24,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     public ChildController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options initialOptions) {
-        super(activity, id, new NoOpYellowBoxDelegate(), initialOptions);
+        super(activity, id, new NoOpYellowBoxDelegate(), initialOptions, new ViewControllerOverlay(activity));
         this.presenter = presenter;
         this.childRegistry = childRegistry;
     }

@@ -15,14 +15,18 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.robolectric.annotation.LooperMode;
+import org.robolectric.shadows.ShadowLooper;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@LooperMode(LooperMode.Mode.PAUSED)
 public class NavigationModuleTest extends BaseTest {
     private NavigationModule uut;
     private Navigator navigator;
@@ -56,7 +60,24 @@ public class NavigationModuleTest extends BaseTest {
         when(layoutFactory.create(any(LayoutNode.class))).thenReturn(rootViewController);
 
         uut.setRoot("1", root, mock(Promise.class));
+        ShadowLooper.idleMainLooper();
         verify(navigator).setRoot(eq(rootViewController), any(), any());
+    }
+
+    @Test
+    public void postCommandsOnMainThread_doesNotCrashIfActivityIsNull() {
+        NavigationModule spy = spy(uut);
+        when(spy.activity()).thenReturn(mock(NavigationActivity.class));
+        Runnable runnable = mock(Runnable.class);
+        spy.handle(runnable);
+        ShadowLooper.idleMainLooper();
+        verify(runnable).run();
+
+        when(spy.activity()).thenReturn(null);
+        Runnable dontRun = mock(Runnable.class);
+        spy.handle(dontRun);
+        ShadowLooper.idleMainLooper();
+        verify(dontRun, times(0)).run();
     }
 
     private NavigationActivity mockActivity() {

@@ -1,18 +1,17 @@
 package com.reactnativenavigation.utils;
 
 import android.graphics.Point;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewParent;
 
 import com.facebook.react.views.view.ReactViewBackgroundDrawable;
-import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.utils.Functions.Func1;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
@@ -93,21 +92,14 @@ public class ViewUtils {
         return view.getLayoutParams().height < 0 ? view.getHeight() : view.getLayoutParams().height;
     }
 
-    public static void performOnParentReactView(View child, Func1<ReactView> task) {
-        ReactView parent = findParentReactView(child.getParent());
+    public static <T extends ViewGroup> T findParent(View view, Class<T> clazz) {
+        if (view == null) return null;
+        @Nullable ViewParent parent = view.getParent();
         if (parent != null) {
-            task.run(parent);
+            if (parent.getClass().isAssignableFrom(clazz)) return (T) parent;
+            return findParent((View) parent, clazz);
         }
-    }
-
-    private static ReactView findParentReactView(ViewParent parent) {
-        if (parent == null) {
-            return null;
-        }
-        if (parent instanceof ReactView) {
-            return (ReactView) parent;
-        }
-        return findParentReactView(parent.getParent());
+        return null;
     }
 
     public static Point getLocationOnScreen(View view) {
@@ -125,6 +117,12 @@ public class ViewUtils {
             if (!view.getClass().isAssignableFrom(clazz)) return false;
         }
         return true;
+    }
+
+    public static int getIndexInParent(View view) {
+        ViewParent parent = view.getParent();
+        if (parent == null) return -1;
+        return ((ViewGroup) parent).indexOfChild(view);
     }
 
     public static int getBackgroundColor(View view) {

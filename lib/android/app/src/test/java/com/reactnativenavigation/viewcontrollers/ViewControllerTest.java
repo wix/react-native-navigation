@@ -17,6 +17,7 @@ import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.viewcontrollers.viewcontrolleroverlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.Component;
 
 import org.assertj.android.api.Assertions;
@@ -64,7 +65,7 @@ public class ViewControllerTest extends BaseTest {
     public void canOverrideViewCreation() {
         final FrameLayout otherView = new FrameLayout(activity);
         yellowBoxDelegate = spy(new YellowBoxDelegate());
-        ViewController myController = new ViewController(activity, "vc", yellowBoxDelegate, new Options()) {
+        ViewController myController = new ViewController(activity, "vc", yellowBoxDelegate, new Options(), new ViewControllerOverlay(activity)) {
             @Override
             protected FrameLayout createView() {
                 return otherView;
@@ -135,7 +136,7 @@ public class ViewControllerTest extends BaseTest {
     public void onChildViewAdded_delegatesToYellowBoxDelegate() {
         View child = new View(activity);
         ViewGroup view = new FrameLayout(activity);
-        ViewController vc = new ViewController(activity, "", yellowBoxDelegate, new Options()) {
+        ViewController vc = new ViewController(activity, "", yellowBoxDelegate, new Options(), new ViewControllerOverlay(activity)) {
             @Override
             protected ViewGroup createView() {
                 return view;

@@ -1,8 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
-import androidx.annotation.RestrictTo;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.ModalAnimator;
@@ -17,6 +15,9 @@ import java.util.EmptyStackException;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import androidx.annotation.RestrictTo;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class ModalStack {
     private List<ViewController> modals = new ArrayList<>();

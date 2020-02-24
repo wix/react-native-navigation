@@ -9,7 +9,6 @@ import { LayoutTreeParser } from './commands/LayoutTreeParser';
 import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
 import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
-import { SharedElement } from './adapters/SharedElement';
 import { CommandsObserver } from './events/CommandsObserver';
 import { Constants, NavigationConstants } from './adapters/Constants';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
@@ -21,9 +20,9 @@ import { OptionsProcessor } from './commands/OptionsProcessor';
 import { ColorService } from './adapters/ColorService';
 import { AssetService } from './adapters/AssetResolver';
 import { AppRegistryService } from './adapters/AppRegistryService';
+import { Deprecations } from './commands/Deprecations';
 
 export class NavigationRoot {
-  public readonly Element = SharedElement;
   public readonly TouchablePreview = TouchablePreview;
 
   private readonly store: Store;
@@ -53,7 +52,7 @@ export class NavigationRoot {
       appRegistryService
     );
     this.layoutTreeParser = new LayoutTreeParser(this.uniqueIdProvider);
-    const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService());
+    const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService(), new Deprecations());
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);

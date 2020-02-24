@@ -1,6 +1,7 @@
 
 #import "RNNReactRootViewCreator.h"
 #import "RNNReactView.h"
+#import "RNNComponentRootView.h"
 
 @implementation RNNReactRootViewCreator {
 	RCTBridge *_bridge;
@@ -33,7 +34,7 @@
             return RNNReactBackgroundView.class;
         case RNNComponentTypeComponent:
         default:
-            return RNNReactView.class;
+            return RNNComponentRootView.class;
     }
 }
 

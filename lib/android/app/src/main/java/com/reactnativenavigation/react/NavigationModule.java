@@ -1,7 +1,5 @@
 package com.reactnativenavigation.react;
 
-import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.utils.LaunchArgsParser;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -18,6 +16,8 @@ import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.parsers.JSONParser;
 import com.reactnativenavigation.parse.parsers.LayoutNodeParser;
+import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.utils.LaunchArgsParser;
 import com.reactnativenavigation.utils.NativeCommandListener;
 import com.reactnativenavigation.utils.Now;
 import com.reactnativenavigation.utils.StatusBarUtils;
@@ -125,7 +125,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setStackRoot(String commandId, String onComponentId, ReadableArray children, Promise promise) {
         handle(() -> {
-            ArrayList<ViewController> _children = new ArrayList();
+            ArrayList<ViewController> _children = new ArrayList<>();
             for (int i = 0; i < children.size(); i++) {
                 final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(children.getMap(i)));
                 _children.add(layoutFactory.create(layoutTree));
@@ -194,12 +194,15 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                null ? Options.EMPTY : Options.parse(new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
     }
 
-    private void handle(Runnable task) {
-        if (activity() == null || activity().isFinishing()) return;
-        UiThread.post(task);
+    protected void handle(Runnable task) {
+        UiThread.post(() -> {
+            if (getCurrentActivity() != null && !activity().isFinishing()) {
+                task.run();
+            }
+        });
     }
 
-    private NavigationActivity activity() {
+    protected NavigationActivity activity() {
         return (NavigationActivity) getCurrentActivity();
     }
 

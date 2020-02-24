@@ -55,7 +55,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @Config(qualifiers = "xxhdpi")
@@ -178,16 +177,19 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void setRoot_WithWaitForRender() {
-        ViewController primaryView = spy(child2);
-        uut.setRoot(primaryView, new CommandListenerAdapter(), reactInstanceManager);
+        ViewController initialRoot = spy(child2);
+        uut.setRoot(initialRoot, new CommandListenerAdapter(), reactInstanceManager);
+
         child3.options.animations.setRoot.waitForRender = new Bool(true);
-        ViewController secondaryView = spy(child3);
+        ViewController secondRoot = spy(child3);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
-        uut.setRoot(secondaryView, listener, reactInstanceManager);
-        verify(secondaryView).addOnAppearedListener(any());
-        verifyZeroInteractions(listener);
-        assertThat(primaryView.isViewShown()).isEqualTo(true);
-        secondaryView.onViewAppeared();
+        uut.setRoot(secondRoot, listener, reactInstanceManager);
+
+        verify(secondRoot).addOnAppearedListener(any());
+
+        secondRoot.getView().addView(new View(activity)); // make isRendered return true and trigger onViewAppeared
+        assertThat(initialRoot.isDestroyed()).isTrue();
+        assertThat(secondRoot.isViewShown()).isEqualTo(true);
     }
 
     @Test
@@ -566,11 +568,11 @@ public class NavigatorTest extends BaseTest {
         disableModalAnimations(child1);
 
         uut.setRoot(parentController, new CommandListenerAdapter(), reactInstanceManager);
-        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView()));
+        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView())).isTrue();
         uut.showModal(child1, new CommandListenerAdapter());
 
         uut.dismissModal(child1.getId(), new CommandListenerAdapter());
-        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView()));
+        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView())).isTrue();
     }
 
     @Test

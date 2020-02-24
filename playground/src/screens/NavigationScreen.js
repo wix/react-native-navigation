@@ -2,7 +2,6 @@ const React = require('react');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
 const Navigation = require('./../services/Navigation');
-const { Platform } = require('react-native');
 const {
   NAVIGATION_TAB,
   MODAL_BTN,
@@ -37,13 +36,13 @@ class NavigationScreen extends React.Component {
       <Root componentId={this.props.componentId} testID={NAVIGATION_SCREEN}>
         <Button label='Set Root' testID={SET_ROOT_BTN} onPress={this.setRoot} />
         <Button label='Modal' testID={MODAL_BTN} onPress={this.showModal} />
-        {Platform.OS === 'ios' && <Button label='PageSheet modal' testID={PAGE_SHEET_MODAL_BTN} onPress={this.showPageSheetModal} />}
+        <Button label='PageSheet modal' testID={PAGE_SHEET_MODAL_BTN} onPress={this.showPageSheetModal} platform='ios'/>
         <Button label='Overlay' testID={OVERLAY_BTN} onPress={this.showOverlay} />
         <Button label='External Component' testID={EXTERNAL_COMP_BTN} onPress={this.externalComponent} />
         <Button label='Static Events' testID={SHOW_STATIC_EVENTS_SCREEN} onPress={this.pushStaticEventsScreen} />
         <Button label='Orientation' testID={SHOW_ORIENTATION_SCREEN} onPress={this.orientation} />
         <Button label='React Context API' onPress={this.pushContextScreen} />
-        {false && <Button label='Shared Element' onPress={this.sharedElement} />}
+        {<Button label='Shared Element' onPress={this.sharedElement} />}
         <Navigation.TouchablePreview
           touchableComponent={Button}
           onPressIn={this.preview}

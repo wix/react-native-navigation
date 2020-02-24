@@ -1,10 +1,6 @@
 const React = require('react');
 const { PureComponent } = require('react');
-
-const { Text, Button, View, Alert, Platform, ScrollView, StyleSheet } = require('react-native');
-const { Navigation } = require('react-native-navigation');
-
-const testIDs = require('../../testIDs');
+const { View, Alert, Platform, ScrollView, StyleSheet } = require('react-native');
 
 class CustomDialogWithScroll extends PureComponent {
   static options() {

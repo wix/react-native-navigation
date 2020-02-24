@@ -11,10 +11,7 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
-import com.reactnativenavigation.views.element.Element;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
-
-import java.util.List;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -82,11 +79,6 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     @Override
     public boolean isRendered() {
         return reactView.isRendered();
-    }
-
-    @Override
-    public List<Element> getElements() {
-        return reactView.getElements();
     }
 
     @Override

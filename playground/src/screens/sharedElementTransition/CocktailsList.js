@@ -1,14 +1,25 @@
 const React = require('react');
 const { Component } = require('react');
-const { SafeAreaView, TouchableOpacity, FlatList, View, Image, Text, StyleSheet } = require('react-native');
+const { TouchableOpacity, FlatList, View, Image, Text, Platform, StyleSheet } = require('react-native');
 const Navigation = require('../../services/Navigation');
 const { slice } = require('lodash');
 const Screens = require('../Screens')
 const data = require('../../assets/cocktails').default;
+const MULTIPLIER = 1.15
+const LONG_DURATION = 350 * MULTIPLIER
+const SHORT_DURATION = 190 * MULTIPLIER
 
 class CocktailsList extends Component {
   static options() {
     return {
+      ...Platform.select({
+        android: {
+          statusBar: {
+            style: 'dark',
+            backgroundColor: 'white'
+          }
+        }
+      }),
       topBar: {
         title: {
           text: 'Cocktails'
@@ -35,19 +46,69 @@ class CocktailsList extends Component {
     <TouchableOpacity
       activeOpacity={0.75}
       style={styles.itemContainer}
-      onPress={() => Navigation.push(this, {
-        component: {
-          name: Screens.CocktailDetailsScreen,
-          passProps: { ...item }
+      onPress={() => Navigation.push(
+        this,
+        {
+          component: {
+            name: Screens.CocktailDetailsScreen,
+            passProps: { ...item },
+            options: {
+              animations: {
+                push: {
+                  content: {
+                    alpha: {
+                      from: 0,
+                      to: 1,
+                      duration: LONG_DURATION
+                    }
+                  },
+                  sharedElementTransitions: [
+                    {
+                      fromId: `image${item.id}`,
+                      toId: `image${item.id}Dest`,
+                      duration: LONG_DURATION
+                    },
+                    {
+                      fromId: `title${item.id}`,
+                      toId: `title${item.id}Dest`,
+                      duration: LONG_DURATION
+                    },
+                    {
+                      fromId: `backdrop${item.id}`,
+                      toId: 'backdrop',
+                      duration: LONG_DURATION
+                    }
+                  ],
+                  elementTransitions: [
+                    {
+                      id: 'description',
+                      alpha: {
+                        from: 0,
+                        duration: SHORT_DURATION
+                      },
+                      translationY: {
+                        from: 16,
+                        duration: SHORT_DURATION
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
         }
-      })}>
-      <Image
-        source={item.image}
-        style={styles.image}
-        resizeMode={'contain'}
-      />
+      )}>
+      <View style={styles.overlayContainer}>
+        <Image
+          source={item.image}
+          nativeID={`image${item.id}`}
+          style={styles.image}
+          resizeMode={'contain'}
+        />
+        <View nativeID={`backdrop${item.id}`} style={[styles.backdrop, { backgroundColor: '#aaaaaa' }]} />
+      </View>
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{item.name}</Text>
+        <Text style={styles.title} nativeID={`title${item.id}`}>{item.name}</Text>
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.ingredients}>{slice(item.ingredients, 0, 3).map(i => i.name).join(' • ')}</Text>
         </View>
@@ -76,6 +137,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: '100%',
     width: 118,
+    zIndex: 1,
+  },
+  backdrop: {
+    width: 118,
+    height: 118,
+    backgroundColor: 'green',
+    marginTop: -112,
+    marginLeft: 6
+  },
+  overlayContainer: {
   },
   textContainer: {
     flex: 1,

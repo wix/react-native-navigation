@@ -1,14 +1,17 @@
 #import "RNNStackController.h"
 #import "RNNComponentViewController.h"
 #import "UIViewController+Utils.h"
+#import "StackControllerDelegate.h"
 
 @implementation RNNStackController {
     UIViewController* _presentedViewController;
+    StackControllerDelegate* _stackDelegate;
 }
 
-- (instancetype)init {
-    self = [super init];
-    self.delegate = self;
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo creator:(id<RNNComponentViewCreator>)creator options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNBasePresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter childViewControllers:(NSArray *)childViewControllers {
+    self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
+    _stackDelegate = [[StackControllerDelegate alloc] initWithEventEmitter:self.eventEmitter];
+    self.delegate = _stackDelegate;
     return self;
 }
 
@@ -44,18 +47,6 @@
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     [self prepareForPop];
 	return [super popViewControllerAnimated:animated];
-}
-
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    if ([self.viewControllers indexOfObject:_presentedViewController] < 0) {
-        [self sendScreenPoppedEvent:_presentedViewController];
-    }
-    
-    _presentedViewController = viewController;
-}
-
-- (void)sendScreenPoppedEvent:(UIViewController *)poppedScreen {
-    [self.eventEmitter sendScreenPoppedEvent:poppedScreen.layoutInfo.componentId];
 }
 
 - (void)prepareForPop {

@@ -34,9 +34,7 @@ public class Navigator extends ParentController {
     private final OverlayManager overlayManager;
     private final RootPresenter rootPresenter;
     private ViewController root;
-
     private ViewController previousRoot;
-
     private final CoordinatorLayout rootLayout;
     private final CoordinatorLayout modalsLayout;
     private final CoordinatorLayout overlaysLayout;

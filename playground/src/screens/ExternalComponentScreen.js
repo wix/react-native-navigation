@@ -26,7 +26,7 @@ class ExternalComponentScreen extends React.Component {
       <Root componentId={this.props.componentId}>
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
         <Button label='Show Modal' testID={MODAL_BTN} onPress={this.modal} />
-        <Button label='Register modal dismiss event' testID={REGISTER_MODAL_DISMISS_EVENT_BTN} onPress={this.registerModalDismissEvent} />
+        <Button label='Register modal dismiss event' testID={REGISTER_MODAL_DISMISS_EVENT_BTN} onPress={this.registerModalDismissEvent} platform='ios'/>
       </Root>
     );
   }

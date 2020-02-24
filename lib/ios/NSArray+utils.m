@@ -1,4 +1,5 @@
 #import "NSArray+utils.h"
+#import <UIKit/UIKit.h>
 
 @implementation NSArray (utils)
 
@@ -26,6 +27,14 @@
         [result addObject:block(obj, idx)];
     }];
     return result;
+}
+
+- (NSArray *)sortByPropertyName:(NSString *)propertyName {
+    return [self sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        id first = [a valueForKey:propertyName];
+        id second = [b valueForKey:propertyName];
+        return [first compare:second];
+    }];
 }
 
 @end

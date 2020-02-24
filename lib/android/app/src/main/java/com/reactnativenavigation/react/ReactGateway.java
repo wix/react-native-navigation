@@ -1,16 +1,10 @@
 package com.reactnativenavigation.react;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 
 import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactPackage;
-import com.facebook.soloader.SoLoader;
 import com.reactnativenavigation.NavigationActivity;
-import com.reactnativenavigation.utils.Functions.FuncR;
-
-import java.util.List;
 
 public class ReactGateway {
 
@@ -18,29 +12,14 @@ public class ReactGateway {
 	private final NavigationReactInitializer initializer;
 	private final JsDevReloadHandler jsDevReloadHandler;
 
-    @SuppressWarnings("unused")
-    public ReactGateway(final Application application, final boolean isDebug, final List<ReactPackage> additionalReactPackages) {
-		this(application, isDebug, new NavigationReactNativeHost(application, isDebug, additionalReactPackages));
-	}
-
-    @SuppressWarnings("WeakerAccess")
-    public ReactGateway(final Application application, final boolean isDebug, final ReactNativeHost host) {
-        this(application, isDebug, () -> host);
-    }
-
-    public ReactGateway(final Application application, final boolean isDebug, FuncR<ReactNativeHost> hostCreator) {
-        SoLoader.init(application, false);
-        this.host = hostCreator.run();
-        initializer = new NavigationReactInitializer(host.getReactInstanceManager(), isDebug);
+    public ReactGateway(ReactNativeHost host) {
+        this.host = host;
+        initializer = new NavigationReactInitializer(host.getReactInstanceManager(), host.getUseDeveloperSupport());
         jsDevReloadHandler = new JsDevReloadHandler(host.getReactInstanceManager().getDevSupportManager());
         if (host instanceof BundleDownloadListenerProvider) {
             ((BundleDownloadListenerProvider) host).setBundleLoaderListener(jsDevReloadHandler);
         }
     }
-
-	public ReactNativeHost getReactNativeHost() {
-		return host;
-	}
 
 	public void onActivityCreated(NavigationActivity activity) {
 		initializer.onActivityCreated();
@@ -53,8 +32,8 @@ public class ReactGateway {
 	}
 
     public boolean onNewIntent(Intent intent) {
-        if (getReactNativeHost().hasInstance()) {
-            getReactNativeHost().getReactInstanceManager().onNewIntent(intent);
+        if (host.hasInstance()) {
+            host.getReactInstanceManager().onNewIntent(intent);
             return true;
         }
         return false;

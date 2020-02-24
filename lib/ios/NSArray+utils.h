@@ -8,4 +8,6 @@
 
 - (NSArray *)mapObjectsUsingBlock:(id (^)(id obj, NSUInteger idx))block;
 
+- (NSArray *)sortByPropertyName:(NSString *)propertyName;
+
 @end

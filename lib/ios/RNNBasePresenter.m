@@ -51,6 +51,8 @@
     if (@available(iOS 13.0, *)) {
         viewController.modalInPresentation = ![withDefault.modal.swipeToDismiss getWithDefaultValue:YES];
     }
+	
+	UIApplication.sharedApplication.delegate.window.backgroundColor = [withDefault.window.backgroundColor getWithDefaultValue:nil];
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
@@ -165,6 +167,10 @@
         UITabBarItem *tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
         viewController.tabBarItem = tabItem;
     }
+	
+	if (options.window.backgroundColor.hasValue) {
+		UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
+	}
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
@@ -184,8 +190,15 @@
 
 - (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions {
     RNNNavigationOptions *withDefault = [resolvedOptions withDefault:[self defaultOptions]];
-    if ([[withDefault.statusBar.style getWithDefaultValue:@"default"] isEqualToString:@"light"]) {
+    NSString* statusBarStyle = [withDefault.statusBar.style getWithDefaultValue:@"default"];
+    if ([statusBarStyle isEqualToString:@"light"]) {
         return UIStatusBarStyleLightContent;
+    } else if (@available(iOS 13.0, *)) {
+        if ([statusBarStyle isEqualToString:@"dark"]) {
+            return UIStatusBarStyleDarkContent;
+        } else {
+            return UIStatusBarStyleDefault;
+        }
     } else {
         return UIStatusBarStyleDefault;
     }

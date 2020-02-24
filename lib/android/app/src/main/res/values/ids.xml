@@ -5,4 +5,12 @@
     <item name="topBarBackgroundComponent" type="id"/>
     <item name="bottomTabs" type="id"/>
     <item name="fab_bottom_margin" type="id" />
+
+    <item name="original_parent" type="id" />
+    <item name="original_layout_params" type="id" />
+    <item name="original_index_in_parent" type="id" />
+    <item name="original_top" type="id" />
+    <item name="original_bottom" type="id" />
+    <item name="original_right" type="id" />
+    <item name="original_left" type="id" />
 </resources>
