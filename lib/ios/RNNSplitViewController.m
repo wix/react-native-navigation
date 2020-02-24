@@ -3,10 +3,10 @@
 
 @implementation RNNSplitViewController
 
-- (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
-	[self setViewControllers:viewControllers];
-	UIViewController<UISplitViewControllerDelegate>* masterViewController = viewControllers[0];
-	self.delegate = masterViewController;
+- (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers {
+    [super setViewControllers:viewControllers];
+    UIViewController<UISplitViewControllerDelegate>* masterViewController = viewControllers[0];
+    self.delegate = masterViewController;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
