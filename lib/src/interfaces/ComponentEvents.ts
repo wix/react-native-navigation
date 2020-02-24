@@ -20,7 +20,7 @@ export interface NavigationButtonPressedEvent extends ComponentEvent {
 }
 
 export interface ModalDismissedEvent extends ComponentEvent {
-  componentId: string;
+  componentName: string;
   modalsDismissed: number;
 }
 

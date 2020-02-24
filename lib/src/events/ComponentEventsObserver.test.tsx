@@ -193,9 +193,9 @@ describe('ComponentEventsObserver', () => {
     expect(navigationButtonPressedFn).toHaveBeenCalledTimes(1);
     expect(navigationButtonPressedFn).toHaveBeenCalledWith({ buttonId: 'myButtonId', componentId: 'myCompId' });
 
-    uut.notifyModalDismissed({ componentId: 'myCompId', modalsDismissed: 1 });
+    uut.notifyModalDismissed({ componentId: 'myCompId', componentName: 'myCompName', modalsDismissed: 1 });
     expect(modalDismissedFn).toHaveBeenCalledTimes(1);
-    expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId', modalsDismissed: 1 })
+    expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId', componentName: 'myCompName', modalsDismissed: 1 })
 
     uut.notifyModalAttemptedToDismiss({ componentId: 'myCompId' });
     expect(modalAttemptedToDismissFn).toHaveBeenCalledTimes(1);

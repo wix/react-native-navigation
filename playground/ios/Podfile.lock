@@ -260,7 +260,7 @@ DEPENDENCIES:
   - Yoga (from `../../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - boost-for-react-native
     - OCMock
 
@@ -349,8 +349,8 @@ SPEC CHECKSUMS:
   ReactCommon: a6a294e7028ed67b926d29551aa9394fd989c24c
   ReactNativeKeyboardTrackingView: a240a6a0dba852bb107109a7ec7e98b884055977
   ReactNativeNavigation: 33657becf06c9c3a805ecb50dce8010fb887a1bb
-  Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
+  Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: 781f49751a12b13af3e83d5dfc4b122aa5770543
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.8.4

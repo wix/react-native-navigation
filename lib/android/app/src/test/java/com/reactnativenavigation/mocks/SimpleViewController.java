@@ -64,6 +64,11 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         if (view != null) presenter.applyBottomInset(view, getBottomInset());
     }
 
+    @Override
+    public String getCurrentComponentName() {
+        return null;
+    }
+
     public static class SimpleView extends ReactView implements ReactComponent {
 
         public SimpleView(@NonNull Context context) {

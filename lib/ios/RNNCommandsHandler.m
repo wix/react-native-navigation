@@ -352,7 +352,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 #pragma mark - RNNModalManagerDelegate
 
 - (void)dismissedModal:(UIViewController *)viewController {
-	[_eventEmitter sendModalsDismissedEvent:viewController.layoutInfo.componentId numberOfModalsDismissed:@(1)];
+	[_eventEmitter sendModalsDismissedEvent:viewController.layoutInfo.componentId componentName:viewController.layoutInfo.name numberOfModalsDismissed:@(1)];
 }
 
 - (void)attemptedToDismissModal:(UIViewController *)viewController {
@@ -361,7 +361,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)dismissedMultipleModals:(NSArray *)viewControllers {
 	if (viewControllers && viewControllers.count) {
-		[_eventEmitter sendModalsDismissedEvent:((UIViewController *)viewControllers.lastObject).layoutInfo.componentId numberOfModalsDismissed:@(viewControllers.count)];
+		UIViewController* lastViewController = [viewControllers.lastObject presentedComponentViewController];
+        [_eventEmitter sendModalsDismissedEvent:lastViewController.layoutInfo.componentId componentName:lastViewController.layoutInfo.name numberOfModalsDismissed:@(viewControllers.count)];
 	}
 }
 

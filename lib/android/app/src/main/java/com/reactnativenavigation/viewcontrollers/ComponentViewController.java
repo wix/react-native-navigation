@@ -41,6 +41,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
+    public String getCurrentComponentName() {
+        return this.componentName;
+    }
+
+    @Override
     public void setDefaultOptions(Options defaultOptions) {
         super.setDefaultOptions(defaultOptions);
         presenter.setDefaultOptions(defaultOptions);

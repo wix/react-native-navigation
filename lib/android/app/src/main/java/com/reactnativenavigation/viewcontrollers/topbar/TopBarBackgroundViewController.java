@@ -44,6 +44,11 @@ public class TopBarBackgroundViewController extends ViewController<TopBarBackgro
 
     }
 
+    @Override
+    public String getCurrentComponentName() {
+        return component.name.get();
+    }
+
     public void setComponent(Component component) {
         this.component = component;
     }

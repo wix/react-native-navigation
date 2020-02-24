@@ -69,6 +69,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
     protected FabPresenter fabOptionsPresenter;
     private ViewControllerOverlay overlay;
+    @Nullable public abstract String getCurrentComponentName();
 
     public boolean isDestroyed() {
         return isDestroyed;
