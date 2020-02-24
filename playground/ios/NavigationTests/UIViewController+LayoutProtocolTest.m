@@ -112,7 +112,7 @@
 	UIViewController* component = [[UIViewController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:nil];
 	UINavigationController* stack = [[UINavigationController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:nil];
 	UITabBarController* tabBar = [[UITabBarController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:nil];
-
+	
 	XCTAssertTrue(component.extendedLayoutIncludesOpaqueBars);
 	XCTAssertTrue(stack.extendedLayoutIncludesOpaqueBars);
 	XCTAssertTrue(tabBar.extendedLayoutIncludesOpaqueBars);
