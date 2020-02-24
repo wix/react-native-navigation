@@ -264,6 +264,14 @@ export interface OptionsTopBarBackButton {
    * Back button icon and text color
    */
   color?: Color;
+  /**
+   * Set subtitle font size
+   */
+  fontSize?: number;
+  /**
+   * Set subtitle font family
+   */
+  fontFamily?: FontFamily;
 }
 
 export interface OptionsTopBarBackground {
