@@ -48,7 +48,7 @@
     }
     
     if (options.backButton.hasValue) {
-        [self setBackButtonOptions:[options.backButton.icon getWithDefaultValue:nil] withColor:[options.backButton.color getWithDefaultValue:nil] title:[options.backButton.title getWithDefaultValue:nil] showTitle:[options.backButton.showTitle getWithDefaultValue:YES] fontFamily:[options.backButton.fontFamily getWithDefaultValue:nil]];
+        [self setBackButtonOptions:[withDefault.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.backButton.color getWithDefaultValue:nil] title:[withDefault.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.backButton.showTitle getWithDefaultValue:YES] fontFamily:[withDefault.backButton.fontFamily getWithDefaultValue:nil]];
     }
 }
 
