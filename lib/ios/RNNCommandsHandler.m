@@ -361,7 +361,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)dismissedMultipleModals:(NSArray *)viewControllers {
 	if (viewControllers && viewControllers.count) {
-		UIViewController* lastViewController = viewControllers.lastObject;
+		UIViewController* lastViewController = [viewControllers.lastObject presentedComponentViewController];
         [_eventEmitter sendModalsDismissedEvent:lastViewController.layoutInfo.componentId componentName:lastViewController.layoutInfo.name numberOfModalsDismissed:@(viewControllers.count)];
 	}
 }
