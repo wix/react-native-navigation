@@ -43,6 +43,14 @@
     UIViewController *viewController = self.boundViewController;
     RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:self.defaultOptions] overrideOptions:options];
     
+    if (options.bottomTab.badge.hasValue) {
+        [viewController setTabBarItemBadge:options.bottomTab.badge.get];
+    }
+
+    if (options.bottomTab.badgeColor.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
+        [viewController setTabBarItemBadgeColor:options.bottomTab.badgeColor.get];
+    }
+    
     if ([options.bottomTab.dotIndicator hasValue] && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
         [[self dotIndicatorPresenter] apply:viewController:options.bottomTab.dotIndicator];
     }
