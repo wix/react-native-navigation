@@ -8,6 +8,7 @@
 #import "RNNExternalViewController.h"
 #import "BottomTabsBaseAttacher.h"
 #import "BottomTabsAttachModeFactory.h"
+#import "BottomTabsPresenterCreator.h"
 
 @implementation RNNControllerFactory {
 	id<RNNComponentViewCreator> _creator;
@@ -148,7 +149,7 @@
 - (UIViewController *)createBottomTabs:(RNNLayoutNode*)node {
     RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
     RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
-    RNNBottomTabsPresenter* presenter = [[RNNBottomTabsPresenter alloc] initWithDefaultOptions:_defaultOptions];
+    RNNBottomTabsPresenter* presenter = [BottomTabsPresenterCreator createWithDefaultOptions:_defaultOptions];
 	BottomTabsBaseAttacher* bottomTabsAttacher = [_bottomTabsAttachModeFactory fromOptions:options];
     
     NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];

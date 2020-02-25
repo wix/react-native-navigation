@@ -16,10 +16,6 @@
 	self.tabBar.accessibilityIdentifier = testID;
 }
 
-- (void)setTabBarBackgroundColor:(UIColor *)backgroundColor {
-	self.tabBar.barTintColor = backgroundColor;
-}
-
 - (void)setTabBarStyle:(UIBarStyle)barStyle {
 	self.tabBar.barStyle = barStyle;
 }
