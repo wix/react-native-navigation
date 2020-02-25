@@ -18,6 +18,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child;
 
+- (UINavigationController *)stack;
+
 - (RNNNavigationOptions *)resolveOptions;
 
 - (RNNNavigationOptions *)resolveOptionsWithDefault;
