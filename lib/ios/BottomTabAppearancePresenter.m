@@ -3,11 +3,6 @@
 
 @implementation BottomTabAppearancePresenter
 
-- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-    self = [super initWithDefaultOptions:defaultOptions];
-    return self;
-}
-
 - (void)bindViewController:(UIViewController *)boundViewController {
     [super bindViewController:boundViewController];
     boundViewController.tabBarItem.standardAppearance = [[UITabBarAppearance alloc] init];
