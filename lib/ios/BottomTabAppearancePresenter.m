@@ -13,10 +13,6 @@
     boundViewController.tabBarItem.standardAppearance = [[UITabBarAppearance alloc] init];
 }
 
-- (void)applyOptions:(RNNNavigationOptions *)options {
-    [super applyOptions:options];
-}
-
 - (void)updateTabBarItem:(UITabBarItem *)tabItem bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
     UIViewController *viewController = self.boundViewController;
     viewController.tabBarItem = [TabBarItemAppearanceCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:bottomTabOptions];
