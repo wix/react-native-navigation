@@ -31,7 +31,7 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle,
                       @"custom": @(UIModalPresentationCustom),
                       @"overFullScreen": @(UIModalPresentationOverFullScreen),
                       @"overCurrentContext": @(UIModalPresentationOverCurrentContext),
-                      @"popover": @(UIModalPresentationPopover),
+                      @"popOver": @(UIModalPresentationPopOver),
                       @"none": @(UIModalPresentationNone),
                       @"default": @([RCTConvert defaultModalPresentationStyle])
                    }), UIModalPresentationFullScreen, integerValue)
