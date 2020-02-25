@@ -9,8 +9,7 @@
 }
 
 - (void)updateTabBarItem:(UITabBarItem *)tabItem bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
-    UIViewController *viewController = self.boundViewController;
-    viewController.tabBarItem = [TabBarItemAppearanceCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:bottomTabOptions];
+    self.boundViewController.tabBarItem = [TabBarItemAppearanceCreator updateTabBarItem:self.boundViewController.tabBarItem bottomTabOptions:bottomTabOptions];
 }
 
 @end
