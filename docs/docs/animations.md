@@ -1,40 +1,140 @@
-# Animations (Preview API)
+# Animations
+
+## Shared element transition
+
+Shared element transitions allows us to provide visual continuity when navigating between destinations. It also
+focuses the user's attention on a significant element which gives the user better context when transitioning to
+another destination.
+
+!> At the moment, the transition is available on iOS for push and pop while on Android it's available only for push commands.
+We will soon add parity and expand the supported commands to show/dismiss modal and changing BottomTabs.
+
+### Example
+In the sections below we will use the following example from the playground app:
+* [Source screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailsList.js)
+* [Destination screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailDetailsScreen.js)
+
+<img src="https://github.com/wix/react-native-navigation/blob/master/docs/_images/sharedElement.gif?raw=true"/>
 
 
-## Shared element
-In order to animate shared element between two screens you need to wrap your element with `Navigation.Element` in both screens with different `elementId`.
-For example, to animate `Image` element wrap it in your first screen like this:
+
+
+#### Transition breakdown
+Four elements are animated in this example.
+
+* **image** - the item's image is animated to the next screen.
+  * Image scale (resizeMode)
+  * position on screen
+
+* **image background** - each item has a "shadow" view which transitions to the next screen and turns into a colorful header.
+  * scale
+  * position on screen
+
+* **title** - the item's title is animated to the next screen.
+  * font size
+  * font color
+  * position on screen
+
+* **Description** - the item's description in the destination screen.
+  * fade-in
+  * translation y
+
+
+### API
+#### Step 1 - set a nativeID prop to elements in the source screen
+In order for RNN to be able to detect the corresponding native views of the elements,
+each element must include a unique `nativeID` prop.
+
 ```jsx
-<Navigation.Element elementId='image1'>
-  <Image source={require('img/icon.png')} />
-</Navigation.Element>
+<Image
+  source={item.image}
+  nativeID={`image${item.id}`}
+  style={styles.image}
+  resizeMode={'contain'} />
 ```
 
-And in your second screen:
+#### Step 2 - set a nativeID prop to elements in the destination screen
+
 ```jsx
-<Navigation.Element elementId='image2'>
-  <Image source={require('img/icon.png')} />
-</Navigation.Element>
+<Image
+  source={this.props.image}
+  nativeID={`image${this.props.id}Dest`}
+  style={styles.image} />
 ```
 
-Then call `push` or `showModal` with `customTransition.animations` options:
-```js
+#### Step 3 - Declare the shared element animation when pushing the screen
+
+```jsx
 Navigation.push(this.props.componentId, {
   component: {
-    name: 'second.screen',
+    name: Screens.CocktailDetailsScreen,
+    passProps: { ...item },
     options: {
-      customTransition: {
-        animations: [
-          { type: 'sharedElement', fromId: 'image1', toId: 'image2', startDelay: 0, springVelocity: 0.2, duration: 0.5 }
-        ],
-        duration: 0.8
+      animations: {
+        push: {
+          sharedElementTransitions: [
+            {
+              fromId: `image${item.id}`,
+              toId: `image${item.id}Dest`
+            }
+          ]
+        }
       }
     }
   }
 });
 ```
 
-## Peek and Pop (iOS 11.4+)
+## Element Transitions
+Element transitions allow you to animate elements during shared element transitions.
+
+### Example
+In the sections below we will use the following example from the playground app:
+* [Source screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailsList.js)
+* [Destination screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailDetailsScreen.js)
+
+### API
+#### Step 1 - set a nativeID prop to elements either source or destination screens
+
+```jsx
+<Text
+  nativeID='description'
+  style={styles.description}>
+  {this.props.description}
+</Text>
+```
+
+#### Step 2 - Declare the element animation when pushing the screen
+
+```jsx
+Navigation.push(this.props.componentId, {
+  component: {
+    name: Screens.CocktailDetailsScreen,
+    passProps: { ...item },
+    options: {
+      animations: {
+        push: {
+          elementTransitions: [
+            {
+              id: 'description',
+              alpha: {
+                from: 0, // We don't declare 'to' value as that is the element's current alpha value, here we're essentially animating from 0 to 1
+                duration: SHORT_DURATION
+              },
+              translationY: {
+                from: 16, // Animate translationY from 16dp to 0dp
+                duration: SHORT_DURATION
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+});
+```
+
+## Peek and Pop (iOS 11.4+) (Preview API)
 
 react-native-navigation supports the [Peek and pop](
 https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/Adopting3DTouchOniPhone/#//apple_ref/doc/uid/TP40016543-CH1-SW3) feature in iOS 11.4 and newer.

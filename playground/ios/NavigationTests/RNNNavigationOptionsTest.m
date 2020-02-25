@@ -20,6 +20,11 @@
 	XCTAssertTrue(options.topBar.background.color);
 }
 
+- (void)testAddsFontToBackButtonOptions {
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBar": @{@"backButton" : @{@"fontFamily" : @"HelveticaNeue"}}}];
+	XCTAssertTrue([options.topBar.backButton.fontFamily.get isEqual:@"HelveticaNeue"]);
+}
+
 - (void)testChangeRNNNavigationOptionsDynamically {
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBar": @{@"background" : @{@"color" : @(0xff0000ff)}}}];
 	NSDictionary* dynamicOptionsDict = @{@"topBar": @{@"textColor" : @(0xffff00ff), @"title" : @{@"text": @"hello"}}};
