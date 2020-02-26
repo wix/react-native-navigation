@@ -3,6 +3,8 @@
 #import "RNNBottomTabsPresenter.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "BottomTabsBaseAttacher.h"
+#import "BottomTabPresenter.h"
+#import "RNNDotIndicatorPresenter.h"
 
 @interface RNNBottomTabsController : UITabBarController <RNNLayoutProtocol, UITabBarControllerDelegate>
 
@@ -11,6 +13,8 @@
                            options:(RNNNavigationOptions *)options
                     defaultOptions:(RNNNavigationOptions *)defaultOptions
                          presenter:(RNNBasePresenter *)presenter
+                bottomTabPresenter:(BottomTabPresenter *)bottomTabPresenter
+                dotIndicatorPresenter:(RNNDotIndicatorPresenter *)dotIndicatorPresenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers
                 bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher;

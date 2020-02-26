@@ -5,17 +5,12 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "DotIndicatorOptions.h"
 #import "RCTConvert+Modal.h"
-#import "BottomTabPresenterCreator.h"
 
-@interface RNNBasePresenter ()
-@property(nonatomic, strong) BottomTabPresenter* bottomTabPresenter;
-@end
 @implementation RNNBasePresenter
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
     self = [super init];
     _defaultOptions = defaultOptions;
-    _bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:self.defaultOptions];
     return self;
 }
 
@@ -28,7 +23,6 @@
 - (void)bindViewController:(UIViewController *)boundViewController {
     self.boundComponentId = boundViewController.layoutInfo.componentId;
     _boundViewController = boundViewController;
-    _bottomTabPresenter.boundViewController = boundViewController;
 }
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
@@ -61,18 +55,15 @@
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
-    [_bottomTabPresenter applyOptionsOnWillMoveToParentViewController:options];
+
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
-    [_bottomTabPresenter applyOptions:options];
+
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
-    UIViewController* viewController = self.boundViewController;
     RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:_defaultOptions] overrideOptions:options];
-    
-    [_bottomTabPresenter mergeOptions:options resolvedOptions:resolvedOptions];
 	
 	if (options.window.backgroundColor.hasValue) {
 		UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
@@ -88,10 +79,6 @@
 
 - (void)viewDidLayoutSubviews {
 
-}
-
-- (void)applyDotIndicator:(UIViewController *)child {
-    [_bottomTabPresenter applyDotIndicator:child];
 }
 
 - (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions {

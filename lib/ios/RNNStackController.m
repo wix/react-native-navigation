@@ -29,7 +29,7 @@
     if (child.isLastInStack) {
         [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
     }
-    [self.parentViewController mergeChildOptions:options child:child];
+    [self.parentViewController mergeChildOptions:options child:self];
 }
 
 - (UINavigationController *)navigationController {

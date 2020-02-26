@@ -1,9 +1,11 @@
 #import <XCTest/XCTest.h>
-#import "RNNBottomTabsController.h"
-#import "RNNComponentViewController.h"
+#import <ReactNativeNavigation/RNNBottomTabsController.h>
+#import <ReactNativeNavigation/RNNComponentViewController.h>
 #import "RNNStackController.h"
 #import <OCMock/OCMock.h>
 #import "RCTConvert+Modal.h"
+#import <ReactNativeNavigation/BottomTabPresenterCreator.h>
+#import "RNNBottomTabsController+Helpers.h"
 
 @interface RNNTabBarControllerTest : XCTestCase
 
@@ -26,7 +28,7 @@
     self.mockTabBarPresenter = [OCMockObject partialMockForObject:[[RNNBottomTabsPresenter alloc] init]];
     self.mockChildViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
     self.mockEventEmitter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
-	self.originalUut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:self.mockTabBarPresenter eventEmitter:self.mockEventEmitter childViewControllers:@[[[UIViewController alloc] init]]];
+	self.originalUut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:self.mockTabBarPresenter bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil] dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil] eventEmitter:self.mockEventEmitter childViewControllers:@[[[UIViewController alloc] init]] bottomTabsAttacher:nil];
     self.uut = [OCMockObject partialMockForObject:self.originalUut];
     OCMStub([self.uut selectedViewController]).andReturn(self.mockChildViewController);
 }
@@ -169,6 +171,17 @@
     RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:nil presenter:[RNNBottomTabsPresenter new] eventEmitter:nil childViewControllers:@[[UIViewController new], vc]];
 
     XCTAssertTrue(uut.selectedIndex == 1);
+}
+
+- (void)testOnViewDidLayoutSubviews_ShouldUpdateDotIndicatorForChildren {
+	id dotIndicator = [OCMockObject partialMockForObject:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil]];
+    RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
+	RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil bottomTabPresenter:nil dotIndicatorPresenter:dotIndicator eventEmitter:nil childViewControllers:@[[UIViewController new], vc] bottomTabsAttacher:nil];
+	
+	[[dotIndicator expect] bottomTabsDidLayoutSubviews:uut];
+	[uut viewDidLayoutSubviews];
+	[dotIndicator verify];
+	
 }
 
 

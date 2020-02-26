@@ -3,23 +3,26 @@
 #import "RNNDotIndicatorPresenter.h"
 #import "DotIndicatorOptions.h"
 #import "RNNBottomTabsController.h"
-#import "RNNComponentViewController.h"
+#import <ReactNativeNavigation/RNNComponentViewController.h>
 #import "RNNTestBase.h"
 #import "UITabBarController+RNNUtils.h"
+#import <ReactNativeNavigation/BottomTabPresenterCreator.h>
+#import "RNNBottomTabsController+Helpers.h"
 
 @interface RNNDotIndicatorPresenterTest : RNNTestBase
 @property(nonatomic, strong) id uut;
 @property(nonatomic, strong) RNNComponentViewController *child;
 @property(nonatomic, strong) id bottomTabs;
+@property(nonatomic, strong) BottomTabPresenter* bottomTabPresenter;
 @end
 
 @implementation RNNDotIndicatorPresenterTest
 - (void)setUp {
     [super setUp];
+	self.bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:nil];
     self.uut = [OCMockObject partialMockForObject:[RNNDotIndicatorPresenter new]];
-    self.bottomTabs = [OCMockObject partialMockForObject:[RNNBottomTabsController new]];
-    self.child = [self createChild];
-    [self.bottomTabs addChildViewController:self.child];
+	self.child = [self createChild];
+    self.bottomTabs = [OCMockObject partialMockForObject:[RNNBottomTabsController createWithChildren:@[self.child]]];
 
     [self setupTopLevelUI:self.bottomTabs];
 }
@@ -126,6 +129,12 @@
     XCTAssertEqual([sizeConstraints count], 2);
     XCTAssertEqual([sizeConstraints[0] constant], 8);
     XCTAssertEqual([sizeConstraints[1] constant], 8);
+}
+
+- (void)testApply_onBottomTabsViewDidLayout {
+	[[self.uut expect] apply:self.child :self.child.resolveOptions.bottomTab.dotIndicator];
+	[self.uut bottomTabsDidLayoutSubviews:self.bottomTabs];
+	[self.uut verify];
 }
 
 - (void)applyIndicator {

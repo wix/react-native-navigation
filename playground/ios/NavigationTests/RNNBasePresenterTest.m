@@ -4,7 +4,7 @@
 #import "UIViewController+RNNOptions.h"
 #import "RNNComponentViewController.h"
 
-@interface RNNBottomTabPresenterTest : XCTestCase
+@interface RNNBasePresenterTest : XCTestCase
 
 @property(nonatomic, strong) RNNBasePresenter *uut;
 @property(nonatomic, strong) RNNNavigationOptions *options;
@@ -13,7 +13,7 @@
 
 @end
 
-@implementation RNNBottomTabPresenterTest
+@implementation RNNBasePresenterTest
 
 - (void)setUp {
     [super setUp];
@@ -32,14 +32,6 @@
 
 - (void)testApplyOptions_shouldSetTabBarItemBadgeOnlyWhenParentIsUITabBarController {
     [[self.mockBoundViewController reject] setTabBarItemBadge:[OCMArg any]];
-    [self.uut applyOptions:self.options];
-    [self.mockBoundViewController verify];
-}
-
-- (void)testApplyOptions_shouldSetTabBarItemBadgeWithValue {
-    OCMStub([self.mockBoundViewController parentViewController]).andReturn([UITabBarController new]);
-    self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
-    [[self.mockBoundViewController expect] setTabBarItemBadge:self.options.bottomTab.badge.get];
     [self.uut applyOptions:self.options];
     [self.mockBoundViewController verify];
 }
@@ -94,19 +86,6 @@
 	XCTAssertFalse(_boundViewController.modalInPresentation);
     [self.uut applyOptionsOnInit:self.options];
 	XCTAssertTrue(_boundViewController.modalInPresentation);
-}
-
-- (void)testMergeOptions_shouldSetTabBarItemColorWithDefaultOptions {
-	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	defaultOptions.bottomTab.selectedIconColor = [Color withColor:UIColor.greenColor];
-	self.uut.defaultOptions = defaultOptions;
-	
-	RNNNavigationOptions* mergeOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	mergeOptions.bottomTab.text = [[Text alloc] initWithValue:@"title"];
-    OCMStub([self.mockBoundViewController parentViewController]).andReturn([UITabBarController new]);
-	
-    [self.uut mergeOptions:mergeOptions resolvedOptions:self.options];
-	XCTAssertEqual(self.uut.boundViewController.tabBarItem.title, @"title");
 }
 
 @end

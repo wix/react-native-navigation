@@ -1,13 +1,17 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "BottomTabsAppearancePresenter.h"
+#import "BottomTabsPresenterCreator.h"
+#import "BottomTabPresenterCreator.h"
 #import "UITabBarController+RNNOptions.h"
 #import "RNNBottomTabsController.h"
 #import "RNNComponentViewController.h"
+#import "RNNBottomTabsPresenter.h"
+#import "RNNDotIndicatorPresenter.h"
 
 @interface RNNBottomTabsAppearancePresenterTest : XCTestCase
 
-@property(nonatomic, strong) BottomTabsAppearancePresenter *uut;
+@property(nonatomic, strong) RNNBottomTabsPresenter *uut;
+@property(nonatomic, strong) id dotIndicatorPresenter;
 @property(nonatomic, strong) RNNNavigationOptions *options;
 @property(nonatomic, strong) id boundViewController;
 
@@ -17,8 +21,9 @@
 
 - (void)setUp {
     [super setUp];
-    self.uut = [OCMockObject partialMockForObject:[BottomTabsAppearancePresenter new]];
-    self.boundViewController = [OCMockObject partialMockForObject:[RNNBottomTabsController new]];
+	self.dotIndicatorPresenter = [OCMockObject partialMockForObject:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil]];
+    self.uut = [OCMockObject partialMockForObject:[BottomTabsPresenterCreator createWithDefaultOptions:nil]];
+	self.boundViewController = [OCMockObject partialMockForObject:[[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:self.uut bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil] dotIndicatorPresenter:self.dotIndicatorPresenter eventEmitter:nil childViewControllers:nil bottomTabsAttacher:nil]];
     [self.uut bindViewController:self.boundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
@@ -69,28 +74,6 @@
 	[[self.boundViewController expect] centerTabItems];
 	[self.uut applyOptionsOnInit:initialOptions];
 	[self.boundViewController verify];
-}
-
-- (void)testViewDidLayoutSubviews_appliesBadgeOnNextRunLoop {
-    id uut = [self uut];
-    [[uut expect] applyDotIndicator];
-    [uut viewDidLayoutSubviews];
-    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
-    [uut verify];
-}
-
-- (void)testApplyDotIndicator_callsAppliesBadgeWithEachChild {
-    id uut = [self uut];
-    id child1 = [UIViewController new];
-    id child2 = [UIViewController new];
-
-    [[uut expect] applyDotIndicator:child1];
-    [[uut expect] applyDotIndicator:child2];
-    [[self boundViewController] addChildViewController:child1];
-    [[self boundViewController] addChildViewController:child2];
-
-    [uut applyDotIndicator];
-    [uut verify];
 }
 
 - (void)testBackgroundColor_validColor {

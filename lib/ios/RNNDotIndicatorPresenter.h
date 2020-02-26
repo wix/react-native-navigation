@@ -8,4 +8,9 @@
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 - (void)apply:(UIViewController *)child :(DotIndicatorOptions *)options;
+
+- (void)bottomTabsDidLayoutSubviews:(UITabBarController *)bottomTabs;
+
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions child:(UIViewController *)child;
+
 @end

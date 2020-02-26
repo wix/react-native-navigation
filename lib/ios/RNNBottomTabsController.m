@@ -1,9 +1,15 @@
 #import "RNNBottomTabsController.h"
 #import "UITabBarController+RNNUtils.h"
 
+@interface RNNBottomTabsController ()
+@property (nonatomic, strong) BottomTabPresenter* bottomTabPresenter;
+@property (nonatomic, strong) RNNDotIndicatorPresenter* dotIndicatorPresenter;
+@end
+
 @implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
     BottomTabsBaseAttacher* _bottomTabsAttacher;
+    
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
@@ -11,12 +17,25 @@
                            options:(RNNNavigationOptions *)options
                     defaultOptions:(RNNNavigationOptions *)defaultOptions
                          presenter:(RNNBasePresenter *)presenter
+                bottomTabPresenter:(BottomTabPresenter *)bottomTabPresenter
+             dotIndicatorPresenter:(RNNDotIndicatorPresenter *)dotIndicatorPresenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers
                 bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher {
-    self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
     _bottomTabsAttacher = bottomTabsAttacher;
+    _bottomTabPresenter = bottomTabPresenter;
+    _dotIndicatorPresenter = dotIndicatorPresenter;
+    self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
     return self;
+}
+
+- (void)onChildAddToParent:(UIViewController *)child options:(RNNNavigationOptions *)options {
+    [_bottomTabPresenter applyOptionsOnWillMoveToParentViewController:options child:child];
+}
+
+- (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
+    [_bottomTabPresenter mergeOptions:options resolvedOptions:self.resolveOptions child:child];
+    [_dotIndicatorPresenter mergeOptions:options resolvedOptions:self.resolveOptions child:child];
 }
 
 - (id<UITabBarControllerDelegate>)delegate {
@@ -36,6 +55,8 @@
               [view addGestureRecognizer: longPressGesture];
           }
     }
+    
+    [_dotIndicatorPresenter bottomTabsDidLayoutSubviews:self];
 }
 
 - (UIViewController *)getCurrentChild {

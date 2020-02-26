@@ -13,20 +13,38 @@
     return self;
 }
 
+- (void)bottomTabsDidLayoutSubviews:(UITabBarController *)bottomTabs {
+    for (UIViewController* child in bottomTabs.childViewControllers) {
+        [self applyDotIndicator:child];
+    }
+}
+
+- (void)applyDotIndicator:(UIViewController *)child {
+    [self apply:child:[child resolveOptions].bottomTab.dotIndicator];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions child:(UIViewController *)child {
+    RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:self.defaultOptions] overrideOptions:options];
+    
+    if ([options.bottomTab.dotIndicator hasValue]) {
+        [self apply:child:withDefault.bottomTab.dotIndicator];
+    }
+}
+
 - (void)apply:(UIViewController *)child :(DotIndicatorOptions *)options {
     if (![options hasValue]) return;
-
+    
     if ([options.visible isFalse]) {
         if ([child tabBarItem].tag > 0) [self remove:child];
         return;
     }
     if ([self currentIndicatorEquals:child :options]) return;
-
+    
     if ([self hasIndicator:child]) [self remove:child];
-
+    
     UIView *indicator = [self createIndicator:options];
     [child tabBarItem].tag = indicator.tag;
-
+    
     UITabBarController *bottomTabs = [self getTabBarController:child];
     int index = (int) [[bottomTabs childViewControllers] indexOfObject:child];
     [[bottomTabs getTabView:index] addSubview:indicator];
@@ -47,10 +65,10 @@
     UIView *icon = [bottomTabs getTabIcon:index];
     float size = [[options.size getWithDefaultValue:@6] floatValue];
     [NSLayoutConstraint activateConstraints:@[
-            [badge.leftAnchor constraintEqualToAnchor:icon.rightAnchor constant:-size / 2],
-            [badge.topAnchor constraintEqualToAnchor:icon.topAnchor constant:-size / 2],
-            [badge.widthAnchor constraintEqualToConstant:size],
-            [badge.heightAnchor constraintEqualToConstant:size]
+        [badge.leftAnchor constraintEqualToAnchor:icon.rightAnchor constant:-size / 2],
+        [badge.topAnchor constraintEqualToAnchor:icon.topAnchor constant:-size / 2],
+        [badge.widthAnchor constraintEqualToConstant:size],
+        [badge.heightAnchor constraintEqualToConstant:size]
     ]];
 }
 
