@@ -17,7 +17,7 @@
 
 - (void)setUp {
     [super setUp];
-    self.uut = [[RNNBasePresenter alloc] init];
+    self.uut = [[RNNBasePresenter alloc] initWithDefaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
     self.boundViewController = [RNNComponentViewController new];
     self.mockBoundViewController = [OCMockObject partialMockForObject:self.boundViewController];
 	[self.uut bindViewController:self.mockBoundViewController];

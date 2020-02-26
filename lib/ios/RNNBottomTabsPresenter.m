@@ -7,7 +7,7 @@
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
     [super applyOptionsOnInit:options];
-    UITabBarController *bottomTabs = self.boundViewController;
+    UITabBarController *bottomTabs = self.tabBarController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [bottomTabs setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex getWithDefaultValue:0]];
 	if ([[withDefault.bottomTabs.titleDisplayMode getWithDefaultValue:@"alwaysShow"] isEqualToString:@"alwaysHide"]) {
@@ -16,21 +16,22 @@
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
-    UITabBarController *bottomTabs = self.boundViewController;
+    UITabBarController *bottomTabs = self.tabBarController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
     [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID getWithDefaultValue:nil]];
-    [bottomTabs setTabBarBackgroundColor:[withDefault.bottomTabs.backgroundColor getWithDefaultValue:nil]];
+    [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible getWithDefaultValue:YES] animated:[withDefault.bottomTabs.animate getWithDefaultValue:NO]];
+    
+    [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
+    [self setTabBarBackgroundColor:[withDefault.bottomTabs.backgroundColor getWithDefaultValue:UIColor.whiteColor]];
     [bottomTabs setTabBarTranslucent:[withDefault.bottomTabs.translucent getWithDefaultValue:NO]];
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow getWithDefaultValue:NO]];
     [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:[withDefault.bottomTabs.barStyle getWithDefaultValue:@"default"]]];
-    [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible getWithDefaultValue:YES] animated:[withDefault.bottomTabs.animate getWithDefaultValue:NO]];
-    [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)currentOptions {
     [super mergeOptions:options resolvedOptions:currentOptions];
-    UITabBarController *bottomTabs = self.boundViewController;
+    UITabBarController *bottomTabs = self.tabBarController;
 
     if (options.bottomTabs.currentTabIndex.hasValue) {
         [bottomTabs setCurrentTabIndex:options.bottomTabs.currentTabIndex.get];
@@ -47,7 +48,7 @@
     }
 
     if (options.bottomTabs.backgroundColor.hasValue) {
-        [bottomTabs setTabBarBackgroundColor:options.bottomTabs.backgroundColor.get];
+        [self setTabBarBackgroundColor:options.bottomTabs.backgroundColor.get];
     }
 
     if (options.bottomTabs.barStyle.hasValue) {
@@ -73,6 +74,18 @@
     if (options.layout.backgroundColor.hasValue) {
         [bottomTabs.view setBackgroundColor:options.layout.backgroundColor.get];
     }
+}
+
+- (void)setTabBarBackgroundColor:(UIColor *)backgroundColor {
+    self.tabBar.barTintColor = backgroundColor;
+}
+
+- (UITabBarController *)tabBarController {
+    return (UITabBarController *)self.boundViewController;
+}
+
+- (UITabBar *)tabBar {
+    return self.tabBarController.tabBar;
 }
 
 - (void)viewDidLayoutSubviews {

@@ -1,22 +1,23 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "RNNBottomTabsPresenter.h"
+#import "BottomTabsAppearancePresenter.h"
 #import "UITabBarController+RNNOptions.h"
 #import "RNNBottomTabsController.h"
+#import "RNNComponentViewController.h"
 
-@interface RNNTabBarPresenterTest : XCTestCase
+@interface RNNBottomTabsAppearancePresenterTest : XCTestCase
 
-@property(nonatomic, strong) RNNBottomTabsPresenter *uut;
+@property(nonatomic, strong) BottomTabsAppearancePresenter *uut;
 @property(nonatomic, strong) RNNNavigationOptions *options;
 @property(nonatomic, strong) id boundViewController;
 
 @end
 
-@implementation RNNTabBarPresenterTest
+@implementation RNNBottomTabsAppearancePresenterTest
 
 - (void)setUp {
     [super setUp];
-    self.uut = [OCMockObject partialMockForObject:[RNNBottomTabsPresenter new]];
+    self.uut = [OCMockObject partialMockForObject:[BottomTabsAppearancePresenter new]];
     self.boundViewController = [OCMockObject partialMockForObject:[RNNBottomTabsController new]];
     [self.uut bindViewController:self.boundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
@@ -25,7 +26,7 @@
 - (void)testApplyOptions_shouldSetDefaultEmptyOptions {
     RNNNavigationOptions *emptyOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
     [[self.boundViewController expect] setTabBarTestID:nil];
-    [[self.boundViewController expect] setTabBarBackgroundColor:nil];
+    [self.uut setTabBarBackgroundColor:nil];
     [[self.boundViewController expect] setTabBarTranslucent:NO];
     [[self.boundViewController expect] setTabBarHideShadow:NO];
     [[self.boundViewController expect] setTabBarStyle:UIBarStyleDefault];
@@ -44,7 +45,7 @@
     initialOptions.bottomTabs.barStyle = [[Text alloc] initWithValue:@"black"];
 
     [[self.boundViewController expect] setTabBarTestID:@"testID"];
-    [[self.boundViewController expect] setTabBarBackgroundColor:[UIColor redColor]];
+    [self.uut setTabBarBackgroundColor:[UIColor redColor]];
     [[self.boundViewController expect] setTabBarTranslucent:NO];
     [[self.boundViewController expect] setTabBarHideShadow:YES];
     [[self.boundViewController expect] setTabBarStyle:UIBarStyleBlack];
@@ -98,6 +99,16 @@
 	[self.uut applyOptions:self.options];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([((UIViewController *)self.boundViewController).view.backgroundColor isEqual:expectedColor]);
+}
+
+- (void)testTabBarBackgroundColor {
+	UIColor* tabBarBackgroundColor = [UIColor redColor];
+	RNNComponentPresenter* vcPresenter = [[RNNComponentPresenter alloc] initWithDefaultOptions:nil];
+	UIViewController* vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:vcPresenter options:nil defaultOptions:nil];
+	
+	[((UITabBarController *)self.boundViewController) setViewControllers:@[vc]];
+	[self.uut setTabBarBackgroundColor:tabBarBackgroundColor];
+	XCTAssertTrue([vc.tabBarItem.standardAppearance.backgroundColor isEqual:tabBarBackgroundColor]);
 }
 
 @end
