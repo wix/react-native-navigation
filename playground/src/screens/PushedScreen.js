@@ -60,9 +60,12 @@ class PushedScreen extends React.Component {
         <Button label='Set Stack Root' testID={SET_STACK_ROOT_BUTTON} onPress={this.setStackRoot} />
         <Button label='Push Options Screen' testID={PUSH_OPTIONS_BUTTON} onPress={this.pushOptionsScreen} />
         <Button label='Hide previous screen top bar' testID={HIDE_PREVIOUS_SCREEN_TOP_BAR} onPress={this.hidePreviousScreenTopBar} />
+        <Button label='Search' onPress={this.search} platform='ios'/>
       </Root>
     );
   }
+
+  search = () => Navigation.push(this, Screens.Search);
 
   push = () => Navigation.push(this, {
     component: {

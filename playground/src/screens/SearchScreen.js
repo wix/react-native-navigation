@@ -1,5 +1,6 @@
 const React = require('react');
 const { Component } = require('react');
+const Screens = require('../screens/Screens')
 
 const {
   StyleSheet,
@@ -72,11 +73,14 @@ class SearchScreen extends Component {
   onItemPressed = () => {
     Navigation.push(this.props.componentId, {
       component: {
-        name: 'navigation.playground.PushedScreen',
+        name: Screens.Search,
         options: {
           topBar: {
             title: {
               text: 'PushedScreen'
+            },
+            backButton: {
+              showTitle: false
             },
             largeTitle: {
               visible: true
