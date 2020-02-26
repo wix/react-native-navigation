@@ -13,8 +13,6 @@
 		21B85E5F1F44482A00B314B5 /* RNNNavigationButtons.h in Headers */ = {isa = PBXBuildFile; fileRef = 21B85E5E1F44482A00B314B5 /* RNNNavigationButtons.h */; };
 		261F0E641E6EC94900989DE2 /* RNNModalManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 261F0E621E6EC94900989DE2 /* RNNModalManager.h */; };
 		261F0E651E6EC94900989DE2 /* RNNModalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 261F0E631E6EC94900989DE2 /* RNNModalManager.m */; };
-		261F0E6A1E6F028A00989DE2 /* RNNNavigationStackManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 261F0E681E6F028A00989DE2 /* RNNNavigationStackManager.h */; };
-		261F0E6B1E6F028A00989DE2 /* RNNNavigationStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 261F0E691E6F028A00989DE2 /* RNNNavigationStackManager.m */; };
 		263905AE1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639058A1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h */; };
 		263905AF1E4C6F440023D7D3 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2639058B1E4C6F440023D7D3 /* MMDrawerBarButtonItem.m */; };
 		263905B01E4C6F440023D7D3 /* MMDrawerController+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639058C1E4C6F440023D7D3 /* MMDrawerController+Subclass.h */; };
@@ -327,6 +325,8 @@
 		50CED44E239EA78700C42EE2 /* TopBarAppearancePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CED44C239EA78700C42EE2 /* TopBarAppearancePresenter.m */; };
 		50CED451239F9DFC00C42EE2 /* TopBarPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CED44F239F9DFC00C42EE2 /* TopBarPresenter.h */; };
 		50CED452239F9DFC00C42EE2 /* TopBarPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CED450239F9DFC00C42EE2 /* TopBarPresenter.m */; };
+		50CF23392405668C0098042D /* UINavigationController+RNNCommands.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CF23372405668C0098042D /* UINavigationController+RNNCommands.h */; };
+		50CF233A2405668C0098042D /* UINavigationController+RNNCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF23382405668C0098042D /* UINavigationController+RNNCommands.m */; };
 		50D031342005149000386B3D /* RNNOverlayManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 50D031322005149000386B3D /* RNNOverlayManager.h */; };
 		50D031352005149000386B3D /* RNNOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D031332005149000386B3D /* RNNOverlayManager.m */; };
 		50D3A36E23B8D6C600717F95 /* SharedElementTransitionsCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 50D3A36C23B8D6C600717F95 /* SharedElementTransitionsCreator.h */; };
@@ -488,8 +488,6 @@
 		21B85E5E1F44482A00B314B5 /* RNNNavigationButtons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNNavigationButtons.h; sourceTree = "<group>"; };
 		261F0E621E6EC94900989DE2 /* RNNModalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNModalManager.h; sourceTree = "<group>"; };
 		261F0E631E6EC94900989DE2 /* RNNModalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNModalManager.m; sourceTree = "<group>"; };
-		261F0E681E6F028A00989DE2 /* RNNNavigationStackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNNavigationStackManager.h; sourceTree = "<group>"; };
-		261F0E691E6F028A00989DE2 /* RNNNavigationStackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationStackManager.m; sourceTree = "<group>"; };
 		2639058A1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
 		2639058B1E4C6F440023D7D3 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
 		2639058C1E4C6F440023D7D3 /* MMDrawerController+Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MMDrawerController+Subclass.h"; sourceTree = "<group>"; };
@@ -809,6 +807,8 @@
 		50CED44C239EA78700C42EE2 /* TopBarAppearancePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopBarAppearancePresenter.m; sourceTree = "<group>"; };
 		50CED44F239F9DFC00C42EE2 /* TopBarPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopBarPresenter.h; sourceTree = "<group>"; };
 		50CED450239F9DFC00C42EE2 /* TopBarPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopBarPresenter.m; sourceTree = "<group>"; };
+		50CF23372405668C0098042D /* UINavigationController+RNNCommands.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+RNNCommands.h"; sourceTree = "<group>"; };
+		50CF23382405668C0098042D /* UINavigationController+RNNCommands.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+RNNCommands.m"; sourceTree = "<group>"; };
 		50D031322005149000386B3D /* RNNOverlayManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayManager.h; sourceTree = "<group>"; };
 		50D031332005149000386B3D /* RNNOverlayManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayManager.m; sourceTree = "<group>"; };
 		50D3A36C23B8D6C600717F95 /* SharedElementTransitionsCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedElementTransitionsCreator.h; sourceTree = "<group>"; };
@@ -1425,8 +1425,6 @@
 			children = (
 				261F0E621E6EC94900989DE2 /* RNNModalManager.h */,
 				261F0E631E6EC94900989DE2 /* RNNModalManager.m */,
-				261F0E681E6F028A00989DE2 /* RNNNavigationStackManager.h */,
-				261F0E691E6F028A00989DE2 /* RNNNavigationStackManager.m */,
 				50D031322005149000386B3D /* RNNOverlayManager.h */,
 				50D031332005149000386B3D /* RNNOverlayManager.m */,
 				5050465221F8F4490035497A /* RNNReactComponentRegistry.h */,
@@ -1578,6 +1576,8 @@
 				5038A3B0216DF41B009280BC /* UIViewController+RNNOptions.m */,
 				5038A3B3216DF602009280BC /* UINavigationController+RNNOptions.h */,
 				5038A3B4216DF602009280BC /* UINavigationController+RNNOptions.m */,
+				50CF23372405668C0098042D /* UINavigationController+RNNCommands.h */,
+				50CF23382405668C0098042D /* UINavigationController+RNNCommands.m */,
 				5038A3B7216DFCFD009280BC /* UITabBarController+RNNOptions.h */,
 				5038A3B8216DFCFD009280BC /* UITabBarController+RNNOptions.m */,
 				651E1F8821FD611600DFEA19 /* UISplitViewController+RNNOptions.h */,
@@ -1809,6 +1809,7 @@
 				5048862D20BE976D000908DE /* RNNLayoutOptions.h in Headers */,
 				50BCB29123F2C7CD00D6C8E5 /* AnchorTransition.h in Headers */,
 				5038A374216CDDB6009280BC /* UIViewController+SideMenuController.h in Headers */,
+				50CF23392405668C0098042D /* UINavigationController+RNNCommands.h in Headers */,
 				E8A5CD621F49114F00E89D0D /* RNNElement.h in Headers */,
 				50CED449239EA56100C42EE2 /* TopBarPresenterCreator.h in Headers */,
 				5012240E21735999000F5F98 /* RNNBasePresenter.h in Headers */,
@@ -2024,7 +2025,6 @@
 				E8A5CD531F464F0400E89D0D /* StackTransitionDelegate.m in Sources */,
 				50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.m in Sources */,
 				503A8A0623BB850A0094D1C4 /* TimeInterval.m in Sources */,
-				261F0E6B1E6F028A00989DE2 /* RNNNavigationStackManager.m in Sources */,
 				5016E8F020209690009D4F7C /* RNNCustomTitleView.m in Sources */,
 				5061B6C823D48449008B9827 /* VerticalRotationTransition.m in Sources */,
 				5022EDB62405224B00852BA6 /* BottomTabPresenter.m in Sources */,
@@ -2043,6 +2043,7 @@
 				5022EDC624054C6100852BA6 /* BottomTabsAppearancePresenter.m in Sources */,
 				7B1126A01E2D263F00F9B03B /* RNNEventEmitter.m in Sources */,
 				A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */,
+				50CF233A2405668C0098042D /* UINavigationController+RNNCommands.m in Sources */,
 				5050465521F8F4490035497A /* RNNReactComponentRegistry.m in Sources */,
 				509416AC23A11CB20036092C /* NullEnum.m in Sources */,
 				503A8A1A23BCB2ED0094D1C4 /* RNNReactButtonView.m in Sources */,
