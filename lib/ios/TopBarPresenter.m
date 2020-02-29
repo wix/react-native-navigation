@@ -114,7 +114,7 @@
 - (void)setBackButtonOptions:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title showTitle:(BOOL)showTitle fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize {
 	NSArray* stackChildren = self.navigationController.viewControllers;
     UIViewController *lastViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
-    UIBarButtonItem *backItem = lastViewControllerInStack.navigationItem.backBarButtonItem;
+    UIBarButtonItem *backItem = lastViewControllerInStack.navigationItem.backBarButtonItem ?: [UIBarButtonItem new];
 
     icon = color
     ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
