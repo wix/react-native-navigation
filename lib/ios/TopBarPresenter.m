@@ -112,15 +112,15 @@
 }
 
 - (void)setBackButtonOptions:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title showTitle:(BOOL)showTitle fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize {
-	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-    NSArray* stackChildren = self.navigationController.viewControllers;
+	NSArray* stackChildren = self.navigationController.viewControllers;
+    UIViewController *lastViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
+    UIBarButtonItem *backItem = lastViewControllerInStack.navigationItem.backBarButtonItem;
+
     icon = color
     ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
     : icon;
     [self setBackIndicatorImage:icon withColor:color];
     
-    UIViewController *lastViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
-
     if (showTitle) {
         backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
     }

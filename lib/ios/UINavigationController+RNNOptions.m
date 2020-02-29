@@ -33,13 +33,9 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	self.navigationBar.barStyle = barStyle;
 }
 
-- (void)setNavigationBarLargeTitleVisible:(BOOL)visible {
+- (void)setNavigationBarLargeTitleVisible {
 	if (@available(iOS 11.0, *)) {
-		if (visible){
-			self.navigationBar.prefersLargeTitles = YES;
-		} else {
-			self.navigationBar.prefersLargeTitles = NO;
-		}
+		self.navigationBar.prefersLargeTitles = YES;
 	}
 }
 
