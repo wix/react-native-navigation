@@ -123,7 +123,10 @@
     
     if (showTitle) {
         backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
+    } else {
+        backItem.title = @"";
     }
+    
     backItem.tintColor = color;
 	
     if (fontFamily) {
