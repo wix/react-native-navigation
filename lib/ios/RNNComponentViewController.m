@@ -76,10 +76,6 @@
 	[self.eventEmitter sendOnSearchBarCancelPressed:self.layoutInfo.componentId];
 }
 
-- (BOOL)prefersStatusBarHidden {
-	return [_presenter isStatusBarVisibility:self.navigationController resolvedOptions:self.resolveOptions];
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return [_presenter getStatusBarStyle:[self resolveOptions]];
 }

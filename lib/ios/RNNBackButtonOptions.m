@@ -11,6 +11,7 @@
     self.color = [ColorParser parse:dict key:@"color"];
     self.showTitle = [BoolParser parse:dict key:@"showTitle"];
     self.visible = [BoolParser parse:dict key:@"visible"];
+    self.testID = [TextParser parse:dict key:@"testID"];
     self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
     self.fontSize = [NumberParser parse:dict key:@"fontSize"];
     

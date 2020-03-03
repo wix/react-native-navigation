@@ -10,7 +10,7 @@
 ## Installing with react-native link
 If you're using RN 0.60 or higher, you can link RNN automatically with react-native link. Otherwise, follow the manual installation steps. Unlike most other libraries, react-native-navigation requires you to make a few changes to native files. To make all the necessary changes, run `react-native link react-native-navigation` in your project's root folder. Make sure to commit the changes introduced by the link script.
 
-If the link script completed successfully, you're good to go! If one of the steps failed, you'll need to complete the relevant step in the manual installation steps bellow.
+If the link script completed successfully, you're good to go! If one of the steps failed, you'll need to complete the relevant step in the manual installation steps below.
 
 ## Manual Installation
 If installation with react-native link did not work, follow the manual installation steps.
@@ -152,7 +152,7 @@ buildscript {
 	}
 	dependencies {
 +        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61" // Or whatever Kotlin version you've specified above
-+        classpath 'com.android.tools.build:gradle:3.5.3' // Or higher
++        classpath 'com.android.tools.build:gradle:3.4.2' // Or higher
 -        classpath 'com.android.tools.build:gradle:2.2.3'
 	}
 }

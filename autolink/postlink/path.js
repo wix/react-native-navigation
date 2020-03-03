@@ -10,3 +10,4 @@ exports.mainApplicationJava = mainApplicationJava;
 exports.rootGradle = mainApplicationJava.replace(/android\/app\/.*\.java/, "android/build.gradle");;
 
 exports.appDelegate = glob.sync("**/AppDelegate.m", ignoreFolders)[0];
+exports.podFile = glob.sync("**/Podfile", ignoreFolders)[0]
