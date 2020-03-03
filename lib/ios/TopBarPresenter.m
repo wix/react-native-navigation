@@ -122,7 +122,6 @@
     
 	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     backItem.accessibilityIdentifier = testID;
-    backItem.accessibilityLabel = testID;
     
     NSArray* stackChildren = self.navigationController.viewControllers;
     icon = color
