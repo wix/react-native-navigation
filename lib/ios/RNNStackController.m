@@ -32,10 +32,6 @@
     [self.parentViewController mergeChildOptions:options child:self];
 }
 
-- (UINavigationController *)navigationController {
-	return self;
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return [_presenter getStatusBarStyle:self.resolveOptions];
 }

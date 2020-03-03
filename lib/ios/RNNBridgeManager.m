@@ -94,7 +94,7 @@
 	_componentRegistry = [[RNNReactComponentRegistry alloc] initWithCreator:rootViewCreator];
 	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter store:_store componentRegistry:_componentRegistry andBridge:bridge bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
 
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter stackManager:[RNNNavigationStackManager new] modalManager:_modalManager overlayManager:_overlayManager mainWindow:_mainWindow];
+	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter modalManager:_modalManager overlayManager:_overlayManager mainWindow:_mainWindow];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 
 	return [@[bridgeModule,eventEmitter] arrayByAddingObjectsFromArray:[self extraModulesFromDelegate]];

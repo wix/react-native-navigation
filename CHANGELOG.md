@@ -113,9 +113,9 @@ Add these lines to the bottom of your `app/build.gradle` file.
 ```
 #### Update `settings.gradle`
 ```diff
++apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
++applyNativeModulesSettingsGradle(settings)
 include ':app'
-+include ':react-native-navigation'
-+project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../../lib/android/app/')
 ```
 
 ### Remove RNN pod from podspec

@@ -60,6 +60,14 @@
 	return interfaceOrientationMask;
 }
 
+- (UINavigationController *)stack {
+    if ([self isKindOfClass:UINavigationController.class]) {
+        return (UINavigationController *)self;
+    } else {
+        return self.navigationController;
+    }
+}
+
 - (void)render {
     if (!self.waitForRender) {
         [self readyForPresentation];
