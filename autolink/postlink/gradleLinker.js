@@ -4,6 +4,8 @@ var fs = require('fs');
 var { warnn, errorn, logn, infon, debugn } = require('./log');
 var { insertString } = require('./stringUtils');
 var DEFAULT_KOTLIN_VERSION = '1.3.61';
+// This should be the minSdkVersion required for RNN.
+var DEFAULT_MIN_SDK_VERSION = 19
 
 class GradleLinker {
   constructor() {
@@ -16,6 +18,7 @@ class GradleLinker {
       var contents = fs.readFileSync(this.gradlePath, 'utf8');
       contents = this._setKotlinVersion(contents);
       contents = this._setKotlinPluginDependency(contents);
+      contents = this._setMinSdkVersion(contents);
       fs.writeFileSync(this.gradlePath, contents);
       infon('Root build.gradle linked successfully!\n');
     } else {
@@ -55,6 +58,22 @@ class GradleLinker {
   }
 
   /**
+   * Check the current minSdkVersion specified and if it's lower than
+   * the required version, set it to the required version otherwise leave as it is.
+   */
+  _setMinSdkVersion(contents) {
+    var minSdkVersion = this._getMinSdkVersion(contents)
+    // If user entered minSdkVersion is lower than the default, set it to default.
+    if (minSdkVersion < DEFAULT_MIN_SDK_VERSION) {
+      debugn(`   Updating minSdkVersion to ${DEFAULT_MIN_SDK_VERSION}`)
+      return contents.replace(/minSdkVersion\s{0,}=\s{0,}\d*/, `minSdkVersion = ${DEFAULT_MIN_SDK_VERSION}`)
+    } 
+
+    debugn(`   Already specified minSdkVersion ${minSdkVersion}`)
+    return contents.replace(/minSdkVersion\s{0,}=\s{0,}\d*/, `minSdkVersion = ${minSdkVersion}`)
+  }
+
+  /**
    * @param { string } contents
    */
   _getKotlinVersion(contents) {
@@ -67,6 +86,21 @@ class GradleLinker {
       return extensionVariableVersion[0].replace("$", "");
     }
     return `"${DEFAULT_KOTLIN_VERSION}"`;
+  }
+
+  /**
+   * Get the minSdkVersion value.
+   * @param { string } contents
+   */
+  _getMinSdkVersion(contents) {
+    var minSdkVersion = contents.match(/minSdkVersion\s{0,}=\s{0,}(\d*)/)
+
+    if (minSdkVersion && minSdkVersion[1]) {
+      // It'd be something like 16 for a fresh React Native project.
+      return +minSdkVersion[1] 
+    }
+
+    return DEFAULT_MIN_SDK_VERSION
   }
 
   /**

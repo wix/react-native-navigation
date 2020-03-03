@@ -1,11 +1,11 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.reactnativenavigation.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
@@ -14,12 +14,14 @@ import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.stack.*;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.EmptyStackException;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
@@ -169,13 +171,6 @@ public class ModalStackTest extends BaseTest {
         uut.dismissAllModals(root, Options.EMPTY, listener);
         verify(listener, times(1)).onSuccess(anyString());
         verifyZeroInteractions(listener);
-    }
-
-    @Test
-    public void dismissAllModals_rejectIfEmpty() {
-        CommandListener spy = spy(new CommandListenerAdapter());
-        uut.dismissAllModals(root, Options.EMPTY, spy);
-        verify(spy, times(1)).onError(any());
     }
 
     @Test

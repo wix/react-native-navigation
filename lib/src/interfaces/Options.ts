@@ -272,6 +272,10 @@ export interface OptionsTopBarBackButton {
    * Set subtitle font family
    */
   fontFamily?: FontFamily;
+  /**
+   * Set testID for reference in E2E tests
+   */
+  testID?: string;
 }
 
 export interface OptionsTopBarBackground {
