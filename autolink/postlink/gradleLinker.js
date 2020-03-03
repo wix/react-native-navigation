@@ -66,11 +66,11 @@ class GradleLinker {
     // If user entered minSdkVersion is lower than the default, set it to default.
     if (minSdkVersion < DEFAULT_MIN_SDK_VERSION) {
       debugn(`   Updating minSdkVersion to ${DEFAULT_MIN_SDK_VERSION}`)
-      return contents.replace(/minSdkVersion = \d*/, `minSdkVersion\s=\s${DEFAULT_MIN_SDK_VERSION}`)
+      return contents.replace(/minSdkVersion\s{0,}=\s{0,}\d*/, `minSdkVersion = ${DEFAULT_MIN_SDK_VERSION}`)
     } 
 
     debugn(`   Already specified minSdkVersion ${minSdkVersion}`)
-    return contents.replace(/minSdkVersion = \d*/, `minSdkVersion = ${minSdkVersion}`)
+    return contents.replace(/minSdkVersion\s{0,}=\s{0,}\d*/, `minSdkVersion = ${minSdkVersion}`)
   }
 
   /**
@@ -93,7 +93,7 @@ class GradleLinker {
    * @param { string } contents
    */
   _getMinSdkVersion(contents) {
-    var minSdkVersion = contents.match(/minSdkVersion\s=\s(\d*)/)
+    var minSdkVersion = contents.match(/minSdkVersion\s{0,}=\s{0,}(\d*)/)
 
     if (minSdkVersion && minSdkVersion[1]) {
       // It'd be something like 16 for a fresh React Native project.
