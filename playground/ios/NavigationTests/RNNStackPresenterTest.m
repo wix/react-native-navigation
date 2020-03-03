@@ -41,7 +41,7 @@
 	_options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
 	
 	[self.uut applyOptionsBeforePopping:self.options];
-	XCTAssertTrue([_boundViewController.navigationBar.standardAppearance.backgroundColor isEqual:[UIColor redColor]]);
+	XCTAssertTrue([_boundViewController.childViewControllers.lastObject.navigationItem.standardAppearance.backgroundColor isEqual:[UIColor redColor]]);
 }
 
 - (void)testApplyOptionsBeforePoppingShouldSetLargeTitleForPoppingViewController {
@@ -103,7 +103,7 @@
 	self.options.topBar.backButton.icon = icon;
 	[self.uut applyOptions:self.options];
 	XCTAssertEqual(self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem.tintColor, UIColor.redColor);
-	XCTAssertTrue([self.boundViewController.navigationBar.standardAppearance.backIndicatorImage isEqual:image]);
+	XCTAssertTrue([self.boundViewController.viewControllers.lastObject.navigationItem.standardAppearance.backIndicatorImage isEqual:image]);
 }
 
 - (void)testBackgroundColor_validColor {

@@ -27,8 +27,8 @@
 	mergeOptions.topBar.title.fontSize = [Number withValue:@(21)];
 	RNNNavigationOptions* withDefault = [mergeOptions withDefault:defaultOptions];
 	[_uut mergeOptions:mergeOptions.topBar withDefault:withDefault.topBar];
-	XCTAssertEqual(_stack.navigationBar.standardAppearance.titleTextAttributes[NSForegroundColorAttributeName], UIColor.redColor);
-	UIFont* font = _stack.navigationBar.standardAppearance.titleTextAttributes[NSFontAttributeName];
+	XCTAssertEqual(_stack.childViewControllers.lastObject.navigationItem.standardAppearance.titleTextAttributes[NSForegroundColorAttributeName], UIColor.redColor);
+	UIFont* font = _stack.childViewControllers.lastObject.navigationItem.standardAppearance.titleTextAttributes[NSFontAttributeName];
 	XCTAssertEqual(font.pointSize, 21);
 }
 

@@ -13,6 +13,8 @@
 
 - (BOOL)transparent;
 
+- (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions;
+
 @property (nonatomic) BOOL translucent;
 @property (nonatomic, strong) UIColor* backgroundColor;
 

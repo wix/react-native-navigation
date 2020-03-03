@@ -6,15 +6,19 @@
 @end
 
 
-@implementation TopBarAppearancePresenter {
-    UINavigationBarAppearance* _appearance;
+@implementation TopBarAppearancePresenter
+
+- (void)applyOptions:(RNNTopBarOptions *)options {
+    [self setTranslucent:[options.background.translucent getWithDefaultValue:NO]];
+    [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
+    [self setTitleAttributes:options.title];
+    [self setLargeTitleAttributes:options.largeTitle];
+    [self showBorder:![options.noBorder getWithDefaultValue:NO]];
+    [self setBackButtonOptions:options.backButton];
 }
 
-- (instancetype)initWithNavigationController:(UINavigationController *)boundNavigationController {
-    self = [super initWithNavigationController:boundNavigationController];
-    _appearance = boundNavigationController.navigationBar.standardAppearance ?: [UINavigationBarAppearance new];
-    boundNavigationController.navigationBar.standardAppearance = _appearance;
-    return self;
+- (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options {
+    [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
 }
 
 - (void)setTranslucent:(BOOL)translucent {
@@ -28,23 +32,23 @@
 
 - (void)updateBackgroundAppearance {
     if (self.transparent) {
-        [_appearance configureWithTransparentBackground];
+        [self.currentChildAppearance configureWithTransparentBackground];
     } else if (self.backgroundColor) {
-        [_appearance setBackgroundColor:self.backgroundColor];
+        [self.currentChildAppearance setBackgroundColor:self.backgroundColor];
     } else if (self.translucent) {
-        [_appearance configureWithDefaultBackground];
+        [self.currentChildAppearance configureWithDefaultBackground];
     } else {
-        [_appearance configureWithOpaqueBackground];
+        [self.currentChildAppearance configureWithOpaqueBackground];
     }
 }
 
 - (void)showBorder:(BOOL)showBorder {
     UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
-    _appearance.shadowColor = shadowColor;
+    self.currentChildAppearance.shadowColor = shadowColor;
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {
-    [_appearance setBackIndicatorImage:image transitionMaskImage:image];
+    [self.currentChildAppearance setBackIndicatorImage:image transitionMaskImage:image];
 }
 
 - (void)setTitleAttributes:(RNNTitleOptions *)titleOptions {
@@ -53,7 +57,7 @@
     NSNumber* fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [titleOptions.color getWithDefaultValue:nil];
     
-    _appearance.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:_appearance.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    self.currentChildAppearance.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.currentChildAppearance.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
@@ -62,7 +66,15 @@
     NSNumber* fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
     
-    _appearance.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:_appearance.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    self.currentChildAppearance.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.currentChildAppearance.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+}
+
+- (UINavigationBarAppearance *)currentChildAppearance {
+    if (!self.boundViewController.childViewControllers.lastObject.navigationItem.standardAppearance) {
+        self.boundViewController.childViewControllers.lastObject.navigationItem.standardAppearance = [UINavigationBarAppearance new];
+    }
+    
+    return self.boundViewController.childViewControllers.lastObject.navigationItem.standardAppearance;
 }
 
 @end
