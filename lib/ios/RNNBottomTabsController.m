@@ -34,6 +34,7 @@
 }
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
+    [super mergeChildOptions:options child:child];
     [_bottomTabPresenter mergeOptions:options resolvedOptions:self.resolveOptions child:child];
     [_dotIndicatorPresenter mergeOptions:options resolvedOptions:self.resolveOptions child:child];
 }
