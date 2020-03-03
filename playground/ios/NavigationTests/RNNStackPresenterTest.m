@@ -51,12 +51,6 @@
 	XCTAssertTrue([[_boundViewController navigationBar] prefersLargeTitles]);
 }
 
-- (void)testApplyOptionsBeforePoppingShouldSetDefaultLargeTitleFalseForPoppingViewController {
-	_options.topBar.largeTitle.visible = nil;
-	[self.uut applyOptionsBeforePopping:self.options];
-	XCTAssertFalse([[_boundViewController navigationBar] prefersLargeTitles]);
-}
-
 - (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withTitle {
 	Text* title = [[Text alloc] initWithValue:@"Title"];
 	self.options.topBar.backButton.title = title;

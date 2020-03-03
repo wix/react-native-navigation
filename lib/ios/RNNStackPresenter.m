@@ -62,7 +62,6 @@
     [_topBarPresenter applyOptions:withDefault.topBar];
     
     [stack setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
-    [stack setNavigationBarLargeTitleVisible];
     [stack setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds getWithDefaultValue:NO]];
     [stack setBackButtonColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil]];
 	
