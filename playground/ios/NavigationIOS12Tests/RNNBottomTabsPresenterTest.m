@@ -70,28 +70,6 @@
 	[self.boundViewController verify];
 }
 
-- (void)testViewDidLayoutSubviews_appliesBadgeOnNextRunLoop {
-    id uut = [self uut];
-    [[uut expect] applyDotIndicator];
-    [uut viewDidLayoutSubviews];
-    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
-    [uut verify];
-}
-
-- (void)testApplyDotIndicator_callsAppliesBadgeWithEachChild {
-    id uut = [self uut];
-    id child1 = [UIViewController new];
-    id child2 = [UIViewController new];
-
-    [[uut expect] applyDotIndicator:child1];
-    [[uut expect] applyDotIndicator:child2];
-    [[self boundViewController] addChildViewController:child1];
-    [[self boundViewController] addChildViewController:child2];
-
-    [uut applyDotIndicator];
-    [uut verify];
-}
-
 - (void)testBackgroundColor_validColor {
 	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
 	self.options.layout.backgroundColor = [[Color alloc] initWithValue:inputColor];
