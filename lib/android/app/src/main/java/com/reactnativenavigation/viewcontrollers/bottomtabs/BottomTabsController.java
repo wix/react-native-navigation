@@ -164,7 +164,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
             BottomTabOptions options = tab.resolveCurrentOptions().bottomTabOptions;
             return new AHBottomNavigationItem(
                     options.text.get(""),
-                    imageLoader.loadIcon(getActivity(), options.icon.get()),
+                    imageLoader.loadIcon(getActivity(), options.icon.get(null)),
                     imageLoader.loadIcon(getActivity(), options.selectedIcon.get(null)),
                     options.testId.get("")
             );
