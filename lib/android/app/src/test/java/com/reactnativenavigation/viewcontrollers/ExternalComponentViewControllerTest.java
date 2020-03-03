@@ -8,6 +8,7 @@ import com.reactnativenavigation.parse.ExternalComponent;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.ExternalComponentPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
@@ -33,6 +34,7 @@ public class ExternalComponentViewControllerTest extends BaseTest {
     private ExternalComponent ec;
     private ReactInstanceManager reactInstanceManager;
     private EventEmitter emitter;
+    private ChildControllersRegistry childRegistry;
 
     @Override
     public void beforeEach() {
@@ -41,8 +43,11 @@ public class ExternalComponentViewControllerTest extends BaseTest {
         ec = createExternalComponent();
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
         emitter = Mockito.mock(EventEmitter.class);
+        childRegistry = new ChildControllersRegistry();
         uut = spy(new ExternalComponentViewController(activity,
+                childRegistry,
                 "fragmentId",
+                new Presenter(activity, Options.EMPTY),
                 ec,
                 componentCreator,
                 reactInstanceManager,
@@ -75,6 +80,14 @@ public class ExternalComponentViewControllerTest extends BaseTest {
     public void onViewDisappear_disappearEventIsEmitted() {
         uut.onViewDisappear();
         verify(emitter).emitComponentDidDisappear(uut.getId(), ec.name.get(), ComponentType.Component);
+    }
+
+    @Test
+    public void registersInChildRegister() {
+        uut.onViewAppeared();
+        assertThat(childRegistry.size()).isOne();
+        uut.onViewDisappear();
+        assertThat(childRegistry.size()).isZero();
     }
 
     private ExternalComponent createExternalComponent() {
