@@ -1,5 +1,6 @@
 #import "TopBarAppearancePresenter.h"
 #import "RNNFontAttributesCreator.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @interface TopBarAppearancePresenter ()
 
@@ -70,11 +71,11 @@
 }
 
 - (UINavigationBarAppearance *)currentChildAppearance {
-    if (!self.boundViewController.childViewControllers.lastObject.navigationItem.standardAppearance) {
-        self.boundViewController.childViewControllers.lastObject.navigationItem.standardAppearance = [UINavigationBarAppearance new];
+    if (!self.topNavigationItem.standardAppearance) {
+        self.topNavigationItem.standardAppearance = [UINavigationBarAppearance new];
     }
     
-    return self.boundViewController.childViewControllers.lastObject.navigationItem.standardAppearance;
+    return self.topNavigationItem.standardAppearance;
 }
 
 @end

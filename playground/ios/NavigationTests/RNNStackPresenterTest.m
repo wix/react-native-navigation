@@ -1,9 +1,10 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "RNNStackPresenter.h"
+#import <ReactNativeNavigation/RNNStackPresenter.h>
 #import "UINavigationController+RNNOptions.h"
 #import "RNNStackController.h"
 #import "UIImage+Utils.h"
+#import "RNNComponentViewController+Utils.h"
 
 @interface RNNStackPresenterTest : XCTestCase
 
@@ -18,7 +19,7 @@
 - (void)setUp {
 	[super setUp];
 	self.uut = [[RNNStackPresenter alloc] init];
-	RNNStackController* stackController = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:self.uut eventEmitter:nil childViewControllers:@[[UIViewController new], [UIViewController new]]];
+	RNNStackController* stackController = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:self.uut eventEmitter:nil childViewControllers:@[[RNNComponentViewController createWithComponentId:@"component1"], [RNNComponentViewController createWithComponentId:@"component2"]]];
 	self.boundViewController = [OCMockObject partialMockForObject:stackController];
     [self.uut bindViewController:self.boundViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
