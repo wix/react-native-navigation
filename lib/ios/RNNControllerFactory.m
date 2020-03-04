@@ -151,11 +151,11 @@
     RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
     RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
     RNNBottomTabsPresenter* presenter = [BottomTabsPresenterCreator createWithDefaultOptions:_defaultOptions];
-    BottomTabPresenter* bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:_defaultOptions];
+    NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
+    BottomTabPresenter* bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:_defaultOptions children:childViewControllers];;
     RNNDotIndicatorPresenter* dotIndicatorPresenter = [[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:_defaultOptions];
 	BottomTabsBaseAttacher* bottomTabsAttacher = [_bottomTabsAttachModeFactory fromOptions:options];
     
-    NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
     return [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo
                                                        creator:_creator
                                                        options:options

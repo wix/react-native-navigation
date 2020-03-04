@@ -11,6 +11,7 @@
 @interface RNNBottomTabsAppearancePresenterTest : XCTestCase
 
 @property(nonatomic, strong) RNNBottomTabsPresenter *uut;
+@property(nonatomic, strong) NSArray<UIViewController *> *children;
 @property(nonatomic, strong) id dotIndicatorPresenter;
 @property(nonatomic, strong) RNNNavigationOptions *options;
 @property(nonatomic, strong) id boundViewController;
@@ -21,9 +22,10 @@
 
 - (void)setUp {
     [super setUp];
+	self.children = @[[[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNComponentPresenter alloc] initWithDefaultOptions:nil] options:nil defaultOptions:nil]];
 	self.dotIndicatorPresenter = [OCMockObject partialMockForObject:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil]];
     self.uut = [OCMockObject partialMockForObject:[BottomTabsPresenterCreator createWithDefaultOptions:nil]];
-	self.boundViewController = [OCMockObject partialMockForObject:[[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:self.uut bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil] dotIndicatorPresenter:self.dotIndicatorPresenter eventEmitter:nil childViewControllers:nil bottomTabsAttacher:nil]];
+	self.boundViewController = [OCMockObject partialMockForObject:[[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:self.uut bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil children:self.children] dotIndicatorPresenter:self.dotIndicatorPresenter eventEmitter:nil childViewControllers:self.children bottomTabsAttacher:nil]];
     [self.uut bindViewController:self.boundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
@@ -86,12 +88,8 @@
 
 - (void)testTabBarBackgroundColor {
 	UIColor* tabBarBackgroundColor = [UIColor redColor];
-	RNNComponentPresenter* vcPresenter = [[RNNComponentPresenter alloc] initWithDefaultOptions:nil];
-	UIViewController* vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:vcPresenter options:nil defaultOptions:nil];
-	
-	[((UITabBarController *)self.boundViewController) setViewControllers:@[vc]];
 	[self.uut setTabBarBackgroundColor:tabBarBackgroundColor];
-	XCTAssertTrue([vc.tabBarItem.standardAppearance.backgroundColor isEqual:tabBarBackgroundColor]);
+	XCTAssertTrue([self.children.lastObject.tabBarItem.standardAppearance.backgroundColor isEqual:tabBarBackgroundColor]);
 }
 
 @end

@@ -3,14 +3,12 @@
 
 @implementation BottomTabAppearancePresenter
 
-- (void)bindViewController:(UIViewController *)boundViewController {
-    [super bindViewController:boundViewController];
-    boundViewController.tabBarItem.standardAppearance = [[UITabBarAppearance alloc] init];
-}
-
-- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options child:(UIViewController *)child {
-    child.tabBarItem.standardAppearance = [[UITabBarAppearance alloc] init];
-    [super applyOptionsOnWillMoveToParentViewController:options child:child];
+- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions children:(NSArray<UIViewController *> *)children {
+    self = [super initWithDefaultOptions:defaultOptions];
+    for (UIViewController* child in children) {
+        child.tabBarItem.standardAppearance = [[UITabBarAppearance alloc] init];
+    }
+    return self;
 }
 
 - (void)updateChild:(UIViewController *)child bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
