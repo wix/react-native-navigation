@@ -26,6 +26,9 @@
     _bottomTabPresenter = bottomTabPresenter;
     _dotIndicatorPresenter = dotIndicatorPresenter;
     self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
+    if (@available(iOS 13.0, *)) {
+        self.tabBar.standardAppearance = [UITabBarAppearance new];
+    }
     return self;
 }
 
