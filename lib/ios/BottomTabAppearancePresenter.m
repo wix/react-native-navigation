@@ -11,7 +11,7 @@
     return self;
 }
 
-- (void)updateChild:(UIViewController *)child bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
+- (void)createTabBarItem:(UIViewController *)child bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
     child.tabBarItem = [TabBarItemAppearanceCreator updateTabBarItem:child.tabBarItem bottomTabOptions:bottomTabOptions];
 }
 
