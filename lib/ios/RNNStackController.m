@@ -30,7 +30,7 @@
     if (child.isLastInStack) {
         [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
     }
-    [self.parentViewController mergeChildOptions:options child:self];
+    [self.parentViewController mergeChildOptions:options child:child];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

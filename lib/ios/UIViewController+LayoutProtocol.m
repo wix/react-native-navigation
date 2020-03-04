@@ -117,6 +117,17 @@
         return self;
 }
 
+- (UIViewController *)findViewController:(UIViewController *)child {
+    if (self == child) return child;
+    
+    for (UIViewController* childController in self.childViewControllers) {
+        UIViewController* fromChild = [childController findViewController:child];
+        if (fromChild) return childController;
+    }
+    
+    return nil;
+}
+
 - (CGFloat)getTopBarHeight {
     for(UIViewController * child in [self childViewControllers]) {
         CGFloat childTopBarHeight = [child getTopBarHeight];
