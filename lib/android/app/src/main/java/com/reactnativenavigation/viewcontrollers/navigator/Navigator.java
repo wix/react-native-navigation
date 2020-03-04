@@ -64,6 +64,7 @@ public class Navigator extends ParentController {
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
         contentLayout.addView(modalsLayout);
+        contentLayout.addView(overlaysLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
@@ -114,7 +115,7 @@ public class Navigator extends ParentController {
 
     public void destroyViews() {
         modalStack.destroy();
-        overlayManager.destroy();
+        overlayManager.destroy(overlaysLayout);
         destroyRoot();
     }
 
@@ -198,11 +199,11 @@ public class Navigator extends ParentController {
     }
 
     public void showOverlay(ViewController overlay, CommandListener listener) {
-        overlayManager.show(contentLayout, overlaysLayout, overlay, listener);
+        overlayManager.show(overlaysLayout, overlay, listener);
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
-        overlayManager.dismiss(componentId, listener);
+        overlayManager.dismiss(overlaysLayout, componentId, listener);
     }
 
     @Nullable
@@ -238,5 +239,10 @@ public class Navigator extends ParentController {
     @RestrictTo(RestrictTo.Scope.TESTS)
     CoordinatorLayout getModalsLayout() {
         return modalsLayout;
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    CoordinatorLayout getOverlaysLayout() {
+        return overlaysLayout;
     }
 }

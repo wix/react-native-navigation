@@ -155,11 +155,11 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void setRoot_clearsSplashLayout() {
         FrameLayout content = activity.findViewById(android.R.id.content);
-        assertThat(content.getChildCount()).isEqualTo(3); // 2 frame layouts (root and modal containers) and the default splash layout
+        assertThat(content.getChildCount()).isEqualTo(4); // 3 frame layouts (root, modal and overlay containers) and the default splash layout
 
         uut.setRoot(child2, new CommandListenerAdapter(), reactInstanceManager);
 
-        assertThat(content.getChildCount()).isEqualTo(2);
+        assertThat(content.getChildCount()).isEqualTo(3);
     }
 
     @Test
@@ -658,7 +658,7 @@ public class NavigatorTest extends BaseTest {
     public void destroy_destroyOverlayManager() {
         uut.setRoot(parentController, new CommandListenerAdapter(), reactInstanceManager);
         activityController.destroy();
-        verify(overlayManager).destroy();
+        verify(overlayManager).destroy(uut.getOverlaysLayout());
     }
 
     @Test
