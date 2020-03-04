@@ -240,4 +240,9 @@ public class Navigator extends ParentController {
     CoordinatorLayout getModalsLayout() {
         return modalsLayout;
     }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    CoordinatorLayout getOverlaysLayout() {
+        return overlaysLayout;
+    }
 }

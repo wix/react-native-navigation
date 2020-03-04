@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.overlay;
 
 import android.app.Activity;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
@@ -36,6 +37,7 @@ public class OverlayManagerTest extends BaseTest {
         contentLayout.layout(0, 0, 1000, 1000);
         activity.setContentView(contentLayout);
         overlayContainer = new FrameLayout(activity);
+        contentLayout.addView(overlayContainer);
 
         ChildControllersRegistry childRegistry = new ChildControllersRegistry();
         overlay1 = spy(new SimpleViewController(activity, childRegistry, OVERLAY_ID_1, new Options()));
@@ -45,15 +47,15 @@ public class OverlayManagerTest extends BaseTest {
 
     @Test
     public void show_attachesOverlayContainerToContentLayout() {
-        uut.show(contentLayout, overlayContainer, overlay1, new CommandListenerAdapter());
+        uut.show(overlayContainer, overlay1, new CommandListenerAdapter());
         assertThat(overlayContainer.getParent()).isEqualTo(contentLayout);
-        uut.show(contentLayout, overlayContainer, overlay2, new CommandListenerAdapter());
+        uut.show(overlayContainer, overlay2, new CommandListenerAdapter());
     }
 
     @Test
     public void show() {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
-        uut.show(contentLayout, overlayContainer, overlay1, listener);
+        uut.show(overlayContainer, overlay1, listener);
         verify(listener, times(1)).onSuccess(OVERLAY_ID_1);
         assertThat(overlay1.getView().getParent()).isEqualTo(overlayContainer);
         assertMatchParent(overlay1.getView());
@@ -61,10 +63,10 @@ public class OverlayManagerTest extends BaseTest {
 
     @Test
     public void dismiss() {
-        uut.show(contentLayout, overlayContainer, overlay1, new CommandListenerAdapter());
+        uut.show(overlayContainer, overlay1, new CommandListenerAdapter());
         assertThat(uut.size()).isOne();
         CommandListener listener = spy(new CommandListenerAdapter());
-        uut.dismiss(overlay1.getId(), listener);
+        uut.dismiss(overlayContainer, overlay1.getId(), listener);
         assertThat(uut.size()).isZero();
         verify(listener, times(1)).onSuccess(OVERLAY_ID_1);
         verify(overlay1, times(1)).destroy();
@@ -73,28 +75,29 @@ public class OverlayManagerTest extends BaseTest {
     @Test
     public void dismiss_rejectIfOverlayNotFound() {
         CommandListener listener = spy(new CommandListenerAdapter());
-        uut.dismiss(overlay1.getId(), listener);
+        uut.dismiss(overlayContainer, overlay1.getId(), listener);
         verify(listener, times(1)).onError(any());
     }
 
     @Test
     public void dismiss_onViewReturnedToFront() {
-        uut.show(contentLayout, overlayContainer, overlay1, new CommandListenerAdapter());
-        uut.show(contentLayout, overlayContainer, overlay2, new CommandListenerAdapter());
+        uut.show(overlayContainer, overlay1, new CommandListenerAdapter());
+        uut.show(overlayContainer, overlay2, new CommandListenerAdapter());
         verify(overlay1, times(0)).onViewBroughtToFront();
 
-        uut.dismiss(OVERLAY_ID_2, new CommandListenerAdapter());
+        uut.dismiss(overlayContainer, OVERLAY_ID_2, new CommandListenerAdapter());
         verify(overlay1, times(1)).onViewBroughtToFront();
     }
 
     @Test
-    public void dismiss_overlayContainerIsRemovedIfAllOverlaysAreDismissed() {
-        uut.show(contentLayout, overlayContainer, overlay1, new CommandListenerAdapter());
-        uut.show(contentLayout, overlayContainer, overlay2, new CommandListenerAdapter());
+    public void dismiss_overlayContainerIsHiddenIfAllOverlaysAreDismissed() {
+        uut.show(overlayContainer, overlay1, new CommandListenerAdapter());
+        uut.show(overlayContainer, overlay2, new CommandListenerAdapter());
 
-        uut.dismiss(OVERLAY_ID_2, new CommandListenerAdapter());
+        uut.dismiss(overlayContainer, OVERLAY_ID_2, new CommandListenerAdapter());
+        assertThat(overlayContainer.getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(overlayContainer.getParent()).isEqualTo(contentLayout);
-        uut.dismiss(OVERLAY_ID_1, new CommandListenerAdapter());
-        assertThat(overlayContainer.getParent()).isNull();
+        uut.dismiss(overlayContainer, OVERLAY_ID_1, new CommandListenerAdapter());
+        assertThat(overlayContainer.getVisibility()).isEqualTo(View.GONE);
     }
 }
