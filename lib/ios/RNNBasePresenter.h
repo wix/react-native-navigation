@@ -37,6 +37,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)componentDidDisappear;
 
+- (UINavigationItem *)currentNavigationItem;
+
 - (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions;
 
 - (UIInterfaceOrientationMask)getOrientation:(RNNNavigationOptions *)options;

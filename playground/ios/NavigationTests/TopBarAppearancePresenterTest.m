@@ -4,6 +4,7 @@
 #import "UIViewController+RNNOptions.h"
 #import <ReactNativeNavigation/RNNStackController.h>
 #import <ReactNativeNavigation/RNNComponentViewController.h>
+#import "RNNComponentViewController+Utils.h"
 
 @interface TopBarAppearancePresenterTest : XCTestCase
 
@@ -17,7 +18,7 @@
 
 - (void)setUp {
     [super setUp];
-	_componentViewController = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil];
+	_componentViewController = [RNNComponentViewController createWithComponentId:@"componentId"];
 	_stack = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:_uut eventEmitter:nil childViewControllers:@[_componentViewController]];
 	_uut = [[TopBarAppearancePresenter alloc] initWithNavigationController:_stack];
 }
@@ -30,8 +31,8 @@
 	mergeOptions.topBar.title.fontSize = [Number withValue:@(21)];
 	RNNNavigationOptions* withDefault = [mergeOptions withDefault:defaultOptions];
 	[_uut mergeOptions:mergeOptions.topBar withDefault:withDefault.topBar];
-	XCTAssertEqual(_stack.navigationBar.standardAppearance.titleTextAttributes[NSForegroundColorAttributeName], UIColor.redColor);
-	UIFont* font = _stack.navigationBar.standardAppearance.titleTextAttributes[NSFontAttributeName];
+	XCTAssertEqual(_stack.childViewControllers.lastObject.navigationItem.standardAppearance.titleTextAttributes[NSForegroundColorAttributeName], UIColor.redColor);
+	UIFont* font = _stack.childViewControllers.lastObject.navigationItem.standardAppearance.titleTextAttributes[NSFontAttributeName];
 	XCTAssertEqual(font.pointSize, 21);
 }
 

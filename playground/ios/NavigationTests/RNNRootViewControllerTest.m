@@ -60,7 +60,7 @@
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.backgroundColor isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.backgroundColor isEqual:expectedColor]);
 }
 
 - (void)testTopBarBackgroundColorWithoutNavigationController {
@@ -127,7 +127,7 @@
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
 - (void)testBackgroundColor_validColor {
@@ -149,7 +149,7 @@
 	self.options.topBar.title.fontFamily = [[Text alloc] initWithValue:inputFont];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:17];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 - (void)testTopBarHideOnScroll_true {
@@ -165,8 +165,8 @@
 	self.options.topBar.background.translucent = [[Bool alloc] initWithValue:topBarTranslucentInput];
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
-	XCTAssertTrue(CGColorEqualToColor(self.uut.navigationController.navigationBar.standardAppearance.shadowColor.CGColor, [UINavigationBarAppearance new].shadowColor.CGColor));
-	XCTAssertTrue(CGColorEqualToColor(self.uut.navigationController.navigationBar.standardAppearance.backgroundColor.CGColor, UIColor.systemBackgroundColor.CGColor));
+	XCTAssertTrue(CGColorEqualToColor(self.uut.navigationItem.standardAppearance.shadowColor.CGColor, [UINavigationBarAppearance new].shadowColor.CGColor));
+	XCTAssertTrue(CGColorEqualToColor(self.uut.navigationItem.standardAppearance.backgroundColor.CGColor, UIColor.systemBackgroundColor.CGColor));
 }
 
 - (void)testTopBarTransparent {
@@ -217,7 +217,7 @@
 	UIFont* initialFont = self.uut.navigationController.navigationBar.standardAppearance.largeTitleTextAttributes[@"NSFont"];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 - (void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withTextColor {
@@ -230,8 +230,8 @@
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
 - (void)testTopBarLargeTitleFontSize_withTextFontFamily_withTextColor {
@@ -246,8 +246,8 @@
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
 - (void)testTopBarLargeTitleFontSize_withTextFontFamily_withoutTextColor {
@@ -258,7 +258,7 @@
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 
@@ -269,7 +269,7 @@
 	UIFont* initialFont = self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSFont"];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 - (void)testTopBarTextFontSize_withoutTextFontFamily_withTextColor {
@@ -282,8 +282,8 @@
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
 - (void)testTopBarTextFontSize_withTextFontFamily_withTextColor {
@@ -297,8 +297,8 @@
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
 - (void)testTopBarTextFontSize_withTextFontFamily_withoutTextColor {
@@ -309,7 +309,7 @@
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 // TODO: Currently not passing
@@ -467,7 +467,7 @@
 	self.options.topBar.noBorder = [[Bool alloc] initWithValue:topBarNoBorderInput];
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
-	XCTAssertNil(self.uut.navigationController.navigationBar.standardAppearance.shadowColor);
+	XCTAssertNil(self.uut.navigationItem.standardAppearance.shadowColor);
 }
 
 - (void)testTopBarNoBorderOff {
