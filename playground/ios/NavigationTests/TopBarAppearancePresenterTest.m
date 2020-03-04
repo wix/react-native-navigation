@@ -3,6 +3,7 @@
 #import <ReactNativeNavigation/TopBarAppearancePresenter.h>
 #import "UIViewController+RNNOptions.h"
 #import <ReactNativeNavigation/RNNStackController.h>
+#import <ReactNativeNavigation/RNNComponentViewController.h>
 
 @interface TopBarAppearancePresenterTest : XCTestCase
 
@@ -11,11 +12,13 @@
 @implementation TopBarAppearancePresenterTest {
 	TopBarAppearancePresenter* _uut;
 	RNNStackController* _stack;
+	RNNComponentViewController* _componentViewController;
 }
 
 - (void)setUp {
     [super setUp];
-	_stack = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:_uut eventEmitter:nil childViewControllers:@[]];
+	_componentViewController = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil];
+	_stack = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:_uut eventEmitter:nil childViewControllers:@[_componentViewController]];
 	_uut = [[TopBarAppearancePresenter alloc] initWithNavigationController:_stack];
 }
 
@@ -31,6 +34,15 @@
 	UIFont* font = _stack.navigationBar.standardAppearance.titleTextAttributes[NSFontAttributeName];
 	XCTAssertEqual(font.pointSize, 21);
 }
+
+- (void)testApplyOptions_shouldSetBackButtonTestID {
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.topBar.backButton.testID = [Text withValue:@"TestID"];
+	
+	[_uut applyOptions:options.topBar];
+	XCTAssertTrue([_componentViewController.navigationItem.backBarButtonItem.accessibilityIdentifier isEqualToString:@"TestID"]);
+}
+
 
 
 @end

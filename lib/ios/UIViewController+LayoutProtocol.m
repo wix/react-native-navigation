@@ -60,6 +60,10 @@
 	return interfaceOrientationMask;
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter isStatusBarVisibility:self.navigationController resolvedOptions:self.resolveOptions];
+}
+
 - (UINavigationController *)stack {
     if ([self isKindOfClass:UINavigationController.class]) {
         return (UINavigationController *)self;

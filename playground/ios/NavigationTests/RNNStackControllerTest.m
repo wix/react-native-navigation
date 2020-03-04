@@ -38,6 +38,10 @@
 	XCTAssertNotNil(self.uut.presenter);
 }
 
+- (void)testInitWithLayoutInfo_shouldPreferLargeTitle {
+	XCTAssertTrue(self.uut.navigationBar.prefersLargeTitles);
+}
+
 - (void)testInitWithLayoutInfo_shouldSetMultipleViewControllers {
 	self.uut = [[RNNStackController alloc] initWithLayoutInfo:nil creator:_creator options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNComponentPresenter alloc] init] eventEmitter:nil childViewControllers:@[_vc1, _vc2]];
 	XCTAssertTrue(self.uut.viewControllers.count == 2);

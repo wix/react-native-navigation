@@ -27,7 +27,7 @@ markComment: >
   This issue has been automatically marked as stale because it has not had
   recent activity. It will be closed if no further activity occurs. 
   
-  If you believe the issue is still relevant, please test on the latest Detox and report back.
+  If you believe the issue is still relevant, please test on the latest version and report back.
   Thank you for your contributions.
 # Comment to post when removing the stale label.
 # unmarkComment: >
