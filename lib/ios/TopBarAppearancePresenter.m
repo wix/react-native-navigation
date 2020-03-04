@@ -33,23 +33,23 @@
 
 - (void)updateBackgroundAppearance {
     if (self.transparent) {
-        [self.getCurrentNavigationItem configureWithTransparentBackground];
+        [self.getAppearance configureWithTransparentBackground];
     } else if (self.backgroundColor) {
-        [self.getCurrentNavigationItem setBackgroundColor:self.backgroundColor];
+        [self.getAppearance setBackgroundColor:self.backgroundColor];
     } else if (self.translucent) {
-        [self.getCurrentNavigationItem configureWithDefaultBackground];
+        [self.getAppearance configureWithDefaultBackground];
     } else {
-        [self.getCurrentNavigationItem configureWithOpaqueBackground];
+        [self.getAppearance configureWithOpaqueBackground];
     }
 }
 
 - (void)showBorder:(BOOL)showBorder {
     UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
-    self.getCurrentNavigationItem.shadowColor = shadowColor;
+    self.getAppearance.shadowColor = shadowColor;
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {
-    [self.getCurrentNavigationItem setBackIndicatorImage:image transitionMaskImage:image];
+    [self.getAppearance setBackIndicatorImage:image transitionMaskImage:image];
 }
 
 - (void)setTitleAttributes:(RNNTitleOptions *)titleOptions {
@@ -58,7 +58,7 @@
     NSNumber* fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [titleOptions.color getWithDefaultValue:nil];
     
-    self.getCurrentNavigationItem.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getCurrentNavigationItem.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    self.getAppearance.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getAppearance.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
@@ -67,10 +67,10 @@
     NSNumber* fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
     
-    self.getCurrentNavigationItem.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getCurrentNavigationItem.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    self.getAppearance.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getAppearance.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
 }
 
-- (UINavigationBarAppearance *)getCurrentNavigationItem {
+- (UINavigationBarAppearance *)getAppearance {
     return self.currentNavigationItem.standardAppearance;
 }
 
