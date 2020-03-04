@@ -8,8 +8,8 @@
 - (void)applyOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
     RNNNavigationOptions * withDefault = [options withDefault:self.defaultOptions];
     
-    if (withDefault.bottomTab.badge.hasValue) [child setTabBarItemBadge:withDefault.bottomTab.badge.get];
-    if (withDefault.bottomTab.badgeColor.hasValue) [child setTabBarItemBadgeColor:withDefault.bottomTab.badgeColor.get];
+    [child setTabBarItemBadge:[withDefault.bottomTab.badge getWithDefaultValue:[NSNull null]]];
+    [child setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor getWithDefaultValue:nil]];
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options  child:(UIViewController *)child {
