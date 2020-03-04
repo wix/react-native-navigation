@@ -14,45 +14,32 @@
 - (void)applyOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
     RNNNavigationOptions * withDefault = [options withDefault:self.defaultOptions];
     
-    if (withDefault.bottomTab.badge.hasValue) {
+    if (withDefault.bottomTab.badge.hasValue)
         [child setTabBarItemBadge:withDefault.bottomTab.badge.get];
-    }
     
-    if (withDefault.bottomTab.badgeColor.hasValue) {
+    if (withDefault.bottomTab.badgeColor.hasValue)
         [child setTabBarItemBadgeColor:withDefault.bottomTab.badgeColor.get];
-    }
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options  child:(UIViewController *)child {
     RNNNavigationOptions * withDefault = [options withDefault:self.defaultOptions];
     
-    if (withDefault.bottomTab.badge.hasValue) {
-        [child setTabBarItemBadge:withDefault.bottomTab.badge.get];
-    }
-    
-    if (withDefault.bottomTab.badgeColor.hasValue) {
-        [child setTabBarItemBadgeColor:withDefault.bottomTab.badgeColor.get];
-    }
-    
-    if (withDefault.bottomTab.hasValue) {
-        [self updateChild:child bottomTabOptions:withDefault.bottomTab];
-    }
+    [child setTabBarItemBadge:[withDefault.bottomTab.badge getWithDefaultValue:nil]];
+    [child setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor getWithDefaultValue:nil]];
+    [self updateChild:child bottomTabOptions:withDefault.bottomTab];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions child:(UIViewController *)child {
     RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:self.defaultOptions] overrideOptions:options];
     
-    if (options.bottomTab.badge.hasValue) {
+    if (options.bottomTab.badge.hasValue)
         [child setTabBarItemBadge:options.bottomTab.badge.get];
-    }
     
-    if (options.bottomTab.badgeColor.hasValue) {
+    if (options.bottomTab.badgeColor.hasValue)
         [child setTabBarItemBadgeColor:options.bottomTab.badgeColor.get];
-    }
     
-    if (options.bottomTab.hasValue) {
+    if (options.bottomTab.hasValue)
         [self updateChild:child bottomTabOptions:withDefault.bottomTab];
-    }
 }
 
 - (void)updateChild:(UIViewController *)child bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
