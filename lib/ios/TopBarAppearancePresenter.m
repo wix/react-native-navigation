@@ -33,23 +33,23 @@
 
 - (void)updateBackgroundAppearance {
     if (self.transparent) {
-        [self.currentChildAppearance configureWithTransparentBackground];
+        [self.getCurrentNavigationItem configureWithTransparentBackground];
     } else if (self.backgroundColor) {
-        [self.currentChildAppearance setBackgroundColor:self.backgroundColor];
+        [self.getCurrentNavigationItem setBackgroundColor:self.backgroundColor];
     } else if (self.translucent) {
-        [self.currentChildAppearance configureWithDefaultBackground];
+        [self.getCurrentNavigationItem configureWithDefaultBackground];
     } else {
-        [self.currentChildAppearance configureWithOpaqueBackground];
+        [self.getCurrentNavigationItem configureWithOpaqueBackground];
     }
 }
 
 - (void)showBorder:(BOOL)showBorder {
     UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
-    self.currentChildAppearance.shadowColor = shadowColor;
+    self.getCurrentNavigationItem.shadowColor = shadowColor;
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {
-    [self.currentChildAppearance setBackIndicatorImage:image transitionMaskImage:image];
+    [self.getCurrentNavigationItem setBackIndicatorImage:image transitionMaskImage:image];
 }
 
 - (void)setTitleAttributes:(RNNTitleOptions *)titleOptions {
@@ -58,7 +58,7 @@
     NSNumber* fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [titleOptions.color getWithDefaultValue:nil];
     
-    self.currentChildAppearance.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.currentChildAppearance.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    self.getCurrentNavigationItem.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getCurrentNavigationItem.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
@@ -67,15 +67,11 @@
     NSNumber* fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
     
-    self.currentChildAppearance.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.currentChildAppearance.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    self.getCurrentNavigationItem.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getCurrentNavigationItem.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
 }
 
-- (UINavigationBarAppearance *)currentChildAppearance {
-    if (!self.topNavigationItem.standardAppearance) {
-        self.topNavigationItem.standardAppearance = [UINavigationBarAppearance new];
-    }
-    
-    return self.topNavigationItem.standardAppearance;
+- (UINavigationBarAppearance *)getCurrentNavigationItem {
+    return self.currentNavigationItem.standardAppearance;
 }
 
 @end

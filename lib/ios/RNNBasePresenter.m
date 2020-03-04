@@ -110,7 +110,7 @@
     }
 }
 
-- (UINavigationItem *)topNavigationItem {
+- (UINavigationItem *)currentNavigationItem {
     return self.boundViewController.getCurrentChild.navigationItem;
 }
 
