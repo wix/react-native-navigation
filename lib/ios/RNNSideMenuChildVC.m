@@ -18,15 +18,15 @@
 }
 
 - (void)render {
-	[self.getCurrentChild render];
+    [self addChildViewController:self.child];
+    [self.child.view setFrame:self.view.bounds];
+    [self.view addSubview:self.child.view];
+    [self.view bringSubviewToFront:self.child.view];
+    [self.child render];
 }
 
 - (void)setChild:(UIViewController<RNNLayoutProtocol> *)child {
 	_child = child;
-	[self addChildViewController:self.child];
-	[self.child.view setFrame:self.view.bounds];
-	[self.view addSubview:self.child.view];
-	[self.view bringSubviewToFront:self.child.view];
 }
 
 - (void)setWidth:(CGFloat)width {
