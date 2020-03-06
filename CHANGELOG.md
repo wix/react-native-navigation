@@ -15,7 +15,7 @@
 ### Android
 * Stop rejecting dismissAllModals promise if no modals are displayed [#30b0b47](https://github.com/wix/react-native-navigation/commit/30b0b47b712cd1882b9c944a125c9d06ca5e0dd8) by [guyca](https://github.com/guyca)
 * Support tabs without icons on Android [#ef58a6c](https://github.com/wix/react-native-navigation/commit/ef58a6cdeb1c4ea90ff528af50d6d2dc572f9f28) by [guyca](https://github.com/guyca)
-* Fix autolink script - set minSdk to 19 [#4ce0e89](https://github.com/wix/react-native-navigation/commit/4ce0e89b06b9ab29d4be5d2eb0d11419deaade7a) by [yogevbd](https://github.com/yogevbd)
+* Fix autolink script - set minSdk to 19 [#4ce0e89](https://github.com/wix/react-native-navigation/commit/4ce0e89b06b9ab29d4be5d2eb0d11419deaade7a) by [jinshin1013](https://github.com/jinshin1013)
 * ExternalComponentController extends ViewController [#c33ff12](https://github.com/wix/react-native-navigation/commit/c33ff1291ded4b171ef7b3f0736c5bc5b169d850) by [guyca](https://github.com/guyca)
 * Support [react-native-youtube](https://github.com/davidohayon669/react-native-youtube) [#2793a02](https://github.com/wix/react-native-navigation/commit/2793a022729043d271fa6ffd80df62297c5f76fa)
 
