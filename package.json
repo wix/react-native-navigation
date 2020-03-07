@@ -82,6 +82,7 @@
     "react-test-renderer": "16.9.x",
     "redux": "3.x.x",
     "remx": "2.x.x",
+    "rimraf": "^3.0.2",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",
