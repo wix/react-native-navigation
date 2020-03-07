@@ -19,7 +19,7 @@
   "main": "lib/dist/index.js",
   "typings": "lib/dist/index.d.ts",
   "scripts": {
-    "build": "rm -rf ./lib/dist && tsc",
+    "build": "node ./scripts/build",
     "watch": "rm -rf ./lib/dist && tsc --watch",
     "xcode": "open playground/ios/playground.xcworkspace",
     "install-android": "node ./scripts/install-android",
