@@ -55,6 +55,7 @@ No PR will be accepted without adequate test coverage.
 | `npm run build` | compiles TypeScript sources `./lib/src` into javascript `./lib/dist` |
 | `npm run clean` | cleans all build directories, stops packager, fixes flakiness by removing watchman cache, etc. |
 | `npm run start` | starts the react-native packager for local debugging |
+| `npm run start-windows` | starts the react-native packager for local debugging [Windows only] |
 | `npm run xcode` | for convenience, opens xcode in this project |
 | `npm run install-android`  |  builds playground debug/release version and installs on running android devices/emulators. <br> **Options:** `-- --release` |
 | `npm run uninstall-android` | uninstalls playground from running android devices/simulators |
