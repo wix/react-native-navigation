@@ -1,5 +1,4 @@
 const exec = require('shell-utils').exec;
-const rimraf = require('rimraf');
 
 const isWindows = process.platform === 'win32' ? true : false;
 
@@ -22,9 +21,9 @@ function run() {
 function runWin32() {
   exec.execSync(`adb reverse tcp:8081 tcp:8081 || true`);
 
-  rimraf.sync('./lib/android/build');
-  rimraf.sync('./lib/android/app/build');
-  rimraf.sync('./playground/android/build');
-  rimraf.sync('./playground/android/app/build');
-  rimraf.sync('./lib/dist');
+  exec.execSync('del /F /S /Q lib\\android\\build');
+  exec.execSync('del /F /S /Q lib\\android\\app\\build');
+  exec.execSync('del /F /S /Q playground\\android\\build');
+  exec.execSync('del /F /S /Q playground\\android\\app\\build');
+  exec.execSync('del /F /S /Q lib\\dist');
 }
