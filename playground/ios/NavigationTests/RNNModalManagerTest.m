@@ -145,6 +145,32 @@
 	[mockDelegate verify];
 }
 
+- (void)testApplyOptionsOnInit_shouldShowModalWithDefaultPresentationStyle {
+	_vc1.options = [RNNNavigationOptions emptyOptions];
+	[_modalManager showModal:_vc1 animated:NO completion:nil];
+	XCTAssertEqual(_vc1.modalPresentationStyle, UIModalPresentationPageSheet);
+}
+
+- (void)testApplyOptionsOnInit_shouldShowModalWithDefaultTransitionStyle {
+	_vc1.options = [RNNNavigationOptions emptyOptions];
+	[_modalManager showModal:_vc1 animated:NO completion:nil];
+	XCTAssertEqual(_vc1.modalTransitionStyle, UIModalTransitionStyleCoverVertical);
+}
+
+- (void)testApplyOptionsOnInit_shouldShowModalWithPresentationStyle {
+	_vc1.options = [RNNNavigationOptions emptyOptions];
+	_vc1.options.modalPresentationStyle = [Text withValue:@"overCurrentContext"];
+	[_modalManager showModal:_vc1 animated:NO completion:nil];
+	XCTAssertEqual(_vc1.modalPresentationStyle, UIModalPresentationOverCurrentContext);
+}
+
+- (void)testApplyOptionsOnInit_shouldShowModalWithTransitionStyle {
+	_vc1.options = [RNNNavigationOptions emptyOptions];
+	_vc1.options.modalTransitionStyle = [Text withValue:@"crossDissolve"];
+	[_modalManager showModal:_vc1 animated:NO completion:nil];
+	XCTAssertEqual(_vc1.modalTransitionStyle, UIModalTransitionStyleCrossDissolve);
+}
+
 #pragma mark RNNModalManagerDelegate
 
 - (void)dismissedMultipleModals:(NSArray *)viewControllers {

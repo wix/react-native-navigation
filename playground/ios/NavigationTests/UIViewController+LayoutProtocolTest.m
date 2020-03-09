@@ -3,7 +3,6 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 #import "RNNComponentPresenter.h"
-#import "RCTConvert+Modal.h"
 #import "RNNBottomTabsController.h"
 #import "RNNStackController.h"
 
