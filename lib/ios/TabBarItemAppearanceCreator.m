@@ -2,9 +2,9 @@
 
 @implementation TabBarItemAppearanceCreator
 
-+ (UITabBarItem *)createTabBarItem {
-    UITabBarItem* tabBarItem = [super createTabBarItem];
-    tabBarItem.standardAppearance = [[UITabBarAppearance alloc] init];
++ (UITabBarItem *)createTabBarItem:(UITabBarItem *)mergeItem {
+    UITabBarItem* tabBarItem = [super createTabBarItem:mergeItem];
+    tabBarItem.standardAppearance = mergeItem.standardAppearance ?: [[UITabBarAppearance alloc] init];
     return tabBarItem;
 }
 

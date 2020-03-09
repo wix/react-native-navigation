@@ -29,7 +29,7 @@
 }
 
 - (void)createTabBarItem:(UIViewController *)child bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
-    child.tabBarItem = [RNNTabBarItemCreator createTabBarItem:bottomTabOptions];
+    child.tabBarItem = [RNNTabBarItemCreator createTabBarItem:bottomTabOptions mergeItem:child.tabBarItem];
 }
 
 @end

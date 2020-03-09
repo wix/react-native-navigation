@@ -4,12 +4,12 @@
 
 @implementation RNNTabBarItemCreator
 
-+ (UITabBarItem *)createTabBarItem {
++ (UITabBarItem *)createTabBarItem:(UITabBarItem *)mergeItem {
     return [UITabBarItem new];
 }
 
-+ (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions {
-    UITabBarItem* tabItem = [self createTabBarItem];
++ (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions mergeItem:(UITabBarItem *)mergeItem {
+    UITabBarItem* tabItem = [self createTabBarItem:mergeItem];
 	UIImage* icon = [bottomTabOptions.icon getWithDefaultValue:nil];
 	UIImage* selectedIcon = [bottomTabOptions.selectedIcon getWithDefaultValue:icon];
 	UIColor* iconColor = [bottomTabOptions.iconColor getWithDefaultValue:nil];
