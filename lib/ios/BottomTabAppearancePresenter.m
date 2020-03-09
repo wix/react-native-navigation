@@ -5,7 +5,6 @@
 
 - (void)createTabBarItem:(UIViewController *)child bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
     child.tabBarItem = [TabBarItemAppearanceCreator createTabBarItem:bottomTabOptions];
-    child.tabBarItem.standardAppearance = [[UITabBarAppearance alloc] init];
 }
 
 @end
