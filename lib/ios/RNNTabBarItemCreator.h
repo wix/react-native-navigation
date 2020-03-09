@@ -4,7 +4,7 @@
 
 @interface RNNTabBarItemCreator : NSObject
 
-+ (UITabBarItem *)updateTabBarItem:(UITabBarItem *)tabItem bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions;
++ (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions;
 
 + (void)setTitleAttributes:(UITabBarItem *)tabItem titleAttributes:(NSDictionary *)titleAttributes;
 

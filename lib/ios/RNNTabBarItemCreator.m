@@ -4,7 +4,8 @@
 
 @implementation RNNTabBarItemCreator
 
-+ (UITabBarItem *)updateTabBarItem:(UITabBarItem *)tabItem bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
++ (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions {
+    UITabBarItem* tabItem = [UITabBarItem new];
 	UIImage* icon = [bottomTabOptions.icon getWithDefaultValue:nil];
 	UIImage* selectedIcon = [bottomTabOptions.selectedIcon getWithDefaultValue:icon];
 	UIColor* iconColor = [bottomTabOptions.iconColor getWithDefaultValue:nil];
