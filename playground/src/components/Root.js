@@ -1,17 +1,18 @@
 const React = require('react');
 const { TextInput } = require('react-native');
-const { SafeAreaView, View, Text, StyleSheet, ScrollView, } = require('react-native');
+const { View, Text, StyleSheet, ScrollView, } = require('react-native');
 const { KeyboardAwareInsetsView } = require('react-native-keyboard-tracking-view');
 const { showTextInputToTestKeyboardInteraction } = require('../flags');
 
 module.exports = (props) =>
-  <SafeAreaView style={styles.root} testID={props.testID}>
-    <ScrollView contentContainerStyle={[styles.scrollView, props.style]}>
+  <ScrollView 
+    style={styles.root}
+    contentContainerStyle={[styles.scrollView, props.style]}
+    testID={props.testID}>
       {props.children}
       {renderFooter(props)}
-    </ScrollView>
-    {showTextInputToTestKeyboardInteraction && <KeyboardAwareInsetsView />}
-  </SafeAreaView>
+      {showTextInputToTestKeyboardInteraction && <KeyboardAwareInsetsView />}
+  </ScrollView>
 
 const renderFooter = (props) => props.componentId && <View style={styles.footer}>
   {renderInput()}
