@@ -52,4 +52,18 @@
 	XCTAssertEqual(self.componentViewController.tabBarItem.title, @"title");
 }
 
+- (void)testMergeOptions_shouldCreateNewTabBarItemInstance {
+	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	defaultOptions.bottomTab.selectedIconColor = [Color withColor:UIColor.greenColor];
+	self.uut.defaultOptions = defaultOptions;
+	
+	RNNNavigationOptions* mergeOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+	mergeOptions.bottomTab.text = [[Text alloc] initWithValue:@"title"];
+	
+	UITabBarItem* currentTabBarItem = self.componentViewController.tabBarItem;
+	[self.uut mergeOptions:mergeOptions resolvedOptions:self.options child:self.componentViewController];
+	UITabBarItem* newTabBarItem = self.componentViewController.tabBarItem;
+	XCTAssertNotEqual(currentTabBarItem, newTabBarItem);
+}
+
 @end

@@ -11,7 +11,7 @@
 
 + (RNNBottomTabsController *)createWithChildren:(NSArray *)children {
 	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	return [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:defaultOptions presenter:[BottomTabsPresenterCreator createWithDefaultOptions:defaultOptions] bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:defaultOptions children:children] dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:defaultOptions] eventEmitter:nil childViewControllers:children bottomTabsAttacher:nil];
+	return [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:defaultOptions presenter:[BottomTabsPresenterCreator createWithDefaultOptions:defaultOptions] bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:defaultOptions] dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:defaultOptions] eventEmitter:nil childViewControllers:children bottomTabsAttacher:nil];
 }
 
 @end

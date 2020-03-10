@@ -37,10 +37,6 @@
 	return [_presenter getStatusBarStyle:self.resolveOptions];
 }
 
-- (UIModalPresentationStyle)modalPresentationStyle {
-	return self.getCurrentChild.modalPresentationStyle;
-}
-
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     [self prepareForPop];
 	return [super popViewControllerAnimated:animated];

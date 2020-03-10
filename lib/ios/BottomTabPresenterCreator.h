@@ -3,6 +3,6 @@
 
 @interface BottomTabPresenterCreator : NSObject
 
-+ (BottomTabPresenter *)createWithDefaultOptions:(RNNNavigationOptions *)defaultOptions children:(NSArray<UIViewController *> *)children;
++ (BottomTabPresenter *)createWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 @end

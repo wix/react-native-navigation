@@ -1,7 +1,6 @@
 #import "RNNComponentPresenter.h"
 #import "UIViewController+RNNOptions.h"
 #import "UITabBarController+RNNOptions.h"
-#import "RCTConvert+Modal.h"
 #import "RNNTitleViewHelper.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "RNNReactTitleView.h"
@@ -78,17 +77,17 @@
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
-	[super applyOptionsOnInit:options];
-	
-	UIViewController* viewController = self.boundViewController;
-	RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+    [super applyOptionsOnInit:options];
     
-	[viewController setDrawBehindTopBar:[withDefault.topBar.drawBehind getWithDefaultValue:NO]];
-    [viewController setDrawBehindTabBar:[withDefault.bottomTabs.drawBehind getWithDefaultValue:NO] || ![withDefault.bottomTabs.visible getWithDefaultValue:YES]];
+    UIViewController* viewController = self.boundViewController;
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     
-	if ((withDefault.topBar.leftButtons || withDefault.topBar.rightButtons)) {
-		[_navigationButtons applyLeftButtons:withDefault.topBar.leftButtons rightButtons:withDefault.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
-	}
+    [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
+    [viewController setDrawBehindTabBar:[withDefault.bottomTabs shouldDrawBehind]];
+    
+    if ((withDefault.topBar.leftButtons || withDefault.topBar.rightButtons)) {
+        [_navigationButtons applyLeftButtons:withDefault.topBar.leftButtons rightButtons:withDefault.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
+    }
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)currentOptions {
@@ -98,14 +97,6 @@
 
 	if (options.backgroundImage.hasValue) {
 		[viewController setBackgroundImage:options.backgroundImage.get];
-	}
-	
-	if (options.modalPresentationStyle.hasValue) {
-		[viewController setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:options.modalPresentationStyle.get]];
-	}
-	
-	if (options.modalTransitionStyle.hasValue) {
-		[viewController setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:options.modalTransitionStyle.get]];
 	}
 	
 	if (options.topBar.searchBar.hasValue) {

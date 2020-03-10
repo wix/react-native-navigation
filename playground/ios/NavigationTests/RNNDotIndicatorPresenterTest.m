@@ -20,7 +20,7 @@
 - (void)setUp {
     [super setUp];
 	self.child = [self createChild];
-	self.bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:nil children:@[self.child]];
+	self.bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:nil];
     self.uut = [OCMockObject partialMockForObject:[RNNDotIndicatorPresenter new]];
     self.bottomTabs = [OCMockObject partialMockForObject:[RNNBottomTabsController createWithChildren:@[self.child]]];
 

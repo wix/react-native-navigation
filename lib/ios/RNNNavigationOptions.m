@@ -42,6 +42,10 @@
 	return self;
 }
 
++ (instancetype)emptyOptions {
+    return [[RNNNavigationOptions alloc] initEmptyOptions];
+}
+
 - (instancetype)initEmptyOptions {
 	self = [self initWithDict:@{}];
 	return self;
