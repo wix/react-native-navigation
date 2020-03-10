@@ -34,12 +34,16 @@
 - (void)updateBackgroundAppearance {
     if (self.transparent) {
         [self.getAppearance configureWithTransparentBackground];
+        [self.getScrollEdgeAppearance configureWithTransparentBackground];
     } else if (self.backgroundColor) {
         [self.getAppearance setBackgroundColor:self.backgroundColor];
+        [self.getScrollEdgeAppearance setBackgroundColor:self.backgroundColor];
     } else if (self.translucent) {
         [self.getAppearance configureWithDefaultBackground];
+        [self.getScrollEdgeAppearance configureWithDefaultBackground];
     } else {
         [self.getAppearance configureWithOpaqueBackground];
+        [self.getScrollEdgeAppearance configureWithOpaqueBackground];
     }
 }
 
@@ -72,6 +76,10 @@
 
 - (UINavigationBarAppearance *)getAppearance {
     return self.currentNavigationItem.standardAppearance;
+}
+
+- (UINavigationBarAppearance *)getScrollEdgeAppearance {
+    return self.currentNavigationItem.scrollEdgeAppearance;
 }
 
 @end

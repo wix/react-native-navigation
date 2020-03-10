@@ -9,6 +9,7 @@
 	self.extendedLayoutIncludesOpaqueBars = YES;
     if (@available(iOS 13.0, *)) {
         self.navigationItem.standardAppearance = [UINavigationBarAppearance new];
+        self.navigationItem.scrollEdgeAppearance = [UINavigationBarAppearance new];
     }
 	return self;
 }
