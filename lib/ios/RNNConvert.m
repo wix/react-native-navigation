@@ -1,12 +1,6 @@
-#import <React/RCTConvert.h>
+#import "RNNConvert.h"
 
-@interface RCTConvert (Modal)
-
-+ (UIModalPresentationStyle)defaultModalPresentationStyle;
-
-@end
-
-@implementation RCTConvert (Modal)
+@implementation RNNConvert
 
 + (UIModalPresentationStyle)defaultModalPresentationStyle {
     if (@available(iOS 13.0, *)) {
@@ -33,7 +27,7 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle,
                       @"overCurrentContext": @(UIModalPresentationOverCurrentContext),
                       @"popover": @(UIModalPresentationPopover),
                       @"none": @(UIModalPresentationNone),
-                      @"default": @([RCTConvert defaultModalPresentationStyle])
+                      @"default": @([RNNConvert defaultModalPresentationStyle])
                    }), UIModalPresentationFullScreen, integerValue)
-@end
 
+@end

@@ -3,7 +3,6 @@
 #import <ReactNativeNavigation/RNNComponentViewController.h>
 #import "RNNStackController.h"
 #import <OCMock/OCMock.h>
-#import "RCTConvert+Modal.h"
 #import <ReactNativeNavigation/BottomTabPresenterCreator.h>
 #import "RNNBottomTabsController+Helpers.h"
 
@@ -28,7 +27,7 @@
     self.mockTabBarPresenter = [OCMockObject partialMockForObject:[[RNNBottomTabsPresenter alloc] init]];
     self.mockChildViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
     self.mockEventEmitter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
-	self.originalUut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:self.mockTabBarPresenter bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil children:children] dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil] eventEmitter:self.mockEventEmitter childViewControllers:children bottomTabsAttacher:nil];
+	self.originalUut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:self.mockTabBarPresenter bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil] dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil] eventEmitter:self.mockEventEmitter childViewControllers:children bottomTabsAttacher:nil];
     self.uut = [OCMockObject partialMockForObject:self.originalUut];
     OCMStub([self.uut selectedViewController]).andReturn(self.mockChildViewController);
 }

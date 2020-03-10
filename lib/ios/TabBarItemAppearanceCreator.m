@@ -2,6 +2,12 @@
 
 @implementation TabBarItemAppearanceCreator
 
++ (UITabBarItem *)createTabBarItem:(UITabBarItem *)mergeItem {
+    UITabBarItem* tabBarItem = [super createTabBarItem:mergeItem];
+    tabBarItem.standardAppearance = mergeItem.standardAppearance ?: [[UITabBarAppearance alloc] init];
+    return tabBarItem;
+}
+
 + (void)setTitleAttributes:(UITabBarItem *)tabItem titleAttributes:(NSDictionary *)titleAttributes {
     tabItem.standardAppearance.stackedLayoutAppearance.normal.titleTextAttributes = titleAttributes;
 }

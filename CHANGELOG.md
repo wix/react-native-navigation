@@ -1,4 +1,35 @@
 # Changelog
+# 6.1.1
+## Fixed
+### iOS
+* Create new UITabBarItem instance on each bottomTab update [#3757ff7](https://github.com/wix/react-native-navigation/commit/3757ff7aa64cc9b6b8054af3e27b3865e27b2f9f) by [yogevbd](https://github.com/yogevbd)
+* Delete duplicate misplaced files in root directory [#6d61ec0](https://github.com/wix/react-native-navigation/commit/6d61ec0e6cabeddc41b5860b4cb5b24f3de92dc2) by [ItsNoHax](https://github.com/ItsNoHax)
+
+# 6.1.0
+## Added
+* Add componentName to modalDismiss event [#1c2558d](https://github.com/wix/react-native-navigation/commit/1c2558d77e489e2a35adc3a60eebed97ebf52add) by [jinshin1013](https://github.com/jinshin1013)
+
+## Fixed
+### iOS
+* Support changing backButton fontFamily and fontSize [#b438588](https://github.com/wix/react-native-navigation/commit/b4385883de9ff07ed8915cdcd6f78ddc26bb6691) by [yogevbd](https://github.com/yogevbd)
+* Fixed bottomTab text color not working correctly on iOS13 [#211a46e](https://github.com/wix/react-native-navigation/commit/211a46e087213bc72c166a4332cd1d3d0fa01be2) by [yogevbd](https://github.com/yogevbd)
+* Support backButton.testID [#e1b76c1](https://github.com/wix/react-native-navigation/commit/e1b76c1fe222a4153eddedf43caba5dd457aadb9) by [yogevbd](https://github.com/yogevbd)
+* Handle statusBar.visible in all layout types and not only in components [#a2f5dbd](https://github.com/wix/react-native-navigation/commit/a2f5dbd3131f2cc158a650a01a1b9e271c2952f2) by [yogevbd](https://github.com/yogevbd)
+* Fix a lot of large title issues [#54b2855](https://github.com/wix/react-native-navigation/commit/54b285531ea43e0dae76ae08af7de923ccf5917c)
+* Fix title and subtitle color animations when popping screens [#5210848](https://github.com/wix/react-native-navigation/commit/52108484cc59ad8aaec9ef51b3c370c7ac80128f) by [yogevbd](https://github.com/yogevbd)
+
+### Android
+* Stop rejecting dismissAllModals promise if no modals are displayed [#30b0b47](https://github.com/wix/react-native-navigation/commit/30b0b47b712cd1882b9c944a125c9d06ca5e0dd8) by [guyca](https://github.com/guyca)
+* Support tabs without icons on Android [#ef58a6c](https://github.com/wix/react-native-navigation/commit/ef58a6cdeb1c4ea90ff528af50d6d2dc572f9f28) by [guyca](https://github.com/guyca)
+* Fix autolink script - set minSdk to 19 [#4ce0e89](https://github.com/wix/react-native-navigation/commit/4ce0e89b06b9ab29d4be5d2eb0d11419deaade7a) by [jinshin1013](https://github.com/jinshin1013)
+* ExternalComponentController extends ViewController [#c33ff12](https://github.com/wix/react-native-navigation/commit/c33ff1291ded4b171ef7b3f0736c5bc5b169d850) by [guyca](https://github.com/guyca)
+* Support [react-native-youtube](https://github.com/davidohayon669/react-native-youtube) [#2793a02](https://github.com/wix/react-native-navigation/commit/2793a022729043d271fa6ffd80df62297c5f76fa)
+
+# 6.0.1
+## Fixed
+### iOS
+* Fix applying drawBehind through mergeOptions [#e002a68](https://github.com/wix/react-native-navigation/commit/e002a68110cb75877982aed9c693ece8382c7942) by [yogevbd](https://github.com/yogevbd)
+
 # 6.0.0
 This release changes how layout.backgroundColor work on iOS to add parity with Android.
 * layout.backgroundColor - applies background color to parent layouts (Stack, BottomTabs, SideMenu etc)

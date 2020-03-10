@@ -1,6 +1,5 @@
 #import "RNNSplitViewControllerPresenter.h"
 #import "UISplitViewController+RNNOptions.h"
-#import "RCTConvert+Modal.h"
 #import "RNNSplitViewController.h"
 
 @implementation RNNSplitViewControllerPresenter
