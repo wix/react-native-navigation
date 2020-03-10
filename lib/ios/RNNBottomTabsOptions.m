@@ -25,4 +25,10 @@
 	return self;
 }
 
+- (BOOL)shouldDrawBehind {
+    return [self.drawBehind getWithDefaultValue:NO] ||
+    [self.translucent getWithDefaultValue:NO] ||
+    ![self.visible getWithDefaultValue:YES];
+}
+
 @end
