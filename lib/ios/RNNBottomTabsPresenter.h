@@ -1,11 +1,5 @@
-#import "RNNBasePresenter.h"
+#import "BottomTabsBasePresenter.h"
 
-@interface RNNBottomTabsPresenter : RNNBasePresenter
-
-- (void)setTabBarBackgroundColor:(UIColor *)backgroundColor;
-
-- (UITabBarController *)tabBarController;
-
-- (UITabBar *)tabBar;
+@interface RNNBottomTabsPresenter : BottomTabsBasePresenter
 
 @end
