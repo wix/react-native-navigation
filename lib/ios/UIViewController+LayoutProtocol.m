@@ -77,13 +77,13 @@
         [self readyForPresentation];
     }
     
-    [self.presentedComponentViewController setReactViewReadyCallback:^{
+    [self.getCurrentChild setReactViewReadyCallback:^{
         [self.presenter renderComponents:self.resolveOptionsWithDefault perform:^{
             [self readyForPresentation];
         }];
     }];
     
-    [self.presentedComponentViewController render];
+    [self.getCurrentChild render];
 }
 
 - (void)readyForPresentation {

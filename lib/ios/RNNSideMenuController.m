@@ -43,7 +43,6 @@
     [self setCenterViewController:self.center];
     [self setLeftDrawerViewController:self.left];
     [self setRightDrawerViewController:self.right];
-    [self render];
 }
 
 - (void)render {
