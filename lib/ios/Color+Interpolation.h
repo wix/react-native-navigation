@@ -18,12 +18,12 @@
 /**
  Interpolate using the LAB color space for optimal quality. This constant is equal to @c LNUseDefaultInterpolationBehavior.
  */
-extern LNInterpolationBehavior const LNInterpolationBehaviorUseLABColorSpace;
+extern LNInterpolationBehavior const RNNInterpolationBehaviorUseLABColorSpace;
 
 /**
  Interpolate using the RGB color space.
  */
-extern LNInterpolationBehavior const LNInterpolationBehaviorUseRGBColorSpace;
+extern LNInterpolationBehavior const RNNInterpolationBehaviorUseRGBColorSpace;
 
 /**
  Interpolates between colors.

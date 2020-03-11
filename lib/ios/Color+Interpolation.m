@@ -18,8 +18,8 @@
 #define SWAP(x, y) do { __typeof(x) __ZZZZ__SWAP = x; x = y; y = __ZZZZ__SWAP; } while(0)
 
 //Same value as LNInterpolationBehaviorUseDefault
-LNInterpolationBehavior const LNInterpolationBehaviorUseLABColorSpace = @"LNInterpolationBehaviorUseDefault";
-LNInterpolationBehavior const LNInterpolationBehaviorUseRGBColorSpace = @"LNInterpolationBehaviorUseRGB";
+LNInterpolationBehavior const RNNInterpolationBehaviorUseLABColorSpace = @"LNInterpolationBehaviorUseDefault";
+LNInterpolationBehavior const RNNInterpolationBehaviorUseRGBColorSpace = @"LNInterpolationBehaviorUseRGB";
 
 extern double LNLinearInterpolate(double from, double to, double p);
 
@@ -149,7 +149,7 @@ static inline __attribute__((__always_inline__)) Color* LNInterpolateColor(Color
 		return toValue;
 	}
 	
-	return LNInterpolateColor(self, toValue, p, behavior == LNInterpolationBehaviorUseRGBColorSpace ? LNRGBComponentsFromColor : LNLabComponentsFromColor, behavior == LNInterpolationBehaviorUseRGBColorSpace ? LNColorFromRGBComponents : LNColorFromLabComponents);
+	return LNInterpolateColor(self, toValue, p, behavior == RNNInterpolationBehaviorUseRGBColorSpace ? LNRGBComponentsFromColor : LNLabComponentsFromColor, behavior == RNNInterpolationBehaviorUseRGBColorSpace ? LNColorFromRGBComponents : LNColorFromLabComponents);
 }
 
 @end
