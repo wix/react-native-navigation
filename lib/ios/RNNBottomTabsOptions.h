@@ -21,4 +21,6 @@
 @property (nonatomic, strong) Text* titleDisplayMode;
 @property (nonatomic, strong) BottomTabsAttachMode* tabsAttachMode;
 
+- (BOOL)shouldDrawBehind;
+
 @end
