@@ -12,7 +12,7 @@
 @implementation RNNModalManager {
 	NSMutableArray* _pendingModalIdsToDismiss;
 	NSMutableArray* _presentedModals;
-    RCTUIManager* _uiManager;
+    RCTBridge* _bridge;
 }
 
 
@@ -20,13 +20,12 @@
 	self = [super init];
 	_pendingModalIdsToDismiss = [[NSMutableArray alloc] init];
 	_presentedModals = [[NSMutableArray alloc] init];
-
 	return self;
 }
 
-- (instancetype)initWithUIManager:(RCTUIManager *)uiManager {
+- (instancetype)initWithBridge:(RCTBridge *)bridge {
     self = [self init];
-    _uiManager = uiManager;
+    _bridge = bridge;
     return self;
 }
 
@@ -45,7 +44,7 @@
 	}
 	    
 	if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
-        _modalTransitionDelegate = [[ModalTransitionDelegate alloc] initWithContentTransition:viewController.resolveOptionsWithDefault.animations.showModal uiManager:_uiManager];
+        _modalTransitionDelegate = [[ModalTransitionDelegate alloc] initWithContentTransition:viewController.resolveOptionsWithDefault.animations.showModal bridge:_bridge];
         viewController.transitioningDelegate = _modalTransitionDelegate;
         viewController.modalPresentationStyle = UIModalPresentationCustom;
 	}
@@ -101,7 +100,7 @@
 	UIViewController* topPresentedVC = [self topPresentedVC];
 	
 	if (optionsWithDefault.animations.dismissModal.hasAnimation) {
-        _modalTransitionDelegate = [[ModalDismissTransitionDelegate alloc] initWithContentTransition:modalToDismiss.resolveOptionsWithDefault.animations.dismissModal uiManager:_uiManager];
+        _modalTransitionDelegate = [[ModalDismissTransitionDelegate alloc] initWithContentTransition:modalToDismiss.resolveOptionsWithDefault.animations.dismissModal bridge:_bridge];
 		[self topViewControllerParent:modalToDismiss].transitioningDelegate = _modalTransitionDelegate;
 	}
 

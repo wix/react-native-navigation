@@ -88,7 +88,7 @@
 
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
 	RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
-    _modalManager = [[RNNModalManager alloc] initWithUIManager:_bridge.uiManager];
+    _modalManager = [[RNNModalManager alloc] initWithBridge:bridge];
     
 	id<RNNComponentViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge eventEmitter:eventEmitter];
 	_componentRegistry = [[RNNReactComponentRegistry alloc] initWithCreator:rootViewCreator];

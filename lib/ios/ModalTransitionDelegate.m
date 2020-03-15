@@ -2,8 +2,8 @@
 
 @implementation ModalTransitionDelegate
 
-- (instancetype)initWithContentTransition:(TransitionOptions *)contentTransitionOptions uiManager:(RCTUIManager *)uiManager {
-    self = [super initWithUIManager:uiManager];
+- (instancetype)initWithContentTransition:(TransitionOptions *)contentTransitionOptions bridge:(RCTBridge *)bridge {
+    self = [super initWithBridge:bridge];
     _contentTransitionOptions = contentTransitionOptions;
     return self;
 }
