@@ -454,5 +454,20 @@
 	[self.modalManager verify];
 }
 
+- (void)testPop_shouldRejectPromiseForInvalidComponentId {
+	[self.uut setReadyToReceiveCommands:true];
+	
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Should invoke reject block"];
+
+	[self.uut pop:@"invalidComponentId" commandId:@"pop" mergeOptions:nil completion:^{
+		[expectation fulfill];
+	} rejection:^(NSString *code, NSString *message, NSError *error) {
+		XCTAssert([code isEqualToString:@"1012"]);
+		XCTAssert([message isEqualToString:@"Popping component failed - componentId 'invalidComponentId' not found"]);
+		[expectation fulfill];
+	}];
+	
+	[self waitForExpectationsWithTimeout:5 handler:nil];
+}
 
 @end
