@@ -72,12 +72,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	[_modalManager dismissAllModalsAnimated:NO completion:nil];
 	
-	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
+	__weak UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
     vc.waitForRender = [vc.resolveOptionsWithDefault.animations.setRoot.waitForRender getWithDefaultValue:NO];
     
     [vc setReactViewReadyCallback:^{
-        _mainWindow.rootViewController = vc;
-        [_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId params:@{@"layout": layout}];
+        self->_mainWindow.rootViewController = vc;
+        [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId params:@{@"layout": layout}];
         completion();
     }];
     
@@ -117,7 +117,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
     RNNAssertMainQueue();
 	
-	UIViewController *newVc = [_controllerFactory createLayout:layout];
+	__weak UIViewController *newVc = [_controllerFactory createLayout:layout];
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
 	
 	if ([[newVc.resolveOptionsWithDefault.preview.reactTag getWithDefaultValue:@(0)] floatValue] > 0) {
@@ -206,7 +206,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[vc overrideOptions:options];
 	
 	[vc.stack pop:vc animated:[vc.resolveOptionsWithDefault.animations.pop.enable getWithDefaultValue:YES] completion:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:pop commandId:commandId params:@{@"componentId": componentId}];
+        [self->_eventEmitter sendOnNavigationCommandCompletion:pop commandId:commandId params:@{@"componentId": componentId}];
 		completion();
 	} rejection:rejection];
 }
@@ -220,7 +220,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[vc overrideOptions:options];
 	
 	[vc.stack popTo:vc animated:[vc.resolveOptionsWithDefault.animations.pop.enable getWithDefaultValue:YES] completion:^(NSArray *poppedViewControllers) {
-		[_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId params:@{@"componentId": componentId}];
+		[self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId params:@{@"componentId": componentId}];
 		completion();
 	} rejection:rejection];
 }
@@ -235,7 +235,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:popToRoot commandId:commandId params:@{@"componentId": componentId}];
+		[self->_eventEmitter sendOnNavigationCommandCompletion:popToRoot commandId:commandId params:@{@"componentId": componentId}];
 		completion();
 	}];
 	
@@ -255,7 +255,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	UIViewController *newVc = [_controllerFactory createLayout:layout];
     newVc.waitForRender = [newVc.resolveOptionsWithDefault.animations.showModal.waitForRender getWithDefaultValue:NO];
     [newVc setReactViewReadyCallback:^{
-        [_modalManager showModal:newVc animated:[newVc.resolveOptionsWithDefault.animations.showModal.enable getWithDefaultValue:YES] completion:^(NSString *componentId) {
+        [self->_modalManager showModal:newVc animated:[newVc.resolveOptionsWithDefault.animations.showModal.enable getWithDefaultValue:YES] completion:^(NSString *componentId) {
             [self->_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId params:@{@"layout": layout}];
             completion(newVc.layoutInfo.componentId);
         }];
@@ -293,7 +293,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals commandId:commandId params:@{}];
+		[self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals commandId:commandId params:@{}];
 		completion();
 	}];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];

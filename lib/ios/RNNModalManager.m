@@ -106,7 +106,7 @@
 
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
 		[modalToDismiss dismissViewControllerAnimated:[optionsWithDefault.animations.dismissModal.enable getWithDefaultValue:YES] completion:^{
-			[_pendingModalIdsToDismiss removeObject:modalToDismiss];
+			[self->_pendingModalIdsToDismiss removeObject:modalToDismiss];
 			if (modalToDismiss.view) {
 				[self dismissedModal:modalToDismiss];
 			}
