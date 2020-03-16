@@ -202,13 +202,17 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNAssertMainQueue();
     
 	RNNComponentViewController *vc = (RNNComponentViewController*)[RNNLayoutManager findComponentForId:componentId];
-	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-	[vc overrideOptions:options];
-	
-	[vc.stack pop:vc animated:[vc.resolveOptionsWithDefault.animations.pop.enable getWithDefaultValue:YES] completion:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:pop commandId:commandId params:@{@"componentId": componentId}];
-		completion();
-	} rejection:rejection];
+    if (vc) {
+        RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+        [vc overrideOptions:options];
+        
+        [vc.stack pop:vc animated:[vc.resolveOptionsWithDefault.animations.pop.enable getWithDefaultValue:YES] completion:^{
+            [self->_eventEmitter sendOnNavigationCommandCompletion:pop commandId:commandId params:@{@"componentId": componentId}];
+            completion();
+        } rejection:rejection];
+    } else {
+        [RNNErrorHandler reject:rejection withErrorCode:1012 errorDescription:[NSString stringWithFormat:@"Popping component failed - componentId '%@' not found", componentId]];
+    }
 }
 
 - (void)popTo:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
