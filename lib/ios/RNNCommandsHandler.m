@@ -72,7 +72,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	[_modalManager dismissAllModalsAnimated:NO completion:nil];
 	
-	__weak UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
+	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
     vc.waitForRender = [vc.resolveOptionsWithDefault.animations.setRoot.waitForRender getWithDefaultValue:NO];
     
     [vc setReactViewReadyCallback:^{
@@ -117,7 +117,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
     RNNAssertMainQueue();
 	
-	__weak UIViewController *newVc = [_controllerFactory createLayout:layout];
+	UIViewController *newVc = [_controllerFactory createLayout:layout];
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
 	
 	if ([[newVc.resolveOptionsWithDefault.preview.reactTag getWithDefaultValue:@(0)] floatValue] > 0) {
