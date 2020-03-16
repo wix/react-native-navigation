@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <React/RCTUIManager.h>
+#import <React/RCTBridge.h>
 
 typedef void (^RNNTransitionCompletionBlock)(void);
 typedef void (^RNNTransitionWithComponentIdCompletionBlock)(NSString *componentId);
@@ -16,7 +16,7 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, N
 
 @interface RNNModalManager : NSObject <UIAdaptivePresentationControllerDelegate>
 
-- (instancetype)initWithUIManager:(RCTUIManager *)uiManager;
+- (instancetype)initWithBridge:(RCTBridge *)bridge;
 
 @property (nonatomic, weak) id<RNNModalManagerDelegate> delegate;
 
