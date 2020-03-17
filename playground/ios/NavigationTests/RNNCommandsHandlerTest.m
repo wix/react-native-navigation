@@ -439,6 +439,36 @@
 	XCTAssertTrue([secondChild.tabBarItem.title isEqualToString:@"Second"]);
 }
 
+- (void)testMergeOptions_shouldResolveTreeOptions {
+	[self.uut setReadyToReceiveCommands:true];
+	NSDictionary* mergeOptions = @{@"bottomTab": @{@"badge": @"Badge"}};
+	
+	RNNNavigationOptions* firstChildOptions = [RNNNavigationOptions emptyOptions];
+	
+	RNNNavigationOptions* secondChildOptions = [RNNNavigationOptions emptyOptions];
+	secondChildOptions.bottomTab.text = [Text withValue:@"Second"];
+	RNNNavigationOptions* stackOptions = [RNNNavigationOptions emptyOptions];
+	stackOptions.bottomTab.text = [Text withValue:@"First"];
+	
+	RNNComponentViewController* firstChild = [RNNComponentViewController createWithComponentId:@"first" initialOptions:firstChildOptions];
+	RNNStackController* stack = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:stackOptions defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:@[firstChild]];
+	RNNComponentViewController* secondChild = [RNNComponentViewController createWithComponentId:@"second" initialOptions:secondChildOptions];
+	
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[RNNNavigationOptions emptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:[RNNNavigationOptions emptyOptions]] dotIndicatorPresenter:nil eventEmitter:_eventEmmiter childViewControllers:@[stack, secondChild] bottomTabsAttacher:nil];
+	
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+	[self.mainWindow setRootViewController:tabBarController];
+	[secondChild viewWillAppear:YES];
+	
+	[self.uut mergeOptions:firstChild.layoutInfo.componentId options:mergeOptions completion:^{
+
+	}];
+	
+	XCTAssertTrue([stack.tabBarItem.badgeValue isEqualToString:@"Badge"]);
+	XCTAssertTrue([stack.tabBarItem.title isEqualToString:@"First"]);
+	XCTAssertTrue([secondChild.tabBarItem.title isEqualToString:@"Second"]);
+}
+
 - (void)testShowModal_shouldShowAnimated {
 	[self.uut setReadyToReceiveCommands:true];
 	self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
