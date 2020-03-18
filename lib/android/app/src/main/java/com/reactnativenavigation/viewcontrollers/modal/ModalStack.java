@@ -84,6 +84,7 @@ public class ModalStack {
 
     public void dismissAllModals(ViewController root, Options mergeOptions, CommandListener listener) {
         if (modals.isEmpty()) {
+            listener.onSuccess(root.getId());
             return;
         }
         String topModalId = peek().getId();
