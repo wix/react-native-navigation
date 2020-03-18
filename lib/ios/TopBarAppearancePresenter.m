@@ -32,20 +32,17 @@
 }
 
 - (void)updateBackgroundAppearance {
-    if (@available(iOS 13.0, *)) {
+    if (self.transparent) {
+        [self.getAppearance configureWithTransparentBackground];
+        [self.getScrollEdgeAppearance configureWithTransparentBackground];
+    } else if (self.backgroundColor) {
         [self.getAppearance configureWithOpaqueBackground];
         [self.getScrollEdgeAppearance configureWithOpaqueBackground];
-
-        if (self.transparent) {
-            [self.getAppearance configureWithTransparentBackground];
-            [self.getScrollEdgeAppearance configureWithTransparentBackground];
-        } else if (self.backgroundColor) {
-            [self.getAppearance setBackgroundColor:self.backgroundColor];
-            [self.getScrollEdgeAppearance setBackgroundColor:self.backgroundColor];
-        } else if (self.translucent) {
-            [self.getAppearance configureWithDefaultBackground];
-            [self.getScrollEdgeAppearance configureWithDefaultBackground];
-        }
+        [self.getAppearance setBackgroundColor:self.backgroundColor];
+        [self.getScrollEdgeAppearance setBackgroundColor:self.backgroundColor];
+    } else if (self.translucent) {
+        [self.getAppearance configureWithDefaultBackground];
+        [self.getScrollEdgeAppearance configureWithDefaultBackground];
     }
 }
 
