@@ -57,11 +57,15 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -118,7 +122,7 @@ public class StackPresenterTest extends BaseTest {
         Options o1 = new Options();
         o1.topBar.title.component = component(Alignment.Default);
         o1.topBar.background.component = component(Alignment.Default);
-        o1.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
+        o1.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
         uut.applyChildOptions(o1, parent, child);
 
         uut.isRendered(child.getView());
@@ -210,12 +214,12 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void mergeButtons_previousRightButtonsAreDestroyed() {
         Options options = new Options();
-        options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
+        options.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
         uut.applyChildOptions(options, parent, child);
         List<TitleBarButtonController> initialButtons = uut.getComponentButtons(child.getView());
         forEach(initialButtons, ViewController::ensureViewIsCreated);
 
-        options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn2));
+        options.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn2));
         uut.mergeChildOptions(options, Options.EMPTY, parent, child);
         for (TitleBarButtonController button : initialButtons) {
             assertThat(button.isDestroyed()).isTrue();
@@ -225,30 +229,52 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void mergeButtons_mergingRightButtonsOnlyDestroysRightButtons() {
         Options a = new Options();
-        a.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
-        a.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
+        a.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
+        a.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
         uut.applyChildOptions(a, parent, child);
         List<TitleBarButtonController> initialButtons = uut.getComponentButtons(child.getView());
         forEach(initialButtons, ViewController::ensureViewIsCreated);
 
         Options b = new Options();
-        b.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn2));
+        b.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn2));
         uut.mergeChildOptions(b, Options.EMPTY, parent, child);
         assertThat(initialButtons.get(0).isDestroyed()).isTrue();
         assertThat(initialButtons.get(1).isDestroyed()).isFalse();
     }
 
     @Test
+    public void mergeButtons_rightButtonsAreCreatedOnlyIfNeeded() {
+        Options toApply = new Options();
+        toApply.topBar.buttons.right = new ArrayList<>(asList(textBtn1, componentBtn1));
+        uut.applyChildOptions(toApply, parent, child);
+
+        assertThat(topBar.getTitleBar().getMenu().size()).isEqualTo(2);
+
+        Options toMerge = new Options();
+        toMerge.topBar.buttons.right = new ArrayList(requireNonNull(map(toApply.topBar.buttons.right, Button::copy)));
+        toMerge.topBar.buttons.right.add(1, componentBtn2);
+        uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child);
+
+        assertThat(topBar.getTitleBar().getMenu().size()).isEqualTo(3);
+        ArgumentCaptor<List<TitleBarButtonController>> captor = ArgumentCaptor.forClass(List.class);
+        verify(topBar, times(2)).setRightButtons(captor.capture(), eq(Collections.EMPTY_LIST));
+        List<TitleBarButtonController> appliedButtons = captor.getAllValues().get(0);
+        List<TitleBarButtonController> mergedButtons = captor.getAllValues().get(1);
+        assertThat(appliedButtons.get(0)).isEqualTo(mergedButtons.get(0));
+        assertThat(appliedButtons.get(1)).isEqualTo(mergedButtons.get(2));
+    }
+
+    @Test
     public void mergeButtons_mergingLeftButtonsOnlyDestroysLeftButtons() {
         Options a = new Options();
-        a.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
-        a.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
+        a.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
+        a.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
         uut.applyChildOptions(a, parent, child);
         List<TitleBarButtonController> initialButtons = uut.getComponentButtons(child.getView());
         forEach(initialButtons, ViewController::ensureViewIsCreated);
 
         Options b = new Options();
-        b.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
+        b.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
         uut.mergeChildOptions(b, Options.EMPTY, parent, child);
         assertThat(initialButtons.get(0).isDestroyed()).isFalse();
         assertThat(initialButtons.get(1).isDestroyed()).isTrue();
@@ -514,8 +540,8 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void getButtonControllers_buttonControllersArePassedToTopBar() {
         Options options = new Options();
-        options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(textBtn1));
-        options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(textBtn1));
+        options.topBar.buttons.right = new ArrayList<>(singletonList(textBtn1));
+        options.topBar.buttons.left = new ArrayList<>(singletonList(textBtn1));
         uut.applyChildOptions(options, parent, child);
 
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
@@ -530,8 +556,8 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void getButtonControllers_storesButtonsByComponent() {
         Options options = new Options();
-        options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(textBtn1));
-        options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(textBtn2));
+        options.topBar.buttons.right = new ArrayList<>(singletonList(textBtn1));
+        options.topBar.buttons.left = new ArrayList<>(singletonList(textBtn2));
         uut.applyChildOptions(options, parent, child);
 
         List<TitleBarButtonController> componentButtons = uut.getComponentButtons(child.getView());
@@ -543,8 +569,8 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void getButtonControllers_createdOnce() {
         Options options = new Options();
-        options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(textBtn1));
-        options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(textBtn2));
+        options.topBar.buttons.right = new ArrayList<>(singletonList(textBtn1));
+        options.topBar.buttons.left = new ArrayList<>(singletonList(textBtn2));
 
         uut.applyChildOptions(options, parent, child);
         List<TitleBarButtonController> buttons1 = uut.getComponentButtons(child.getView());
@@ -559,8 +585,8 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void applyButtons_doesNotDestroyOtherComponentButtons() {
         Options options = new Options();
-        options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
-        options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
+        options.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
+        options.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
         uut.applyChildOptions(options, parent, child);
         List<TitleBarButtonController> buttons = uut.getComponentButtons(child.getView());
         forEach(buttons, ViewController::ensureViewIsCreated);
@@ -574,8 +600,8 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void onChildDestroyed_destroyedButtons() {
         Options options = new Options();
-        options.topBar.buttons.right = new ArrayList<>(Collections.singletonList(componentBtn1));
-        options.topBar.buttons.left = new ArrayList<>(Collections.singletonList(componentBtn2));
+        options.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
+        options.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
         uut.applyChildOptions(options, parent, child);
         List<TitleBarButtonController> buttons = uut.getComponentButtons(child.getView());
         forEach(buttons, ViewController::ensureViewIsCreated);

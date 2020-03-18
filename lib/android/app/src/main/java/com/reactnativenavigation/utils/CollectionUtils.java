@@ -74,9 +74,9 @@ public class CollectionUtils {
         return result == null ? defaultValue : result;
     }
 
-    public static <T> List<T> merge(@Nullable Collection<T> a, @Nullable Collection<T> b) {
+    public static <T> ArrayList<T> merge(@Nullable Collection<T> a, @Nullable Collection<T> b) {
         if (a == null && b == null) return null;
-        List<T> result = new ArrayList<>(get(a));
+        ArrayList<T> result = new ArrayList<>(get(a));
         result.addAll(get(b));
         return result;
     }
