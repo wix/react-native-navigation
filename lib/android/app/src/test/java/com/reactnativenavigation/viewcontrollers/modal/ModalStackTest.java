@@ -174,7 +174,7 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
-    public void dismissAllModals_rejectIfEmpty() {
+    public void dismissAllModals_resolveSuccessfullyIfEmpty() {
         CommandListener spy = spy(new CommandListenerAdapter());
         uut.dismissAllModals(root, Options.EMPTY, spy);
         verify(spy, times(1)).onSuccess(root.getId());
