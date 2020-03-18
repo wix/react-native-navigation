@@ -7,12 +7,14 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -25,6 +27,7 @@ import javax.annotation.Nullable;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.UiUtils.runOnPreDrawOnce;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
@@ -128,13 +131,13 @@ public class TitleBar extends Toolbar {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
 
-        if(changed || isTitleChanged) {
+        if (changed || isTitleChanged) {
             TextView title = findTitleTextView();
             if (title != null) this.alignTextView(titleAlignment, title);
             isTitleChanged = false;
         }
 
-        if(changed || isSubtitleChanged) {
+        if (changed || isSubtitleChanged) {
             TextView subtitle = findSubtitleTextView();
             if (subtitle != null) this.alignTextView(subtitleAlignment, subtitle);
             isSubtitleChanged = false;
@@ -190,7 +193,7 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    private void clearRightButtons() {
+    public void clearRightButtons() {
         if (getMenu().size() > 0) getMenu().clear();
     }
 
@@ -216,11 +219,43 @@ public class TitleBar extends Toolbar {
         button.applyNavigationIcon(this);
     }
 
-    public void setRightButtons(List<TitleBarButtonController> rightButtons) {
-        if (rightButtons == null) return;
-        clearRightButtons();
-        for (int i = 0; i < rightButtons.size(); i++) {
-            rightButtons.get(i).addToMenu(this, rightButtons.size() - i - 1);
+    public void setRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
+        if (toAdd == null) return;
+        if (isNullOrEmpty(toRemove) && isNullOrEmpty(toAdd)) {
+            clearRightButtons();
+        }
+        CollectionUtils.forEach(toRemove, btn -> getMenu().removeItem(btn.getButtonIntId()));
+        int size = toAdd.size();
+        boolean isPopulated = getMenu().size() > 0;
+        for (int i = 0; i < size; i++) {
+            TitleBarButtonController button = toAdd.get(i);
+            @Nullable MenuItem item = getMenu().findItem(button.getButtonIntId());
+            if (item != null) {
+                button.applyButtonOptions(this);
+                continue;
+            }
+
+            int order = (size - i) * 10000;
+            if (isPopulated) {
+                if (i > 0 && i < getMenu().size()) {
+                    MenuItem next = getMenu().getItem(i);
+                    MenuItem prev = getMenu().getItem(i - 1);
+                    if (next != null) {
+                        Log.w("TitleBar", "next: " + next.getOrder() );
+                        order = (next.getOrder() + prev.getOrder()) / 2;
+                    }
+                } else if (i == 0) {
+                    MenuItem first = getMenu().getItem(getMenu().size() - 1);
+                    Log.e("TitleBar", "first: " + first.getOrder() );
+                    order = first.getOrder() * 2;
+                } else if (i == getMenu().size()) {
+                    MenuItem last = getMenu().getItem(0);
+                    Log.v("TitleBar", "last: " + last.getOrder());
+                    order = last.getOrder() / 2;
+                }
+            }
+            Log.i("TitleBar", "adding at index " + i + ", order: " + order + " [" + toAdd.get(i).getId() + "]");
+            button.addToMenu(this, order);
         }
     }
 

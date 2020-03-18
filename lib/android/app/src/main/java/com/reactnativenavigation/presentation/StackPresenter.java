@@ -50,6 +50,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.utils.ObjectUtils.take;
 
 public class StackPresenter {
     private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
@@ -272,11 +273,12 @@ public class StackPresenter {
         List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
 
         if (rightButtons != null) {
-            List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllers(componentRightButtons.get(child.getView()), rightButtons);
+            List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllersByInstanceId(componentRightButtons.get(child.getView()), rightButtons);
             componentRightButtons.put(child.getView(), keyBy(rightButtonControllers, TitleBarButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
+                topBar.getTitleBar().getMenu().clear();
+                topBar.setRightButtons(rightButtonControllers, currentRightButtons);
                 currentRightButtons = rightButtonControllers;
-                topBar.setRightButtons(rightButtonControllers);
             }
         } else {
             currentRightButtons = null;
@@ -284,7 +286,7 @@ public class StackPresenter {
         }
 
         if (leftButtons != null) {
-            List<TitleBarButtonController> leftButtonControllers = getOrCreateButtonControllers(componentLeftButtons.get(child.getView()), leftButtons);
+            List<TitleBarButtonController> leftButtonControllers = getOrCreateButtonControllersByInstanceId(componentLeftButtons.get(child.getView()), leftButtons);
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, TitleBarButtonController::getButtonInstanceId));
             topBar.setLeftButtons(leftButtonControllers);
         } else {
@@ -298,13 +300,20 @@ public class StackPresenter {
         topBar.setOverflowButtonColor(options.rightButtonColor.get(Color.BLACK));
     }
 
-    private List<TitleBarButtonController> getOrCreateButtonControllers(@Nullable Map<String, TitleBarButtonController> currentButtons, @Nullable List<Button> buttons) {
+    private List<TitleBarButtonController> getOrCreateButtonControllersByInstanceId(@Nullable Map<String, TitleBarButtonController> currentButtons, @Nullable List<Button> buttons) {
         if (buttons == null) return null;
         Map<String, TitleBarButtonController> result = new LinkedHashMap<>();
-        for (Button b : buttons) {
-            result.put(b.instanceId, currentButtons != null && currentButtons.containsKey(b.instanceId) ? currentButtons.get(b.instanceId) : createButtonController(b));
-        }
+        forEach(buttons, b -> result.put(b.instanceId, getOrDefault(currentButtons, b.instanceId, () -> createButtonController(b))));
         return new ArrayList<>(result.values());
+    }
+
+    private List<TitleBarButtonController> getOrCreateButtonControllersById(@Nullable Map<String, TitleBarButtonController> currentButtons, @Nullable List<Button> buttons) {
+        if (buttons == null) return null;
+        ArrayList result = new ArrayList<TitleBarButtonController>();
+        for (Button b : buttons) {
+            result.add(take(first(perform(currentButtons, null, Map::values), button -> button.getId().equals(b.id)), createButtonController(b)));
+        }
+        return result;
     }
 
     private TitleBarButtonController createButtonController(Button button) {
@@ -357,24 +366,25 @@ public class StackPresenter {
         List<Button> rightButtons = mergeButtonsWithColor(buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
         List<Button> leftButtons = mergeButtonsWithColor(buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
 
-        List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllers(componentRightButtons.get(child), rightButtons);
-        List<TitleBarButtonController> leftButtonControllers = getOrCreateButtonControllers(componentLeftButtons.get(child), leftButtons);
+        List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllersById(componentRightButtons.get(child), rightButtons);
+        List<TitleBarButtonController> leftButtonControllers = getOrCreateButtonControllersById(componentLeftButtons.get(child), leftButtons);
 
         if (rightButtonControllers != null) {
-            Map previousRightButtons = componentRightButtons.put(child, keyBy(rightButtonControllers, TitleBarButtonController::getButtonInstanceId));
-            if (previousRightButtons != null) forEach(previousRightButtons.values(), TitleBarButtonController::destroy);
+            List<TitleBarButtonController> rightButtonsToRemove = difference(currentRightButtons, rightButtonControllers, TitleBarButtonController::equals);
+            forEach(rightButtonsToRemove, TitleBarButtonController::destroy);
+
+            if (buttons.right != null) {
+                if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
+                    currentRightButtons = rightButtonControllers;
+                    topBar.setRightButtons(currentRightButtons, rightButtonsToRemove);
+                }
+            }
         }
         if (leftButtonControllers != null) {
             Map previousLeftButtons = componentLeftButtons.put(child, keyBy(leftButtonControllers, TitleBarButtonController::getButtonInstanceId));
             if (previousLeftButtons != null) forEach(previousLeftButtons.values(), TitleBarButtonController::destroy);
         }
 
-        if (buttons.right != null) {
-            if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
-                currentRightButtons = rightButtonControllers;
-                topBar.setRightButtons(rightButtonControllers);
-            }
-        }
         if (buttons.left != null) topBar.setLeftButtons(leftButtonControllers);
         if (buttons.back.hasValue()) {
             if (buttons.back.visible.isFalse()) {

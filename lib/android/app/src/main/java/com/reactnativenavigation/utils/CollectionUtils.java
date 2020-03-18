@@ -19,6 +19,10 @@ public class CollectionUtils {
         void on(T t);
     }
 
+    public interface Comparator<T> {
+        boolean compare(T a, T b);
+    }
+
     public static boolean isNullOrEmpty(Collection collection) {
         return collection == null || collection.isEmpty();
     }
@@ -60,6 +64,11 @@ public class CollectionUtils {
         return result;
     }
 
+    public static <K, V> V getOrDefault(@Nullable Map<K, V> map, K key, Functions.FuncR<V> defaultValueCreator) {
+        if (map == null) return defaultValueCreator.run();
+        return map.containsKey(key) ? map.get(key) : defaultValueCreator.run();
+    }
+
     public static <T> List<T> merge(@Nullable Collection<T> a, @Nullable Collection<T> b, @NonNull List<T> defaultValue) {
         List<T> result = merge(a, b);
         return result == null ? defaultValue : result;
@@ -70,6 +79,25 @@ public class CollectionUtils {
         List<T> result = new ArrayList<>(get(a));
         result.addAll(get(b));
         return result;
+    }
+
+    /**
+     * @return Items in a, that are not in b
+     */
+    public static <T> List<T> difference(@NonNull Collection<T> a, @Nullable Collection<T> b, Comparator<T> comparator) {
+        if (b == null) return new ArrayList<>(a);
+        ArrayList<T> results = new ArrayList<>();
+        forEach(a, btn -> {
+            if (!contains(b, btn, comparator)) results.add(btn);
+        });
+        return results;
+    }
+
+    private static <T> boolean contains(@NonNull Collection<T> items, T item, Comparator<T> comparator) {
+        for (T t : items) {
+            if (comparator.compare(t, item)) return true;
+        }
+        return false;
     }
 
     public static <T> void forEach(@Nullable Collection<T> items, Apply<T> apply) {

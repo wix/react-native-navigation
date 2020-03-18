@@ -26,12 +26,15 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 public class TitleBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
+    @Nullable private MenuItem menuItem;
+
     public interface OnClickListener {
         void onPress(String buttonId);
     }
@@ -50,6 +53,10 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
 
     public String getButtonInstanceId() {
         return button.instanceId;
+    }
+
+    public int getButtonIntId() {
+        return button.getIntId();
     }
 
     public TitleBarButtonController(Activity activity,
@@ -106,6 +113,12 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
         return true;
     }
 
+    public boolean equals(TitleBarButtonController other) {
+        if (other == this) return true;
+        if (!other.getId().equals(getId())) return false;
+        return button.equals(other.button);
+    }
+
     public void applyNavigationIcon(Toolbar toolbar) {
         navigationIconResolver.resolve(button, icon -> {
             setIconColor(icon);
@@ -127,7 +140,12 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public void addToMenu(Toolbar toolbar, int position) {
-        MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, position, position, button.text.get(""));
+        this.menuItem = toolbar.getMenu().add(Menu.NONE, button.getIntId(), position, button.text.get(""));
+        applyButtonOptions(toolbar);
+    }
+
+    public void applyButtonOptions(Toolbar toolbar) {
+        if (menuItem == null) return;
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get());
         menuItem.setEnabled(button.enabled.isTrueOrUndefined());
         menuItem.setOnMenuItemClickListener(this);

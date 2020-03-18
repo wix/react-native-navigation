@@ -19,10 +19,12 @@ import java.util.Objects;
 
 import androidx.annotation.Nullable;
 
+import static com.reactnativenavigation.utils.ObjectUtils.take;
+
 public class Button {
     public String instanceId = "btn" + CompatUtils.generateViewId();
 
-    @Nullable public String id;
+    public String id;
     public Text accessibilityLabel = new NullText();
     public Text text = new NullText();
     public Bool enabled = new NullBool();
@@ -56,7 +58,7 @@ public class Button {
 
     private static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
         Button button = new Button();
-        button.id = json.optString("id");
+        button.id = take(json.optString("id"), "btn" + CompatUtils.generateViewId());
         button.accessibilityLabel = TextParser.parse(json, "accessibilityLabel");
         button.text = TextParser.parse(json, "text");
         button.enabled = BoolParser.parse(json, "enabled");
@@ -114,6 +116,10 @@ public class Button {
 
     public boolean hasIcon() {
         return icon.hasValue();
+    }
+
+    public int getIntId() {
+        return id.hashCode();
     }
 
     private static Number parseShowAsAction(JSONObject json) {

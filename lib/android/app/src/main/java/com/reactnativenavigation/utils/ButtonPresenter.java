@@ -5,9 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.ActionMenuView;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
@@ -18,6 +15,10 @@ import android.widget.TextView;
 import com.reactnativenavigation.parse.params.Button;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 
 public class ButtonPresenter {
     private final Toolbar toolbar;
@@ -35,6 +36,7 @@ public class ButtonPresenter {
     }
 
     public void setTypeFace(Typeface typeface) {
+        if (typeface == null) return;
         UiUtils.runOnPreDrawOnce(toolbar, () -> {
             ArrayList<View> buttons = findActualTextViewInMenu();
             for (View btn : buttons) {

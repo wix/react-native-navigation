@@ -212,12 +212,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setLeftButtons(Collections.emptyList());
     }
 
-    public void setRightButtons(List<TitleBarButtonController> rightButtons) {
-        titleBar.setRightButtons(rightButtons);
+    public void setRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
+        titleBar.setRightButtons(toAdd, toRemove);
     }
 
     public void clearRightButtons() {
-        titleBar.setRightButtons(Collections.emptyList());
+        titleBar.clearRightButtons();
     }
 
     public void setElevation(Double elevation) {
