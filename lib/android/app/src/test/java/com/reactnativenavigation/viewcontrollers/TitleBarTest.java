@@ -65,7 +65,7 @@ public class TitleBarTest extends BaseTest {
 
     @Test
     public void setButton_setsTextButton() {
-        uut.setRightButtons(rightButtons(textButton));
+        uut.setRightButtons(rightButtons(textButton), Collections.EMPTY_LIST);
         uut.setLeftButtons(leftButton(leftButton));
         assertThat(uut.getMenu().getItem(0).getTitle()).isEqualTo(textButton.text.get());
     }
@@ -73,7 +73,7 @@ public class TitleBarTest extends BaseTest {
     @Test
     public void setButton_setsCustomButton() {
         uut.setLeftButtons(leftButton(leftButton));
-        uut.setRightButtons(rightButtons(customButton));
+        uut.setRightButtons(rightButtons(customButton), Collections.EMPTY_LIST);
         ReactView btnView = (ReactView) uut.getMenu().getItem(0).getActionView();
         assertThat(btnView.getComponentName()).isEqualTo(customButton.component.name.get());
     }
@@ -81,20 +81,20 @@ public class TitleBarTest extends BaseTest {
     @Test
     public void setRightButtons_emptyButtonsListClearsRightButtons() {
         uut.setLeftButtons(new ArrayList<>());
-        uut.setRightButtons(rightButtons(customButton, textButton));
+        uut.setRightButtons(rightButtons(customButton, textButton), Collections.EMPTY_LIST);
         uut.setLeftButtons(new ArrayList<>());
-        uut.setRightButtons(new ArrayList<>());
+        uut.setRightButtons(new ArrayList<>(), Collections.EMPTY_LIST);
         assertThat(uut.getMenu().size()).isEqualTo(0);
     }
 
     @Test
     public void setLeftButtons_emptyButtonsListClearsLeftButton() {
         uut.setLeftButtons(leftButton(leftButton));
-        uut.setRightButtons(rightButtons(customButton));
+        uut.setRightButtons(rightButtons(customButton), Collections.EMPTY_LIST);
         assertThat(uut.getNavigationIcon()).isNotNull();
 
         uut.setLeftButtons(new ArrayList<>());
-        uut.setRightButtons(rightButtons(textButton));
+        uut.setRightButtons(rightButtons(textButton), Collections.EMPTY_LIST);
         assertThat(uut.getNavigationIcon()).isNull();
     }
 
@@ -113,7 +113,7 @@ public class TitleBarTest extends BaseTest {
     @Test
     public void setRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
         uut.setLeftButtons(new ArrayList<>());
-        uut.setRightButtons(rightButtons(textButton, customButton));
+        uut.setRightButtons(rightButtons(textButton, customButton), Collections.EMPTY_LIST);
         assertThat(uut.getMenu().getItem(1).getTitle()).isEqualTo(textButton.text.get());
     }
 

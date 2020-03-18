@@ -24,7 +24,7 @@ import static com.reactnativenavigation.utils.ObjectUtils.take;
 public class Button {
     public String instanceId = "btn" + CompatUtils.generateViewId();
 
-    public String id;
+    public String id = "btn" + CompatUtils.generateViewId();
     public Text accessibilityLabel = new NullText();
     public Text text = new NullText();
     public Bool enabled = new NullBool();
