@@ -3,6 +3,6 @@
 
 @interface BottomTabsPresenterCreator : NSObject
 
-+ (RNNBottomTabsPresenter *)createWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
++ (BottomTabsBasePresenter *)createWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 @end
