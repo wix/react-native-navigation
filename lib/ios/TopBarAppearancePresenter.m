@@ -43,6 +43,9 @@
     } else if (self.translucent) {
         [self.getAppearance configureWithDefaultBackground];
         [self.getScrollEdgeAppearance configureWithDefaultBackground];
+    }  else {
+        [self.getAppearance configureWithOpaqueBackground];
+        [self.getScrollEdgeAppearance configureWithOpaqueBackground];
     }
 }
 
