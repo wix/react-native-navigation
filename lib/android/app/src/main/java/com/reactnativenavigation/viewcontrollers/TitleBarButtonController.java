@@ -21,6 +21,7 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.viewcontrolleroverlay.ViewControllerOverlay;
+import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
 import java.util.List;
@@ -139,12 +140,12 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
         });
     }
 
-    public void addToMenu(Toolbar toolbar, int position) {
-        this.menuItem = toolbar.getMenu().add(Menu.NONE, button.getIntId(), position, button.text.get(""));
-        applyButtonOptions(toolbar);
+    public void addToMenu(TitleBar titleBar, int position) {
+        this.menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), position, button.text.get(""));
+        applyButtonOptions(titleBar);
     }
 
-    public void applyButtonOptions(Toolbar toolbar) {
+    public void applyButtonOptions(TitleBar titleBar) {
         if (menuItem == null) return;
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get());
         menuItem.setEnabled(button.enabled.isTrueOrUndefined());
@@ -164,12 +165,12 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
                     }
                 });
             } else {
-                optionsPresenter.setTextColor();
+                optionsPresenter.setTextColor(titleBar);
                 if (button.fontSize.hasValue()) optionsPresenter.setFontSize(menuItem);
-                optionsPresenter.setTypeFace(button.fontFamily);
+                optionsPresenter.setTypeFace(titleBar, button.fontFamily);
             }
         }
-        setTestId(toolbar, button.testId);
+        setTestId(titleBar, button.testId);
     }
 
     private void loadIcon(ImageLoader.ImagesLoadingListener callback) {

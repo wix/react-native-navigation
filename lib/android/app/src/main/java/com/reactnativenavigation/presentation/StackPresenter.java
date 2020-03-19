@@ -277,7 +277,7 @@ public class StackPresenter {
             componentRightButtons.put(child.getView(), keyBy(rightButtonControllers, TitleBarButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
                 topBar.getTitleBar().getMenu().clear();
-                topBar.setRightButtons(rightButtonControllers, currentRightButtons);
+                topBarController.setRightButtons(rightButtonControllers, currentRightButtons);
                 currentRightButtons = rightButtonControllers;
             }
         } else {
@@ -288,7 +288,7 @@ public class StackPresenter {
         if (leftButtons != null) {
             List<TitleBarButtonController> leftButtonControllers = getOrCreateButtonControllersByInstanceId(componentLeftButtons.get(child.getView()), leftButtons);
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, TitleBarButtonController::getButtonInstanceId));
-            topBar.setLeftButtons(leftButtonControllers);
+            topBarController.setLeftButtons(leftButtonControllers);
         } else {
             topBar.clearLeftButtons();
         }
@@ -319,7 +319,7 @@ public class StackPresenter {
     private TitleBarButtonController createButtonController(Button button) {
         TitleBarButtonController controller = new TitleBarButtonController(activity,
                 iconResolver,
-                new ButtonPresenter(topBar.getTitleBar(), button),
+                new ButtonPresenter(button),
                 button,
                 buttonCreator,
                 onClickListener
@@ -376,7 +376,7 @@ public class StackPresenter {
             if (buttons.right != null) {
                 if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
                     currentRightButtons = rightButtonControllers;
-                    topBar.setRightButtons(currentRightButtons, rightButtonsToRemove);
+                    topBarController.setRightButtons(currentRightButtons, rightButtonsToRemove);
                 }
             }
         }
@@ -385,7 +385,7 @@ public class StackPresenter {
             if (previousLeftButtons != null) forEach(previousLeftButtons.values(), TitleBarButtonController::destroy);
         }
 
-        if (buttons.left != null) topBar.setLeftButtons(leftButtonControllers);
+        if (buttons.left != null) topBarController.setLeftButtons(leftButtonControllers);
         if (buttons.back.hasValue()) {
             if (buttons.back.visible.isFalse()) {
                 topBar.clearLeftButtons();

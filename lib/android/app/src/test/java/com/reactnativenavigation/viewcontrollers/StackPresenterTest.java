@@ -195,8 +195,8 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void mergeButtons() {
         uut.mergeChildOptions(EMPTY_OPTIONS, EMPTY_OPTIONS, parent, child);
-        verify(topBar, times(0)).setRightButtons(any(), any());
-        verify(topBar, times(0)).setLeftButtons(any());
+        verify(topBarController, times(0)).setRightButtons(any(), any());
+        verify(topBarController, times(0)).setLeftButtons(any());
 
         Options options = new Options();
 
@@ -204,11 +204,11 @@ public class StackPresenterTest extends BaseTest {
         button.text = new Text("btn");
         options.topBar.buttons.right = new ArrayList<>(Collections.singleton(button));
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
-        verify(topBar, times(1)).setRightButtons(any(), any());
+        verify(topBarController).setRightButtons(any(), any());
 
         options.topBar.buttons.left = new ArrayList<>();
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
-        verify(topBar, times(1)).setLeftButtons(any());
+        verify(topBarController).setLeftButtons(any());
     }
 
     @Test
@@ -257,7 +257,7 @@ public class StackPresenterTest extends BaseTest {
 
         assertThat(topBar.getTitleBar().getMenu().size()).isEqualTo(3);
         ArgumentCaptor<List<TitleBarButtonController>> captor = ArgumentCaptor.forClass(List.class);
-        verify(topBar, times(2)).setRightButtons(captor.capture(), eq(Collections.EMPTY_LIST));
+        verify(topBarController, times(2)).setRightButtons(captor.capture(), eq(Collections.EMPTY_LIST));
         List<TitleBarButtonController> appliedButtons = captor.getAllValues().get(0);
         List<TitleBarButtonController> mergedButtons = captor.getAllValues().get(1);
         assertThat(appliedButtons.get(0)).isEqualTo(mergedButtons.get(0));
@@ -448,14 +448,14 @@ public class StackPresenterTest extends BaseTest {
 
         uut.applyChildOptions(options, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar).setRightButtons(rightCaptor.capture(), any());
+        verify(topBarController).setRightButtons(rightCaptor.capture(), any());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(options.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(1).getButton().color.get()).isEqualTo(options.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
         assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
 
         ArgumentCaptor<List<TitleBarButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar).setLeftButtons(leftCaptor.capture());
+        verify(topBarController).setLeftButtons(leftCaptor.capture());
         assertThat(leftCaptor.getValue().get(0).getButton().color).isEqualTo(options.topBar.leftButtonColor);
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
     }
@@ -493,14 +493,14 @@ public class StackPresenterTest extends BaseTest {
 
         uut.mergeChildOptions(options2, appliedOptions, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar, times(1)).setRightButtons(rightCaptor.capture(), any());
+        verify(topBarController).setRightButtons(rightCaptor.capture(), any());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(1).getButton().color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
         assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
 
         ArgumentCaptor<List<TitleBarButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar, times(1)).setLeftButtons(leftCaptor.capture());
+        verify(topBarController).setLeftButtons(leftCaptor.capture());
         assertThat(leftCaptor.getValue().get(0).getButton().color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get());
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
     }
@@ -525,14 +525,14 @@ public class StackPresenterTest extends BaseTest {
 
         uut.mergeChildOptions(options2, resolvedOptions, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar).setRightButtons(rightCaptor.capture(), any());
+        verify(topBarController).setRightButtons(rightCaptor.capture(), any());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(1).getButton().color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
         assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
 
         ArgumentCaptor<List<TitleBarButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar).setLeftButtons(leftCaptor.capture());
+        verify(topBarController).setLeftButtons(leftCaptor.capture());
         assertThat(leftCaptor.getValue().get(0).getButton().color.get()).isEqualTo(resolvedOptions.topBar.leftButtonColor.get());
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
     }
@@ -546,8 +546,8 @@ public class StackPresenterTest extends BaseTest {
 
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
         ArgumentCaptor<List<TitleBarButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBar).setRightButtons(rightCaptor.capture(), any());
-        verify(topBar).setLeftButtons(leftCaptor.capture());
+        verify(topBarController).setRightButtons(rightCaptor.capture(), any());
+        verify(topBarController).setLeftButtons(leftCaptor.capture());
 
         assertThat(rightCaptor.getValue().size()).isOne();
         assertThat(leftCaptor.getValue().size()).isOne();

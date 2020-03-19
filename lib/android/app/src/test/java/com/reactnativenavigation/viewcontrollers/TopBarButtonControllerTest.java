@@ -18,10 +18,9 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.views.titlebar.TitleBar;
 
 import org.junit.Test;
-
-import androidx.appcompat.widget.Toolbar;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,7 +49,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         stackController.getTopBar().layout(0, 0, 1080, 200);
         getTitleBar().layout(0, 0, 1080, 200);
 
-        optionsPresenter = spy(new ButtonPresenter(getTitleBar(), button));
+        optionsPresenter = spy(new ButtonPresenter(button));
         uut = new TitleBarButtonController(activity, new IconResolver(activity, ImageLoaderMock.mock()), optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
 
         stackController.ensureViewIsCreated();
@@ -102,7 +101,7 @@ public class TopBarButtonControllerTest extends BaseTest {
     public void fontFamily() {
         setTextButton();
         uut.addToMenu(getTitleBar(), 0);
-        verify(optionsPresenter, times(1)).setTypeFace(Typeface.MONOSPACE);
+        verify(optionsPresenter, times(1)).setTypeFace(getTitleBar(), Typeface.MONOSPACE);
     }
 
     @Test
@@ -152,7 +151,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         verify(optionsPresenter, times(1)).setDisabledColor(any(), eq(Color.BLACK));
     }
 
-    private Toolbar getTitleBar() {
+    private TitleBar getTitleBar() {
         return stackController.getTopBar().getTitleBar();
     }
 

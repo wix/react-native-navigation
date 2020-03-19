@@ -9,25 +9,18 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.views.titlebar.TitleBar;
 
-import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.ActionMenuView;
-import androidx.appcompat.widget.Toolbar;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.UiUtils.runOnPreDrawOnce;
 
 public class ButtonPresenter {
-    private final Toolbar toolbar;
-    private final ActionMenuView actionMenuView;
     private Button button;
 
-    public ButtonPresenter(Toolbar toolbar, Button button) {
-        this.toolbar = toolbar;
-        actionMenuView = ViewUtils.findChildrenByClass(toolbar, ActionMenuView.class).get(0);
+    public ButtonPresenter(Button button) {
         this.button = button;
     }
 
@@ -35,14 +28,9 @@ public class ButtonPresenter {
         drawable.setColorFilter(new PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN));
     }
 
-    public void setTypeFace(Typeface typeface) {
+    public void setTypeFace(TitleBar titleBar, Typeface typeface) {
         if (typeface == null) return;
-        UiUtils.runOnPreDrawOnce(toolbar, () -> {
-            ArrayList<View> buttons = findActualTextViewInMenu();
-            for (View btn : buttons) {
-                ((TextView) btn).setTypeface(typeface);
-            }
-        });
+        runOnPreDrawOnce(titleBar, () -> forEach(titleBar.findButtonTextView(button), b -> ((TextView) b).setTypeface(typeface)));
     }
 
     public void setFontSize(MenuItem menuItem) {
@@ -57,17 +45,14 @@ public class ButtonPresenter {
         menuItem.setTitleCondensed(spanString);
     }
 
-    public void setTextColor() {
-        UiUtils.runOnPreDrawOnce(toolbar, () -> {
-            ArrayList<View> buttons = findActualTextViewInMenu();
-            for (View btn : buttons) {
-                if (button.enabled.isTrueOrUndefined() && button.color.hasValue()) {
-                    setEnabledColor((TextView) btn);
-                } else if (button.enabled.isFalse()) {
-                    setDisabledColor((TextView) btn, button.disabledColor.get(Color.LTGRAY));
-                }
+    public void setTextColor(TitleBar titleBar) {
+        runOnPreDrawOnce(titleBar, () -> forEach(titleBar.findButtonTextView(button), btn -> {
+            if (button.enabled.isTrueOrUndefined() && button.color.hasValue()) {
+                setEnabledColor((TextView) btn);
+            } else if (button.enabled.isFalse()) {
+                setDisabledColor((TextView) btn, button.disabledColor.get(Color.LTGRAY));
             }
-        });
+        }));
     }
 
     public void setDisabledColor(TextView btn, int color) {
@@ -77,14 +62,4 @@ public class ButtonPresenter {
     public void setEnabledColor(TextView btn) {
         btn.setTextColor(button.color.get());
     }
-
-    @NonNull
-    private ArrayList<View> findActualTextViewInMenu() {
-        ArrayList<View> outViews = new ArrayList<>();
-        if (button.text.hasValue()) {
-            actionMenuView.findViewsWithText(outViews, button.text.get(), View.FIND_VIEWS_WITH_TEXT);
-        }
-        return outViews;
-    }
-
 }

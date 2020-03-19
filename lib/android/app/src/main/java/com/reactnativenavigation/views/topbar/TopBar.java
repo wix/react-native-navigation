@@ -27,12 +27,10 @@ import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
 import java.util.Collections;
-import java.util.List;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -51,6 +49,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public TopBar(final Context context) {
         super(context);
         context.setTheme(R.style.TopBar);
+        setId(CompatUtils.generateViewId());
         collapsingBehavior = new TopBarCollapseBehavior(this);
         topTabs = new TopTabs(getContext());
         createLayout();
@@ -204,16 +203,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setBackButton(backButton);
     }
 
-    public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
-        titleBar.setLeftButtons(leftButtons);
-    }
-
     public void clearLeftButtons() {
         titleBar.setLeftButtons(Collections.emptyList());
-    }
-
-    public void setRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
-        titleBar.setRightButtons(toAdd, toRemove);
     }
 
     public void clearRightButtons() {
@@ -234,7 +225,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         }
     }
 
-    public Toolbar getTitleBar() {
+    public TitleBar getTitleBar() {
         return titleBar;
     }
 
