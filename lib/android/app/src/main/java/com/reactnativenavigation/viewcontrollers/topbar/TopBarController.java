@@ -119,16 +119,27 @@ public class TopBarController {
         topBar.setRotation(0);
     }
 
+
     public void setTitleComponent(TitleBarReactViewController component) {
         topBar.setTitleComponent(component.getView());
     }
 
-    public void setRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
+    public void applyRightButtons(List<TitleBarButtonController> toAdd) {
+        topBar.clearRightButtons();
+        if (CollectionUtils.isNullOrEmpty(toAdd)) return;
+        int size = toAdd.size();
+        for (int i = 0; i < size; i++) {
+            TitleBarButtonController button = toAdd.get(i);
+            button.addToMenu(titleBar, (size - i) * 10000);
+        }
+    }
+
+    public void mergeRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
         if (toAdd == null) return;
         if (isNullOrEmpty(toRemove) && isNullOrEmpty(toAdd)) {
             topBar.clearRightButtons();
         }
-        CollectionUtils.forEach(toRemove, btn -> getMenu().removeItem(btn.getButtonIntId()));
+        forEach(toRemove, btn -> getMenu().removeItem(btn.getButtonIntId()));
         int size = toAdd.size();
         boolean isPopulated = getMenu().size() > 0;
         for (int i = 0; i < size; i++) {

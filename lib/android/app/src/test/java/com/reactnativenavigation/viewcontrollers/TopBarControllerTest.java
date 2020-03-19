@@ -26,8 +26,9 @@ public class TopBarControllerTest extends BaseTest {
     private TopBarController uut;
     private Activity activity;
     private Button leftButton;
-    private Button textButton;
-    private Button customButton;
+    private Button textButton1;
+    private Button textButton2;
+    private Button componentButton;
 
     @Override
     public void beforeEach() {
@@ -41,58 +42,73 @@ public class TopBarControllerTest extends BaseTest {
 
     @Test
     public void setButton_setsTextButton() {
-        uut.setRightButtons(rightButtons(textButton), Collections.EMPTY_LIST);
+        uut.applyRightButtons(rightButtons(textButton1));
         uut.setLeftButtons(leftButton(leftButton));
-        assertThat(uut.getRightButton(0).getTitle()).isEqualTo(textButton.text.get());
+        assertThat(uut.getRightButton(0).getTitle()).isEqualTo(textButton1.text.get());
     }
 
     @Test
     public void setButton_setsCustomButton() {
         uut.setLeftButtons(leftButton(leftButton));
-        uut.setRightButtons(rightButtons(customButton), Collections.EMPTY_LIST);
+        uut.applyRightButtons(rightButtons(componentButton));
         ReactView btnView = (ReactView) uut.getRightButton(0).getActionView();
-        assertThat(btnView.getComponentName()).isEqualTo(customButton.component.name.get());
+        assertThat(btnView.getComponentName()).isEqualTo(componentButton.component.name.get());
     }
 
     @Test
     public void setRightButtons_emptyButtonsListClearsRightButtons() {
         uut.setLeftButtons(new ArrayList<>());
-        uut.setRightButtons(rightButtons(customButton, textButton), Collections.EMPTY_LIST);
+        uut.applyRightButtons(rightButtons(componentButton, textButton1));
         uut.setLeftButtons(new ArrayList<>());
-        uut.setRightButtons(new ArrayList<>(), Collections.EMPTY_LIST);
+        uut.applyRightButtons(new ArrayList<>());
         assertThat(uut.getRightButtonsCount()).isEqualTo(0);
     }
 
     @Test
-    public void setLeftButtons_emptyButtonsListClearsLeftButton() {
-        uut.setLeftButtons(leftButton(leftButton));
-        uut.setRightButtons(rightButtons(customButton), Collections.EMPTY_LIST);
-        assertThat(uut.getLeftButton()).isNotNull();
+    public void setRightButtons_previousButtonsAreCleared() {
+        uut.applyRightButtons(rightButtons(textButton1, componentButton));
+        assertThat(uut.getRightButtonsCount()).isEqualTo(2);
 
-        uut.setLeftButtons(new ArrayList<>());
-        uut.setRightButtons(rightButtons(textButton), Collections.EMPTY_LIST);
-        assertThat(uut.getLeftButton()).isNull();
+        uut.applyRightButtons(rightButtons(textButton2));
+        assertThat(uut.getRightButtonsCount()).isEqualTo(1);
     }
 
     @Test
     public void setRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
         uut.setLeftButtons(new ArrayList<>());
-        uut.setRightButtons(rightButtons(textButton, customButton), Collections.EMPTY_LIST);
-        assertThat(uut.getRightButton(1).getTitle()).isEqualTo(textButton.text.get());
+        uut.applyRightButtons(rightButtons(textButton1, componentButton));
+        assertThat(uut.getRightButton(1).getTitle()).isEqualTo(textButton1.text.get());
+    }
+
+    @Test
+    public void setLeftButtons_emptyButtonsListClearsLeftButton() {
+        uut.setLeftButtons(leftButton(leftButton));
+        uut.applyRightButtons(rightButtons(componentButton));
+        assertThat(uut.getLeftButton()).isNotNull();
+
+        uut.setLeftButtons(new ArrayList<>());
+        uut.applyRightButtons(rightButtons(textButton1));
+        assertThat(uut.getLeftButton()).isNull();
     }
 
     private void createButtons() {
         leftButton = new Button();
         leftButton.id = Constants.BACK_BUTTON_ID;
 
-        textButton = new Button();
-        textButton.id = "textButton";
-        textButton.text = new Text("Btn");
+        textButton1 = createTextButton("1");
+        textButton2 = createTextButton("2");
 
-        customButton = new Button();
-        customButton.id = "customBtn";
-        customButton.component.name = new Text("com.rnn.customBtn");
-        customButton.component.componentId = new Text("component4");
+        componentButton = new Button();
+        componentButton.id = "customBtn";
+        componentButton.component.name = new Text("com.rnn.customBtn");
+        componentButton.component.componentId = new Text("component4");
+    }
+
+    private Button createTextButton(String id) {
+        Button button = new Button();
+        button.id = id;
+        button.text = new Text("txt" + id);
+        return button;
     }
 
     private List<TitleBarButtonController> leftButton(Button leftButton) {

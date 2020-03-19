@@ -276,9 +276,8 @@ public class StackPresenter {
             List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllersByInstanceId(componentRightButtons.get(child.getView()), rightButtons);
             componentRightButtons.put(child.getView(), keyBy(rightButtonControllers, TitleBarButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
-                topBar.getTitleBar().getMenu().clear();
-                topBarController.setRightButtons(rightButtonControllers, currentRightButtons);
                 currentRightButtons = rightButtonControllers;
+                topBarController.applyRightButtons(currentRightButtons);
             }
         } else {
             currentRightButtons = null;
@@ -376,7 +375,7 @@ public class StackPresenter {
             if (buttons.right != null) {
                 if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
                     currentRightButtons = rightButtonControllers;
-                    topBarController.setRightButtons(currentRightButtons, rightButtonsToRemove);
+                    topBarController.mergeRightButtons(currentRightButtons, rightButtonsToRemove);
                 }
             }
         }
