@@ -268,7 +268,7 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
-    public void mergeButtons_mergingLeftButtonsOnlyDestroysLeftButtons() {
+    public void mergeButtons_mergingLeftButtonsDoesNotDestroyRightButtons() {
         Options a = new Options();
         a.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
         a.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
@@ -280,7 +280,6 @@ public class StackPresenterTest extends BaseTest {
         b.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
         uut.mergeChildOptions(b, Options.EMPTY, parent, child);
         assertThat(initialButtons.get(0).isDestroyed()).isFalse();
-        assertThat(initialButtons.get(1).isDestroyed()).isTrue();
     }
 
     @Test

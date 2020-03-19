@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
+@SuppressWarnings("WeakerAccess")
 public class CollectionUtils {
     public interface Apply<T> {
         void on(T t);

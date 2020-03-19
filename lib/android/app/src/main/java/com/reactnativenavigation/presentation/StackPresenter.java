@@ -44,6 +44,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.Toolbar;
@@ -269,10 +270,8 @@ public class StackPresenter {
     }
 
     private void applyButtons(TopBarOptions options, ViewController child) {
-        List<Button> rightButtons = mergeButtonsWithColor(options.buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
-        List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
-
-        if (rightButtons != null) {
+        if (options.buttons.right != null) {
+            List<Button> rightButtons = mergeButtonsWithColor(options.buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
             List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllersByInstanceId(componentRightButtons.get(child.getView()), rightButtons);
             componentRightButtons.put(child.getView(), keyBy(rightButtonControllers, TitleBarButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
@@ -284,7 +283,8 @@ public class StackPresenter {
             topBar.clearRightButtons();
         }
 
-        if (leftButtons != null) {
+        if (options.buttons.left != null) {
+            List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
             List<TitleBarButtonController> leftButtonControllers = getOrCreateButtonControllersByInstanceId(componentLeftButtons.get(child.getView()), leftButtons);
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, TitleBarButtonController::getButtonInstanceId));
             topBarController.setLeftButtons(leftButtonControllers);
@@ -306,8 +306,7 @@ public class StackPresenter {
         return new ArrayList<>(result.values());
     }
 
-    private List<TitleBarButtonController> getOrCreateButtonControllersById(@Nullable Map<String, TitleBarButtonController> currentButtons, @Nullable List<Button> buttons) {
-        if (buttons == null) return null;
+    private List<TitleBarButtonController> getOrCreateButtonControllersById(@Nullable Map<String, TitleBarButtonController> currentButtons,@NonNull List<Button> buttons) {
         ArrayList result = new ArrayList<TitleBarButtonController>();
         for (Button b : buttons) {
             result.add(take(first(perform(currentButtons, null, Map::values), button -> button.getId().equals(b.id)), createButtonController(b)));
@@ -362,29 +361,34 @@ public class StackPresenter {
     }
 
     private void mergeButtons(TopBarOptions options, TopBarButtons buttons, View child) {
+        mergeRightButtons(options, buttons, child);
+        mergeLeftButton(options, buttons, child);
+        mergeBackButton(buttons);
+    }
+
+    private void mergeRightButtons(TopBarOptions options, TopBarButtons buttons, View child) {
+        if (buttons.right == null) return;
         List<Button> rightButtons = mergeButtonsWithColor(buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
+        List<TitleBarButtonController> toMerge = getOrCreateButtonControllersById(componentRightButtons.get(child), rightButtons);
+        List<TitleBarButtonController> toRemove = difference(currentRightButtons, toMerge, TitleBarButtonController::equals);
+        forEach(toRemove, TitleBarButtonController::destroy);
+
+        if (!CollectionUtils.equals(currentRightButtons, toMerge)) {
+            currentRightButtons = toMerge;
+            topBarController.mergeRightButtons(currentRightButtons, toRemove);
+        }
+        if (options.rightButtonColor.hasValue()) topBar.setOverflowButtonColor(options.rightButtonColor.get());
+    }
+
+    private void mergeLeftButton(TopBarOptions options, TopBarButtons buttons, View child) {
+        if (buttons.left == null) return;
         List<Button> leftButtons = mergeButtonsWithColor(buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
+        List<TitleBarButtonController> toMerge = getOrCreateButtonControllersById(componentLeftButtons.get(child), leftButtons);
+        componentLeftButtons.put(child, keyBy(toMerge, TitleBarButtonController::getButtonInstanceId));
+        topBarController.setLeftButtons(toMerge);
+    }
 
-        List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllersById(componentRightButtons.get(child), rightButtons);
-        List<TitleBarButtonController> leftButtonControllers = getOrCreateButtonControllersById(componentLeftButtons.get(child), leftButtons);
-
-        if (rightButtonControllers != null) {
-            List<TitleBarButtonController> rightButtonsToRemove = difference(currentRightButtons, rightButtonControllers, TitleBarButtonController::equals);
-            forEach(rightButtonsToRemove, TitleBarButtonController::destroy);
-
-            if (buttons.right != null) {
-                if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
-                    currentRightButtons = rightButtonControllers;
-                    topBarController.mergeRightButtons(currentRightButtons, rightButtonsToRemove);
-                }
-            }
-        }
-        if (leftButtonControllers != null) {
-            Map previousLeftButtons = componentLeftButtons.put(child, keyBy(leftButtonControllers, TitleBarButtonController::getButtonInstanceId));
-            if (previousLeftButtons != null) forEach(previousLeftButtons.values(), TitleBarButtonController::destroy);
-        }
-
-        if (buttons.left != null) topBarController.setLeftButtons(leftButtonControllers);
+    private void mergeBackButton(TopBarButtons buttons) {
         if (buttons.back.hasValue()) {
             if (buttons.back.visible.isFalse()) {
                 topBar.clearLeftButtons();
@@ -392,21 +396,15 @@ public class StackPresenter {
                 topBar.setBackButton(createButtonController(buttons.back));
             }
         }
-
-        if (options.rightButtonColor.hasValue()) topBar.setOverflowButtonColor(options.rightButtonColor.get());
     }
 
-    @Nullable
-    private List<Button> mergeButtonsWithColor(List<Button> buttons, Colour buttonColor, Colour disabledColor) {
-        List<Button> result = null;
-        if (buttons != null) {
-            result = new ArrayList<>();
-            for (Button button : buttons) {
-                Button copy = button.copy();
-                if (!button.color.hasValue()) copy.color = buttonColor;
-                if (!button.disabledColor.hasValue()) copy.disabledColor = disabledColor;
-                result.add(copy);
-            }
+    private List<Button> mergeButtonsWithColor(@NonNull List<Button> buttons, Colour buttonColor, Colour disabledColor) {
+        List<Button> result = new ArrayList<>();
+        for (Button button : buttons) {
+            Button copy = button.copy();
+            if (!button.color.hasValue()) copy.color = buttonColor;
+            if (!button.disabledColor.hasValue()) copy.disabledColor = disabledColor;
+            result.add(copy);
         }
         return result;
     }
