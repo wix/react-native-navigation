@@ -320,7 +320,7 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
-    public void mergeTopBarOptions_doesNotRecreateTitleComponentIfEquals() {
+    public void mergeTopBarOptions_settingTitleDestroysComponent() {
         Options componentOptions = new Options();
         componentOptions.topBar.title.component = titleComponent1;
         uut.applyChildOptions(componentOptions, parent, child);
@@ -334,7 +334,7 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
-    public void mergeTopBarOptions_settingTitleDestroysComponent() {
+    public void mergeTopBarOptions_doesNotRecreateTitleComponentIfEquals() {
         Options options = new Options();
         options.topBar.title.component = titleComponent1;
         uut.applyChildOptions(options, parent, child);
