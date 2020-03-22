@@ -42,9 +42,11 @@ import App from "./App";
 +   Navigation.setRoot({
 +     root: {
 +       stack: {
-+         component: {
-+           name: 'com.myApp.WelcomeScreen'
-+         }
++         children: [
++           component: {
++             name: 'com.myApp.WelcomeScreen'
++           }
++         ]
 +       }
 +     }
 +  });
