@@ -12,6 +12,8 @@ module.exports = {
       'advance-navigation',
       'screen-lifecycle',
       'passing-data-to-components',
+      'using-react-context',
+      'using-mobx',
     ],
     Layouts: [
       'stack-doc',

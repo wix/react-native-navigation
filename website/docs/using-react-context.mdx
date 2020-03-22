@@ -1,0 +1,96 @@
+---
+id: using-react-context
+title: Using React Context API
+sidebar_label: Using React Context API
+---
+
+## React Context API 
+React Context API provides a easy way to pass data through the component tree without having to pass props down 
+manually at every level. You can find more about the Context API in [React documentation](https://reactjs.org/docs/context.html).
+
+You can use the Context API with React Native Navigation. In this example, we are going to create a screen which uses
+the Counter Context.
+
+## Create a Counter context
+***TODO***: Found this on the Playground app, will need to explain why we needed to do this way.
+
+```tsx
+// CounterContext.js
+import React from 'react
+
+const initialCounterState = {
+  count: 0
+}
+
+const counterContextWrapper = (component) => ({
+  ...initialCounterState,
+  increment: () => {
+    initialCounterState.count += 1
+    component.setState({ context: contextWrapper(component) })
+  },
+  decrement: () => {
+    initialCounterState.count -= 1
+    component.setState({ context: contextWrapper(component) })
+  },
+})
+
+export const CounterContext = React.createContext({})
+
+export class CounterContextProvider extends React.Component {
+  state = {
+    context: counterContextWrapper(this)
+  }
+
+  render() {
+    return (
+      <CounterContext.Provider value={this.state.context}>
+        {this.props.children}
+      </CounterContext.Provider>
+    )
+  }
+}
+```
+
+## Register the screen
+When registering the screen that will be using the Counter Context, we need to wrap it
+with the Counter Context Provider we created earlier.
+
+```tsx
+// index.js
+import { Navigation } from 'react-native-navigation
+import { CounterContextProvider } from './CounterContext
+import { CounterReactContextScreen } from './CounterReactContextScreen
+
+Navigation.registerComponent(
+  'CounterReactContext', 
+  () => props => (
+    <CounterContextProvider>
+      <CounterReactContextScreen {...props} />
+    </CounterContextProvider>
+  ),
+  () => CounterReactContextScreen
+)
+```
+
+## Counter screen
+You can consume the Counter Context any way you want such as `Provider.Consumer` or `React.useContext` like in the 
+example below.
+
+```tsx
+// CounterReactContextScreen.js
+import React from 'react'
+import { Button, Text, View } from 'react-native'
+import { CounterContext } from './CounterContext'
+
+export const CounterReactContext = () => {
+  const { count, increment, decrement } = React.useContext(CounterContext)
+
+  return (
+    <View>
+      <Text>{`Clicked ${count} times!`}</Text>
+      <Button title="Increment" onPress={increment} />
+      <Button title="Decrement" onPress={decrement} />
+    </View>
+  )
+}
+```
