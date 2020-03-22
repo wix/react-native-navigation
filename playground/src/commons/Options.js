@@ -3,7 +3,6 @@ const Colors = require('./Colors');
 const { Dimensions } = require('react-native');
 const height = Math.round(Dimensions.get('window').height);
 const width = Math.round(Dimensions.get('window').width);
-console.log('guyca', `height: ${height} width: ${width}`);
 const {
   useCustomAnimations,
   useSlowOpenScreenAnimations,

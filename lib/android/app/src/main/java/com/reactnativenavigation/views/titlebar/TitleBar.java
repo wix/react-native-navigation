@@ -29,6 +29,7 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.UiUtils.runOnPreDrawOnce;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 import static com.reactnativenavigation.utils.ViewUtils.findChildrenByClass;
+import static com.reactnativenavigation.utils.ViewUtils.removeFromParent;
 
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
@@ -70,6 +71,7 @@ public class TitleBar extends Toolbar {
     }
 
     public void setComponent(View component) {
+        if (this.component == component) return;
         clearTitle();
         clearSubtitle();
         this.component = component;
@@ -175,7 +177,7 @@ public class TitleBar extends Toolbar {
 
     private void clearComponent() {
         if (component != null) {
-            removeView(component);
+            removeFromParent(component);
             component = null;
         }
     }
