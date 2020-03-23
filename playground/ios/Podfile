@@ -47,6 +47,8 @@ end
 target 'NavigationTests' do
   all_pods
   pod 'OCMock'
+  use_frameworks!
+  pod 'iOSSnapshotTestCase/Core'
 end
 
 target 'NavigationIOS12Tests' do

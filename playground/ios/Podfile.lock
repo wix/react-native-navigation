@@ -19,6 +19,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - iOSSnapshotTestCase/Core (6.2.0)
   - OCMock (3.5)
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
@@ -220,7 +221,7 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.5)
   - ReactNativeKeyboardTrackingView (5.6.1):
     - React
-  - ReactNativeNavigation (6.0.1):
+  - ReactNativeNavigation (6.3.1):
     - React
     - React-RCTImage
     - React-RCTText
@@ -232,6 +233,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - iOSSnapshotTestCase/Core
   - OCMock
   - RCTRequired (from `../../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../../node_modules/react-native/Libraries/TypeSafety`)
@@ -262,6 +264,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
+    - iOSSnapshotTestCase
     - OCMock
 
 EXTERNAL SOURCES:
@@ -327,6 +330,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
   OCMock: 4ab4577fc941af31f4a0398f6e7e230cf21fc72a
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
@@ -348,9 +352,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeKeyboardTrackingView: a240a6a0dba852bb107109a7ec7e98b884055977
-  ReactNativeNavigation: 33657becf06c9c3a805ecb50dce8010fb887a1bb
+  ReactNativeNavigation: d9bb71088ef37aa6af58f3172f890a1ae08861d6
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 781f49751a12b13af3e83d5dfc4b122aa5770543
+PODFILE CHECKSUM: 480983e790dd4e9f99b1673fbb65606d9fe8ce71
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1
