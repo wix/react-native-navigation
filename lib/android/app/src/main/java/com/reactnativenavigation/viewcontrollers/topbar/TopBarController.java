@@ -136,12 +136,12 @@ public class TopBarController {
     public void mergeRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
         forEach(toRemove, btn -> getMenu().removeItem(btn.getButtonIntId()));
         int size = toAdd.size();
-        boolean isPopulated = getMenu().size() > 0;
+//        boolean isPopulated = getMenu().size() > 0;
         for (int i = 0; i < size; i++) {
             TitleBarButtonController button = toAdd.get(i);
             if (findRightButton(button) == null) {
                 int order = (size - i) * 10000;
-                if (isPopulated) {
+//                if (isPopulated) {
                     if (i > 0 && i < getMenu().size()) {
                         MenuItem next = getMenu().getItem(i);
                         MenuItem prev = getMenu().getItem(i - 1);
@@ -158,7 +158,7 @@ public class TopBarController {
                         Log.v("TitleBar", "last: " + last.getOrder());
                         order = last.getOrder() / 2;
                     }
-                }
+//                }
                 Log.i("TitleBar", "adding at index " + i + ", order: " + order + " [" + toAdd.get(i).getId() + "]");
                 button.addToMenu(titleBar, order);
             }
