@@ -4,7 +4,7 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
-	
+
 	self.visible = [BoolParser parse:dict key:@"visible"];
 	self.currentTabIndex = [IntNumberParser parse:dict key:@"currentTabIndex"];
 	self.drawBehind = [BoolParser parse:dict key:@"drawBehind"];
@@ -14,14 +14,15 @@
 	self.translucent = [BoolParser parse:dict key:@"translucent"];
 	self.hideShadow = [BoolParser parse:dict key:@"hideShadow"];
 	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
+	self.borderColor = [ColorParser parse:dict key:@"borderColor"];
 	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
 	self.testID = [TextParser parse:dict key:@"testID"];
 	self.currentTabId = [TextParser parse:dict key:@"currentTabId"];
 	self.barStyle = [TextParser parse:dict key:@"barStyle"];
 	self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
 	self.titleDisplayMode = [TextParser parse:dict key:@"titleDisplayMode"];
-    self.tabsAttachMode = (BottomTabsAttachMode *)[EnumParser parse:dict key:@"tabsAttachMode" ofClass:BottomTabsAttachMode.class];
-	
+	self.tabsAttachMode = (BottomTabsAttachMode *)[EnumParser parse:dict key:@"tabsAttachMode" ofClass:BottomTabsAttachMode.class];
+
 	return self;
 }
 

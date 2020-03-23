@@ -20,6 +20,16 @@
 	self.tabBar.barStyle = barStyle;
 }
 
+- (void)setTabBarBorderColor:(UIColor *)borderColor {
+    NSLog(@"gvbhjklm of setTabBarBorderColor RNBottomTAbsPresenter = %@", borderColor);
+   
+    
+//    self.tabBar.layer.borderColor = (__bridge CGColorRef _Nullable)(borderColor);
+    self.tabBarController.tabBar.layer.borderColor = borderColor;
+    self.tabBar.layer.borderWidth = 4;
+    self.tabBar.clipsToBounds = true;
+}
+
 - (void)setTabBarTranslucent:(BOOL)translucent {
 	self.tabBar.translucent = translucent;
 }

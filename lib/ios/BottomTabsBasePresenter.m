@@ -21,6 +21,7 @@
     
     [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
     [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor getWithDefaultValue:nil] translucent:[withDefault.bottomTabs.translucent getWithDefaultValue:NO]];
+    [bottomTabs setTabBarBorderColor:[withDefault.bottomTabs.borderColor getWithDefaultValue:nil]];
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow getWithDefaultValue:NO]];
     [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:[withDefault.bottomTabs.barStyle getWithDefaultValue:@"default"]]];
 }
@@ -45,6 +46,10 @@
 
     if (options.bottomTabs.backgroundColor.hasValue) {
         [self setTabBarBackgroundColor:options.bottomTabs.backgroundColor.get];
+    }
+    
+    if (options.bottomTabs.borderColor.hasValue) {
+        [bottomTabs setTabBarBorderColor:options.bottomTabs.borderColor.get];
     }
 
     if (options.bottomTabs.barStyle.hasValue) {

@@ -6,6 +6,8 @@
 
 - (void)setCurrentTabID:(NSString *)tabID;
 
+- (void)setTabBarBorderColor:(UIColor *)borderColor;
+
 - (void)setTabBarTestID:(NSString *)testID;
 
 - (void)setTabBarStyle:(UIBarStyle)barStyle;

@@ -11,6 +11,8 @@
 
 - (void)setTabBarBackgroundColor:(UIColor *)backgroundColor;
 
+- (void)setTabBarBorderColor:(UIColor *)borderColor;
+
 - (void)setTabBarTranslucent:(BOOL)translucent;
 
 - (UITabBarController *)tabBarController;

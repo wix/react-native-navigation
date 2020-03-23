@@ -592,6 +592,10 @@ export interface OptionsBottomTabs {
    */
   backgroundColor?: Color;
   /**
+   * Set a border color for the bottom tabs
+   */
+  borderColor?: Color;
+  /**
    * Set when tabs are attached to hierarchy consequently when the
    * RootView's constructor is called.
    */

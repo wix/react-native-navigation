@@ -17,7 +17,9 @@ const setDefaultOptions = () => Navigation.setDefaultOptions({
     direction: 'locale'
   },
   bottomTabs: {
-    titleDisplayMode: 'alwaysShow'
+    titleDisplayMode: 'alwaysShow',
+    backgroundColor: '#fff',
+    borderColor: 'red',
   },
   bottomTab: {
     selectedIconColor: Colors.primary,
@@ -87,7 +89,7 @@ const customAnimations = {
       to: height,
       duration: SHOW_DURATION * 0.9,
     },
-    
+
   },
   push: {
     waitForRender: true,
