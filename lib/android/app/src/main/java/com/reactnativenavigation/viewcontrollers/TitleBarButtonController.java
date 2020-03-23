@@ -141,8 +141,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public void addToMenu(TitleBar titleBar, int position) {
-        this.menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), position, button.text.get(""));
-        applyButtonOptions(titleBar);
+        menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), position, button.text.get(""));
     }
 
     public void applyButtonOptions(TitleBar titleBar) {

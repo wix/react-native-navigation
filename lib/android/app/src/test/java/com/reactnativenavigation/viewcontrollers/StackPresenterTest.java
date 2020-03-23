@@ -227,7 +227,7 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
-    public void mergeButtons_mergingRightButtonsOnlyDestroysRightButtons() {
+    public void mergeRightButtons_mergingButtonsOnlyDestroysRightButtons() {
         Options a = new Options();
         a.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
         a.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
@@ -243,7 +243,7 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
-    public void mergeButtons_rightButtonsAreCreatedOnlyIfNeeded() {
+    public void mergeRightButtons_buttonsAreCreatedOnlyIfNeeded() {
         Options toApply = new Options();
         toApply.topBar.buttons.right = new ArrayList<>(asList(textBtn1, componentBtn1));
         uut.applyChildOptions(toApply, parent, child);

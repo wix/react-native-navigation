@@ -19,8 +19,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.TitleBarHelper.createButtonController;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class TopBarControllerTest extends BaseTest {
     private TopBarController uut;
@@ -33,7 +38,7 @@ public class TopBarControllerTest extends BaseTest {
     @Override
     public void beforeEach() {
         activity = newActivity();
-        uut = new TopBarController();
+        uut = spy(new TopBarController());
         StackLayout stack = Mockito.mock(StackLayout.class);
         uut.createView(activity, stack);
 
@@ -78,6 +83,16 @@ public class TopBarControllerTest extends BaseTest {
         uut.setLeftButtons(new ArrayList<>());
         uut.applyRightButtons(rightButtons(textButton1, componentButton));
         assertThat(uut.getRightButton(1).getTitle()).isEqualTo(textButton1.text.get());
+    }
+
+    @Test
+    public void mergeRightButtons_appliesButtonOptionOnExistingButtons() {
+        List<TitleBarButtonController> toAdd = map(rightButtons(textButton1), Mockito::spy);
+        uut.applyRightButtons(toAdd);
+        verify(toAdd.get(0), times(1)).applyButtonOptions(any());
+
+        uut.mergeRightButtons(Arrays.asList(toAdd.get(0), createButtonController(activity, componentButton)), Collections.EMPTY_LIST);
+        verify(toAdd.get(0), times(2)).applyButtonOptions(any());
     }
 
     @Test

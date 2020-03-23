@@ -18,8 +18,6 @@ import com.reactnativenavigation.views.topbar.TopBar;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import androidx.annotation.VisibleForTesting;
 import androidx.viewpager.widget.ViewPager;
 
@@ -131,51 +129,49 @@ public class TopBarController {
         for (int i = 0; i < size; i++) {
             TitleBarButtonController button = toAdd.get(i);
             button.addToMenu(titleBar, (size - i) * 10000);
+            button.applyButtonOptions(titleBar);
         }
     }
 
     public void mergeRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
-        if (toAdd == null) return;
-        if (isNullOrEmpty(toRemove) && isNullOrEmpty(toAdd)) {
-            topBar.clearRightButtons();
-        }
         forEach(toRemove, btn -> getMenu().removeItem(btn.getButtonIntId()));
         int size = toAdd.size();
         boolean isPopulated = getMenu().size() > 0;
         for (int i = 0; i < size; i++) {
             TitleBarButtonController button = toAdd.get(i);
-            @Nullable MenuItem item = getMenu().findItem(button.getButtonIntId());
-            if (item != null) {
-                button.applyButtonOptions(titleBar);
-                continue;
-            }
-
-            int order = (size - i) * 10000;
-            if (isPopulated) {
-                if (i > 0 && i < getMenu().size()) {
-                    MenuItem next = getMenu().getItem(i);
-                    MenuItem prev = getMenu().getItem(i - 1);
-                    if (next != null) {
-                        Log.w("TitleBar", "next: " + next.getOrder() );
-                        order = (next.getOrder() + prev.getOrder()) / 2;
+            if (findRightButton(button) == null) {
+                int order = (size - i) * 10000;
+                if (isPopulated) {
+                    if (i > 0 && i < getMenu().size()) {
+                        MenuItem next = getMenu().getItem(i);
+                        MenuItem prev = getMenu().getItem(i - 1);
+                        if (next != null) {
+                            Log.w("TitleBar", "next: " + next.getOrder());
+                            order = (next.getOrder() + prev.getOrder()) / 2;
+                        }
+                    } else if (i == 0) {
+                        MenuItem first = getMenu().getItem(getMenu().size() - 1);
+                        Log.e("TitleBar", "first: " + first.getOrder());
+                        order = first.getOrder() * 2;
+                    } else if (i == getMenu().size()) {
+                        MenuItem last = getMenu().getItem(0);
+                        Log.v("TitleBar", "last: " + last.getOrder());
+                        order = last.getOrder() / 2;
                     }
-                } else if (i == 0) {
-                    MenuItem first = getMenu().getItem(getMenu().size() - 1);
-                    Log.e("TitleBar", "first: " + first.getOrder() );
-                    order = first.getOrder() * 2;
-                } else if (i == getMenu().size()) {
-                    MenuItem last = getMenu().getItem(0);
-                    Log.v("TitleBar", "last: " + last.getOrder());
-                    order = last.getOrder() / 2;
                 }
+                Log.i("TitleBar", "adding at index " + i + ", order: " + order + " [" + toAdd.get(i).getId() + "]");
+                button.addToMenu(titleBar, order);
             }
-            Log.i("TitleBar", "adding at index " + i + ", order: " + order + " [" + toAdd.get(i).getId() + "]");
-            button.addToMenu(titleBar, order);
+            button.applyButtonOptions(titleBar);
         }
     }
 
     public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
         titleBar.setLeftButtons(leftButtons);
+    }
+
+    public MenuItem findRightButton(TitleBarButtonController button) {
+        return getMenu().findItem(button.getButtonIntId());
     }
 
     private Menu getMenu() {
