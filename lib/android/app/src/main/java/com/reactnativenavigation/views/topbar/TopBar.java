@@ -46,6 +46,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private View component;
     private float elevation = -1;
 
+    public int getRightButtonsCount() {
+        return titleBar.getRightButtonsCount();
+    }
+
     public TopBar(final Context context) {
         super(context);
         context.setTheme(R.style.TopBar);

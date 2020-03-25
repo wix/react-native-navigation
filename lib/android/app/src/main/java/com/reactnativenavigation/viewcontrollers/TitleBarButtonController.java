@@ -27,21 +27,18 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 public class TitleBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
-    @Nullable private MenuItem menuItem;
-
     public interface OnClickListener {
         void onPress(String buttonId);
     }
 
     private final IconResolver navigationIconResolver;
-    private ButtonPresenter optionsPresenter;
+    private ButtonPresenter presenter;
     private final Button button;
     private final ReactViewCreator viewCreator;
     private TitleBarButtonController.OnClickListener onPressListener;
@@ -62,13 +59,13 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
 
     public TitleBarButtonController(Activity activity,
                                     IconResolver navigationIconResolver,
-                                    ButtonPresenter optionsPresenter,
+                                    ButtonPresenter presenter,
                                     Button button,
                                     ReactViewCreator viewCreator,
                                     OnClickListener onClickListener) {
         super(activity, button.id, new YellowBoxDelegate(), new Options(), new ViewControllerOverlay(activity));
         this.navigationIconResolver = navigationIconResolver;
-        this.optionsPresenter = optionsPresenter;
+        this.presenter = presenter;
         this.button = button;
         this.viewCreator = viewCreator;
         this.onPressListener = onClickListener;
@@ -141,11 +138,11 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public void addToMenu(TitleBar titleBar, int position) {
-        menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), position, button.text.get(""));
+        MenuItem menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), position, presenter.getStyledText());
+        applyButtonOptions(titleBar, menuItem);
     }
 
-    public void applyButtonOptions(TitleBar titleBar) {
-        if (menuItem == null) return;
+    void applyButtonOptions(TitleBar titleBar, MenuItem menuItem) {
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get());
         menuItem.setEnabled(button.enabled.isTrueOrUndefined());
         menuItem.setOnMenuItemClickListener(this);
@@ -163,10 +160,6 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
                         menuItem.setIcon(icon);
                     }
                 });
-            } else {
-                optionsPresenter.setTextColor(titleBar);
-                if (button.fontSize.hasValue()) optionsPresenter.setFontSize(menuItem);
-                optionsPresenter.setTypeFace(titleBar, button.fontFamily);
             }
         }
         setTestId(titleBar, button.testId);
@@ -179,9 +172,9 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     private void setIconColor(Drawable icon) {
         if (button.disableIconTint.isTrue()) return;
         if (button.enabled.isTrueOrUndefined() && button.color.hasValue()) {
-            optionsPresenter.tint(icon, button.color.get());
+            presenter.tint(icon, button.color.get());
         } else if (button.enabled.isFalse()) {
-            optionsPresenter.tint(icon, button.disabledColor.get(Color.LTGRAY));
+            presenter.tint(icon, button.disabledColor.get(Color.LTGRAY));
         }
     }
 

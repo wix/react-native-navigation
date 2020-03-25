@@ -28,6 +28,18 @@ public class ButtonPresenter {
         drawable.setColorFilter(new PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN));
     }
 
+    public SpannableString getStyledText() {
+        SpannableString string = new SpannableString(button.text.get(""));
+        string.setSpan(
+                new ButtonSpan(button.fontFamily, button.fontSize, button.color),
+                0,
+                button.text.get("").length(),
+                Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+        );
+        return string;
+    }
+
+
     public void setTypeFace(TitleBar titleBar, Typeface typeface) {
         if (typeface == null) return;
         runOnPreDrawOnce(titleBar, () -> forEach(titleBar.findButtonTextView(button), b -> ((TextView) b).setTypeface(typeface)));
@@ -37,7 +49,7 @@ public class ButtonPresenter {
         SpannableString spanString = new SpannableString(button.text.get());
         if (this.button.fontSize.hasValue())
             spanString.setSpan(
-                    new AbsoluteSizeSpan(button.fontSize.get(), true),
+                    new AbsoluteSizeSpan(button.fontSize.get().intValue(), true),
                     0,
                     button.text.get().length(),
                     Spannable.SPAN_INCLUSIVE_INCLUSIVE

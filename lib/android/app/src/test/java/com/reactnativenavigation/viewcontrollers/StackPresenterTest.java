@@ -65,7 +65,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -204,7 +203,7 @@ public class StackPresenterTest extends BaseTest {
         button.text = new Text("btn");
         options.topBar.buttons.right = new ArrayList<>(Collections.singleton(button));
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
-        verify(topBarController).mergeRightButtons(any(), eq(Collections.EMPTY_LIST));
+        verify(topBarController).applyRightButtons(any());
 
         options.topBar.buttons.left = new ArrayList<>();
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
@@ -260,7 +259,7 @@ public class StackPresenterTest extends BaseTest {
 
         assertThat(topBar.getTitleBar().getMenu().size()).isEqualTo(3);
         ArgumentCaptor<List<TitleBarButtonController>> captor2 = ArgumentCaptor.forClass(List.class);
-        verify(topBarController).mergeRightButtons(captor2.capture(), eq(Collections.EMPTY_LIST));
+        verify(topBarController).applyRightButtons(captor2.capture());
         List<TitleBarButtonController> mergedButtons = captor2.getValue();
         assertThat(mergedButtons).hasSize(3);
         assertThat(appliedButtons.get(0)).isEqualTo(mergedButtons.get(0));
@@ -495,7 +494,7 @@ public class StackPresenterTest extends BaseTest {
 
         uut.mergeChildOptions(options2, appliedOptions, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBarController).mergeRightButtons(rightCaptor.capture(), eq(Collections.EMPTY_LIST));
+        verify(topBarController).applyRightButtons(rightCaptor.capture());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(1).getButton().color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
@@ -527,7 +526,7 @@ public class StackPresenterTest extends BaseTest {
 
         uut.mergeChildOptions(options2, resolvedOptions, parent, child);
         ArgumentCaptor<List<TitleBarButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBarController).mergeRightButtons(rightCaptor.capture(), eq(Collections.EMPTY_LIST));
+        verify(topBarController).applyRightButtons(rightCaptor.capture());
         assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(1).getButton().color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);

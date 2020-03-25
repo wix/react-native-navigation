@@ -6,7 +6,7 @@ import android.view.MenuItem;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
-import com.reactnativenavigation.parse.parsers.NumberParser;
+import com.reactnativenavigation.parse.parsers.FractionParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
@@ -32,7 +32,7 @@ public class Button {
     public Number showAsAction = new NullNumber();
     public Colour color = new NullColor();
     public Colour disabledColor = new NullColor();
-    public Number fontSize = new NullNumber();
+    public Fraction fontSize = new NullFraction();
     private Text fontWeight = new NullText();
     @Nullable public Typeface fontFamily;
     public Text icon = new NullText();
@@ -66,7 +66,7 @@ public class Button {
         button.showAsAction = parseShowAsAction(json);
         button.color = ColorParser.parse(json, "color");
         button.disabledColor = ColorParser.parse(json, "disabledColor");
-        button.fontSize = NumberParser.parse(json, "fontSize");
+        button.fontSize = FractionParser.parse(json, "fontSize");
         button.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         button.fontWeight = TextParser.parse(json, "fontWeight");
         button.testId = TextParser.parse(json, "testID");

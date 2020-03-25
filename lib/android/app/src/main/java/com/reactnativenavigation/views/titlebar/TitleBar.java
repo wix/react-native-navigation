@@ -50,6 +50,10 @@ public class TitleBar extends Toolbar {
         return getMenu().getItem(index);
     }
 
+    public int getRightButtonsCount() {
+        return getMenu().size();
+    }
+
     public TitleBar(Context context) {
         super(context);
         getMenu();

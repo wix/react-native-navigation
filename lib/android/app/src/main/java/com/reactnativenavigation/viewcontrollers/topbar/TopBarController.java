@@ -2,14 +2,11 @@ package com.reactnativenavigation.viewcontrollers.topbar;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.views.StackLayout;
@@ -44,7 +41,7 @@ public class TopBarController {
     }
 
     public int getRightButtonsCount() {
-        return getMenu().size();
+        return topBar.getRightButtonsCount();
     }
 
     public Drawable getLeftButton() {
@@ -124,54 +121,10 @@ public class TopBarController {
 
     public void applyRightButtons(List<TitleBarButtonController> toAdd) {
         topBar.clearRightButtons();
-        if (CollectionUtils.isNullOrEmpty(toAdd)) return;
-        int size = toAdd.size();
-        for (int i = 0; i < size; i++) {
-            TitleBarButtonController button = toAdd.get(i);
-            button.addToMenu(titleBar, (size - i) * 10000);
-            button.applyButtonOptions(titleBar);
-        }
-    }
-
-    public void mergeRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
-        forEach(toRemove, btn -> getMenu().removeItem(btn.getButtonIntId()));
-        forEachIndexed(toAdd, (button, i) -> {
-            if (findRightButton(button) == null) addButtonToMenu(toAdd, button, i);
-            button.applyButtonOptions(titleBar);
-        });
-    }
-
-    private void addButtonToMenu(List<TitleBarButtonController> toAdd, TitleBarButtonController button, Integer i) {
-        int order = (toAdd.size() - i) * 10000;
-        if (i > 0 && i < getMenu().size()) {
-            MenuItem next = getMenu().getItem(i);
-            MenuItem prev = getMenu().getItem(i - 1);
-            if (next != null) {
-                Log.w("TitleBar", "next: " + next.getOrder());
-                order = (next.getOrder() + prev.getOrder()) / 2;
-            }
-        } else if (i == 0) {
-            MenuItem first = getMenu().getItem(getMenu().size() - 1);
-            Log.e("TitleBar", "first: " + first.getOrder());
-            order = first.getOrder() * 2;
-        } else if (i == getMenu().size()) {
-            MenuItem last = getMenu().getItem(0);
-            Log.v("TitleBar", "last: " + last.getOrder());
-            order = last.getOrder() / 2;
-        }
-        Log.i("TitleBar", "adding at index " + i + ", order: " + order + " [" + toAdd.get(i).getId() + "]");
-        button.addToMenu(titleBar, order);
+        forEachIndexed(toAdd, (b, i) -> b.addToMenu(titleBar, toAdd.size() - i));
     }
 
     public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
         titleBar.setLeftButtons(leftButtons);
-    }
-
-    public MenuItem findRightButton(TitleBarButtonController button) {
-        return getMenu().findItem(button.getButtonIntId());
-    }
-
-    private Menu getMenu() {
-        return topBar.getTitleBar().getMenu();
     }
 }
