@@ -32,6 +32,7 @@
     "test-js": "node ./scripts/test-js",
     "pod-install": "pod install --project-directory=playground/ios",
     "test-unit-ios": "node ./scripts/test-unit --ios",
+    "test-snapshot-ios": "node ./scripts/test-snapshot --ios",
     "test-unit-android": "node ./scripts/test-unit --android",
     "pretest-e2e-android": "npm run build",
     "test-e2e-android": "node ./scripts/test-e2e --android",

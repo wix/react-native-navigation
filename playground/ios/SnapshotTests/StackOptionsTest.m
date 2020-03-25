@@ -52,53 +52,56 @@
 	_window.rootViewController = nil;
 }
 
-- (void)testStack_shouldChangeBackgroundColor {
-	[self setRootPushAndPop:@{
-		@"topBar": @{
-				@"background": @{
-						@"color": @(0xFFFF00FF)
-				}
+- (void)testStack_backgroundColor {
+	[self setRootPushAndPopWithTopBarOptions:@{
+		@"background": @{
+				@"color": @(0xFFFF00FF)
 		}
-	} secondComponentOptions:@{
-		@"topBar": @{
-				@"background": @{
-						@"color": @(0xFFFF0000)
-				}
+	} secondTopBarOptions:@{
+		@"background": @{
+				@"color": @(0xFFFF0000)
 		}
 	}];
 }
 
-- (void)testStack_shouldChangeTitle {
-	[self setRootPushAndPop:@{
-		@"topBar": @{
-				@"title": @{
-						@"text": @"First Component"
-				}
+- (void)testStack_title {
+	[self setRootPushAndPopWithTopBarOptions:@{
+		@"title": @{
+				@"text": @"First Component"
 		}
-	} secondComponentOptions:@{
-		@"topBar": @{
-				@"title": @{
-						@"text": @"Second Component"
-				}
+	} secondTopBarOptions:@{
+		@"title": @{
+				@"text": @"Second Component"
 		}
 	}];
 }
 
-- (void)testStack_shouldSetTranslucentBackground {
-	[self setRootPushAndPop:@{
-		@"topBar": @{
-				@"background": @{
-						@"translucent": @(0)
-				}
+- (void)testStack_translucent {
+	[self setRootPushAndPopWithTopBarOptions:@{
+		@"background": @{
+				@"translucent": @(0)
 		}
-	} secondComponentOptions:@{
-		@"topBar": @{
-				@"background": @{
-						@"translucent": @(1)
-				}
+	} secondTopBarOptions:@{
+		@"background": @{
+				@"translucent": @(1)
 		}
 	}];
+}
 
+- (void)testStack_topBarVisibility {
+	[self setRootPushAndPopWithTopBarOptions:@{
+		@"visible": @(0)
+	} secondTopBarOptions:@{
+		@"visible": @(1)
+	}];
+}
+
+- (void)setRootPushAndPopWithTopBarOptions:(NSDictionary *)firstTopBarOptions secondTopBarOptions:(NSDictionary *)secondTopBarOptions {
+	[self setRootPushAndPop:@{
+		@"topBar": firstTopBarOptions
+	} secondComponentOptions:@{
+		@"topBar": secondTopBarOptions
+	}];
 }
 
 - (void)setRootPushAndPop:(NSDictionary *)firstComponentOptions secondComponentOptions:(NSDictionary *)secondComponentOptions {
