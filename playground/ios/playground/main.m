@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 
 #import "AppDelegate.h"
+#import "TestingAppDelegate.h"
 
 static bool isRunningTests()
 {
@@ -21,7 +22,7 @@ static bool isRunningTests()
 int main(int argc, char * argv[]) {
 	@autoreleasepool {
 		if (isRunningTests()) {
-			return UIApplicationMain(argc, argv, nil, nil);
+			return UIApplicationMain(argc, argv, nil, NSStringFromClass([TestingAppDelegate class]));
 		} else {
 			return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
 		}
