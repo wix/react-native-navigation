@@ -123,6 +123,13 @@ public class CollectionUtils {
         }
     }
 
+    public static <T> void forEachIndexed(@Nullable List<T> items, Functions.Func2<T, Integer> apply) {
+        if (items == null) return;
+        for (int i = 0; i < items.size(); i++) {
+            apply.run(items.get(i), i);
+        }
+    }
+
     public static @Nullable <T> T first(@Nullable Collection<T> items, Filter<T> by) {
         if (isNullOrEmpty(items)) return null;
         for (T item : items) {
