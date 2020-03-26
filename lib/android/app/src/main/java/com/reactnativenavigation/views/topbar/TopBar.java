@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -27,6 +28,7 @@ import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
 import java.util.Collections;
+import java.util.List;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -233,6 +235,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return titleBar;
     }
 
+    public List<MenuItem> getRightButtons() {
+        return titleBar.getRightButtons();
+    }
+
     public void initTopTabs(ViewPager viewPager) {
         topTabs.setVisibility(VISIBLE);
         topTabs.init(viewPager);
@@ -278,5 +284,13 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setLayoutDirection(LayoutDirection direction) {
         titleBar.setLayoutDirection(direction.get());
+    }
+
+    public void removeItem(TitleBarButtonController button) {
+        titleBar.removeRightButton(button);
+    }
+
+    public boolean containsRightButton(TitleBarButtonController button) {
+        return titleBar.containsRightButton(button);
     }
 }

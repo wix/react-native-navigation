@@ -12,6 +12,7 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
@@ -111,7 +112,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         verify(optionsPresenter, times(0)).setFontSize(getTitleBar().getMenu().getItem(0));
 
         clearMenu();
-        button.fontSize = new Number(10);
+        button.fontSize = new Fraction(10);
         uut.addToMenu(getTitleBar(), 0);
         verify(optionsPresenter, times(1)).setFontSize(getTitleBar().getMenu().getItem(0));
     }

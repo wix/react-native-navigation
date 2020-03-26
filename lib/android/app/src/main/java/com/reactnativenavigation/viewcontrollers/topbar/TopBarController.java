@@ -121,8 +121,43 @@ public class TopBarController {
 
     public void applyRightButtons(List<TitleBarButtonController> toAdd) {
         topBar.clearRightButtons();
-        forEachIndexed(toAdd, (b, i) -> b.addToMenu(titleBar, toAdd.size() - i));
+        forEachIndexed(toAdd, (b, i) -> {
+            b.addToMenu(titleBar, (toAdd.size() - i) * 10);
+            b.applyButtonOptions(titleBar);
+        });
     }
+
+    public void mergeRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
+        forEach(toRemove, btn -> topBar.removeItem(btn));
+        forEachIndexed(toAdd, (button, i) -> {
+            if (!topBar.containsRightButton(button)) button.addToMenu(titleBar, getOrder(toAdd, i));
+            button.applyButtonOptions(titleBar);
+        });
+    }
+
+    private int getOrder(List toAdd, int index) {
+        List<MenuItem> items = topBar.getTitleBar().getRightButtons();
+        int order = (toAdd.size() - index - 1) * 10;
+        for (int i = items.size() - 1; i >= 0; i--) {
+            int currentOrder = items.get(i).getOrder();
+            if (currentOrder <= order) {
+                return currentOrder + 1;
+            }
+        }
+        return 0;
+    }
+
+//    private static int findInsertIndex(ArrayList<MenuItemImpl> items, int ordering) {
+//        for (int i = items.size() - 1; i >= 0; i--) {
+//            MenuItemImpl item = items.get(i);
+//            if (item.getOrdering() <= ordering) {
+//                return i + 1;
+//            }
+//        }
+//
+//        return 0;
+//    }
+
 
     public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
         titleBar.setLeftButtons(leftButtons);

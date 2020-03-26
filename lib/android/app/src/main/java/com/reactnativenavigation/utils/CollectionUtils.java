@@ -206,4 +206,8 @@ public class CollectionUtils {
         }
         return result;
     }
+
+    public static @Nullable<T> T safeGet(List<T> items, int index) {
+        return index >= 0 && index < items.size() ? items.get(index) : null;
+    }
 }

@@ -27,12 +27,15 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 public class TitleBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
+    @Nullable private MenuItem menuItem;
+
     public interface OnClickListener {
         void onPress(String buttonId);
     }
@@ -138,11 +141,11 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public void addToMenu(TitleBar titleBar, int position) {
-        MenuItem menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), position, presenter.getStyledText());
-        applyButtonOptions(titleBar, menuItem);
+        menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), position, presenter.getStyledText());
     }
 
-    void applyButtonOptions(TitleBar titleBar, MenuItem menuItem) {
+    public void applyButtonOptions(TitleBar titleBar) {
+        if (menuItem == null) return;
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get());
         menuItem.setEnabled(button.enabled.isTrueOrUndefined());
         menuItem.setOnMenuItemClickListener(this);

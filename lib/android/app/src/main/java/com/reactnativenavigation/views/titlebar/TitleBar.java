@@ -54,6 +54,14 @@ public class TitleBar extends Toolbar {
         return getMenu().size();
     }
 
+    public List<MenuItem> getRightButtons() {
+        List<MenuItem> items = new ArrayList<>();
+        for (int i = 0; i < getRightButtonsCount(); i++) {
+            items.add(i, getRightButton(i));
+        }
+        return items;
+    }
+
     public TitleBar(Context context) {
         super(context);
         getMenu();
@@ -271,5 +279,13 @@ public class TitleBar extends Toolbar {
         if (child instanceof ActionMenuView) {
             ((ViewGroup) child).setClipChildren(false);
         }
+    }
+
+    public void removeRightButton(TitleBarButtonController button) {
+        getMenu().removeItem(button.getButtonIntId());
+    }
+
+    public boolean containsRightButton(TitleBarButtonController button) {
+        return getMenu().findItem(button.getButtonIntId()) != null;
     }
 }
