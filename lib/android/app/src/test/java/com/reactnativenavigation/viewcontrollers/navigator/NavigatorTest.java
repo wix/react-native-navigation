@@ -596,6 +596,7 @@ public class NavigatorTest extends BaseTest {
     public void dismissAllModals_onViewAppearedInvokedOnRoot() {
         disablePushAnimation(child2);
         disableShowModalAnimation(child1);
+        uut.setRoot(child3, new CommandListenerAdapter(), reactInstanceManager);
 
         uut.dismissAllModals(Options.EMPTY, new CommandListenerAdapter());
         verify(parentVisibilityListener, times(0)).onViewAppeared(parentController.getView());

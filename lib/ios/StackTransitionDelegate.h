@@ -5,6 +5,6 @@
 
 @interface StackTransitionDelegate : TransitionDelegate
 
-- (instancetype)initWithScreenTransition:(RNNScreenTransition *)screenTransition uiManager:(RCTUIManager *)uiManager;
+- (instancetype)initWithScreenTransition:(RNNScreenTransition *)screenTransition bridge:(RCTBridge *)bridge;
 
 @end

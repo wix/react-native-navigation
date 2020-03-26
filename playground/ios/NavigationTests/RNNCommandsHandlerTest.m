@@ -10,20 +10,8 @@
 #import "RNNLayoutManager.h"
 #import "RNNBottomTabsController.h"
 #import "BottomTabsAttachModeFactory.h"
-
-@interface MockUIApplication : NSObject
-
--(UIWindow *)keyWindow;
-
-@end
-
-@implementation MockUIApplication
-
-- (UIWindow *)keyWindow {
-	return [UIWindow new];
-}
-
-@end
+#import <ReactNativeNavigation/BottomTabPresenterCreator.h>
+#import "RNNComponentViewController+Utils.h"
 
 @interface MockUINavigationController : RNNStackController
 @property (nonatomic, strong) NSArray* willReturnVCs;
@@ -62,7 +50,6 @@
 
 - (void)setUp {
 	[super setUp];
-	self.sharedApplication = [OCMockObject mockForClass:[UIApplication class]];
 	self.creator = [OCMockObject partialMockForObject:[RNNTestRootViewCreator new]];
 	self.mainWindow = [OCMockObject partialMockForObject:[UIWindow new]];
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
@@ -75,7 +62,12 @@
 	self.vc3 = [self generateComponentWithComponentId:@"3"];
 	_nvc = [[MockUINavigationController alloc] init];
 	[_nvc setViewControllers:@[self.vc1, self.vc2, self.vc3]];
-	OCMStub([self.sharedApplication keyWindow]).andReturn(self.mainWindow);
+	
+	UIApplication* sharedApplication = [OCMockObject niceMockForClass:[UIApplication class]];
+	id mockedApplicationClass = OCMClassMock([UIApplication class]);
+	OCMStub(ClassMethod([mockedApplicationClass sharedApplication])).andReturn(sharedApplication);
+	OCMStub(sharedApplication.keyWindow).andReturn(self.mainWindow);
+	OCMStub([sharedApplication windows]).andReturn(@[self.mainWindow]);
 }
 
 - (RNNComponentViewController *)generateComponentWithComponentId:(NSString *)componentId {
@@ -129,14 +121,11 @@
 -(void)testDynamicStylesMergeWithStaticStyles {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"the title"];
-	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
 	RNNTestRootViewCreator* creator = [[RNNTestRootViewCreator alloc] init];
-	
-	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil];
-	RNNComponentViewController* vc = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:creator eventEmitter:nil presenter:presenter options:initialOptions defaultOptions:nil];
+	RNNComponentViewController* vc = [RNNComponentViewController createWithComponentId:@"componentId" initialOptions:initialOptions];
 	
 	RNNStackController* nav = [[RNNStackController alloc] initWithLayoutInfo:nil creator:creator options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNStackPresenter alloc] init] eventEmitter:nil childViewControllers:@[vc]];
-	
+	[self.mainWindow setRootViewController:nav];
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 	
@@ -146,9 +135,11 @@
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	
 	[self.uut mergeOptions:@"componentId" options:dictFromJs completion:^{
-		XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
-		XCTAssertTrue([nav.navigationBar.barTintColor isEqual:expectedColor]);
+		
 	}];
+	
+	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
+	XCTAssertTrue([vc.navigationItem.standardAppearance.backgroundColor isEqual:expectedColor]);
 }
 
 - (void)testMergeOptions_shouldOverrideOptions {
@@ -420,6 +411,64 @@
 	XCTAssertTrue(_vc2.isViewLoaded);
 }
 
+- (void)testMergeOptions_shouldMergeWithChildOnly {
+	[self.uut setReadyToReceiveCommands:true];
+	NSDictionary* mergeOptions = @{@"bottomTab": @{@"badge": @"Badge"}};
+	
+	RNNNavigationOptions* firstChildOptions = [RNNNavigationOptions emptyOptions];
+	firstChildOptions.bottomTab.text = [Text withValue:@"First"];
+	RNNNavigationOptions* secondChildOptions = [RNNNavigationOptions emptyOptions];
+	secondChildOptions.bottomTab.text = [Text withValue:@"Second"];
+	
+	RNNComponentViewController* firstChild = [RNNComponentViewController createWithComponentId:@"first" initialOptions:firstChildOptions];
+	RNNComponentViewController* secondChild = [RNNComponentViewController createWithComponentId:@"second" initialOptions:secondChildOptions];
+	
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[RNNNavigationOptions emptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:[RNNNavigationOptions emptyOptions]] dotIndicatorPresenter:nil eventEmitter:_eventEmmiter childViewControllers:@[firstChild, secondChild] bottomTabsAttacher:nil];
+	
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+	[self.mainWindow setRootViewController:tabBarController];
+	[secondChild viewWillAppear:YES];
+	
+	[self.uut mergeOptions:secondChild.layoutInfo.componentId options:mergeOptions completion:^{
+		
+	}];
+	
+	XCTAssertTrue([secondChild.tabBarItem.badgeValue isEqualToString:@"Badge"]);
+	XCTAssertNil(firstChild.tabBarItem.badgeValue);
+	XCTAssertTrue([firstChild.tabBarItem.title isEqualToString:@"First"]);
+	XCTAssertTrue([secondChild.tabBarItem.title isEqualToString:@"Second"]);
+}
+
+- (void)testMergeOptions_shouldResolveTreeOptions {
+	[self.uut setReadyToReceiveCommands:true];
+	NSDictionary* mergeOptions = @{@"bottomTab": @{@"badge": @"Badge"}};
+	
+	RNNNavigationOptions* firstChildOptions = [RNNNavigationOptions emptyOptions];
+	
+	RNNNavigationOptions* secondChildOptions = [RNNNavigationOptions emptyOptions];
+	secondChildOptions.bottomTab.text = [Text withValue:@"Second"];
+	RNNNavigationOptions* stackOptions = [RNNNavigationOptions emptyOptions];
+	stackOptions.bottomTab.text = [Text withValue:@"First"];
+	
+	RNNComponentViewController* firstChild = [RNNComponentViewController createWithComponentId:@"first" initialOptions:firstChildOptions];
+	RNNStackController* stack = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:stackOptions defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:@[firstChild]];
+	RNNComponentViewController* secondChild = [RNNComponentViewController createWithComponentId:@"second" initialOptions:secondChildOptions];
+	
+	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[RNNNavigationOptions emptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:[RNNNavigationOptions emptyOptions]] dotIndicatorPresenter:nil eventEmitter:_eventEmmiter childViewControllers:@[stack, secondChild] bottomTabsAttacher:nil];
+	
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+	[self.mainWindow setRootViewController:tabBarController];
+	[secondChild viewWillAppear:YES];
+	
+	[self.uut mergeOptions:firstChild.layoutInfo.componentId options:mergeOptions completion:^{
+
+	}];
+	
+	XCTAssertTrue([stack.tabBarItem.badgeValue isEqualToString:@"Badge"]);
+	XCTAssertTrue([stack.tabBarItem.title isEqualToString:@"First"]);
+	XCTAssertTrue([secondChild.tabBarItem.title isEqualToString:@"Second"]);
+}
+
 - (void)testShowModal_shouldShowAnimated {
 	[self.uut setReadyToReceiveCommands:true];
 	self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
@@ -435,5 +484,20 @@
 	[self.modalManager verify];
 }
 
+- (void)testPop_shouldRejectPromiseForInvalidComponentId {
+	[self.uut setReadyToReceiveCommands:true];
+	
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Should invoke reject block"];
+
+	[self.uut pop:@"invalidComponentId" commandId:@"pop" mergeOptions:nil completion:^{
+		[expectation fulfill];
+	} rejection:^(NSString *code, NSString *message, NSError *error) {
+		XCTAssert([code isEqualToString:@"1012"]);
+		XCTAssert([message isEqualToString:@"Popping component failed - componentId 'invalidComponentId' not found"]);
+		[expectation fulfill];
+	}];
+	
+	[self waitForExpectationsWithTimeout:5 handler:nil];
+}
 
 @end

@@ -174,6 +174,13 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
+    public void dismissAllModals_resolveSuccessfullyIfEmpty() {
+        CommandListener spy = spy(new CommandListenerAdapter());
+        uut.dismissAllModals(root, Options.EMPTY, spy);
+        verify(spy, times(1)).onSuccess(root.getId());
+    }
+
+    @Test
     public void dismissAllModals_optionsAreMergedOnTopModal() {
         uut.showModal(modal1, root, new CommandListenerAdapter());
         uut.showModal(modal2, root, new CommandListenerAdapter());

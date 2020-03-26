@@ -1,4 +1,16 @@
 # Changelog
+# 6.3.0
+## Fixed
+### iOS
+* Fix symbol collision with react-native-keyboard-input [#8ad40e1](https://github.com/wix/react-native-navigation/commit/8ad40e1ab23116d432e888801c07b57c6c09ad37) by [yogevbd](https://github.com/yogevbd)
+* Fix overlays touch interception on new iPads [#2ed434c](https://github.com/wix/react-native-navigation/commit/2ed434c952b7c9326d9547005caa8c0601e58cb4)
+* Removes unable to find UIManager module warning [#ba12604](https://github.com/wix/react-native-navigation/commit/ba1260402cc15409ddfef46fd5cad180d5e1a60f)
+* Reject pop command when viewController not found in the hierarchy [#4413aa4](https://github.com/wix/react-native-navigation/commit/4413aa4a76628449116cf9bc7294696a490d6a65)
+* Fix mergeOptions merging options with wrong child [#3c38c50](https://github.com/wix/react-native-navigation/commit/3c38c50a8b53e958a21e6fb7453622463e9870ff)
+* Fix build warnings and possible retain cycles issues [#3f8577d](https://github.com/wix/react-native-navigation/commit/3f8577da7d23a2e4698d27d12bf9de55be39e7ef)
+* Fix bottomTab icon hidden after setting badge [#124f975](https://github.com/wix/react-native-navigation/commit/124f975f42ebaf124d9e7c58296eaafd0f617ad9) by [yogevbd](https://github.com/yogevbd)
+
+
 # 6.2.0
 ## Added
 * Add windows support to build scripts vai `npm run start-windows` command [#afb5bff](https://github.com/wix/react-native-navigation/commit/afb5bffb49b9e8c670419aaacedf10f65cf82fd2) by [mayconmesquita](https://github.com/mayconmesquita)

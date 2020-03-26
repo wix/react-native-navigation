@@ -38,8 +38,9 @@
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
     [super mergeChildOptions:options child:child];
-    [_bottomTabPresenter mergeOptions:options resolvedOptions:self.resolveOptions child:[self findViewController:child]];
-    [_dotIndicatorPresenter mergeOptions:options resolvedOptions:self.resolveOptions child:[self findViewController:child]];
+    UIViewController* childViewController = [self findViewController:child];
+    [_bottomTabPresenter mergeOptions:options resolvedOptions:childViewController.resolveOptions child:childViewController];
+    [_dotIndicatorPresenter mergeOptions:options resolvedOptions:childViewController.resolveOptions child:childViewController];
 }
 
 - (id<UITabBarControllerDelegate>)delegate {

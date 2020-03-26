@@ -327,6 +327,13 @@ export interface OptionsTopBarButton {
    * Set the button as a custom component
    */
   component?: {
+    /**
+     * Component reference id, Auto generated if empty
+     */
+    id?: string;
+    /**
+     * Name of your component
+     */
     name: string;
     /**
      * Properties to pass down to the component

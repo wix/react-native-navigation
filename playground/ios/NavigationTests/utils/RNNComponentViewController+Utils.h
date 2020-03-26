@@ -5,4 +5,6 @@
 
 + (RNNComponentViewController *)createWithComponentId:(NSString *)componentId;
 
++ (RNNComponentViewController *)createWithComponentId:(NSString *)componentId initialOptions:(RNNNavigationOptions *)initialOptions;
+
 @end

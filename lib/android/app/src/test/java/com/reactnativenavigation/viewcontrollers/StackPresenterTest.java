@@ -84,9 +84,10 @@ public class StackPresenterTest extends BaseTest {
     private Button textBtn2 = TitleBarHelper.textualButton("btn2");
     private Button componentBtn1 = TitleBarHelper.reactViewButton("btn1_");
     private Button componentBtn2 = TitleBarHelper.reactViewButton("btn2_");
+    private Component titleComponent1 = TitleBarHelper.titleComponent("component1");
+    private Component titleComponent2 = TitleBarHelper.titleComponent("component2");
     private TopBarController topBarController;
     private ChildControllersRegistry childRegistry;
-    private IconResolver iconResolver;
 
     @Override
     public void beforeEach() {
@@ -98,7 +99,7 @@ public class StackPresenterTest extends BaseTest {
             }
         };
         renderChecker = spy(new RenderChecker());
-        iconResolver = new IconResolver(activity, ImageLoaderMock.mock());
+        IconResolver iconResolver = new IconResolver(activity, ImageLoaderMock.mock());
         uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), iconResolver, renderChecker, new Options()));
         createTopBarController();
 
@@ -307,6 +308,59 @@ public class StackPresenterTest extends BaseTest {
 
         options.topBar.drawBehind = new Bool(true);
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
+    }
+
+    @Test
+    public void applyTopBarOptions_setTitleComponent() {
+        Options applyComponent = new Options();
+        applyComponent.topBar.title.component.name = new Text("Component1");
+        applyComponent.topBar.title.component.componentId = new Text("Component1id");
+        uut.applyChildOptions(applyComponent, parent, child);
+        verify(topBarController).setTitleComponent(any());
+    }
+
+    @Test
+    public void mergeTopBarOptions_settingTitleDestroysComponent() {
+        Options componentOptions = new Options();
+        componentOptions.topBar.title.component = titleComponent1;
+        uut.applyChildOptions(componentOptions, parent, child);
+        ArgumentCaptor<TitleBarReactViewController> applyCaptor = ArgumentCaptor.forClass(TitleBarReactViewController.class);
+        verify(topBarController).setTitleComponent(applyCaptor.capture());
+
+        Options titleOptions = new Options();
+        titleOptions.topBar.title.text = new Text("Some title");
+        uut.mergeChildOptions(titleOptions, Options.EMPTY, parent, child);
+        assertThat(applyCaptor.getValue().isDestroyed()).isTrue();
+    }
+
+    @Test
+    public void mergeTopBarOptions_doesNotRecreateTitleComponentIfEquals() {
+        Options options = new Options();
+        options.topBar.title.component = titleComponent1;
+        uut.applyChildOptions(options, parent, child);
+        ArgumentCaptor<TitleBarReactViewController> applyCaptor = ArgumentCaptor.forClass(TitleBarReactViewController.class);
+        verify(topBarController).setTitleComponent(applyCaptor.capture());
+
+        uut.mergeChildOptions(options, Options.EMPTY, parent, child);
+        verify(topBarController, times(2)).setTitleComponent(applyCaptor.getValue());
+    }
+
+    @Test
+    public void mergeTopBarOptions_previousTitleComponentIsDestroyed() {
+        Options options = new Options();
+        options.topBar.title.component = titleComponent1;
+        uut.applyChildOptions(options, parent, child);
+        ArgumentCaptor<TitleBarReactViewController> applyCaptor = ArgumentCaptor.forClass(TitleBarReactViewController.class);
+        verify(topBarController).setTitleComponent(applyCaptor.capture());
+
+        Options toMerge = new Options();
+        toMerge.topBar.title.component = titleComponent2;
+        uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child);
+        ArgumentCaptor<TitleBarReactViewController> mergeCaptor = ArgumentCaptor.forClass(TitleBarReactViewController.class);
+        verify(topBarController, times(2)).setTitleComponent(mergeCaptor.capture());
+
+        assertThat(applyCaptor.getValue()).isNotEqualTo(mergeCaptor.getValue());
+        assertThat(applyCaptor.getValue().isDestroyed()).isTrue();
     }
 
     @Test
