@@ -35,6 +35,13 @@ public class TitleBarHelper {
         return button;
     }
 
+    public static Component titleComponent(String componentId) {
+        Component component = new Component();
+        component.componentId = new Text(componentId);
+        component.name = new Text(componentId);
+        return component;
+    }
+
     public static Button iconButton(String id, String icon) {
         Button button = new Button();
         button.id = "someButton";

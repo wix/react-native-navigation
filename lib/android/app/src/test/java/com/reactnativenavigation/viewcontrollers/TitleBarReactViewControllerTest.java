@@ -23,9 +23,8 @@ public class TitleBarReactViewControllerTest extends BaseTest {
     public void beforeEach() {
         viewCreator = spy(new TitleBarReactViewCreatorMock());
         activity = newActivity();
-        uut = new TitleBarReactViewController(activity, viewCreator);
-        createComponent();
-        uut.setComponent(component);
+        component = createComponent();
+        uut = new TitleBarReactViewController(activity, viewCreator, component);
     }
 
     @Test
@@ -34,9 +33,10 @@ public class TitleBarReactViewControllerTest extends BaseTest {
         verify(viewCreator).create(activity, component.componentId.get(), component.name.get());
     }
 
-    private void createComponent() {
-        component = new Component();
+    private Component createComponent() {
+        Component component = new Component();
         component.componentId = new Text("compId");
         component.name = new Text("compName");
+        return component;
     }
 }
