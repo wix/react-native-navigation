@@ -19,7 +19,7 @@
 }
 
 - (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options {
-    [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
+
 }
 
 - (void)setTranslucent:(BOOL)translucent {

@@ -6,6 +6,7 @@ import android.view.View;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
 
@@ -92,5 +93,9 @@ public class TopBarController {
         topBar.setRotationX(0);
         topBar.setRotationY(0);
         topBar.setRotation(0);
+    }
+
+    public void setTitleComponent(TitleBarReactViewController component) {
+        topBar.setTitleComponent(component.getView());
     }
 }

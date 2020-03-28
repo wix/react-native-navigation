@@ -177,14 +177,13 @@ public class StackPresenter {
 
         if (topBarOptions.title.component.hasValue()) {
             if (titleControllers.containsKey(component)) {
-                topBar.setTitleComponent(titleControllers.get(component).getView());
+                topBarController.setTitleComponent(titleControllers.get(component));
             } else {
-                TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
+                TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator, topBarOptions.title.component);
                 controller.setWaitForRender(topBarOptions.title.component.waitForRender);
                 titleControllers.put(component, controller);
-                controller.setComponent(topBarOptions.title.component);
                 controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
-                topBar.setTitleComponent(controller.getView());
+                topBarController.setTitleComponent(controller);
             }
         }
 
@@ -415,19 +414,19 @@ public class StackPresenter {
         }
 
         if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
-        if (topBarOptions.title.text.hasValue()) topBar.setTitle(topBarOptions.title.text.get());
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
 
         if (topBarOptions.title.component.hasValue()) {
-            if (titleControllers.containsKey(component)) {
-                topBar.setTitleComponent(titleControllers.get(component).getView());
-            } else {
-                TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
-                titleControllers.put(component, controller);
-                controller.setComponent(topBarOptions.title.component);
+            TitleBarReactViewController controller = findTitleComponent(topBarOptions.title.component);
+            if (controller == null) {
+                controller = new TitleBarReactViewController(activity, titleViewCreator, topBarOptions.title.component);
+                perform(titleControllers.put(component, controller), ViewController::destroy);
                 controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
-                topBar.setTitleComponent(controller.getView());
             }
+            topBarController.setTitleComponent(controller);
+        } else if (topBarOptions.title.text.hasValue()) {
+            perform(titleControllers.remove(component), ViewController::destroy);
+            topBar.setTitle(topBarOptions.title.text.get());
         }
 
         if (topBarOptions.title.color.hasValue()) topBar.setTitleTextColor(topBarOptions.title.color.get());
@@ -476,6 +475,16 @@ public class StackPresenter {
         if (topBarOptions.hideOnScroll.isFalse()) {
             topBar.disableCollapse();
         }
+    }
+
+    private TitleBarReactViewController findTitleComponent(com.reactnativenavigation.parse.Component component) {
+        for (TitleBarReactViewController controller : titleControllers.values()) {
+            if (ObjectUtils.equalsNotNull(controller.getComponent().name.get(null), component.name.get(null)) &&
+                ObjectUtils.equalsNotNull(controller.getComponent().componentId.get(null), component.componentId.get(null))) {
+                return controller;
+            }
+        }
+        return null;
     }
 
     private void mergeTopTabsOptions(TopTabsOptions options) {

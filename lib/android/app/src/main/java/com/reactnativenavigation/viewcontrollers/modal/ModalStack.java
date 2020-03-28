@@ -14,10 +14,11 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ModalStack {
     private List<ViewController> modals = new ArrayList<>();
@@ -82,9 +83,9 @@ public class ModalStack {
         }
     }
 
-    public void dismissAllModals(ViewController root, Options mergeOptions, CommandListener listener) {
+    public void dismissAllModals(@Nullable ViewController root, Options mergeOptions, CommandListener listener) {
         if (modals.isEmpty()) {
-            listener.onSuccess(root.getId());
+            listener.onSuccess(perform(root, "", ViewController::getId));
             return;
         }
         String topModalId = peek().getId();
