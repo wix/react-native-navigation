@@ -1,18 +1,11 @@
 #import <XCTest/XCTest.h>
-#import "RNNTestRootViewCreator.h"
 #import "LayoutCreator.h"
-#import <ReactNativeNavigation/RNNEventEmitter.h>
-#import <ReactNativeNavigation/RNNOverlayManager.h>
-#import <ReactNativeNavigation/RNNModalManager.h>
-#import <ReactNativeNavigation/RNNControllerFactory.h>
-#import <ReactNativeNavigation/RNNCommandsHandler.h>
+#import "CommandsHandlerCreator.h"
 #import <FBSnapshotTestCase/FBSnapshotTestCase.h>
 
 @interface StackOptionsTest : FBSnapshotTestCase
-
 @property (nonatomic, strong) RNNCommandsHandler* commandsHandler;
 @property (nonatomic, strong) UIWindow* window;
-
 @end
 
 @implementation StackOptionsTest
@@ -20,30 +13,10 @@
 - (void)setUp {
 	[super setUp];
 	_window = [[[UIApplication sharedApplication] delegate] window];
-	RNNTestRootViewCreator* creator = [RNNTestRootViewCreator new];
-	RNNEventEmitter* eventEmmiter = [RNNEventEmitter new];
-	RNNOverlayManager* overlayManager = [RNNOverlayManager new];
-	RNNModalManager* modalManager = [RNNModalManager new];
-	RNNControllerFactory* controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:creator eventEmitter:eventEmmiter store:nil componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmmiter modalManager:modalManager overlayManager:overlayManager mainWindow:_window];
-	[_commandsHandler setReadyToReceiveCommands:YES];
-	[_commandsHandler setDefaultOptions:@{
-		@"animations": @{
-				@"push": @{
-						@"enabled": @(0)
-				},
-				@"pop": @{
-						@"enabled": @(0)
-				}
-		},
-		@"topBar": @{
-				@"drawBehind": @(1)
-		},
-		@"layout": @{
-				@"componentBackgroundColor": @(0xFF00FF00)
-		}
-	} completion:^{}];
+	_commandsHandler = [CommandsHandlerCreator createWithWindow:_window];
 	self.usesDrawViewHierarchyInRect = YES;
+	
+//	Uncomment next line to record new snapshots
 //	self.recordMode = YES;
 }
 
@@ -52,81 +25,43 @@
 	_window.rootViewController = nil;
 }
 
-- (void)testStack_backgroundColor {
-	[self setRootPushAndPopWithTopBarOptions:@{
-		@"background": @{
-				@"color": @(0xFFFF00FF)
-		}
-	} secondTopBarOptions:@{
-		@"background": @{
-				@"color": @(0xFFFF0000)
-		}
-	}];
+#define RNNStackFlow(NAME, FIRST, SECOND, ...)\
+[self setRootPushAndPop:FIRST secondComponentOptions:SECOND testName:@#NAME];
+
+- (void)testStack_topBar {
+	RNNStackFlow(opaque background, @{@"topBar": @{@"background": @{@"color": @(0xFFFF00FF)}}}, @{@"topBar": @{@"background": @{@"color": @(0xFFFF0000)}}});
+	RNNStackFlow(tansparent background, @{@"topBar": @{@"background": @{@"color": @(0x00FFFFFF)}}}, @{@"topBar": @{@"background": @{@"color": @(0xFFFF0000)}}});
+	RNNStackFlow(translucent background, @{@"topBar": @{@"background": @{@"translucent": @(1)}}}, @{@"topBar": @{@"background": @{@"translucent": @(0)}}});
+	RNNStackFlow(title change, @{@"topBar": @{@"title": @{@"text": @"First Component"}}}, @{@"topBar": @{@"title": @{@"text": @"Second Component"}}});
+	RNNStackFlow(visibility, @{@"topBar": @{@"visible": @(0)}}, @{@"topBar": @{@"visible": @(1)}});
+	RNNStackFlow(title font, @{@"topBar": @{@"title": @{@"text": @"First Component"}}}, (@{@"topBar": @{@"title": @{@"text": @"Second Component", @"fontFamily": @"Arial", @"color": @(0xFFFF00FF), @"fontSize": @(15)}}}));
 }
 
-- (void)testStack_title {
-	[self setRootPushAndPopWithTopBarOptions:@{
-		@"title": @{
-				@"text": @"First Component"
-		}
-	} secondTopBarOptions:@{
-		@"title": @{
-				@"text": @"Second Component"
-		}
-	}];
-}
-
-- (void)testStack_translucent {
-	[self setRootPushAndPopWithTopBarOptions:@{
-		@"background": @{
-				@"translucent": @(0)
-		}
-	} secondTopBarOptions:@{
-		@"background": @{
-				@"translucent": @(1)
-		}
-	}];
-}
-
-- (void)testStack_topBarVisibility {
-	[self setRootPushAndPopWithTopBarOptions:@{
-		@"visible": @(0)
-	} secondTopBarOptions:@{
-		@"visible": @(1)
-	}];
-}
-
-- (void)setRootPushAndPopWithTopBarOptions:(NSDictionary *)firstTopBarOptions secondTopBarOptions:(NSDictionary *)secondTopBarOptions {
-	[self setRootPushAndPop:@{
-		@"topBar": firstTopBarOptions
-	} secondComponentOptions:@{
-		@"topBar": secondTopBarOptions
-	}];
-}
-
-- (void)setRootPushAndPop:(NSDictionary *)firstComponentOptions secondComponentOptions:(NSDictionary *)secondComponentOptions {
+- (void)setRootPushAndPop:(NSDictionary *)firstComponentOptions secondComponentOptions:(NSDictionary *)secondComponentOptions testName:(NSString *)testName {
 	NSDictionary* firstComponent = [LayoutCreator component:@"FirstComponent" options:firstComponentOptions];
 	NSDictionary* secondComponent = [LayoutCreator component:@"SecondComponent" options:secondComponentOptions];
 	NSDictionary* root = [LayoutCreator stack:@{} children:@[firstComponent]];
-
+	NSString* rootTestName = [NSString stringWithFormat:@"%@_root", testName];
 	[_commandsHandler setRoot:@{@"root": root}
 					commandId:@"SetRoot"
 				   completion:^{}];
-	FBSnapshotVerifyView(_window, @"root");
+	FBSnapshotVerifyView(_window, rootTestName);
 
+	NSString* pushTestName = [NSString stringWithFormat:@"%@_push", testName];
 	[_commandsHandler push:@"FirstComponent"
 				 commandId:@"push"
 					layout:secondComponent
 				completion:^{}
 				 rejection:^(NSString *code, NSString *message, NSError *error) {}];
-	FBSnapshotVerifyView(_window, @"push");
+	FBSnapshotVerifyView(_window, pushTestName);
 	
+	NSString* popTestName = [NSString stringWithFormat:@"%@_pop", testName];
 	[_commandsHandler pop:@"SecondComponent"
 				commandId:@"pop"
 			 mergeOptions:@{}
 			   completion:^{}
 				rejection:^(NSString *code, NSString *message, NSError *error) {}];
-	FBSnapshotVerifyView(_window, @"pop");
+	FBSnapshotVerifyView(_window, popTestName);
 }
 
 
