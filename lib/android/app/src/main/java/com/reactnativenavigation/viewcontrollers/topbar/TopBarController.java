@@ -128,11 +128,21 @@ public class TopBarController {
     }
 
     public void mergeRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
-        forEach(toRemove, btn -> topBar.removeItem(btn));
+        forEach(toRemove, btn -> topBar.removeRightButton(btn));
         forEachIndexed(toAdd, (button, i) -> {
-            if (!topBar.containsRightButton(button)) button.addToMenu(titleBar, getOrder(toAdd, i));
+            if (topBar.containsRightButton(button)) {
+                ensureExistingButtonIsInCorrectIndex(toAdd, button, i);
+            } else {
+                button.addToMenu(titleBar, getOrder(toAdd, i));
+            }
             button.applyButtonOptions(titleBar);
         });
+    }
+
+    private void ensureExistingButtonIsInCorrectIndex(List<TitleBarButtonController> toAdd, TitleBarButtonController toMerge, Integer index) {
+        if (topBar.getRightButton(index).getItemId() != toMerge.getButtonIntId()) {
+            toMerge.addToMenu(titleBar, getOrder(toAdd, index));
+        }
     }
 
     private int getOrder(List toAdd, int index) {

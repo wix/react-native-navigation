@@ -239,6 +239,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return titleBar.getRightButtons();
     }
 
+    public MenuItem getRightButton(int index) {
+        return titleBar.getRightButton(getRightButtonsCount() - index - 1);
+    }
+
     public void initTopTabs(ViewPager viewPager) {
         topTabs.setVisibility(VISIBLE);
         topTabs.init(viewPager);
@@ -286,8 +290,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setLayoutDirection(direction.get());
     }
 
-    public void removeItem(TitleBarButtonController button) {
-        titleBar.removeRightButton(button);
+    public void removeRightButton(TitleBarButtonController button) {
+        removeRightButton(button.getButtonIntId());
+    }
+
+    public void removeRightButton(int buttonId) {
+        titleBar.removeRightButton(buttonId);
     }
 
     public boolean containsRightButton(TitleBarButtonController button) {

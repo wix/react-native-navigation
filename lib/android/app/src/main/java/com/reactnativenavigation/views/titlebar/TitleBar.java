@@ -281,8 +281,8 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    public void removeRightButton(TitleBarButtonController button) {
-        getMenu().removeItem(button.getButtonIntId());
+    public void removeRightButton(int buttonId) {
+        getMenu().removeItem(buttonId);
     }
 
     public boolean containsRightButton(TitleBarButtonController button) {
