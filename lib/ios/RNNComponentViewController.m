@@ -83,6 +83,10 @@
 	return [_presenter getStatusBarStyle:[self resolveOptions]];
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter statusBarVisibile:self.navigationController resolvedOptions:self.resolveOptions];
+}
+
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
 	return self.previewController;
 }

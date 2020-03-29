@@ -43,5 +43,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (UIInterfaceOrientationMask)getOrientation:(RNNNavigationOptions *)options;
 
-- (BOOL)isStatusBarVisibility:(UINavigationController *)stack resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
+- (BOOL)statusBarVisibile:(UINavigationController *)stack resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
+
 @end

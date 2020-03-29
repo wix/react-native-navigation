@@ -134,6 +134,10 @@
 	return self.openedViewController.preferredStatusBarStyle;
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter statusBarVisibile:self.navigationController resolvedOptions:self.resolveOptions];
+}
+
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild {
 	return self.openedViewController;
 }

@@ -16,10 +16,10 @@
 - (void)setUp {
     [super setUp];
 	_creator = [[RNNTestRootViewCreator alloc] init];
-	_leftVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:self.generateComponent type:RNNSideMenuChildTypeLeft];
-	_rightVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:self.generateComponent type:RNNSideMenuChildTypeRight];
-	_centerVC =[[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewController:self.generateComponent type:RNNSideMenuChildTypeCenter];
-	self.uut = [[RNNSideMenuController alloc] initWithLayoutInfo:nil creator:nil childViewControllers:@[_leftVC, _centerVC, _rightVC] options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil];
+	_leftVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:[RNNNavigationOptions emptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewController:self.generateComponent type:RNNSideMenuChildTypeLeft];
+	_rightVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:[RNNNavigationOptions emptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewController:self.generateComponent type:RNNSideMenuChildTypeRight];
+	_centerVC =[[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil creator:nil options:[RNNNavigationOptions emptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewController:self.generateComponent type:RNNSideMenuChildTypeCenter];
+	self.uut = [[RNNSideMenuController alloc] initWithLayoutInfo:nil creator:nil childViewControllers:@[_leftVC, _centerVC, _rightVC] options:[RNNNavigationOptions emptyOptions] defaultOptions:nil presenter:[[RNNSideMenuPresenter alloc] initWithDefaultOptions:nil] eventEmitter:nil];
 }
 
 - (RNNComponentViewController *)generateComponent {
@@ -68,6 +68,26 @@
     }];
 
     [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleTrue {
+	self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(1)];
+	XCTAssertFalse(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleFalse {
+	self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(0)];
+	XCTAssertTrue(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldHideStatusBar {
+	self.uut.options.statusBar.visible = [Bool withValue:@(1)];
+	XCTAssertFalse(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldShowStatusBar {
+	self.uut.options.statusBar.visible = [Bool withValue:@(0)];
+	XCTAssertTrue(self.uut.prefersStatusBarHidden);
 }
 
 @end
