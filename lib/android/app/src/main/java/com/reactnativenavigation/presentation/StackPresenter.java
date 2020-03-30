@@ -374,8 +374,8 @@ public class StackPresenter {
         forEach(toRemove, TitleBarButtonController::destroy);
 
         if (!CollectionUtils.equals(currentRightButtons, toMerge)) {
+            topBarController.mergeRightButtons(toMerge, toRemove);
             currentRightButtons = toMerge;
-            topBarController.mergeRightButtons(currentRightButtons, toRemove);
         }
         if (options.rightButtonColor.hasValue()) topBar.setOverflowButtonColor(options.rightButtonColor.get());
     }

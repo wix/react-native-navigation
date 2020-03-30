@@ -129,45 +129,11 @@ public class TopBarController {
 
     public void mergeRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
         forEach(toRemove, btn -> topBar.removeRightButton(btn));
-        forEachIndexed(toAdd, (button, i) -> {
-            if (topBar.containsRightButton(button)) {
-                ensureExistingButtonIsInCorrectIndex(toAdd, button, i);
-            } else {
-                button.addToMenu(titleBar, getOrder(toAdd, i));
-            }
-            button.applyButtonOptions(titleBar);
+        forEachIndexed(toAdd, (b, i) -> {
+            b.addToMenu(titleBar, (toAdd.size() - i) * 10);
+            b.applyButtonOptions(titleBar);
         });
     }
-
-    private void ensureExistingButtonIsInCorrectIndex(List<TitleBarButtonController> toAdd, TitleBarButtonController toMerge, Integer index) {
-        if (topBar.getRightButton(index).getItemId() != toMerge.getButtonIntId()) {
-            toMerge.addToMenu(titleBar, getOrder(toAdd, index));
-        }
-    }
-
-    private int getOrder(List toAdd, int index) {
-        List<MenuItem> items = topBar.getTitleBar().getRightButtons();
-        int order = (toAdd.size() - index - 1) * 10;
-        for (int i = items.size() - 1; i >= 0; i--) {
-            int currentOrder = items.get(i).getOrder();
-            if (currentOrder <= order) {
-                return currentOrder + 1;
-            }
-        }
-        return 0;
-    }
-
-//    private static int findInsertIndex(ArrayList<MenuItemImpl> items, int ordering) {
-//        for (int i = items.size() - 1; i >= 0; i--) {
-//            MenuItemImpl item = items.get(i);
-//            if (item.getOrdering() <= ordering) {
-//                return i + 1;
-//            }
-//        }
-//
-//        return 0;
-//    }
-
 
     public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
         titleBar.setLeftButtons(leftButtons);

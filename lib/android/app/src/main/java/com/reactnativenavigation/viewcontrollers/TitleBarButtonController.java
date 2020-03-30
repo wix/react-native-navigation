@@ -140,9 +140,14 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
         });
     }
 
-    public void addToMenu(TitleBar titleBar, int position) {
+    public void addToMenu(TitleBar titleBar, int order) {
+        if (componentIsAlreadyAdded(order)) return;
         titleBar.getMenu().removeItem(button.getIntId());
-        menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), position, presenter.getStyledText());
+        menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), order, presenter.getStyledText());
+    }
+
+    private boolean componentIsAlreadyAdded(int order) {
+        return button.component.hasValue() && menuItem != null && menuItem.getOrder() == order;
     }
 
     public void applyButtonOptions(TitleBar titleBar) {
