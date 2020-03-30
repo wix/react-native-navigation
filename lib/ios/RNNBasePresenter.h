@@ -39,10 +39,12 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (UINavigationItem *)currentNavigationItem;
 
-- (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions;
+- (void)willMoveToParentViewController:(UIViewController *)parent;
 
-- (UIInterfaceOrientationMask)getOrientation:(RNNNavigationOptions *)options;
+- (UIStatusBarStyle)getStatusBarStyle;
 
-- (BOOL)statusBarVisibile:(UINavigationController *)stack resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
+- (UIInterfaceOrientationMask)getOrientation;
+
+- (BOOL)getStatusBarVisibility;
 
 @end

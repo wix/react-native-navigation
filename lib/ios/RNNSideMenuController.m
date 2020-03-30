@@ -158,22 +158,19 @@
 # pragma mark - UIViewController overrides
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-    if (parent) {
-        [self.presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
-        [self onChildAddToParent:self options:self.resolveOptions];
-    }
+    [self.presenter willMoveToParentViewController:parent];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return self.openedViewController.preferredStatusBarStyle;
+    return [self.presenter getStatusBarStyle];
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return [self.openedViewController prefersStatusBarHidden];
+    return [self.presenter getStatusBarVisibility];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return [self.presenter getOrientation:self.resolveOptions];
+    return [self.presenter getOrientation];
 }
 
 @end

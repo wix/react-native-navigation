@@ -139,7 +139,7 @@
 }
 
 - (void)testPreferredStatusBarStyle_shouldInvokeSelectedViewControllerPreferredStatusBarStyle {
-    [[self.mockTabBarPresenter expect] getStatusBarStyle:[OCMArg any]];
+    [[self.mockTabBarPresenter expect] getStatusBarStyle];
     [self.uut preferredStatusBarStyle];
     [self.mockTabBarPresenter verify];
 }
