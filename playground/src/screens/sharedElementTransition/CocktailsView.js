@@ -23,7 +23,9 @@ class CocktailsView extends Component {
     <TouchableOpacity
       activeOpacity={0.75}
       style={styles.itemContainer}
-      onPress={() => this.props.onItemPress(item)}>
+      testID={item.id}
+      onPress={() => this.props.onItemPress(item)}
+      onLongPress={() => this.props.onItemLongPress(item)}>
       <View style={styles.overlayContainer}>
         <Image
           source={item.image}

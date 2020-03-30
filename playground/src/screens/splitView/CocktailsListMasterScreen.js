@@ -3,8 +3,9 @@ const { Component } = require('react');
 const CocktailsView = require('../sharedElementTransition/CocktailsView')
 const { Platform } = require('react-native');
 const Navigation = require('../../services/Navigation');
+const CocktailsListScreen = require('../sharedElementTransition/CocktailsListScreen');
 
-class CocktailsListMasterScreen extends Component {
+class CocktailsListMasterScreen extends CocktailsListScreen {
   static options() {
     return {
       ...Platform.select({
@@ -27,6 +28,7 @@ class CocktailsListMasterScreen extends Component {
     return (
       <CocktailsView 
         onItemPress={this.updateDetailsScreen}
+        onItemLongPress={this.pushCocktailDetails}
       />
     );
   }
@@ -35,4 +37,5 @@ class CocktailsListMasterScreen extends Component {
     Navigation.updateProps('DETAILS_COMPONENT_ID', item);
   }
 }
+
 module.exports = CocktailsListMasterScreen;

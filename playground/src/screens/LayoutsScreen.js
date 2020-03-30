@@ -8,7 +8,7 @@ const {
   BOTTOM_TABS_BTN,
   BOTTOM_TABS,
   SIDE_MENU_BTN,
-  SPLIT_VIEW_BTN
+  SPLIT_VIEW_BUTTON
 } = require('../testIDs');
 const Screens = require('./Screens');
 const Navigation = require('../services/Navigation');
@@ -32,7 +32,7 @@ class LayoutsScreen extends React.Component {
         <Button label='Stack' testID={STACK_BTN} onPress={this.stack} />
         <Button label='BottomTabs' testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label='SideMenu' testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
-        {Platform.OS === 'ios' && <Button label='SplitView' testID={SPLIT_VIEW_BTN} onPress={this.splitView} />}
+        {Platform.OS === 'ios' && <Button label='SplitView' testID={SPLIT_VIEW_BUTTON} onPress={this.splitView} />}
       </Root>
     );
   }
