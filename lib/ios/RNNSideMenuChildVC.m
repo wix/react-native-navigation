@@ -39,8 +39,25 @@
 	return self.child;
 }
 
+# pragma mark - UIViewController overrides
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    if (parent) {
+        [self.presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
+        [self onChildAddToParent:self options:self.resolveOptions];
+    }
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return [[self presenter] getStatusBarStyle:[self resolveOptions]];
+    return [self.presenter getStatusBarStyle:self.resolveOptions];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter statusBarVisibile:self.navigationController resolvedOptions:self.resolveOptions];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation:self.resolveOptions];
 }
 
 @end

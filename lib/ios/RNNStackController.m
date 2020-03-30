@@ -35,14 +35,6 @@
     [self.parentViewController mergeChildOptions:options child:child];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-	return [_presenter getStatusBarStyle:self.resolveOptions];
-}
-
-- (BOOL)prefersStatusBarHidden {
-    return [self.presenter statusBarVisibile:self.navigationController resolvedOptions:self.resolveOptions];
-}
-
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     [self prepareForPop];
 	return [super popViewControllerAnimated:animated];
@@ -60,6 +52,27 @@
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
+}
+
+# pragma mark - UIViewController overrides
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    if (parent) {
+        [self.presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
+        [self onChildAddToParent:self options:self.resolveOptions];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [self.presenter getStatusBarStyle:self.resolveOptions];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter statusBarVisibile:self.navigationController resolvedOptions:self.resolveOptions];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation:self.resolveOptions];
 }
 
 @end
