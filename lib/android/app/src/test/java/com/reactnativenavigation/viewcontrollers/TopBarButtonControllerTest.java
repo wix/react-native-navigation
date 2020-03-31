@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
+import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
@@ -42,7 +42,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         button = new Button();
         final Activity activity = newActivity();
 
-        TopBarButtonCreatorMock buttonCreatorMock = new TopBarButtonCreatorMock();
+        TitleBarButtonCreatorMock buttonCreatorMock = new TitleBarButtonCreatorMock();
         stackController = spy(TestUtils.newStackController(activity).build());
         stackController.getView().layout(0, 0, 1080, 1920);
         stackController.getTopBar().layout(0, 0, 1080, 200);

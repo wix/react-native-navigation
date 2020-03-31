@@ -10,9 +10,9 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
 import static org.mockito.Mockito.mock;
 
-public class TopBarButtonCreatorMock extends TitleBarButtonCreator {
+public class TitleBarButtonCreatorMock extends TitleBarButtonCreator {
 
-    public TopBarButtonCreatorMock() {
+    public TitleBarButtonCreatorMock() {
         super(null);
     }
 

@@ -5,7 +5,7 @@ import android.view.MenuItem;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
+import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ButtonPresenter;
@@ -32,7 +32,7 @@ public class TitleBarButtonControllerTest extends BaseTest {
                 new IconResolver(activity, ImageLoaderMock.mock()),
                 new ButtonPresenter(button),
                 button,
-                new TopBarButtonCreatorMock(),
+                new TitleBarButtonCreatorMock(),
                 Mockito.mock(TitleBarButtonController.OnClickListener.class)
         );
     }
