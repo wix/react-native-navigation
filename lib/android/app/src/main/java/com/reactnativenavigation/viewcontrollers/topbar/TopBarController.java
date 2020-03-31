@@ -114,7 +114,6 @@ public class TopBarController {
         topBar.setRotation(0);
     }
 
-
     public void setTitleComponent(TitleBarReactViewController component) {
         topBar.setTitleComponent(component.getView());
     }
