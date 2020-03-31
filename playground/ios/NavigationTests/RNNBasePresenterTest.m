@@ -2,7 +2,7 @@
 #import "RNNBasePresenter.h"
 #import <OCMock/OCMock.h>
 #import "UIViewController+RNNOptions.h"
-#import "RNNComponentViewController.h"
+#import "RNNComponentViewController+Utils.h"
 
 @interface RNNBasePresenterTest : XCTestCase
 
@@ -18,7 +18,7 @@
 - (void)setUp {
     [super setUp];
     self.uut = [[RNNBasePresenter alloc] initWithDefaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
-    self.boundViewController = [RNNComponentViewController new];
+    self.boundViewController = [RNNComponentViewController createWithComponentId:@"componentId" initialOptions:[RNNNavigationOptions emptyOptions]];
     self.mockBoundViewController = [OCMockObject partialMockForObject:self.boundViewController];
 	[self.uut bindViewController:self.mockBoundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
@@ -53,32 +53,28 @@
 }
 
 - (void)testGetPreferredStatusBarStyle_returnLightIfLight {
-    RNNNavigationOptions * lightOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-    lightOptions.statusBar.style = [[Text alloc] initWithValue:@"light"];
-
-    XCTAssertEqual([_uut getStatusBarStyle:lightOptions], UIStatusBarStyleLightContent);
+	self.boundViewController.options.statusBar.style = [[Text alloc] initWithValue:@"light"];
+	
+    XCTAssertEqual([_uut getStatusBarStyle], UIStatusBarStyleLightContent);
 }
 
 - (void)testGetPreferredStatusBarStyle_returnDark {
-    RNNNavigationOptions * darkOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-    darkOptions.statusBar.style = [[Text alloc] initWithValue:@"dark"];
+    self.boundViewController.options.statusBar.style = [[Text alloc] initWithValue:@"dark"];
 
-    XCTAssertEqual([_uut getStatusBarStyle:darkOptions], UIStatusBarStyleDarkContent);
+    XCTAssertEqual([_uut getStatusBarStyle], UIStatusBarStyleDarkContent);
 }
 
 - (void)testGetPreferredStatusBarStyle_returnDefaultIfNil {
-    RNNNavigationOptions * options = [[RNNNavigationOptions alloc] initEmptyOptions];
-
-    XCTAssertEqual([_uut getStatusBarStyle:options], UIStatusBarStyleDefault);
+	self.boundViewController.options.statusBar.style = nil;
+    XCTAssertEqual([_uut getStatusBarStyle], UIStatusBarStyleDefault);
 }
 
 - (void)testGetPreferredStatusBarStyle_considersDefaultOptions {
-    RNNNavigationOptions * options = [[RNNNavigationOptions alloc] initEmptyOptions];
     RNNNavigationOptions * lightOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
     lightOptions.statusBar.style = [[Text alloc] initWithValue:@"light"];
     [_uut setDefaultOptions:lightOptions];
 
-    XCTAssertEqual([_uut getStatusBarStyle:options], UIStatusBarStyleLightContent);
+    XCTAssertEqual([_uut getStatusBarStyle], UIStatusBarStyleLightContent);
 }
 
 - (void)testApplyOptionsOnInit_setSwipeToDismiss {

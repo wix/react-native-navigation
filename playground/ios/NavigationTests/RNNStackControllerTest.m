@@ -70,6 +70,26 @@
 	XCTAssertTrue(self.uut.preferredStatusBarStyle == self.uut.getCurrentChild.preferredStatusBarStyle);
 }
 
+- (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleTrue {
+	self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(1)];
+	XCTAssertFalse(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleFalse {
+	self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(0)];
+	XCTAssertTrue(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldHideStatusBar {
+	self.uut.options.statusBar.visible = [Bool withValue:@(1)];
+	XCTAssertFalse(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldShowStatusBar {
+	self.uut.options.statusBar.visible = [Bool withValue:@(0)];
+	XCTAssertTrue(self.uut.prefersStatusBarHidden);
+}
+
 - (void)testPopGestureEnabled_false {
 	NSNumber* popGestureEnabled = @(0);
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
