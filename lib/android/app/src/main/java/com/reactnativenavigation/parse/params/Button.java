@@ -9,6 +9,7 @@ import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.FractionParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.IdFactory;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONArray;
@@ -119,7 +120,7 @@ public class Button {
     }
 
     public int getIntId() {
-        return (component.hasValue() ? component.componentId : id).hashCode();
+        return IdFactory.Companion.get(component.componentId.get(id));
     }
 
     private static Number parseShowAsAction(JSONObject json) {
