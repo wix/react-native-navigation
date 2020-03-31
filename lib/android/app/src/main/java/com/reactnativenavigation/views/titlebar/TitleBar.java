@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Alignment;
-import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiUtils;
@@ -23,9 +22,7 @@ import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 
@@ -128,6 +125,12 @@ public class TitleBar extends Toolbar {
 
     public void setSubtitleAlignment(Alignment alignment) {
         subtitleAlignment = alignment;
+    }
+
+    public boolean containsRightButton(@Nullable MenuItem menuItem, int order) {
+        return menuItem != null &&
+               getMenu().findItem(menuItem.getItemId()) != null &&
+               menuItem.getOrder() == order;
     }
 
     public void alignTextView(Alignment alignment, TextView view) {
@@ -262,17 +265,6 @@ public class TitleBar extends Toolbar {
                 overflowIcon.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
             }
         }
-    }
-
-    @NonNull
-    public ArrayList<View> findButtonTextView(Button button) {
-        ArrayList<View> outViews = new ArrayList<>();
-        if (button.text.hasValue()) {
-            findChildrenByClass(this, ActionMenuView.class)
-                    .get(0)
-                    .findViewsWithText(outViews, button.text.get(), View.FIND_VIEWS_WITH_TEXT);
-        }
-        return outViews;
     }
 
     private void enableOverflowForReactButtonViews(View child) {

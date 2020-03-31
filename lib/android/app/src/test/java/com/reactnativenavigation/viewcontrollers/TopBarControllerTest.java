@@ -57,7 +57,7 @@ public class TopBarControllerTest extends BaseTest {
     }
 
     @Test
-    public void setRightButtons_emptyButtonsListClearsRightButtons() {
+    public void applyRightButtons_emptyButtonsListClearsRightButtons() {
         uut.setLeftButtons(new ArrayList<>());
         uut.applyRightButtons(rightButtons(componentButton, textButton1));
         uut.setLeftButtons(new ArrayList<>());
@@ -66,7 +66,7 @@ public class TopBarControllerTest extends BaseTest {
     }
 
     @Test
-    public void setRightButtons_previousButtonsAreCleared() {
+    public void applyRightButtons_previousButtonsAreCleared() {
         uut.applyRightButtons(rightButtons(textButton1, componentButton));
         assertThat(uut.getRightButtonsCount()).isEqualTo(2);
 
@@ -75,10 +75,32 @@ public class TopBarControllerTest extends BaseTest {
     }
 
     @Test
-    public void setRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
+    public void applyRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
         uut.setLeftButtons(new ArrayList<>());
         uut.applyRightButtons(rightButtons(textButton1, componentButton));
         assertThat(uut.getRightButton(1).getTitle().toString()).isEqualTo(textButton1.text.get());
+    }
+
+    @Test
+    public void applyRightButtons_componentButtonIsReapplied() {
+        List<TitleBarButtonController> initialButtons = rightButtons(componentButton);
+        uut.applyRightButtons(initialButtons);
+        assertThat(uut.getRightButton(0).getItemId()).isEqualTo(componentButton.getIntId());
+
+        uut.applyRightButtons(rightButtons(textButton1));
+        assertThat(uut.getRightButton(0).getItemId()).isEqualTo(textButton1.getIntId());
+
+        uut.applyRightButtons(initialButtons);
+        assertThat(uut.getRightButton(0).getItemId()).isEqualTo(componentButton.getIntId());
+    }
+
+    @Test
+    public void mergeRightButtons_componentButtonIsNotAddedIfAlreadyAddedToMenu() {
+        List<TitleBarButtonController> initialButtons = rightButtons(componentButton);
+        uut.applyRightButtons(initialButtons);
+
+        uut.mergeRightButtons(initialButtons, Collections.EMPTY_LIST);
+
     }
 
     @Test
