@@ -339,6 +339,14 @@ export interface OptionsTopBarButton {
      * Properties to pass down to the component
      */
     passProps?: object;
+    /**
+     * (Android only) component width
+     */
+    width?: number;
+    /**
+     * (Android only) component height
+     */
+    height?: number;
   };
   /**
    * (iOS only) Set the button as an iOS system icon

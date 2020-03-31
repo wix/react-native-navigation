@@ -119,7 +119,7 @@ public class Button {
     }
 
     public int getIntId() {
-        return id.hashCode();
+        return (component.hasValue() ? component.componentId : id).hashCode();
     }
 
     private static Number parseShowAsAction(JSONObject json) {

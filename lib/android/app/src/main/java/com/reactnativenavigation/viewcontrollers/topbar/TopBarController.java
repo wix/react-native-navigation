@@ -121,18 +121,12 @@ public class TopBarController {
 
     public void applyRightButtons(List<TitleBarButtonController> toAdd) {
         topBar.clearRightButtons();
-        forEachIndexed(toAdd, (b, i) -> {
-            b.addToMenu(titleBar, (toAdd.size() - i) * 10);
-            b.applyButtonOptions(titleBar);
-        });
+        forEachIndexed(toAdd, (b, i) -> b.addToMenu(titleBar, (toAdd.size() - i) * 10));
     }
 
     public void mergeRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
         forEach(toRemove, btn -> topBar.removeRightButton(btn));
-        forEachIndexed(toAdd, (b, i) -> {
-            b.addToMenu(titleBar, (toAdd.size() - i) * 10);
-            b.applyButtonOptions(titleBar);
-        });
+        forEachIndexed(toAdd, (b, i) -> b.addToMenu(titleBar, (toAdd.size() - i) * 10));
     }
 
     public void setLeftButtons(List<TitleBarButtonController> leftButtons) {

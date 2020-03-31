@@ -22,6 +22,7 @@ import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.viewcontrolleroverlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.titlebar.TitleBar;
+import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     private final IconResolver navigationIconResolver;
     private ButtonPresenter presenter;
     private final Button button;
-    private final ReactViewCreator viewCreator;
+    private final TitleBarButtonCreator viewCreator;
     private TitleBarButtonController.OnClickListener onPressListener;
     private Drawable icon;
 
@@ -64,7 +65,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
                                     IconResolver navigationIconResolver,
                                     ButtonPresenter presenter,
                                     Button button,
-                                    ReactViewCreator viewCreator,
+                                    TitleBarButtonCreator viewCreator,
                                     OnClickListener onClickListener) {
         super(activity, button.id, new YellowBoxDelegate(), new Options(), new ViewControllerOverlay(activity));
         this.navigationIconResolver = navigationIconResolver;
@@ -104,7 +105,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     @NonNull
     @Override
     protected TitleBarReactButtonView createView() {
-        view = (TitleBarReactButtonView) viewCreator.create(getActivity(), button.component.componentId.get(), button.component.name.get());
+        view = viewCreator.create(getActivity(), button.component);
         return (TitleBarReactButtonView) view.asView();
     }
 
@@ -144,14 +145,14 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
         if (componentIsAlreadyAdded(order)) return;
         titleBar.getMenu().removeItem(button.getIntId());
         menuItem = titleBar.getMenu().add(Menu.NONE, button.getIntId(), order, presenter.getStyledText());
+        applyButtonOptions(titleBar, menuItem);
     }
 
     private boolean componentIsAlreadyAdded(int order) {
         return button.component.hasValue() && menuItem != null && menuItem.getOrder() == order;
     }
 
-    public void applyButtonOptions(TitleBar titleBar) {
-        if (menuItem == null) return;
+    private void applyButtonOptions(TitleBar titleBar, MenuItem menuItem) {
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get());
         menuItem.setEnabled(button.enabled.isTrueOrUndefined());
         menuItem.setOnMenuItemClickListener(this);

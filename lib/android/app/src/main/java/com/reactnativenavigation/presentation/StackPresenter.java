@@ -25,7 +25,6 @@ import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -33,6 +32,7 @@ import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
@@ -68,7 +68,7 @@ public class StackPresenter {
     private TitleBarButtonController.OnClickListener onClickListener;
     private final RenderChecker renderChecker;
     private final TopBarBackgroundViewCreator topBarBackgroundViewCreator;
-    private final ReactViewCreator buttonCreator;
+    private final TitleBarButtonCreator buttonCreator;
     private Options defaultOptions;
 
     private List<TitleBarButtonController> currentRightButtons = new ArrayList<>();
@@ -81,7 +81,7 @@ public class StackPresenter {
     public StackPresenter(Activity activity,
                           TitleBarReactViewCreator titleViewCreator,
                           TopBarBackgroundViewCreator topBarBackgroundViewCreator,
-                          ReactViewCreator buttonCreator,
+                          TitleBarButtonCreator buttonCreator,
                           IconResolver iconResolver,
                           RenderChecker renderChecker,
                           Options defaultOptions) {

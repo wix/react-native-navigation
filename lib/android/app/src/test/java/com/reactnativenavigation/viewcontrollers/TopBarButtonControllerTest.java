@@ -2,7 +2,6 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.MenuItem;
 
 import com.reactnativenavigation.BaseTest;
@@ -12,7 +11,6 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
@@ -98,69 +96,8 @@ public class TopBarButtonControllerTest extends BaseTest {
         verify(optionsPresenter, times(0)).tint(any(), anyInt());
     }
 
-    @Test
-    public void fontFamily() {
-        setTextButton();
-        uut.addToMenu(getTitleBar(), 0);
-        verify(optionsPresenter, times(1)).setTypeFace(getTitleBar(), Typeface.MONOSPACE);
-    }
-
-    @Test
-    public void fontSize() {
-        setTextButton();
-        uut.addToMenu(getTitleBar(), 0);
-        verify(optionsPresenter, times(0)).setFontSize(getTitleBar().getMenu().getItem(0));
-
-        clearMenu();
-        button.fontSize = new Fraction(10);
-        uut.addToMenu(getTitleBar(), 0);
-        verify(optionsPresenter, times(1)).setFontSize(getTitleBar().getMenu().getItem(0));
-    }
-
-    @Test
-    public void textColor_enabled() {
-        setTextButton();
-        button.enabled = new Bool(false);
-        uut.addToMenu(getTitleBar(), 0);
-        dispatchPreDraw(getTitleBar());
-        verify(optionsPresenter, times(0)).setEnabledColor(any());
-
-        clearMenu();
-        button.enabled = new Bool(true);
-        button.color = new Colour(android.graphics.Color.RED);
-        uut.addToMenu(getTitleBar(), 0);
-        dispatchPreDraw(getTitleBar());
-        verify(optionsPresenter, times(1)).setEnabledColor(any());
-    }
-
-    private void clearMenu() {
-        getTitleBar().getMenu().clear();
-    }
-
-    @Test
-    public void textColor_disabled() {
-        setTextButton();
-        button.enabled = new Bool(false);
-        uut.addToMenu(getTitleBar(), 0);
-        dispatchPreDraw(getTitleBar());
-        verify(optionsPresenter, times(1)).setDisabledColor(any(), eq(Color.LTGRAY));
-
-        clearMenu();
-        button.disabledColor = new Colour(android.graphics.Color.BLACK);
-        uut.addToMenu(getTitleBar(), 0);
-        dispatchPreDraw(getTitleBar());
-        verify(optionsPresenter, times(1)).setDisabledColor(any(), eq(Color.BLACK));
-    }
-
     private TitleBar getTitleBar() {
         return stackController.getTopBar().getTitleBar();
-    }
-
-    private void setTextButton() {
-        button.id = "btn1";
-        button.text = new Text("Button");
-        button.fontFamily = Typeface.MONOSPACE;
-        button.showAsAction = new Number(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     private void setIconButton(boolean enabled) {

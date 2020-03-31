@@ -7,6 +7,10 @@ public class Text extends Param<String> {
         super(value);
     }
 
+    public int length() {
+        return hasValue() ? value.length() : 0;
+    }
+
     @NonNull
     @Override
     public String toString() {
