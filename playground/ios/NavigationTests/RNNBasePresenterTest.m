@@ -108,4 +108,19 @@
 	XCTAssertFalse(_boundViewController.hidesBottomBarWhenPushed);
 }
 
+- (void)testHidesBottomBarWhenPushed_resolveChildShowsBarBeforeParent {
+	UINavigationController* nvc = [[UINavigationController alloc] initWithRootViewController:self.boundViewController];
+	nvc.options = [RNNNavigationOptions emptyOptions];
+	nvc.options.bottomTabs.visible = [[Bool alloc] initWithBOOL:NO];
+	XCTAssertTrue(_boundViewController.hidesBottomBarWhenPushed);
+}
+
+- (void)testHidesBottomBarWhenPushed_resolveChildHidesBarBeforeParent {
+	UINavigationController* nvc = [[UINavigationController alloc] initWithRootViewController:self.boundViewController];
+	nvc.options = [RNNNavigationOptions emptyOptions];
+	self.boundViewController.options.bottomTabs.visible = [[Bool alloc] initWithBOOL:NO];
+	nvc.options.bottomTabs.visible = [[Bool alloc] initWithBOOL:YES];
+	XCTAssertTrue(_boundViewController.hidesBottomBarWhenPushed);
+}
+
 @end
