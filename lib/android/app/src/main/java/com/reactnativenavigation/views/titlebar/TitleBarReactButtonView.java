@@ -28,7 +28,7 @@ public class TitleBarReactButtonView extends ReactView {
     }
 
     private int createSpec(int measureSpec, Number dimension) {
-        if (component.width.hasValue()) {
+        if (dimension.hasValue()) {
             return makeMeasureSpec(MeasureSpec.getSize(dpToPx(getContext(), dimension.get())), EXACTLY);
         } else {
             return makeMeasureSpec(MeasureSpec.getSize(measureSpec), UNSPECIFIED);
