@@ -26,7 +26,10 @@
 }
 
 #define RNNStackFlow(NAME, FIRST, SECOND, ...)\
-[self setRootPushAndPop:FIRST secondComponentOptions:SECOND testName:@#NAME];
+[self setRoot:[LayoutCreator component:@"FirstComponent" options:FIRST] testName:@#NAME]; \
+[self push:[LayoutCreator component:@"SecondComponent" options:SECOND] testName:@#NAME]; \
+[self pop:@"SecondComponent" testName:@#NAME]; \
+
 
 - (void)testStack_topBar {
 	RNNStackFlow(opaque background, @{@"topBar": @{@"background": @{@"color": @(0xFFFF00FF)}}}, @{@"topBar": @{@"background": @{@"color": @(0xFFFF0000)}}});
@@ -37,16 +40,16 @@
 	RNNStackFlow(title font, @{@"topBar": @{@"title": @{@"text": @"First Component"}}}, (@{@"topBar": @{@"title": @{@"text": @"Second Component", @"fontFamily": @"Arial", @"color": @(0xFFFF00FF), @"fontSize": @(15)}}}));
 }
 
-- (void)setRootPushAndPop:(NSDictionary *)firstComponentOptions secondComponentOptions:(NSDictionary *)secondComponentOptions testName:(NSString *)testName {
-	NSDictionary* firstComponent = [LayoutCreator component:@"FirstComponent" options:firstComponentOptions];
-	NSDictionary* secondComponent = [LayoutCreator component:@"SecondComponent" options:secondComponentOptions];
+- (void)setRoot:(NSDictionary *)firstComponent testName:(NSString *)testName {
 	NSDictionary* root = [LayoutCreator stack:@{} children:@[firstComponent]];
 	NSString* rootTestName = [NSString stringWithFormat:@"%@_root", testName];
 	[_commandsHandler setRoot:@{@"root": root}
 					commandId:@"SetRoot"
 				   completion:^{}];
 	FBSnapshotVerifyView(_window, rootTestName);
+}
 
+- (void)push:(NSDictionary *)secondComponent testName:(NSString *)testName {
 	NSString* pushTestName = [NSString stringWithFormat:@"%@_push", testName];
 	[_commandsHandler push:@"FirstComponent"
 				 commandId:@"push"
@@ -54,9 +57,11 @@
 				completion:^{}
 				 rejection:^(NSString *code, NSString *message, NSError *error) {}];
 	FBSnapshotVerifyView(_window, pushTestName);
-	
+}
+
+- (void)pop:(NSString *)componentId testName:(NSString *)testName {
 	NSString* popTestName = [NSString stringWithFormat:@"%@_pop", testName];
-	[_commandsHandler pop:@"SecondComponent"
+	[_commandsHandler pop:componentId
 				commandId:@"pop"
 			 mergeOptions:@{}
 			   completion:^{}
