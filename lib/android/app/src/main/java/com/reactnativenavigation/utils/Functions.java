@@ -13,6 +13,10 @@ public class Functions {
         void run(T param);
     }
 
+    public interface Func2<T, S> {
+        void run(T param1, S param2);
+    }
+
     public interface FuncR<T> {
         T run();
     }

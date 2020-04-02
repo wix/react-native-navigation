@@ -174,6 +174,13 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
+    public void dismissAllModal_resolvesPromiseSuccessfullyWhenCalledBeforeRootIsSet() {
+        CommandListenerAdapter spy = spy(new CommandListenerAdapter());
+        uut.dismissAllModals(null, Options.EMPTY, spy);
+        verify(spy).onSuccess("");
+    }
+
+    @Test
     public void dismissAllModals_resolveSuccessfullyIfEmpty() {
         CommandListener spy = spy(new CommandListenerAdapter());
         uut.dismissAllModals(root, Options.EMPTY, spy);

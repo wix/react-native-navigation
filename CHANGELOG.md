@@ -1,4 +1,26 @@
 # Changelog
+# 6.4.0
+## Fixed
+### iOS
+* Fix styling options on iOS 13.4 [#950ac64](https://github.com/wix/react-native-navigation/commit/950ac6404fe1a43021426803d4fdad4ed4711476) by [yogevbd](https://github.com/yogevbd)
+* Fix white flicker when pushing a screen [#a2bdfac](https://github.com/wix/react-native-navigation/commit/a2bdfacb27065f2101c3228df98484ba4ec68e03) by [RobertPaul01](https://github.com/RobertPaul01)
+* Fix white topBar on pop with swipe gesture [#6227321](https://github.com/wix/react-native-navigation/commit/62273214f0590007ce81be2aef6da1f05e035c4a) by [yogevbd](https://github.com/yogevbd)
+### Android
+* Fix title component not being replaced via mergeOptions [#b0e8a82](https://github.com/wix/react-native-navigation/commit/b0e8a824f5e1ec141c9d3030dc21f242902ec29f) by [guyca](https://github.com/guyca)
+
+# 6.3.3
+## Fixed
+### iOS
+* Fix status bar visibility on iOS 13 [#f487134](https://github.com/wix/react-native-navigation/commit/f487134d8e4c302f69453c093c49fde17dba46fe) by [yogevbd](https://github.com/yogevbd)
+
+# 6.3.1 - 6.3.2
+## Added
+* Custom component reference id OptionsTopBarButton typing [#6046372](https://github.com/wix/react-native-navigation/commit/60463729e5e4ace5c4c81ddc854ee2421b431c86) by [jarnove](https://github.com/jarnove)
+
+## Fixed
+### Android
+* Always resolve dismissAllModals promise [#ec03383](https://github.com/wix/react-native-navigation/commit/ec03383b0de4fe092ddbef807850d131a42a1e7f) [#52bcd5b](https://github.com/wix/react-native-navigation/commit/52bcd5ba5090622db37055d0a18cb673673affa0) by [guyca](https://github.com/guyca)
+
 # 6.3.0
 ## Fixed
 ### iOS

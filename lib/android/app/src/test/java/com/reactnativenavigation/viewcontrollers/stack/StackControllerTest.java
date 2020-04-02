@@ -14,7 +14,7 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
+import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
@@ -102,7 +102,7 @@ public class StackControllerTest extends BaseTest {
                     activity,
                     new TitleBarReactViewCreatorMock(),
                     new TopBarBackgroundViewCreatorMock(),
-                    new TopBarButtonCreatorMock(),
+                    new TitleBarButtonCreatorMock(),
                     new IconResolver(activity, ImageLoaderMock.mock()),
                     new RenderChecker(),
                     new Options()
