@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
@@ -24,9 +23,7 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class Presenter {
-
     private Activity activity;
     private Options defaultOptions;
 
@@ -195,31 +192,30 @@ public class Presenter {
     }
 
     private void applyNavigationBarOptions(NavigationBarOptions options) {
-        setNavigationBarVisibility(options);
+        applyNavigationBarVisibility(options);
         setNavigationBarBackgroundColor(options);
     }
 
     private void mergeNavigationBarOptions(NavigationBarOptions options) {
-        setNavigationBarVisibility(options);
+        mergeNavigationBarVisibility(options);
         setNavigationBarBackgroundColor(options);
     }
 
-    private void setNavigationBarVisibility(NavigationBarOptions navigationBar) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && navigationBar.isVisible.canApplyValue()) {
-            View decorView = activity.getWindow().getDecorView();
-            int flags = decorView.getSystemUiVisibility();
-            boolean defaultVisibility = (flags & View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION) == 0;
-            boolean visible = navigationBar.isVisible.get(defaultVisibility);
-            int hideNavigationBarFlags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+    private void mergeNavigationBarVisibility(NavigationBarOptions options) {
+        if (options.isVisible.hasValue()) applyNavigationBarOptions(options);
+    }
 
-            if (visible) {
-                flags &= ~hideNavigationBarFlags;
-            } else {
-                flags |= hideNavigationBarFlags;
-            }
-
-            decorView.setSystemUiVisibility(flags);
+    private void applyNavigationBarVisibility(NavigationBarOptions options) {
+        View decorView = activity.getWindow().getDecorView();
+        int flags = decorView.getSystemUiVisibility();
+        boolean defaultVisibility = (flags & View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION) == 0;
+        int hideNavigationBarFlags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        if (options.isVisible.get(defaultVisibility)) {
+            flags &= ~hideNavigationBarFlags;
+        } else {
+            flags |= hideNavigationBarFlags;
         }
+        decorView.setSystemUiVisibility(flags);
     }
 
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {

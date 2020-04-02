@@ -35,7 +35,6 @@ class Options extends Component {
   };
 
   render() {
-    const {isAndroidNavigationBarVisible} = this.state;
     return (
       <Root componentId={this.props.componentId}>
         <Button label='Change title' testID={CHANGE_TITLE_BTN} onPress={this.changeTitle} />
@@ -47,7 +46,7 @@ class Options extends Component {
         <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
         <Button label='StatusBar' onPress={this.statusBarScreen} />
         <Button label='Buttons Screen' testID={GOTO_BUTTONS_SCREEN} onPress={this.pushButtonsScreen} />
-        <Button platform='android' onPress={this.toggleAndroidNavigationBar}/>
+        <Button label='Toggle Navigation bar visibility' platform='android' onPress={this.toggleAndroidNavigationBar}/>
       </Root>
     );
   }
