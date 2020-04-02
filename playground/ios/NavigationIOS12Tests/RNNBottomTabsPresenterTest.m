@@ -28,7 +28,6 @@
 	[[(id)self.uut expect] applyBackgroundColor:nil translucent:NO];
     [[self.boundViewController expect] setTabBarHideShadow:NO];
     [[self.boundViewController expect] setTabBarStyle:UIBarStyleDefault];
-    [[self.boundViewController expect] setTabBarVisible:YES animated:NO];
     [self.uut applyOptions:emptyOptions];
     [self.boundViewController verify];
 }
@@ -46,7 +45,6 @@
     [[(id)self.uut expect] applyBackgroundColor:nil translucent:[UIColor redColor]];
     [[self.boundViewController expect] setTabBarHideShadow:YES];
     [[self.boundViewController expect] setTabBarStyle:UIBarStyleBlack];
-    [[self.boundViewController expect] setTabBarVisible:NO animated:NO];
 
     [self.uut applyOptions:initialOptions];
     [self.boundViewController verify];
