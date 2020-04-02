@@ -5,8 +5,9 @@
 #import <OCMock/OCMock.h>
 #import <ReactNativeNavigation/BottomTabPresenterCreator.h>
 #import "RNNBottomTabsController+Helpers.h"
+#import "RNNComponentViewController+Utils.h"
 
-@interface RNNTabBarControllerTest : XCTestCase
+@interface BottomTabsControllerTest : XCTestCase
 
 @property(nonatomic, strong) RNNBottomTabsController * originalUut;
 @property(nonatomic, strong) RNNBottomTabsController * uut;
@@ -16,16 +17,17 @@
 
 @end
 
-@implementation RNNTabBarControllerTest
+@implementation BottomTabsControllerTest
 
 - (void)setUp {
     [super setUp];
 
     id tabBarClassMock = OCMClassMock([RNNBottomTabsController class]);
     OCMStub([tabBarClassMock parentViewController]).andReturn([OCMockObject partialMockForObject:[RNNBottomTabsController new]]);
-	NSArray* children = @[[[UIViewController alloc] init]];
+	UIViewController* childViewController = [RNNComponentViewController createWithComponentId:@"componentId" initialOptions:[RNNNavigationOptions emptyOptions]];
+	NSArray* children = @[childViewController];
     self.mockTabBarPresenter = [OCMockObject partialMockForObject:[[RNNBottomTabsPresenter alloc] init]];
-    self.mockChildViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
+    self.mockChildViewController = [OCMockObject partialMockForObject:childViewController];
     self.mockEventEmitter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.originalUut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:self.mockTabBarPresenter bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil] dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil] eventEmitter:self.mockEventEmitter childViewControllers:children bottomTabsAttacher:nil];
     self.uut = [OCMockObject partialMockForObject:self.originalUut];
@@ -101,7 +103,7 @@
 - (void)testMergeOptions_shouldInvokePresenterMergeOptions {
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
-    [(RNNBottomTabsPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options resolvedOptions:[self.uut options]];
+    [(RNNBottomTabsPresenter *) [self.mockTabBarPresenter expect] mergeOptions:options resolvedOptions:[OCMArg any]];
     [self.uut mergeOptions:options];
     [self.mockTabBarPresenter verify];
 }
@@ -137,9 +139,29 @@
 }
 
 - (void)testPreferredStatusBarStyle_shouldInvokeSelectedViewControllerPreferredStatusBarStyle {
-    [[self.mockTabBarPresenter expect] getStatusBarStyle:[OCMArg any]];
+    [[self.mockTabBarPresenter expect] getStatusBarStyle];
     [self.uut preferredStatusBarStyle];
     [self.mockTabBarPresenter verify];
+}
+
+- (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleTrue {
+	self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(1)];
+	XCTAssertFalse(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleFalse {
+	self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(0)];
+	XCTAssertTrue(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldHideStatusBar {
+	self.uut.options.statusBar.visible = [Bool withValue:@(1)];
+	XCTAssertFalse(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldShowStatusBar {
+	self.uut.options.statusBar.visible = [Bool withValue:@(0)];
+	XCTAssertTrue(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testTabBarControllerDidSelectViewControllerDelegate_shouldInvokeSendBottomTabSelectedEvent {

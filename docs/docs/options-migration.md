@@ -374,11 +374,14 @@ topBar: {
 Controls the behavior of screens displayed modally. 
 
 ### Options supported on iOS
-* overCurrentContext - Content is displayed over the previous screen. Useful for **transparent modals**
+* `overCurrentContext` - Content is displayed over the previous screen. Useful for **transparent modals**
 * `formSheet` - Content is centered in the screen
 * `pageSheet` -Content partially covers the underlying content
 * `overFullScreen` - Content covers the screen, without detaching previous content.
 * `fullScreen` - Content covers the screen, previous content is detached.
+* `popover` - Content is displayed in a popover view.
+
+More information on the different styles for iOS can be found on https://developer.apple.com/documentation/uikit/uimodalpresentationstyle
 
 ### Options supported on Android
 * `overCurrentContext` - Content is displayed over the previous screen. Useful for **transparent modals**
