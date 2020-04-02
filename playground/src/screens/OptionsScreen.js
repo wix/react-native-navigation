@@ -9,8 +9,6 @@ const {
   CHANGE_TITLE_BTN,
   HIDE_TOP_BAR_BTN,
   SHOW_TOP_BAR_BTN,
-  HIDE_ANDROID_NAVIGATION_BAR_BTN,
-  SHOW_ANDROID_NAVIGATION_BAR_BTN,
   TOP_BAR,
   PUSH_BTN,
   HIDE_TOPBAR_DEFAULT_OPTIONS,
@@ -48,15 +46,8 @@ class Options extends Component {
         <Button label='Set React Title View' testID={SET_REACT_TITLE_VIEW} onPress={this.setReactTitleView} />
         <Button label='Show Yellow Box' testID={SHOW_YELLOW_BOX_BTN} onPress={() => console.warn('Yellow Box')} />
         <Button label='StatusBar' onPress={this.statusBarScreen} />
-        <Button label='Buttons Screen' testID={GOTO_BUTTONS_SCREEN} onPress={this.goToButtonsScreen} />
-        {
-          Platform.OS === 'android' &&
-          <Button
-            label={`${isAndroidNavigationBarVisible ? 'Hide' : 'Show'} Android Navigation Bar`}
-            testID={isAndroidNavigationBarVisible ? HIDE_ANDROID_NAVIGATION_BAR_BTN : SHOW_ANDROID_NAVIGATION_BAR_BTN}
-            onPress={this.toggleAndroidNavigationBar}
-          />
-        }
+        <Button label='Buttons Screen' testID={GOTO_BUTTONS_SCREEN} onPress={this.pushButtonsScreen} />
+        <Button platform='android' onPress={this.toggleAndroidNavigationBar}/>
       </Root>
     );
   }
@@ -126,7 +117,13 @@ class Options extends Component {
 
   statusBarScreen = () => Navigation.showModal(Screens.StatusBar);
 
-  goToButtonsScreen = () => Navigation.push(this, Screens.Buttons);
+  pushButtonsScreen = () => Navigation.push(this, Screens.Buttons, {
+    animations: {
+      push: {
+        waitForRender: true
+      }
+    }
+  });
 }
 
 module.exports = Options;

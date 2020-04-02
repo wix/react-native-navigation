@@ -6,7 +6,6 @@
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo rootViewCreator:(id<RNNComponentViewCreator>)creator eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNComponentPresenter *)presenter options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions {
 	self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:nil];
-	self.extendedLayoutIncludesOpaqueBars = YES;
     if (@available(iOS 13.0, *)) {
         self.navigationItem.standardAppearance = [UINavigationBarAppearance new];
         self.navigationItem.scrollEdgeAppearance = [UINavigationBarAppearance new];
@@ -79,10 +78,6 @@
 	[self.eventEmitter sendOnSearchBarCancelPressed:self.layoutInfo.componentId];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-	return [_presenter getStatusBarStyle:[self resolveOptions]];
-}
-
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
 	return self.previewController;
 }
@@ -133,6 +128,24 @@
 
 -(void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem {
 	[self.eventEmitter sendOnNavigationButtonPressed:self.layoutInfo.componentId buttonId:barButtonItem.buttonId];
+}
+
+# pragma mark - UIViewController overrides
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    [self.presenter willMoveToParentViewController:parent];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [self.presenter getStatusBarStyle];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter getStatusBarVisibility];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation];
 }
 
 

@@ -1,28 +1,35 @@
 package com.reactnativenavigation.viewcontrollers.topbar;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.topbar.TopBar;
+
+import java.util.List;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.viewpager.widget.ViewPager;
 
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.ViewUtils.isVisible;
 
 
 public class TopBarController {
     private TopBar topBar;
+    private TitleBar titleBar;
     private TopBarAnimator animator;
 
-    public TopBarController() {
-        animator = new TopBarAnimator();
+    public MenuItem getRightButton(int index) {
+        return titleBar.getRightButton(index);
     }
 
     public TopBar getView() {
@@ -33,15 +40,27 @@ public class TopBarController {
         return perform(topBar, 0, View::getHeight);
     }
 
+    public int getRightButtonsCount() {
+        return topBar.getRightButtonsCount();
+    }
+
+    public Drawable getLeftButton() {
+        return titleBar.getNavigationIcon();
+    }
+
     @VisibleForTesting
     public void setAnimator(TopBarAnimator animator) {
         this.animator = animator;
     }
 
+    public TopBarController() {
+        animator = new TopBarAnimator();
+    }
+
     public TopBar createView(Context context, StackLayout parent) {
         if (topBar == null) {
             topBar = createTopBar(context, parent);
-            topBar.setId(CompatUtils.generateViewId());
+            titleBar = topBar.getTitleBar();
             animator.bindView(topBar, parent);
         }
         return topBar;
@@ -97,5 +116,19 @@ public class TopBarController {
 
     public void setTitleComponent(TitleBarReactViewController component) {
         topBar.setTitleComponent(component.getView());
+    }
+
+    public void applyRightButtons(List<TitleBarButtonController> toAdd) {
+        topBar.clearRightButtons();
+        forEachIndexed(toAdd, (b, i) -> b.addToMenu(titleBar, (toAdd.size() - i) * 10));
+    }
+
+    public void mergeRightButtons(List<TitleBarButtonController> toAdd, List<TitleBarButtonController> toRemove) {
+        forEach(toRemove, btn -> topBar.removeRightButton(btn));
+        forEachIndexed(toAdd, (b, i) -> b.addToMenu(titleBar, (toAdd.size() - i) * 10));
+    }
+
+    public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
+        titleBar.setLeftButtons(leftButtons);
     }
 }
