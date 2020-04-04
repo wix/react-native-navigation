@@ -940,6 +940,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         }
         [viewController didMoveToParentViewController:self];
         [viewController.view setAutoresizingMask:autoResizingMask];
+        [viewController.view setFrame:viewController.mm_visibleDrawerFrame];
     }
 }
 
@@ -1402,6 +1403,7 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
     [sideDrawerViewControllerToPresent.view setHidden:NO];
     [self resetDrawerVisualStateForDrawerSide:drawer];
     [sideDrawerViewControllerToPresent.view setFrame:sideDrawerViewControllerToPresent.mm_visibleDrawerFrame];
+    [sideDrawerViewControllerToPresent.view setNeedsLayout]; // Added to make SafeAreaView in sideDrawerView work (#3418)
     [self updateDrawerVisualStateForDrawerSide:drawer percentVisible:0.0];
     [sideDrawerViewControllerToPresent beginAppearanceTransition:YES animated:animated];
 }
