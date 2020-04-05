@@ -17,6 +17,12 @@
 		5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */; };
 		50451D35204451A900695F00 /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50451D34204451A800695F00 /* RNNCustomViewController.m */; };
 		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */; };
+		50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.m */; };
+		5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */; };
+		507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */; };
+		507C80E7242914C800F765F7 /* StackOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E4888A2427DA4800B11A8E /* StackOptionsTest.m */; };
+		507C80E8242A1E6F00F765F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
+		507C80EC242BC6FB00F765F7 /* LayoutCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 507C80EB242BC6FB00F765F7 /* LayoutCreator.m */; };
 		50996C6823AA477400008F89 /* RNNRootViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50996C6723AA477400008F89 /* RNNRootViewControllerTest.m */; };
 		50996C6923AA487800008F89 /* RNNTestRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */; };
 		50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.m */; };
@@ -25,6 +31,7 @@
 		50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
 		67C681D42B662A53F29C19DA /* Pods_NavigationIOS12Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEE0B5D45FD34FBABC6586CF /* Pods_NavigationIOS12Tests.framework */; };
 		9D204F3DC4FBCD81583BF99F /* Pods_playground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3340545EAAF11C1F146864 /* Pods_playground.framework */; };
+		B9EA50B19EF52C45E9399616 /* Pods_SnapshotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE0C1AD81D2043249E7FE924 /* Pods_SnapshotTests.framework */; };
 		E5046080227748EA00212BD8 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E504607F227748EA00212BD8 /* JavaScriptCore.framework */; };
 		E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.m */; };
 		E58D26472385888C003F36BA /* RNNRootViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26262385888B003F36BA /* RNNRootViewControllerTest.m */; };
@@ -57,6 +64,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		507C80DF2429111F00F765F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = playground;
+		};
 		50996C6223AA46DD00008F89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
@@ -84,6 +98,7 @@
 		4259AF43A23D928FE78B4A3A /* Pods-NavigationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationTests.debug.xcconfig"; path = "Target Support Files/Pods-NavigationTests/Pods-NavigationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4A3340545EAAF11C1F146864 /* Pods_playground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_playground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AE37ACF6BFBAB211EE8E7E9 /* Pods-NavigationIOS12Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationIOS12Tests.release.xcconfig"; path = "Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests.release.xcconfig"; sourceTree = "<group>"; };
+		4C14E49C47AA48BEDE90A218 /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		500E9FE62406A4E200C61231 /* BottomTabPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabPresenterTest.m; sourceTree = "<group>"; };
 		501C86B7239FE9C400E0B631 /* UIImage+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
 		501C86B8239FE9C400E0B631 /* UIImage+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
@@ -93,6 +108,14 @@
 		50451D33204451A800695F00 /* RNNCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNNCustomViewController.h; path = ../../../lib/ios/RNNCustomViewController.h; sourceTree = "<group>"; };
 		50451D34204451A800695F00 /* RNNCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNNCustomViewController.m; path = ../../../lib/ios/RNNCustomViewController.m; sourceTree = "<group>"; };
 		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNExternalViewControllerTests.m; sourceTree = "<group>"; };
+		50650A21242FB0F800688104 /* CommandsHandlerCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandsHandlerCreator.h; sourceTree = "<group>"; };
+		50650A22242FB0F800688104 /* CommandsHandlerCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommandsHandlerCreator.m; sourceTree = "<group>"; };
+		5078DF37242BE8AA007B0B4F /* TestingAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestingAppDelegate.h; sourceTree = "<group>"; };
+		5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestingAppDelegate.m; sourceTree = "<group>"; };
+		507C80DA2429111F00F765F7 /* SnapshotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		507C80DE2429111F00F765F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		507C80EA242BC6FB00F765F7 /* LayoutCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutCreator.h; sourceTree = "<group>"; };
+		507C80EB242BC6FB00F765F7 /* LayoutCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayoutCreator.m; sourceTree = "<group>"; };
 		50996C5D23AA46DD00008F89 /* NavigationIOS12Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationIOS12Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50996C6123AA46DD00008F89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50996C6723AA477400008F89 /* RNNRootViewControllerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNRootViewControllerTest.m; sourceTree = "<group>"; };
@@ -101,11 +124,13 @@
 		50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNNComponentViewController+Utils.m"; sourceTree = "<group>"; };
 		50CF233B240695B10098042D /* RNNBottomTabsController+Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNNBottomTabsController+Helpers.h"; sourceTree = "<group>"; };
 		50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNNBottomTabsController+Helpers.m"; sourceTree = "<group>"; };
+		50E4888A2427DA4800B11A8E /* StackOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StackOptionsTest.m; sourceTree = "<group>"; };
 		7F8E255E2E08F6ECE7DF6FE3 /* Pods-playground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.release.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.release.xcconfig"; sourceTree = "<group>"; };
 		84E32151E3A71C2B7328BCB4 /* Pods_NavigationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NavigationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B484A10A046B0046B98A76B5 /* Pods-playground.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.debug.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.debug.xcconfig"; sourceTree = "<group>"; };
 		C9E7FB91365E7BEF959ADB5F /* Pods-NavigationIOS12Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationIOS12Tests.debug.xcconfig"; path = "Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		D95A99C17C65D674BA9DF26B /* Pods-NavigationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationTests.release.xcconfig"; path = "Target Support Files/Pods-NavigationTests/Pods-NavigationTests.release.xcconfig"; sourceTree = "<group>"; };
+		DC6478E8C795582800285530 /* Pods-SnapshotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.release.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.release.xcconfig"; sourceTree = "<group>"; };
 		DEE0B5D45FD34FBABC6586CF /* Pods_NavigationIOS12Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NavigationIOS12Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E504607F227748EA00212BD8 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		E58D261B238587F4003F36BA /* NavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,6 +165,7 @@
 		E58D26422385888C003F36BA /* RNNBasePresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNBasePresenterTest.m; sourceTree = "<group>"; };
 		E58D26432385888C003F36BA /* RNNModalManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNModalManagerTest.m; sourceTree = "<group>"; };
 		E58D26452385888C003F36BA /* RNNTestNoColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTestNoColor.m; sourceTree = "<group>"; };
+		FE0C1AD81D2043249E7FE924 /* Pods_SnapshotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapshotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +176,14 @@
 				E5046080227748EA00212BD8 /* JavaScriptCore.framework in Frameworks */,
 				9D204F3DC4FBCD81583BF99F /* Pods_playground.framework in Frameworks */,
 				FE548D2471FE535CFCE8B113 /* Pods_playground.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		507C80D72429111F00F765F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9EA50B19EF52C45E9399616 /* Pods_SnapshotTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +213,8 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				50451D33204451A800695F00 /* RNNCustomViewController.h */,
 				50451D34204451A800695F00 /* RNNCustomViewController.m */,
+				5078DF37242BE8AA007B0B4F /* TestingAppDelegate.h */,
+				5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
@@ -196,8 +232,31 @@
 				D95A99C17C65D674BA9DF26B /* Pods-NavigationTests.release.xcconfig */,
 				C9E7FB91365E7BEF959ADB5F /* Pods-NavigationIOS12Tests.debug.xcconfig */,
 				4AE37ACF6BFBAB211EE8E7E9 /* Pods-NavigationIOS12Tests.release.xcconfig */,
+				4C14E49C47AA48BEDE90A218 /* Pods-SnapshotTests.debug.xcconfig */,
+				DC6478E8C795582800285530 /* Pods-SnapshotTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		507C80DB2429111F00F765F7 /* SnapshotTests */ = {
+			isa = PBXGroup;
+			children = (
+				507C80E9242BC6E200F765F7 /* Utils */,
+				50E4888A2427DA4800B11A8E /* StackOptionsTest.m */,
+				507C80DE2429111F00F765F7 /* Info.plist */,
+			);
+			path = SnapshotTests;
+			sourceTree = "<group>";
+		};
+		507C80E9242BC6E200F765F7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				507C80EA242BC6FB00F765F7 /* LayoutCreator.h */,
+				507C80EB242BC6FB00F765F7 /* LayoutCreator.m */,
+				50650A21242FB0F800688104 /* CommandsHandlerCreator.h */,
+				50650A22242FB0F800688104 /* CommandsHandlerCreator.m */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		50996C5E23AA46DD00008F89 /* NavigationIOS12Tests */ = {
@@ -224,6 +283,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				E58D261C238587F4003F36BA /* NavigationTests */,
 				50996C5E23AA46DD00008F89 /* NavigationIOS12Tests */,
+				507C80DB2429111F00F765F7 /* SnapshotTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				E504607E227748E900212BD8 /* Frameworks */,
 				4620213833CA57C55B227B23 /* Pods */,
@@ -239,6 +299,7 @@
 				13B07F961A680F5B00A75B9A /* playground.app */,
 				E58D261B238587F4003F36BA /* NavigationTests.xctest */,
 				50996C5D23AA46DD00008F89 /* NavigationIOS12Tests.xctest */,
+				507C80DA2429111F00F765F7 /* SnapshotTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -252,6 +313,7 @@
 				4A3340545EAAF11C1F146864 /* Pods_playground.framework */,
 				84E32151E3A71C2B7328BCB4 /* Pods_NavigationTests.framework */,
 				DEE0B5D45FD34FBABC6586CF /* Pods_NavigationIOS12Tests.framework */,
+				FE0C1AD81D2043249E7FE924 /* Pods_SnapshotTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -342,6 +404,26 @@
 			productReference = 13B07F961A680F5B00A75B9A /* playground.app */;
 			productType = "com.apple.product-type.application";
 		};
+		507C80D92429111F00F765F7 /* SnapshotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 507C80E12429111F00F765F7 /* Build configuration list for PBXNativeTarget "SnapshotTests" */;
+			buildPhases = (
+				59AF7E19C5E8CA48E2ADBB81 /* [CP] Check Pods Manifest.lock */,
+				507C80D62429111F00F765F7 /* Sources */,
+				507C80D72429111F00F765F7 /* Frameworks */,
+				507C80D82429111F00F765F7 /* Resources */,
+				1093A79180788A805F6D391C /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				507C80E02429111F00F765F7 /* PBXTargetDependency */,
+			);
+			name = SnapshotTests;
+			productName = SnapshotTests;
+			productReference = 507C80DA2429111F00F765F7 /* SnapshotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		50996C5C23AA46DD00008F89 /* NavigationIOS12Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 50996C6623AA46DD00008F89 /* Build configuration list for PBXNativeTarget "NavigationIOS12Tests" */;
@@ -396,6 +478,11 @@
 						DevelopmentTeam = XPHGA2FMQQ;
 						ProvisioningStyle = Automatic;
 					};
+					507C80D92429111F00F765F7 = {
+						CreatedOnToolsVersion = 11.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
 					50996C5C23AA46DD00008F89 = {
 						CreatedOnToolsVersion = 11.2.1;
 						ProvisioningStyle = Automatic;
@@ -426,6 +513,7 @@
 				13B07F861A680F5B00A75B9A /* playground */,
 				E58D261A238587F4003F36BA /* NavigationTests */,
 				50996C5C23AA46DD00008F89 /* NavigationIOS12Tests */,
+				507C80D92429111F00F765F7 /* SnapshotTests */,
 			);
 		};
 /* End PBXProject section */
@@ -437,6 +525,13 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		507C80D82429111F00F765F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,6 +582,96 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-NavigationIOS12Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1093A79180788A805F6D391C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
+				"${BUILT_PRODUCTS_DIR}/FBReactNativeSpec/FBReactNativeSpec.framework",
+				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
+				"${BUILT_PRODUCTS_DIR}/RCTTypeSafety/RCTTypeSafety.framework",
+				"${BUILT_PRODUCTS_DIR}/React-Core/React.framework",
+				"${BUILT_PRODUCTS_DIR}/React-CoreModules/CoreModules.framework",
+				"${BUILT_PRODUCTS_DIR}/React-RCTActionSheet/RCTActionSheet.framework",
+				"${BUILT_PRODUCTS_DIR}/React-RCTAnimation/RCTAnimation.framework",
+				"${BUILT_PRODUCTS_DIR}/React-RCTBlob/RCTBlob.framework",
+				"${BUILT_PRODUCTS_DIR}/React-RCTImage/RCTImage.framework",
+				"${BUILT_PRODUCTS_DIR}/React-RCTLinking/RCTLinking.framework",
+				"${BUILT_PRODUCTS_DIR}/React-RCTNetwork/RCTNetwork.framework",
+				"${BUILT_PRODUCTS_DIR}/React-RCTSettings/RCTSettings.framework",
+				"${BUILT_PRODUCTS_DIR}/React-RCTText/RCTText.framework",
+				"${BUILT_PRODUCTS_DIR}/React-RCTVibration/RCTVibration.framework",
+				"${BUILT_PRODUCTS_DIR}/React-cxxreact/cxxreact.framework",
+				"${BUILT_PRODUCTS_DIR}/React-jsi/jsi.framework",
+				"${BUILT_PRODUCTS_DIR}/React-jsiexecutor/jsireact.framework",
+				"${BUILT_PRODUCTS_DIR}/React-jsinspector/jsinspector.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactCommon/ReactCommon.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactNativeKeyboardTrackingView/ReactNativeKeyboardTrackingView.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactNativeNavigation/ReactNativeNavigation.framework",
+				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
+				"${BUILT_PRODUCTS_DIR}/glog/glog.framework",
+				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
+				"${BUILT_PRODUCTS_DIR}/iOSSnapshotTestCase/FBSnapshotTestCase.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBReactNativeSpec.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/folly.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTTypeSafety.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CoreModules.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTActionSheet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTAnimation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTBlob.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTLinking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTNetwork.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTSettings.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTText.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTVibration.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cxxreact.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/jsi.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/jsireact.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/jsinspector.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactCommon.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeKeyboardTrackingView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeNavigation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSnapshotTestCase.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		59AF7E19C5E8CA48E2ADBB81 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SnapshotTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -741,8 +926,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				50451D35204451A900695F00 /* RNNCustomViewController.m in Sources */,
+				5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		507C80D62429111F00F765F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				507C80E8242A1E6F00F765F7 /* AppDelegate.m in Sources */,
+				507C80EC242BC6FB00F765F7 /* LayoutCreator.m in Sources */,
+				507C80E7242914C800F765F7 /* StackOptionsTest.m in Sources */,
+				507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.m in Sources */,
+				50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -800,6 +998,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		507C80E02429111F00F765F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9A /* playground */;
+			targetProxy = 507C80DF2429111F00F765F7 /* PBXContainerItemProxy */;
+		};
 		50996C6323AA46DD00008F89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* playground */;
@@ -870,6 +1073,58 @@
 				PRODUCT_NAME = playground;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		507C80E22429111F00F765F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C14E49C47AA48BEDE90A218 /* Pods-SnapshotTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = SnapshotTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = rn.SnapshotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/playground.app/playground";
+			};
+			name = Debug;
+		};
+		507C80E32429111F00F765F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC6478E8C795582800285530 /* Pods-SnapshotTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = SnapshotTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = rn.SnapshotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/playground.app/playground";
 			};
 			name = Release;
 		};
@@ -1088,6 +1343,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		507C80E12429111F00F765F7 /* Build configuration list for PBXNativeTarget "SnapshotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				507C80E22429111F00F765F7 /* Debug */,
+				507C80E32429111F00F765F7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

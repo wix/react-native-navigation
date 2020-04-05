@@ -669,7 +669,6 @@ export interface OptionsBottomTab {
   testID?: string;
   /**
    * Set the tab icon
-   * Note: On Android `icon` is required
    */
   icon?: ImageRequireSource | ImageResource;
   /**
