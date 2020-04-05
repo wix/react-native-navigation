@@ -326,8 +326,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public boolean isViewShown() {
         return !isDestroyed &&
-               getView().isShown() &&
                view != null &&
+               view.isShown() &&
                isRendered();
     }
 
