@@ -1,17 +1,17 @@
 module.exports = {
   docs: {
     'Getting Started': [
-      'before-you-start',
-      'installing',
-      'playground-app',
-      'showcases'
+      'docs-before-you-start',
+      'docs-installing',
+      'docs-playground-app',
+      'docs-showcases'
     ],
     'Using the app': [
-      'app-launch',
-      'basic-navigation',
-      'advanced-navigation',
-      'screen-lifecycle',
-      'passing-data-to-components',
+      'docs-app-launch',
+      'docs-basic-navigation',
+      'docs-advanced-navigation',
+      'docs-screen-lifecycle',
+      'docs-passing-data-to-components',
     ],
     Layouts: [
       'docs-stack',
@@ -25,12 +25,12 @@ module.exports = {
       'docs-overlay'
     ],
     Styling: [
-      'theme',
-      'statusBar-docs',
-      'orientation',
-      'docs-animations',
-      'fonts',
-      'constants-docs'
+      'style-theme',
+      'style-statusBar',
+      'style-orientation',
+      'style-animations',
+      'style-fonts',
+      'style-constants'
     ],
     Meta: [
       'meta-contributing'
@@ -41,23 +41,23 @@ module.exports = {
       type: 'category',
       label: 'Navigation',
       items: [
-        'component-api',
-        'root-api',
-        'stack-api',
-        'modal-api',
-        'overlay-api'
+        'api-component',
+        'api-root',
+        'api-stack',
+        'api-modal',
+        'api-overlay'
       ]
     },
     {
       type: 'category',
       label: 'Layouts',
       items: [
-        'layout',
-        'component-layout',
-        'stack-layout',
-        'bottomTabs-layout',
-        'sideMenu-layout',
-        'splitView'
+        'layout-layout',
+        'layout-component',
+        'layout-stack',
+        'layout-bottomTabs',
+        'layout-sideMenu',
+        'layout-splitView'
       ]
     },
     {
@@ -66,30 +66,30 @@ module.exports = {
       items: [
         'options-api',
         'options-root',
-        'bottomTabs-options',
-        'bottomTab-options',
+        'options-bottomTabs',
+        'options-bottomTab',
         {
           'type': 'category',
           'label': 'Stack',
           'items': [
-            'stack-options',
-            'title-options',
-            'subtitle-options',
-            'background-options',
-            'backButton-options',
-            'button-options',
-            'iconInsets-options',
-            'largeTitle-options'
+            'options-stack',
+            'options-title',
+            'options-subtitle',
+            'options-background',
+            'options-backButton',
+            'options-button',
+            'options-iconInsets',
+            'options-largeTitle'
           ]
         },
-        'statusBar-options',
-        'layout-options',
-        'overlay-options',
-        'sideMenu-options',
-        'sideMenuSide-options',
-        'splitView-options'
+        'options-statusBar',
+        'options-layout',
+        'options-overlay',
+        'options-sideMenu',
+        'options-sideMenuSide',
+        'options-splitView'
       ]
     },
-    'events-api'
+    'api-events'
   ]
 };

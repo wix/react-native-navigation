@@ -19,8 +19,8 @@ module.exports = {
         src: 'img/logo.png',
       },
       links: [
-        {to: 'docs/installing', label: 'Docs', position: 'left'},
-        {to: 'docs/component-api', label: 'API', position: 'left'},
+        {to: 'docs/docs-installing', label: 'Docs', position: 'left'},
+        {to: 'docs/api-component', label: 'API', position: 'left'},
         {
           href: 'https://github.com/wix/react-native-navigation',
           label: 'GitHub',
