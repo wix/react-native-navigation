@@ -1,28 +1,28 @@
 module.exports = {
   docs: {
     'Getting Started': [
-      'docs-before-you-start',
-      'docs-installing',
-      'docs-playground-app',
-      'docs-showcases'
+       'before-you-start',
+       'installing',
+       'playground-app',
+       'showcases'
     ],
     'Using the app': [
-      'docs-app-launch',
-      'docs-basic-navigation',
-      'docs-advanced-navigation',
-      'docs-screen-lifecycle',
-      'docs-passing-data-to-components',
+       'app-launch',
+       'basic-navigation',
+       'advanced-navigation',
+       'screen-lifecycle',
+       'passing-data-to-components',
     ],
     Layouts: [
-      'docs-stack',
-      'docs-bottomTabs',
-      'docs-sideMenu',
-      'docs-externalComponent',
+       'stack',
+       'bottomTabs',
+       'sideMenu',
+       'externalComponent',
     ],
     Hierarchy: [
-      'docs-root',
-      'docs-modal',
-      'docs-overlay'
+       'root',
+       'modal',
+       'overlay'
     ],
     Styling: [
       'style-theme',

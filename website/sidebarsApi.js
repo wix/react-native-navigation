@@ -4,11 +4,11 @@ module.exports = {
       type: 'category',
       label: 'Navigation',
       items: [
-        'api-component',
-        'api-root',
-        'api-stack',
-        'api-modal',
-        'api-overlay'
+        'component',
+        'root',
+        'stack',
+        'modal',
+        'overlay'
       ]
     },
     {
@@ -53,6 +53,6 @@ module.exports = {
         'options-splitView'
       ]
     },
-    'api-events'
+    'events'
   ]
 };

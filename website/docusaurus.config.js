@@ -19,8 +19,8 @@ module.exports = {
         src: 'img/logo.png',
       },
       links: [
-        {to: 'docs/docs-before-you-start', label: 'Docs', position: 'left', activeBasePath: 'docs'},
-        {to: 'api/api-component', label: 'API', position: 'left', activeBasePath: 'api'},
+        {to: 'docs/before-you-start', label: 'Docs', position: 'left', activeBasePath: 'docs'},
+        {to: 'api/component', label: 'API', position: 'left', activeBasePath: 'api'},
         {
           href: 'https://github.com/wix/react-native-navigation',
           label: 'GitHub',
@@ -77,10 +77,10 @@ module.exports = {
               label: 'GitHub',
               href: 'https://github.com/wix/react-native-navigation',
             },
-            // {
-            //   label: 'Twitter',
-            //   href: 'https://twitter.com/docusaurus',
-            // },
+            {
+              label: 'Twitter',
+              href: 'https://twitter.com/ReactNativeNav',
+            },
           ],
         },
       ]
