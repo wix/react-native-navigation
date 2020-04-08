@@ -16,16 +16,18 @@ A container view for managing a radio-style selection interface, where a selecti
         name: 'HomeScreen'
       }
     },
-    stack: {
-      id: 'PROFILE_TAB',
-      children: [
-        {
-          component: {
-            id: 'PROFILE_SCREEN',
-            name: 'ProfileScreen'
+    {
+      stack: {
+        id: 'PROFILE_TAB',
+        children: [
+          {
+            component: {
+              id: 'PROFILE_SCREEN',
+              name: 'ProfileScreen'
+            }
           }
-        }
-      ]
+        ]
+      }
     }
   ]
 }

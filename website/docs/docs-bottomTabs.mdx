@@ -39,19 +39,21 @@ bottomTabs: {
         }
       }
     },
-    stack: {
-      id: 'PROFILE_TAB',
-      children: [
-        {
-          component: {
-            id: 'PROFILE_SCREEN',
-            name: 'ProfileScreen'
+    {
+      stack: {
+        id: 'PROFILE_TAB',
+        children: [
+          {
+            component: {
+              id: 'PROFILE_SCREEN',
+              name: 'ProfileScreen'
+            }
           }
-        }
-      ],
-      options: {
-        bottomTab: {
-          icon: require('./profile.png')
+        ],
+        options: {
+          bottomTab: {
+            icon: require('./profile.png')
+          }
         }
       }
     }

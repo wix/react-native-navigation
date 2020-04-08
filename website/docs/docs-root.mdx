@@ -84,32 +84,38 @@ Navigation.setRoot({
   root: {
     bottomTabs: {
       children: [
-        stack: {
-          children: [
-            {
-              component: {
-                name: 'FEED_SCREEN'
+        {
+          stack: {
+            children: [
+              {
+                component: {
+                  name: 'FEED_SCREEN'
+                }
               }
-            }
-          ]
+            ]
+          }
         },
-        stack: {
-          children: [
-            {
-              component: {
-                name: 'CHAT_LIST'
+        {
+          stack: {
+            children: [
+              {
+                component: {
+                  name: 'CHAT_LIST'
+                }
               }
-            }
-          ]
+            ]
+          }
         },
-        stack: {
-          children: [
-            {
-              component: {
-                name: 'PROFILE_SCREEN'
+        {
+          stack: {
+            children: [
+              {
+                component: {
+                  name: 'PROFILE_SCREEN'
+                }
               }
-            }
-          ]
+            ]
+          }
         }
       ]
     }
@@ -129,7 +135,11 @@ Navigation.setRoot({
       center: {
         stack: {
           children: [
-            name: 'HOME_SCREEN'
+            {
+              component: {
+                name: 'HOME_SCREEN'
+              }
+            }
           ]
         }
       },
