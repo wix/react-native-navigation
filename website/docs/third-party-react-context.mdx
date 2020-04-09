@@ -13,6 +13,9 @@ You can use the React Context API with React Native Navigation with a limitation
 :::important Limitation
 As RNN screens are not part of the same component tree, updating the values in the shared context does not trigger a re-render across all screens.
 However you can still use the React.Context per RNN screen component tree.
+
+If you need to trigger a re-render across all screens, there are many popular third party libraries such as 
+[MobX](third-party-mobx.mdx) or Redux.
 :::
 
 ## Create a Counter context
