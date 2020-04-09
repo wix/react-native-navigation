@@ -32,6 +32,10 @@ module.exports = {
       'style-fonts',
       'style-constants'
     ],
+    'Third party integration': [
+      'third-party-react-context',
+      'third-party-mobx'
+    ],
     Meta: [
       'meta-contributing'
     ]
