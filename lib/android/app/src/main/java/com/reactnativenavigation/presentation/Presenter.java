@@ -111,7 +111,11 @@ public class Presenter {
         } else {
             flags &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
         }
-        decorView.setSystemUiVisibility(flags);
+        try {
+            decorView.setSystemUiVisibility(flags);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
@@ -127,7 +131,11 @@ public class Presenter {
         if (scheme == TextColorScheme.Dark) {
             int flags = view.getSystemUiVisibility();
             flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
+            try {
+                view.setSystemUiVisibility(flags);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             clearDarkTextColorScheme(view);
         }
@@ -137,7 +145,11 @@ public class Presenter {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
         int flags = view.getSystemUiVisibility();
         flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        view.setSystemUiVisibility(flags);
+        try {
+            view.setSystemUiVisibility(flags);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void mergeStatusBarOptions(View view, StatusBarOptions statusBar) {
@@ -159,7 +171,11 @@ public class Presenter {
         if (scheme == TextColorScheme.Dark) {
             int flags = view.getSystemUiVisibility();
             flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
+            try {
+                view.setSystemUiVisibility(flags);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             clearDarkTextColorScheme(view);
         }
@@ -183,13 +199,21 @@ public class Presenter {
                 flags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN;
             }
             if (flags != view.getSystemUiVisibility()) view.requestLayout();
-            view.setSystemUiVisibility(flags);
-        } else if (drawBehind.hasValue()) {
-            if (drawBehind.isTrue()) {
-                view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            } else {
-                view.setSystemUiVisibility(~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            try {
+                view.setSystemUiVisibility(flags);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        } else if (drawBehind.hasValue()) {
+          try {
+              if (drawBehind.isTrue()) {
+                  view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+              } else {
+                  view.setSystemUiVisibility(~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+              }
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
         }
     }
 
@@ -219,7 +243,11 @@ public class Presenter {
             } else {
                 flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
             }
-            decorView.setSystemUiVisibility(flags);
+            try {
+                decorView.setSystemUiVisibility(flags);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
