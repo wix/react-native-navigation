@@ -64,8 +64,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        Options resolvedOptions = resolveCurrentOptions();
-        presenter.applyOptions(this, resolvedOptions);
+        presenter.applyOptions(this, resolveCurrentOptions());
     }
 
     @Override
@@ -85,7 +84,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
         childRegistry.onChildDestroyed(this);
     }
 
-    protected boolean isRoot() {
+    boolean isRoot() {
         return getParentController() == null &&
                 !(this instanceof Navigator) &&
                 getView().getParent() != null;
