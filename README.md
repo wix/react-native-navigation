@@ -6,7 +6,7 @@
 [![StackExchange](https://img.shields.io/stackexchange/stackoverflow/t/react-native-navigation.svg)](https://stackoverflow.com/questions/tagged/wix-react-native-navigation)
 
 <h1 align="center">
-  <img src=".logo.png"/><br>
+  <img src=".logo.png"/><br/>
   React Native Navigation
 </h1>
 
@@ -17,7 +17,7 @@ React Native Navigation provides 100% native platform navigation on both iOS and
 - [Changelog](https://github.com/wix/react-native-navigation/blob/master/CHANGELOG.md)
 - [Stack Overflow](http://stackoverflow.com/questions/tagged/react-native-navigation)
 - [Chat with us](https://discord.gg/DhkZjq2)
-- [Contributing](/docs/docs/WorkingLocally.md)
+- [Contributing](https://wix.github.io/react-native-navigation/docs/meta-contributing)
 
 # Installation
 As `react-native-navigation` is a native navigation library - integrating it into your app will require editing native files. Follow the installation guides in the [documentation](https://wix.github.io/react-native-navigation/).
