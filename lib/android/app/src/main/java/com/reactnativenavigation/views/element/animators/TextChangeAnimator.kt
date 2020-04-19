@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
-import com.reactnativenavigation.utils.TextViewUtils
-import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.*
 import com.shazam.android.widget.text.reflow.ReflowTextAnimatorHelper
 
 class TextChangeAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactTextView>(from, to) {
@@ -39,5 +38,6 @@ class TextChangeAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactTe
                 }
                 .buildAnimator()
                 .setDuration(options.getDuration())
+                .withInterpolator(options.interpolation.interpolator)
     }
 }

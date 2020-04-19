@@ -12,6 +12,7 @@ import com.facebook.react.views.view.ReactViewBackgroundDrawable
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ColorUtils
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.withInterpolator
 import com.reactnativenavigation.utils.withStartDelay
 
 class BackgroundColorAnimator(from: View, to: View) : PropertyAnimatorCreator<ViewGroup>(from, to) {
@@ -36,5 +37,6 @@ class BackgroundColorAnimator(from: View, to: View) : PropertyAnimatorCreator<Vi
                 )
                 .setDuration(options.getDuration())
                 .withStartDelay(options.getStartDelay())
+                .withInterpolator(options.interpolation.interpolator)
     }
 }

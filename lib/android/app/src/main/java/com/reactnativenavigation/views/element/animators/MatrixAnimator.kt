@@ -12,6 +12,8 @@ import com.facebook.drawee.drawable.ScalingUtils.InterpolatingScaleType
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.withDuration
+import com.reactnativenavigation.utils.withInterpolator
 import com.reactnativenavigation.utils.withStartDelay
 
 class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
@@ -38,6 +40,7 @@ class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageV
                     }, 0, 1)
                     .setDuration(options.getDuration())
                     .withStartDelay(options.getStartDelay())
+                    .withInterpolator(options.interpolation.interpolator)
         }
     }
 

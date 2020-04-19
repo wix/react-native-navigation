@@ -1,9 +1,11 @@
 package com.reactnativenavigation.parse;
 
+import com.reactnativenavigation.parse.params.Interpolation;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.parse.parsers.InterpolationParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 
@@ -16,6 +18,7 @@ public class SharedElementTransitionOptions {
     public Text toId = new NullText();
     public Number duration = new NullNumber();
     public Number startDelay = new NullNumber();
+    public Interpolation interpolation = Interpolation.NO_VALUE;
 
     public static SharedElementTransitionOptions parse(@Nullable JSONObject json) {
         SharedElementTransitionOptions transition = new SharedElementTransitionOptions();
@@ -25,6 +28,7 @@ public class SharedElementTransitionOptions {
         transition.toId = TextParser.parse(json, "toId");
         transition.duration = NumberParser.parse(json, "duration");
         transition.startDelay = NumberParser.parse(json, "startDelay");
+        transition.interpolation = InterpolationParser.parse(json, "interpolation");
 
         return transition;
     }

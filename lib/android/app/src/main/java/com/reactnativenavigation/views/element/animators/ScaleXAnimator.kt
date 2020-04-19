@@ -8,6 +8,8 @@ import androidx.core.animation.addListener
 import androidx.core.animation.doOnStart
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.utils.withDuration
+import com.reactnativenavigation.utils.withInterpolator
 import com.reactnativenavigation.utils.withStartDelay
 
 class ScaleXAnimator(from: View, to: View) : PropertyAnimatorCreator<ViewGroup>(from, to) {
@@ -23,5 +25,6 @@ class ScaleXAnimator(from: View, to: View) : PropertyAnimatorCreator<ViewGroup>(
                 .ofFloat(to, View.SCALE_X, from.width.toFloat() / to.width, 1f)
                 .setDuration(options.getDuration())
                 .withStartDelay(options.getStartDelay())
+                .withInterpolator(options.interpolation.interpolator)
     }
 }

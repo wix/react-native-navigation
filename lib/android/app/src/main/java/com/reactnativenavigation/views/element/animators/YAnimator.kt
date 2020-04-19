@@ -11,6 +11,7 @@ import androidx.core.animation.doOnStart
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.withInterpolator
 import com.reactnativenavigation.utils.withStartDelay
 
 class YAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) {
@@ -33,5 +34,6 @@ class YAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
                 .ofFloat(to, TRANSLATION_Y, dy.toFloat(), 0f)
                 .setDuration(options.getDuration())
                 .withStartDelay(options.getStartDelay())
+                .withInterpolator(options.interpolation.interpolator)
     }
 }
