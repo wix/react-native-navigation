@@ -15,6 +15,7 @@ public class SharedElementTransitionOptions {
     public Text fromId = new NullText();
     public Text toId = new NullText();
     public Number duration = new NullNumber();
+    public Number startDelay = new NullNumber();
 
     public static SharedElementTransitionOptions parse(@Nullable JSONObject json) {
         SharedElementTransitionOptions transition = new SharedElementTransitionOptions();
@@ -23,6 +24,7 @@ public class SharedElementTransitionOptions {
         transition.fromId = TextParser.parse(json, "fromId");
         transition.toId = TextParser.parse(json, "toId");
         transition.duration = NumberParser.parse(json, "duration");
+        transition.startDelay = NumberParser.parse(json, "startDelay");
 
         return transition;
     }
@@ -31,15 +33,21 @@ public class SharedElementTransitionOptions {
         if (other.fromId.hasValue()) fromId = other.fromId;
         if (other.toId.hasValue()) toId = other.toId;
         if (other.duration.hasValue()) duration = other.duration;
+        if (other.startDelay.hasValue()) startDelay = other.startDelay;
     }
 
     void mergeWithDefault(SharedElementTransitionOptions defaultOptions) {
         if (!fromId.hasValue()) fromId = defaultOptions.fromId;
         if (!toId.hasValue()) toId = defaultOptions.toId;
         if (!duration.hasValue()) duration = defaultOptions.duration;
+        if (!startDelay.hasValue()) startDelay = defaultOptions.startDelay;
     }
 
     public long getDuration() {
         return duration.get(0).longValue();
+    }
+
+    public long getStartDelay() {
+        return startDelay.get(0).longValue();
     }
 }
