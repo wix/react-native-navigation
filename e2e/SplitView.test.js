@@ -14,4 +14,14 @@ describe(':ios: SplitView', () => {
     await elementById(secondCocktail.id).tap();
     await expect(elementByLabel(secondCocktail.description)).toBeVisible();
   });
+
+  it('push screen to master screen', async () => {
+    await elementById(TestIDs.PUSH_MASTER_BTN).tap();
+    await expect(elementByLabel('Pushed Screen')).toBeVisible();
+  });
+
+  it('push screen to detail screen', async () => {
+    await elementById(TestIDs.PUSH_DETAILS_BTN).tap();
+    await expect(elementByLabel('Pushed Screen')).toBeVisible();
+  });
 });

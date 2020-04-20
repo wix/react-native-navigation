@@ -1,8 +1,12 @@
 const React = require('react');
 const { Image, Platform, ScrollView, StyleSheet, Text, View } = require('react-native');
 const {
-  COCKTAILS_DETAILS_HEADER
+  COCKTAILS_DETAILS_HEADER,
+  PUSH_DETAILS_BTN
 } = require('../../testIDs');
+const Screens = require('../Screens');
+const Navigation = require('../../services/Navigation');
+
 class CocktailDetailsScreen extends React.Component {
   static options() {
     return {
@@ -17,8 +21,24 @@ class CocktailDetailsScreen extends React.Component {
       topBar: {
         title: {
           text: 'Cocktail Details'
-        }
+        },
+        rightButtons: [{
+          id: 'pushDetails',
+          testID: PUSH_DETAILS_BTN,
+          text: 'push'
+        }]
       }
+    }
+  }
+
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  navigationButtonPressed({buttonId}) {
+    if (buttonId === 'pushDetails') {
+      Navigation.push(this, Screens.Pushed)
     }
   }
 

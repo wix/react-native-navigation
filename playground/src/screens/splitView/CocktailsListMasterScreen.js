@@ -1,9 +1,12 @@
 const React = require('react');
-const { Component } = require('react');
 const CocktailsView = require('../sharedElementTransition/CocktailsView')
 const { Platform } = require('react-native');
 const Navigation = require('../../services/Navigation');
+const Screens = require('../Screens');
 const CocktailsListScreen = require('../sharedElementTransition/CocktailsListScreen');
+const {
+  PUSH_MASTER_BTN
+} = require('../../testIDs');
 
 class CocktailsListMasterScreen extends CocktailsListScreen {
   static options() {
@@ -19,8 +22,24 @@ class CocktailsListMasterScreen extends CocktailsListScreen {
       topBar: {
         title: {
           text: 'Cocktails'
-        }
+        },
+        rightButtons: [{
+          id: 'pushMaster',
+          testID: PUSH_MASTER_BTN,
+          text: 'push'
+        }]
       }
+    }
+  }
+
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  navigationButtonPressed({buttonId}) {
+    if (buttonId === 'pushMaster') {
+      Navigation.push(this, Screens.Pushed)
     }
   }
 
