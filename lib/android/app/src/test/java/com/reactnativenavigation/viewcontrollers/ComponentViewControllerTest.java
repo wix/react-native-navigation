@@ -21,6 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class ComponentViewControllerTest extends BaseTest {
@@ -40,12 +41,12 @@ public class ComponentViewControllerTest extends BaseTest {
         parent = TestUtils.newStackController(activity).build();
         Presenter presenter = new Presenter(activity, new Options());
         this.presenter = spy(new ComponentPresenter(Options.EMPTY));
-        uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter, this.presenter) {
+        uut = spy(new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter, this.presenter) {
             @Override
             public Options resolveCurrentOptions(Options defaultOptions) {
                 return resolvedOptions;
             }
-        };
+        });
         uut.setParentController(parent);
         parent.ensureViewIsCreated();
     }
@@ -117,8 +118,13 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeOptions_delegatesToPresenter() {
+    public void mergeOptions_delegatesToPresenterIfViewIsNotShown() {
         Options options = new Options();
+        assertThat(uut.isViewShown()).isFalse();
+        uut.mergeOptions(options);
+        verifyZeroInteractions(presenter);
+
+        when(uut.isViewShown()).thenReturn(true);
         uut.mergeOptions(options);
         verify(presenter).mergeOptions(uut.getView(), options);
     }

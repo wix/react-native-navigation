@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import com.facebook.react.uimanager.ViewGroupManager
+import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.R
 import com.reactnativenavigation.parse.AnimationOptions
 import com.reactnativenavigation.utils.ViewTags
@@ -51,9 +52,7 @@ open class TransitionAnimatorCreator {
     private fun reparentViews(transitions: TransitionSet) {
         transitions.transitions
                 .sortedBy { ViewGroupManager.getViewZIndex(it.view) }
-                .forEach {
-                    reparent(it)
-                }
+                .forEach { reparent(it) }
     }
 
     private fun createSharedElementTransitionAnimators(transitions: List<SharedElementTransition>): List<AnimatorSet> {
@@ -65,14 +64,15 @@ open class TransitionAnimatorCreator {
     }
 
     private fun createSharedElementAnimator(transition: SharedElementTransition): AnimatorSet {
-        val set = AnimatorSet()
-        set.playTogether(transition.createAnimators())
-        set.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                transition.from.alpha = 0f
-            }
-        })
-        return set
+        return transition
+                .createAnimators()
+                .apply {
+                    addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationStart(animation: Animator) {
+                            transition.from.alpha = 0f
+                        }
+                    })
+                }
     }
 
     private fun createElementTransitionAnimators(transitions: List<ElementTransition>): List<AnimatorSet> {
@@ -116,8 +116,10 @@ open class TransitionAnimatorCreator {
             lp.topMargin = loc.y + viewController.topInset
             lp.topMargin = loc.y
             lp.leftMargin = loc.x
-            lp.width = view.width
-            lp.height = view.height
+            if (view !is ReactImageView) {
+                lp.width = view.width
+                lp.height = view.height
+            }
             view.layoutParams = lp
             transition.viewController.requireParentController().addOverlay(view)
         }

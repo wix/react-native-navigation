@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "6.3.1",
+  "version": "6.4.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -32,6 +32,7 @@
     "test-js": "node ./scripts/test-js",
     "pod-install": "pod install --project-directory=playground/ios",
     "test-unit-ios": "node ./scripts/test-unit --ios",
+    "test-snapshot-ios": "node ./scripts/test-snapshot --ios",
     "test-unit-android": "node ./scripts/test-unit --android",
     "pretest-e2e-android": "npm run build",
     "test-e2e-android": "node ./scripts/test-e2e --android",
@@ -43,7 +44,8 @@
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
     "local-docs": "node ./scripts/local-docs",
-    "gen-docs": "ts-node ./scripts/gen-docs/Main"
+    "gen-docs": "ts-node ./scripts/gen-docs/Main",
+    "docusaurus": "npm start --prefix website"
   },
   "peerDependencies": {
     "react": "*",

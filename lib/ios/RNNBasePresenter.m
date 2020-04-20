@@ -36,6 +36,13 @@
     
 }
 
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    if (parent) {
+        [self applyOptionsOnWillMoveToParentViewController:self.boundViewController.resolveOptions];
+        [self.boundViewController onChildAddToParent:self.boundViewController options:self.boundViewController.resolveOptions];
+    }
+}
+
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
     UIViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [initialOptions withDefault:[self defaultOptions]];
@@ -78,8 +85,8 @@
 
 }
 
-- (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions {
-    RNNNavigationOptions *withDefault = [resolvedOptions withDefault:[self defaultOptions]];
+- (UIStatusBarStyle)getStatusBarStyle {
+    RNNNavigationOptions *withDefault = [self.boundViewController.resolveOptions withDefault:[self defaultOptions]];
     NSString* statusBarStyle = [withDefault.statusBar.style getWithDefaultValue:@"default"];
     if ([statusBarStyle isEqualToString:@"light"]) {
         return UIStatusBarStyleLightContent;
@@ -98,19 +105,23 @@
     return self.boundViewController.getCurrentChild.navigationItem;
 }
 
-- (UIInterfaceOrientationMask)getOrientation:(RNNNavigationOptions *)options {
-    return [options withDefault:[self defaultOptions]].layout.supportedOrientations;
+- (UIInterfaceOrientationMask)getOrientation {
+    return [self.boundViewController.resolveOptions withDefault:self.defaultOptions].layout.supportedOrientations;
 }
 
-- (BOOL)isStatusBarVisibility:(UINavigationController *)stack resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
-    RNNNavigationOptions *withDefault = [resolvedOptions withDefault:[self defaultOptions]];
+- (BOOL)getStatusBarVisibility {
+    RNNNavigationOptions *withDefault = [self.boundViewController.resolveOptions withDefault:self.defaultOptions];
     if (withDefault.statusBar.visible.hasValue) {
         return ![withDefault.statusBar.visible get];
     } else if ([withDefault.statusBar.hideWithTopBar getWithDefaultValue:NO]) {
-        return stack.isNavigationBarHidden;
+        return self.boundViewController.stack.isNavigationBarHidden;
     }
     return NO;
 }
 
+- (BOOL)hidesBottomBarWhenPushed {
+    RNNNavigationOptions *withDefault = [self.boundViewController.topMostViewController.resolveOptions withDefault:self.defaultOptions];
+    return ![withDefault.bottomTabs.visible getWithDefaultValue:YES];
+}
 
 @end
