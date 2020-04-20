@@ -2,7 +2,6 @@ package com.reactnativenavigation.utils
 
 import android.animation.Animator
 import android.animation.TimeInterpolator
-import android.view.animation.Interpolator
 
 fun Animator.withStartDelay(delay: Long): Animator {
     startDelay = delay

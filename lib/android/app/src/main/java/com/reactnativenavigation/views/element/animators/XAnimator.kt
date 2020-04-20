@@ -10,6 +10,7 @@ import androidx.core.animation.doOnStart
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.withDuration
 import com.reactnativenavigation.utils.withInterpolator
 import com.reactnativenavigation.utils.withStartDelay
 
@@ -31,7 +32,7 @@ class XAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
         to.translationX = dx.toFloat()
         return ObjectAnimator
                 .ofFloat(to, TRANSLATION_X, dx.toFloat(), 0f)
-                .setDuration(options.getDuration())
+                .withDuration(options.getDuration())
                 .withStartDelay(options.getStartDelay())
                 .withInterpolator(options.interpolation.interpolator)
     }

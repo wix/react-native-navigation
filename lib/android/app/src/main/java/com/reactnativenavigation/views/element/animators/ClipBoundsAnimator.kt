@@ -24,7 +24,7 @@ class ClipBoundsAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactIm
                 startDrawingRect,
                 endDrawingRect
         )
-                .setDuration(options.getDuration())
+                .withDuration(options.getDuration())
                 .withStartDelay(options.getStartDelay())
                 .withInterpolator(options.interpolation.interpolator)
     }

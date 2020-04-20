@@ -10,10 +10,7 @@ import androidx.core.animation.doOnStart
 import com.facebook.react.views.text.ReactTextView
 import com.facebook.react.views.view.ReactViewBackgroundDrawable
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
-import com.reactnativenavigation.utils.ColorUtils
-import com.reactnativenavigation.utils.ViewUtils
-import com.reactnativenavigation.utils.withInterpolator
-import com.reactnativenavigation.utils.withStartDelay
+import com.reactnativenavigation.utils.*
 
 class BackgroundColorAnimator(from: View, to: View) : PropertyAnimatorCreator<ViewGroup>(from, to) {
     override fun shouldAnimateProperty(fromChild: ViewGroup, toChild: ViewGroup): Boolean {
@@ -35,7 +32,7 @@ class BackgroundColorAnimator(from: View, to: View) : PropertyAnimatorCreator<Vi
                         fromColor,
                         toColor
                 )
-                .setDuration(options.getDuration())
+                .withDuration(options.getDuration())
                 .withStartDelay(options.getStartDelay())
                 .withInterpolator(options.interpolation.interpolator)
     }

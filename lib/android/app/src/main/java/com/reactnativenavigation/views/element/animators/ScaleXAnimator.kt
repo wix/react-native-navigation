@@ -23,7 +23,7 @@ class ScaleXAnimator(from: View, to: View) : PropertyAnimatorCreator<ViewGroup>(
         to.scaleX = from.width.toFloat() / to.width
         return ObjectAnimator
                 .ofFloat(to, View.SCALE_X, from.width.toFloat() / to.width, 1f)
-                .setDuration(options.getDuration())
+                .withDuration(options.getDuration())
                 .withStartDelay(options.getStartDelay())
                 .withInterpolator(options.interpolation.interpolator)
     }
