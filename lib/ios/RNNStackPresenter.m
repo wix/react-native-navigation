@@ -63,7 +63,6 @@
     
     [stack setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
     [stack setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds getWithDefaultValue:NO]];
-    [stack setBackButtonColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil]];
 	
 	[stack.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
 }
@@ -113,10 +112,6 @@
     
     if (options.topBar.background.blur.hasValue) {
         [stack setNavigationBarBlur:[options.topBar.background.blur get]];
-    }
-    
-    if (options.topBar.backButton.color.hasValue) {
-        [stack setBackButtonColor:options.topBar.backButton.color.get];
     }
 
     if (options.topBar.background.component.name.hasValue) {
