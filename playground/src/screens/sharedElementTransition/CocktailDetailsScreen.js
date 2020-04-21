@@ -100,6 +100,9 @@ const styles = StyleSheet.create({
     height: SIZE,
     width: SIZE,
     zIndex: 1,
+    // transform: [
+    //   { rotate: '45deg' }
+    // ],
     marginLeft: 24,
     marginBottom: -24
   }
