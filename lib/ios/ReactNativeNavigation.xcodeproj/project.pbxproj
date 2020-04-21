@@ -235,6 +235,8 @@
 		50644A2120E11A720026709C /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 50644A1F20E11A720026709C /* Constants.m */; };
 		506A2B1420973DFD00F43A95 /* RNNErrorHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 506A2B1220973DFD00F43A95 /* RNNErrorHandler.h */; };
 		506A2B1520973DFD00F43A95 /* RNNErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 506A2B1320973DFD00F43A95 /* RNNErrorHandler.m */; };
+		506C2532244F0C6B00820F5B /* RotationTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 506C2530244F0C6B00820F5B /* RotationTransition.h */; };
+		506C2533244F0C6B00820F5B /* RotationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 506C2531244F0C6B00820F5B /* RotationTransition.m */; };
 		506F630D216A599300AD0D0A /* RNNTabBarControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 506F630C216A599300AD0D0A /* RNNTabBarControllerTest.m */; };
 		506F630F216A5AD700AD0D0A /* RNNComponentPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 506F630E216A5AD700AD0D0A /* RNNComponentPresenterTest.m */; };
 		50706E6D20CE7CA5003345C3 /* UIImage+tint.h in Headers */ = {isa = PBXBuildFile; fileRef = 50706E6B20CE7CA5003345C3 /* UIImage+tint.h */; };
@@ -721,6 +723,8 @@
 		50644A1F20E11A720026709C /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		506A2B1220973DFD00F43A95 /* RNNErrorHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNErrorHandler.h; sourceTree = "<group>"; };
 		506A2B1320973DFD00F43A95 /* RNNErrorHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNErrorHandler.m; sourceTree = "<group>"; };
+		506C2530244F0C6B00820F5B /* RotationTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RotationTransition.h; sourceTree = "<group>"; };
+		506C2531244F0C6B00820F5B /* RotationTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RotationTransition.m; sourceTree = "<group>"; };
 		506F630C216A599300AD0D0A /* RNNTabBarControllerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTabBarControllerTest.m; sourceTree = "<group>"; };
 		506F630E216A5AD700AD0D0A /* RNNComponentPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNComponentPresenterTest.m; sourceTree = "<group>"; };
 		50706E6B20CE7CA5003345C3 /* UIImage+tint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+tint.h"; sourceTree = "<group>"; };
@@ -1320,6 +1324,8 @@
 				50AD288723CDB71C00FF3134 /* ElementHorizontalTransition.m */,
 				5082CC3123CDC3B800FD2B6A /* HorizontalTranslationTransition.h */,
 				5082CC3223CDC3B800FD2B6A /* HorizontalTranslationTransition.m */,
+				506C2530244F0C6B00820F5B /* RotationTransition.h */,
+				506C2531244F0C6B00820F5B /* RotationTransition.m */,
 				5061B6C523D48449008B9827 /* VerticalRotationTransition.h */,
 				5061B6C623D48449008B9827 /* VerticalRotationTransition.m */,
 				5096709923D49B35002224F9 /* DisplayLinkAnimatorDelegate.h */,
@@ -1812,6 +1818,7 @@
 				390AD477200F499D00A8250D /* RNNSwizzles.h in Headers */,
 				5022EDC924054C8A00852BA6 /* BottomTabsPresenterCreator.h in Headers */,
 				263905B11E4C6F440023D7D3 /* MMDrawerController.h in Headers */,
+				506C2532244F0C6B00820F5B /* RotationTransition.h in Headers */,
 				263905B31E4C6F440023D7D3 /* MMDrawerVisualState.h in Headers */,
 				50451D092042E20600695F00 /* RNNAnimationsOptions.h in Headers */,
 				50EA541A23AEE1C6006F881A /* AnimatedReactView.h in Headers */,
@@ -2182,6 +2189,7 @@
 				50EA541B23AEE1C6006F881A /* AnimatedReactView.m in Sources */,
 				5095BB732416A3B900C4CD41 /* RNNConvert.m in Sources */,
 				7BC9346E1E26886E00EFA125 /* RNNControllerFactory.m in Sources */,
+				506C2533244F0C6B00820F5B /* RotationTransition.m in Sources */,
 				507F43F91FF525B500D9425B /* RNNSegmentedControl.m in Sources */,
 				5038A3B2216DF41B009280BC /* UIViewController+RNNOptions.m in Sources */,
 				50D031352005149000386B3D /* RNNOverlayManager.m in Sources */,
