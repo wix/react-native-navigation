@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
+import androidx.core.view.marginLeft
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.R
@@ -101,19 +102,18 @@ open class TransitionAnimatorCreator {
 
     private fun reparent(transition: Transition) {
         with(transition) {
+            val loc = ViewUtils.getLocationOnScreen(view)
             val biologicalParent = view.parent as ViewGroup
             view.setTag(R.id.original_parent, biologicalParent)
             view.setTag(R.id.original_layout_params, view.layoutParams)
-            view.setTag(R.id.original_top, view.top)
+            view.setTag(R.id.original_top, loc.y - transition.topInset)
             view.setTag(R.id.original_bottom, view.bottom)
             view.setTag(R.id.original_right, view.right)
-            view.setTag(R.id.original_left, view.left)
+            view.setTag(R.id.original_left, loc.x)
 
-            val loc = ViewUtils.getLocationOnScreen(view)
             biologicalParent.removeView(view)
 
             val lp = FrameLayout.LayoutParams(view.layoutParams)
-            lp.topMargin = loc.y + viewController.topInset
             lp.topMargin = loc.y
             lp.leftMargin = loc.x
             if (view !is ReactImageView) {

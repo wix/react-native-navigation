@@ -1,4 +1,5 @@
 const React = require('react');
+const { Platform } = require('react-native');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
 const Navigation = require('./../services/Navigation');
@@ -42,11 +43,11 @@ class NavigationScreen extends React.Component {
         <Button label='Static Events' testID={SHOW_STATIC_EVENTS_SCREEN} onPress={this.pushStaticEventsScreen} />
         <Button label='Orientation' testID={SHOW_ORIENTATION_SCREEN} onPress={this.orientation} />
         <Button label='React Context API' onPress={this.pushContextScreen} />
-        {<Button label='Shared Element' onPress={this.sharedElement} />}
-        <Navigation.TouchablePreview
+        <Button label='Shared Element' onPress={this.sharedElement} />
+        {Platform.OS === 'ios' && <Navigation.TouchablePreview
           touchableComponent={Button}
           onPressIn={this.preview}
-          label='Preview' />
+          label='Preview' />}
       </Root>
     );
   }

@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.view.View.TRANSLATION_Y
 import android.view.ViewGroup
+import com.facebook.react.views.image.ReactImageView
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
@@ -20,7 +21,6 @@ class YAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
         val fromXy = ViewUtils.getLocationOnScreen(from)
         val toY = (to.layoutParams as ViewGroup.MarginLayoutParams).topMargin
         dy = fromXy.y - toY
-        to.pivotY = 0f
     }
 
     override fun shouldAnimateProperty(fromChild: View, toChild: View) = dy != 0
@@ -29,6 +29,7 @@ class YAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
 
     override fun create(options: SharedElementTransitionOptions): Animator {
         to.translationY = dy.toFloat()
+        to.pivotY = 0f
         return ObjectAnimator
                 .ofFloat(to, TRANSLATION_Y, dy.toFloat(), 0f)
                 .withDuration(options.getDuration())
