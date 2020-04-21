@@ -26,14 +26,6 @@ class BackgroundColorAnimator(from: View, to: View) : PropertyAnimatorCreator<Vi
         val toColor = ColorUtils.colorToLAB(ViewUtils.getBackgroundColor(to))
 
         backgroundColorEvaluator.evaluate(0f, fromColor, toColor)
-        return ObjectAnimator
-                .ofObject(
-                        backgroundColorEvaluator,
-                        fromColor,
-                        toColor
-                )
-                .withDuration(options.getDuration())
-                .withStartDelay(options.getStartDelay())
-                .withInterpolator(options.interpolation.interpolator)
+        return ObjectAnimator.ofObject(backgroundColorEvaluator, fromColor, toColor)
     }
 }

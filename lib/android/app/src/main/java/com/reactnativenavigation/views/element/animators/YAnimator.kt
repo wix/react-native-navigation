@@ -8,10 +8,6 @@ import android.view.ViewGroup
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
-import com.reactnativenavigation.utils.withDuration
-
-import com.reactnativenavigation.utils.withInterpolator
-import com.reactnativenavigation.utils.withStartDelay
 
 class YAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) {
     private val dy: Int
@@ -29,10 +25,6 @@ class YAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
     override fun create(options: SharedElementTransitionOptions): Animator {
         to.translationY = dy.toFloat()
         to.pivotY = 0f
-        return ObjectAnimator
-                .ofFloat(to, TRANSLATION_Y, dy.toFloat(), 0f)
-                .withDuration(options.getDuration())
-                .withStartDelay(options.getStartDelay())
-                .withInterpolator(options.interpolation.interpolator)
+        return ObjectAnimator.ofFloat(to, TRANSLATION_Y, dy.toFloat(), 0f)
     }
 }

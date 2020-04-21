@@ -22,7 +22,11 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
     override fun createAnimators(): AnimatorSet {
         val animators = animators()
                 .filter { it.shouldAnimateProperty() }
-                .map { it.create(options) }
+                .map { it.create(options).apply {
+                    duration = options.getDuration()
+                    startDelay = options.getStartDelay()
+                    interpolator = options.getInterpolator()
+                } }
         val set = AnimatorSet()
         set.playTogether(animators)
         return set
