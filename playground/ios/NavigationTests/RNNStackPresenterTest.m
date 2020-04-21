@@ -25,19 +25,6 @@
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
-- (void)testApplyOptions_shouldSetBackButtonColor_withDefaultValues {
-	[[(id)_boundViewController expect] setBackButtonColor:nil];
-	[self.uut applyOptions:self.options];
-	[(id)_boundViewController verify];
-}
-
-- (void)testApplyOptions_shouldSetBackButtonColor_withColor {
-	self.options.topBar.backButton.color = [[Color alloc] initWithValue:[UIColor redColor]];
-	[[(id)_boundViewController expect] setBackButtonColor:[UIColor redColor]];
-	[self.uut applyOptions:self.options];
-	[(id)_boundViewController verify];
-}
-
 - (void)testApplyOptionsBeforePoppingShouldSetTopBarBackgroundForPoppingViewController {
 	_options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
 	
