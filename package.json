@@ -90,7 +90,8 @@
     "ts-node": "5.x.x",
     "tslint": "5.x.x",
     "typedoc": "0.x.x",
-    "typescript": "3.2.2"
+    "typescript": "3.2.2",
+    "identity-obj-proxy": "3.0.0"
   },
   "jest": {
     "preset": "react-native",

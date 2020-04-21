@@ -3,11 +3,8 @@ package com.reactnativenavigation.views.element.animators
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.graphics.rotationMatrix
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
-import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.withDuration
 import com.reactnativenavigation.utils.withInterpolator
 import com.reactnativenavigation.utils.withStartDelay

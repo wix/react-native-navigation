@@ -100,11 +100,13 @@ The following example demonstrates how to show a modal with a fade-in animation.
 
 ```js
 options: {
-  showModal: {
-    alpha: {
-      from: 0,
-      to: 1,
-      duration: 300
+  animations: {
+    showModal: {
+      alpha: {
+        from: 0,
+        to: 1,
+        duration: 300
+      }
     }
   }
 }
@@ -117,11 +119,13 @@ The following example demonstrates how to dismiss a modal with a fade-out animat
 
 ```js
 options: {
-  dismissModal: {
-    alpha: {
-      from: 1,
-      to: 0,
-      duration: 300
+  animations: {
+    dismissModal: {
+      alpha: {
+        from: 1,
+        to: 0,
+        duration: 300
+      }
     }
   }
 }

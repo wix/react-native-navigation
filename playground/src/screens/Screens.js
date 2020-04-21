@@ -9,6 +9,7 @@ module.exports = {
   Buttons: 'Buttons',
   CocktailDetailsScreen: 'CocktailDetailsScreen',
   CocktailsListScreen: 'CocktailsListScreen',
+  CocktailsListMasterScreen: 'CocktailsListMasterScreen',
   ContextScreen: 'ContextScreen',
   ExternalComponent: 'ExternalComponent',
   FullScreenModal: 'FullScreenModal',

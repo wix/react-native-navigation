@@ -1,5 +1,11 @@
 const React = require('react');
-const { Image, Platform, SafeAreaView, StyleSheet, Text, View } = require('react-native');
+const { Image, Platform, ScrollView, StyleSheet, Text, View } = require('react-native');
+const {
+  COCKTAILS_DETAILS_HEADER,
+  PUSH_DETAILS_BTN
+} = require('../../testIDs');
+const Screens = require('../Screens');
+const Navigation = require('../../services/Navigation');
 
 class CocktailDetailsScreen extends React.Component {
   static options() {
@@ -14,17 +20,33 @@ class CocktailDetailsScreen extends React.Component {
       }),
       topBar: {
         title: {
-          text: 'Cocktails'
-        }
+          text: 'Cocktail Details'
+        },
+        rightButtons: [{
+          id: 'pushDetails',
+          testID: PUSH_DETAILS_BTN,
+          text: 'push'
+        }]
       }
+    }
+  }
+
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  navigationButtonPressed({buttonId}) {
+    if (buttonId === 'pushDetails') {
+      Navigation.push(this, Screens.Pushed)
     }
   }
 
   render() {
     return (
-      <SafeAreaView style={styles.root}>
+      <ScrollView style={styles.root}>
         <View nativeID={'backdrop'} style={[styles.backdrop, { backgroundColor: this.props.color }]}/> 
-        <View style={styles.header}>
+        <View style={styles.header} testID={COCKTAILS_DETAILS_HEADER}>
           <Image
             source={this.props.image}
             nativeID={`image${this.props.id}Dest`}
@@ -37,7 +59,7 @@ class CocktailDetailsScreen extends React.Component {
           style={styles.description}>
           {this.props.description}
         </Text>
-      </SafeAreaView >
+      </ScrollView >
     );
   }
 }

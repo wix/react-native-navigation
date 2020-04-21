@@ -1,4 +1,5 @@
 const React = require('react');
+const { Platform } = require('react-native');
 const Root = require('../components/Root');
 const Button = require('../components/Button')
 const {
@@ -6,7 +7,8 @@ const {
   STACK_BTN,
   BOTTOM_TABS_BTN,
   BOTTOM_TABS,
-  SIDE_MENU_BTN
+  SIDE_MENU_BTN,
+  SPLIT_VIEW_BUTTON
 } = require('../testIDs');
 const Screens = require('./Screens');
 const Navigation = require('../services/Navigation');
@@ -30,6 +32,7 @@ class LayoutsScreen extends React.Component {
         <Button label='Stack' testID={STACK_BTN} onPress={this.stack} />
         <Button label='BottomTabs' testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label='SideMenu' testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
+        <Button label='SplitView' testID={SPLIT_VIEW_BUTTON} platform='ios' onPress={this.splitView} />
       </Root>
     );
   }
@@ -78,7 +81,7 @@ class LayoutsScreen extends React.Component {
     }
   });
 
-  onClickSplitView = () => {
+  splitView = () => {
     Navigation.setRoot({
       root: {
         splitView: {
@@ -89,7 +92,7 @@ class LayoutsScreen extends React.Component {
               children: [
                 {
                   component: {
-                    name: 'navigation.playground.WelcomeScreen'
+                    name: Screens.CocktailsListMasterScreen
                   },
                 },
               ]
@@ -101,17 +104,20 @@ class LayoutsScreen extends React.Component {
               children: [
                 {
                   component: {
-                    name: 'navigation.playground.WelcomeScreen'
+                    id: 'DETAILS_COMPONENT_ID',
+                    name: Screens.CocktailDetailsScreen
                   },
                 },
               ]
             }
           },
           options: {
-            displayMode: 'auto',
-            primaryEdge: 'leading',
-            minWidth: 150,
-            maxWidth: 300,
+            layout: {
+              orientation: ['landscape']
+            },
+            splitView: {
+              displayMode: 'visible'
+            }
           },
         },
       },

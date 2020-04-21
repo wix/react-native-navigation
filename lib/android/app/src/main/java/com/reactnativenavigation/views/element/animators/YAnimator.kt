@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.view.View.TRANSLATION_Y
 import android.view.ViewGroup
-import com.facebook.react.views.image.ReactImageView
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
