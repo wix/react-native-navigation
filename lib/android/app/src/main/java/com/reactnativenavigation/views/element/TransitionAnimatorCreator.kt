@@ -116,10 +116,8 @@ open class TransitionAnimatorCreator {
             val lp = FrameLayout.LayoutParams(view.layoutParams)
             lp.topMargin = loc.y
             lp.leftMargin = loc.x
-            if (view !is ReactImageView) {
-                lp.width = view.width
-                lp.height = view.height
-            }
+            lp.width = view.width
+            lp.height = view.height
             view.layoutParams = lp
             transition.viewController.requireParentController().addOverlay(view)
         }
