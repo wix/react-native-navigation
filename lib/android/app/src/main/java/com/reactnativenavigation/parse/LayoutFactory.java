@@ -219,7 +219,7 @@ public class LayoutFactory {
                 node.id,
                 parse(typefaceManager, node.getOptions()),
                 new Presenter(activity, defaultOptions),
-                new BottomTabsAttacher(tabs, bottomTabsPresenter),
+                new BottomTabsAttacher(tabs, bottomTabsPresenter, defaultOptions),
                 bottomTabsPresenter,
                 new BottomTabPresenter(activity, tabs, new ImageLoader(), defaultOptions));
 	}
