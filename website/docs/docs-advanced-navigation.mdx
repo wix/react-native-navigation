@@ -67,6 +67,7 @@ SettingsScreen.options = {
 Navigation.registerComponent('Home', () => HomeScreen);
 Navigation.registerComponent('Settings', () => SettingsScreen);
 
+Navigation.events().registerAppLaunchedListener(async () => {
 Navigation.setDefaultOptions({
   statusBar: {
     backgroundColor: '#4d089a'
@@ -88,7 +89,6 @@ Navigation.setDefaultOptions({
   }
 });
 
-Navigation.events().registerAppLaunchedListener(async () => {
   Navigation.setRoot({
     root: {
       bottomTabs: {
@@ -246,27 +246,29 @@ const loginRoot = {
 };
 
 
-Navigation.setDefaultOptions({
-  statusBar: {
-    backgroundColor: '#4d089a'
-  },
-  topBar: {
-    title: {
-      color: 'white'
-    },
-    backButton: {
-      color: 'white'
-    },
-    background: {
-      color: '#4d089a'
-    }
-  },
-  bottomTab: {
-    fontSize: 14,
-    selectedFontSize: 14
-  }
-});
+
 Navigation.events().registerAppLaunchedListener(async () => {
+  Navigation.setDefaultOptions({
+    statusBar: {
+      backgroundColor: '#4d089a'
+    },
+    topBar: {
+      title: {
+        color: 'white'
+      },
+      backButton: {
+        color: 'white'
+      },
+      background: {
+        color: '#4d089a'
+      }
+    },
+    bottomTab: {
+      fontSize: 14,
+      selectedFontSize: 14
+    }
+  });
+
   Navigation.setRoot(loginRoot);
 });
 
