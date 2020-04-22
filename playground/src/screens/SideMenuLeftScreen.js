@@ -12,15 +12,16 @@ const {
 
 function SideMenuLeftScreen(props) {
   useEffect(() => {
-    const componentDisappearListener = Navigation.events().registerComponentDidDisappearListener(
-      ({ componentId }) => {
-        if (componentId === props.componentId) {
-          console.log('RNN', `componentDisappearListener ${componentId}/${JSON.stringify(props)}`);
-        }
+    const unsubscribe = Navigation.events().bindComponent({
+      componentDidAppear: () => {
+        console.log('RNN', `componentDidAppear`);
       },
-    );
+      componentDidDisappear: () => {
+        console.log('RNN', `componentDidDisappear`);
+      }
+    }, props.componentId);
     return () => {
-      componentDisappearListener.remove();
+      unsubscribe.remove();
     };
   }, []);
 

@@ -12,6 +12,7 @@ module.exports = {
        'advanced-navigation',
        'screen-lifecycle',
        'passing-data-to-components',
+       'functionalComponents'
     ],
     Layouts: [
        'stack',
