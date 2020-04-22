@@ -19,6 +19,7 @@ if (Platform.OS === 'android') {
 };
 
 function start() {
+  Navigation.dismissAllModals();
   registerScreens();
   Navigation.events().registerAppLaunchedListener(async () => {
     setDefaultOptions();
