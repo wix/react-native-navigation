@@ -5,9 +5,6 @@ import android.animation.ObjectAnimator
 import android.view.View
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.parse.SharedElementTransitionOptions
-import com.reactnativenavigation.utils.withDuration
-import com.reactnativenavigation.utils.withInterpolator
-import com.reactnativenavigation.utils.withStartDelay
 
 class RotationAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
     private val fromRotation = from.rotation
@@ -21,10 +18,6 @@ class RotationAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImag
         to.rotation = fromRotation
         to.pivotX = 0f
         to.pivotY = 0f
-        return ObjectAnimator
-                .ofFloat(to, View.ROTATION, fromRotation, toRotation)
-                .withDuration(options.getDuration())
-                .withStartDelay(options.getStartDelay())
-                .withInterpolator(options.interpolation.interpolator)
+        return ObjectAnimator.ofFloat(to, View.ROTATION, fromRotation, toRotation)
     }
 }

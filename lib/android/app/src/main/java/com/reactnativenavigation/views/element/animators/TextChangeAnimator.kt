@@ -35,9 +35,6 @@ class TextChangeAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactTe
                 }
                 .setTextColorGetter {
                     TextViewUtils.getTextColor(it)
-                }
-                .buildAnimator()
-                .setDuration(options.getDuration())
-                .withInterpolator(options.interpolation.interpolator)
+                }.buildAnimator()
     }
 }
