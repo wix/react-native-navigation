@@ -49,12 +49,14 @@ function testTarget(scheme, device, OS = 'latest') {
     -destination 'platform=iOS Simulator,name=${device},OS=${OS}'
     -derivedDataPath ./DerivedData/playground
     ONLY_ACTIVE_ARCH=YES`);
-  } catch (error) {}
+  } catch (error) {
+    if (!RECORD) {
+      throw 'Snapshot tests failed';
+    }
+  }
   finally {
     if (RECORD) {
       pushSnapshots();
-    } else {
-      throw 'Snapshot tests failed';
     }
   }
 }
