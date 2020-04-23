@@ -22,6 +22,7 @@ function start() {
   registerScreens();
   Navigation.events().registerAppLaunchedListener(async () => {
     setDefaultOptions();
+    Navigation.dismissAllModals();
     setRoot();
   });
 }

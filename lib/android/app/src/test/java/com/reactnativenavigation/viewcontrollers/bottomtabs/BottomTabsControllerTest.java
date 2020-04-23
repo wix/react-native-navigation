@@ -251,7 +251,7 @@ public class BottomTabsControllerTest extends BaseTest {
         child4 = createStack(pushedScreen);
 
         tabs = new ArrayList<>(Collections.singletonList(child4));
-        tabsAttacher = new BottomTabsAttacher(tabs, presenter);
+        tabsAttacher = new BottomTabsAttacher(tabs, presenter, Options.EMPTY);
 
         initialOptions.bottomTabsOptions.currentTabIndex = new Number(0);
         Options resolvedOptions = new Options();
@@ -401,7 +401,7 @@ public class BottomTabsControllerTest extends BaseTest {
         tabs = createTabs();
         presenter = spy(new BottomTabsPresenter(tabs, new Options()));
         bottomTabPresenter = spy(new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options()));
-        tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter));
+        tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter, Options.EMPTY));
         uut = createBottomTabs();
 
         uut.setParentController(Mockito.mock(ParentController.class));
