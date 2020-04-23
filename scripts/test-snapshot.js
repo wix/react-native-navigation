@@ -4,7 +4,7 @@ const exec = require('shell-utils').exec;
 const android = includes(process.argv, '--android');
 const release = includes(process.argv, '--release');
 const BRANCH = process.env.BRANCH;
-const RECORD = process.env.RECORD;
+const RECORD = process.env.RECORD === 'true';
 
 function run() {
   if (android) {
@@ -19,7 +19,6 @@ function runAndroidSnapshotTests() {
 }
 
 function runIosSnapshotTests() {
-  console.log(`RECORD ENV VAL: ${RECORD}`);
   exec.execSync('npm run build');
   exec.execSync('npm run pod-install');
   testTarget(RECORD ? 'SnapshotRecordTests' : 'SnapshotTests', 'iPhone 11', '13.0');
