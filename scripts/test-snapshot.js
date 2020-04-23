@@ -64,8 +64,7 @@ function testTarget(scheme, device, OS = 'latest') {
 function pushSnapshots() {
   setupGit();
   exec.execSync(`git checkout ${BRANCH}`);
-  exec.execSync(`rm -rfv ./SnapshotTests/ReferenceImages_64`);
-  exec.execSync(`git add ./SnapshotTests/ReferenceImages_64`);
+  exec.execSync(`git add ./playground/ios/SnapshotTests/ReferenceImages_64`);
   exec.execSync(`git commit -m "Update snapshots [ci skip]"`);
   exec.execSync(`git push deploy ${BRANCH}`);
 }
