@@ -221,7 +221,7 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.5)
   - ReactNativeKeyboardTrackingView (5.6.1):
     - React
-  - ReactNativeNavigation (6.3.1):
+  - ReactNativeNavigation (6.4.0):
     - React
     - React-RCTImage
     - React-RCTText
@@ -352,9 +352,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeKeyboardTrackingView: a240a6a0dba852bb107109a7ec7e98b884055977
-  ReactNativeNavigation: d9bb71088ef37aa6af58f3172f890a1ae08861d6
+  ReactNativeNavigation: 667586f6924fbd09512e2933fe70497db914b758
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 480983e790dd4e9f99b1673fbb65606d9fe8ce71
+PODFILE CHECKSUM: 51b8040756c3fb06cf4c6437b0a7c683703c2b03
 
 COCOAPODS: 1.9.1
