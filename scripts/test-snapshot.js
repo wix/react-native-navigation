@@ -53,6 +53,8 @@ function testTarget(scheme, device, OS = 'latest') {
   finally {
     if (RECORD) {
       pushSnapshots();
+    } else {
+      throw 'Snapshot tests failed';
     }
   }
 }
@@ -60,11 +62,10 @@ function testTarget(scheme, device, OS = 'latest') {
 function pushSnapshots() {
   setupGit();
   exec.execSync(`git checkout ${BRANCH}`);
-  exec.execSync(`rm -rfv ./playground/ios/SnapshotTests/ReferenceImages_64`);
-  exec.execSync(`git add ./playground/ios/SnapshotTests/ReferenceImages_64`);
+  exec.execSync(`rm -rfv ./SnapshotTests/ReferenceImages_64`);
+  exec.execSync(`git add ./SnapshotTests/ReferenceImages_64`);
   exec.execSync(`git commit -m "Update snapshots [ci skip]"`);
-  console.log(`git push deploy ${BRANCH}`);
-  // exec.execSync(`git push deploy ${BRANCH}`);
+  exec.execSync(`git push deploy ${BRANCH}`);
 }
 
 function setupGit() {
