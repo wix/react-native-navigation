@@ -209,3 +209,6 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+
+# Snapshot tests diffs
+ios/SnapshotTests/FailureDiffs/
