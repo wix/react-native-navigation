@@ -24,6 +24,7 @@ public class Options {
         result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
         result.overlayOptions = OverlayOptions.parse(json.optJSONObject("overlay"));
         result.fabOptions = FabOptions.parse(json.optJSONObject("fab"));
+        result.extendedFabOptions = FabOptions.parse(json.optJSONObject("extendedFab"));
         result.sideMenuRootOptions = SideMenuRootOptions.parse(json.optJSONObject("sideMenu"));
         result.animations = AnimationsOptions.parse(json.optJSONObject("animations"));
         result.modal = ModalOptions.parse(json);
@@ -34,6 +35,14 @@ public class Options {
         return result;
     }
 
+    public FabOptions getFabOptionsType() {
+        if (extendedFabOptions.hasValue()) {
+            return extendedFabOptions;
+        }
+
+        return fabOptions;
+    }
+
     @NonNull public TopBarOptions topBar = new TopBarOptions();
     @NonNull public TopTabsOptions topTabs = new TopTabsOptions();
     @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
@@ -41,6 +50,7 @@ public class Options {
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
     @NonNull public OverlayOptions overlayOptions = new OverlayOptions();
     @NonNull public FabOptions fabOptions = new FabOptions();
+    @NonNull public FabOptions extendedFabOptions = new FabOptions();
     @NonNull public AnimationsOptions animations = new AnimationsOptions();
     @NonNull public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
     @NonNull public ModalOptions modal = new ModalOptions();
@@ -62,6 +72,7 @@ public class Options {
         result.bottomTabsOptions.mergeWith(bottomTabsOptions);
         result.overlayOptions = overlayOptions;
         result.fabOptions.mergeWith(fabOptions);
+        result.extendedFabOptions.mergeWith(extendedFabOptions);
         result.sideMenuRootOptions.mergeWith(sideMenuRootOptions);
         result.animations.mergeWith(animations);
         result.modal.mergeWith(modal);
@@ -80,6 +91,7 @@ public class Options {
         result.bottomTabOptions.mergeWith(other.bottomTabOptions);
         result.bottomTabsOptions.mergeWith(other.bottomTabsOptions);
         result.fabOptions.mergeWith(other.fabOptions);
+        result.extendedFabOptions.mergeWith(other.extendedFabOptions);
         result.animations.mergeWith(other.animations);
         result.sideMenuRootOptions.mergeWith(other.sideMenuRootOptions);
         result.modal.mergeWith(other.modal);
@@ -96,6 +108,7 @@ public class Options {
         bottomTabOptions.mergeWithDefault(defaultOptions.bottomTabOptions);
         bottomTabsOptions.mergeWithDefault(defaultOptions.bottomTabsOptions);
         fabOptions.mergeWithDefault(defaultOptions.fabOptions);
+        extendedFabOptions.mergeWithDefault(defaultOptions.extendedFabOptions);
         animations.mergeWithDefault(defaultOptions.animations);
         sideMenuRootOptions.mergeWithDefault(defaultOptions.sideMenuRootOptions);
         modal.mergeWithDefault(defaultOptions.modal);
@@ -137,6 +150,7 @@ public class Options {
 
     public Options clearFabOptions() {
         fabOptions = new FabOptions();
+        extendedFabOptions = new FabOptions();
         return this;
     }
 

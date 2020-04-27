@@ -10,7 +10,6 @@ import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.parse.params.TitleDisplayMode;
 import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.FractionParser;
@@ -21,6 +20,17 @@ import org.json.JSONObject;
 
 public class BottomTabsOptions {
 
+    public Colour backgroundColor = new NullColor();
+    public Bool visible = new NullBool();
+    public Bool drawBehind = new NullBool();
+    public Bool animate = new NullBool();
+    public Number currentTabIndex = new NullNumber();
+    public Fraction elevation = new NullFraction();
+    public Text currentTabId = new NullText();
+    public Text testId = new NullText();
+    public Text titleDisplayMode = new NullText();
+    public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
+
 	public static BottomTabsOptions parse(JSONObject json) {
 		BottomTabsOptions options = new BottomTabsOptions();
 		if (json == null) return options;
@@ -30,27 +40,14 @@ public class BottomTabsOptions {
 		options.currentTabIndex = NumberParser.parse(json,"currentTabIndex");
 		options.visible = BoolParser.parse(json,"visible");
         options.drawBehind = BoolParser.parse(json, "drawBehind");
-        options.preferLargeIcons = BoolParser.parse(json, "preferLargeIcons");
 		options.animate = BoolParser.parse(json,"animate");
         options.elevation = FractionParser.parse(json, "elevation");
         options.testId = TextParser.parse(json, "testID");
-        options.titleDisplayMode = TitleDisplayMode.fromString(json.optString("titleDisplayMode"));
+        options.titleDisplayMode = TextParser.parse(json, "titleDisplayMode");
         options.tabsAttachMode = TabsAttachMode.fromString(json.optString("tabsAttachMode"));
 
 		return options;
 	}
-
-    public Colour backgroundColor = new NullColor();
-	public Bool visible = new NullBool();
-    public Bool drawBehind = new NullBool();
-	public Bool animate = new NullBool();
-    public Bool preferLargeIcons = new NullBool();
-	public Number currentTabIndex = new NullNumber();
-	public Fraction elevation = new NullFraction();
-	public Text currentTabId = new NullText();
-    public Text testId = new NullText();
-    public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
-    public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
 
 	void mergeWith(final BottomTabsOptions other) {
 		if (other.currentTabId.hasValue()) currentTabId = other.currentTabId;
@@ -58,7 +55,6 @@ public class BottomTabsOptions {
 		if (other.visible.hasValue()) visible = other.visible;
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
 		if (other.animate.hasValue()) animate = other.animate;
-        if (other.preferLargeIcons.hasValue()) preferLargeIcons = other.preferLargeIcons;
         if (other.elevation.hasValue()) elevation = other.elevation;
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
         if (other.testId.hasValue()) testId = other.testId;
@@ -72,7 +68,6 @@ public class BottomTabsOptions {
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;
         if (!animate.hasValue()) animate = defaultOptions.animate;
-        if (!preferLargeIcons.hasValue()) preferLargeIcons = defaultOptions.preferLargeIcons;
         if (!elevation.hasValue()) elevation = defaultOptions.elevation;
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
         if (!titleDisplayMode.hasValue()) titleDisplayMode = defaultOptions.titleDisplayMode;

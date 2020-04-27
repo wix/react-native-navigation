@@ -7,26 +7,19 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState;
 import javax.annotation.Nullable;
 
 public enum TitleDisplayMode {
-    ALWAYS_SHOW(TitleState.ALWAYS_SHOW), SHOW_WHEN_ACTIVE(TitleState.SHOW_WHEN_ACTIVE), ALWAYS_HIDE(TitleState.ALWAYS_HIDE), SHOW_WHEN_ACTIVE_FORCE(TitleState.SHOW_WHEN_ACTIVE_FORCE), UNDEFINED(null);
+    ALWAYS_SHOW(Constants.ALWAYS_SHOW),
+    SHOW_WHEN_ACTIVE(Constants.SHOW_WHEN_ACTIVE),
+    ALWAYS_HIDE(Constants.ALWAYS_HIDE),
+    SHOW_WHEN_ACTIVE_FORCE(Constants.SHOW_WHEN_ACTIVE_FORCE),
+    UNDEFINED(null);
 
-    public static TitleDisplayMode fromString(String mode) {
-        switch (mode) {
-            case Constants.ALWAYS_SHOW:
-                return ALWAYS_SHOW;
-            case Constants.SHOW_WHEN_ACTIVE:
-                return SHOW_WHEN_ACTIVE;
-            case Constants.ALWAYS_HIDE:
-                return ALWAYS_HIDE;
-            case Constants.SHOW_WHEN_ACTIVE_FORCE:
-                return SHOW_WHEN_ACTIVE_FORCE;
-            default:
-                return UNDEFINED;
-        }
+    public static String fromString(String mode) {
+        return mode;
     }
 
-    @Nullable private TitleState state;
+    @Nullable private String state;
 
-    TitleDisplayMode(@Nullable TitleState state) {
+    TitleDisplayMode(@Nullable String state) {
         this.state = state;
     }
 
@@ -34,12 +27,12 @@ public enum TitleDisplayMode {
         return state != null;
     }
 
-    public TitleState get(@NonNull TitleState defaultValue) {
+    public String get(@NonNull String defaultValue) {
         return state == null ? defaultValue : state;
     }
 
     @NonNull
-    public TitleState toState() {
+    public String toState() {
         if (state == null) throw new RuntimeException("TitleDisplayMode is undefined");
         return state;
     }

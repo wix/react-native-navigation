@@ -3,28 +3,26 @@ package com.reactnativenavigation.presentation;
 import android.graphics.Color;
 import android.view.ViewGroup;
 
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState;
-import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
 import com.reactnativenavigation.views.BottomTabs;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 import androidx.annotation.IntRange;
+
+import org.jetbrains.annotations.NotNull;
 
 public class BottomTabsPresenter {
     private final BottomTabFinder bottomTabFinder;
     private final List<ViewController> tabs;
     private Options defaultOptions;
     private BottomTabs bottomTabs;
-    private BottomTabsAnimator animator;
     private TabSelector tabSelector;
 
     public BottomTabsPresenter(List<ViewController> tabs, Options defaultOptions) {
@@ -37,10 +35,9 @@ public class BottomTabsPresenter {
         this.defaultOptions = defaultOptions;
     }
 
-    public void bindView(BottomTabs bottomTabs, TabSelector tabSelector, BottomTabsAnimator animator) {
+    public void bindView(BottomTabs bottomTabs, TabSelector tabSelector) {
         this.bottomTabs = bottomTabs;
         this.tabSelector = tabSelector;
-        this.animator = animator;
     }
 
     public void mergeOptions(Options options, ViewController view) {
@@ -67,12 +64,10 @@ public class BottomTabsPresenter {
 
     private void mergeBottomTabsOptions(Options options, ViewController view) {
         BottomTabsOptions bottomTabsOptions = options.bottomTabsOptions;
-        AnimationsOptions animations = options.animations;
 
         if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction);
-        if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get());
-        if (bottomTabsOptions.titleDisplayMode.hasValue()) {
-            bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.toState());
+       if (bottomTabsOptions.titleDisplayMode.hasValue()) {
+            bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode);
         }
         if (bottomTabsOptions.backgroundColor.hasValue()) {
             bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get());
@@ -91,16 +86,12 @@ public class BottomTabsPresenter {
         if (view.isViewShown()) {
             if (bottomTabsOptions.visible.isTrue()) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined()) {
-                    animator.show(animations);
-                } else {
-                    bottomTabs.restoreBottomNavigation(false);
+                    bottomTabs.show();
                 }
             }
             if (bottomTabsOptions.visible.isFalse()) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined()) {
-                    animator.hide(animations);
-                } else {
-                    bottomTabs.hideBottomNavigation(false);
+                    bottomTabs.hide();
                 }
             }
         }
@@ -119,8 +110,7 @@ public class BottomTabsPresenter {
         AnimationsOptions animationsOptions = options.animations;
 
         bottomTabs.setLayoutDirection(options.layout.direction);
-        bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons.get(false));
-        bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.get(getDefaultTitleState()));
+        bottomTabs.setTitleState(new Text(bottomTabsOptions.titleDisplayMode.get(getDefaultTitleState())));
         bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE));
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             int tabIndex = bottomTabsOptions.currentTabIndex.get();
@@ -132,30 +122,22 @@ public class BottomTabsPresenter {
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
         if (bottomTabsOptions.visible.isTrueOrUndefined()) {
-            if (bottomTabsOptions.animate.isTrueOrUndefined()) {
-                animator.show(animationsOptions);
-            } else {
-                bottomTabs.restoreBottomNavigation(false);
-            }
+                bottomTabs.show();
         }
         if (bottomTabsOptions.visible.isFalse()) {
-            if (bottomTabsOptions.animate.isTrueOrUndefined()) {
-                animator.hide(animationsOptions);
-            } else {
-                bottomTabs.hideBottomNavigation(false);
-            }
+                bottomTabs.hide();
         }
         if (bottomTabsOptions.elevation.hasValue()) {
-            bottomTabs.setUseElevation(true, bottomTabsOptions.elevation.get().floatValue());
+            bottomTabs.setElevation(bottomTabsOptions.elevation.get().floatValue());
         }
     }
 
     @NotNull
-    private TitleState getDefaultTitleState() {
-        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
-            if (bottomTabs.getItem(i).hasIcon()) return TitleState.SHOW_WHEN_ACTIVE;
+    private String getDefaultTitleState() {
+        for (int i = 0; i < bottomTabs.getMenu().size(); i++) {
+            if (bottomTabs.getMenu().getItem(i).getIcon() != null) return "SHOW_WHEN_ACTIVE";
         }
-        return TitleState.ALWAYS_SHOW;
+        return "ALWAYS_SHOW";
     }
 
     public void applyBottomInset(int bottomInset) {

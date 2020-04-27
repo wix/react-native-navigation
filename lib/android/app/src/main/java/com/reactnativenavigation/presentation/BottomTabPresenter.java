@@ -1,11 +1,24 @@
 package com.reactnativenavigation.presentation;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
-import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import androidx.annotation.NonNull;
+
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.reactnativenavigation.parse.BottomTabOptions;
-import com.reactnativenavigation.parse.DotIndicatorOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Param;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -17,9 +30,7 @@ import com.reactnativenavigation.views.BottomTabs;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 public class BottomTabPresenter {
@@ -29,7 +40,7 @@ public class BottomTabPresenter {
     private final BottomTabFinder bottomTabFinder;
     private LateInit<BottomTabs> bottomTabs = new LateInit<>();
     private final List<ViewController> tabs;
-    private final int defaultDotIndicatorSize;
+    private TextView tv;
 
     public BottomTabPresenter(Context context, List<ViewController> tabs, ImageLoader imageLoader, Options defaultOptions) {
         this.tabs = tabs;
@@ -37,7 +48,7 @@ public class BottomTabPresenter {
         this.bottomTabFinder = new BottomTabFinder(tabs);
         this.imageLoader = imageLoader;
         this.defaultOptions = defaultOptions;
-        defaultDotIndicatorSize = dpToPx(context, 6);
+        this.tv = new TextView(context);
     }
 
     public void setDefaultOptions(Options defaultOptions) {
@@ -50,26 +61,30 @@ public class BottomTabPresenter {
 
     public void applyOptions() {
         bottomTabs.perform(bottomTabs -> {
-            for (int i = 0; i < tabs.size(); i++) {
-                BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
-                bottomTabs.setTitleTypeface(i, tab.fontFamily);
-                if (tab.selectedIconColor.canApplyValue()) bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
-                if (tab.iconColor.canApplyValue()) bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
-                bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
-                bottomTabs.setTitleInactiveColor(i, tab.textColor.get(null));
-                bottomTabs.setTitleInactiveTextSizeInSp(i, tab.fontSize.hasValue() ? Float.valueOf(tab.fontSize.get()) : null);
-                bottomTabs.setTitleActiveTextSizeInSp(i, tab.selectedFontSize.hasValue() ? Float.valueOf(tab.selectedFontSize.get()) : null);
-                if (tab.testId.hasValue()) bottomTabs.setTag(i, tab.testId.get());
-                if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator); else applyBadge(i, tab);
+            for (int index = 0; index < tabs.size(); index++) {
+                BottomTabOptions tab = tabs.get(index).resolveCurrentOptions(defaultOptions).bottomTabOptions;
+                if (tab.fontFamily != null) bottomTabs.setItemTypeface(tab.fontFamily, index);
+                if (tab.iconColor.hasValue()) bottomTabs.setIconUnselectedColor(tab.iconColor.get(), index);
+                if (tab.selectedIconColor.hasValue()) bottomTabs.setIconSelectedColor(tab.selectedIconColor.get(), index);
+                if (tab.selectedTextColor.hasValue()) bottomTabs.setItemTextColorSelected(tab.selectedTextColor.get());
+                if (tab.textColor.hasValue()) bottomTabs.setItemTextColor(tab.textColor.get());
+                if (tab.text.hasValue()) bottomTabs.setText(index, tab.text.get());
+//                bottomTabs.setTitleInactiveTextSizeInSp(i, tab.fontSize.hasValue() ? Float.valueOf(tab.fontSize.get()) : null);
+//                bottomTabs.setTitleActiveTextSizeInSp(i, tab.selectedFontSize.hasValue() ? Float.valueOf(tab.selectedFontSize.get()) : null);
+                BottomNavigationMenuView bottomNavigationMenuView = (BottomNavigationMenuView) bottomTabs.getChildAt(0);
+                BottomNavigationItemView item = (BottomNavigationItemView) bottomNavigationMenuView.getChildAt(index);
+                View itemTitle = item.getChildAt(1);
+                if (tab.testId.hasValue()) itemTitle.setTag(tab.testId.get());
+                if (shouldApplyDot(tab)) mergeDotIndicator(index, tab); else mergeBadge(index, tab);
             }
         });
     }
 
+
+
     public void mergeOptions(Options options) {
         bottomTabs.perform(bottomTabs -> {
-            bottomTabs.disableItemsCreation();
             forEach(tabs, tab -> mergeChildOptions(options, tab));
-            bottomTabs.enableItemsCreation();
         });
     }
 
@@ -78,11 +93,11 @@ public class BottomTabPresenter {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
                 BottomTabOptions tab = options.bottomTabOptions;
-                if (tab.fontFamily != null) bottomTabs.setTitleTypeface(index, tab.fontFamily);
-                if (canMerge(tab.selectedIconColor)) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
-                if (canMerge(tab.iconColor)) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
-                if (tab.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, tab.selectedTextColor.get());
-                if (tab.textColor.hasValue()) bottomTabs.setTitleInactiveColor(index, tab.textColor.get());
+                if (tab.fontFamily != null) bottomTabs.setItemTypeface(tab.fontFamily, index);
+                if (canMerge(tab.selectedIconColor)) bottomTabs.setIconSelectedColor(tab.selectedIconColor.get(), index);
+                if (canMerge(tab.iconColor)) bottomTabs.setIconUnselectedColor(tab.iconColor.get(), index);
+                if (tab.selectedTextColor.hasValue()) bottomTabs.setItemTextColorSelected(tab.selectedTextColor.get());
+                if (tab.textColor.hasValue()) bottomTabs.setItemTextColor(tab.textColor.get());
                 if (tab.text.hasValue()) bottomTabs.setText(index, tab.text.get());
                 if (tab.icon.hasValue()) imageLoader.loadIcon(context, tab.icon.get(), new ImageLoadingListenerAdapter() {
                     @Override
@@ -96,50 +111,100 @@ public class BottomTabPresenter {
                         bottomTabs.setSelectedIcon(index, drawable);
                     }
                 });
-                if (tab.testId.hasValue()) bottomTabs.setTag(index, tab.testId.get());
-                if (shouldApplyDot(tab)) mergeDotIndicator(index, tab.dotIndicator); else mergeBadge(index, tab);
+                BottomNavigationMenuView bottomNavigationMenuView = (BottomNavigationMenuView) bottomTabs.getChildAt(0);
+                BottomNavigationItemView item = (BottomNavigationItemView) bottomNavigationMenuView.getChildAt(index);
+                View itemTitle = item.getChildAt(1);
+                if (tab.testId.hasValue()) itemTitle.setTag(tab.testId.get());
+                if (shouldApplyDot(tab)) mergeDotIndicator(index, tab); else mergeBadge(index, tab);
             }
         });
-    }
-
-    private void applyDotIndicator(int tabIndex, DotIndicatorOptions dotIndicator) {
-        if(dotIndicator.visible.isFalse()) return;
-        AHNotification.Builder builder = new AHNotification.Builder()
-                .setText("")
-                .setBackgroundColor(dotIndicator.color.get(null))
-                .setSize(dotIndicator.size.get(defaultDotIndicatorSize))
-                .animate(dotIndicator.animate.get(false));
-        bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), tabIndex));
-    }
-
-    private void applyBadge(int tabIndex, BottomTabOptions tab) {
-        if (bottomTabs == null) return;
-        AHNotification.Builder builder = new AHNotification.Builder()
-                .setText(tab.badge.get(""))
-                .setBackgroundColor(tab.badgeColor.get(null))
-                .animate(tab.animateBadge.get(false));
-        bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), tabIndex));
     }
 
     private void mergeBadge(int index, BottomTabOptions tab) {
         if (bottomTabs == null) return;
         if (!tab.badge.hasValue()) return;
-        AHNotification.Builder builder = new AHNotification.Builder();
-        if (tab.badge.hasValue()) builder.setText(tab.badge.get());
-        if (tab.badgeColor.hasValue()) builder.setBackgroundColor(tab.badgeColor.get());
-        if (tab.badgeColor.hasValue()) builder.setBackgroundColor(tab.badgeColor.get());
-        if (tab.animateBadge.hasValue()) builder.animate(tab.animateBadge.get());
-        bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), index));
+
+        doBadgeLogic(index, tab);
     }
 
-    private void mergeDotIndicator(int index, DotIndicatorOptions dotIndicator) {
+    private void removeNotificationIconRemnants() {
+        bottomTabs.perform(bottomTabs -> {
+            BottomNavigationMenuView bottomNavigationMenuView =
+                    (BottomNavigationMenuView) bottomTabs.getChildAt(0);
+
+            for (int i = 0; i < bottomNavigationMenuView.getChildCount(); i++) {
+                View v = bottomNavigationMenuView.getChildAt(i);
+                BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+                itemView.removeView(tv);
+            }
+        });
+    }
+
+    private void doBadgeLogic(int index, BottomTabOptions tab) {
+        if (tab.badge.hasValue()) {
+            bottomTabs.perform(bottomTabs -> {
+                if (tab.badge.get().isEmpty()) {
+                    removeNotificationIconRemnants();
+                } else {
+                    createNotificationIcon(index, "badge", tab);
+                }
+            });
+        }
+    }
+
+    private void mergeDotIndicator(int index, BottomTabOptions tab) {
+        createNotificationIcon(index, "dot", tab);
+    }
+
+    private void createNotificationIcon(int index, String iconType, BottomTabOptions tab) {
         if (bottomTabs == null) return;
-        AHNotification.Builder builder = new AHNotification.Builder();
-        if (dotIndicator.color.hasValue()) builder.setBackgroundColor(dotIndicator.color.get());
-        builder.setSize(dotIndicator.visible.isFalse() ? 0 : dotIndicator.size.get(defaultDotIndicatorSize));
-        if (dotIndicator.animate.hasValue()) builder.animate(dotIndicator.animate.get());
-        AHNotification notification = builder.build();
-        if (notification.hasValue()) bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(notification, index));
+
+        BottomNavigationMenuView bottomNavigationMenuView =
+                (BottomNavigationMenuView) bottomTabs.get().getChildAt(0);
+
+        bottomTabs.perform(bottomTabs -> {
+            removeNotificationIconRemnants();
+            tv = new TextView(context);
+
+            View v = bottomNavigationMenuView.getChildAt(index);
+            BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            lp.gravity = Gravity.CENTER_HORIZONTAL;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                tv.setElevation(dpToPx(context, 1));
+            }
+
+            lp.setMargins(dpToPx(context, 16), dpToPx(context, 6), 0 ,0);
+            GradientDrawable shape =  new GradientDrawable();
+            shape.setCornerRadius( dpToPx(context, 8));
+            int badgeColor = Color.parseColor("#F63D2B");
+            if (tab.badgeColor.hasValue()) {
+                badgeColor = tab.badgeColor.get();
+            }
+            shape.setColor(badgeColor);
+            tv.setBackground(shape);
+
+            if (iconType.equals("badge")) {
+                SpannableString spanString = new SpannableString(tab.badge.get());
+                spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 9);
+                tv.setTextColor(Color.parseColor("#FFFFFF"));
+                tv.setGravity(Gravity.CENTER);
+                tv.setText(spanString);
+                tv.setHeight(dpToPx(context, 16));
+
+                tv.setPadding(dpToPx(context, 3),dpToPx(context, 0),dpToPx(context, 3),dpToPx(context, 0));
+            } else if (iconType.equals("dot")) {
+                tv.setWidth(dpToPx(context, 6));
+                tv.setHeight(dpToPx(context, 6));
+            }
+
+            itemView.addView(tv, lp);
+
+
+        });
     }
 
     private boolean shouldApplyDot(BottomTabOptions tab) {

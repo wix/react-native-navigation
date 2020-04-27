@@ -2,11 +2,13 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.app.Activity;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
@@ -34,7 +36,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
-public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
+public class BottomTabsController extends ParentController<BottomTabsLayout> implements BottomNavigationView.OnNavigationItemSelectedListener, TabSelector {
 
 	private BottomTabs bottomTabs;
 	private List<ViewController> tabs;
@@ -43,6 +45,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     private final BottomTabsAttacher tabsAttacher;
     private BottomTabsPresenter presenter;
     private BottomTabPresenter tabPresenter;
+    private int currentIndex = 0;
 
     public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsAttacher tabsAttacher, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
 		super(activity, childRegistry, id, presenter, initialOptions);
@@ -69,14 +72,14 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
         bottomTabs = createBottomTabs();
         tabsAttacher.init(root, resolveCurrentOptions());
-        presenter.bindView(bottomTabs, this, new BottomTabsAnimator(bottomTabs));
+        presenter.bindView(bottomTabs, this);
         tabPresenter.bindView(bottomTabs);
-        bottomTabs.setOnTabSelectedListener(this);
+        bottomTabs.setOnNavigationItemSelectedListener(this);
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         lp.gravity = Gravity.BOTTOM;
 		root.addView(bottomTabs, lp);
 
-        bottomTabs.addItems(createTabs());
+		createTabs();
         tabsAttacher.attach();
         return root;
 	}
@@ -89,10 +92,8 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        bottomTabs.disableItemsCreation();
         presenter.applyOptions(options);
         tabPresenter.applyOptions();
-        bottomTabs.enableItemsCreation();
         this.options.bottomTabsOptions.clearOneTimeOptions();
         this.initialOptions.bottomTabsOptions.clearOneTimeOptions();
     }
@@ -129,7 +130,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
 	public boolean handleBack(CommandListener listener) {
-		return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
+		return !tabs.isEmpty() && tabs.get(currentIndex).handleBack(listener);
 	}
 
     @Override
@@ -139,40 +140,22 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     protected ViewController getCurrentChild() {
-        return tabs.get(bottomTabs == null ? 0 : bottomTabs.getCurrentItem());
+        return (ViewController) tabs.get(currentIndex);
     }
 
-    @Override
-    public boolean onTabSelected(int index, boolean wasSelected) {
-        BottomTabOptions options = tabs.get(index).resolveCurrentOptions().bottomTabOptions;
-
-        eventEmitter.emitBottomTabPressed(index);
-
-        if (options.selectTabOnPress.get(true)){
-            eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
-            if (wasSelected) return false;
-            selectTab(index);
-            return false;
-        } else {
-            return false;
-        }
-	}
-
-	private List<AHBottomNavigationItem> createTabs() {
+	private void createTabs() {
 		if (tabs.size() > 5) throw new RuntimeException("Too many tabs!");
-        return map(tabs, tab -> {
+		map(tabs, tab -> {
             BottomTabOptions options = tab.resolveCurrentOptions().bottomTabOptions;
-            return new AHBottomNavigationItem(
-                    options.text.get(""),
-                    imageLoader.loadIcon(getActivity(), options.icon.get(null)),
-                    imageLoader.loadIcon(getActivity(), options.selectedIcon.get(null)),
-                    options.testId.get("")
-            );
+            Menu menu = bottomTabs.getMenu();
+            MenuItem item = menu.add(0, View.generateViewId(), Menu.NONE, options.text.toString());
+            item.setIcon(imageLoader.loadIcon(getActivity(), options.icon.get(null)));
+            return item;
         });
 	}
 
     int getSelectedIndex() {
-		return bottomTabs.getCurrentItem();
+		return getItemIndex(bottomTabs.getMenu().findItem(bottomTabs.getSelectedItemId()));
 	}
 
     @Override
@@ -207,18 +190,46 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @Override
     public void selectTab(final int newIndex) {
         tabsAttacher.onTabSelected(tabs.get(newIndex));
-        getCurrentView().setVisibility(View.INVISIBLE);
-        bottomTabs.setCurrentItem(newIndex, false);
-        getCurrentView().setVisibility(View.VISIBLE);
+        getCurrentView(currentIndex).setVisibility(View.INVISIBLE);
+        getCurrentView(newIndex).setVisibility(View.VISIBLE);
+        bottomTabs.getMenu().getItem(newIndex).setChecked(true);
+        currentIndex = newIndex;
     }
 
     @NonNull
-    private ViewGroup getCurrentView() {
-        return tabs.get(bottomTabs.getCurrentItem()).getView();
+    private ViewGroup getCurrentView(int index) {
+        return tabs.get(index).getView();
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public BottomTabs getBottomTabs() {
         return bottomTabs;
+    }
+
+    private int getItemIndex(MenuItem item) {
+        BottomNavigationMenuView bottomNavigationMenuView =
+                (BottomNavigationMenuView) bottomTabs.getChildAt(0);
+        for (int i = 0; i<bottomNavigationMenuView.getChildCount(); i++) {
+            if (bottomNavigationMenuView.getChildAt(i).getId() == item.getItemId()) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int index = getItemIndex(item);
+
+        eventEmitter.emitBottomTabPressed(index);
+
+        BottomTabOptions options = tabs.get(index).resolveCurrentOptions().bottomTabOptions;
+        if (options.selectTabOnPress.get(true)){
+            eventEmitter.emitBottomTabSelected(getSelectedIndex(), index);
+            selectTab(index);
+        }
+
+        return false;
     }
 }

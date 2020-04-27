@@ -22,12 +22,12 @@ public class BottomTabsAnimator {
             set.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    bottomTabs.hideBottomNavigation(false);
+                    bottomTabs.hide();
                 }
             });
             set.start();
         } else {
-            bottomTabs.hideBottomNavigation();
+            bottomTabs.hide();
         }
     }
 
@@ -37,12 +37,12 @@ public class BottomTabsAnimator {
             set.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    bottomTabs.restoreBottomNavigation(false);
+                    bottomTabs.show();
                 }
             });
             set.start();
         } else {
-            bottomTabs.restoreBottomNavigation();
+            bottomTabs.show();
         }
     }
 

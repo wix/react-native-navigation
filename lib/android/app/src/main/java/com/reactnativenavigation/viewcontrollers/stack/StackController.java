@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.NavigationAnimator;
+import com.reactnativenavigation.interfaces.FloatingButton;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.Presenter;
@@ -20,8 +21,6 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.Fab;
-import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -104,7 +103,7 @@ public class StackController extends ParentController<StackLayout> {
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
-        fabOptionsPresenter.applyOptions(this.options.fabOptions, child, getView());
+        fabOptionsPresenter.applyOptions(options, child, getView());
         performOnParentController(parent ->
                 parent.applyChildOptions(
                         this.options.copy()
@@ -124,7 +123,7 @@ public class StackController extends ParentController<StackLayout> {
         if (child.isViewShown() && peek() == child) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), this, child);
             if (options.fabOptions.hasValue()) {
-                fabOptionsPresenter.mergeOptions(options.fabOptions, child, getView());
+                fabOptionsPresenter.mergeOptions(options, child, getView());
             }
         }
         performOnParentController(parent ->
@@ -397,7 +396,7 @@ public class StackController extends ParentController<StackLayout> {
     public boolean onDependentViewChanged(CoordinatorLayout parent, ViewGroup child, View dependency) {
         perform(findController(child), controller -> {
             if (dependency instanceof TopBar) presenter.applyTopInsets(this, controller);
-            if (dependency instanceof Fab || dependency instanceof FabMenu) updateBottomMargin(dependency, getBottomInset());
+            if (dependency instanceof FloatingButton) updateBottomMargin(dependency, getBottomInset());
         });
         return false;
     }

@@ -394,10 +394,6 @@ public class NavigatorTest extends BaseTest {
             @Override
             protected BottomTabs createBottomTabs() {
                 return new BottomTabs(activity) {
-                    @Override
-                    public void superCreateItems() {
-
-                    }
                 };
             }
         };

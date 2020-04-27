@@ -13,7 +13,6 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.Fab;
-import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;
@@ -58,11 +57,6 @@ public class FloatingActionButtonTest extends BaseTest {
         Options options = new Options();
         FabOptions fabOptions = new FabOptions();
         fabOptions.id = new Text("FAB");
-        for (int i = 0; i < CHILD_FAB_COUNT; i++) {
-            FabOptions childOptions = new FabOptions();
-            childOptions.id = new Text("fab" + i);
-            fabOptions.actionsArray.add(childOptions);
-        }
         options.fabOptions = fabOptions;
         return options;
     }
@@ -71,9 +65,6 @@ public class FloatingActionButtonTest extends BaseTest {
         StackLayout stackLayout = stackController.getStackLayout();
         for (int i = 0; i < stackLayout.getChildCount(); i++) {
             if (stackLayout.getChildAt(i) instanceof Fab) {
-                return true;
-            }
-            if (stackLayout.getChildAt(i) instanceof FabMenu) {
                 return true;
             }
         }
@@ -127,17 +118,5 @@ public class FloatingActionButtonTest extends BaseTest {
         stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
-        assertThat(containsActions()).isTrue();
-    }
-
-    private boolean containsActions() {
-        StackLayout stackLayout = stackController.getStackLayout();
-        for (int i = 0; i < stackLayout.getChildCount(); i++) {
-            View child = stackLayout.getChildAt(i);
-            if (child instanceof FabMenu) {
-                return ((ViewGroup) child).getChildCount() == CHILD_FAB_COUNT + 2;
-            }
-        }
-        return false;
     }
 }
