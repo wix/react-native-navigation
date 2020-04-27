@@ -59,6 +59,12 @@ describe('Stack', () => {
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 
+  it('Screen popped event', async () => {
+    await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
+    await elementById(TestIDs.SCREEN_POPPED_BTN).tap();
+    await expect(elementByLabel('Screen popped event')).toBeVisible();
+  });
+
   it('unmount is called on pop', async () => {
     await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
     await elementById(TestIDs.POP_BTN).tap();
