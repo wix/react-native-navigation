@@ -26,6 +26,7 @@ class LifecycleScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    this.showUnmountAndDisappearAlerts = true;
     Navigation.events().bindComponent(this);
   }
 
@@ -34,12 +35,12 @@ class LifecycleScreen extends React.Component {
   }
 
   componentDidDisappear() {
-    alert('didDisappear'); // eslint-disable-line no-alert
+    this.showUnmountAndDisappearAlerts && alert('didDisappear'); // eslint-disable-line no-alert
   }
 
   componentWillUnmount() {
     setTimeout(() => {
-      alert('componentWillUnmount'); // eslint-disable-line no-alert
+      this.showUnmountAndDisappearAlerts && alert('componentWillUnmount'); // eslint-disable-line no-alert
     }, 100); 
   }
 
@@ -63,10 +64,9 @@ class LifecycleScreen extends React.Component {
 
   push = () => Navigation.push(this, Screens.Pushed);
   screenPoppedEvent = async () => {
+    this.showUnmountAndDisappearAlerts = false;
     const unregister = Navigation.events().registerScreenPoppedListener((event) => {
-      setTimeout(() => {
-        alert('Screen popped event')
-      }, 1000);
+      alert('Screen popped event')
       unregister.remove();
     });
     await Navigation.pop(this);
