@@ -1,6 +1,8 @@
 name: Require PR label
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled]
 
 jobs:
   require-label:
@@ -8,4 +10,5 @@ jobs:
     steps:
     - uses: yogevbd/require-label-action@master
       with:
-        valid-labels: "bug,enhancement,feature"
+        VALID_LABELS: "bug,enhancement,feature"
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
