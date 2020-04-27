@@ -10,5 +10,5 @@ jobs:
     steps:
     - uses: yogevbd/require-label-action@master
       with:
-        VALID_LABELS: "bug,enhancement,feature"
+        VALID_LABELS: "type: accepted/bug,type: accepted/enhancement"
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
