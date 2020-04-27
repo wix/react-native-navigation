@@ -64,7 +64,9 @@ class LifecycleScreen extends React.Component {
   push = () => Navigation.push(this, Screens.Pushed);
   screenPoppedEvent = async () => {
     const unregister = Navigation.events().registerScreenPoppedListener((event) => {
-      alert('Screen popped event')
+      setTimeout(() => {
+        alert('Screen popped event')
+      }, 1000);
       unregister.remove();
     });
     await Navigation.pop(this);

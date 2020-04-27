@@ -14,7 +14,7 @@
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    if ([navigationController.viewControllers indexOfObject:_presentedViewController] < 0) {
+    if (_presentedViewController && ![navigationController.viewControllers containsObject:_presentedViewController]) {
         [self sendScreenPoppedEvent:_presentedViewController];
     }
     
