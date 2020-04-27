@@ -12,7 +12,7 @@ apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
     compileSdkVersion 28
-    ndkVersion "20.1.5948944"
+    ndkVersion "21.1.6352462"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
