@@ -16,8 +16,9 @@
 	_commandsHandler = [CommandsHandlerCreator createWithWindow:_window];
 	self.usesDrawViewHierarchyInRect = YES;
 	
-//	Uncomment next line to record new snapshots
-//	self.recordMode = YES;
+	if (NSProcessInfo.processInfo.environment[@"RECORD_SNAPSHOTS"]) {
+		self.recordMode = YES;
+	}
 }
 
 - (void)tearDown {
