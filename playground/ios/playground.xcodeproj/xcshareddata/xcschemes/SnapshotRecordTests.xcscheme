@@ -27,6 +27,11 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
+            key = "RECORD_SNAPSHOTS"
+            value = "YES"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "IMAGE_DIFF_DIR"
             value = "$(SOURCE_ROOT)/SnapshotTests/FailureDiffs"
             isEnabled = "YES">
@@ -70,6 +75,13 @@
             ReferencedContainer = "container:playground.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "RECORD_SNAPSHOT_TESTS"
+            value = ""
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
