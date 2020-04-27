@@ -35,7 +35,8 @@ module.exports = {
     ],
     'Third party integration': [
       'third-party-react-context',
-      'third-party-mobx'
+      'third-party-mobx',
+      'community-libraries'
     ],
     Meta: [
       'meta-contributing'
