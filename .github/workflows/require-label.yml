@@ -8,6 +8,6 @@ jobs:
   require-label:
     runs-on: ubuntu-latest
     steps:
-    - uses: yogevbd/require-label-action@master
+    - uses: yogevbd/require-label-action@2.0.0
       with:
-        valid-labels: "type: accepted/bug,type: accepted/enhancement"
+        REQUIRED_LABELS_ANY: "type: accepted/bug,type: accepted/enhancement"
