@@ -22,7 +22,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
 }
-
+#if !TARGET_OS_TV
 - (void)setSearchBarWithPlaceholder:(NSString *)placeholder
 		 hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar {
 	if (@available(iOS 11.0, *)) {
@@ -45,13 +45,14 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		}
 	}
 }
-
+#endif
+#if !TARGET_OS_TV
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden {
 	if (@available(iOS 11.0, *)) {
 		self.navigationItem.hidesSearchBarWhenScrolling = searchBarHidden;
 	}
 }
-
+#endif
 - (void)setNavigationItemTitle:(NSString *)title {
 	self.navigationItem.title = title;
 }
@@ -62,7 +63,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	} else {
 		self.edgesForExtendedLayout &= ~UIRectEdgeTop;
 	}
-    
+
     if (self.isViewLoaded) {
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
@@ -75,7 +76,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	} else {
 		self.edgesForExtendedLayout &= ~UIRectEdgeBottom;
 	}
-    
+
     if (self.isViewLoaded) {
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
@@ -109,7 +110,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		[self setNeedsStatusBarAppearanceUpdate];
 	}
 }
-
+#if !TARGET_OS_TV
 - (void)setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle {
 	if (@available(iOS 11.0, *)) {
 		if (prefersLargeTitle) {
@@ -119,6 +120,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		}
 	}
 }
+#endif
 
 
 - (void)setStatusBarBlur:(BOOL)blur {
@@ -126,7 +128,9 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	if (blur) {
 		if (!curBlurView) {
 			UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+            #if !TARGET_OS_TV
 			blur.frame = [[UIApplication sharedApplication] statusBarFrame];
+            #endif
 			blur.tag = BLUR_STATUS_TAG;
 			[self.view insertSubview:blur atIndex:0];
 		}
@@ -140,10 +144,11 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
 	self.view.backgroundColor = backgroundColor;
 }
-
+#if !TARGET_OS_TV
 - (void)setBackButtonVisible:(BOOL)visible {
 	self.navigationItem.hidesBackButton = !visible;
 }
+#endif
 
 - (CGFloat)statusBarAnimationDuration:(BOOL)animated {
 	return animated ? kStatusBarAnimationDuration : CGFLOAT_MIN;

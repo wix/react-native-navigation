@@ -15,7 +15,9 @@
     [self setTranslucent:[options.background.translucent getWithDefaultValue:NO]];
     [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
     [self setTitleAttributes:options.title];
+    #if !TARGET_OS_TV
     [self setLargeTitleAttributes:options.largeTitle];
+    #endif
     [self showBorder:![options.noBorder getWithDefaultValue:NO]];
     [self setBackButtonOptions:options.backButton];
 }
@@ -23,31 +25,35 @@
 - (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options {
     [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
     [self setTitleAttributes:options.title];
+    #if !TARGET_OS_TV
     [self setLargeTitleAttributes:options.largeTitle];
+    #endif
 }
 
 - (void)mergeOptions:(RNNTopBarOptions *)options withDefault:(RNNTopBarOptions *)withDefault {
     if (options.background.color.hasValue) {
         [self setBackgroundColor:options.background.color.get];
     }
-    
+
     if (options.noBorder.hasValue) {
         [self showBorder:![options.noBorder get]];
     }
-    
+
     if (options.background.translucent.hasValue) {
         [self setTranslucent:[options.background.translucent get]];
     }
-    
+
     RNNLargeTitleOptions* largeTitleOptions = options.largeTitle;
     if (largeTitleOptions.color.hasValue || largeTitleOptions.fontSize.hasValue || largeTitleOptions.fontFamily.hasValue) {
+        #if !TARGET_OS_TV
         [self setLargeTitleAttributes:largeTitleOptions];
+        #endif
     }
 
     if (options.title.hasValue) {
         [self setTitleAttributes:withDefault.title];
     }
-    
+
     if (options.backButton.hasValue) {
         [self setBackButtonOptions:withDefault.backButton];
     }
@@ -62,8 +68,10 @@
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {
+    #if !TARGET_OS_TV
     [self.navigationController.navigationBar setBackIndicatorImage:image];
     [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:image];
+    #endif
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
@@ -97,20 +105,20 @@
     NSString* fontWeight = [titleOptions.fontWeight getWithDefaultValue:nil];
     NSNumber* fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [titleOptions.color getWithDefaultValue:nil];
-    
+
     self.navigationController.navigationBar.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.navigationController.navigationBar.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
 }
-
+#if !TARGET_OS_TV
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
     NSString* fontFamily = [largeTitleOptions.fontFamily getWithDefaultValue:nil];
     NSString* fontWeight = [largeTitleOptions.fontWeight getWithDefaultValue:nil];
     NSNumber* fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
-    
     if (@available(iOS 11.0, *)) {
         self.navigationController.navigationBar.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.navigationController.navigationBar.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
     }
 }
+#endif
 
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
     UIImage* icon = [backButtonOptions.icon getWithDefaultValue:nil];
@@ -120,7 +128,7 @@
     NSString* fontFamily = [backButtonOptions.fontFamily getWithDefaultValue:nil];
     NSNumber* fontSize = [backButtonOptions.fontSize getWithDefaultValue:nil];
     NSString* testID = [backButtonOptions.testID getWithDefaultValue:nil];
-    
+
     NSArray* stackChildren = self.navigationController.viewControllers;
     UIViewController *lastViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
     UIBarButtonItem *backItem = [UIBarButtonItem new];
@@ -130,22 +138,24 @@
     ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
     : icon;
     [self setBackIndicatorImage:icon withColor:color];
-    
+
     if (showTitle) {
         backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
     } else {
         backItem.title = @"";
     }
-    
+
     backItem.tintColor = color;
-	
+
     if (fontFamily) {
         CGFloat resolvedFontSize = fontSize ? fontSize.floatValue : 17.0;
         [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:resolvedFontSize], NSFontAttributeName, nil] forState:UIControlStateNormal];
         [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:resolvedFontSize], NSFontAttributeName, nil] forState:UIControlStateHighlighted];
     }
-    
+    #if !TARGET_OS_TV
     lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
+    #endif
+
 }
 
 - (BOOL)transparent {

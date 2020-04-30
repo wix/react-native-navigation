@@ -14,23 +14,23 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo creator:(id<RNNComponentViewCreator>)creator childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNBasePresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter {
 	[self setControllers:childViewControllers];
 	self = [super init];
-	
+
 	self.presenter = presenter;
     [self.presenter bindViewController:self];
-	
+
 	self.defaultOptions = defaultOptions;
 	self.options = options;
-	
+
 	self.layoutInfo = layoutInfo;
-	
+
 	self.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
-	
+
 	[self.presenter applyOptionsOnInit:self.resolveOptions];
-	
+
 	// Fixes #3697
 	[self setExtendedLayoutIncludesOpaqueBars:YES];
 	self.edgesForExtendedLayout |= UIRectEdgeBottom;
-	
+
 	return self;
 }
 
@@ -58,7 +58,7 @@
 	else if ([animationType isEqualToString:@"parallax"]) animationTypeStateBlock = [MMDrawerVisualState parallaxVisualStateBlockWithParallaxFactor:2.0];
 	else if ([animationType isEqualToString:@"slide"]) animationTypeStateBlock = [MMDrawerVisualState slideVisualStateBlock];
 	else if ([animationType isEqualToString:@"slide-and-scale"]) animationTypeStateBlock = [MMDrawerVisualState slideAndScaleVisualStateBlock];
-	
+
 	if (animationTypeStateBlock) {
 		[self setDrawerVisualStateBlock:animationTypeStateBlock];
 	}
@@ -160,18 +160,21 @@
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     [self.presenter willMoveToParentViewController:parent];
 }
-
+#if !TARGET_OS_TV
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return [self.presenter getStatusBarStyle];
-}
-
-- (BOOL)prefersStatusBarHidden {
-    return [self.presenter getStatusBarVisibility];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return [self.presenter getOrientation];
 }
+#endif
+
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter getStatusBarVisibility];
+}
+
+
 
 - (BOOL)hidesBottomBarWhenPushed {
     return [self.presenter hidesBottomBarWhenPushed];

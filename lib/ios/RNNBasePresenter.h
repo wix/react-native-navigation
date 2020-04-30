@@ -40,10 +40,11 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 - (UINavigationItem *)currentNavigationItem;
 
 - (void)willMoveToParentViewController:(UIViewController *)parent;
-
+#if !TARGET_OS_TV
 - (UIStatusBarStyle)getStatusBarStyle;
 
 - (UIInterfaceOrientationMask)getOrientation;
+#endif
 
 - (BOOL)getStatusBarVisibility;
 

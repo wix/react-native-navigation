@@ -17,11 +17,13 @@
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
     [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID getWithDefaultValue:nil]];
-    
+
     [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
     [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor getWithDefaultValue:nil] translucent:[withDefault.bottomTabs.translucent getWithDefaultValue:NO]];
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow getWithDefaultValue:NO]];
+    #if !TARGET_OS_TV
     [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:[withDefault.bottomTabs.barStyle getWithDefaultValue:@"default"]]];
+    #endif
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)currentOptions {
@@ -45,10 +47,11 @@
     if (options.bottomTabs.backgroundColor.hasValue) {
         [self setTabBarBackgroundColor:options.bottomTabs.backgroundColor.get];
     }
-
+    #if !TARGET_OS_TV
     if (options.bottomTabs.barStyle.hasValue) {
         [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:options.bottomTabs.barStyle.get]];
     }
+    #endif
 
     if (options.bottomTabs.translucent.hasValue) {
         [bottomTabs setTabBarTranslucent:options.bottomTabs.translucent.get];
@@ -65,7 +68,7 @@
             [bottomTabs setTabBarVisible:options.bottomTabs.visible.get animated:NO];
         }
     }
-    
+
     if (options.layout.backgroundColor.hasValue) {
         [bottomTabs.view setBackgroundColor:options.layout.backgroundColor.get];
     }
@@ -80,15 +83,15 @@
 }
 
 - (void)applyBackgroundColor:(UIColor *)backgroundColor translucent:(BOOL)translucent {
-    
+
 }
 
 - (void)setTabBarBackgroundColor:(UIColor *)backgroundColor {
-    
+
 }
 
 - (void)setTabBarTranslucent:(BOOL)translucent {
-    
+
 }
 
 @end

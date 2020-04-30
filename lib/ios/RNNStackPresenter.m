@@ -30,7 +30,10 @@
     [super bindViewController:boundViewController];
     _topBarPresenter = [TopBarPresenterCreator createWithBoundedNavigationController:self.stackController];
     _interactivePopGestureDelegate.navigationController = boundViewController;
+    #if !TARGET_OS_TV
     _interactivePopGestureDelegate.originalDelegate = boundViewController.interactivePopGestureRecognizer.delegate;
+    #endif
+
 }
 
 - (void)componentDidAppear {
@@ -49,21 +52,22 @@
     [super applyOptions:options];
     RNNStackController* stack = self.stackController;
     RNNNavigationOptions * withDefault = [options withDefault:[self defaultOptions]];
-    
-    [_interactivePopGestureDelegate setEnabled:[withDefault.popGesture getWithDefaultValue:YES]];
-    stack.interactivePopGestureRecognizer.delegate = _interactivePopGestureDelegate;
 
+    [_interactivePopGestureDelegate setEnabled:[withDefault.popGesture getWithDefaultValue:YES]];
+    #if !TARGET_OS_TV
+    stack.interactivePopGestureRecognizer.delegate = _interactivePopGestureDelegate;
     [stack setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle getWithDefaultValue:@"default"]]];
+    #endif
     [stack setRootBackgroundImage:[withDefault.rootBackgroundImage getWithDefaultValue:nil]];
     [stack setNavigationBarTestId:[withDefault.topBar.testID getWithDefaultValue:nil]];
     [stack setNavigationBarVisible:[withDefault.topBar.visible getWithDefaultValue:YES] animated:[withDefault.topBar.animate getWithDefaultValue:YES]];
     [stack hideBarsOnScroll:[withDefault.topBar.hideOnScroll getWithDefaultValue:NO]];
-    
+
     [_topBarPresenter applyOptions:withDefault.topBar];
-    
+
     [stack setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
     [stack setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds getWithDefaultValue:NO]];
-	
+
 	[stack.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
 }
 
@@ -81,35 +85,36 @@
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     [super mergeOptions:options resolvedOptions:resolvedOptions];
     RNNStackController* stack = self.stackController;
-    
+
     if (options.popGesture.hasValue) {
         [_interactivePopGestureDelegate setEnabled:options.popGesture.get];
     }
-    
+
     if (options.rootBackgroundImage.hasValue) {
         [stack setRootBackgroundImage:options.rootBackgroundImage.get];
     }
-    
+
     if (options.topBar.testID.hasValue) {
         [stack setNavigationBarTestId:options.topBar.testID.get];
     }
-    
+
     if (options.topBar.visible.hasValue) {
         [stack setNavigationBarVisible:options.topBar.visible.get animated:[options.topBar.animate getWithDefaultValue:YES]];
     }
-    
+
     if (options.topBar.hideOnScroll.hasValue) {
         [stack hideBarsOnScroll:[options.topBar.hideOnScroll get]];
     }
-    
+    #if !TARGET_OS_TV
     if (options.topBar.barStyle.hasValue) {
         [stack setBarStyle:[RCTConvert UIBarStyle:options.topBar.barStyle.get]];
     }
-    
+    #endif
+
     if (options.topBar.background.clipToBounds.hasValue) {
         [stack setNavigationBarClipsToBounds:[options.topBar.background.clipToBounds get]];
     }
-    
+
     if (options.topBar.background.blur.hasValue) {
         [stack setNavigationBarBlur:[options.topBar.background.blur get]];
     }
@@ -117,11 +122,11 @@
     if (options.topBar.background.component.name.hasValue) {
         [self setCustomNavigationComponentBackground:options perform:nil];
     }
-	
+
 	if (options.layout.backgroundColor.hasValue) {
 		[stack.view setBackgroundColor:options.layout.backgroundColor.get];
 	}
-    
+
     RNNNavigationOptions * withDefault = (RNNNavigationOptions *) [[options mergeInOptions:resolvedOptions] withDefault:[self defaultOptions]];
     [_topBarPresenter mergeOptions:options.topBar withDefault:withDefault.topBar];
 }
@@ -129,16 +134,16 @@
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         dispatch_group_t group = dispatch_group_create();
-        
+
         dispatch_group_enter(group);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setCustomNavigationComponentBackground:options perform:^{
                 dispatch_group_leave(group);
             }];
         });
-        
+
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             if (readyBlock) {
                 readyBlock();
@@ -154,11 +159,11 @@
         readyBlock();
         readyBlock = nil;
     }
-    
+
     if (withDefault.topBar.background.component.name.hasValue) {
         NSString* currentChildComponentId = [stack getCurrentChild].layoutInfo.componentId;
         _topBarBackgroundReactView = [_componentRegistry createComponentIfNotExists:withDefault.topBar.background.component parentComponentId:currentChildComponentId componentType:RNNComponentTypeTopBarBackground reactViewReadyBlock:readyBlock];
-        
+
     } else {
         [_topBarBackgroundReactView componentDidDisappear];
         [_customTopBarBackground removeFromSuperview];
@@ -175,7 +180,7 @@
         [_customTopBarBackground removeFromSuperview];
     }
     _customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:stack.navigationBar.bounds subView:_topBarBackgroundReactView alignment:@"fill"];
-    
+
     [stack.navigationBar insertSubview:_customTopBarBackground atIndex:1];
     [_topBarBackgroundReactView componentDidAppear];
 }

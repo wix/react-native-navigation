@@ -11,7 +11,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
 		[self.view insertSubview:backgroundImageView atIndex:0];
 	}
-	
+
 	backgroundImageView.layer.masksToBounds = YES;
 	backgroundImageView.image = backgroundImage;
 	[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
@@ -24,7 +24,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 - (void)setNavigationBarVisible:(BOOL)visible animated:(BOOL)animated {
 	[self setNavigationBarHidden:!visible animated:animated];
 }
-
+#if !TARGET_OS_TV
 - (void)hideBarsOnScroll:(BOOL)hideOnScroll {
 	self.hidesBarsOnSwipe = hideOnScroll;
 }
@@ -32,14 +32,18 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 - (void)setBarStyle:(UIBarStyle)barStyle {
 	self.navigationBar.barStyle = barStyle;
 }
+#endif
 
 - (void)setNavigationBarBlur:(BOOL)blur {
 	if (blur && ![self.navigationBar viewWithTag:BLUR_TOPBAR_TAG]) {
 		[self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
 		self.navigationBar.shadowImage = [UIImage new];
 		UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+        #if !TARGET_OS_TV
 		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
 		blur.frame = CGRectMake(0, -1 * statusBarFrame.size.height, self.navigationBar.frame.size.width, self.navigationBar.frame.size.height + statusBarFrame.size.height);
+        #endif
+
 		blur.userInteractionEnabled = NO;
 		blur.tag = BLUR_TOPBAR_TAG;
 		[self.navigationBar insertSubview:blur atIndex:0];

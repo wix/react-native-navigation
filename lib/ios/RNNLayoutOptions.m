@@ -6,7 +6,7 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
-	
+
 	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
     self.componentBackgroundColor = [ColorParser parse:dict key:@"componentBackgroundColor"];
 	self.direction = [TextParser parse:dict key:@"direction"];
@@ -14,7 +14,7 @@
 
 	return self;
 }
-
+#if !TARGET_OS_TV
 - (UIInterfaceOrientationMask)supportedOrientations {
 	NSArray* orientationsArray = [self.orientation isKindOfClass:[NSString class]] ? @[self.orientation] : self.orientation;
 	NSUInteger supportedOrientationsMask = 0;
@@ -40,6 +40,7 @@
 
 	return supportedOrientationsMask;
 }
+#endif
 
 
 @end

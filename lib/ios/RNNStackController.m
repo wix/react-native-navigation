@@ -12,9 +12,11 @@
     self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
     _stackDelegate = [[StackControllerDelegate alloc] initWithEventEmitter:self.eventEmitter];
     self.delegate = _stackDelegate;
+    #if !TARGET_OS_TV
     if (@available(iOS 11.0, *)) {
         self.navigationBar.prefersLargeTitles = YES;
     }
+    #endif
     return self;
 }
 
@@ -59,18 +61,20 @@
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     [self.presenter willMoveToParentViewController:parent];
 }
-
+#if !TARGET_OS_TV
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return [self.presenter getStatusBarStyle];
 }
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation];
+}
+#endif
 
 - (BOOL)prefersStatusBarHidden {
     return [self.presenter getStatusBarVisibility];
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return [self.presenter getOrientation];
-}
+
 
 - (BOOL)hidesBottomBarWhenPushed {
     return [self.presenter hidesBottomBarWhenPushed];

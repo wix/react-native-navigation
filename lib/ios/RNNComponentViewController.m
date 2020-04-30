@@ -101,7 +101,7 @@
 	} else if ([action[@"style"] isEqualToString:@"destructive"]) {
 		actionStyle = UIPreviewActionStyleDestructive;
 	}
-	
+
 	return [UIPreviewAction actionWithTitle:actionTitle style:actionStyle handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
 		[self onActionPress:actionId];
 	}];
@@ -135,18 +135,20 @@
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     [self.presenter willMoveToParentViewController:parent];
 }
-
+#if !TARGET_OS_TV
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return [self.presenter getStatusBarStyle];
 }
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation];
+}
+#endif
 
 - (BOOL)prefersStatusBarHidden {
     return [self.presenter getStatusBarVisibility];
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return [self.presenter getOrientation];
-}
+
 
 - (BOOL)hidesBottomBarWhenPushed {
     return [self.presenter hidesBottomBarWhenPushed];

@@ -29,11 +29,11 @@
 }
 
 - (void)componentDidAppear {
-    
+
 }
 
 - (void)componentDidDisappear {
-    
+
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
@@ -46,11 +46,11 @@
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
     UIViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [initialOptions withDefault:[self defaultOptions]];
-    
+
     if (@available(iOS 13.0, *)) {
         viewController.modalInPresentation = ![withDefault.modal.swipeToDismiss getWithDefaultValue:YES];
     }
-	
+
 	UIApplication.sharedApplication.delegate.window.backgroundColor = [withDefault.window.backgroundColor getWithDefaultValue:nil];
 }
 
@@ -68,7 +68,7 @@
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:_defaultOptions] overrideOptions:options];
-	
+
 	if (options.window.backgroundColor.hasValue) {
 		UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
 	}
@@ -84,7 +84,7 @@
 - (void)viewDidLayoutSubviews {
 
 }
-
+#if !TARGET_OS_TV
 - (UIStatusBarStyle)getStatusBarStyle {
     RNNNavigationOptions *withDefault = [self.boundViewController.resolveOptions withDefault:[self defaultOptions]];
     NSString* statusBarStyle = [withDefault.statusBar.style getWithDefaultValue:@"default"];
@@ -100,14 +100,15 @@
         return UIStatusBarStyleDefault;
     }
 }
-
+- (UIInterfaceOrientationMask)getOrientation {
+    return [self.boundViewController.resolveOptions withDefault:self.defaultOptions].layout.supportedOrientations;
+}
+#endif
 - (UINavigationItem *)currentNavigationItem {
     return self.boundViewController.getCurrentChild.navigationItem;
 }
 
-- (UIInterfaceOrientationMask)getOrientation {
-    return [self.boundViewController.resolveOptions withDefault:self.defaultOptions].layout.supportedOrientations;
-}
+
 
 - (BOOL)getStatusBarVisibility {
     RNNNavigationOptions *withDefault = [self.boundViewController.resolveOptions withDefault:self.defaultOptions];

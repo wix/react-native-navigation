@@ -44,18 +44,19 @@
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     [self.presenter willMoveToParentViewController:parent];
 }
-
+#if !TARGET_OS_TV
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return [self.presenter getStatusBarStyle];
 }
-
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation];
+}
+#endif
 - (BOOL)prefersStatusBarHidden {
     return [self.presenter getStatusBarVisibility];
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return [self.presenter getOrientation];
-}
+
 
 - (BOOL)hidesBottomBarWhenPushed {
     return [self.presenter hidesBottomBarWhenPushed];
