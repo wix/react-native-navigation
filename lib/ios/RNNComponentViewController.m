@@ -101,7 +101,7 @@
 	} else if ([action[@"style"] isEqualToString:@"destructive"]) {
 		actionStyle = UIPreviewActionStyleDestructive;
 	}
-
+	
 	return [UIPreviewAction actionWithTitle:actionTitle style:actionStyle handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
 		[self onActionPress:actionId];
 	}];

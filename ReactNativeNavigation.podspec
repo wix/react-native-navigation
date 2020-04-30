@@ -10,11 +10,11 @@ Pod::Spec.new do |s|
   s.authors      = "Wix.com"
   s.homepage     = package['homepage']
   s.license      = package['license']
-  s.platforms     = { :ios => "8.0", :tvos => "13.0" }
+  s.platforms     = { :ios => "9.0", :tvos => "13.0" }
 
   s.module_name  = 'ReactNativeNavigation'
 
-  s.source       = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/mahdi-hamdan/react-native-navigation.git", :tag => "6.5.2" }
   s.source_files  = "lib/ios/**/*.{h,m}"
   s.exclude_files  = "lib/ios/ReactNativeNavigationTests/**/*.*", "lib/ios/OCMock/**/*.*"
 

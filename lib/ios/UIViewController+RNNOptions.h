@@ -19,16 +19,17 @@
 - (void)setTabBarItemBadgeColor:(UIColor *)badgeColor;
 
 - (void)setTabBarItemBadge:(NSString *)badge;
-
+#if !TARGET_OS_TV
 - (void)setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;
+- (void)setBackButtonVisible:(BOOL)visible;
+- (void)setStatusBarBlur:(BOOL)blur;
 
+#endif
 - (void)setNavigationItemTitle:(NSString *)title;
 
 - (void)setStatusBarStyle:(NSString *)style animated:(BOOL)animated;
 
-- (void)setStatusBarBlur:(BOOL)blur;
 
-- (void)setBackButtonVisible:(BOOL)visible;
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
 

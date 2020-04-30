@@ -8,9 +8,10 @@
 
 - (void)setNavigationBarVisible:(BOOL)visible animated:(BOOL)animated;
 
-- (void)hideBarsOnScroll:(BOOL)hideOnScroll;
 #if !TARGET_OS_TV
 - (void)setBarStyle:(UIBarStyle)barStyle;
+- (void)hideBarsOnScroll:(BOOL)hideOnScroll;
+
 #endif
 - (void)setNavigationBarBlur:(BOOL)blur;
 

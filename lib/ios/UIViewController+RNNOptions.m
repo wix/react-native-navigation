@@ -63,7 +63,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	} else {
 		self.edgesForExtendedLayout &= ~UIRectEdgeTop;
 	}
-
+    
     if (self.isViewLoaded) {
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
@@ -76,7 +76,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	} else {
 		self.edgesForExtendedLayout &= ~UIRectEdgeBottom;
 	}
-
+    
     if (self.isViewLoaded) {
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
@@ -120,9 +120,6 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		}
 	}
 }
-#endif
-
-
 - (void)setStatusBarBlur:(BOOL)blur {
 	UIView* curBlurView = [self.view viewWithTag:BLUR_STATUS_TAG];
 	if (blur) {
@@ -140,6 +137,10 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		}
 	}
 }
+#endif
+
+
+
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
 	self.view.backgroundColor = backgroundColor;

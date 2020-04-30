@@ -11,7 +11,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
 		[self.view insertSubview:backgroundImageView atIndex:0];
 	}
-
+	
 	backgroundImageView.layer.masksToBounds = YES;
 	backgroundImageView.image = backgroundImage;
 	[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];

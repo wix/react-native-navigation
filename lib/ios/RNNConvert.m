@@ -31,7 +31,7 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
                       @"crossDissolve": @(UIModalTransitionStyleCrossDissolve),
                       @"partialCurl": @(UIModalTransitionStylePartialCurl)
                    }), UIModalTransitionStyleCoverVertical, integerValue)
-
+ 
 #endif
 
 @end

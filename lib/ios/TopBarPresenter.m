@@ -34,15 +34,15 @@
     if (options.background.color.hasValue) {
         [self setBackgroundColor:options.background.color.get];
     }
-
+    
     if (options.noBorder.hasValue) {
         [self showBorder:![options.noBorder get]];
     }
-
+    
     if (options.background.translucent.hasValue) {
         [self setTranslucent:[options.background.translucent get]];
     }
-
+    
     RNNLargeTitleOptions* largeTitleOptions = options.largeTitle;
     if (largeTitleOptions.color.hasValue || largeTitleOptions.fontSize.hasValue || largeTitleOptions.fontFamily.hasValue) {
         #if !TARGET_OS_TV
@@ -53,7 +53,7 @@
     if (options.title.hasValue) {
         [self setTitleAttributes:withDefault.title];
     }
-
+    
     if (options.backButton.hasValue) {
         [self setBackButtonOptions:withDefault.backButton];
     }
@@ -105,7 +105,7 @@
     NSString* fontWeight = [titleOptions.fontWeight getWithDefaultValue:nil];
     NSNumber* fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [titleOptions.color getWithDefaultValue:nil];
-
+    
     self.navigationController.navigationBar.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.navigationController.navigationBar.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
 }
 #if !TARGET_OS_TV
@@ -128,7 +128,7 @@
     NSString* fontFamily = [backButtonOptions.fontFamily getWithDefaultValue:nil];
     NSNumber* fontSize = [backButtonOptions.fontSize getWithDefaultValue:nil];
     NSString* testID = [backButtonOptions.testID getWithDefaultValue:nil];
-
+    
     NSArray* stackChildren = self.navigationController.viewControllers;
     UIViewController *lastViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
     UIBarButtonItem *backItem = [UIBarButtonItem new];
@@ -138,15 +138,15 @@
     ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
     : icon;
     [self setBackIndicatorImage:icon withColor:color];
-
+    
     if (showTitle) {
         backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
     } else {
         backItem.title = @"";
     }
-
+    
     backItem.tintColor = color;
-
+	
     if (fontFamily) {
         CGFloat resolvedFontSize = fontSize ? fontSize.floatValue : 17.0;
         [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:resolvedFontSize], NSFontAttributeName, nil] forState:UIControlStateNormal];

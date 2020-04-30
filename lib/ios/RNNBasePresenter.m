@@ -29,11 +29,11 @@
 }
 
 - (void)componentDidAppear {
-
+    
 }
 
 - (void)componentDidDisappear {
-
+    
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
@@ -46,11 +46,11 @@
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
     UIViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [initialOptions withDefault:[self defaultOptions]];
-
+    
     if (@available(iOS 13.0, *)) {
         viewController.modalInPresentation = ![withDefault.modal.swipeToDismiss getWithDefaultValue:YES];
     }
-
+	
 	UIApplication.sharedApplication.delegate.window.backgroundColor = [withDefault.window.backgroundColor getWithDefaultValue:nil];
 }
 
@@ -68,7 +68,7 @@
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:_defaultOptions] overrideOptions:options];
-
+	
 	if (options.window.backgroundColor.hasValue) {
 		UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
 	}

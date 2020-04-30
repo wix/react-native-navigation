@@ -9,7 +9,7 @@
 @implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
     BottomTabsBaseAttacher* _bottomTabsAttacher;
-
+    
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
@@ -53,14 +53,14 @@
 
 - (void)viewDidLayoutSubviews {
     [self.presenter viewDidLayoutSubviews];
-
+    
     for (UIView *view in [[self tabBar] subviews]) {
          UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget: self action: @selector(handleLongPress:)];
           if ([NSStringFromClass([view class]) isEqualToString:@"UITabBarButton"]) {
               [view addGestureRecognizer: longPressGesture];
           }
     }
-
+    
     [_dotIndicatorPresenter bottomTabsDidLayoutSubviews:self];
 }
 
@@ -105,7 +105,7 @@
 {
     NSUInteger _index = [tabBarController.viewControllers indexOfObject:viewController];
     [self.eventEmitter sendBottomTabPressed:@(_index)];
-
+    
     if([[viewController resolveOptions].bottomTab.selectTabOnPress getWithDefaultValue:YES]){
         return YES;
     }

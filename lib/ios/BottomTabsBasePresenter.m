@@ -17,7 +17,7 @@
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
     [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID getWithDefaultValue:nil]];
-
+    
     [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
     [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor getWithDefaultValue:nil] translucent:[withDefault.bottomTabs.translucent getWithDefaultValue:NO]];
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow getWithDefaultValue:NO]];
@@ -68,7 +68,7 @@
             [bottomTabs setTabBarVisible:options.bottomTabs.visible.get animated:NO];
         }
     }
-
+    
     if (options.layout.backgroundColor.hasValue) {
         [bottomTabs.view setBackgroundColor:options.layout.backgroundColor.get];
     }
@@ -83,15 +83,15 @@
 }
 
 - (void)applyBackgroundColor:(UIColor *)backgroundColor translucent:(BOOL)translucent {
-
+    
 }
 
 - (void)setTabBarBackgroundColor:(UIColor *)backgroundColor {
-
+    
 }
 
 - (void)setTabBarTranslucent:(BOOL)translucent {
-
+    
 }
 
 @end
