@@ -2,6 +2,8 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.Gravity;
 
 import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -24,5 +26,21 @@ public class SideMenu extends DrawerLayout {
     public void setDrawerLockMode(int lockMode, int edgeGravity) {
         int currentLockMode = getDrawerLockMode(edgeGravity);
         if (currentLockMode != lockMode) super.setDrawerLockMode(lockMode, edgeGravity);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (!isDrawerVisible(Gravity.START)) {
+            return false;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (!isDrawerVisible(Gravity.START)) {
+            return false;
+        }
+        return super.onTouchEvent(ev);
     }
 }
