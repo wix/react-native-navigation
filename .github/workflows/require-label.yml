@@ -1,0 +1,13 @@
+name: Enforce PR label
+
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled]
+
+jobs:
+  enforce-label:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: yogevbd/enforce-label-action@2.0.0
+      with:
+        REQUIRED_LABELS_ANY: "type: accepted/bug,type: accepted/enhancement"
