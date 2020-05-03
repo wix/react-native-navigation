@@ -124,12 +124,18 @@ public class BottomTabsPresenter {
         bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE));
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             int tabIndex = bottomTabsOptions.currentTabIndex.get();
-            if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
+            if (tabIndex >= 0) {
+                bottomTabsOptions.currentTabIndex.consume();
+                tabSelector.selectTab(tabIndex);
+            }
         }
         if (bottomTabsOptions.testId.hasValue()) bottomTabs.setTag(bottomTabsOptions.testId.get());
         if (bottomTabsOptions.currentTabId.hasValue()) {
             int tabIndex = bottomTabFinder.findByControllerId(bottomTabsOptions.currentTabId.get());
-            if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
+            if (tabIndex >= 0) {
+                bottomTabsOptions.currentTabId.consume();
+                tabSelector.selectTab(tabIndex);
+            }
         }
         if (bottomTabsOptions.visible.isTrueOrUndefined()) {
             if (bottomTabsOptions.animate.isTrueOrUndefined()) {

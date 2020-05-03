@@ -35,17 +35,17 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     @Override
+    public void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (hasItemsAndIsMeasured(w, h, oldw, oldh)) createItems();
+    }
+
+    @Override
     protected void createItems() {
         if (itemsCreationEnabled) {
             superCreateItems();
         } else {
             shouldCreateItems = true;
         }
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        // NOOP - don't recreate views on size change
     }
 
     public void superCreateItems() {
@@ -95,5 +95,9 @@ public class BottomTabs extends AHBottomNavigation {
     public void setLayoutDirection(LayoutDirection direction) {
          LinearLayout tabsContainer = findChildByClass(this, LinearLayout.class);
         if (tabsContainer != null) tabsContainer.setLayoutDirection(direction.get());
+    }
+
+    private boolean hasItemsAndIsMeasured(int w, int h, int oldw, int oldh) {
+        return w != 0 && h != 0 && (w != oldw || h != oldh) && getItemsCount() > 0;
     }
 }
