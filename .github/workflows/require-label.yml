@@ -2,7 +2,7 @@ name: Enforce PR label
 
 on:
   pull_request:
-    types: [opened, labeled, unlabeled]
+    types: [labeled, unlabeled, opened, edited, synchronize]
 
 jobs:
   enforce-label:
@@ -10,4 +10,4 @@ jobs:
     steps:
     - uses: yogevbd/enforce-label-action@2.0.0
       with:
-        REQUIRED_LABELS_ANY: "type: accepted/bug,type: accepted/enhancement"
+        REQUIRED_LABELS_ANY: "type: accepted/bug,type: accepted/enhancement,Infrastructure,type: documentation"
