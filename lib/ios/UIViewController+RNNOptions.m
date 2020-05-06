@@ -143,7 +143,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-	self.view.backgroundColor = backgroundColor;
+	self.view.backgroundColor = [[UIColor alloc] initWithRed:0.09 green:0.11 blue:0.15 alpha: 1.00];
 }
 #if !TARGET_OS_TV
 - (void)setBackButtonVisible:(BOOL)visible {
