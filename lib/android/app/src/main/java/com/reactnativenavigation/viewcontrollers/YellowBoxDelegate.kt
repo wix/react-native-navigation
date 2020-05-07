@@ -4,7 +4,9 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
-import com.reactnativenavigation.utils.UiUtils
+import androidx.core.view.doOnPreDraw
+import androidx.core.view.forEachIndexed
+import androidx.core.view.get
 import com.reactnativenavigation.utils.isDebug
 import java.util.*
 
@@ -22,30 +24,22 @@ open class YellowBoxDelegate(private val context: Context, private val yellowBox
     private val yellowBoxViews = ArrayList<View>()
 
     open fun onChildViewAdded(parent: View, child: View?) {
-        if (context.isDebug()) return
-        UiUtils.runOnPreDrawOnce(child) {
-            if (yellowBoxHelper.isYellowBox(parent, child)) {
-                onYellowBoxAdded(parent)
-            }
-        }
+        if (!context.isDebug()) return
+        child?.doOnPreDraw { if (yellowBoxHelper.isYellowBox(parent, child)) onYellowBoxAdded(parent) }
     }
 
     fun onYellowBoxAdded(parent: View) {
         if (isDestroyed) return
         this.parent = parent as ViewGroup
-        for (i in 1 until this.parent!!.childCount) {
-            yellowBoxViews.add(this.parent!!.getChildAt(i))
-            this.parent!!.removeView(this.parent!!.getChildAt(i))
-            this.parent!!.addView(View(parent.getContext()), i)
+        for (i in 1 until parent.childCount) {
+            yellowBoxViews.add(parent[i])
+            parent.removeView(parent[i])
+            parent.addView(View(context), i)
         }
     }
 
     fun destroy() {
         isDestroyed = true
-        if (yellowBoxViews.isNotEmpty()) {
-            for (view in yellowBoxViews) {
-                parent!!.addView(view)
-            }
-        }
+        if (yellowBoxViews.isNotEmpty()) yellowBoxViews.forEach { parent?.addView(it) }
     }
 }
