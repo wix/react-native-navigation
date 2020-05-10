@@ -4,12 +4,12 @@ const { Platform } = require('react-native');
 const Navigation = require('../../services/Navigation');
 const Screens = require('../Screens');
 import { CocktailsListScreen } from '../sharedElementTransition/CocktailsListScreen';
-import { NavigationButtonPressedEvent } from 'react-native-navigation';
+import { NavigationButtonPressedEvent, NavigationListener } from 'react-native-navigation';
 const {
   PUSH_MASTER_BTN
 } = require('../../testIDs');
 
-export class CocktailsListMasterScreen extends CocktailsListScreen {
+export class CocktailsListMasterScreen extends CocktailsListScreen implements NavigationListener {
   static options() {
     return {
       ...Platform.select({

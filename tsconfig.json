@@ -24,6 +24,6 @@
   },
   "include": [
     "./lib/src/**/*",
-    "./playground/src/**/*"
+    "./playground/**/*"
   ]
 }
