@@ -193,6 +193,26 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void onSizeChanged_recreateItemsIfSizeHasChanged() {
+        int numberOfPreviousInvocations = 2;
+        bottomTabs.onSizeChanged(0, 0, 0, 0);
+        verify(bottomTabs, times(numberOfPreviousInvocations)).superCreateItems();
+
+        bottomTabs.onSizeChanged(100, 0, 0, 0);
+        verify(bottomTabs, times(numberOfPreviousInvocations)).superCreateItems();
+
+        bottomTabs.onSizeChanged(1080, 147, 0, 0);
+        verify(bottomTabs, times(numberOfPreviousInvocations + 1)).superCreateItems();
+
+        bottomTabs.onSizeChanged(1920, 147, 0, 0);
+        verify(bottomTabs, times(numberOfPreviousInvocations + 2)).superCreateItems();
+
+        when(bottomTabs.getItemsCount()).thenReturn(0);
+        bottomTabs.onSizeChanged(1080, 147, 0, 0);
+        verify(bottomTabs, times(numberOfPreviousInvocations + 2)).superCreateItems();
+    }
+
+    @Test
     public void mergeOptions_currentTabIndex() {
         uut.ensureViewIsCreated();
         assertThat(uut.getSelectedIndex()).isZero();

@@ -233,3 +233,4 @@ playground/android/.settings/
 playground/android/app/.settings/
 AndroidE2E/.settings/
 website/yarn.lock
+playground/ios/Podfile.lock

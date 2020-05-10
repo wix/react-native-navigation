@@ -1,4 +1,34 @@
 # Changelog
+# 6.5.0
+## Added
+### Android
+* Added `width` and `height` options to button component which can be used to set exact measurements to button components [#42a6917](https://github.com/wix/react-native-navigation/commit/42a6917eeee149f7348a4eaf524ba76bac1240cf) by [guyca](https://github.com/guyca)
+* Reuse button component if a component with the same id already exists  [#42a6917](https://github.com/wix/react-native-navigation/commit/42a6917eeee149f7348a4eaf524ba76bac1240cf) by [guyca](https://github.com/guyca)
+* Allow hiding the NavigationBar [#7f6353b](https://github.com/wix/react-native-navigation/commit/7f6353bcead9c6d6e87d72574e0fec29ad9f2d19) by [M-i-k-e-l](https://github.com/M-i-k-e-l)
+* Support `rotation` animation in shared element transition [#03dd211](https://github.com/wix/react-native-navigation/commit/03dd211a5425cf14586ef49814c1d3716aeb8441) by [guyca](https://github.com/guyca)
+* Implement shared element transition `interpolation` option [#e80eb92](https://github.com/wix/react-native-navigation/commit/e80eb9275a04921976127f8c2775f37088f133c1) by [guyca](https://github.com/guyca)
+* Implement shared element transition `startDelay` option [#334ab71](https://github.com/wix/react-native-navigation/commit/334ab7174a599f18af66eca6cee7409bee7537e7) by [guyca](https://github.com/guyca)
+
+### iOS
+* Implement rotate animation for shared element transition [#5d9e910](https://github.com/wix/react-native-navigation/commit/5d9e9100b771ca76ac20b916f945406460084b9b) by [yogevbd](https://github.com/yogevbd)
+
+## Fixed
+### iOS
+* Fixed invalid modalPresentationStyle.popover enum value [#951a07b](https://github.com/wix/react-native-navigation/commit/951a07bb5571dbda2a0c9b665969bc25fc5ae784) by [rfnd](https://github.com/rfnd)
+* Fix incorrect layout after changing BottomTabs visibility [#21cafcd](https://github.com/wix/react-native-navigation/commit/21cafcdecca8264dd2157d172dab24d8d4b5b4e6) by [yogevbd](https://github.com/yogevbd)
+* Fix SafeAreaView measurement in SideMenu [#0da097e](https://github.com/wix/react-native-navigation/commit/0da097ef8471670e6550152fa5ebbdf4a02b3478) by [rfnd](https://github.com/rfnd)
+* Fix backButton.color change on mergeOptions [#da0fd19](https://github.com/wix/react-native-navigation/commit/da0fd194f88b8f1042a0fe74bbf91e75ffac95b3) by [yogevbd](https://github.com/yogevbd)
+* Fix bottomTab colors in landscape orientation  [#89402dc](https://github.com/wix/react-native-navigation/commit/89402dc31a3769b4fb1326b95170961497011caf) by [yogevbd](https://github.com/yogevbd)
+* FIx screenPopped event not emitted if screen is popped with pop command [#2f31a2f](https://github.com/wix/react-native-navigation/commit/2f31a2fa703659f153162274c846a8f137ee94d1) by [yogevbd](https://github.com/yogevbd)
+
+### Android
+* Set textual TopBar button style options by spans instead of applying them on the view [#42a6917](https://github.com/wix/react-native-navigation/commit/42a6917eeee149f7348a4eaf524ba76bac1240cf) by [guyca](https://github.com/guyca)
+* Ensure Component layout is not created prematurely by mergeOptions [#111df5a](https://github.com/wix/react-native-navigation/commit/111df5a3ba51ba6762cffd7119071bb4f71d18f7) by [guyca](https://github.com/guyca)
+* Resolve tabsAttachMode from default options [#a4b2c76](https://github.com/wix/react-native-navigation/commit/a4b2c76a9d9b934192a4deee496c3ecef4c184ff) by [guyca](https://github.com/guyca)
+* Support declaring currentTabIndex and currentTabId in default options [#3e5be29](https://github.com/wix/react-native-navigation/commit/3e5be29af8b1b78be1eec9ebf970b9204354a052) by [guyca](https://github.com/guyca)
+* Fix BottomTabs size not adjusted after orientation change [#aa7908c](https://github.com/wix/react-native-navigation/commit/aa7908c57d141c7bb49de64a8e071330a8f7af31) by [guyca](https://github.com/guyca)
+
+
 # 6.4.0
 ## Fixed
 ### iOS
