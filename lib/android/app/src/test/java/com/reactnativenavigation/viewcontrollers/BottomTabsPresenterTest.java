@@ -8,6 +8,8 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
 import com.reactnativenavigation.views.BottomTabs;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,6 +33,7 @@ public class BottomTabsPresenterTest extends BaseTest {
     private BottomTabsPresenter uut;
     private BottomTabs bottomTabs;
     private BottomTabsAnimator animator;
+    private TabSelector tabSelector;
 
     @Override
     public void beforeEach() {
@@ -41,7 +45,8 @@ public class BottomTabsPresenterTest extends BaseTest {
         uut = new BottomTabsPresenter(tabs, new Options());
         bottomTabs = Mockito.mock(BottomTabs.class);
         animator = spy(new BottomTabsAnimator(bottomTabs));
-        uut.bindView(bottomTabs, Mockito.mock(TabSelector.class), animator);
+        tabSelector = mock(TabSelector.class);
+        uut.bindView(bottomTabs, tabSelector, animator);
     }
 
     @Test
@@ -70,5 +75,31 @@ public class BottomTabsPresenterTest extends BaseTest {
         Mockito.when(tabs.get(0).isViewShown()).thenAnswer(ignored -> true);
         uut.mergeChildOptions(options, tabs.get(0));
         verify(animator).hide(any());
+    }
+
+    @Test
+    public void applyChildOptions_currentTabIndexIsConsumedAfterApply() {
+        Options defaultOptions = new Options();
+        defaultOptions.bottomTabsOptions.currentTabIndex = new Number(1);
+        uut.setDefaultOptions(defaultOptions);
+
+        uut.applyChildOptions(Options.EMPTY, tabs.get(0));
+        verify(tabSelector).selectTab(1);
+
+        uut.applyChildOptions(Options.EMPTY, tabs.get(0));
+        verifyNoMoreInteractions(tabSelector);
+    }
+
+    @Test
+    public void applyChildOptions_currentTabIdIsConsumedAfterApply() {
+        Options defaultOptions = new Options();
+        defaultOptions.bottomTabsOptions.currentTabId = new Text(tabs.get(1).getId());
+        uut.setDefaultOptions(defaultOptions);
+
+        uut.applyChildOptions(Options.EMPTY, tabs.get(0));
+        verify(tabSelector).selectTab(1);
+
+        uut.applyChildOptions(Options.EMPTY, tabs.get(0));
+        verifyNoMoreInteractions(tabSelector);
     }
 }

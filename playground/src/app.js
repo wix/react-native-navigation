@@ -6,17 +6,16 @@ const { setDefaultOptions } = require('./commons/Options')
 const testIDs = require('./testIDs');
 const Screens = require('./screens/Screens');
 
-if (Platform.OS === 'android') {
-  alert = (title, message) => Navigation.showOverlay({
-    component: {
-      name: Screens.Alert,
-      passProps: {
-        title,
-        message
-      }
+// @ts-ignore
+alert = (title, message) => Navigation.showOverlay({
+  component: {
+    name: Screens.Alert,
+    passProps: {
+      title,
+      message
     }
-  });
-};
+  }
+});
 
 function start() {
   registerScreens();
