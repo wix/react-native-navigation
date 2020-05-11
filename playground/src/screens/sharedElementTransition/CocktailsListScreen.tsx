@@ -8,7 +8,7 @@ const MULTIPLIER = 1.15
 const LONG_DURATION = 350 * MULTIPLIER
 const SHORT_DURATION = 190 * MULTIPLIER
 
-export class CocktailsListScreen extends NavigationComponent {
+export default class CocktailsListScreen extends NavigationComponent {
   static options() {
     return {
       ...Platform.select({

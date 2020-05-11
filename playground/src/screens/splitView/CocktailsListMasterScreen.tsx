@@ -3,13 +3,13 @@ const CocktailsView = require('../sharedElementTransition/CocktailsView')
 const { Platform } = require('react-native');
 const Navigation = require('../../services/Navigation');
 const Screens = require('../Screens');
-import { CocktailsListScreen } from '../sharedElementTransition/CocktailsListScreen';
+import CocktailsListScreen from '../sharedElementTransition/CocktailsListScreen';
 import { NavigationButtonPressedEvent, NavigationListener } from 'react-native-navigation';
 const {
   PUSH_MASTER_BTN
 } = require('../../testIDs');
 
-export class CocktailsListMasterScreen extends CocktailsListScreen implements NavigationListener {
+export default class CocktailsListMasterScreen extends CocktailsListScreen implements NavigationListener {
   static options() {
     return {
       ...Platform.select({
