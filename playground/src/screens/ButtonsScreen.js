@@ -1,7 +1,7 @@
 const React = require('react');
 const {Component} = require('react');
 const Root = require('../components/Root');
-const Button = require('../components/Button')
+const Button = require('../components/Button');
 const Navigation = require('../services/Navigation');
 const Screens = require('./Screens');
 const Colors = require('../commons/Colors');
@@ -64,45 +64,75 @@ class Options extends Component {
   render() {
     return (
       <Root componentId={this.props.componentId}>
-        <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
-        <Button label='Show Lifecycle button' testID={SHOW_LIFECYCLE_BTN} onPress={this.showLifecycleButton} />
-        <Button label='Remove all buttons' testID={RESET_BUTTONS} onPress={this.resetButtons} />
-        <Button label='Change Button Props'  testID={CHANGE_BUTTON_PROPS} onPress={this.changeButtonProps} />
+        <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
+        <Button
+          label="Show Lifecycle button"
+          testID={SHOW_LIFECYCLE_BTN}
+          onPress={this.showLifecycleButton}
+        />
+        <Button
+          label="Remove all buttons"
+          testID={RESET_BUTTONS}
+          onPress={this.resetButtons}
+        />
+        <Button
+          label="Change Button Props"
+          testID={CHANGE_BUTTON_PROPS}
+          onPress={this.changeButtonProps}
+        />
+        <Button label="Change LeftButton" onPress={this.changeLeftButton} />
       </Root>
     );
   }
 
   push = () => Navigation.push(this, Screens.Pushed);
 
-  showLifecycleButton = () => Navigation.mergeOptions(this, {
-    topBar: {
-      rightButtons: [
-        {
-          id: 'ROUND',
-          testID: ROUND_BUTTON,
-          component: {
-            name: Screens.LifecycleButton,
-            passProps: {
-              title: 'Two'
+  showLifecycleButton = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        rightButtons: [
+          {
+            id: 'ROUND',
+            testID: ROUND_BUTTON,
+            component: {
+              name: Screens.LifecycleButton,
+              passProps: {
+                title: 'Two'
+              }
             }
           }
-        }
-      ]
-    }
-  });
+        ]
+      }
+    });
 
-  resetButtons = () => Navigation.mergeOptions(this, {
-    topBar: {
-      rightButtons: [],
-      leftButtons: []
-    }
-  });
+  changeLeftButton = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        leftButtons: [
+          {
+            id: 'LEFT',
+            testID: LEFT_BUTTON,
+            icon: require('../../img/clear.png'),
+            color: 'red',
+            accessibilityLabel: 'Close button'
+          }
+        ]
+      }
+    });
+
+  resetButtons = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        rightButtons: [],
+        leftButtons: []
+      }
+    });
 
   changeButtonProps = () => {
     Navigation.updateProps('ROUND_COMPONENT', {
       title: 'Three'
     });
-  }
+  };
 }
 
 module.exports = Options;
