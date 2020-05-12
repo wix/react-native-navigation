@@ -67,7 +67,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
                                     Button button,
                                     TitleBarButtonCreator viewCreator,
                                     OnClickListener onClickListener) {
-        super(activity, button.id, new YellowBoxDelegate(), new Options(), new ViewControllerOverlay(activity));
+        super(activity, button.id, new YellowBoxDelegate(activity), new Options(), new ViewControllerOverlay(activity));
         this.navigationIconResolver = navigationIconResolver;
         this.presenter = presenter;
         this.button = button;

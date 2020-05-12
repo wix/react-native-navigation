@@ -65,7 +65,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void canOverrideViewCreation() {
         final FrameLayout otherView = new FrameLayout(activity);
-        yellowBoxDelegate = spy(new YellowBoxDelegate());
+        yellowBoxDelegate = spy(new YellowBoxDelegate(activity));
         ViewController myController = new ViewController(activity, "vc", yellowBoxDelegate, new Options(), new ViewControllerOverlay(activity)) {
             @Override
             protected FrameLayout createView() {
