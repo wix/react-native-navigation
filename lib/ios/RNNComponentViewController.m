@@ -50,7 +50,9 @@
 }
 
 - (void)destroyReactView {
-    [((RNNReactView *)self.view) invalidate];
+    if ([self.view isKindOfClass: [RNNReactView class]]) {
+        [((RNNReactView *)self.view) invalidate];
+    }
 }
 
 - (void)renderReactViewIfNeeded {
