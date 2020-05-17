@@ -49,6 +49,10 @@
     [self renderReactViewIfNeeded];
 }
 
+- (void)destroyReactView {
+    [((RNNReactView *)self.view) invalidate];
+}
+
 - (void)renderReactViewIfNeeded {
     if (!self.isViewLoaded) {
         self.view = [self.creator createRootView:self.layoutInfo.name
