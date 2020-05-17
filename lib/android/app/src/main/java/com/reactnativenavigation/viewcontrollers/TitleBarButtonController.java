@@ -29,7 +29,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
@@ -48,7 +47,6 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     private TitleBarButtonController.OnClickListener onPressListener;
     private Drawable icon;
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
     public Button getButton() {
         return button;
     }
