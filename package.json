@@ -91,7 +91,8 @@
     "tslint": "5.x.x",
     "typedoc": "0.x.x",
     "typescript": "3.2.2",
-    "identity-obj-proxy": "3.0.0"
+    "identity-obj-proxy": "3.0.0",
+    "github-release-notes": "0.17.3"
   },
   "jest": {
     "preset": "react-native",
