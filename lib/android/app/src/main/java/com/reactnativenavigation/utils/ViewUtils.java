@@ -43,7 +43,7 @@ public class ViewUtils {
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
             if (view instanceof ViewGroup) {
-                ret.addAll(findChildrenByClassRecursive((ViewGroup) view, clazz));
+                ret.addAll(findChildrenByClassRecursive((ViewGroup) view, clazz, matcher));
             }
             if (clazz.isAssignableFrom(view.getClass()) && matcher.match((T) view)) {
                 ret.add((T) view);

@@ -126,6 +126,11 @@ function updatePackageJsonGit(version) {
     exec.execSync(`git add package.json`);
     exec.execSync(`git commit -m"Update package.json version to ${version} [ci skip]"`);
     exec.execSync(`git push deploy ${BRANCH}`);
+    draftGitRelease(version);
+}
+
+function draftGitRelease(version) {
+    exec.execSync(`npx gren release --tags=${version}`);
 }
 
 run();
