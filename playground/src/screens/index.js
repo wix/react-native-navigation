@@ -13,7 +13,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.CocktailDetailsScreen, () => require('./sharedElementTransition/CocktailDetailsScreen'));
   Navigation.registerComponent(Screens.CocktailsListScreen, () => require('./sharedElementTransition/CocktailsListScreen'));
   Navigation.registerComponent(Screens.CocktailsListMasterScreen, () => require('./splitView/CocktailsListMasterScreen'));
-  Navigation.registerComponent(Screens.EventsOverlay, () => require('./StaticLifecycleOverlay'));
+  Navigation.registerComponent(Screens.EventsOverlay, () => require('./StaticLifecycleOverlay').StaticLifecycleOverlay);
   Navigation.registerComponent(Screens.EventsScreen, () => require('./StaticEventsScreen'));
   Navigation.registerComponent(Screens.ExternalComponent, () => require('./ExternalComponentScreen'));
   Navigation.registerComponent(Screens.FirstBottomTabsScreen, () => require('./FirstBottomTabScreen'));

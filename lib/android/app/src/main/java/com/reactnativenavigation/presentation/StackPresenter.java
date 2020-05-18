@@ -306,10 +306,10 @@ public class StackPresenter {
         return new ArrayList<>(result.values());
     }
 
-    private List<TitleBarButtonController> getOrCreateButtonControllersById(@Nullable Map<String, TitleBarButtonController> currentButtons,@NonNull List<Button> buttons) {
+    private List<TitleBarButtonController> getOrCreateButtonControllers(@Nullable Map<String, TitleBarButtonController> currentButtons, @NonNull List<Button> buttons) {
         ArrayList result = new ArrayList<TitleBarButtonController>();
         for (Button b : buttons) {
-            result.add(take(first(perform(currentButtons, null, Map::values), button -> button.getId().equals(b.id)), createButtonController(b)));
+            result.add(take(first(perform(currentButtons, null, Map::values), button -> button.getButton().equals(b)), createButtonController(b)));
         }
         return result;
     }
@@ -369,7 +369,7 @@ public class StackPresenter {
     private void mergeRightButtons(TopBarOptions options, TopBarButtons buttons, View child) {
         if (buttons.right == null) return;
         List<Button> rightButtons = mergeButtonsWithColor(buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
-        List<TitleBarButtonController> toMerge = getOrCreateButtonControllersById(componentRightButtons.get(child), rightButtons);
+        List<TitleBarButtonController> toMerge = getOrCreateButtonControllers(componentRightButtons.get(child), rightButtons);
         List<TitleBarButtonController> toRemove = difference(currentRightButtons, toMerge, TitleBarButtonController::equals);
         forEach(toRemove, TitleBarButtonController::destroy);
 
@@ -383,7 +383,7 @@ public class StackPresenter {
     private void mergeLeftButton(TopBarOptions options, TopBarButtons buttons, View child) {
         if (buttons.left == null) return;
         List<Button> leftButtons = mergeButtonsWithColor(buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
-        List<TitleBarButtonController> toMerge = getOrCreateButtonControllersById(componentLeftButtons.get(child), leftButtons);
+        List<TitleBarButtonController> toMerge = getOrCreateButtonControllers(componentLeftButtons.get(child), leftButtons);
         componentLeftButtons.put(child, keyBy(toMerge, TitleBarButtonController::getButtonInstanceId));
         topBarController.setLeftButtons(toMerge);
     }
