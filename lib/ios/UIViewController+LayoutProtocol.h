@@ -40,6 +40,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)componentDidDisappear;
 
+- (void)screenPopped;
+
 @property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNNavigationOptions* options;

@@ -80,6 +80,10 @@
 									isFocused:searchController.searchBar.isFirstResponder];
 }
 
+- (void)screenPopped {
+    [_eventEmitter sendScreenPoppedEvent:self.layoutInfo.componentId];
+}
+
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 	[self.eventEmitter sendOnSearchBarCancelPressed:self.layoutInfo.componentId];
 }
