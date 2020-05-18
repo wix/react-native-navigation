@@ -13,6 +13,8 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		5007B4312472CA390002AA4E /* RNNNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.m */; };
 		5007B4342472CBD40002AA4E /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.m */; };
+		5007B4352472D3C90002AA4E /* RNNNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.m */; };
+		5007B4362472D3CC0002AA4E /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.m */; };
 		500E9FE72406A52100C61231 /* BottomTabPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 500E9FE62406A4E200C61231 /* BottomTabPresenterTest.m */; };
 		501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C86B8239FE9C400E0B631 /* UIImage+Utils.m */; };
 		5022EDCD2405522000852BA6 /* RNNBottomTabsPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.m */; };
@@ -942,6 +944,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5007B4362472D3CC0002AA4E /* RNNCustomViewController.m in Sources */,
+				5007B4352472D3C90002AA4E /* RNNNativeViewController.m in Sources */,
 				507C80E8242A1E6F00F765F7 /* AppDelegate.m in Sources */,
 				507C80EC242BC6FB00F765F7 /* LayoutCreator.m in Sources */,
 				507C80E7242914C800F765F7 /* StackOptionsTest.m in Sources */,
