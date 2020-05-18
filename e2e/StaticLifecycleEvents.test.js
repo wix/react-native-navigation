@@ -60,4 +60,11 @@ describe('static lifecycle events', () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('componentDidDisappear | ReactTitleView | TopBarTitle')).toBeVisible();
   });
+
+  it('unmounts previous root before resolving setRoot promise', async () => {
+    await elementById(TestIDs.SET_ROOT_BTN).tap();
+    await elementById(TestIDs.SET_ROOT_BTN).tap();
+
+    await expect(elementByLabel('setRoot complete - previous root is unmounted')).toBeVisible();
+  });
 });
