@@ -10,4 +10,3 @@ export * from './interfaces/EventSubscription';
 export * from './interfaces/Layout';
 export * from './interfaces/Options';
 export * from './interfaces/NavigationComponent';
-export * from './interfaces/NavigationListener';
