@@ -46,7 +46,16 @@
     [[(id)self.uut expect] applyBackgroundColor:nil translucent:[UIColor redColor]];
     [[self.boundViewController expect] setTabBarHideShadow:YES];
     [[self.boundViewController expect] setTabBarStyle:UIBarStyleBlack];
-	[[self.boundViewController expect] setTabBarVisible:NO animated:NO];
+
+    [self.uut applyOptions:initialOptions];
+    [self.boundViewController verify];
+}
+
+- (void)testApplyOptions_shouldRestoreHiddenTabBar {
+    RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    initialOptions.bottomTabs.visible = [[Bool alloc] initWithValue:@(1)];
+	
+	[[self.boundViewController expect] setTabBarVisible:YES animated:NO];
 
     [self.uut applyOptions:initialOptions];
     [self.boundViewController verify];
