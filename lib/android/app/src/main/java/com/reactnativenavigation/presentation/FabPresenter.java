@@ -99,19 +99,24 @@ public class FabPresenter {
 
     private void removeFab() {
         if (fab != null) {
-            fab.animate()
-                    .scaleX(0f)
-                    .scaleY(0f)
-                    .setDuration(DURATION)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            viewGroup.removeView(fab);
-                            fab = null;
-                        }
-                    })
-                    .start();
+            animateHide(() -> {
+                viewGroup.removeView(fab);
+                fab = null;
+            });
         }
+    }
+
+    public void animateHide(Runnable onAnimationEnd) {
+        fab.animate()
+                .scaleX(0f)
+                .scaleY(0f)
+                .setDuration(DURATION)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        onAnimationEnd.run();
+                    }
+                });
     }
 
     private void setParams(ViewController component, View fab, FabOptions options) {
