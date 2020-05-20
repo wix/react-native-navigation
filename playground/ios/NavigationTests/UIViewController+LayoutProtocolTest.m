@@ -31,12 +31,21 @@
     XCTAssertEqual(uut.modalPresentationStyle, UIModalPresentationPageSheet);
 }
 
-- (void)testInitWithLayoutInfoShouldSetChildViewControllers {
+- (void)testInitWithLayoutInfoShouldNotSetChildViewControllers {
 	UIViewController* child1 = [UIViewController new];
 	UIViewController* child2 = [UIViewController new];
 	NSArray* childViewControllers = @[child1, child2];
 	UINavigationController* uut = [[UINavigationController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:childViewControllers];
 	
+	XCTAssertEqual(uut.viewControllers.count, 0);
+}
+
+- (void)testLoadChildrenShouldSetChildViewControllers {
+	UIViewController* child1 = [UIViewController new];
+	UIViewController* child2 = [UIViewController new];
+	NSArray* childViewControllers = @[child1, child2];
+	UINavigationController* uut = [[UINavigationController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:childViewControllers];
+	[uut loadChildren];
 	XCTAssertEqual(uut.viewControllers[0], child1);
 	XCTAssertEqual(uut.viewControllers[1], child2);
 }

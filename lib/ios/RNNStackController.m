@@ -15,6 +15,7 @@
     if (@available(iOS 11.0, *)) {
         self.navigationBar.prefersLargeTitles = YES;
     }
+    [self loadChildren];
     return self;
 }
 

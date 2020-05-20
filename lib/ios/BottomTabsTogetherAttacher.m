@@ -3,7 +3,7 @@
 @implementation BottomTabsTogetherAttacher
 
 - (void)attach:(UITabBarController *)bottomTabsController {
-    for (UIViewController* childViewController in bottomTabsController.childViewControllers) {
+    for (UIViewController* childViewController in bottomTabsController.children) {
         [childViewController render];
     }
     

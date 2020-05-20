@@ -32,6 +32,11 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self loadChildren];
+}
+
 - (void)onChildAddToParent:(UIViewController *)child options:(RNNNavigationOptions *)options {
     [_bottomTabPresenter applyOptionsOnWillMoveToParentViewController:options child:child];
 }
@@ -73,11 +78,13 @@
 }
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
-	for (id child in self.childViewControllers) {
+	for (id child in self.children) {
 		UIViewController<RNNLayoutProtocol>* vc = child;
 
 		if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] && [vc.layoutInfo.componentId isEqualToString:componentID]) {
-			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
+            NSUInteger selectedIndex = [self.children indexOfObject:child];
+			[self setSelectedIndex:selectedIndex];
+            _currentTabIndex = selectedIndex;
 		}
 	}
 }
@@ -85,6 +92,10 @@
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
 	_currentTabIndex = selectedIndex;
 	[super setSelectedIndex:selectedIndex];
+}
+
+- (UIViewController *)selectedViewController {
+    return self.children[_currentTabIndex];
 }
 
 #pragma mark UITabBarControllerDelegate

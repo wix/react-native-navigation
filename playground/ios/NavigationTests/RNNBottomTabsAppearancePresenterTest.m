@@ -26,6 +26,7 @@
 	self.dotIndicatorPresenter = [OCMockObject partialMockForObject:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil]];
     self.uut = [OCMockObject partialMockForObject:[BottomTabsPresenterCreator createWithDefaultOptions:nil]];
 	self.boundViewController = [OCMockObject partialMockForObject:[[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:self.uut bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil] dotIndicatorPresenter:self.dotIndicatorPresenter eventEmitter:nil childViewControllers:self.children bottomTabsAttacher:nil]];
+	[self.boundViewController viewWillAppear:YES];
     [self.uut bindViewController:self.boundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }

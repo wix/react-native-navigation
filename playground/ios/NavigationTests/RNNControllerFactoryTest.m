@@ -115,7 +115,7 @@
 												 @"data": @{},
 												 @"children": @[]}]}]};
 	RNNBottomTabsController* tabBar = (RNNBottomTabsController*) [self.factory createLayout:layout];
-	
+	[tabBar viewWillAppear:YES];
 	XCTAssertTrue([tabBar isMemberOfClass:[RNNBottomTabsController class]]);
 	XCTAssertTrue(tabBar.childViewControllers.count == 1);
 	XCTAssertTrue([tabBar.childViewControllers[0] isMemberOfClass:[RNNStackController class]]);
