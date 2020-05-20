@@ -3,7 +3,7 @@ package com.reactnativenavigation.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
@@ -27,7 +27,7 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
 		super(context);
 		this.reactView = reactView;
         addView(reactView.asView(), matchParentLP());
-        touchDelegate = new OverlayTouchDelegate(reactView);
+        touchDelegate = new OverlayTouchDelegate(this, reactView);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     }
 
     @Override
-    public View asView() {
+    public ViewGroup asView() {
         return this;
     }
 
@@ -93,5 +93,9 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return touchDelegate.onInterceptTouchEvent(ev);
+    }
+
+    public boolean superOnInterceptTouchEvent(MotionEvent event) {
+        return super.onInterceptTouchEvent(event);
     }
 }
