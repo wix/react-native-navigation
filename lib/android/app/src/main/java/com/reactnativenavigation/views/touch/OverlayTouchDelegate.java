@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
-import com.reactnativenavigation.react.ReactView;
+import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.ComponentLayout;
 
 import androidx.annotation.VisibleForTesting;
@@ -15,13 +15,13 @@ public class OverlayTouchDelegate {
     private final Rect hitRect = new Rect();
     private Bool interceptTouchOutside = new NullBool();
     private ComponentLayout component;
-    private ReactView reactView;
+    private IReactView reactView;
 
     public void setInterceptTouchOutside(Bool interceptTouchOutside) {
         this.interceptTouchOutside = interceptTouchOutside;
     }
 
-    public OverlayTouchDelegate(ComponentLayout component, ReactView reactView) {
+    public OverlayTouchDelegate(ComponentLayout component, IReactView reactView) {
         this.component = component;
         this.reactView = reactView;
     }
@@ -44,6 +44,6 @@ public class OverlayTouchDelegate {
     }
 
     private View getOverlayView() {
-        return reactView.getChildCount() > 0 ? reactView.getChildAt(0) : reactView;
+        return reactView.asView().getChildCount() > 0 ? reactView.asView().getChildAt(0) : reactView.asView();
     }
 }

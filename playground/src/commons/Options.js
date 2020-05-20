@@ -17,7 +17,6 @@ const setDefaultOptions = () => Navigation.setDefaultOptions({
     direction: 'locale'
   },
   bottomTabs: {
-    currentTabIndex: 2,
     titleDisplayMode: 'alwaysShow'
   },
   bottomTab: {
