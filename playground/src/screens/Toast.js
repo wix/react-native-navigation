@@ -4,14 +4,21 @@ const Colors = require('../commons/Colors');
 const Navigation = require('../services/Navigation');
 
 const Toast = function ({componentId}) {
+  dismiss = (txt) => {
+    console.log('guyca', txt);
+    Navigation.dismissOverlay(componentId);
+  }
+
   return (
     <View style={styles.root}>
-      <View style={styles.toast}>
-        <Text style={styles.text}>This a very important message!</Text>
-        <TouchableOpacity style={styles.button} onPress={() => Navigation.dismissOverlay(componentId)}>
-          <Text style={styles.buttonText}>OK</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={() => dismiss('d1')}>
+        <View style={styles.toast}>
+          <Text style={styles.text}>This a very important message!</Text>
+          <TouchableOpacity style={styles.button} onPress={() => dismiss('d2')}>
+            <Text style={styles.buttonText}>OK</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
     </View>
   )
 }
