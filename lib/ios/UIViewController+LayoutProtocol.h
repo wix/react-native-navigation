@@ -16,6 +16,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (UIViewController *)topMostViewController;
 
+- (void)destroy;
+
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child;
@@ -37,6 +39,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 - (void)componentDidAppear;
 
 - (void)componentDidDisappear;
+
+- (void)screenPopped;
 
 @property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;

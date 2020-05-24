@@ -125,6 +125,14 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void setContentLayout_modalAndOverlayLayoutsAreGONE() {
+        ViewGroup contentLayout = Mockito.mock(ViewGroup.class);
+        uut.setContentLayout(contentLayout);
+        assertThat(uut.getModalsLayout().getVisibility()).isEqualTo(View.GONE);
+        assertThat(uut.getOverlaysLayout().getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
     public void bindViews() {
         verify(rootPresenter).setRootContainer(uut.getRootLayout());
         verify(modalStack).setModalsLayout(uut.getModalsLayout());

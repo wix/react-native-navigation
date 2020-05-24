@@ -12,9 +12,9 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
@@ -59,6 +59,7 @@ import java.util.List;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import static com.reactnativenavigation.utils.ObjectUtils.take;
 import static com.reactnativenavigation.utils.ViewUtils.topMargin;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -82,6 +83,7 @@ public class StackControllerTest extends BaseTest {
     private ViewController child1a;
     private ViewController child2;
     private ViewController child3;
+    private SimpleViewController.SimpleView child3View;
     private ViewController child4;
     private NavigationAnimator animator;
     private TopBarController topBarController;
@@ -108,13 +110,22 @@ public class StackControllerTest extends BaseTest {
                     new Options()
                 )
         );
+        createChildren();
+        uut = createStack();
+        activity.setContentView(uut.getView());
+    }
+
+    private void createChildren() {
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         child1a = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
-        child3 = spy(new SimpleViewController(activity, childRegistry, "child3", new Options()));
+        child3 = spy(new SimpleViewController(activity, childRegistry, "child3", new Options()) {
+            @Override
+            protected SimpleView createView() {
+                return take(child3View, super.createView());
+            }
+        });
         child4 = spy(new SimpleViewController(activity, childRegistry, "child4", new Options()));
-        uut = createStack();
-        activity.setContentView(uut.getView());
     }
 
     @Test
@@ -392,6 +403,19 @@ public class StackControllerTest extends BaseTest {
         uut.setRoot(Collections.singletonList(child1a), new CommandListenerAdapter());
 
         assertContainsOnlyId(child1a.getId());
+    }
+
+    @Test
+    public void setRoot_topScreenIsStartedThenTheRest() {
+        disablePushAnimation(child1, child2, child3);
+        child3View = spy(new SimpleViewController.SimpleView(activity));
+
+        uut.setRoot(Arrays.asList(child1, child2, child3), new CommandListenerAdapter());
+        ShadowLooper.idleMainLooper();
+        InOrder inOrder = inOrder(child3View, child2, child1);
+        inOrder.verify(child3View).start();
+        inOrder.verify(child2).start();
+        inOrder.verify(child1).start();
     }
 
     @Test

@@ -6,7 +6,9 @@ const {
   PUSH_BTN,
   POP_BTN,
   STATIC_EVENTS_OVERLAY_BTN,
-  MODAL_BTN
+  MODAL_BTN,
+  SET_ROOT_BTN
+
 } = require('../testIDs');
 const Screens = require('./Screens');
 
@@ -18,6 +20,7 @@ class StaticEventsScreen extends React.Component {
         <Button label='Push' testID={PUSH_BTN} onPress={this.push} />
         <Button label='Pop' testID={POP_BTN} onPress={this.pop} />
         <Button label='Show Modal' testID={MODAL_BTN} onPress={this.showModal} />
+        <Button label='Set Root' testID={SET_ROOT_BTN} onPress={this.setRoot} />
       </Root>
     );
   }
@@ -37,6 +40,7 @@ class StaticEventsScreen extends React.Component {
   });
   push = () => Navigation.push(this, Screens.Pushed);
   pop = () => Navigation.pop(this);
+  setRoot = () => Navigation.setRoot(Screens.SetRoot);
 }
 
 module.exports = StaticEventsScreen;

@@ -1,17 +1,16 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import androidx.annotation.NonNull;
-
 import com.reactnativenavigation.utils.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-import static com.reactnativenavigation.utils.CollectionUtils.last;
-import static com.reactnativenavigation.utils.CollectionUtils.removeLast;
+import androidx.annotation.NonNull;
+
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 public class IdStack<E> implements Iterable<String> {
 
@@ -84,8 +83,8 @@ public class IdStack<E> implements Iterable<String> {
 	}
 
 
-	public Collection<E> values() {
-		return map.values();
+	public List<E> values() {
+		return map(deque, map::get);
 	}
 
     public void remove(Iterator<String> iterator, String id) {

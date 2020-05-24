@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.SideMenuRootOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
@@ -23,6 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.LayoutParams;
+
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class SideMenuController extends ParentController<SideMenuRoot> implements DrawerLayout.DrawerListener {
 
@@ -94,6 +97,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
         presenter.mergeOptions(options.sideMenuRootOptions);
+        mergeLockMode(this.initialOptions, options.sideMenuRootOptions);
         performOnParentController(parent -> parent.mergeChildOptions(options, child));
     }
 
@@ -126,13 +130,13 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     @Override
     public void onDrawerOpened(@NonNull View drawerView) {
         ViewController view = this.getMatchingView(drawerView);
-        view.mergeOptions(this.getOptionsWithVisibility(this.viewIsLeft(drawerView), true));
+        view.mergeOptions(this.getOptionsWithVisibility(isLeftMenu(drawerView), true));
     }
 
     @Override
     public void onDrawerClosed(@NonNull View drawerView) {
         ViewController view = this.getMatchingView(drawerView);
-        view.mergeOptions(this.getOptionsWithVisibility(this.viewIsLeft(drawerView), false));
+        view.mergeOptions(this.getOptionsWithVisibility(isLeftMenu(drawerView), false));
     }
 
     @Override
@@ -179,10 +183,10 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     private ViewController getMatchingView (View drawerView) {
-        return this.viewIsLeft(drawerView) ? left : right;
+        return this.isLeftMenu(drawerView) ? left : right;
     }
 
-    private boolean viewIsLeft (View drawerView) {
+    private boolean isLeftMenu(View drawerView) {
         return (left != null && drawerView.equals(left.getView()));
     }
 
@@ -206,6 +210,11 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         } else if (prevOffset > 0 && offset == 0) {
             drawer.onViewDisappear();
         }
+    }
+
+    private void mergeLockMode(Options out, SideMenuRootOptions sideMenu) {
+        perform(sideMenu.left.enabled.get(null), enabled -> out.sideMenuRootOptions.left.enabled = new Bool(enabled));
+        perform(sideMenu.right.enabled.get(null), enabled -> out.sideMenuRootOptions.right.enabled = new Bool(enabled));
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

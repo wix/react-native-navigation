@@ -49,7 +49,7 @@ module.exports = {
             },
             {
               label: 'Contributing',
-              to: 'docs/contributing',
+              to: 'docs/meta-contributing',
             }
           ],
         },
@@ -95,7 +95,7 @@ module.exports = {
           routeBasePath: 'docs',
           path: 'docs',
           editUrl:
-            'https://github.com/wix/react-native-navigation/edit/master/website/docs'
+            'https://github.com/wix/react-native-navigation/edit/master/website'
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -110,7 +110,7 @@ module.exports = {
           path: 'api',
           sidebarPath: require.resolve('./sidebarsApi.js'),
           editUrl:
-            'https://github.com/wix/react-native-navigation/edit/master/website/docs'
+            'https://github.com/wix/react-native-navigation/edit/master/website'
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

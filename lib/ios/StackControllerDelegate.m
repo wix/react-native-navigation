@@ -15,14 +15,10 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     if (_presentedViewController && ![navigationController.viewControllers containsObject:_presentedViewController]) {
-        [self sendScreenPoppedEvent:_presentedViewController];
+        [_presentedViewController screenPopped];
     }
     
     _presentedViewController = viewController;
-}
-
-- (void)sendScreenPoppedEvent:(UIViewController *)poppedScreen {
-    [_eventEmitter sendScreenPoppedEvent:poppedScreen.layoutInfo.componentId];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController

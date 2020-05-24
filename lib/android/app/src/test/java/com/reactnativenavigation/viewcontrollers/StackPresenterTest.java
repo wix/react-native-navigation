@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
@@ -12,9 +13,9 @@ import com.reactnativenavigation.mocks.BackDrawable;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.Mocks;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.Options;
@@ -244,6 +245,7 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void mergeRightButtons_buttonsAreCreatedOnlyIfNeeded() {
         Options toApply = new Options();
+        textBtn1.color = new Colour(Color.GREEN);
         toApply.topBar.buttons.right = new ArrayList<>(asList(textBtn1, componentBtn1));
         uut.applyChildOptions(toApply, parent, child);
 
@@ -254,6 +256,7 @@ public class StackPresenterTest extends BaseTest {
 
         Options toMerge = new Options();
         toMerge.topBar.buttons.right = new ArrayList(requireNonNull(map(toApply.topBar.buttons.right, Button::copy)));
+        toMerge.topBar.buttons.right.get(0).color = new Colour(Color.RED);
         toMerge.topBar.buttons.right.add(1, componentBtn2);
         uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child);
 
@@ -262,7 +265,7 @@ public class StackPresenterTest extends BaseTest {
         verify(topBarController).mergeRightButtons(captor2.capture(), any());
         List<TitleBarButtonController> mergedButtons = captor2.getValue();
         assertThat(mergedButtons).hasSize(3);
-        assertThat(appliedButtons.get(0)).isEqualTo(mergedButtons.get(0));
+        assertThat(appliedButtons.get(0)).isNotEqualTo(mergedButtons.get(0));
         assertThat(appliedButtons.get(1)).isEqualTo(mergedButtons.get(2));
     }
 

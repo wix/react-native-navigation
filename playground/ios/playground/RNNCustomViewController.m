@@ -1,4 +1,5 @@
 #import "RNNCustomViewController.h"
+#import "RNNNativeViewController.h"
 
 @implementation RNNCustomViewController {
 	NSString* _text;
@@ -16,12 +17,9 @@
 	[self addTestLabel];
 	[self addDismissModalButton];
 	[self addNavigationBarButtons];
+	[self addPushButton];
 	
 	[[self view] setBackgroundColor:UIColor.whiteColor];
-}
-
-- (void)dismissModal {
-	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addDismissModalButton {
@@ -31,6 +29,15 @@
 	[dismissModalButton setTitle:@"Dismiss modal" forState:UIControlStateNormal];
 	[dismissModalButton addTarget:self action:@selector(dismissModal) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:dismissModalButton];
+}
+
+- (void)addPushButton {
+	UIButton* pushNativeVCButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.center.x - 70, 370, 140, 50)];
+	pushNativeVCButton.backgroundColor = UIColor.systemBlueColor;
+	pushNativeVCButton.accessibilityIdentifier = @"PUSH_NATIVE_BTN";
+	[pushNativeVCButton setTitle:@"Push Native VC" forState:UIControlStateNormal];
+	[pushNativeVCButton addTarget:self action:@selector(pushNativeVC) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:pushNativeVCButton];
 }
 
 - (void)addTestLabel {
@@ -47,6 +54,15 @@
 	UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Right button" style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonPressed)];
 	rightButton.accessibilityIdentifier = @"EXTERNAL_TOP_BAR_RIGHT_BTN";
 	self.navigationItem.rightBarButtonItem = rightButton;
+}
+
+- (void)dismissModal {
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)pushNativeVC {
+	RNNNativeViewController* nativeVC = [[RNNNativeViewController alloc] init];
+	[self.navigationController pushViewController:nativeVC animated:NO];
 }
 
 - (void)rightButtonPressed {
