@@ -376,7 +376,7 @@
 	NSArray* supportedOrientations = @[@"portrait"];
 	self.options.layout.orientation = supportedOrientations;
 	NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
-    __unused RNNBottomTabsController* vc = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[RNNComponentPresenter new] eventEmitter:nil childViewControllers:controllers];
+    __unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
 	[vc viewWillAppear:NO];
 	[self.uut viewWillAppear:false];
 
@@ -388,7 +388,7 @@
 	NSArray* supportedOrientations = @[@"portrait", @"landscape"];
 	self.options.layout.orientation = supportedOrientations;
     NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
-    __unused RNNBottomTabsController* vc = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[RNNComponentPresenter new] eventEmitter:nil childViewControllers:controllers];
+    __unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
 	[vc viewWillAppear:NO];
 	[self.uut viewWillAppear:false];
 
@@ -400,7 +400,7 @@
 	NSArray* supportedOrientations = @[@"all"];
 	self.options.layout.orientation = supportedOrientations;
 	NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
-	__unused RNNBottomTabsController* vc = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[RNNComponentPresenter new] eventEmitter:nil childViewControllers:controllers];
+	__unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
 	[vc viewWillAppear:NO];
 	[self.uut viewWillAppear:false];
 
