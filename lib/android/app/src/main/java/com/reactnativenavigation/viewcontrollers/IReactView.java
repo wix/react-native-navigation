@@ -1,7 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 
@@ -9,7 +9,7 @@ public interface IReactView extends Destroyable {
 
     boolean isReady();
 
-    View asView();
+    ViewGroup asView();
 
     void sendOnNavigationButtonPressed(String buttonId);
 
