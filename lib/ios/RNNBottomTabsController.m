@@ -4,6 +4,7 @@
 @interface RNNBottomTabsController ()
 @property (nonatomic, strong) BottomTabPresenter* bottomTabPresenter;
 @property (nonatomic, strong) RNNDotIndicatorPresenter* dotIndicatorPresenter;
+@property (nonatomic) BOOL viewWillAppearOnce;
 @end
 
 @implementation RNNBottomTabsController {
@@ -25,6 +26,7 @@
     _bottomTabsAttacher = bottomTabsAttacher;
     _bottomTabPresenter = bottomTabPresenter;
     _dotIndicatorPresenter = dotIndicatorPresenter;
+    _pendingChildViewControllers = childViewControllers;
     self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
     if (@available(iOS 13.0, *)) {
         self.tabBar.standardAppearance = [UITabBarAppearance new];
@@ -34,7 +36,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self loadChildren];
+    _viewWillAppearOnce = YES;
+    [self loadChildren:self.pendingChildViewControllers];
 }
 
 - (void)onChildAddToParent:(UIViewController *)child options:(RNNNavigationOptions *)options {
@@ -78,11 +81,12 @@
 }
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
-	for (id child in self.children) {
+    NSArray* children = self.pendingChildViewControllers ?: self.childViewControllers;
+	for (id child in children) {
 		UIViewController<RNNLayoutProtocol>* vc = child;
 
 		if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] && [vc.layoutInfo.componentId isEqualToString:componentID]) {
-            NSUInteger selectedIndex = [self.children indexOfObject:child];
+            NSUInteger selectedIndex = [children indexOfObject:child];
 			[self setSelectedIndex:selectedIndex];
             _currentTabIndex = selectedIndex;
 		}
@@ -95,7 +99,15 @@
 }
 
 - (UIViewController *)selectedViewController {
-    return self.children[_currentTabIndex];
+    NSArray* children = self.pendingChildViewControllers ?: self.childViewControllers;
+    return children.count ? children[_currentTabIndex] : nil;
+}
+
+- (void)loadChildren:(NSArray *)children {
+    if (self.viewWillAppearOnce) {
+        [super loadChildren:children];
+        self.pendingChildViewControllers = nil;
+    }
 }
 
 #pragma mark UITabBarControllerDelegate

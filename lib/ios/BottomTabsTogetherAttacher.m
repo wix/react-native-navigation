@@ -1,9 +1,10 @@
 #import "BottomTabsTogetherAttacher.h"
+#import "RNNBottomTabsController.h"
 
 @implementation BottomTabsTogetherAttacher
 
-- (void)attach:(UITabBarController *)bottomTabsController {
-    for (UIViewController* childViewController in bottomTabsController.children) {
+- (void)attach:(RNNBottomTabsController *)bottomTabsController {
+    for (UIViewController* childViewController in bottomTabsController.pendingChildViewControllers) {
         [childViewController render];
     }
     

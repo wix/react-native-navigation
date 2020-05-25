@@ -12,7 +12,6 @@
 					  eventEmitter:(RNNEventEmitter *)eventEmitter
 			  childViewControllers:(NSArray *)childViewControllers {
 	self = [self init];
-    self.children = childViewControllers;
 	self.options = options;
 	self.defaultOptions = defaultOptions;
 	self.layoutInfo = layoutInfo;
@@ -21,6 +20,7 @@
     self.presenter = presenter;
     [self.presenter bindViewController:self];
     self.extendedLayoutIncludesOpaqueBars = YES;
+    [self loadChildren:childViewControllers];
     [self.presenter applyOptionsOnInit:self.resolveOptions];
 
 	return self;
@@ -71,10 +71,10 @@
     [self.getCurrentChild render];
 }
 
-- (void)loadChildren {
+- (void)loadChildren:(NSArray *)children {
     if (!self.isChildViewControllersLoaded && [self respondsToSelector:@selector(setViewControllers:)]) {
         self.isChildViewControllersLoaded = YES;
-        [self performSelector:@selector(setViewControllers:) withObject:self.children];
+        [self performSelector:@selector(setViewControllers:) withObject:children];
     }
 }
 
@@ -88,8 +88,7 @@
 }
 
 - (UIViewController *)getCurrentChild {
-    NSArray* childViewControllers = self.childViewControllers.count > 0 ? self.childViewControllers : self.children;
-    for (UIViewController* childViewController in childViewControllers.reverseObjectEnumerator.allObjects) {
+    for (UIViewController* childViewController in self.childViewControllers.reverseObjectEnumerator.allObjects) {
         if (childViewController.layoutInfo) {
             return childViewController;
         }
@@ -215,14 +214,6 @@
 
 - (void)setEventEmitter:(RNNEventEmitter *)eventEmitter {
 	objc_setAssociatedObject(self, @selector(eventEmitter), eventEmitter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (NSArray *)children {
-    return objc_getAssociatedObject(self, @selector(children));
-}
-
-- (void)setChildren:(NSArray *)children {
-    objc_setAssociatedObject(self, @selector(children), children, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL)isChildViewControllersLoaded {

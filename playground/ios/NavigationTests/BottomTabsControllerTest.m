@@ -42,7 +42,7 @@
     UIViewController *vc1 = [[UIViewController alloc] init];
     UIViewController *vc2 = [[UIViewController alloc] init];
 
-    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNComponentPresenter alloc] init] eventEmitter:nil childViewControllers:@[vc1, vc2]];
+	RNNBottomTabsController *uut = [RNNBottomTabsController createWithChildren:@[vc1, vc2]];
 	[uut viewWillAppear:YES];
     XCTAssertTrue(uut.viewControllers.count == 2);
 }
@@ -52,35 +52,19 @@
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
     RNNBottomTabsPresenter *presenter = [[RNNBottomTabsPresenter alloc] init];
     NSArray *childViewControllers = @[[UIViewController new]];
-
-    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo creator:nil options:options defaultOptions:nil presenter:presenter eventEmitter:nil childViewControllers:childViewControllers];
-	[uut viewWillAppear:YES];
-    XCTAssertTrue(uut.layoutInfo == layoutInfo);
-    XCTAssertTrue(uut.options == options);
-    XCTAssertTrue(uut.presenter == presenter);
-    XCTAssertTrue(uut.childViewControllers.count == childViewControllers.count);
-}
-
-- (void)testInitWithEventEmmiter_shouldInitializeDependencies {
-    RNNLayoutInfo *layoutInfo = [RNNLayoutInfo new];
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
-    RNNBottomTabsPresenter *presenter = [[RNNBottomTabsPresenter alloc] init];
-    RNNEventEmitter *eventEmmiter = [RNNEventEmitter new];
-
-    NSArray *childViewControllers = @[[UIViewController new]];
-
-    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo creator:nil options:options defaultOptions:nil presenter:presenter eventEmitter:eventEmmiter childViewControllers:childViewControllers];
-	[uut viewWillAppear:YES];
+	RNNEventEmitter *eventEmmiter = [RNNEventEmitter new];
 	
+    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo creator:nil options:options defaultOptions:nil presenter:presenter bottomTabPresenter:nil dotIndicatorPresenter:nil eventEmitter:eventEmmiter childViewControllers:childViewControllers bottomTabsAttacher:nil];
+	[uut viewWillAppear:YES];
     XCTAssertTrue(uut.layoutInfo == layoutInfo);
     XCTAssertTrue(uut.options == options);
     XCTAssertTrue(uut.presenter == presenter);
     XCTAssertTrue(uut.childViewControllers.count == childViewControllers.count);
-    XCTAssertTrue(uut.eventEmitter == eventEmmiter);
+	XCTAssertTrue(uut.eventEmitter == eventEmmiter);
 }
 
 - (void)testInitWithLayoutInfo_shouldSetDelegate {
-    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNBasePresenter alloc] init] eventEmitter:nil childViewControllers:nil];
+    RNNBottomTabsController *uut = [RNNBottomTabsController createWithChildren:@[]];
 
     XCTAssertTrue(uut.delegate == uut);
 }
@@ -183,7 +167,7 @@
 
     RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
 
-    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:[RNNBottomTabsPresenter new] eventEmitter:nil childViewControllers:@[[UIViewController new], vc]];
+    RNNBottomTabsController *uut = [RNNBottomTabsController createWithChildren:@[[UIViewController new], vc]];
 	[uut viewWillAppear:YES];
 	
     [uut setSelectedIndexByComponentID:@"componentId"];
@@ -195,7 +179,7 @@
     options.bottomTabs.currentTabIndex = [[IntNumber alloc] initWithValue:@(1)];
 
     RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
-    RNNBottomTabsController *uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:nil presenter:[RNNBottomTabsPresenter new] eventEmitter:nil childViewControllers:@[[UIViewController new], vc]];
+	RNNBottomTabsController *uut = [RNNBottomTabsController createWithChildren:@[[UIViewController new], vc] options:options];
 	[uut viewWillAppear:YES];
 
     XCTAssertTrue(uut.selectedIndex == 1);
