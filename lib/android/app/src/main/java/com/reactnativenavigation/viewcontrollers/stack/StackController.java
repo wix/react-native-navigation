@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.Constants;
@@ -50,14 +51,16 @@ public class StackController extends ParentController<StackLayout> {
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
+    private final FabPresenter fabPresenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter) {
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.eventEmitter = eventEmitter;
         this.topBarController = topBarController;
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
         this.presenter = stackPresenter;
+        this.fabPresenter = fabPresenter;
         stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
         for (ViewController child : children) {
             child.setParentController(this);
@@ -105,7 +108,7 @@ public class StackController extends ParentController<StackLayout> {
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
-        fabOptionsPresenter.applyOptions(this.options.fabOptions, child, getView());
+        fabPresenter.applyOptions(this.options.fabOptions, child, getView());
         performOnParentController(parent ->
                 parent.applyChildOptions(
                         this.options.copy()
@@ -125,7 +128,7 @@ public class StackController extends ParentController<StackLayout> {
         if (child.isViewShown() && peek() == child) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), this, child);
             if (options.fabOptions.hasValue()) {
-                fabOptionsPresenter.mergeOptions(options.fabOptions, child, getView());
+                fabPresenter.mergeOptions(options.fabOptions, child, getView());
             }
         }
         performOnParentController(parent ->

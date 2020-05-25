@@ -35,6 +35,17 @@ describe('Overlay', () => {
     await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
   });
 
+  fit('nested touchables work as expected', async () => {
+    await elementById(TestIDs.TOAST_BTN).tap();
+    await elementById(TestIDs.TOAST_OK_BTN_INNER).tap();
+    await expect(elementByLabel('Inner button clicked')).toBeVisible();
+    await elementById(TestIDs.OK_BUTTON).tap();
+
+    await elementById(TestIDs.TOAST_BTN).tap();
+    await elementById(TestIDs.TOAST_OK_BTN_OUTER).tap();
+    await expect(elementByLabel('Outer button clicked')).toBeVisible();
+  });
+
   xtest('overlay pass touches - false', async () => {
     await elementById(TestIDs.SHOW_OVERLAY_BUTTON).tap();
     await expect(elementById(TestIDs.SHOW_OVERLAY_BUTTON)).toBeVisible();

@@ -10,7 +10,6 @@ import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
-import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.StringUtils;
@@ -67,7 +66,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
-    protected FabPresenter fabOptionsPresenter;
     private ViewControllerOverlay overlay;
     @Nullable public abstract String getCurrentComponentName();
 
@@ -79,7 +77,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.activity = activity;
         this.id = id;
         this.yellowBoxDelegate = yellowBoxDelegate;
-        fabOptionsPresenter = new FabPresenter();
         this.initialOptions = initialOptions;
         this.overlay = overlay;
         options = initialOptions.copy();

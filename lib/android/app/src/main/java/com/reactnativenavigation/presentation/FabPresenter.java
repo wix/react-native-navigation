@@ -1,12 +1,15 @@
 package com.reactnativenavigation.presentation;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.FabOptions;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
@@ -20,28 +23,28 @@ import static com.github.clans.fab.FloatingActionButton.SIZE_NORMAL;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class FabPresenter {
+    private static final int DURATION = 200;
+
     private ViewGroup viewGroup;
-    private ViewController component;
 
     private Fab fab;
     private FabMenu fabMenu;
 
     public void applyOptions(FabOptions options, @NonNull ViewController component, @NonNull ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
-        this.component = component;
 
         if (options.id.hasValue()) {
             if (fabMenu != null && fabMenu.getFabId().equals(options.id.get())) {
                 fabMenu.bringToFront();
-                applyFabMenuOptions(fabMenu, options);
-                setParams(fabMenu, options);
+                applyFabMenuOptions(component, fabMenu, options);
+                setParams(component, fabMenu, options);
             } else if (fab != null && fab.getFabId().equals(options.id.get())) {
                 fab.bringToFront();
-                applyFabOptions(fab, options);
-                setParams(fab, options);
+                setParams(component, fab, options);
+                applyFabOptions(component, fab, options);
                 fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
             } else {
-                createFab(options);
+                createFab(component, options);
             }
         } else {
             removeFab();
@@ -51,35 +54,38 @@ public class FabPresenter {
 
     public void mergeOptions(FabOptions options, @NonNull ViewController component, @NonNull ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
-        this.component = component;
         if (options.id.hasValue()) {
             if (fabMenu != null && fabMenu.getFabId().equals(options.id.get())) {
                 mergeParams(fabMenu, options);
                 fabMenu.bringToFront();
-                mergeFabMenuOptions(fabMenu, options);
+                mergeFabMenuOptions(component, fabMenu, options);
             } else if (fab != null && fab.getFabId().equals(options.id.get())) {
                 mergeParams(fab, options);
                 fab.bringToFront();
-                mergeFabOptions(fab, options);
+                mergeFabOptions(component, fab, options);
                 fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
             } else {
-                createFab(options);
+                createFab(component, options);
             }
         }
     }
 
-    private void createFab(FabOptions options) {
+    private void createFab(ViewController component, FabOptions options) {
         if (options.actionsArray.size() > 0) {
             fabMenu = new FabMenu(viewGroup.getContext(), options.id.get());
-            setParams(fabMenu, options);
-            applyFabMenuOptions(fabMenu, options);
+            setParams(component, fabMenu, options);
+            applyFabMenuOptions(component, fabMenu, options);
             viewGroup.addView(fabMenu);
         } else {
             fab = new Fab(viewGroup.getContext(), options.id.get());
-            setParams(fab, options);
-            applyFabOptions(fab, options);
-            fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
+            setParams(component, fab, options);
+            applyFabOptions(component, fab, options);
             viewGroup.addView(fab);
+            fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
+            UiUtils.doOnLayout(fab, () -> {
+                fab.setPivotX(fab.getWidth() / 2f);
+                fab.setPivotY(fab.getHeight() / 2f);
+            });
         }
     }
 
@@ -93,18 +99,32 @@ public class FabPresenter {
 
     private void removeFab() {
         if (fab != null) {
-            fab.hide(true);
-            viewGroup.removeView(fab);
-            fab = null;
+            animateHide(() -> {
+                viewGroup.removeView(fab);
+                fab = null;
+            });
         }
     }
 
-    private void setParams(View fab, FabOptions options) {
+    public void animateHide(Runnable onAnimationEnd) {
+        fab.animate()
+                .scaleX(0f)
+                .scaleY(0f)
+                .setDuration(DURATION)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        onAnimationEnd.run();
+                    }
+                });
+    }
+
+    private void setParams(ViewController component, View fab, FabOptions options) {
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         lp.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
         lp.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-        lp.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
-        fab.setTag(R.id.fab_bottom_margin, lp.bottomMargin);
+        lp.bottomMargin = component.getBottomInset() + (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+        fab.setTag(R.id.fab_bottom_margin, (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin));
         lp.gravity = Gravity.BOTTOM;
         if (options.alignHorizontally.hasValue()) {
             if ("right".equals(options.alignHorizontally.get())) {
@@ -140,12 +160,22 @@ public class FabPresenter {
         fab.setLayoutParams(lp);
     }
 
-    private void applyFabOptions(Fab fab, FabOptions options) {
+    private void applyFabOptions(ViewController component, Fab fab, FabOptions options) {
         if (options.visible.isTrueOrUndefined()) {
-            fab.show(true);
+            fab.setScaleX(0.6f);
+            fab.setScaleY(0.6f);
+            fab.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(DURATION)
+                    .start();
         }
         if (options.visible.isFalse()) {
-            fab.hide(true);
+            fab.animate()
+                    .scaleX(0f)
+                    .scaleY(0f)
+                    .setDuration(DURATION)
+                    .start();
         }
         if (options.backgroundColor.hasValue()) {
             fab.setColorNormal(options.backgroundColor.get());
@@ -170,7 +200,7 @@ public class FabPresenter {
         }
     }
 
-    private void mergeFabOptions(Fab fab, FabOptions options) {
+    private void mergeFabOptions(ViewController component, Fab fab, FabOptions options) {
         if (options.visible.isTrue()) {
             fab.show(true);
         }
@@ -200,7 +230,7 @@ public class FabPresenter {
         }
     }
 
-    private void applyFabMenuOptions(FabMenu fabMenu, FabOptions options) {
+    private void applyFabMenuOptions(ViewController component, FabMenu fabMenu, FabOptions options) {
         if (options.visible.isTrueOrUndefined()) {
             fabMenu.showMenuButton(true);
         }
@@ -223,7 +253,7 @@ public class FabPresenter {
         fabMenu.getActions().clear();
         for (FabOptions fabOption : options.actionsArray) {
             Fab fab = new Fab(viewGroup.getContext(), fabOption.id.get());
-            applyFabOptions(fab, fabOption);
+            applyFabOptions(component, fab, fabOption);
             fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
 
             fabMenu.getActions().add(fab);
@@ -237,7 +267,7 @@ public class FabPresenter {
         }
     }
 
-    private void mergeFabMenuOptions(FabMenu fabMenu, FabOptions options) {
+    private void mergeFabMenuOptions(ViewController component, FabMenu fabMenu, FabOptions options) {
         if (options.visible.isTrue()) {
             fabMenu.showMenuButton(true);
         }
@@ -261,7 +291,7 @@ public class FabPresenter {
             fabMenu.getActions().clear();
             for (FabOptions fabOption : options.actionsArray) {
                 Fab fab = new Fab(viewGroup.getContext(), fabOption.id.get());
-                applyFabOptions(fab, fabOption);
+                applyFabOptions(component, fab, fabOption);
                 fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
 
                 fabMenu.getActions().add(fab);

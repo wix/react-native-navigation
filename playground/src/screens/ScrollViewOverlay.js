@@ -10,7 +10,14 @@ const colors = [
   '#D9644A',
   '#CF262F',
   '#8B1079',
-  '#48217B'
+  '#48217B',
+  '#8B1079',
+  '#CF262F',
+  '#D9644A',
+  '#E2902B',
+  '#00A65F',
+  '#00AAAF',
+  '#3182C8',
 ];
 
 class ScrollViewOverlay extends PureComponent {
@@ -27,7 +34,7 @@ class ScrollViewOverlay extends PureComponent {
     );
   }
 
-  renderRow = (color) => <Text key={color} style={[styles.row, { backgroundColor: color }]}>{color}</Text>
+  renderRow = (color) => <Text key={color + Math.random()} style={[styles.row, { backgroundColor: color }]}>{color}</Text>
 }
 
 const styles = StyleSheet.create({
