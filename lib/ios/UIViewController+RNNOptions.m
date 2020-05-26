@@ -95,9 +95,12 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 }
 
 - (void)setTabBarItemBadgeColor:(UIColor *)badgeColor {
-	if (@available(iOS 10.0, *)) {
-		self.tabBarItem.badgeColor = badgeColor;
-	}
+	if (@available(iOS 13.0, *)) {
+        self.tabBarItem.standardAppearance.stackedLayoutAppearance.normal.badgeBackgroundColor = badgeColor;
+    }
+    else if (@available(iOS 10.0, *)) {
+        self.tabBarItem.badgeColor = badgeColor;
+    }
 }
 
 - (void)setStatusBarStyle:(NSString *)style animated:(BOOL)animated {
