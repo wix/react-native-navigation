@@ -21,6 +21,8 @@ import {
   BottomTabLongPressedEvent,
   BottomTabPressedEvent
 } from '../interfaces/Events';
+import { NavigationComponentListener } from 'react-native-navigation/interfaces/NavigationComponentListener';
+import { NavigationComponent } from 'react-native-navigation/interfaces/NavigationComponent';
 
 export class EventsRegistry {
   constructor(
@@ -128,10 +130,17 @@ export class EventsRegistry {
   }
 
   public bindComponent(
-    component: React.Component<any>,
+    component: NavigationComponent<any>,
     componentId?: string
   ): EventSubscription {
     return this.componentEventsObserver.bindComponent(component, componentId);
+  }
+
+  public registerComponentListener(
+    listener: NavigationComponentListener,
+    componentId: string
+  ): EventSubscription {
+    return this.componentEventsObserver.registerComponentListener(listener, componentId);
   }
 
   public registerScreenPoppedListener(

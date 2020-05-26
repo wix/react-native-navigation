@@ -7,6 +7,8 @@ import {
   SearchBarCancelPressedEvent,
   PreviewCompletedEvent,
   ScreenPoppedEvent,
+  ComponentDidAppearEvent,
+  ComponentDidDisappearEvent,
 } from './ComponentEvents';
 
 export interface NavigationComponentProps {
@@ -15,8 +17,8 @@ export interface NavigationComponentProps {
 
 export class NavigationComponent<Props = {}, State = {}, Snapshot = any>
   extends React.Component<Props & NavigationComponentProps, State, Snapshot> {
-    componentDidAppear() {}
-    componentDidDisappear() {}
+    componentDidAppear(_event: ComponentDidAppearEvent) {}
+    componentDidDisappear(_event: ComponentDidDisappearEvent) {}
     navigationButtonPressed(_event: NavigationButtonPressedEvent) {}
     modalDismissed(_event: ModalDismissedEvent) {}
     modalAttemptedToDismiss(_event: ModalAttemptedToDismissEvent) {}

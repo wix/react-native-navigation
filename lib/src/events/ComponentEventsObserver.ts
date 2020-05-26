@@ -18,8 +18,10 @@ import {
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { Store } from '../components/Store';
+import { NavigationComponentListener } from 'react-native-navigation/interfaces/NavigationComponentListener'
+import { NavigationComponent } from 'react-native-navigation/interfaces/NavigationComponent'
 
-type ReactComponentWithIndexing = React.Component<any> & Record<string, any>;
+type ReactComponentWithIndexing = NavigationComponentListener & Record<string, any>;
 
 export class ComponentEventsObserver {
   private listeners: Record<string, Record<string, ReactComponentWithIndexing>> = {};
@@ -54,19 +56,27 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyPreviewCompleted);
   }
 
-  public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
+  public bindComponent(component: NavigationComponent<any>, componentId?: string): EventSubscription {
     const computedComponentId = componentId || component.props.componentId;
 
     if (!isString(computedComponentId)) {
       throw new Error(`bindComponent expects a component with a componentId in props or a componentId as the second argument`);
     }
-    if (isNil(this.listeners[computedComponentId])) {
-      this.listeners[computedComponentId] = {};
+    
+    return this.registerComponentListener(component, computedComponentId);
+  }
+
+  public registerComponentListener(listener: NavigationComponentListener, componentId: string): EventSubscription {
+    if (!isString(componentId)) {
+      throw new Error(`registerComponentListener expects a componentId as the second argument`);
+    }
+    if (isNil(this.listeners[componentId])) {
+      this.listeners[componentId] = {};
     }
     const key = uniqueId();
-    this.listeners[computedComponentId][key] = component;
+    this.listeners[componentId][key] = listener;
 
-    return { remove: () => unset(this.listeners[computedComponentId], key) };
+    return { remove: () => unset(this.listeners[componentId], key) };
   }
 
   public unmounted(componentId: string) {
