@@ -19,7 +19,6 @@ import {
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { Store } from '../components/Store';
 import { NavigationComponentListener } from 'react-native-navigation/interfaces/NavigationComponentListener'
-import { NavigationComponent } from 'react-native-navigation/interfaces/NavigationComponent'
 
 type ReactComponentWithIndexing = NavigationComponentListener & Record<string, any>;
 
@@ -56,14 +55,14 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyPreviewCompleted);
   }
 
-  public bindComponent(component: NavigationComponent<any>, componentId?: string): EventSubscription {
+  public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
     const computedComponentId = componentId || component.props.componentId;
 
     if (!isString(computedComponentId)) {
       throw new Error(`bindComponent expects a component with a componentId in props or a componentId as the second argument`);
     }
     
-    return this.registerComponentListener(component, computedComponentId);
+    return this.registerComponentListener(component as NavigationComponentListener, computedComponentId);
   }
 
   public registerComponentListener(listener: NavigationComponentListener, componentId: string): EventSubscription {
