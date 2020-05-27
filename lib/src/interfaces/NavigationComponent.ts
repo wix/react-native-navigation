@@ -10,10 +10,7 @@ import {
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
 } from './ComponentEvents';
-
-export interface NavigationComponentProps {
-  componentId: string;
-}
+import { NavigationComponentProps } from './NavigationComponentProps';
 
 export class NavigationComponent<Props = {}, State = {}, Snapshot = any>
   extends React.Component<Props & NavigationComponentProps, State, Snapshot> {

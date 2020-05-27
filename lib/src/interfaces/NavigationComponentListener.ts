@@ -10,10 +10,6 @@ import {
   ComponentDidDisappearEvent,
 } from './ComponentEvents';
 
-export interface NavigationComponentProps {
-  componentId: string;
-}
-
 export interface NavigationComponentListener {
     componentDidAppear? : (_event: ComponentDidAppearEvent) => void
     componentDidDisappear? : (_event: ComponentDidDisappearEvent) => void
