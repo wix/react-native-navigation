@@ -4,7 +4,7 @@
 #import <React/RCTBundleURLProvider.h>
 
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
-#import <ReactNativeNavigation/RNNCustomViewController.h>
+#import "RNNCustomViewController.h"
 
 @implementation AppDelegate
 

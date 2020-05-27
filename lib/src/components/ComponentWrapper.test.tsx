@@ -168,6 +168,13 @@ describe('ComponentWrapper', () => {
     expect(store.getComponentInstance('component1')).toBeTruthy();
   });
 
+  it('Component generator is invoked only once', () => {
+    const componentGenerator = jest.fn(() => MyComponent);
+    uut.wrap(componentName, componentGenerator, store, componentEventsObserver);
+
+    expect(componentGenerator.mock.calls.length).toBe(1);
+  });
+
   describe(`register with redux store`, () => {
     class MyReduxComp extends React.Component<any> {
       static options() {

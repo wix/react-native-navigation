@@ -382,7 +382,7 @@
 	
 	BottomTabsBaseAttacher* attacher = [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
 	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] bottomTabPresenter:nil dotIndicatorPresenter:nil eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2] bottomTabsAttacher:attacher];
-
+	[tabBarController viewWillAppear:YES];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 	
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
@@ -400,7 +400,8 @@
 
 	BottomTabsBaseAttacher* attacher = [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
 	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] bottomTabPresenter:nil dotIndicatorPresenter:nil eventEmitter:_eventEmmiter childViewControllers:@[_vc1, _vc2] bottomTabsAttacher:attacher];
-
+	[tabBarController viewWillAppear:YES];
+	
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 
 	[self.uut setRoot:@{} commandId:@"" completion:^{
@@ -424,6 +425,7 @@
 	RNNComponentViewController* secondChild = [RNNComponentViewController createWithComponentId:@"second" initialOptions:secondChildOptions];
 	
 	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[RNNNavigationOptions emptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:[RNNNavigationOptions emptyOptions]] dotIndicatorPresenter:nil eventEmitter:_eventEmmiter childViewControllers:@[firstChild, secondChild] bottomTabsAttacher:nil];
+	[tabBarController viewWillAppear:YES];
 	
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 	[self.mainWindow setRootViewController:tabBarController];
@@ -455,6 +457,7 @@
 	RNNComponentViewController* secondChild = [RNNComponentViewController createWithComponentId:@"second" initialOptions:secondChildOptions];
 	
 	RNNBottomTabsController* tabBarController = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:[RNNNavigationOptions emptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[RNNBasePresenter new] bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:[RNNNavigationOptions emptyOptions]] dotIndicatorPresenter:nil eventEmitter:_eventEmmiter childViewControllers:@[stack, secondChild] bottomTabsAttacher:nil];
+	[tabBarController viewWillAppear:YES];
 	
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 	[self.mainWindow setRootViewController:tabBarController];

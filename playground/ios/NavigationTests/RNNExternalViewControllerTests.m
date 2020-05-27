@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import <ReactNativeNavigation/RNNExternalViewController.h>
-#import <ReactNativeNavigation/RNNCustomViewController.h>
+#import "RNNCustomViewController.h"
 
 @interface RNNExternalViewControllerTest : XCTestCase
 

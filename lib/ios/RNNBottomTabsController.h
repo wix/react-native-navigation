@@ -21,4 +21,6 @@
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 
+@property (nonatomic, strong) NSArray* pendingChildViewControllers;
+
 @end
