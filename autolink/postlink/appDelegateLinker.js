@@ -1,78 +1,145 @@
 // @ts-check
-var path = require('./path');
 var fs = require("fs");
-var {warnn, logn, infon, debugn} = require("./log");
+var path = require("./path");
+var { warnn, logn, infon, debugn, errorn } = require("./log");
 
-class ApplicationLinker {
+class AppDelegateLinker {
   constructor() {
     this.appDelegatePath = path.appDelegate;
+    this.removeUnneededImportsSuccess = false;
+    this.removeApplicationLaunchContentSuccess = false;
   }
 
   link() {
-    if (this.appDelegatePath) {
-      logn("Linking AppDelegate...");
-      var appDelegateContents = fs.readFileSync(this.appDelegatePath, "utf8");
-      if (this._doesBootstrapNavigation(appDelegateContents)) {
-        infon("AppDelegate already linked\n");
-        return;
-      }
+    if (!this.appDelegatePath) {
+      errorn(
+        "   AppDelegate not found! Does the file exist in the correct folder?\n   Please check the manual installation docs:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation"
+      );
+      return;
+    }
+
+    logn("Linking AppDelegate...");
+
+    var appDelegateContents = fs.readFileSync(this.appDelegatePath, "utf8");
+
+    try {
       appDelegateContents = this._removeUnneededImports(appDelegateContents);
-      appDelegateContents = this._importNavigation(appDelegateContents);
-      appDelegateContents = this._bootstrapNavigation(appDelegateContents);
+      this.removeUnneededImportsSuccess = true;
+    } catch (e) {
+      errorn("   " + e);
+    }
+
+    appDelegateContents = this._importNavigation(appDelegateContents);
+
+    appDelegateContents = this._bootstrapNavigation(appDelegateContents);
+
+    try {
       appDelegateContents = this._removeApplicationLaunchContent(appDelegateContents);
-      fs.writeFileSync(this.appDelegatePath, appDelegateContents);
+      this.removeApplicationLaunchContentSuccess = true;
+    } catch (e) {
+      errorn("   " + e);
+    }
+
+    fs.writeFileSync(this.appDelegatePath, appDelegateContents);
+
+    if (this.removeUnneededImportsSuccess && this.removeApplicationLaunchContentSuccess) {
       infon("AppDelegate linked successfully!\n");
+    } else {
+      warnn("AppDelegate was partially linked, please check the details above and proceed with the manual installation documentation to complete the linking process.!\n");
     }
   }
 
-  _doesBootstrapNavigation(applicationContent) {
-    return /ReactNativeNavigation\s+bootstrap/.test(applicationContent);
-  }
-
-  _removeUnneededImports(applicationContent) {
-    const unneededImports = [/\#import\s+\<React\/RCTBridge.h>\s/, /#import\s+\<React\/RCTRootView.h>\s/];
+  _removeUnneededImports(content) {
     debugn("   Removing Unneeded imports");
+
+    const unneededImports = [/\#import\s+\<React\/RCTBridge.h>\s/, /#import\s+\<React\/RCTRootView.h>\s/];
+    let elementsRemoved = 0;
+
     unneededImports.forEach(unneededImport => {
-      if (unneededImport.test(applicationContent)) {
-        applicationContent = applicationContent.replace(unneededImport, "");
+      if (unneededImport.test(content)) {
+        content = content.replace(unneededImport, "");
+        elementsRemoved++;
       }
     });
 
-    return applicationContent;
-  }
-
-  _importNavigation(applicationContent) {
-    if (!this._doesImportNavigation(applicationContent)) {
-      debugn("   ");
-      return applicationContent
-        .replace(/#import\s+"AppDelegate.h"/, "#import \"AppDelegate.h\"\n#import <ReactNativeNavigation/ReactNativeNavigation.h>")
+    if (unneededImports.length === elementsRemoved) {
+      debugn("   All imports have been removed");
+    } else if (elementsRemoved === 0) {
+      warnn(
+        "   No imports could be removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation"
+      );
+    } else {
+      throw new Error(
+        "Some imports were removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation"
+      );
     }
-    warnn("   AppDelegate already imports Navigation");
-    return applicationContent;
+
+    return content;
   }
 
-  _removeApplicationLaunchContent(applicationContent) {
-    const toRemove = [/RCTRootView\s+\*rootView((.|\r|\s)*?)];\s+/, /rootView.backgroundColor((.|\r)*)];\s+/,
-      /self.window((.|\r)*)];\s+/, /UIViewController\s\*rootViewController((.|\r)*)];\s+/, /rootViewController\.view\s+=\s+rootView;\s+/,
-      /self.window.rootViewController\s+=\s+rootViewController;\s+/, /\[self.window\s+makeKeyAndVisible];\s+/
-    ]
+  _importNavigation(content) {
+    if (!this._doesImportNavigation(content)) {
+      debugn("   Importing ReactNativeNavigation.h");
+      return content.replace(/#import\s+"AppDelegate.h"/, '#import "AppDelegate.h"\n#import <ReactNativeNavigation/ReactNativeNavigation.h>');
+    }
+
+    warnn("   AppDelegate already imports ReactNativeNavigation.h");
+    return content;
+  }
+
+  _bootstrapNavigation(content) {
+    if (this._doesBootstrapNavigation(content)) {
+      warnn("   Navigation Bootstrap already present.");
+      return content;
+    }
+
+    debugn("   Bootstrapping Navigation");
+    return content.replace(/RCTBridge.*];/, "[ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];");
+  }
+
+  _doesBootstrapNavigation(content) {
+    return /ReactNativeNavigation\s+bootstrap/.test(content);
+  }
+
+  _removeApplicationLaunchContent(content) {
+    debugn("   Removing Application launch content");
+
+    const toRemove = [
+      /RCTRootView\s+\*rootView((.|\r|\s)*?)];\s+/,
+      /rootView.backgroundColor((.|\r)*)];\s+/,
+      /self.window((.|\r)*)];\s+/,
+      /UIViewController\s\*rootViewController((.|\r)*)];\s+/,
+      /rootViewController\.view\s+=\s+rootView;\s+/,
+      /self.window.rootViewController\s+=\s+rootViewController;\s+/,
+      /\[self.window\s+makeKeyAndVisible];\s+/
+    ];
+    let elementsRemoved = 0;
 
     toRemove.forEach(element => {
-      if (element.test(applicationContent)) {
-        applicationContent = applicationContent.replace(element, "");
+      if (element.test(content)) {
+        content = content.replace(element, "");
+        elementsRemoved++;
       }
     });
 
-    return applicationContent;
+    if (toRemove.length === elementsRemoved) {
+      debugn("   Application Launch content has been removed");
+    } else if (elementsRemoved === 0) {
+      warnn(
+        "   No elements could be removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation"
+      );
+    } else {
+      throw new Error(
+        "Some elements were removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation"
+      );
+    }
+
+    return content;
   }
 
-  _bootstrapNavigation(applicationContent) {
-    return applicationContent.replace(/RCTBridge.*];/, "[ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];");
-  }
-
-  _doesImportNavigation(applicationContent) {
-    return /#import\s+\<ReactNativeNavigation\/ReactNativeNavigation.h>/.test(applicationContent);
+  _doesImportNavigation(content) {
+    return /#import\s+\<ReactNativeNavigation\/ReactNativeNavigation.h>/.test(content);
   }
 }
 
-module.exports = ApplicationLinker;
+module.exports = AppDelegateLinker;

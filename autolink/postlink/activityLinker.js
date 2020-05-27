@@ -1,23 +1,52 @@
 // @ts-check
-var path = require('./path');
+var path = require("./path");
 var fs = require("fs");
-var { warnn, logn, infon, debugn } = require("./log");
+var { errorn, warnn, logn, infon, debugn } = require("./log");
 
 class ActivityLinker {
   constructor() {
     this.activityPath = path.mainActivityJava;
+    this.extendNavigationActivity = false;
+    this.removeGetMainComponentName = false;
   }
 
   link() {
+    if (!this.activityPath) {
+      errorn(
+        "   MainActivity not found! Does the file exist in the correct folder?\n   Please check the manual installation docs:\n   https://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava"
+      );
+      return;
+    }
+
     logn("Linking MainActivity...");
-    if (this.activityPath) {
-      var activityContent = fs.readFileSync(this.activityPath, "utf8");
+
+    var activityContent = fs.readFileSync(this.activityPath, "utf8");
+
+    try {
       activityContent = this._extendNavigationActivity(activityContent);
+      this.extendNavigationActivity = true;
+    } catch (e) {
+      errorn("   " + e);
+    }
+
+    try {
       activityContent = this._removeGetMainComponentName(activityContent);
-      fs.writeFileSync(this.activityPath, activityContent);
+      this.removeGetMainComponentName = true;
+    } catch (e) {
+      errorn("   " + e);
+    }
+
+    fs.writeFileSync(this.activityPath, activityContent);
+    if (this.extendNavigationActivity && this.removeGetMainComponentName) {
       infon("MainActivity linked successfully!\n");
+    } else if (!this.extendNavigationActivity && !this.removeGetMainComponentName) {
+      errorn(
+        "MainActivity was not linked. Please check the logs above for more information and proceed with manual linking of the MainActivity file in Android:\nhttps://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava"
+      );
     } else {
-      warnn("   MainActivity not found!");
+      warnn(
+        "MainActivity was only partially linked. Please check the logs above for more information and proceed with manual linking for the failed steps:\nhttps://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava"
+      );
     }
   }
 
@@ -27,22 +56,30 @@ class ActivityLinker {
       debugn("   Removing getMainComponentName function");
       return contents.replace(/\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*String\s*getMainComponentName\s*\(\)\s*{\s*return.+\s*\}/, "");
     }
+    warnn("   getMainComponentName function was not found.");
     return contents;
   }
 
   _extendNavigationActivity(activityContent) {
     if (this._doesActivityExtendReactActivity(activityContent)) {
-      debugn("   Extending NavigationActivity")
+      debugn("   Extending NavigationActivity");
       return activityContent
         .replace(/extends\s+ReactActivity\s*/, "extends NavigationActivity ")
-        .replace("import com.facebook.react.ReactActivity;", "import com.reactnativenavigation.NavigationActivity;")
-    } else {
-      warnn("   MainActivity already extends NavigationActivity")
+        .replace("import com.facebook.react.ReactActivity;", "import com.reactnativenavigation.NavigationActivity;");
     }
-    return activityContent;
+    if (this._hasAlreadyExtendReactActivity) {
+      warnn("   MainActivity already extends NavigationActivity");
+      return activityContent;
+    }
+
+    throw new Error("MainActivity was not successfully replaced. Please check the documentation and proceed manually.");
   }
 
   _doesActivityExtendReactActivity(activityContent) {
+    return /public\s+class\s+MainActivity\s+extends\s+ReactActivity\s*/.test(activityContent);
+  }
+
+  _hasAlreadyExtendReactActivity(activityContent) {
     return /public\s+class\s+MainActivity\s+extends\s+ReactActivity\s*/.test(activityContent);
   }
 }
