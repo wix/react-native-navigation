@@ -2,7 +2,7 @@ package com.reactnativenavigation.mocks;
 
 import android.content.Context;
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
@@ -26,7 +26,7 @@ public class TestComponentLayout extends ComponentLayout implements TitleBarButt
     }
 
     @Override
-    public View asView() {
+    public ViewGroup asView() {
         return this;
     }
 

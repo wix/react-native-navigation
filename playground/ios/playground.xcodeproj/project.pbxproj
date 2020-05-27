@@ -11,11 +11,16 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		5007B4312472CA390002AA4E /* RNNNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.m */; };
+		5007B4342472CBD40002AA4E /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.m */; };
+		5007B4352472D3C90002AA4E /* RNNNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.m */; };
+		5007B4362472D3CC0002AA4E /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.m */; };
+		5007B4382472D9A20002AA4E /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.m */; };
+		5007B4392472D9A70002AA4E /* RNNNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.m */; };
 		500E9FE72406A52100C61231 /* BottomTabPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 500E9FE62406A4E200C61231 /* BottomTabPresenterTest.m */; };
 		501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C86B8239FE9C400E0B631 /* UIImage+Utils.m */; };
 		5022EDCD2405522000852BA6 /* RNNBottomTabsPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.m */; };
 		5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */; };
-		50451D35204451A900695F00 /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50451D34204451A800695F00 /* RNNCustomViewController.m */; };
 		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */; };
 		50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.m */; };
 		5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */; };
@@ -99,14 +104,16 @@
 		4A3340545EAAF11C1F146864 /* Pods_playground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_playground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AE37ACF6BFBAB211EE8E7E9 /* Pods-NavigationIOS12Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationIOS12Tests.release.xcconfig"; path = "Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests.release.xcconfig"; sourceTree = "<group>"; };
 		4C14E49C47AA48BEDE90A218 /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5007B42F2472CA390002AA4E /* RNNNativeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNNativeViewController.h; sourceTree = "<group>"; };
+		5007B4302472CA390002AA4E /* RNNNativeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNativeViewController.m; sourceTree = "<group>"; };
+		5007B4322472CBD30002AA4E /* RNNCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNCustomViewController.m; sourceTree = "<group>"; };
+		5007B4332472CBD40002AA4E /* RNNCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNCustomViewController.h; sourceTree = "<group>"; };
 		500E9FE62406A4E200C61231 /* BottomTabPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabPresenterTest.m; sourceTree = "<group>"; };
 		501C86B7239FE9C400E0B631 /* UIImage+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
 		501C86B8239FE9C400E0B631 /* UIImage+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
 		5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsAppearancePresenterTest.m; sourceTree = "<group>"; };
 		50364D69238E7ECC000E62A2 /* Pods_playground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_playground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactNativeNavigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		50451D33204451A800695F00 /* RNNCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNNCustomViewController.h; path = ../../../lib/ios/RNNCustomViewController.h; sourceTree = "<group>"; };
-		50451D34204451A800695F00 /* RNNCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNNCustomViewController.m; path = ../../../lib/ios/RNNCustomViewController.m; sourceTree = "<group>"; };
 		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNExternalViewControllerTests.m; sourceTree = "<group>"; };
 		50650A21242FB0F800688104 /* CommandsHandlerCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandsHandlerCreator.h; sourceTree = "<group>"; };
 		50650A22242FB0F800688104 /* CommandsHandlerCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommandsHandlerCreator.m; sourceTree = "<group>"; };
@@ -211,8 +218,10 @@
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				50451D33204451A800695F00 /* RNNCustomViewController.h */,
-				50451D34204451A800695F00 /* RNNCustomViewController.m */,
+				5007B42F2472CA390002AA4E /* RNNNativeViewController.h */,
+				5007B4302472CA390002AA4E /* RNNNativeViewController.m */,
+				5007B4332472CBD40002AA4E /* RNNCustomViewController.h */,
+				5007B4322472CBD30002AA4E /* RNNCustomViewController.m */,
 				5078DF37242BE8AA007B0B4F /* TestingAppDelegate.h */,
 				5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -925,8 +934,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50451D35204451A900695F00 /* RNNCustomViewController.m in Sources */,
+				5007B4312472CA390002AA4E /* RNNNativeViewController.m in Sources */,
 				5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */,
+				5007B4342472CBD40002AA4E /* RNNCustomViewController.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -936,6 +946,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5007B4362472D3CC0002AA4E /* RNNCustomViewController.m in Sources */,
+				5007B4352472D3C90002AA4E /* RNNNativeViewController.m in Sources */,
 				507C80E8242A1E6F00F765F7 /* AppDelegate.m in Sources */,
 				507C80EC242BC6FB00F765F7 /* LayoutCreator.m in Sources */,
 				507C80E7242914C800F765F7 /* StackOptionsTest.m in Sources */,
@@ -959,6 +971,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5007B4392472D9A70002AA4E /* RNNNativeViewController.m in Sources */,
+				5007B4382472D9A20002AA4E /* RNNCustomViewController.m in Sources */,
 				E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.m in Sources */,
 				E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.m in Sources */,
 				50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.m in Sources */,

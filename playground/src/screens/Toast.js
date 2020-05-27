@@ -2,16 +2,27 @@ const React = require('react');
 const { View, Text, StyleSheet, TouchableOpacity } = require('react-native');
 const Colors = require('../commons/Colors');
 const Navigation = require('../services/Navigation');
+const {
+  TOAST_OK_BTN_INNER,
+  TOAST_OK_BTN_OUTER
+} = require('../testIDs');
 
 const Toast = function ({componentId}) {
+  const dismiss = (txt) => {
+    alert(txt)
+    Navigation.dismissOverlay(componentId);
+  }
+
   return (
     <View style={styles.root}>
-      <View style={styles.toast}>
-        <Text style={styles.text}>This a very important message!</Text>
-        <TouchableOpacity style={styles.button} onPress={() => Navigation.dismissOverlay(componentId)}>
-          <Text style={styles.buttonText}>OK</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity testID={TOAST_OK_BTN_OUTER} onPress={() => dismiss('Outer button clicked')}>
+        <View style={styles.toast}>
+          <Text style={styles.text}>This a very important message!</Text>
+          <TouchableOpacity testID={TOAST_OK_BTN_INNER} style={styles.button} onPress={() => dismiss('Inner button clicked')}>
+            <Text style={styles.buttonText}>OK</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -21,7 +32,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column-reverse',
     backgroundColor: 0x3e434aa1
-    // backgroundColor: 'red'
   },
   toast: {
     elevation: 2,

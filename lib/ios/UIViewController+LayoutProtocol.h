@@ -40,6 +40,10 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)componentDidDisappear;
 
+- (void)screenPopped;
+
+- (void)loadChildren:(NSArray *)children;
+
 @property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNNavigationOptions* options;
@@ -48,5 +52,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic) id<RNNComponentViewCreator> creator;
 @property (nonatomic) RNNReactViewReadyCompletionBlock reactViewReadyCallback;
 @property (nonatomic) BOOL waitForRender;
+@property (nonatomic) BOOL isChildViewControllersLoaded;
 
 @end

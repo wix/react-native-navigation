@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.Constants;
@@ -26,6 +27,7 @@ import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.topbar.TopBar;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -49,14 +51,16 @@ public class StackController extends ParentController<StackLayout> {
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
+    private final FabPresenter fabPresenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter) {
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.eventEmitter = eventEmitter;
         this.topBarController = topBarController;
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
         this.presenter = stackPresenter;
+        this.fabPresenter = fabPresenter;
         stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
         for (ViewController child : children) {
             child.setParentController(this);
@@ -104,7 +108,7 @@ public class StackController extends ParentController<StackLayout> {
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
-        fabOptionsPresenter.applyOptions(this.options.fabOptions, child, getView());
+        fabPresenter.applyOptions(this.options.fabOptions, child, getView());
         performOnParentController(parent ->
                 parent.applyChildOptions(
                         this.options.copy()
@@ -124,7 +128,7 @@ public class StackController extends ParentController<StackLayout> {
         if (child.isViewShown() && peek() == child) {
             presenter.mergeChildOptions(options, resolveCurrentOptions(), this, child);
             if (options.fabOptions.hasValue()) {
-                fabOptionsPresenter.mergeOptions(options.fabOptions, child, getView());
+                fabPresenter.mergeOptions(options.fabOptions, child, getView());
             }
         }
         performOnParentController(parent ->
@@ -214,6 +218,7 @@ public class StackController extends ParentController<StackLayout> {
                             backButtonHelper.addToPushedChild(children.get(i));
                         }
                     }
+                    startChildrenBellowTopChild();
                 }
                 listener.onSuccess(childId);
             }
@@ -360,8 +365,16 @@ public class StackController extends ParentController<StackLayout> {
         if (isEmpty()) return;
         ViewGroup child = peek().getView();
         child.setId(CompatUtils.generateViewId());
+        peek().addOnAppearedListener(this::startChildrenBellowTopChild);
         presenter.applyInitialChildLayoutOptions(resolveCurrentOptions());
         stackLayout.addView(child, 0, matchParentWithBehaviour(new StackBehaviour(this)));
+    }
+
+    private void startChildrenBellowTopChild() {
+        ArrayList<ViewController> children = new ArrayList(getChildControllers());
+        for (int i = children.size() - 2; i >= 0; i--) {
+            children.get(i).start();
+        }
     }
 
     private void onNavigationButtonPressed(String buttonId) {

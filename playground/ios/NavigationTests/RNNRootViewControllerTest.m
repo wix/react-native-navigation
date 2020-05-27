@@ -182,6 +182,7 @@
 	NSMutableArray* controllers = [NSMutableArray new];
 	[controllers addObject:self.uut];
 	__unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
+	[vc viewWillAppear:NO];
 	[self.uut willMoveToParentViewController:vc];
 	XCTAssertTrue([self.uut.tabBarItem.badgeValue isEqualToString:tabBadgeInput]);
 
@@ -369,9 +370,8 @@
 	self.options.layout.orientation = supportedOrientations;
 	NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
     __unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
-
-	[self.uut viewWillAppear:false];
-
+	[vc viewWillAppear:NO];
+	[self.uut viewWillAppear:NO];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskPortrait;
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
 }
@@ -381,8 +381,8 @@
 	self.options.layout.orientation = supportedOrientations;
     NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
     __unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
-
-	[self.uut viewWillAppear:false];
+	[vc viewWillAppear:NO];
+	[self.uut viewWillAppear:NO];
 
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape);
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
@@ -393,8 +393,8 @@
 	self.options.layout.orientation = supportedOrientations;
 	NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
 	__unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
-
-	[self.uut viewWillAppear:false];
+	[vc viewWillAppear:NO];
+	[self.uut viewWillAppear:NO];
 
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
@@ -553,7 +553,7 @@
 
 - (RNNStackController *)createNavigationController {
 	RNNStackController* nav = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNStackPresenter alloc] init] eventEmitter:nil childViewControllers:@[self.uut]];
-	
+
 	return nav;
 }
 

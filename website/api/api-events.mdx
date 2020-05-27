@@ -151,6 +151,11 @@ const modalDismissedListener = Navigation.events().registerModalDismissedListene
 modalDismissedListener.remove();
 ```
 
+|      Parameter      | Description                          |
+| :-----------------: | :----------------------------------- |
+|   **componentId**   | Id of the modal                      |
+| **modalsDismissed** | Number of modals that were dismissed |
+
 ## registerModalAttemptedToDismissListener(iOS 13+ only)
 
 Invoked only on iOS pageSheet modal when `swipeToDismiss` flag is set to true and modal was swiped down to dismiss.
@@ -162,7 +167,7 @@ const modalAttemptedToDismissListener = Navigation.events().registerModalAttempt
 });
 ...
 // Unsubscribe
-modalDismissedListener.remove();
+modalAttemptedToDismissListener.remove();
 ```
 
 |    Parameter    | Description                      |
@@ -185,8 +190,7 @@ screenPoppedListener.remove();
 
 |      Parameter      | Description                          |
 | :-----------------: | :----------------------------------- |
-|   **componentId**   | Id of the modal                      |
-| **modalsDismissed** | Number of modals that were dismissed |
+|   **componentId**   | Id of the screen which was popped    |
 
 ## registerBottomTabSelectedListener
 

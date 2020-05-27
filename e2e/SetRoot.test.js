@@ -13,4 +13,18 @@ describe('SetRoot', () => {
     await elementById(TestIDs.SET_MULTIPLE_ROOTS_BTN).tap();
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
   });
+
+  it('set root hides bottomTabs', async () => {
+    await elementById(TestIDs.SET_ROOT_HIDES_BOTTOM_TABS_BTN).tap();
+    await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeNotVisible();
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeVisible();
+  });
+
+  it('set root with stack hides bottomTabs', async () => {
+    await elementById(TestIDs.SET_ROOT_WITH_STACK_HIDES_BOTTOM_TABS_BTN).tap();
+    await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeNotVisible();
+    await elementById(TestIDs.POP_BTN).tap();
+    await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeVisible();
+  });
 });

@@ -7,4 +7,6 @@
 
 + (RNNBottomTabsController *)createWithChildren:(NSArray *)children;
 
++ (RNNBottomTabsController *)createWithChildren:(NSArray *)children options:(RNNNavigationOptions *)options;
+
 @end

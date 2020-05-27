@@ -1,6 +1,5 @@
 const React = require('react');
 const {Component} = require('react');
-import {Platform} from 'react-native';
 const Root = require('../components/Root');
 const Button = require('../components/Button')
 const Navigation = require('../services/Navigation');

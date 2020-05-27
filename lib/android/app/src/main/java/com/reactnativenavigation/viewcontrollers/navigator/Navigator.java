@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
@@ -63,8 +64,8 @@ public class Navigator extends ParentController {
     public void setContentLayout(ViewGroup contentLayout) {
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
-        contentLayout.addView(modalsLayout);
-        contentLayout.addView(overlaysLayout);
+        modalsLayout.setVisibility(View.GONE); contentLayout.addView(modalsLayout);
+        overlaysLayout.setVisibility(View.GONE); contentLayout.addView(overlaysLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
