@@ -45,7 +45,8 @@
     "release": "node ./scripts/release",
     "local-docs": "node ./scripts/local-docs",
     "gen-docs": "ts-node ./scripts/gen-docs/Main",
-    "docusaurus": "npm start --prefix website"
+    "docusaurus": "npm start --prefix website",
+    "preinstall": "npm run build"
   },
   "peerDependencies": {
     "react": "*",

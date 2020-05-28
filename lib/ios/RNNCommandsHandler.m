@@ -71,18 +71,27 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 	
 	[_modalManager dismissAllModalsAnimated:NO completion:nil];
-    
-    UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
+	
+	UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
     vc.waitForRender = [vc.resolveOptionsWithDefault.animations.setRoot.waitForRender getWithDefaultValue:NO];
-    __weak UIViewController* weakVC = vc;
+    
+    /** START: Code Change */
     [vc setReactViewReadyCallback:^{
-        [self->_mainWindow.rootViewController destroy];
-        self->_mainWindow.rootViewController = weakVC;
-        [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId params:@{@"layout": layout}];
+        _mainWindow.rootViewController = vc;
+        [vc.view setNeedsDisplay];
+        [UIView transitionWithView:_mainWindow
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            [vc.view.layer displayIfNeeded];
+                        }
+                        completion:nil];
+        [_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId params:@{@"layout": layout}];
         completion();
     }];
+    /** END: Code Change */
     
-    [vc render];
+	[vc render];
 }
 
 - (void)mergeOptions:(NSString*)componentId options:(NSDictionary*)mergeOptions completion:(RNNTransitionCompletionBlock)completion {
