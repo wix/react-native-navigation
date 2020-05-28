@@ -46,7 +46,7 @@
     "local-docs": "node ./scripts/local-docs",
     "gen-docs": "ts-node ./scripts/gen-docs/Main",
     "docusaurus": "npm start --prefix website",
-    "preinstall": "npm run build"
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "react": "*",
