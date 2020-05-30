@@ -44,7 +44,7 @@ function MyScreen(props) {
       }
     };
     // Register the listener to all events related to our component
-    const unsubscribe = Navigation.events().bindComponent(listener, props.componentId);
+    const unsubscribe = Navigation.events().registerComponentListener(listener, props.componentId);
     return () => {
       // Make sure to unregister the listener during cleanup
       unsubscribe.remove();
@@ -59,7 +59,7 @@ function MyScreen(props) {
 }
 ```
 
-Notice that in the example above, we call `Navigation.events().bindComponent()` to register our listener even though we're not binding any component. That's because our listener is registered with the `componentId` passed in the second argument.
+In the example above, our listener is registered with the `componentId` passed in the second argument, and will receive only its related events.
 
 :::tip
 [underscopeio/react-native-navigation-hooks](https://github.com/underscopeio/react-native-navigation-hooks) is a wonderful library which greatly simplifies usage with hooks by introducing dedicated hooks for each event. The following example, which is taken from their docs, shows how to listen to all appear events and a particular screen's appear events:
