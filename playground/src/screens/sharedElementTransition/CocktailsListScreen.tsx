@@ -1,5 +1,5 @@
 const React = require('react');
-const { Component } = require('react');
+import { NavigationComponent } from 'react-native-navigation';
 const CocktailsView = require('./CocktailsView')
 const { Platform } = require('react-native');
 const Navigation = require('../../services/Navigation');
@@ -8,7 +8,7 @@ const MULTIPLIER = 1.15
 const LONG_DURATION = 350 * MULTIPLIER
 const SHORT_DURATION = 190 * MULTIPLIER
 
-class CocktailsListScreen extends Component {
+export default class CocktailsListScreen extends NavigationComponent {
   static options() {
     return {
       ...Platform.select({
@@ -35,11 +35,11 @@ class CocktailsListScreen extends Component {
     );
   }
 
-  update = (item) => {
+  update = (item: any) => {
     Navigation.updateProps('DETAILS_COMPONENT_ID', item);
   }
 
-  pushCocktailDetails = (item) => {
+  pushCocktailDetails = (item: any) => {
     Navigation.push(
       this,
       {
@@ -94,4 +94,4 @@ class CocktailsListScreen extends Component {
     )
   }
 }
-module.exports = CocktailsListScreen;
+

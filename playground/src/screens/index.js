@@ -11,8 +11,8 @@ const Screens = require('./Screens');
 function registerScreens() {
   Navigation.registerComponent(Screens.Alert, () => require('./Alert'));
   Navigation.registerComponent(Screens.CocktailDetailsScreen, () => require('./sharedElementTransition/CocktailDetailsScreen'));
-  Navigation.registerComponent(Screens.CocktailsListScreen, () => require('./sharedElementTransition/CocktailsListScreen'));
-  Navigation.registerComponent(Screens.CocktailsListMasterScreen, () => require('./splitView/CocktailsListMasterScreen'));
+  Navigation.registerComponent(Screens.CocktailsListScreen, () => require('./sharedElementTransition/CocktailsListScreen').default);
+  Navigation.registerComponent(Screens.CocktailsListMasterScreen, () => require('./splitView/CocktailsListMasterScreen').default);
   Navigation.registerComponent(Screens.EventsOverlay, () => require('./StaticLifecycleOverlay').StaticLifecycleOverlay);
   Navigation.registerComponent(Screens.EventsScreen, () => require('./StaticEventsScreen'));
   Navigation.registerComponent(Screens.ExternalComponent, () => require('./ExternalComponentScreen'));

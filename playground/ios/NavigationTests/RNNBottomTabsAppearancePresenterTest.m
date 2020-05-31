@@ -26,6 +26,7 @@
 	self.dotIndicatorPresenter = [OCMockObject partialMockForObject:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil]];
     self.uut = [OCMockObject partialMockForObject:[BottomTabsPresenterCreator createWithDefaultOptions:nil]];
 	self.boundViewController = [OCMockObject partialMockForObject:[[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:self.uut bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil] dotIndicatorPresenter:self.dotIndicatorPresenter eventEmitter:nil childViewControllers:self.children bottomTabsAttacher:nil]];
+	[self.boundViewController viewWillAppear:YES];
     [self.uut bindViewController:self.boundViewController];
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
@@ -35,7 +36,8 @@
     [[self.boundViewController expect] setTabBarTestID:nil];
     [[(id)self.uut expect] applyBackgroundColor:nil translucent:NO];
     [[self.boundViewController expect] setTabBarHideShadow:NO];
-    [[self.boundViewController expect] setTabBarStyle:UIBarStyleDefault];
+    [[self.boundViewController expect] setTabBarVisible:YES animated:NO];
+	[[self.boundViewController expect] setTabBarStyle:UIBarStyleDefault];
     [self.uut applyOptions:emptyOptions];
     [self.boundViewController verify];
 }
@@ -53,6 +55,16 @@
     [[(id)self.uut expect] applyBackgroundColor:nil translucent:[UIColor redColor]];
     [[self.boundViewController expect] setTabBarHideShadow:YES];
     [[self.boundViewController expect] setTabBarStyle:UIBarStyleBlack];
+
+    [self.uut applyOptions:initialOptions];
+    [self.boundViewController verify];
+}
+
+- (void)testApplyOptions_shouldRestoreHiddenTabBar {
+    RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    initialOptions.bottomTabs.visible = [[Bool alloc] initWithValue:@(1)];
+	
+	[[self.boundViewController expect] setTabBarVisible:YES animated:NO];
 
     [self.uut applyOptions:initialOptions];
     [self.boundViewController verify];

@@ -10,7 +10,7 @@
 }
 
 - (UIViewController *)getCurrentChild {
-	return self.viewControllers[0];
+    return self.viewControllers[0];
 }
 
 # pragma mark - UIViewController overrides

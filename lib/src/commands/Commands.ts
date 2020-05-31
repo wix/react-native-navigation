@@ -1,5 +1,5 @@
-import cloneDeep from 'lodash/cloneDeep'
-import map from 'lodash/map'
+import cloneDeep from 'lodash/cloneDeep';
+import map from 'lodash/map';
 import { CommandsObserver } from '../events/CommandsObserver';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';

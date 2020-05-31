@@ -1,59 +1,49 @@
 package com.reactnativenavigation.views.touch;
 
 import android.graphics.Rect;
-import androidx.annotation.VisibleForTesting;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.views.ComponentLayout;
+
+import androidx.annotation.VisibleForTesting;
 
 public class OverlayTouchDelegate {
-    private enum TouchLocation {Outside, Inside}
     private final Rect hitRect = new Rect();
-    private IReactView reactView;
     private Bool interceptTouchOutside = new NullBool();
+    private ComponentLayout component;
+    private IReactView reactView;
 
     public void setInterceptTouchOutside(Bool interceptTouchOutside) {
         this.interceptTouchOutside = interceptTouchOutside;
     }
 
-    public OverlayTouchDelegate(IReactView reactView) {
+    public OverlayTouchDelegate(ComponentLayout component, IReactView reactView) {
+        this.component = component;
         this.reactView = reactView;
     }
 
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        if (interceptTouchOutside instanceof NullBool) return false;
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-                return handleDown(event);
-            default:
-                reactView.dispatchTouchEventToJs(event);
-                return false;
-
-        }
+        return interceptTouchOutside.hasValue() && event.getActionMasked() == MotionEvent.ACTION_DOWN ?
+                handleDown(event) :
+                component.superOnInterceptTouchEvent(event);
     }
 
     @VisibleForTesting
     public boolean handleDown(MotionEvent event) {
-        TouchLocation location = getTouchLocation(event);
-        if (location == TouchLocation.Inside) {
-            reactView.dispatchTouchEventToJs(event);
-            return false;
-        }
-        return interceptTouchOutside.isFalseOrUndefined();
+        if (isTouchInsideOverlay(event)) return component.superOnInterceptTouchEvent(event);
+        return interceptTouchOutside.isFalse();
     }
 
-    private TouchLocation getTouchLocation(MotionEvent ev) {
-        getView((ViewGroup) reactView.asView()).getHitRect(hitRect);
-        return hitRect.contains((int) ev.getRawX(), (int) ev.getRawY()) ?
-                TouchLocation.Inside :
-                TouchLocation.Outside;
+    private boolean isTouchInsideOverlay(MotionEvent ev) {
+        getOverlayView().getHitRect(hitRect);
+        return hitRect.contains((int) ev.getRawX(), (int) ev.getRawY());
     }
 
-    private View getView(ViewGroup view) {
-        return view.getChildCount() > 0 ? view.getChildAt(0) : view;
+    private View getOverlayView() {
+        return reactView.asView().getChildCount() > 0 ? reactView.asView().getChildAt(0) : reactView.asView();
     }
 }

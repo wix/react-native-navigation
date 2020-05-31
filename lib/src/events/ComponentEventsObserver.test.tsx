@@ -221,6 +221,20 @@ describe('ComponentEventsObserver', () => {
     expect(willUnmountFn).toHaveBeenCalledTimes(1);
   });
 
+  it(`registerComponentListener accepts listener object`, () => {
+    const tree = renderer.create(<UnboundScreen />);
+    const didAppearListenerFn = jest.fn();
+    uut.registerComponentListener({
+      componentDidAppear: didAppearListenerFn
+    }, 'myCompId')
+
+    expect(tree.toJSON()).toBeDefined();
+    expect(didAppearListenerFn).not.toHaveBeenCalled();
+
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
+    expect(didAppearListenerFn).toHaveBeenCalledTimes(1);
+  });
+
   it(`componentDidAppear should receive component props from store`, () => {
     const event = {
       componentId: 'myCompId',
