@@ -12,18 +12,16 @@
 					  eventEmitter:(RNNEventEmitter *)eventEmitter
 			  childViewControllers:(NSArray *)childViewControllers {
 	self = [self init];
-	
 	self.options = options;
 	self.defaultOptions = defaultOptions;
 	self.layoutInfo = layoutInfo;
 	self.creator = creator;
-	self.eventEmitter = eventEmitter;
-	if ([self respondsToSelector:@selector(setViewControllers:)]) {
-		[self performSelector:@selector(setViewControllers:) withObject:childViewControllers];
-	}
-	self.presenter = presenter;
+    self.eventEmitter = eventEmitter;
+    self.presenter = presenter;
     [self.presenter bindViewController:self];
-	[self.presenter applyOptionsOnInit:self.resolveOptions];
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    [self loadChildren:childViewControllers];
+    [self.presenter applyOptionsOnInit:self.resolveOptions];
 
 	return self;
 }
@@ -51,13 +49,12 @@
 	[self.options overrideOptions:options];
 }
 
-- (BOOL)extendedLayoutIncludesOpaqueBars {
-    return YES;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	UIInterfaceOrientationMask interfaceOrientationMask = self.presenter ? [self.presenter getOrientation:[self resolveOptions]] : [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
-	return interfaceOrientationMask;
+- (UINavigationController *)stack {
+    if ([self isKindOfClass:UINavigationController.class]) {
+        return (UINavigationController *)self;
+    } else {
+        return self.navigationController;
+    }
 }
 
 - (void)render {
@@ -65,13 +62,20 @@
         [self readyForPresentation];
     }
     
-    [self.presentedComponentViewController setReactViewReadyCallback:^{
+    [self.getCurrentChild setReactViewReadyCallback:^{
         [self.presenter renderComponents:self.resolveOptionsWithDefault perform:^{
             [self readyForPresentation];
         }];
     }];
     
-    [self.presentedComponentViewController render];
+    [self.getCurrentChild render];
+}
+
+- (void)loadChildren:(NSArray *)children {
+    if (!self.isChildViewControllersLoaded && [self respondsToSelector:@selector(setViewControllers:)]) {
+        self.isChildViewControllersLoaded = YES;
+        [self performSelector:@selector(setViewControllers:) withObject:children];
+    }
 }
 
 - (void)readyForPresentation {
@@ -93,6 +97,19 @@
     return nil;
 }
 
+- (void)destroy {
+    [self destroyReactView];
+    [self.presentedViewController destroy];
+    
+    for (UIViewController* child in self.childViewControllers) {
+        [child destroy];
+    }
+}
+
+- (void)destroyReactView {
+    
+}
+
 - (UIViewController *)presentedComponentViewController {
     UIViewController* currentChild = self.getCurrentChild;
     return currentChild ? currentChild.presentedComponentViewController : self;
@@ -103,6 +120,17 @@
         return [self.parentViewController topMostViewController];
     } else
         return self;
+}
+
+- (UIViewController *)findViewController:(UIViewController *)child {
+    if (self == child) return child;
+    
+    for (UIViewController* childController in self.childViewControllers) {
+        UIViewController* fromChild = [childController findViewController:child];
+        if (fromChild) return childController;
+    }
+    
+    return nil;
 }
 
 - (CGFloat)getTopBarHeight {
@@ -123,9 +151,17 @@
     return 0;
 }
 
+- (void)screenPopped {
+    
+}
+
 - (void)onChildWillAppear {
 	[self.presenter applyOptions:self.resolveOptions];
 	[self.parentViewController onChildWillAppear];
+}
+
+- (void)onChildAddToParent:(UIViewController *)child options:(RNNNavigationOptions *)options {
+    [self.parentViewController onChildAddToParent:child options:options];
 }
 
 - (void)componentDidAppear {
@@ -136,12 +172,6 @@
 - (void)componentDidDisappear {
     [self.presenter componentDidDisappear];
     [self.parentViewController componentDidDisappear];
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	if (parent) {
-		[self.presenter applyOptionsOnWillMoveToParentViewController:self.resolveOptions];
-	}
 }
 
 #pragma mark getters and setters to associated object
@@ -184,6 +214,14 @@
 
 - (void)setEventEmitter:(RNNEventEmitter *)eventEmitter {
 	objc_setAssociatedObject(self, @selector(eventEmitter), eventEmitter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)isChildViewControllersLoaded {
+    return [objc_getAssociatedObject(self, @selector(isChildViewControllersLoaded)) boolValue];
+}
+
+- (void)setIsChildViewControllersLoaded:(BOOL)isChildViewControllersLoaded {
+    objc_setAssociatedObject(self, @selector(isChildViewControllersLoaded), [NSNumber numberWithBool:isChildViewControllersLoaded], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (id<RNNComponentViewCreator>)creator {

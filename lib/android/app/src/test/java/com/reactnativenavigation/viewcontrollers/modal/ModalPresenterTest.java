@@ -257,4 +257,20 @@ public class ModalPresenterTest extends BaseTest {
         inOrder.verify(listener).onSuccess(modal.getId());
         inOrder.verify(modal).destroy();
     }
+
+    @Test
+    public void dismissModal_modalsLayoutIfHiddenIsAllModalsAreDismissed() {
+        disableShowModalAnimation(modal1, modal2);
+        disableDismissModalAnimation(modal1, modal2);
+
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        assertVisible(modalsLayout);
+        uut.showModal(modal2, modal1, new CommandListenerAdapter());
+        assertVisible(modalsLayout);
+
+        uut.dismissModal(modal2, modal1, root, new CommandListenerAdapter());
+        assertVisible(modalsLayout);
+        uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
+        assertGone(modalsLayout);
+    }
 }

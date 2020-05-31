@@ -22,7 +22,11 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
     override fun createAnimators(): AnimatorSet {
         val animators = animators()
                 .filter { it.shouldAnimateProperty() }
-                .map { it.create(options) }
+                .map { it.create(options).apply {
+                    duration = options.getDuration()
+                    startDelay = options.getStartDelay()
+                    interpolator = options.getInterpolator()
+                } }
         val set = AnimatorSet()
         set.playTogether(animators)
         return set
@@ -30,9 +34,10 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
 
     private fun animators(): List<PropertyAnimatorCreator<*>> {
         return listOf(
+                MatrixAnimator(from, to),
                 XAnimator(from, to),
                 YAnimator(from, to),
-                MatrixAnimator(from, to),
+                RotationAnimator(from, to),
                 ScaleXAnimator(from, to),
                 ScaleYAnimator(from, to),
                 BackgroundColorAnimator(from, to),

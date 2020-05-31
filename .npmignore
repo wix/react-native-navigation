@@ -4,6 +4,7 @@ e2e/
 integration/
 playground/
 scripts/
+website/
 .travis.yml
 wallaby.js
 package-lock.json

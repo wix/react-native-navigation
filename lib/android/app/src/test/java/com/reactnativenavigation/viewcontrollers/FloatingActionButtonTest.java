@@ -10,6 +10,7 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.Fab;
@@ -37,7 +38,9 @@ public class FloatingActionButtonTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
-        stackController = TestUtils.newStackController(activity).build();
+        stackController = TestUtils.newStackController(activity)
+                .setFabPresenter(createFabPresenter())
+                .build();
         stackController.ensureViewIsCreated();
         Options options = getOptionsWithFab();
         childFab = new SimpleViewController(activity, childRegistry, "child1", options);
@@ -139,5 +142,14 @@ public class FloatingActionButtonTest extends BaseTest {
             }
         }
         return false;
+    }
+
+    private FabPresenter createFabPresenter() {
+        return new FabPresenter() {
+            @Override
+            public void animateHide(Runnable onAnimationEnd) {
+                onAnimationEnd.run();
+            }
+        };
     }
 }

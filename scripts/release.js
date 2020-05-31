@@ -99,10 +99,10 @@ function tagAndPublish(newVersion) {
     console.log(`trying to publish ${newVersion}...`);
     exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
     exec.execSync(`npm publish --tag ${VERSION_TAG}`);
-    exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
-    exec.execSyncSilent(`git push deploy ${newVersion} || true`);
     if (isRelease) {
-      updatePackageJsonGit(newVersion);
+        exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
+        exec.execSyncSilent(`git push deploy ${newVersion} || true`);
+        updatePackageJsonGit(newVersion);
     }
 }
 
@@ -126,6 +126,11 @@ function updatePackageJsonGit(version) {
     exec.execSync(`git add package.json`);
     exec.execSync(`git commit -m"Update package.json version to ${version} [ci skip]"`);
     exec.execSync(`git push deploy ${BRANCH}`);
+    draftGitRelease(version);
+}
+
+function draftGitRelease(version) {
+    exec.execSync(`npx gren release --tags=${version}`);
 }
 
 run();

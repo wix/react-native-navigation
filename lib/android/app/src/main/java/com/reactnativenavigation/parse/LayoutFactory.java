@@ -166,7 +166,9 @@ public class LayoutFactory {
     private ViewController createExternalComponent(LayoutNode node) {
         final ExternalComponent externalComponent = ExternalComponent.parse(node.data);
         return new ExternalComponentViewController(activity,
+                childRegistry,
                 node.id,
+                new Presenter(activity, defaultOptions),
                 externalComponent,
                 externalComponentCreators.get(externalComponent.name.get()),
                 reactInstanceManager,
@@ -217,7 +219,7 @@ public class LayoutFactory {
                 node.id,
                 parse(typefaceManager, node.getOptions()),
                 new Presenter(activity, defaultOptions),
-                new BottomTabsAttacher(tabs, bottomTabsPresenter),
+                new BottomTabsAttacher(tabs, bottomTabsPresenter, defaultOptions),
                 bottomTabsPresenter,
                 new BottomTabPresenter(activity, tabs, new ImageLoader(), defaultOptions));
 	}

@@ -109,6 +109,6 @@ public class IdStackTest extends BaseTest {
         assertThat(uut.values()).isNotNull().isEmpty();
         uut.push("123", 123);
         uut.push("456", 456);
-        assertThat(uut.values()).isNotNull().containsExactlyInAnyOrder(123, 456);
+        assertThat(uut.values()).isNotNull().containsSequence(123, 456);
     }
 }

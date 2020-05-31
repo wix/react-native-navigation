@@ -25,7 +25,7 @@ public class YellowBoxDelegateTest extends BaseTest {
         yellowBox = new View(context);
         parent = new FrameLayout(context);
         yellowBoxHelper = Mockito.mock(YellowBoxHelper.class);
-        uut = new YellowBoxDelegate(yellowBoxHelper);
+        uut = new YellowBoxDelegate(context, yellowBoxHelper);
         parent.addView(new View(context)); // We assume view at index 0 is not a yellow box
         parent.addView(yellowBox);
     }

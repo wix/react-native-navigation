@@ -193,9 +193,9 @@ describe('ComponentEventsObserver', () => {
     expect(navigationButtonPressedFn).toHaveBeenCalledTimes(1);
     expect(navigationButtonPressedFn).toHaveBeenCalledWith({ buttonId: 'myButtonId', componentId: 'myCompId' });
 
-    uut.notifyModalDismissed({ componentId: 'myCompId', modalsDismissed: 1 });
+    uut.notifyModalDismissed({ componentId: 'myCompId', componentName: 'myCompName', modalsDismissed: 1 });
     expect(modalDismissedFn).toHaveBeenCalledTimes(1);
-    expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId', modalsDismissed: 1 })
+    expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId', componentName: 'myCompName', modalsDismissed: 1 })
 
     uut.notifyModalAttemptedToDismiss({ componentId: 'myCompId' });
     expect(modalAttemptedToDismissFn).toHaveBeenCalledTimes(1);
@@ -219,6 +219,20 @@ describe('ComponentEventsObserver', () => {
 
     tree.unmount();
     expect(willUnmountFn).toHaveBeenCalledTimes(1);
+  });
+
+  it(`registerComponentListener accepts listener object`, () => {
+    const tree = renderer.create(<UnboundScreen />);
+    const didAppearListenerFn = jest.fn();
+    uut.registerComponentListener({
+      componentDidAppear: didAppearListenerFn
+    }, 'myCompId')
+
+    expect(tree.toJSON()).toBeDefined();
+    expect(didAppearListenerFn).not.toHaveBeenCalled();
+
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter', componentType: 'Component' });
+    expect(didAppearListenerFn).toHaveBeenCalledTimes(1);
   });
 
   it(`componentDidAppear should receive component props from store`, () => {

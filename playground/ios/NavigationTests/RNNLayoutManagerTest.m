@@ -26,7 +26,7 @@
 	_secondWindow = [[UIWindow alloc] init];
 	NSArray* windows = @[_firstWindow, _secondWindow];
 	
-	UIApplication* sharedApplication = [OCMockObject mockForClass:[UIApplication class]];
+	UIApplication* sharedApplication = [OCMockObject niceMockForClass:[UIApplication class]];
 	id mockedApplicationClass = OCMClassMock([UIApplication class]);
 	OCMStub(ClassMethod([mockedApplicationClass sharedApplication])).andReturn(sharedApplication);
 	OCMStub(sharedApplication.keyWindow).andReturn(_firstWindow);

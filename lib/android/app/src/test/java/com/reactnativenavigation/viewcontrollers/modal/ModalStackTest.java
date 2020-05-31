@@ -1,11 +1,11 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.reactnativenavigation.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
@@ -14,12 +14,14 @@ import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.stack.*;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.EmptyStackException;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
@@ -116,7 +118,7 @@ public class ModalStackTest extends BaseTest {
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.dismissModal(modal4.getId(), root, listener);
         verify(listener).onSuccess(modal4.getId());
-        verify(emitter).emitModalDismissed(modal4.getId(), 1);
+        verify(emitter).emitModalDismissed(modal4.getId(), modal4.getCurrentComponentName(), 1);
     }
 
     @SuppressWarnings("Convert2Lambda")
@@ -172,10 +174,17 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
-    public void dismissAllModals_rejectIfEmpty() {
+    public void dismissAllModal_resolvesPromiseSuccessfullyWhenCalledBeforeRootIsSet() {
+        CommandListenerAdapter spy = spy(new CommandListenerAdapter());
+        uut.dismissAllModals(null, Options.EMPTY, spy);
+        verify(spy).onSuccess("");
+    }
+
+    @Test
+    public void dismissAllModals_resolveSuccessfullyIfEmpty() {
         CommandListener spy = spy(new CommandListenerAdapter());
         uut.dismissAllModals(root, Options.EMPTY, spy);
-        verify(spy, times(1)).onError(any());
+        verify(spy, times(1)).onSuccess(root.getId());
     }
 
     @Test

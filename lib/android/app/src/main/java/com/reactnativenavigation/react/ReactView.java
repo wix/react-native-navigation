@@ -42,7 +42,7 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
         start();
     }
 
-    private void start() {
+    public void start() {
         if (isAttachedToReactInstance) return;
         isAttachedToReactInstance = true;
 		final Bundle opts = new Bundle();

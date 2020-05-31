@@ -15,9 +15,15 @@
       "react",
       "react-native",
       "react-test-renderer"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "react-native-navigation": ["lib/src/"],
+      "react-native-navigation/*": ["lib/src/*"]
+    }
   },
   "include": [
-    "./lib/src/**/*"
+    "./lib/src/**/*",
+    "./playground/**/*"
   ]
 }

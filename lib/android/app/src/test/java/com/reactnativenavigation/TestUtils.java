@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
+import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.RenderChecker;
@@ -39,7 +39,7 @@ public class TestUtils {
                 .setId("stack")
                 .setChildRegistry(new ChildControllersRegistry())
                 .setTopBarController(topBarController)
-                .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarButtonCreatorMock(), new IconResolver(activity, new ImageLoader()), new RenderChecker(), new Options()))
+                .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, new ImageLoader()), new RenderChecker(), new Options()))
                 .setInitialOptions(new Options());
     }
 

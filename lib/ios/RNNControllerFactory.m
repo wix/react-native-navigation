@@ -8,6 +8,8 @@
 #import "RNNExternalViewController.h"
 #import "BottomTabsBaseAttacher.h"
 #import "BottomTabsAttachModeFactory.h"
+#import "BottomTabsPresenterCreator.h"
+#import "BottomTabPresenterCreator.h"
 
 @implementation RNNControllerFactory {
 	id<RNNComponentViewCreator> _creator;
@@ -148,15 +150,19 @@
 - (UIViewController *)createBottomTabs:(RNNLayoutNode*)node {
     RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
     RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
-    RNNBottomTabsPresenter* presenter = [[RNNBottomTabsPresenter alloc] initWithDefaultOptions:_defaultOptions];
+    BottomTabsBasePresenter* presenter = [BottomTabsPresenterCreator createWithDefaultOptions:_defaultOptions];
+    NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
+    BottomTabPresenter* bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:_defaultOptions];
+    RNNDotIndicatorPresenter* dotIndicatorPresenter = [[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:_defaultOptions];
 	BottomTabsBaseAttacher* bottomTabsAttacher = [_bottomTabsAttachModeFactory fromOptions:options];
     
-    NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
     return [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo
                                                        creator:_creator
                                                        options:options
                                                 defaultOptions:_defaultOptions
                                                      presenter:presenter
+                                            bottomTabPresenter:bottomTabPresenter
+                                         dotIndicatorPresenter:dotIndicatorPresenter
                                                   eventEmitter:_eventEmitter
                                           childViewControllers:childViewControllers
                                             bottomTabsAttacher:bottomTabsAttacher

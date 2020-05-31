@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "6.0.0",
+  "version": "6.7.1",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -19,8 +19,8 @@
   "main": "lib/dist/index.js",
   "typings": "lib/dist/index.d.ts",
   "scripts": {
-    "build": "rm -rf ./lib/dist && tsc",
-    "watch": "rm -rf ./lib/dist && tsc --watch",
+    "build": "node ./scripts/build",
+    "watch": "node ./scripts/watch",
     "xcode": "open playground/ios/playground.xcworkspace",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
@@ -32,6 +32,7 @@
     "test-js": "node ./scripts/test-js",
     "pod-install": "pod install --project-directory=playground/ios",
     "test-unit-ios": "node ./scripts/test-unit --ios",
+    "test-snapshot-ios": "node ./scripts/test-snapshot --ios",
     "test-unit-android": "node ./scripts/test-unit --android",
     "pretest-e2e-android": "npm run build",
     "test-e2e-android": "node ./scripts/test-e2e --android",
@@ -43,7 +44,8 @@
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
     "local-docs": "node ./scripts/local-docs",
-    "gen-docs": "ts-node ./scripts/gen-docs/Main"
+    "gen-docs": "ts-node ./scripts/gen-docs/Main",
+    "docusaurus": "npm start --prefix website"
   },
   "peerDependencies": {
     "react": "*",
@@ -88,7 +90,9 @@
     "ts-node": "5.x.x",
     "tslint": "5.x.x",
     "typedoc": "0.x.x",
-    "typescript": "3.2.2"
+    "typescript": "3.2.2",
+    "identity-obj-proxy": "3.0.0",
+    "github-release-notes": "0.17.3"
   },
   "jest": {
     "preset": "react-native",

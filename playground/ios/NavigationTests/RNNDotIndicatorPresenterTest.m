@@ -3,23 +3,26 @@
 #import "RNNDotIndicatorPresenter.h"
 #import "DotIndicatorOptions.h"
 #import "RNNBottomTabsController.h"
-#import "RNNComponentViewController.h"
+#import <ReactNativeNavigation/RNNComponentViewController.h>
 #import "RNNTestBase.h"
 #import "UITabBarController+RNNUtils.h"
+#import <ReactNativeNavigation/BottomTabPresenterCreator.h>
+#import "RNNBottomTabsController+Helpers.h"
 
 @interface RNNDotIndicatorPresenterTest : RNNTestBase
 @property(nonatomic, strong) id uut;
 @property(nonatomic, strong) RNNComponentViewController *child;
 @property(nonatomic, strong) id bottomTabs;
+@property(nonatomic, strong) BottomTabPresenter* bottomTabPresenter;
 @end
 
 @implementation RNNDotIndicatorPresenterTest
 - (void)setUp {
     [super setUp];
+	self.child = [self createChild];
+	self.bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:nil];
     self.uut = [OCMockObject partialMockForObject:[RNNDotIndicatorPresenter new]];
-    self.bottomTabs = [OCMockObject partialMockForObject:[RNNBottomTabsController new]];
-    self.child = [self createChild];
-    [self.bottomTabs addChildViewController:self.child];
+    self.bottomTabs = [OCMockObject partialMockForObject:[RNNBottomTabsController createWithChildren:@[self.child]]];
 
     [self setupTopLevelUI:self.bottomTabs];
 }
@@ -128,6 +131,12 @@
     XCTAssertEqual([sizeConstraints[1] constant], 8);
 }
 
+- (void)testApply_onBottomTabsViewDidLayout {
+	[[self.uut expect] apply:self.child :self.child.resolveOptions.bottomTab.dotIndicator];
+	[self.uut bottomTabsDidLayoutSubviews:self.bottomTabs];
+	[self.uut verify];
+}
+
 - (void)applyIndicator {
     [self applyIndicator:[UIColor redColor]];
 }
@@ -145,7 +154,7 @@
     id img = [OCMockObject partialMockForObject:[UIImage new]];
 
     options.bottomTab.icon = [[Image alloc] initWithValue:img];
-    return [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[RNNComponentPresenter new] options:options defaultOptions:nil];
+    return [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNComponentPresenter alloc] initWithDefaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]] options:options defaultOptions:nil];
 }
 
 - (BOOL)tabHasIndicator {

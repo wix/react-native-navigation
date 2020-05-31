@@ -3,7 +3,6 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 #import "RNNComponentPresenter.h"
-#import "RCTConvert+Modal.h"
 #import "RNNBottomTabsController.h"
 #import "RNNStackController.h"
 
@@ -38,6 +37,24 @@
 	NSArray* childViewControllers = @[child1, child2];
 	UINavigationController* uut = [[UINavigationController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:childViewControllers];
 	
+	XCTAssertEqual(uut.viewControllers.count, 2);
+}
+
+- (void)testInitBottomTabsWithLayoutInfoShouldNotSetChildViewControllers {
+	UIViewController* child1 = [UIViewController new];
+	UIViewController* child2 = [UIViewController new];
+	NSArray* childViewControllers = @[child1, child2];
+	RNNBottomTabsController* uut = [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:childViewControllers];
+	
+	XCTAssertEqual(uut.viewControllers.count, 0);
+}
+
+- (void)testLoadChildrenShouldSetChildViewControllers {
+	UIViewController* child1 = [UIViewController new];
+	UIViewController* child2 = [UIViewController new];
+	NSArray* childViewControllers = @[child1, child2];
+	UINavigationController* uut = [[UINavigationController alloc] initWithLayoutInfo:nil creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:childViewControllers];
+	[uut loadChildren:childViewControllers];
 	XCTAssertEqual(uut.viewControllers[0], child1);
 	XCTAssertEqual(uut.viewControllers[1], child2);
 }
@@ -112,7 +129,7 @@
 	UIViewController* component = [[UIViewController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:nil];
 	UINavigationController* stack = [[UINavigationController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:nil];
 	UITabBarController* tabBar = [[UITabBarController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:nil];
-
+	
 	XCTAssertTrue(component.extendedLayoutIncludesOpaqueBars);
 	XCTAssertTrue(stack.extendedLayoutIncludesOpaqueBars);
 	XCTAssertTrue(tabBar.extendedLayoutIncludesOpaqueBars);

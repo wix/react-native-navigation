@@ -23,5 +23,6 @@
 @property(nonatomic, strong) Bool *visible;
 @property(nonatomic, strong) Bool *selectTabOnPress;
 
+- (BOOL)hasValue;
 
 @end

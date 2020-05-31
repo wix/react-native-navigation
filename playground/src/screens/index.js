@@ -11,8 +11,9 @@ const Screens = require('./Screens');
 function registerScreens() {
   Navigation.registerComponent(Screens.Alert, () => require('./Alert'));
   Navigation.registerComponent(Screens.CocktailDetailsScreen, () => require('./sharedElementTransition/CocktailDetailsScreen'));
-  Navigation.registerComponent(Screens.CocktailsListScreen, () => require('./sharedElementTransition/CocktailsList'));
-  Navigation.registerComponent(Screens.EventsOverlay, () => require('./StaticLifecycleOverlay'));
+  Navigation.registerComponent(Screens.CocktailsListScreen, () => require('./sharedElementTransition/CocktailsListScreen').default);
+  Navigation.registerComponent(Screens.CocktailsListMasterScreen, () => require('./splitView/CocktailsListMasterScreen').default);
+  Navigation.registerComponent(Screens.EventsOverlay, () => require('./StaticLifecycleOverlay').StaticLifecycleOverlay);
   Navigation.registerComponent(Screens.EventsScreen, () => require('./StaticEventsScreen'));
   Navigation.registerComponent(Screens.ExternalComponent, () => require('./ExternalComponentScreen'));
   Navigation.registerComponent(Screens.FirstBottomTabsScreen, () => require('./FirstBottomTabScreen'));
@@ -44,6 +45,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.StatusBarOptions, () => require('./StatusBarOptionsScreen'));
   Navigation.registerComponent(Screens.StatusBarFirstTab, () => require('./StatusBarFirstTab'));
   Navigation.registerComponent(Screens.TopBarBackground, () => require('../components/TopBarBackground'));
+  Navigation.registerComponent(Screens.Toast, () => require('./Toast'));
 
   const { ContextProvider } = require('../context');
   const ContextScreen = require('./ContextScreen');

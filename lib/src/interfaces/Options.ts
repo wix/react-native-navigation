@@ -119,7 +119,7 @@ export enum OptionsModalPresentationStyle {
   overFullScreen = 'overFullScreen',
   overCurrentContext = 'overCurrentContext',
   currentContext = 'currentContext',
-  popOver = 'popOver',
+  popover = 'popover',
   fullScreen = 'fullScreen',
   none = 'none'
 }
@@ -264,6 +264,18 @@ export interface OptionsTopBarBackButton {
    * Back button icon and text color
    */
   color?: Color;
+  /**
+   * Set subtitle font size
+   */
+  fontSize?: number;
+  /**
+   * Set subtitle font family
+   */
+  fontFamily?: FontFamily;
+  /**
+   * Set testID for reference in E2E tests
+   */
+  testID?: string;
 }
 
 export interface OptionsTopBarBackground {
@@ -315,11 +327,26 @@ export interface OptionsTopBarButton {
    * Set the button as a custom component
    */
   component?: {
+    /**
+     * Component reference id, Auto generated if empty
+     */
+    id?: string;
+    /**
+     * Name of your component
+     */
     name: string;
     /**
      * Properties to pass down to the component
      */
     passProps?: object;
+    /**
+     * (Android only) component width
+     */
+    width?: number;
+    /**
+     * (Android only) component height
+     */
+    height?: number;
   };
   /**
    * (iOS only) Set the button as an iOS system icon
@@ -642,7 +669,6 @@ export interface OptionsBottomTab {
   testID?: string;
   /**
    * Set the tab icon
-   * Note: On Android `icon` is required
    */
   icon?: ImageRequireSource | ImageResource;
   /**
@@ -986,6 +1012,14 @@ export interface AnimationOptions {
   dismissModal?: ViewAnimationOptions;
 }
 
+/**
+ * Configure Android's NavigationBar
+ */
+export interface NavigationBarOptions {
+  backgroundColor?: Color;
+  visible?: boolean;
+}
+
 export interface Options {
   /**
    * Configure the status bar
@@ -1061,6 +1095,12 @@ setRoot: {
 ```
    */
   animations?: AnimationOptions;
+
+  /**
+   * Configure Android's NavigationBar
+   */
+  navigationBar?: NavigationBarOptions;
+
   /**
    * Preview configuration for Peek and Pop
    * #### (iOS specific)
@@ -1088,8 +1128,4 @@ setRoot: {
    * @default false
    */
   blurOnUnmount?: boolean;
-  /**
-   * Props to pass to a component
-   */
-  passProps?: Record<string, any>;
 }

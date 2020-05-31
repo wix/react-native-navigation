@@ -62,9 +62,7 @@
     [_topBarPresenter applyOptions:withDefault.topBar];
     
     [stack setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
-    [stack setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
     [stack setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds getWithDefaultValue:NO]];
-    [stack setBackButtonColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil]];
 	
 	[stack.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
 }
@@ -77,9 +75,6 @@
 }
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options {
-    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
-    RNNStackController* navigationController = self.stackController;
-    [navigationController setNavigationBarLargeTitleVisible:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
     [_topBarPresenter applyOptionsBeforePopping:options.topBar];
 }
 
@@ -117,14 +112,6 @@
     
     if (options.topBar.background.blur.hasValue) {
         [stack setNavigationBarBlur:[options.topBar.background.blur get]];
-    }
-    
-    if (options.topBar.largeTitle.visible.hasValue) {
-        [stack setNavigationBarLargeTitleVisible:options.topBar.largeTitle.visible.get];
-    }
-    
-    if (options.topBar.backButton.color.hasValue) {
-        [stack setBackButtonColor:options.topBar.backButton.color.get];
     }
 
     if (options.topBar.background.component.name.hasValue) {

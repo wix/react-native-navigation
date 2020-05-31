@@ -15,8 +15,7 @@ class ScaleYAnimator(from: View, to: View) : PropertyAnimatorCreator<ViewGroup>(
     override fun excludedViews() = listOf(ReactTextView::class.java)
 
     override fun create(options: SharedElementTransitionOptions): Animator {
-        return ObjectAnimator
-                .ofFloat(to, View.SCALE_Y, from.height.toFloat() / to.height, 1f)
-                .setDuration(options.getDuration())
+        to.scaleY = from.height.toFloat() / to.height
+        return ObjectAnimator.ofFloat(to, View.SCALE_Y, from.height.toFloat() / to.height, 1f)
     }
 }

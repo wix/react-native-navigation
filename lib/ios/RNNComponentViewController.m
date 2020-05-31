@@ -1,5 +1,4 @@
 #import "RNNComponentViewController.h"
-#import "UIViewController+LayoutProtocol.h"
 
 @implementation RNNComponentViewController
 
@@ -7,7 +6,10 @@
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo rootViewCreator:(id<RNNComponentViewCreator>)creator eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNComponentPresenter *)presenter options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions {
 	self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:nil];
-	self.extendedLayoutIncludesOpaqueBars = YES;
+    if (@available(iOS 13.0, *)) {
+        self.navigationItem.standardAppearance = [UINavigationBarAppearance new];
+        self.navigationItem.scrollEdgeAppearance = [UINavigationBarAppearance new];
+    }
 	return self;
 }
 
@@ -47,6 +49,12 @@
     [self renderReactViewIfNeeded];
 }
 
+- (void)destroyReactView {
+    if ([self.view isKindOfClass: [RNNReactView class]]) {
+        [((RNNReactView *)self.view) invalidate];
+    }
+}
+
 - (void)renderReactViewIfNeeded {
     if (!self.isViewLoaded) {
         self.view = [self.creator createRootView:self.layoutInfo.name
@@ -72,16 +80,12 @@
 									isFocused:searchController.searchBar.isFirstResponder];
 }
 
+- (void)screenPopped {
+    [_eventEmitter sendScreenPoppedEvent:self.layoutInfo.componentId];
+}
+
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 	[self.eventEmitter sendOnSearchBarCancelPressed:self.layoutInfo.componentId];
-}
-
-- (BOOL)prefersStatusBarHidden {
-	return [_presenter isStatusBarVisibility:self.navigationController resolvedOptions:self.resolveOptions];
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle {
-	return [_presenter getStatusBarStyle:[self resolveOptions]];
 }
 
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
@@ -136,5 +140,26 @@
 	[self.eventEmitter sendOnNavigationButtonPressed:self.layoutInfo.componentId buttonId:barButtonItem.buttonId];
 }
 
+# pragma mark - UIViewController overrides
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    [self.presenter willMoveToParentViewController:parent];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [self.presenter getStatusBarStyle];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter getStatusBarVisibility];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation];
+}
+
+- (BOOL)hidesBottomBarWhenPushed {
+    return [self.presenter hidesBottomBarWhenPushed];
+}
 
 @end

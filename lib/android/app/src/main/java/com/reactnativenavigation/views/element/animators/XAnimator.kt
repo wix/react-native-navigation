@@ -15,7 +15,6 @@ class XAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
         val fromXy = ViewUtils.getLocationOnScreen(from)
         val toXy = ViewUtils.getLocationOnScreen(to)
         dx = fromXy.x - toXy.x
-        to.pivotX = 0f
     }
 
     override fun excludedViews() = listOf(ReactTextView::class.java)
@@ -23,6 +22,8 @@ class XAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
     override fun shouldAnimateProperty(fromChild: View, toChild: View) = dx != 0
 
     override fun create(options: SharedElementTransitionOptions): Animator {
-        return ObjectAnimator.ofFloat(to, TRANSLATION_X, dx.toFloat(), 0f).setDuration(options.getDuration())
+        to.translationX = dx.toFloat()
+        to.pivotX = 0f
+        return ObjectAnimator.ofFloat(to, TRANSLATION_X, dx.toFloat(), 0f)
     }
 }

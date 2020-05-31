@@ -13,7 +13,7 @@
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo creator:(id<RNNComponentViewCreator>)creator childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNBasePresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter {
 	[self setControllers:childViewControllers];
-	self = [super initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
+	self = [super init];
 	
 	self.presenter = presenter;
     [self.presenter bindViewController:self];
@@ -36,6 +36,20 @@
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
 	[self.presenter setDefaultOptions:defaultOptions];
+}
+
+- (void)loadView {
+    [super loadView];
+    [self setCenterViewController:self.center];
+    [self setLeftDrawerViewController:self.left];
+    [self setRightDrawerViewController:self.right];
+}
+
+- (void)render {
+    [super render];
+    [self.center render];
+    [self.left render];
+    [self.right render];
 }
 
 - (void)setAnimationType:(NSString *)animationType {
@@ -116,10 +130,6 @@
 	}
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-	return self.openedViewController.preferredStatusBarStyle;
-}
-
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild {
 	return self.openedViewController;
 }
@@ -143,6 +153,28 @@
         [options.sideMenu mergeOptions:self.center.resolveOptions.sideMenu];
     }
     return options;
+}
+
+# pragma mark - UIViewController overrides
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    [self.presenter willMoveToParentViewController:parent];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [self.presenter getStatusBarStyle];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter getStatusBarVisibility];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation];
+}
+
+- (BOOL)hidesBottomBarWhenPushed {
+    return [self.presenter hidesBottomBarWhenPushed];
 }
 
 @end

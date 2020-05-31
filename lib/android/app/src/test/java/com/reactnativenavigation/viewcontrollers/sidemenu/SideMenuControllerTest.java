@@ -180,6 +180,21 @@ public class SideMenuControllerTest extends BaseTest {
     }
 
     @Test
+    public void mergeChildOptions_lockModeIsUpdatedInInitialOptions() {
+        setLeftRight(left, right);
+
+        Options leftDisabled = new Options();
+        leftDisabled.sideMenuRootOptions.left.enabled = new Bool(false);
+        left.mergeOptions(leftDisabled);
+        assertThat(uut.resolveCurrentOptions().sideMenuRootOptions.left.enabled.get()).isFalse();
+
+        Options rightVisible = new Options();
+        rightVisible.sideMenuRootOptions.right.visible = new Bool(true);
+        right.mergeOptions(rightVisible);
+        assertThat(uut.resolveCurrentOptions().sideMenuRootOptions.left.enabled.get()).isFalse();
+    }
+
+    @Test
     public void setLeftController_matchesParentByDefault() {
         SideMenuOptions options = new SideMenuOptions();
         assertThat(options.width.hasValue()).isFalse();
@@ -389,5 +404,7 @@ public class SideMenuControllerTest extends BaseTest {
     private void setLeftRight(ViewController left, ViewController right) {
         uut.setLeftController(left);
         uut.setRightController(right);
+        left.setParentController(uut);
+        right.setParentController(uut);
     }
 }

@@ -121,4 +121,12 @@ public abstract class BaseTest {
         when(mock.getContext()).thenReturn(activity);
         return mock;
     }
+
+    protected void assertVisible(View view) {
+        assertThat(view.getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    protected void assertGone(View view) {
+        assertThat(view.getVisibility()).isEqualTo(View.GONE);
+    }
 }

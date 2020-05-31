@@ -1,6 +1,7 @@
 #import "TopBarPresenter.h"
 #import "UIImage+tint.h"
 #import "RNNFontAttributesCreator.h"
+#import "UIColor+RNNUtils.h"
 
 @implementation TopBarPresenter
 
@@ -16,7 +17,7 @@
     [self setTitleAttributes:options.title];
     [self setLargeTitleAttributes:options.largeTitle];
     [self showBorder:![options.noBorder getWithDefaultValue:NO]];
-    [self setBackButtonIcon:[options.backButton.icon getWithDefaultValue:nil] withColor:[options.backButton.color getWithDefaultValue:nil] title:[options.backButton.title getWithDefaultValue:nil] showTitle:[options.backButton.showTitle getWithDefaultValue:YES]];
+    [self setBackButtonOptions:options.backButton];
 }
 
 - (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options {
@@ -48,7 +49,7 @@
     }
     
     if (options.backButton.hasValue) {
-        [self setBackButtonIcon:[withDefault.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.backButton.color getWithDefaultValue:nil] title:[withDefault.backButton.title getWithDefaultValue:nil] showTitle:[withDefault.backButton.showTitle getWithDefaultValue:YES]];
+        [self setBackButtonOptions:withDefault.backButton];
     }
 }
 
@@ -111,26 +112,44 @@
     }
 }
 
-- (void)setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title showTitle:(BOOL)showTitle {
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+- (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
+    UIImage* icon = [backButtonOptions.icon getWithDefaultValue:nil];
+    UIColor* color = [backButtonOptions.color getWithDefaultValue:nil];
+    NSString* title = [backButtonOptions.title getWithDefaultValue:nil];
+    BOOL showTitle = [backButtonOptions.showTitle getWithDefaultValue:YES];
+    NSString* fontFamily = [backButtonOptions.fontFamily getWithDefaultValue:nil];
+    NSNumber* fontSize = [backButtonOptions.fontSize getWithDefaultValue:nil];
+    NSString* testID = [backButtonOptions.testID getWithDefaultValue:nil];
+    
     NSArray* stackChildren = self.navigationController.viewControllers;
+    UIViewController *lastViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
+    UIBarButtonItem *backItem = [UIBarButtonItem new];
+    backItem.accessibilityIdentifier = testID;
+
     icon = color
     ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
     : icon;
     [self setBackIndicatorImage:icon withColor:color];
-
-    UIViewController *lastViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
-
+    
     if (showTitle) {
         backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
+    } else {
+        backItem.title = @"";
     }
+    
     backItem.tintColor = color;
-
+	
+    if (fontFamily) {
+        CGFloat resolvedFontSize = fontSize ? fontSize.floatValue : 17.0;
+        [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:resolvedFontSize], NSFontAttributeName, nil] forState:UIControlStateNormal];
+        [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:resolvedFontSize], NSFontAttributeName, nil] forState:UIControlStateHighlighted];
+    }
+    
     lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
 - (BOOL)transparent {
-    return (self.backgroundColor && CGColorGetAlpha(self.backgroundColor.CGColor) == 0.0);
+    return self.backgroundColor.isTransparent;
 }
 
 @end

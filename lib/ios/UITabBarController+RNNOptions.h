@@ -8,8 +8,6 @@
 
 - (void)setTabBarTestID:(NSString *)testID;
 
-- (void)setTabBarBackgroundColor:(UIColor *)backgroundColor;
-
 - (void)setTabBarStyle:(UIBarStyle)barStyle;
 
 - (void)setTabBarTranslucent:(BOOL)translucent;

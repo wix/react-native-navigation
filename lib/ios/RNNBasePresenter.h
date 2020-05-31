@@ -27,8 +27,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options;
 
-- (void)applyDotIndicator:(UIViewController *)child;
-
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
@@ -39,9 +37,16 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)componentDidDisappear;
 
-- (UIStatusBarStyle)getStatusBarStyle:(RNNNavigationOptions *)resolvedOptions;
+- (UINavigationItem *)currentNavigationItem;
 
-- (UIInterfaceOrientationMask)getOrientation:(RNNNavigationOptions *)options;
+- (void)willMoveToParentViewController:(UIViewController *)parent;
 
-- (BOOL)isStatusBarVisibility:(UINavigationController *)stack resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
+- (UIStatusBarStyle)getStatusBarStyle;
+
+- (UIInterfaceOrientationMask)getOrientation;
+
+- (BOOL)getStatusBarVisibility;
+
+- (BOOL)hidesBottomBarWhenPushed;
+
 @end

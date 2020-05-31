@@ -1,5 +1,5 @@
-#import "RNNBasePresenter.h"
+#import "BottomTabsBasePresenter.h"
 
-@interface RNNBottomTabsPresenter : RNNBasePresenter
-- (void)applyDotIndicator;
+@interface RNNBottomTabsPresenter : BottomTabsBasePresenter
+
 @end

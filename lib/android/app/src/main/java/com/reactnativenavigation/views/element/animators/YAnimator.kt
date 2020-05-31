@@ -16,7 +16,6 @@ class YAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
         val fromXy = ViewUtils.getLocationOnScreen(from)
         val toY = (to.layoutParams as ViewGroup.MarginLayoutParams).topMargin
         dy = fromXy.y - toY
-        to.pivotY = 0f
     }
 
     override fun shouldAnimateProperty(fromChild: View, toChild: View) = dy != 0
@@ -24,6 +23,8 @@ class YAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
     override fun excludedViews() = listOf(ReactTextView::class.java)
 
     override fun create(options: SharedElementTransitionOptions): Animator {
-        return ObjectAnimator.ofFloat(to, TRANSLATION_Y, dy.toFloat(), 0f).setDuration(options.getDuration())
+        to.translationY = dy.toFloat()
+        to.pivotY = 0f
+        return ObjectAnimator.ofFloat(to, TRANSLATION_Y, dy.toFloat(), 0f)
     }
 }

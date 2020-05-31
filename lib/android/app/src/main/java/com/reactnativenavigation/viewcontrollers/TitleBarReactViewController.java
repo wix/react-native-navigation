@@ -13,11 +13,16 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 public class TitleBarReactViewController extends ViewController<TitleBarReactView> {
 
     private final TitleBarReactViewCreator reactViewCreator;
-    private Component component;
+    private final Component component;
 
-    public TitleBarReactViewController(Activity activity, TitleBarReactViewCreator reactViewCreator) {
-        super(activity, CompatUtils.generateViewId() + "", new YellowBoxDelegate(), new Options(), new ViewControllerOverlay(activity));
+    public Component getComponent() {
+        return component;
+    }
+
+    public TitleBarReactViewController(Activity activity, TitleBarReactViewCreator reactViewCreator, Component component) {
+        super(activity, CompatUtils.generateViewId() + "", new YellowBoxDelegate(activity), new Options(), new ViewControllerOverlay(activity));
         this.reactViewCreator = reactViewCreator;
+        this.component = component;
     }
 
     @Override
@@ -45,7 +50,8 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
 
     }
 
-    public void setComponent(Component component) {
-        this.component = component;
+    @Override
+    public String getCurrentComponentName() {
+        return null;
     }
 }

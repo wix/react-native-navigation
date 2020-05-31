@@ -38,6 +38,10 @@
 	XCTAssertNotNil(self.uut.presenter);
 }
 
+- (void)testInitWithLayoutInfo_shouldPreferLargeTitle {
+	XCTAssertTrue(self.uut.navigationBar.prefersLargeTitles);
+}
+
 - (void)testInitWithLayoutInfo_shouldSetMultipleViewControllers {
 	self.uut = [[RNNStackController alloc] initWithLayoutInfo:nil creator:_creator options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNComponentPresenter alloc] init] eventEmitter:nil childViewControllers:@[_vc1, _vc2]];
 	XCTAssertTrue(self.uut.viewControllers.count == 2);
@@ -64,6 +68,26 @@
 - (void)testPreferredStatusBarStyle_shouldReturnLeafPreferredStatusBarStyle {
 	self.uut.getCurrentChild.resolveOptions.statusBar.style = [[Text alloc] initWithValue:@"light"];
 	XCTAssertTrue(self.uut.preferredStatusBarStyle == self.uut.getCurrentChild.preferredStatusBarStyle);
+}
+
+- (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleTrue {
+	self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(1)];
+	XCTAssertFalse(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleFalse {
+	self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(0)];
+	XCTAssertTrue(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldHideStatusBar {
+	self.uut.options.statusBar.visible = [Bool withValue:@(1)];
+	XCTAssertFalse(self.uut.prefersStatusBarHidden);
+}
+
+- (void)testPreferredStatusHidden_shouldShowStatusBar {
+	self.uut.options.statusBar.visible = [Bool withValue:@(0)];
+	XCTAssertTrue(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPopGestureEnabled_false {
@@ -133,7 +157,8 @@
 	[_vc1 overrideOptions:_options];
 	
 	[self.uut popViewControllerAnimated:NO];
-	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, self.uut.navigationBar.standardAppearance.backgroundColor);
+	[_vc1 viewWillAppear:YES];
+	XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get, self.uut.childViewControllers.lastObject.navigationItem.standardAppearance.backgroundColor);
 }
 
 - (void)testPopViewControllerSetDefaultTopBarBackgroundForPoppingViewController {

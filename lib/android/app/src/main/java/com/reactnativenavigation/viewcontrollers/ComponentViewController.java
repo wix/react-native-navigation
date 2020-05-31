@@ -9,7 +9,6 @@ import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.views.ComponentLayout;
-import com.reactnativenavigation.views.ReactComponent;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
@@ -21,10 +20,6 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
-
-    ReactComponent getComponent() {
-        return view;
-    }
 
     public ComponentViewController(final Activity activity,
                                    final ChildControllersRegistry childRegistry,
@@ -38,6 +33,16 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         this.componentName = componentName;
         this.viewCreator = viewCreator;
         this.presenter = componentPresenter;
+    }
+
+    @Override
+    public void start() {
+        if (!isDestroyed()) getView().start();
+    }
+
+    @Override
+    public String getCurrentComponentName() {
+        return this.componentName;
     }
 
     @Override
@@ -91,7 +96,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public void mergeOptions(Options options) {
         if (options == Options.EMPTY) return;
-        presenter.mergeOptions(getView(), options);
+        if (isViewShown()) presenter.mergeOptions(getView(), options);
         super.mergeOptions(options);
     }
 

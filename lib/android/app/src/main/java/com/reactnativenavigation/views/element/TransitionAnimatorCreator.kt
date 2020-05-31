@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
+import androidx.core.view.marginLeft
 import com.facebook.react.uimanager.ViewGroupManager
+import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.R
 import com.reactnativenavigation.parse.AnimationOptions
 import com.reactnativenavigation.utils.ViewTags
@@ -51,9 +53,7 @@ open class TransitionAnimatorCreator {
     private fun reparentViews(transitions: TransitionSet) {
         transitions.transitions
                 .sortedBy { ViewGroupManager.getViewZIndex(it.view) }
-                .forEach {
-                    reparent(it)
-                }
+                .forEach { reparent(it) }
     }
 
     private fun createSharedElementTransitionAnimators(transitions: List<SharedElementTransition>): List<AnimatorSet> {
@@ -65,14 +65,15 @@ open class TransitionAnimatorCreator {
     }
 
     private fun createSharedElementAnimator(transition: SharedElementTransition): AnimatorSet {
-        val set = AnimatorSet()
-        set.playTogether(transition.createAnimators())
-        set.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                transition.from.alpha = 0f
-            }
-        })
-        return set
+        return transition
+                .createAnimators()
+                .apply {
+                    addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationStart(animation: Animator) {
+                            transition.from.alpha = 0f
+                        }
+                    })
+                }
     }
 
     private fun createElementTransitionAnimators(transitions: List<ElementTransition>): List<AnimatorSet> {
@@ -101,19 +102,18 @@ open class TransitionAnimatorCreator {
 
     private fun reparent(transition: Transition) {
         with(transition) {
+            val loc = ViewUtils.getLocationOnScreen(view)
             val biologicalParent = view.parent as ViewGroup
             view.setTag(R.id.original_parent, biologicalParent)
             view.setTag(R.id.original_layout_params, view.layoutParams)
-            view.setTag(R.id.original_top, view.top)
+            view.setTag(R.id.original_top, loc.y - transition.topInset)
             view.setTag(R.id.original_bottom, view.bottom)
             view.setTag(R.id.original_right, view.right)
-            view.setTag(R.id.original_left, view.left)
+            view.setTag(R.id.original_left, loc.x)
 
-            val loc = ViewUtils.getLocationOnScreen(view)
             biologicalParent.removeView(view)
 
             val lp = FrameLayout.LayoutParams(view.layoutParams)
-            lp.topMargin = loc.y + viewController.topInset
             lp.topMargin = loc.y
             lp.leftMargin = loc.x
             lp.width = view.width

@@ -19,6 +19,10 @@ public class ObjectUtils {
         return obj == null ? defaultValue : obj;
     }
 
+    public static <T> T getOrCreate(@Nullable T obj, @NonNull Functions.FuncR<T> creator) {
+        return obj == null ? creator.run() : obj;
+    }
+
     public static boolean notNull(Object o) {
         return o != null;
     }

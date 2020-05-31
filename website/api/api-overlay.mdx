@@ -1,0 +1,40 @@
+---
+id: overlay
+title: Overlay
+sidebar_label: Overlay
+---
+
+## `showOverlay()`
+Shows a component as an overlay.
+
+| Name   | Required | Type                | Description                                                                                                                                                                                                         |
+| ------ | -------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| layout | Yes      | [Layout](layout-layout.mdx) | Any type of layout. Typically, Component layout is used in Overlays but it's possible to load any other layout ([BottomTabs](layout-BottomTabs.mdx), [Stack](layout-stack.mdx), [SideMenu](layout-sideMenu.mdx), [Component](layout-component.mdx)) |
+
+```js
+Navigation.showOverlay({
+  component: {
+    name: 'example.Overlay',
+    options: {
+      layout: {
+            componentBackgroundColor: 'transparent',
+          },
+      overlay: {
+        interceptTouchOutside: true
+      }
+    }
+  }
+});
+```
+
+## `dismissOverlay()`
+Dismisses an overlay matching the given overlay componentId.
+
+#### Parameters
+| Name        | Required | Type   | Description                           |
+| ----------- | -------- | ------ | ------------------------------------- |
+| componentId | Yes      | string | The component id presented in Overlay |
+
+```js
+Navigation.dismissOverlay(this.props.componentId);
+```

@@ -71,10 +71,10 @@ class StackScreen extends React.Component {
 
   search = () => Navigation.push(this, Screens.Search);
 
-  setStackRoot = () => Navigation.setStackRoot(this, stack([
+  setStackRoot = () => Navigation.setStackRoot(this, [
     component(Screens.Pushed, { topBar: { title: { text: 'Screen A' } } }),
     component(Screens.Pushed, { topBar: { title: { text: 'Screen B' } } }),
-  ]));
+  ]);
 
   setStackRootWithId = () => Navigation.setStackRoot(this,
     {

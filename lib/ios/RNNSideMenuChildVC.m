@@ -18,15 +18,15 @@
 }
 
 - (void)render {
-	[self.getCurrentChild render];
+    [self addChildViewController:self.child];
+    [self.child.view setFrame:self.view.bounds];
+    [self.view addSubview:self.child.view];
+    [self.view bringSubviewToFront:self.child.view];
+    [self.child render];
 }
 
 - (void)setChild:(UIViewController<RNNLayoutProtocol> *)child {
 	_child = child;
-	[self addChildViewController:self.child];
-	[self.child.view setFrame:self.view.bounds];
-	[self.view addSubview:self.child.view];
-	[self.view bringSubviewToFront:self.child.view];
 }
 
 - (void)setWidth:(CGFloat)width {
@@ -39,8 +39,26 @@
 	return self.child;
 }
 
+# pragma mark - UIViewController overrides
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    [self.presenter willMoveToParentViewController:parent];
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return [[self presenter] getStatusBarStyle:[self resolveOptions]];
+    return [self.presenter getStatusBarStyle];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return [self.presenter getStatusBarVisibility];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.presenter getOrientation];
+}
+
+- (BOOL)hidesBottomBarWhenPushed {
+    return [self.presenter hidesBottomBarWhenPushed];
 }
 
 @end

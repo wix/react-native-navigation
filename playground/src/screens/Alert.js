@@ -33,6 +33,7 @@ const styles = {
   },
   title: {
     fontSize: 18,
+    alignSelf: 'flex-start'
   },
   message: {
     marginVertical: 8
