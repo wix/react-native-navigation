@@ -1,4 +1,29 @@
 # Changelog
+# 6.7.0 - 6.7.1
+## Added
+* Export TypeScript interfaces to streamline work with NavigationComponent + introduce `Navigation.events().registerComponentListener()` api [#ec7f324](https://github.com/wix/react-native-navigation/commit/ec7f32404d1a8cba79517f12c36eccaa4b13d3e2) by [yogevbd](https://github.com/yogevbd)
+
+## Fixed
+* Unmount previous root before resolving setRoot promise [#86b344c](https://github.com/wix/react-native-navigation/commit/86b344c7a287815a79891d7a9491c893c8081339) by [guyca](https://github.com/guyca) and [yogevbd](https://github.com/yogevbd)
+* Ensure component generator passed to Navigation.registerComponent is invoked only once [#8ec7bcd](https://github.com/wix/react-native-navigation/commit/8ec7bcd83ae7fc721ce026cd11fb62df136edeac) by [guyca](https://github.com/guyca)
+
+### Android
+* Fix updating button options with mergeOptions [#b2df65a](https://github.com/wix/react-native-navigation/commit/b2df65a5fb245f123ea96cd2785ebc065cb065ea) by [guyca](https://github.com/guyca)
+* Fix react-native-youtube support [#4d8d2ae](https://github.com/wix/react-native-navigation/commit/4d8d2ae40a0455fb5187cb965213fe350052bc50) by [guyca](https://github.com/guyca)
+* Fix sideMenu.enabled option getting cleared when set on one drawer and the other drawer is opened [#67191e9](https://github.com/wix/react-native-navigation/commit/67191e9e7c915d612f83136e47000ed6311591e1) by [guyca](https://github.com/guyca)
+* Mount all stack children after initial child is mounted [#a1beebe](https://github.com/wix/react-native-navigation/commit/a1beebe74beb265ed196e9e322a85aa40b84aa98) by [guyca](https://github.com/guyca)
+* Fix flickering FAB when changing bottom tabs [#9a8bc54](https://github.com/wix/react-native-navigation/commit/9a8bc54dd41f91fbc90c3d8e44f02884dcdaa02c) by [guyca](https://github.com/guyca)
+* Fix touch handling in nested Touchables in an Overlay [#851703c](https://github.com/wix/react-native-navigation/commit/851703c0caa75e4b6d8ad66f672ad0dc855842c4) by [guyca](https://github.com/guyca)
+
+### iOS
+* Send screen popped event only for rnn components [#0b7507d](https://github.com/wix/react-native-navigation/commit/0b7507d75f05590af7c933d5949b01aa7db04993) by [yogevbd](https://github.com/yogevbd)
+* Fix bottomTabs visibility issues [#4e1ac71](https://github.com/wix/react-native-navigation/commit/4e1ac713944373d8d2c5b251912e1a872b2d00a7) by [yogevbd](https://github.com/yogevbd)
+
+# 6.6.0
+## Fixed
+### Android
+* Fix showing Modal from TopBar components in RN 62 [94862ed](https://github.com/wix/react-native-navigation/commit/94862ed66883646d636be95aeaaccd40394b8082) by [guyca](https://github.com/guyca)
+
 # 6.5.0
 ## Added
 ### Android

@@ -3,12 +3,14 @@ const CocktailsView = require('../sharedElementTransition/CocktailsView')
 const { Platform } = require('react-native');
 const Navigation = require('../../services/Navigation');
 const Screens = require('../Screens');
-const CocktailsListScreen = require('../sharedElementTransition/CocktailsListScreen');
+import CocktailsListScreen from '../sharedElementTransition/CocktailsListScreen';
+import { NavigationButtonPressedEvent } from 'react-native-navigation';
+
 const {
   PUSH_MASTER_BTN
 } = require('../../testIDs');
 
-class CocktailsListMasterScreen extends CocktailsListScreen {
+export default class CocktailsListMasterScreen extends CocktailsListScreen {
   static options() {
     return {
       ...Platform.select({
@@ -32,13 +34,13 @@ class CocktailsListMasterScreen extends CocktailsListScreen {
     }
   }
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     Navigation.events().bindComponent(this);
   }
 
-  navigationButtonPressed({buttonId}) {
-    if (buttonId === 'pushMaster') {
+  navigationButtonPressed(event: NavigationButtonPressedEvent) {
+    if (event.buttonId === 'pushMaster') {
       Navigation.push(this, Screens.Pushed)
     }
   }
@@ -52,9 +54,7 @@ class CocktailsListMasterScreen extends CocktailsListScreen {
     );
   }
 
-  updateDetailsScreen = (item) => {
+  updateDetailsScreen = (item: any) => {
     Navigation.updateProps('DETAILS_COMPONENT_ID', item);
   }
 }
-
-module.exports = CocktailsListMasterScreen;
