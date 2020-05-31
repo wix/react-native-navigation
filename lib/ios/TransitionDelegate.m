@@ -26,9 +26,9 @@
 }
 
 - (void)prepareTransitionContext:(id<UIViewControllerContextTransitioning>)transitionContext {
-    UIViewController* toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    toVC.view.alpha = 0;
-    [transitionContext.containerView addSubview:toVC.view];
+    UIView* toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    toView.alpha = 0;
+    [transitionContext.containerView addSubview:toView];
 }
 
 - (void)performAnimationOnce {

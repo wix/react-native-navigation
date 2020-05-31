@@ -13,12 +13,12 @@
 }
 
 - (void)prepareTransitionContext:(id<UIViewControllerContextTransitioning>)transitionContext {
-    UIViewController* toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIViewController* fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIView* toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    UIView* fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
     
-    fromVC.view.alpha = 0;
-    [transitionContext.containerView addSubview:toVC.view];
-    [transitionContext.containerView addSubview:fromVC.view];
+    fromView.alpha = 0;
+    [transitionContext.containerView addSubview:toView];
+    [transitionContext.containerView addSubview:fromView];
 }
 
 @end
