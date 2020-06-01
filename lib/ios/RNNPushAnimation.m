@@ -13,11 +13,12 @@
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-	UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-	UIViewController* toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+	UIView* fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+	UIView* toView = [transitionContext viewForKey:UITransitionContextToViewKey];
 	
-	[[transitionContext containerView] addSubview:fromViewController.view];
-	[[transitionContext containerView] addSubview:toViewController.view];
+	[[transitionContext containerView] addSubview:fromView];
+	[[transitionContext containerView] addSubview:toView];
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
