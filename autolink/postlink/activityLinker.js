@@ -6,8 +6,8 @@ var { errorn, warnn, logn, infon, debugn } = require("./log");
 class ActivityLinker {
   constructor() {
     this.activityPath = path.mainActivityJava;
-    this.extendNavigationActivity = false;
-    this.removeGetMainComponentName = false;
+    this.extendNavigationActivitySuccess = false;
+    this.removeGetMainComponentNameSuccess = false;
   }
 
   link() {
@@ -24,22 +24,22 @@ class ActivityLinker {
 
     try {
       activityContent = this._extendNavigationActivity(activityContent);
-      this.extendNavigationActivity = true;
+      this.extendNavigationActivitySuccess = true;
     } catch (e) {
-      errorn("   " + e);
+      errorn("   " + e.message);
     }
 
     try {
       activityContent = this._removeGetMainComponentName(activityContent);
-      this.removeGetMainComponentName = true;
+      this.removeGetMainComponentNameSuccess = true;
     } catch (e) {
-      errorn("   " + e);
+      errorn("   " + e.message);
     }
 
     fs.writeFileSync(this.activityPath, activityContent);
-    if (this.extendNavigationActivity && this.removeGetMainComponentName) {
+    if (this.extendNavigationActivitySuccess && this.removeGetMainComponentNameSuccess) {
       infon("MainActivity linked successfully!\n");
-    } else if (!this.extendNavigationActivity && !this.removeGetMainComponentName) {
+    } else if (!this.extendNavigationActivitySuccess && !this.removeGetMainComponentNameSuccess) {
       errorn(
         "MainActivity was not linked. Please check the logs above for more information and proceed with manual linking of the MainActivity file in Android:\nhttps://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava"
       );

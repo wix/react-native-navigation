@@ -26,7 +26,7 @@ class AppDelegateLinker {
       appDelegateContents = this._removeUnneededImports(appDelegateContents);
       this.removeUnneededImportsSuccess = true;
     } catch (e) {
-      errorn("   " + e);
+      errorn("   " + e.message);
     }
 
     appDelegateContents = this._importNavigation(appDelegateContents);
@@ -37,7 +37,7 @@ class AppDelegateLinker {
       appDelegateContents = this._removeApplicationLaunchContent(appDelegateContents);
       this.removeApplicationLaunchContentSuccess = true;
     } catch (e) {
-      errorn("   " + e);
+      errorn("   " + e.message);
     }
 
     fs.writeFileSync(this.appDelegatePath, appDelegateContents);
@@ -53,18 +53,18 @@ class AppDelegateLinker {
     debugn("   Removing Unneeded imports");
 
     const unneededImports = [/\#import\s+\<React\/RCTBridge.h>\s/, /#import\s+\<React\/RCTRootView.h>\s/];
-    let elementsRemoved = 0;
+    let elementsRemovedCount = 0;
 
-    unneededImports.forEach(unneededImport => {
+    unneededImports.forEach((unneededImport) => {
       if (unneededImport.test(content)) {
         content = content.replace(unneededImport, "");
-        elementsRemoved++;
+        elementsRemovedCount++;
       }
     });
 
-    if (unneededImports.length === elementsRemoved) {
+    if (unneededImports.length === elementsRemovedCount) {
       debugn("   All imports have been removed");
-    } else if (elementsRemoved === 0) {
+    } else if (elementsRemovedCount === 0) {
       warnn(
         "   No imports could be removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation"
       );
@@ -111,20 +111,20 @@ class AppDelegateLinker {
       /UIViewController\s\*rootViewController((.|\r)*)];\s+/,
       /rootViewController\.view\s+=\s+rootView;\s+/,
       /self.window.rootViewController\s+=\s+rootViewController;\s+/,
-      /\[self.window\s+makeKeyAndVisible];\s+/
+      /\[self.window\s+makeKeyAndVisible];\s+/,
     ];
-    let elementsRemoved = 0;
+    let elementsRemovedCount = 0;
 
-    toRemove.forEach(element => {
+    toRemove.forEach((element) => {
       if (element.test(content)) {
         content = content.replace(element, "");
-        elementsRemoved++;
+        elementsRemovedCount++;
       }
     });
 
-    if (toRemove.length === elementsRemoved) {
+    if (toRemove.length === elementsRemovedCount) {
       debugn("   Application Launch content has been removed");
-    } else if (elementsRemoved === 0) {
+    } else if (elementsRemovedCount === 0) {
       warnn(
         "   No elements could be removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation"
       );
