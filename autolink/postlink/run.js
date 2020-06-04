@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // @ts-check
 var { infon } = require("./log");
 var postLinkAndroid = require('./postLinkAndroid');
