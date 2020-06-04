@@ -105,8 +105,7 @@
     "roots": [
       "<rootDir>/node_modules/",
       "<rootDir>/lib/dist/",
-      "<rootDir>/integration/",
-      "<rootDir>/autolink/postlink/"
+      "<rootDir>/integration/"
     ],
     "collectCoverageFrom": [
       "lib/dist/**/*.js",

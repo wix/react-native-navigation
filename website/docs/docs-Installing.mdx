@@ -8,19 +8,27 @@ sidebar_label: Installation
 * node >= 8
 * react-native >= 0.51
 
-## npm
+## npm or yarn
 * `npm install --save react-native-navigation`
 
-## Installing with `react-native link`
-If you're using RN 0.60 or higher, you can link RNN automatically with react-native link.
+...or if you use `yarn`:
 
-Unlike most other libraries, react-native-navigation requires you to make a few changes to native files. To make all the necessary changes, run 
+* `yarn add react-native-navigation`
 
-```react-native link react-native-navigation```
+## Installing with `npx rnn-link`
+If you're using RN 0.60 or higher, you can benefit from autolinking for some of the necessary installation steps. But unlike most other libraries, react-native-navigation requires you to make a few changes to native files.
 
-in your project's root folder. Make sure to commit the changes introduced by the link script.
+We've simplified the process through a set of scripts. So to make all the necessary changes automatically, in your project's root folder run:
 
-If the link script completed successfully, you're good to go! If one of the steps failed, you'll need to complete the relevant step in the manual installation steps below.
+```npx rnn-link```
+
+Make sure to commit the changes introduced by the `rnn-link` script.
+
+> The automatic linking is optimized for new applications created via the `react-native init` command. If you are migrating from a version of react-native-navigation older than v5, it's recommended to check the steps manually after the script runs.
+
+If the link script completed successfully, you're good to go! No more native configuration is required.
+
+If one of the steps failed or you can't run (or are not comfortable with) the automatic scripts, you'll need to complete the relevant steps in the manual installation steps below, for both platforms.
 
 ## Displaying the app root
 
@@ -54,10 +62,17 @@ import App from "./App";
 +  });
 +});
 ```
+
+If you followed the steps successfully up to this point, then this should be all! 
+
+:::tip
+This is a good moment to build your application in both platforms, validate that everything is working properly and commit your changes. If you're coming from a fresh `react-native init` project, then you should be seeing the Welcome screen as usual, but under the hood your application is using react-native-navigation!
+::::
+
 ___
 
 ## Manual Installation
-If installation with react-native link did not work, follow the manual installation steps below.
+If installation with `npx rnn-link` did not work, follow the manual installation steps below.
 
 ### iOS
 
@@ -111,7 +126,9 @@ end
 
 #### Native Installation
 
-If all else fails, we can always try and install the hardcore way:
+> If the React Native version in your project is above 0.60 and you are following the manual installation, skip to step 3. 
+
+If autolinking is not available in your project (RN version < 0.60), you can always try and install the hardcore way:
 
 1. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#manual-linking)).
 
