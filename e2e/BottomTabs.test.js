@@ -70,6 +70,7 @@ describe('BottomTabs', () => {
 
   it('hide Tab Bar on push from second bottomTabs screen', async () => {
     await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
+    await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
     await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
     await elementById(TestIDs.POP_BTN).tap();
     await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
