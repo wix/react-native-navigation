@@ -33,11 +33,11 @@ const counterContextWrapper = (component) => ({
   ...initialCounterState,
   increment: () => {
     initialCounterState.count += 1
-    component.setState({ context: contextWrapper(component) })
+    component.setState({ context: counterContextWrapper(component) })
   },
   decrement: () => {
     initialCounterState.count -= 1
-    component.setState({ context: contextWrapper(component) })
+    component.setState({ context: counterContextWrapper(component) })
   },
 })
 
