@@ -1,4 +1,9 @@
 # Changelog
+# 6.7.2
+## Fixed
+### iOS
+* Fix BottomTabs visibility not working for pushed screens and mergeOptions [#ab63850](https://github.com/wix/react-native-navigation/commit/ab63850a405d01d40689478b3f408fc30ab1d382) by [yogevbd](https://github.com/yogevbd)
+
 # 6.7.0 - 6.7.1
 ## Added
 * Export TypeScript interfaces to streamline work with NavigationComponent + introduce `Navigation.events().registerComponentListener()` api [#ec7f324](https://github.com/wix/react-native-navigation/commit/ec7f32404d1a8cba79517f12c36eccaa4b13d3e2) by [yogevbd](https://github.com/yogevbd)

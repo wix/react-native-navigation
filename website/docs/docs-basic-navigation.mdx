@@ -20,7 +20,7 @@ const { View, Text, StyleSheet } = require('react-native');
 
 const HomeScreen = (props) => {
   return (
-    <View style={styles.home}>
+    <View style={styles.root}>
       <Text>Home Screen</Text>
     </View>
   );
@@ -121,16 +121,6 @@ const { Navigation } = require('react-native-navigation');
 const React = require('react');
 const { View, Text, Button, StyleSheet } = require('react-native');
 
-
-// Settings screen declaration - this is the screen we'll be pushing into the stack
-const SettingsScreen = () => {
-  return (
-    <View style={[styles.root, styles.settings]}>
-      <Text>Settings Screen</Text>
-    </View>
-  );
-};
-
 // Home screen declaration
 const HomeScreen = (props) => {
   return (
@@ -166,6 +156,7 @@ HomeScreen.options = {
   }
 };
 
+// Settings screen declaration - this is the screen we'll be pushing into the stack
 const SettingsScreen = () => {
   return (
     <View style={styles.root}>
@@ -238,16 +229,6 @@ const { Navigation } = require('react-native-navigation');
 const React = require('react');
 const { View, Text, Button, StyleSheet } = require('react-native');
 
-
-// Settings screen declaration - this is the screen we'll be pushing into the stack
-const SettingsScreen = () => {
-  return (
-    <View style={[styles.root, styles.settings]}>
-      <Text>Settings Screen</Text>
-    </View>
-  );
-};
-
 // Home screen declaration
 const HomeScreen = (props) => {
   return (
@@ -279,6 +260,7 @@ HomeScreen.options = {
   }
 };
 
+// Settings screen declaration - this is the screen we'll be pushing into the stack
 const SettingsScreen = () => {
   return (
     <View style={styles.root}>
