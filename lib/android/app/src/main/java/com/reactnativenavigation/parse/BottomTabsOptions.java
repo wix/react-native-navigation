@@ -28,6 +28,7 @@ public class BottomTabsOptions {
         options.backgroundColor = ColorParser.parse(json, "backgroundColor");
         options.currentTabId = TextParser.parse(json, "currentTabId");
 		options.currentTabIndex = NumberParser.parse(json,"currentTabIndex");
+        options.hideOnScroll = BoolParser.parse(json, "hideOnScroll");
 		options.visible = BoolParser.parse(json,"visible");
         options.drawBehind = BoolParser.parse(json, "drawBehind");
         options.preferLargeIcons = BoolParser.parse(json, "preferLargeIcons");
@@ -41,6 +42,7 @@ public class BottomTabsOptions {
 	}
 
     public Colour backgroundColor = new NullColor();
+    public Bool hideOnScroll = new NullBool();
 	public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
 	public Bool animate = new NullBool();
@@ -55,6 +57,7 @@ public class BottomTabsOptions {
 	void mergeWith(final BottomTabsOptions other) {
 		if (other.currentTabId.hasValue()) currentTabId = other.currentTabId;
 		if (other.currentTabIndex.hasValue()) currentTabIndex = other.currentTabIndex;
+        if (other.hideOnScroll.hasValue()) hideOnScroll = other.hideOnScroll;
 		if (other.visible.hasValue()) visible = other.visible;
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
 		if (other.animate.hasValue()) animate = other.animate;
@@ -69,6 +72,7 @@ public class BottomTabsOptions {
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
         if (!currentTabId.hasValue()) currentTabId = defaultOptions.currentTabId;
         if (!currentTabIndex.hasValue()) currentTabIndex = defaultOptions.currentTabIndex;
+        if (!hideOnScroll.hasValue()) hideOnScroll = defaultOptions.hideOnScroll;
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;
         if (!animate.hasValue()) animate = defaultOptions.animate;
