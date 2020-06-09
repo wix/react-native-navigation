@@ -71,8 +71,8 @@ export class Commands {
   }
 
   public showModal(layout: Layout) {
-    const layoutcloned = clone(layout);
-    const layoutNode = this.layoutTreeParser.parse(layoutcloned);
+    const layoutCloned = clone(layout);
+    const layoutNode = this.layoutTreeParser.parse(layoutCloned);
 
     const commandId = this.uniqueIdProvider.generate('showModal');
     this.commandsObserver.notify('showModal', { commandId, layout: layoutNode });
