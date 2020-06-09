@@ -16,6 +16,9 @@
     "type": "git",
     "url": "https://github.com/wix/react-native-navigation.git"
   },
+  "bin": {
+    "rnn-link": "./autolink/postlink/run.js"
+  },
   "main": "lib/dist/index.js",
   "typings": "lib/dist/index.d.ts",
   "scripts": {
