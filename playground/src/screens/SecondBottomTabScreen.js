@@ -9,7 +9,8 @@ const {
   PUSH_BTN,
   PUSHED_BOTTOM_TABS,
   SIDE_MENU_TAB,
-  FLAT_LIST_BTN
+  FLAT_LIST_BTN,
+  HIDE_TABS_PUSH_BTN
 } = require('../testIDs')
 
 class SecondBottomTabScreen extends React.Component {
@@ -37,9 +38,14 @@ class SecondBottomTabScreen extends React.Component {
         <Button label='Push' onPress={this.push} />
         <Button label='Push BottomTabs' testID={PUSH_BTN} onPress={this.pushBottomTabs} />
         <Button label='SideMenu inside BottomTabs' testID={SIDE_MENU_INSIDE_BOTTOM_TABS_BTN} onPress={this.sideMenuInsideBottomTabs} />
+        <Button label='Hide Tabs on Push' testID={HIDE_TABS_PUSH_BTN} onPress={this.hideTabsOnPush} />
       </Root>
     );
   }
+
+  hideTabsOnPush = () => Navigation.push(this, component(Screens.Pushed, {
+    bottomTabs: { visible: false }
+  }));
 
   push = () => Navigation.push(this, Screens.Pushed);
 
