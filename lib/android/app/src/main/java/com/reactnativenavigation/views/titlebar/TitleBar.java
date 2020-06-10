@@ -7,6 +7,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,7 +102,7 @@ public class TitleBar extends Toolbar {
 
     public void setTitleFontSize(double size) {
         TextView titleTextView = findTitleTextView();
-        if (titleTextView != null) titleTextView.setTextSize((float) size);
+        if (titleTextView != null) titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, (float) size);
     }
 
     public void setTitleTypeface(Typeface typeface) {
@@ -120,7 +121,7 @@ public class TitleBar extends Toolbar {
 
     public void setSubtitleFontSize(double size) {
         TextView subtitleTextView = findSubtitleTextView();
-        if (subtitleTextView != null) subtitleTextView.setTextSize((float) size);
+        if (subtitleTextView != null) subtitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, (float) size);
     }
 
     public void setSubtitleAlignment(Alignment alignment) {
