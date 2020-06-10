@@ -11,6 +11,7 @@ module.exports = {
   CocktailsListScreen: 'CocktailsListScreen',
   CocktailsListMasterScreen: 'CocktailsListMasterScreen',
   ContextScreen: 'ContextScreen',
+  PIPScreen: 'PIPScreen',
   ExternalComponent: 'ExternalComponent',
   FullScreenModal: 'FullScreenModal',
   Layouts: 'Layouts',

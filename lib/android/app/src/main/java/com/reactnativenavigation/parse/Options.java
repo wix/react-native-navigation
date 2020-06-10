@@ -1,13 +1,13 @@
 package com.reactnativenavigation.parse;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
-
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
 
 public class Options {
     public static final Options EMPTY = new Options();
@@ -30,23 +30,38 @@ public class Options {
         result.navigationBar = NavigationBarOptions.parse(json.optJSONObject("navigationBar"));
         result.statusBar = StatusBarOptions.parse(json.optJSONObject("statusBar"));
         result.layout = LayoutOptions.parse(json.optJSONObject("layout"));
-
+        result.pipOptions = PIPOptions.parse(json.optJSONObject("pipOptions"));
         return result;
     }
 
-    @NonNull public TopBarOptions topBar = new TopBarOptions();
-    @NonNull public TopTabsOptions topTabs = new TopTabsOptions();
-    @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
-    @NonNull public BottomTabOptions bottomTabOptions = new BottomTabOptions();
-    @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
-    @NonNull public OverlayOptions overlayOptions = new OverlayOptions();
-    @NonNull public FabOptions fabOptions = new FabOptions();
-    @NonNull public AnimationsOptions animations = new AnimationsOptions();
-    @NonNull public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
-    @NonNull public ModalOptions modal = new ModalOptions();
-    @NonNull public NavigationBarOptions navigationBar = new NavigationBarOptions();
-    @NonNull public StatusBarOptions statusBar = new StatusBarOptions();
-    @NonNull public LayoutOptions layout = new LayoutOptions();
+    @NonNull
+    public TopBarOptions topBar = new TopBarOptions();
+    @NonNull
+    public TopTabsOptions topTabs = new TopTabsOptions();
+    @NonNull
+    public TopTabOptions topTabOptions = new TopTabOptions();
+    @NonNull
+    public BottomTabOptions bottomTabOptions = new BottomTabOptions();
+    @NonNull
+    public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
+    @NonNull
+    public OverlayOptions overlayOptions = new OverlayOptions();
+    @NonNull
+    public FabOptions fabOptions = new FabOptions();
+    @NonNull
+    public AnimationsOptions animations = new AnimationsOptions();
+    @NonNull
+    public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
+    @NonNull
+    public ModalOptions modal = new ModalOptions();
+    @NonNull
+    public NavigationBarOptions navigationBar = new NavigationBarOptions();
+    @NonNull
+    public StatusBarOptions statusBar = new StatusBarOptions();
+    @NonNull
+    public LayoutOptions layout = new LayoutOptions();
+    @NonNull
+    public PIPOptions pipOptions = new PIPOptions();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -68,11 +83,12 @@ public class Options {
         result.navigationBar.mergeWith(navigationBar);
         result.statusBar.mergeWith(statusBar);
         result.layout.mergeWith(layout);
+        result.pipOptions.mergeWith(pipOptions);
         return result;
     }
 
     @CheckResult
-	public Options mergeWith(final Options other) {
+    public Options mergeWith(final Options other) {
         Options result = copy();
         result.topBar.mergeWith(other.topBar);
         result.topTabs.mergeWith(other.topTabs);
@@ -86,6 +102,7 @@ public class Options {
         result.navigationBar.mergeWith(other.navigationBar);
         result.statusBar.mergeWith(other.statusBar);
         result.layout.mergeWith(other.layout);
+        result.pipOptions.mergeWith(pipOptions);
         return result;
     }
 
@@ -102,6 +119,12 @@ public class Options {
         navigationBar.mergeWithDefault(defaultOptions.navigationBar);
         statusBar.mergeWithDefault(defaultOptions.statusBar);
         layout.mergeWithDefault(defaultOptions.layout);
+        pipOptions.mergeWith(defaultOptions.pipOptions);
+        return this;
+    }
+
+    public Options clearPIPOptions() {
+        pipOptions = new PIPOptions();
         return this;
     }
 

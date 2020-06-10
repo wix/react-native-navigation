@@ -1,8 +1,14 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.parse.Options;
@@ -24,10 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import jp.manse.PIPActivity;
 
 public class Navigator extends ParentController {
 
@@ -36,6 +39,7 @@ public class Navigator extends ParentController {
     private final RootPresenter rootPresenter;
     private ViewController root;
     private ViewController previousRoot;
+    private StackController pipStackController;
     private final CoordinatorLayout rootLayout;
     private final CoordinatorLayout modalsLayout;
     private final CoordinatorLayout overlaysLayout;
@@ -64,12 +68,14 @@ public class Navigator extends ParentController {
     public void setContentLayout(ViewGroup contentLayout) {
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
-        modalsLayout.setVisibility(View.GONE); contentLayout.addView(modalsLayout);
-        overlaysLayout.setVisibility(View.GONE); contentLayout.addView(overlaysLayout);
+        modalsLayout.setVisibility(View.GONE);
+        contentLayout.addView(modalsLayout);
+        overlaysLayout.setVisibility(View.GONE);
+        contentLayout.addView(overlaysLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
-        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
+        super(activity, childRegistry, "navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
@@ -162,12 +168,33 @@ public class Navigator extends ParentController {
         applyOnStack(id, listener, stack -> stack.push(viewController, listener));
     }
 
+    public void pushAsPIP(final String id, final ViewController viewController, CommandListener listener) {
+        applyOnStack(id, listener, stack -> {
+            this.pipStackController = stack.pushAsPIP(viewController, listener);
+            viewController.start();
+            Intent intent = new Intent(getActivity(), PIPActivity.class);
+            getActivity().startActivity(intent);
+        });
+    }
+
     public void setStackRoot(String id, List<ViewController> children, CommandListener listener) {
         applyOnStack(id, listener, stack -> stack.setRoot(children, listener));
     }
 
     public void pop(String id, Options mergeOptions, CommandListener listener) {
         applyOnStack(id, listener, stack -> stack.pop(mergeOptions, listener));
+    }
+
+    public void switchToPIP(String id, Options mergeOptions, CommandListener listener) {
+        applyOnStack(id, listener, stack -> {
+            this.pipStackController = stack.switchToPIP(mergeOptions, listener);
+            Intent intent = new Intent(getActivity(), PIPActivity.class);
+            getActivity().startActivity(intent);
+        });
+    }
+
+    public StackController getPipStackController() {
+        return pipStackController;
     }
 
     public void popToRoot(final String id, Options mergeOptions, CommandListener listener) {
@@ -226,10 +253,17 @@ public class Navigator extends ParentController {
             if (from instanceof StackController) {
                 task.run((StackController) from);
             } else {
-                from.performOnParentStack(stack -> task.run((StackController) stack) );
+                from.performOnParentStack(stack -> task.run((StackController) stack));
             }
         } else {
             listener.onError("Failed to execute stack command. Stack " + fromId + " not found.");
+        }
+    }
+
+    public void clearPIP() {
+        if (pipStackController != null) {
+            pipStackController.clearPIP();
+            pipStackController = null;
         }
     }
 

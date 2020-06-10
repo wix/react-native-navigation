@@ -1,5 +1,8 @@
 package com.reactnativenavigation.react;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -29,8 +32,7 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import jp.manse.PIPActivity;
 
 import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 
@@ -38,7 +40,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private static final String NAME = "RNNBridgeModule";
 
     private final Now now = new Now();
-    private final ReactInstanceManager reactInstanceManager;
+    public static ReactInstanceManager reactInstanceManager;
+    public static Navigator currentNavigator;
     private final JSONParser jsonParser;
     private final LayoutFactory layoutFactory;
     private EventEmitter eventEmitter;
@@ -78,7 +81,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void getLaunchArgs(String commandId, Promise promise) {
         promise.resolve(LaunchArgsParser.parse(activity()));
     }
-    
+
     @ReactMethod
     public void getNavigationConstants(Promise promise) {
         ReactApplicationContext ctx = getReactApplicationContext();
@@ -122,6 +125,28 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         });
     }
 
+
+    @ReactMethod
+    public void pushAsPIP(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
+        final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
+        handle(() -> {
+            final ViewController viewController = layoutFactory.create(layoutTree);
+            navigator().pushAsPIP(onComponentId, viewController, new NativeCommandListener("pushAsPIP", commandId, promise, eventEmitter, now));
+        });
+       /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            Intent intent = new Intent(getCurrentActivity(), PIPActivity.class);
+            intent.putExtra(PIPActivity.COMPONENT_INFO, jsonParser.parse(rawLayoutTree).toString());
+            getCurrentActivity().startActivity(intent);
+        }*/
+    }
+
+    @ReactMethod
+    public void closePIP(String commandId) {
+        if (PIPActivity.Companion.getINSTANCE() != null) {
+            PIPActivity.Companion.getINSTANCE().finish();
+        }
+    }
+
     @ReactMethod
     public void setStackRoot(String commandId, String onComponentId, ReadableArray children, Promise promise) {
         handle(() -> {
@@ -147,6 +172,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void popToRoot(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
         handle(() -> navigator().popToRoot(componentId, parse(mergeOptions), new NativeCommandListener("popToRoot", commandId, promise, eventEmitter, now)));
+    }
+
+    @ReactMethod
+    public void switchToPIP(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
+        handle(() -> navigator().switchToPIP(componentId, parse(mergeOptions), new NativeCommandListener("switchToPIP", commandId, promise, eventEmitter, now)));
     }
 
     @ReactMethod
@@ -191,12 +221,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     private Options parse(@Nullable ReadableMap mergeOptions) {
         return mergeOptions ==
-               null ? Options.EMPTY : Options.parse(new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
+                null ? Options.EMPTY : Options.parse(new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
     }
 
     protected void handle(Runnable task) {
         UiThread.post(() -> {
             if (getCurrentActivity() != null && !activity().isFinishing()) {
+                currentNavigator = activity().getNavigator();
                 task.run();
             }
         });
@@ -214,4 +245,6 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         }
         super.onCatalystInstanceDestroy();
     }
+
+
 }

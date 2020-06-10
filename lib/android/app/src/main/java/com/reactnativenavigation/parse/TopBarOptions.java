@@ -43,7 +43,6 @@ public class TopBarOptions {
         options.elevation = FractionParser.parse(json, "elevation");
         options.topMargin = NumberParser.parse(json, "topMargin");
         options.buttons = TopBarButtons.parse(typefaceLoader, json);
-
         options.rightButtonColor = ColorParser.parse(json, "rightButtonColor");
         options.leftButtonColor = ColorParser.parse(json, "leftButtonColor");
         options.leftButtonDisabledColor = ColorParser.parse(json, "leftButtonDisabledColor");

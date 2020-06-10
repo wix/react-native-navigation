@@ -4,6 +4,12 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.viewpager.widget.ViewPager;
+
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
@@ -32,13 +38,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.VisibleForTesting;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.viewpager.widget.ViewPager;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CollectionUtils.last;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.updateBottomMargin;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
@@ -49,6 +49,7 @@ public class StackController extends ParentController<StackLayout> {
     private final NavigationAnimator animator;
     private final EventEmitter eventEmitter;
     private TopBarController topBarController;
+    private ViewController pipController;
     private BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
     private final FabPresenter fabPresenter;
@@ -150,6 +151,17 @@ public class StackController extends ParentController<StackLayout> {
         presenter.onChildDestroyed(child);
     }
 
+    public StackController pushAsPIP(ViewController child, CommandListener listener) {
+        this.pipController = child;
+        return this;
+    }
+
+    public void clearPIP() {
+        this.pipController.destroy();
+        eventEmitter.emitScreenPoppedEvent(this.pipController.getId());
+        this.pipController = null;
+    }
+
     public void push(ViewController child, CommandListener listener) {
         if (findController(child.getId()) != null) {
             listener.onError("A stack can't contain two children with the same id");
@@ -232,7 +244,7 @@ public class StackController extends ParentController<StackLayout> {
                         toRemove,
                         resolvedOptions,
                         () -> listenerAdapter.onSuccess(child.getId())
-                    )
+                        )
                 );
             } else {
                 animator.push(child, toRemove, resolvedOptions, () -> listenerAdapter.onSuccess(child.getId()));
@@ -276,6 +288,51 @@ public class StackController extends ParentController<StackLayout> {
         } else {
             finishPopping(disappearing, listener);
         }
+    }
+
+    public StackController switchToPIP(Options mergeOptions, CommandListener listener) {
+        if (!canPop()) {
+            listener.onError("Nothing to pop");
+            return null;
+        }
+
+        peek().mergeOptions(mergeOptions);
+
+        final ViewController disappearing = stack.pop();
+        final ViewController appearing = stack.peek();
+
+        appearing.onViewWillAppear();
+
+        ViewGroup appearingView = appearing.getView();
+        if (appearingView.getLayoutParams() == null) {
+            appearingView.setLayoutParams(matchParentWithBehaviour(new StackBehaviour(this)));
+        }
+        if (appearingView.getParent() == null) {
+            getView().addView(appearingView, 0);
+        }
+        presenter.onChildWillAppear(this, appearing, disappearing);
+        this.pipController = disappearing;
+        disappearing.detachView();
+        return this;
+    }
+
+    public void pushBackPIP() {
+        this.push(this.pipController, new CommandListener() {
+            @Override
+            public void onSuccess(String childId) {
+
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+        });
+        this.pipController = null;
+    }
+
+    public ViewController getPipController() {
+        return pipController;
     }
 
     private void finishPopping(ViewController disappearing, CommandListener listener) {
@@ -410,7 +467,8 @@ public class StackController extends ParentController<StackLayout> {
     public boolean onDependentViewChanged(CoordinatorLayout parent, ViewGroup child, View dependency) {
         perform(findController(child), controller -> {
             if (dependency instanceof TopBar) presenter.applyTopInsets(this, controller);
-            if (dependency instanceof Fab || dependency instanceof FabMenu) updateBottomMargin(dependency, getBottomInset());
+            if (dependency instanceof Fab || dependency instanceof FabMenu)
+                updateBottomMargin(dependency, getBottomInset());
         });
         return false;
     }

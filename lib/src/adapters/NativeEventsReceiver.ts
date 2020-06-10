@@ -13,7 +13,7 @@ import {
   PreviewCompletedEvent,
   ModalDismissedEvent,
   ScreenPoppedEvent,
-  ModalAttemptedToDismissEvent
+  ModalAttemptedToDismissEvent, PIPEvent
 } from '../interfaces/ComponentEvents';
 import {
   CommandCompletedEvent,
@@ -122,5 +122,11 @@ export class NativeEventsReceiver {
     callback: (event: ScreenPoppedEvent) => void
   ): EmitterSubscription {
     return this.emitter.addListener('RNN.ScreenPopped', callback);
+  }
+
+  public registerPIPEventListener(
+      callback: (event: PIPEvent) => void
+  ): EmitterSubscription {
+    return this.emitter.addListener('RNN.PIPEvent', callback);
   }
 }

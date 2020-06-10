@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
@@ -20,14 +24,12 @@ import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import jp.manse.PIPActivity;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
     private PermissionListener mPermissionListener;
-    
+
     protected Navigator navigator;
 
     @Override
@@ -42,6 +44,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         );
         navigator.bindViews();
         getReactGateway().onActivityCreated(this);
+
     }
 
     @Override
@@ -54,6 +57,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected void onResume() {
         super.onResume();
         getReactGateway().onActivityResumed(this);
+        if (PIPActivity.Companion.getINSTANCE() != null) {
+            PIPActivity.Companion.getINSTANCE().finish();
+        }
     }
 
     @Override
