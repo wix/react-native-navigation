@@ -22,7 +22,6 @@ public class BottomTabs extends AHBottomNavigation {
     public BottomTabs(Context context) {
         super(context);
         setId(R.id.bottomTabs);
-        setBehaviorTranslationEnabled(false);
     }
 
     public void disableItemsCreation() {

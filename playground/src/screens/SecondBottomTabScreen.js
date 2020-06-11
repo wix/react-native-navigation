@@ -37,6 +37,7 @@ class SecondBottomTabScreen extends React.Component {
       <Root componentId={this.props.componentId}>
         <Button label='Push' onPress={this.push} />
         <Button label='Push BottomTabs' testID={PUSH_BTN} onPress={this.pushBottomTabs} />
+        <Button label='Push ScrollView' onPress={this.pushScrollView} />
         <Button label='SideMenu inside BottomTabs' testID={SIDE_MENU_INSIDE_BOTTOM_TABS_BTN} onPress={this.sideMenuInsideBottomTabs} />
         <Button label='Hide Tabs on Push' testID={HIDE_TABS_PUSH_BTN} onPress={this.hideTabsOnPush} />
       </Root>
@@ -76,6 +77,8 @@ class SecondBottomTabScreen extends React.Component {
       ]
     }
   });
+
+  pushScrollView = () => Navigation.push(this, Screens.ScrollViewScreen);
 
   sideMenuInsideBottomTabs = () => {
     Navigation.showModal({
