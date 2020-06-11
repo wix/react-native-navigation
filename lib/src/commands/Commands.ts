@@ -65,8 +65,7 @@ export class Commands {
   }
 
   public updateProps(componentId: string, props: object) {
-    const input = cloneDeep(props);
-    this.store.updateProps(componentId, input);
+    this.store.updateProps(componentId, props);
     this.commandsObserver.notify('updateProps', { componentId, props });
   }
 

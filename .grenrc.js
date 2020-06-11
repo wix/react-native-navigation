@@ -11,7 +11,7 @@ module.exports = {
   },
   groupBy: {
     "Enhancements:": ["type: accepted/enhancement", "internal"],
-    "Bug Fixes:": ["type: accepted/bug"],
+    "Bug fixes:": ["type: accepted/bug"],
     "Features": ["feature"]
   },
   ignoreIssuesWith: [
