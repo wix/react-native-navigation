@@ -23,6 +23,7 @@ module.exports = {
   SetRoot: 'SetRoot',
   Overlay: 'Overlay',
   OverlayAlert: 'OverlayAlert',
+  ScrollViewScreen: 'ScrollViewScreen',
   ScrollViewOverlay: 'ScrollViewOverlay',
   Lifecycle: 'Lifecycle',
   BackHandler: 'BackHandler',
