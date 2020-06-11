@@ -1,4 +1,5 @@
 #import "BottomTabsBasePresenter.h"
+#import "RNNBottomTabsController.h"
 
 @implementation BottomTabsBasePresenter
 
@@ -13,11 +14,11 @@
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
-    UITabBarController *bottomTabs = self.tabBarController;
+    RNNBottomTabsController *bottomTabs = self.tabBarController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
     [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID getWithDefaultValue:nil]];
-    ![withDefault.bottomTabs.visible getWithDefaultValue:YES] ?: [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible getWithDefaultValue:YES] animated:[withDefault.bottomTabs.animate getWithDefaultValue:NO]];
+    [bottomTabs restoreTabBarVisibility:[withDefault.bottomTabs.visible getWithDefaultValue:YES]];
     
     [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
     [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor getWithDefaultValue:nil] translucent:[withDefault.bottomTabs.translucent getWithDefaultValue:NO]];
@@ -27,7 +28,7 @@
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)currentOptions {
     [super mergeOptions:options resolvedOptions:currentOptions];
-    UITabBarController *bottomTabs = self.tabBarController;
+    RNNBottomTabsController *bottomTabs = self.tabBarController;
 
     if (options.bottomTabs.currentTabIndex.hasValue) {
         [bottomTabs setCurrentTabIndex:options.bottomTabs.currentTabIndex.get];
@@ -72,8 +73,8 @@
     }
 }
 
-- (UITabBarController *)tabBarController {
-    return (UITabBarController *)self.boundViewController;
+- (RNNBottomTabsController *)tabBarController {
+    return (RNNBottomTabsController *)self.boundViewController;
 }
 
 - (UITabBar *)tabBar {
