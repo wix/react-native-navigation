@@ -33,6 +33,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (isFinishing()) {
+            return;
+        }
         addDefaultSplashLayout();
         navigator = new Navigator(this,
                 new ChildControllersRegistry(),
@@ -72,7 +75,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        navigator.destroy();
+        if (navigator != null) {
+            navigator.destroy();
+        }
         getReactGateway().onActivityDestroyed(this);
     }
 
