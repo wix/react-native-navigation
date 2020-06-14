@@ -120,7 +120,7 @@
 }
 
 - (BOOL)hidesBottomBarWhenPushed {
-    RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[[self.boundViewController.topMostViewController.resolveOptions withDefault:self.defaultOptions] mergeOptions:self.boundViewController.options];
+    RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[self.boundViewController.topMostViewController.resolveOptions withDefault:self.defaultOptions];
     return ![withDefault.bottomTabs.visible getWithDefaultValue:YES];
 }
 

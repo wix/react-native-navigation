@@ -88,6 +88,9 @@ public class BottomTabsPresenter {
             int tabIndex = bottomTabFinder.findByControllerId(bottomTabsOptions.currentTabId.get());
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
+        if (bottomTabsOptions.hideOnScroll.hasValue()) {
+            bottomTabs.setBehaviorTranslationEnabled(bottomTabsOptions.hideOnScroll.get());
+        }
         if (view.isViewShown()) {
             if (bottomTabsOptions.visible.isTrue()) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined()) {
@@ -154,6 +157,7 @@ public class BottomTabsPresenter {
         if (bottomTabsOptions.elevation.hasValue()) {
             bottomTabs.setUseElevation(true, bottomTabsOptions.elevation.get().floatValue());
         }
+        bottomTabs.setBehaviorTranslationEnabled(bottomTabsOptions.hideOnScroll.get(false));
     }
 
     @NotNull

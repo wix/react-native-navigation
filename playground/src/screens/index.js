@@ -1,6 +1,5 @@
 const React = require('react');
 const { Navigation } = require('react-native-navigation');
-const ScrollViewScreen = require('./ScrollViewScreen');
 const CustomDialogWithScroll = require('./complexlayouts/CustomDialogWithScroll');
 const TopTabScreen = require('./TopTabScreen');
 const TopTabOptionsScreen = require('./TopTabOptionsScreen');
@@ -34,6 +33,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.LifecycleButton, () => require('./LifecycleButton'));
   Navigation.registerComponent(Screens.ReactTitleView, () => require('./CustomTopBar'));
   Navigation.registerComponent(Screens.RoundButton, () => require('./RoundedButton'));
+  Navigation.registerComponent(Screens.ScrollViewScreen, () => require('./ScrollViewScreen'));
   Navigation.registerComponent(Screens.ScrollViewOverlay, () => require('./ScrollViewOverlay'));
   Navigation.registerComponent(Screens.SecondBottomTabsScreen, () => require('./SecondBottomTabScreen'));
   Navigation.registerComponent(Screens.Search, () => require('./SearchScreen'));
@@ -54,8 +54,6 @@ function registerScreens() {
       <ContextScreen {...props} />
     </ContextProvider>,
     () => ContextScreen);
-
-  Navigation.registerComponent(`navigation.playground.ScrollViewScreen`, () => ScrollViewScreen);
 
   Navigation.registerComponent('navigation.playground.CustomDialog', () => CustomDialog);
   Navigation.registerComponent('navigation.playground.CustomDialogWithScroll', () => CustomDialogWithScroll);

@@ -14,8 +14,10 @@
 
 - (void)setTabBarHideShadow:(BOOL)hideShadow;
 
-- (void)setTabBarVisible:(BOOL)visible animated:(BOOL)animated;
-
 - (void)centerTabItems;
+
+- (void)showTabBar:(BOOL)animated;
+
+- (void)hideTabBar:(BOOL)animated;
 
 @end
