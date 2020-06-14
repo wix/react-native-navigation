@@ -29,6 +29,12 @@
 	_child = child;
 }
 
+- (void)viewDidLayoutSubviews {
+    CGRect frame = self.child.view.frame;
+    frame.size.height = self.view.frame.size.height;
+    self.child.view.frame = frame;
+}
+
 - (void)setWidth:(CGFloat)width {
 	CGRect frame = self.child.view.frame;
 	frame.size.width = width;
