@@ -81,7 +81,7 @@ describe('BottomTabs', () => {
     await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
     await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
-    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
     await elementById(TestIDs.POP_BTN).tap();
     await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
     await elementById(TestIDs.POP_BTN).tap();
