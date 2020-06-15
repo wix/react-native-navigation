@@ -102,8 +102,8 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     @Override
-    public void onViewAppeared() {
-        super.onViewAppeared();
+    public void onViewWillAppear() {
+        super.onViewWillAppear();
         if (left != null) left.performOnView(view -> ((View) view).requestLayout());
         if (right != null) right.performOnView(view -> ((View) view).requestLayout());
     }
@@ -206,7 +206,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
 
     private void dispatchSideMenuVisibilityEvents(ViewController drawer, float prevOffset, float offset) {
         if (prevOffset == 0 && offset > 0) {
-            drawer.onViewAppeared();
+            drawer.onViewWillAppear();
         } else if (prevOffset > 0 && offset == 0) {
             drawer.onViewDisappear();
         }

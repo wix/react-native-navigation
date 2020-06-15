@@ -127,9 +127,9 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.get(0).ensureViewIsCreated();
         tabControllers.get(1).ensureViewIsCreated();
 
-        tabControllers.get(0).onViewAppeared();
+        tabControllers.get(0).onViewWillAppear();
 
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
 
         TestReactView initialTab = getActualTabView(0);
         TestReactView selectedTab = getActualTabView(1);
@@ -144,7 +144,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     public void lifecycleMethodsSentWhenSelectedPreviouslySelectedTab() {
         stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         uut.switchToTab(1);
         uut.switchToTab(0);
 
@@ -158,9 +158,9 @@ public class TopTabsViewControllerTest extends BaseTest {
     public void setOptionsOfInitialTab() {
         stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
-        uut.onViewAppeared();
-        verify(tabControllers.get(0), times(1)).onViewAppeared();
-        verify(tabControllers.get(1), times(0)).onViewAppeared();
+        uut.onViewWillAppear();
+        verify(tabControllers.get(0), times(1)).onViewWillAppear();
+        verify(tabControllers.get(1), times(0)).onViewWillAppear();
 
         ViewController comp = tabControllers.get(0);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(comp));
@@ -173,7 +173,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.get(0).ensureViewIsCreated();
         tabControllers.get(1).ensureViewIsCreated();
 
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         ViewController currentTab = tab(0);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(currentTab));
         assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
@@ -199,7 +199,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
 
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
 
         verify(topTabsLayout, times(1)).applyOptions(any(Options.class));
     }
@@ -213,13 +213,13 @@ public class TopTabsViewControllerTest extends BaseTest {
         stackController.push(first, new CommandListenerAdapter());
         stackController.push(uut, new CommandListenerAdapter());
 
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
 
         assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isTrue();
         disablePopAnimation(uut);
         stackController.pop(Options.EMPTY, new CommandListenerAdapter());
 
-        first.onViewAppeared();
+        first.onViewWillAppear();
 
         assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
     }
@@ -227,7 +227,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     @Test
     public void onNavigationButtonPressInvokedOnCurrentTab() {
         uut.ensureViewIsCreated();
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         uut.switchToTab(1);
         uut.sendOnNavigationButtonPressed("btn1");
         verify(tabControllers.get(1), times(1)).sendOnNavigationButtonPressed("btn1");

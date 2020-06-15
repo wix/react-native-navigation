@@ -262,7 +262,7 @@ public class ModalStackTest extends BaseTest {
         uut.showModal(modal1, root, new CommandListenerAdapter());
         uut.showModal(modal2, root, new CommandListenerAdapter());
         uut.dismissModal(modal2.getId(), root, new CommandListenerAdapter());
-        verify(modal1, times(2)).onViewAppeared();
+        verify(modal1, times(2)).onViewWillAppear();
     }
 
     @Test

@@ -122,7 +122,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void setTabs_allChildViewsAreAttachedToHierarchy() {
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         assertThat(uut.getView().getChildCount()).isEqualTo(6);
         for (ViewController child : uut.getChildControllers()) {
             assertThat(child.getView().getParent()).isNotNull();
@@ -131,7 +131,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void setTabs_firstChildIsVisibleOtherAreGone() {
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         for (int i = 0; i < uut.getChildControllers().size(); i++) {
             assertThat(uut.getView().getChildAt(i + 1)).isEqualTo(tabs.get(i).getView());
             assertThat(uut.getView().getChildAt(i + 1).getVisibility()).isEqualTo(i == 0 ? View.VISIBLE : View.INVISIBLE);
@@ -179,7 +179,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.setParentController(parent);
 
         child1.options.bottomTabsOptions.backgroundColor = new Colour(Color.RED);
-        child1.onViewAppeared();
+        child1.onViewWillAppear();
 
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
         verify(parent).applyChildOptions(optionsCaptor.capture(), any());

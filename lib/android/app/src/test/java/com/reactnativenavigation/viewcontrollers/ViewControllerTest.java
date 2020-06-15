@@ -163,13 +163,13 @@ public class ViewControllerTest extends BaseTest {
         ViewController spy = spy(uut);
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
         Assertions.assertThat(spy.getView()).isNotShown();
-        verify(spy, times(0)).onViewAppeared();
+        verify(spy, times(0)).onViewWillAppear();
 
         Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
         Assertions.assertThat(spy.getView()).isShown();
 
-        verify(spy, times(1)).onViewAppeared();
+        verify(spy, times(1)).onViewWillAppear();
     }
 
     @Test
@@ -181,7 +181,7 @@ public class ViewControllerTest extends BaseTest {
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
 
-        verify(spy, times(1)).onViewAppeared();
+        verify(spy, times(1)).onViewWillAppear();
     }
 
     @Test
@@ -196,7 +196,7 @@ public class ViewControllerTest extends BaseTest {
         Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
-        verify(spy, times(1)).onViewAppeared();
+        verify(spy, times(1)).onViewWillAppear();
         verify(spy, times(0)).onViewDisappear();
 
         spy.getView().setVisibility(View.GONE);
@@ -230,7 +230,7 @@ public class ViewControllerTest extends BaseTest {
 
         Assertions.assertThat(view).isShown();
         view.getViewTreeObserver().dispatchOnGlobalLayout();
-        verify(spy, times(0)).onViewAppeared();
+        verify(spy, times(0)).onViewWillAppear();
         verify(spy, times(0)).onViewDisappear();
 
         Field field = ViewController.class.getDeclaredField("view");
@@ -244,7 +244,7 @@ public class ViewControllerTest extends BaseTest {
         Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
-        verify(spy, times(1)).onViewAppeared();
+        verify(spy, times(1)).onViewWillAppear();
 
         spy.destroy();
 

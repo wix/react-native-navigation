@@ -84,7 +84,7 @@ public class ModalPresenterTest extends BaseTest {
             @Override
             public void onSuccess(String childId) {
                 assertThat(modal1.getView().getParent()).isEqualTo(modalsLayout);
-                verify(modal1, times(1)).onViewAppeared();
+                verify(modal1, times(1)).onViewWillAppear();
             }
         });
         uut.showModal(modal1, root, listener);
@@ -200,12 +200,12 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1, modal2);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        verify(modal1).onViewAppeared();
+        verify(modal1).onViewWillAppear();
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNull();
         uut.dismissModal(modal2, modal1, root, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNotNull();
-        verify(modal1, times(2)).onViewAppeared();
+        verify(modal1, times(2)).onViewWillAppear();
     }
 
     @Test

@@ -57,10 +57,10 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     }
 
     @Override
-    public void onViewAppeared() {
-        super.onViewAppeared();
+    public void onViewWillAppear() {
+        super.onViewWillAppear();
         performOnParentController(parentController -> ((ParentController) parentController).setupTopTabsWithViewPager(getView()));
-        performOnCurrentTab(ViewController::onViewAppeared);
+        performOnCurrentTab(ViewController::onViewWillAppear);
     }
 
     @Override

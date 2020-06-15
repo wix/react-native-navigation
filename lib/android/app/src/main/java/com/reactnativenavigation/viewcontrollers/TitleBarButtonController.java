@@ -75,7 +75,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
 
     @SuppressLint("MissingSuperCall")
     @Override
-    public void onViewAppeared() {
+    public void onViewWillAppear() {
         getView().sendComponentStart(ComponentType.Button);
     }
 

@@ -231,12 +231,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return getView().equals(component);
     }
 
-    public void onViewWillAppear() {
-
-    }
-
     @CallSuper
-    public void onViewAppeared() {
+    public void onViewWillAppear() {
         isShown = true;
         applyOptions(options);
         performOnParentController(parentController -> {
@@ -291,7 +287,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (!isShown && isViewShown()) {
             if (!viewVisibilityListener.onViewAppeared(view)) {
                 isShown = true;
-                onViewAppeared();
+                onViewWillAppear();
             }
         } else if (isShown && !isViewShown()) {
             if (!viewVisibilityListener.onViewDisappear(view)) {

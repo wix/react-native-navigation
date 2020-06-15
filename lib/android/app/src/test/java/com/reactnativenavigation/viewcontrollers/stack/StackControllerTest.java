@@ -250,11 +250,11 @@ public class StackControllerTest extends BaseTest {
         assertThat(child1.getView().getParent()).isEqualTo(uut.getView());
         assertThat(child2.getView().getParent()).isEqualTo(uut.getView());
         assertThat(child2.isViewShown()).isFalse();
-        verify(child2, times(0)).onViewAppeared();
+        verify(child2, times(0)).onViewWillAppear();
 
         child2.getView().addView(new View(activity));
         ShadowLooper.idleMainLooper();
-        verify(child2).onViewAppeared();
+        verify(child2).onViewWillAppear();
         assertThat(child2.isViewShown()).isTrue();
         animator.endPushAnimation(child2.getView());
         assertThat(child1.getView().getParent()).isNull();
@@ -663,11 +663,11 @@ public class StackControllerTest extends BaseTest {
         uut.push(child1, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                child1.onViewAppeared();
+                child1.onViewWillAppear();
                 assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
 
                 uut.push(child2, new CommandListenerAdapter());
-                child2.onViewAppeared();
+                child2.onViewWillAppear();
                 verify(topBarController, times(0)).showAnimate(child2.options.animations.push.topBar, 0);
                 assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.VISIBLE);
                 verify(topBarController, times(2)).resetViewProperties();
@@ -926,7 +926,6 @@ public class StackControllerTest extends BaseTest {
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
         uut.pop(Options.EMPTY, new CommandListenerAdapter());
-        verify(child1, times(1)).onViewWillAppear();
         verify(child2, times(1)).onViewWillDisappear();
     }
 
@@ -940,7 +939,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child1, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                child1.onViewAppeared();
+                child1.onViewWillAppear();
                 assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
                 uut.push(child2, new CommandListenerAdapter() {
                     @Override
@@ -1012,7 +1011,7 @@ public class StackControllerTest extends BaseTest {
         StackController parent = createStack("someStack");
         parent.ensureViewIsCreated();
         parent.push(uut, new CommandListenerAdapter());
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         assertThat(parent.getView().getChildAt(0)).isEqualTo(uut.getView());
     }
 
@@ -1028,7 +1027,7 @@ public class StackControllerTest extends BaseTest {
         child1.options = childOptions;
         uut.push(child1, new CommandListenerAdapter());
         child1.ensureViewIsCreated();
-        child1.onViewAppeared();
+        child1.onViewWillAppear();
 
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
         ArgumentCaptor<ViewController> viewCaptor = ArgumentCaptor.forClass(ViewController.class);
@@ -1041,7 +1040,7 @@ public class StackControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
         uut.push(child1, new CommandListenerAdapter());
         child1.ensureViewIsCreated();
-        child1.onViewAppeared();
+        child1.onViewWillAppear();
         assertThat(ViewHelper.isVisible(uut.getTopBar().getTopTabs())).isFalse();
     }
 

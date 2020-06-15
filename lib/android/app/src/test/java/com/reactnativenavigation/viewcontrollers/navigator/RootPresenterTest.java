@@ -120,7 +120,7 @@ public class RootPresenterTest extends BaseTest {
         assertThat(spy.getView().getAlpha()).isZero();
         verifyZeroInteractions(listener);
 
-        spy.onViewAppeared();
+        spy.onViewWillAppear();
         assertThat(spy.getView().getAlpha()).isOne();
         verify(listener).onSuccess(spy.getId());
     }

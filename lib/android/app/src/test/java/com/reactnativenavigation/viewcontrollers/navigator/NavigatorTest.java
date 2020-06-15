@@ -636,7 +636,7 @@ public class NavigatorTest extends BaseTest {
             @Override
             public void onSuccess(String childId) {
                 assertThat(spy.getView().getParent()).isNotNull();
-                verify(spy, times(2)).onViewAppeared();
+                verify(spy, times(2)).onViewWillAppear();
             }
         });
     }
