@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
-import com.reactnativenavigation.anim.NavigationAnimator;
+import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
@@ -85,7 +85,7 @@ public class StackControllerTest extends BaseTest {
     private ViewController child3;
     private SimpleViewController.SimpleView child3View;
     private ViewController child4;
-    private NavigationAnimator animator;
+    private StackAnimator animator;
     private TopBarController topBarController;
     private StackPresenter presenter;
     private BackButtonHelper backButtonHelper;
@@ -98,7 +98,7 @@ public class StackControllerTest extends BaseTest {
         backButtonHelper = spy(new BackButtonHelper());
         activity = newActivity();
         StatusBarUtils.saveStatusBarHeight(63);
-        animator = spy(new NavigationAnimator(activity, new ElementTransitionManager()));
+        animator = spy(new StackAnimator(activity, new ElementTransitionManager()));
         childRegistry = new ChildControllersRegistry();
         presenter = spy(new StackPresenter(
                     activity,

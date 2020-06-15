@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.anim.NavigationAnimator;
+import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.FabPresenter;
@@ -46,14 +46,14 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 public class StackController extends ParentController<StackLayout> {
 
     private IdStack<ViewController> stack = new IdStack<>();
-    private final NavigationAnimator animator;
+    private final StackAnimator animator;
     private final EventEmitter eventEmitter;
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
     private final FabPresenter fabPresenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, StackAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.eventEmitter = eventEmitter;
         this.topBarController = topBarController;
