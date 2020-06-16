@@ -205,7 +205,9 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     private void dispatchSideMenuVisibilityEvents(ViewController drawer, float prevOffset, float offset) {
-        if (prevOffset == 0 && offset > 0) {
+        if (prevOffset < 1 && offset == 1) {
+            drawer.onViewDidAppear();
+        } else if (prevOffset == 0 && offset > 0) {
             drawer.onViewWillAppear();
         } else if (prevOffset > 0 && offset == 0) {
             drawer.onViewDisappear();

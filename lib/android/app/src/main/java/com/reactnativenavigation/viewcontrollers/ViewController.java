@@ -248,6 +248,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
+    public void onViewDidAppear() {
+
+    }
+
     public void onViewWillDisappear() {
 
     }

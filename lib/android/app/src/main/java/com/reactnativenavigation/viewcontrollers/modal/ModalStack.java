@@ -53,7 +53,13 @@ public class ModalStack {
     public void showModal(ViewController viewController, ViewController root, CommandListener listener) {
         ViewController toRemove = isEmpty() ? root : peek();
         modals.add(viewController);
-        presenter.showModal(viewController, toRemove, listener);
+        presenter.showModal(viewController, toRemove, new CommandListenerAdapter(listener) {
+            @Override
+            public void onSuccess(String childId) {
+                viewController.onViewDidAppear();
+                super.onSuccess(childId);
+            }
+        });
     }
 
     public boolean dismissModal(String componentId, @Nullable ViewController root, CommandListener listener) {

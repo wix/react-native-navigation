@@ -167,6 +167,7 @@ public class StackController extends ParentController<StackLayout> {
             if (animation.enabled.isTrueOrUndefined()) {
                 animator.push(child, toRemove, resolvedOptions, () -> onPushAnimationComplete(child, toRemove, listener));
             } else {
+                child.onViewDidAppear();
                 getView().removeView(toRemove.getView());
                 listener.onSuccess(child.getId());
             }
@@ -176,6 +177,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void onPushAnimationComplete(ViewController toAdd, ViewController toRemove, CommandListener listener) {
+        toAdd.onViewDidAppear();
         if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
         listener.onSuccess(toAdd.getId());
     }
@@ -231,15 +233,20 @@ public class StackController extends ParentController<StackLayout> {
                         child,
                         toRemove,
                         resolvedOptions,
-                        () -> listenerAdapter.onSuccess(child.getId())
+                        () -> onSetRootAnimationComplete(child, listenerAdapter)
                     )
                 );
             } else {
-                animator.push(child, toRemove, resolvedOptions, () -> listenerAdapter.onSuccess(child.getId()));
+                animator.push(child, toRemove, resolvedOptions, () -> onSetRootAnimationComplete(child, listenerAdapter));
             }
         } else {
-            listenerAdapter.onSuccess(child.getId());
+            onSetRootAnimationComplete(child, listenerAdapter);
         }
+    }
+
+    private void onSetRootAnimationComplete(ViewController child, CommandListener listener) {
+        child.onViewDidAppear();
+        listener.onSuccess(child.getId());
     }
 
     private void destroyStack(IdStack stack) {
@@ -271,13 +278,14 @@ public class StackController extends ParentController<StackLayout> {
         }
         presenter.onChildWillAppear(this, appearing, disappearing);
         if (disappearingOptions.animations.pop.enabled.isTrueOrUndefined()) {
-            animator.pop(disappearing.getView(), disappearingOptions.animations.pop, () -> finishPopping(disappearing, listener));
+            animator.pop(disappearing.getView(), disappearingOptions.animations.pop, () -> finishPopping(appearing, disappearing, listener));
         } else {
-            finishPopping(disappearing, listener);
+            finishPopping(appearing, disappearing, listener);
         }
     }
 
-    private void finishPopping(ViewController disappearing, CommandListener listener) {
+    private void finishPopping(ViewController appearing, ViewController disappearing, CommandListener listener) {
+        appearing.onViewDidAppear();
         disappearing.destroy();
         listener.onSuccess(disappearing.getId());
         eventEmitter.emitScreenPoppedEvent(disappearing.getId());

@@ -94,6 +94,21 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
+    public void onViewDidAppear_componentStartIsEmittedOnlyIfComponentIsNotAppeared() {
+        uut.ensureViewIsCreated();
+
+        uut.onViewDidAppear();
+        verify(view).sendComponentStart();
+
+        uut.onViewDidAppear();
+        verify(view).sendComponentStart();
+
+        uut.onViewDisappear();
+        uut.onViewDidAppear();
+        verify(view, times(2)).sendComponentStart();
+    }
+
+    @Test
     public void isViewShownOnlyIfComponentViewIsReady() {
         assertThat(uut.isViewShown()).isFalse();
         uut.ensureViewIsCreated();
