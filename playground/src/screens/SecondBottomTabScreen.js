@@ -10,7 +10,8 @@ const {
   PUSHED_BOTTOM_TABS,
   SIDE_MENU_TAB,
   FLAT_LIST_BTN,
-  HIDE_TABS_PUSH_BTN
+  HIDE_TABS_PUSH_BTN,
+  SECOND_TAB_BAR_BTN
 } = require('../testIDs')
 
 class SecondBottomTabScreen extends React.Component {
@@ -24,6 +25,7 @@ class SecondBottomTabScreen extends React.Component {
       bottomTab: {
         icon: require('../../img/star.png'),
         text: 'Tab 2',
+        testID: SECOND_TAB_BAR_BTN,
         dotIndicator: {
           visible: true,
           color: 'green'

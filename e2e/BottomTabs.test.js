@@ -87,4 +87,12 @@ describe('BottomTabs', () => {
     await elementById(TestIDs.POP_BTN).tap();
     await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
   });
+
+  it('hide Tab Bar on second tab after pressing the tab', async () => {
+    await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
+    await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    await elementById(TestIDs.POP_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+  });
 });
