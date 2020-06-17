@@ -74,11 +74,11 @@ public class ModalStack {
                     return false;
                 }
             }
+            if (toAdd != null) toAdd.onViewDidAppear();
             presenter.dismissModal(toDismiss, toAdd, root, new CommandListenerAdapter(listener) {
                 @Override
                 public void onSuccess(String childId) {
                     eventEmitter.emitModalDismissed(componentId, toDismiss.getCurrentComponentName(), 1);
-                    if (toAdd != null) toAdd.onViewDidAppear();
                     super.onSuccess(componentId);
                 }
             });
