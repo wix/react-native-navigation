@@ -18,7 +18,10 @@ public class OverlayManager {
     public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
         overlaysContainer.setVisibility(View.VISIBLE);
         overlayRegistry.put(overlay.getId(), overlay);
-        overlay.addOnAppearedListener(() -> listener.onSuccess(overlay.getId()));
+        overlay.addOnAppearedListener(() -> {
+            overlay.onViewDidAppear();
+            listener.onSuccess(overlay.getId());
+        });
         overlaysContainer.addView(overlay.getView(), matchParentWithBehaviour(new BehaviourDelegate(overlay)));
     }
 
