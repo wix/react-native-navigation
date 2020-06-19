@@ -14,6 +14,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.PIPActivity;
 import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.parse.Options;
@@ -32,7 +33,6 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import java.util.ArrayList;
 
-import jp.manse.PIPActivity;
 
 import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 

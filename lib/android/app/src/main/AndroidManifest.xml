@@ -6,7 +6,7 @@
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
             android:exported="false" />
         <activity
-            android:name="jp.manse.PIPActivity"
+            android:name="com.reactnativenavigation.PIPActivity"
             android:launchMode="singleTask"
             android:excludeFromRecents="true"
             android:noHistory="true"

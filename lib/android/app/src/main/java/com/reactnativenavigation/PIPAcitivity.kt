@@ -1,4 +1,4 @@
-package jp.manse
+package com.reactnativenavigation
 
 import android.app.ActivityManager
 import android.app.PictureInPictureParams
@@ -10,8 +10,8 @@ import android.os.Bundle
 import android.util.Rational
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.reactnativenavigation.R
 import com.reactnativenavigation.parse.PIPActionButton
 import com.reactnativenavigation.react.NavigationModule
 import com.reactnativenavigation.viewcontrollers.ViewController
@@ -39,7 +39,7 @@ class PIPActivity : AppCompatActivity() {
         super.onResume()
         if (mFromPictureInPictureMode) {
             (mContentView.parent as ViewGroup).removeView(mContentView)
-            NavigationModule.currentNavigator.pipStackController.pushBackPIP()
+            NavigationModule.currentNavigator.pushBackPIP()
             mFromPictureInPictureMode = false;
             navToLauncherTask(this)
         }
@@ -83,8 +83,14 @@ class PIPActivity : AppCompatActivity() {
     private fun loadView() {
         var view = findViewById<ViewGroup>(R.id.rootView)
         view.removeAllViews()
-        mViewController = NavigationModule.currentNavigator.pipStackController.pipController
+        mViewController = NavigationModule.currentNavigator.pipController
         mContentView = mViewController.view
+        val params = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(0, 0, 0, 0)
+        mContentView.layoutParams = params
         view.addView(mContentView)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val mPictureInPictureParamsBuilder = PictureInPictureParams.Builder()

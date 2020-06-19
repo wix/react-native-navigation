@@ -49,7 +49,6 @@ public class StackController extends ParentController<StackLayout> {
     private final NavigationAnimator animator;
     private final EventEmitter eventEmitter;
     private TopBarController topBarController;
-    private ViewController pipController;
     private BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
     private final FabPresenter fabPresenter;
@@ -151,16 +150,8 @@ public class StackController extends ParentController<StackLayout> {
         presenter.onChildDestroyed(child);
     }
 
-    public StackController pushAsPIP(ViewController child, CommandListener listener) {
-        this.pipController = child;
-        return this;
-    }
 
-    public void clearPIP() {
-        this.pipController.destroy();
-        eventEmitter.emitScreenPoppedEvent(this.pipController.getId());
-        this.pipController = null;
-    }
+
 
     public void push(ViewController child, CommandListener listener) {
         if (findController(child.getId()) != null) {
@@ -290,7 +281,7 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-    public StackController switchToPIP(Options mergeOptions, CommandListener listener) {
+    public ViewController switchToPIP(Options mergeOptions, CommandListener listener) {
         if (!canPop()) {
             listener.onError("Nothing to pop");
             return null;
@@ -311,28 +302,8 @@ public class StackController extends ParentController<StackLayout> {
             getView().addView(appearingView, 0);
         }
         presenter.onChildWillAppear(this, appearing, disappearing);
-        this.pipController = disappearing;
         disappearing.detachView();
-        return this;
-    }
-
-    public void pushBackPIP() {
-        this.push(this.pipController, new CommandListener() {
-            @Override
-            public void onSuccess(String childId) {
-
-            }
-
-            @Override
-            public void onError(String message) {
-
-            }
-        });
-        this.pipController = null;
-    }
-
-    public ViewController getPipController() {
-        return pipController;
+        return disappearing;
     }
 
     private void finishPopping(ViewController disappearing, CommandListener listener) {

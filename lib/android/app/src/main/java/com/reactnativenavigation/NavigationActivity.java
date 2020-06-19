@@ -1,7 +1,9 @@
 package com.reactnativenavigation;
 
 import android.annotation.TargetApi;
+import android.app.PictureInPictureParams;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,7 +26,6 @@ import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
-import jp.manse.PIPActivity;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
@@ -32,54 +33,87 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     protected Navigator navigator;
 
+    private boolean mPictureInPictureMode = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addDefaultSplashLayout();
-        navigator = new Navigator(this,
-                new ChildControllersRegistry(),
-                new ModalStack(this),
-                new OverlayManager(),
-                new RootPresenter(this)
-        );
-        navigator.bindViews();
-        getReactGateway().onActivityCreated(this);
+        if (!mPictureInPictureMode) {
+            addDefaultSplashLayout();
+            navigator = new Navigator(this,
+                    new ChildControllersRegistry(),
+                    new ModalStack(this),
+                    new OverlayManager(),
+                    new RootPresenter(this)
+            );
+            navigator.bindViews();
+            getReactGateway().onActivityCreated(this);
+        } else {
+            mPictureInPictureMode = false;
+        }
 
     }
 
     @Override
     public void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        navigator.setContentLayout(findViewById(android.R.id.content));
+        if (!mPictureInPictureMode) {
+            navigator.setContentLayout(findViewById(android.R.id.content));
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getReactGateway().onActivityResumed(this);
-        if (PIPActivity.Companion.getINSTANCE() != null) {
-            PIPActivity.Companion.getINSTANCE().finish();
+        if (!mPictureInPictureMode) {
+            getReactGateway().onActivityResumed(this);
+            if (PIPActivity.Companion.getINSTANCE() != null) {
+                PIPActivity.Companion.getINSTANCE().finish();
+            }
         }
     }
 
     @Override
     public void onNewIntent(Intent intent) {
-        if (!getReactGateway().onNewIntent(intent)) {
-            super.onNewIntent(intent);
+        if (!mPictureInPictureMode) {
+            if (!getReactGateway().onNewIntent(intent)) {
+                super.onNewIntent(intent);
+            }
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        getReactGateway().onActivityPaused(this);
+        if (!mPictureInPictureMode) {
+            getReactGateway().onActivityPaused(this);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        navigator.destroy();
-        getReactGateway().onActivityDestroyed(this);
+        if (!mPictureInPictureMode) {
+            navigator.destroy();
+            getReactGateway().onActivityDestroyed(this);
+        }
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        mPictureInPictureMode = true;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            navigator.onPictureInPictureModeChanged(true, null);
+            enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+        }
+    }
+
+    @Override
+    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
+        this.mPictureInPictureMode = isInPictureInPictureMode;
+        navigator.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
     }
 
     @Override
@@ -133,7 +167,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void onReload() {
-        navigator.destroyViews();
+        if (!mPictureInPictureMode) {
+            navigator.destroyViews();
+        }
     }
 
     protected void addDefaultSplashLayout() {
@@ -145,4 +181,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void onCatalystInstanceDestroy() {
         runOnUiThread(() -> navigator.destroyViews());
     }
+
+
 }

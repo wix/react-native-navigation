@@ -1,7 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,24 +25,25 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.views.pip.PIPFloatingLayout;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import jp.manse.PIPActivity;
 
 public class Navigator extends ParentController {
-
+    private ViewController pipController;
+    private String lastPushedComponent = "";
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
     private final RootPresenter rootPresenter;
     private ViewController root;
     private ViewController previousRoot;
-    private StackController pipStackController;
     private final CoordinatorLayout rootLayout;
     private final CoordinatorLayout modalsLayout;
     private final CoordinatorLayout overlaysLayout;
+    private final PIPFloatingLayout pipLayout;
     private ViewGroup contentLayout;
     private Options defaultOptions = new Options();
 
@@ -72,6 +73,8 @@ public class Navigator extends ParentController {
         contentLayout.addView(modalsLayout);
         overlaysLayout.setVisibility(View.GONE);
         contentLayout.addView(overlaysLayout);
+        contentLayout.addView(pipLayout);
+        pipLayout.bringToFront();
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
@@ -82,6 +85,8 @@ public class Navigator extends ParentController {
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
+        pipLayout = new PIPFloatingLayout(getActivity());
+        pipLayout.resetPIPLayout();
     }
 
     public void bindViews() {
@@ -141,6 +146,7 @@ public class Navigator extends ParentController {
 
     }
 
+
     public void setRoot(final ViewController viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
         previousRoot = root;
         modalStack.destroy();
@@ -165,15 +171,15 @@ public class Navigator extends ParentController {
     }
 
     public void push(final String id, final ViewController viewController, CommandListener listener) {
+        this.lastPushedComponent = id;
         applyOnStack(id, listener, stack -> stack.push(viewController, listener));
     }
 
     public void pushAsPIP(final String id, final ViewController viewController, CommandListener listener) {
         applyOnStack(id, listener, stack -> {
-            this.pipStackController = stack.pushAsPIP(viewController, listener);
+            this.pipController = viewController;
             viewController.start();
-            Intent intent = new Intent(getActivity(), PIPActivity.class);
-            getActivity().startActivity(intent);
+            pipLayout.addView(this.pipController.getView());
         });
     }
 
@@ -185,16 +191,28 @@ public class Navigator extends ParentController {
         applyOnStack(id, listener, stack -> stack.pop(mergeOptions, listener));
     }
 
+
     public void switchToPIP(String id, Options mergeOptions, CommandListener listener) {
         applyOnStack(id, listener, stack -> {
-            this.pipStackController = stack.switchToPIP(mergeOptions, listener);
-            Intent intent = new Intent(getActivity(), PIPActivity.class);
-            getActivity().startActivity(intent);
+            this.pipController = stack.switchToPIP(mergeOptions, listener);
+            View pipView = this.pipController.getView();
+            CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(0, 0, 0, 0);
+            pipView.setLayoutParams(params);
+            pipLayout.addView(pipView);
+            pipLayout.intializeCustomLayoutParams();
+            pipLayout.setCustomPIPMode();
         });
     }
 
-    public StackController getPipStackController() {
-        return pipStackController;
+    public int dpToPx(int dp) {
+        float density = getActivity().getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
+    }
+
+
+    public ViewController getPipController() {
+        return pipController;
     }
 
     public void popToRoot(final String id, Options mergeOptions, CommandListener listener) {
@@ -260,12 +278,42 @@ public class Navigator extends ParentController {
         }
     }
 
+    public void pushBackPIP() {
+        this.pipController.sendOnNavigationButtonPressed("restorePIP");
+        this.push(this.lastPushedComponent, this.pipController, new CommandListener() {
+            @Override
+            public void onSuccess(String childId) {
+
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+        });
+        this.pipController = null;
+    }
+
     public void clearPIP() {
-        if (pipStackController != null) {
-            pipStackController.clearPIP();
-            pipStackController = null;
+        this.pipController.destroy();
+        this.pipController = null;
+    }
+
+
+    public void onPictureInPictureModeChanged(Boolean isInPictureInPictureMode, Configuration newConfig) {
+        if (isInPictureInPictureMode) {
+            rootLayout.setVisibility(View.GONE);
+            modalsLayout.setVisibility(View.GONE);
+            overlaysLayout.setVisibility(View.GONE);
+            pipLayout.setNativePIPMode();
+        } else {
+            rootLayout.setVisibility(View.VISIBLE);
+            modalsLayout.setVisibility(View.VISIBLE);
+            overlaysLayout.setVisibility(View.VISIBLE);
+            pipLayout.setCustomPIPMode();
         }
     }
+
 
     private boolean isRootNotCreated() {
         return view == null;
