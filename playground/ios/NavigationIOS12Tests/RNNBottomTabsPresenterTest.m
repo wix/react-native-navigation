@@ -28,7 +28,7 @@
 	[[(id)self.uut expect] applyBackgroundColor:nil translucent:NO];
     [[self.boundViewController expect] setTabBarHideShadow:NO];
     [[self.boundViewController expect] setTabBarStyle:UIBarStyleDefault];
-	[[self.boundViewController expect] restoreTabBarVisibility:YES];
+	[[self.boundViewController expect] setTabBarVisible:YES];
     [self.uut applyOptions:emptyOptions];
     [self.boundViewController verify];
 }
@@ -55,7 +55,7 @@
     RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
     initialOptions.bottomTabs.visible = [[Bool alloc] initWithValue:@(1)];
 	
-	[[self.boundViewController expect] restoreTabBarVisibility:YES];
+	[[self.boundViewController expect] setTabBarVisible:YES];
 
     [self.uut applyOptions:initialOptions];
     [self.boundViewController verify];
