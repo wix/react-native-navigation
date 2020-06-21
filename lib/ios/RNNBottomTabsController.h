@@ -23,7 +23,7 @@
 
 - (void)setTabBarVisible:(BOOL)visible animated:(BOOL)animated;
 
-- (void)restoreTabBarVisibility:(BOOL)visible;
+- (void)setTabBarVisible:(BOOL)visible;
 
 @property (nonatomic, strong) NSArray* pendingChildViewControllers;
 

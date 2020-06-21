@@ -122,8 +122,8 @@
     visible ? [self showTabBar:animated] : [self hideTabBar:animated];
 }
 
-- (void)restoreTabBarVisibility:(BOOL)visible {
-    if (_tabBarNeedsRestore) {
+- (void)setTabBarVisible:(BOOL)visible {
+    if (_tabBarNeedsRestore || !self.presentedComponentViewController.navigationController) {
         [self setTabBarVisible:visible animated:NO];
         _tabBarNeedsRestore = NO;
     }
