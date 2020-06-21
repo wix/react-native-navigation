@@ -1,8 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
@@ -17,6 +15,9 @@ import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 
 import java.util.Collection;
 import java.util.List;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 
 public class TopTabsController extends ParentController<TopTabsViewPager> {
 
@@ -100,6 +101,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
 
     public void switchToTab(int index) {
         getView().switchToTab(index);
+        getCurrentChild().onViewDidAppear();
     }
 
     private void performOnCurrentTab(Func1<ViewController> task) {

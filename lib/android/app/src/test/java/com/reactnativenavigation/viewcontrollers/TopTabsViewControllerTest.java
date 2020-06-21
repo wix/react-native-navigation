@@ -127,10 +127,6 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.get(0).ensureViewIsCreated();
         tabControllers.get(1).ensureViewIsCreated();
 
-        tabControllers.get(0).onViewWillAppear();
-
-        uut.onViewWillAppear();
-
         TestReactView initialTab = getActualTabView(0);
         TestReactView selectedTab = getActualTabView(1);
 
@@ -144,7 +140,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     public void lifecycleMethodsSentWhenSelectedPreviouslySelectedTab() {
         stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
-        uut.onViewWillAppear();
+        uut.onViewDidAppear();
         uut.switchToTab(1);
         uut.switchToTab(0);
 
