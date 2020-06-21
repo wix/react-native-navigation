@@ -9,6 +9,7 @@
 
 @implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
+    NSUInteger _previousTabIndex;
     BottomTabsBaseAttacher* _bottomTabsAttacher;
     BOOL _tabBarNeedsRestore;
     
@@ -106,6 +107,7 @@
 
 - (void)setSelectedViewController:(__kindof UIViewController *)selectedViewController {
     NSArray* children = self.pendingChildViewControllers ?: self.childViewControllers;
+    _previousTabIndex = _currentTabIndex;
     _currentTabIndex = [children indexOfObject:selectedViewController];
     [super setSelectedViewController:selectedViewController];
 }
@@ -132,8 +134,7 @@
 #pragma mark UITabBarControllerDelegate
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	[self.eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex) unselected:@(_currentTabIndex)];
-	_currentTabIndex = tabBarController.selectedIndex;
+	[self.eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex) unselected:@(_previousTabIndex)];
 }
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *) recognizer {

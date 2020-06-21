@@ -185,6 +185,18 @@
     XCTAssertTrue(uut.selectedIndex == 1);
 }
 
+- (void)testDidSelectViewController_emitEventOnTabPress {
+    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
+	RNNBottomTabsController *uut = [RNNBottomTabsController createWithChildren:@[[UIViewController new], vc] options:options];
+	[uut viewWillAppear:YES];
+	
+	[[(id)uut.eventEmitter expect] sendBottomTabSelected:@(1) unselected:@(0)];
+	[uut setSelectedViewController:vc];
+	[uut tabBarController:uut didSelectViewController:vc];
+	[(id)uut.eventEmitter verify];
+}
+
 - (void)testOnViewDidLayoutSubviews_ShouldUpdateDotIndicatorForChildren {
 	id dotIndicator = [OCMockObject partialMockForObject:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil]];
     RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
