@@ -132,6 +132,7 @@
         if (CGRectContainsPoint([[item valueForKey:@"view"] frame], locationInTabBar)) {
             NSUInteger tabIndex = [self.tabBar.items indexOfObject:item];
             [self.eventEmitter sendBottomTabLongPressed:@(tabIndex)];
+            break;
         }
     }
 }
