@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, PlatformOSType } from 'react-native';
+import { View, Platform, PlatformOSType } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 
 export type RnnButtonProps = {
@@ -20,7 +20,7 @@ const RnnButton: React.FC<RnnButtonProps> = ({ platform, testID, ...props }) => 
     return null;
   }
 
-  return <Button {...props} backgroundColor={testID ? undefined : '#65C888'} marginB-8 />;
+  return <Button {...props} testID={testID} backgroundColor={testID ? undefined : '#65C888'} marginB-8 />;
 };
 
 export default RnnButton;
