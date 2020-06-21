@@ -48,7 +48,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     @Override
     protected TopTabsViewPager createView() {
         view = viewCreator.create();
-        return (TopTabsViewPager) view;
+        return view;
     }
 
     @NonNull
@@ -60,7 +60,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     @Override
     public void onViewWillAppear() {
         super.onViewWillAppear();
-        performOnParentController(parentController -> ((ParentController) parentController).setupTopTabsWithViewPager(getView()));
+        performOnParentController(parentController -> parentController.setupTopTabsWithViewPager(getView()));
         performOnCurrentTab(ViewController::onViewWillAppear);
     }
 
@@ -73,7 +73,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     public void onViewDisappear() {
         super.onViewDisappear();
         performOnCurrentTab(ViewController::onViewDisappear);
-        performOnParentController(parentController -> ((ParentController) parentController).clearTopTabs());
+        performOnParentController(ParentController::clearTopTabs);
     }
 
     @Override
@@ -90,13 +90,13 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     @Override
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
-        performOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(this.options.copy(), child));
+        performOnParentController(parentController -> parentController.applyChildOptions(this.options.copy(), child));
     }
 
     @CallSuper
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
-        performOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(options.copy(), child));
+        performOnParentController(parentController -> parentController.applyChildOptions(options.copy(), child));
     }
 
     public void switchToTab(int index) {
