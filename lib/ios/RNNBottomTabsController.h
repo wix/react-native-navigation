@@ -25,6 +25,8 @@
 
 - (void)setTabBarVisible:(BOOL)visible;
 
+- (void)handleTabBarLongPress:(CGPoint)locationInTabBar;
+
 @property (nonatomic, strong) NSArray* pendingChildViewControllers;
 
 @end
