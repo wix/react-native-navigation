@@ -52,7 +52,7 @@ class AppDelegateLinker {
   _removeUnneededImports(content) {
     debugn("   Removing Unneeded imports");
 
-    const unneededImports = [/\#import\s+\<React\/RCTBridge.h>\s/, /#import\s+\<React\/RCTRootView.h>\s/];
+    const unneededImports = [/#import\s+\<React\/RCTRootView.h>\s/];
     let elementsRemovedCount = 0;
 
     unneededImports.forEach((unneededImport) => {
