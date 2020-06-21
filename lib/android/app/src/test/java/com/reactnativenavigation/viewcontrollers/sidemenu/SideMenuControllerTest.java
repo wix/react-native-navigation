@@ -293,7 +293,7 @@ public class SideMenuControllerTest extends BaseTest {
 
         openLeftMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isTrue();
-        verify(spy).onViewWillAppear();
+        verify(spy).onViewDidAppear();
 
         closeLeftMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
@@ -311,7 +311,7 @@ public class SideMenuControllerTest extends BaseTest {
 
         openRightMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isTrue();
-        verify(spy).onViewWillAppear();
+        verify(spy).onViewDidAppear();
 
         closeRightMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
