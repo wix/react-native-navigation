@@ -97,11 +97,10 @@ public class ModalStackTest extends BaseTest {
         uut.showModal(modal1, root, listener);
         verify(listener, times(1)).onSuccess(modal1.getId());
         assertThat(uut.size()).isOne();
-        verify(presenter, times(1)).showModal(modal1, root, listener);
+        verify(presenter, times(1)).showModal(eq(modal1), eq(root), any());
         assertThat(findModal(MODAL_ID_1)).isNotNull();
     }
 
-    @SuppressWarnings("Convert2Lambda")
     @Test
     public void dismissModal() {
         uut.showModal(modal1, root, new CommandListenerAdapter());
@@ -200,7 +199,6 @@ public class ModalStackTest extends BaseTest {
         verify(modal2, times(0)).mergeOptions(mergeOptions);
     }
 
-    @SuppressWarnings("Convert2Lambda")
     @Test
     public void dismissAllModals_onlyTopModalIsAnimated() {
         modal2 = spy(modal2);
