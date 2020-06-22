@@ -2,7 +2,6 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.reactnativenavigation.utils.UiUtils;
@@ -28,12 +27,6 @@ public class StackLayout extends CoordinatorLayout implements Component {
         CoordinatorLayout.LayoutParams lp = new LayoutParams(MATCH_PARENT, UiUtils.getTopBarHeight(getContext()));
         lp.setBehavior(new ScrollDIsabledBehavior());
         addView(topBar, lp);
-    }
-
-    @Override
-    public void childHasTransientStateChanged(View child, boolean childHasTransientState) {
-        super.childHasTransientStateChanged(child, childHasTransientState);
-            Log.i("StackLayout", "childHasTransientStateChanged " + childHasTransientState);
     }
 
     public String getStackId() {
