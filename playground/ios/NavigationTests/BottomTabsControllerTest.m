@@ -6,6 +6,7 @@
 #import <ReactNativeNavigation/BottomTabPresenterCreator.h>
 #import "RNNBottomTabsController+Helpers.h"
 #import "RNNComponentViewController+Utils.h"
+#import <ReactNativeNavigation/UITabBar+utils.h>
 
 @interface BottomTabsControllerTest : XCTestCase
 
