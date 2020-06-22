@@ -99,7 +99,7 @@
         [viewController setBackgroundImage:options.backgroundImage.get];
     }
     
-    if (options.topBar.searchBar.hasValue && options.topBar.searchBar.get) {
+    if ([withDefault.topBar.searchBar getWithDefaultValue:NO]) {
         BOOL hideNavBarOnFocusSearchBar = YES;
         if (options.topBar.hideNavBarOnFocusSearchBar.hasValue) {
             hideNavBarOnFocusSearchBar = options.topBar.hideNavBarOnFocusSearchBar.get;
