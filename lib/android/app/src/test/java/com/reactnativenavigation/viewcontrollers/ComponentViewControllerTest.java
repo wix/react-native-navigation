@@ -86,6 +86,9 @@ public class ComponentViewControllerTest extends BaseTest {
         verify(view, times(0)).sendComponentStart();
         verify(view, times(0)).sendComponentStop();
         uut.onViewWillAppear();
+        verify(view, times(0)).sendComponentStart();
+        verify(view, times(0)).sendComponentStop();
+        uut.onViewDidAppear();
         verify(view, times(1)).sendComponentStart();
         verify(view, times(0)).sendComponentStop();
         uut.onViewDisappear();
