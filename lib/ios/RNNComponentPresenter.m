@@ -65,7 +65,7 @@
         [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor getWithDefaultValue:viewController.view.backgroundColor]];
     }
     
-    if (withDefault.topBar.searchBar.hasValue && withDefault.topBar.searchBar.get) {
+    if ([withDefault.topBar.searchBar getWithDefaultValue:NO]) {
         BOOL hideNavBarOnFocusSearchBar = YES;
         if (withDefault.topBar.hideNavBarOnFocusSearchBar.hasValue) {
             hideNavBarOnFocusSearchBar = withDefault.topBar.hideNavBarOnFocusSearchBar.get;
