@@ -304,6 +304,15 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void push_onViewDidAppearInvokedOnPushedScreen() {
+        disablePushAnimation(child1, child2);
+        uut.push(child1, new CommandListenerAdapter()); // Initialize stack with a child
+
+        uut.push(child2, new CommandListenerAdapter());
+        verify(child2).onViewDidAppear();
+    }
+
+    @Test
     public void animateSetRoot() {
         disablePushAnimation(child1, child2, child3);
         assertThat(uut.isEmpty()).isTrue();
@@ -918,15 +927,22 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pop_callWillAppearWillDisappear() {
-        child1.options.animations.push.enabled = new Bool(false);
-        child2.options.animations.push.enabled = new Bool(false);
-        child1 = spy(child1);
-        child2 = spy(child2);
+    public void pop_callWillDisappear() {
+        disablePushAnimation(child1, child2);
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
         uut.pop(Options.EMPTY, new CommandListenerAdapter());
-        verify(child2, times(1)).onViewWillDisappear();
+        verify(child2).onViewWillDisappear();
+    }
+
+    @Test
+    public void pop_callDidAppear() {
+        disablePushAnimation(child1, child2);
+        disablePopAnimation(child2);
+        uut.push(child1, new CommandListenerAdapter());
+        uut.push(child2, new CommandListenerAdapter());
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
+        verify(child1).onViewDidAppear();
     }
 
     @Test
