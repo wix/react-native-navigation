@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Platform, PlatformOSType } from 'react-native';
+import { Platform, PlatformOSType } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 
 export type RnnButtonProps = {
@@ -14,7 +14,7 @@ export type RnnButtonProps = {
   testID?: string;
 };
 
-const RnnButton: React.FC<RnnButtonProps> = ({ platform, testID, ...props }) => {
+const RnnButton = ({ platform, testID, ...props }: RnnButtonProps) => {
   // If the platform prop is provided, only render if provided platform matches the current platform.
   if (platform && platform !== Platform.OS) {
     return null;

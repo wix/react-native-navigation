@@ -8,9 +8,10 @@ export type RootProps = {
   style?: StyleProp<ViewStyle>;
   footer?: string;
   testID?: string;
+  children?: React.ReactNode;
 };
 
-const Root: React.FC<RootProps> = ({ children, componentId, footer, style, testID }) => (
+const Root = ({ children, componentId, footer, style, testID }: RootProps) => (
   <SafeAreaView style={styles.root} testID={testID}>
     <ScrollView contentContainerStyle={[styles.scrollView, style]}>
       {children}
