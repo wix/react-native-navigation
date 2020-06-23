@@ -156,6 +156,15 @@ public class ModalPresenterTest extends BaseTest {
     }
 
     @Test
+    public void showModal_onViewDidAppearIsInvokedBeforeViewDisappear() {
+        disableShowModalAnimation(modal1);
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        InOrder inOrder = inOrder(modal1, root);
+        inOrder.verify(modal1).onViewDidAppear();
+        inOrder.verify(root).onViewDisappear();
+    }
+
+    @Test
     public void dismissModal_animatesByDefault() {
         disableShowModalAnimation(modal1);
 
