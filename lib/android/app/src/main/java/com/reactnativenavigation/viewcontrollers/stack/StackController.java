@@ -34,6 +34,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.Size;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
@@ -188,13 +189,13 @@ public class StackController extends ParentController<StackLayout> {
         getView().addView(child.getView(), getView().getChildCount() - 1, matchParentWithBehaviour(new StackBehaviour(this)));
     }
 
-    public void setRoot(List<ViewController> children, CommandListener listener) {
+    public void setRoot(@Size(min = 1) List<ViewController> children, CommandListener listener) {
         animator.cancelPushAnimations();
         final ViewController toRemove = stack.peek();
         IdStack stackToDestroy = stack;
         stack = new IdStack<>();
 
-        ViewController child = last(children);
+        ViewController child = requireLast(children);
         if (children.size() == 1) {
             backButtonHelper.clear(child);
         } else {
@@ -209,6 +210,7 @@ public class StackController extends ParentController<StackLayout> {
         CommandListener listenerAdapter = new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
+                child.onViewDidAppear();
                 destroyStack(stackToDestroy);
                 if (children.size() > 1) {
                     for (int i = 0; i < children.size() - 1; i++) {
@@ -233,20 +235,15 @@ public class StackController extends ParentController<StackLayout> {
                         child,
                         toRemove,
                         resolvedOptions,
-                        () -> onSetRootAnimationComplete(child, listenerAdapter)
+                        () -> listenerAdapter.onSuccess(child.getId())
                     )
                 );
             } else {
-                animator.push(child, toRemove, resolvedOptions, () -> onSetRootAnimationComplete(child, listenerAdapter));
+                animator.push(child, toRemove, resolvedOptions, () -> listenerAdapter.onSuccess(child.getId()));
             }
         } else {
-            onSetRootAnimationComplete(child, listenerAdapter);
+            listenerAdapter.onSuccess(child.getId());
         }
-    }
-
-    private void onSetRootAnimationComplete(ViewController child, CommandListener listener) {
-        child.onViewDidAppear();
-        listener.onSuccess(child.getId());
     }
 
     private void destroyStack(IdStack stack) {

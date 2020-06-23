@@ -428,7 +428,29 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public synchronized void pop() {
+    public void setRoot_onViewDidAppearIsInvokedOnAppearingChild() {
+        disablePushAnimation(child1);
+        uut.setRoot(Collections.singletonList(child1), new CommandListenerAdapter());
+
+        verify(child1).onViewDidAppear();
+    }
+
+    @Test
+    public void setRoot_inViewDidAppearIsInvokedBeforePreviousRootIsDestroyed() {
+        disablePushAnimation(child1, child2, child3);
+        uut.push(child1, new CommandListenerAdapter());
+
+        uut.setRoot(Arrays.asList(child2, child3), new CommandListenerAdapter());
+        ShadowLooper.idleMainLooper();
+
+        InOrder inOrder = inOrder(child2, child3, child1);
+        inOrder.verify(child3).onViewDidAppear();
+        inOrder.verify(child1).onViewDisappear();
+        verify(child2, times(0)).onViewDidAppear();
+    }
+
+    @Test
+    public void pop() {
         disablePushAnimation(child1, child2);
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter() {
