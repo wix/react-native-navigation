@@ -366,6 +366,12 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void selectTab_onViewDidAppearIsInvokedAfterSelection() {
+        uut.selectTab(1);
+        verify(child2).onViewDidAppear();
+    }
+
+    @Test
     public void getTopInset() {
         assertThat(child1.getTopInset()).isEqualTo(getStatusBarHeight());
         assertThat(child2.getTopInset()).isEqualTo(getStatusBarHeight());
