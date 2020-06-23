@@ -95,9 +95,10 @@ public class ModalStackTest extends BaseTest {
     public void showModal() {
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.showModal(modal1, root, listener);
-        verify(listener, times(1)).onSuccess(modal1.getId());
+        verify(listener).onSuccess(modal1.getId());
+        verify(modal1).onViewDidAppear();
         assertThat(uut.size()).isOne();
-        verify(presenter, times(1)).showModal(eq(modal1), eq(root), any());
+        verify(presenter).showModal(eq(modal1), eq(root), any());
         assertThat(findModal(MODAL_ID_1)).isNotNull();
     }
 
@@ -107,7 +108,7 @@ public class ModalStackTest extends BaseTest {
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.dismissModal(modal1.getId(), root, listener);
         assertThat(findModal(modal1.getId())).isNull();
-        verify(presenter, times(1)).dismissModal(eq(modal1), eq(root), eq(root), any());
+        verify(presenter).dismissModal(eq(modal1), eq(root), eq(root), any());
         verify(listener).onSuccess(modal1.getId());
     }
 
