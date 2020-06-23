@@ -73,7 +73,6 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1);
         uut.showModal(modal1, root, new CommandListenerAdapter());
         verify(modal1).setWaitForRender(any());
-        verify(modal1).resolveCurrentOptions(defaultOptions);
         assertThat(modal1.getView().getFitsSystemWindows()).isTrue();
     }
 
@@ -122,6 +121,17 @@ public class ModalPresenterTest extends BaseTest {
                 assertThat(modal1.getView().getParent()).isEqualTo(modal2.getView().getParent());
             }
         });
+    }
+
+    @Test
+    public void showModal_overCurrentContext_previousModalIsNotRemovedFromHierarchy() {
+        Options options = new Options();
+        options.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
+        uut.setDefaultOptions(options);
+        disableShowModalAnimation(modal1);
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        verify(root, times(0)).detachView();
+        verify(root, times(0)).onViewDisappear();
     }
 
     @Test
