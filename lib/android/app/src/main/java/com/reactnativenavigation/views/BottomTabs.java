@@ -10,14 +10,19 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.LayoutDirection;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.IntRange;
 
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 
 @SuppressLint("ViewConstructor")
 public class BottomTabs extends AHBottomNavigation {
     private boolean itemsCreationEnabled = true;
     private boolean shouldCreateItems = true;
+    private List<Runnable> onItemCreationEnabled = new ArrayList<>();
 
     public BottomTabs(Context context) {
         super(context);
@@ -30,7 +35,11 @@ public class BottomTabs extends AHBottomNavigation {
 
     public void enableItemsCreation() {
         itemsCreationEnabled = true;
-        if (shouldCreateItems) createItems();
+        if (shouldCreateItems) {
+            createItems();
+            forEach(onItemCreationEnabled, Runnable::run);
+            onItemCreationEnabled.clear();
+        }
     }
 
     @Override
@@ -53,7 +62,16 @@ public class BottomTabs extends AHBottomNavigation {
 
     @Override
     public void setCurrentItem(@IntRange(from = 0) int position) {
-        super.setCurrentItem(position);
+        setCurrentItem(position, true);
+    }
+
+    @Override
+    public void setCurrentItem(@IntRange(from = 0) int position, boolean useCallback) {
+        if (itemsCreationEnabled) {
+            super.setCurrentItem(position, useCallback);
+        } else {
+            onItemCreationEnabled.add(() -> super.setCurrentItem(position, useCallback));
+        }
     }
 
     @Override
