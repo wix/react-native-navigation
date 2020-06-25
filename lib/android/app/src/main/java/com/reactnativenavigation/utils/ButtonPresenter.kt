@@ -37,7 +37,7 @@ class ButtonPresenter(private val button: Button, private val iconResolver: Icon
         applyAccessibilityLabel(menuItem)
         applyIcon(menuItem)
 
-        findButtonView(titleBar, menuItem) {
+        applyOptionsDirectlyOnView(titleBar, menuItem) {
             applyTestId(it)
             applyTextColor(it)
         }
@@ -79,7 +79,7 @@ class ButtonPresenter(private val button: Button, private val iconResolver: Icon
     }
 
     private fun applyTestId(view: View) {
-        view.tag = button.testId.get()
+        if (button.testId.hasValue()) view.tag = button.testId.get()
     }
 
     private fun applyTextColor(view: View) {
@@ -88,7 +88,7 @@ class ButtonPresenter(private val button: Button, private val iconResolver: Icon
         }
     }
 
-    private fun findButtonView(titleBar: TitleBar, menuItem: MenuItem, onViewFound: (View) -> Unit) {
+    private fun applyOptionsDirectlyOnView(titleBar: TitleBar, menuItem: MenuItem, onViewFound: (View) -> Unit) {
         titleBar.doOnPreDraw {
             if (button.hasComponent()) onViewFound(menuItem.actionView!!)
             val buttonsLayout = ViewUtils.findChildByClass(titleBar, ActionMenuView::class.java)
