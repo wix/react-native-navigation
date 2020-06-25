@@ -7,17 +7,21 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
+import com.reactnativenavigation.fakes.IconResolverFake;
+import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.views.titlebar.TitleBar;
+import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.util.Collections;
 
 import androidx.appcompat.widget.ActionMenuView;
 
 import static com.reactnativenavigation.utils.Assertions.assertNotNull;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
@@ -44,7 +48,7 @@ public class TitleBarTest extends BaseTest {
         uut.addView(title);
         when(uut.findTitleTextView()).thenReturn(title);
 
-        uut.setLeftButtons(Collections.singletonList(Mockito.mock(TitleBarButtonController.class)));
+        uut.setLeftButtons(singletonList(createButtonController(createIconButton())));
         dispatchPreDraw(title);
         verify(uut).alignTextView(any(), eq(title));
     }
@@ -112,5 +116,24 @@ public class TitleBarTest extends BaseTest {
         uut.setTitleFontSize(10);
 
         verify(mockTitleView).setTextSize(eq(TypedValue.COMPLEX_UNIT_DIP), eq(10f));
+    }
+
+    @NotNull
+    private TitleBarButtonController createButtonController(Button b) {
+        return new TitleBarButtonController(
+                activity,
+                new ButtonPresenter(b, new IconResolverFake(activity)),
+                b,
+                mock(TitleBarButtonCreator.class),
+                mock(TitleBarButtonController.OnClickListener.class)
+        );
+    }
+
+    @NotNull
+    private Button createIconButton() {
+        Button b = new Button();
+        b.id = "id";
+        b.icon = new Text("");
+        return b;
     }
 }

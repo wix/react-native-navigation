@@ -18,7 +18,7 @@ import com.reactnativenavigation.parse.params.Button
 import com.reactnativenavigation.viewcontrollers.button.IconResolver
 import com.reactnativenavigation.views.titlebar.TitleBar
 
-class ButtonPresenter(private val button: Button, private val iconResolver: IconResolver) {
+open class ButtonPresenter(private val button: Button, private val iconResolver: IconResolver) {
     val styledText: SpannableString
         get() {
             return SpannableString(button.text.get("")).apply {
@@ -26,7 +26,7 @@ class ButtonPresenter(private val button: Button, private val iconResolver: Icon
             }
         }
 
-    fun tint(drawable: Drawable, tint: Int) {
+    open fun tint(drawable: Drawable, tint: Int) {
         drawable.colorFilter = PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN)
     }
 
