@@ -1,11 +1,6 @@
 import React from 'react';
 import { Navigation } from 'react-native-navigation';
-const CustomDialogWithScroll = require('./complexlayouts/CustomDialogWithScroll');
-const TopTabScreen = require('./TopTabScreen');
-const TopTabOptionsScreen = require('./TopTabOptionsScreen');
-const CustomTextButton = require('./CustomTextButton');
-const KeyboardScreen = require('./KeyboardScreen');
-const Screens = require('./Screens');
+import Screens from './Screens';
 
 function registerScreens() {
   Navigation.registerComponent(Screens.Alert, () => require('./Alert').default);
@@ -112,15 +107,21 @@ function registerScreens() {
 
   Navigation.registerComponent(
     'navigation.playground.CustomDialogWithScroll',
-    () => CustomDialogWithScroll.default
+    () => require('./complexlayouts/CustomDialogWithScroll').default
   );
-  Navigation.registerComponent('navigation.playground.TopTabScreen', () => TopTabScreen);
+  Navigation.registerComponent(
+    'navigation.playground.TopTabScreen',
+    () => require('./TopTabScreen').default
+  );
   Navigation.registerComponent(
     'navigation.playground.TopTabOptionsScreen',
-    () => TopTabOptionsScreen
+    () => require('./TopTabOptionsScreen').default
   );
-  Navigation.registerComponent('CustomTextButton', () => CustomTextButton);
-  Navigation.registerComponent('navigation.playground.KeyboardScreen', () => KeyboardScreen);
+  Navigation.registerComponent('CustomTextButton', () => require('./CustomTextButton').default);
+  Navigation.registerComponent(
+    'navigation.playground.KeyboardScreen',
+    () => require('./KeyboardScreen').default
+  );
 }
 
 export { registerScreens };
