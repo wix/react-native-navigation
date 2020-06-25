@@ -42,4 +42,13 @@ describe('SideMenu', () => {
     await device.setOrientation('landscape');
     await expect(elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN)).toBeVisible();
   });
+
+  it(':ios: rotation should update drawer height', async () => {
+    await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+    await expect(elementByLabel('left drawer height: 842')).toBeVisible();
+    await device.setOrientation('landscape');
+    await expect(elementByLabel('left drawer height: 414')).toBeVisible();
+    await device.setOrientation('portrait');
+    await expect(elementByLabel('left drawer height: 842')).toBeVisible();
+  });
 });

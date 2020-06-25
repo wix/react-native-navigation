@@ -44,8 +44,7 @@ public class TitleBarHelper {
 
     public static TitleBarButtonController createButtonController(Activity activity, Button button) {
         return new TitleBarButtonController(activity,
-                new IconResolver(activity, ImageLoaderMock.mock()),
-                new ButtonPresenter(button),
+                new ButtonPresenter(button, new IconResolver(activity, ImageLoaderMock.mock())),
                 button,
                 new TitleBarButtonCreatorMock(),
                 buttonId -> {}

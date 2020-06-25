@@ -4,6 +4,7 @@ import uniqueId from 'lodash/uniqueId'
 import unset from 'lodash/unset'
 import forEach from 'lodash/forEach'
 import { EventSubscription } from '../interfaces/EventSubscription';
+import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
 import {
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
@@ -18,7 +19,6 @@ import {
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { Store } from '../components/Store';
-import { NavigationComponentListener } from 'react-native-navigation/interfaces/NavigationComponentListener'
 
 type ReactComponentWithIndexing = NavigationComponentListener & Record<string, any>;
 

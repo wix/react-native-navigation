@@ -29,8 +29,7 @@ public class TitleBarButtonControllerTest extends BaseTest {
         Button button = createComponentButton();
         uut = new TitleBarButtonController(
                 activity,
-                new IconResolver(activity, ImageLoaderMock.mock()),
-                new ButtonPresenter(button),
+                new ButtonPresenter(button, new IconResolver(activity, ImageLoaderMock.mock())),
                 button,
                 new TitleBarButtonCreatorMock(),
                 Mockito.mock(TitleBarButtonController.OnClickListener.class)

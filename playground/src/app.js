@@ -1,8 +1,8 @@
 // @ts-check
 const Navigation = require('./services/Navigation');
-const { registerScreens } = require('./screens');
-const { Platform } = require('react-native');
-const { setDefaultOptions } = require('./commons/Options')
+const {registerScreens} = require('./screens');
+const {Platform} = require('react-native');
+const {setDefaultOptions} = require('./commons/Options')
 const testIDs = require('./testIDs');
 const Screens = require('./screens/Screens');
 

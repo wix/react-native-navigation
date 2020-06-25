@@ -1,4 +1,36 @@
 # Changelog
+# 6.8.0
+## Added
+* Proper error handling in link script [#daa48ca](https://github.com/wix/react-native-navigation/commit/daa48caa44831efdb60a6b394eb56cf6a94b4f9f) by [eduardopelitti](https://github.com/eduardopelitti)
+* Replace deprecated link process [#4c3ed45](https://github.com/wix/react-native-navigation/commit/4c3ed4511a3a7f81586705b24b36e84e21436980) by [eduardopelitti](https://github.com/eduardopelitti)
+* Add NavigationFunctionComponent interface [#c56630e](https://github.com/wix/react-native-navigation/commit/c56630e1ca7ed6575ac49c0c0c53a32b7ac3ff05) by [elizabeth-dev](https://github.com/elizabeth-dev)
+* Export EventsRegistry [#057f11b](https://github.com/wix/react-native-navigation/commit/057f11b8eb6180066d719e83b9a8f39fe567d1b0) by [yedidyak](https://github.com/yedidyak) 
+### Android
+* Implement bottomTabs.hideOnScroll [#9544f41](https://github.com/wix/react-native-navigation/commit/9544f412e88505dec5aee4472b736689a0fe249a) by [guyca](https://github.com/guyca)
+
+## Fixed
+* Fix updateProps creating new props object [#b1a1e0d](https://github.com/wix/react-native-navigation/commit/b1a1e0d9ee5e00cd6c71ec3df2c8cc0c2c18fb7f) by [jinshin1013](https://github.com/jinshin1013)
+### iOS
+* Fixes badgeColor not being applied on ios 13+ [#28928e5](https://github.com/wix/react-native-navigation/commit/28928e567edac38a99c9aa71e3749e2e32364ec5) by [DaveAdams88](https://github.com/DaveAdams88)
+* Fix black/white flickering when dismissing modals [#fd38fff](https://github.com/wix/react-native-navigation/commit/fd38fffeebbfca8edd8ddebccb4002c3349e5e9f) by [simonmitchell](https://github.com/simonmitchell)
+* Fix registerBottomTabSelectedListener unselected value [#fbb72f2](https://github.com/wix/react-native-navigation/commit/fbb72f25df7097f5345d4e769b8cb736e2145785) by [yogevbd](https://github.com/yogevbd)
+* Fix bottomTabs long press event [#814de45](https://github.com/wix/react-native-navigation/commit/814de45558a2bc250acc9c496e3974b54888592a) by [yogevbd](https://github.com/yogevbd)
+* Fix hiding the SearchBar on iOS 11+ [#58674e8](https://github.com/wix/react-native-navigation/commit/58674e8baf06b09187039897a6ba27aff99ec8cb) by [jinshin1013](https://github.com/jinshin1013)
+### Android
+* Don't create Navigator if the Activity is finishing [#5c6ccd1](https://github.com/wix/react-native-navigation/commit/5c6ccd12c62190edbef4a614b24374b2402ac90c) by [JK0N](https://github.com/JK0N)
+* Fix crash when disabledButtonColor is undefined and attempting to show a disabled button [#3fae8ed](https://github.com/wix/react-native-navigation/commit/3fae8ededc31e4d10e9e4153a614e9f3d159d650) by [guyca](https://github.com/guyca)
+* TopBar title and subtitle font size is measured in dp instead of sp [#88e65de](https://github.com/wix/react-native-navigation/commit/88e65defb91e30292e73d228f602b126e1064b59) by [guyca](https://github.com/guyca)
+* Fix crash when currentTabIndex is defined [#fbe81d0](https://github.com/wix/react-native-navigation/commit/fbe81d05b5074e82e32c08456b9688cf8c9f4a25) by [guyca](https://github.com/guyca)
+
+# 6.7.5
+## Fixed
+* Fix TypeScript compilation errors [#2225e97](https://github.com/wix/react-native-navigation/commit/2225e971265a58fec7715630d782d8a8845f48fa) by [ItsNoHax](https://github.com/ItsNoHax)
+
+# 6.7.4
+## Fixed
+### iOS
+* Fix wrong options being applied when selected tab changes [#bd710bc](https://github.com/wix/react-native-navigation/commit/bd710bc0bd91ebdc41c3ebca6cf79ad84b91738e) by [yogevbd](https://github.com/yogevbd)
+
 # 6.7.3
 ## Fixed
 ### iOS

@@ -8,13 +8,14 @@ const {
   SET_ROOT_BTN,
   LAYOUTS_TAB,
   SET_ROOT_HIDES_BOTTOM_TABS_BTN,
-  SET_ROOT_WITH_STACK_HIDES_BOTTOM_TABS_BTN
+  SET_ROOT_WITH_STACK_HIDES_BOTTOM_TABS_BTN,
+  SET_ROOT_WITHOUT_STACK_HIDES_BOTTOM_TABS_BTN
 } = require('../testIDs');
 const Screens = require('./Screens');
-const { logLifecycleEvent } = require('./StaticLifecycleOverlay');
+const {logLifecycleEvent} = require('./StaticLifecycleOverlay');
 let unmounted;
 
-class SetRootScreen  extends React.Component {
+class SetRootScreen extends React.Component {
   static options() {
     return {
       topBar: {
@@ -41,7 +42,8 @@ class SetRootScreen  extends React.Component {
         <Button label='Set Root' testID={SET_ROOT_BTN} onPress={this.setSingleRoot} />
         <Button label='Set Multiple Roots' testID={SET_MULTIPLE_ROOTS_BTN} onPress={this.setMultipleRoot} />
         <Button label='Set Root - hides bottomTabs' testID={SET_ROOT_HIDES_BOTTOM_TABS_BTN} onPress={this.setRootHidesBottomTabs} />
-        <Button label='Set Root with stack - hides bottomTabs' testID={SET_ROOT_WITH_STACK_HIDES_BOTTOM_TABS_BTN} onPress={this.setRootWithStackHidesBottomTabs} />
+        <Button label='Set Root with deep stack - hides bottomTabs' testID={SET_ROOT_WITH_STACK_HIDES_BOTTOM_TABS_BTN} onPress={this.setRootWithStackHidesBottomTabs} />
+        <Button label='Set Root without stack - hides bottomTabs' testID={SET_ROOT_WITHOUT_STACK_HIDES_BOTTOM_TABS_BTN} onPress={this.setRootWithoutStackHidesBottomTabs} />
       </Root>
     );
   }
@@ -125,6 +127,35 @@ class SetRootScreen  extends React.Component {
                 }
               }
             }]
+          }
+        }],
+        options: {
+          bottomTabs: {
+            testID: LAYOUTS_TAB
+          }
+        }
+      }
+    }
+  });
+
+  setRootWithoutStackHidesBottomTabs = async () => await Navigation.setRoot({
+    root: {
+      bottomTabs: {
+        children: [{
+          component: {
+            id: 'component',
+            name: Screens.Pushed,
+            options: {
+              bottomTabs: {
+                visible: false
+              }
+            }
+          }
+        },
+        {
+          component: {
+            id: 'component2',
+            name: Screens.Pushed
           }
         }],
         options: {

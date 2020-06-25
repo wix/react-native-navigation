@@ -6,6 +6,7 @@
 #import <ReactNativeNavigation/BottomTabPresenterCreator.h>
 #import "RNNBottomTabsController+Helpers.h"
 #import "RNNComponentViewController+Utils.h"
+#import <ReactNativeNavigation/UITabBar+utils.h>
 
 @interface BottomTabsControllerTest : XCTestCase
 
@@ -183,6 +184,30 @@
 	[uut viewWillAppear:YES];
 
     XCTAssertTrue(uut.selectedIndex == 1);
+}
+
+- (void)testDidSelectViewController_emitEventOnTabPress {
+    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
+	RNNBottomTabsController *uut = [RNNBottomTabsController createWithChildren:@[[UIViewController new], vc] options:options];
+	[uut viewWillAppear:YES];
+	
+	[[(id)uut.eventEmitter expect] sendBottomTabSelected:@(1) unselected:@(0)];
+	[uut setSelectedViewController:vc];
+	[uut tabBarController:uut didSelectViewController:vc];
+	[(id)uut.eventEmitter verify];
+}
+
+- (void)testTabLongPress_ShouldEmitEvent {
+    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:nil options:nil defaultOptions:nil];
+	RNNBottomTabsController *uut = [RNNBottomTabsController createWithChildren:@[[UIViewController new], vc] options:options];
+	[uut viewWillAppear:YES];
+	[uut.tabBar layoutSubviews];
+	[[(id)uut.eventEmitter expect] sendBottomTabLongPressed:@(1)];
+	UIView* secondTabItemView = [uut.tabBar tabBarItemViewAtIndex:1];
+	[uut handleTabBarLongPress:secondTabItemView.center];
+	[(id)uut.eventEmitter verify];
 }
 
 - (void)testOnViewDidLayoutSubviews_ShouldUpdateDotIndicatorForChildren {
