@@ -25,11 +25,11 @@ public class ButtonSpanTest extends BaseTest {
     }
 
     @Test
-    public void apply_color() {
+    public void apply_colorIsNotHandled() {
         Paint paint = new Paint();
         uut.apply(paint);
 
-        assertThat(paint.getColor()).isEqualTo(button.color.get());
+        assertThat(paint.getColor()).isNotEqualTo(button.color.get());
     }
 
     @Test

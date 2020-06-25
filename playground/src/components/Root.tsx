@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleProp,
   ViewStyle,
+  LayoutChangeEvent,
 } from 'react-native';
 import { KeyboardAwareInsetsView } from 'react-native-keyboard-tracking-view';
 const { showTextInputToTestKeyboardInteraction } = require('../flags');
@@ -18,10 +19,11 @@ type RootProps = {
   footer?: string;
   testID?: string;
   children?: React.ReactNode;
+  onLayout?: (event: LayoutChangeEvent) => void;
 };
 
-const Root = ({ children, componentId, footer, style, testID }: RootProps) => (
-  <SafeAreaView style={styles.root} testID={testID}>
+const Root = ({ children, componentId, footer, style, testID, onLayout }: RootProps) => (
+  <SafeAreaView style={styles.root} testID={testID} onLayout={onLayout}>
     <ScrollView contentContainerStyle={[styles.scrollView, style]}>
       {children}
       <Footer componentId={componentId} footer={footer} />

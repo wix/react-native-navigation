@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { Options, NavigationComponentProps } from 'react-native-navigation';
 
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -20,13 +20,16 @@ const {
 interface LayoutsScreenProps extends NavigationComponentProps {}
 
 export default class LayoutsScreen extends React.Component<LayoutsScreenProps> {
-  static options() {
+  static options(): Options {
     return {
       topBar: {
         testID: WELCOME_SCREEN_HEADER,
         title: {
           text: 'React Native Navigation',
         },
+      },
+      layout: {
+        orientation: ['portrait', 'landscape'],
       },
     };
   }

@@ -22,6 +22,14 @@
     [self.child.view setFrame:self.view.bounds];
     [self.view addSubview:self.child.view];
     [self.view bringSubviewToFront:self.child.view];
+    self.child.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [self.child.view.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.child.view.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [self.child.view.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+        [self.child.view.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+    ]];
     [self.child render];
 }
 

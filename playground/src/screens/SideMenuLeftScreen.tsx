@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Text } from 'react-native';
 import { NavigationComponentProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -10,6 +11,7 @@ const {
   LEFT_SIDE_MENU_PUSH_BTN,
   CLOSE_LEFT_SIDE_MENU_BTN,
   LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN,
+  SIDE_MENU_LEFT_DRAWER_HEIGHT_TEXT,
 } = testIDs;
 
 interface Props extends NavigationComponentProps {
@@ -57,8 +59,15 @@ export default function SideMenuLeftScreen({ componentId, marginTop }: Props) {
       },
     });
 
+  const [height, setHeight] = useState(0);
   return (
-    <Root componentId={componentId} style={{ marginTop: marginTop || 0 }}>
+    <Root
+      componentId={componentId}
+      style={{ marginTop: marginTop || 0 }}
+      onLayout={(event) => {
+        setHeight(event.nativeEvent.layout.height);
+      }}
+    >
       <Button label="Push" testID={LEFT_SIDE_MENU_PUSH_BTN} onPress={push} />
       <Button
         label="Push and Close"
@@ -66,6 +75,8 @@ export default function SideMenuLeftScreen({ componentId, marginTop }: Props) {
         onPress={pushAndClose}
       />
       <Button label="Close" testID={CLOSE_LEFT_SIDE_MENU_BTN} onPress={close} />
+
+      <Text testID={SIDE_MENU_LEFT_DRAWER_HEIGHT_TEXT}>{`left drawer height: ${height}`}</Text>
     </Root>
   );
 }
