@@ -31,7 +31,7 @@ class TitleBarButtonController(activity: Activity,
         get() = button.intId
 
     @SuppressLint("MissingSuperCall")
-    override fun onViewAppeared() {
+    override fun onViewWillAppear() {
         getView()!!.sendComponentStart(ComponentType.Button)
     }
 
