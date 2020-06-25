@@ -5,10 +5,13 @@
 @property (nonatomic, strong) BottomTabPresenter* bottomTabPresenter;
 @property (nonatomic, strong) RNNDotIndicatorPresenter* dotIndicatorPresenter;
 @property (nonatomic) BOOL viewWillAppearOnce;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPressRecognizer;
+
 @end
 
 @implementation RNNBottomTabsController {
 	NSUInteger _currentTabIndex;
+    NSUInteger _previousTabIndex;
     BottomTabsBaseAttacher* _bottomTabsAttacher;
     BOOL _tabBarNeedsRestore;
     
@@ -32,6 +35,10 @@
     if (@available(iOS 13.0, *)) {
         self.tabBar.standardAppearance = [UITabBarAppearance new];
     }
+    
+    self.longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    [self.tabBar addGestureRecognizer:self.longPressRecognizer];
+    
     return self;
 }
 
@@ -62,14 +69,6 @@
 
 - (void)viewDidLayoutSubviews {
     [self.presenter viewDidLayoutSubviews];
-    
-    for (UIView *view in [[self tabBar] subviews]) {
-         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget: self action: @selector(handleLongPress:)];
-          if ([NSStringFromClass([view class]) isEqualToString:@"UITabBarButton"]) {
-              [view addGestureRecognizer: longPressGesture];
-          }
-    }
-    
     [_dotIndicatorPresenter bottomTabsDidLayoutSubviews:self];
 }
 
@@ -106,6 +105,7 @@
 
 - (void)setSelectedViewController:(__kindof UIViewController *)selectedViewController {
     NSArray* children = self.pendingChildViewControllers ?: self.childViewControllers;
+    _previousTabIndex = _currentTabIndex;
     _currentTabIndex = [children indexOfObject:selectedViewController];
     [super setSelectedViewController:selectedViewController];
 }
@@ -122,24 +122,33 @@
     visible ? [self showTabBar:animated] : [self hideTabBar:animated];
 }
 
-- (void)restoreTabBarVisibility:(BOOL)visible {
-    if (_tabBarNeedsRestore) {
+- (void)setTabBarVisible:(BOOL)visible {
+    if (_tabBarNeedsRestore || !self.presentedComponentViewController.navigationController) {
         [self setTabBarVisible:visible animated:NO];
         _tabBarNeedsRestore = NO;
+    }
+}
+
+- (void)handleTabBarLongPress:(CGPoint)locationInTabBar {
+    for (UITabBarItem* item in self.tabBar.items) {
+        if (CGRectContainsPoint([[item valueForKey:@"view"] frame], locationInTabBar)) {
+            NSUInteger tabIndex = [self.tabBar.items indexOfObject:item];
+            [self.eventEmitter sendBottomTabLongPressed:@(tabIndex)];
+            break;
+        }
     }
 }
 
 #pragma mark UITabBarControllerDelegate
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	[self.eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex) unselected:@(_currentTabIndex)];
-	_currentTabIndex = tabBarController.selectedIndex;
+	[self.eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex) unselected:@(_previousTabIndex)];
 }
 
-- (void)handleLongPress:(UILongPressGestureRecognizer *) recognizer {
+- (void)handleLongPressGesture:(UILongPressGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        NSUInteger _index = [self.tabBar.subviews indexOfObject:(UIView *)recognizer.view];
-        [self.eventEmitter sendBottomTabLongPressed:@(_index)];
+        CGPoint locationInTabBar = [recognizer locationInView:self.tabBar];
+        [self handleTabBarLongPress:locationInTabBar];
     }
 }
 
