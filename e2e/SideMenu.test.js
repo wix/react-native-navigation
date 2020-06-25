@@ -48,5 +48,7 @@ describe('SideMenu', () => {
     await expect(elementByLabel('left drawer height: 842')).toBeVisible();
     await device.setOrientation('landscape');
     await expect(elementByLabel('left drawer height: 414')).toBeVisible();
+    await device.setOrientation('portrait');
+    await expect(elementByLabel('left drawer height: 842')).toBeVisible();
   });
 });
