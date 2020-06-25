@@ -75,10 +75,12 @@ class TitleBarButtonController(activity: Activity,
     fun addToMenu(titleBar: TitleBar, order: Int) {
         if (button.component.hasValue() && titleBar.containsRightButton(menuItem, order)) return
         titleBar.menu.removeItem(button.intId)
-        titleBar.menu.add(Menu.NONE, button.intId, order, presenter.styledText).apply {
+        createAndAddButtonToTitleBar(titleBar, order).apply {
             menuItem = this
             setOnMenuItemClickListener(this@TitleBarButtonController)
             presenter.applyOptions(titleBar, this, this@TitleBarButtonController::getView)
         }
     }
+
+    fun createAndAddButtonToTitleBar(titleBar: TitleBar, order: Int): MenuItem = titleBar.menu.add(Menu.NONE, button.intId, order, presenter.styledText)
 }
