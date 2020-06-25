@@ -22,7 +22,7 @@ class ButtonSpan(private val button: Button) : MetricAffectingSpan() {
             if (fakeStyle and Typeface.BOLD != 0) paint.isFakeBoldText = true
             if (fakeStyle and Typeface.ITALIC != 0) paint.textSkewX = -0.25f
             if (fontSize.hasValue()) paint.textSize = fontSize.get().toFloat()
-            if (color.hasValue()) paint.color = if (enabled.isTrueOrUndefined) color.get() else disabledColor.get(DISABLED_COLOR)
+            if (enabled.hasValue()) paint.color = disabledColor.get(DISABLED_COLOR)
             paint.typeface = fontFamily
         }
     }
