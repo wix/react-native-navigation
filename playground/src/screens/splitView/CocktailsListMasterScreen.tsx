@@ -1,14 +1,14 @@
-const React = require('react');
-const CocktailsView = require('../sharedElementTransition/CocktailsView')
-const { Platform } = require('react-native');
-const Navigation = require('../../services/Navigation');
-const Screens = require('../Screens');
-import CocktailsListScreen from '../sharedElementTransition/CocktailsListScreen';
+import React from 'react';
+import { Platform } from 'react-native';
 import { NavigationButtonPressedEvent } from 'react-native-navigation';
+import CocktailsView from '../sharedElementTransition/CocktailsView';
+import Navigation from '../../services/Navigation';
+import Screens from '../Screens';
+import CocktailsListScreen from '../sharedElementTransition/CocktailsListScreen';
 
-const {
-  PUSH_MASTER_BTN
-} = require('../../testIDs');
+import testIDs from '../../testIDs';
+
+const { PUSH_MASTER_BTN } = testIDs;
 
 export default class CocktailsListMasterScreen extends CocktailsListScreen {
   static options() {
@@ -17,21 +17,23 @@ export default class CocktailsListMasterScreen extends CocktailsListScreen {
         android: {
           statusBar: {
             style: 'dark',
-            backgroundColor: 'white'
-          }
-        }
+            backgroundColor: 'white',
+          },
+        },
       }),
       topBar: {
         title: {
-          text: 'Cocktails'
+          text: 'Cocktails',
         },
-        rightButtons: [{
-          id: 'pushMaster',
-          testID: PUSH_MASTER_BTN,
-          text: 'push'
-        }]
-      }
-    }
+        rightButtons: [
+          {
+            id: 'pushMaster',
+            testID: PUSH_MASTER_BTN,
+            text: 'push',
+          },
+        ],
+      },
+    };
   }
 
   constructor(props: any) {
@@ -41,13 +43,13 @@ export default class CocktailsListMasterScreen extends CocktailsListScreen {
 
   navigationButtonPressed(event: NavigationButtonPressedEvent) {
     if (event.buttonId === 'pushMaster') {
-      Navigation.push(this, Screens.Pushed)
+      Navigation.push(this, Screens.Pushed);
     }
   }
 
   render() {
     return (
-      <CocktailsView 
+      <CocktailsView
         onItemPress={this.updateDetailsScreen}
         onItemLongPress={this.pushCocktailDetails}
       />
@@ -56,5 +58,5 @@ export default class CocktailsListMasterScreen extends CocktailsListScreen {
 
   updateDetailsScreen = (item: any) => {
     Navigation.updateProps('DETAILS_COMPONENT_ID', item);
-  }
+  };
 }

@@ -34,7 +34,11 @@ export class OptionsProcessor {
     });
   }
 
-  private processObject(objectToProcess: object, parentOptions: object, onProcess: (key: string, parentOptions: object) => void) {
+  private processObject(
+    objectToProcess: object,
+    parentOptions: object,
+    onProcess: (key: string, parentOptions: object) => void
+  ) {
     forEach(objectToProcess, (value, key) => {
       this.processColor(key, value, objectToProcess);
 

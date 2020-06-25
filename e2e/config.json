@@ -1,8 +1,11 @@
 {
-  "setupTestFrameworkScriptFile" : "./init.js",
-  "testEnvironment": "node",
+  "preset": "ts-jest",
+  "testEnvironment": "./environment.ts",
+  "testRunner": "jest-circus/runner",
   "bail": true,
   "verbose": true,
+  "testTimeout": 120000,
+  "reporters": ["detox/runners/jest/streamlineReporter"],
   "moduleNameMapper": {
     ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy"
   }

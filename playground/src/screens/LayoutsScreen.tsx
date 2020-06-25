@@ -3,6 +3,11 @@ import { NavigationComponentProps } from 'react-native-navigation';
 
 import Root from '../components/Root';
 import Button from '../components/Button';
+import testIDs from '../testIDs';
+import Screens from './Screens';
+import Navigation from '../services/Navigation';
+import { stack } from '../commons/Layouts';
+
 const {
   WELCOME_SCREEN_HEADER,
   STACK_BTN,
@@ -10,14 +15,11 @@ const {
   BOTTOM_TABS,
   SIDE_MENU_BTN,
   SPLIT_VIEW_BUTTON,
-} = require('../testIDs');
-const Screens = require('./Screens');
-const Navigation = require('../services/Navigation');
-const { stack } = require('../commons/Layouts');
+} = testIDs;
 
 interface LayoutsScreenProps extends NavigationComponentProps {}
 
-class LayoutsScreen extends React.Component<LayoutsScreenProps> {
+export default class LayoutsScreen extends React.Component<LayoutsScreenProps> {
   static options() {
     return {
       topBar: {
@@ -35,7 +37,12 @@ class LayoutsScreen extends React.Component<LayoutsScreenProps> {
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
-        <Button label="SplitView" testID={SPLIT_VIEW_BUTTON} platform="ios" onPress={this.splitView} />
+        <Button
+          label="SplitView"
+          testID={SPLIT_VIEW_BUTTON}
+          platform="ios"
+          onPress={this.splitView}
+        />
       </Root>
     );
   }
@@ -139,5 +146,3 @@ class LayoutsScreen extends React.Component<LayoutsScreenProps> {
     });
   };
 }
-
-export = LayoutsScreen;

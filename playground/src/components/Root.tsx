@@ -1,5 +1,14 @@
 import React from 'react';
-import { TextInput, SafeAreaView, View, Text, StyleSheet, ScrollView, StyleProp, ViewStyle } from 'react-native';
+import {
+  TextInput,
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import { KeyboardAwareInsetsView } from 'react-native-keyboard-tracking-view';
 const { showTextInputToTestKeyboardInteraction } = require('../flags');
 
@@ -31,7 +40,9 @@ const Footer: React.FC<FooterProps> = ({ componentId, footer }) => {
   return (
     <View style={styles.footer}>
       {/* Rendering TextInput for a test. */}
-      {showTextInputToTestKeyboardInteraction && <TextInput placeholder="Input" style={styles.testInput} />}
+      {showTextInputToTestKeyboardInteraction && (
+        <TextInput placeholder="Input" style={styles.testInput} />
+      )}
 
       {/* Rendering Footer. */}
       {footer && <Text style={styles.footerText}>{footer}</Text>}
@@ -69,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export = Root;
+export default Root;

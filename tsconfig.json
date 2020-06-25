@@ -9,21 +9,12 @@
     "declaration": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": [
-      "jest",
-      "lodash",
-      "react",
-      "react-native",
-      "react-test-renderer"
-    ],
+    "types": ["jest", "lodash", "react", "react-native", "react-test-renderer"],
     "baseUrl": ".",
     "paths": {
       "react-native-navigation": ["lib/src/"],
       "react-native-navigation/*": ["lib/src/*"]
     }
   },
-  "include": [
-    "./lib/src/**/*",
-    "./playground/**/*"
-  ]
+  "include": ["./lib/src/**/*", "./playground/**/*"]
 }

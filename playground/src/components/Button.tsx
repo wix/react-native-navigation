@@ -20,7 +20,9 @@ const RnnButton = ({ platform, testID, ...props }: RnnButtonProps) => {
     return null;
   }
 
-  return <Button {...props} testID={testID} backgroundColor={testID ? undefined : '#65C888'} marginB-8 />;
+  return (
+    <Button {...props} testID={testID} backgroundColor={testID ? undefined : '#65C888'} marginB-8 />
+  );
 };
 
-export = RnnButton;
+export default RnnButton;
