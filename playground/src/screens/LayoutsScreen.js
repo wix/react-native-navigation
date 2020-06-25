@@ -22,6 +22,9 @@ class LayoutsScreen extends React.Component {
         title: {
           text: 'React Native Navigation'
         }
+      },
+      layout: {
+        orientation: ['portrait', 'landscape']
       }
     };
   }
