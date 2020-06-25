@@ -1,11 +1,11 @@
-import redux from 'redux';
-import merge from 'lodash/merge';
-import get from 'lodash/get';
+const redux = require('redux');
+const merge = require('lodash/merge');
+const get = require('lodash/get');
 
 const initialState = {
   person: {
-    name: 'no name',
-  },
+    name: 'no name'
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,9 +29,12 @@ const selectors = {
 
   getAge(state) {
     return state.person.age;
-  },
+  }
 };
 
 const reduxStore = redux.createStore(reducer);
 
-export { reduxStore, selectors };
+module.exports = {
+  reduxStore,
+  selectors
+};

@@ -1,19 +1,19 @@
-import remx from 'remx';
+const remx = require('remx');
 
 const state = remx.state({
   person: {
-    name: 'no name',
-  },
+    name: 'no name'
+  }
 });
 
 const setters = remx.setters({
-  setName(newName: string) {
+  setName(newName) {
     state.person.name = newName;
   },
 
-  setAge(age: number) {
+  setAge(age) {
     state.person.age = age;
-  },
+  }
 });
 
 const getters = remx.getters({
@@ -23,7 +23,10 @@ const getters = remx.getters({
 
   getAge() {
     return state.person.age;
-  },
+  }
 });
 
-export { setters, getters };
+module.exports = {
+  setters,
+  getters
+};
