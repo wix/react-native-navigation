@@ -1,4 +1,4 @@
-const { component, stack } = require('../commons/Layouts');
+import { component, stack } from '../commons/Layouts';
 const SideMenuLeft = 'SideMenuLeft';
 const SideMenuCenter = 'SideMenuCenter';
 const SideMenuRight = 'SideMenuRight';

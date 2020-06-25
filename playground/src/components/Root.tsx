@@ -11,7 +11,9 @@ import {
   LayoutChangeEvent,
 } from 'react-native';
 import { KeyboardAwareInsetsView } from 'react-native-keyboard-tracking-view';
-const { showTextInputToTestKeyboardInteraction } = require('../flags');
+import flags from '../flags';
+
+const { showTextInputToTestKeyboardInteraction } = flags;
 
 type RootProps = {
   componentId?: string;

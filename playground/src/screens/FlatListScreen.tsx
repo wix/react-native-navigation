@@ -55,7 +55,7 @@ export default class FlatListScreen extends React.Component<NavigationComponentP
     };
   }
 
-  constructor(props: Props) {
+  constructor(props: NavigationComponentProps) {
     super(props);
     Navigation.events().bindComponent(this);
     this.state = { isFetching: false, shouldHideOnScroll: false };

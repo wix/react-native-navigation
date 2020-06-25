@@ -1,4 +1,4 @@
-const Navigation = require('./services/Navigation');
+import Navigation from './services/Navigation';
 import { registerScreens } from './screens';
 import { setDefaultOptions } from './commons/Options';
 import testIDs from './testIDs';
