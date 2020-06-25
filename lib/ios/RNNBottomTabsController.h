@@ -21,6 +21,12 @@
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 
+- (void)setTabBarVisible:(BOOL)visible animated:(BOOL)animated;
+
+- (void)setTabBarVisible:(BOOL)visible;
+
+- (void)handleTabBarLongPress:(CGPoint)locationInTabBar;
+
 @property (nonatomic, strong) NSArray* pendingChildViewControllers;
 
 @end

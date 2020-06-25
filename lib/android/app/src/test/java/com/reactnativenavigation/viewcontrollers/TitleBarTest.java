@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -91,5 +92,25 @@ public class TitleBarTest extends BaseTest {
         ActionMenuView spy = TestUtils.spyOn(buttonsContainer);
         uut.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         verify(spy).setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+    }
+
+    @Test
+    public void setSubtitleFontSize_usesDpInsteadofSp() {
+        TextView mockSubtitleView = mock(TextView.class);
+
+        when(uut.findSubtitleTextView()).thenReturn(mockSubtitleView);
+        uut.setSubtitleFontSize(10);
+
+        verify(mockSubtitleView).setTextSize(eq(TypedValue.COMPLEX_UNIT_DIP), eq(10f));
+    }
+
+    @Test
+    public void setTitleFontSize_usesDpInsteadofSp() {
+        TextView mockTitleView = mock(TextView.class);
+
+        when(uut.findTitleTextView()).thenReturn(mockTitleView);
+        uut.setTitleFontSize(10);
+
+        verify(mockTitleView).setTextSize(eq(TypedValue.COMPLEX_UNIT_DIP), eq(10f));
     }
 }

@@ -1,6 +1,7 @@
 #import "RNNBottomTabsController+Helpers.h"
 #import "BottomTabsPresenterCreator.h"
 #import "BottomTabPresenterCreator.h"
+#import <OCMock/OCMock.h>
 
 @implementation RNNBottomTabsController (Helpers)
 
@@ -14,7 +15,7 @@
 
 + (RNNBottomTabsController *)createWithChildren:(NSArray *)children options:(RNNNavigationOptions *)options {
 	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	return [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:defaultOptions presenter:[BottomTabsPresenterCreator createWithDefaultOptions:defaultOptions] bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:defaultOptions] dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:defaultOptions] eventEmitter:nil childViewControllers:children bottomTabsAttacher:nil];
+	return [[RNNBottomTabsController alloc] initWithLayoutInfo:nil creator:nil options:options defaultOptions:defaultOptions presenter:[BottomTabsPresenterCreator createWithDefaultOptions:defaultOptions] bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:defaultOptions] dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:defaultOptions] eventEmitter:[OCMockObject partialMockForObject:RNNEventEmitter.new] childViewControllers:children bottomTabsAttacher:nil];
 }
 
 @end

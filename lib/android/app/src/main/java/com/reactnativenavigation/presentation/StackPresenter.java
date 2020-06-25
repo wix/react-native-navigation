@@ -92,8 +92,8 @@ public class StackPresenter {
         this.iconResolver = iconResolver;
         this.renderChecker = renderChecker;
         this.defaultOptions = defaultOptions;
-        defaultTitleFontSize = UiUtils.dpToSp(activity, 18);
-        defaultSubtitleFontSize = UiUtils.dpToSp(activity, 14);
+        defaultTitleFontSize = 18;
+        defaultSubtitleFontSize = 14;
     }
 
     public void setDefaultOptions(Options defaultOptions) {

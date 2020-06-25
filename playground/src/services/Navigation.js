@@ -13,7 +13,7 @@ const pushExternalComponent = (self, name, passProps) => Navigation.push(self.pr
   }
 });
 
-const pop = (selfOrCompId) => Navigation.pop(compId(selfOrCompId));
+const pop = (selfOrCompId, mergeOptions) => Navigation.pop(compId(selfOrCompId), mergeOptions);
 
 const showModal = (screen, options) => Navigation.showModal(isString(screen) ? stack(component(screen, options)) : screen);
 

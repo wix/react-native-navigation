@@ -38,13 +38,13 @@ Following the code example [above](passing-data-to-components#initial-props), le
 ```jsx
 class UserProfileScreen extends React.Component {
   static options(props) {
-    return (
+    return {
       topBar: {
         title: {
           text: props.name
         }
       }
-    );
+    };
   }
 }
 ```

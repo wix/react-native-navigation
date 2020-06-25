@@ -3,6 +3,7 @@ import { EmitterSubscription } from 'react-native';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { CommandsObserver } from './CommandsObserver';
 import { EventSubscription } from '../interfaces/EventSubscription';
+import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
 import {
   ComponentDidAppearEvent,
@@ -21,7 +22,6 @@ import {
   BottomTabLongPressedEvent,
   BottomTabPressedEvent
 } from '../interfaces/Events';
-import { NavigationComponentListener } from 'react-native-navigation/interfaces/NavigationComponentListener';
 
 export class EventsRegistry {
   constructor(
