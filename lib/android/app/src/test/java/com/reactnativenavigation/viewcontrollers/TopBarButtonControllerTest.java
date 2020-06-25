@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
-import com.reactnativenavigation.mocks.ImageLoaderMock;
+import com.reactnativenavigation.fakes.IconResolverFake;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
@@ -15,7 +15,6 @@ import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ButtonPresenter;
-import com.reactnativenavigation.viewcontrollers.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 
@@ -48,8 +47,8 @@ public class TopBarButtonControllerTest extends BaseTest {
         stackController.getTopBar().layout(0, 0, 1080, 200);
         getTitleBar().layout(0, 0, 1080, 200);
 
-        optionsPresenter = spy(new ButtonPresenter(button));
-        uut = new TitleBarButtonController(activity, new IconResolver(activity, ImageLoaderMock.mock()), optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
+        optionsPresenter = spy(new ButtonPresenter(button, new IconResolverFake(activity)));
+        uut = new TitleBarButtonController(activity, optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
 
         stackController.ensureViewIsCreated();
     }
@@ -68,7 +67,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         uut.addToMenu(getTitleBar(), 0);
 
         assertThat(getTitleBar().getMenu().size()).isOne();
-        verify(optionsPresenter, times(1)).tint(any(), eq(Color.RED));
+        verify(optionsPresenter).tint(any(), eq(Color.RED));
     }
 
     @Test
@@ -76,7 +75,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         setIconButton(false);
         uut.addToMenu(getTitleBar(), 0);
 
-        verify(optionsPresenter, times(1)).tint(any(), eq(Color.LTGRAY));
+        verify(optionsPresenter).tint(any(), eq(Color.LTGRAY));
     }
 
     @Test

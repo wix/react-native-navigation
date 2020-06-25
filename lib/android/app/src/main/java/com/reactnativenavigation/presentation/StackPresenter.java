@@ -316,8 +316,7 @@ public class StackPresenter {
 
     private TitleBarButtonController createButtonController(Button button) {
         TitleBarButtonController controller = new TitleBarButtonController(activity,
-                iconResolver,
-                new ButtonPresenter(button),
+                new ButtonPresenter(button, iconResolver),
                 button,
                 buttonCreator,
                 onClickListener
@@ -370,7 +369,7 @@ public class StackPresenter {
         if (buttons.right == null) return;
         List<Button> rightButtons = mergeButtonsWithColor(buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
         List<TitleBarButtonController> toMerge = getOrCreateButtonControllers(componentRightButtons.get(child), rightButtons);
-        List<TitleBarButtonController> toRemove = difference(currentRightButtons, toMerge, TitleBarButtonController::equals);
+        List<TitleBarButtonController> toRemove = difference(currentRightButtons, toMerge, TitleBarButtonController::areButtonsEqual);
         forEach(toRemove, TitleBarButtonController::destroy);
 
         if (!CollectionUtils.equals(currentRightButtons, toMerge)) {
