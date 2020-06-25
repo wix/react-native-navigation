@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform, PlatformOSType } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 
-export type RnnButtonProps = {
+type RnnButtonProps = {
   platform?: PlatformOSType;
 
   /**
@@ -23,8 +23,4 @@ const RnnButton = ({ platform, testID, ...props }: RnnButtonProps) => {
   return <Button {...props} testID={testID} backgroundColor={testID ? undefined : '#65C888'} marginB-8 />;
 };
 
-export default RnnButton;
-
-// Keeping the old behavior to avoid a breaking change.
-// This allows importing the component as `const Button = require('./Button')`.
-module.exports = RnnButton;
+export = RnnButton;

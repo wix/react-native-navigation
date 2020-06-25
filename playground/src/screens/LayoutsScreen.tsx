@@ -15,7 +15,7 @@ const Screens = require('./Screens');
 const Navigation = require('../services/Navigation');
 const { stack } = require('../commons/Layouts');
 
-export interface LayoutsScreenProps extends NavigationComponentProps {}
+interface LayoutsScreenProps extends NavigationComponentProps {}
 
 class LayoutsScreen extends React.Component<LayoutsScreenProps> {
   static options() {
@@ -140,8 +140,4 @@ class LayoutsScreen extends React.Component<LayoutsScreenProps> {
   };
 }
 
-export default LayoutsScreen;
-
-// Keeping the old behavior to avoid a breaking change.
-// This allows importing the component when registering as `() => require('./LayoutsScreen')`
-module.exports = LayoutsScreen;
+export = LayoutsScreen;

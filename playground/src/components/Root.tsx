@@ -3,7 +3,7 @@ import { TextInput, SafeAreaView, View, Text, StyleSheet, ScrollView, StyleProp,
 import { KeyboardAwareInsetsView } from 'react-native-keyboard-tracking-view';
 const { showTextInputToTestKeyboardInteraction } = require('../flags');
 
-export type RootProps = {
+type RootProps = {
   componentId?: string;
   style?: StyleProp<ViewStyle>;
   footer?: string;
@@ -69,8 +69,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Root;
-
-// Keeping the old behavior to avoid a breaking change.
-// This allows importing the component as `const Root = require('./Root')`.
-module.exports = Root;
+export = Root;
