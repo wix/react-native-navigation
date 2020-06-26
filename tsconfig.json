@@ -9,7 +9,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["jest", "lodash", "react", "react-native", "react-test-renderer"],
+    "types": ["jest", "lodash", "react", "react-native", "react-test-renderer", "node"],
     "baseUrl": ".",
     "paths": {
       "react-native-navigation": ["lib/src/"],
