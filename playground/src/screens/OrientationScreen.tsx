@@ -19,7 +19,7 @@ export default class OrientationScreen extends React.Component<NavigationCompone
         <Button
           label="Default"
           testID={DEFAULT_ORIENTATION_BTN}
-          onPress={() => this.orientation(['default'])}
+          onPress={() => this.orientation('default')}
         />
         <Button
           label="Landscape and Portrait"
@@ -41,7 +41,7 @@ export default class OrientationScreen extends React.Component<NavigationCompone
   }
 
   // LayoutOrientation is not exposed by the API.
-  orientation(orientation: ('portrait' | 'landscape')[]) {
+  orientation(orientation: ('portrait' | 'landscape')[] | 'default') {
     Navigation.showModal({
       component: {
         name: Screens.OrientationDetect,
