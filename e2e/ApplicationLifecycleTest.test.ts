@@ -5,6 +5,7 @@ import TestIDs from '../playground/src/testIDs';
 import Android from './AndroidUtils';
 
 const { elementByLabel, elementById, sleep } = Utils;
+// @ts-ignore
 const IS_RELEASE = includes(process.argv, '--release');
 const KEY_CODE_R = 46;
 
