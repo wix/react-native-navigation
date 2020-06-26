@@ -1,15 +1,12 @@
-import { element, by, device, expect } from 'detox';
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
 const { elementById } = Utils;
 
-let waitForDeviceToSettleAfterOrientationChangeAndroid: () => Promise<unknown>;
-
 describe(':ios: orientation', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
-    waitForDeviceToSettleAfterOrientationChangeAndroid = () =>
+    await device.relaunchApp();
+    waitForDeviceToSettleAfterOrientationChangeAndroid = (ms) =>
       new Promise((res) => setTimeout(res, device.getPlatform() === 'ios' ? 0 : 400));
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.SHOW_ORIENTATION_SCREEN).tap();

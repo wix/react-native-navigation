@@ -1,4 +1,3 @@
-import { device, expect } from 'detox';
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
@@ -6,7 +5,7 @@ const { elementByLabel, elementById } = Utils;
 
 describe('External Component', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.relaunchApp();
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.EXTERNAL_COMP_BTN).tap();
   });

@@ -1,12 +1,11 @@
-import { device, expect } from 'detox';
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementById, elementByLabel } = Utils;
+const { elementByLabel, elementById } = Utils;
 
 describe('SideMenu', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.relaunchApp();
     await elementById(TestIDs.SIDE_MENU_BTN).tap();
   });
 

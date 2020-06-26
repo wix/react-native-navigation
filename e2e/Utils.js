@@ -1,10 +1,8 @@
-import { element, by } from 'detox';
-
-const Utils = {
-  elementByLabel: (label: string) => {
+const utils = {
+  elementByLabel: (label) => {
     return element(by.text(label));
   },
-  elementById: (id: string) => {
+  elementById: (id) => {
     return element(by.id(id));
   },
   tapBackIos: () => {
@@ -16,7 +14,7 @@ const Utils = {
       return element(by.type('_UIModernBarButton').and(by.label('Back'))).tap();
     }
   },
-  sleep: (ms: number) => new Promise((res) => setTimeout(res, ms)),
+  sleep: (ms) => new Promise((res) => setTimeout(res, ms)),
 };
 
-export default Utils;
+export default utils;

@@ -1,4 +1,3 @@
-import { device, expect } from 'detox';
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
@@ -6,7 +5,7 @@ const { elementById, elementByLabel } = Utils;
 
 describe('Buttons', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.relaunchApp();
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });

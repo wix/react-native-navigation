@@ -1,13 +1,11 @@
-import { device, expect } from 'detox';
-import Utils from './Utils';
-import TestIDs from '../playground/src/testIDs';
-import cocktailsList from '../playground/src/assets/cocktails';
-
+const Utils = require('./Utils');
+const TestIDs = require('../playground/src/testIDs');
+const cocktailsList = require('../playground/src/assets/cocktails').default;
 const { elementByLabel, elementById } = Utils;
 
 describe(':ios: SplitView', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.relaunchApp();
     await elementById(TestIDs.SPLIT_VIEW_BUTTON).tap();
   });
 

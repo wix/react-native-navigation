@@ -1,4 +1,3 @@
-import { device, expect } from 'detox';
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
@@ -6,7 +5,7 @@ const { elementByLabel, elementById } = Utils;
 
 describe('Overlay', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.relaunchApp();
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.OVERLAY_BTN).tap();
   });
@@ -48,15 +47,11 @@ describe('Overlay', () => {
     await expect(elementByLabel('Outer button clicked')).toBeVisible();
   });
 
-  /**
-   * @TODO (Jin Shin 25 June 2020)
-   * These test ids do not exist. Is this test no long relevant?
-   */
-  // xtest('overlay pass touches - false', async () => {
-  //   await elementById(TestIDs.SHOW_OVERLAY_BUTTON).tap();
-  //   await expect(elementById(TestIDs.SHOW_OVERLAY_BUTTON)).toBeVisible();
-  //   await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
-  //   await elementById(TestIDs.HIDE_TOP_BAR_BUTTON).tap();
-  //   await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
-  // });
+  xtest('overlay pass touches - false', async () => {
+    await elementById(TestIDs.SHOW_OVERLAY_BUTTON).tap();
+    await expect(elementById(TestIDs.SHOW_OVERLAY_BUTTON)).toBeVisible();
+    await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
+    await elementById(TestIDs.HIDE_TOP_BAR_BUTTON).tap();
+    await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
+  });
 });

@@ -100,15 +100,44 @@
     "remx": "2.x.x",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
-    "ts-jest": "26.1.1",
     "ts-mockito": "^2.3.1",
     "ts-node": "5.x.x",
     "typedoc": "0.x.x",
     "typescript": "3.9.5"
   },
+  "jest": {
+    "preset": "react-native",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    },
+    "roots": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/lib/dist/",
+      "<rootDir>/integration/"
+    ],
+    "collectCoverageFrom": [
+      "lib/dist/**/*.js",
+      "integration/**/*.js",
+      "!lib/dist/index.js",
+      "!lib/dist/Navigation.js",
+      "!lib/dist/adapters/**/*",
+      "!lib/dist/interfaces/**/*",
+      "!lib/dist/**/*.test.*",
+      "!integration/**/*.test.*",
+      "!integration/*.test.*"
+    ],
+    "resetMocks": true,
+    "resetModules": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ]
+  },
   "detox": {
     "test-runner": "jest",
-    "runner-config": "./e2e/config.json",
+    "specs": "",
     "configurations": {
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",

@@ -1,11 +1,11 @@
-import { device, expect, element, by } from 'detox';
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
 const { elementByLabel, elementById } = Utils;
+
 describe('BottomTabs', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.relaunchApp();
     await elementById(TestIDs.BOTTOM_TABS_BTN).tap();
     await expect(elementByLabel('First Tab')).toBeVisible();
   });

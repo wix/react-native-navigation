@@ -1,12 +1,11 @@
-import { device, expect } from 'detox';
 import Utils from './Utils';
 import testIDs from '../playground/src/testIDs';
 
-const elementById = Utils.elementById;
+const { elementById } = Utils;
 
 describe(':ios: custom transition', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.relaunchApp();
   });
 
   test('sanity', async () => {
