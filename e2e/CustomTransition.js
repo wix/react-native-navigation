@@ -5,7 +5,7 @@ const { elementById } = Utils;
 
 describe(':ios: custom transition', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
   });
 
   test('sanity', async () => {

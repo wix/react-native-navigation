@@ -6,7 +6,7 @@ const { elementByLabel, elementById, sleep } = Utils;
 
 describe('Stack', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.STACK_BTN).tap();
   });
 

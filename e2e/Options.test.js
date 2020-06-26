@@ -5,7 +5,7 @@ const { elementById, elementByLabel } = Utils;
 
 describe('Options', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
   });
 

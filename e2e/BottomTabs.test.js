@@ -5,7 +5,7 @@ const { elementByLabel, elementById } = Utils;
 
 describe('BottomTabs', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.BOTTOM_TABS_BTN).tap();
     await expect(elementByLabel('First Tab')).toBeVisible();
   });

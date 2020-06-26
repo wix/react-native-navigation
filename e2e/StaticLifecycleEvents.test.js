@@ -5,7 +5,7 @@ const { elementByLabel, elementById } = Utils;
 
 describe('static lifecycle events', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.SHOW_STATIC_EVENTS_SCREEN).tap();
     await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();

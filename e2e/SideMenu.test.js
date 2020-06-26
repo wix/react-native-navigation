@@ -5,7 +5,7 @@ const { elementByLabel, elementById } = Utils;
 
 describe('SideMenu', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.SIDE_MENU_BTN).tap();
   });
 

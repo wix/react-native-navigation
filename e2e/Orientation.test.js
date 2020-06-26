@@ -5,7 +5,7 @@ const { elementById } = Utils;
 
 describe(':ios: orientation', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     waitForDeviceToSettleAfterOrientationChangeAndroid = (ms) =>
       new Promise((res) => setTimeout(res, device.getPlatform() === 'ios' ? 0 : 400));
     await elementById(TestIDs.NAVIGATION_TAB).tap();

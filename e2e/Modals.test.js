@@ -6,7 +6,7 @@ const { elementByLabel, elementById, sleep } = Utils;
 
 describe('modal', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
   });

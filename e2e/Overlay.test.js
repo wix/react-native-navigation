@@ -5,7 +5,7 @@ const { elementByLabel, elementById } = Utils;
 
 describe('Overlay', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.OVERLAY_BTN).tap();
   });
