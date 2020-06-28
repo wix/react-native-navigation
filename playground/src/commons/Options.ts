@@ -12,11 +12,6 @@ const setDefaultOptions = () =>
     layout: {
       componentBackgroundColor: Colors.background,
       orientation: ['portrait'],
-      /**
-       * @TODO (Jin Shin 25 June 2020)
-       * locale isn't a valid option. Should this option be removed?
-       */
-      // direction: 'locale',
     },
     bottomTabs: {
       titleDisplayMode: 'alwaysShow',
