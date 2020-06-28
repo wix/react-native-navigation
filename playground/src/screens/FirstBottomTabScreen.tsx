@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponentProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
@@ -18,7 +18,7 @@ const {
 } = testIDs;
 
 export default class FirstBottomTabScreen extends React.Component<NavigationComponentProps> {
-  static options() {
+  static options(): Options {
     return {
       layout: {
         orientation: ['portrait', 'landscape'],
@@ -85,7 +85,7 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
     this.badgeVisible = !!badge;
     if (this.badgeVisible) this.dotVisible = false;
     Navigation.mergeOptions(this, {
-      bottomTab: { badge },
+      bottomTab: { badge, animateBadge: true },
     });
   };
 
