@@ -221,7 +221,7 @@ Navigation.setDefaultOptions({
 });
 ```
 
-We need to add this snippet before registering the `registerAppLaunchedListener`. This way we ensure our theme is applied when our root is set. Our code should now look like this:
+We need to add this snippet inside `registerAppLaunchedListener`, before we set the root (`Navigation.setRoot({})`). This way we ensure our theme is applied correctly during the initialization. Our code should now look like this:
 
 ```jsx
 // In index.js of a new project
