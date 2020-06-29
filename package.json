@@ -143,10 +143,7 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,ts,tsx}": "eslint"
   },
   "detox": {
     "test-runner": "jest",
