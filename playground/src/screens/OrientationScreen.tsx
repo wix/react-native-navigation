@@ -1,12 +1,11 @@
 import React from 'react';
-import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import { Navigation, NavigationComponentProps, LayoutOrientation } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
 import testIDs from '../testIDs';
 
 const {
-  DEFAULT_ORIENTATION_BTN,
   LANDSCAPE_PORTRAIT_ORIENTATION_BTN,
   LANDSCAPE_ORIENTATION_BTN,
   PORTRAIT_ORIENTATION_BTN,
@@ -16,11 +15,6 @@ export default class OrientationScreen extends React.Component<NavigationCompone
   render() {
     return (
       <Root componentId={this.props.componentId}>
-        <Button
-          label="Default"
-          testID={DEFAULT_ORIENTATION_BTN}
-          onPress={() => this.orientation('default')}
-        />
         <Button
           label="Landscape and Portrait"
           testID={LANDSCAPE_PORTRAIT_ORIENTATION_BTN}
@@ -41,7 +35,7 @@ export default class OrientationScreen extends React.Component<NavigationCompone
   }
 
   // LayoutOrientation is not exposed by the API.
-  orientation(orientation: ('portrait' | 'landscape')[] | 'default') {
+  orientation(orientation: LayoutOrientation[]) {
     Navigation.showModal({
       component: {
         name: Screens.OrientationDetect,

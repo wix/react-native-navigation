@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, Button, LayoutChangeEvent } from 'react-native';
-import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import { Navigation, NavigationComponentProps, LayoutOrientation } from 'react-native-navigation';
 import TestIDs from '../testIDs';
 
 interface Props extends NavigationComponentProps {
-  orientation: ('portrait' | 'landscape')[]; // LayoutOrientation type is not exposed.
+  orientation: LayoutOrientation[]; // LayoutOrientation type is not exposed.
 }
 
 interface State {

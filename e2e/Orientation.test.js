@@ -12,19 +12,6 @@ describe(':ios: orientation', () => {
     await elementById(TestIDs.SHOW_ORIENTATION_SCREEN).tap();
   });
 
-  it('default allows all', async () => {
-    await elementById(TestIDs.DEFAULT_ORIENTATION_BTN).tap();
-    waitForDeviceToSettleAfterOrientationChangeAndroid();
-    await expect(elementById(TestIDs.PORTRAIT_ELEMENT)).toBeVisible();
-    await device.setOrientation('landscape');
-    waitForDeviceToSettleAfterOrientationChangeAndroid();
-    await expect(elementById(TestIDs.LANDSCAPE_ELEMENT)).toBeVisible();
-    await device.setOrientation('portrait');
-    waitForDeviceToSettleAfterOrientationChangeAndroid();
-    await expect(elementById(TestIDs.PORTRAIT_ELEMENT)).toBeVisible();
-    await elementById(TestIDs.DISMISS_BTN).tap();
-  });
-
   it('landscape and portrait array', async () => {
     await elementById(TestIDs.LANDSCAPE_PORTRAIT_ORIENTATION_BTN).tap();
     await expect(element(by.id(TestIDs.PORTRAIT_ELEMENT))).toBeVisible();
