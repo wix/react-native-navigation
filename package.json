@@ -184,7 +184,7 @@
         "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
         "type": "android.emulator",
         "name": "Pixel_API_28"
-      },
+      }
     }
   }
 }
