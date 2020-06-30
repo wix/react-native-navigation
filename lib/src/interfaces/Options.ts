@@ -88,6 +88,11 @@ export interface OptionsStatusBar {
    * #### (Android specific)
    */
   drawBehind?: boolean;
+  /**
+   * Allows the StatusBar to be translucent (blurred)
+   * #### (Android specific)
+   */
+  translucent?: boolean;
 }
 
 export interface OptionsLayout {
