@@ -1,30 +1,23 @@
 const exec = require('shell-utils').exec;
-const includes = require('lodash/includes')
-const split = require('lodash/split')
-const filter = require('lodash/filter')
-
-const flow = require('lodash/fp/flow')
-const map = require('lodash/fp/map')
-const join = require('lodash/fp/join')
+const includes = require('lodash/includes');
+const split = require('lodash/split');
+const filter = require('lodash/filter');
 
 const fix = includes(process.argv, '--fix') ? '--fix' : '';
 
-const dirs = [
-  'lib/src',
-  'integration',
-  'e2e',
-  'scripts',
-  'playground/src'
-];
+/**
+ * Temporarily disabling lint checking until the lint/prettier settings are settled.
+ *
+ * @todo Uncomment the following and run auto lint fix on these.
+ * @author Jin Shin (22/06/2020)
+ */
+// const dirs = ['lib/src', 'integration', 'scripts', 'playground/src'].join(' ');
+const dirs = [];
 
 run();
 
 function run() {
-  const paths = flow(
-    map((d) => d === 'e2e' ? `${d}/**/*.[tj]s` : `${d}/**/*.[tj]sx?`),
-    join(' ')
-  )(dirs)
-  exec.execSync(`tslint ${paths} ${fix} --format verbose`);
+  exec.execSync(`eslint ${dirs} ${fix} --ext .js,.jsx,.ts,.tsx --format "codeframe"`);
   assertAllTsFilesInSrc();
   exec.execSync(`jest --coverage`);
 }

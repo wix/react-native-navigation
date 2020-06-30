@@ -1,10 +1,11 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
-const Android = require('./AndroidUtils');
-const { elementByLabel, elementById, sleep } = Utils;
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
+
+const { elementByLabel, elementById } = Utils;
+
 describe('BottomTabs', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.BOTTOM_TABS_BTN).tap();
     await expect(elementByLabel('First Tab')).toBeVisible();
   });
