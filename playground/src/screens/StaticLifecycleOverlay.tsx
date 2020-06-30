@@ -1,17 +1,49 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Navigation } from 'react-native-navigation';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  EmitterSubscription,
+} from 'react-native';
+import {
+  Navigation,
+  NavigationComponentProps,
+  EventSubscription,
+  Options,
+} from 'react-native-navigation';
 import TestIDs from '../testIDs';
 
-let _overlayInstance;
-export const logLifecycleEvent = (event) => {
+type Event = {
+  componentId?: string;
+  componentName?: string;
+  componentType?: string;
+  passProps?: object;
+  event?: string;
+  commandName?: string;
+  commandId?: string;
+  buttonId?: string;
+  text?: string;
+};
+
+let _overlayInstance: any;
+export const logLifecycleEvent = (event: Event) => {
   _overlayInstance.setState({
     events: [..._overlayInstance.state.events, event],
   });
 };
 
-export default class StaticLifecycleOverlay extends React.Component {
-  static options() {
+type State = {
+  text: string;
+  events: Event[];
+};
+export default class StaticLifecycleOverlay extends React.Component<
+  NavigationComponentProps,
+  State
+> {
+  static options(): Options {
     return {
       layout: {
         componentBackgroundColor: 'transparent',
@@ -19,34 +51,39 @@ export default class StaticLifecycleOverlay extends React.Component {
     };
   }
 
+  listeners: (EmitterSubscription | EventSubscription)[] = [];
+
   componentDidMount() {
+    // eslint-disable-next-line consistent-this
     _overlayInstance = this;
   }
 
   componentWillUnmount() {
     _overlayInstance = null;
+    this.listeners.forEach((listener) => listener.remove());
+    this.listeners = [];
+    // eslint-disable-next-line no-alert
+    alert('Overlay Unmounted');
   }
 
-  constructor(props) {
+  constructor(props: NavigationComponentProps) {
     super(props);
     this.state = {
       text: 'nothing yet',
       events: [],
     };
-    this.listeners = [];
+
     this.listeners.push(
       Navigation.events().registerComponentDidAppearListener((event) => {
-        event.event = 'componentDidAppear';
         this.setState({
-          events: [...this.state.events, { ...event }],
+          events: [...this.state.events, { ...event, event: 'componentDidAppear' }],
         });
       })
     );
     this.listeners.push(
       Navigation.events().registerComponentDidDisappearListener((event) => {
-        event.event = 'componentDidDisappear';
         this.setState({
-          events: [...this.state.events, { ...event }],
+          events: [...this.state.events, { ...event, event: 'componentDidDisappear' }],
         });
       })
     );
@@ -76,13 +113,7 @@ export default class StaticLifecycleOverlay extends React.Component {
     );
   }
 
-  componentWillUnmount() {
-    this.listeners.forEach((listener) => listener.remove());
-    this.listeners = [];
-    alert('Overlay Unmounted');
-  }
-
-  renderEvent(event) {
+  renderEvent(event: Event) {
     if (event.commandId) {
       return <Text style={styles.h2}>{`${event.commandId}`}</Text>;
     } else if (event.commandName) {
@@ -122,7 +153,7 @@ export default class StaticLifecycleOverlay extends React.Component {
         style={styles.dismissBtn}
         onPress={() => Navigation.dismissOverlay(this.props.componentId)}
       >
-        <Text testID={TestIDs.DISMISS_BTN} style={{ color: 'red', alignSelf: 'center' }}>
+        <Text testID={TestIDs.DISMISS_BTN} style={styles.btnText}>
           X
         </Text>
       </TouchableOpacity>
@@ -132,10 +163,7 @@ export default class StaticLifecycleOverlay extends React.Component {
   renderClearButton = () => {
     return (
       <TouchableOpacity style={styles.clearBtn} onPress={() => this.setState({ events: [] })}>
-        <Text
-          testID={TestIDs.CLEAR_OVERLAY_EVENTS_BTN}
-          style={{ color: 'red', alignSelf: 'center' }}
-        >
+        <Text testID={TestIDs.CLEAR_OVERLAY_EVENTS_BTN} style={styles.btnText}>
           Clear
         </Text>
       </TouchableOpacity>
@@ -143,7 +171,17 @@ export default class StaticLifecycleOverlay extends React.Component {
   };
 }
 
-const styles = {
+type Style = {
+  root: ViewStyle;
+  dismissBtn: ViewStyle;
+  clearBtn: ViewStyle;
+  btnText: TextStyle;
+  events: ViewStyle;
+  h1: TextStyle;
+  h2: TextStyle;
+};
+
+const styles = StyleSheet.create<Style>({
   root: {
     position: 'absolute',
     bottom: 0,
@@ -168,6 +206,10 @@ const styles = {
     backgroundColor: 'white',
     justifyContent: 'center',
   },
+  btnText: {
+    color: 'red',
+    alignSelf: 'center',
+  },
   events: {
     flexDirection: 'column',
     marginHorizontal: 2,
@@ -180,4 +222,4 @@ const styles = {
   h2: {
     fontSize: 10,
   },
-};
+});
