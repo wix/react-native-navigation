@@ -70,18 +70,6 @@ export default class SecondBottomTabScreen extends React.Component<NavigationCom
   pushBottomTabs = () =>
     Navigation.push(this, {
       bottomTabs: {
-        options: {
-          /**
-           * @TODO (Jin Shin 25 June 2020)
-           * Are they meant to be commented out?
-           */
-          // _layout: {
-          //   backgroundColor: '#99ff29',
-          // },
-          // _bottomTabs: {
-          //   visible: false,
-          // },
-        },
         children: [
           component(Screens.Pushed, {
             bottomTab: {
