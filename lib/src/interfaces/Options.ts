@@ -560,7 +560,7 @@ export interface ElementAnimation {
 }
 
 export interface OptionsFab {
-  id: string;
+  id?: string;
   backgroundColor?: Color;
   clickColor?: Color;
   rippleColor?: Color;
