@@ -20,7 +20,7 @@ interface Props extends NavigationComponentProps {
 
 export default function SideMenuLeftScreen({ componentId, marginTop }: Props) {
   useEffect(() => {
-    const unsubscribe = Navigation.events().bindComponent(
+    const unsubscribe = Navigation.events().registerComponentListener(
       {
         componentDidAppear: () => {
           console.log('RNN', `componentDidAppear`);
