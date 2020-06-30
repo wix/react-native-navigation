@@ -849,7 +849,7 @@ export interface OptionsPreview {
   /**
    * Height of the preview
    */
-  height?: 100;
+  height?: number;
   /**
    * You can control if the users gesture will result in pushing
    * the preview screen into the stack.
