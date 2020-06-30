@@ -1,12 +1,11 @@
-const Utils = require('./Utils');
-const Android = require('./AndroidUtils');
-const TestIDs = require('../playground/src/testIDs');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
 
 const { elementById, elementByLabel } = Utils;
 
 describe('Options', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
   });
 

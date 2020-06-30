@@ -13,7 +13,7 @@ type FontWeight =
   | 'semibold'
   | 'heavy'
   | 'black';
-type LayoutOrientation = 'portrait' | 'landscape';
+export type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
 type SystemItemIcon =
   | 'done'
@@ -39,7 +39,12 @@ type SystemItemIcon =
   | 'fastForward'
   | 'undo'
   | 'redo';
-type Interpolation = 'linear' | 'accelerateDecelerate' | 'decelerate' | 'accelerate' | 'decelerateAccelerate';
+type Interpolation =
+  | 'linear'
+  | 'accelerateDecelerate'
+  | 'decelerate'
+  | 'accelerate'
+  | 'decelerateAccelerate';
 
 export interface OptionsSplitView {
   /**
@@ -121,14 +126,14 @@ export enum OptionsModalPresentationStyle {
   currentContext = 'currentContext',
   popover = 'popover',
   fullScreen = 'fullScreen',
-  none = 'none'
+  none = 'none',
 }
 
 export enum OptionsModalTransitionStyle {
   coverVertical = 'coverVertical',
   crossDissolve = 'crossDissolve',
   flipHorizontal = 'flipHorizontal',
-  partialCurl = 'partialCurl'
+  partialCurl = 'partialCurl',
 }
 
 export interface OptionsTopBarLargeTitle {
@@ -625,11 +630,7 @@ export interface OptionsBottomTabs {
    * Control the text display mode below the tab icon
    * #### (Android specific)
    */
-  titleDisplayMode?:
-    | 'alwaysShow'
-    | 'showWhenActive'
-    | 'alwaysHide'
-    | 'showWhenActiveForce';
+  titleDisplayMode?: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' | 'showWhenActiveForce';
   /**
    * Set the elevation of the Bottom Tabs in dp
    * #### (Android specific)

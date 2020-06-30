@@ -1,0 +1,6 @@
+node_modules/
+lib/dist/
+website/
+autolink/
+scripts/
+e2e/
