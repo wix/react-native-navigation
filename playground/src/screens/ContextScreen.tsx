@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button } from 'react-native';
+import { Text, Button, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { NavigationComponentProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import { GlobalContext, Context } from '../context';
@@ -32,7 +32,12 @@ export default class ContextScreen extends React.Component<NavigationComponentPr
   }
 }
 
-const styles = {
+type Style = {
+  root: ViewStyle;
+  text: TextStyle;
+};
+
+const styles = StyleSheet.create<Style>({
   root: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -42,4 +47,4 @@ const styles = {
     textAlign: 'center',
     marginBottom: 8,
   },
-};
+});

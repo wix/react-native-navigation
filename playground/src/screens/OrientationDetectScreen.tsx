@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text, Button, LayoutChangeEvent } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  LayoutChangeEvent,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 import { Navigation, NavigationComponentProps, LayoutOrientation } from 'react-native-navigation';
 import TestIDs from '../testIDs';
 
@@ -58,7 +66,13 @@ export default class OrientationDetectScreen extends React.Component<Props, Stat
   }
 }
 
-const styles = {
+type Style = {
+  root: ViewStyle;
+  h1: TextStyle;
+  footer: TextStyle;
+};
+
+const styles = StyleSheet.create<Style>({
   root: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -70,14 +84,9 @@ const styles = {
     textAlign: 'center',
     margin: 10,
   },
-  h2: {
-    fontSize: 12,
-    textAlign: 'center',
-    margin: 10,
-  },
   footer: {
     fontSize: 10,
     color: '#888',
     marginTop: 10,
   },
-};
+});

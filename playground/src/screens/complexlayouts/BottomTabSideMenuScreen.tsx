@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, StyleSheet, ViewStyle } from 'react-native';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
-import testIDs from '../../testIDs';
 
 interface Props extends NavigationComponentProps {}
 
-class BottomTabSideMenuScreen extends React.Component<Props> {
+export default class BottomTabSideMenuScreen extends React.Component<Props> {
   static options() {
     return {
       topBar: {
@@ -29,24 +28,21 @@ class BottomTabSideMenuScreen extends React.Component<Props> {
   render() {
     return (
       <View style={styles.root}>
-        <Button
-          title="Open SideMenu"
-          color="blue"
-          onPress={this.onOpenSideMenuPress}
-          testID={testIDs.OPEN_SIDE_MENU}
-        />
+        <Button title="Open SideMenu" color="blue" onPress={this.onOpenSideMenuPress} />
       </View>
     );
   }
 }
 
-const styles = {
+type Style = {
+  root: ViewStyle;
+};
+
+const styles = StyleSheet.create<Style>({
   root: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f5fcff',
   },
-};
-
-export default BottomTabSideMenuScreen;
+});
