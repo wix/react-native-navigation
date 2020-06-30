@@ -247,6 +247,11 @@ export interface OptionsTopBarSubtitle {
 
 export interface OptionsTopBarBackButton {
   /**
+   * Button id for reference press event
+   * #### (Android specific)
+   */
+  id?: string;
+  /**
    * Image to show as the back button
    */
   icon?: ImageRequireSource;
