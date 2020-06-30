@@ -681,6 +681,11 @@ export interface OptionsBottomTab {
    */
   badgeColor?: string;
   /**
+   * Show the badge with the animation.
+   * #### (Android specific)
+   */
+  animateBadge?: boolean;
+  /**
    * Set a testID to reference the tab in E2E tests
    */
   testID?: string;
