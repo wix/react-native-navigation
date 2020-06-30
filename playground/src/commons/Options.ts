@@ -1,8 +1,13 @@
-import { Navigation, AnimationOptions, OptionsModalPresentationStyle } from 'react-native-navigation';
+import {
+  Navigation,
+  AnimationOptions,
+  OptionsModalPresentationStyle,
+} from 'react-native-navigation';
 import { Dimensions } from 'react-native';
 import Colors from './Colors';
-import { useCustomAnimations, useSlowOpenScreenAnimations, useSlideAnimation } from '../flags';
+import flags from '../flags';
 
+const { useCustomAnimations, useSlowOpenScreenAnimations, useSlideAnimation } = flags;
 const height = Math.round(Dimensions.get('window').height);
 const width = Math.round(Dimensions.get('window').width);
 const SHOW_DURATION = 250 * (useSlowOpenScreenAnimations ? 2.5 : 1);
