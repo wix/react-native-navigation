@@ -641,6 +641,12 @@ export interface OptionsBottomTabs {
    * #### (Android specific)
    */
   elevation?: AndroidDensityNumber;
+  /**
+   * Hides the BottomTabs on scroll to increase the amount of content visible to the user.
+   * The options requires that the scrollable view will be the root view of the screen and that it specifies `nestedScrollEnabled: true`.
+   * #### (Android specific)
+   */
+  hideOnScroll?: boolean;
 }
 
 export interface DotIndicatorOptions {
