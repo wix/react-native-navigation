@@ -529,7 +529,7 @@ export interface SharedElementTransition {
   fromId: string;
   toId: string;
   duration?: number;
-  interpolation: Interpolation;
+  interpolation?: Interpolation;
 }
 
 export interface ElementTransition {
@@ -556,7 +556,7 @@ export interface DisappearingElementAnimation extends ElementAnimation {
 export interface ElementAnimation {
   duration: number;
   startDelay?: number;
-  interpolation: Interpolation;
+  interpolation?: Interpolation;
 }
 
 export interface OptionsFab {
