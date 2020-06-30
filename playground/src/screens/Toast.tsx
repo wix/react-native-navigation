@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: 'column-reverse',
-    backgroundColor: 0x3e434aa1,
+    backgroundColor: '#3e434aa1',
   },
   toast: {
     elevation: 2,
