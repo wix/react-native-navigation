@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
-import androidx.core.view.marginLeft
 import com.facebook.react.uimanager.ViewGroupManager
-import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.R
 import com.reactnativenavigation.parse.AnimationOptions
 import com.reactnativenavigation.utils.ViewTags
@@ -33,6 +31,7 @@ open class TransitionAnimatorCreator {
         set.playTogether(animators)
         return set
     }
+
 
     private fun recordIndices(transitions: TransitionSet) {
         transitions.forEach {
@@ -89,7 +88,7 @@ open class TransitionAnimatorCreator {
             addAll(transitions.validSharedElementTransitions)
             addAll(transitions.validElementTransitions)
             sortBy { ViewGroupManager.getViewZIndex(it.view) }
-            sortBy { it.view.getTag(R.id.original_index_in_parent) as Int}
+            sortBy { it.view.getTag(R.id.original_index_in_parent) as Int }
             forEach {
                 it.viewController.requireParentController().removeOverlay(it.view)
                 returnToOriginalParent(it.view)
@@ -132,6 +131,8 @@ open class TransitionAnimatorCreator {
         val parent = ViewTags.get<ViewGroup>(element, R.id.original_parent)
         val lp = ViewTags.get<ViewGroup.LayoutParams>(element, R.id.original_layout_params)
         val index = ViewTags.get<Int>(element, R.id.original_index_in_parent)
+        element.x = element.left.toFloat()
+        element.y = element.top.toFloat()
         parent.addView(element, index, lp)
     }
 }

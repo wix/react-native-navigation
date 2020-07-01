@@ -19,6 +19,8 @@ public class EventEmitter {
     private static final String ComponentDidAppear = "RNN.ComponentDidAppear";
     private static final String ComponentDidDisappear = "RNN.ComponentDidDisappear";
     private static final String NavigationButtonPressed = "RNN.NavigationButtonPressed";
+    private static final String PIPStateChanged = "RNN.PIPStateChanged";
+    private static final String PIPButtonPressed = "RNN.PIPButtonPressed";
     private static final String ModalDismissed = "RNN.ModalDismissed";
     private static final String ScreenPopped = "RNN.ScreenPopped";
     @Nullable
@@ -53,6 +55,21 @@ public class EventEmitter {
         event.putString("componentId", id);
         event.putString("buttonId", buttonId);
         emit(NavigationButtonPressed, event);
+    }
+
+    public void emitOnPIPStateChanged(String id, String prevState, String newState) {
+        WritableMap event = Arguments.createMap();
+        event.putString("componentId", id);
+        event.putString("prevState", prevState);
+        event.putString("newState", newState);
+        emit(PIPStateChanged, event);
+    }
+
+    public void emitOnPIPButtonPressed(String id, String buttonId) {
+        WritableMap event = Arguments.createMap();
+        event.putString("componentId", id);
+        event.putString("buttonId", buttonId);
+        emit(PIPButtonPressed, event);
     }
 
     public void emitBottomTabSelected(int unselectedTabIndex, int selectedTabIndex) {

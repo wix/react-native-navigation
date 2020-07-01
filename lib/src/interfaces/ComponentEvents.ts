@@ -46,7 +46,11 @@ export interface ScreenPoppedEvent extends ComponentEvent {
     componentId: string;
 }
 
-export interface PIPEvent extends ComponentEvent {
-    componentId: string;
-    isOpened: boolean;
+export interface PIPStateChangedEvent extends ComponentEvent {
+    prevState: string;
+    newState: string;
+}
+
+export interface PIPButtonPressedEvent extends ComponentEvent {
+    buttonId: string;
 }

@@ -18,4 +18,8 @@ public interface IReactView extends Destroyable {
     void dispatchTouchEventToJs(MotionEvent event);
 
     boolean isRendered();
+
+    void sendOnPIPStateChanged(String prevState, String newState);
+
+    void sendOnPIPButtonPressed(String buttonId);
 }

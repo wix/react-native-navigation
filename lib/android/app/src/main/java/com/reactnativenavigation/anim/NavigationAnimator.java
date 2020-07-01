@@ -6,6 +6,8 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
 
+import androidx.annotation.RestrictTo;
+
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.FadeAnimation;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
@@ -17,15 +19,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.RestrictTo;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator extends BaseAnimator {
 
     private final ElementTransitionManager transitionManager;
     private Map<View, Animator> runningPushAnimations = new HashMap<>();
+    private Map<View, Animator> runningPIPAnimations = new HashMap<>();
 
     public NavigationAnimator(Context context, ElementTransitionManager transitionManager) {
         super(context);
@@ -40,6 +41,60 @@ public class NavigationAnimator extends BaseAnimator {
         } else {
             pushWithoutElementTransitions(appearing, options, set);
         }
+    }
+
+    public void pipIn(View pipContainer, ViewController pip, Options options, Runnable onAnimationEnd) {
+            AnimatorSet set = createPIPAnimator(pip, onAnimationEnd);
+            runningPIPAnimations.put(pipContainer, set);
+            pipInElementTransition(pipContainer, pip, options, set);
+    }
+
+    public void pipOut(View pipContainer, ViewController pip, Options options, Runnable onAnimationEnd) {
+        AnimatorSet set = createPIPAnimator(pip, onAnimationEnd);
+        runningPIPAnimations.put(pipContainer, set);
+        pipOutElementTransition(pipContainer, pip, options, set);
+    }
+
+    private void pipInElementTransition(View pipContainer, ViewController pipIn, Options options, AnimatorSet set) {
+        transitionManager.createPIPTransitions(
+                options.animations.pipIn,
+                pipContainer,
+                pipIn,
+                transitionSet -> {
+                    if (transitionSet.isEmpty()) {
+                        set.playTogether(options.animations.pipIn.content.getAnimation(pipContainer, getDefaultPopAnimation(pipContainer)));
+                    } else {
+                        AnimationOptions fade = options.animations.pipIn.content.isFadeAnimation() ? options.animations.pipIn.content : new FadeAnimation().content;
+                        AnimatorSet transitions = transitionManager.createAnimators(fade, transitionSet);
+                        ArrayList<Animator.AnimatorListener> listeners = transitions.getListeners();
+                        set.playTogether(options.animations.pipIn.content.getAnimation(pipContainer, getDefaultPopAnimation(pipContainer)), transitions);
+                        forEach(listeners, set::addListener);
+                        transitions.removeAllListeners();
+                    }
+                    set.start();
+                }
+        );
+    }
+
+    private void pipOutElementTransition(View pipContainer, ViewController pipIn, Options options, AnimatorSet set) {
+        transitionManager.createPIPTransitions(
+                options.animations.pipOut,
+                pipContainer,
+                pipIn,
+                transitionSet -> {
+                    if (transitionSet.isEmpty()) {
+                        set.playTogether(options.animations.pipOut.content.getAnimation(pipContainer, getDefaultPopAnimation(pipContainer)));
+                    } else {
+                        AnimationOptions fade = options.animations.pipOut.content.isFadeAnimation() ? options.animations.pipOut.content : new FadeAnimation().content;
+                        AnimatorSet transitions = transitionManager.createAnimators(fade, transitionSet);
+                        ArrayList<Animator.AnimatorListener> listeners = transitions.getListeners();
+                        set.playTogether(options.animations.pipOut.content.getAnimation(pipContainer, getDefaultPopAnimation(pipContainer)), transitions);
+                        forEach(listeners, set::addListener);
+                        transitions.removeAllListeners();
+                    }
+                    set.start();
+                }
+        );
     }
 
     private AnimatorSet createPushAnimator(ViewController appearing, Runnable onAnimationEnd) {
@@ -58,6 +113,29 @@ public class NavigationAnimator extends BaseAnimator {
             public void onAnimationEnd(Animator animation) {
                 if (!isCancelled) {
                     runningPushAnimations.remove(appearing.getView());
+                    onAnimationEnd.run();
+                }
+            }
+        });
+        return set;
+    }
+
+    private AnimatorSet createPIPAnimator(ViewController pip, Runnable onAnimationEnd) {
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            private boolean isCancelled;
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                isCancelled = true;
+                runningPIPAnimations.remove(pip.getView());
+                onAnimationEnd.run();
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (!isCancelled) {
+                    runningPIPAnimations.remove(pip.getView());
                     onAnimationEnd.run();
                 }
             }

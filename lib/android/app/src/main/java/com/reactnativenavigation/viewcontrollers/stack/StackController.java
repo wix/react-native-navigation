@@ -151,8 +151,6 @@ public class StackController extends ParentController<StackLayout> {
     }
 
 
-
-
     public void push(ViewController child, CommandListener listener) {
         if (findController(child.getId()) != null) {
             listener.onError("A stack can't contain two children with the same id");
@@ -281,13 +279,14 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-    public ViewController switchToPIP(Options mergeOptions, CommandListener listener) {
+    public ViewController switchToPIP(Options mergeOptions) {
         if (!canPop()) {
-            listener.onError("Nothing to pop");
+            //listener.onError("Nothing to pop");
             return null;
         }
 
         peek().mergeOptions(mergeOptions);
+        Options disappearingOptions = resolveCurrentOptions(presenter.getDefaultOptions());
 
         final ViewController disappearing = stack.pop();
         final ViewController appearing = stack.peek();
@@ -304,6 +303,26 @@ public class StackController extends ParentController<StackLayout> {
         presenter.onChildWillAppear(this, appearing, disappearing);
         disappearing.detachView();
         return disappearing;
+    }
+
+    public void restorePIP(ViewController child, CommandListener listener) {
+        if (findController(child.getId()) != null) {
+            listener.onError("A stack can't contain two children with the same id");
+            return;
+        }
+        final ViewController toRemove = stack.peek();
+        if (size() > 0) backButtonHelper.addToPushedChild(child);
+        child.setParentController(this);
+        stack.push(child.getId(), child);
+        Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
+        addChildToStack(child, resolvedOptions);
+
+        if (toRemove != null) {
+            getView().removeView(toRemove.getView());
+            listener.onSuccess(child.getId());
+        } else {
+            listener.onSuccess(child.getId());
+        }
     }
 
     private void finishPopping(ViewController disappearing, CommandListener listener) {
@@ -416,6 +435,16 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
         peek().sendOnNavigationButtonPressed(buttonId);
+    }
+
+    @Override
+    public void sendOnPIPStateChanged(String prevState, String newState) {
+        peek().sendOnPIPStateChanged(prevState, newState);
+    }
+
+    @Override
+    public void sendOnPIPButtonPressed(String buttonId) {
+        peek().sendOnPIPButtonPressed(buttonId);
     }
 
     @NonNull

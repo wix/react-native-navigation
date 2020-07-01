@@ -67,6 +67,26 @@ open class ElementTransitionManager {
         }
     }
 
+    fun createPIPTransitions(animation: NestedAnimationsOptions, pipContainer: View, pipScreen: ViewController<*>, onAnimatorsCreated: Func1<TransitionSet?>) {
+        val elementTransitions = animation.elementTransitions
+        if (!elementTransitions.hasValue) {
+            onAnimatorsCreated.run(TransitionSet())
+            return
+        }
+        val transitionSet = TransitionSet()
+        for (transitionOptions in elementTransitions.transitions) {
+            val transition = ElementTransition(transitionOptions)
+            findView(pipContainer, transition.id)?.let {
+                transition.view = it
+                transition.viewController = pipScreen
+                transitionSet.add(transition)
+            }
+            if (transition.isValid()) continue
+        }
+        onAnimatorsCreated.run(transitionSet)
+    }
+
+
     fun createAnimators(fadeAnimation: AnimationOptions?, transitionSet: TransitionSet?): AnimatorSet {
         return animatorCreator.create(fadeAnimation!!, transitionSet!!)
     }

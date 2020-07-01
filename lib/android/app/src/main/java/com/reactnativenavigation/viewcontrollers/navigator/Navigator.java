@@ -24,8 +24,9 @@ import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
+import com.reactnativenavigation.viewcontrollers.pip.PIPNavigator;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
-import com.reactnativenavigation.views.pip.PIPFloatingLayout;
+import com.reactnativenavigation.views.pip.PIPStates;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -33,7 +34,7 @@ import java.util.List;
 
 
 public class Navigator extends ParentController {
-    private ViewController pipController;
+    private PIPNavigator pipNavigator;
     private String lastPushedComponent = "";
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
@@ -43,7 +44,6 @@ public class Navigator extends ParentController {
     private final CoordinatorLayout rootLayout;
     private final CoordinatorLayout modalsLayout;
     private final CoordinatorLayout overlaysLayout;
-    private final PIPFloatingLayout pipLayout;
     private ViewGroup contentLayout;
     private Options defaultOptions = new Options();
 
@@ -73,8 +73,7 @@ public class Navigator extends ParentController {
         contentLayout.addView(modalsLayout);
         overlaysLayout.setVisibility(View.GONE);
         contentLayout.addView(overlaysLayout);
-        contentLayout.addView(pipLayout);
-        pipLayout.bringToFront();
+        pipNavigator.setContentLayout(contentLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
@@ -85,8 +84,8 @@ public class Navigator extends ParentController {
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
-        pipLayout = new PIPFloatingLayout(getActivity());
-        pipLayout.resetPIPLayout();
+        this.pipNavigator = new PIPNavigator(activity, new ChildControllersRegistry(), new Presenter(activity, new Options()), new Options());
+        this.pipNavigator.setParentController(this);
     }
 
     public void bindViews() {
@@ -170,19 +169,6 @@ public class Navigator extends ParentController {
         }
     }
 
-    public void push(final String id, final ViewController viewController, CommandListener listener) {
-        this.lastPushedComponent = id;
-        applyOnStack(id, listener, stack -> stack.push(viewController, listener));
-    }
-
-    public void pushAsPIP(final String id, final ViewController viewController, CommandListener listener) {
-        applyOnStack(id, listener, stack -> {
-            this.pipController = viewController;
-            viewController.start();
-            pipLayout.addView(this.pipController.getView());
-        });
-    }
-
     public void setStackRoot(String id, List<ViewController> children, CommandListener listener) {
         applyOnStack(id, listener, stack -> stack.setRoot(children, listener));
     }
@@ -191,18 +177,50 @@ public class Navigator extends ParentController {
         applyOnStack(id, listener, stack -> stack.pop(mergeOptions, listener));
     }
 
+    public void push(final String id, final ViewController viewController, CommandListener listener) {
+        this.lastPushedComponent = id;
+        applyOnStack(id, listener, stack -> stack.push(viewController, listener));
+    }
+
+    public void pushAsPIP(final String id, final ViewController viewController, CommandListener listener) {
+        applyOnStack(id, listener, stack -> {
+            this.pipNavigator.pushPIP(viewController);
+            viewController.start();
+        });
+    }
 
     public void switchToPIP(String id, Options mergeOptions, CommandListener listener) {
         applyOnStack(id, listener, stack -> {
-            this.pipController = stack.switchToPIP(mergeOptions, listener);
-            View pipView = this.pipController.getView();
-            CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT);
-            params.setMargins(0, 0, 0, 0);
-            pipView.setLayoutParams(params);
-            pipLayout.addView(pipView);
-            pipLayout.intializeCustomLayoutParams();
-            pipLayout.setCustomPIPMode();
+            this.pipNavigator.pushPIP(stack.switchToPIP(mergeOptions));
         });
+    }
+
+    public void restorePIP(String id, CommandListener listener) {
+        applyOnStack(id, listener, stack -> stack.restorePIP(this.pipNavigator.restorePIP(), new CommandListener() {
+            @Override
+            public void onSuccess(String childId) {
+                listener.onSuccess(childId);
+            }
+
+            @Override
+            public void onError(String message) {
+                listener.onError(message);
+            }
+        }));
+    }
+
+    public void closePIP() {
+        pipNavigator.closePIP();
+    }
+
+    @Override
+    public void addOverlay(View v) {
+        super.addOverlay(v);
+    }
+
+    @Override
+    public void removeOverlay(View view) {
+        super.removeOverlay(view);
     }
 
     public int dpToPx(int dp) {
@@ -212,7 +230,7 @@ public class Navigator extends ParentController {
 
 
     public ViewController getPipController() {
-        return pipController;
+        return this.pipNavigator;
     }
 
     public void popToRoot(final String id, Options mergeOptions, CommandListener listener) {
@@ -279,7 +297,7 @@ public class Navigator extends ParentController {
     }
 
     public void pushBackPIP() {
-        this.pipController.sendOnNavigationButtonPressed("restorePIP");
+        /*this.pipController.sendOnNavigationButtonPressed("restorePIP");
         this.push(this.lastPushedComponent, this.pipController, new CommandListener() {
             @Override
             public void onSuccess(String childId) {
@@ -291,12 +309,12 @@ public class Navigator extends ParentController {
 
             }
         });
-        this.pipController = null;
+        this.pipController = null;*/
     }
 
     public void clearPIP() {
-        this.pipController.destroy();
-        this.pipController = null;
+       /* this.pipController.destroy();
+        this.pipController = null;*/
     }
 
 
@@ -305,13 +323,12 @@ public class Navigator extends ParentController {
             rootLayout.setVisibility(View.GONE);
             modalsLayout.setVisibility(View.GONE);
             overlaysLayout.setVisibility(View.GONE);
-            pipLayout.setNativePIPMode();
         } else {
             rootLayout.setVisibility(View.VISIBLE);
             modalsLayout.setVisibility(View.VISIBLE);
             overlaysLayout.setVisibility(View.VISIBLE);
-            pipLayout.setCustomPIPMode();
         }
+        pipNavigator.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
     }
 
 
@@ -327,5 +344,9 @@ public class Navigator extends ParentController {
     @RestrictTo(RestrictTo.Scope.TESTS)
     CoordinatorLayout getOverlaysLayout() {
         return overlaysLayout;
+    }
+
+    public PIPStates getPipMode() {
+        return this.pipNavigator.getPipStates();
     }
 }

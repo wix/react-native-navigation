@@ -15,6 +15,12 @@ const {
     NAVIGATION_SCREEN
 } = require('../testIDs');
 const Screens = require('./Screens');
+const {
+    Dimensions
+} = require('react-native');
+
+const animtaionTime1 = 5000
+const animtaionTime2 = 3000
 
 class NavigationScreen extends React.Component {
     static options() {
@@ -62,7 +68,129 @@ class NavigationScreen extends React.Component {
     pushPIPScreen = () => Navigation.push(this, {
         component: {
             name: Screens.PIPScreen,
-            options: {pipOptions: {actionControlGroup: 'testing', aspectRatio: {numerator: 16, denominator: 9}}}
+            options: {
+                pipOptions: {
+                    actionControlGroup: 'testing', aspectRatio: {numerator: 16, denominator: 9}, customPIP: {
+                        compact: {
+                            height: 150,
+                            width: 240
+                        },
+                        expanded: {
+                            height: 160,
+                            width: 280
+                        }
+                    }
+                },
+                animations: {
+                    pipIn: {
+                        enabled: true,
+                        content: {
+                            y: {
+                                to: Dimensions.get('window').height - 100,
+                                duration: animtaionTime1
+                            },
+                            height: {
+                                from: Dimensions.get('window').height - 100,
+                                to: 150,
+                                duration: animtaionTime1
+                            },
+                            width: {
+                                from: Dimensions.get('window').width,
+                                to: Dimensions.get('window').width / 2,
+                                duration: animtaionTime2
+                            },
+                            x: {
+                                to: Dimensions.get('window').width / 2,
+                                duration: animtaionTime1
+                            }
+                        },
+                        elementTransitions: [
+                            {
+                                id: 'pipImage',
+                                height: {
+                                    from: 250,
+                                    to: 150,
+                                    duration: animtaionTime2
+                                },
+                                width: {
+                                    from: Dimensions.get('window').width,
+                                    to: Dimensions.get('window').width / 2,
+                                    duration: animtaionTime2
+                                },
+                                x: {
+                                    to: Dimensions.get('window').width / 2,
+                                    duration: animtaionTime1
+                                },
+                                y: {
+                                    to: Dimensions.get('window').height - 100,
+                                    duration: animtaionTime1
+                                }
+                            },
+                            {
+                                id: 'switchButton',
+                                alpha: {
+                                    to: 0, // We don't declare 'to' value as that is the element's current alpha value, here we're essentially animating from 0 to 1
+                                    duration: animtaionTime2
+                                },
+                                translationX: {
+                                    to: Dimensions.get('window').width * .5,
+                                    duration: animtaionTime2
+                                },
+                                translationY: {
+                                    to: Dimensions.get('window').height * .6,
+                                    duration: animtaionTime2
+                                }
+                            },
+                            {
+                                id: 'description',
+                                alpha: {
+                                    to: 0, // We don't declare 'to' value as that is the element's current alpha value, here we're essentially animating from 0 to 1
+                                    duration: animtaionTime2
+                                },
+                                translationX: {
+                                    to: Dimensions.get('window').width * .5,
+                                    duration: animtaionTime2
+                                },
+                                translationY: {
+                                    to: Dimensions.get('window').height * .6,
+                                    duration: animtaionTime2
+                                }
+                            }
+                        ]
+                    },
+                    pipOut: {
+                        elementTransitions: [
+                            {
+                                id: 'description',
+                                alpha: {
+                                    from: 0, // We don't declare 'to' value as that is the element's current alpha value, here we're essentially animating from 0 to 1
+                                    duration: animtaionTime1
+                                },
+                                scaleX: {
+                                    to: .5,
+                                    duration: animtaionTime1
+                                },
+                                scaleY: {
+                                    to: .2,
+                                    duration: animtaionTime1
+                                }
+                            },
+                            {
+                                id: 'pipImage',
+
+                                scaleX: {
+                                    from: .5,
+                                    duration: animtaionTime1
+                                },
+                                scaleY: {
+                                    from: .5,
+                                    duration: animtaionTime1
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
         }
     });
     pushContextScreen = () => Navigation.push(this, Screens.ContextScreen);

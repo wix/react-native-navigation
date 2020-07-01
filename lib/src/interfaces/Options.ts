@@ -534,6 +534,8 @@ export interface ElementTransition {
     rotationY?: AppearingElementAnimation | DisappearingElementAnimation;
     x?: AppearingElementAnimation | DisappearingElementAnimation;
     y?: AppearingElementAnimation | DisappearingElementAnimation;
+    height?: AppearingElementAnimation | DisappearingElementAnimation;
+    width?: AppearingElementAnimation | DisappearingElementAnimation;
 }
 
 export interface AppearingElementAnimation extends ElementAnimation {
@@ -874,6 +876,14 @@ export interface ScreenAnimationOptions {
     /**
      * Animate the element over x value
      */
+    height?: OptionsAnimationPropertyConfig;
+    /**
+     * Animate the element over y value
+     */
+    width?: OptionsAnimationPropertyConfig;
+    /**
+     * Animate the element over x value
+     */
     x?: OptionsAnimationPropertyConfig;
     /**
      * Animate the element over y value
@@ -1011,6 +1021,15 @@ export interface AnimationOptions {
      * Configure what animates when modal is dismissed
      */
     dismissModal?: ViewAnimationOptions;
+
+    /**
+     * Configure what animates when a screen is pushed
+     */
+    pipIn?: StackAnimationOptions;
+    /**
+     * Configure what animates when a screen is popped
+     */
+    pipOut?: StackAnimationOptions;
 }
 
 /**
@@ -1026,6 +1045,16 @@ export interface PIPOptions {
 
     actionButtons?: [PIPActionButton];
 
+    customPIP: {
+        compact: {
+            height: number;
+            width: number;
+        },
+        expanded: {
+            height: number;
+            width: number;
+        }
+    };
     aspectRatio: {
         numerator: number
         denominator: number

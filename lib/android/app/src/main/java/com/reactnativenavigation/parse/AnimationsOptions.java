@@ -15,13 +15,16 @@ public class AnimationsOptions {
         options.setRoot = new AnimationOptions(json.optJSONObject("setRoot"));
         options.showModal = new AnimationOptions(json.optJSONObject("showModal"));
         options.dismissModal = new AnimationOptions(json.optJSONObject("dismissModal"));
-
+        options.pipIn = NestedAnimationsOptions.parse(json.optJSONObject("pipIn"));
+        options.pipOut = NestedAnimationsOptions.parse(json.optJSONObject("pipOut"));
         return options;
     }
 
     public NestedAnimationsOptions push = new NestedAnimationsOptions();
     public NestedAnimationsOptions pop = new NestedAnimationsOptions();
     public NestedAnimationsOptions setStackRoot = new NestedAnimationsOptions();
+    public NestedAnimationsOptions pipIn = new NestedAnimationsOptions();
+    public NestedAnimationsOptions pipOut = new NestedAnimationsOptions();
     public AnimationOptions setRoot = new AnimationOptions();
     public AnimationOptions showModal = new AnimationOptions();
     public AnimationOptions dismissModal = new AnimationOptions();
@@ -33,6 +36,8 @@ public class AnimationsOptions {
         setStackRoot.mergeWith(other.setStackRoot);
         showModal.mergeWith(other.showModal);
         dismissModal.mergeWith(other.dismissModal);
+        pipIn.mergeWith(other.pipIn);
+        pipOut.mergeWith(other.pipOut);
     }
 
     void mergeWithDefault(AnimationsOptions defaultOptions) {
@@ -42,5 +47,7 @@ public class AnimationsOptions {
         setRoot.mergeWithDefault(defaultOptions.setRoot);
         showModal.mergeWithDefault(defaultOptions.showModal);
         dismissModal.mergeWithDefault(defaultOptions.dismissModal);
+        pipIn.mergeWithDefault(defaultOptions.pipIn);
+        pipOut.mergeWithDefault(defaultOptions.pipOut);
     }
 }

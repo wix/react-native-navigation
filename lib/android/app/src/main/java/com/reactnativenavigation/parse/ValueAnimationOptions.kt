@@ -50,6 +50,7 @@ class ValueAnimationOptions {
                 from,
                 to
         )
+
         animator.interpolator = interpolation.interpolator
         if (duration.hasValue()) animator.duration = duration.get().toLong()
         if (startDelay.hasValue()) animator.startDelay = startDelay.get().toLong()

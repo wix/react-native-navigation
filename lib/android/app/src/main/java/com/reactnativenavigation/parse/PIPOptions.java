@@ -8,6 +8,8 @@ public class PIPOptions {
 
     public AspectRatio aspectRatio = new AspectRatio();
 
+    public CustomPIPDimension customPIP = new CustomPIPDimension();
+
     public PIPActionButton[] actionButtons;
 
     public PIPOptions() {
@@ -20,6 +22,7 @@ public class PIPOptions {
             pipOptions = new PIPOptions();
             pipOptions.actionControlGroup = json.optString("actionControlGroup");
             pipOptions.aspectRatio = AspectRatio.parse(json.optJSONObject("aspectRatio"));
+            pipOptions.customPIP = CustomPIPDimension.parse(json.optJSONObject("customPIP"));
             JSONArray array = json.optJSONArray("actionButtons");
             if (array != null) {
                 pipOptions.actionButtons = new PIPActionButton[array.length()];
@@ -42,6 +45,7 @@ public class PIPOptions {
             this.actionControlGroup = other.actionControlGroup;
             this.aspectRatio.mergeWith(other.aspectRatio);
             this.actionButtons = other.actionButtons;
+            this.customPIP.mergeWith(other.customPIP);
         }
         return this;
     }

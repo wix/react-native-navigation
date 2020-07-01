@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
@@ -12,8 +14,6 @@ import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
-
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 
@@ -24,8 +24,8 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     private final OverlayTouchDelegate touchDelegate;
 
     public ComponentLayout(Context context, ReactView reactView) {
-		super(context);
-		this.reactView = reactView;
+        super(context);
+        this.reactView = reactView;
         addView(reactView.asView(), matchParentLP());
         touchDelegate = new OverlayTouchDelegate(reactView);
     }
@@ -49,13 +49,13 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
         reactView.start();
     }
 
-	public void sendComponentStart() {
-		reactView.sendComponentStart(ComponentType.Component);
-	}
+    public void sendComponentStart() {
+        reactView.sendComponentStart(ComponentType.Component);
+    }
 
-	public void sendComponentStop() {
-		reactView.sendComponentStop(ComponentType.Component);
-	}
+    public void sendComponentStop() {
+        reactView.sendComponentStop(ComponentType.Component);
+    }
 
     public void applyOptions(Options options) {
         touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside);
@@ -83,6 +83,16 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     @Override
     public boolean isRendered() {
         return reactView.isRendered();
+    }
+
+    @Override
+    public void sendOnPIPStateChanged(String prevState, String newState) {
+        reactView.sendOnPIPStateChanged(prevState, newState);
+    }
+
+    @Override
+    public void sendOnPIPButtonPressed(String buttonId) {
+        reactView.sendOnPIPButtonPressed(buttonId);
     }
 
     @Override

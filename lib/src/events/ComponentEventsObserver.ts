@@ -1,8 +1,8 @@
-import isString from 'lodash/isString'
-import isNil from 'lodash/isNil'
-import uniqueId from 'lodash/uniqueId'
-import unset from 'lodash/unset'
-import forEach from 'lodash/forEach'
+import isString from 'lodash/isString';
+import isNil from 'lodash/isNil';
+import uniqueId from 'lodash/uniqueId';
+import unset from 'lodash/unset';
+import forEach from 'lodash/forEach';
 import {EventSubscription} from '../interfaces/EventSubscription';
 import {
     ComponentDidAppearEvent,
@@ -14,7 +14,7 @@ import {
     PreviewCompletedEvent,
     ModalDismissedEvent,
     ScreenPoppedEvent,
-    ModalAttemptedToDismissEvent, PIPEvent
+    ModalAttemptedToDismissEvent, PIPStateChangedEvent, PIPButtonPressedEvent
 } from '../interfaces/ComponentEvents';
 import {NativeEventsReceiver} from '../adapters/NativeEventsReceiver';
 import {Store} from '../components/Store';
@@ -38,7 +38,7 @@ export class ComponentEventsObserver {
         this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
         this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
         this.notifyScreenPopped = this.notifyScreenPopped.bind(this);
-        this.notifyPIPEvent = this.notifyPIPEvent.bind(this);
+        this.notifyPIPStateChangedEvent = this.notifyPIPStateChangedEvent.bind(this);
     }
 
     public registerOnceForAllComponentEvents() {
@@ -55,7 +55,8 @@ export class ComponentEventsObserver {
         this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
         this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
         this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyPreviewCompleted);
-        this.nativeEventsReceiver.registerPIPEventListener(this.notifyPIPEvent);
+        this.nativeEventsReceiver.registerPIPStateChangedEventListener(this.notifyPIPStateChangedEvent);
+        this.nativeEventsReceiver.registerPIPButtonPressedEventListener(this.notifyPIPButtonPressedEvent);
     }
 
     public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
@@ -114,8 +115,12 @@ export class ComponentEventsObserver {
         this.triggerOnAllListenersByComponentId(event, 'screenPopped');
     }
 
-    notifyPIPEvent(event: PIPEvent) {
-        this.triggerOnAllListenersByComponentId(event, 'onPIPTransition');
+    notifyPIPStateChangedEvent(event: PIPStateChangedEvent) {
+        this.triggerOnAllListenersByComponentId(event, 'onPIPStateChanged');
+    }
+
+    notifyPIPButtonPressedEvent(event: PIPButtonPressedEvent) {
+        this.triggerOnAllListenersByComponentId(event, 'onPIPButtonPressed');
     }
 
     private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {

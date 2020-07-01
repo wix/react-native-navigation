@@ -14,7 +14,6 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.PIPActivity;
 import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.parse.Options;
@@ -32,7 +31,6 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import java.util.ArrayList;
-
 
 import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 
@@ -125,6 +123,10 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void switchToPIP(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
+        handle(() -> navigator().switchToPIP(componentId, parse(mergeOptions), new NativeCommandListener("switchToPIP", commandId, promise, eventEmitter, now)));
+    }
 
     @ReactMethod
     public void pushAsPIP(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
@@ -133,18 +135,16 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             final ViewController viewController = layoutFactory.create(layoutTree);
             navigator().pushAsPIP(onComponentId, viewController, new NativeCommandListener("pushAsPIP", commandId, promise, eventEmitter, now));
         });
-       /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            Intent intent = new Intent(getCurrentActivity(), PIPActivity.class);
-            intent.putExtra(PIPActivity.COMPONENT_INFO, jsonParser.parse(rawLayoutTree).toString());
-            getCurrentActivity().startActivity(intent);
-        }*/
     }
 
     @ReactMethod
     public void closePIP(String commandId) {
-        if (PIPActivity.Companion.getINSTANCE() != null) {
-            PIPActivity.Companion.getINSTANCE().finish();
-        }
+        navigator().closePIP();
+    }
+
+    @ReactMethod
+    public void restorePIP(String commandId, Promise promise) {
+        handle(() -> navigator().restorePIP(commandId, new NativeCommandListener("restorePIP", commandId, promise, eventEmitter, now)));
     }
 
     @ReactMethod
@@ -172,11 +172,6 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void popToRoot(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
         handle(() -> navigator().popToRoot(componentId, parse(mergeOptions), new NativeCommandListener("popToRoot", commandId, promise, eventEmitter, now)));
-    }
-
-    @ReactMethod
-    public void switchToPIP(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        handle(() -> navigator().switchToPIP(componentId, parse(mergeOptions), new NativeCommandListener("switchToPIP", commandId, promise, eventEmitter, now)));
     }
 
     @ReactMethod

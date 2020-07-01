@@ -25,6 +25,7 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
+import com.reactnativenavigation.views.pip.PIPStates;
 
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
@@ -33,12 +34,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     protected Navigator navigator;
 
-    private boolean mPictureInPictureMode = false;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!mPictureInPictureMode) {
+        if (navigator == null || navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             addDefaultSplashLayout();
             navigator = new Navigator(this,
                     new ChildControllersRegistry(),
@@ -48,8 +47,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             );
             navigator.bindViews();
             getReactGateway().onActivityCreated(this);
-        } else {
-            mPictureInPictureMode = false;
         }
 
     }
@@ -57,7 +54,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (!mPictureInPictureMode) {
+        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             navigator.setContentLayout(findViewById(android.R.id.content));
         }
     }
@@ -65,7 +62,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onResume() {
         super.onResume();
-        if (!mPictureInPictureMode) {
+        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             getReactGateway().onActivityResumed(this);
             if (PIPActivity.Companion.getINSTANCE() != null) {
                 PIPActivity.Companion.getINSTANCE().finish();
@@ -75,7 +72,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void onNewIntent(Intent intent) {
-        if (!mPictureInPictureMode) {
+        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             if (!getReactGateway().onNewIntent(intent)) {
                 super.onNewIntent(intent);
             }
@@ -85,7 +82,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onPause() {
         super.onPause();
-        if (!mPictureInPictureMode) {
+        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             getReactGateway().onActivityPaused(this);
         }
     }
@@ -93,7 +90,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (!mPictureInPictureMode) {
+        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             navigator.destroy();
             getReactGateway().onActivityDestroyed(this);
         }
@@ -102,7 +99,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        mPictureInPictureMode = true;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             navigator.onPictureInPictureModeChanged(true, null);
             enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
@@ -112,7 +108,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
-        this.mPictureInPictureMode = isInPictureInPictureMode;
         navigator.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
     }
 
@@ -167,7 +162,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void onReload() {
-        if (!mPictureInPictureMode) {
+        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             navigator.destroyViews();
         }
     }

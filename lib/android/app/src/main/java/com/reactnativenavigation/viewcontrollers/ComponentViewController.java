@@ -3,16 +3,16 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.views.ComponentLayout;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
@@ -71,6 +71,16 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
         getView().sendOnNavigationButtonPressed(buttonId);
+    }
+
+    @Override
+    public void sendOnPIPStateChanged(String prevState, String newState) {
+        getView().sendOnPIPStateChanged(prevState, newState);
+    }
+
+    @Override
+    public void sendOnPIPButtonPressed(String buttonId) {
+        getView().sendOnPIPButtonPressed(buttonId);
     }
 
     @Override
