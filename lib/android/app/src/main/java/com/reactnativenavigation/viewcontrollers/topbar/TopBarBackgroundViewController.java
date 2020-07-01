@@ -28,8 +28,8 @@ public class TopBarBackgroundViewController extends ViewController<TopBarBackgro
     }
 
     @Override
-    public void onViewAppeared() {
-        super.onViewAppeared();
+    public void onViewWillAppear() {
+        super.onViewWillAppear();
         getView().sendComponentStart(ComponentType.Background);
     }
 

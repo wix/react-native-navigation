@@ -83,9 +83,11 @@
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",
     "github-release-notes": "0.17.3",
+    "husky": "4.2.5",
     "identity-obj-proxy": "3.0.0",
     "jest": "26.1.0",
     "jest-circus": "26.1.0",
+    "lint-staged": "10.2.11",
     "lodash": "^4.17.15",
     "metro-react-native-babel-preset": "0.59.0",
     "prettier": "2.0.5",
@@ -133,6 +135,14 @@
       "text",
       "html"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint"
   },
   "detox": {
     "test-runner": "jest",

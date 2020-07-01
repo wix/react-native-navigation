@@ -210,6 +210,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         getCurrentView().setVisibility(View.INVISIBLE);
         bottomTabs.setCurrentItem(newIndex, false);
         getCurrentView().setVisibility(View.VISIBLE);
+        getCurrentChild().onViewDidAppear();
     }
 
     @NonNull

@@ -57,6 +57,11 @@ Besides an overview of basic React Native Navigation functionality, the [Playgro
 If a screen contains too many buttons, e2e tests might fail if the button is positioned out of screen bounds because Detox matchers detect it's invisible.
 :::
 
+### Enable linter
+The project uses [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) to ensure code style consistency across the codebase. Make sure to install these plugins in your IDE.
+
+A pre-commit hook will verify that the linter passes when committing.
+
 ### Playground app Folder Structure
 
 | Folder | Description |
