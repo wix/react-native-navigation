@@ -60,12 +60,12 @@ export default class Options extends React.Component<Props> {
           testID={SHOW_YELLOW_BOX_BTN}
           onPress={() => console.warn('Yellow Box')}
         />
-        <Button label="StatusBar" onPress={this.statusBarScreen} />
         <Button
           label="Buttons Screen"
           testID={GOTO_BUTTONS_SCREEN}
           onPress={this.pushButtonsScreen}
         />
+        <Button label="StatusBar" onPress={this.statusBarScreen} />
         <Button
           label="Toggle Navigation bar visibility"
           platform="android"
