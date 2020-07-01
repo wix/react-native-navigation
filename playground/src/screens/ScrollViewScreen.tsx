@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponentProps, Options } from 'react-native-navigation';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import Colors from '../commons/Colors';
@@ -11,7 +11,7 @@ interface State {
 }
 
 export default class ScrollViewScreen extends React.Component<NavigationComponentProps, State> {
-  static options() {
+  static options(): Options {
     return {
       topBar: {
         title: {
@@ -57,11 +57,11 @@ export default class ScrollViewScreen extends React.Component<NavigationComponen
     );
   }
 
-  onClickToggleTopBarHideOnScroll() {
+  onClickToggleTopBarHideOnScroll = () => {
     this.setState({
       topBarHideOnScroll: !this.state.topBarHideOnScroll,
     });
-  }
+  };
 
   hideBottomTabsOnScroll = () => {
     const hideOnScroll = !this.state.bottomTabsHideOnScroll;

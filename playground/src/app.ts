@@ -3,6 +3,9 @@ import { registerScreens } from './screens';
 import { setDefaultOptions } from './commons/Options';
 import testIDs from './testIDs';
 import Screens from './screens/Screens';
+import { unstable_enableLogBox } from 'react-native';
+
+unstable_enableLogBox();
 
 // @ts-ignore
 alert = (title, message) =>
