@@ -1,7 +1,7 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
-const { elementByLabel, elementById, sleep } = Utils;
-const Android = require('./AndroidUtils');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
+
+const { elementById } = Utils;
 
 describe('Lazy Registration', () => {
   beforeEach(async () => {
