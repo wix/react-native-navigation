@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, Button, View } from 'react-native';
+import { StyleSheet, Text, Button, View, ViewStyle, TextStyle } from 'react-native';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
 import { component } from '../commons/Layouts';
 import Screens from './Screens';
 import testIDs from '../testIDs';
 
-const { OVERLAY_ALERT_HEADER, DISMISS_BTN, SET_ROOT_BUTTON, SET_INTERCEPT_TOUCH } = testIDs;
+const { OVERLAY_ALERT_HEADER, DISMISS_BTN, SET_INTERCEPT_TOUCH } = testIDs;
 
 export default class OverlayAlert extends React.PureComponent<NavigationComponentProps> {
   render() {
@@ -15,7 +15,7 @@ export default class OverlayAlert extends React.PureComponent<NavigationComponen
           Test view
         </Text>
         <Button title="Dismiss" testID={DISMISS_BTN} onPress={this.dismiss} />
-        <Button title="Set Root" testID={SET_ROOT_BUTTON} onPress={this.setRoot} />
+        <Button title="Set Root" onPress={this.setRoot} />
         <Button
           title="Set Intercept touch"
           testID={SET_INTERCEPT_TOUCH}
@@ -36,7 +36,12 @@ export default class OverlayAlert extends React.PureComponent<NavigationComponen
     });
 }
 
-const styles = {
+type Style = {
+  root: ViewStyle;
+  title: TextStyle;
+};
+
+const styles = StyleSheet.create<Style>({
   root: {
     position: 'absolute',
     backgroundColor: 'green',
@@ -49,4 +54,4 @@ const styles = {
   title: {
     marginTop: 8,
   },
-};
+});

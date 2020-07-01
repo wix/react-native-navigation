@@ -40,13 +40,13 @@ public class ChildControllerTest extends BaseTest {
 
     @Test
     public void onViewAppeared() {
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         verify(childRegistry, times(1)).onViewAppeared(uut);
     }
 
     @Test
     public void onViewDisappear() {
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
 
         uut.onViewDisappear();
         verify(childRegistry, times(1)).onViewDisappear(uut);

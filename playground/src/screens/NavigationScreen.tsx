@@ -89,7 +89,10 @@ export default class NavigationScreen extends React.Component<Props> {
   orientation = () => Navigation.showModal(Screens.Orientation);
   pushContextScreen = () => Navigation.push(this, Screens.ContextScreen);
   sharedElement = () => Navigation.showModal(Screens.CocktailsListScreen);
-  preview = ({ reactTag }: { reactTag?: number }) => {
+  preview = ({ reactTag }: { reactTag: number | null }) => {
+    if (reactTag === null) {
+      return;
+    }
     Navigation.push(this.props.componentId, {
       component: {
         name: Screens.Pushed,
@@ -100,7 +103,7 @@ export default class NavigationScreen extends React.Component<Props> {
             },
           },
           preview: {
-            reactTag: reactTag,
+            reactTag,
             height: 300,
             actions: [
               {

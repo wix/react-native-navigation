@@ -144,6 +144,7 @@ public class Navigator extends ParentController {
         rootPresenter.setRoot(root, defaultOptions, new CommandListenerAdapter(commandListener) {
             @Override
             public void onSuccess(String childId) {
+                root.onViewDidAppear();
                 if (removeSplashView) contentLayout.removeViewAt(0);
                 destroyPreviousRoot();
                 super.onSuccess(childId);

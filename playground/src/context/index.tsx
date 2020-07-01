@@ -3,6 +3,7 @@ import React from 'react';
 const _context = {
   title: 'Title from global context',
   count: 0,
+  incrementCount: () => { },
 };
 const contextWrapper = (component: any) => ({
   ..._context,
@@ -16,7 +17,7 @@ const GlobalContext = React.createContext<{
   title: string;
   count: number;
   incrementCount: () => void;
-}>({});
+}>(_context);
 class ContextProvider extends React.Component {
   state = { context: contextWrapper(this) };
 

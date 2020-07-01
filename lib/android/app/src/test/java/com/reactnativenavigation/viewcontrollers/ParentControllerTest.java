@@ -131,7 +131,7 @@ public class ParentControllerTest extends BaseTest {
         SimpleViewController child1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
         stackController.push(child1, new CommandListenerAdapter());
 
-        child1.onViewAppeared();
+        child1.onViewWillAppear();
         verify(stackController, times(1)).clearOptions();
     }
 
@@ -144,7 +144,7 @@ public class ParentControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
 
         child1.ensureViewIsCreated();
-        child1.onViewAppeared();
+        child1.onViewWillAppear();
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
         verify(uut, times(1)).clearOptions();
         verify(uut, times(1)).applyChildOptions(optionsCaptor.capture(), eq(child1));
@@ -161,7 +161,7 @@ public class ParentControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
 
         child1.ensureViewIsCreated();
-        child1.onViewAppeared();
+        child1.onViewWillAppear();
         assertThat(uut.initialOptions.topBar.title.text.get()).isEqualTo(INITIAL_TITLE);
     }
 

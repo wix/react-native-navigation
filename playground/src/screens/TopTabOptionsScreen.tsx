@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
 import testIDs from '../testIDs';
 
@@ -45,13 +45,12 @@ export default class TopTabOptionsScreen extends React.PureComponent<Props> {
         largeTitle: {
           visible: false,
         },
-        buttonColor: 'red',
       },
     });
   };
 }
 
-const styles = {
+const styles = StyleSheet.create({
   root: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -73,4 +72,4 @@ const styles = {
     color: '#888',
     marginTop: 10,
   },
-};
+});

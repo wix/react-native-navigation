@@ -57,7 +57,7 @@ public class TopBarButtonControllerTest extends BaseTest {
     public void buttonDoesNotClearStackOptionsOnAppear() {
         setReactComponentButton();
         uut.ensureViewIsCreated();
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         verify(stackController, times(0)).clearOptions();
     }
 

@@ -46,8 +46,8 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     @Override
-    public void onViewAppeared() {
-        super.onViewAppeared();
+    public void onViewWillAppear() {
+        super.onViewWillAppear();
         childRegistry.onViewAppeared(this);
     }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponentProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
@@ -20,7 +20,7 @@ const {
 } = testIDs;
 
 export default class StackScreen extends React.Component<NavigationComponentProps> {
-  static options() {
+  static options(): Options {
     return {
       topBar: {
         testID: STACK_SCREEN_HEADER,
@@ -30,10 +30,6 @@ export default class StackScreen extends React.Component<NavigationComponentProp
       },
     };
   }
-
-  state = {
-    backPress: '',
-  };
 
   render() {
     return (

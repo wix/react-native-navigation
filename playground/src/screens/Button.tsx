@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   View,
   Text,
+  ViewStyle,
+  TextStyle,
 } from 'react-native';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
 
@@ -51,7 +53,8 @@ export default class Button extends React.Component<Props> {
     }
 
     const formattedTitle = Platform.OS === 'android' ? title.toUpperCase() : title;
-    let Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+    let Touchable: React.ElementType =
+      Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
 
     if (typeof onPressIn === 'function') {
       Touchable = Navigation.TouchablePreview;
@@ -76,16 +79,23 @@ export default class Button extends React.Component<Props> {
   }
 }
 
-const styles = StyleSheet.create({
-  button: Platform.select({
+type Style = {
+  button: ViewStyle;
+  text: TextStyle;
+  buttonDisabled: ViewStyle;
+  textDisabled: TextStyle;
+};
+
+const styles = StyleSheet.create<Style>({
+  button: Platform.select<ViewStyle>({
     ios: {},
     android: {
       elevation: 4,
       backgroundColor: '#2196F3',
       borderRadius: 2,
     },
-  }),
-  text: Platform.select({
+  })!,
+  text: Platform.select<TextStyle>({
     ios: {
       color: '#007AFF',
       textAlign: 'center',
@@ -98,14 +108,14 @@ const styles = StyleSheet.create({
       padding: 8,
       fontWeight: '500',
     },
-  }),
+  })!,
   buttonDisabled: Platform.select({
     ios: {},
     android: {
       elevation: 0,
       backgroundColor: '#dfdfdf',
     },
-  }),
+  })!,
   textDisabled: Platform.select({
     ios: {
       color: '#cdcdcd',
@@ -113,5 +123,5 @@ const styles = StyleSheet.create({
     android: {
       color: '#a1a1a1',
     },
-  }),
+  })!,
 });

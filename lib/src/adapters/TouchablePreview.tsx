@@ -20,7 +20,7 @@ interface NativeTouchEventWithForce extends NativeTouchEvent {
 interface GestureResponderEventWithForce extends NativeSyntheticEvent<NativeTouchEventWithForce> {}
 
 export interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   touchableComponent?:
     | TouchableHighlight
     | TouchableOpacity
@@ -45,6 +45,7 @@ export class TouchablePreview extends React.PureComponent<Props> {
     onPressIn: PropTypes.func,
     onPeekIn: PropTypes.func,
     onPeekOut: PropTypes.func,
+    label: PropTypes.string,
   };
 
   static defaultProps = {
@@ -84,7 +85,7 @@ export class TouchablePreview extends React.PureComponent<Props> {
   };
 
   onTouchStart = (event: GestureResponderEvent) => {
-    // Store a timstamp of the initial touch start
+    // Store a timestamp of the initial touch start
     this.touchStartedAt = event.nativeEvent.timestamp;
   };
 
@@ -114,7 +115,7 @@ export class TouchablePreview extends React.PureComponent<Props> {
   };
 
   render() {
-    const { children, touchableComponent, onPress, onPressIn, ...props } = this.props;
+    const { children, touchableComponent, ...props } = this.props;
 
     // Default to TouchableWithoutFeedback for iOS if set to TouchableNativeFeedback
     const Touchable =

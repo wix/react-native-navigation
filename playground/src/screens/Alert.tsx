@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button, View } from 'react-native';
+import { StyleSheet, Text, Button, View, ViewStyle, TextStyle } from 'react-native';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
 import testIDs from '../testIDs';
 
@@ -14,9 +14,7 @@ export default function Alert({ componentId, title, message }: Props) {
   return (
     <View style={styles.root} key={'overlay'}>
       <View style={styles.alert}>
-        <Text style={styles.title} testID={testIDs.DIALOG_HEADER}>
-          {title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
         <Text style={styles.message}>{message}</Text>
         <Button title="OK" testID={testIDs.OK_BUTTON} onPress={onCLickOk} />
       </View>
@@ -24,7 +22,14 @@ export default function Alert({ componentId, title, message }: Props) {
   );
 }
 
-const styles = {
+type Style = {
+  root: ViewStyle;
+  alert: ViewStyle;
+  title: TextStyle;
+  message: TextStyle;
+};
+
+const styles = StyleSheet.create<Style>({
   root: {
     flex: 1,
     justifyContent: 'center',
@@ -45,7 +50,7 @@ const styles = {
   message: {
     marginVertical: 8,
   },
-};
+});
 
 Alert.options = () => {
   return {
