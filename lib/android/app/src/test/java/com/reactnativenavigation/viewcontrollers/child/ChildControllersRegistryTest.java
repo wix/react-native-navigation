@@ -30,15 +30,15 @@ public class ChildControllersRegistryTest extends BaseTest {
 
     @Test
     public void onViewAppeared() {
-        child1.onViewAppeared();
+        child1.onViewWillAppear();
         verify(child1, times(0)).onViewBroughtToFront();
         assertThat(uut.size()).isOne();
     }
 
     @Test
     public void onViewDisappear() {
-        child1.onViewAppeared();
-        child2.onViewAppeared();
+        child1.onViewWillAppear();
+        child2.onViewWillAppear();
         assertThat(uut.size()).isEqualTo(2);
         child2.onViewDisappear();
         verify(child1, times(1)).onViewBroughtToFront();

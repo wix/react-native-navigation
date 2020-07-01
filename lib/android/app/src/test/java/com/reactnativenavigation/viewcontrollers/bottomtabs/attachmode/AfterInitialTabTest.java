@@ -27,7 +27,7 @@ public class AfterInitialTabTest extends AttachModeTest {
         uut.attach();
         assertNotChildOf(parent, otherTabs());
 
-        initialTab().onViewAppeared();
+        initialTab().onViewWillAppear();
         assertIsChild(parent, otherTabs());
     }
 

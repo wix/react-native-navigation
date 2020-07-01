@@ -40,6 +40,11 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     }
 
     @Override
+    public void onViewDidAppear() {
+        getCurrentChild().onViewDidAppear();
+    }
+
+    @Override
     @CheckResult
     public Options resolveCurrentOptions() {
 	    if (CollectionUtils.isNullOrEmpty(getChildControllers())) return initialOptions;

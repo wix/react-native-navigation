@@ -55,7 +55,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public int getTopInset() {
-        int statusBarInset = resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : 63;
+        int statusBarInset = resolveCurrentOptions().statusBar.isHiddenOrDrawBehind() ? 0 : 63;
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 

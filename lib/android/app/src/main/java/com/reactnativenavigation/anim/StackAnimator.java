@@ -22,12 +22,12 @@ import androidx.annotation.RestrictTo;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 @SuppressWarnings("ResourceType")
-public class NavigationAnimator extends BaseAnimator {
+public class StackAnimator extends BaseAnimator {
 
     private final ElementTransitionManager transitionManager;
     private Map<View, Animator> runningPushAnimations = new HashMap<>();
 
-    public NavigationAnimator(Context context, ElementTransitionManager transitionManager) {
+    public StackAnimator(Context context, ElementTransitionManager transitionManager) {
         super(context);
         this.transitionManager = transitionManager;
     }

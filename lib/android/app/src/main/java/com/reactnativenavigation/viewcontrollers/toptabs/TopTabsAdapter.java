@@ -46,7 +46,7 @@ public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChan
     @Override
     public void onPageSelected(int position) {
         tabs.get(currentPage).onViewDisappear();
-        tabs.get(position).onViewAppeared();
+        tabs.get(position).onViewWillAppear();
         currentPage = position;
     }
 

@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.anim.NavigationAnimator;
+import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.Options;
@@ -38,7 +38,7 @@ public class RootPresenterTest extends BaseTest {
     private RootPresenter uut;
     private CoordinatorLayout rootContainer;
     private ViewController root;
-    private NavigationAnimator animator;
+    private StackAnimator animator;
     private LayoutDirectionApplier layoutDirectionApplier;
     private Options defaultOptions;
     private ReactInstanceManager reactInstanceManager;
@@ -120,7 +120,7 @@ public class RootPresenterTest extends BaseTest {
         assertThat(spy.getView().getAlpha()).isZero();
         verifyZeroInteractions(listener);
 
-        spy.onViewAppeared();
+        spy.onViewWillAppear();
         assertThat(spy.getView().getAlpha()).isOne();
         verify(listener).onSuccess(spy.getId());
     }
@@ -133,8 +133,8 @@ public class RootPresenterTest extends BaseTest {
     }
 
     @NonNull
-    private NavigationAnimator createAnimator(Activity activity) {
-        return new NavigationAnimator(activity, mock(ElementTransitionManager.class)) {
+    private StackAnimator createAnimator(Activity activity) {
+        return new StackAnimator(activity, mock(ElementTransitionManager.class)) {
             @Override
             public void setRoot(View root, AnimationOptions setRoot, Runnable onAnimationEnd) {
                 onAnimationEnd.run();
