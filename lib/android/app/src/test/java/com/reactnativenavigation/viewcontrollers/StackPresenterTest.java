@@ -294,7 +294,7 @@ public class StackPresenterTest extends BaseTest {
 
         parent.push(pushedChild, new CommandListenerAdapter());
         ShadowLooper.idleMainLooper();
-        verify(pushedChild).onViewAppeared();
+        verify(pushedChild).onViewWillAppear();
         assertThat(topBar.getTitleBar().getNavigationIcon()).isInstanceOf(BackDrawable.class);
 
         Options backButtonHidden = new Options();

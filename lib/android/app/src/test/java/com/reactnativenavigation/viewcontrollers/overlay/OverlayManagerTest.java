@@ -56,7 +56,8 @@ public class OverlayManagerTest extends BaseTest {
     public void show() {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.show(overlayContainer, overlay1, listener);
-        verify(listener, times(1)).onSuccess(OVERLAY_ID_1);
+        verify(listener).onSuccess(OVERLAY_ID_1);
+        verify(overlay1).onViewDidAppear();
         assertThat(overlay1.getView().getParent()).isEqualTo(overlayContainer);
         assertMatchParent(overlay1.getView());
     }

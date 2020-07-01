@@ -20,6 +20,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
+    private enum VisibilityState { Appear, Disappear }
+    private VisibilityState lastVisibilityState = VisibilityState.Disappear;
 
     public ComponentViewController(final Activity activity,
                                    final ChildControllersRegistry childRegistry,
@@ -57,13 +59,15 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    public void onViewAppeared() {
-        super.onViewAppeared();
-        if (view != null) view.sendComponentStart();
+    public void onViewDidAppear() {
+        super.onViewDidAppear();
+        if (view != null && lastVisibilityState == VisibilityState.Disappear) view.sendComponentStart();
+        lastVisibilityState = VisibilityState.Appear;
     }
 
     @Override
     public void onViewDisappear() {
+        lastVisibilityState = VisibilityState.Disappear;
         if (view != null) view.sendComponentStop();
         super.onViewDisappear();
     }

@@ -75,7 +75,7 @@ public class ComponentViewControllerTest extends BaseTest {
     public void componentViewDestroyedOnDestroy() {
         uut.ensureViewIsCreated();
         verify(view, times(0)).destroy();
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         uut.destroy();
         verify(view, times(1)).destroy();
     }
@@ -85,12 +85,30 @@ public class ComponentViewControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
         verify(view, times(0)).sendComponentStart();
         verify(view, times(0)).sendComponentStop();
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
+        verify(view, times(0)).sendComponentStart();
+        verify(view, times(0)).sendComponentStop();
+        uut.onViewDidAppear();
         verify(view, times(1)).sendComponentStart();
         verify(view, times(0)).sendComponentStop();
         uut.onViewDisappear();
         verify(view, times(1)).sendComponentStart();
         verify(view, times(1)).sendComponentStop();
+    }
+
+    @Test
+    public void onViewDidAppear_componentStartIsEmittedOnlyIfComponentIsNotAppeared() {
+        uut.ensureViewIsCreated();
+
+        uut.onViewDidAppear();
+        verify(view).sendComponentStart();
+
+        uut.onViewDidAppear();
+        verify(view).sendComponentStart();
+
+        uut.onViewDisappear();
+        uut.onViewDidAppear();
+        verify(view, times(2)).sendComponentStart();
     }
 
     @Test

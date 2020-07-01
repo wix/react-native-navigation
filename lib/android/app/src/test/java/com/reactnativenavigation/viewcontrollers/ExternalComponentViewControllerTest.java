@@ -72,7 +72,7 @@ public class ExternalComponentViewControllerTest extends BaseTest {
 
     @Test
     public void onViewAppeared_appearEventIsEmitted() {
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         verify(emitter).emitComponentDidAppear(uut.getId(), ec.name.get(), ComponentType.Component);
     }
 
@@ -84,7 +84,7 @@ public class ExternalComponentViewControllerTest extends BaseTest {
 
     @Test
     public void registersInChildRegister() {
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         assertThat(childRegistry.size()).isOne();
         uut.onViewDisappear();
         assertThat(childRegistry.size()).isZero();

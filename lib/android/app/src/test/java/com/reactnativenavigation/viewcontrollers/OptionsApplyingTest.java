@@ -81,7 +81,7 @@ public class OptionsApplyingTest extends BaseTest {
         uut.setParentController(null);
         assertThat(uut.getParentController()).isNull();
         uut.ensureViewIsCreated();
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         assertThat(uut.getParentController()).isNull();
     }
 
@@ -93,7 +93,7 @@ public class OptionsApplyingTest extends BaseTest {
         stackController.push(uut, new CommandListenerAdapter());
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         assertThat(stackController.getTopBar().getTitle()).isEqualTo("the title");
     }
 

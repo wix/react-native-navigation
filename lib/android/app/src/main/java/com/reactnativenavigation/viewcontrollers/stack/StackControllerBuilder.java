@@ -2,7 +2,7 @@ package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.app.Activity;
 
-import com.reactnativenavigation.anim.NavigationAnimator;
+import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
@@ -23,7 +23,7 @@ public class StackControllerBuilder {
     private TopBarController topBarController;
     private String id;
     private Options initialOptions = new Options();
-    private NavigationAnimator animator;
+    private StackAnimator animator;
     private BackButtonHelper backButtonHelper = new BackButtonHelper();
     private Presenter presenter;
     private StackPresenter stackPresenter;
@@ -35,7 +35,7 @@ public class StackControllerBuilder {
         this.activity = activity;
         this.eventEmitter = eventEmitter;
         presenter = new Presenter(activity, new Options());
-        animator = new NavigationAnimator(activity, new ElementTransitionManager());
+        animator = new StackAnimator(activity, new ElementTransitionManager());
     }
 
     public StackControllerBuilder setEventEmitter(EventEmitter eventEmitter) {
@@ -82,7 +82,7 @@ public class StackControllerBuilder {
         return this;
     }
 
-    public StackControllerBuilder setAnimator(NavigationAnimator animator) {
+    public StackControllerBuilder setAnimator(StackAnimator animator) {
         this.animator = animator;
         return this;
     }

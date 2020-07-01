@@ -62,20 +62,19 @@ public class ModalStack {
             boolean isDismissingTopModal = isTop(toDismiss);
             modals.remove(toDismiss);
             @Nullable ViewController toAdd = isEmpty() ? root : isDismissingTopModal ? get(size() - 1) : null;
-            CommandListenerAdapter onDismiss = new CommandListenerAdapter(listener) {
-                @Override
-                public void onSuccess(String childId) {
-                    eventEmitter.emitModalDismissed(componentId, toDismiss.getCurrentComponentName(), 1);
-                    super.onSuccess(componentId);
-                }
-            };
             if (isDismissingTopModal) {
                 if (toAdd == null) {
                     listener.onError("Could not dismiss modal");
                     return false;
                 }
             }
-            presenter.dismissModal(toDismiss, toAdd, root, onDismiss);
+            presenter.dismissModal(toDismiss, toAdd, root, new CommandListenerAdapter(listener) {
+                @Override
+                public void onSuccess(String childId) {
+                    eventEmitter.emitModalDismissed(componentId, toDismiss.getCurrentComponentName(), 1);
+                    super.onSuccess(componentId);
+                }
+            });
             return true;
         } else {
             listener.onError("Nothing to dismiss");
