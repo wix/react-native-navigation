@@ -7,8 +7,8 @@ run();
 function run() {
   if (isWindows) {
     exec.execSync(`del /F /S /Q lib\\dist`);
-    exec.execSync(`tsc --project tsconfig.build.json`);
   } else {
-    exec.execSync(`rm -rf ./lib/dist && tsc --project tsconfig.build.json`);
+    exec.execSync(`rm -rf ./lib/dist`);
   }
+  exec.execSync(`tsc`);
 }
