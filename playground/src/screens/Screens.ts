@@ -36,6 +36,7 @@ const Screens = {
   ReactTitleView: 'ReactTitleView',
   EventsScreen: 'EventsScreen',
   EventsOverlay: 'EventsOverlay',
+  LazilyRegisteredScreen: 'LazilyRegisteredScreen',
   SideMenuLeft,
   SideMenuCenter,
   SideMenuRight,

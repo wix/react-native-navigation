@@ -78,6 +78,10 @@ export class NavigationRoot {
     return this.componentRegistry.registerComponent(componentName, componentProvider, concreteComponentProvider);
   }
 
+  public setLazyComponentRegistrator(lazyRegistratorFn: (lazyComponentRequest: string | number) => void) {
+    this.store.setLazyComponentRegistrator(lazyRegistratorFn);
+  }
+
   /**
    * Utility helper function like registerComponent,
    * wraps the provided component with a react-redux Provider with the passed redux store

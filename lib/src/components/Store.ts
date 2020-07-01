@@ -7,6 +7,7 @@ export class Store {
   private propsById: Record<string, any> = {};
   private componentsInstancesById: Record<string, IWrappedComponent> = {};
   private wrappedComponents: Record<string, React.ComponentClass<any>> = {};
+  private lazyRegistratorFn: ((lazyComponentRequest: string | number) => void) | undefined;
 
   updateProps(componentId: string, props: any) {
     this.propsById[componentId] = props;
@@ -30,6 +31,9 @@ export class Store {
   }
 
   getComponentClassForName(componentName: string | number): ComponentProvider | undefined {
+    if (!this.componentsByName[componentName.toString()] && this.lazyRegistratorFn) {
+      this.lazyRegistratorFn(componentName);
+    }
     return this.componentsByName[componentName.toString()];
   }
 
@@ -51,5 +55,9 @@ export class Store {
 
   getWrappedComponent(componentName: string | number): React.ComponentClass<any> {
     return this.wrappedComponents[componentName];
+  }
+
+  setLazyComponentRegistrator(lazyRegistratorFn: (lazyComponentRequest: string | number) => void) {
+    this.lazyRegistratorFn = lazyRegistratorFn;
   }
 }
