@@ -53,7 +53,8 @@ export default class Button extends React.Component<Props> {
     }
 
     const formattedTitle = Platform.OS === 'android' ? title.toUpperCase() : title;
-    let Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+    let Touchable: React.ElementType =
+      Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
 
     if (typeof onPressIn === 'function') {
       Touchable = Navigation.TouchablePreview;
