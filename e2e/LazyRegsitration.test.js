@@ -10,7 +10,7 @@ describe('Lazy Registration', () => {
   });
 
   it('push and pop lazily registered screen', async () => {
-    await elementById(TestIDs.PUSH_BTN).tap();
+    await elementById(TestIDs.PUSH_LAZY_BTN).tap();
     await expect(elementById(TestIDs.LAZILY_REGISTERED_SCREEN_HEADER)).toBeVisible();
     await elementById(TestIDs.POP_BTN).tap();
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
