@@ -31,10 +31,14 @@ export class Store {
   }
 
   getComponentClassForName(componentName: string | number): ComponentProvider | undefined {
+    this.ensureClassForName(componentName);
+    return this.componentsByName[componentName.toString()];
+  }
+
+  ensureClassForName(componentName: string | number): void {
     if (!this.componentsByName[componentName.toString()] && this.lazyRegistratorFn) {
       this.lazyRegistratorFn(componentName);
     }
-    return this.componentsByName[componentName.toString()];
   }
 
   setComponentInstance(id: string, component: IWrappedComponent): void {
@@ -45,7 +49,10 @@ export class Store {
     return this.componentsInstancesById[id];
   }
 
-  setWrappedComponent(componentName: string | number, wrappedComponent: React.ComponentClass<any>): void {
+  setWrappedComponent(
+    componentName: string | number,
+    wrappedComponent: React.ComponentClass<any>
+  ): void {
     this.wrappedComponents[componentName] = wrappedComponent;
   }
 

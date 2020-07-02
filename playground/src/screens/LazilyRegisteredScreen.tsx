@@ -1,19 +1,26 @@
 import React from 'react';
-import {NavigationComponentProps} from 'react-native-navigation';
+import { NavigationComponentProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
+import Screens from './Screens';
 
 class LazilyRegisteredScreen extends React.Component<NavigationComponentProps> {
-  static options() {
+  static options(): Options {
     return {
       topBar: {
         testID: testIDs.LAZILY_REGISTERED_SCREEN_HEADER,
         title: {
-          text: 'Lazily Registered Screen'
-        }
-      }
+          component: {
+            name: Screens.LazyTitleView,
+            alignment: 'center',
+            passProps: {
+              text: 'Lazily registered top bar!',
+            },
+          },
+        },
+      },
     };
   }
 
@@ -25,7 +32,7 @@ class LazilyRegisteredScreen extends React.Component<NavigationComponentProps> {
   render() {
     return (
       <Root componentId={this.props.componentId}>
-        <Button label='Pop' testID={testIDs.POP_BTN} onPress={this.pop} />
+        <Button label="Pop" testID={testIDs.POP_BTN} onPress={this.pop} />
       </Root>
     );
   }
