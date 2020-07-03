@@ -78,6 +78,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
     /** START: Code Change */
     __weak UIViewController* weakVC = vc;
     [vc setReactViewReadyCallback:^{
+        [self->_mainWindow.rootViewController destroy];
         self->_mainWindow.rootViewController = weakVC;
         [weakVC.view setNeedsDisplay];
         [UIView transitionWithView:self->_mainWindow
