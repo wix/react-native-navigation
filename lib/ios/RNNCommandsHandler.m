@@ -76,20 +76,22 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
     vc.waitForRender = [vc.resolveOptionsWithDefault.animations.setRoot.waitForRender getWithDefaultValue:NO];
     
     /** START: Code Change */
+    __weak UIViewController* weakVC = vc;
     [vc setReactViewReadyCallback:^{
-        _mainWindow.rootViewController = vc;
-        [vc.view setNeedsDisplay];
-        [UIView transitionWithView:_mainWindow
+        self->_mainWindow.rootViewController = weakVC;
+        [weakVC.view setNeedsDisplay];
+        [UIView transitionWithView:self->_mainWindow
                           duration:0.5
                            options:UIViewAnimationOptionTransitionCrossDissolve
                         animations:^{
-                            [vc.view.layer displayIfNeeded];
+                            [weakVC.view.layer displayIfNeeded];
                         }
                         completion:nil];
-        [_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId params:@{@"layout": layout}];
+        [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId params:@{@"layout": layout}];
         completion();
     }];
     /** END: Code Change */
+    
     
 	[vc render];
 }
