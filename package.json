@@ -45,8 +45,6 @@
     "test-all": "node ./scripts/test-all",
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
-    "local-docs": "node ./scripts/local-docs",
-    "gen-docs": "ts-node ./scripts/gen-docs/Main",
     "docusaurus": "npm start --prefix website",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
   },
@@ -107,7 +105,6 @@
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",
-    "ts-node": "5.x.x",
     "typedoc": "0.x.x",
     "typescript": "3.9.5"
   },
