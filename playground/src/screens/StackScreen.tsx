@@ -13,6 +13,7 @@ const {
   PUSH_LIFECYCLE_BTN,
   POP_NONE_EXISTENT_SCREEN_BTN,
   PUSH_CUSTOM_BACK_BTN,
+  PUSH_LAZY_BTN,
   CUSTOM_BACK_BTN,
   SEARCH_BTN,
   SET_STACK_ROOT_BTN,
@@ -46,6 +47,11 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           onPress={this.popNoneExistent}
         />
         <Button
+          label='Push Lazily Registered Screen'
+          testID={PUSH_LAZY_BTN}
+          onPress={this.pushLazilyRegistered}
+        />
+        <Button
           label="Push Custom Back Button"
           testID={PUSH_CUSTOM_BACK_BTN}
           onPress={this.pushCustomBackButton}
@@ -64,6 +70,8 @@ export default class StackScreen extends React.Component<NavigationComponentProp
   push = () => Navigation.push(this, Screens.Pushed);
 
   pushLifecycleScreen = () => Navigation.push(this, Screens.Lifecycle);
+
+  pushLazilyRegistered = () => Navigation.push(this, Screens.LazilyRegisteredScreen);
 
   popNoneExistent = () => Navigation.pop('noneExistentComponentId');
 
