@@ -89,6 +89,7 @@ export class OptionsProcessor {
   private processComponent(key: string, value: any, options: Record<string, any>) {
     if (isEqual(key, 'component')) {
       value.componentId = value.id ? value.id : this.uniqueIdProvider.generate('CustomComponent');
+      this.store.ensureClassForName(value.name);
       if (value.passProps) {
         this.store.updateProps(value.componentId, value.passProps);
       }

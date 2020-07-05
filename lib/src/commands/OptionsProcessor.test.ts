@@ -18,7 +18,7 @@ describe('navigation options', () => {
       height: 100,
       scale: 1,
       uri: 'lol',
-      width: 100
+      width: 100,
     });
     const assetService = instance(mockedAssetService);
 
@@ -26,7 +26,13 @@ describe('navigation options', () => {
     when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
     const colorService = instance(mockedColorService);
 
-    uut = new OptionsProcessor(store, new UniqueIdProvider(), colorService, assetService, new Deprecations());
+    uut = new OptionsProcessor(
+      store,
+      new UniqueIdProvider(),
+      colorService,
+      assetService,
+      new Deprecations()
+    );
   });
 
   it('keeps original values if values were not processed', () => {
@@ -69,8 +75,8 @@ describe('navigation options', () => {
       rootBackgroundImage: { height: 100, scale: 1, uri: 'lol', width: 100 },
       bottomTab: {
         icon: { height: 100, scale: 1, uri: 'lol', width: 100 },
-        selectedIcon: { height: 100, scale: 1, uri: 'lol', width: 100 }
-      }
+        selectedIcon: { height: 100, scale: 1, uri: 'lol', width: 100 },
+      },
     });
   });
 
@@ -135,5 +141,17 @@ describe('navigation options', () => {
     expect(options.topBar.leftButtons[0].passProps).toBeUndefined();
     expect(options.topBar.title.component.passProps).toBeUndefined();
     expect(options.topBar.background.component.passProps).toBeUndefined();
+  });
+
+  it('Will ensure the store has a chance to lazily load components in options', () => {
+    const options = {
+      topBar: {
+        title: { component: { name: 'helloThere1', passProps: {} } },
+        background: { component: { name: 'helloThere2', passProps: {} } },
+      },
+    };
+    uut.processOptions(options);
+    verify(mockedStore.ensureClassForName('helloThere1')).called();
+    verify(mockedStore.ensureClassForName('helloThere2')).called();
   });
 });
