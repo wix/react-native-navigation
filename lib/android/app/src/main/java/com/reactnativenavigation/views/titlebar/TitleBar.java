@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.reactnativenavigation.parse.Alignment;
-import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.options.Alignment;
+import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;

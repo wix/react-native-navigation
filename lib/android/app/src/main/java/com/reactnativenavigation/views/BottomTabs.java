@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.R;
-import com.reactnativenavigation.parse.LayoutDirection;
+import com.reactnativenavigation.options.LayoutDirection;
 
 import java.util.ArrayList;
 import java.util.List;

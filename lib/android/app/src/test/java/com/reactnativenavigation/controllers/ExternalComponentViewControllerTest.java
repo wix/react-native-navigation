@@ -4,9 +4,9 @@ import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.ExternalComponent;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.options.ExternalComponent;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.presentation.ExternalComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.events.ComponentType;

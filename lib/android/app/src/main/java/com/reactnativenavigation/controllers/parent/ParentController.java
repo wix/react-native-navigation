@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;

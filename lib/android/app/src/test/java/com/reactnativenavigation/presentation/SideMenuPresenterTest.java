@@ -1,8 +1,8 @@
 package com.reactnativenavigation.presentation;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.SideMenuRootOptions;
-import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.options.SideMenuRootOptions;
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.views.SideMenu;
 
 import org.junit.Test;

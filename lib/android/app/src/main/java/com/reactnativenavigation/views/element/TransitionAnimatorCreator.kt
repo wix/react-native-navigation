@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
-import androidx.core.view.marginLeft
 import com.facebook.react.uimanager.ViewGroupManager
-import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.R
-import com.reactnativenavigation.parse.AnimationOptions
+import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
 import java.util.*

@@ -5,8 +5,8 @@ import android.view.View
 import androidx.core.view.doOnLayout
 import com.facebook.react.uimanager.util.ReactFindViewUtil.OnViewFoundListener
 import com.facebook.react.uimanager.util.ReactFindViewUtil.findView
-import com.reactnativenavigation.parse.AnimationOptions
-import com.reactnativenavigation.parse.NestedAnimationsOptions
+import com.reactnativenavigation.options.AnimationOptions
+import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.utils.Functions.Func1
 import com.reactnativenavigation.controllers.viewcontroller.ViewController
 

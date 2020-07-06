@@ -1,6 +1,6 @@
 package com.reactnativenavigation.mocks;
 
-import com.reactnativenavigation.parse.parsers.TypefaceLoader;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 
 public class TypefaceLoaderMock extends TypefaceLoader {
 

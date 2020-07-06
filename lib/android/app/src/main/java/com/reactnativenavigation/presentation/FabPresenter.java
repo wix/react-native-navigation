@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.R;
-import com.reactnativenavigation.parse.FabOptions;
+import com.reactnativenavigation.options.FabOptions;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.Fab;

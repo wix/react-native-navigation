@@ -6,8 +6,8 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;

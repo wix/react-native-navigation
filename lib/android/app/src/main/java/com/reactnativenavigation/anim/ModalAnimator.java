@@ -6,7 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.view.View;
 
-import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.options.AnimationOptions;
 
 public class ModalAnimator extends BaseAnimator {
 

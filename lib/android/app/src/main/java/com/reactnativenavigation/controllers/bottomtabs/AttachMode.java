@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsBehaviour;

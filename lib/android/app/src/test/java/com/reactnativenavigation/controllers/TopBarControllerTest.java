@@ -3,8 +3,8 @@ package com.reactnativenavigation.controllers;
 import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.ButtonOptions;
-import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.options.ButtonOptions;
+import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;

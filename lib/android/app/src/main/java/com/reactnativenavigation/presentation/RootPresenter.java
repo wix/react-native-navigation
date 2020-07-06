@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.anim.StackAnimator;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;

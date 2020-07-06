@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;

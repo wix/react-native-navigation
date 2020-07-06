@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.controllers.stack.topbar.title.TitleBarReactViewController;
-import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBar;

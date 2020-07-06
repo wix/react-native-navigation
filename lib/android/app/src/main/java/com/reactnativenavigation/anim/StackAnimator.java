@@ -6,10 +6,10 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
 
-import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.parse.FadeAnimation;
-import com.reactnativenavigation.parse.NestedAnimationsOptions;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.FadeAnimation;
+import com.reactnativenavigation.options.NestedAnimationsOptions;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 

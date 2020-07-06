@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;

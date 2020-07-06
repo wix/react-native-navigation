@@ -2,7 +2,7 @@ package com.reactnativenavigation.controllers.bottomtabs;
 
 import android.view.*;
 
-import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.options.*;
 import com.reactnativenavigation.presentation.*;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 

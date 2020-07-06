@@ -6,8 +6,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuOptions;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.SideMenuOptions;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 
 import androidx.annotation.RestrictTo;

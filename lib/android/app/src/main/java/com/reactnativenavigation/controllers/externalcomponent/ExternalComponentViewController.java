@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.parse.ExternalComponent;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.ExternalComponent;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.presentation.ExternalComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.events.ComponentType;

@@ -6,7 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.controllers.viewcontroller.IReactView;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;

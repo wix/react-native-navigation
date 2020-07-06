@@ -2,7 +2,7 @@ package com.reactnativenavigation.views.element
 
 import android.animation.AnimatorSet
 import android.view.View
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.controllers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.animators.*
 

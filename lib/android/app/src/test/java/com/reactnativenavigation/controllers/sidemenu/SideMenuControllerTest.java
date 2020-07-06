@@ -11,11 +11,11 @@ import android.view.Window;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuOptions;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.SideMenuOptions;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.react.CommandListenerAdapter;

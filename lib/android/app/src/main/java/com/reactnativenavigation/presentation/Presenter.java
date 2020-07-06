@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
-import com.reactnativenavigation.parse.NavigationBarOptions;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.OrientationOptions;
-import com.reactnativenavigation.parse.StatusBarOptions;
-import com.reactnativenavigation.parse.StatusBarOptions.TextColorScheme;
-import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.options.NavigationBarOptions;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.OrientationOptions;
+import com.reactnativenavigation.options.StatusBarOptions;
+import com.reactnativenavigation.options.StatusBarOptions.TextColorScheme;
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;

@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuRootOptions;
-import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.SideMenuRootOptions;
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.react.CommandListener;

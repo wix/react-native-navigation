@@ -2,8 +2,8 @@ package com.reactnativenavigation.controllers.stack.topbar.title;
 
 import android.app.Activity;
 
-import com.reactnativenavigation.parse.ComponentOptions;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.ComponentOptions;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;

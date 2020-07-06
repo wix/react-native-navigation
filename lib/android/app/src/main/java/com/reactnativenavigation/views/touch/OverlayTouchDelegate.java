@@ -4,8 +4,8 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.controllers.viewcontroller.IReactView;
 import com.reactnativenavigation.views.ComponentLayout;
 

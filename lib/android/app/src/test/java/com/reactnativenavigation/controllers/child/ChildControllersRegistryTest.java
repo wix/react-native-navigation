@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
 
 import org.junit.Test;
 

@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
-import com.reactnativenavigation.parse.Options
-import com.reactnativenavigation.parse.ButtonOptions
+import com.reactnativenavigation.options.Options
+import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.controllers.viewcontroller.ViewController
 import com.reactnativenavigation.controllers.viewcontroller.YellowBoxDelegate

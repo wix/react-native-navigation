@@ -6,9 +6,9 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.NavigationActivity;
-import com.reactnativenavigation.parse.LayoutFactory;
-import com.reactnativenavigation.parse.LayoutNode;
-import com.reactnativenavigation.parse.parsers.JSONParser;
+import com.reactnativenavigation.options.LayoutFactory;
+import com.reactnativenavigation.options.LayoutNode;
+import com.reactnativenavigation.options.parsers.JSONParser;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.navigator.Navigator;
 

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.facebook.react.views.text.ReactTextView
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.*
 import com.shazam.android.widget.text.reflow.ReflowTextAnimatorHelper
 

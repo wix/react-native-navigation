@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
-import com.reactnativenavigation.parse.BottomTabOptions;
-import com.reactnativenavigation.parse.DotIndicatorOptions;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Param;
+import com.reactnativenavigation.options.BottomTabOptions;
+import com.reactnativenavigation.options.DotIndicatorOptions;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Param;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;

@@ -2,7 +2,7 @@ package com.reactnativenavigation.mocks;
 
 import android.app.*;
 
-import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.options.*;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;

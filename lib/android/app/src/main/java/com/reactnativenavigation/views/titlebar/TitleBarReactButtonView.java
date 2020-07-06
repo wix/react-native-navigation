@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.parse.ComponentOptions;
-import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.options.ComponentOptions;
+import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.react.ReactView;
 
 import static android.view.View.MeasureSpec.EXACTLY;

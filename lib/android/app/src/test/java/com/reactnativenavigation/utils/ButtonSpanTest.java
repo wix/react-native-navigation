@@ -5,9 +5,9 @@ import android.graphics.Paint;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonSpan;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.ButtonOptions;
-import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.ButtonOptions;
+import com.reactnativenavigation.options.params.Colour;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;

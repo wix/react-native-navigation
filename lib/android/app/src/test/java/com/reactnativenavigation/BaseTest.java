@@ -5,7 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 

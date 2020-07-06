@@ -1,6 +1,6 @@
 package com.reactnativenavigation.presentation;
 
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.views.ComponentLayout;
 
 public class ComponentPresenter extends ComponentPresenterBase {

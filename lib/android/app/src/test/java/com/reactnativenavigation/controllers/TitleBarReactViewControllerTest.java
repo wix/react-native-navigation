@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.parse.ComponentOptions;
-import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.options.ComponentOptions;
+import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.controllers.stack.topbar.title.TitleBarReactViewController;
 
 import org.junit.Test;

@@ -3,7 +3,7 @@ package com.reactnativenavigation.mocks;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.parse.ComponentOptions;
+import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;

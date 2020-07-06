@@ -5,8 +5,8 @@ import android.graphics.Typeface;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 
-import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.topbar.TopBar;
 

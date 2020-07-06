@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
-import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
 

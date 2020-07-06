@@ -2,8 +2,8 @@ package com.reactnativenavigation.presentation;
 
 import android.view.Gravity;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuRootOptions;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.SideMenuRootOptions;
 import com.reactnativenavigation.views.SideMenu;
 
 import androidx.annotation.RestrictTo;

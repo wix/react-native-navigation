@@ -1,7 +1,7 @@
 package com.reactnativenavigation.controllers.stack.topbar.button;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 
 public class BackButtonHelper {

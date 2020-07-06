@@ -2,7 +2,7 @@ package com.reactnativenavigation.presentation;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 
 public class LayoutDirectionApplier {
