@@ -11,7 +11,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.utils.TypefaceLoader;
+import com.reactnativenavigation.parse.parsers.TypefaceLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -2,7 +2,7 @@ package com.reactnativenavigation.parse;
 
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
-import com.reactnativenavigation.utils.TypefaceLoader;
+import com.reactnativenavigation.parse.parsers.TypefaceLoader;
 
 import org.json.JSONObject;
 

@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.TextParser;
-import com.reactnativenavigation.utils.TypefaceLoader;
+import com.reactnativenavigation.parse.parsers.TypefaceLoader;
 
 import org.json.JSONObject;
 

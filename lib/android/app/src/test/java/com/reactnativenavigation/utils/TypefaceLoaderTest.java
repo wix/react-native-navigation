@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 
 import com.reactnativenavigation.*;
+import com.reactnativenavigation.parse.parsers.TypefaceLoader;
 
 import org.junit.*;
 import org.mockito.*;

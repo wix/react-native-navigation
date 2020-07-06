@@ -14,7 +14,7 @@ import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.Assertions;
 import com.reactnativenavigation.utils.ImageLoader;
-import com.reactnativenavigation.utils.TypefaceLoader;
+import com.reactnativenavigation.parse.parsers.TypefaceLoader;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.component.ComponentViewController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;

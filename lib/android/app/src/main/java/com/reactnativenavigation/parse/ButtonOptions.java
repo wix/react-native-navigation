@@ -19,7 +19,7 @@ import com.reactnativenavigation.parse.parsers.FractionParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.IdFactory;
-import com.reactnativenavigation.utils.TypefaceLoader;
+import com.reactnativenavigation.parse.parsers.TypefaceLoader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

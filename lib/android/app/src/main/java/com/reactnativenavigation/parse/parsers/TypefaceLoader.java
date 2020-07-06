@@ -1,9 +1,8 @@
-package com.reactnativenavigation.utils;
+package com.reactnativenavigation.parse.parsers;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.io.IOException;
@@ -11,6 +10,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.Nullable;
 
 public class TypefaceLoader {
 	private static final Map<String, Typeface> typefaceCache = new HashMap<>();

@@ -3,7 +3,7 @@ package com.reactnativenavigation.parse;
 import androidx.annotation.Nullable;
 
 import com.reactnativenavigation.utils.CollectionUtils;
-import com.reactnativenavigation.utils.TypefaceLoader;
+import com.reactnativenavigation.parse.parsers.TypefaceLoader;
 
 import org.json.JSONObject;
 
