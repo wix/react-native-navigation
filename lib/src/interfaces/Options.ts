@@ -120,7 +120,7 @@ export interface OptionsLayout {
    * Set language direction.
    * only works with DefaultOptions
    */
-  direction?: 'rtl' | 'ltr';
+  direction?: 'rtl' | 'ltr' | 'locale';
 }
 
 export enum OptionsModalPresentationStyle {
