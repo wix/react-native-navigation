@@ -9,6 +9,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListener;
@@ -145,15 +146,13 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
         eventEmitter.emitBottomTabPressed(index);
 
-        if (options.selectTabOnPress.get(true)){
+        if (options.selectTabOnPress.get(true)) {
             eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
             if (wasSelected) return false;
             selectTab(index);
-            return false;
-        } else {
-            return false;
         }
-	}
+        return false;
+    }
 
 	private List<AHBottomNavigationItem> createTabs() {
 		if (tabs.size() > 5) throw new RuntimeException("Too many tabs!");

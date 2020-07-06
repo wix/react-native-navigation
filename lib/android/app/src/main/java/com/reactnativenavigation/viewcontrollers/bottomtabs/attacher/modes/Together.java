@@ -1,8 +1,9 @@
-package com.reactnativenavigation.viewcontrollers.bottomtabs;
+package com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes;
 
 import android.view.*;
 
 import com.reactnativenavigation.options.*;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import java.util.*;

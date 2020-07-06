@@ -17,6 +17,7 @@ import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListenerAdapter;

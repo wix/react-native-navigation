@@ -1,6 +1,5 @@
-package com.reactnativenavigation.viewcontrollers.bottomtabs.attachmode;
+package com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes;
 
-import com.reactnativenavigation.viewcontrollers.bottomtabs.*;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.junit.*;

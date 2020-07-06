@@ -5,6 +5,9 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.TabsAttachMode;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes.AttachMode;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes.OnSwitchToTab;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.junit.Test;

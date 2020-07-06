@@ -1,8 +1,10 @@
-package com.reactnativenavigation.viewcontrollers.bottomtabs;
+package com.reactnativenavigation.viewcontrollers.bottomtabs.attacher;
 
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes.AttachMode;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public class BottomTabsAttacher {
     private final BottomTabsPresenter presenter;
     private Options defaultOptions;
     @VisibleForTesting
-    AttachMode attachStrategy;
+    public AttachMode attachStrategy;
 
     public BottomTabsAttacher(List<ViewController> tabs, BottomTabsPresenter presenter, Options defaultOptions) {
         this.tabs = tabs;
@@ -22,11 +24,11 @@ public class BottomTabsAttacher {
         this.defaultOptions = defaultOptions;
     }
 
-    void init(ViewGroup parent, Options resolved) {
+    public void init(ViewGroup parent, Options resolved) {
         attachStrategy = AttachMode.get(parent, tabs, presenter, resolved.withDefaultOptions(defaultOptions));
     }
 
-    void attach() {
+    public void attach() {
         attachStrategy.attach();
     }
 
@@ -34,7 +36,7 @@ public class BottomTabsAttacher {
         attachStrategy.destroy();
     }
 
-    void onTabSelected(ViewController tab) {
+    public void onTabSelected(ViewController tab) {
         attachStrategy.onTabSelected(tab);
     }
 }

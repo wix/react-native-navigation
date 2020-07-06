@@ -1,4 +1,4 @@
-package com.reactnativenavigation.viewcontrollers.bottomtabs.attachmode;
+package com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes;
 
 import android.app.Activity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -12,7 +12,6 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.AttachMode;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsBehaviour;
 
 import org.junit.Test;

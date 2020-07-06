@@ -1,10 +1,11 @@
-package com.reactnativenavigation.viewcontrollers.bottomtabs;
+package com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes;
 
 import androidx.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsBehaviour;
 
