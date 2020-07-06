@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.BackDrawable;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.Constants;
@@ -59,16 +59,16 @@ public class NavigationIconResolverTest extends BaseTest {
         verify(onSuccess).run(any(BackDrawable.class));
     }
 
-    private Button iconButton() {
-        Button button = new Button();
+    private ButtonOptions iconButton() {
+        ButtonOptions button = new ButtonOptions();
         button.id = "iconBtnId";
         button.icon = new Text(ICON_URI);
         button.color = new Colour(Color.RED);
         return button;
     }
 
-    private Button backButton() {
-        Button button = new Button();
+    private ButtonOptions backButton() {
+        ButtonOptions button = new ButtonOptions();
         button.id = Constants.BACK_BUTTON_ID;
         return button;
     }

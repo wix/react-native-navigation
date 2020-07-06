@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.parse.Component;
+import com.reactnativenavigation.parse.ComponentOptions;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.controllers.stack.TitleBarReactViewController;
 
@@ -18,7 +18,7 @@ public class TitleBarReactViewControllerTest extends BaseTest {
     private TitleBarReactViewController uut;
     private TitleBarReactViewCreatorMock viewCreator;
     private Activity activity;
-    private Component component;
+    private ComponentOptions component;
 
     @Override
     public void beforeEach() {
@@ -34,8 +34,8 @@ public class TitleBarReactViewControllerTest extends BaseTest {
         verify(viewCreator).create(activity, component.componentId.get(), component.name.get());
     }
 
-    private Component createComponent() {
-        Component component = new Component();
+    private ComponentOptions createComponent() {
+        ComponentOptions component = new ComponentOptions();
         component.componentId = new Text("compId");
         component.name = new Text("compName");
         return component;

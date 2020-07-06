@@ -9,7 +9,7 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.fakes.IconResolverFake;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
@@ -34,12 +34,12 @@ public class TopBarButtonControllerTest extends BaseTest {
 
     private ButtonController uut;
     private StackController stackController;
-    private Button button;
+    private ButtonOptions button;
     private ButtonPresenter optionsPresenter;
 
     @Override
     public void beforeEach() {
-        button = new Button();
+        button = new ButtonOptions();
         final Activity activity = newActivity();
 
         TitleBarButtonCreatorMock buttonCreatorMock = new TitleBarButtonCreatorMock();

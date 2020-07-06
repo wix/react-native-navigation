@@ -1,7 +1,7 @@
 package com.reactnativenavigation.parse;
 
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
@@ -11,7 +11,7 @@ import com.reactnativenavigation.react.Constants;
 
 import org.json.JSONObject;
 
-public class BackButton extends Button {
+public class BackButton extends ButtonOptions {
     public static BackButton parse(JSONObject json) {
         BackButton result = new BackButton();
         if (json == null || json.toString().equals("{}")) return result;

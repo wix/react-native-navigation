@@ -5,7 +5,7 @@ import android.graphics.Paint;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.Colour;
 
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class ButtonSpanTest extends BaseTest {
     private ButtonSpan uut;
-    private Button button;
+    private ButtonOptions button;
 
     @Override
     public void beforeEach() {
@@ -43,8 +43,8 @@ public class ButtonSpanTest extends BaseTest {
     }
 
     @NotNull
-    private Button createButton() {
-        Button button = new Button();
+    private ButtonOptions createButton() {
+        ButtonOptions button = new ButtonOptions();
         button.color = new Colour(Color.RED);
         return button;
     }

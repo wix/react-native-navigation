@@ -14,11 +14,11 @@ import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
-import com.reactnativenavigation.parse.params.Button
+import com.reactnativenavigation.parse.params.ButtonOptions
 import com.reactnativenavigation.controllers.button.IconResolver
 import com.reactnativenavigation.views.titlebar.TitleBar
 
-open class ButtonPresenter(private val button: Button, private val iconResolver: IconResolver) {
+open class ButtonPresenter(private val button: ButtonOptions, private val iconResolver: IconResolver) {
     val styledText: SpannableString
         get() {
             return SpannableString(button.text.get("")).apply {

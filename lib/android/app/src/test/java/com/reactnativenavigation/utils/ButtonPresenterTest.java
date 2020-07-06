@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.fakes.IconResolverFake;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
@@ -38,7 +38,7 @@ public class ButtonPresenterTest extends BaseTest {
         Activity activity = newActivity();
         titleBar = new TitleBar(activity);
         activity.setContentView(titleBar);
-        Button button = createButton();
+        ButtonOptions button = createButton();
 
         uut = new ButtonPresenter(button, new IconResolverFake(activity));
         buttonController = new ButtonController(
@@ -64,8 +64,8 @@ public class ButtonPresenterTest extends BaseTest {
         assertThat(textualButtons.get(0).getCurrentTextColor()).isEqualTo(Color.RED);
     }
 
-    private Button createButton() {
-        Button b = new Button();
+    private ButtonOptions createButton() {
+        ButtonOptions b = new ButtonOptions();
         b.id = "btn1";
         b.text = new Text("button");
         b.color = new Colour(Color.RED);

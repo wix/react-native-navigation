@@ -6,7 +6,7 @@ import android.view.MenuItem;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.controllers.button.IconResolver;
@@ -27,7 +27,7 @@ public class TitleBarButtonControllerTest extends BaseTest {
         Activity activity = newActivity();
         titleBar = new TitleBar(activity);
 
-        Button button = createComponentButton();
+        ButtonOptions button = createComponentButton();
         uut = new ButtonController(
                 activity,
                 new ButtonPresenter(button, new IconResolver(activity, ImageLoaderMock.mock())),
@@ -51,8 +51,8 @@ public class TitleBarButtonControllerTest extends BaseTest {
         assertThat(third).isNotEqualTo(second);
     }
 
-    private Button createComponentButton() {
-        Button componentButton = new Button();
+    private ButtonOptions createComponentButton() {
+        ButtonOptions componentButton = new ButtonOptions();
         componentButton.id = "customBtn";
         componentButton.component.name = new Text("com.rnn.customBtn");
         componentButton.component.componentId = new Text("component4");

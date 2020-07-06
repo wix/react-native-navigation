@@ -3,7 +3,7 @@ package com.reactnativenavigation.mocks;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.parse.Component;
+import com.reactnativenavigation.parse.ComponentOptions;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
@@ -17,7 +17,7 @@ public class TitleBarButtonCreatorMock extends TitleBarButtonCreator {
     }
 
     @Override
-    public TitleBarReactButtonView create(Activity activity, Component component) {
+    public TitleBarReactButtonView create(Activity activity, ComponentOptions component) {
         final ReactInstanceManager reactInstanceManager = mock(ReactInstanceManager.class);
         return new TitleBarReactButtonView(activity, reactInstanceManager, component) {
             @Override

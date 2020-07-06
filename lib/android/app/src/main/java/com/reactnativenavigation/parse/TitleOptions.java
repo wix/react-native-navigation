@@ -25,7 +25,7 @@ public class TitleOptions {
         final TitleOptions options = new TitleOptions();
         if (json == null) return options;
 
-        options.component = Component.parse(json.optJSONObject("component"));
+        options.component = ComponentOptions.parse(json.optJSONObject("component"));
         options.text = TextParser.parse(json, "text");
         options.color = ColorParser.parse(json, "color");
         options.fontSize = FractionParser.parse(json, "fontSize");
@@ -42,7 +42,7 @@ public class TitleOptions {
     public Fraction fontSize = new NullFraction();
     public Alignment alignment = Alignment.Default;
     @Nullable public Typeface fontFamily;
-    public Component component = new Component();
+    public ComponentOptions component = new ComponentOptions();
     public Number height = new NullNumber();
     public Number topMargin = new NullNumber();
 

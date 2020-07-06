@@ -12,9 +12,9 @@ import com.reactnativenavigation.parse.parsers.TextParser;
 
 import org.json.JSONObject;
 
-public class Component {
-    public static Component parse(JSONObject json) {
-        Component result = new Component();
+public class ComponentOptions {
+    public static ComponentOptions parse(JSONObject json) {
+        ComponentOptions result = new ComponentOptions();
         if (json == null) return result;
 
         result.name = TextParser.parse(json, "name");
@@ -34,7 +34,7 @@ public class Component {
     public Number width = new NullNumber();
     public Number height = new NullNumber();
 
-    void mergeWith(Component other) {
+    void mergeWith(ComponentOptions other) {
         if (other.componentId.hasValue()) componentId = other.componentId;
         if (other.name.hasValue()) name = other.name;
         if (other.waitForRender.hasValue()) waitForRender = other.waitForRender;
@@ -43,7 +43,7 @@ public class Component {
         if (other.height.hasValue()) height = other.height;
     }
 
-    public void mergeWithDefault(Component defaultOptions) {
+    public void mergeWithDefault(ComponentOptions defaultOptions) {
         if (!componentId.hasValue()) componentId = defaultOptions.componentId;
         if (!name.hasValue()) name = defaultOptions.name;
         if (!waitForRender.hasValue()) waitForRender = defaultOptions.waitForRender;
@@ -56,7 +56,7 @@ public class Component {
         return name.hasValue();
     }
 
-    public boolean equals(Component other) {
+    public boolean equals(ComponentOptions other) {
         return name.equals(other.name) &&
                componentId.equals(other.componentId) &&
                alignment.equals(other.alignment) &&

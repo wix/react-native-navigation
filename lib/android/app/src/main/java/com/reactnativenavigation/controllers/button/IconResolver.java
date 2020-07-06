@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -22,7 +22,7 @@ public class IconResolver {
         this.imageLoader = imageLoader;
     }
 
-    public void resolve(Button button, Func1<Drawable> onSuccess) {
+    public void resolve(ButtonOptions button, Func1<Drawable> onSuccess) {
         if (button.hasIcon()) {
             imageLoader.loadIcon(context, button.icon.get(), new ImageLoadingListenerAdapter() {
                 @Override

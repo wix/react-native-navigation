@@ -3,7 +3,7 @@ package com.reactnativenavigation.controllers;
 import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.react.ReactView;
@@ -27,10 +27,10 @@ import static org.mockito.Mockito.spy;
 public class TopBarControllerTest extends BaseTest {
     private TopBarController uut;
     private Activity activity;
-    private Button leftButton;
-    private Button textButton1;
-    private Button textButton2;
-    private Button componentButton;
+    private ButtonOptions leftButton;
+    private ButtonOptions textButton1;
+    private ButtonOptions textButton2;
+    private ButtonOptions componentButton;
 
     @Override
     public void beforeEach() {
@@ -116,30 +116,30 @@ public class TopBarControllerTest extends BaseTest {
     }
 
     private void createButtons() {
-        leftButton = new Button();
+        leftButton = new ButtonOptions();
         leftButton.id = Constants.BACK_BUTTON_ID;
 
         textButton1 = createTextButton("1");
         textButton2 = createTextButton("2");
 
-        componentButton = new Button();
+        componentButton = new ButtonOptions();
         componentButton.id = "customBtn";
         componentButton.component.name = new Text("com.rnn.customBtn");
         componentButton.component.componentId = new Text("component4");
     }
 
-    private Button createTextButton(String id) {
-        Button button = new Button();
+    private ButtonOptions createTextButton(String id) {
+        ButtonOptions button = new ButtonOptions();
         button.id = id;
         button.text = new Text("txt" + id);
         return button;
     }
 
-    private List<ButtonController> leftButton(Button leftButton) {
+    private List<ButtonController> leftButton(ButtonOptions leftButton) {
         return Collections.singletonList(createButtonController(activity, leftButton));
     }
 
-    private List<ButtonController> rightButtons(Button... buttons) {
+    private List<ButtonController> rightButtons(ButtonOptions... buttons) {
         return map(Arrays.asList(buttons), button -> createButtonController(activity, button));
     }
 }

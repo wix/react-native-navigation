@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.fakes.IconResolverFake;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.controllers.stack.ButtonController;
@@ -120,7 +120,7 @@ public class TitleBarTest extends BaseTest {
     }
 
     @NotNull
-    private ButtonController createButtonController(Button b) {
+    private ButtonController createButtonController(ButtonOptions b) {
         return new ButtonController(
                 activity,
                 new ButtonPresenter(b, new IconResolverFake(activity)),
@@ -131,8 +131,8 @@ public class TitleBarTest extends BaseTest {
     }
 
     @NotNull
-    private Button createIconButton() {
-        Button b = new Button();
+    private ButtonOptions createIconButton() {
+        ButtonOptions b = new ButtonOptions();
         b.id = "id";
         b.icon = new Text("");
         return b;

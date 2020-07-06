@@ -17,7 +17,7 @@ public class TopBarBackgroundOptions {
         if (json == null) return options;
 
         options.color = ColorParser.parse(json, "color");
-        options.component = Component.parse(json.optJSONObject("component"));
+        options.component = ComponentOptions.parse(json.optJSONObject("component"));
         options.waitForRender = BoolParser.parse(json, "waitForRender");
 
         if (options.component.hasValue()) {
@@ -28,7 +28,7 @@ public class TopBarBackgroundOptions {
     }
 
     public Colour color = new NullColor();
-    public Component component = new Component();
+    public ComponentOptions component = new ComponentOptions();
     public Bool waitForRender = new NullBool();
 
     void mergeWith(final TopBarBackgroundOptions other) {

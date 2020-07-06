@@ -17,13 +17,13 @@ import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.parse.Alignment;
-import com.reactnativenavigation.parse.Component;
+import com.reactnativenavigation.parse.ComponentOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.SubtitleOptions;
 import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
@@ -88,12 +88,12 @@ public class StackPresenterTest extends BaseTest {
     private TopBar topBar;
     private RenderChecker renderChecker;
 
-    private Button textBtn1 = TitleBarHelper.textualButton("btn1");
-    private Button textBtn2 = TitleBarHelper.textualButton("btn2");
-    private Button componentBtn1 = TitleBarHelper.reactViewButton("btn1_");
-    private Button componentBtn2 = TitleBarHelper.reactViewButton("btn2_");
-    private Component titleComponent1 = TitleBarHelper.titleComponent("component1");
-    private Component titleComponent2 = TitleBarHelper.titleComponent("component2");
+    private ButtonOptions textBtn1 = TitleBarHelper.textualButton("btn1");
+    private ButtonOptions textBtn2 = TitleBarHelper.textualButton("btn2");
+    private ButtonOptions componentBtn1 = TitleBarHelper.reactViewButton("btn1_");
+    private ButtonOptions componentBtn2 = TitleBarHelper.reactViewButton("btn2_");
+    private ComponentOptions titleComponent1 = TitleBarHelper.titleComponent("component1");
+    private ComponentOptions titleComponent2 = TitleBarHelper.titleComponent("component2");
     private TopBarController topBarController;
     private ChildControllersRegistry childRegistry;
 
@@ -204,7 +204,7 @@ public class StackPresenterTest extends BaseTest {
 
         Options options = new Options();
 
-        Button button = new Button();
+        ButtonOptions button = new ButtonOptions();
         button.text = new Text("btn");
         options.topBar.buttons.right = new ArrayList<>(Collections.singleton(button));
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
@@ -259,7 +259,7 @@ public class StackPresenterTest extends BaseTest {
         List<ButtonController> appliedButtons = captor1.getValue();
 
         Options toMerge = new Options();
-        toMerge.topBar.buttons.right = new ArrayList(requireNonNull(map(toApply.topBar.buttons.right, Button::copy)));
+        toMerge.topBar.buttons.right = new ArrayList(requireNonNull(map(toApply.topBar.buttons.right, ButtonOptions::copy)));
         toMerge.topBar.buttons.right.get(0).color = new Colour(Color.RED);
         toMerge.topBar.buttons.right.add(1, componentBtn2);
         uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child);
@@ -440,9 +440,9 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void applyButtons_buttonColorIsMergedToButtons() {
         Options options = new Options();
-        Button rightButton1 = new Button();
-        Button rightButton2 = new Button();
-        Button leftButton = new Button();
+        ButtonOptions rightButton1 = new ButtonOptions();
+        ButtonOptions rightButton2 = new ButtonOptions();
+        ButtonOptions leftButton = new ButtonOptions();
 
         options.topBar.rightButtonColor = new Colour(10);
         options.topBar.leftButtonColor = new Colour(100);
@@ -488,9 +488,9 @@ public class StackPresenterTest extends BaseTest {
         appliedOptions.topBar.leftButtonColor = new Colour(100);
 
         Options options2 = new Options();
-        Button rightButton1 = new Button();
-        Button rightButton2 = new Button();
-        Button leftButton = new Button();
+        ButtonOptions rightButton1 = new ButtonOptions();
+        ButtonOptions rightButton2 = new ButtonOptions();
+        ButtonOptions leftButton = new ButtonOptions();
 
         options2.topBar.buttons.right = new ArrayList<>();
         options2.topBar.buttons.right.add(rightButton1);
@@ -520,9 +520,9 @@ public class StackPresenterTest extends BaseTest {
         resolvedOptions.topBar.leftButtonColor = new Colour(100);
 
         Options options2 = new Options();
-        Button rightButton1 = new Button();
-        Button rightButton2 = new Button();
-        Button leftButton = new Button();
+        ButtonOptions rightButton1 = new ButtonOptions();
+        ButtonOptions rightButton2 = new ButtonOptions();
+        ButtonOptions leftButton = new ButtonOptions();
 
         options2.topBar.buttons.right = new ArrayList<>();
         options2.topBar.buttons.right.add(rightButton1);
@@ -685,8 +685,8 @@ public class StackPresenterTest extends BaseTest {
         });
     }
 
-    private Component component(Alignment alignment) {
-        Component component = new Component();
+    private ComponentOptions component(Alignment alignment) {
+        ComponentOptions component = new ComponentOptions();
         component.name = new Text("myComp");
         component.alignment = alignment;
         component.componentId = new Text("compId");

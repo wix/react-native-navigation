@@ -11,13 +11,14 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationsOptions;
+import com.reactnativenavigation.parse.ComponentOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.TopBarButtons;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.utils.CollectionUtils;
@@ -232,7 +233,7 @@ public class StackPresenter {
     }
 
     @Nullable
-    private View findBackgroundComponent(com.reactnativenavigation.parse.Component component) {
+    private View findBackgroundComponent(ComponentOptions component) {
         for (TopBarBackgroundViewController controller : backgroundControllers.values()) {
             if (ObjectUtils.equalsNotNull(controller.getComponent().name.get(null), component.name.get(null)) &&
                 ObjectUtils.equalsNotNull(controller.getComponent().componentId.get(null), component.componentId.get(null))) {
@@ -271,7 +272,7 @@ public class StackPresenter {
 
     private void applyButtons(TopBarOptions options, ViewController child) {
         if (options.buttons.right != null) {
-            List<Button> rightButtons = mergeButtonsWithColor(options.buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
+            List<ButtonOptions> rightButtons = mergeButtonsWithColor(options.buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
             List<ButtonController> rightButtonControllers = getOrCreateButtonControllersByInstanceId(componentRightButtons.get(child.getView()), rightButtons);
             componentRightButtons.put(child.getView(), keyBy(rightButtonControllers, ButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
@@ -284,7 +285,7 @@ public class StackPresenter {
         }
 
         if (options.buttons.left != null) {
-            List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
+            List<ButtonOptions> leftButtons = mergeButtonsWithColor(options.buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
             List<ButtonController> leftButtonControllers = getOrCreateButtonControllersByInstanceId(componentLeftButtons.get(child.getView()), leftButtons);
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, ButtonController::getButtonInstanceId));
             topBarController.setLeftButtons(leftButtonControllers);
@@ -299,22 +300,22 @@ public class StackPresenter {
         topBar.setOverflowButtonColor(options.rightButtonColor.get(Color.BLACK));
     }
 
-    private List<ButtonController> getOrCreateButtonControllersByInstanceId(@Nullable Map<String, ButtonController> currentButtons, @Nullable List<Button> buttons) {
+    private List<ButtonController> getOrCreateButtonControllersByInstanceId(@Nullable Map<String, ButtonController> currentButtons, @Nullable List<ButtonOptions> buttons) {
         if (buttons == null) return null;
         Map<String, ButtonController> result = new LinkedHashMap<>();
         forEach(buttons, b -> result.put(b.instanceId, getOrDefault(currentButtons, b.instanceId, () -> createButtonController(b))));
         return new ArrayList<>(result.values());
     }
 
-    private List<ButtonController> getOrCreateButtonControllers(@Nullable Map<String, ButtonController> currentButtons, @NonNull List<Button> buttons) {
+    private List<ButtonController> getOrCreateButtonControllers(@Nullable Map<String, ButtonController> currentButtons, @NonNull List<ButtonOptions> buttons) {
         ArrayList result = new ArrayList<ButtonController>();
-        for (Button b : buttons) {
+        for (ButtonOptions b : buttons) {
             result.add(take(first(perform(currentButtons, null, Map::values), button -> button.getButton().equals(b)), createButtonController(b)));
         }
         return result;
     }
 
-    private ButtonController createButtonController(Button button) {
+    private ButtonController createButtonController(ButtonOptions button) {
         ButtonController controller = new ButtonController(activity,
                 new ButtonPresenter(button, iconResolver),
                 button,
@@ -367,7 +368,7 @@ public class StackPresenter {
 
     private void mergeRightButtons(TopBarOptions options, TopBarButtons buttons, View child) {
         if (buttons.right == null) return;
-        List<Button> rightButtons = mergeButtonsWithColor(buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
+        List<ButtonOptions> rightButtons = mergeButtonsWithColor(buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
         List<ButtonController> toMerge = getOrCreateButtonControllers(componentRightButtons.get(child), rightButtons);
         List<ButtonController> toRemove = difference(currentRightButtons, toMerge, ButtonController::areButtonsEqual);
         forEach(toRemove, ButtonController::destroy);
@@ -381,7 +382,7 @@ public class StackPresenter {
 
     private void mergeLeftButton(TopBarOptions options, TopBarButtons buttons, View child) {
         if (buttons.left == null) return;
-        List<Button> leftButtons = mergeButtonsWithColor(buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
+        List<ButtonOptions> leftButtons = mergeButtonsWithColor(buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
         List<ButtonController> toMerge = getOrCreateButtonControllers(componentLeftButtons.get(child), leftButtons);
         componentLeftButtons.put(child, keyBy(toMerge, ButtonController::getButtonInstanceId));
         topBarController.setLeftButtons(toMerge);
@@ -397,10 +398,10 @@ public class StackPresenter {
         }
     }
 
-    private List<Button> mergeButtonsWithColor(@NonNull List<Button> buttons, Colour buttonColor, Colour disabledColor) {
-        List<Button> result = new ArrayList<>();
-        for (Button button : buttons) {
-            Button copy = button.copy();
+    private List<ButtonOptions> mergeButtonsWithColor(@NonNull List<ButtonOptions> buttons, Colour buttonColor, Colour disabledColor) {
+        List<ButtonOptions> result = new ArrayList<>();
+        for (ButtonOptions button : buttons) {
+            ButtonOptions copy = button.copy();
             if (!button.color.hasValue()) copy.color = buttonColor;
             if (!button.disabledColor.hasValue()) copy.disabledColor = disabledColor;
             result.add(copy);
@@ -483,7 +484,7 @@ public class StackPresenter {
         }
     }
 
-    private TitleBarReactViewController findTitleComponent(com.reactnativenavigation.parse.Component component) {
+    private TitleBarReactViewController findTitleComponent(ComponentOptions component) {
         for (TitleBarReactViewController controller : titleControllers.values()) {
             if (ObjectUtils.equalsNotNull(controller.getComponent().name.get(null), component.name.get(null)) &&
                 ObjectUtils.equalsNotNull(controller.getComponent().componentId.get(null), component.componentId.get(null))) {
@@ -504,7 +505,7 @@ public class StackPresenter {
         if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
     }
 
-    private LayoutParams getComponentLayoutParams(com.reactnativenavigation.parse.Component component) {
+    private LayoutParams getComponentLayoutParams(ComponentOptions component) {
         return new Toolbar.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, component.alignment == Alignment.Center ? Gravity.CENTER : Gravity.START);
     }
 

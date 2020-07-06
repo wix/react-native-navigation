@@ -2,7 +2,7 @@ package com.reactnativenavigation.parse;
 
 import androidx.annotation.Nullable;
 
-import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
@@ -24,13 +24,13 @@ public class TopBarButtons {
     }
 
     @Nullable
-    private static ArrayList<Button> parseButtons(TypefaceLoader typefaceLoader, JSONObject json, String buttons) {
-        return Button.parse(json, buttons, typefaceLoader);
+    private static ArrayList<ButtonOptions> parseButtons(TypefaceLoader typefaceLoader, JSONObject json, String buttons) {
+        return ButtonOptions.parse(json, buttons, typefaceLoader);
     }
 
     public BackButton back = new BackButton();
-    @Nullable public ArrayList<Button> left;
-    @Nullable public ArrayList<Button> right;
+    @Nullable public ArrayList<ButtonOptions> left;
+    @Nullable public ArrayList<ButtonOptions> right;
 
     void mergeWith(TopBarButtons other) {
         if (other.left != null) left = mergeLeftButton(other.left);
@@ -38,9 +38,9 @@ public class TopBarButtons {
         back.mergeWith(other.back);
     }
 
-    private ArrayList<Button> mergeLeftButton(ArrayList<Button> other) {
+    private ArrayList<ButtonOptions> mergeLeftButton(ArrayList<ButtonOptions> other) {
         if (!other.isEmpty() && !CollectionUtils.isNullOrEmpty(left)) {
-            Button otherLeft = other.get(0);
+            ButtonOptions otherLeft = other.get(0);
             if (otherLeft.id == null) {
                 left.get(0).mergeWith(otherLeft);
                 return left;
@@ -53,14 +53,14 @@ public class TopBarButtons {
         if (left == null) {
             left = defaultOptions.left;
         } else if (!CollectionUtils.isNullOrEmpty(defaultOptions.left)){
-            for (Button button : left) {
+            for (ButtonOptions button : left) {
                 button.mergeWithDefault(defaultOptions.left.get(0));
             }
         }
         if (right == null) {
             right = defaultOptions.right;
         } else if (!CollectionUtils.isNullOrEmpty(defaultOptions.right)) {
-            for (Button button : right) {
+            for (ButtonOptions button : right) {
                 button.mergeWithDefault(defaultOptions.right.get(0));
             }
         }

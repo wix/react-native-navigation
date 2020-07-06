@@ -5,7 +5,7 @@ import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
 import com.reactnativenavigation.parse.Options
-import com.reactnativenavigation.parse.params.Button
+import com.reactnativenavigation.parse.params.ButtonOptions
 import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.controllers.viewcontroller.ViewController
@@ -17,7 +17,7 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView
 
 class ButtonController(activity: Activity,
                        private val presenter: ButtonPresenter,
-                       val button: Button,
+                       val button: ButtonOptions,
                        private val viewCreator: TitleBarButtonCreator,
                        private val onPressListener: OnClickListener) : ViewController<TitleBarReactButtonView>(activity, button.id, YellowBoxDelegate(activity), Options(), ViewControllerOverlay(activity)), MenuItem.OnMenuItemClickListener {
     private var menuItem: MenuItem? = null

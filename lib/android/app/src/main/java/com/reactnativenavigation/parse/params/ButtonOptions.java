@@ -3,7 +3,7 @@ package com.reactnativenavigation.parse.params;
 import android.graphics.Typeface;
 import android.view.MenuItem;
 
-import com.reactnativenavigation.parse.Component;
+import com.reactnativenavigation.parse.ComponentOptions;
 import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.FractionParser;
@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 
 import static com.reactnativenavigation.utils.ObjectUtils.take;
 
-public class Button {
+public class ButtonOptions {
     public String instanceId = "btn" + CompatUtils.generateViewId();
 
     public String id = "btn" + CompatUtils.generateViewId();
@@ -38,9 +38,9 @@ public class Button {
     @Nullable public Typeface fontFamily;
     public Text icon = new NullText();
     public Text testId = new NullText();
-    public Component component = new Component();
+    public ComponentOptions component = new ComponentOptions();
 
-    public boolean equals(Button other) {
+    public boolean equals(ButtonOptions other) {
         return Objects.equals(id, other.id) &&
                accessibilityLabel.equals(other.accessibilityLabel) &&
                text.equals(other.text) &&
@@ -57,8 +57,8 @@ public class Button {
                component.equals(other.component);
     }
 
-    private static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
-        Button button = new Button();
+    private static ButtonOptions parseJson(JSONObject json, TypefaceLoader typefaceManager) {
+        ButtonOptions button = new ButtonOptions();
         button.id = take(json.optString("id"), "btn" + CompatUtils.generateViewId());
         button.accessibilityLabel = TextParser.parse(json, "accessibilityLabel");
         button.text = TextParser.parse(json, "text");
@@ -71,7 +71,7 @@ public class Button {
         button.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         button.fontWeight = TextParser.parse(json, "fontWeight");
         button.testId = TextParser.parse(json, "testID");
-        button.component = Component.parse(json.optJSONObject("component"));
+        button.component = ComponentOptions.parse(json.optJSONObject("component"));
 
         if (json.has("icon")) {
             button.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
@@ -80,8 +80,8 @@ public class Button {
         return button;
     }
 
-    public static ArrayList<Button> parse(JSONObject json, String buttonsType, TypefaceLoader typefaceLoader) {
-        ArrayList<Button> buttons = new ArrayList<>();
+    public static ArrayList<ButtonOptions> parse(JSONObject json, String buttonsType, TypefaceLoader typefaceLoader) {
+        ArrayList<ButtonOptions> buttons = new ArrayList<>();
         if (!json.has(buttonsType)) {
             return null;
         }
@@ -95,18 +95,18 @@ public class Button {
         return buttons;
     }
 
-    private static ArrayList<Button> parseJsonArray(JSONArray jsonArray, TypefaceLoader typefaceLoader) {
-        ArrayList<Button> buttons = new ArrayList<>();
+    private static ArrayList<ButtonOptions> parseJsonArray(JSONArray jsonArray, TypefaceLoader typefaceLoader) {
+        ArrayList<ButtonOptions> buttons = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.optJSONObject(i);
-            Button button = Button.parseJson(json, typefaceLoader);
+            ButtonOptions button = ButtonOptions.parseJson(json, typefaceLoader);
             buttons.add(button);
         }
         return buttons;
     }
 
-    public Button copy() {
-        Button button = new Button();
+    public ButtonOptions copy() {
+        ButtonOptions button = new ButtonOptions();
         button.mergeWith(this);
         return button;
     }
@@ -142,7 +142,7 @@ public class Button {
         }
     }
 
-    public void mergeWith(Button other) {
+    public void mergeWith(ButtonOptions other) {
         if (other.text.hasValue()) text = other.text;
         if (other.accessibilityLabel.hasValue()) accessibilityLabel = other.accessibilityLabel;
         if (other.enabled.hasValue()) enabled = other.enabled;
@@ -160,7 +160,7 @@ public class Button {
         if (other.instanceId != null) instanceId = other.instanceId;
     }
 
-    public void mergeWithDefault(Button defaultOptions) {
+    public void mergeWithDefault(ButtonOptions defaultOptions) {
         if (!text.hasValue()) text = defaultOptions.text;
         if (!accessibilityLabel.hasValue()) accessibilityLabel = defaultOptions.accessibilityLabel;
         if (!enabled.hasValue()) enabled = defaultOptions.enabled;

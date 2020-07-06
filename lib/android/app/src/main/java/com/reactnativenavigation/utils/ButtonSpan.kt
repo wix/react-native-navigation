@@ -5,9 +5,9 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.text.TextPaint
 import android.text.style.MetricAffectingSpan
-import com.reactnativenavigation.parse.params.Button
+import com.reactnativenavigation.parse.params.ButtonOptions
 
-class ButtonSpan(private val button: Button) : MetricAffectingSpan() {
+class ButtonSpan(private val button: ButtonOptions) : MetricAffectingSpan() {
     companion object {
         const val DISABLED_COLOR = Color.LTGRAY
     }

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.parse.Component;
+import com.reactnativenavigation.parse.ComponentOptions;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.react.ReactView;
 
@@ -15,9 +15,9 @@ import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 @SuppressLint("ViewConstructor")
 public class TitleBarReactButtonView extends ReactView {
-    private final Component component;
+    private final ComponentOptions component;
 
-    public TitleBarReactButtonView(Context context, ReactInstanceManager reactInstanceManager, Component component) {
+    public TitleBarReactButtonView(Context context, ReactInstanceManager reactInstanceManager, ComponentOptions component) {
         super(context, reactInstanceManager, component.componentId.get(), component.name.get());
         this.component = component;
     }
