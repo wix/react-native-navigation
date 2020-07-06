@@ -2,8 +2,6 @@ package com.reactnativenavigation.parse;
 
 import androidx.annotation.CheckResult;
 
-import com.reactnativenavigation.parse.params.Orientation;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 

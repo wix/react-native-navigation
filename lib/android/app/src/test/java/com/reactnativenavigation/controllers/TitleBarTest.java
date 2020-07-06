@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.fakes.IconResolverFake;
-import com.reactnativenavigation.parse.params.ButtonOptions;
+import com.reactnativenavigation.parse.ButtonOptions;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.controllers.stack.ButtonController;

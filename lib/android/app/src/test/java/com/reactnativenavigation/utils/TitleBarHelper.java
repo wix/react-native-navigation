@@ -5,7 +5,7 @@ import android.app.Activity;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.ComponentOptions;
-import com.reactnativenavigation.parse.params.ButtonOptions;
+import com.reactnativenavigation.parse.ButtonOptions;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.controllers.stack.ButtonController;
 import com.reactnativenavigation.controllers.button.IconResolver;

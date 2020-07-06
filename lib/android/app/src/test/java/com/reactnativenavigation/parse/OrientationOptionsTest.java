@@ -1,7 +1,6 @@
 package com.reactnativenavigation.parse;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.params.Orientation;
 
 import org.json.JSONArray;
 import org.json.JSONException;

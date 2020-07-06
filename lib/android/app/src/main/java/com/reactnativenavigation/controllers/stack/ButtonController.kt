@@ -5,7 +5,7 @@ import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
 import com.reactnativenavigation.parse.Options
-import com.reactnativenavigation.parse.params.ButtonOptions
+import com.reactnativenavigation.parse.ButtonOptions
 import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.controllers.viewcontroller.ViewController

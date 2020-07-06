@@ -5,7 +5,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.text.TextPaint
 import android.text.style.MetricAffectingSpan
-import com.reactnativenavigation.parse.params.ButtonOptions
+import com.reactnativenavigation.parse.ButtonOptions
 
 class ButtonSpan(private val button: ButtonOptions) : MetricAffectingSpan() {
     companion object {

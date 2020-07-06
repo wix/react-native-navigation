@@ -1,9 +1,18 @@
-package com.reactnativenavigation.parse.params;
+package com.reactnativenavigation.parse;
 
 import android.graphics.Typeface;
 import android.view.MenuItem;
 
-import com.reactnativenavigation.parse.ComponentOptions;
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.parse.params.Fraction;
+import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.NullColor;
+import com.reactnativenavigation.parse.params.NullFraction;
+import com.reactnativenavigation.parse.params.NullNumber;
+import com.reactnativenavigation.parse.params.NullText;
+import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.FractionParser;

@@ -23,7 +23,7 @@ import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.SubtitleOptions;
 import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.ButtonOptions;
+import com.reactnativenavigation.parse.ButtonOptions;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;

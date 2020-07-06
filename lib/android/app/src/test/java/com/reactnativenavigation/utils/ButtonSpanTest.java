@@ -5,7 +5,7 @@ import android.graphics.Paint;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.ButtonOptions;
+import com.reactnativenavigation.parse.ButtonOptions;
 import com.reactnativenavigation.parse.params.Colour;
 
 import org.jetbrains.annotations.NotNull;

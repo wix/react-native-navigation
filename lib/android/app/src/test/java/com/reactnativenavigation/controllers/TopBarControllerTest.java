@@ -3,7 +3,7 @@ package com.reactnativenavigation.controllers;
 import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.params.ButtonOptions;
+import com.reactnativenavigation.parse.ButtonOptions;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.react.ReactView;

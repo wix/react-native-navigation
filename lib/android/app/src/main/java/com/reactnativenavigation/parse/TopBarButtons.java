@@ -2,7 +2,6 @@ package com.reactnativenavigation.parse;
 
 import androidx.annotation.Nullable;
 
-import com.reactnativenavigation.parse.params.ButtonOptions;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
 

@@ -1,4 +1,4 @@
-package com.reactnativenavigation.parse.params;
+package com.reactnativenavigation.parse;
 
 import android.content.pm.ActivityInfo;
 import androidx.annotation.Nullable;
