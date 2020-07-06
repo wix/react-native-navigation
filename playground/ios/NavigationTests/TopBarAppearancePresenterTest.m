@@ -19,8 +19,8 @@
 - (void)setUp {
     [super setUp];
 	_componentViewController = [RNNComponentViewController createWithComponentId:@"componentId"];
-	_stack = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:_uut eventEmitter:nil childViewControllers:@[_componentViewController]];
 	_uut = [[TopBarAppearancePresenter alloc] initWithNavigationController:_stack];
+	_stack = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:_uut eventEmitter:nil childViewControllers:@[_componentViewController]];
 }
 
 - (void)testMergeOptions_shouldMergeWithDefault {
@@ -35,15 +35,5 @@
 	UIFont* font = _stack.childViewControllers.lastObject.navigationItem.standardAppearance.titleTextAttributes[NSFontAttributeName];
 	XCTAssertEqual(font.pointSize, 21);
 }
-
-- (void)testApplyOptions_shouldSetBackButtonTestID {
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
-	options.topBar.backButton.testID = [Text withValue:@"TestID"];
-	
-	[_uut applyOptions:options.topBar];
-	XCTAssertTrue([_componentViewController.navigationItem.backBarButtonItem.accessibilityIdentifier isEqualToString:@"TestID"]);
-}
-
-
 
 @end
