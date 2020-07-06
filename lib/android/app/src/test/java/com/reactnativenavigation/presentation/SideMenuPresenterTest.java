@@ -1,7 +1,7 @@
 package com.reactnativenavigation.presentation;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.controllers.sidemenu.SideMenuPresenter;
+import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuPresenter;
 import com.reactnativenavigation.options.SideMenuRootOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.views.sidemenu.SideMenu;

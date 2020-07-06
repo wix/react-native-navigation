@@ -9,8 +9,8 @@ import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.options.LayoutFactory;
 import com.reactnativenavigation.options.LayoutNode;
 import com.reactnativenavigation.options.parsers.JSONParser;
-import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.controllers.navigator.Navigator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import org.json.JSONException;
 import org.json.JSONObject;

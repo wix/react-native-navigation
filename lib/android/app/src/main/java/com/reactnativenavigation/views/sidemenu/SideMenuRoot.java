@@ -8,10 +8,9 @@ import android.view.View;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.SideMenuOptions;
-import com.reactnativenavigation.controllers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.BehaviourDelegate;
-import com.reactnativenavigation.views.sidemenu.SideMenu;
 
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;

@@ -18,7 +18,7 @@ import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 
 import java.util.ArrayList;
 import java.util.List;

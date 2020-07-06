@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.controllers.viewcontroller.IReactView;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.VisibleForTesting;

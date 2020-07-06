@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.controllers.viewcontroller.IReactView;
-import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.controllers.toptabs.TopTabsAdapter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.views.component.Component;
 
 import java.util.List;

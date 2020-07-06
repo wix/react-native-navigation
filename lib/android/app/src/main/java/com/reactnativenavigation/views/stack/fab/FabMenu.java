@@ -3,9 +3,9 @@ package com.reactnativenavigation.views.stack.fab;
 import android.content.Context;
 
 import com.github.clans.fab.FloatingActionMenu;
-import com.reactnativenavigation.controllers.stack.FabAnimator;
-import com.reactnativenavigation.controllers.stack.FabCollapseBehaviour;
-import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.stack.FabAnimator;
+import com.reactnativenavigation.viewcontrollers.stack.FabCollapseBehaviour;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 
 import java.util.HashSet;
 

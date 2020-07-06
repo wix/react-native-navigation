@@ -6,9 +6,9 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.reactnativenavigation.controllers.stack.FabAnimator;
-import com.reactnativenavigation.controllers.stack.FabCollapseBehaviour;
-import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.stack.FabAnimator;
+import com.reactnativenavigation.viewcontrollers.stack.FabCollapseBehaviour;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;

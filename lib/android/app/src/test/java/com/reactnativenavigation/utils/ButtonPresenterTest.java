@@ -6,13 +6,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.controllers.stack.topbar.button.ButtonPresenter;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.fakes.IconResolverFake;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 

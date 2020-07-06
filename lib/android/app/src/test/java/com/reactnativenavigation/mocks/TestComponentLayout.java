@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
-import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 public class TestComponentLayout extends ComponentLayout implements ButtonController.OnClickListener {

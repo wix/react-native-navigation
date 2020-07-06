@@ -3,7 +3,7 @@ package com.reactnativenavigation.views.element
 import android.animation.AnimatorSet
 import android.view.View
 import com.reactnativenavigation.options.ElementTransitionOptions
-import com.reactnativenavigation.controllers.viewcontroller.ViewController
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
 class ElementTransition(private val transitionOptions: ElementTransitionOptions) : Transition() {
     val id: String

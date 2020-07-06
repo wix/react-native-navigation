@@ -15,15 +15,15 @@ import android.widget.RelativeLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.reactnativenavigation.R;
-import com.reactnativenavigation.controllers.stack.topbar.TopBarCollapseBehavior;
-import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.LayoutDirection;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 

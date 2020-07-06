@@ -11,10 +11,10 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.controllers.viewcontroller.IReactView;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.views.component.Renderable;
 
 import androidx.annotation.RestrictTo;

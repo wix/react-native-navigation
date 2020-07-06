@@ -8,7 +8,7 @@ import com.facebook.react.uimanager.util.ReactFindViewUtil.findView
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.utils.Functions.Func1
-import com.reactnativenavigation.controllers.viewcontroller.ViewController
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
 open class ElementTransitionManager {
     private val animatorCreator: TransitionAnimatorCreator = TransitionAnimatorCreator()

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.reactnativenavigation.controllers.externalcomponent.ExternalComponent;
+import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponent;
 
 import org.json.JSONObject;
 

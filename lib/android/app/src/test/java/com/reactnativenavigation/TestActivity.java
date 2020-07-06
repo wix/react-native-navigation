@@ -1,7 +1,7 @@
 package com.reactnativenavigation;
 
 import com.reactnativenavigation.react.ReactGateway;
-import com.reactnativenavigation.controllers.navigator.Navigator;
+import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import org.mockito.Mockito;
 

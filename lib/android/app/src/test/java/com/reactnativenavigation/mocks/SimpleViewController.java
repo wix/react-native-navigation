@@ -5,13 +5,13 @@ import android.content.Context;
 import android.view.MotionEvent;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.controllers.component.ComponentPresenterBase;
-import com.reactnativenavigation.controllers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.component.ComponentPresenterBase;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.controllers.child.ChildController;
-import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.child.ChildController;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.views.component.ReactComponent;
 
 import org.mockito.Mockito;
