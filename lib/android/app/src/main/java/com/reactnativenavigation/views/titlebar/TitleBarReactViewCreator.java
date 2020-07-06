@@ -3,7 +3,7 @@ package com.reactnativenavigation.views.titlebar;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.controllers.viewcontroller.ReactViewCreator;
 
 public class TitleBarReactViewCreator implements ReactViewCreator {
 

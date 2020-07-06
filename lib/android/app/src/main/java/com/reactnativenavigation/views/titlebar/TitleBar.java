@@ -18,7 +18,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
+import com.reactnativenavigation.controllers.stack.ButtonController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ import static com.reactnativenavigation.utils.ViewUtils.removeFromParent;
 public class TitleBar extends Toolbar {
     public static final int DEFAULT_LEFT_MARGIN = 16;
 
-    private TitleBarButtonController leftButtonController;
+    private ButtonController leftButtonController;
     private View component;
     private Alignment titleAlignment;
     private Alignment subtitleAlignment;
@@ -218,11 +218,11 @@ public class TitleBar extends Toolbar {
         if (getMenu().size() > 0) getMenu().clear();
     }
 
-    public void setBackButton(TitleBarButtonController button) {
+    public void setBackButton(ButtonController button) {
         setLeftButton(button);
     }
 
-    public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
+    public void setLeftButtons(List<ButtonController> leftButtons) {
         if (leftButtons == null) return;
         if (leftButtons.isEmpty()) {
             clearLeftButton();
@@ -234,7 +234,7 @@ public class TitleBar extends Toolbar {
         setLeftButton(leftButtons.get(0));
     }
 
-    private void setLeftButton(TitleBarButtonController button) {
+    private void setLeftButton(ButtonController button) {
         leftButtonController = button;
         runOnPreDrawOnce(findTitleTextView(), title -> alignTextView(titleAlignment, title));
         button.applyNavigationIcon(this);
@@ -278,7 +278,7 @@ public class TitleBar extends Toolbar {
         getMenu().removeItem(buttonId);
     }
 
-    public boolean containsRightButton(TitleBarButtonController button) {
+    public boolean containsRightButton(ButtonController button) {
         return getMenu().findItem(button.getButtonIntId()) != null;
     }
 }

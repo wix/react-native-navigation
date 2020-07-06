@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
 

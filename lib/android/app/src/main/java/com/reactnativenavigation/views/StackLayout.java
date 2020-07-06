@@ -5,7 +5,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.controllers.topbar.TopBarController;
 import com.reactnativenavigation.views.topbar.ScrollDIsabledBehavior;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;

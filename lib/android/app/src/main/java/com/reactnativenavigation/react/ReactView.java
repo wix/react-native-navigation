@@ -14,7 +14,7 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.controllers.viewcontroller.IReactView;
 import com.reactnativenavigation.views.Renderable;
 
 import androidx.annotation.RestrictTo;

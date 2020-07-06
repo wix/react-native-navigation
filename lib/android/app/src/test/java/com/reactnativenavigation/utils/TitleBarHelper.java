@@ -7,8 +7,8 @@ import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
-import com.reactnativenavigation.viewcontrollers.button.IconResolver;
+import com.reactnativenavigation.controllers.stack.ButtonController;
+import com.reactnativenavigation.controllers.button.IconResolver;
 
 public class TitleBarHelper {
     public static Button textualButton(String text) {
@@ -42,8 +42,8 @@ public class TitleBarHelper {
     }
 
 
-    public static TitleBarButtonController createButtonController(Activity activity, Button button) {
-        return new TitleBarButtonController(activity,
+    public static ButtonController createButtonController(Activity activity, Button button) {
+        return new ButtonController(activity,
                 new ButtonPresenter(button, new IconResolver(activity, ImageLoaderMock.mock())),
                 button,
                 new TitleBarButtonCreatorMock(),

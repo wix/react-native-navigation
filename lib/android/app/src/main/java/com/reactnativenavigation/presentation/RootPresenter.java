@@ -6,7 +6,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 

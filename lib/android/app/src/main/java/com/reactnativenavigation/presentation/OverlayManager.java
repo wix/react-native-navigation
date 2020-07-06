@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 
 import java.util.HashMap;

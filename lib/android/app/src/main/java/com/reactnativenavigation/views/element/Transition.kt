@@ -2,7 +2,7 @@ package com.reactnativenavigation.views.element
 
 import android.animation.AnimatorSet
 import android.view.View
-import com.reactnativenavigation.viewcontrollers.ViewController
+import com.reactnativenavigation.controllers.viewcontroller.ViewController
 
 abstract class Transition {
     abstract var viewController: ViewController<*>

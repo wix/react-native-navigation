@@ -11,8 +11,8 @@ import com.reactnativenavigation.parse.params.Param;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
+import com.reactnativenavigation.controllers.viewcontroller.ViewController;
+import com.reactnativenavigation.controllers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.views.BottomTabs;
 
 import java.util.List;

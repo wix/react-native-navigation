@@ -1,6 +1,6 @@
 package com.reactnativenavigation.presentation;
 
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 
 import java.util.Collection;
 

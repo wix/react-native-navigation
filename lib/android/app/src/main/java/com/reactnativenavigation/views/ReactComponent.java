@@ -1,6 +1,6 @@
 package com.reactnativenavigation.views;
 
-import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.controllers.viewcontroller.IReactView;
 
 public interface ReactComponent extends Component, IReactView {
 }

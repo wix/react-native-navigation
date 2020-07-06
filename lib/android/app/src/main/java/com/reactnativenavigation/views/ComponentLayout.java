@@ -10,7 +10,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
-import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
+import com.reactnativenavigation.controllers.stack.ButtonController;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -18,7 +18,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 
 @SuppressLint("ViewConstructor")
-public class ComponentLayout extends CoordinatorLayout implements ReactComponent, TitleBarButtonController.OnClickListener {
+public class ComponentLayout extends CoordinatorLayout implements ReactComponent, ButtonController.OnClickListener {
 
     private ReactView reactView;
     private final OverlayTouchDelegate touchDelegate;

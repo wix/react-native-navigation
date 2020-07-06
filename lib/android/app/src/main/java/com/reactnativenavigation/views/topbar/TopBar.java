@@ -23,7 +23,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
+import com.reactnativenavigation.controllers.stack.ButtonController;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
@@ -205,7 +205,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         topTabs.setLayoutParams(topTabs.getLayoutParams());
     }
 
-    public void setBackButton(TitleBarButtonController backButton) {
+    public void setBackButton(ButtonController backButton) {
         titleBar.setBackButton(backButton);
     }
 
@@ -290,7 +290,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setLayoutDirection(direction.get());
     }
 
-    public void removeRightButton(TitleBarButtonController button) {
+    public void removeRightButton(ButtonController button) {
         removeRightButton(button.getButtonIntId());
     }
 
@@ -298,7 +298,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.removeRightButton(buttonId);
     }
 
-    public boolean containsRightButton(TitleBarButtonController button) {
+    public boolean containsRightButton(ButtonController button) {
         return titleBar.containsRightButton(button);
     }
 }

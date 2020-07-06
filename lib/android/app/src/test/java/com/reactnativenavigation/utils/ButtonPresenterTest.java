@@ -6,13 +6,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.fakes.IconResolverFake;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
+import com.reactnativenavigation.controllers.stack.ButtonController;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
 
@@ -32,7 +31,7 @@ import static org.mockito.Mockito.mock;
 public class ButtonPresenterTest extends BaseTest {
     private TitleBar titleBar;
     private ButtonPresenter uut;
-    private TitleBarButtonController buttonController;
+    private ButtonController buttonController;
 
     @Override
     public void beforeEach() {
@@ -42,12 +41,12 @@ public class ButtonPresenterTest extends BaseTest {
         Button button = createButton();
 
         uut = new ButtonPresenter(button, new IconResolverFake(activity));
-        buttonController = new TitleBarButtonController(
+        buttonController = new ButtonController(
                 activity,
                 uut,
                 button,
                 mock(TitleBarButtonCreator.class),
-                mock(TitleBarButtonController.OnClickListener.class)
+                mock(ButtonController.OnClickListener.class)
         );
     }
 

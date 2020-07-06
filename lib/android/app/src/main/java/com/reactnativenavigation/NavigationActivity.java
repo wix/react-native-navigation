@@ -16,9 +16,9 @@ import com.reactnativenavigation.presentation.RootPresenter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
-import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
+import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
+import com.reactnativenavigation.controllers.modal.ModalStack;
+import com.reactnativenavigation.controllers.navigator.Navigator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

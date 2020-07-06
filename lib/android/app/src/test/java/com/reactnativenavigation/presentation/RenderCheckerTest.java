@@ -1,7 +1,7 @@
 package com.reactnativenavigation.presentation;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 
 import org.junit.Test;
 import org.mockito.Mockito;

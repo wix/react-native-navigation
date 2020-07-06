@@ -15,7 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.parse.params.Button
-import com.reactnativenavigation.viewcontrollers.button.IconResolver
+import com.reactnativenavigation.controllers.button.IconResolver
 import com.reactnativenavigation.views.titlebar.TitleBar
 
 open class ButtonPresenter(private val button: Button, private val iconResolver: IconResolver) {

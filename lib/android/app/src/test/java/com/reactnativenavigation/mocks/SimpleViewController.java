@@ -10,8 +10,8 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.ComponentPresenterBase;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.viewcontrollers.ChildController;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.controllers.child.ChildController;
+import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.views.ReactComponent;
 
 import org.mockito.Mockito;
@@ -32,7 +32,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
     }
 
     @Override
-    protected SimpleView createView() {
+    public SimpleView createView() {
         return new SimpleView(getActivity());
     }
 

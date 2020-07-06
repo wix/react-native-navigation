@@ -6,7 +6,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.controllers.topbar.TopBarController;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.junit.Test;

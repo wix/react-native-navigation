@@ -2,8 +2,8 @@ package com.reactnativenavigation.views.toptabs;
 
 import android.content.Context;
 
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
+import com.reactnativenavigation.controllers.viewcontroller.ViewController;
+import com.reactnativenavigation.controllers.toptabs.TopTabsAdapter;
 
 import java.util.List;
 

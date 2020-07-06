@@ -3,7 +3,7 @@ package com.reactnativenavigation.views.topbar;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.controllers.viewcontroller.ReactViewCreator;
 
 public class TopBarBackgroundViewCreator implements ReactViewCreator {
 

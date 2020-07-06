@@ -24,8 +24,8 @@ import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
+import com.reactnativenavigation.controllers.viewcontroller.ViewController;
+import com.reactnativenavigation.controllers.navigator.Navigator;
 
 import java.util.ArrayList;
 

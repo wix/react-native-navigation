@@ -3,7 +3,7 @@ package com.reactnativenavigation.mocks;
 import android.app.Activity;
 
 import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.controllers.viewcontroller.ReactViewCreator;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
 

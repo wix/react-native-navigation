@@ -5,7 +5,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 
 import org.json.JSONException;
 import org.json.JSONObject;

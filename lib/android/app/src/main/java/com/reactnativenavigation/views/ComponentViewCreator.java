@@ -5,8 +5,8 @@ import android.app.Activity;
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.react.ReactComponentViewCreator;
 import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.viewcontrollers.IReactView;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.controllers.viewcontroller.IReactView;
+import com.reactnativenavigation.controllers.viewcontroller.ReactViewCreator;
 
 public class ComponentViewCreator implements ReactViewCreator {
 

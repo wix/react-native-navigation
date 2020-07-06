@@ -5,7 +5,8 @@ import android.app.*;
 import com.reactnativenavigation.parse.*;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.viewcontrollers.*;
+import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
+import com.reactnativenavigation.controllers.component.ComponentViewController;
 
 public class SimpleComponentViewController extends ComponentViewController {
     public SimpleComponentViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions) {
