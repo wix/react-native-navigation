@@ -1,4 +1,4 @@
-package com.reactnativenavigation.controllers;
+package com.reactnativenavigation.controllers.parent;
 
 import android.app.Activity;
 import android.view.ViewGroup;

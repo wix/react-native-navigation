@@ -1,4 +1,4 @@
-package com.reactnativenavigation.controllers;
+package com.reactnativenavigation.controllers.bottomtabs;
 
 import android.app.Activity;
 import android.graphics.Color;

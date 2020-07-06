@@ -1,4 +1,4 @@
-package com.reactnativenavigation.controllers;
+package com.reactnativenavigation.controllers.externalcomponent;
 
 import android.app.Activity;
 

@@ -1,30 +1,23 @@
-package com.reactnativenavigation.controllers;
+package com.reactnativenavigation.controllers.component;
 
 import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
+import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
+import com.reactnativenavigation.controllers.stack.StackController;
+import com.reactnativenavigation.controllers.viewcontroller.Presenter;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.controllers.component.ComponentPresenter;
-import com.reactnativenavigation.controllers.viewcontroller.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;
-import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
-import com.reactnativenavigation.controllers.component.ComponentViewController;
-import com.reactnativenavigation.controllers.stack.StackController;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
+import org.assertj.core.api.Java6Assertions;
 import org.junit.Test;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 public class ComponentViewControllerTest extends BaseTest {
     private ComponentViewController uut;
@@ -39,11 +32,11 @@ public class ComponentViewControllerTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         StatusBarUtils.saveStatusBarHeight(63);
-        view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
+        view = Mockito.spy(new TestComponentLayout(activity, new TestReactView(activity)));
         parent = TestUtils.newStackController(activity).build();
         Presenter presenter = new Presenter(activity, new Options());
-        this.presenter = spy(new ComponentPresenter(Options.EMPTY));
-        uut = spy(new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter, this.presenter) {
+        this.presenter = Mockito.spy(new ComponentPresenter(Options.EMPTY));
+        uut = Mockito.spy(new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter, this.presenter) {
             @Override
             public Options resolveCurrentOptions(Options defaultOptions) {
                 return resolvedOptions;
@@ -57,45 +50,45 @@ public class ComponentViewControllerTest extends BaseTest {
     public void setDefaultOptions() {
         Options defaultOptions = new Options();
         uut.setDefaultOptions(defaultOptions);
-        verify(presenter).setDefaultOptions(defaultOptions);
+        Mockito.verify(presenter).setDefaultOptions(defaultOptions);
     }
 
     @Test
     public void applyOptions() {
         Options options = new Options();
         uut.applyOptions(options);
-        verify(view).applyOptions(options);
-        verify(presenter).applyOptions(view, resolvedOptions);
+        Mockito.verify(view).applyOptions(options);
+        Mockito.verify(presenter).applyOptions(view, resolvedOptions);
     }
 
     @Test
     public void createsViewFromComponentViewCreator() {
-        assertThat(uut.getView()).isSameAs(view);
+        Java6Assertions.assertThat(uut.getView()).isSameAs(view);
     }
 
     @Test
     public void componentViewDestroyedOnDestroy() {
         uut.ensureViewIsCreated();
-        verify(view, times(0)).destroy();
+        Mockito.verify(view, Mockito.times(0)).destroy();
         uut.onViewWillAppear();
         uut.destroy();
-        verify(view, times(1)).destroy();
+        Mockito.verify(view, Mockito.times(1)).destroy();
     }
 
     @Test
     public void lifecycleMethodsSentToComponentView() {
         uut.ensureViewIsCreated();
-        verify(view, times(0)).sendComponentStart();
-        verify(view, times(0)).sendComponentStop();
+        Mockito.verify(view, Mockito.times(0)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(0)).sendComponentStop();
         uut.onViewWillAppear();
-        verify(view, times(0)).sendComponentStart();
-        verify(view, times(0)).sendComponentStop();
+        Mockito.verify(view, Mockito.times(0)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(0)).sendComponentStop();
         uut.onViewDidAppear();
-        verify(view, times(1)).sendComponentStart();
-        verify(view, times(0)).sendComponentStop();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(0)).sendComponentStop();
         uut.onViewDisappear();
-        verify(view, times(1)).sendComponentStart();
-        verify(view, times(1)).sendComponentStop();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStop();
     }
 
     @Test
@@ -103,82 +96,83 @@ public class ComponentViewControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
 
         uut.onViewDidAppear();
-        verify(view).sendComponentStart();
+        Mockito.verify(view).sendComponentStart();
 
         uut.onViewDidAppear();
-        verify(view).sendComponentStart();
+        Mockito.verify(view).sendComponentStart();
 
         uut.onViewDisappear();
         uut.onViewDidAppear();
-        verify(view, times(2)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(2)).sendComponentStart();
     }
 
     @Test
     public void isViewShownOnlyIfComponentViewIsReady() {
-        assertThat(uut.isViewShown()).isFalse();
+        Java6Assertions.assertThat(uut.isViewShown()).isFalse();
         uut.ensureViewIsCreated();
-        when(view.asView().isShown()).thenReturn(true);
-        assertThat(uut.isViewShown()).isFalse();
-        when(view.isReady()).thenReturn(true);
-        assertThat(uut.isViewShown()).isTrue();
+        Mockito.when(view.asView().isShown()).thenReturn(true);
+        Java6Assertions.assertThat(uut.isViewShown()).isFalse();
+        Mockito.when(view.isReady()).thenReturn(true);
+        Java6Assertions.assertThat(uut.isViewShown()).isTrue();
     }
 
     @Test
     public void onNavigationButtonPressInvokedOnReactComponent() {
         uut.ensureViewIsCreated();
         uut.sendOnNavigationButtonPressed("btn1");
-        verify(view, times(1)).sendOnNavigationButtonPressed("btn1");
+        Mockito.verify(view, Mockito.times(1)).sendOnNavigationButtonPressed("btn1");
     }
 
     @Test
     public void mergeOptions_emptyOptionsAreIgnored() {
-        ComponentViewController spy = spy(uut);
+        ComponentViewController spy = Mockito.spy(uut);
         spy.mergeOptions(Options.EMPTY);
-        verify(spy, times(0)).performOnParentController(any());
+        Mockito.verify(spy, Mockito.times(0)).performOnParentController(ArgumentMatchers.any());
     }
 
     @Test
     public void mergeOptions_delegatesToPresenterIfViewIsNotShown() {
         Options options = new Options();
-        assertThat(uut.isViewShown()).isFalse();
+        Java6Assertions.assertThat(uut.isViewShown()).isFalse();
         uut.mergeOptions(options);
-        verifyZeroInteractions(presenter);
+        Mockito.verifyZeroInteractions(presenter);
 
-        when(uut.isViewShown()).thenReturn(true);
+        Mockito.when(uut.isViewShown()).thenReturn(true);
         uut.mergeOptions(options);
-        verify(presenter).mergeOptions(uut.getView(), options);
+        Mockito.verify(presenter).mergeOptions(uut.getView(), options);
     }
 
     @Test
     public void applyTopInset_delegatesToPresenter() {
         addToParent(activity, uut);
         uut.applyTopInset();
-        verify(presenter).applyTopInsets(uut.getView(), uut.getTopInset());
+        Mockito.verify(presenter).applyTopInsets(uut.getView(), uut.getTopInset());
     }
 
     @Test
     public void getTopInset_returnsStatusBarHeight() {
         //noinspection ConstantConditions
         uut.setParentController(null);
-        assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
+        Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
     }
 
     @Test
     public void getTopInset_resolveWithParent() {
-        assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity) + parent.getTopInset(uut));
+        Java6Assertions
+                .assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity) + parent.getTopInset(uut));
     }
 
     @Test
     public void getTopInset_drawBehind() {
         uut.options.statusBar.drawBehind = new Bool(true);
         uut.options.topBar.drawBehind = new Bool(true);
-        assertThat(uut.getTopInset()).isEqualTo(0);
+        Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(0);
     }
 
     @Test
     public void applyBottomInset_delegatesToPresenter() {
         addToParent(activity, uut);
         uut.applyBottomInset();
-        verify(presenter).applyBottomInset(uut.getView(), uut.getBottomInset());
+        Mockito.verify(presenter).applyBottomInset(uut.getView(), uut.getBottomInset());
     }
 }
