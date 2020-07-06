@@ -73,7 +73,6 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1);
         uut.showModal(modal1, root, new CommandListenerAdapter());
         verify(modal1).setWaitForRender(any());
-        verify(modal1).resolveCurrentOptions(defaultOptions);
         assertThat(modal1.getView().getFitsSystemWindows()).isTrue();
     }
 
@@ -84,7 +83,7 @@ public class ModalPresenterTest extends BaseTest {
             @Override
             public void onSuccess(String childId) {
                 assertThat(modal1.getView().getParent()).isEqualTo(modalsLayout);
-                verify(modal1, times(1)).onViewAppeared();
+                verify(modal1, times(1)).onViewWillAppear();
             }
         });
         uut.showModal(modal1, root, listener);
@@ -125,6 +124,17 @@ public class ModalPresenterTest extends BaseTest {
     }
 
     @Test
+    public void showModal_overCurrentContext_previousModalIsNotRemovedFromHierarchy() {
+        Options options = new Options();
+        options.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
+        uut.setDefaultOptions(options);
+        disableShowModalAnimation(modal1);
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        verify(root, times(0)).detachView();
+        verify(root, times(0)).onViewDisappear();
+    }
+
+    @Test
     public void showModal_animatesByDefault() {
         uut.showModal(modal1, null, new CommandListenerAdapter() {
             @Override
@@ -153,6 +163,15 @@ public class ModalPresenterTest extends BaseTest {
         CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
         uut.showModal(modal1, modal2, listener);
         verify(listener).onError(any());
+    }
+
+    @Test
+    public void showModal_onViewDidAppearIsInvokedBeforeViewDisappear() {
+        disableShowModalAnimation(modal1);
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        InOrder inOrder = inOrder(modal1, root);
+        inOrder.verify(modal1).onViewDidAppear();
+        inOrder.verify(root).onViewDisappear();
     }
 
     @Test
@@ -200,12 +219,12 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1, modal2);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        verify(modal1).onViewAppeared();
+        verify(modal1).onViewWillAppear();
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNull();
         uut.dismissModal(modal2, modal1, root, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNotNull();
-        verify(modal1, times(2)).onViewAppeared();
+        verify(modal1, times(2)).onViewWillAppear();
     }
 
     @Test

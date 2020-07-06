@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { NavigationComponentProps } from 'react-native-navigation';
 
 const FAB = 'fab';
@@ -37,7 +37,7 @@ export default class TopTabScreen extends React.PureComponent<Props> {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   root: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -59,4 +59,4 @@ const styles = {
     color: '#888',
     marginTop: 10,
   },
-};
+});

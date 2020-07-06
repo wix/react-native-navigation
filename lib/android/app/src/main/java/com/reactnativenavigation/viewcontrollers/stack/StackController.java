@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.anim.NavigationAnimator;
+import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.FabPresenter;
@@ -34,6 +34,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.Size;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
@@ -46,14 +47,14 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 public class StackController extends ParentController<StackLayout> {
 
     private IdStack<ViewController> stack = new IdStack<>();
-    private final NavigationAnimator animator;
+    private final StackAnimator animator;
     private final EventEmitter eventEmitter;
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
     private final FabPresenter fabPresenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, StackAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.eventEmitter = eventEmitter;
         this.topBarController = topBarController;
@@ -167,6 +168,7 @@ public class StackController extends ParentController<StackLayout> {
             if (animation.enabled.isTrueOrUndefined()) {
                 animator.push(child, toRemove, resolvedOptions, () -> onPushAnimationComplete(child, toRemove, listener));
             } else {
+                child.onViewDidAppear();
                 getView().removeView(toRemove.getView());
                 listener.onSuccess(child.getId());
             }
@@ -176,6 +178,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void onPushAnimationComplete(ViewController toAdd, ViewController toRemove, CommandListener listener) {
+        toAdd.onViewDidAppear();
         if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
         listener.onSuccess(toAdd.getId());
     }
@@ -186,13 +189,13 @@ public class StackController extends ParentController<StackLayout> {
         getView().addView(child.getView(), getView().getChildCount() - 1, matchParentWithBehaviour(new StackBehaviour(this)));
     }
 
-    public void setRoot(List<ViewController> children, CommandListener listener) {
+    public void setRoot(@Size(min = 1) List<ViewController> children, CommandListener listener) {
         animator.cancelPushAnimations();
         final ViewController toRemove = stack.peek();
         IdStack stackToDestroy = stack;
         stack = new IdStack<>();
 
-        ViewController child = last(children);
+        ViewController child = requireLast(children);
         if (children.size() == 1) {
             backButtonHelper.clear(child);
         } else {
@@ -207,6 +210,7 @@ public class StackController extends ParentController<StackLayout> {
         CommandListener listenerAdapter = new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
+                child.onViewDidAppear();
                 destroyStack(stackToDestroy);
                 if (children.size() > 1) {
                     for (int i = 0; i < children.size() - 1; i++) {
@@ -261,7 +265,6 @@ public class StackController extends ParentController<StackLayout> {
         final ViewController appearing = stack.peek();
 
         disappearing.onViewWillDisappear();
-        appearing.onViewWillAppear();
 
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
@@ -272,13 +275,14 @@ public class StackController extends ParentController<StackLayout> {
         }
         presenter.onChildWillAppear(this, appearing, disappearing);
         if (disappearingOptions.animations.pop.enabled.isTrueOrUndefined()) {
-            animator.pop(disappearing.getView(), disappearingOptions.animations.pop, () -> finishPopping(disappearing, listener));
+            animator.pop(disappearing.getView(), disappearingOptions.animations.pop, () -> finishPopping(appearing, disappearing, listener));
         } else {
-            finishPopping(disappearing, listener);
+            finishPopping(appearing, disappearing, listener);
         }
     }
 
-    private void finishPopping(ViewController disappearing, CommandListener listener) {
+    private void finishPopping(ViewController appearing, ViewController disappearing, CommandListener listener) {
+        appearing.onViewDidAppear();
         disappearing.destroy();
         listener.onSuccess(disappearing.getId());
         eventEmitter.emitScreenPoppedEvent(disappearing.getId());

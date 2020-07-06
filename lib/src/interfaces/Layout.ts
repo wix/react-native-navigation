@@ -59,6 +59,10 @@ export interface LayoutTabsChildren {
    * Set the external component
    */
   externalComponent?: ExternalComponent;
+  /**
+   * Set the side menu
+   */
+  sideMenu?: LayoutSideMenu;
 }
 
 export interface LayoutBottomTabs {

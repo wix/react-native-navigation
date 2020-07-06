@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponentProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
@@ -13,6 +13,7 @@ const {
   PUSH_LIFECYCLE_BTN,
   POP_NONE_EXISTENT_SCREEN_BTN,
   PUSH_CUSTOM_BACK_BTN,
+  PUSH_LAZY_BTN,
   CUSTOM_BACK_BTN,
   SEARCH_BTN,
   SET_STACK_ROOT_BTN,
@@ -20,7 +21,7 @@ const {
 } = testIDs;
 
 export default class StackScreen extends React.Component<NavigationComponentProps> {
-  static options() {
+  static options(): Options {
     return {
       topBar: {
         testID: STACK_SCREEN_HEADER,
@@ -30,10 +31,6 @@ export default class StackScreen extends React.Component<NavigationComponentProp
       },
     };
   }
-
-  state = {
-    backPress: '',
-  };
 
   render() {
     return (
@@ -48,6 +45,11 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           label="Pop None Existent Screen"
           testID={POP_NONE_EXISTENT_SCREEN_BTN}
           onPress={this.popNoneExistent}
+        />
+        <Button
+          label='Push Lazily Registered Screen'
+          testID={PUSH_LAZY_BTN}
+          onPress={this.pushLazilyRegistered}
         />
         <Button
           label="Push Custom Back Button"
@@ -68,6 +70,8 @@ export default class StackScreen extends React.Component<NavigationComponentProp
   push = () => Navigation.push(this, Screens.Pushed);
 
   pushLifecycleScreen = () => Navigation.push(this, Screens.Lifecycle);
+
+  pushLazilyRegistered = () => Navigation.push(this, Screens.LazilyRegisteredScreen);
 
   popNoneExistent = () => Navigation.pop('noneExistentComponentId');
 

@@ -3,6 +3,7 @@
 #import <ReactNativeNavigation/RNNStackController.h>
 #import <ReactNativeNavigation/RNNComponentViewController.h>
 #import "RNNTestRootViewCreator.h"
+#import "RNNComponentViewController+Utils.h"
 
 @interface RNNStackControllerTest : XCTestCase
 
@@ -208,6 +209,17 @@
 	[[_presenter reject] mergeOptions:options resolvedOptions:self.uut.resolveOptions];
 	[self.uut mergeChildOptions:options child:self.uut.childViewControllers.firstObject];
 	[_presenter verify];
+}
+
+- (void)testOnChildWillAppear_shouldSetBackButtonTestID {
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	options.topBar.backButton.testID = [Text withValue:@"TestID"];
+	RNNComponentViewController* pushedController = [RNNComponentViewController createWithComponentId:@"pushedController"];
+	pushedController.options.topBar.backButton.testID = [Text withValue:@"TestID"];
+	[[[UIApplication sharedApplication] keyWindow] setRootViewController:_uut];
+	[_uut pushViewController:pushedController animated:NO];
+	[pushedController viewDidAppear:YES];
+	XCTAssertTrue([[[_uut.navigationBar.subviews[2] subviews][0] valueForKey:@"accessibilityIdentifier"] isEqualToString:@"TestID"]);
 }
 
 - (RNNStackController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {

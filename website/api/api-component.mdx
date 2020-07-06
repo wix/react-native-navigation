@@ -36,6 +36,23 @@ Navigation.registerComponent(`navigation.playground.MyScreen`, () => (props) =>
 );
 ```
 
+## `setLazyComponentRegistrator`
+Pass a function that will allow you to register a component lazily. When encountering an unknown component name, this function will be called, giving you a chance to register the component before an error is thrown.
+
+#### Parameters
+| Name   | Required | Type                | Description                                                                                                            |
+| ------ | -------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| lazyRegistratorFn | Yes      | (lazyComponentRequest: string | number) => void | A function that takes a componentName, will be called when encountering an unknown componentName |
+
+#### Example
+```js
+Navigation.setLazyComponentRegistrator((componentName) => {
+  if (componentName === 'navigation.playground.LazyScreen') {
+    Navigation.registerComponent(Screens.LazilyRegisteredScreen, () => LazyScreen);
+  }
+});
+```
+
 ## `updateProps`
 Update props of a component registered with [registerComponent](#registercomponent). Updating props triggers the component lifecycle methods related to [updating](https://reactjs.org/docs/react-component.html#updating).
 

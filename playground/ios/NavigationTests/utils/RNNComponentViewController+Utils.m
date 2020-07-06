@@ -10,7 +10,7 @@
 }
 
 + (RNNComponentViewController *)createWithComponentId:(NSString *)componentId {
-	return [self createWithComponentId:componentId initialOptions:nil];
+	return [self createWithComponentId:componentId initialOptions:RNNNavigationOptions.emptyOptions];
 }
 
 @end

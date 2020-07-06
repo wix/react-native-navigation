@@ -88,6 +88,11 @@ export interface OptionsStatusBar {
    * #### (Android specific)
    */
   drawBehind?: boolean;
+  /**
+   * Allows the StatusBar to be translucent (blurred)
+   * #### (Android specific)
+   */
+  translucent?: boolean;
 }
 
 export interface OptionsLayout {
@@ -246,6 +251,11 @@ export interface OptionsTopBarSubtitle {
 }
 
 export interface OptionsTopBarBackButton {
+  /**
+   * Button id for reference press event
+   * #### (Android specific)
+   */
+  id?: string;
   /**
    * Image to show as the back button
    */
@@ -524,7 +534,7 @@ export interface SharedElementTransition {
   fromId: string;
   toId: string;
   duration?: number;
-  interpolation: Interpolation;
+  interpolation?: Interpolation;
 }
 
 export interface ElementTransition {
@@ -551,11 +561,11 @@ export interface DisappearingElementAnimation extends ElementAnimation {
 export interface ElementAnimation {
   duration: number;
   startDelay?: number;
-  interpolation: Interpolation;
+  interpolation?: Interpolation;
 }
 
 export interface OptionsFab {
-  id: string;
+  id?: string;
   backgroundColor?: Color;
   clickColor?: Color;
   rippleColor?: Color;
@@ -636,6 +646,12 @@ export interface OptionsBottomTabs {
    * #### (Android specific)
    */
   elevation?: AndroidDensityNumber;
+  /**
+   * Hides the BottomTabs on scroll to increase the amount of content visible to the user.
+   * The options requires that the scrollable view will be the root view of the screen and that it specifies `nestedScrollEnabled: true`.
+   * #### (Android specific)
+   */
+  hideOnScroll?: boolean;
 }
 
 export interface DotIndicatorOptions {
@@ -664,6 +680,11 @@ export interface OptionsBottomTab {
    * Set the background color of the badge that is overlayed over the component
    */
   badgeColor?: string;
+  /**
+   * Show the badge with the animation.
+   * #### (Android specific)
+   */
+  animateBadge?: boolean;
   /**
    * Set a testID to reference the tab in E2E tests
    */
@@ -828,7 +849,7 @@ export interface OptionsPreview {
   /**
    * Height of the preview
    */
-  height?: 100;
+  height?: number;
   /**
    * You can control if the users gesture will result in pushing
    * the preview screen into the stack.

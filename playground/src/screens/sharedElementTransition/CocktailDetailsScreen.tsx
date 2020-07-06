@@ -57,6 +57,7 @@ export default class CocktailDetailsScreen extends React.Component<Props> {
         <View style={styles.header} testID={COCKTAILS_DETAILS_HEADER}>
           <Image
             source={this.props.image}
+            // @ts-ignore nativeID isn't included in react-native Image props.
             nativeID={`image${this.props.id}Dest`}
             style={styles.image}
           />

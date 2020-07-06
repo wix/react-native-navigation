@@ -37,6 +37,7 @@ export default class CocktailsView extends React.Component<Props> {
       <View style={styles.overlayContainer}>
         <Image
           source={item.image}
+          // @ts-ignore nativeID isn't included in react-native Image props.
           nativeID={`image${item.id}`}
           style={styles.image}
           resizeMode={'contain'}
