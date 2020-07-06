@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.sidemenu;
 
 import android.content.Context;
 import android.util.Log;

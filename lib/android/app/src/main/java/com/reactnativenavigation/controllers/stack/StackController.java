@@ -18,10 +18,10 @@ import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
-import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.Fab;
-import com.reactnativenavigation.views.FabMenu;
-import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.component.Component;
+import com.reactnativenavigation.views.fab.Fab;
+import com.reactnativenavigation.views.fab.FabMenu;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.topbar.TopBar;
 

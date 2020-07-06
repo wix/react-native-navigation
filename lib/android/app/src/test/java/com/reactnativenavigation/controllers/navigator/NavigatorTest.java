@@ -34,7 +34,7 @@ import com.reactnativenavigation.controllers.bottomtabs.BottomTabsAttacher;
 import com.reactnativenavigation.controllers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.controllers.modal.ModalStack;
 import com.reactnativenavigation.controllers.stack.StackController;
-import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

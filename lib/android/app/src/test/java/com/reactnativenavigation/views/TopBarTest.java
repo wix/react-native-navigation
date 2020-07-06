@@ -7,6 +7,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.junit.Test;

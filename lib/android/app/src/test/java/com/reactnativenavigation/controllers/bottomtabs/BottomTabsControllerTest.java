@@ -28,7 +28,7 @@ import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.fakes.FakeParentController;
 import com.reactnativenavigation.controllers.stack.StackController;
-import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
 import org.junit.Test;

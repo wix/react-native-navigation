@@ -9,7 +9,7 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.ComponentLayout;
+import com.reactnativenavigation.views.component.ComponentLayout;
 
 public class TestComponentLayout extends ComponentLayout implements ButtonController.OnClickListener {
 

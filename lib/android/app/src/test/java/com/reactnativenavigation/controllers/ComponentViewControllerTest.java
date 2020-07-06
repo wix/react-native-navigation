@@ -14,7 +14,7 @@ import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.component.ComponentViewController;
 import com.reactnativenavigation.controllers.stack.StackController;
-import com.reactnativenavigation.views.ComponentLayout;
+import com.reactnativenavigation.views.component.ComponentLayout;
 
 import org.junit.Test;
 

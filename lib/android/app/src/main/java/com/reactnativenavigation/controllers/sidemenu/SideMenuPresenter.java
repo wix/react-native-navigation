@@ -4,7 +4,7 @@ import android.view.Gravity;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.SideMenuRootOptions;
-import com.reactnativenavigation.views.SideMenu;
+import com.reactnativenavigation.views.sidemenu.SideMenu;
 
 import androidx.annotation.RestrictTo;
 import androidx.drawerlayout.widget.DrawerLayout;

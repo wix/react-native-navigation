@@ -11,7 +11,7 @@ import com.reactnativenavigation.controllers.viewcontroller.NoOpYellowBoxDelegat
 import com.reactnativenavigation.controllers.navigator.Navigator;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewControllerOverlay;
-import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.component.Component;
 
 import androidx.annotation.CallSuper;
 import androidx.core.view.ViewCompat;

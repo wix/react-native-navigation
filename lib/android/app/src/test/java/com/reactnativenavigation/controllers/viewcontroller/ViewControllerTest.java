@@ -18,7 +18,7 @@ import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.stack.StackController;
-import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.component.Component;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Test;

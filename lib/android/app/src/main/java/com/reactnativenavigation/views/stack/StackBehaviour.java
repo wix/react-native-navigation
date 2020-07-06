@@ -5,8 +5,8 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.BehaviourDelegate;
-import com.reactnativenavigation.views.Fab;
-import com.reactnativenavigation.views.FabMenu;
+import com.reactnativenavigation.views.fab.Fab;
+import com.reactnativenavigation.views.fab.FabMenu;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import androidx.annotation.NonNull;

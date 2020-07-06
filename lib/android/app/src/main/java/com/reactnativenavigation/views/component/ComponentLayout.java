@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.component;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

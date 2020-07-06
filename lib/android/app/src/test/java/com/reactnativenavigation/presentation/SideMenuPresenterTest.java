@@ -4,7 +4,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.controllers.sidemenu.SideMenuPresenter;
 import com.reactnativenavigation.options.SideMenuRootOptions;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.views.SideMenu;
+import com.reactnativenavigation.views.sidemenu.SideMenu;
 
 import org.junit.Test;
 import org.mockito.Mockito;

@@ -12,8 +12,8 @@ import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.SideMenu;
-import com.reactnativenavigation.views.SideMenuRoot;
+import com.reactnativenavigation.views.sidemenu.SideMenu;
+import com.reactnativenavigation.views.sidemenu.SideMenuRoot;
 
 import java.util.ArrayList;
 import java.util.Collection;

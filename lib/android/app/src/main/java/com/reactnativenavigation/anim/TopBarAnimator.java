@@ -11,7 +11,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.options.AnimationOptions;
-import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import static android.view.View.TRANSLATION_Y;

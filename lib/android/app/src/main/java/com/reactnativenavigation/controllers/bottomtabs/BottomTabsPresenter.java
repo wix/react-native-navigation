@@ -9,9 +9,7 @@ import com.reactnativenavigation.options.AnimationsOptions;
 import com.reactnativenavigation.options.BottomTabsOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.controllers.bottomtabs.BottomTabFinder;
-import com.reactnativenavigation.controllers.bottomtabs.TabSelector;
-import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import org.jetbrains.annotations.NotNull;
 

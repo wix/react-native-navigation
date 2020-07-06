@@ -6,7 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 
 import com.reactnativenavigation.options.AnimationsOptions;
-import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 public class BottomTabsAnimator {
 

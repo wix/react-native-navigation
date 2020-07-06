@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.fab;
 
 import android.content.Context;
 
@@ -6,6 +6,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.reactnativenavigation.anim.FabAnimator;
 import com.reactnativenavigation.anim.FabCollapseBehaviour;
 import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.views.fab.Fab;
 
 import java.util.HashSet;
 

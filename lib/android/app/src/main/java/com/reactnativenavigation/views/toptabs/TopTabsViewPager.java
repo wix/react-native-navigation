@@ -11,7 +11,7 @@ import com.reactnativenavigation.controllers.viewcontroller.IReactView;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.toptabs.TopTabsAdapter;
-import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.component.Component;
 
 import java.util.List;
 

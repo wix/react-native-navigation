@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.fab;
 
 import android.content.Context;
 import android.graphics.PorterDuff;

@@ -34,7 +34,7 @@ import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
-import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.topbar.ScrollDIsabledBehavior;

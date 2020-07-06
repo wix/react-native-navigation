@@ -17,8 +17,8 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.stack.StackController;
 import com.reactnativenavigation.views.BehaviourAdapter;
-import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.Renderable;
+import com.reactnativenavigation.views.component.Component;
+import com.reactnativenavigation.views.component.Renderable;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,7 +12,7 @@ import com.reactnativenavigation.controllers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.controllers.child.ChildController;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.component.ReactComponent;
 
 import org.mockito.Mockito;
 

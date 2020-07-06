@@ -11,8 +11,8 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.FabOptions;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.Fab;
-import com.reactnativenavigation.views.FabMenu;
+import com.reactnativenavigation.views.fab.Fab;
+import com.reactnativenavigation.views.fab.FabMenu;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;

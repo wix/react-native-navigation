@@ -9,7 +9,7 @@ import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.controllers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.topbar.TopBar;
 

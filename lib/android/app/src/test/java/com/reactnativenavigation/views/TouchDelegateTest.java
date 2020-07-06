@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleOverlay;
 import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.views.component.ComponentLayout;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import org.junit.Test;

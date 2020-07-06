@@ -15,7 +15,7 @@ import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.controllers.viewcontroller.IReactView;
-import com.reactnativenavigation.views.Renderable;
+import com.reactnativenavigation.views.component.Renderable;
 
 import androidx.annotation.RestrictTo;
 

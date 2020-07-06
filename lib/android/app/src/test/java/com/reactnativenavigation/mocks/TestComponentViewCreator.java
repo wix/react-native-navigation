@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.controllers.viewcontroller.ReactViewCreator;
-import com.reactnativenavigation.views.ComponentLayout;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.component.ComponentLayout;
+import com.reactnativenavigation.views.component.ReactComponent;
 
 import static org.mockito.Mockito.spy;
 

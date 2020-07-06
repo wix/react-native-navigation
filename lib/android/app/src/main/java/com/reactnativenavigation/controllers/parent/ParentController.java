@@ -11,7 +11,7 @@ import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.child.ChildController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.component.Component;
 
 import java.util.Collection;
 

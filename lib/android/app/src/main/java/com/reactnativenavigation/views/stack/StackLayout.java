@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.stack;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.view.View;
 
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
+import com.reactnativenavigation.views.component.Component;
+import com.reactnativenavigation.views.component.Renderable;
 import com.reactnativenavigation.views.topbar.ScrollDIsabledBehavior;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;

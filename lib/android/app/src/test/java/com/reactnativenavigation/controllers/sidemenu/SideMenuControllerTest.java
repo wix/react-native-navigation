@@ -22,7 +22,7 @@ import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.SideMenu;
+import com.reactnativenavigation.views.sidemenu.SideMenu;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;

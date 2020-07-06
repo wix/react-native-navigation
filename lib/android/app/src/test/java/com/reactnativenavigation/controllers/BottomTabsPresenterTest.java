@@ -14,7 +14,7 @@ import com.reactnativenavigation.controllers.bottomtabs.BottomTabsPresenter;
 import com.reactnativenavigation.controllers.bottomtabs.TabSelector;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import org.junit.Test;
 import org.mockito.Mockito;

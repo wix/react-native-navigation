@@ -14,7 +14,7 @@ import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.controllers.bottomtabs.BottomTabPresenter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import org.junit.Test;
 import org.mockito.InOrder;

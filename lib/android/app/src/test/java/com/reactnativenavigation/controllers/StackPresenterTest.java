@@ -40,7 +40,7 @@ import com.reactnativenavigation.controllers.stack.topbar.button.ButtonControlle
 import com.reactnativenavigation.controllers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBarReactView;
 import com.reactnativenavigation.views.topbar.TopBar;
 

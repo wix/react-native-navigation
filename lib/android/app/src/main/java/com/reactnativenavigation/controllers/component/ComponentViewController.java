@@ -11,7 +11,7 @@ import com.reactnativenavigation.controllers.viewcontroller.ReactViewCreator;
 import com.reactnativenavigation.controllers.child.ChildController;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.ComponentLayout;
+import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;

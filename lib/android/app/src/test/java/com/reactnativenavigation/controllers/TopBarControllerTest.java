@@ -9,7 +9,7 @@ import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
-import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.stack.StackLayout;
 
 import org.junit.Test;
 import org.mockito.Mockito;
