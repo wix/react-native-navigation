@@ -60,6 +60,8 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
+    implementation 'com.facebook.soloader:soloader:0.9.0'
+
     //noinspection GradleDynamicVersion
     implementation 'org.webkit:android-jsc-intl:+'
     implementation project(':react-native-navigation')
