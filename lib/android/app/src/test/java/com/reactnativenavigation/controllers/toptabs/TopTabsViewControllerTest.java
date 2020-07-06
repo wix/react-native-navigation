@@ -14,7 +14,7 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.events.ComponentType;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.controllers.viewcontroller.IReactView;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;

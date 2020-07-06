@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 
 import java.util.ArrayList;

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.parse.ModalPresentationStyle;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 
 import androidx.annotation.Nullable;

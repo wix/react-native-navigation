@@ -8,7 +8,7 @@ import com.reactnativenavigation.controllers.stack.topbar.button.BackButtonHelpe
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.controllers.child.ChildController;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 

@@ -18,7 +18,7 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.parent.ParentController;

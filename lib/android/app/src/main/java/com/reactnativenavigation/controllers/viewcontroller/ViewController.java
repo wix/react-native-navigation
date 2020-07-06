@@ -10,7 +10,7 @@ import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
-import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiThread;

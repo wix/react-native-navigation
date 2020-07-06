@@ -1,4 +1,4 @@
-package com.reactnativenavigation.utils;
+package com.reactnativenavigation.react;
 
 public interface CommandListener {
     void onSuccess(String childId);

@@ -9,7 +9,7 @@ import com.reactnativenavigation.parse.SideMenuRootOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.SideMenuPresenter;
-import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;

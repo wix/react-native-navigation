@@ -17,7 +17,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.ComponentPresenter;
 import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.component.ComponentViewController;
 import com.reactnativenavigation.controllers.stack.StackController;

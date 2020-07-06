@@ -3,7 +3,7 @@ package com.reactnativenavigation.presentation;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 

@@ -1,9 +1,10 @@
-package com.reactnativenavigation.utils;
-
-import androidx.annotation.Nullable;
+package com.reactnativenavigation.react;
 
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.utils.Now;
+
+import androidx.annotation.Nullable;
 
 public class NativeCommandListener extends CommandListenerAdapter {
     private String commandId;

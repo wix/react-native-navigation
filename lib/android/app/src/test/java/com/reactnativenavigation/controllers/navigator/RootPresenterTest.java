@@ -12,7 +12,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.LayoutDirectionApplier;
 import com.reactnativenavigation.presentation.RootPresenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;

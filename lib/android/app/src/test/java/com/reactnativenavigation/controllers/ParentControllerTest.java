@@ -10,7 +10,7 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.parent.ParentController;
 import com.reactnativenavigation.controllers.stack.StackController;

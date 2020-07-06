@@ -30,7 +30,7 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.RenderChecker;
 import com.reactnativenavigation.presentation.StackPresenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.controllers.stack.topbar.button.IconResolver;

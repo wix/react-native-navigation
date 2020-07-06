@@ -15,7 +15,7 @@ import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.presentation.RootPresenter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.react.ReactGateway;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.modal.ModalStack;
 import com.reactnativenavigation.controllers.navigator.Navigator;

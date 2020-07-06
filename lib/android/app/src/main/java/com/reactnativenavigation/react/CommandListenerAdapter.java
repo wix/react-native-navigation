@@ -1,4 +1,6 @@
-package com.reactnativenavigation.utils;
+package com.reactnativenavigation.react;
+
+import com.reactnativenavigation.react.CommandListener;
 
 import androidx.annotation.Nullable;
 
