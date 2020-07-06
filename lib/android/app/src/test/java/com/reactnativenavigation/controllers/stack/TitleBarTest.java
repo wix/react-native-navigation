@@ -12,8 +12,8 @@ import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.titlebar.TitleBar;
-import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;

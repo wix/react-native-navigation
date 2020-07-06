@@ -10,12 +10,10 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.FabOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.controllers.stack.FabPresenter;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
-import com.reactnativenavigation.controllers.stack.StackController;
-import com.reactnativenavigation.views.fab.Fab;
-import com.reactnativenavigation.views.fab.FabMenu;
+import com.reactnativenavigation.views.stack.fab.Fab;
+import com.reactnativenavigation.views.stack.fab.FabMenu;
 import com.reactnativenavigation.views.stack.StackLayout;
 
 import org.junit.Test;

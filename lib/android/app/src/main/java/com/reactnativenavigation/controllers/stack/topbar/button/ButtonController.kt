@@ -10,9 +10,9 @@ import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.controllers.viewcontroller.ViewController
 import com.reactnativenavigation.controllers.viewcontroller.YellowBoxDelegate
 import com.reactnativenavigation.controllers.viewcontroller.ViewControllerOverlay
-import com.reactnativenavigation.views.titlebar.TitleBar
-import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator
-import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactButtonView
 
 class ButtonController(activity: Activity,
                        private val presenter: ButtonPresenter,

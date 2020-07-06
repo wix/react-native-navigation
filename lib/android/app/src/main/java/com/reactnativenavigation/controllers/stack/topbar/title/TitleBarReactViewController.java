@@ -9,8 +9,8 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.viewcontroller.YellowBoxDelegate;
 import com.reactnativenavigation.controllers.viewcontroller.ViewControllerOverlay;
-import com.reactnativenavigation.views.titlebar.TitleBarReactView;
-import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 
 public class TitleBarReactViewController extends ViewController<TitleBarReactView> {
 

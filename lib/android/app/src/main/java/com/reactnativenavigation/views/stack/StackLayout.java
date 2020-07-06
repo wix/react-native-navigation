@@ -8,7 +8,7 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.component.Renderable;
-import com.reactnativenavigation.views.topbar.ScrollDIsabledBehavior;
+import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 

@@ -8,7 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 public class TopTabs extends TabLayout {
     private final TopTabsStyleHelper styleHelper;

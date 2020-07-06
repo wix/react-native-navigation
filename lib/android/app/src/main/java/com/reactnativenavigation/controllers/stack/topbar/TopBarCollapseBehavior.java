@@ -4,9 +4,8 @@ package com.reactnativenavigation.controllers.stack.topbar;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.controllers.stack.topbar.TopBarAnimator;
 import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListener, ScrollEventListener.OnDragListener {
     private TopBar topBar;

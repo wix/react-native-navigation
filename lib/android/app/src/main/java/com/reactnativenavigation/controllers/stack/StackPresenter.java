@@ -33,10 +33,10 @@ import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
-import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
-import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
-import com.reactnativenavigation.views.topbar.TopBar;
-import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 
 import java.util.ArrayList;
 import java.util.Collections;

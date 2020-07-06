@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views.topbar;
+package com.reactnativenavigation.views.stack.topbar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -36,8 +36,8 @@ import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
 import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 import com.reactnativenavigation.views.stack.StackBehaviour;
-import com.reactnativenavigation.views.topbar.ScrollDIsabledBehavior;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 import org.assertj.core.api.iterable.Extractor;
 import org.json.JSONException;

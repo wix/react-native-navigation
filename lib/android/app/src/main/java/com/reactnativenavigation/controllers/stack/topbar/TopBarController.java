@@ -9,8 +9,8 @@ import com.reactnativenavigation.controllers.stack.topbar.title.TitleBarReactVie
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.stack.StackLayout;
-import com.reactnativenavigation.views.titlebar.TitleBar;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 import java.util.List;
 

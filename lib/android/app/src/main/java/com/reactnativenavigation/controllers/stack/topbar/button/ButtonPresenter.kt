@@ -16,7 +16,7 @@ import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.utils.*
-import com.reactnativenavigation.views.titlebar.TitleBar
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 
 open class ButtonPresenter(private val button: ButtonOptions, private val iconResolver: IconResolver) {
     val styledText: SpannableString

@@ -28,9 +28,9 @@ import com.reactnativenavigation.controllers.stack.StackControllerBuilder;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
 import com.reactnativenavigation.controllers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.component.ComponentViewCreator;
-import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
-import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
-import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
 
 import java.util.ArrayList;

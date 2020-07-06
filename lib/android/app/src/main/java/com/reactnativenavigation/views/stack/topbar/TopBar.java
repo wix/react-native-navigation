@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views.topbar;
+package com.reactnativenavigation.views.stack.topbar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,7 +24,7 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
 import java.util.Collections;

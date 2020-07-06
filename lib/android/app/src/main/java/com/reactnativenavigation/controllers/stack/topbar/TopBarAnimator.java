@@ -12,7 +12,7 @@ import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.views.stack.StackLayout;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 import static android.view.View.TRANSLATION_Y;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;

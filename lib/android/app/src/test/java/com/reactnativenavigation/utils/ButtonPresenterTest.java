@@ -13,8 +13,8 @@ import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.titlebar.TitleBar;
-import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 
 import org.junit.Test;
 import org.robolectric.annotation.LooperMode;

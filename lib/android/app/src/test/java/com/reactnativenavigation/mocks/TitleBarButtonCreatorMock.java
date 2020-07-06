@@ -5,8 +5,8 @@ import android.app.Activity;
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.react.events.ComponentType;
-import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
-import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactButtonView;
 
 import static org.mockito.Mockito.mock;
 

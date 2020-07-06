@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views.titlebar;
+package com.reactnativenavigation.views.stack.topbar.titlebar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -9,8 +9,8 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.viewcontroller.YellowBoxDelegate;
 import com.reactnativenavigation.controllers.viewcontroller.ViewControllerOverlay;
-import com.reactnativenavigation.views.topbar.TopBarBackgroundView;
-import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
+import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundView;
+import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 
 public class TopBarBackgroundViewController extends ViewController<TopBarBackgroundView> {
 

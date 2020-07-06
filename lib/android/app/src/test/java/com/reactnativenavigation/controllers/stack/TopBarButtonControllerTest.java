@@ -15,9 +15,8 @@ import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonPresenter;
-import com.reactnativenavigation.controllers.stack.StackController;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 
 import org.junit.Test;
 
