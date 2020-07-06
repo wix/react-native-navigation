@@ -16,4 +16,6 @@
 
 - (void)setNavigationBarClipsToBounds:(BOOL)clipsToBounds;
 
+- (void)setBackButtonTestID:(NSString *)testID;
+
 @end

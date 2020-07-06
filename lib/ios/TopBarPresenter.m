@@ -2,6 +2,8 @@
 #import "UIImage+tint.h"
 #import "RNNFontAttributesCreator.h"
 #import "UIColor+RNNUtils.h"
+#import "UIViewController+LayoutProtocol.h"
+#import "UINavigationController+RNNOptions.h"
 
 @implementation TopBarPresenter
 
@@ -112,6 +114,11 @@
     }
 }
 
+- (void)componentDidAppear {
+    NSString* backButtonTestID = [self.navigationController.topViewController.resolveOptionsWithDefault.topBar.backButton.testID getWithDefaultValue:nil];
+    [self.navigationController setBackButtonTestID:backButtonTestID];
+}
+
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
     UIImage* icon = [backButtonOptions.icon getWithDefaultValue:nil];
     UIColor* color = [backButtonOptions.color getWithDefaultValue:nil];
@@ -119,12 +126,9 @@
     BOOL showTitle = [backButtonOptions.showTitle getWithDefaultValue:YES];
     NSString* fontFamily = [backButtonOptions.fontFamily getWithDefaultValue:nil];
     NSNumber* fontSize = [backButtonOptions.fontSize getWithDefaultValue:nil];
-    NSString* testID = [backButtonOptions.testID getWithDefaultValue:nil];
     
-    NSArray* stackChildren = self.navigationController.viewControllers;
-    UIViewController *lastViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
+    UIViewController *previousViewControllerInStack = self.previousViewControllerInStack;
     UIBarButtonItem *backItem = [UIBarButtonItem new];
-    backItem.accessibilityIdentifier = testID;
 
     icon = color
     ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
@@ -132,7 +136,7 @@
     [self setBackIndicatorImage:icon withColor:color];
     
     if (showTitle) {
-        backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
+        backItem.title = title ? title : previousViewControllerInStack.navigationItem.title;
     } else {
         backItem.title = @"";
     }
@@ -145,7 +149,13 @@
         [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:resolvedFontSize], NSFontAttributeName, nil] forState:UIControlStateHighlighted];
     }
     
-    lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
+    previousViewControllerInStack.navigationItem.backBarButtonItem = backItem;
+}
+
+- (UIViewController *)previousViewControllerInStack {
+    NSArray* stackChildren = self.navigationController.viewControllers;
+    UIViewController *previousViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
+    return previousViewControllerInStack;
 }
 
 - (BOOL)transparent {

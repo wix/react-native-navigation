@@ -21,6 +21,7 @@ const {
   SET_STACK_ROOT_BUTTON,
   PUSH_OPTIONS_BUTTON,
   HIDE_PREVIOUS_SCREEN_TOP_BAR,
+  BACK_BUTTON,
 } = testIDs;
 
 interface Props extends NavigationComponentProps {
@@ -40,6 +41,9 @@ export default class PushedScreen extends React.Component<Props> {
           id: 'singleBtn',
           text: 'single',
           testID: TOP_BAR_BTN,
+        },
+        backButton: {
+          testID: BACK_BUTTON,
         },
       },
     };

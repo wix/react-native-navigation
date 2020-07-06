@@ -1,11 +1,11 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementById, elementByLabel } = Utils;
+const {elementById, elementByLabel} = Utils;
 
 describe('Buttons', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
@@ -44,5 +44,11 @@ describe('Buttons', () => {
   it('change button props without rendering all buttons', async () => {
     await elementById(TestIDs.CHANGE_BUTTON_PROPS).tap();
     await expect(elementByLabel('Three')).toBeVisible();
+  });
+
+  it('pop using back button', async () => {
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await elementById(TestIDs.BACK_BUTTON).tap();
+    await expect(elementByLabel('Buttons')).toBeVisible();
   });
 });
