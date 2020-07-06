@@ -10,7 +10,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
-import com.reactnativenavigation.controllers.stack.ButtonController;
+import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;

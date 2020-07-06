@@ -1,4 +1,4 @@
-package com.reactnativenavigation.controllers.stack;
+package com.reactnativenavigation.controllers.stack.topbar.button;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
@@ -11,7 +11,7 @@ public class BackButtonHelper {
         }
     }
 
-    void addToPushedChild(ViewController child) {
+    public void addToPushedChild(ViewController child) {
         if (child.options.topBar.buttons.left != null || child.options.topBar.buttons.back.visible.isFalse()) return;
         Options options = new Options();
         options.topBar.buttons.back.setVisible();

@@ -7,8 +7,8 @@ import com.reactnativenavigation.parse.ButtonOptions;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.controllers.stack.ButtonController;
-import com.reactnativenavigation.controllers.topbar.TopBarController;
+import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.reactnativenavigation.controllers.topbar;
+package com.reactnativenavigation.controllers.stack.topbar;
 
 import android.app.Activity;
 

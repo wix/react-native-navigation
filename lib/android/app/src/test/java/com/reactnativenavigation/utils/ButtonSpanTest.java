@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.controllers.stack.topbar.button.ButtonSpan;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.ButtonOptions;
 import com.reactnativenavigation.parse.params.Colour;
@@ -11,7 +12,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-import static com.reactnativenavigation.utils.ButtonSpan.DISABLED_COLOR;
+import static com.reactnativenavigation.controllers.stack.topbar.button.ButtonSpan.DISABLED_COLOR;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class ButtonSpanTest extends BaseTest {

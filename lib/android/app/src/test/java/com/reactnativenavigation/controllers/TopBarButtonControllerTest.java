@@ -14,9 +14,9 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.utils.ButtonPresenter;
+import com.reactnativenavigation.controllers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.controllers.stack.StackController;
-import com.reactnativenavigation.controllers.stack.ButtonController;
+import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 
 import org.junit.Test;

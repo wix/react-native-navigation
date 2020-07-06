@@ -3,6 +3,7 @@ package com.reactnativenavigation.controllers.stack;
 import android.app.Activity;
 
 import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.controllers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.FabPresenter;
 import com.reactnativenavigation.presentation.Presenter;
@@ -10,7 +11,7 @@ import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.controllers.topbar.TopBarController;
+import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import java.util.ArrayList;

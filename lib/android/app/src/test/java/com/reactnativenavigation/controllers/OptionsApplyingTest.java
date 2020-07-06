@@ -21,7 +21,7 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.component.ComponentViewController;
 import com.reactnativenavigation.controllers.stack.StackController;
-import com.reactnativenavigation.controllers.topbar.TopBarController;
+import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
 import com.reactnativenavigation.controllers.viewcontroller.IReactView;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;

@@ -1,4 +1,4 @@
-package com.reactnativenavigation.controllers.button;
+package com.reactnativenavigation.controllers.stack.topbar.button;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;

@@ -1,4 +1,4 @@
-package com.reactnativenavigation.utils
+package com.reactnativenavigation.controllers.stack.topbar.button
 
 import android.graphics.Color
 import android.graphics.Paint

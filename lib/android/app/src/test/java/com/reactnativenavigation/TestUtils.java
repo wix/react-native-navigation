@@ -18,9 +18,9 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
-import com.reactnativenavigation.controllers.button.IconResolver;
+import com.reactnativenavigation.controllers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.controllers.stack.StackControllerBuilder;
-import com.reactnativenavigation.controllers.topbar.TopBarController;
+import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.topbar.TopBar;
 

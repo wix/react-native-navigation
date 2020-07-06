@@ -1,4 +1,4 @@
-package com.reactnativenavigation.utils
+package com.reactnativenavigation.controllers.stack.topbar.button
 
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -15,7 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.parse.ButtonOptions
-import com.reactnativenavigation.controllers.button.IconResolver
+import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.views.titlebar.TitleBar
 
 open class ButtonPresenter(private val button: ButtonOptions, private val iconResolver: IconResolver) {

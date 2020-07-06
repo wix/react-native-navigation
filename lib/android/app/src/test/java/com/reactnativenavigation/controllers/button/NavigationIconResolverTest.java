@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.controllers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.mocks.BackDrawable;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.parse.ButtonOptions;

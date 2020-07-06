@@ -10,8 +10,8 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.fakes.IconResolverFake;
 import com.reactnativenavigation.parse.ButtonOptions;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.utils.ButtonPresenter;
-import com.reactnativenavigation.controllers.stack.ButtonController;
+import com.reactnativenavigation.controllers.stack.topbar.button.ButtonPresenter;
+import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;
 

@@ -2,13 +2,14 @@ package com.reactnativenavigation.utils;
 
 import android.app.Activity;
 
+import com.reactnativenavigation.controllers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.parse.ComponentOptions;
 import com.reactnativenavigation.parse.ButtonOptions;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.controllers.stack.ButtonController;
-import com.reactnativenavigation.controllers.button.IconResolver;
+import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.controllers.stack.topbar.button.IconResolver;
 
 public class TitleBarHelper {
     public static ButtonOptions textualButton(String text) {
