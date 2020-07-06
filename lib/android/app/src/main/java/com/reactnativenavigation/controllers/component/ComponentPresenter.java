@@ -1,4 +1,4 @@
-package com.reactnativenavigation.presentation;
+package com.reactnativenavigation.controllers.component;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.views.ComponentLayout;

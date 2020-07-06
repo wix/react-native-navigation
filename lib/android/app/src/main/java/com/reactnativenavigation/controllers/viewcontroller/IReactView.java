@@ -3,8 +3,6 @@ package com.reactnativenavigation.controllers.viewcontroller;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.interfaces.ScrollEventListener;
-
 public interface IReactView extends Destroyable {
 
     boolean isReady();

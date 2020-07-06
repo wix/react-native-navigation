@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.controllers.viewcontroller.IReactView;
 
 public class SimpleOverlay extends RelativeLayout implements IReactView {

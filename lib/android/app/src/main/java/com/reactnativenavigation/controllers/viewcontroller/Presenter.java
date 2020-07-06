@@ -1,4 +1,4 @@
-package com.reactnativenavigation.presentation;
+package com.reactnativenavigation.controllers.viewcontroller;
 
 import android.app.Activity;
 import android.graphics.Color;

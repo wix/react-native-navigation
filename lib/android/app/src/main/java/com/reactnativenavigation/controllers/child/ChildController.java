@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.controllers.viewcontroller.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.controllers.viewcontroller.NoOpYellowBoxDelegate;
 import com.reactnativenavigation.controllers.navigator.Navigator;

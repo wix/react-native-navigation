@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.controllers.viewcontroller.Presenter;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 

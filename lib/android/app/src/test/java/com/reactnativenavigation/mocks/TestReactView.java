@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.controllers.viewcontroller.IReactView;

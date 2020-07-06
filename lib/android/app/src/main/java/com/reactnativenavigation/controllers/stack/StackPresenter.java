@@ -1,4 +1,4 @@
-package com.reactnativenavigation.presentation;
+package com.reactnativenavigation.controllers.stack;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -21,6 +21,7 @@ import com.reactnativenavigation.options.TopTabsOptions;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonPresenter;
+import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.StatusBarUtils;
@@ -30,7 +31,6 @@ import com.reactnativenavigation.controllers.stack.topbar.button.ButtonControlle
 import com.reactnativenavigation.controllers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.stack.topbar.button.IconResolver;
-import com.reactnativenavigation.controllers.stack.StackController;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.controllers.stack.topbar.TopBarController;
 import com.reactnativenavigation.views.titlebar.TitleBarButtonCreator;

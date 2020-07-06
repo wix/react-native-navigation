@@ -3,7 +3,7 @@ package com.reactnativenavigation.controllers.child;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.controllers.viewcontroller.Presenter;
 import com.reactnativenavigation.controllers.parent.ParentController;
 
 import org.junit.Test;

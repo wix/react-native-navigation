@@ -11,7 +11,7 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.presentation.BottomTabPresenter;
+import com.reactnativenavigation.controllers.bottomtabs.BottomTabPresenter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BottomTabs;

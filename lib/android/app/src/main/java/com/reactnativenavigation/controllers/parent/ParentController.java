@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.controllers.viewcontroller.Presenter;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.child.ChildController;

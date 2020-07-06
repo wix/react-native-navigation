@@ -1,4 +1,4 @@
-package com.reactnativenavigation.presentation;
+package com.reactnativenavigation.utils;
 
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 

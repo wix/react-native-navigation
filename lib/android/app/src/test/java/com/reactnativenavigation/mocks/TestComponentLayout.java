@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;

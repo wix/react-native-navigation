@@ -11,7 +11,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.controllers.viewcontroller.IReactView;

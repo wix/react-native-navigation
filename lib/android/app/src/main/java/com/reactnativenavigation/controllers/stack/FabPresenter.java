@@ -1,4 +1,4 @@
-package com.reactnativenavigation.presentation;
+package com.reactnativenavigation.controllers.stack;
 
 
 import android.animation.Animator;

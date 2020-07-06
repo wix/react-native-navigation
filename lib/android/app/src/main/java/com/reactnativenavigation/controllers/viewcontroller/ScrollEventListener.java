@@ -1,4 +1,4 @@
-package com.reactnativenavigation.interfaces;
+package com.reactnativenavigation.controllers.viewcontroller;
 
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;

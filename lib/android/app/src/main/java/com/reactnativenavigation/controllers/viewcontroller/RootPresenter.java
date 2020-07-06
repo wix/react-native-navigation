@@ -1,9 +1,10 @@
-package com.reactnativenavigation.presentation;
+package com.reactnativenavigation.controllers.viewcontroller;
 
 import android.content.Context;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.controllers.viewcontroller.LayoutDirectionApplier;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;

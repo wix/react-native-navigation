@@ -9,7 +9,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.presentation.BottomTabsPresenter;
+import com.reactnativenavigation.controllers.bottomtabs.BottomTabsPresenter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 import com.reactnativenavigation.controllers.bottomtabs.AttachMode;

@@ -3,10 +3,9 @@ package com.reactnativenavigation.controllers.component;
 import android.app.Activity;
 import android.view.View;
 
-import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.presentation.ComponentPresenter;
-import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.controllers.viewcontroller.Presenter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.controllers.viewcontroller.ReactViewCreator;
 import com.reactnativenavigation.controllers.child.ChildController;

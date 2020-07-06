@@ -3,7 +3,6 @@ package com.reactnativenavigation.controllers.bottomtabs;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.controllers.viewcontroller.ViewController;
 
 import java.util.List;

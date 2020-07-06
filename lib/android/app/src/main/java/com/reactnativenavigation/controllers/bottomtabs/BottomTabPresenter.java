@@ -1,4 +1,4 @@
-package com.reactnativenavigation.presentation;
+package com.reactnativenavigation.controllers.bottomtabs;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

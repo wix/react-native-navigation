@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.presentation.OverlayManager;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.presentation.RootPresenter;
+import com.reactnativenavigation.controllers.overlay.OverlayManager;
+import com.reactnativenavigation.controllers.viewcontroller.Presenter;
+import com.reactnativenavigation.controllers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;

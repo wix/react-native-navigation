@@ -3,8 +3,8 @@ package com.reactnativenavigation.mocks;
 import android.app.*;
 
 import com.reactnativenavigation.options.*;
-import com.reactnativenavigation.presentation.ComponentPresenter;
-import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.controllers.component.ComponentPresenter;
+import com.reactnativenavigation.controllers.viewcontroller.Presenter;
 import com.reactnativenavigation.controllers.child.ChildControllersRegistry;
 import com.reactnativenavigation.controllers.component.ComponentViewController;
 
