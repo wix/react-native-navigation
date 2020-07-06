@@ -1,4 +1,4 @@
-package com.reactnativenavigation.anim;
+package com.reactnativenavigation.controllers.stack;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
 
+import com.reactnativenavigation.controllers.common.BaseAnimator;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.FadeAnimation;
 import com.reactnativenavigation.options.NestedAnimationsOptions;

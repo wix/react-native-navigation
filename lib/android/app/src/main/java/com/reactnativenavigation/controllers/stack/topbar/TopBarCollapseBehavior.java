@@ -1,9 +1,10 @@
-package com.reactnativenavigation.anim;
+package com.reactnativenavigation.controllers.stack.topbar;
 
 
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.controllers.stack.topbar.TopBarAnimator;
 import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.topbar.TopBar;
 

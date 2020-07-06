@@ -1,8 +1,9 @@
-package com.reactnativenavigation.anim;
+package com.reactnativenavigation.controllers.stack;
 
 
 import androidx.annotation.NonNull;
 
+import com.reactnativenavigation.controllers.stack.FabAnimator;
 import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 
 public class FabCollapseBehaviour implements ScrollEventListener.OnScrollListener, ScrollEventListener.OnDragListener {

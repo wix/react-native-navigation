@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.view.ViewGroup;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState;
-import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.options.AnimationsOptions;
 import com.reactnativenavigation.options.BottomTabsOptions;
 import com.reactnativenavigation.options.Options;

@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.controllers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.controllers.stack.topbar.button.ButtonController;

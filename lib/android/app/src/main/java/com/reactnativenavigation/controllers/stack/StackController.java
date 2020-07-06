@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.controllers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.options.NestedAnimationsOptions;
 import com.reactnativenavigation.options.Options;

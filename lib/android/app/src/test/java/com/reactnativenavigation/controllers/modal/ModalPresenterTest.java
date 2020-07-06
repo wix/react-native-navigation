@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.ModalPresentationStyle;

@@ -3,7 +3,7 @@ package com.reactnativenavigation.controllers;
 import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.anim.BottomTabsAnimator;
+import com.reactnativenavigation.controllers.bottomtabs.BottomTabsAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;

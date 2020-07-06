@@ -1,4 +1,4 @@
-package com.reactnativenavigation.anim;
+package com.reactnativenavigation.controllers.stack.topbar;
 
 
 import android.animation.Animator;

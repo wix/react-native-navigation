@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.controllers.stack.StackAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.Options;

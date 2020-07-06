@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.controllers.viewcontroller.Presenter;

@@ -4,7 +4,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.view.View;
 
-import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.options.AnimationOptions;
 
 public class ModalAnimatorMock extends ModalAnimator {

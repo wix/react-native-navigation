@@ -1,4 +1,4 @@
-package com.reactnativenavigation.anim;
+package com.reactnativenavigation.controllers.bottomtabs;
 
 
 import android.animation.Animator;

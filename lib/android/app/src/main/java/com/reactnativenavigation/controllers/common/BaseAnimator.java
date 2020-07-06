@@ -1,21 +1,22 @@
-package com.reactnativenavigation.anim;
+package com.reactnativenavigation.controllers.common;
 
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.reactnativenavigation.utils.UiUtils;
 
+import androidx.annotation.NonNull;
+
 import static android.view.View.ALPHA;
 import static android.view.View.TRANSLATION_Y;
 
-class BaseAnimator {
+public class BaseAnimator {
 
     private static final int DURATION = 300;
     private static final TimeInterpolator DECELERATE = new DecelerateInterpolator();
@@ -23,12 +24,12 @@ class BaseAnimator {
 
     private float translationY;
 
-    BaseAnimator(Context context) {
+    public BaseAnimator(Context context) {
         translationY = UiUtils.getWindowHeight(context);
     }
 
     @NonNull
-    AnimatorSet getDefaultPushAnimation(View view) {
+    public AnimatorSet getDefaultPushAnimation(View view) {
         AnimatorSet set = new AnimatorSet();
         set.setInterpolator(DECELERATE);
         set.setDuration(DURATION);
@@ -42,7 +43,7 @@ class BaseAnimator {
 
 
     @NonNull
-    AnimatorSet getDefaultPopAnimation(View view) {
+    public AnimatorSet getDefaultPopAnimation(View view) {
         AnimatorSet set = new AnimatorSet();
         set.setInterpolator(ACCELERATE_DECELERATE);
         set.setDuration(DURATION);

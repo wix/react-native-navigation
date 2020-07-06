@@ -1,4 +1,4 @@
-package com.reactnativenavigation.anim;
+package com.reactnativenavigation.controllers.modal;
 
 
 import android.animation.Animator;
@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.view.View;
 
+import com.reactnativenavigation.controllers.common.BaseAnimator;
 import com.reactnativenavigation.options.AnimationOptions;
 
 public class ModalAnimator extends BaseAnimator {

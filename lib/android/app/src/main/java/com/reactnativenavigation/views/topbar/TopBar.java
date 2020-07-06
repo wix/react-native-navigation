@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.reactnativenavigation.R;
-import com.reactnativenavigation.anim.TopBarCollapseBehavior;
+import com.reactnativenavigation.controllers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.controllers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.LayoutDirection;

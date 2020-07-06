@@ -3,7 +3,6 @@ package com.reactnativenavigation.controllers.modal;
 import android.app.Activity;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListener;

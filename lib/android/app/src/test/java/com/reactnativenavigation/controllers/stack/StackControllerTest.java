@@ -9,7 +9,6 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
-import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.controllers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;

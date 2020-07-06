@@ -2,7 +2,6 @@ package com.reactnativenavigation.controllers.stack;
 
 import android.app.Activity;
 
-import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.controllers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.controllers.viewcontroller.Presenter;
