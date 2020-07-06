@@ -9,12 +9,21 @@ Controls the back button styling.
 ```js
 const options = {
   topBar: {
-    backButton: {}
-  }
-}
+    backButton: {},
+  },
+};
 ```
 
+### `id`
+
+Button id for reference press event.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Android  |
+
 ### `color`
+
 Change the back button color. This will change the text color as well.
 
 | Type  | Required | Platform |
@@ -22,6 +31,7 @@ Change the back button color. This will change the text color as well.
 | color | No       | Both     |
 
 ### `icon`
+
 Change the default back button icon.
 
 | Type   | Required | Platform |
@@ -29,6 +39,7 @@ Change the default back button icon.
 | number | No       | Both     |
 
 ### `showTitle`
+
 Show or hide the text displayed next to the back button.
 
 | Type   | Required | Platform |
@@ -36,6 +47,7 @@ Show or hide the text displayed next to the back button.
 | number | No       | iOS      |
 
 ### `title`
+
 Change the text displayed next to the title. Usually the back button shows the title of the previous screen.
 
 | Type   | Required | Platform |
@@ -43,8 +55,17 @@ Change the text displayed next to the title. Usually the back button shows the t
 | string | No       | iOS      |
 
 ### `visible`
+
 Hide or show the back button.
 
 | Type    | Required | Platform |
 | ------- | -------- | -------- |
 | boolean | No       | Both     |
+
+### `testID`
+
+Used to interact with the back button in e2e tests.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
