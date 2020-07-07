@@ -40,7 +40,7 @@ public class OverlayTouchDelegate {
 
     private boolean isTouchInsideOverlay(MotionEvent ev) {
         getOverlayView().getHitRect(hitRect);
-        return hitRect.contains((int) ev.getRawX(), (int) ev.getRawY());
+        return hitRect.contains((int) ev.getRawX(), (int) (ev.getRawY() - component.getY()));
     }
 
     private View getOverlayView() {

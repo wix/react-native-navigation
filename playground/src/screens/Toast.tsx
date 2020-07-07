@@ -15,7 +15,11 @@ export default function Toast({ componentId }: NavigationComponentProps) {
 
   return (
     <View style={styles.root}>
-      <TouchableOpacity testID={TOAST_OK_BTN_OUTER} onPress={() => dismiss('Outer button clicked')}>
+      <TouchableOpacity
+        style={styles.outerTouchable}
+        testID={TOAST_OK_BTN_OUTER}
+        onPress={() => dismiss('Outer button clicked')}
+      >
         <View style={styles.toast}>
           <Text style={styles.text}>This a very important message!</Text>
           <TouchableOpacity
@@ -37,11 +41,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
     backgroundColor: '#3e434aa1',
   },
+  outerTouchable: {
+    margin: 16,
+  },
   toast: {
     elevation: 2,
     flexDirection: 'row',
     height: 40,
-    margin: 16,
     borderRadius: 20,
     backgroundColor: Colors.accent,
     alignItems: 'center',
