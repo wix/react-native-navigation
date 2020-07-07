@@ -9,27 +9,25 @@ import com.reactnativenavigation.views.component.ComponentLayout;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class TouchDelegateTest extends BaseTest {
+public class OverlayTouchDelegateTest extends BaseTest {
     private OverlayTouchDelegate uut;
     private final int x = 10;
     private final int y = 10;
     private final MotionEvent downEvent = MotionEvent.obtain(0, 0, MotionEvent.ACTION_DOWN, x, y, 0);
     private final MotionEvent upEvent = MotionEvent.obtain(0, 0, MotionEvent.ACTION_UP, x, y, 0);
-    private SimpleOverlay reactView;
     private ComponentLayout component;
 
     @Override
     public void beforeEach() {
-        super.beforeEach();
-        reactView = spy(new SimpleOverlay(newActivity()));
-        component = Mockito.mock(ComponentLayout.class);
+        SimpleOverlay reactView = spy(new SimpleOverlay(newActivity()));
+        component = mock(ComponentLayout.class);
         uut = spy(new OverlayTouchDelegate(component, reactView));
     }
 
