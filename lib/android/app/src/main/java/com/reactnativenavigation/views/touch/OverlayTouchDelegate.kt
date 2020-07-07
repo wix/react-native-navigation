@@ -1,19 +1,15 @@
 package com.reactnativenavigation.views.touch
 
-import android.graphics.Rect
 import android.view.MotionEvent
-import android.view.View
 import androidx.annotation.VisibleForTesting
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.options.params.NullBool
-import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView
+import com.reactnativenavigation.react.ReactView
+import com.reactnativenavigation.utils.coordinatesInsideView
 import com.reactnativenavigation.views.component.ComponentLayout
 
-open class OverlayTouchDelegate(private val component: ComponentLayout, private val reactView: IReactView) {
+open class OverlayTouchDelegate(private val component: ComponentLayout, private val reactView: ReactView) {
     var interceptTouchOutside: Bool = NullBool()
-    private val hitRect = Rect()
-    private val overlayView: View
-        get() = if (reactView.asView().childCount > 0) reactView.asView().getChildAt(0) else reactView.asView()
 
     fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         return when (interceptTouchOutside.hasValue() && event.actionMasked == MotionEvent.ACTION_DOWN) {
@@ -23,10 +19,8 @@ open class OverlayTouchDelegate(private val component: ComponentLayout, private 
     }
 
     @VisibleForTesting
-    open fun handleDown(event: MotionEvent) = if (isTouchInsideOverlay(event)) component.superOnInterceptTouchEvent(event) else interceptTouchOutside.isFalse
-
-    private fun isTouchInsideOverlay(ev: MotionEvent): Boolean {
-        overlayView.getHitRect(hitRect)
-        return hitRect.contains(ev.rawX.toInt(), (ev.rawY - component.y).toInt())
+    open fun handleDown(event: MotionEvent) = when (event.coordinatesInsideView(reactView.getChildAt(0))) {
+        true -> component.superOnInterceptTouchEvent(event)
+        false -> interceptTouchOutside.isFalse
     }
 }

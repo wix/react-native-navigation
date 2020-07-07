@@ -3,8 +3,8 @@ package com.reactnativenavigation.views;
 import android.view.MotionEvent;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.SimpleOverlay;
 import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.views.component.ComponentLayout;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
@@ -26,7 +26,7 @@ public class OverlayTouchDelegateTest extends BaseTest {
 
     @Override
     public void beforeEach() {
-        SimpleOverlay reactView = spy(new SimpleOverlay(newActivity()));
+        ReactView reactView = mock(ReactView.class);
         component = mock(ComponentLayout.class);
         uut = spy(new OverlayTouchDelegate(component, reactView));
     }
