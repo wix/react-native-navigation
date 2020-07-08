@@ -21,6 +21,21 @@ open class StackAnimator @JvmOverloads constructor(
 ) : BaseAnimator(context) {
     private val runningPushAnimations: MutableMap<View, Animator> = HashMap()
 
+    open fun setRoot(root: View, setRoot: AnimationOptions, onAnimationEnd: Runnable) {
+        root.visibility = View.INVISIBLE
+        val set = setRoot.getAnimation(root)
+        set.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator) {
+                root.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                onAnimationEnd.run()
+            }
+        })
+        set.start()
+    }
+
     fun push(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, onAnimationEnd: Runnable) {
         val set = createPushAnimator(appearing, onAnimationEnd)
         runningPushAnimations[appearing.view] = set
@@ -31,6 +46,30 @@ open class StackAnimator @JvmOverloads constructor(
         } else {
             pushWithoutElementTransitions(appearing, options, set)
         }
+    }
+
+    open fun pop(view: View, pop: NestedAnimationsOptions, onAnimationEnd: Runnable) {
+        if (runningPushAnimations.containsKey(view)) {
+            runningPushAnimations[view]!!.cancel()
+            onAnimationEnd.run()
+        } else {
+            animatePop(pop, view, onAnimationEnd)
+        }
+    }
+
+    private fun animatePop(pop: NestedAnimationsOptions, view: View, onAnimationEnd: Runnable) {
+        val set = pop.content.getAnimation(view, getDefaultPopAnimation(view))
+        set.addListener(object : AnimatorListenerAdapter() {
+            private var cancelled = false
+            override fun onAnimationCancel(animation: Animator) {
+                cancelled = true
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                if (!cancelled) onAnimationEnd.run()
+            }
+        })
+        set.start()
     }
 
     private fun createPushAnimator(appearing: ViewController<*>, onAnimationEnd: Runnable): AnimatorSet {
@@ -84,45 +123,6 @@ open class StackAnimator @JvmOverloads constructor(
             set.playTogether(options.animations.push.content.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
             set.start()
         }
-    }
-
-    open fun pop(view: View, pop: NestedAnimationsOptions, onAnimationEnd: Runnable) {
-        if (runningPushAnimations.containsKey(view)) {
-            runningPushAnimations[view]!!.cancel()
-            onAnimationEnd.run()
-        } else {
-            animatePop(pop, view, onAnimationEnd)
-        }
-    }
-
-    private fun animatePop(pop: NestedAnimationsOptions, view: View, onAnimationEnd: Runnable) {
-        val set = pop.content.getAnimation(view, getDefaultPopAnimation(view))
-        set.addListener(object : AnimatorListenerAdapter() {
-            private var cancelled = false
-            override fun onAnimationCancel(animation: Animator) {
-                cancelled = true
-            }
-
-            override fun onAnimationEnd(animation: Animator) {
-                if (!cancelled) onAnimationEnd.run()
-            }
-        })
-        set.start()
-    }
-
-    open fun setRoot(root: View, setRoot: AnimationOptions, onAnimationEnd: Runnable) {
-        root.visibility = View.INVISIBLE
-        val set = setRoot.getAnimation(root)
-        set.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                root.visibility = View.VISIBLE
-            }
-
-            override fun onAnimationEnd(animation: Animator) {
-                onAnimationEnd.run()
-            }
-        })
-        set.start()
     }
 
     fun cancelPushAnimations() {
