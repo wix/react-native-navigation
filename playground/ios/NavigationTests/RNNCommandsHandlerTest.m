@@ -504,4 +504,9 @@
 	[self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testSetDefaultOptions_shouldNotThrowWhenBridgeNotReady {
+	[self.uut setReadyToReceiveCommands:false];
+	[self.uut setDefaultOptions:@{} completion:^{}];
+}
+
 @end
