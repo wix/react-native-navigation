@@ -7,17 +7,16 @@ import com.facebook.react.uimanager.util.ReactFindViewUtil.OnViewFoundListener
 import com.facebook.react.uimanager.util.ReactFindViewUtil.findView
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.NestedAnimationsOptions
-import com.reactnativenavigation.utils.Functions.Func1
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
 open class ElementTransitionManager {
     private val animatorCreator: TransitionAnimatorCreator = TransitionAnimatorCreator()
 
-    fun createTransitions(animation: NestedAnimationsOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, onAnimatorsCreated: Func1<TransitionSet?>) {
+    fun createTransitions(animation: NestedAnimationsOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
         val sharedElements = animation.sharedElements
         val elementTransitions = animation.elementTransitions
         if (!sharedElements.hasValue() && !elementTransitions.hasValue) {
-            onAnimatorsCreated.run(TransitionSet())
+            onAnimatorsCreated(TransitionSet())
             return
         }
         val transitionSet = TransitionSet()
@@ -34,7 +33,7 @@ open class ElementTransitionManager {
                         transition.to = view
                         if (transition.isValid()) transitionSet.add(transition)
                         if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
-                            onAnimatorsCreated.run(transitionSet)
+                            onAnimatorsCreated(transitionSet)
                         }
                     }
                 }
@@ -59,7 +58,7 @@ open class ElementTransitionManager {
                         transition.viewController = toScreen
                         transitionSet.add(transition)
                         if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
-                            onAnimatorsCreated.run(transitionSet)
+                            onAnimatorsCreated(transitionSet)
                         }
                     }
                 }
