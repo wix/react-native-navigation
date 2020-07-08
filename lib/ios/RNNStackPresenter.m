@@ -35,6 +35,7 @@
 
 - (void)componentDidAppear {
     [_topBarBackgroundReactView componentDidAppear];
+    [_topBarPresenter componentDidAppear];
 }
 
 - (void)componentDidDisappear {

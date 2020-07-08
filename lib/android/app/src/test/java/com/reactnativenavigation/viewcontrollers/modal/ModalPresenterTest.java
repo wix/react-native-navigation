@@ -4,17 +4,16 @@ import android.app.Activity;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.parse.ModalPresentationStyle;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ChildController;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.ModalPresentationStyle;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.child.ChildController;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.json.JSONException;
 import org.json.JSONObject;

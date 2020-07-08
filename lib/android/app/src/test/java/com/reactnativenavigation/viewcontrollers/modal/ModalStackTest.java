@@ -6,14 +6,13 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
-import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.junit.Test;

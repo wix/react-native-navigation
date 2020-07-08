@@ -5,8 +5,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import java.util.List;
 

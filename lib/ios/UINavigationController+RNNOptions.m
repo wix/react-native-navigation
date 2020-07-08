@@ -1,5 +1,6 @@
 #import "UINavigationController+RNNOptions.h"
 #import "RNNFontAttributesCreator.h"
+#import "UIView+Utils.h"
 
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
@@ -56,6 +57,12 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 - (void)setNavigationBarClipsToBounds:(BOOL)clipsToBounds {
 	self.navigationBar.clipsToBounds = clipsToBounds;
+}
+
+- (void)setBackButtonTestID:(NSString *)testID {
+    UIView* navigationBarContentView = [self.navigationBar findChildByClass:NSClassFromString(@"_UINavigationBarContentView")];
+    UIView* barButton = [navigationBarContentView findChildByClass:NSClassFromString(@"_UIButtonBarButton")];
+    if (barButton) barButton.accessibilityIdentifier = testID;
 }
 
 - (CGFloat)getTopBarHeight {

@@ -5,18 +5,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OverlayManager;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.presentation.RootPresenter;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
@@ -86,7 +86,7 @@ public class Navigator extends ParentController {
 
     @NonNull
     @Override
-    protected ViewGroup createView() {
+    public ViewGroup createView() {
         return rootLayout;
     }
 
@@ -104,7 +104,7 @@ public class Navigator extends ParentController {
     }
 
     @Override
-    protected ViewController getCurrentChild() {
+    public ViewController getCurrentChild() {
         return root;
     }
 

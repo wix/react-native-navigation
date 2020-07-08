@@ -1,12 +1,12 @@
 package com.reactnativenavigation.playground;
 
-import androidx.fragment.app.FragmentActivity;
-
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponent;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 
 import org.json.JSONObject;
+
+import androidx.fragment.app.FragmentActivity;
 
 public class FragmentCreator implements ExternalComponentCreator {
     @Override

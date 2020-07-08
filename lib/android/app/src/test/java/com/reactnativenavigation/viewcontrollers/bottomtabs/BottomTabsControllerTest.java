@@ -11,26 +11,25 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.parse.params.NullText;
-import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.BottomTabPresenter;
-import com.reactnativenavigation.presentation.BottomTabsPresenter;
-import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.NullText;
+import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.utils.StatusBarUtils;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.fakes.FakeParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
-import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
 import org.junit.Test;
@@ -458,7 +457,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
             @NonNull
             @Override
-            protected BottomTabsLayout createView() {
+            public BottomTabsLayout createView() {
                 BottomTabsLayout view = super.createView();
                 bottomTabs.getLayoutParams().height = 100;
                 return view;

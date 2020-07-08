@@ -4,17 +4,16 @@ import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuRootOptions;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.presentation.SideMenuPresenter;
-import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.SideMenu;
-import com.reactnativenavigation.views.SideMenuRoot;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.SideMenuRootOptions;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.sidemenu.SideMenu;
+import com.reactnativenavigation.views.sidemenu.SideMenuRoot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +41,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     @Override
-    protected ViewController getCurrentChild() {
+    public ViewController getCurrentChild() {
         if (!isDestroyed()) {
             if (getView().isDrawerOpen(Gravity.LEFT)) {
                 return left;
@@ -55,7 +54,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
 
     @NonNull
 	@Override
-	protected SideMenuRoot createView() {
+    public SideMenuRoot createView() {
         SideMenu sideMenu = new SideMenu(getActivity());
         presenter.bindView(sideMenu);
         sideMenu.addDrawerListener(this);

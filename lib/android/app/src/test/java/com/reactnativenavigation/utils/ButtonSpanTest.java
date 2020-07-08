@@ -4,19 +4,20 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonSpan;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.ButtonOptions;
+import com.reactnativenavigation.options.params.Colour;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-import static com.reactnativenavigation.utils.ButtonSpan.DISABLED_COLOR;
+import static com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonSpan.DISABLED_COLOR;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class ButtonSpanTest extends BaseTest {
     private ButtonSpan uut;
-    private Button button;
+    private ButtonOptions button;
 
     @Override
     public void beforeEach() {
@@ -43,8 +44,8 @@ public class ButtonSpanTest extends BaseTest {
     }
 
     @NotNull
-    private Button createButton() {
-        Button button = new Button();
+    private ButtonOptions createButton() {
+        ButtonOptions button = new ButtonOptions();
         button.color = new Colour(Color.RED);
         return button;
     }

@@ -9,36 +9,35 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
-import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.parse.NestedAnimationsOptions;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.RenderChecker;
-import com.reactnativenavigation.presentation.StackPresenter;
+import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.NestedAnimationsOptions;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.button.IconResolver;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
-import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 import com.reactnativenavigation.views.stack.StackBehaviour;
-import com.reactnativenavigation.views.topbar.ScrollDIsabledBehavior;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 import org.assertj.core.api.iterable.Extractor;
 import org.json.JSONException;
@@ -121,7 +120,7 @@ public class StackControllerTest extends BaseTest {
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
         child3 = spy(new SimpleViewController(activity, childRegistry, "child3", new Options()) {
             @Override
-            protected SimpleView createView() {
+            public SimpleView createView() {
                 return take(child3View, super.createView());
             }
         });

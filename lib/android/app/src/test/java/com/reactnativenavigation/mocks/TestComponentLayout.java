@@ -4,14 +4,14 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
-import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
-import com.reactnativenavigation.views.ComponentLayout;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.views.component.ComponentLayout;
 
-public class TestComponentLayout extends ComponentLayout implements TitleBarButtonController.OnClickListener {
+public class TestComponentLayout extends ComponentLayout implements ButtonController.OnClickListener {
 
     private ReactView reactView;
 

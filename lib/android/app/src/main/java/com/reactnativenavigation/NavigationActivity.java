@@ -11,12 +11,12 @@ import android.view.View;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
-import com.reactnativenavigation.presentation.OverlayManager;
-import com.reactnativenavigation.presentation.RootPresenter;
+import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.react.ReactGateway;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 

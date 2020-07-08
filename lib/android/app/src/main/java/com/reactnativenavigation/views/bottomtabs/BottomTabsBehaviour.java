@@ -5,7 +5,6 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.BehaviourDelegate;
-import com.reactnativenavigation.views.BottomTabs;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;

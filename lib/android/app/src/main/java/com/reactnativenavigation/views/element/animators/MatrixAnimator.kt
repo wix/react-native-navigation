@@ -7,7 +7,7 @@ import android.graphics.Rect
 import android.view.View
 import com.facebook.drawee.drawable.ScalingUtils.InterpolatingScaleType
 import com.facebook.react.views.image.ReactImageView
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
 
 class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {

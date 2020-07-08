@@ -2,10 +2,11 @@ package com.reactnativenavigation.mocks;
 
 import android.app.*;
 
-import com.reactnativenavigation.parse.*;
-import com.reactnativenavigation.presentation.ComponentPresenter;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.viewcontrollers.*;
+import com.reactnativenavigation.options.*;
+import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 
 public class SimpleComponentViewController extends ComponentViewController {
     public SimpleComponentViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions) {

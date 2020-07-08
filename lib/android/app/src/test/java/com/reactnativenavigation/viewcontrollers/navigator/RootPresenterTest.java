@@ -5,16 +5,16 @@ import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.presentation.LayoutDirectionApplier;
-import com.reactnativenavigation.presentation.RootPresenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.LayoutDirectionApplier;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 

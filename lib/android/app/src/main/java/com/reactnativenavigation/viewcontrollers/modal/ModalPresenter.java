@@ -5,11 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.anim.ModalAnimator;
-import com.reactnativenavigation.parse.ModalPresentationStyle;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.options.ModalPresentationStyle;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;

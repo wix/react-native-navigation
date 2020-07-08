@@ -34,6 +34,7 @@ const Screens = {
   RoundButton: 'CustomRoundedButton',
   LifecycleButton: 'LifecycleButton',
   ReactTitleView: 'ReactTitleView',
+  LazyTitleView: 'LazyTitleView',
   EventsScreen: 'EventsScreen',
   EventsOverlay: 'EventsOverlay',
   LazilyRegisteredScreen: 'LazilyRegisteredScreen',

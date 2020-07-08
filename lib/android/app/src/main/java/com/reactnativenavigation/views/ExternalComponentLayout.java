@@ -2,6 +2,9 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
+import com.reactnativenavigation.views.component.Component;
+
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 @SuppressLint("ViewConstructor")

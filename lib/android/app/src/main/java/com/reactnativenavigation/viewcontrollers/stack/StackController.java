@@ -4,28 +4,25 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.anim.StackAnimator;
-import com.reactnativenavigation.parse.NestedAnimationsOptions;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.FabPresenter;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.presentation.StackPresenter;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
+import com.reactnativenavigation.options.NestedAnimationsOptions;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.IdStack;
-import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
-import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.Fab;
-import com.reactnativenavigation.views.FabMenu;
-import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
+import com.reactnativenavigation.views.component.Component;
+import com.reactnativenavigation.views.stack.fab.Fab;
+import com.reactnativenavigation.views.stack.fab.FabMenu;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.StackBehaviour;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,7 +85,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    protected ViewController getCurrentChild() {
+    public ViewController getCurrentChild() {
         return stack.peek();
     }
 
@@ -358,7 +355,7 @@ public class StackController extends ParentController<StackLayout> {
 
     @NonNull
     @Override
-    protected StackLayout createView() {
+    public StackLayout createView() {
         StackLayout stackLayout = new StackLayout(getActivity(), topBarController, getId());
         presenter.bindView(topBarController);
         addInitialChild(stackLayout);

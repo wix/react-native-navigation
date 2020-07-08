@@ -3,13 +3,13 @@ package com.reactnativenavigation.viewcontrollers.toptabs;
 import android.app.Activity;
 import android.view.View;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.utils.Functions.Func1;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.ViewVisibilityListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewVisibilityListenerAdapter;
 import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
 import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 
@@ -40,13 +40,13 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     }
 
     @Override
-    protected ViewController getCurrentChild() {
+    public ViewController getCurrentChild() {
         return tabs.get(getView().getCurrentItem());
     }
 
     @NonNull
     @Override
-    protected TopTabsViewPager createView() {
+    public TopTabsViewPager createView() {
         view = viewCreator.create();
         return view;
     }

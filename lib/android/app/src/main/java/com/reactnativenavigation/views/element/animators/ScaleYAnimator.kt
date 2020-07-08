@@ -5,7 +5,7 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.view.ViewGroup
 import com.facebook.react.views.text.ReactTextView
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.options.SharedElementTransitionOptions
 
 class ScaleYAnimator(from: View, to: View) : PropertyAnimatorCreator<ViewGroup>(from, to) {
     override fun shouldAnimateProperty(fromChild: ViewGroup, toChild: ViewGroup): Boolean {

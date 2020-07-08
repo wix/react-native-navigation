@@ -2,11 +2,9 @@ package com.reactnativenavigation.viewcontrollers.child;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.viewcontrollers.ChildController;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -18,7 +16,6 @@ import static org.mockito.Mockito.verify;
 
 public class ChildControllerTest extends BaseTest {
 
-    private ParentController parent;
     private ChildController uut;
     private ChildControllersRegistry childRegistry;
     private Presenter presenter;
@@ -34,7 +31,7 @@ public class ChildControllerTest extends BaseTest {
                 return resolvedOptions;
             }
         };
-        parent = Mockito.mock(ParentController.class);
+        ParentController parent = Mockito.mock(ParentController.class);
         uut.setParentController(parent);
     }
 

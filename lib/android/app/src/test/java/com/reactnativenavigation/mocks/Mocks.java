@@ -1,7 +1,7 @@
 package com.reactnativenavigation.mocks;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

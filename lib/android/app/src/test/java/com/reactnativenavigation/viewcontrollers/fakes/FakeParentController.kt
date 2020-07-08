@@ -1,15 +1,13 @@
 package com.reactnativenavigation.viewcontrollers.fakes
 
 import android.app.Activity
-import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.reactnativenavigation.parse.Options
-import com.reactnativenavigation.presentation.Presenter
+import com.reactnativenavigation.options.Options
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter
 import com.reactnativenavigation.utils.CompatUtils
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry
-import com.reactnativenavigation.viewcontrollers.ParentController
-import com.reactnativenavigation.viewcontrollers.ViewController
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
+import com.reactnativenavigation.viewcontrollers.parent.ParentController
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import org.mockito.Mockito.mock
 
 class FakeParentController @JvmOverloads constructor(

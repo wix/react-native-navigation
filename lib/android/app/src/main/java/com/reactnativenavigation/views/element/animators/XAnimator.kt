@@ -5,7 +5,7 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.view.View.TRANSLATION_X
 import com.facebook.react.views.text.ReactTextView
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
 
 class XAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) {
