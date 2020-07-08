@@ -102,7 +102,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 }
 
 - (void)setDefaultOptions:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion {
-	[self assertReady];
     RNNAssertMainQueue();
     
 	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initWithDict:optionsDict];

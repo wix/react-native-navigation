@@ -98,6 +98,7 @@
 	[skipMethods addObject:@"dismissedModal:"];
 	[skipMethods addObject:@"attemptedToDismissModal:"];
 	[skipMethods addObject:@"dismissedMultipleModals:"];
+	[skipMethods addObject:@"setDefaultOptions:completion:"];
 	
 	NSMutableArray* result = [NSMutableArray new];
 	
