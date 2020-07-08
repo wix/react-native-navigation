@@ -9,7 +9,6 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
@@ -20,9 +19,9 @@ import com.reactnativenavigation.options.NestedAnimationsOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.utils.RenderChecker;
-import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
@@ -30,12 +29,12 @@ import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
-import com.reactnativenavigation.views.stack.StackLayout;
-import com.reactnativenavigation.views.element.ElementTransitionManager;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.StackBehaviour;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 
@@ -97,7 +96,7 @@ public class StackControllerTest extends BaseTest {
         backButtonHelper = spy(new BackButtonHelper());
         activity = newActivity();
         StatusBarUtils.saveStatusBarHeight(63);
-        animator = spy(new StackAnimator(activity, new ElementTransitionManager()));
+        animator = spy(new StackAnimator(activity));
         childRegistry = new ChildControllersRegistry();
         presenter = spy(new StackPresenter(
                     activity,

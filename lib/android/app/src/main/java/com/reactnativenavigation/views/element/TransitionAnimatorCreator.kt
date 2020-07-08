@@ -11,13 +11,25 @@ import androidx.core.animation.doOnEnd
 import com.facebook.react.uimanager.ViewGroupManager
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions
+import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.*
 
-open class TransitionAnimatorCreator {
-    fun create(fadeAnimation: AnimationOptions, transitions: TransitionSet): AnimatorSet {
-        if (transitions.isEmpty) return AnimatorSet()
+open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
+
+    fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, onAnimatorsCreated: (AnimatorSet) -> Unit) {
+        transitionSetCreator.create(animation, fromScreen, toScreen) {
+            if (it.isEmpty) {
+                onAnimatorsCreated(AnimatorSet())
+            } else {
+                onAnimatorsCreated(create(fadeAnimation, it))
+            }
+        }
+    }
+
+    private fun create(fadeAnimation: AnimationOptions, transitions: TransitionSet): AnimatorSet {
         recordIndices(transitions)
         reparentViews(transitions)
         val animators = ArrayList<Animator>()

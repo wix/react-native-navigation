@@ -10,20 +10,24 @@ import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.utils.CollectionUtils
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import com.reactnativenavigation.views.element.ElementTransitionManager
+import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import java.util.*
 
-open class StackAnimator(context: Context, private val transitionManager: ElementTransitionManager) : BaseAnimator(context) {
+open class StackAnimator @JvmOverloads constructor(
+        context: Context,
+        private val transitionAnimatorCreator: TransitionAnimatorCreator = TransitionAnimatorCreator()
+) : BaseAnimator(context) {
     private val runningPushAnimations: MutableMap<View, Animator> = HashMap()
 
     fun push(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, onAnimationEnd: Runnable) {
         val set = createPushAnimator(appearing, onAnimationEnd)
         runningPushAnimations[appearing.view] = set
         if (options.animations.push.sharedElements.hasValue()) {
-            pushWithElementTransition(appearing, disappearing, options, set)
+            pushWithElementTransition(appearing, disappearing, options, set) {
+                pushWithoutElementTransitions(appearing, options, set)
+            }
         } else {
             pushWithoutElementTransitions(appearing, options, set)
         }
@@ -49,24 +53,23 @@ open class StackAnimator(context: Context, private val transitionManager: Elemen
         return set
     }
 
-    private fun pushWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, set: AnimatorSet) {
+    private fun pushWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, set: AnimatorSet, onElementsNotFound: () -> Unit) {
         appearing.view.alpha = 0f
-        transitionManager.createTransitions(
+        val fade = if (options.animations.push.content.isFadeAnimation()) options.animations.push.content else FadeAnimation().content
+        transitionAnimatorCreator.create(
                 options.animations.push,
+                fade,
                 disappearing,
-                appearing) { transitionSet ->
-                    if (transitionSet.isEmpty) {
-                        set.playTogether(options.animations.push.content.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
-                    } else {
-                        val fade = if (options.animations.push.content.isFadeAnimation()) options.animations.push.content else FadeAnimation().content
-                        val transitions = transitionManager.createAnimators(fade, transitionSet)
-                        val listeners = transitions.listeners
-                        set.playTogether(fade.getAnimation(appearing.view), transitions)
-                        CollectionUtils.forEach(listeners) { listener: Animator.AnimatorListener? -> set.addListener(listener) }
-                        transitions.removeAllListeners()
-                    }
-                    set.start()
-                }
+                appearing) { transitionAnimators ->
+            if (transitionAnimators.childAnimations.isEmpty()) {
+                onElementsNotFound()
+            } else {
+                set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
+                transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
+                transitionAnimators.removeAllListeners()
+            }
+            set.start()
+        }
     }
 
     private fun pushWithoutElementTransitions(appearing: ViewController<*>, options: Options, set: AnimatorSet) {
@@ -87,8 +90,12 @@ open class StackAnimator(context: Context, private val transitionManager: Elemen
         if (runningPushAnimations.containsKey(view)) {
             runningPushAnimations[view]!!.cancel()
             onAnimationEnd.run()
-            return
+        } else {
+            animatePop(pop, view, onAnimationEnd)
         }
+    }
+
+    private fun animatePop(pop: NestedAnimationsOptions, view: View, onAnimationEnd: Runnable) {
         val set = pop.content.getAnimation(view, getDefaultPopAnimation(view))
         set.addListener(object : AnimatorListenerAdapter() {
             private var cancelled = false

@@ -36,13 +36,11 @@ open class AnimationOptions(json: JSONObject?) {
         }
     }
 
-    @JvmField
-    var id: Text = NullText()
-    @JvmField
-    var enabled: Bool = NullBool()
-    @JvmField
-    var waitForRender: Bool = NullBool()
+    @JvmField var id: Text = NullText()
+    @JvmField var enabled: Bool = NullBool()
+    @JvmField var waitForRender: Bool = NullBool()
     private var valueOptions = HashSet<ValueAnimationOptions>()
+
     fun mergeWith(other: AnimationOptions) {
         if (other.id.hasValue()) id = other.id
         if (other.enabled.hasValue()) enabled = other.enabled

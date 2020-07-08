@@ -1,18 +1,13 @@
 package com.reactnativenavigation.views.element
 
-import android.animation.AnimatorSet
 import android.view.View
 import androidx.core.view.doOnLayout
-import com.facebook.react.uimanager.util.ReactFindViewUtil.OnViewFoundListener
-import com.facebook.react.uimanager.util.ReactFindViewUtil.findView
-import com.reactnativenavigation.options.AnimationOptions
+import com.facebook.react.uimanager.util.ReactFindViewUtil
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
-open class ElementTransitionManager {
-    private val animatorCreator: TransitionAnimatorCreator = TransitionAnimatorCreator()
-
-    fun createTransitions(animation: NestedAnimationsOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
+class TransitionSetCreator {
+    fun create(animation: NestedAnimationsOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
         val sharedElements = animation.sharedElements
         val elementTransitions = animation.elementTransitions
         if (!sharedElements.hasValue() && !elementTransitions.hasValue) {
@@ -22,8 +17,8 @@ open class ElementTransitionManager {
         val transitionSet = TransitionSet()
         for (transitionOptions in sharedElements.get()) {
             val transition = SharedElementTransition(toScreen, transitionOptions!!)
-            findView(fromScreen.view, transition.fromId)?.let { transition.from = it }
-            findView(toScreen.view, object : OnViewFoundListener {
+            ReactFindViewUtil.findView(fromScreen.view, transition.fromId)?.let { transition.from = it }
+            ReactFindViewUtil.findView(toScreen.view, object : ReactFindViewUtil.OnViewFoundListener {
                 override fun getNativeId(): String {
                     return transition.toId
                 }
@@ -41,13 +36,13 @@ open class ElementTransitionManager {
         }
         for (transitionOptions in elementTransitions.transitions) {
             val transition = ElementTransition(transitionOptions)
-            findView(fromScreen.view, transition.id)?.let {
+            ReactFindViewUtil.findView(fromScreen.view, transition.id)?.let {
                 transition.view = it
                 transition.viewController = fromScreen
                 transitionSet.add(transition)
             }
             if (transition.isValid()) continue
-            findView(toScreen.view, object : OnViewFoundListener {
+            ReactFindViewUtil.findView(toScreen.view, object : ReactFindViewUtil.OnViewFoundListener {
                 override fun getNativeId(): String {
                     return transition.id
                 }
@@ -65,9 +60,4 @@ open class ElementTransitionManager {
             })
         }
     }
-
-    fun createAnimators(fadeAnimation: AnimationOptions?, transitionSet: TransitionSet?): AnimatorSet {
-        return animatorCreator.create(fadeAnimation!!, transitionSet!!)
-    }
-
 }
