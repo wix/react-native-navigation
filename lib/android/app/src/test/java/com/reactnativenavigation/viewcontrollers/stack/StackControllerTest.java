@@ -599,7 +599,7 @@ public class StackControllerTest extends BaseTest {
 
         uut.pop(mergeOptions, new CommandListenerAdapter());
         ArgumentCaptor<NestedAnimationsOptions> captor = ArgumentCaptor.forClass(NestedAnimationsOptions.class);
-        verify(animator, times(1)).pop(any(), captor.capture(), any());
+        verify(animator, times(1)).pop(any(), any(), captor.capture(), any());
         Animator animator = captor.getValue().content
                 .getAnimation(mockView(activity))
                 .getChildAnimations()
@@ -627,7 +627,7 @@ public class StackControllerTest extends BaseTest {
 
         uut.pop(Options.EMPTY, new CommandListenerAdapter());
         ArgumentCaptor<NestedAnimationsOptions> captor = ArgumentCaptor.forClass(NestedAnimationsOptions.class);
-        verify(animator, times(1)).pop(any(), captor.capture(), any());
+        verify(animator, times(1)).pop(any(), any(), captor.capture(), any());
         Animator animator = captor.getValue().content
                 .getAnimation(mockView(activity))
                 .getChildAnimations()
@@ -792,9 +792,9 @@ public class StackControllerTest extends BaseTest {
                 uut.popTo(child2, Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(animator, times(0)).pop(eq(child1.getView()), any(), any());
-                        verify(animator, times(0)).pop(eq(child2.getView()), any(), any());
-                        verify(animator, times(1)).pop(eq(child4.getView()), eq(child4.options.animations.push), any());
+                        verify(animator, times(0)).pop(any(), eq(child1), any(), any());
+                        verify(animator, times(0)).pop(any(), eq(child2), any(), any());
+                        verify(animator, times(1)).pop(any(), eq(child4), eq(child4.options.animations.push), any());
                     }
                 });
             }
@@ -840,8 +840,7 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void popToRoot_onlyTopChildIsAnimated() {
-        child1.options.animations.push.enabled = new Bool(false);
-        child2.options.animations.push.enabled = new Bool(false);
+        disablePushAnimation(child1, child2);
 
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
@@ -851,7 +850,7 @@ public class StackControllerTest extends BaseTest {
                 uut.popToRoot(Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(animator, times(1)).pop(eq(child3.getView()), eq(child3.options.animations.pop), any());
+                        verify(animator, times(1)).pop(eq(child1), eq(child3), eq(child3.options.animations.pop), any());
                     }
                 });
             }

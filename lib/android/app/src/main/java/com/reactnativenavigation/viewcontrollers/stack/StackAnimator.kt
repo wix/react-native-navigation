@@ -40,25 +40,45 @@ open class StackAnimator @JvmOverloads constructor(
         val set = createPushAnimator(appearing, onAnimationEnd)
         runningPushAnimations[appearing.view] = set
         if (options.animations.push.sharedElements.hasValue()) {
-            pushWithElementTransition(appearing, disappearing, options, set) {
-                pushWithoutElementTransitions(appearing, options, set)
-            }
+            pushWithElementTransition(appearing, disappearing, options, set, object : TransitionAnimatorCreator.CreatorResultCallback() {
+                override fun onError() {
+                    pushWithoutElementTransitions(appearing, options, set)
+                }
+            })
         } else {
             pushWithoutElementTransitions(appearing, options, set)
         }
     }
 
-    open fun pop(view: View, pop: NestedAnimationsOptions, onAnimationEnd: Runnable) {
-        if (runningPushAnimations.containsKey(view)) {
-            runningPushAnimations[view]!!.cancel()
+    open fun pop(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, onAnimationEnd: Runnable) {
+        if (runningPushAnimations.containsKey(disappearing.view)) {
+            runningPushAnimations[disappearing.view]!!.cancel()
             onAnimationEnd.run()
         } else {
-            animatePop(pop, view, onAnimationEnd)
+            animatePop(appearing, disappearing, pop, onAnimationEnd)
         }
     }
 
-    private fun animatePop(pop: NestedAnimationsOptions, view: View, onAnimationEnd: Runnable) {
-        val set = pop.content.getAnimation(view, getDefaultPopAnimation(view))
+    private fun animatePop(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, onAnimationEnd: Runnable) {
+        val set = createPopAnimator(onAnimationEnd)
+        if (pop.sharedElements.hasValue()) {
+            popWithElementTransitions(appearing, disappearing, pop, set)
+        } else {
+            popWithoutElementTransitions(pop, set, disappearing)
+        }
+    }
+
+    private fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, set: AnimatorSet) {
+
+    }
+
+    private fun popWithoutElementTransitions(pop: NestedAnimationsOptions, set: AnimatorSet, disappearing: ViewController<*>) {
+        set.playTogether(pop.content.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+        set.start()
+    }
+
+    private fun createPopAnimator(onAnimationEnd: Runnable): AnimatorSet {
+        val set = AnimatorSet()
         set.addListener(object : AnimatorListenerAdapter() {
             private var cancelled = false
             override fun onAnimationCancel(animation: Animator) {
@@ -69,7 +89,7 @@ open class StackAnimator @JvmOverloads constructor(
                 if (!cancelled) onAnimationEnd.run()
             }
         })
-        set.start()
+        return set
     }
 
     private fun createPushAnimator(appearing: ViewController<*>, onAnimationEnd: Runnable): AnimatorSet {
@@ -92,23 +112,23 @@ open class StackAnimator @JvmOverloads constructor(
         return set
     }
 
-    private fun pushWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, set: AnimatorSet, onElementsNotFound: () -> Unit) {
+    private fun pushWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, set: AnimatorSet, callback: TransitionAnimatorCreator.CreatorResultCallback) {
         appearing.view.alpha = 0f
         val fade = if (options.animations.push.content.isFadeAnimation()) options.animations.push.content else FadeAnimation().content
         transitionAnimatorCreator.create(
                 options.animations.push,
                 fade,
                 disappearing,
-                appearing) { transitionAnimators ->
-            if (transitionAnimators.childAnimations.isEmpty()) {
-                onElementsNotFound()
-            } else {
-                set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
-                transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
-                transitionAnimators.removeAllListeners()
-            }
-            set.start()
-        }
+                appearing,
+                object : TransitionAnimatorCreator.CreatorResultCallback(callback) {
+                    override fun onSuccess(transitionAnimators: AnimatorSet) {
+                        set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
+                        transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
+                        transitionAnimators.removeAllListeners()
+                        set.start()
+                    }
+                }
+        )
     }
 
     private fun pushWithoutElementTransitions(appearing: ViewController<*>, options: Options, set: AnimatorSet) {

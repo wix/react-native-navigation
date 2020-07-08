@@ -18,13 +18,22 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.*
 
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
+    open class CreatorResultCallback(private val callback: CreatorResultCallback? = null) {
+        open fun onError() {
+            callback?.onError()
+        }
 
-    fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, onAnimatorsCreated: (AnimatorSet) -> Unit) {
+        open fun onSuccess(transitionAnimators: AnimatorSet) {
+
+        }
+    }
+
+    fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, callback: CreatorResultCallback) {
         transitionSetCreator.create(animation, fromScreen, toScreen) {
             if (it.isEmpty) {
-                onAnimatorsCreated(AnimatorSet())
+                callback.onError()
             } else {
-                onAnimatorsCreated(create(fadeAnimation, it))
+                callback.onSuccess(create(fadeAnimation, it))
             }
         }
     }
