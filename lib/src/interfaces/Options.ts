@@ -565,6 +565,10 @@ export interface ElementAnimation {
 }
 
 export interface OptionsFab {
+  /**
+   * ID is required when first instantiating the Fab button,
+   * however when updating the existing Fab button, ID is not required.
+   */
   id?: string;
   backgroundColor?: Color;
   clickColor?: Color;
@@ -573,10 +577,8 @@ export interface OptionsFab {
   icon?: ImageRequireSource;
   iconColor?: Color;
   alignHorizontally?: 'left' | 'right';
-  alignVertically?: 'top' | 'bottom';
   hideOnScroll?: boolean;
-  size?: number;
-  actions?: OptionsFab[];
+  size?: 'mini' | 'regular';
 }
 
 export interface OptionsBottomTabs {
