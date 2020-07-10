@@ -37,6 +37,7 @@ export default class CocktailsView extends React.Component<Props> {
       <View style={styles.overlayContainer}>
         <Image
           source={item.image}
+          fadeDuration={0}
           // @ts-ignore nativeID isn't included in react-native Image props.
           nativeID={`image${item.id}`}
           style={styles.image}
@@ -80,7 +81,6 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   image: {
-    backgroundColor: 'white',
     height: '100%',
     width: 118,
     zIndex: 1,
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
+    zIndex: 2,
   },
   ingredients: {
     fontSize: 12,
