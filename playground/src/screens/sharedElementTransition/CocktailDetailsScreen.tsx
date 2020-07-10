@@ -73,7 +73,7 @@ export default class CocktailDetailsScreen extends React.Component<Props> {
   }
 }
 
-const SIZE = 120;
+const SIZE = 100;
 const HEADER = 150;
 const styles = StyleSheet.create({
   root: {
@@ -108,9 +108,7 @@ const styles = StyleSheet.create({
     height: SIZE,
     width: SIZE,
     zIndex: 1,
-    // transform: [
-    //   { rotate: '45deg' }
-    // ],
+    // transform: [{ rotate: '45deg' }],
     marginLeft: 24,
     marginBottom: -24,
   },
