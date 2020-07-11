@@ -1,11 +1,11 @@
 package com.reactnativenavigation.views.element
 
 import android.view.View
-import androidx.core.view.doOnLayout
 import com.facebook.react.uimanager.util.ReactFindViewUtil
 import com.reactnativenavigation.options.ElementTransitions
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.SharedElements
+import com.reactnativenavigation.utils.doIfMeasuredOrOnLayout
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
 class TransitionSetCreator {
@@ -31,19 +31,11 @@ class TransitionSetCreator {
                 }
 
                 override fun onViewFound(view: View) {
-                    if (view.width > 0) {
+                    view.doIfMeasuredOrOnLayout {
                         transition.to = view
                         if (transition.isValid()) transitionSet.add(transition)
                         if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
                             onAnimatorsCreated(transitionSet)
-                        }
-                    } else {
-                        view.doOnLayout {
-                            transition.to = view
-                            if (transition.isValid()) transitionSet.add(transition)
-                            if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
-                                onAnimatorsCreated(transitionSet)
-                            }
                         }
                     }
                 }
@@ -66,21 +58,12 @@ class TransitionSetCreator {
                 }
 
                 override fun onViewFound(view: View) {
-                    if (view.width > 0) {
+                    view.doIfMeasuredOrOnLayout {
                         transition.view = view
                         transition.viewController = toScreen
                         transitionSet.add(transition)
                         if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
                             onAnimatorsCreated(transitionSet)
-                        }
-                    } else {
-                        view.doOnLayout {
-                            transition.view = view
-                            transition.viewController = toScreen
-                            transitionSet.add(transition)
-                            if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
-                                onAnimatorsCreated(transitionSet)
-                            }
                         }
                     }
                 }
