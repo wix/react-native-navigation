@@ -6,6 +6,7 @@ import android.animation.TypeEvaluator
 import android.graphics.PointF
 import android.graphics.Rect
 import android.view.View
+import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.drawable.ScalingUtils.InterpolatingScaleType
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
@@ -40,7 +41,10 @@ class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageV
         }
     }
 
-    private fun getScaleType(child: View) = (child as ReactImageView).hierarchy.actualImageScaleType
+    private fun getScaleType(child: View): ScalingUtils.ScaleType? {
+        val scaleType = (child as ReactImageView).hierarchy.actualImageScaleType
+        return if (scaleType is InterpolatingScaleType) scaleType.scaleTypeFrom else scaleType
+    }
 
     private fun calculateBounds(view: View) = Rect(0, 0, view.width, view.height)
 }
