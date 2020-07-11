@@ -29,7 +29,6 @@ export default class CocktailsView extends React.Component<Props> {
       style={styles.itemContainer}
       testID={item.id}
       onPress={() => {
-        console.log(item);
         this.props.onItemPress(item);
       }}
       onLongPress={() => this.props.onItemLongPress?.(item)}
