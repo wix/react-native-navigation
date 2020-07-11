@@ -62,7 +62,9 @@ open class StackAnimator @JvmOverloads constructor(
     private fun animatePop(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, onAnimationEnd: Runnable) {
         val set = createPopAnimator(onAnimationEnd)
         if (pop.sharedElements.hasValue()) {
-            popWithElementTransitions(appearing, disappearing, pop, set)
+            appearing.view.post {
+                popWithElementTransitions(appearing, disappearing, pop, set)
+            }
         } else {
             popWithoutElementTransitions(pop, set, disappearing)
         }
