@@ -6,7 +6,6 @@ import android.animation.TypeEvaluator
 import android.graphics.PointF
 import android.graphics.Rect
 import android.view.View
-import android.view.ViewGroup
 import com.facebook.drawee.drawable.ScalingUtils.InterpolatingScaleType
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions

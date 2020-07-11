@@ -139,8 +139,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             lp.leftMargin = loc.x
             lp.width = view.width
             lp.height = view.height
-            view.layoutParams = lp
-            transition.viewController.requireParentController().addOverlay(view)
+            transition.viewController.requireParentController().addOverlay(view, lp)
         }
     }
 
