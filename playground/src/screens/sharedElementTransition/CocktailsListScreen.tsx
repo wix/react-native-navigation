@@ -7,6 +7,7 @@ import Screens from '../Screens';
 import { CocktailItem } from '../../assets/cocktails';
 
 const MULTIPLIER = 1.15;
+const POP_MULTIPLIER = 1.15;
 const LONG_DURATION = 350 * MULTIPLIER;
 const SHORT_DURATION = 190 * MULTIPLIER;
 
@@ -78,6 +79,45 @@ export default class CocktailsListScreen extends NavigationComponent {
                   },
                   translationY: {
                     from: 16,
+                    duration: SHORT_DURATION,
+                  },
+                },
+              ],
+            },
+            pop: {
+              content: {
+                alpha: {
+                  from: 1,
+                  to: 0,
+                  duration: LONG_DURATION * POP_MULTIPLIER,
+                },
+              },
+              sharedElementTransitions: [
+                {
+                  fromId: `image${item.id}Dest`,
+                  toId: `image${item.id}`,
+                  duration: LONG_DURATION * POP_MULTIPLIER,
+                },
+                {
+                  fromId: `title${item.id}Dest`,
+                  toId: `title${item.id}`,
+                  duration: LONG_DURATION * POP_MULTIPLIER,
+                },
+                {
+                  fromId: 'backdrop',
+                  toId: `backdrop${item.id}`,
+                  duration: LONG_DURATION * POP_MULTIPLIER,
+                },
+              ],
+              elementTransitions: [
+                {
+                  id: 'description',
+                  alpha: {
+                    to: 0,
+                    duration: SHORT_DURATION,
+                  },
+                  translationY: {
+                    to: 16,
                     duration: SHORT_DURATION,
                   },
                 },
