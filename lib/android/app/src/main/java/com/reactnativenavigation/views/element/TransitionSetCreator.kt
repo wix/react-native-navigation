@@ -11,7 +11,7 @@ class TransitionSetCreator {
     fun create(animation: NestedAnimationsOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
         val sharedElements = animation.sharedElements
         val elementTransitions = animation.elementTransitions
-        if (!sharedElements.hasValue() && !elementTransitions.hasValue) {
+        if (!sharedElements.hasValue() && !elementTransitions.hasValue()) {
             onAnimatorsCreated(TransitionSet())
             return
         }

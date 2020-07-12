@@ -5,8 +5,6 @@ import org.json.JSONObject
 
 class ElementTransitions {
     var transitions = arrayListOf<ElementTransitionOptions>()
-    val hasValue: Boolean
-        get() = transitions.isNotEmpty()
 
     companion object {
         fun parse(json: JSONObject): ElementTransitions {
@@ -25,10 +23,12 @@ class ElementTransitions {
     }
 
     fun mergeWith(other: ElementTransitions) {
-        if (other.hasValue) transitions = other.transitions
+        if (other.hasValue()) transitions = other.transitions
     }
 
     fun mergeWithDefault(defaultOptions: ElementTransitions) {
-        if (!hasValue) transitions = defaultOptions.transitions
+        if (!hasValue()) transitions = defaultOptions.transitions
     }
+
+    fun hasValue() = transitions.isNotEmpty()
 }
