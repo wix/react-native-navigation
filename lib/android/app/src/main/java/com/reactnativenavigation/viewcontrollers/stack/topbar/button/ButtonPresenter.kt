@@ -89,7 +89,7 @@ open class ButtonPresenter(private val button: ButtonOptions, private val iconRe
     private fun applyTextColor(view: View) {
         if (view is TextView) {
             if (button.enabled.isTrueOrUndefined) {
-                view.setTextColor(button.color.get())
+                if (button.color.hasValue()) view.setTextColor(button.color.get())
             } else {
                 view.setTextColor(button.disabledColor.get(DISABLED_COLOR))
             }

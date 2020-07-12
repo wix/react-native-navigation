@@ -6,21 +6,20 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.fakes.IconResolverFake;
 import com.reactnativenavigation.options.ButtonOptions;
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 
 import org.junit.Test;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
-
-import java.util.List;
 
 import androidx.appcompat.widget.ActionMenuView;
 
@@ -30,16 +29,19 @@ import static org.mockito.Mockito.mock;
 
 @LooperMode(LooperMode.Mode.PAUSED)
 public class ButtonPresenterTest extends BaseTest {
+    private static final String BTN_TEXT = "button1";
+
     private TitleBar titleBar;
     private ButtonPresenter uut;
     private ButtonController buttonController;
+    private ButtonOptions button;
 
     @Override
     public void beforeEach() {
         Activity activity = newActivity();
         titleBar = new TitleBar(activity);
         activity.setContentView(titleBar);
-        ButtonOptions button = createButton();
+        button = createButton();
 
         uut = new ButtonPresenter(button, new IconResolverFake(activity));
         buttonController = new ButtonController(
@@ -52,24 +54,46 @@ public class ButtonPresenterTest extends BaseTest {
     }
 
     @Test
+    public void applyOptions_buttonIsAddedToMenu() {
+        addButtonAndApplyOptions();
+
+        assertThat(findButtonView().getText().toString()).isEqualTo(BTN_TEXT);
+    }
+
+    @Test
     public void applyOptions_appliesColorOnButtonTextView() {
+        button.color = new Colour(Color.RED);
+        addButtonAndApplyOptions();
+
+        assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.RED);
+    }
+
+    @Test
+    public void apply_disabledColor() {
+        button.enabled = new Bool(false);
+        addButtonAndApplyOptions();
+
+        assertThat(findButtonView().getCurrentTextColor()).isEqualTo(ButtonPresenter.DISABLED_COLOR);
+    }
+
+    private void addButtonAndApplyOptions() {
         MenuItem menuItem = buttonController.createAndAddButtonToTitleBar(titleBar, 0);
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
+    }
 
+    private TextView findButtonView() {
         ShadowLooper.idleMainLooper();
-        List<TextView> textualButtons = ViewUtils.findChildrenByClass(
+        return (TextView) ViewUtils.findChildrenByClass(
                 requireNonNull(ViewUtils.findChildByClass(titleBar, ActionMenuView.class)),
                 TextView.class,
                 child -> true
-        );
-        assertThat(textualButtons.get(0).getCurrentTextColor()).isEqualTo(Color.RED);
+        ).get(0);
     }
 
     private ButtonOptions createButton() {
         ButtonOptions b = new ButtonOptions();
         b.id = "btn1";
-        b.text = new Text("button");
-        b.color = new Colour(Color.RED);
+        b.text = new Text(BTN_TEXT);
         b.showAsAction = new Number(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return b;
     }
