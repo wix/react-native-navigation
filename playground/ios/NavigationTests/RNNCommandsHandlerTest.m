@@ -98,6 +98,7 @@
 	[skipMethods addObject:@"dismissedModal:"];
 	[skipMethods addObject:@"attemptedToDismissModal:"];
 	[skipMethods addObject:@"dismissedMultipleModals:"];
+	[skipMethods addObject:@"setDefaultOptions:completion:"];
 	
 	NSMutableArray* result = [NSMutableArray new];
 	
@@ -501,6 +502,11 @@
 	}];
 	
 	[self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testSetDefaultOptions_shouldNotThrowWhenBridgeNotReady {
+	[self.uut setReadyToReceiveCommands:false];
+	[self.uut setDefaultOptions:@{} completion:^{}];
 }
 
 @end
