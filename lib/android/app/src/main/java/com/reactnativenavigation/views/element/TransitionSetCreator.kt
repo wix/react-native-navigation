@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views.element
 
 import android.view.View
+import androidx.core.view.doOnLayout
 import com.facebook.react.uimanager.util.ReactFindViewUtil
 import com.reactnativenavigation.options.ElementTransitions
 import com.reactnativenavigation.options.NestedAnimationsOptions
@@ -17,57 +18,63 @@ class TransitionSetCreator {
             return
         }
         val transitionSet = TransitionSet()
-        createSharedElementTransitions(sharedElements, toScreen, fromScreen, transitionSet, elementTransitions, onAnimatorsCreated)
-        createElementTransitions(elementTransitions, fromScreen, transitionSet, toScreen, sharedElements, onAnimatorsCreated)
+        createSharedElementTransitions(fromScreen, toScreen, transitionSet, sharedElements, elementTransitions, onAnimatorsCreated)
+        createElementTransitions(fromScreen, toScreen, transitionSet, sharedElements, elementTransitions, onAnimatorsCreated)
     }
 
-    private fun createSharedElementTransitions(sharedElements: SharedElements, toScreen: ViewController<*>, fromScreen: ViewController<*>, transitionSet: TransitionSet, elementTransitions: ElementTransitions, onAnimatorsCreated: (TransitionSet) -> Unit) {
+    private fun createSharedElementTransitions(fromScreen: ViewController<*>, toScreen: ViewController<*>, transitionSet: TransitionSet, sharedElements: SharedElements, elementTransitions: ElementTransitions, onTransitionCreated: (TransitionSet) -> Unit) {
         for (transitionOptions in sharedElements.get()) {
-            val transition = SharedElementTransition(toScreen, transitionOptions!!)
-            ReactFindViewUtil.findView(fromScreen.view, transition.fromId)?.let { transition.from = it }
-            ReactFindViewUtil.findView(toScreen.view, object : ReactFindViewUtil.OnViewFoundListener {
-                override fun getNativeId(): String {
-                    return transition.toId
-                }
-
-                override fun onViewFound(view: View) {
-                    view.doIfMeasuredOrOnLayout {
-                        transition.to = view
-                        if (transition.isValid()) transitionSet.add(transition)
-                        if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
-                            onAnimatorsCreated(transitionSet)
-                        }
-                    }
-                }
-            })
+            val transition = SharedElementTransition(toScreen, transitionOptions)
+            ViewFinder().find(fromScreen, transition.fromId) {
+                transition.from = it
+                reportTransitionCreated(transitionSet, sharedElements, elementTransitions, transition, onTransitionCreated)
+            }
+            ViewFinder().find(toScreen, transition.toId) {
+                transition.to = it
+                reportTransitionCreated(transitionSet, sharedElements, elementTransitions, transition, onTransitionCreated)
+            }
         }
     }
 
-    private fun createElementTransitions(elementTransitions: ElementTransitions, fromScreen: ViewController<*>, transitionSet: TransitionSet, toScreen: ViewController<*>, sharedElements: SharedElements, onAnimatorsCreated: (TransitionSet) -> Unit) {
+    private fun reportTransitionCreated(transitionSet: TransitionSet, sharedElements: SharedElements, elementTransitions: ElementTransitions, transition: SharedElementTransition, onTransitionCreated: (TransitionSet) -> Unit) {
+        if (transition.isValid()) transitionSet.add(transition)
+        if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
+            onTransitionCreated(transitionSet)
+        }
+    }
+
+    private fun createElementTransitions(fromScreen: ViewController<*>, toScreen: ViewController<*>, transitionSet: TransitionSet, sharedElements: SharedElements, elementTransitions: ElementTransitions, onAnimatorsCreated: (TransitionSet) -> Unit) {
         for (transitionOptions in elementTransitions.transitions) {
             val transition = ElementTransition(transitionOptions)
-            ReactFindViewUtil.findView(fromScreen.view, transition.id)?.let {
-                transition.view = it
+            ViewFinder().find(fromScreen, transition.id) {
                 transition.viewController = fromScreen
-                transitionSet.add(transition)
+                reportTransitionCreated(transitionSet, sharedElements, elementTransitions, transition, it, onAnimatorsCreated)
             }
-            if (transition.isValid()) continue
-            ReactFindViewUtil.findView(toScreen.view, object : ReactFindViewUtil.OnViewFoundListener {
-                override fun getNativeId(): String {
-                    return transition.id
-                }
+            ViewFinder().find(toScreen, transition.id) {
+                transition.viewController = toScreen
+                reportTransitionCreated(transitionSet, sharedElements, elementTransitions, transition, it, onAnimatorsCreated)
+            }
+        }
+    }
 
-                override fun onViewFound(view: View) {
-                    view.doIfMeasuredOrOnLayout {
-                        transition.view = view
-                        transition.viewController = toScreen
-                        transitionSet.add(transition)
-                        if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
-                            onAnimatorsCreated(transitionSet)
-                        }
+    private fun reportTransitionCreated(transitionSet: TransitionSet, sharedElements: SharedElements, elementTransitions: ElementTransitions, transition: ElementTransition, it: View, onAnimatorsCreated: (TransitionSet) -> Unit) {
+        transition.view = it
+        transitionSet.add(transition)
+        if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
+            onAnimatorsCreated(transitionSet)
+        }
+    }
+
+    private class ViewFinder {
+        fun find(root: ViewController<*>, nativeId: String, onViewFound: (View) -> Unit) {
+            ReactFindViewUtil.findView(root.view, nativeId)
+                    ?.let { onViewFound(it) }
+                    ?: run {
+                        ReactFindViewUtil.findView(root.view, object : ReactFindViewUtil.OnViewFoundListener {
+                            override fun getNativeId() = nativeId
+                            override fun onViewFound(view: View) = view.doOnLayout { onViewFound(view) }
+                        })
                     }
-                }
-            })
         }
     }
 }
