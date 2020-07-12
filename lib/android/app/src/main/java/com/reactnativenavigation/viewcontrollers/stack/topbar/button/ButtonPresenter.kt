@@ -96,6 +96,12 @@ open class ButtonPresenter(private val button: ButtonOptions, private val iconRe
         }
     }
 
+    private fun applyAllCaps(view: View) {
+        if (view is TextView && button.allCaps.hasValue()) {
+            view.isAllCaps = button.allCaps.get()
+        }
+    }
+
     private fun applyOptionsDirectlyOnView(titleBar: TitleBar, menuItem: MenuItem, onViewFound: (View) -> Unit) {
         titleBar.doOnPreDraw {
             if (button.hasComponent()) onViewFound(menuItem.actionView!!)
