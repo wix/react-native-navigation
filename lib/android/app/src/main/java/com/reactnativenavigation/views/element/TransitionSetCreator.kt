@@ -1,13 +1,11 @@
 package com.reactnativenavigation.views.element
 
 import android.view.View
-import androidx.core.view.doOnLayout
-import com.facebook.react.uimanager.util.ReactFindViewUtil
 import com.reactnativenavigation.options.ElementTransitions
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.SharedElements
-import com.reactnativenavigation.utils.doIfMeasuredOrOnLayout
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
+import com.reactnativenavigation.views.element.finder.ViewFinder
 
 class TransitionSetCreator {
     fun create(animation: NestedAnimationsOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
@@ -62,19 +60,6 @@ class TransitionSetCreator {
         transitionSet.add(transition)
         if (transitionSet.size() == sharedElements.get().size + elementTransitions.transitions.size) {
             onAnimatorsCreated(transitionSet)
-        }
-    }
-
-    private class ViewFinder {
-        fun find(root: ViewController<*>, nativeId: String, onViewFound: (View) -> Unit) {
-            ReactFindViewUtil.findView(root.view, nativeId)
-                    ?.let { onViewFound(it) }
-                    ?: run {
-                        ReactFindViewUtil.findView(root.view, object : ReactFindViewUtil.OnViewFoundListener {
-                            override fun getNativeId() = nativeId
-                            override fun onViewFound(view: View) = view.doOnLayout { onViewFound(view) }
-                        })
-                    }
         }
     }
 }
