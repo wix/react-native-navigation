@@ -13,7 +13,6 @@ describe('navigation options', () => {
   let optionProcessorsRegistry: OptionProcessorsRegistry;
   const mockedStore = mock(Store) as Store;
   const store = instance(mockedStore) as Store;
-  const mockedUniqueIdProvider = mock(UniqueIdProvider);
   const setRootCommandName = 'setRoot';
   beforeEach(() => {
     const mockedAssetService = mock(AssetService) as AssetService;
@@ -28,12 +27,10 @@ describe('navigation options', () => {
     const mockedColorService = mock(ColorService) as ColorService;
     when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
     const colorService = instance(mockedColorService);
-    const uniqueIdProvider = instance(mockedUniqueIdProvider) as UniqueIdProvider;
-    when(mockedUniqueIdProvider.generate(anyString())).thenReturn('CustomComponent1');
     optionProcessorsRegistry = new OptionProcessorsRegistry();
     uut = new OptionsProcessor(
       store,
-      uniqueIdProvider,
+      new UniqueIdProvider(),
       optionProcessorsRegistry,
       colorService,
       assetService,
