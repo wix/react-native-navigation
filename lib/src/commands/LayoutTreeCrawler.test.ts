@@ -11,7 +11,7 @@ describe('LayoutTreeCrawler', () => {
   let uut: LayoutTreeCrawler;
   let mockedStore: Store;
   let mockedOptionsProcessor: OptionsProcessor;
-
+  const setRootCommandName = 'setRoot';
   beforeEach(() => {
     mockedStore = mock(Store);
     mockedOptionsProcessor = mock(OptionsProcessor);
@@ -28,12 +28,12 @@ describe('LayoutTreeCrawler', () => {
           id: 'testId',
           type: LayoutType.Component,
           data: { name: 'the name', passProps: { myProp: 123 } },
-          children: []
-        }
+          children: [],
+        },
       ],
-      data: {}
+      data: {},
     };
-    uut.crawl(node);
+    uut.crawl(node, setRootCommandName);
     verify(mockedStore.updateProps('testId', deepEqual({ myProp: 123 }))).called();
   });
 
@@ -50,28 +50,9 @@ describe('LayoutTreeCrawler', () => {
       id: 'testId',
       type: LayoutType.Component,
       data: { name: 'theComponentName', options: {} },
-      children: []
+      children: [],
     };
-    uut.crawl(node);
-    expect(node.data.options).toEqual({ popGesture: true });
-  });
-
-  it('Components: injects options from original component class static property', () => {
-    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
-      () =>
-        class extends React.Component {
-          static options = {
-            popGesture: true
-          };
-        }
-    );
-    const node = {
-      id: 'testId',
-      type: LayoutType.Component,
-      data: { name: 'theComponentName', options: {} },
-      children: []
-    };
-    uut.crawl(node);
+    uut.crawl(node, setRootCommandName);
     expect(node.data.options).toEqual({ popGesture: true });
   });
 
@@ -88,18 +69,18 @@ describe('LayoutTreeCrawler', () => {
       id: 'testId',
       type: LayoutType.Component,
       data: { name: 'theComponentName', options: {}, passProps: { title: 'title' } },
-      children: []
+      children: [],
     };
-    uut.crawl(node);
+    uut.crawl(node, setRootCommandName);
     expect(node.data.options).toEqual({ topBar: { title: { text: 'title' } } });
 
     const node2 = {
       id: 'testId',
       type: LayoutType.Component,
       data: { name: 'theComponentName', options: {} },
-      children: []
+      children: [],
     };
-    uut.crawl(node2);
+    uut.crawl(node2, setRootCommandName);
     expect(node2.data.options).toEqual({ topBar: { title: {} } });
   });
 
@@ -111,7 +92,7 @@ describe('LayoutTreeCrawler', () => {
             return {
               bazz: 123,
               inner: { foo: 'this gets overriden' },
-              opt: 'exists only in static'
+              opt: 'exists only in static',
             };
           }
         }
@@ -125,25 +106,25 @@ describe('LayoutTreeCrawler', () => {
         options: {
           aaa: 'exists only in passed',
           bazz: 789,
-          inner: { foo: 'this should override same keys' }
-        }
+          inner: { foo: 'this should override same keys' },
+        },
       },
-      children: []
+      children: [],
     };
 
-    uut.crawl(node);
+    uut.crawl(node, setRootCommandName);
 
     expect(node.data.options).toEqual({
       aaa: 'exists only in passed',
       bazz: 789,
       inner: { foo: 'this should override same keys' },
-      opt: 'exists only in static'
+      opt: 'exists only in static',
     });
   });
 
   it('Components: must contain data name', () => {
     const node = { type: LayoutType.Component, data: {}, children: [], id: 'testId' };
-    expect(() => uut.crawl(node)).toThrowError('Missing component data.name');
+    expect(() => uut.crawl(node, setRootCommandName)).toThrowError('Missing component data.name');
   });
 
   it('Components: options default obj', () => {
@@ -155,9 +136,9 @@ describe('LayoutTreeCrawler', () => {
       id: 'testId',
       type: LayoutType.Component,
       data: { name: 'theComponentName', options: {} },
-      children: []
+      children: [],
     };
-    uut.crawl(node);
+    uut.crawl(node, setRootCommandName);
     expect(node.data.options).toEqual({});
   });
 
@@ -167,11 +148,11 @@ describe('LayoutTreeCrawler', () => {
       type: LayoutType.Component,
       data: {
         name: 'compName',
-        passProps: { someProp: 'here' }
+        passProps: { someProp: 'here' },
       },
-      children: []
+      children: [],
     };
-    uut.crawl(node);
+    uut.crawl(node, setRootCommandName);
     expect(node.data.passProps).toBeUndefined();
   });
 });

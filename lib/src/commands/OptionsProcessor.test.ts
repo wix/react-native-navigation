@@ -1,6 +1,7 @@
 import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
+import { OptionProcessorsRegistry } from '../processors/OptionProcessorsRegistry';
 import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
 import { mock, when, anyString, instance, anyNumber, verify } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
@@ -9,9 +10,11 @@ import { Deprecations } from './Deprecations';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
+  let optionProcessorsRegistry: OptionProcessorsRegistry;
   const mockedStore = mock(Store) as Store;
   const store = instance(mockedStore) as Store;
-
+  const mockedUniqueIdProvider = mock(UniqueIdProvider);
+  const setRootCommandName = 'setRoot';
   beforeEach(() => {
     const mockedAssetService = mock(AssetService) as AssetService;
     when(mockedAssetService.resolveFromRequire(anyNumber())).thenReturn({
@@ -25,10 +28,13 @@ describe('navigation options', () => {
     const mockedColorService = mock(ColorService) as ColorService;
     when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
     const colorService = instance(mockedColorService);
-
+    const uniqueIdProvider = instance(mockedUniqueIdProvider) as UniqueIdProvider;
+    when(mockedUniqueIdProvider.generate(anyString())).thenReturn('CustomComponent1');
+    optionProcessorsRegistry = new OptionProcessorsRegistry();
     uut = new OptionsProcessor(
       store,
-      new UniqueIdProvider(),
+      uniqueIdProvider,
+      optionProcessorsRegistry,
       colorService,
       assetService,
       new Deprecations()
@@ -42,7 +48,7 @@ describe('navigation options', () => {
       modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
       animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
     };
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
     expect(options).toEqual({
       blurOnUnmount: false,
       popGesture: false,
@@ -51,12 +57,64 @@ describe('navigation options', () => {
     });
   });
 
+  it('process options using registered processor', () => {
+    const options: Options = {
+      topBar: {
+        visible: false,
+      },
+    };
+
+    optionProcessorsRegistry.registerProcessor('topBar.visible', () => {
+      return true;
+    });
+
+    uut.processOptions(options, setRootCommandName);
+    expect(options).toEqual({
+      topBar: {
+        visible: true,
+      },
+    });
+  });
+
+  it('passes value to registered processor', () => {
+    const options: Options = {
+      topBar: {
+        visible: true,
+      },
+    };
+
+    optionProcessorsRegistry.registerProcessor('topBar.visible', (value) => {
+      return !value;
+    });
+
+    uut.processOptions(options, setRootCommandName);
+    expect(options).toEqual({
+      topBar: {
+        visible: false,
+      },
+    });
+  });
+
+  it('passes commandName to registered processor', () => {
+    const options: Options = {
+      topBar: {
+        visible: false,
+      },
+    };
+
+    optionProcessorsRegistry.registerProcessor('topBar.visible', (_value, commandName) => {
+      expect(commandName).toEqual(setRootCommandName);
+    });
+
+    uut.processOptions(options, setRootCommandName);
+  });
+
   it('processes color keys', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'red' },
       topBar: { background: { color: 'blue' } },
     };
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
     expect(options).toEqual({
       statusBar: { backgroundColor: 666 },
       topBar: { background: { color: 666 } },
@@ -69,7 +127,7 @@ describe('navigation options', () => {
       rootBackgroundImage: 234,
       bottomTab: { icon: 345, selectedIcon: 345 },
     };
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
     expect(options).toEqual({
       backgroundImage: { height: 100, scale: 1, uri: 'lol', width: 100 },
       rootBackgroundImage: { height: 100, scale: 1, uri: 'lol', width: 100 },
@@ -84,7 +142,7 @@ describe('navigation options', () => {
     const passProps = { some: 'thing' };
     const options = { topBar: { title: { component: { passProps, name: 'a' } } } };
 
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
 
     verify(mockedStore.updateProps('CustomComponent1', passProps)).called();
   });
@@ -92,7 +150,7 @@ describe('navigation options', () => {
   it('generates componentId for component id was not passed', () => {
     const options = { topBar: { title: { component: { name: 'a' } } } };
 
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
 
     expect(options).toEqual({
       topBar: { title: { component: { name: 'a', componentId: 'CustomComponent1' } } },
@@ -102,7 +160,7 @@ describe('navigation options', () => {
   it('copies passed id to componentId key', () => {
     const options = { topBar: { title: { component: { name: 'a', id: 'Component1' } } } };
 
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
 
     expect(options).toEqual({
       topBar: { title: { component: { name: 'a', id: 'Component1', componentId: 'Component1' } } },
@@ -113,7 +171,7 @@ describe('navigation options', () => {
     const passProps = { prop: 'prop' };
     const options = { topBar: { rightButtons: [{ passProps, id: '1' }] } };
 
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
 
     verify(mockedStore.updateProps('1', passProps)).called();
   });
@@ -122,7 +180,7 @@ describe('navigation options', () => {
     const passProps = { prop: 'prop' };
     const options = { topBar: { rightButtons: [{ passProps } as any] } };
 
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
 
     expect(options).toEqual({ topBar: { rightButtons: [{ passProps }] } });
   });
@@ -136,7 +194,7 @@ describe('navigation options', () => {
         background: { component: { name: 'helloThere2', passProps: {} } },
       },
     };
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
     expect(options.topBar.rightButtons[0].passProps).toBeUndefined();
     expect(options.topBar.leftButtons[0].passProps).toBeUndefined();
     expect(options.topBar.title.component.passProps).toBeUndefined();
@@ -150,7 +208,7 @@ describe('navigation options', () => {
         background: { component: { name: 'helloThere2', passProps: {} } },
       },
     };
-    uut.processOptions(options);
+    uut.processOptions(options, setRootCommandName);
     verify(mockedStore.ensureClassForName('helloThere1')).called();
     verify(mockedStore.ensureClassForName('helloThere2')).called();
   });
