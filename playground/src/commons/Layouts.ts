@@ -10,14 +10,14 @@ const stack = (rawChildren: CompIdOrLayout | CompIdOrLayout[], id?: string): Lay
   return { stack: { children, id } };
 };
 
-const component = (
+const component = <P = {}>(
   compIdOrLayout: CompIdOrLayout,
   options?: Options,
-  passProps?: object
-): Layout => {
+  passProps?: P
+): Layout<P> => {
   return isString(compIdOrLayout)
     ? { component: { name: compIdOrLayout, options, passProps } }
-    : compIdOrLayout;
+    : (compIdOrLayout as Layout<P>);
 };
 
 export { stack, component };

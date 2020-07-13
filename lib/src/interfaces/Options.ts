@@ -456,11 +456,11 @@ export interface OptionsTopBar {
   /**
    * List of buttons to the left
    */
-  leftButtons?: OptionsTopBarButton[];
+  leftButtons?: OptionsTopBarButton | OptionsTopBarButton[];
   /**
    * List of buttons to the right
    */
-  rightButtons?: OptionsTopBarButton[];
+  rightButtons?: OptionsTopBarButton | OptionsTopBarButton[];
   /**
    * Background configuration
    */

@@ -1,6 +1,10 @@
 import React from 'react';
 import { BackHandler } from 'react-native';
-import { NavigationComponentProps, NavigationButtonPressedEvent } from 'react-native-navigation';
+import {
+  NavigationComponent,
+  NavigationComponentProps,
+  NavigationButtonPressedEvent,
+} from 'react-native-navigation';
 import concat from 'lodash/concat';
 import Navigation from '../services/Navigation';
 import Root from '../components/Root';
@@ -29,7 +33,7 @@ interface Props extends NavigationComponentProps {
   stackPosition: number;
 }
 
-export default class PushedScreen extends React.Component<Props> {
+export default class PushedScreen extends NavigationComponent<Props> {
   static options() {
     return {
       topBar: {
@@ -99,7 +103,7 @@ export default class PushedScreen extends React.Component<Props> {
   }
 
   push = () =>
-    Navigation.push(this, {
+    Navigation.push<Props>(this, {
       component: {
         name: Screens.Pushed,
         passProps: this.createPassProps(),
@@ -216,7 +220,7 @@ export default class PushedScreen extends React.Component<Props> {
     return {
       stackPosition: this.getStackPosition() + 1,
       previousScreenIds: concat([], this.props.previousScreenIds || [], this.props.componentId),
-    };
+    } as Props;
   };
   getStackPosition = () => this.props.stackPosition || 1;
 }
