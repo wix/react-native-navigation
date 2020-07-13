@@ -106,7 +106,10 @@ export class NavigationRoot {
   /**
    * Register an option processor which allows option interpolation by objectPath.
    */
-  public registerOptionProcessor(objectPath: string, processor: (value: any) => any) {
+  public registerOptionProcessor(
+    objectPath: string,
+    processor: (value: any, commandName: string) => any
+  ) {
     this.optionProcessorsRegistry.registerProcessor(objectPath, processor);
   }
 
