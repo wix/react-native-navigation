@@ -8,8 +8,8 @@ export interface NavigationConstants {
 }
 
 export class Constants {
-  static async get(): Promise<NavigationConstants> {
-    const constants: NavigationConstants = await NativeModules.RNNBridgeModule.getNavigationConstants();
+  static get(): NavigationConstants {
+    const constants: NavigationConstants = NativeModules.RNNBridgeModule.getNavigationConstants();
     return new Constants(constants);
   }
 

@@ -128,10 +128,8 @@ RCT_EXPORT_METHOD(getLaunchArgs:(NSString*)commandId :(RCTPromiseResolveBlock)re
     resolve(args);
 }
 
-RCT_EXPORT_METHOD(getNavigationConstants:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    RCTExecuteOnMainQueue(^{
-        resolve([Constants getConstants]);
-    });
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getNavigationConstants) {
+	return [Constants getConstants];
 }
 
 @end

@@ -211,7 +211,7 @@ export class NavigationRoot {
   /**
    * Constants coming from native
    */
-  public async constants(): Promise<NavigationConstants> {
-    return await Constants.get();
+  public constants(): NavigationConstants {
+    return Constants.get();
   }
 }
