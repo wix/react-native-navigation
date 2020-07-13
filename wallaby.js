@@ -1,5 +1,3 @@
-const babelOptions = require('./babel.config')();
-
 module.exports = function (wallaby) {
   return {
     env: {
