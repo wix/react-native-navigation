@@ -19,6 +19,10 @@ import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 
 open class ButtonPresenter(private val button: ButtonOptions, private val iconResolver: IconResolver) {
+    companion object {
+        const val DISABLED_COLOR = Color.LTGRAY
+    }
+
     val styledText: SpannableString
         get() {
             return SpannableString(button.text.get("")).apply {
@@ -83,8 +87,12 @@ open class ButtonPresenter(private val button: ButtonOptions, private val iconRe
     }
 
     private fun applyTextColor(view: View) {
-        if (view is TextView && button.color.hasValue()) {
-            view.setTextColor(button.color.get())
+        if (view is TextView) {
+            if (button.enabled.isTrueOrUndefined) {
+                if (button.color.hasValue()) view.setTextColor(button.color.get())
+            } else {
+                view.setTextColor(button.disabledColor.get(DISABLED_COLOR))
+            }
         }
     }
 

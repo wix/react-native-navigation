@@ -1,5 +1,13 @@
 # Changelog
 
+# 6.9.1
+
+## Fixed
+
+### Android
+
+- Fix changing disabled button color [#1b291c6](https://github.com/wix/react-native-navigation/commit/1b291c63458052e44ef6b03ff7daf7e4d3dd84a4) by [guyca](https://github.com/guyca)
+
 # 6.9.0
 
 ## Added

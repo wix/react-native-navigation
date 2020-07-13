@@ -1,5 +1,5 @@
 import React from 'react';
-import { Options, NavigationComponentProps } from 'react-native-navigation';
+import { Options, NavigationComponent } from 'react-native-navigation';
 
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -17,9 +17,7 @@ const {
   SPLIT_VIEW_BUTTON,
 } = testIDs;
 
-interface LayoutsScreenProps extends NavigationComponentProps {}
-
-export default class LayoutsScreen extends React.Component<LayoutsScreenProps> {
+export default class LayoutsScreen extends NavigationComponent {
   static options(): Options {
     return {
       topBar: {

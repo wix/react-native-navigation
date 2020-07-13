@@ -16,7 +16,7 @@ export default class CocktailsListMasterScreen extends CocktailsListScreen {
       ...Platform.select({
         android: {
           statusBar: {
-            style: 'dark',
+            style: 'dark' as const,
             backgroundColor: 'white',
           },
         },

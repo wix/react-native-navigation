@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationFunctionComponent } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -14,11 +14,11 @@ const {
   SIDE_MENU_LEFT_DRAWER_HEIGHT_TEXT,
 } = testIDs;
 
-interface Props extends NavigationComponentProps {
+interface Props {
   marginTop?: number;
 }
 
-export default function SideMenuLeftScreen({ componentId, marginTop }: Props) {
+const SideMenuLeftScreen: NavigationFunctionComponent<Props> = ({ componentId, marginTop }) => {
   useEffect(() => {
     const unsubscribe = Navigation.events().registerComponentListener(
       {
@@ -79,4 +79,5 @@ export default function SideMenuLeftScreen({ componentId, marginTop }: Props) {
       <Text testID={SIDE_MENU_LEFT_DRAWER_HEIGHT_TEXT}>{`left drawer height: ${height}`}</Text>
     </Root>
   );
-}
+};
+export default SideMenuLeftScreen;

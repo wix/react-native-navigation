@@ -8,10 +8,6 @@ import android.text.style.MetricAffectingSpan
 import com.reactnativenavigation.options.ButtonOptions
 
 class ButtonSpan(private val button: ButtonOptions) : MetricAffectingSpan() {
-    companion object {
-        const val DISABLED_COLOR = Color.LTGRAY
-    }
-
     override fun updateDrawState(drawState: TextPaint) = apply(drawState)
 
     override fun updateMeasureState(paint: TextPaint) = apply(paint)
@@ -22,7 +18,6 @@ class ButtonSpan(private val button: ButtonOptions) : MetricAffectingSpan() {
             if (fakeStyle and Typeface.BOLD != 0) paint.isFakeBoldText = true
             if (fakeStyle and Typeface.ITALIC != 0) paint.textSkewX = -0.25f
             if (fontSize.hasValue()) paint.textSize = fontSize.get().toFloat()
-            if (enabled.hasValue()) paint.color = disabledColor.get(DISABLED_COLOR)
             paint.typeface = fontFamily
         }
     }
