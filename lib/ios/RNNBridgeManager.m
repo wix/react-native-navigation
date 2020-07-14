@@ -40,7 +40,7 @@
 		_overlayManager = [RNNOverlayManager new];
 		
 		_store = [RNNExternalComponentStore new];
-		_bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:_launchOptions];
+		_bridge = [[RCTBridge alloc] initWithDelegate:delegate launchOptions:_launchOptions];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(onJavaScriptLoaded)
