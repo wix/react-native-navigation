@@ -17,7 +17,7 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
     override val topInset: Int
         get() = viewController.topInset
 
-    fun isValid(): Boolean = this::from.isInitialized
+    fun isValid(): Boolean = this::from.isInitialized && this::to.isInitialized
 
     override fun createAnimators(): AnimatorSet {
         val animators = animators()

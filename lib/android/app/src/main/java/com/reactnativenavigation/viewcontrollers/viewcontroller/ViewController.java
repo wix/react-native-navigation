@@ -116,8 +116,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return false;
     }
 
-    public void addOverlay(View v) {
-        perform(view, view -> overlay.add(view, v));
+    public void addOverlay(View v, ViewGroup.LayoutParams layoutParams) {
+        perform(view, view -> overlay.add(view, v, layoutParams));
     }
 
     public void removeOverlay(View view) {

@@ -9,7 +9,6 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
@@ -20,9 +19,9 @@ import com.reactnativenavigation.options.NestedAnimationsOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.utils.RenderChecker;
-import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
@@ -30,12 +29,12 @@ import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
-import com.reactnativenavigation.views.stack.StackLayout;
-import com.reactnativenavigation.views.element.ElementTransitionManager;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.StackBehaviour;
+import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 
@@ -97,7 +96,7 @@ public class StackControllerTest extends BaseTest {
         backButtonHelper = spy(new BackButtonHelper());
         activity = newActivity();
         StatusBarUtils.saveStatusBarHeight(63);
-        animator = spy(new StackAnimator(activity, new ElementTransitionManager()));
+        animator = spy(new StackAnimator(activity));
         childRegistry = new ChildControllersRegistry();
         presenter = spy(new StackPresenter(
                     activity,
@@ -600,7 +599,7 @@ public class StackControllerTest extends BaseTest {
 
         uut.pop(mergeOptions, new CommandListenerAdapter());
         ArgumentCaptor<NestedAnimationsOptions> captor = ArgumentCaptor.forClass(NestedAnimationsOptions.class);
-        verify(animator, times(1)).pop(any(), captor.capture(), any());
+        verify(animator, times(1)).pop(any(), any(), captor.capture(), any());
         Animator animator = captor.getValue().content
                 .getAnimation(mockView(activity))
                 .getChildAnimations()
@@ -628,7 +627,7 @@ public class StackControllerTest extends BaseTest {
 
         uut.pop(Options.EMPTY, new CommandListenerAdapter());
         ArgumentCaptor<NestedAnimationsOptions> captor = ArgumentCaptor.forClass(NestedAnimationsOptions.class);
-        verify(animator, times(1)).pop(any(), captor.capture(), any());
+        verify(animator, times(1)).pop(any(), any(), captor.capture(), any());
         Animator animator = captor.getValue().content
                 .getAnimation(mockView(activity))
                 .getChildAnimations()
@@ -793,9 +792,9 @@ public class StackControllerTest extends BaseTest {
                 uut.popTo(child2, Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(animator, times(0)).pop(eq(child1.getView()), any(), any());
-                        verify(animator, times(0)).pop(eq(child2.getView()), any(), any());
-                        verify(animator, times(1)).pop(eq(child4.getView()), eq(child4.options.animations.push), any());
+                        verify(animator, times(0)).pop(any(), eq(child1), any(), any());
+                        verify(animator, times(0)).pop(any(), eq(child2), any(), any());
+                        verify(animator, times(1)).pop(any(), eq(child4), eq(child4.options.animations.push), any());
                     }
                 });
             }
@@ -841,8 +840,7 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void popToRoot_onlyTopChildIsAnimated() {
-        child1.options.animations.push.enabled = new Bool(false);
-        child2.options.animations.push.enabled = new Bool(false);
+        disablePushAnimation(child1, child2);
 
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
@@ -852,7 +850,7 @@ public class StackControllerTest extends BaseTest {
                 uut.popToRoot(Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(animator, times(1)).pop(eq(child3.getView()), eq(child3.options.animations.pop), any());
+                        verify(animator, times(1)).pop(eq(child1), eq(child3), eq(child3.options.animations.pop), any());
                     }
                 });
             }

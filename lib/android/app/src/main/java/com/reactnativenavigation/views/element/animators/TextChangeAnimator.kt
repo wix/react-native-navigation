@@ -24,7 +24,7 @@ class TextChangeAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactTe
                 .setBoundsCalculator { view: View ->
                     val loc = IntArray(2)
                     view.getLocationInWindow(loc)
-                    val x = loc[0]
+                    val x = if (view == to) (to.layoutParams as ViewGroup.MarginLayoutParams).leftMargin else loc[0]
                     val y = if (view == to) (to.layoutParams as ViewGroup.MarginLayoutParams).topMargin else loc[1]
                     Rect(
                             x,

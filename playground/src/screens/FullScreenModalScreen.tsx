@@ -1,7 +1,7 @@
 import concat from 'lodash/concat';
 import last from 'lodash/last';
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponent } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
@@ -10,12 +10,12 @@ import testIDs from '../testIDs';
 
 const { PUSH_BTN, MODAL_SCREEN_HEADER, MODAL_BTN, DISMISS_MODAL_BTN } = testIDs;
 
-interface Props extends NavigationComponentProps {
+interface Props {
   previousModalIds?: string[];
   modalPosition?: number;
 }
 
-export default class FullScreenModalScreen extends React.Component<Props> {
+export default class FullScreenModalScreen extends NavigationComponent<Props> {
   static options() {
     return {
       statusBar: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponent } from 'react-native-navigation';
 import last from 'lodash/last';
 import concat from 'lodash/concat';
 import forEach from 'lodash/forEach';
@@ -25,12 +25,12 @@ const {
   SET_ROOT,
 } = testIDs;
 
-interface Props extends NavigationComponentProps {
+interface Props {
   previousModalIds?: string[];
   modalPosition?: number;
 }
 
-export default class ModalScreen extends React.Component<Props> {
+export default class ModalScreen extends NavigationComponent<Props> {
   static options() {
     return {
       topBar: {

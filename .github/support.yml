@@ -7,7 +7,7 @@ supportLabel: "type: question/stack overflow"
 supportComment: >
   We use the issue tracker exclusively for bug reports and feature requests.
   This issue appears to be a general usage or support question. 
-  Instead, please ask a question on Stack Overflow with the `react-native-navigation` tag.
+  Instead, please ask a question on Stack Overflow with the `wix-react-native-navigation` tag.
 # Whether to close issues marked as support requests
 close: true
 # Whether to lock issues marked as support requests

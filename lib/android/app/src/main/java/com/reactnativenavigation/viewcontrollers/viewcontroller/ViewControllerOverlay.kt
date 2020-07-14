@@ -10,9 +10,9 @@ import com.reactnativenavigation.utils.ViewUtils.removeFromParent
 class ViewControllerOverlay(context: Context) {
     private val overlay: FrameLayout = FrameLayout(context)
 
-    fun add(parent: ViewGroup, view: View) {
+    fun add(parent: ViewGroup, view: View, layoutParams: ViewGroup.LayoutParams) {
         attachOverlayToParent(parent)
-        overlay.addView(view)
+        overlay.addView(view, layoutParams)
     }
 
     fun remove(view: View) {

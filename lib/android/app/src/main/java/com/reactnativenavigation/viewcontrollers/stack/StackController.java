@@ -272,7 +272,12 @@ public class StackController extends ParentController<StackLayout> {
         }
         presenter.onChildWillAppear(this, appearing, disappearing);
         if (disappearingOptions.animations.pop.enabled.isTrueOrUndefined()) {
-            animator.pop(disappearing.getView(), disappearingOptions.animations.pop, () -> finishPopping(appearing, disappearing, listener));
+            animator.pop(
+                    appearing,
+                    disappearing,
+                    disappearingOptions.animations.pop,
+                    () -> finishPopping(appearing, disappearing, listener)
+            );
         } else {
             finishPopping(appearing, disappearing, listener);
         }

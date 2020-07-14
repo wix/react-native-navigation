@@ -9,7 +9,6 @@ import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
-import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +32,7 @@ public class StackControllerBuilder {
         this.activity = activity;
         this.eventEmitter = eventEmitter;
         presenter = new Presenter(activity, new Options());
-        animator = new StackAnimator(activity, new ElementTransitionManager());
+        animator = new StackAnimator(activity);
     }
 
     public StackControllerBuilder setEventEmitter(EventEmitter eventEmitter) {
