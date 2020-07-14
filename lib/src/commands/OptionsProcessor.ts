@@ -12,34 +12,50 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Options } from '../interfaces/Options';
 import { Deprecations } from './Deprecations';
+import { OptionProcessorsStore } from 'react-native-navigation/processors/OptionProcessorsStore';
 
 export class OptionsProcessor {
   constructor(
     private store: Store,
     private uniqueIdProvider: UniqueIdProvider,
+    private optionProcessorsRegistry: OptionProcessorsStore,
     private colorService: ColorService,
     private assetService: AssetService,
     private deprecations: Deprecations
   ) {}
 
-  public processOptions(options: Options) {
-    this.processObject(options, clone(options), (key, parentOptions) => {
-      this.deprecations.onProcessOptions(key, parentOptions);
-    });
+  public processOptions(options: Options, commandName: string) {
+    this.processObject(
+      options,
+      clone(options),
+      (key, parentOptions) => {
+        this.deprecations.onProcessOptions(key, parentOptions);
+      },
+      commandName
+    );
   }
 
-  public processDefaultOptions(options: Options) {
-    this.processObject(options, clone(options), (key, parentOptions) => {
-      this.deprecations.onProcessDefaultOptions(key, parentOptions);
-    });
+  public processDefaultOptions(options: Options, commandName: string) {
+    this.processObject(
+      options,
+      clone(options),
+      (key, parentOptions) => {
+        this.deprecations.onProcessDefaultOptions(key, parentOptions);
+      },
+      commandName
+    );
   }
 
   private processObject(
     objectToProcess: object,
     parentOptions: object,
-    onProcess: (key: string, parentOptions: object) => void
+    onProcess: (key: string, parentOptions: object) => void,
+    commandName: string,
+    path?: string
   ) {
     forEach(objectToProcess, (value, key) => {
+      path = this.resolveObjectPath(key, path);
+      this.processWithRegisteredProcessor(key, value, objectToProcess, path, commandName);
       this.processColor(key, value, objectToProcess);
 
       if (!value) {
@@ -53,14 +69,35 @@ export class OptionsProcessor {
       onProcess(key, parentOptions);
 
       if (!isEqual(key, 'passProps') && (isObject(value) || isArray(value))) {
-        this.processObject(value, parentOptions, onProcess);
+        this.processObject(value, parentOptions, onProcess, commandName, path);
       }
     });
+  }
+
+  private resolveObjectPath(key: string, path?: string): string {
+    if (!path) path = key;
+    else path += `.${key}`;
+    return path;
   }
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (isEqual(key, 'color') || endsWith(key, 'Color')) {
       options[key] = value === null ? 'NoColor' : this.colorService.toNativeColor(value);
+    }
+  }
+
+  private processWithRegisteredProcessor(
+    key: string,
+    value: string,
+    options: Record<string, any>,
+    path: string,
+    commandName: string
+  ) {
+    const registeredProcessors = this.optionProcessorsRegistry.getProcessors(path);
+    if (registeredProcessors) {
+      registeredProcessors.forEach((processor) => {
+        options[key] = processor(value, commandName);
+      });
     }
   }
 
