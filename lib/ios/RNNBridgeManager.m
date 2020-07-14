@@ -10,7 +10,7 @@
 #import "RNNReactRootViewCreator.h"
 #import "RNNReactComponentRegistry.h"
 
-@interface RNNBridgeManager() <RCTBridgeDelegate>
+@interface RNNBridgeManager()
 
 @property (nonatomic, strong, readwrite) RCTBridge *bridge;
 @property (nonatomic, strong, readwrite) RNNExternalComponentStore *store;
@@ -21,7 +21,6 @@
 @end
 
 @implementation RNNBridgeManager {
-	NSURL* _jsCodeLocation;
 	NSDictionary* _launchOptions;
 	id<RCTBridgeDelegate> _delegate;
 	RCTBridge* _bridge;
@@ -32,10 +31,9 @@
 	RNNCommandsHandler* _commandsHandler;
 }
 
-- (instancetype)initWithJsCodeLocation:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate mainWindow:(UIWindow *)mainWindow {
+- (instancetype)initWithlaunchOptions:(NSDictionary *)launchOptions andBridgeDelegate:(id<RCTBridgeDelegate>)delegate mainWindow:(UIWindow *)mainWindow {
 	if (self = [super init]) {
 		_mainWindow = mainWindow;
-		_jsCodeLocation = jsCodeLocation;
 		_launchOptions = launchOptions;
 		_delegate = delegate;
 		
@@ -60,10 +58,6 @@
 	return self;
 }
 
-- (void)setJSCodeLocation:(NSURL *)jsCodeLocation {
-	_jsCodeLocation = jsCodeLocation;
-}
-
 - (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
 	[_store registerExternalComponent:name callback:callback];
 }
@@ -74,16 +68,6 @@
 	}
 	
 	return nil;
-}
-
-# pragma mark - RCTBridgeDelegate
-
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
-    if ([_delegate respondsToSelector:@selector(sourceURLForBridge:)]) {
-        return [_delegate sourceURLForBridge:bridge];
-    } else {
-        return _jsCodeLocation;
-    }
 }
 
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {

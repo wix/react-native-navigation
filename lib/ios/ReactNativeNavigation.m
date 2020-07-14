@@ -16,16 +16,12 @@
 
 # pragma mark - public API
 
-+ (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
-	[[ReactNativeNavigation sharedInstance] bootstrap:jsCodeLocation launchOptions:launchOptions];
++ (void)bootstrapWithlaunchOptions:(NSDictionary *)launchOptions {
+	[[ReactNativeNavigation sharedInstance] bootstrapbootstrapWithLaunchOptions:launchOptions andBridgeDelegate:nil];
 }
 
-+ (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate {
-	[[ReactNativeNavigation sharedInstance] bootstrap:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate];
-}
-
-+ (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
-    [[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:bridgeDelegate launchOptions:launchOptions];
++ (void)bootstrapbootstrapWithLaunchOptions:(NSDictionary *)launchOptions andBridgeDelegate:(id<RCTBridgeDelegate>)bridgeDelegate {
+    [[ReactNativeNavigation sharedInstance] bootstrapbootstrapWithLaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate];
 }
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
@@ -40,9 +36,6 @@
     return [RNNLayoutManager findComponentForId:componentId];
 }
 
-+ (void)setJSCodeLocation:(NSURL *)jsCodeLocation {
-	[[ReactNativeNavigation sharedInstance].bridgeManager setJSCodeLocation:jsCodeLocation];
-}
 
 # pragma mark - instance
 
@@ -58,18 +51,14 @@
 	return instance;
 }
 
-- (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
-	[self bootstrap:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:nil];
+- (void)bootstrapWithLaunchOptions:(NSDictionary *)launchOptions {
+	[self bootstrapbootstrapWithLaunchOptions:launchOptions andBridgeDelegate:nil];
 }
 
-- (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
-    [self bootstrap:nil launchOptions:launchOptions bridgeManagerDelegate:bridgeDelegate];
-}
-
-- (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate {
+- (void)bootstrapbootstrapWithLaunchOptions:(NSDictionary *)launchOptions andBridgeDelegate:(id<RCTBridgeDelegate>)bridgeDelegate {
 	UIWindow* mainWindow = [self initializeKeyWindow];
 	
-	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate mainWindow:mainWindow];
+	self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
 	[RNNSplashScreen showOnWindow:mainWindow];
 }
 
