@@ -28,7 +28,7 @@ export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
 
   private readonly store: Store;
-  private readonly optionProcessorsRegistry: OptionProcessorsStore;
+  private readonly optionProcessorsStore: OptionProcessorsStore;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
   private readonly componentRegistry: ComponentRegistry;
@@ -44,7 +44,7 @@ export class NavigationRoot {
   constructor() {
     this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
-    this.optionProcessorsRegistry = new OptionProcessorsStore();
+    this.optionProcessorsStore = new OptionProcessorsStore();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(
@@ -62,7 +62,7 @@ export class NavigationRoot {
     const optionsProcessor = new OptionsProcessor(
       this.store,
       this.uniqueIdProvider,
-      this.optionProcessorsRegistry,
+      this.optionProcessorsStore,
       new ColorService(),
       new AssetService(),
       new Deprecations()
@@ -111,7 +111,7 @@ export class NavigationRoot {
     optionPath: string,
     processor: (value: T, commandName: string) => T
   ): ProcessorSubscription {
-    return this.optionProcessorsRegistry.addProcessor(optionPath, processor);
+    return this.optionProcessorsStore.addProcessor(optionPath, processor);
   }
 
   public setLazyComponentRegistrator(
