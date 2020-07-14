@@ -12,13 +12,13 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Options } from '../interfaces/Options';
 import { Deprecations } from './Deprecations';
-import { OptionProcessorsRegistry } from 'react-native-navigation/processors/OptionProcessorsRegistry';
+import { OptionProcessorsStore } from 'react-native-navigation/processors/OptionProcessorsStore';
 
 export class OptionsProcessor {
   constructor(
     private store: Store,
     private uniqueIdProvider: UniqueIdProvider,
-    private optionProcessorsRegistry: OptionProcessorsRegistry,
+    private optionProcessorsRegistry: OptionProcessorsStore,
     private colorService: ColorService,
     private assetService: AssetService,
     private deprecations: Deprecations
@@ -93,8 +93,12 @@ export class OptionsProcessor {
     path: string,
     commandName: string
   ) {
-    const registeredProcessor = this.optionProcessorsRegistry.getProcessor(path);
-    if (registeredProcessor) options[key] = registeredProcessor(value, commandName);
+    const registeredProcessors = this.optionProcessorsRegistry.getProcessors(path);
+    if (registeredProcessors) {
+      registeredProcessors.forEach((processor) => {
+        options[key] = processor(value, commandName);
+      });
+    }
   }
 
   private processImage(key: string, value: any, options: Record<string, any>) {

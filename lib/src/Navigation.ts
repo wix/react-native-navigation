@@ -3,7 +3,7 @@ import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { UniqueIdProvider } from './adapters/UniqueIdProvider';
 import { Store } from './components/Store';
-import { OptionProcessorsRegistry } from './processors/OptionProcessorsRegistry';
+import { OptionProcessorsStore } from './processors/OptionProcessorsStore';
 import { ComponentRegistry } from './components/ComponentRegistry';
 import { Commands } from './commands/Commands';
 import { LayoutTreeParser } from './commands/LayoutTreeParser';
@@ -22,12 +22,13 @@ import { ColorService } from './adapters/ColorService';
 import { AssetService } from './adapters/AssetResolver';
 import { AppRegistryService } from './adapters/AppRegistryService';
 import { Deprecations } from './commands/Deprecations';
+import { ProcessorSubscription } from './interfaces/ProcessorSubscription';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
 
   private readonly store: Store;
-  private readonly optionProcessorsRegistry: OptionProcessorsRegistry;
+  private readonly optionProcessorsRegistry: OptionProcessorsStore;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
   private readonly componentRegistry: ComponentRegistry;
@@ -43,7 +44,7 @@ export class NavigationRoot {
   constructor() {
     this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
-    this.optionProcessorsRegistry = new OptionProcessorsRegistry();
+    this.optionProcessorsRegistry = new OptionProcessorsStore();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(
@@ -104,20 +105,13 @@ export class NavigationRoot {
   }
 
   /**
-   * Register an option processor which allows option interpolation by objectPath.
+   * Adds an option processor which allows option interpolation by optionPath.
    */
-  public registerOptionProcessor(
-    objectPath: string,
-    processor: (value: any, commandName: string) => any
-  ) {
-    this.optionProcessorsRegistry.registerProcessor(objectPath, processor);
-  }
-
-  /**
-   * Unegister an option processor.
-   */
-  public unregisterOptionProcessor(objectPath: string) {
-    this.optionProcessorsRegistry.unregisterProcessor(objectPath);
+  public addOptionProcessor<T>(
+    optionPath: string,
+    processor: (value: T, commandName: string) => T
+  ): ProcessorSubscription {
+    return this.optionProcessorsRegistry.addProcessor(optionPath, processor);
   }
 
   public setLazyComponentRegistrator(

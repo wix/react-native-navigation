@@ -1,7 +1,7 @@
 import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
-import { OptionProcessorsRegistry } from '../processors/OptionProcessorsRegistry';
+import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
 import { mock, when, anyString, instance, anyNumber, verify } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
@@ -10,7 +10,7 @@ import { Deprecations } from './Deprecations';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
-  let optionProcessorsRegistry: OptionProcessorsRegistry;
+  let optionProcessorsRegistry: OptionProcessorsStore;
   const mockedStore = mock(Store) as Store;
   const store = instance(mockedStore) as Store;
   const setRootCommandName = 'setRoot';
@@ -27,7 +27,7 @@ describe('navigation options', () => {
     const mockedColorService = mock(ColorService) as ColorService;
     when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
     const colorService = instance(mockedColorService);
-    optionProcessorsRegistry = new OptionProcessorsRegistry();
+    optionProcessorsRegistry = new OptionProcessorsStore();
     uut = new OptionsProcessor(
       store,
       new UniqueIdProvider(),
@@ -54,25 +54,6 @@ describe('navigation options', () => {
     });
   });
 
-  it('process options using registered processor', () => {
-    const options: Options = {
-      topBar: {
-        visible: false,
-      },
-    };
-
-    optionProcessorsRegistry.registerProcessor('topBar.visible', () => {
-      return true;
-    });
-
-    uut.processOptions(options, setRootCommandName);
-    expect(options).toEqual({
-      topBar: {
-        visible: true,
-      },
-    });
-  });
-
   it('passes value to registered processor', () => {
     const options: Options = {
       topBar: {
@@ -80,7 +61,7 @@ describe('navigation options', () => {
       },
     };
 
-    optionProcessorsRegistry.registerProcessor('topBar.visible', (value) => {
+    optionProcessorsRegistry.addProcessor('topBar.visible', (value: boolean) => {
       return !value;
     });
 
@@ -99,11 +80,29 @@ describe('navigation options', () => {
       },
     };
 
-    optionProcessorsRegistry.registerProcessor('topBar.visible', (_value, commandName) => {
+    optionProcessorsRegistry.addProcessor('topBar.visible', (_value, commandName) => {
       expect(commandName).toEqual(setRootCommandName);
     });
 
     uut.processOptions(options, setRootCommandName);
+  });
+
+  it('supports multiple registered processors', () => {
+    const options: Options = {
+      topBar: {
+        visible: true,
+      },
+    };
+
+    optionProcessorsRegistry.addProcessor('topBar.visible', () => false);
+    optionProcessorsRegistry.addProcessor('topBar.visible', () => true);
+
+    uut.processOptions(options, setRootCommandName);
+    expect(options).toEqual({
+      topBar: {
+        visible: true,
+      },
+    });
   });
 
   it('processes color keys', () => {
