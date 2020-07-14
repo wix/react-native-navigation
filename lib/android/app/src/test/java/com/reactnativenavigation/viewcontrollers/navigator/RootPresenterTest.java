@@ -1,31 +1,32 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.FrameLayout;
-
-import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.anim.NavigationAnimator;
-import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.LayoutDirectionApplier;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.BehaviourDelegate;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -33,21 +34,22 @@ import static org.mockito.Mockito.when;
 
 public class RootPresenterTest extends BaseTest {
     private RootPresenter uut;
-    private FrameLayout rootContainer;
+    private CoordinatorLayout rootContainer;
     private ViewController root;
-    private NavigationAnimator animator;
+    private StackAnimator animator;
+    private LayoutDirectionApplier layoutDirectionApplier;
     private Options defaultOptions;
     private ReactInstanceManager reactInstanceManager;
-
 
     @Override
     public void beforeEach() {
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
         Activity activity = newActivity();
-        rootContainer = new FrameLayout(activity);
+        rootContainer = new CoordinatorLayout(activity);
         root = new SimpleViewController(activity, new ChildControllersRegistry(), "child1", new Options());
         animator = spy(createAnimator(activity));
-        uut = new RootPresenter(animator);
+        layoutDirectionApplier = Mockito.mock(LayoutDirectionApplier.class);
+        uut = new RootPresenter(animator, layoutDirectionApplier);
         uut.setRootContainer(rootContainer);
         defaultOptions = new Options();
     }
@@ -56,6 +58,7 @@ public class RootPresenterTest extends BaseTest {
     public void setRoot_viewIsAddedToContainer() {
         uut.setRoot(root, defaultOptions, new CommandListenerAdapter(), reactInstanceManager);
         assertThat(root.getView().getParent()).isEqualTo(rootContainer);
+        assertThat(((CoordinatorLayout.LayoutParams) root.getView().getLayoutParams()).getBehavior()).isInstanceOf(BehaviourDelegate.class);
     }
 
     @Test
@@ -115,14 +118,21 @@ public class RootPresenterTest extends BaseTest {
         assertThat(spy.getView().getAlpha()).isZero();
         verifyZeroInteractions(listener);
 
-        spy.onViewAppeared();
+        spy.onViewWillAppear();
         assertThat(spy.getView().getAlpha()).isOne();
         verify(listener).onSuccess(spy.getId());
     }
 
+    @Test
+    public void setRoot_appliesLayoutDirection() {
+        CommandListenerAdapter listener = spy(new CommandListenerAdapter());
+        uut.setRoot(root, defaultOptions, listener, reactInstanceManager);
+        verify(layoutDirectionApplier).apply(root, defaultOptions, reactInstanceManager);
+    }
+
     @NonNull
-    private NavigationAnimator createAnimator(Activity activity) {
-        return new NavigationAnimator(activity, mock(ElementTransitionManager.class)) {
+    private StackAnimator createAnimator(Activity activity) {
+        return new StackAnimator(activity) {
             @Override
             public void setRoot(View root, AnimationOptions setRoot, Runnable onAnimationEnd) {
                 onAnimationEnd.run();

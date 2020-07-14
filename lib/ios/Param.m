@@ -9,11 +9,13 @@
 
 @implementation Param
 
++ (instancetype)withValue:(id)value {
+    return [[self.class alloc] initWithValue:value];
+}
+
 - (instancetype)initWithValue:(id)value {
 	self = [super init];
-	
 	self.value = value;
-	
 	return self;
 }
 
@@ -21,7 +23,6 @@
 	if (!self.value) {
 		@throw [NSException exceptionWithName:@"Param get" reason:@"value does not exists" userInfo:nil];
 	}
-	
 	return self.value;
 }
 

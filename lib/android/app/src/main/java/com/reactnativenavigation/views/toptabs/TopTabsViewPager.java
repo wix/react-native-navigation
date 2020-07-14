@@ -2,26 +2,23 @@ package com.reactnativenavigation.views.toptabs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.IReactView;
-import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
-import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.component.Component;
 
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.widget.RelativeLayout.BELOW;
 
 @SuppressLint("ViewConstructor")
-public class TopTabsViewPager extends ViewPager implements Component, TitleBarButtonController.OnClickListener {
+public class TopTabsViewPager extends ViewPager implements Component, ButtonController.OnClickListener {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
     private List<ViewController> tabs;
@@ -39,20 +36,6 @@ public class TopTabsViewPager extends ViewPager implements Component, TitleBarBu
         }
         setAdapter(adapter);
         addOnPageChangeListener(adapter);
-    }
-
-    @Override
-    public void drawBehindTopBar() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-        layoutParams.removeRule(BELOW);
-        setLayoutParams(layoutParams);
-    }
-
-    @Override
-    public void drawBelowTopBar(TopBar topBar) {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-        layoutParams.addRule(BELOW, topBar.getId());
-        setLayoutParams(layoutParams);
     }
 
     @Override

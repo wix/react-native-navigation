@@ -13,4 +13,8 @@
 	return self;
 }
 
+- (BOOL)hasValue {
+	return _name.hasValue;
+}
+
 @end

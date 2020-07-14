@@ -1,56 +1,61 @@
 #import "RNNReactView.h"
-#import "RCTHelpers.h"
-#import <React/RCTUIManager.h>
+#import <React/RCTRootContentView.h>
 
-@implementation RNNReactView
+@implementation RNNReactView {
+    BOOL _isAppeared;
+}
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties availableSize:(CGSize)availableSize reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties eventEmitter:(RNNEventEmitter *)eventEmitter reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
 	self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentDidAppear:) name:RCTContentDidAppearNotification object:nil];
 	 _reactViewReadyBlock = reactViewReadyBlock;
-	[bridge.uiManager setAvailableSize:availableSize forRootView:self];
-	
+    _eventEmitter = eventEmitter;
+    
 	return self;
 }
 
 - (void)contentDidAppear:(NSNotification *)notification {
-#ifdef DEBUG
-	if ([((RNNReactView *)notification.object).moduleName isEqualToString:self.moduleName]) {
-		[RCTHelpers removeYellowBox:self];
-	}
-#endif
-	
 	RNNReactView* appearedView = notification.object;
-	
-	 if (_reactViewReadyBlock && [appearedView.appProperties[@"componentId"] isEqual:self.appProperties[@"componentId"]]) {
-	 	_reactViewReadyBlock();
-		 _reactViewReadyBlock = nil;
-		 [[NSNotificationCenter defaultCenter] removeObserver:self];
+	 if ([appearedView.appProperties[@"componentId"] isEqual:self.componentId]) {
+         [self reactViewReady];
 	 }
 }
 
-- (void)setRootViewDidChangeIntrinsicSize:(void (^)(CGSize))rootViewDidChangeIntrinsicSize {
-		_rootViewDidChangeIntrinsicSize = rootViewDidChangeIntrinsicSize;
-		self.delegate = self;
+- (void)reactViewReady {
+    if (_reactViewReadyBlock) {
+        _reactViewReadyBlock();
+        _reactViewReadyBlock = nil;
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
-	if (_rootViewDidChangeIntrinsicSize) {
-		_rootViewDidChangeIntrinsicSize(rootView.intrinsicContentSize);
-	}
+
+- (void)componentDidAppear {
+    if (!_isAppeared) {
+        [_eventEmitter sendComponentDidAppear:self.componentId componentName:self.moduleName componentType:self.componentType];
+    }
+    
+    _isAppeared = YES;
 }
 
-- (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame {
-	if ([alignment isEqualToString:@"fill"]) {
-		self.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
-		[self setFrame:frame];
-	} else {
-		self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
-		__weak RNNReactView *weakSelf = self;
-		[self setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicSize) {
-			[weakSelf setFrame:CGRectMake(0, 0, intrinsicSize.width, intrinsicSize.height)];
-		}];
-	}
+- (void)componentDidDisappear {
+    if (_isAppeared) {
+        [_eventEmitter sendComponentDidDisappear:self.componentId componentName:self.moduleName componentType:self.componentType];
+    }
+    
+    _isAppeared = NO;
+}
+
+- (void)invalidate {
+    [((RCTRootContentView *)self.contentView) invalidate];
+}
+
+- (NSString *)componentId {
+	return self.appProperties[@"componentId"];
+}
+
+- (NSString *)componentType {
+    @throw [NSException exceptionWithName:@"componentType not implemented" reason:@"Should always subclass RNNReactView" userInfo:nil];
 }
 
 @end

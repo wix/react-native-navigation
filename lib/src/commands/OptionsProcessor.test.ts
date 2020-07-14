@@ -5,27 +5,34 @@ import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
 import { mock, when, anyString, instance, anyNumber, verify } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
+import { Deprecations } from './Deprecations';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
-  const mockedStore = mock(Store);
-  const store = instance(mockedStore);
+  const mockedStore = mock(Store) as Store;
+  const store = instance(mockedStore) as Store;
 
   beforeEach(() => {
-    const mockedAssetService = mock(AssetService);
+    const mockedAssetService = mock(AssetService) as AssetService;
     when(mockedAssetService.resolveFromRequire(anyNumber())).thenReturn({
       height: 100,
       scale: 1,
       uri: 'lol',
-      width: 100
+      width: 100,
     });
     const assetService = instance(mockedAssetService);
 
-    const mockedColorService = mock(ColorService);
+    const mockedColorService = mock(ColorService) as ColorService;
     when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
     const colorService = instance(mockedColorService);
 
-    uut = new OptionsProcessor(store, new UniqueIdProvider(), colorService, assetService);
+    uut = new OptionsProcessor(
+      store,
+      new UniqueIdProvider(),
+      colorService,
+      assetService,
+      new Deprecations()
+    );
   });
 
   it('keeps original values if values were not processed', () => {
@@ -68,8 +75,8 @@ describe('navigation options', () => {
       rootBackgroundImage: { height: 100, scale: 1, uri: 'lol', width: 100 },
       bottomTab: {
         icon: { height: 100, scale: 1, uri: 'lol', width: 100 },
-        selectedIcon: { height: 100, scale: 1, uri: 'lol', width: 100 }
-      }
+        selectedIcon: { height: 100, scale: 1, uri: 'lol', width: 100 },
+      },
     });
   });
 
@@ -79,7 +86,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options);
 
-    verify(mockedStore.setPropsForId('CustomComponent1', passProps)).called();
+    verify(mockedStore.updateProps('CustomComponent1', passProps)).called();
   });
 
   it('generates componentId for component id was not passed', () => {
@@ -108,7 +115,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options);
 
-    verify(mockedStore.setPropsForId('1', passProps)).called();
+    verify(mockedStore.updateProps('1', passProps)).called();
   });
 
   it('do not touch passProps when id for button is missing', () => {
@@ -134,5 +141,17 @@ describe('navigation options', () => {
     expect(options.topBar.leftButtons[0].passProps).toBeUndefined();
     expect(options.topBar.title.component.passProps).toBeUndefined();
     expect(options.topBar.background.component.passProps).toBeUndefined();
+  });
+
+  it('Will ensure the store has a chance to lazily load components in options', () => {
+    const options = {
+      topBar: {
+        title: { component: { name: 'helloThere1', passProps: {} } },
+        background: { component: { name: 'helloThere2', passProps: {} } },
+      },
+    };
+    uut.processOptions(options);
+    verify(mockedStore.ensureClassForName('helloThere1')).called();
+    verify(mockedStore.ensureClassForName('helloThere2')).called();
   });
 });

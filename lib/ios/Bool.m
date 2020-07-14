@@ -29,4 +29,9 @@
 	}
 }
 
+- (bool)isFalse {
+    return self.value != nil && ![self.value boolValue];
+}
+
+
 @end

@@ -2,6 +2,8 @@ import { EventsRegistry } from './EventsRegistry';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { CommandsObserver } from './CommandsObserver';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { NavigationComponent } from '../interfaces/NavigationComponent';
+import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
 
 describe('EventsRegistry', () => {
   let uut: EventsRegistry;
@@ -68,6 +70,13 @@ describe('EventsRegistry', () => {
     expect(mockNativeEventsReceiver.registerModalDismissedListener).toHaveBeenCalledWith(cb);
   });
 
+  it('delegates modalAttemptedToDimiss to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerModalAttemptedToDismissListener(cb);
+    expect(mockNativeEventsReceiver.registerModalAttemptedToDismissListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerModalAttemptedToDismissListener).toHaveBeenCalledWith(cb);
+  });
+
   it('delegates searchBarUpdated to nativeEventsReceiver', () => {
     const cb = jest.fn();
     uut.registerSearchBarUpdatedListener(cb);
@@ -110,6 +119,20 @@ describe('EventsRegistry', () => {
     const subscription = {};
     mockScreenEventsRegistry.bindComponent = jest.fn();
     mockScreenEventsRegistry.bindComponent.mockReturnValueOnce(subscription);
-    expect(uut.bindComponent({} as React.Component<any>)).toEqual(subscription);
+    expect(uut.bindComponent({} as NavigationComponent<any>)).toEqual(subscription);
+  });
+
+  it(`delegates registerComponentListener to ComponentObserver`, () => {
+    const subscription = {};
+    mockScreenEventsRegistry.registerComponentListener = jest.fn();
+    mockScreenEventsRegistry.registerComponentListener.mockReturnValueOnce(subscription);
+    expect(uut.registerComponentListener({} as NavigationComponentListener, 'componentId')).toEqual(subscription);
+  });
+
+  it('delegates screenPopped to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerScreenPoppedListener(cb);
+    expect(mockNativeEventsReceiver.registerScreenPoppedListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerScreenPoppedListener).toHaveBeenCalledWith(cb);
   });
 });

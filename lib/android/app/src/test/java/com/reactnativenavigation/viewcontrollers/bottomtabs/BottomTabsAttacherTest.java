@@ -1,14 +1,22 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import android.view.ViewGroup;
+
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.presentation.BottomTabsPresenter;
-import com.reactnativenavigation.viewcontrollers.*;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.TabsAttachMode;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes.AttachMode;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes.OnSwitchToTab;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -16,12 +24,22 @@ public class BottomTabsAttacherTest extends BaseTest {
 
     private BottomTabsAttacher uut;
     private AttachMode mode;
+    private Options defaultOptions = new Options();
+    private List<ViewController> tabs;
 
     @Override
     public void beforeEach() {
         mode = Mockito.mock(AttachMode.class);
-        uut = new BottomTabsAttacher(Collections.EMPTY_LIST, Mockito.mock(BottomTabsPresenter.class));
+        tabs = Arrays.asList(mock(ViewController.class), mock(ViewController.class));
+        uut = new BottomTabsAttacher(tabs, Mockito.mock(BottomTabsPresenter.class), defaultOptions);
         uut.attachStrategy = mode;
+    }
+
+    @Test
+    public void init_defaultOptionsAreTakenIntoAccount() {
+        defaultOptions.bottomTabsOptions.tabsAttachMode = TabsAttachMode.ON_SWITCH_TO_TAB;
+        uut.init(Mockito.mock(ViewGroup.class), Options.EMPTY);
+        assertThat(uut.attachStrategy).isInstanceOfAny(OnSwitchToTab.class);
     }
 
     @Test

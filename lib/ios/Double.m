@@ -8,6 +8,10 @@
 
 @implementation Double
 
++ (instancetype)withValue:(double)value {
+    return [[self.class alloc] initWithValue:@(value)];
+}
+
 - (double)get {
 	return [[super get] doubleValue];
 }

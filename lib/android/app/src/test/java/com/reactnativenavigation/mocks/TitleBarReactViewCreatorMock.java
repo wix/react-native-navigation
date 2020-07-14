@@ -3,8 +3,8 @@ package com.reactnativenavigation.mocks;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.views.titlebar.TitleBarReactView;
-import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 
 import static org.mockito.Mockito.mock;
 

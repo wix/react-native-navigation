@@ -1,4 +1,5 @@
 #import "Constants.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @implementation Constants
 
@@ -7,7 +8,7 @@
 }
 
 + (CGFloat)topBarHeight {
-	return UIApplication.sharedApplication.delegate.window.rootViewController.navigationController.navigationBar.frame.size.height;
+	return [RCTPresentedViewController() getTopBarHeight];
 }
 
 + (CGFloat)statusBarHeight {
@@ -15,7 +16,7 @@
 }
 
 + (CGFloat)bottomTabsHeight {
-	return CGRectGetHeight(((UITabBarController *)((UIWindow *)(UIApplication.sharedApplication.windows[0])).rootViewController).tabBar.frame);
+	return [UIApplication.sharedApplication.delegate.window.rootViewController getBottomTabsHeight];
 }
 
 @end

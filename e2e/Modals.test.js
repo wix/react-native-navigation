@@ -1,12 +1,12 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
-const Android = require('./AndroidUtils');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
+import Android from './AndroidUtils';
 
 const { elementByLabel, elementById, sleep } = Utils;
 
 describe('modal', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
   });
@@ -72,8 +72,7 @@ describe('modal', () => {
 
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
     await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
-    }
-  );
+  });
 
   it('dismiss some modal by id deep in the stack', async () => {
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
@@ -116,6 +115,12 @@ describe('modal', () => {
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
+  });
+
+  it('setRoot dismisses modals', async () => {
+    await elementById(TestIDs.SET_ROOT).tap();
+    await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeNotVisible();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
   });
 
   it(':android: override hardware back button in modal with stack', async () => {

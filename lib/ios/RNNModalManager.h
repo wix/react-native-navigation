@@ -1,24 +1,28 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <React/RCTBridge.h>
 
 typedef void (^RNNTransitionCompletionBlock)(void);
-typedef void (^RNNTransitionWithComponentIdCompletionBlock)(NSString *componentId);
-typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, NSError *error);
+typedef void (^RNNTransitionWithComponentIdCompletionBlock)(NSString * _Nonnull componentId);
+typedef void (^RNNTransitionRejectionBlock)(NSString * _Nonnull code, NSString * _Nonnull message, NSError * _Nullable error);
 
 @protocol RNNModalManagerDelegate <NSObject>
 
-- (void)dismissedModal:(UIViewController *)viewController;
-- (void)dismissedMultipleModals:(NSArray *)viewControllers;
+- (void)dismissedModal:(UIViewController * _Nonnull)viewController;
+- (void)attemptedToDismissModal:(UIViewController * _Nonnull)viewController;
+- (void)dismissedMultipleModals:(NSArray * _Nonnull)viewControllers;
 
 @end
 
-@interface RNNModalManager : NSObject
+@interface RNNModalManager : NSObject <UIAdaptivePresentationControllerDelegate>
 
-@property (nonatomic, weak) id<RNNModalManagerDelegate> delegate;
+- (instancetype _Nullable)initWithBridge:(RCTBridge * _Nonnull)bridge;
 
-- (void)showModal:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
-- (void)showModal:(UIViewController *)viewController animated:(BOOL)animated hasCustomAnimation:(BOOL)hasCustomAnimation completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
-- (void)dismissModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion;
-- (void)dismissAllModalsAnimated:(BOOL)animated;
+@property (nonatomic, weak) id<RNNModalManagerDelegate> _Nullable delegate;
+
+- (void)showModal:(UIViewController * _Nonnull)viewController animated:(BOOL)animated completion:(RNNTransitionWithComponentIdCompletionBlock _Nonnull)completion;
+- (void)dismissModal:(UIViewController * _Nonnull)viewController completion:(RNNTransitionCompletionBlock _Nonnull)completion;
+- (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion;
+- (void)dismissAllModalsSynchronosly;
 
 @end

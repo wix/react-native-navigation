@@ -11,12 +11,12 @@
 
 RCT_CUSTOM_VIEW_PROPERTY(elementId, NSString, RNNElement)
 {
-	[(RNNElementView*)view setElementId:json];
+//	[(RNNElementView*)view setElementId:json];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(resizeMode, NSString, RNNElement)
 {
-	[(RNNElementView*)view setResizeMode:json];
+//	[(RNNElementView*)view. setResizeMode:json];
 }
 
 RCT_EXPORT_MODULE();

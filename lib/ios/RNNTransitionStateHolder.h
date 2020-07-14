@@ -13,15 +13,14 @@
 @property (nonatomic) double startDelay;
 @property (nonatomic, strong) NSString* fromId;
 @property (nonatomic, strong) NSString* toId;
-@property (nonatomic) BOOL isSharedElementTransition;
 @property (nonatomic) double startY;
 @property (nonatomic) double endY;
 @property (nonatomic) double startX;
 @property (nonatomic) double endX;
 @property (nonatomic) UIViewAnimationOptions interpolation;
 
-- (void)setupInitialTransitionForView:(UIView *)view;
+- (CGPoint)startPoint;
 
-- (void)completeTransitionForView:(UIView*)view;
+- (CGPoint)endPoint;
 
 @end

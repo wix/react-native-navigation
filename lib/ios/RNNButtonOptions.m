@@ -13,7 +13,8 @@
 	self.icon = [ImageParser parse:dict key:@"icon"];
 	self.iconInsets = [[RNNInsetsOptions alloc] initWithDict:dict[@"iconInsets"]];
 	self.enabled = [BoolParser parse:dict key:@"enabled"];
-	
+	self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
+
 
 	return self;
 }

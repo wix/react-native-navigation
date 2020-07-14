@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { ComponentProvider } from 'react-native';
-import * as  _ from 'lodash';
 import { polyfill } from 'react-lifecycles-compat';
-import hoistNonReactStatics = require('hoist-non-react-statics');
+import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { Store } from './Store';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 
 interface HocState { componentId: string; allProps: {}; }
 interface HocProps { componentId: string; }
+
+export interface IWrappedComponent extends React.Component {
+  setProps(newProps: Record<string, any>): void;
+}
 
 export class ComponentWrapper {
   wrap(
@@ -24,7 +27,10 @@ export class ComponentWrapper {
     class WrappedComponent extends React.Component<HocProps, HocState> {
       static getDerivedStateFromProps(nextProps: any, prevState: HocState) {
         return {
-          allProps: _.merge({}, nextProps, store.getPropsForId(prevState.componentId))
+          allProps: {
+            ...nextProps,
+            ...store.getPropsForId(prevState.componentId)
+          }
         };
       }
 
@@ -35,10 +41,15 @@ export class ComponentWrapper {
           componentId: props.componentId,
           allProps: {}
         };
+        store.setComponentInstance(props.componentId, this);
+      }
+
+      public setProps(newProps: any) {
+        this.setState({ allProps: newProps });
       }
 
       componentWillUnmount() {
-        store.cleanId(this.state.componentId);
+        store.clearComponent(this.state.componentId);
         componentEventsObserver.unmounted(this.state.componentId);
       }
 
@@ -59,7 +70,7 @@ export class ComponentWrapper {
     }
 
     polyfill(WrappedComponent);
-    hoistNonReactStatics(WrappedComponent, concreteComponentProvider());
+    hoistNonReactStatics(WrappedComponent, concreteComponentProvider === OriginalComponentGenerator ? GeneratedComponentClass : concreteComponentProvider());
     return ReduxProvider ? this.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore) : WrappedComponent;
   }
 

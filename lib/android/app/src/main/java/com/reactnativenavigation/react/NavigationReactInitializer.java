@@ -1,43 +1,47 @@
 package com.reactnativenavigation.react;
 
-import android.support.annotation.NonNull;
-
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
 import com.reactnativenavigation.NavigationActivity;
+import com.reactnativenavigation.react.events.EventEmitter;
+
+import androidx.annotation.NonNull;
 
 public class NavigationReactInitializer implements ReactInstanceManager.ReactInstanceEventListener {
 
 	private final ReactInstanceManager reactInstanceManager;
 	private final DevPermissionRequest devPermissionRequest;
 	private boolean waitingForAppLaunchEvent = true;
+	private boolean isActivityReadyForUi = false;
 
-	public NavigationReactInitializer(ReactInstanceManager reactInstanceManager, boolean isDebug) {
+	NavigationReactInitializer(ReactInstanceManager reactInstanceManager, boolean isDebug) {
 		this.reactInstanceManager = reactInstanceManager;
 		this.devPermissionRequest = new DevPermissionRequest(isDebug);
 	}
 
-	public void onActivityCreated(final NavigationActivity activity) {
+	void onActivityCreated() {
 		reactInstanceManager.addReactInstanceEventListener(this);
 		waitingForAppLaunchEvent = true;
 	}
 
-	public void onActivityResumed(NavigationActivity activity) {
+	void onActivityResumed(NavigationActivity activity) {
 		if (devPermissionRequest.shouldAskPermission(activity)) {
 			devPermissionRequest.askPermission(activity);
 		} else {
 			reactInstanceManager.onHostResume(activity, activity);
+            isActivityReadyForUi = true;
 			prepareReactApp();
 		}
 	}
 
-	public void onActivityPaused(NavigationActivity activity) {
+	void onActivityPaused(NavigationActivity activity) {
+        isActivityReadyForUi = false;
 		if (reactInstanceManager.hasStartedCreatingInitialContext()) {
 			reactInstanceManager.onHostPause(activity);
 		}
 	}
 
-	public void onActivityDestroyed(NavigationActivity activity) {
+	void onActivityDestroyed(NavigationActivity activity) {
 		reactInstanceManager.removeReactInstanceEventListener(this);
 		if (reactInstanceManager.hasStartedCreatingInitialContext()) {
 			reactInstanceManager.onHostDestroy(activity);
@@ -55,6 +59,7 @@ public class NavigationReactInitializer implements ReactInstanceManager.ReactIns
 	}
 
 	private void emitAppLaunched(@NonNull ReactContext context) {
+	    if (!isActivityReadyForUi) return;
 		waitingForAppLaunchEvent = false;
 		new EventEmitter(context).appLaunched();
 	}

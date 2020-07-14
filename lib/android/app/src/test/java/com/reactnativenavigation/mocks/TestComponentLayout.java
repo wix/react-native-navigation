@@ -2,23 +2,23 @@ package com.reactnativenavigation.mocks;
 
 import android.content.Context;
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.ViewGroup;
 
-import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.IReactView;
-import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
-import com.reactnativenavigation.views.ComponentLayout;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.react.ReactView;
+import com.reactnativenavigation.react.events.ComponentType;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.views.component.ComponentLayout;
 
-public class TestComponentLayout extends ComponentLayout implements TitleBarButtonController.OnClickListener {
+public class TestComponentLayout extends ComponentLayout implements ButtonController.OnClickListener {
 
-    private IReactView reactView;
+    private ReactView reactView;
 
-    public TestComponentLayout(final Context context, IReactView reactView) {
+    public TestComponentLayout(final Context context, ReactView reactView) {
         super(context, reactView);
         this.reactView = reactView;
     }
-
 
     @Override
     public boolean isReady() {
@@ -26,7 +26,7 @@ public class TestComponentLayout extends ComponentLayout implements TitleBarButt
     }
 
     @Override
-    public View asView() {
+    public ViewGroup asView() {
         return this;
     }
 
@@ -36,12 +36,12 @@ public class TestComponentLayout extends ComponentLayout implements TitleBarButt
 
     @Override
     public void sendComponentStart() {
-        reactView.sendComponentStart();
+        reactView.sendComponentStart(ComponentType.Component);
     }
 
     @Override
     public void sendComponentStop() {
-        reactView.sendComponentStop();
+        reactView.sendComponentStop(ComponentType.Component);
     }
 
     @Override

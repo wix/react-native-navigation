@@ -36,7 +36,6 @@
 	self.backButton = [[RNNBackButtonOptions alloc] initWithDict:dict[@"backButton"]];
 	self.leftButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"leftButtonStyle"]];
 	self.rightButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"rightButtonStyle"]];
-	self.component = [[RNNComponentOptions alloc] initWithDict:dict[@"component"]];
 	
 	if (self.leftButtonColor.hasValue) {
 		self.leftButtonStyle.color = self.leftButtonColor;
@@ -61,5 +60,11 @@
 	return self;
 }
 
+- (BOOL)shouldDrawBehind {
+    return [self.drawBehind getWithDefaultValue:NO] ||
+    [self.background.translucent getWithDefaultValue:NO] ||
+    ![self.visible getWithDefaultValue:YES] ||
+    [self.largeTitle.visible getWithDefaultValue:NO];
+}
 
 @end

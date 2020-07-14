@@ -2,22 +2,19 @@ package com.reactnativenavigation.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 public class UiUtils {
-    private static final int STATUS_BAR_HEIGHT_M = 24;
-    private static final int STATUS_BAR_HEIGHT_L = 25;
     private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
 
-    private static int statusBarHeight = -1;
     private static int topBarHeight = -1;
 
     public static <T extends View> void runOnPreDrawOnce(@Nullable final T view, final Functions.Func1<T> task) {
@@ -33,6 +30,17 @@ public class UiUtils {
                 view.getViewTreeObserver().removeOnPreDrawListener(this);
                 task.run();
                 return true;
+            }
+        });
+    }
+
+    public static void doOnLayout(@Nullable final View view, final Runnable task) {
+        if (view == null) return;
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                task.run();
             }
         });
     }
@@ -75,18 +83,6 @@ public class UiUtils {
         return metrics;
     }
 
-    public static int getStatusBarHeight(Context context) {
-        if (statusBarHeight > 0) {
-            return statusBarHeight;
-        }
-        final Resources resources = context.getResources();
-        final int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-        statusBarHeight = resourceId > 0 ?
-                resources.getDimensionPixelSize(resourceId) :
-                dpToPx(context, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? STATUS_BAR_HEIGHT_M : STATUS_BAR_HEIGHT_L);
-        return statusBarHeight;
-    }
-
     public static int getTopBarHeightDp(Context context) {
         return (int) UiUtils.pxToDp(context, getTopBarHeight(context));
     }
@@ -110,6 +106,7 @@ public class UiUtils {
     }
 
     public static int dpToPx(Context context, int dp) {
+        if (dp <= 0) return dp;
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return (int) (dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));

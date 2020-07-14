@@ -1,10 +1,11 @@
 package com.reactnativenavigation.playground;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.reactnativenavigation.NavigationActivity;
+
+import androidx.annotation.Nullable;
 
 public class MainActivity extends NavigationActivity {
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0920"
+   LastUpgradeVersion = "1120"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "NO"
@@ -14,24 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3D3C04B91DE3340900C268FA"
-               BuildableName = "libyoga.a"
-               BlueprintName = "yoga"
-               ReferencedContainer = "container:../../node_modules/react-native/React/React.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "83CBBA2D1A601D0E00E9B192"
-               BuildableName = "libReact.a"
-               BlueprintName = "React"
-               ReferencedContainer = "container:../../node_modules/react-native/React/React.xcodeproj">
+               BlueprintIdentifier = "6ADCF369490C694BEBF31C5B4517D035"
+               BuildableName = "ReactNativeNavigation.framework"
+               BlueprintName = "ReactNativeNavigation"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -48,40 +34,14 @@
                ReferencedContainer = "container:playground.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "playgroundTests.xctest"
-               BlueprintName = "playgroundTests"
-               ReferencedContainer = "container:playground.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      codeCoverageEnabled = "YES"
-      shouldUseLaunchSchemeArgsEnv = "NO">
-      <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7B49FEBA1E95090800DEB3EA"
-               BuildableName = "ReactNativeNavigationTests.xctest"
-               BlueprintName = "ReactNativeNavigationTests"
-               ReferencedContainer = "container:../../lib/ios/ReactNativeNavigation.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
+      shouldUseLaunchSchemeArgsEnv = "NO"
+      codeCoverageEnabled = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -98,8 +58,18 @@
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E58D261A238587F4003F36BA"
+               BuildableName = "NavigationTests.xctest"
+               BlueprintName = "NavigationTests"
+               ReferencedContainer = "container:playground.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -121,8 +91,6 @@
             ReferencedContainer = "container:playground.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

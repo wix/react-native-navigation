@@ -1,10 +1,11 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
-const Android = require('./AndroidUtils');
-const { elementByLabel, elementById, sleep } = Utils;
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
+
+const { elementByLabel, elementById } = Utils;
+
 describe('BottomTabs', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.BOTTOM_TABS_BTN).tap();
     await expect(elementByLabel('First Tab')).toBeVisible();
   });
@@ -32,7 +33,7 @@ describe('BottomTabs', () => {
     await expect(element(by.text('NEW'))).toBeVisible();
   });
 
-  it(':ios: set Tab Bar badge null on a current Tab should reset badge', async () => {
+  it('set empty string badge on a current Tab should clear badge', async () => {
     await elementById(TestIDs.SET_BADGE_BTN).tap();
     await expect(element(by.text('NEW'))).toBeVisible();
     await elementById(TestIDs.CLEAR_BADGE_BTN).tap();
@@ -62,6 +63,34 @@ describe('BottomTabs', () => {
   });
 
   it('hide Tab Bar on push', async () => {
+    await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    await elementById(TestIDs.POP_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+  });
+
+  it('hide Tab Bar on push from second bottomTabs screen', async () => {
+    await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
+    await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    await elementById(TestIDs.POP_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+  });
+
+  it('hide Tab Bar on push from second bottomTabs screen - deep stack', async () => {
+    await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
+    await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    await elementById(TestIDs.POP_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    await elementById(TestIDs.POP_BTN).tap();
+    await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+  });
+
+  it('hide Tab Bar on second tab after pressing the tab', async () => {
+    await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
     await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
     await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
     await elementById(TestIDs.POP_BTN).tap();

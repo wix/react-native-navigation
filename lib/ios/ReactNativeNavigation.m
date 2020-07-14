@@ -16,12 +16,16 @@
 
 # pragma mark - public API
 
-+(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
++ (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
 	[[ReactNativeNavigation sharedInstance] bootstrap:jsCodeLocation launchOptions:launchOptions];
 }
 
-+(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate {
++ (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate {
 	[[ReactNativeNavigation sharedInstance] bootstrap:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate];
+}
+
++ (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
+    [[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:bridgeDelegate launchOptions:launchOptions];
 }
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
@@ -34,6 +38,10 @@
 
 + (UIViewController *)findViewController:(NSString *)componentId {
     return [RNNLayoutManager findComponentForId:componentId];
+}
+
++ (void)setJSCodeLocation:(NSURL *)jsCodeLocation {
+	[[ReactNativeNavigation sharedInstance].bridgeManager setJSCodeLocation:jsCodeLocation];
 }
 
 # pragma mark - instance
@@ -50,11 +58,15 @@
 	return instance;
 }
 
--(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
+- (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
 	[self bootstrap:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:nil];
 }
 
--(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate {
+- (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
+    [self bootstrap:nil launchOptions:launchOptions bridgeManagerDelegate:bridgeDelegate];
+}
+
+- (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate {
 	UIWindow* mainWindow = [self initializeKeyWindow];
 	
 	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate mainWindow:mainWindow];
@@ -63,9 +75,7 @@
 
 - (UIWindow *)initializeKeyWindow {
 	UIWindow* keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	keyWindow.backgroundColor = [UIColor whiteColor];
 	UIApplication.sharedApplication.delegate.window = keyWindow;
-	
 	return keyWindow;
 }
 

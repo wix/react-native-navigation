@@ -15,13 +15,20 @@
 	self.hideShadow = [BoolParser parse:dict key:@"hideShadow"];
 	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
 	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
-	
 	self.testID = [TextParser parse:dict key:@"testID"];
 	self.currentTabId = [TextParser parse:dict key:@"currentTabId"];
 	self.barStyle = [TextParser parse:dict key:@"barStyle"];
 	self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
+	self.titleDisplayMode = [TextParser parse:dict key:@"titleDisplayMode"];
+    self.tabsAttachMode = (BottomTabsAttachMode *)[EnumParser parse:dict key:@"tabsAttachMode" ofClass:BottomTabsAttachMode.class];
 	
 	return self;
+}
+
+- (BOOL)shouldDrawBehind {
+    return [self.drawBehind getWithDefaultValue:NO] ||
+    [self.translucent getWithDefaultValue:NO] ||
+    ![self.visible getWithDefaultValue:YES];
 }
 
 @end

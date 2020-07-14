@@ -1,15 +1,16 @@
 package com.reactnativenavigation.viewcontrollers.button;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
+import com.reactnativenavigation.mocks.BackDrawable;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.options.ButtonOptions;
+import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -20,19 +21,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class NavigationIconResolverTest extends BaseTest {
     private static final String ICON_URI = "someIconUri";
-    private NavigationIconResolver uut;
+    private IconResolver uut;
     private ImageLoader imageLoader;
-    private Context context;
+    private Activity context;
 
     @Override
     public void beforeEach() {
         imageLoader = ImageLoaderMock.mock();
         context = newActivity();
-        uut = new NavigationIconResolver(context, imageLoader);
+        uut = new IconResolver(context, imageLoader);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class NavigationIconResolverTest extends BaseTest {
 
             }
         });
-        uut.resolve(iconButton(), View.LAYOUT_DIRECTION_LTR, onSuccess);
+        uut.resolve(iconButton(), onSuccess);
         verify(imageLoader).loadIcon(eq(context), eq(ICON_URI), any());
         verify(onSuccess).run(any(Drawable.class));
     }
@@ -56,21 +56,20 @@ public class NavigationIconResolverTest extends BaseTest {
 
             }
         });
-        uut.resolve(backButton(), View.LAYOUT_DIRECTION_LTR, onSuccess);
-        verifyZeroInteractions(imageLoader);
-        verify(onSuccess).run(any());
+        uut.resolve(backButton(), onSuccess);
+        verify(onSuccess).run(any(BackDrawable.class));
     }
 
-    private Button iconButton() {
-        Button button = new Button();
+    private ButtonOptions iconButton() {
+        ButtonOptions button = new ButtonOptions();
         button.id = "iconBtnId";
         button.icon = new Text(ICON_URI);
         button.color = new Colour(Color.RED);
         return button;
     }
 
-    private Button backButton() {
-        Button button = new Button();
+    private ButtonOptions backButton() {
+        ButtonOptions button = new ButtonOptions();
         button.id = Constants.BACK_BUTTON_ID;
         return button;
     }

@@ -2,11 +2,9 @@ package com.reactnativenavigation.viewcontrollers.child;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.viewcontrollers.ChildController;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -33,35 +31,22 @@ public class ChildControllerTest extends BaseTest {
                 return resolvedOptions;
             }
         };
+        ParentController parent = Mockito.mock(ParentController.class);
+        uut.setParentController(parent);
     }
 
     @Test
     public void onViewAppeared() {
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         verify(childRegistry, times(1)).onViewAppeared(uut);
     }
 
     @Test
     public void onViewDisappear() {
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
 
         uut.onViewDisappear();
         verify(childRegistry, times(1)).onViewDisappear(uut);
-    }
-
-    @Test
-    public void applyOptions_applyRootOptionsIfRoot() {
-        newActivity().setContentView(uut.getView());
-        verify(presenter).applyOptions(uut.getView(), resolvedOptions);
-        verify(presenter).applyRootOptions(uut.getView(), resolvedOptions);
-    }
-
-    @Test
-    public void applyOptions_doesNotApplyRootOptionsIfHasParent() {
-        Options options = new Options();
-        uut.setParentController(Mockito.mock(ParentController.class));
-        uut.applyOptions(options);
-        verify(presenter, times(0)).applyRootOptions(uut.getView(), options);
     }
 
     @Test
@@ -77,6 +62,13 @@ public class ChildControllerTest extends BaseTest {
     public void mergeOptions_emptyOptionsAreIgnored() {
         uut.mergeOptions(Options.EMPTY);
         verify(presenter, times(0)).mergeOptions(any(), any());
+    }
+
+    @Test
+    public void mergeOptions_mergeWithParentViewController() {
+        Options options = new Options();
+        uut.mergeOptions(options);
+        verify(uut.getParentController()).mergeChildOptions(options, uut);
     }
 
     @Test

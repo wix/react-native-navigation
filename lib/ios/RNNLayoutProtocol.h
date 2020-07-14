@@ -1,6 +1,6 @@
 #import "RNNLayoutInfo.h"
 #import "RNNBasePresenter.h"
-#import "RNNRootViewCreator.h"
+#import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
@@ -10,18 +10,26 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @required
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
-						   creator:(id<RNNRootViewCreator>)creator
+						   creator:(id<RNNComponentViewCreator>)creator
 						   options:(RNNNavigationOptions *)options
 					defaultOptions:(RNNNavigationOptions *)defaultOptions
 						 presenter:(RNNBasePresenter *)presenter
 					  eventEmitter:(RNNEventEmitter *)eventEmitter
 			  childViewControllers:(NSArray *)childViewControllers;
 
-- (void)renderTreeAndWait:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+- (void)render;
 
 - (UIViewController<RNNLayoutProtocol> *)getCurrentChild;
 
+- (CGFloat)getTopBarHeight;
+
+- (CGFloat)getBottomTabsHeight;
+
+- (UIViewController *)topMostViewController;
+
 - (void)mergeOptions:(RNNNavigationOptions *)options;
+
+- (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child;
 
 - (RNNNavigationOptions *)resolveOptions;
 
@@ -30,5 +38,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 - (void)overrideOptions:(RNNNavigationOptions *)options;
 
 - (void)onChildWillAppear;
+
+- (void)readyForPresentation;
 
 @end

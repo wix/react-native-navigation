@@ -2,13 +2,13 @@ package com.reactnativenavigation.views.toptabs;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager.widget.ViewPager;
 
-import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 public class TopTabs extends TabLayout {
     private final TopTabsStyleHelper styleHelper;

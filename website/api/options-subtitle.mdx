@@ -1,0 +1,63 @@
+---
+id: options-subtitle
+title: Subtitle Options
+sidebar_label: Subtitle
+---
+
+Controls the top bar subtitle.
+
+```js
+const options = {
+  topBar: {
+    subtitle: {}
+  }
+};
+```
+
+### `text`
+
+Subtitle text.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+### `fontSize`
+
+Subtitle fontSize. On Android this value is `sp`.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+### `color`
+
+Subtitle color.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | Both     |
+
+### `fontFamily`
+
+Subtitle FontFamily.
+
+| Type       | Required | Platform |
+| ---------- | -------- | -------- |
+| FontFamily | No       | Both     |
+
+### `alignment`
+
+`fill` will make the subtitle stretch and consume all available space in the TopBar while `center` will center the subtitle in the middle of the TopBar.
+
+| Type                   | Required | Platform |
+| ---------------------- | -------- | -------- |
+| enum('center', 'fill') | No       | Both     |
+
+### `testID`
+
+Used to interact with the TopBar in e2e tests.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |

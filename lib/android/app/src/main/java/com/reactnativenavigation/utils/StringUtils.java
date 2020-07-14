@@ -1,6 +1,6 @@
 package com.reactnativenavigation.utils;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public class StringUtils {
 

@@ -12,6 +12,7 @@ apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
     compileSdkVersion 28
+    ndkVersion "20.1.5948944"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -28,8 +29,7 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
 
-        testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
-        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative57_5"
+        testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     signingConfigs {
@@ -45,33 +45,36 @@ android {
             signingConfig signingConfigs.release
         }
     }
-}
-
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == 'com.android.support') {
-            details.useVersion "28.0.0"
-        }
-    }
-}
-
-configurations.all {
-    resolutionStrategy {
-        force 'org.webkit:android-jsc:r236355'
+    packagingOptions {
+        pickFirst "lib/armeabi-v7a/libc++_shared.so"
+        pickFirst "lib/arm64-v8a/libc++_shared.so"
+        pickFirst "lib/x86/libc++_shared.so"
+        pickFirst "lib/x86_64/libc++_shared.so"
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
+    implementation 'com.facebook.soloader:soloader:0.9.0'
+
+    //noinspection GradleDynamicVersion
+    implementation 'org.webkit:android-jsc-intl:+'
     implementation project(':react-native-navigation')
-    implementation project(':react-native-view-overflow')
 
     androidTestImplementation('com.wix:detox:+') { transitive = true }
     androidTestImplementation 'junit:junit:4.12'
 }
+
+
+task copyDownloadableDepsToLibs(type: Copy) {
+    from configurations.compile
+    into 'libs'
+}
+
+apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
+applyNativeModulesAppBuildGradle(project)

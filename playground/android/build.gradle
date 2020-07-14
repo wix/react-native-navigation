@@ -1,8 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlinVersion = '1.3.31'
-    ext.detoxKotlinVersion = ext.kotlinVersion
+    ext {
+        kotlinVersion = "1.3.72"
+        RNNKotlinVersion = kotlinVersion
+        detoxKotlinVersion = kotlinVersion
+    }
 
     repositories {
         google()
@@ -11,8 +14,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.android.tools.build:gradle:3.6.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,17 +24,16 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()
-        mavenCentral()
-        google()
         jcenter()
+        maven { url 'https://www.jitpack.io' }
+        google()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../../node_modules/react-native/android"
         }
-        maven { url 'https://jitpack.io' }
+        mavenLocal()
+        maven { url "$rootDir/../../node_modules/detox/Detox-android" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url "$rootDir/../../node_modules/jsc-android/dist" }
-        maven { url "$rootDir/../../node_modules/detox/Detox-android" }
     }
 }

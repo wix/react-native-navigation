@@ -4,6 +4,12 @@
 
 @interface RNNTabBarItemCreator : NSObject
 
-+ (UITabBarItem *)updateTabBarItem:(UITabBarItem *)tabItem bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions;
++ (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions mergeItem:(UITabBarItem *)mergeItem;
+
++ (UITabBarItem *)createTabBarItem:(UITabBarItem *)mergeItem;
+
++ (void)setTitleAttributes:(UITabBarItem *)tabItem titleAttributes:(NSDictionary *)titleAttributes;
+
++ (void)setSelectedTitleAttributes:(UITabBarItem *)tabItem selectedTitleAttributes:(NSDictionary *)selectedTitleAttributes;
 
 @end

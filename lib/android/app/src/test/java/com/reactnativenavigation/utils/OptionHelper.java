@@ -1,7 +1,7 @@
 package com.reactnativenavigation.utils;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Text;
 
 import java.util.ArrayList;
 

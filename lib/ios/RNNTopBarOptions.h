@@ -35,7 +35,6 @@
 @property (nonatomic, strong) RNNButtonOptions* leftButtonStyle;
 @property (nonatomic, strong) RNNButtonOptions* rightButtonStyle;
 
-
-@property (nonatomic, strong) RNNComponentOptions* component;
+- (BOOL)shouldDrawBehind;
 
 @end

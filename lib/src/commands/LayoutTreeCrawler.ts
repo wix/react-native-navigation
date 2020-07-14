@@ -1,4 +1,5 @@
-import * as _ from 'lodash';
+import merge from 'lodash/merge'
+import isFunction from 'lodash/isFunction'
 import { LayoutType } from './LayoutType';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Store } from '../components/Store';
@@ -39,7 +40,7 @@ export class LayoutTreeCrawler {
   }
 
   private savePropsToStore(node: LayoutNode) {
-    this.store.setPropsForId(node.id, node.data.passProps);
+    this.store.updateProps(node.id, node.data.passProps);
   }
 
   private isComponentWithOptions(component: any): component is ComponentWithOptions {
@@ -47,14 +48,14 @@ export class LayoutTreeCrawler {
   }
 
   private applyStaticOptions(node: LayoutNode) {
-    node.data.options = _.merge({}, this.staticOptionsIfPossible(node), node.data.options);
+    node.data.options = merge({}, this.staticOptionsIfPossible(node), node.data.options);
   }
 
   private staticOptionsIfPossible(node: LayoutNode) {
     const foundReactGenerator = this.store.getComponentClassForName(node.data.name!);
     const reactComponent = foundReactGenerator ? foundReactGenerator() : undefined;
     if (reactComponent && this.isComponentWithOptions(reactComponent)) {
-      return _.isFunction(reactComponent.options) ? reactComponent.options(node.data.passProps || {}) : reactComponent.options;
+      return isFunction(reactComponent.options) ? reactComponent.options(node.data.passProps || {}) : reactComponent.options;
     }
     return {};
   }
