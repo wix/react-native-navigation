@@ -33,6 +33,7 @@ Pod::Spec.new do |s|
   end
 
   s.dependency 'React'
-  
+  s.dependency 'React-RCTImage'
+  s.dependency 'React-RCTText'
   s.frameworks = 'UIKit'
 end
