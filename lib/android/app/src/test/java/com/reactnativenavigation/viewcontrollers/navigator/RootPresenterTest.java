@@ -5,18 +5,17 @@ import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.LayoutDirectionApplier;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.LayoutDirectionApplier;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
-import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -28,7 +27,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -134,7 +132,7 @@ public class RootPresenterTest extends BaseTest {
 
     @NonNull
     private StackAnimator createAnimator(Activity activity) {
-        return new StackAnimator(activity, mock(ElementTransitionManager.class)) {
+        return new StackAnimator(activity) {
             @Override
             public void setRoot(View root, AnimationOptions setRoot, Runnable onAnimationEnd) {
                 onAnimationEnd.run();

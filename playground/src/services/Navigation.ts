@@ -5,10 +5,13 @@ import { stack, component } from '../commons/Layouts';
 
 type ComponentIdProp = { props: { componentId: string } };
 type SelfOrCompId = string | ComponentIdProp;
-type CompIdOrLayout = string | Layout;
+type CompIdOrLayout<P = {}> = string | Layout<P>;
 
-const push = (selfOrCompId: SelfOrCompId, screen: CompIdOrLayout, options?: Options) =>
-  Navigation.push(compId(selfOrCompId), isString(screen) ? component(screen, options) : screen);
+const push = <P>(selfOrCompId: SelfOrCompId, screen: CompIdOrLayout<P>, options?: Options) =>
+  Navigation.push<P>(
+    compId(selfOrCompId),
+    isString(screen) ? component<P>(screen, options) : (screen as Layout<P>)
+  );
 
 const pushExternalComponent = (
   self: { props: { componentId: string } },

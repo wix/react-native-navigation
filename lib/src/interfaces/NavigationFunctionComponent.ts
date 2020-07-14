@@ -4,5 +4,5 @@ import { Options } from './Options';
 
 export interface NavigationFunctionComponent<Props = {}>
   extends React.FunctionComponent<Props & NavigationComponentProps> {
-    options?: ((props: Props) => Options) | Options;
+  options?: ((props: Props) => Options) | Options;
 }

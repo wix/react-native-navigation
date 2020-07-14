@@ -1,5 +1,9 @@
 import React from 'react';
-import { NavigationComponentProps, NavigationButtonPressedEvent } from 'react-native-navigation';
+import {
+  NavigationComponent,
+  NavigationButtonPressedEvent,
+  NavigationComponentProps,
+} from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -7,7 +11,7 @@ import testIDs from '../testIDs';
 
 const { OPEN_LEFT_SIDE_MENU_BTN, OPEN_RIGHT_SIDE_MENU_BTN, CENTER_SCREEN_HEADER } = testIDs;
 
-export default class SideMenuCenterScreen extends React.Component<NavigationComponentProps> {
+export default class SideMenuCenterScreen extends NavigationComponent {
   static options() {
     return {
       topBar: {
