@@ -44,6 +44,7 @@ open class ButtonPresenter(private val button: ButtonOptions, private val iconRe
         applyOptionsDirectlyOnView(titleBar, menuItem) {
             applyTestId(it)
             applyTextColor(it)
+            applyAllCaps(it)
         }
     }
 
@@ -97,9 +98,7 @@ open class ButtonPresenter(private val button: ButtonOptions, private val iconRe
     }
 
     private fun applyAllCaps(view: View) {
-        if (view is TextView && button.allCaps.hasValue()) {
-            view.isAllCaps = button.allCaps.get()
-        }
+        if (view is TextView) view.isAllCaps = button.allCaps.get(true)
     }
 
     private fun applyOptionsDirectlyOnView(titleBar: TitleBar, menuItem: MenuItem, onViewFound: (View) -> Unit) {

@@ -56,7 +56,6 @@ public class ButtonPresenterTest extends BaseTest {
     @Test
     public void applyOptions_buttonIsAddedToMenu() {
         addButtonAndApplyOptions();
-
         assertThat(findButtonView().getText().toString()).isEqualTo(BTN_TEXT);
     }
 
@@ -64,7 +63,6 @@ public class ButtonPresenterTest extends BaseTest {
     public void applyOptions_appliesColorOnButtonTextView() {
         button.color = new Colour(Color.RED);
         addButtonAndApplyOptions();
-
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.RED);
     }
 
@@ -72,13 +70,19 @@ public class ButtonPresenterTest extends BaseTest {
     public void apply_disabledColor() {
         button.enabled = new Bool(false);
         addButtonAndApplyOptions();
-
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(ButtonPresenter.DISABLED_COLOR);
     }
 
     private void addButtonAndApplyOptions() {
         MenuItem menuItem = buttonController.createAndAddButtonToTitleBar(titleBar, 0);
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
+    }
+
+    @Test
+    public void apply_allCaps() {
+        button.allCaps = new Bool(false);
+        addButtonAndApplyOptions();
+        assertThat(findButtonView().isAllCaps()).isEqualTo(false);
     }
 
     private TextView findButtonView() {
