@@ -6,6 +6,9 @@
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 #import "RNNCustomViewController.h"
 
+@interface AppDelegate() <RCTBridgeDelegate>
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -18,9 +21,7 @@
 	return YES;
 }
 
-- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
-	return [ReactNativeNavigation extraModulesForBridge:bridge];
-}
+# pragma mark - RCTBridgeDelegate
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
@@ -29,6 +30,10 @@
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
+	return [ReactNativeNavigation extraModulesForBridge:bridge];
 }
 
 @end
