@@ -17,15 +17,19 @@
 # pragma mark - public API
 
 + (void)bootstrapWithlaunchOptions:(NSDictionary *)launchOptions {
-	[[ReactNativeNavigation sharedInstance] bootstrapbootstrapWithLaunchOptions:launchOptions andBridgeDelegate:nil];
+	[[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:nil launchOptions:launchOptions];
 }
 
-+ (void)bootstrapbootstrapWithLaunchOptions:(NSDictionary *)launchOptions andBridgeDelegate:(id<RCTBridgeDelegate>)bridgeDelegate {
-    [[ReactNativeNavigation sharedInstance] bootstrapbootstrapWithLaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate];
++ (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
+    [[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:bridgeDelegate launchOptions:launchOptions];
 }
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
 	[[ReactNativeNavigation sharedInstance].bridgeManager registerExternalComponent:name callback:callback];
+}
+
++ (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
+    return [[ReactNativeNavigation sharedInstance].bridgeManager extraModulesForBridge:bridge];
 }
 
 + (RCTBridge *)getBridge {
@@ -51,14 +55,11 @@
 	return instance;
 }
 
-- (void)bootstrapWithLaunchOptions:(NSDictionary *)launchOptions {
-	[self bootstrapbootstrapWithLaunchOptions:launchOptions andBridgeDelegate:nil];
-}
-
-- (void)bootstrapbootstrapWithLaunchOptions:(NSDictionary *)launchOptions andBridgeDelegate:(id<RCTBridgeDelegate>)bridgeDelegate {
+- (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
 	UIWindow* mainWindow = [self initializeKeyWindow];
 	
 	self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
+    [self.bridgeManager initializeBridge];
 	[RNNSplashScreen showOnWindow:mainWindow];
 }
 

@@ -9,7 +9,9 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBri
 
 + (void)bootstrapWithlaunchOptions:(NSDictionary *)launchOptions;
 
-+ (void)bootstrapbootstrapWithLaunchOptions:(NSDictionary *)launchOptions andBridgeDelegate:(id<RCTBridgeDelegate>)bridgeDelegate;
++ (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions;
+
++ (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge;
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
 

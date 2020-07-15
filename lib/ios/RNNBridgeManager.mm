@@ -48,12 +48,6 @@
 		_overlayManager = [RNNOverlayManager new];
 		
 		_store = [RNNExternalComponentStore new];
-		_bridge = [[RCTBridge alloc] initWithDelegate:delegate launchOptions:_launchOptions];
-		
-#ifdef RN_FABRIC_ENABLED
-		_surfacePresenter = [[RCTSurfacePresenter alloc] initWithBridge:_bridge config:nil];
-		_bridge.surfacePresenter = _surfacePresenter;
-#endif
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(onJavaScriptLoaded)
@@ -71,16 +65,17 @@
 	return self;
 }
 
-- (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
-	[_store registerExternalComponent:name callback:callback];
+- (void)initializeBridge {
+    _bridge = [[RCTBridge alloc] initWithDelegate:_delegate launchOptions:_launchOptions];
+            
+    #ifdef RN_FABRIC_ENABLED
+            _surfacePresenter = [[RCTSurfacePresenter alloc] initWithBridge:_bridge config:nil];
+            _bridge.surfacePresenter = _surfacePresenter;
+    #endif
 }
 
-- (NSArray *)extraModulesFromDelegate {
-	if ([_delegate respondsToSelector:@selector(extraModulesForBridge:)]) {
-		return [_delegate extraModulesForBridge:_bridge];
-	}
-	
-	return nil;
+- (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
+	[_store registerExternalComponent:name callback:callback];
 }
 
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
@@ -94,7 +89,7 @@
 	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter modalManager:_modalManager overlayManager:_overlayManager mainWindow:_mainWindow];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 
-	return [@[bridgeModule,eventEmitter] arrayByAddingObjectsFromArray:[self extraModulesFromDelegate]];
+	return @[bridgeModule,eventEmitter];
 }
 
 # pragma mark - JavaScript & Bridge Notifications

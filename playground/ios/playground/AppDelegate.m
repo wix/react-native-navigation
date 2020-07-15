@@ -18,6 +18,10 @@
 	return YES;
 }
 
+- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
+	return [ReactNativeNavigation extraModulesForBridge:bridge];
+}
+
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
