@@ -36,6 +36,7 @@ public class BottomTabs extends AHBottomNavigation {
     public void enableItemsCreation() {
         itemsCreationEnabled = true;
         if (shouldCreateItems) {
+            shouldCreateItems = false;
             createItems();
             forEach(onItemCreationEnabled, Runnable::run);
             onItemCreationEnabled.clear();
