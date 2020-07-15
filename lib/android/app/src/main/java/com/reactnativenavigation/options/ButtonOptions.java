@@ -37,6 +37,7 @@ public class ButtonOptions {
     public String id = "btn" + CompatUtils.generateViewId();
     public Text accessibilityLabel = new NullText();
     public Text text = new NullText();
+    public Bool allCaps = new NullBool();
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
     public Number showAsAction = new NullNumber();
@@ -53,6 +54,7 @@ public class ButtonOptions {
         return Objects.equals(id, other.id) &&
                accessibilityLabel.equals(other.accessibilityLabel) &&
                text.equals(other.text) &&
+               allCaps.equals(other.allCaps) &&
                enabled.equals(other.enabled) &&
                disableIconTint.equals(other.disableIconTint) &&
                showAsAction.equals(other.showAsAction) &&
@@ -71,6 +73,7 @@ public class ButtonOptions {
         button.id = take(json.optString("id"), "btn" + CompatUtils.generateViewId());
         button.accessibilityLabel = TextParser.parse(json, "accessibilityLabel");
         button.text = TextParser.parse(json, "text");
+        button.allCaps = BoolParser.parse(json, "allCaps");
         button.enabled = BoolParser.parse(json, "enabled");
         button.disableIconTint = BoolParser.parse(json, "disableIconTint");
         button.showAsAction = parseShowAsAction(json);
@@ -153,6 +156,7 @@ public class ButtonOptions {
 
     public void mergeWith(ButtonOptions other) {
         if (other.text.hasValue()) text = other.text;
+        if (other.allCaps.hasValue()) allCaps = other.allCaps;
         if (other.accessibilityLabel.hasValue()) accessibilityLabel = other.accessibilityLabel;
         if (other.enabled.hasValue()) enabled = other.enabled;
         if (other.disableIconTint.hasValue()) disableIconTint = other.disableIconTint;
@@ -171,6 +175,7 @@ public class ButtonOptions {
 
     public void mergeWithDefault(ButtonOptions defaultOptions) {
         if (!text.hasValue()) text = defaultOptions.text;
+        if (!allCaps.hasValue()) allCaps = defaultOptions.allCaps;
         if (!accessibilityLabel.hasValue()) accessibilityLabel = defaultOptions.accessibilityLabel;
         if (!enabled.hasValue()) enabled = defaultOptions.enabled;
         if (!disableIconTint.hasValue()) disableIconTint = defaultOptions.disableIconTint;

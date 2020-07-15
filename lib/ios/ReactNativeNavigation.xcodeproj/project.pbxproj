@@ -31,7 +31,7 @@
 		26916C981E4B9E7700D13680 /* RNNReactRootViewCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */; };
 		26916C991E4B9E7700D13680 /* RNNReactRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */; };
 		2DCD9195200014A900EDC75D /* RNNBridgeManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DCD9193200014A900EDC75D /* RNNBridgeManager.h */; };
-		2DCD9196200014A900EDC75D /* RNNBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD9194200014A900EDC75D /* RNNBridgeManager.m */; };
+		2DCD9196200014A900EDC75D /* RNNBridgeManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD9194200014A900EDC75D /* RNNBridgeManager.mm */; };
 		3098702E6833E5CC16D91CE3 /* NoColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 309874C5B132A51A03DAA3BF /* NoColor.h */; };
 		3098730BC3B4DE41104D9CC4 /* RNNDotIndicatorPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 309878B02F15ECDD1A286722 /* RNNDotIndicatorPresenter.h */; };
 		309874B40D202C9718F15CBD /* UIView+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 309877F25920CFE113FADEE0 /* UIView+Utils.h */; };
@@ -512,7 +512,7 @@
 		26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNReactRootViewCreator.h; sourceTree = "<group>"; };
 		26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNReactRootViewCreator.m; sourceTree = "<group>"; };
 		2DCD9193200014A900EDC75D /* RNNBridgeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBridgeManager.h; sourceTree = "<group>"; };
-		2DCD9194200014A900EDC75D /* RNNBridgeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBridgeManager.m; sourceTree = "<group>"; };
+		2DCD9194200014A900EDC75D /* RNNBridgeManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNBridgeManager.mm; sourceTree = "<group>"; };
 		30987122507D8CBF16624F93 /* DotIndicatorOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotIndicatorOptions.h; sourceTree = "<group>"; };
 		309871A6C468B5DC1D0CA495 /* RNNTestNoColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTestNoColor.m; sourceTree = "<group>"; };
 		309871FBA64AD937CEF3E191 /* DotIndicatorParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotIndicatorParser.h; sourceTree = "<group>"; };
@@ -1581,7 +1581,7 @@
 				5030B62623D5B54D008F1642 /* LNInterpolable.h */,
 				5030B61E23D5B4CA008F1642 /* LNInterpolable.m */,
 				2DCD9193200014A900EDC75D /* RNNBridgeManager.h */,
-				2DCD9194200014A900EDC75D /* RNNBridgeManager.m */,
+				2DCD9194200014A900EDC75D /* RNNBridgeManager.mm */,
 				5047E4F22267568500908DD3 /* RNNExternalComponentStore.h */,
 				5047E4F32267568700908DD3 /* RNNExternalComponentStore.m */,
 				7B4928061E70415400555040 /* RNNCommandsHandler.h */,
@@ -2123,8 +2123,8 @@
 				507E7D58201DDD3000444E6C /* RNNSharedElementAnimationOptions.m in Sources */,
 				2145452A1F4DC85F006E8DA1 /* RCTHelpers.m in Sources */,
 				503A8A1223BC9C040094D1C4 /* ElementBaseTransition.m in Sources */,
-				2DCD9196200014A900EDC75D /* RNNBridgeManager.m in Sources */,
 				50D4656E23CE2553005A84B2 /* Transition.m in Sources */,
+				2DCD9196200014A900EDC75D /* RNNBridgeManager.mm in Sources */,
 				263905D71E4C94970023D7D3 /* RNNSideMenuController.m in Sources */,
 				50EB4ED82068EBE000D6ED34 /* RNNBackgroundOptions.m in Sources */,
 				5022EDCA24054C8A00852BA6 /* BottomTabsPresenterCreator.m in Sources */,

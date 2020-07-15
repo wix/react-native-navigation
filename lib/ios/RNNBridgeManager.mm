@@ -3,6 +3,10 @@
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 
+#ifdef RN_FABRIC_ENABLED
+#import <React/RCTSurfacePresenter.h>
+#endif
+
 #import "RNNEventEmitter.h"
 #import "RNNSplashScreen.h"
 #import "RNNBridgeModule.h"
@@ -10,7 +14,11 @@
 #import "RNNReactRootViewCreator.h"
 #import "RNNReactComponentRegistry.h"
 
-@interface RNNBridgeManager()
+@interface RNNBridgeManager() {
+#ifdef RN_FABRIC_ENABLED
+  RCTSurfacePresenter *_surfacePresenter;
+#endif
+}
 
 @property (nonatomic, strong, readwrite) RCTBridge *bridge;
 @property (nonatomic, strong, readwrite) RNNExternalComponentStore *store;
@@ -41,6 +49,11 @@
 		
 		_store = [RNNExternalComponentStore new];
 		_bridge = [[RCTBridge alloc] initWithDelegate:delegate launchOptions:_launchOptions];
+		
+#ifdef RN_FABRIC_ENABLED
+		_surfacePresenter = [[RCTSurfacePresenter alloc] initWithBridge:_bridge config:nil];
+		_bridge.surfacePresenter = _surfacePresenter;
+#endif
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(onJavaScriptLoaded)

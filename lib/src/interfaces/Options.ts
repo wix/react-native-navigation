@@ -327,6 +327,10 @@ export interface OptionsTopBarBackground {
 
 export interface OptionsTopBarButton {
   /**
+   * (Android only) Sets a textual button to be ALL CAPS. default value is true
+   */
+  allCaps?: boolean;
+  /**
    * Button id for reference press event
    */
   id: string;
