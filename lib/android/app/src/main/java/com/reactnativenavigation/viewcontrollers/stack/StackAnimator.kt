@@ -13,8 +13,10 @@ import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 
+@ExperimentalCoroutinesApi
 open class StackAnimator @JvmOverloads constructor(
         context: Context,
         private val transitionAnimatorCreator: TransitionAnimatorCreator = TransitionAnimatorCreator()
