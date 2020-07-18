@@ -4,11 +4,9 @@ import android.view.View
 import androidx.core.view.doOnLayout
 import com.facebook.react.uimanager.util.ReactFindViewUtil
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-@ExperimentalCoroutinesApi
 class OptimisticViewFinder : ViewFinder {
     override suspend fun find(root: ViewController<*>, nativeId: String) = suspendCancellableCoroutine<View>() { cont ->
         val onViewFoundListener = object : ReactFindViewUtil.OnViewFoundListener {

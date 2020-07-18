@@ -6,20 +6,17 @@ import com.reactnativenavigation.options.SharedElements
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.finder.ExistingViewFinder
 import com.reactnativenavigation.views.element.finder.OptimisticViewFinder
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-@ExperimentalCoroutinesApi
 class TransitionSetCreator {
-    @ExperimentalCoroutinesApi
     suspend fun create(
             animation: NestedAnimationsOptions,
             fromScreen: ViewController<*>,
             toScreen: ViewController<*>
-    ) = suspendCancellableCoroutine<TransitionSet> { cont ->
+    ) = suspendCoroutine<TransitionSet> { cont ->
         GlobalScope.launch {
             val sharedElements = animation.sharedElements
             val elementTransitions = animation.elementTransitions

@@ -3,7 +3,6 @@ package com.reactnativenavigation.views.element
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -17,12 +16,10 @@ import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-@ExperimentalCoroutinesApi
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
     open class CreatorResultCallback(private val callback: CreatorResultCallback? = null) {
         open fun onError() {
