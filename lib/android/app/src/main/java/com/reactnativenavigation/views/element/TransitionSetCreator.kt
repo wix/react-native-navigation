@@ -6,27 +6,21 @@ import com.reactnativenavigation.options.SharedElements
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.finder.ExistingViewFinder
 import com.reactnativenavigation.views.element.finder.OptimisticViewFinder
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class TransitionSetCreator {
     suspend fun create(
             animation: NestedAnimationsOptions,
             fromScreen: ViewController<*>,
             toScreen: ViewController<*>
-    ) = suspendCoroutine<TransitionSet> { cont ->
-        GlobalScope.launch {
-            val sharedElements = animation.sharedElements
-            val elementTransitions = animation.elementTransitions
-            if (!sharedElements.hasValue() && !elementTransitions.hasValue()) cont.resume(TransitionSet())
+    ): TransitionSet {
+        val sharedElements = animation.sharedElements
+        val elementTransitions = animation.elementTransitions
+        if (!sharedElements.hasValue() && !elementTransitions.hasValue()) return TransitionSet()
 
-            val result = TransitionSet()
-            result.addAll(createSharedElementTransitions(fromScreen, toScreen, sharedElements))
-            result.addAll(createElementTransitions(fromScreen, toScreen, elementTransitions))
-            cont.resume(result)
-        }
+        val result = TransitionSet()
+        result.addAll(createSharedElementTransitions(fromScreen, toScreen, sharedElements))
+        result.addAll(createElementTransitions(fromScreen, toScreen, elementTransitions))
+        return result
     }
 
     private suspend fun createSharedElementTransitions(

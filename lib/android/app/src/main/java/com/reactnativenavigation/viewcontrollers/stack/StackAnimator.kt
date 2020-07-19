@@ -60,7 +60,7 @@ open class StackAnimator @JvmOverloads constructor(
     }
 
     private fun animatePop(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, onAnimationEnd: Runnable) {
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(Dispatchers.Main.immediate) {
             val set = createPopAnimator(onAnimationEnd)
             if (pop.sharedElements.hasValue()) {
                 appearing.view.awaitPost()
@@ -122,7 +122,7 @@ open class StackAnimator @JvmOverloads constructor(
 
     private fun pushWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, set: AnimatorSet) {
         appearing.view.alpha = 0f
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(Dispatchers.Main.immediate) {
             val fade = if (options.animations.push.content.isFadeAnimation()) options.animations.push.content else FadeAnimation().content
             val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade, disappearing, appearing)
             set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)

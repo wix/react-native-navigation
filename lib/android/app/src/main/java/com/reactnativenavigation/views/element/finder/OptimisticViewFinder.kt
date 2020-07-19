@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.element.finder
 import android.view.View
 import androidx.core.view.doOnLayout
 import com.facebook.react.uimanager.util.ReactFindViewUtil
+import com.reactnativenavigation.utils.doOnLayoutCompat
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -15,7 +16,7 @@ class OptimisticViewFinder : ViewFinder {
         }
 
         ReactFindViewUtil.findView(root.view, nativeId)
-                ?.let { cont.resume(it) }
+                ?.let { view -> view.doOnLayoutCompat { cont.resume(view) } }
                 ?: run { ReactFindViewUtil.findView(root.view, onViewFoundListener) }
 
         cont.invokeOnCancellation { ReactFindViewUtil.removeViewListener(onViewFoundListener) }
