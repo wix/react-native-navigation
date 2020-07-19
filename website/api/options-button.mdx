@@ -9,13 +9,21 @@ const options = {
   topBar: {
     leftButtons: [
       {
-        id: "id",
-        text: "Button"
-      }
-    ]
-  }
+        id: 'id',
+        text: 'Button',
+      },
+    ],
+  },
 };
 ```
+
+### `allCaps`
+
+This option will set whether characters are all capitalized or not.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | Android  | true    |
 
 ### `id`
 
@@ -55,8 +63,8 @@ Button text. Ignored if an icon is specified, unless the button is displayed in 
 
 Set a react [component](layout-component.mdx) as this button's view which will be displayed instead of the regular view.
 
-| Type                   | Required | Platform |
-| ---------------------- | -------- | -------- |
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
 | [Component](layout-component.mdx) | No       | Both     |
 
 ### `iconInsets`
