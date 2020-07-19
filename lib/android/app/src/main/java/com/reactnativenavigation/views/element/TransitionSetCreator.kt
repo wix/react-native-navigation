@@ -33,7 +33,7 @@ class TransitionSetCreator {
         for (transitionOptions in sharedElements.get()) {
             val transition = SharedElementTransition(toScreen, transitionOptions)
             ExistingViewFinder().find(fromScreen, transition.fromId)?.let { transition.from = it }
-            transition.to = OptimisticViewFinder().find(toScreen, transition.toId)
+            OptimisticViewFinder().find(toScreen, transition.toId)?.let { transition.to = it }
             if (transition.isValid()) transitions.add(transition)
         }
 
@@ -57,9 +57,11 @@ class TransitionSetCreator {
 
             if (transition.isValid()) continue
 
-            transition.view = OptimisticViewFinder().find(toScreen, transition.id)
-            transition.viewController = toScreen
-            transitions.add(transition)
+            OptimisticViewFinder().find(toScreen, transition.id)?.let {
+                transition.view = it
+                transition.viewController = toScreen
+                transitions.add(transition)
+            }
         }
 
         return transitions
