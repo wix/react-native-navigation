@@ -12,7 +12,7 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Options } from '../interfaces/Options';
 import { Deprecations } from './Deprecations';
-import { OptionProcessorsStore } from 'react-native-navigation/processors/OptionProcessorsStore';
+import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 
 export class OptionsProcessor {
   constructor(

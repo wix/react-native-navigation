@@ -9,6 +9,7 @@ import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Store } from '../components/Store';
+import { LayoutProcessor } from '../processors/LayoutProcessor';
 
 enum CommandNames {
   SetRoot = 'setRoot',
@@ -36,18 +37,22 @@ export class Commands {
     private readonly layoutTreeCrawler: LayoutTreeCrawler,
     private readonly commandsObserver: CommandsObserver,
     private readonly uniqueIdProvider: UniqueIdProvider,
-    private readonly optionsProcessor: OptionsProcessor
+    private readonly optionsProcessor: OptionsProcessor,
+    private readonly layoutProcessor: LayoutProcessor
   ) {}
 
   public setRoot(simpleApi: LayoutRoot) {
     const input = cloneDeep(simpleApi);
-    const root = this.layoutTreeParser.parse(input.root);
+    const processedRoot = this.layoutProcessor.process(input.root, CommandNames.SetRoot);
+    const root = this.layoutTreeParser.parse(processedRoot);
 
-    const modals = map(input.modals, (modal) => {
+    const processedModals = this.layoutProcessor.process(input.modals, CommandNames.SetRoot);
+    const modals = map(processedModals, (modal: any) => {
       return this.layoutTreeParser.parse(modal);
     });
 
-    const overlays = map(input.overlays, (overlay) => {
+    const processedOverlays = this.layoutProcessor.process(input.overlays, CommandNames.SetRoot);
+    const overlays = map(processedOverlays, (overlay: any) => {
       return this.layoutTreeParser.parse(overlay);
     });
 
@@ -92,7 +97,8 @@ export class Commands {
 
   public showModal(layout: Layout) {
     const layoutCloned = cloneDeep(layout);
-    const layoutNode = this.layoutTreeParser.parse(layoutCloned);
+    const layoutProcessed = this.layoutProcessor.process(layoutCloned, CommandNames.ShowModal);
+    const layoutNode = this.layoutTreeParser.parse(layoutProcessed);
 
     const commandId = this.uniqueIdProvider.generate(CommandNames.ShowModal);
     this.commandsObserver.notify(CommandNames.ShowModal, { commandId, layout: layoutNode });
@@ -122,7 +128,8 @@ export class Commands {
 
   public push(componentId: string, simpleApi: Layout) {
     const input = cloneDeep(simpleApi);
-    const layout = this.layoutTreeParser.parse(input);
+    const layoutProcessed = this.layoutProcessor.process(input, CommandNames.Push);
+    const layout = this.layoutTreeParser.parse(layoutProcessed);
 
     const commandId = this.uniqueIdProvider.generate(CommandNames.Push);
     this.commandsObserver.notify(CommandNames.Push, { commandId, componentId, layout });
@@ -155,7 +162,8 @@ export class Commands {
 
   public setStackRoot(componentId: string, children: Layout[]) {
     const input = map(cloneDeep(children), (simpleApi) => {
-      const layout = this.layoutTreeParser.parse(simpleApi);
+      const layoutProcessed = this.layoutProcessor.process(simpleApi, CommandNames.SetStackRoot);
+      const layout = this.layoutTreeParser.parse(layoutProcessed);
       return layout;
     });
 
@@ -175,7 +183,8 @@ export class Commands {
 
   public showOverlay(simpleApi: Layout) {
     const input = cloneDeep(simpleApi);
-    const layout = this.layoutTreeParser.parse(input);
+    const layoutProcessed = this.layoutProcessor.process(input, CommandNames.ShowOverlay);
+    const layout = this.layoutTreeParser.parse(layoutProcessed);
 
     const commandId = this.uniqueIdProvider.generate(CommandNames.ShowOverlay);
     this.commandsObserver.notify(CommandNames.ShowOverlay, { commandId, layout });
