@@ -1,5 +1,5 @@
 import { LayoutProcessorsStore } from './LayoutProcessorsStore';
-import { ExternalLayoutProcessor } from 'react-native-navigation/interfaces/Processors';
+import { ExternalLayoutProcessor } from '../interfaces/Processors';
 import { Layout } from '../interfaces/Layout';
 
 export class LayoutProcessor {

@@ -1,5 +1,5 @@
-import { ProcessorSubscription } from 'react-native-navigation/interfaces/ProcessorSubscription';
-import { ExternalLayoutProcessor } from 'react-native-navigation/interfaces/Processors';
+import { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
+import { ExternalLayoutProcessor } from '../interfaces/Processors';
 
 export class LayoutProcessorsStore {
   private layoutProcessors: ExternalLayoutProcessor[] = [];

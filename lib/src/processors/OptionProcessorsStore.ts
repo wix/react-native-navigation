@@ -1,4 +1,4 @@
-import { ProcessorSubscription } from 'react-native-navigation/interfaces/ProcessorSubscription';
+import { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
 import { ExternalOptionsProcessor } from '../interfaces/Processors';
 
 export class OptionProcessorsStore {
