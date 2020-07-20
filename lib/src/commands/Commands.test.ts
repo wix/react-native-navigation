@@ -14,7 +14,7 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Options } from '../interfaces/Options';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
-import { CommandName } from 'react-native-navigation/interfaces/CommandName';
+import { CommandName } from '../interfaces/CommandName';
 
 describe('Commands', () => {
   let uut: Commands;
