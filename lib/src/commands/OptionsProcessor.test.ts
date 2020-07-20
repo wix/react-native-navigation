@@ -208,4 +208,12 @@ describe('navigation options', () => {
     verify(mockedStore.ensureClassForName('helloThere1')).called();
     verify(mockedStore.ensureClassForName('helloThere2')).called();
   });
+
+  it('show warning on iOS when toggling bottomTabs visibility through mergeOptions', () => {
+    jest.spyOn(console, 'warn');
+    uut.processOptions({ bottomTabs: { visible: false } }, 'mergeOptions');
+    expect(console.warn).toBeCalledWith('toggling bottomTabs visibility is deprecated on iOS.', {
+      bottomTabs: { visible: false },
+    });
+  });
 });
