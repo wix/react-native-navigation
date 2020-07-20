@@ -121,7 +121,7 @@ export class NavigationRoot {
   }
 
   /**
-   * Adds layout processor which allows layout interpolation.
+   * Method to be invoked when a layout is processed and is about to be created. This can be used to change layout options or even inject props to components.
    */
   public addLayoutProcessor(
     processor: (layout: Layout, commandName: string) => Layout
