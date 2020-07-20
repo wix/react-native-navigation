@@ -1,20 +1,20 @@
 import { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
-import { ExternalLayoutProcessor } from '../interfaces/Processors';
+import { LayoutProcessor } from '../interfaces/Processors';
 
 export class LayoutProcessorsStore {
-  private layoutProcessors: ExternalLayoutProcessor[] = [];
+  private layoutProcessors: LayoutProcessor[] = [];
 
-  public addProcessor(processor: ExternalLayoutProcessor): ProcessorSubscription {
+  public addProcessor(processor: LayoutProcessor): ProcessorSubscription {
     this.layoutProcessors.push(processor);
 
     return { remove: () => this.removeProcessor(processor) };
   }
 
-  public getProcessors(): ExternalLayoutProcessor[] {
+  public getProcessors(): LayoutProcessor[] {
     return this.layoutProcessors;
   }
 
-  private removeProcessor(processor: ExternalLayoutProcessor) {
+  private removeProcessor(processor: LayoutProcessor) {
     this.layoutProcessors.splice(this.layoutProcessors.indexOf(processor));
   }
 }

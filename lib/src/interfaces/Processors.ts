@@ -1,9 +1,9 @@
 import { Layout } from './Layout';
 
-export interface ExternalLayoutProcessor {
+export interface LayoutProcessor {
   (layout: Layout<{}>, commandName: string): Layout<{}>;
 }
 
-export interface ExternalOptionsProcessor<T> {
+export interface OptionsProcessor<T> {
   (value: T, commandName: string): T;
 }

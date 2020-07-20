@@ -1,12 +1,12 @@
 import { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
-import { ExternalOptionsProcessor } from '../interfaces/Processors';
+import { OptionsProcessor } from '../interfaces/Processors';
 
 export class OptionProcessorsStore {
-  private optionsProcessorsByObjectPath: Record<string, ExternalOptionsProcessor<any>[]> = {};
+  private optionsProcessorsByObjectPath: Record<string, OptionsProcessor<any>[]> = {};
 
   public addProcessor<T>(
     optionPath: string,
-    processor: ExternalOptionsProcessor<T>
+    processor: OptionsProcessor<T>
   ): ProcessorSubscription {
     if (!this.optionsProcessorsByObjectPath[optionPath])
       this.optionsProcessorsByObjectPath[optionPath] = [];
@@ -20,7 +20,7 @@ export class OptionProcessorsStore {
     return this.optionsProcessorsByObjectPath[optionPath];
   }
 
-  private removeProcessor(optionPath: string, processor: ExternalOptionsProcessor<any>) {
+  private removeProcessor(optionPath: string, processor: OptionsProcessor<any>) {
     this.optionsProcessorsByObjectPath[optionPath].splice(
       this.optionsProcessorsByObjectPath[optionPath].indexOf(processor)
     );

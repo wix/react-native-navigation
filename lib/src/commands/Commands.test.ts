@@ -14,6 +14,7 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Options } from '../interfaces/Options';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
+import { CommandName } from 'react-native-navigation/interfaces/CommandName';
 
 describe('Commands', () => {
   let uut: Commands;
@@ -21,7 +22,7 @@ describe('Commands', () => {
   let mockedStore: Store;
   let commandsObserver: CommandsObserver;
   let mockedUniqueIdProvider: UniqueIdProvider;
-  let layoutProcessorsStore: LayoutProcessorsStore;
+  let layoutProcessor: LayoutProcessor;
 
   beforeEach(() => {
     mockedNativeCommandsSender = mock(NativeCommandsSender);
@@ -30,10 +31,13 @@ describe('Commands', () => {
     const uniqueIdProvider = instance(mockedUniqueIdProvider);
     mockedStore = mock(Store);
     commandsObserver = new CommandsObserver(uniqueIdProvider);
-    layoutProcessorsStore = new LayoutProcessorsStore();
+    const layoutProcessorsStore = new LayoutProcessorsStore();
 
     const mockedOptionsProcessor = mock(OptionsProcessor);
     const optionsProcessor = instance(mockedOptionsProcessor) as OptionsProcessor;
+
+    layoutProcessor = new LayoutProcessor(layoutProcessorsStore);
+    jest.spyOn(layoutProcessor, 'process');
 
     uut = new Commands(
       mockedStore,
@@ -43,7 +47,7 @@ describe('Commands', () => {
       commandsObserver,
       uniqueIdProvider,
       optionsProcessor,
-      new LayoutProcessor(layoutProcessorsStore)
+      layoutProcessor
     );
   });
 
@@ -126,35 +130,14 @@ describe('Commands', () => {
       ).called();
     });
 
-    it('manipulates layouts with added layout processor', () => {
-      layoutProcessorsStore.addProcessor((layout, commandName) => {
-        if (commandName === 'setRoot') {
-          layout!.component!.options = { topBar: { visible: false } };
-        }
-        return layout;
-      });
+    it('process layout with layoutProcessor', () => {
       uut.setRoot({
         root: { component: { name: 'com.example.MyScreen' } },
       });
-      verify(
-        mockedNativeCommandsSender.setRoot(
-          'setRoot+UNIQUE_ID',
-          deepEqual({
-            root: {
-              type: 'Component',
-              id: 'Component+UNIQUE_ID',
-              children: [],
-              data: {
-                name: 'com.example.MyScreen',
-                options: { topBar: { visible: false } },
-                passProps: undefined,
-              },
-            },
-            modals: [],
-            overlays: [],
-          })
-        )
-      ).called();
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.SetRoot
+      );
     });
   });
 
@@ -215,30 +198,12 @@ describe('Commands', () => {
       expect(result).toEqual('the resolved layout');
     });
 
-    it('manipulates layouts with added layout processor', () => {
-      layoutProcessorsStore.addProcessor((layout, commandName) => {
-        if (commandName === 'showModal') {
-          layout!.component!.options = { topBar: { visible: false } };
-        }
-        return layout;
-      });
-
+    it('process layout with layoutProcessor', () => {
       uut.showModal({ component: { name: 'com.example.MyScreen' } });
-      verify(
-        mockedNativeCommandsSender.showModal(
-          'showModal+UNIQUE_ID',
-          deepEqual({
-            type: 'Component',
-            id: 'Component+UNIQUE_ID',
-            data: {
-              name: 'com.example.MyScreen',
-              options: { topBar: { visible: false } },
-              passProps: undefined,
-            },
-            children: [],
-          })
-        )
-      ).called();
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.ShowModal
+      );
     });
   });
 
@@ -311,31 +276,12 @@ describe('Commands', () => {
       ).called();
     });
 
-    it('manipulates layouts with added layout processor', () => {
-      layoutProcessorsStore.addProcessor((layout, commandName) => {
-        if (commandName === 'push') {
-          layout!.component!.options = { topBar: { visible: false } };
-        }
-        return layout;
-      });
-
+    it('process layout with layoutProcessor', () => {
       uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
-      verify(
-        mockedNativeCommandsSender.push(
-          'push+UNIQUE_ID',
-          'theComponentId',
-          deepEqual({
-            type: 'Component',
-            id: 'Component+UNIQUE_ID',
-            data: {
-              name: 'com.example.MyScreen',
-              options: { topBar: { visible: false } },
-              passProps: undefined,
-            },
-            children: [],
-          })
-        )
-      ).called();
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.Push
+      );
     });
   });
 
@@ -418,33 +364,12 @@ describe('Commands', () => {
       ).called();
     });
 
-    it('manipulates layouts with added layout processor', () => {
-      layoutProcessorsStore.addProcessor((layout, commandName) => {
-        if (commandName === 'setStackRoot') {
-          layout!.component!.options = { topBar: { visible: false } };
-        }
-        return layout;
-      });
-
+    it('process layout with layoutProcessor', () => {
       uut.setStackRoot('theComponentId', [{ component: { name: 'com.example.MyScreen' } }]);
-      verify(
-        mockedNativeCommandsSender.setStackRoot(
-          'setStackRoot+UNIQUE_ID',
-          'theComponentId',
-          deepEqual([
-            {
-              type: 'Component',
-              id: 'Component+UNIQUE_ID',
-              data: {
-                name: 'com.example.MyScreen',
-                options: { topBar: { visible: false } },
-                passProps: undefined,
-              },
-              children: [],
-            },
-          ])
-        )
-      ).called();
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.SetStackRoot
+      );
     });
   });
 
@@ -476,30 +401,12 @@ describe('Commands', () => {
       expect(result).toEqual('Component1');
     });
 
-    it('manipulates layouts with added layout processor', () => {
-      layoutProcessorsStore.addProcessor((layout, commandName) => {
-        if (commandName === 'showOverlay') {
-          layout!.component!.options = { topBar: { visible: false } };
-        }
-        return layout;
-      });
-
+    it('process layout with layoutProcessor', () => {
       uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
-      verify(
-        mockedNativeCommandsSender.showOverlay(
-          'showOverlay+UNIQUE_ID',
-          deepEqual({
-            type: 'Component',
-            id: 'Component+UNIQUE_ID',
-            data: {
-              name: 'com.example.MyScreen',
-              options: { topBar: { visible: false } },
-              passProps: undefined,
-            },
-            children: [],
-          })
-        )
-      ).called();
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.ShowOverlay
+      );
     });
   });
 
