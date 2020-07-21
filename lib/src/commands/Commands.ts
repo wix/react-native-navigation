@@ -29,9 +29,10 @@ export class Commands {
     const processedRoot = this.layoutProcessor.process(input.root, CommandName.SetRoot);
     const root = this.layoutTreeParser.parse(processedRoot);
 
-    const processedModals =
-      input.modals && this.layoutProcessor.process(input.modals, CommandName.SetRoot);
-    const modals = map(processedModals, (modal: any) => {
+    const modals = map(input.modals, (modal) => {
+        const processedModal = this.layoutProcesor.process(modal, CommandName.SetRoot);
+        return this.layoutTreeParser.parse(processedModal);
+    });
       return this.layoutTreeParser.parse(modal);
     });
 
