@@ -30,16 +30,13 @@ export class Commands {
     const root = this.layoutTreeParser.parse(processedRoot);
 
     const modals = map(input.modals, (modal) => {
-        const processedModal = this.layoutProcesor.process(modal, CommandName.SetRoot);
-        return this.layoutTreeParser.parse(processedModal);
-    });
-      return this.layoutTreeParser.parse(modal);
+      const processedModal = this.layoutProcessor.process(modal, CommandName.SetRoot);
+      return this.layoutTreeParser.parse(processedModal);
     });
 
-    const processedOverlays =
-      input.overlays && this.layoutProcessor.process(input.overlays, CommandName.SetRoot);
-    const overlays = map(processedOverlays, (overlay: any) => {
-      return this.layoutTreeParser.parse(overlay);
+    const overlays = map(input.overlays, (overlay: any) => {
+      const processedOverlay = this.layoutProcessor.process(overlay, CommandName.SetRoot);
+      return this.layoutTreeParser.parse(processedOverlay);
     });
 
     const commandId = this.uniqueIdProvider.generate(CommandName.SetRoot);
