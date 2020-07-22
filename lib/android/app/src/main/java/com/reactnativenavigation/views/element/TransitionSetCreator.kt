@@ -6,64 +6,61 @@ import com.reactnativenavigation.options.SharedElements
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.finder.ExistingViewFinder
 import com.reactnativenavigation.views.element.finder.OptimisticViewFinder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 
 class TransitionSetCreator {
     suspend fun create(
             animation: NestedAnimationsOptions,
             fromScreen: ViewController<*>,
             toScreen: ViewController<*>
-    ): TransitionSet {
-        val sharedElements = animation.sharedElements
-        val elementTransitions = animation.elementTransitions
-        if (!sharedElements.hasValue() && !elementTransitions.hasValue()) return TransitionSet()
-
-        val result = TransitionSet()
-        result.addAll(createSharedElementTransitions(fromScreen, toScreen, sharedElements))
-        result.addAll(createElementTransitions(fromScreen, toScreen, elementTransitions))
-        return result
+    ) = TransitionSet().apply {
+        addAll(createSharedElementTransitions(fromScreen, toScreen, animation.sharedElements))
+        addAll(createElementTransitions(fromScreen, toScreen, animation.elementTransitions))
     }
 
     private suspend fun createSharedElementTransitions(
             fromScreen: ViewController<*>,
             toScreen: ViewController<*>,
             sharedElements: SharedElements
-    ): List<Transition> {
-        val transitions = mutableListOf<SharedElementTransition>()
-
-        for (transitionOptions in sharedElements.get()) {
-            val transition = SharedElementTransition(toScreen, transitionOptions)
-            ExistingViewFinder().find(fromScreen, transition.fromId)?.let { transition.from = it }
-            OptimisticViewFinder().find(toScreen, transition.toId)?.let { transition.to = it }
-            if (transition.isValid()) transitions.add(transition)
-        }
-
-        return transitions
+    ): List<Transition> = withContext(Dispatchers.Main.immediate) {
+        sharedElements.get()
+                .map {
+                    async {
+                        SharedElementTransition(toScreen, it).apply {
+                            ExistingViewFinder().find(fromScreen, fromId)?.let { from = it }
+                            OptimisticViewFinder().find(toScreen, toId)?.let { to = it }
+                        }
+                    }
+                }
+                .awaitAll()
+                .filter { it.isValid() }
     }
 
     private suspend fun createElementTransitions(
             fromScreen: ViewController<*>,
             toScreen: ViewController<*>,
             elementTransitions: ElementTransitions
-    ): List<ElementTransition> {
-        val transitions = mutableListOf<ElementTransition>()
-
-        for (transitionOptions in elementTransitions.transitions) {
-            val transition = ElementTransition(transitionOptions)
-            ExistingViewFinder().find(fromScreen, transition.id)?.let {
-                transition.view = it
-                transition.viewController = fromScreen
-                transitions.add(transition)
-            }
-
-            if (transition.isValid()) continue
-
-            OptimisticViewFinder().find(toScreen, transition.id)?.let {
-                transition.view = it
-                transition.viewController = toScreen
-                transitions.add(transition)
-            }
-        }
-
-        return transitions
+    ): List<ElementTransition> = withContext(Dispatchers.Main.immediate) {
+        elementTransitions.transitions
+                .map {
+                    async {
+                        val transition = ElementTransition(it)
+                        ExistingViewFinder().find(fromScreen, transition.id)?.let {
+                            transition.view = it
+                            transition.viewController = fromScreen
+                        } ?: run {
+                            OptimisticViewFinder().find(toScreen, transition.id)?.let {
+                                transition.view = it
+                                transition.viewController = toScreen
+                            }
+                        }
+                        transition
+                    }
+                }
+                .awaitAll()
+                .filter { it.isValid() }
     }
 }
