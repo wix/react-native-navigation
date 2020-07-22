@@ -16,6 +16,8 @@
 	[self.splitViewController rnn_setPrimaryEdge:options.splitView.primaryEdge];
 	[self.splitViewController rnn_setMinWidth:options.splitView.minWidth];
 	[self.splitViewController rnn_setMaxWidth:options.splitView.maxWidth];
+	[self.splitViewController rnn_setPrimaryBackgroundStyle:options.splitView.primaryBackgroundStyle];
+
 }
 
 
@@ -26,6 +28,8 @@
 	[self.splitViewController rnn_setPrimaryEdge:initialOptions.splitView.primaryEdge];
 	[self.splitViewController rnn_setMinWidth:initialOptions.splitView.minWidth];
 	[self.splitViewController rnn_setMaxWidth:initialOptions.splitView.maxWidth];
+	[self.splitViewController rnn_setPrimaryBackgroundStyle:initialOptions.splitView.primaryBackgroundStyle];
+
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)currentOptions {
@@ -43,6 +47,10 @@
 	if (options.splitView.maxWidth) {
 		[self.splitViewController rnn_setMaxWidth:options.splitView.maxWidth];
 	}
+	if (options.splitView.primaryBackgroundStyle) {
+		[self.splitViewController rnn_setPrimaryBackgroundStyle:options.splitView.primaryBackgroundStyle];
+	}
+
 }
 
 - (UISplitViewController *)splitViewController {

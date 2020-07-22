@@ -11,4 +11,6 @@
 
 - (void)rnn_setMaxWidth:(Number *)maxWidth;
 
+- (void)rnn_setPrimaryBackgroundStyle:(NSString *)style;
+
 @end
