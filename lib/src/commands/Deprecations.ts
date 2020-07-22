@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 export class Deprecations {
   public onProcessOptions(key: string, parentOptions: Record<string, any>, commandName: string) {
     if (
-      isEqual(key, 'bottomTabs') &&
+      key === 'bottomTabs' &&
       parentOptions[key].visible !== undefined &&
       Platform.OS === 'ios' &&
       commandName === 'mergeOptions'
