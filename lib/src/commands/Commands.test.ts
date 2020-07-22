@@ -12,6 +12,9 @@ import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Options } from '../interfaces/Options';
+import { LayoutProcessor } from '../processors/LayoutProcessor';
+import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
+import { CommandName } from '../interfaces/CommandName';
 
 describe('Commands', () => {
   let uut: Commands;
@@ -19,6 +22,7 @@ describe('Commands', () => {
   let mockedStore: Store;
   let commandsObserver: CommandsObserver;
   let mockedUniqueIdProvider: UniqueIdProvider;
+  let layoutProcessor: LayoutProcessor;
 
   beforeEach(() => {
     mockedNativeCommandsSender = mock(NativeCommandsSender);
@@ -27,9 +31,13 @@ describe('Commands', () => {
     const uniqueIdProvider = instance(mockedUniqueIdProvider);
     mockedStore = mock(Store);
     commandsObserver = new CommandsObserver(uniqueIdProvider);
+    const layoutProcessorsStore = new LayoutProcessorsStore();
 
     const mockedOptionsProcessor = mock(OptionsProcessor);
     const optionsProcessor = instance(mockedOptionsProcessor) as OptionsProcessor;
+
+    layoutProcessor = new LayoutProcessor(layoutProcessorsStore);
+    jest.spyOn(layoutProcessor, 'process');
 
     uut = new Commands(
       mockedStore,
@@ -38,7 +46,8 @@ describe('Commands', () => {
       new LayoutTreeCrawler(instance(mockedStore), optionsProcessor),
       commandsObserver,
       uniqueIdProvider,
-      optionsProcessor
+      optionsProcessor,
+      layoutProcessor
     );
   });
 
@@ -120,6 +129,16 @@ describe('Commands', () => {
         )
       ).called();
     });
+
+    it('process layout with layoutProcessor', () => {
+      uut.setRoot({
+        root: { component: { name: 'com.example.MyScreen' } },
+      });
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.SetRoot
+      );
+    });
   });
 
   describe('mergeOptions', () => {
@@ -177,6 +196,14 @@ describe('Commands', () => {
       );
       const result = await uut.showModal({ component: { name: 'com.example.MyScreen' } });
       expect(result).toEqual('the resolved layout');
+    });
+
+    it('process layout with layoutProcessor', () => {
+      uut.showModal({ component: { name: 'com.example.MyScreen' } });
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.ShowModal
+      );
     });
   });
 
@@ -247,6 +274,14 @@ describe('Commands', () => {
           })
         )
       ).called();
+    });
+
+    it('process layout with layoutProcessor', () => {
+      uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.Push
+      );
     });
   });
 
@@ -328,6 +363,14 @@ describe('Commands', () => {
         )
       ).called();
     });
+
+    it('process layout with layoutProcessor', () => {
+      uut.setStackRoot('theComponentId', [{ component: { name: 'com.example.MyScreen' } }]);
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.SetStackRoot
+      );
+    });
   });
 
   describe('showOverlay', () => {
@@ -356,6 +399,14 @@ describe('Commands', () => {
       );
       const result = await uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
       expect(result).toEqual('Component1');
+    });
+
+    it('process layout with layoutProcessor', () => {
+      uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen' } },
+        CommandName.ShowOverlay
+      );
     });
   });
 
@@ -399,7 +450,8 @@ describe('Commands', () => {
         instance(mockedLayoutTreeCrawler),
         commandsObserver,
         instance(anotherMockedUniqueIdProvider),
-        instance(mockedOptionsProcessor)
+        instance(mockedOptionsProcessor),
+        new LayoutProcessor(new LayoutProcessorsStore())
       );
     });
 

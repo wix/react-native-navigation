@@ -1,14 +1,12 @@
-import { ProcessorSubscription } from 'react-native-navigation/interfaces/ProcessorSubscription';
+import { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
+import { OptionsProcessor } from '../interfaces/Processors';
 
 export class OptionProcessorsStore {
-  private optionsProcessorsByObjectPath: Record<
-    string,
-    ((value: any, commandName: string) => any)[]
-  > = {};
+  private optionsProcessorsByObjectPath: Record<string, OptionsProcessor<any>[]> = {};
 
   public addProcessor<T>(
     optionPath: string,
-    processor: (value: T, commandName: string) => T
+    processor: OptionsProcessor<T>
   ): ProcessorSubscription {
     if (!this.optionsProcessorsByObjectPath[optionPath])
       this.optionsProcessorsByObjectPath[optionPath] = [];
@@ -22,7 +20,7 @@ export class OptionProcessorsStore {
     return this.optionsProcessorsByObjectPath[optionPath];
   }
 
-  private removeProcessor(optionPath: string, processor: (value: any, commandName: string) => any) {
+  private removeProcessor(optionPath: string, processor: OptionsProcessor<any>) {
     this.optionsProcessorsByObjectPath[optionPath].splice(
       this.optionsProcessorsByObjectPath[optionPath].indexOf(processor)
     );
