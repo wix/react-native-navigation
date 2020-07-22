@@ -1,4 +1,3 @@
-import isEqual from 'lodash/isEqual';
 import once from 'lodash/once';
 import { Platform } from 'react-native';
 
