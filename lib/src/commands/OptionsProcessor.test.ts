@@ -212,8 +212,11 @@ describe('navigation options', () => {
   it('show warning on iOS when toggling bottomTabs visibility through mergeOptions', () => {
     jest.spyOn(console, 'warn');
     uut.processOptions({ bottomTabs: { visible: false } }, 'mergeOptions');
-    expect(console.warn).toBeCalledWith('toggling bottomTabs visibility is deprecated on iOS.', {
-      bottomTabs: { visible: false },
-    });
+    expect(console.warn).toBeCalledWith(
+      'toggling bottomTabs visibility is deprecated on iOS. For more information see https://github.com/wix/react-native-navigation/issues/6416',
+      {
+        bottomTabs: { visible: false },
+      }
+    );
   });
 });

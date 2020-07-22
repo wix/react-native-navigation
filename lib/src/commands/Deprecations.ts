@@ -17,6 +17,9 @@ export class Deprecations {
   public onProcessDefaultOptions(_key: string, _parentOptions: Record<string, any>) {}
 
   private deprecateBottomTabsVisibility = once((parentOptions: object) => {
-    console.warn(`toggling bottomTabs visibility is deprecated on iOS.`, parentOptions);
+    console.warn(
+      `toggling bottomTabs visibility is deprecated on iOS. For more information see https://github.com/wix/react-native-navigation/issues/6416`,
+      parentOptions
+    );
   });
 }
