@@ -57,7 +57,7 @@
 }
 
 - (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
-    @throw [NSException exceptionWithName:@"Unimplemented method" reason:@"createTransitionFromVC:fromVC:toVC:containerView must be overridden by subclass" userInfo:nil];
+    @throw [NSException exceptionWithName:@"Unimplemented method" reason:@"createTransitionsFromVC:fromVC:toVC:containerView must be overridden by subclass" userInfo:nil];
     return @[];
 }
 
