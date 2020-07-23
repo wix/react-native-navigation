@@ -14,15 +14,21 @@ type RnnButtonProps = {
   testID?: string;
 };
 
-const RnnButton = ({ platform, testID, ...props }: RnnButtonProps) => {
-  // If the platform prop is provided, only render if provided platform matches the current platform.
-  if (platform && platform !== Platform.OS) {
-    return null;
+export default class RnnButton extends React.Component<RnnButtonProps> {
+  render() {
+    const { platform, testID, ...props } = this.props;
+    // If the platform prop is provided, only render if provided platform matches the current platform.
+    if (platform && platform !== Platform.OS) {
+      return null;
+    }
+
+    return (
+      <Button
+        {...props}
+        testID={testID}
+        backgroundColor={testID ? undefined : '#65C888'}
+        marginB-8
+      />
+    );
   }
-
-  return (
-    <Button {...props} testID={testID} backgroundColor={testID ? undefined : '#65C888'} marginB-8 />
-  );
-};
-
-export default RnnButton;
+}
