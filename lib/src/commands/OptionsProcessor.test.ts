@@ -73,6 +73,35 @@ describe('navigation options', () => {
     });
   });
 
+  it('process options object with multiple values using registered processor', () => {
+    const options: Options = {
+      topBar: {
+        visible: true,
+        background: {
+          translucent: true,
+        },
+      },
+    };
+
+    optionProcessorsRegistry.addProcessor('topBar.visible', (value: boolean) => {
+      return !value;
+    });
+
+    optionProcessorsRegistry.addProcessor('topBar.background.translucent', (value: boolean) => {
+      return !value;
+    });
+
+    uut.processOptions(options, setRootCommandName);
+    expect(options).toEqual({
+      topBar: {
+        visible: false,
+        background: {
+          translucent: false,
+        },
+      },
+    });
+  });
+
   it('passes commandName to registered processor', () => {
     const options: Options = {
       topBar: {

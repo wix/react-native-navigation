@@ -54,8 +54,13 @@ export class OptionsProcessor {
     path?: string
   ) {
     forEach(objectToProcess, (value, key) => {
-      path = this.resolveObjectPath(key, path);
-      this.processWithRegisteredProcessor(key, value, objectToProcess, path, commandName);
+      this.processWithRegisteredProcessor(
+        key,
+        value,
+        objectToProcess,
+        this.resolveObjectPath(key, path),
+        commandName
+      );
       this.processColor(key, value, objectToProcess);
 
       if (!value) {
@@ -69,6 +74,7 @@ export class OptionsProcessor {
       onProcess(key, parentOptions);
 
       if (!isEqual(key, 'passProps') && (isObject(value) || isArray(value))) {
+        path = this.resolveObjectPath(key, path);
         this.processObject(value, parentOptions, onProcess, commandName, path);
       }
     });
