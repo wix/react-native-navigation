@@ -9,6 +9,7 @@ a consistent style to all Navigation components such as the TopBar and BottomTab
 to system elements like the StatusBar and NavigationBar.
 
 ## Applying a theme
+
 Themes are applied using `Navigation.setDefaultOptions()` which must be called **before** `Navigation.setRoot()` is called.
 
 ```js
@@ -33,5 +34,54 @@ Navigation.setRoot({
 });
 ```
 
+## Conditional themes with Options Processors
+
+Some style requirements can't be facilitated with the `defaultOptions` api. For example, an app may have a unique theme for screens displayed in a modal or require that modals have a default dismiss button in the TopBar. Options Processors alow us to mutate the options object of each screen and layout right before they are displayed.
+
+Lets see how we can leverage this API to add a dismiss button to the TopBar when showing a modal.
+
+```ts
+Navigation.addOptionProcessor<OptionsTopBar>(
+  'topBar',
+  (topBar: OptionsTopBar, commandName: CommandName): OptionsTopBar => {
+    if (commandName === CommandName.ShowModal) {
+      if (!topBar.leftButtons) {
+        topBar.leftButtons = [
+          {
+            id: 'dismissModalButton',
+            icon: require('dismissIcon.png'),
+            color: 'black',
+          },
+        ];
+      }
+    }
+    return topBar;
+  }
+);
+
+// Now that each modal has a dismiss button, let's handle the button press event and dismiss the modal when needed.
+Navigation.events().registerNavigationButtonPressedListener(
+  (event: NavigationButtonPressedEvent) => {
+    if (event.buttonId === 'dismissModalButton') {
+      Navigation.dismissModal(event.componentId);
+    }
+  }
+);
+```
+
+Options Processors can also be used to set default options for buttons, here's how:
+
+```ts
+Navigation.addOptionProcessor<OptionsTopBarButton>(
+  'topBar.rightButtons',
+  (button: OptionsTopBarButton, commandName: CommandName): OptionsTopBarButton => {
+    button.fontFamily = 'helvetica';
+    button.color = 'red';
+    return button;
+  }
+);
+```
+
 ## Changing theme dynamically
+
 Apps can have multiple themes and sometimes you might need to change theme dynamically. To change current theme, simply call `Navigation.setDefaultOptions()` with updated theme options, following that with a call to `Navigation.setRoot()`. The reason we need to setRoot once more is because `Navigation.setDefaultOptions()` does not apply options to screens which had already been created.
