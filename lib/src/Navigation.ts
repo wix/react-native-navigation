@@ -123,6 +123,7 @@ export class NavigationRoot {
   /**
    * Utility helper function like registerComponent,
    * wraps the provided component with a react-redux Provider with the passed redux store
+   * @deprecated
    */
   public registerComponentWithRedux(
     componentName: string | number,
