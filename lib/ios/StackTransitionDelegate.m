@@ -34,7 +34,7 @@
 
 - (id<DisplayLinkAnimatorDelegate>)createContentTransitionFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
     UIView* contentView = _operation == UINavigationControllerOperationPush ? toVC.view : fromVC.view;
-    return [ContentTransitionCreator createTransition:_screenTransition.content view:contentView fromVC:fromVC toVC:toVC containerView:containerView];
+    return [ContentTransitionCreator createTransition:_screenTransition.content view:contentView fromVC:fromVC toVC:toVC containerView:containerView operation:_operation];
 }
 
 - (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
