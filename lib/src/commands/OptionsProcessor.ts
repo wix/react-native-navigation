@@ -29,7 +29,7 @@ export class OptionsProcessor {
       options,
       clone(options),
       (key, parentOptions) => {
-        this.deprecations.onProcessOptions(key, parentOptions);
+        this.deprecations.onProcessOptions(key, parentOptions, commandName);
       },
       commandName
     );
