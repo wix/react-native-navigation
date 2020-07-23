@@ -9,8 +9,8 @@ const options = {
   sideMenu: {
     left: {},
     right: {},
-    openGestureMode: "entireScreen"
-  }
+    openGestureMode: 'entireScreen',
+  },
 };
 ```
 
@@ -18,22 +18,22 @@ const options = {
 
 Configure the left side menu.
 
-| Type                                 | Required | Platform |
-| ------------------------------------ | -------- | -------- |
+| Type                                     | Required | Platform |
+| ---------------------------------------- | -------- | -------- |
 | [SideMenuSide](options-sideMenuSide.mdx) | No       | Both     |
 
 ### `right`
 
 Configure the right side menu.
 
-| Type                                 | Required | Platform |
-| ------------------------------------ | -------- | -------- |
+| Type                                     | Required | Platform |
+| ---------------------------------------- | -------- | -------- |
 | [SideMenuSide](options-sideMenuSide.mdx) | No       | Both     |
 
 ### `openGestureMode`
 
 Configure how a user is allowed to open a drawer using gestures.
 
-| Type                          | Required | Platform |
-| ----------------------------- | -------- | -------- |
-| enum('entireScreen', 'bezel') | No       | iOS      |
+| Type                          | Required | Platform | Default |
+| ----------------------------- | -------- | -------- | ------- |
+| enum('entireScreen', 'bezel') | No       | iOS      | 'bezel' |
