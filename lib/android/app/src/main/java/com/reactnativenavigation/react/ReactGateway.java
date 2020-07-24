@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.NavigationActivity;
 
 public class ReactGateway {
@@ -59,5 +60,9 @@ public class ReactGateway {
 
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         host.getReactInstanceManager().onActivityResult(activity, requestCode, resultCode, data);
+    }
+	
+    public ReactInstanceManager getReactInstanceManager() {
+        return host.getReactInstanceManager();
     }
 }
