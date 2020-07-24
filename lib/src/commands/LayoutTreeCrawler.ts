@@ -4,6 +4,7 @@ import { LayoutType } from './LayoutType';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Store } from '../components/Store';
 import { Options } from '../interfaces/Options';
+import { CommandName } from '../interfaces/CommandName';
 
 export interface Data {
   name?: string;
@@ -24,7 +25,7 @@ export class LayoutTreeCrawler {
     this.crawl = this.crawl.bind(this);
   }
 
-  crawl(node: LayoutNode, commandName: string): void {
+  crawl(node: LayoutNode, commandName: CommandName): void {
     if (node.type === LayoutType.Component) {
       this.handleComponent(node);
     }
