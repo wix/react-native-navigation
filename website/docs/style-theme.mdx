@@ -34,9 +34,9 @@ Navigation.setRoot({
 });
 ```
 
-## Conditional themes with Options Processors
+## Conditional themes with Options Processor
 
-Some style requirements can't be facilitated with the `defaultOptions` api. For example, an app may have a unique theme for screens displayed in a modal or require that modals have a default dismiss button in the TopBar. Options Processors alow us to mutate the options object of each screen and layout right before they are displayed.
+Some style requirements can't be facilitated with the `defaultOptions` api. For example, an app may have a unique theme for screens displayed in a modal or require that modals have a default dismiss button in the TopBar. An Options Processor allow us to mutate the options object of each screen and layout right before they are displayed.
 
 Lets see how we can leverage this API to add a dismiss button to the TopBar when showing a modal.
 
@@ -69,7 +69,7 @@ Navigation.events().registerNavigationButtonPressedListener(
 );
 ```
 
-Options Processors can also be used to set default options for buttons, here's how:
+The Options Processors can also be used to set default options for buttons, here's how:
 
 ```ts
 Navigation.addOptionProcessor<OptionsTopBarButton>(
@@ -82,9 +82,9 @@ Navigation.addOptionProcessor<OptionsTopBarButton>(
 );
 ```
 
-## Conditional themes with Layout Processors
+## Conditional themes with Layout Processor
 
-A Layout Processor is similar in concept to the Options Processor discussed above. While Options Processors are invoked for each options object, a Layout Processor is invoked once on the entire (layout)['../api/layout-layout/'] tree passed to the Navigation command.
+Layout Processor is similar in concept to the Options Processor discussed above. While Options Processor is invoked for each options object, Layout Processor is invoked once on the entire (layout)['../api/layout-layout/'] tree passed to the Navigation command.
 
 Through the Layout Processor we can access the layout and it's children, and mutate both options and passProps before the layout is displayed. In this example we iterate on the stack's children and set a dark TopBar color according to a `theme` property in the child's props.
 
