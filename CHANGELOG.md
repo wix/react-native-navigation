@@ -1,5 +1,39 @@
 # Changelog
 
+# 6.10.0
+
+## Added
+
+- New Options Processor API [#1d4d054](https://github.com/wix/react-native-navigation/commit/1d4d05460f323e31ccc87f614560f82876baa50c) by [yogevbd](https://github.com/yogevbd)
+
+- New Layout Processor API [#4f4a04e](https://github.com/wix/react-native-navigation/commit/4f4a04e25c2d64052810b75cda1e51aafc0f1a08) by [yogevbd](https://github.com/yogevbd)
+
+- Type component options in NavgationComponent and NavigationFunctionalComponent [#b23ab25](https://github.com/wix/react-native-navigation/commit/b23ab2598225466e1e49d7f7dd73c696060fed98)
+
+### Android
+
+- Support Shared Element Transition in pop [#80a52a2](https://github.com/wix/react-native-navigation/commit/80a52a23f6d3143de10421c036c2ed9deb152589) by [guyca](https://github.com/guyca)
+
+- Add allCaps option to TopBar buttons [#a561a80](https://github.com/wix/react-native-navigation/commit/a561a80e9dd36d5cf40b9952cab022583ed9bee5) by [guyca](https://github.com/guyca)
+
+### iOS
+
+- Deprecate toggling BottomTabs on iOS [#aaef66b](https://github.com/wix/react-native-navigation/commit/aaef66b56ced621c48252d6d11a59fb3f4a1d776) by [yogevbd](https://github.com/yogevbd)
+
+- Fabric support [#6ecdb51](https://github.com/wix/react-native-navigation/commit/6ecdb515bd1c06a923987eefcad99d02f66c3bbc) by [ericlewis](https://github.com/ericlewis)
+
+## Fixed
+
+### Android
+
+- Fix overlay touch detection [#5e03718](https://github.com/wix/react-native-navigation/commit/5e0371885db750844989981db53c0929e98d9baf) by [guyca](https://github.com/guyca)
+
+- Fix flickering BottomTabs when pushing a screen with waitForRender [#7add403](https://github.com/wix/react-native-navigation/commit/7add403d39a3d6eceef7c3c28443be425ecec9ef) by [guyca](https://github.com/guyca)
+
+### iOS
+
+- Support calling setDefaultOptions before appLaunch event is emitted [#87e7b1a](https://github.com/wix/react-native-navigation/commit/87e7b1afa280e6788385f3fcbd29350f9149a839) by [yogevbd](https://github.com/yogevbd)
+
 # 6.9.1
 
 ## Fixed

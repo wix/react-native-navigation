@@ -131,7 +131,7 @@ export class TouchablePreview extends React.PureComponent<Props> {
        * Ignoring this for now so that it builds.
        */
       // @ts-ignore
-      <Touchable ref={this.onRef} onPress={this.onPress} onPressIn={this.onPressIn} {...props}>
+      <Touchable {...props} ref={this.onRef} onPress={this.onPress} onPressIn={this.onPressIn}>
         <View
           onTouchStart={this.onTouchStart}
           onTouchMove={this.onTouchMove as (event: GestureResponderEvent) => void}

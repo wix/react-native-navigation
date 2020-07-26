@@ -5,6 +5,6 @@
 
 @interface StackTransitionDelegate : TransitionDelegate
 
-- (instancetype)initWithScreenTransition:(RNNScreenTransition *)screenTransition bridge:(RCTBridge *)bridge;
+- (instancetype)initWithScreenTransition:(RNNScreenTransition *)screenTransition bridge:(RCTBridge *)bridge operation:(UINavigationControllerOperation)operation;
 
 @end
