@@ -2,6 +2,6 @@
 
 @interface NSObject (Utils)
 
-- (NSArray *)objectProperties;
+- (NSArray *)classProperties;
 
 @end

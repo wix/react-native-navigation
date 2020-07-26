@@ -9,7 +9,7 @@
 }
 
 - (RNNOptions *)mergeOptions:(RNNOptions *)otherOptions overrideOptions:(BOOL)override {
-	for (id prop in self.objectProperties) {
+	for (id prop in self.classProperties) {
 		id value = [otherOptions valueForKey:prop];
 		if ([value isKindOfClass:[RNNOptions class]]) {
 			[[self valueForKey:prop] mergeOptions:value overrideOptions:override];

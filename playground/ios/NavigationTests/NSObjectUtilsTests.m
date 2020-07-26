@@ -21,16 +21,16 @@
 
 @implementation NSObjectUtilsTests
 
-- (void)testReturnObjectProperties {
+- (void)testReturnClassProperties {
 	TestClass* testObject = [TestClass new];
-	NSArray* properties = [testObject objectProperties];
+	NSArray* properties = [testObject classProperties];
 	NSArray* expectedProperties = @[@"testProperty"];
 	XCTAssertTrue([properties isEqualToArray:expectedProperties]);
 }
 
-- (void)testReturnSuperClassObjectProperties {
+- (void)testReturnSuperClassProperties {
 	TestSubClass* testObject = [TestSubClass new];
-	NSArray* properties = [testObject objectProperties];
+	NSArray* properties = [testObject classProperties];
 	NSArray* expectedProperties = @[@"testSubProperty", @"testProperty"];
 	XCTAssertTrue([properties isEqualToArray:expectedProperties]);
 }

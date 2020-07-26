@@ -4,7 +4,7 @@
 
 @implementation NSObject (Utils)
 
-- (NSArray *)objectProperties {
+- (NSArray *)classProperties {
     NSMutableArray* properties = [NSMutableArray new];
     unsigned int count;
     Class cls = [self class];
