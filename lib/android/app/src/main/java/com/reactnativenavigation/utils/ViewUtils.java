@@ -132,7 +132,8 @@ public class ViewUtils {
         throw new RuntimeException(view.getBackground().getClass().getSimpleName() + " is not ReactViewBackgroundDrawable");
     }
 
-    public static void removeFromParent(View view) {
+    public static void removeFromParent(@Nullable View view) {
+        if (view == null) return;
         ViewParent parent = view.getParent();
         if (parent != null) {
             ((ViewManager) parent).removeView(view);
