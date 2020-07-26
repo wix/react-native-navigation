@@ -13,6 +13,7 @@ import { AssetService } from '../adapters/AssetResolver';
 import { Options } from '../interfaces/Options';
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
+import { CommandName } from '../interfaces/CommandName';
 
 export class OptionsProcessor {
   constructor(
@@ -24,7 +25,7 @@ export class OptionsProcessor {
     private deprecations: Deprecations
   ) {}
 
-  public processOptions(options: Options, commandName: string) {
+  public processOptions(options: Options, commandName: CommandName) {
     this.processObject(
       options,
       clone(options),
@@ -35,7 +36,7 @@ export class OptionsProcessor {
     );
   }
 
-  public processDefaultOptions(options: Options, commandName: string) {
+  public processDefaultOptions(options: Options, commandName: CommandName) {
     this.processObject(
       options,
       clone(options),
@@ -50,12 +51,17 @@ export class OptionsProcessor {
     objectToProcess: object,
     parentOptions: object,
     onProcess: (key: string, parentOptions: object) => void,
-    commandName: string,
+    commandName: CommandName,
     path?: string
   ) {
     forEach(objectToProcess, (value, key) => {
-      path = this.resolveObjectPath(key, path);
-      this.processWithRegisteredProcessor(key, value, objectToProcess, path, commandName);
+      this.processWithRegisteredProcessor(
+        key,
+        value,
+        objectToProcess,
+        this.resolveObjectPath(key, path),
+        commandName
+      );
       this.processColor(key, value, objectToProcess);
 
       if (!value) {
@@ -69,6 +75,7 @@ export class OptionsProcessor {
       onProcess(key, parentOptions);
 
       if (!isEqual(key, 'passProps') && (isObject(value) || isArray(value))) {
+        path = this.resolveObjectPath(key, path);
         this.processObject(value, parentOptions, onProcess, commandName, path);
       }
     });
@@ -91,7 +98,7 @@ export class OptionsProcessor {
     value: string,
     options: Record<string, any>,
     path: string,
-    commandName: string
+    commandName: CommandName
   ) {
     const registeredProcessors = this.optionProcessorsRegistry.getProcessors(path);
     if (registeredProcessors) {

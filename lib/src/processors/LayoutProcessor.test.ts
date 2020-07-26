@@ -1,10 +1,10 @@
 import { LayoutProcessor } from './LayoutProcessor';
 import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
+import { CommandName } from '../interfaces/CommandName';
 
 describe('Layout processor', () => {
   let uut: LayoutProcessor;
   let layoutProcessorsStore: LayoutProcessorsStore;
-  const setRootCommandName = 'setRoot';
   beforeEach(() => {
     layoutProcessorsStore = new LayoutProcessorsStore();
     uut = new LayoutProcessor(layoutProcessorsStore);
@@ -17,7 +17,7 @@ describe('Layout processor', () => {
       },
     };
 
-    uut.process(layout, setRootCommandName);
+    uut.process(layout, CommandName.SetRoot);
     expect(layout).toEqual({
       component: {
         name: 'component',
@@ -43,12 +43,12 @@ describe('Layout processor', () => {
       };
     });
 
-    const result = uut.process(layout, setRootCommandName);
+    const result = uut.process(layout, CommandName.SetRoot);
     expect(result).toEqual({
       component: {
         name: 'component1',
         passProps: {
-          commandName: setRootCommandName,
+          commandName: CommandName.SetRoot,
         },
       },
     });

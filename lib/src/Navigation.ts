@@ -25,6 +25,7 @@ import { Deprecations } from './commands/Deprecations';
 import { ProcessorSubscription } from './interfaces/ProcessorSubscription';
 import { LayoutProcessor } from './processors/LayoutProcessor';
 import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
+import { CommandName } from './interfaces/CommandName';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
@@ -115,7 +116,7 @@ export class NavigationRoot {
    */
   public addOptionProcessor<T>(
     optionPath: string,
-    processor: (value: T, commandName: string) => T
+    processor: (value: T, commandName: CommandName) => T
   ): ProcessorSubscription {
     return this.optionProcessorsStore.addProcessor(optionPath, processor);
   }
@@ -124,7 +125,7 @@ export class NavigationRoot {
    * Method to be invoked when a layout is processed and is about to be created. This can be used to change layout options or even inject props to components.
    */
   public addLayoutProcessor(
-    processor: (layout: Layout, commandName: string) => Layout
+    processor: (layout: Layout, commandName: CommandName) => Layout
   ): ProcessorSubscription {
     return this.layoutProcessorsStore.addProcessor(processor);
   }
