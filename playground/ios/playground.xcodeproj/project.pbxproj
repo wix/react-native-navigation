@@ -34,6 +34,7 @@
 		50C9A8D1240EB95F00BD699F /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
 		50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.m */; };
 		50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
+		50EF5BAE24CDCF04009CBFD0 /* NSObjectUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EF5BAD24CDCF04009CBFD0 /* NSObjectUtilsTests.m */; };
 		67C681D42B662A53F29C19DA /* Pods_NavigationIOS12Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEE0B5D45FD34FBABC6586CF /* Pods_NavigationIOS12Tests.framework */; };
 		9D204F3DC4FBCD81583BF99F /* Pods_playground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3340545EAAF11C1F146864 /* Pods_playground.framework */; };
 		B9EA50B19EF52C45E9399616 /* Pods_SnapshotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE0C1AD81D2043249E7FE924 /* Pods_SnapshotTests.framework */; };
@@ -132,6 +133,7 @@
 		50CF233B240695B10098042D /* RNNBottomTabsController+Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNNBottomTabsController+Helpers.h"; sourceTree = "<group>"; };
 		50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNNBottomTabsController+Helpers.m"; sourceTree = "<group>"; };
 		50E4888A2427DA4800B11A8E /* StackOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StackOptionsTest.m; sourceTree = "<group>"; };
+		50EF5BAD24CDCF04009CBFD0 /* NSObjectUtilsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSObjectUtilsTests.m; sourceTree = "<group>"; };
 		7F8E255E2E08F6ECE7DF6FE3 /* Pods-playground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.release.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.release.xcconfig"; sourceTree = "<group>"; };
 		84E32151E3A71C2B7328BCB4 /* Pods_NavigationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NavigationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B484A10A046B0046B98A76B5 /* Pods-playground.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.debug.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.debug.xcconfig"; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				50CF233B240695B10098042D /* RNNBottomTabsController+Helpers.h */,
 				50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */,
 				50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */,
+				50EF5BAD24CDCF04009CBFD0 /* NSObjectUtilsTests.m */,
 				E58D261F238587F4003F36BA /* Info.plist */,
 			);
 			path = NavigationTests;
@@ -994,6 +997,7 @@
 				50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.m in Sources */,
 				E58D265D2385888C003F36BA /* RNNControllerFactoryTest.m in Sources */,
 				E58D265C2385888C003F36BA /* RNNStackControllerTest.m in Sources */,
+				50EF5BAE24CDCF04009CBFD0 /* NSObjectUtilsTests.m in Sources */,
 				E58D26482385888C003F36BA /* RNNDotIndicatorPresenterTest.m in Sources */,
 				E58D26522385888C003F36BA /* RNNComponentPresenterTest.m in Sources */,
 				E58D264C2385888C003F36BA /* RNNSideMenuParserTest.m in Sources */,
