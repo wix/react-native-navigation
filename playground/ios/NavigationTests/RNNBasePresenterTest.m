@@ -123,4 +123,13 @@
 	XCTAssertTrue(_boundViewController.hidesBottomBarWhenPushed);
 }
 
+- (void)testMergeOptions_updatesStatusBarVisibility {
+	RNNNavigationOptions* mergeOptions = [RNNNavigationOptions emptyOptions];
+	mergeOptions.statusBar.visible = [Bool withValue:@(0)];
+	
+	[[self.mockBoundViewController expect] setNeedsStatusBarAppearanceUpdate];
+	[self.uut mergeOptions:mergeOptions resolvedOptions:nil];
+	[self.mockBoundViewController verify];
+}
+
 @end
