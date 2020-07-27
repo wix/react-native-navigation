@@ -6,12 +6,12 @@ import { Store } from '../components/Store';
 import { mock, instance, verify, deepEqual, when } from 'ts-mockito';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Options } from '../interfaces/Options';
+import { CommandName } from '../interfaces/CommandName';
 
 describe('LayoutTreeCrawler', () => {
   let uut: LayoutTreeCrawler;
   let mockedStore: Store;
   let mockedOptionsProcessor: OptionsProcessor;
-  const setRootCommandName = 'setRoot';
   beforeEach(() => {
     mockedStore = mock(Store);
     mockedOptionsProcessor = mock(OptionsProcessor);
@@ -33,7 +33,7 @@ describe('LayoutTreeCrawler', () => {
       ],
       data: {},
     };
-    uut.crawl(node, setRootCommandName);
+    uut.crawl(node, CommandName.SetRoot);
     verify(mockedStore.updateProps('testId', deepEqual({ myProp: 123 }))).called();
   });
 
@@ -52,7 +52,7 @@ describe('LayoutTreeCrawler', () => {
       data: { name: 'theComponentName', options: {} },
       children: [],
     };
-    uut.crawl(node, setRootCommandName);
+    uut.crawl(node, CommandName.SetRoot);
     expect(node.data.options).toEqual({ popGesture: true });
   });
 
@@ -71,7 +71,7 @@ describe('LayoutTreeCrawler', () => {
       data: { name: 'theComponentName', options: {}, passProps: { title: 'title' } },
       children: [],
     };
-    uut.crawl(node, setRootCommandName);
+    uut.crawl(node, CommandName.SetRoot);
     expect(node.data.options).toEqual({ topBar: { title: { text: 'title' } } });
 
     const node2 = {
@@ -80,7 +80,7 @@ describe('LayoutTreeCrawler', () => {
       data: { name: 'theComponentName', options: {} },
       children: [],
     };
-    uut.crawl(node2, setRootCommandName);
+    uut.crawl(node2, CommandName.SetRoot);
     expect(node2.data.options).toEqual({ topBar: { title: {} } });
   });
 
@@ -112,7 +112,7 @@ describe('LayoutTreeCrawler', () => {
       children: [],
     };
 
-    uut.crawl(node, setRootCommandName);
+    uut.crawl(node, CommandName.SetRoot);
 
     expect(node.data.options).toEqual({
       aaa: 'exists only in passed',
@@ -124,7 +124,7 @@ describe('LayoutTreeCrawler', () => {
 
   it('Components: must contain data name', () => {
     const node = { type: LayoutType.Component, data: {}, children: [], id: 'testId' };
-    expect(() => uut.crawl(node, setRootCommandName)).toThrowError('Missing component data.name');
+    expect(() => uut.crawl(node, CommandName.SetRoot)).toThrowError('Missing component data.name');
   });
 
   it('Components: options default obj', () => {
@@ -138,7 +138,7 @@ describe('LayoutTreeCrawler', () => {
       data: { name: 'theComponentName', options: {} },
       children: [],
     };
-    uut.crawl(node, setRootCommandName);
+    uut.crawl(node, CommandName.SetRoot);
     expect(node.data.options).toEqual({});
   });
 
@@ -152,7 +152,7 @@ describe('LayoutTreeCrawler', () => {
       },
       children: [],
     };
-    uut.crawl(node, setRootCommandName);
+    uut.crawl(node, CommandName.SetRoot);
     expect(node.data.passProps).toBeUndefined();
   });
 });

@@ -65,6 +65,11 @@ export interface OptionsSplitView {
    * Set the maximum width of master view
    */
   maxWidth?: number;
+  /**
+   * Set background style of sidebar. Currently works for Mac Catalyst apps only.
+   * @default 'none'
+   */
+  primaryBackgroundStyle?: 'none' | 'sidebar';
 }
 
 export interface OptionsStatusBar {
