@@ -1,6 +1,9 @@
 #import "RNNComponentViewController.h"
 
-@implementation RNNComponentViewController
+@implementation RNNComponentViewController {
+    RNNReactView* _reactView;
+    NSArray* _reactViewConstraints;
+}
 
 @synthesize previewCallback;
 
@@ -30,11 +33,13 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [_reactView componentDidAppear];
     [self componentDidAppear];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    [_reactView componentDidDisappear];
     [self componentDidDisappear];
 }
 
@@ -56,8 +61,9 @@
 }
 
 - (void)renderReactViewIfNeeded {
-    if (!self.isViewLoaded) {
-        self.view = [self.creator createRootView:self.layoutInfo.name
+    if (!_reactView) {
+        self.view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];
+        _reactView = [self.creator createRootView:self.layoutInfo.name
                                       rootViewId:self.layoutInfo.componentId
                                           ofType:RNNComponentTypeComponent
                              reactViewReadyBlock:^{
@@ -65,10 +71,51 @@
                 [self readyForPresentation];
             }];
         }];
+        _reactView.backgroundColor = UIColor.clearColor;
+        _reactView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:_reactView];
+        [self updateReactViewConstraints];
     } else {
         [self readyForPresentation];
     }
 }
+
+- (void)viewSafeAreaInsetsDidChange {
+    [super viewSafeAreaInsetsDidChange];
+    [self updateReactViewConstraints];
+}
+
+- (void)updateReactViewConstraints {
+    if (self.view.safeAreaLayoutGuide) {
+        [NSLayoutConstraint deactivateConstraints:_reactViewConstraints];
+        _reactViewConstraints = @[
+            [_reactView.topAnchor constraintEqualToAnchor:self.shouldDrawBehindTopBar ? self.view.topAnchor : self.view.safeAreaLayoutGuide.topAnchor],
+            [_reactView.bottomAnchor constraintEqualToAnchor:self.shouldDrawBehindBottomTabs ? self.view.bottomAnchor : self.view.safeAreaLayoutGuide.bottomAnchor],
+            [_reactView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor],
+            [_reactView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor]
+        ];
+        [NSLayoutConstraint activateConstraints:_reactViewConstraints];
+    }
+}
+
+- (BOOL)shouldDrawBehindBottomTabs {
+    return (!self.tabBarController.tabBar || self.tabBarController.tabBar.isHidden || _drawBehindBottomTabs);
+}
+
+- (BOOL)shouldDrawBehindTopBar {
+    return (!self.navigationController.navigationBar || self.navigationController.navigationBar.isHidden || _drawBehindTopBar);
+}
+
+- (void)setDrawBehindTopBar:(BOOL)drawBehindTopBar {
+    _drawBehindTopBar = drawBehindTopBar;
+    [self updateReactViewConstraints];
+}
+
+- (void)setDrawBehindBottomTabs:(BOOL)drawBehindBottomTabs {
+    _drawBehindBottomTabs = drawBehindBottomTabs;
+    [self updateReactViewConstraints];
+}
+
 
 - (UIViewController *)getCurrentChild {
 	return nil;

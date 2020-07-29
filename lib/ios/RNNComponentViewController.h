@@ -31,4 +31,7 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 
 - (void)destroyReactView;
 
+@property (nonatomic) BOOL drawBehindTopBar;
+@property (nonatomic) BOOL drawBehindBottomTabs;
+
 @end
