@@ -55,7 +55,7 @@
 	[_commandsHandler push:@"FirstComponent"
 				 commandId:@"push"
 					layout:secondComponent
-				completion:^{}
+				completion:^(NSString *newComponentId){}
 				 rejection:^(NSString *code, NSString *message, NSError *error) {}];
 	FBSnapshotVerifyView(_window, pushTestName);
 }
