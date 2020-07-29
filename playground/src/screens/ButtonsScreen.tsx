@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponent, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -18,8 +18,8 @@ const {
   CHANGE_BUTTON_PROPS,
 } = testIDs;
 
-export default class Options extends React.Component<NavigationComponentProps> {
-  static options() {
+export default class ButtonOptions extends NavigationComponent {
+  static options(): Options {
     return {
       fab: {
         id: 'fab',

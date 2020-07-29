@@ -47,7 +47,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         stackController.getTopBar().layout(0, 0, 1080, 200);
         getTitleBar().layout(0, 0, 1080, 200);
 
-        optionsPresenter = spy(new ButtonPresenter(button, new IconResolverFake(activity)));
+        optionsPresenter = spy(new ButtonPresenter(activity, button, new IconResolverFake(activity)));
         uut = new ButtonController(activity, optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
 
         stackController.ensureViewIsCreated();

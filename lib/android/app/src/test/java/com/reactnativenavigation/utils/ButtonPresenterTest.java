@@ -43,7 +43,7 @@ public class ButtonPresenterTest extends BaseTest {
         activity.setContentView(titleBar);
         button = createButton();
 
-        uut = new ButtonPresenter(button, new IconResolverFake(activity));
+        uut = new ButtonPresenter(activity, button, new IconResolverFake(activity));
         buttonController = new ButtonController(
                 activity,
                 uut,
