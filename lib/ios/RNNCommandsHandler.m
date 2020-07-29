@@ -25,7 +25,7 @@ static NSString* const dismissOverlay	= @"dismissOverlay";
 static NSString* const mergeOptions	= @"mergeOptions";
 static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
-@interface RNNCommandsHandler() <RNNModalManagerDelegate>
+@interface RNNCommandsHandler()
 
 @end
 
@@ -42,7 +42,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	_controllerFactory = controllerFactory;
 	_eventEmitter = eventEmitter;
 	_modalManager = modalManager;
-	_modalManager.delegate = self;
 	_overlayManager = overlayManager;
 	_mainWindow = mainWindow;
 	return self;
@@ -269,12 +268,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[newVc render];
 }
 
-- (void)dismissModal:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
+- (void)dismissModal:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionWithComponentIdCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	[self assertReady];
     RNNAssertMainQueue();
 	
 	UIViewController *modalToDismiss = (UIViewController *)[RNNLayoutManager findComponentForId:componentId];
-	
+
 	if (!modalToDismiss.isModal) {
 		[RNNErrorHandler reject:reject withErrorCode:1013 errorDescription:@"component is not a modal"];
 		return;
@@ -288,7 +287,9 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
         [self->_eventEmitter sendOnNavigationCommandCompletion:dismissModal commandId:commandId params:@{@"componentId": componentId}];
 	}];
 	
-	[_modalManager dismissModal:modalToDismiss completion:completion];
+    [_modalManager dismissModal:modalToDismiss completion:^{
+        completion(modalToDismiss.topMostViewController.layoutInfo.componentId);
+    }];
 	
 	[CATransaction commit];
 }
@@ -352,23 +353,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 								 reason:@"Bridge not yet loaded! Send commands after Navigation.events().onAppLaunched() has been called."
 							   userInfo:nil]
 		 raise];
-	}
-}
-
-#pragma mark - RNNModalManagerDelegate
-
-- (void)dismissedModal:(UIViewController *)viewController {
-	[_eventEmitter sendModalsDismissedEvent:viewController.layoutInfo.componentId componentName:viewController.layoutInfo.name numberOfModalsDismissed:@(1)];
-}
-
-- (void)attemptedToDismissModal:(UIViewController *)viewController {
-    [_eventEmitter sendModalAttemptedToDismissEvent:viewController.layoutInfo.componentId];
-}
-
-- (void)dismissedMultipleModals:(NSArray *)viewControllers {
-	if (viewControllers && viewControllers.count) {
-		UIViewController* lastViewController = [viewControllers.lastObject presentedComponentViewController];
-        [_eventEmitter sendModalsDismissedEvent:lastViewController.layoutInfo.componentId componentName:lastViewController.layoutInfo.name numberOfModalsDismissed:@(viewControllers.count)];
 	}
 }
 

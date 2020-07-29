@@ -93,7 +93,7 @@ RCT_EXPORT_METHOD(showModal:(NSString*)commandId layout:(NSDictionary*)layout re
 
 RCT_EXPORT_METHOD(dismissModal:(NSString*)commandId componentId:(NSString*)componentId mergeOptions:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTExecuteOnMainQueue(^{
-        [self->_commandsHandler dismissModal:componentId commandId:commandId mergeOptions:options completion:^{
+        [self->_commandsHandler dismissModal:componentId commandId:commandId mergeOptions:options completion:^(NSString *componentId) {
             resolve(componentId);
         } rejection:reject];
     });

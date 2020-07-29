@@ -124,10 +124,9 @@ static NSString* const BottomTabPressed         = @"RNN.BottomTabPressed";
     }];
 }
 
-- (void)sendModalsDismissedEvent:(NSString *)componentId componentName:(NSString *)componentName numberOfModalsDismissed:(NSNumber *)modalsDismissed {
+- (void)sendModalsDismissedEvent:(NSString *)componentId numberOfModalsDismissed:(NSNumber *)modalsDismissed {
     [self send:ModalDismissed body:@{
         @"componentId": componentId,
-        @"componentName": componentName,
         @"modalsDismissed": modalsDismissed
     }];
 }

@@ -12,6 +12,7 @@
 #import "BottomTabsAttachModeFactory.h"
 #import <ReactNativeNavigation/BottomTabPresenterCreator.h>
 #import "RNNComponentViewController+Utils.h"
+#import <ReactNativeNavigation/UIViewController+RNNOptions.h>
 
 @interface MockUINavigationController : RNNStackController
 @property (nonatomic, strong) NSArray* willReturnVCs;
@@ -507,6 +508,35 @@
 - (void)testSetDefaultOptions_shouldNotThrowWhenBridgeNotReady {
 	[self.uut setReadyToReceiveCommands:false];
 	[self.uut setDefaultOptions:@{} completion:^{}];
+}
+
+- (void)testDismissModal_shouldResolveTopMostComponentId {
+	[self.uut setReadyToReceiveCommands:true];
+	RNNLayoutInfo* stackLayoutInfo = [RNNLayoutInfo new];
+	stackLayoutInfo.componentId = @"stack";
+	
+	RNNComponentViewController* child = [OCMockObject partialMockForObject:[RNNComponentViewController createWithComponentId:@"child"]];
+	__unused RNNStackController* stack = [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:@[child]];
+	
+	OCMStub([self.modalManager dismissModal:OCMArg.any completion:OCMArg.invokeBlock]);
+	OCMStub(child.isModal).andReturn(YES);
+	id classMock = OCMClassMock([RNNLayoutManager class]);
+	OCMStub(ClassMethod([classMock findComponentForId:@"child"])).andReturn(child);
+	
+	[self.uut dismissModal:@"child" commandId:@"commandId" mergeOptions:nil completion:^(NSString * _Nonnull componentId) {
+		XCTAssertTrue([componentId isEqualToString:@"stack"]);
+	} rejection:^(NSString * _Nonnull code, NSString * _Nonnull message, NSError * _Nullable error) {}];
+}
+
+- (void)testDismissedModalDelegate_shouldSendEventWithTopMostComponentId {
+	[self.uut setReadyToReceiveCommands:true];
+	RNNLayoutInfo* stackLayoutInfo = [RNNLayoutInfo new];
+	stackLayoutInfo.componentId = @"stack";
+	RNNComponentViewController* child = [OCMockObject partialMockForObject:[RNNComponentViewController createWithComponentId:@"child"]];
+	__unused RNNStackController* stack = [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:@[child]];
+	
+	[[self.eventEmmiter expect] sendModalAttemptedToDismissEvent:@"stack"];
+	
 }
 
 @end

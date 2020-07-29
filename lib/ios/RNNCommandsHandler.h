@@ -28,7 +28,7 @@
 
 - (void)showModal:(NSDictionary*)layout commandId:(NSString*)commandId completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
 
-- (void)dismissModal:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
+- (void)dismissModal:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary*)options completion:(RNNTransitionWithComponentIdCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
 
 - (void)dismissAllModals:(NSDictionary *)options commandId:(NSString*)commandId completion:(RNNTransitionCompletionBlock)completion;
 

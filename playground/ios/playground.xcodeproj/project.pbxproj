@@ -23,6 +23,7 @@
 		501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C86B8239FE9C400E0B631 /* UIImage+Utils.m */; };
 		5022EDCD2405522000852BA6 /* RNNBottomTabsPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.m */; };
 		5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */; };
+		503F775C24D19D96005E596D /* RNNModalManagerEventHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.m */; };
 		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */; };
 		50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.m */; };
 		5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */; };
@@ -112,6 +113,7 @@
 		501C86B8239FE9C400E0B631 /* UIImage+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
 		5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsAppearancePresenterTest.m; sourceTree = "<group>"; };
 		50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactNativeNavigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalManagerEventHandlerTest.m; sourceTree = "<group>"; };
 		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNExternalViewControllerTests.m; sourceTree = "<group>"; };
 		50650A21242FB0F800688104 /* CommandsHandlerCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandsHandlerCreator.h; sourceTree = "<group>"; };
 		50650A22242FB0F800688104 /* CommandsHandlerCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommandsHandlerCreator.m; sourceTree = "<group>"; };
@@ -339,6 +341,7 @@
 				E58D26282385888B003F36BA /* RNNFontAttributesCreatorTest.m */,
 				E58D262A2385888B003F36BA /* RNNLayoutManagerTest.m */,
 				E58D26432385888C003F36BA /* RNNModalManagerTest.m */,
+				503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.m */,
 				E58D263F2385888C003F36BA /* RNNStackControllerTest.m */,
 				E58D26322385888B003F36BA /* RNNNavigationOptionsTest.m */,
 				E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */,
@@ -801,6 +804,7 @@
 				E58D26502385888C003F36BA /* RNNNavigationOptionsTest.m in Sources */,
 				E58D264E2385888C003F36BA /* RNNTestBase.m in Sources */,
 				5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.m in Sources */,
+				503F775C24D19D96005E596D /* RNNModalManagerEventHandlerTest.m in Sources */,
 				500E9FE72406A52100C61231 /* BottomTabPresenterTest.m in Sources */,
 				E58D26612385888C003F36BA /* RNNTestNoColor.m in Sources */,
 				50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.m in Sources */,
