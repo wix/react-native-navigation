@@ -16,7 +16,7 @@
 
 - (void)setDefaultOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 
-- (void)push:(NSString*)componentId commandId:(NSString*)commandId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
+- (void)push:(NSString*)componentId commandId:(NSString*)commandId layout:(NSDictionary*)layout completion:(RNNTransitionWithComponentIdCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
 
 - (void)pop:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
 
@@ -24,7 +24,7 @@
 
 - (void)popToRoot:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
 
-- (void)setStackRoot:(NSString*)componentId commandId:(NSString*)commandId children:(NSArray*)children completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
+- (void)setStackRoot:(NSString*)componentId commandId:(NSString*)commandId children:(NSArray*)children completion:(RNNTransitionWithComponentIdCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
 
 - (void)showModal:(NSDictionary*)layout commandId:(NSString*)commandId completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
 

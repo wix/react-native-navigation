@@ -45,8 +45,8 @@ RCT_EXPORT_METHOD(setDefaultOptions:(NSDictionary*)options resolver:(RCTPromiseR
 
 RCT_EXPORT_METHOD(push:(NSString*)commandId componentId:(NSString*)componentId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTExecuteOnMainQueue(^{
-        [self->_commandsHandler push:componentId commandId:commandId layout:layout completion:^{
-            resolve(componentId);
+        [self->_commandsHandler push:componentId commandId:commandId layout:layout completion:^(NSString *newComponentId){
+            resolve(newComponentId);
         } rejection:reject];
     });
 }
@@ -61,8 +61,8 @@ RCT_EXPORT_METHOD(pop:(NSString*)commandId componentId:(NSString*)componentId me
 
 RCT_EXPORT_METHOD(setStackRoot:(NSString*)commandId componentId:(NSString*)componentId children:(NSArray*)children resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTExecuteOnMainQueue(^{
-        [self->_commandsHandler setStackRoot:componentId commandId:commandId children:children completion:^{
-            resolve(componentId);
+        [self->_commandsHandler setStackRoot:componentId commandId:commandId children:children completion:^(NSString *newComponentId){
+            resolve(newComponentId);
         } rejection:reject];
     });
 }

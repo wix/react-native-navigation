@@ -269,7 +269,7 @@
 	OCMStub(ClassMethod([classMock findComponentForId:@"vc1"])).andReturn(_nvc);
 	self.vc2.options.animations.setStackRoot.enable = [[Bool alloc] initWithBOOL:NO];
 	
-	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
+	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^(NSString *newComponentId){
 
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
@@ -287,7 +287,7 @@
 	[self.uut setReadyToReceiveCommands:true];
 	
 	_vc3.options.animations.setStackRoot.enable = [[Bool alloc] initWithBOOL:NO];
-	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
+	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^(NSString *newComponentId){
 	
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
@@ -302,7 +302,7 @@
 	
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
 	[self.uut setReadyToReceiveCommands:true];
-	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
+	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^(NSString *newComponentId){
 		
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
@@ -322,7 +322,7 @@
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
 	
 	[self.uut setReadyToReceiveCommands:true];
-	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
+	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^(NSString *newComponentId){
 		
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		

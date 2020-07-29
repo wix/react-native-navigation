@@ -113,7 +113,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	completion();
 }
 
-- (void)push:(NSString*)componentId commandId:(NSString*)commandId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)push:(NSString*)componentId commandId:(NSString*)commandId layout:(NSDictionary*)layout completion:(RNNTransitionWithComponentIdCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
     RNNAssertMainQueue();
 	
@@ -133,7 +133,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 					[CATransaction begin];
 					[CATransaction setCompletionBlock:^{
 						[self->_eventEmitter sendOnNavigationCommandCompletion:push commandId:commandId params:@{@"componentId": componentId}];
-						completion();
+						completion(newVc.layoutInfo.componentId);
 					}];
 					[rvc.navigationController pushViewController:newVc animated:YES];
 					[CATransaction commit];
@@ -164,7 +164,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
         [newVc setReactViewReadyCallback:^{
             [fromVC.stack push:weakNewVC onTop:fromVC animated:[weakNewVC.resolveOptionsWithDefault.animations.push.enable getWithDefaultValue:YES] completion:^{
                 [self->_eventEmitter sendOnNavigationCommandCompletion:push commandId:commandId params:@{@"componentId": componentId}];
-                completion();
+                completion(newVc.layoutInfo.componentId);
             } rejection:rejection];
         }];
         
@@ -172,7 +172,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 }
 
-- (void)setStackRoot:(NSString*)componentId commandId:(NSString*)commandId children:(NSArray*)children completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)setStackRoot:(NSString*)componentId commandId:(NSString*)commandId children:(NSArray*)children completion:(RNNTransitionWithComponentIdCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
     RNNAssertMainQueue();
 	
@@ -191,7 +191,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
     [newVC setReactViewReadyCallback:^{
         [fromVC.stack setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
             [weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot commandId:commandId params:@{@"componentId": componentId}];
-            completion();
+			NSString* newComponentId = [childViewControllers.lastObject getCurrentChild].layoutInfo.componentId;
+            completion(newComponentId);
         } rejection:rejection];
     }];
 
