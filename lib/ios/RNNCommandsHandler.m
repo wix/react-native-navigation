@@ -164,7 +164,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
         [newVc setReactViewReadyCallback:^{
             [fromVC.stack push:weakNewVC onTop:fromVC animated:[weakNewVC.resolveOptionsWithDefault.animations.push.enable getWithDefaultValue:YES] completion:^{
                 [self->_eventEmitter sendOnNavigationCommandCompletion:push commandId:commandId params:@{@"componentId": componentId}];
-                completion(newVc.layoutInfo.componentId);
+                completion(weakNewVC.layoutInfo.componentId);
             } rejection:rejection];
         }];
         
