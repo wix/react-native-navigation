@@ -119,7 +119,7 @@ describe('Stack', () => {
       'push promise resolved with: ChildId'
     );
     await expect(element(by.id(TestIDs.POP_PROMISE_RESULT))).toHaveText(
-      'pop listener called with with: ChildId'
+      'pop promise resolved with: ChildId'
     );
   });
 });
