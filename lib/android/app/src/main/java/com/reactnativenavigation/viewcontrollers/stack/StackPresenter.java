@@ -317,7 +317,7 @@ public class StackPresenter {
 
     private ButtonController createButtonController(ButtonOptions button) {
         ButtonController controller = new ButtonController(activity,
-                new ButtonPresenter(button, iconResolver),
+                new ButtonPresenter(activity, button, iconResolver),
                 button,
                 buttonCreator,
                 onClickListener

@@ -1,5 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.stack.topbar.button
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -18,7 +19,7 @@ import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 
-open class ButtonPresenter(private val button: ButtonOptions, private val iconResolver: IconResolver) {
+open class ButtonPresenter(private val context: Context, private val button: ButtonOptions, private val iconResolver: IconResolver) {
     companion object {
         const val DISABLED_COLOR = Color.LTGRAY
     }
@@ -26,7 +27,7 @@ open class ButtonPresenter(private val button: ButtonOptions, private val iconRe
     val styledText: SpannableString
         get() {
             return SpannableString(button.text.get("")).apply {
-                setSpan(ButtonSpan(button), 0, button.text.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+                setSpan(ButtonSpan(context, button), 0, button.text.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
             }
         }
 

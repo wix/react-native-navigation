@@ -394,6 +394,10 @@ export interface OptionsTopBarButton {
    */
   fontWeight?: FontWeight;
   /**
+   * Set the font size in dp
+   */
+  fontSize?: number;
+  /**
    * Set the button enabled or disabled
    * @default true
    */

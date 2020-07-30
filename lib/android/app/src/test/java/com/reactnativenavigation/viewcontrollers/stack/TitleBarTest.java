@@ -123,7 +123,7 @@ public class TitleBarTest extends BaseTest {
     private ButtonController createButtonController(ButtonOptions b) {
         return new ButtonController(
                 activity,
-                new ButtonPresenter(b, new IconResolverFake(activity)),
+                new ButtonPresenter(activity, b, new IconResolverFake(activity)),
                 b,
                 mock(TitleBarButtonCreator.class),
                 mock(ButtonController.OnClickListener.class)
