@@ -37,6 +37,10 @@
 	
 }
 
+- (void)invalidate {
+	
+}
+
 @end
 
 @implementation RNNTestRootViewCreator
