@@ -10,7 +10,7 @@
 
 @property (nonatomic) BOOL readyToReceiveCommands;
 
-- (void)setRoot:(NSDictionary*)layout commandId:(NSString*)commandId completion:(RNNTransitionCompletionBlock)completion;
+- (void)setRoot:(NSDictionary*)layout commandId:(NSString*)commandId completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
 
 - (void)mergeOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 
@@ -32,7 +32,7 @@
 
 - (void)dismissAllModals:(NSDictionary *)options commandId:(NSString*)commandId completion:(RNNTransitionCompletionBlock)completion;
 
-- (void)showOverlay:(NSDictionary *)layout commandId:(NSString*)commandId completion:(RNNTransitionCompletionBlock)completion;
+- (void)showOverlay:(NSDictionary *)layout commandId:(NSString*)commandId completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
 
 - (void)dismissOverlay:(NSString*)componentId commandId:(NSString*)commandId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
 

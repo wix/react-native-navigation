@@ -16,7 +16,7 @@
 
 - (void)sendBottomTabLongPressed:(NSNumber *)selectedTabIndex;
 
-- (void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId params:(NSDictionary*)params;
+- (void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId;
 
 - (void)sendOnSearchBarUpdated:(NSString *)componentId text:(NSString*)text isFocused:(BOOL)isFocused;
 

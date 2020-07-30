@@ -92,11 +92,10 @@ static NSString* const BottomTabPressed         = @"RNN.BottomTabPressed";
                                         }];
 }
 
--(void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId params:(NSDictionary*)params {
+- (void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId {
 	[self send:CommandCompleted body:@{
 									   @"commandId":commandId,
 									   @"commandName":commandName,
-									   @"params": params,
 									   @"completionTime": [RNNUtils getCurrentTimestamp]
 									   }];
 }

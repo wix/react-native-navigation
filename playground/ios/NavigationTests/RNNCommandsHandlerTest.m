@@ -173,7 +173,7 @@
 	NSDictionary* layout = @{};
 	
 	[[self.controllerFactory expect] createLayout:layout];
-	[self.uut showOverlay:layout commandId:@"" completion:^{}];
+	[self.uut showOverlay:layout commandId:@"" completion:^(NSString* componentId) {}];
 	[self.controllerFactory verify];
 }
 
@@ -183,7 +183,7 @@
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]);
 	
 	[[self.controllerFactory expect] createLayout:[OCMArg any]];
-	[self.uut showOverlay:@{} commandId:@"" completion:^{}];
+	[self.uut showOverlay:@{} commandId:@"" completion:^(NSString* componentId) {}];
 	[self.overlayManager verify];
 }
 
@@ -193,7 +193,7 @@
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(layoutVC);
 	
 	[[self.overlayManager expect] showOverlayWindow:[OCMArg any]];
-	[self.uut showOverlay:@{} commandId:@"" completion:^{}];
+	[self.uut showOverlay:@{} commandId:@"" completion:^(NSString* componentId) {}];
 	[self.overlayManager verify];
 }
 
@@ -203,10 +203,8 @@
 	id mockedVC = [OCMockObject partialMockForObject:self.vc1];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
-	NSDictionary* layout = @{};
-	
-	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"showOverlay" commandId:[OCMArg any] params:[OCMArg any]];
-	[self.uut showOverlay:layout commandId:@"" completion:^{}];
+	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"showOverlay" commandId:[OCMArg any]];
+	[self.uut showOverlay:@{} commandId:@"" completion:^(NSString* componentId) {}];
 	[self.eventEmmiter verify];
 }
 
@@ -247,7 +245,7 @@
 	
 	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:componentId])).andReturn([UIViewController new]);
 	
-	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"dismissOverlay" commandId:[OCMArg any] params:[OCMArg any]];
+	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"dismissOverlay" commandId:[OCMArg any]];
 	[self.uut dismissOverlay:componentId commandId:@"" completion:^{
 		
 	} rejection:^(NSString *code, NSString *message, NSError *error) {}];
@@ -260,7 +258,7 @@
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(self.vc1);
 	
 	[[self.mainWindow expect] setRootViewController:self.vc1];
-	[self.uut setRoot:@{} commandId:@"" completion:^{}];
+	[self.uut setRoot:@{} commandId:@"" completion:^(NSString* componentId) {}];
 	[self.mainWindow verify];
 }
 
@@ -342,7 +340,7 @@
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
 	[[mockedVC expect] render];
-	[self.uut setRoot:@{} commandId:@"" completion:^{}];
+	[self.uut setRoot:@{} commandId:@"" completion:^(NSString* componentId) {}];
 	[mockedVC verify];
 }
 
@@ -355,7 +353,7 @@
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
 	
 	[[mockedVC expect] render];
-	[self.uut setRoot:@{} commandId:@"" completion:^{}];
+	[self.uut setRoot:@{} commandId:@"" completion:^(NSString* componentId) {}];
 	[mockedVC verify];
 }
 
@@ -369,7 +367,7 @@
 
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 	
-	[self.uut setRoot:@{} commandId:@"" completion:^{}];
+	[self.uut setRoot:@{} commandId:@"" completion:^(NSString* componentId) {}];
 	XCTAssertTrue(_vc1.isViewLoaded);
 	XCTAssertTrue(_vc2.isViewLoaded);
 	XCTAssertEqual(_vc1.view.tag, 1);
@@ -387,7 +385,7 @@
 	[tabBarController viewWillAppear:YES];
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 	
-	[self.uut setRoot:@{} commandId:@"" completion:^{}];
+	[self.uut setRoot:@{} commandId:@"" completion:^(NSString* componentId) {}];
 	XCTAssertTrue(_vc1.isViewLoaded);
 	XCTAssertFalse(_vc2.isViewLoaded);
 	[tabBarController setSelectedIndex:1];
@@ -406,7 +404,7 @@
 	
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 
-	[self.uut setRoot:@{} commandId:@"" completion:^{
+	[self.uut setRoot:@{} commandId:@"" completion:^(NSString* componentId) {
 		XCTAssertFalse(self->_vc2.isViewLoaded);
 	}];
 
@@ -539,7 +537,7 @@
 	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:@"currentComponent"])).andReturn(currentComponent);
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(pushedComponent);
 	
-	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"push" commandId:@"pushCommandId" params:@{@"componentId": expectedComponentId}];
+	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"push" commandId:@"pushCommandId"];
 	
 	XCTestExpectation *exp = [self expectationWithDescription:@"wait for animation to end"];
 	[self.uut push:@"currentComponent" commandId:@"pushCommandId" layout:nil completion:^(NSString * _Nonnull componentId) {
