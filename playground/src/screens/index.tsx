@@ -38,6 +38,10 @@ function registerScreens() {
     () => require('./ModalCommandsScreen').default
   );
   Navigation.registerComponent(
+    Screens.StackCommands,
+    () => require('./StackCommandsScreen').default
+  );
+  Navigation.registerComponent(
     Screens.FullScreenModal,
     () => require('./FullScreenModalScreen').default
   );

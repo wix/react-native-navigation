@@ -16,7 +16,7 @@
 
 - (void)setDefaultOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 
-- (void)push:(NSString*)componentId commandId:(NSString*)commandId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
+- (void)push:(NSString*)componentId commandId:(NSString*)commandId layout:(NSDictionary*)layout completion:(RNNTransitionWithComponentIdCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
 
 - (void)pop:(NSString*)componentId commandId:(NSString*)commandId mergeOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
 

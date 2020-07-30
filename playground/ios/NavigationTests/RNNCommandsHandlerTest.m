@@ -44,6 +44,7 @@
 @property (nonatomic, strong) id overlayManager;
 @property (nonatomic, strong) id eventEmmiter;
 @property (nonatomic, strong) id creator;
+@property (nonatomic, strong) id layoutManagerClassMock;
 
 @end
 
@@ -56,6 +57,8 @@
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
 	self.modalManager = [OCMockObject partialMockForObject:[RNNModalManager new]];
+	self.layoutManagerClassMock = OCMClassMock([RNNLayoutManager class]);
+	
 	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:nil componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]]];
 	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter modalManager:self.modalManager overlayManager:self.overlayManager mainWindow:_mainWindow];
 	self.vc1 = [self generateComponentWithComponentId:@"1"];
@@ -210,10 +213,10 @@
 - (void)testDismissOverlay_findComponentFromLayoutManager {
 	[self.uut setReadyToReceiveCommands:true];
 	NSString* componentId = @"componentId";
-	id classMock = OCMClassMock([RNNLayoutManager class]);
-	[[classMock expect] findComponentForId:componentId];
+
+	[[self.layoutManagerClassMock expect] findComponentForId:componentId];
 	[self.uut dismissOverlay:componentId commandId:@"" completion:^{} rejection:^(NSString *code, NSString *message, NSError *error) {}];
-	[classMock verify];
+	[self.layoutManagerClassMock verify];
 }
 
 - (void)testDismissOverlay_dismissReturnedViewController {
@@ -221,8 +224,7 @@
 	NSString* componentId = @"componentId";
 	UIViewController* returnedView = [UIViewController new];
 	
-	id classMock = OCMClassMock([RNNLayoutManager class]);
-	OCMStub(ClassMethod([classMock findComponentForId:componentId])).andReturn(returnedView);
+	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:componentId])).andReturn(returnedView);
 	
 	[[self.overlayManager expect] dismissOverlay:returnedView];
 	[self.uut dismissOverlay:componentId commandId:@"" completion:^{} rejection:^(NSString *code, NSString *message, NSError *error) {}];
@@ -243,8 +245,7 @@
 	[self.uut setReadyToReceiveCommands:true];
 	NSString* componentId = @"componentId";
 	
-	id classMock = OCMClassMock([RNNLayoutManager class]);
-	OCMStub(ClassMethod([classMock findComponentForId:componentId])).andReturn([UIViewController new]);
+	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:componentId])).andReturn([UIViewController new]);
 	
 	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"dismissOverlay" commandId:[OCMArg any] params:[OCMArg any]];
 	[self.uut dismissOverlay:componentId commandId:@"" completion:^{
@@ -266,8 +267,7 @@
 - (void)testSetStackRoot_resetStackWithSingleComponent {
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(@[self.vc2]);
 	[self.uut setReadyToReceiveCommands:true];
-	id classMock = OCMClassMock([RNNLayoutManager class]);
-	OCMStub(ClassMethod([classMock findComponentForId:@"vc1"])).andReturn(_nvc);
+	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:@"vc1"])).andReturn(_nvc);
 	self.vc2.options.animations.setStackRoot.enable = [[Bool alloc] initWithBOOL:NO];
 	
 	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
@@ -282,8 +282,8 @@
 
 - (void)testSetStackRoot_setMultipleChildren {
 	NSArray* newViewControllers = @[_vc1, _vc3];
-	id classMock = OCMClassMock([RNNLayoutManager class]);
-	OCMStub(ClassMethod([classMock findComponentForId:@"vc1"])).andReturn(_nvc);
+
+	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:@"vc1"])).andReturn(_nvc);
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
 	[self.uut setReadyToReceiveCommands:true];
 	
@@ -520,23 +520,37 @@
 	
 	OCMStub([self.modalManager dismissModal:OCMArg.any completion:OCMArg.invokeBlock]);
 	OCMStub(child.isModal).andReturn(YES);
-	id classMock = OCMClassMock([RNNLayoutManager class]);
-	OCMStub(ClassMethod([classMock findComponentForId:@"child"])).andReturn(child);
+	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:@"child"])).andReturn(child);
 	
 	[self.uut dismissModal:@"child" commandId:@"commandId" mergeOptions:nil completion:^(NSString * _Nonnull componentId) {
 		XCTAssertTrue([componentId isEqualToString:@"stack"]);
 	} rejection:^(NSString * _Nonnull code, NSString * _Nonnull message, NSError * _Nullable error) {}];
 }
 
-- (void)testDismissedModalDelegate_shouldSendEventWithTopMostComponentId {
+- (void)testPush_shouldResolvePromiseAndSendCommandCompletionWithPushedComponentId {
 	[self.uut setReadyToReceiveCommands:true];
+	NSString* expectedComponentId = @"pushedComponent";
 	RNNLayoutInfo* stackLayoutInfo = [RNNLayoutInfo new];
 	stackLayoutInfo.componentId = @"stack";
-	RNNComponentViewController* child = [OCMockObject partialMockForObject:[RNNComponentViewController createWithComponentId:@"child"]];
-	__unused RNNStackController* stack = [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:@[child]];
+	RNNComponentViewController* currentComponent = [RNNComponentViewController createWithComponentId:@"currentComponent"];
+	RNNComponentViewController* pushedComponent = [RNNComponentViewController createWithComponentId:expectedComponentId];
+	__unused RNNStackController* stack = [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:@[currentComponent]];
+
+	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:@"currentComponent"])).andReturn(currentComponent);
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(pushedComponent);
 	
-	[[self.eventEmmiter expect] sendModalAttemptedToDismissEvent:@"stack"];
+	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"push" commandId:@"pushCommandId" params:@{@"componentId": expectedComponentId}];
 	
+	XCTestExpectation *exp = [self expectationWithDescription:@"wait for animation to end"];
+	[self.uut push:@"currentComponent" commandId:@"pushCommandId" layout:nil completion:^(NSString * _Nonnull componentId) {
+		[self.eventEmmiter verify];
+		XCTAssertTrue([componentId isEqualToString:expectedComponentId]);
+		[exp fulfill];
+	} rejection:^(NSString *code, NSString *message, NSError *error) {
+		
+	}];
+	
+	[self waitForExpectationsWithTimeout:40 handler: nil];
 }
 
 @end
