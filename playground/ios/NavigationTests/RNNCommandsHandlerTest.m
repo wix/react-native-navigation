@@ -371,8 +371,8 @@
 	[self.uut setRoot:@{} commandId:@"" completion:^{}];
 	XCTAssertTrue(_vc1.isViewLoaded);
 	XCTAssertTrue(_vc2.isViewLoaded);
-	XCTAssertEqual(_vc1.view.tag, 1);
-	XCTAssertEqual(_vc2.view.tag, 2);
+	XCTAssertEqual(_vc1.reactView.tag, 1);
+	XCTAssertEqual(_vc2.reactView.tag, 2);
 }
 
 - (void)testSetRoot_withBottomTabsAttachModeOnSwitchToTab {

@@ -54,9 +54,7 @@
 }
 
 - (void)destroyReactView {
-    if ([self.view isKindOfClass: [RNNReactView class]]) {
-        [((RNNReactView *)self.view) invalidate];
-    }
+    [self.reactView invalidate];
 }
 
 - (void)renderReactViewIfNeeded {
@@ -79,13 +77,17 @@
     }
 }
 
+- (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside {
+    self.reactView.passThroughTouches = !interceptTouchOutside;
+}
+
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
     [self updateReactViewConstraints];
 }
 
 - (void)updateReactViewConstraints {
-    if (self.view.safeAreaLayoutGuide) {
+    if (self.isViewLoaded && self.reactView) {
         [NSLayoutConstraint deactivateConstraints:_reactViewConstraints];
         _reactViewConstraints = @[
             [self.reactView.topAnchor constraintEqualToAnchor:self.shouldDrawBehindTopBar ? self.view.topAnchor : self.view.safeAreaLayoutGuide.topAnchor],

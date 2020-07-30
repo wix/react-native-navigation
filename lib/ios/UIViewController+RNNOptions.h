@@ -28,8 +28,6 @@
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
 
-- (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside;
-
 - (BOOL)isModal;
 
 @end

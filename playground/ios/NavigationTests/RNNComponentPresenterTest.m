@@ -37,9 +37,9 @@
 	XCTAssertTrue(self.boundViewController.navigationItem.largeTitleDisplayMode == UINavigationItemLargeTitleDisplayModeNever);
 }
 
-- (void)testApplyOptions_layoutBackgroundColorDefaultWhiteColor {
+- (void)testApplyOptions_layoutBackgroundColorDefaultSystemColor {
 	[self.uut applyOptions:self.options];
-	XCTAssertNil(self.boundViewController.view.backgroundColor);
+	XCTAssertEqual(UIColor.systemBackgroundColor, self.boundViewController.view.backgroundColor);
 }
 
 - (void)testApplyOptions_statusBarBlurDefaultFalse {
@@ -59,14 +59,14 @@
 
 - (void)testApplyOptions_drawBehindTabBarTrueWhenVisibleFalse {
 	self.options.bottomTabs.visible = [[Bool alloc] initWithValue:@(0)];
-	[[(id) self.boundViewController expect] setDrawBehindTabBar:YES];
+	[[(id) self.boundViewController expect] setDrawBehindBottomTabs:YES];
 	[self.uut applyOptionsOnInit:self.options];
 	[(id)self.boundViewController verify];
 }
 
 - (void)testApplyOptions_setOverlayTouchOutsideIfHasValue {
     self.options.overlay.interceptTouchOutside = [[Bool alloc] initWithBOOL:YES];
-    [(UIViewController *) [(id) self.boundViewController expect] setInterceptTouchOutside:YES];
+    [(RNNComponentViewController *) [(id) self.boundViewController expect] setInterceptTouchOutside:YES];
     [self.uut applyOptions:self.options];
     [(id)self.boundViewController verify];
 }
@@ -96,7 +96,7 @@
 -(void)testApplyOptionsOnInit_BottomTabsDrawUnder_true {
     self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(1)];
 
-	[[(id) self.boundViewController expect] setDrawBehindTabBar:YES];
+	[[(id) self.boundViewController expect] setDrawBehindBottomTabs:YES];
     [self.uut applyOptionsOnInit:self.options];
     [(id)self.boundViewController verify];
 }
@@ -104,7 +104,7 @@
 -(void)testApplyOptionsOnInit_BottomTabsDrawUnder_false {
     self.options.bottomTabs.drawBehind = [[Bool alloc] initWithValue:@(0)];
 
-	[[(id) self.boundViewController expect] setDrawBehindTabBar:NO];
+	[[(id) self.boundViewController expect] setDrawBehindBottomTabs:NO];
     [self.uut applyOptionsOnInit:self.options];
     [(id)self.boundViewController verify];
 }

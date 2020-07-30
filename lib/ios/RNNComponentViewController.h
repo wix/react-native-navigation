@@ -31,6 +31,8 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 
 - (void)destroyReactView;
 
+- (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside;
+
 @property (nonatomic) BOOL drawBehindTopBar;
 @property (nonatomic) BOOL drawBehindBottomTabs;
 

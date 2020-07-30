@@ -40,7 +40,7 @@
 - (void)applyOptions:(RNNNavigationOptions *)options {
     [super applyOptions:options];
     
-    UIViewController* viewController = self.boundViewController;
+    RNNComponentViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [viewController setBackgroundImage:[withDefault.backgroundImage getWithDefaultValue:nil]];
     [viewController setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
@@ -144,8 +144,7 @@
     
 
     if (options.overlay.interceptTouchOutside.hasValue) {
-        RCTRootView* rootView = (RCTRootView*)viewController.view;
-        rootView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
+        viewController.reactView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
     }
     
     [_topBarTitlePresenter mergeOptions:options.topBar resolvedOptions:withDefault.topBar];
