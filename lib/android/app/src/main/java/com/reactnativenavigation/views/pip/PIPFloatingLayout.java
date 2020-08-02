@@ -27,8 +27,10 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     private Activity activity;
     private int pipLayoutLeft = 0, pipLayoutTop = 0;
     private FrameLayout.LayoutParams layoutParams;
-    private PIPStates pipState;
+    private PIPStates pipState = PIPStates.NOT_STARTED;
     private CustomPIPDimension pipDimension;
+    private IPIPListener pipListener;
+    private AnimatorSet runningAnimation;
 
     public PIPFloatingLayout(@NonNull Activity activity) {
         super(activity);
@@ -49,46 +51,55 @@ public class PIPFloatingLayout extends CoordinatorLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        if (shouldInterceptTouchEvent()) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                case MotionEvent.ACTION_MOVE:
-                    return true;
-                case MotionEvent.ACTION_UP:
-                    return this.pipState != PIPStates.CUSTOM_EXPANDED;
-                default:
-                    return false;
-            }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_UP:
+                return shouldInterceptTouchEvent();
+            case MotionEvent.ACTION_MOVE:
+                return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean isHandled = false;
-        if (shouldInterceptTouchEvent()) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (shouldInterceptTouchEvent()) {
                     dX = getX() - event.getRawX();
                     dY = getY() - event.getRawY();
                     isHandled = true;
-                    break;
+                }
+                break;
 
-                case MotionEvent.ACTION_MOVE:
-                    animate()
-                            .x(event.getRawX() + dX)
-                            .y(event.getRawY() + dY)
-                            .setDuration(0)
-                            .start();
+            case MotionEvent.ACTION_MOVE:
+                float halfWidth = getWidth() / 2.0f;
+                float halfHeight = getHeight() / 2.0f;
+                float destX = event.getRawX() + dX - halfWidth;
+                float destY = event.getRawY() + dY - halfHeight;
+                if (destX < 0) {
+                    destX = 0;
+                }
+                if ((destX + getWidth()) > UiUtils.getWindowWidth(getContext())) {
+                    destX = UiUtils.getWindowWidth(getContext()) - getWidth();
+                }
+                if (destY < 0) {
+                    destY = 0;
+                }
+                if ((destY + getHeight()) > UiUtils.getWindowHeight(getContext())) {
+                    destY = UiUtils.getWindowHeight(getContext()) - getHeight();
+                }
+                animate().x(destX).y(destY).setDuration(0).start();
+                isHandled = true;
+                break;
+            case MotionEvent.ACTION_UP:
+                if (shouldInterceptTouchEvent()) {
                     isHandled = true;
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if (this.pipState != PIPStates.CUSTOM_EXPANDED) {
-                        isHandled = true;
-                        animateToExpand();
-                    }
-                    break;
-            }
+                    animateToExpand();
+                }
+                break;
         }
         return isHandled;
     }
@@ -128,6 +139,14 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         layoutParams.setMargins(0, 0, 0, 0);
         setLayoutParams(layoutParams);
         removeAllViews();
+        cancelAnimations();
+    }
+
+    public void initiateRestore() {
+        Point loc = ViewUtils.getLocationOnScreen(this);
+        animate().x(0).y(0).setDuration(0).start();
+        this.setX(UiUtils.pxToDp(activity, loc.x));
+        this.setY(UiUtils.pxToDp(activity, loc.y));
     }
 
     private boolean shouldInterceptTouchEvent() {
@@ -139,7 +158,6 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         params.width = UiUtils.dpToPx(activity, pipDimension.compact.width.get());
         params.height = UiUtils.dpToPx(activity, pipDimension.compact.height.get());
         setLayoutParams(params);
-
     }
 
     private void setCustomExpandedState() {
@@ -160,10 +178,10 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     }
 
     private void animateToCompact(int delay) {
-        AnimatorSet animatorSet = createViewSizeAnimation(pipDimension.expanded.height.get(), pipDimension.compact.height.get(), pipDimension.expanded.width.get(), pipDimension.compact.width.get(), 100);
-        animatorSet.setStartDelay(delay);
-        animatorSet.start();
-        animatorSet.addListener(new Animator.AnimatorListener() {
+        runningAnimation = createViewSizeAnimation(pipDimension.expanded.height.get(), pipDimension.compact.height.get(), pipDimension.expanded.width.get(), pipDimension.compact.width.get(), 100);
+        runningAnimation.setStartDelay(delay);
+        runningAnimation.start();
+        runningAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -187,9 +205,9 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     }
 
     private void animateToExpand() {
-        AnimatorSet animatorSet = createViewSizeAnimation(pipDimension.compact.height.get(), pipDimension.expanded.height.get(), pipDimension.compact.width.get(), pipDimension.expanded.width.get(), 100);
-        animatorSet.start();
-        animatorSet.addListener(new Animator.AnimatorListener() {
+        runningAnimation = createViewSizeAnimation(pipDimension.compact.height.get(), pipDimension.expanded.height.get(), pipDimension.compact.width.get(), pipDimension.expanded.width.get(), 100);
+        runningAnimation.start();
+        runningAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -213,12 +231,13 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     }
 
     public void updatePIPState(PIPStates pipState) {
+        PIPStates oldState = this.pipState;
         this.pipState = pipState;
         switch (this.pipState) {
             case NOT_STARTED:
                 resetPIPLayout();
                 break;
-            case CUSTOM_MOUNT_START:
+            case MOUNT_START:
                 resetPIPLayout();
                 initializeCustomLayoutParams();
                 setCustomPIPMode();
@@ -230,12 +249,18 @@ public class PIPFloatingLayout extends CoordinatorLayout {
                 setCustomExpandedState();
                 break;
             case NATIVE_MOUNTED:
+                cancelAnimations();
                 setNativePIPMode();
                 break;
-            case CUSTOM_UNMOUNTED:
-                resetPIPLayout();
+            case CUSTOM_MOUNTED:
+                setCustomPIPMode();
+                setCustomCompactState();
+                animateToExpand();
                 break;
 
+        }
+        if (this.pipListener != null) {
+            this.pipListener.onPIPStateChanged(oldState, pipState);
         }
     }
 
@@ -245,5 +270,20 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, 0);
         child.setLayoutParams(params);
+    }
+
+    public void setPipListener(IPIPListener pipListener) {
+        this.pipListener = pipListener;
+    }
+
+    public void cancelAnimations() {
+        if (runningAnimation != null) {
+            runningAnimation.cancel();
+            runningAnimation = null;
+        }
+    }
+
+    public interface IPIPListener {
+        void onPIPStateChanged(PIPStates oldPIPState, PIPStates pipState);
     }
 }

@@ -194,4 +194,11 @@ export class Commands {
         this.commandsObserver.notify('switchToPIP', {commandId, componentId, mergeOptions});
         return result;
     }
+
+    public restorePIP() {
+        const commandId = this.uniqueIdProvider.generate('restorePIP');
+        const result = this.nativeCommandsSender.restorePIP(commandId);
+        this.commandsObserver.notify('restorePIP', {commandId});
+        return result;
+    }
 }

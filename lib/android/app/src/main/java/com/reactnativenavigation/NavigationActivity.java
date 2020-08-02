@@ -99,9 +99,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            navigator.onPictureInPictureModeChanged(true, null);
-            enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+        if (navigator.getPipMode() != PIPStates.NOT_STARTED) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                navigator.onPictureInPictureModeChanged(true, null);
+                enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+            }
         }
     }
 

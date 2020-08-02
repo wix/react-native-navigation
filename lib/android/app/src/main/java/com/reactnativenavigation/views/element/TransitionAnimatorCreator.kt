@@ -23,7 +23,6 @@ open class TransitionAnimatorCreator {
         val animators = ArrayList<Animator>()
         animators.addAll(createSharedElementTransitionAnimators(transitions.validSharedElementTransitions))
         animators.addAll(createElementTransitionAnimators(transitions.validElementTransitions))
-
         setAnimatorsDuration(animators, fadeAnimation)
         val set = AnimatorSet()
         set.doOnEnd { restoreViewsToOriginalState(transitions) }

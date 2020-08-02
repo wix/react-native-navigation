@@ -230,4 +230,11 @@ export class NavigationRoot {
     public switchToPIP(componentId: string, mergeOptions?: Options): Promise<any> {
         return this.commands.switchToPIP(componentId, mergeOptions);
     }
+
+    /**
+     * restore pip component
+     */
+    public restorePIP(): Promise<any> {
+        return this.commands.restorePIP();
+    }
 }

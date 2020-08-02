@@ -235,7 +235,7 @@ public class StackPresenter {
     private View findBackgroundComponent(com.reactnativenavigation.parse.Component component) {
         for (TopBarBackgroundViewController controller : backgroundControllers.values()) {
             if (ObjectUtils.equalsNotNull(controller.getComponent().name.get(null), component.name.get(null)) &&
-                ObjectUtils.equalsNotNull(controller.getComponent().componentId.get(null), component.componentId.get(null))) {
+                    ObjectUtils.equalsNotNull(controller.getComponent().componentId.get(null), component.componentId.get(null))) {
                 return controller.getView();
             }
         }
@@ -487,7 +487,7 @@ public class StackPresenter {
     private TitleBarReactViewController findTitleComponent(com.reactnativenavigation.parse.Component component) {
         for (TitleBarReactViewController controller : titleControllers.values()) {
             if (ObjectUtils.equalsNotNull(controller.getComponent().name.get(null), component.name.get(null)) &&
-                ObjectUtils.equalsNotNull(controller.getComponent().componentId.get(null), component.componentId.get(null))) {
+                    ObjectUtils.equalsNotNull(controller.getComponent().componentId.get(null), component.componentId.get(null))) {
                 return controller;
             }
         }

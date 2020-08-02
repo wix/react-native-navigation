@@ -1,6 +1,7 @@
 package com.reactnativenavigation.parse
 
 import android.animation.AnimatorSet
+import android.util.Property
 import android.view.View
 import org.json.JSONObject
 
@@ -10,4 +11,8 @@ class ElementTransitionOptions(json: JSONObject) {
         get() = animation.id.get()
 
     fun getAnimation(view: View): AnimatorSet = animation.getAnimation(view)
+
+    fun setValueDy(property: Property<View?, Float?>?, fromDelta: Float, toDelta: Float) {
+        animation.setValueDy(property, fromDelta, toDelta)
+    }
 }

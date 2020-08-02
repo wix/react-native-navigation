@@ -2,6 +2,8 @@ package com.reactnativenavigation.views.element
 
 import android.animation.AnimatorSet
 import android.view.View
+import android.view.View.X
+import android.view.View.Y
 import androidx.core.view.doOnLayout
 import com.facebook.react.uimanager.util.ReactFindViewUtil.OnViewFoundListener
 import com.facebook.react.uimanager.util.ReactFindViewUtil.findView
@@ -80,6 +82,27 @@ open class ElementTransitionManager {
                 transition.view = it
                 transition.viewController = pipScreen
                 transitionSet.add(transition)
+            }
+            if (transition.isValid()) continue
+        }
+        onAnimatorsCreated.run(transitionSet)
+    }
+
+    fun createPIPOutTransitions(animation: NestedAnimationsOptions, pipContainer: View, pipScreen: ViewController<*>, onAnimatorsCreated: Func1<TransitionSet?>) {
+        val elementTransitions = animation.elementTransitions
+        if (!elementTransitions.hasValue) {
+            onAnimatorsCreated.run(TransitionSet())
+            return
+        }
+        val transitionSet = TransitionSet()
+        for (transitionOptions in elementTransitions.transitions) {
+            val transition = ElementTransition(transitionOptions)
+            findView(pipContainer, transition.id)?.let {
+                transition.view = it
+                transition.viewController = pipScreen
+                transitionSet.add(transition)
+                transition.setValueDy(X, pipContainer.x, 0.toFloat())
+                transition.setValueDy(Y, pipContainer.y, 0.toFloat())
             }
             if (transition.isValid()) continue
         }

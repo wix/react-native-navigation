@@ -39,7 +39,6 @@ class PIPActivity : AppCompatActivity() {
         super.onResume()
         if (mFromPictureInPictureMode) {
             (mContentView.parent as ViewGroup).removeView(mContentView)
-            NavigationModule.currentNavigator.pushBackPIP()
             mFromPictureInPictureMode = false;
             navToLauncherTask(this)
         }
@@ -48,7 +47,7 @@ class PIPActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         if (mFromPictureInPictureMode) {
-            NavigationModule.currentNavigator.clearPIP()
+            NavigationModule.currentNavigator.closePIP(null)
             mFromPictureInPictureMode = false;
         }
     }

@@ -13,7 +13,7 @@ const pushExternalComponent = (self, name, passProps) => Navigation.push(self.pr
     }
 });
 
-const switchToPIP= (selfOrCompId) => Navigation.switchToPIP(compId(selfOrCompId));
+const switchToPIP = (selfOrCompId) => Navigation.switchToPIP(compId(selfOrCompId));
 
 const pop = (selfOrCompId) => Navigation.pop(compId(selfOrCompId));
 
@@ -35,10 +35,11 @@ const setStackRoot = (selfOrCompId, root) => Navigation.setStackRoot(compId(self
 
 const setRoot = (root) => Navigation.setRoot(root.root ? root : {root: component(root, {})});
 
-const pushAsPIP = (selfOrCompId,layout) => Navigation.pushAsPIP(compId(selfOrCompId),layout)
+const pushAsPIP = (selfOrCompId, layout) => Navigation.pushAsPIP(compId(selfOrCompId), layout)
 
 const closePIP = () => Navigation.closePIP()
 
+const restorePIP = () => Navigation.restorePIP()
 
 
 const compId = (selfOrCompId) => {
@@ -68,5 +69,6 @@ module.exports = {
     constants,
     pushAsPIP,
     closePIP,
-    switchToPIP
+    switchToPIP,
+    restorePIP
 }

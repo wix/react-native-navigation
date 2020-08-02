@@ -176,6 +176,25 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
+    public void restorePIP(ViewController child, CommandListener listener) {
+        if (findController(child.getId()) != null) {
+            listener.onError("A stack can't contain two children with the same id");
+            return;
+        }
+        final ViewController toRemove = stack.peek();
+        if (size() > 0) backButtonHelper.addToPushedChild(child);
+        child.setParentController(this);
+        stack.push(child.getId(), child);
+        Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
+        presenter.applyInitialChildLayoutOptions(resolvedOptions);
+        getView().addView(child.getView(), getView().getChildCount() - 1, matchParentWithBehaviour(new StackBehaviour(this)));
+
+        if (toRemove != null) {
+            getView().removeView(toRemove.getView());
+        }
+        listener.onSuccess(child.getId());
+    }
+
     private void onPushAnimationComplete(ViewController toAdd, ViewController toRemove, CommandListener listener) {
         if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
         listener.onSuccess(toAdd.getId());
@@ -303,26 +322,6 @@ public class StackController extends ParentController<StackLayout> {
         presenter.onChildWillAppear(this, appearing, disappearing);
         disappearing.detachView();
         return disappearing;
-    }
-
-    public void restorePIP(ViewController child, CommandListener listener) {
-        if (findController(child.getId()) != null) {
-            listener.onError("A stack can't contain two children with the same id");
-            return;
-        }
-        final ViewController toRemove = stack.peek();
-        if (size() > 0) backButtonHelper.addToPushedChild(child);
-        child.setParentController(this);
-        stack.push(child.getId(), child);
-        Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
-        addChildToStack(child, resolvedOptions);
-
-        if (toRemove != null) {
-            getView().removeView(toRemove.getView());
-            listener.onSuccess(child.getId());
-        } else {
-            listener.onSuccess(child.getId());
-        }
     }
 
     private void finishPopping(ViewController disappearing, CommandListener listener) {

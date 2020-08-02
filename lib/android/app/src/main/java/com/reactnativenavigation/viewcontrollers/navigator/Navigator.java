@@ -1,12 +1,15 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+import android.app.PictureInPictureParams;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -166,6 +169,11 @@ public class Navigator extends ParentController {
         ViewController target = findController(componentId);
         if (target != null) {
             target.mergeOptions(options);
+        } else {
+            target = pipNavigator.findController(componentId);
+            if (target != null) {
+                target.mergeOptions(options);
+            }
         }
     }
 
@@ -196,7 +204,7 @@ public class Navigator extends ParentController {
     }
 
     public void restorePIP(String id, CommandListener listener) {
-        applyOnStack(id, listener, stack -> stack.restorePIP(this.pipNavigator.restorePIP(), new CommandListener() {
+        applyOnStack(this.lastPushedComponent, listener, stack -> this.pipNavigator.restorePIP(child -> stack.restorePIP(child, new CommandListener() {
             @Override
             public void onSuccess(String childId) {
                 listener.onSuccess(childId);
@@ -206,11 +214,12 @@ public class Navigator extends ParentController {
             public void onError(String message) {
                 listener.onError(message);
             }
-        }));
+        })));
     }
 
-    public void closePIP() {
-        pipNavigator.closePIP();
+
+    public void closePIP(CommandListener listener) {
+        pipNavigator.closePIP(listener);
     }
 
     @Override
@@ -296,28 +305,6 @@ public class Navigator extends ParentController {
         }
     }
 
-    public void pushBackPIP() {
-        /*this.pipController.sendOnNavigationButtonPressed("restorePIP");
-        this.push(this.lastPushedComponent, this.pipController, new CommandListener() {
-            @Override
-            public void onSuccess(String childId) {
-
-            }
-
-            @Override
-            public void onError(String message) {
-
-            }
-        });
-        this.pipController = null;*/
-    }
-
-    public void clearPIP() {
-       /* this.pipController.destroy();
-        this.pipController = null;*/
-    }
-
-
     public void onPictureInPictureModeChanged(Boolean isInPictureInPictureMode, Configuration newConfig) {
         if (isInPictureInPictureMode) {
             rootLayout.setVisibility(View.GONE);
@@ -329,6 +316,11 @@ public class Navigator extends ParentController {
             overlaysLayout.setVisibility(View.VISIBLE);
         }
         pipNavigator.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public PictureInPictureParams getPictureInPictureParams() {
+        return pipNavigator.getPictureInPictureParams();
     }
 
 

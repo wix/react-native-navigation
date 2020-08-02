@@ -1,4 +1,13 @@
 export type ComponentType = 'Component' | 'TopBarTitle' | 'TopBarBackground' | 'TopBarButton';
+export type PIPState =
+    | 'NOT_STARTED'
+    | 'MOUNT_START'
+    | 'CUSTOM_MOUNTED'
+    | 'CUSTOM_EXPANDED'
+    | 'CUSTOM_COMPACT'
+    | 'RESTORE_START'
+    | 'UNMOUNT_START'
+    | 'NATIVE_MOUNTED';
 
 export interface ComponentEvent {
     componentId: string;
@@ -47,8 +56,8 @@ export interface ScreenPoppedEvent extends ComponentEvent {
 }
 
 export interface PIPStateChangedEvent extends ComponentEvent {
-    prevState: string;
-    newState: string;
+    prevState: PIPState;
+    newState: PIPState;
 }
 
 export interface PIPButtonPressedEvent extends ComponentEvent {

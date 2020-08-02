@@ -13,6 +13,7 @@ import com.reactnativenavigation.parse.FadeAnimation;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.views.element.ElementTransition;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import java.util.ArrayList;
@@ -44,9 +45,9 @@ public class NavigationAnimator extends BaseAnimator {
     }
 
     public void pipIn(View pipContainer, ViewController pip, Options options, Runnable onAnimationEnd) {
-            AnimatorSet set = createPIPAnimator(pip, onAnimationEnd);
-            runningPIPAnimations.put(pipContainer, set);
-            pipInElementTransition(pipContainer, pip, options, set);
+        AnimatorSet set = createPIPAnimator(pip, onAnimationEnd);
+        runningPIPAnimations.put(pipContainer, set);
+        pipInElementTransition(pipContainer, pip, options, set);
     }
 
     public void pipOut(View pipContainer, ViewController pip, Options options, Runnable onAnimationEnd) {
@@ -76,11 +77,11 @@ public class NavigationAnimator extends BaseAnimator {
         );
     }
 
-    private void pipOutElementTransition(View pipContainer, ViewController pipIn, Options options, AnimatorSet set) {
-        transitionManager.createPIPTransitions(
+    private void pipOutElementTransition(View pipContainer, ViewController pipOut, Options options, AnimatorSet set) {
+        transitionManager.createPIPOutTransitions(
                 options.animations.pipOut,
                 pipContainer,
-                pipIn,
+                pipOut,
                 transitionSet -> {
                     if (transitionSet.isEmpty()) {
                         set.playTogether(options.animations.pipOut.content.getAnimation(pipContainer, getDefaultPopAnimation(pipContainer)));
@@ -118,6 +119,10 @@ public class NavigationAnimator extends BaseAnimator {
             }
         });
         return set;
+    }
+
+    private void setRelativeDeltaBeforeAnimations(ElementTransition transition) {
+
     }
 
     private AnimatorSet createPIPAnimator(ViewController pip, Runnable onAnimationEnd) {

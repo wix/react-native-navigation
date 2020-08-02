@@ -36,6 +36,8 @@ interface NativeCommandsModule {
 
     switchToPIP(commandId: string, componentId: string, options?: object): Promise<any>;
 
+    restorePIP(commandId: string): Promise<any>;
+
 }
 
 export class NativeCommandsSender {
@@ -111,5 +113,9 @@ export class NativeCommandsSender {
 
     switchToPIP(commandId: string, componentId: string, options?: Options) {
         return this.nativeCommandsModule.switchToPIP(commandId, componentId, options);
+    }
+
+    restorePIP(commandId: string) {
+        return this.nativeCommandsModule.restorePIP(commandId);
     }
 }
