@@ -155,4 +155,57 @@ describe('LayoutTreeCrawler', () => {
     uut.crawl(node, CommandName.SetRoot);
     expect(node.data.passProps).toBeUndefined();
   });
+
+  it('componentId is included in props passed to options generator', () => {
+    let componentIdInProps: String = '';
+
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static options(props: any) {
+            componentIdInProps = props.componentId;
+            return {};
+          }
+        }
+    );
+    const node = {
+      id: 'testId',
+      type: LayoutType.Component,
+      data: {
+        name: 'theComponentName',
+        passProps: { someProp: 'here' },
+      },
+      children: [],
+    };
+    uut.crawl(node, CommandName.SetRoot);
+    expect(componentIdInProps).toEqual('testId');
+  });
+
+  it('componentId does not override componentId in passProps', () => {
+    let componentIdInProps: String = '';
+
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static options(props: any) {
+            componentIdInProps = props.componentId;
+            return {};
+          }
+        }
+    );
+    const node = {
+      id: 'testId',
+      type: LayoutType.Component,
+      data: {
+        name: 'theComponentName',
+        passProps: {
+          someProp: 'here',
+          componentId: 'compIdFromPassProps',
+        },
+      },
+      children: [],
+    };
+    uut.crawl(node, CommandName.SetRoot);
+    expect(componentIdInProps).toEqual('compIdFromPassProps');
+  });
 });

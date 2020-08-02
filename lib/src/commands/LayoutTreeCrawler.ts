@@ -57,7 +57,7 @@ export class LayoutTreeCrawler {
     const reactComponent = foundReactGenerator ? foundReactGenerator() : undefined;
     if (reactComponent && this.isComponentWithOptions(reactComponent)) {
       return isFunction(reactComponent.options)
-        ? reactComponent.options(node.data.passProps || {})
+        ? reactComponent.options({ componentId: node.id, ...node.data.passProps } || {})
         : reactComponent.options;
     }
     return {};
