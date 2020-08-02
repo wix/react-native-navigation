@@ -18,7 +18,13 @@ export class NavigationComponent<Props = {}, State = {}, Snapshot = any> extends
   State,
   Snapshot
 > {
-  static options?: (() => Options) | Options;
+  /**
+   * Options used to apply a style configuration when the screen appears.
+   *
+   * This field can either contain the concrete options to be applied, or a generator function
+   * which accepts props and returns an Options object.
+   */
+  static options: ((props?: any) => Options) | Options;
 
   componentDidAppear(_event: ComponentDidAppearEvent) {}
   componentDidDisappear(_event: ComponentDidDisappearEvent) {}
