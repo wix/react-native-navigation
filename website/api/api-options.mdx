@@ -10,8 +10,8 @@ Set default options for all screens. Useful for declaring a consistent style acr
 
 #### Parameters
 
-| Name    | Type                    | Required | Description  |
-| ------- | ----------------------- | -------- | ------------ |
+| Name    | Type                        | Required | Description  |
+| ------- | --------------------------- | -------- | ------------ |
 | options | [Options](options-root.mdx) | Yes      | Options root |
 
 #### Example
@@ -19,29 +19,29 @@ Set default options for all screens. Useful for declaring a consistent style acr
 ```js
 Navigation.setDefaultOptions({
   bottomTab: {
-    textColor: "black",
-    selectedTextColor: "blue"
-  }
+    textColor: 'black',
+    selectedTextColor: 'blue',
+  },
 });
 ```
 
 ## `mergeOptions`
 
-Change navigation options of a component.
+Change navigation options of a component or layout.
 
 #### Parameters
 
-| Name        | Type                    | Required | Description      |
-| ----------- | ----------------------- | -------- | ---------------- |
-| componentId | string                  | Yes      | The component id |
-| options     | [Options](options-root.mdx) | Yes      | Options root     |
+| Name        | Type                        | Required | Description                |
+| ----------- | --------------------------- | -------- | -------------------------- |
+| componentId | string                      | Yes      | The component or layout id |
+| options     | [Options](options-root.mdx) | Yes      | Options root               |
 
 #### Example
 
 ```js
 Navigation.mergeOptions('componentId', {
   bottomTabs: {
-    visible: false
-  }
+    visible: false,
+  },
 });
 ```

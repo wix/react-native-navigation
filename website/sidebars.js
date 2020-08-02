@@ -12,6 +12,7 @@ module.exports = {
     Layouts: ['stack', 'bottomTabs', 'sideMenu', 'externalComponent'],
     Hierarchy: ['root', 'modal', 'overlay'],
     Styling: [
+      'style-options',
       'style-theme',
       'style-statusBar',
       'style-orientation',
