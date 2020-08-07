@@ -41,7 +41,7 @@ const darkTheme = {
 };
 
 Appearance.addChangeListener(({ colorScheme }) => {
-  console.log('RNN_', '$colorScheme');
+  console.log('RNN_', `${colorScheme}`);
   if (colorScheme === 'dark') {
     Navigation.setDefaultOptions(darkTheme);
   }
