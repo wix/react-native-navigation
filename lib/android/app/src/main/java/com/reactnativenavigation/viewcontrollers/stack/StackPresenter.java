@@ -168,8 +168,6 @@ public class StackPresenter {
 
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
-        // topBar height = topbar height + toptabs
-//         topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity) + UiUtils.getTopTabHeightDp(activity)));
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get(0));

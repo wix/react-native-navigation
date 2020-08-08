@@ -36,7 +36,7 @@ public class TopTabsOptions {
         result.fontSize = NumberParser.parse(json, "fontSize");
         result.visible = BoolParser.parse(json, "visible");
         result.height = NumberParser.parse(json, "height");
-        result.tabMode = TextParser.parse(json,"tabMode");
+        result.tabMode = TextParser.parse(json, "tabMode");
         return result;
     }
 

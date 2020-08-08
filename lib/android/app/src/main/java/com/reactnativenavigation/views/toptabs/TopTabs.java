@@ -47,7 +47,7 @@ public class TopTabs extends TabLayout {
 
     public void setVisibility(TopBar topBar, boolean visible) {
         if (visible && getTabCount() > 0) {
-            if(getVisibility()!=VISIBLE){
+            if(getVisibility() != VISIBLE){
                 setVisibility(VISIBLE);
                 topBar.addTabsHeightPx(getLayoutParams().height);
             }

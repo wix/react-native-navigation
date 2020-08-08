@@ -64,7 +64,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private void createLayout() {
         setId(CompatUtils.generateViewId());
         setFitsSystemWindows(true);
-        setOrientation(VERTICAL);
         titleBar = createTitleBar(getContext());
         topTabs = createTopTabs();
         border = createBorder();
@@ -81,15 +80,13 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     private LinearLayout createContentLayout() {
         LinearLayout content = new LinearLayout(getContext());
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-        content.setLayoutParams(layoutParams);
         content.setOrientation(VERTICAL);
         return content;
     }
 
     @NonNull
     private TopTabs createTopTabs() {
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(MATCH_PARENT, UiUtils.getTopTabHeight(getContext()));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         TopTabs topTabs = new TopTabs(getContext());
         topTabs.setLayoutParams(lp);
         topTabs.setVisibility(GONE);
@@ -259,7 +256,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void initTopTabs(ViewPager viewPager) {
-//        topTabs.setVisibility(VISIBLE);
         topTabs.init(viewPager);
     }
 
