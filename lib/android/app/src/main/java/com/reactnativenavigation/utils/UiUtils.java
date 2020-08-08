@@ -14,8 +14,10 @@ import androidx.annotation.Nullable;
 
 public class UiUtils {
     private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
+    private static final int DEFAULT_TOP_TAB_HEIGHT = 40;
 
     private static int topBarHeight = -1;
+    private static int topTabHeight = -1;
 
     public static <T extends View> void runOnPreDrawOnce(@Nullable final T view, final Functions.Func1<T> task) {
         if (view == null) return;
@@ -97,6 +99,22 @@ public class UiUtils {
                 resources.getDimensionPixelSize(resourceId) :
                 dpToPx(context, DEFAULT_TOOLBAR_HEIGHT);
         return topBarHeight;
+    }
+
+    public static int getTopTabHeightDp(Context context){
+        return (int) UiUtils.pxToDp(context, getTopTabHeight(context));
+    }
+
+    public static int getTopTabHeight(Context context) {
+        if (topTabHeight > 0) {
+            return topTabHeight;
+        }
+        final Resources resources = context.getResources();
+        final int resourceId = resources.getIdentifier("action_tap_tab_size", "dimen", "android");
+        topTabHeight = resourceId > 0 ?
+                resources.getDimensionPixelSize(resourceId) :
+                dpToPx(context, DEFAULT_TOP_TAB_HEIGHT);
+        return topTabHeight;
     }
 
     public static float dpToPx(Context context, float dp) {

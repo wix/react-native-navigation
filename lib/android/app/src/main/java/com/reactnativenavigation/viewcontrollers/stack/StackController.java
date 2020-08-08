@@ -23,6 +23,7 @@ import com.reactnativenavigation.views.stack.fab.FabMenu;
 import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -419,6 +420,15 @@ public class StackController extends ParentController<StackLayout> {
             if (dependency instanceof Fab || dependency instanceof FabMenu) updateBottomMargin(dependency, getBottomInset());
         });
         return false;
+    }
+
+    @Override
+    public boolean onMeasureChild(CoordinatorLayout parent, ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+        perform(findController(child), controller -> {
+            //before topbar layout setTopMarigin . fix toptabs switch blink
+            if (controller instanceof TopTabsController) presenter.applyTopInsets(this, controller);
+        });
+        return super.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
     }
 
     @Override

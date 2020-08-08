@@ -168,7 +168,8 @@ public class StackPresenter {
 
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
-        topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+        // topBar height = topbar height + toptabs
+//         topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity) + UiUtils.getTopTabHeightDp(activity)));
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get(0));
@@ -330,7 +331,8 @@ public class StackPresenter {
         topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         topBar.applyTopTabsFontSize(options.fontSize);
         topBar.setTopTabsVisible(options.visible.isTrueOrUndefined());
-        topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
+        topBar.setTopTabsHeight(options.height.get(UiUtils.getTopTabHeightDp(activity)));
+        topBar.setTopTabsMode(options.getTabMode());
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
@@ -498,7 +500,8 @@ public class StackPresenter {
         if (options.selectedTabColor.hasValue() && options.unselectedTabColor.hasValue()) topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         if (options.fontSize.hasValue()) topBar.applyTopTabsFontSize(options.fontSize);
         if (options.visible.hasValue()) topBar.setTopTabsVisible(options.visible.isTrue());
-        if (options.height.hasValue()) topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
+        if (options.height.hasValue()) topBar.setTopTabsHeight(options.height.get(UiUtils.getTopTabHeightDp(activity)));
+        if (options.tabMode.hasValue())topBar.setTopTabsMode(options.getTabMode());
     }
 
     private void mergeTopTabOptions(TopTabOptions topTabOptions) {

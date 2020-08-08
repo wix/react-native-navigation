@@ -2,6 +2,8 @@ package com.reactnativenavigation.views.toptabs;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.view.View;
+
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 
@@ -38,14 +40,19 @@ public class TopTabs extends TabLayout {
         styleHelper.applyTopTabsFontSize(fontSize);
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+    }
+
     public void setVisibility(TopBar topBar, boolean visible) {
         if (visible && getTabCount() > 0) {
-            if (getParent() == null) {
-                topBar.addView(this, 1);
+            if(getVisibility()!=VISIBLE){
+                setVisibility(VISIBLE);
+                topBar.addTabsHeightPx(getLayoutParams().height);
             }
-            setVisibility(VISIBLE);
         } else {
-            topBar.removeView(this);
+            setVisibility(GONE);
         }
     }
 

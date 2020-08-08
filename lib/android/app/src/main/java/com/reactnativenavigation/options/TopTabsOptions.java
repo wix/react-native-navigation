@@ -12,6 +12,10 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
+import com.reactnativenavigation.options.parsers.TextParser;
+import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.NullText;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONObject;
 
@@ -22,6 +26,7 @@ public class TopTabsOptions {
     @NonNull public Number fontSize = new NullNumber();
     @NonNull public Bool visible = new NullBool();
     @NonNull public Number height = new NullNumber();
+    @NonNull public Text tabMode = new NullText();
 
     public static TopTabsOptions parse(@Nullable JSONObject json) {
         TopTabsOptions result = new TopTabsOptions();
@@ -31,6 +36,7 @@ public class TopTabsOptions {
         result.fontSize = NumberParser.parse(json, "fontSize");
         result.visible = BoolParser.parse(json, "visible");
         result.height = NumberParser.parse(json, "height");
+        result.tabMode = TextParser.parse(json,"tabMode");
         return result;
     }
 
@@ -40,6 +46,7 @@ public class TopTabsOptions {
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.visible.hasValue()) visible = other.visible;
         if (other.height.hasValue()) height = other.height;
+        if (other.tabMode.hasValue()) tabMode = other.tabMode;
     }
 
     void mergeWithDefault(TopTabsOptions defaultOptions) {
@@ -48,5 +55,21 @@ public class TopTabsOptions {
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!height.hasValue()) height = defaultOptions.height;
+        if (!tabMode.hasValue()) tabMode = defaultOptions.tabMode;
     }
+
+    public int getTabMode() {
+        if(tabMode.hasValue()){
+            switch (tabMode.get()){
+                case "auto":
+                    return TabLayout.MODE_AUTO;
+                case "scrollable":
+                    return TabLayout.MODE_SCROLLABLE;
+                default:
+                    return TabLayout.MODE_FIXED;
+            }
+        }
+        return TabLayout.MODE_FIXED;
+    }
+    
 }

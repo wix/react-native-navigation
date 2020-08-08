@@ -31,9 +31,10 @@ public class TopTabsViewPager extends ViewPager implements Component, ButtonCont
 
     private void initTabs(TopTabsAdapter adapter) {
         setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
-        for (ViewController tab : tabs) {
-            addView(tab.getView(), new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        }
+         //tab.getView() will createView。next step will create large views when page number largest together. let pagerAdapter control view create and destroy
+//        for (ViewController tab : tabs) {
+//            addView(tab.getView(), new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+//        }
         setAdapter(adapter);
         addOnPageChangeListener(adapter);
     }
