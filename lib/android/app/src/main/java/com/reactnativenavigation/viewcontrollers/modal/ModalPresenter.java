@@ -1,13 +1,12 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.utils.ScreenAnimationListener;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import androidx.annotation.Nullable;
@@ -66,15 +65,20 @@ public class ModalPresenter {
     }
 
     private void animateShow(ViewController toAdd, ViewController toRemove, CommandListener listener, Options options) {
-        animator.show(toAdd.getView(), options.animations.showModal, new AnimatorListenerAdapter() {
+        animator.show(toAdd.getView(), options.animations.showModal, new ScreenAnimationListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
+            public void onStart() {
                 toAdd.getView().setAlpha(1);
             }
 
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void onEnd() {
                 onShowModalEnd(toAdd, toRemove, listener);
+            }
+
+            @Override
+            public void onCancel() {
+                listener.onSuccess(toAdd.getId());
             }
         });
     }
@@ -98,9 +102,9 @@ public class ModalPresenter {
         }
         Options options = toDismiss.resolveCurrentOptions(defaultOptions);
         if (options.animations.dismissModal.enabled.isTrueOrUndefined()) {
-            animator.dismiss(toDismiss.getView(), options.animations.dismissModal, new AnimatorListenerAdapter() {
+            animator.dismiss(toDismiss.getView(), options.animations.dismissModal, new ScreenAnimationListener() {
                 @Override
-                public void onAnimationEnd(Animator animation) {
+                public void onEnd() {
                     onDismissEnd(toDismiss, listener);
                 }
             });
