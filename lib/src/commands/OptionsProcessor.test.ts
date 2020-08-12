@@ -134,7 +134,7 @@ describe('navigation options', () => {
     });
   });
 
-  it('supports multiple registered processors of a different kind', () => {
+  it('supports multiple registered processors deep props', () => {
     const options: Options = {
       topBar: {
         visible: false,
