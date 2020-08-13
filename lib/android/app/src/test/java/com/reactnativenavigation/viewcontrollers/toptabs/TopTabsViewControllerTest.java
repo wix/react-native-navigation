@@ -104,14 +104,16 @@ public class TopTabsViewControllerTest extends BaseTest {
     @Test
     public void createsViewFromComponentViewCreator() {
         uut.ensureViewIsCreated();
-        for (int i = 0; i < SIZE; i++) {
-            verify(tabControllers.get(i), times(1)).createView();
+        for (ViewController tabController : tabControllers) {
+            tabController.createView();
+            verify((ComponentViewController)tabController, times(1)).createView();
         }
     }
 
     @Test
     public void componentViewDestroyedOnDestroy() {
         uut.ensureViewIsCreated();
+        uut.onViewWillAppear();
         TopTabsViewPager topTabs = uut.getView();
         for (int i = 0; i < SIZE; i++) {
             verify(tab(topTabs, i), times(0)).destroy();
@@ -143,11 +145,13 @@ public class TopTabsViewControllerTest extends BaseTest {
         stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
         uut.onViewDidAppear();
+        tabControllers.get(0).ensureViewIsCreated();
+        tabControllers.get(1).ensureViewIsCreated();
         uut.switchToTab(1);
         uut.switchToTab(0);
 
         verify(getActualTabView(0), times(1)).sendComponentStop(ComponentType.Component);
-        verify(getActualTabView(0), times(2)).sendComponentStart(ComponentType.Component);
+        verify(getActualTabView(0), times(1)).sendComponentStart(ComponentType.Component);
         verify(getActualTabView(1), times(1)).sendComponentStart(ComponentType.Component);
         verify(getActualTabView(1), times(1)).sendComponentStop(ComponentType.Component);
     }
@@ -232,7 +236,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     }
 
     private IReactView tab(TopTabsViewPager topTabs, final int index) {
-        return (IReactView) ((ViewGroup) topTabs.getChildAt(index)).getChildAt(0);
+        return  (IReactView)((TopTabsAdapter)topTabs.getAdapter()).getItem(index).getChildAt(0);
     }
 
     private String createTabTopBarTitle(int i) {

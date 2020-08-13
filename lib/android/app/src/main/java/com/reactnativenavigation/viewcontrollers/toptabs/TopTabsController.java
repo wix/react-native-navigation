@@ -73,8 +73,8 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     public void onViewDisappear() {
         super.onViewDisappear();
         performOnCurrentTab(ViewController::onViewDisappear);
-        //topTabs child pager click navigation all to overlay or model. Don't clearTopTabs, make topTabs onResume can't show
-        //performOnParentController(ParentController::clearTopTabs);
+        performOnParentController(ParentController::clearTopTabs);
+
     }
 
     @Override

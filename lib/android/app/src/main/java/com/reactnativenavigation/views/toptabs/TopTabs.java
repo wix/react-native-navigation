@@ -47,12 +47,12 @@ public class TopTabs extends TabLayout {
 
     public void setVisibility(TopBar topBar, boolean visible) {
         if (visible && getTabCount() > 0) {
-            if(getVisibility() != VISIBLE){
-                setVisibility(VISIBLE);
-                topBar.addTabsHeightPx(getLayoutParams().height);
+            if(null == getParent()){
+                topBar.addTabs(this);
             }
+            setVisibility(VISIBLE);
         } else {
-            setVisibility(GONE);
+            ViewUtils.removeFromParent(this);
         }
     }
 
@@ -63,5 +63,6 @@ public class TopTabs extends TabLayout {
 
     public void init(ViewPager viewPager) {
         setupWithViewPager(viewPager);
+        post(() -> setScrollPosition(viewPager.getCurrentItem(), 0, true));
     }
 }

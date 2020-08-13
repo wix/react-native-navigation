@@ -257,6 +257,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void initTopTabs(ViewPager viewPager) {
         topTabs.init(viewPager);
+        addTabsHeightPx(topTabs.getLayoutParams().height);
     }
 
     public void enableCollapse(ScrollEventListener scrollEventListener) {
@@ -278,6 +279,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void clearTopTabs() {
         topTabs.clear();
+        addTabsHeightPx(0);
     }
 
     @VisibleForTesting
@@ -311,5 +313,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public boolean containsRightButton(ButtonController button) {
         return titleBar.containsRightButton(button);
+    }
+
+    public void addTabs(TopTabs topTabs) {
+        ((LinearLayout)titleBar.getParent()).addView(topTabs);
     }
 }
