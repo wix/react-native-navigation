@@ -5,15 +5,5 @@
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
             android:exported="false" />
-        <activity
-            android:name="com.reactnativenavigation.PIPActivity"
-            android:launchMode="singleTask"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:autoRemoveFromRecents="true"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:supportsPictureInPicture="true">
-
-        </activity>
     </application>
 </manifest>

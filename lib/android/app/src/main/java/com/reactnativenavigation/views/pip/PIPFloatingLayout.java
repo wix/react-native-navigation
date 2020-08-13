@@ -182,19 +182,23 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         runningAnimation.setStartDelay(delay);
         runningAnimation.start();
         runningAnimation.addListener(new Animator.AnimatorListener() {
+            boolean wasCancelled = false;
+
             @Override
             public void onAnimationStart(Animator animation) {
-
+                wasCancelled = false;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                updatePIPState(PIPStates.CUSTOM_COMPACT);
+                if (!wasCancelled) {
+                    updatePIPState(PIPStates.CUSTOM_COMPACT);
+                }
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-
+                wasCancelled = true;
             }
 
             @Override
@@ -208,19 +212,23 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         runningAnimation = createViewSizeAnimation(pipDimension.compact.height.get(), pipDimension.expanded.height.get(), pipDimension.compact.width.get(), pipDimension.expanded.width.get(), 100);
         runningAnimation.start();
         runningAnimation.addListener(new Animator.AnimatorListener() {
+            boolean wasCancelled = false;
+
             @Override
             public void onAnimationStart(Animator animation) {
-
+                wasCancelled = false;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                updatePIPState(PIPStates.CUSTOM_EXPANDED);
+                if (!wasCancelled) {
+                    updatePIPState(PIPStates.CUSTOM_EXPANDED);
+                }
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-
+                wasCancelled = true;
             }
 
             @Override
@@ -259,7 +267,7 @@ public class PIPFloatingLayout extends CoordinatorLayout {
                 break;
 
         }
-        if (this.pipListener != null) {
+        if (this.pipListener != null && oldState != pipState) {
             this.pipListener.onPIPStateChanged(oldState, pipState);
         }
     }

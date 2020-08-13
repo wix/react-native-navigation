@@ -138,13 +138,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void closePIP(String commandId, Promise promise) {
-        navigator().closePIP(new NativeCommandListener("closePIP", commandId, promise, eventEmitter, now));
+    public void closePIP(String commandId, String componentId, Promise promise) {
+        navigator().closePIP(componentId,new NativeCommandListener("closePIP", commandId, promise, eventEmitter, now));
     }
 
     @ReactMethod
-    public void restorePIP(String commandId, Promise promise) {
-        handle(() -> navigator().restorePIP(commandId, new NativeCommandListener("restorePIP", commandId, promise, eventEmitter, now)));
+    public void restorePIP(String commandId, String stackId, Promise promise) {
+        handle(() -> navigator().restorePIP(stackId, new NativeCommandListener("restorePIP", commandId, promise, eventEmitter, now)));
     }
 
     @ReactMethod

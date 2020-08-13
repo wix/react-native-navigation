@@ -1043,7 +1043,7 @@ export interface NavigationBarOptions {
 export interface PIPOptions {
     actionControlGroup: string;
 
-    actionButtons?: [PIPActionButton];
+    actionButtons?: PIPActionButton[];
 
     customPIP: {
         compact: {

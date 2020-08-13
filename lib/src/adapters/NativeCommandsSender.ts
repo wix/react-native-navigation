@@ -32,11 +32,11 @@ interface NativeCommandsModule {
 
     pushAsPIP(commandId: string, onComponentId: string, component: object): Promise<any>;
 
-    closePIP(commandId: string): Promise<any>;
+    closePIP(commandId: string, componentId: string): Promise<any>;
 
     switchToPIP(commandId: string, componentId: string, options?: object): Promise<any>;
 
-    restorePIP(commandId: string): Promise<any>;
+    restorePIP(commandId: string, componentId: string): Promise<any>;
 
 }
 
@@ -107,15 +107,15 @@ export class NativeCommandsSender {
         return this.nativeCommandsModule.pushAsPIP(commandId, onComponentId, component);
     }
 
-    closePIP(commandId: string) {
-        return this.nativeCommandsModule.closePIP(commandId);
+    closePIP(commandId: string, componentId: string) {
+        return this.nativeCommandsModule.closePIP(commandId, componentId);
     }
 
     switchToPIP(commandId: string, componentId: string, options?: Options) {
         return this.nativeCommandsModule.switchToPIP(commandId, componentId, options);
     }
 
-    restorePIP(commandId: string) {
-        return this.nativeCommandsModule.restorePIP(commandId);
+    restorePIP(commandId: string, componentId: string) {
+        return this.nativeCommandsModule.restorePIP(commandId, componentId);
     }
 }

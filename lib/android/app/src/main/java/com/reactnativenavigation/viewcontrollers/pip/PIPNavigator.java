@@ -79,6 +79,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     }
 
     public void pushPIP(ViewController childController) {
+        closePIP(null);
         this.childController = childController;
         this.childController.setParentController(this);
         View pipView = this.childController.getView();
@@ -90,7 +91,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         floatingLayout.setPipListener(new PIPFloatingLayout.IPIPListener() {
             @Override
             public void onPIPStateChanged(PIPStates oldState, PIPStates newState) {
-                if (!PIPNavigator.this.childController.isDestroyed())
+                if (PIPNavigator.this.childController != null && !PIPNavigator.this.childController.isDestroyed())
                     PIPNavigator.this.childController.sendOnPIPStateChanged(oldState.getValue(), newState.getValue());
             }
         });
@@ -117,13 +118,18 @@ public class PIPNavigator extends ParentController<PIPContainer> {
                     this.childController.detachView();
                     task.run(this.childController);
                     getView().removeAllViews();
+                    PIPNavigator.this.childController = null;
+                    PIPNavigator.this.pipFloatingLayout = null;
                 });
             } else {
                 updatePIPState(PIPStates.NOT_STARTED);
                 this.childController.detachView();
                 task.run(this.childController);
                 getView().removeAllViews();
+                PIPNavigator.this.childController = null;
+                PIPNavigator.this.pipFloatingLayout = null;
             }
+
         }
     }
 
@@ -133,6 +139,9 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         if (pipFloatingLayout != null) {
             pipFloatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);
             pipFloatingLayout.updatePIPState(this.pipState);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && pipState == PIPStates.NATIVE_MOUNTED) {
+                updatePictureInPictureParams();
+            }
         }
     }
 
@@ -159,9 +168,11 @@ public class PIPNavigator extends ParentController<PIPContainer> {
                     PIPNavigator.this.childController.detachView();
                     PIPNavigator.this.childController.onViewWillDisappear();
                     PIPNavigator.this.childController.destroy();
+                    PIPNavigator.this.childController = null;
                     updatePIPState(PIPStates.NOT_STARTED);
                     if (listener != null)
                         listener.onSuccess("PIP Closed");
+                    PIPNavigator.this.childController = null;
                 } else {
                     if (listener != null)
                         listener.onSuccess("PIP is not available");
@@ -187,6 +198,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         return actionList;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Rational getPIPAspectRatio() {
         return childController != null ? new Rational(childController.options.pipOptions.aspectRatio.numerator.get(), childController.options.pipOptions.aspectRatio.denominator.get()) : null;
     }
@@ -216,5 +228,10 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         mPictureInPictureParamsBuilder.setActions(getPIPActionButtons());
         mPictureInPictureParamsBuilder.setAspectRatio(getPIPAspectRatio());
         return mPictureInPictureParamsBuilder.build();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void updatePictureInPictureParams() {
+        getActivity().setPictureInPictureParams(getPictureInPictureParams());
     }
 }

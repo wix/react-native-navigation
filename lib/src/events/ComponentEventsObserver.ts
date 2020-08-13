@@ -39,6 +39,7 @@ export class ComponentEventsObserver {
         this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
         this.notifyScreenPopped = this.notifyScreenPopped.bind(this);
         this.notifyPIPStateChangedEvent = this.notifyPIPStateChangedEvent.bind(this);
+        this.notifyPIPButtonPressedEvent = this.notifyPIPButtonPressedEvent.bind(this);
     }
 
     public registerOnceForAllComponentEvents() {

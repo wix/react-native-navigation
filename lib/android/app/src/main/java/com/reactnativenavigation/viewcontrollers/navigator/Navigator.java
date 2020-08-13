@@ -204,7 +204,7 @@ public class Navigator extends ParentController {
     }
 
     public void restorePIP(String id, CommandListener listener) {
-        applyOnStack(this.lastPushedComponent, listener, stack -> this.pipNavigator.restorePIP(child -> stack.restorePIP(child, new CommandListener() {
+        applyOnStack(id, listener, stack -> this.pipNavigator.restorePIP(child -> stack.restorePIP(child, new CommandListener() {
             @Override
             public void onSuccess(String childId) {
                 listener.onSuccess(childId);
@@ -218,8 +218,10 @@ public class Navigator extends ParentController {
     }
 
 
-    public void closePIP(CommandListener listener) {
-        pipNavigator.closePIP(listener);
+    public void closePIP(String componentId, CommandListener listener) {
+        ViewController childController = pipNavigator.findController(componentId);
+        if (childController != null)
+            pipNavigator.closePIP(listener);
     }
 
     @Override

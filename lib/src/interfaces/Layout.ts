@@ -224,7 +224,7 @@ export interface PIPComponent {
     options: {
         actionControlGroup: string;
 
-        actionButtons?: [PIPActionButton];
+        actionButtons?: PIPActionButton[];
 
         aspectRatio: {
             numerator: number

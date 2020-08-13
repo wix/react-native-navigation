@@ -102,7 +102,7 @@ public class Options {
         result.navigationBar.mergeWith(other.navigationBar);
         result.statusBar.mergeWith(other.statusBar);
         result.layout.mergeWith(other.layout);
-        result.pipOptions.mergeWith(pipOptions);
+        result.pipOptions.mergeWith(other.pipOptions);
         return result;
     }
 

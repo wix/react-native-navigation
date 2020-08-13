@@ -1,7 +1,6 @@
 package com.reactnativenavigation;
 
 import android.annotation.TargetApi;
-import android.app.PictureInPictureParams;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -64,9 +63,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onResume();
         if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             getReactGateway().onActivityResumed(this);
-            if (PIPActivity.Companion.getINSTANCE() != null) {
-                PIPActivity.Companion.getINSTANCE().finish();
-            }
         }
     }
 
@@ -102,7 +98,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (navigator.getPipMode() != PIPStates.NOT_STARTED) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 navigator.onPictureInPictureModeChanged(true, null);
-                enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+                enterPictureInPictureMode(navigator.getPictureInPictureParams());
             }
         }
     }
@@ -117,6 +113,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void invokeDefaultOnBackPressed() {
         if (!navigator.handleBack(new CommandListenerAdapter())) {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (navigator.getPipMode() == PIPStates.NATIVE_MOUNTED) {
+            finish();
         }
     }
 

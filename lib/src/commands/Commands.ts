@@ -181,10 +181,10 @@ export class Commands {
         return result;
     }
 
-    public closePIP() {
+    public closePIP(componentId: string) {
         const commandId = this.uniqueIdProvider.generate('closePIP');
-        const result = this.nativeCommandsSender.closePIP(commandId);
-        this.commandsObserver.notify('closePIP', {commandId});
+        const result = this.nativeCommandsSender.closePIP(commandId, componentId);
+        this.commandsObserver.notify('closePIP', {commandId, componentId});
         return result;
     }
 
@@ -195,10 +195,10 @@ export class Commands {
         return result;
     }
 
-    public restorePIP() {
+    public restorePIP(componentId: string) {
         const commandId = this.uniqueIdProvider.generate('restorePIP');
-        const result = this.nativeCommandsSender.restorePIP(commandId);
-        this.commandsObserver.notify('restorePIP', {commandId});
+        const result = this.nativeCommandsSender.restorePIP(commandId, componentId);
+        this.commandsObserver.notify('restorePIP', {commandId, componentId});
         return result;
     }
 }
