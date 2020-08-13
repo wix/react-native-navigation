@@ -134,6 +134,37 @@ describe('navigation options', () => {
     });
   });
 
+  it('supports multiple registered processors deep props', () => {
+    const options: Options = {
+      topBar: {
+        visible: false,
+        background: {
+          translucent: false,
+        },
+      },
+      bottomTabs: {
+        visible: false,
+      },
+    };
+
+    optionProcessorsRegistry.addProcessor('topBar.visible', () => true);
+    optionProcessorsRegistry.addProcessor('bottomTabs.visible', () => true);
+    optionProcessorsRegistry.addProcessor('topBar.background.translucent', () => true);
+
+    uut.processOptions(options, CommandName.SetRoot);
+    expect(options).toEqual({
+      topBar: {
+        visible: true,
+        background: {
+          translucent: true,
+        },
+      },
+      bottomTabs: {
+        visible: true,
+      },
+    });
+  });
+
   it('processes color keys', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'red' },

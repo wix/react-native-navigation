@@ -1,10 +1,10 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.view.View;
 
 import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.utils.ScreenAnimationListener;
 
 public class ModalAnimatorMock extends ModalAnimator {
 
@@ -13,22 +13,22 @@ public class ModalAnimatorMock extends ModalAnimator {
     }
 
     @Override
-    public void show(View view, AnimationOptions show, AnimatorListenerAdapter listener) {
+    public void show(View view, AnimationOptions show, ScreenAnimationListener listener) {
         try {
-            listener.onAnimationStart(null);
+            listener.onStart();
             Thread.sleep(10);
-            listener.onAnimationEnd(null);
+            listener.onEnd();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void dismiss(View view, AnimationOptions dismiss, AnimatorListenerAdapter listener) {
+    public void dismiss(View view, AnimationOptions dismiss, ScreenAnimationListener listener) {
         try {
-            listener.onAnimationStart(null);
+            listener.onStart();
             Thread.sleep(10);
-            listener.onAnimationEnd(null);
+            listener.onEnd();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
