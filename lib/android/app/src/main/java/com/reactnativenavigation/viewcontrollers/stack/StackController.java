@@ -314,7 +314,7 @@ public class StackController extends ParentController<StackLayout> {
 
     public void popToRoot(Options mergeOptions, CommandListener listener) {
         if (!canPop()) {
-            listener.onError("Nothing to pop");
+            listener.onSuccess("");
             return;
         }
 
