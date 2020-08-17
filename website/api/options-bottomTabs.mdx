@@ -6,13 +6,12 @@ sidebar_label: Bottom Tabs
 
 ```js
 const options = {
-  bottomTabs: {
-
-  }
-}
+  bottomTabs: {},
+};
 ```
 
 ## `animate`
+
 Controls whether toggling visibility states will be animated.
 
 | Type    | Required | Platform |
@@ -20,6 +19,7 @@ Controls whether toggling visibility states will be animated.
 | boolean | No       | Both     |
 
 ## `backgroundColor`
+
 Change the background color.
 
 | Type  | Required | Platform |
@@ -27,6 +27,7 @@ Change the background color.
 | color | No       | Both     |
 
 ## `barStyle`
+
 Controls whether the BottomTabs use dark (black) or light (default) visual style. Requires `translucent: true`.
 
 | Type                    | Required | Platform |
@@ -34,6 +35,7 @@ Controls whether the BottomTabs use dark (black) or light (default) visual style
 | enum('default','black') | No       | Both     |
 
 ## `currentTabId`
+
 Select a tab by the id (componentId) of a child contained in it. See [Selecting tabs programmatically](#selectingtabsprogrammatically) for a detailed explanation.
 
 | Type   | Required | Platform |
@@ -65,6 +67,7 @@ Select a tab by the id (componentId) of a child contained in it. See [Selecting 
 | boolean | No       | iOS      |
 
 ## `hideOnScroll`
+
 Hides the BottomTabs on scroll to increase the amount of content visible to the user.
 The options requires that the scrollable view will be the root view of the screen and that it specifies `nestedScrollEnabled: true`.
 
@@ -97,6 +100,8 @@ The options requires that the scrollable view will be the root view of the scree
 | enum('alwaysShow','showWhenActive','alwaysHide') | No       | Both    |
 
 ## `translucent`
+
+A Boolean value that indicates whether the BottomTabs are translucent. For this option to function as expected the screen needs to be drawn behind the BottomTabs; Make sure the list component you're using (FlatList for example) is the root component in the screen and not SafeAreaView. When SafeAreView is the root component it shifts the content above the BottomTabs and the translucent effect isn't visible.
 
 | Type    | Required | Platform |
 | ------- | -------- | -------- |
