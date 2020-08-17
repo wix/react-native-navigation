@@ -35,7 +35,7 @@ export default class ButtonOptions extends NavigationComponent {
             name: Screens.ReactTitleView,
             alignment: 'fill',
             passProps: {
-              text: 'Buttons Screen',
+              text: 'Buttons',
               clickable: false,
             },
           },
