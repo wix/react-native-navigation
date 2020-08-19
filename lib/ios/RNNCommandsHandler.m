@@ -108,7 +108,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_controllerFactory setDefaultOptions:defaultOptions];
 	
 	UIViewController *rootViewController = UIApplication.sharedApplication.delegate.window.rootViewController;
-	[RNNDefaultOptionsHelper recrusivelySetDefaultOptions:defaultOptions onRootViewController:rootViewController];
+	[RNNDefaultOptionsHelper recursivelySetDefaultOptions:defaultOptions onRootViewController:rootViewController];
 
 	completion();
 }
