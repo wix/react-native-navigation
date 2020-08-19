@@ -1,7 +1,9 @@
 // tslint:disable jsdoc-format
 import { ImageRequireSource, Insets } from 'react-native';
 
-type Color = string;
+// TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
+// Only assign PlatformColor or DynamicColorIOS as a Color symbol!
+declare type Color = string | symbol;
 type FontFamily = string;
 type FontWeight =
   | 'regular'
