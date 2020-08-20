@@ -1,6 +1,8 @@
 package com.reactnativenavigation.options;
 
 
+import android.content.Context;
+
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullBool;
@@ -18,23 +20,23 @@ import java.util.ArrayList;
 
 public class FabOptions {
 
-    public static FabOptions parse(JSONObject json) {
+    public static FabOptions parse(Context context, JSONObject json) {
         FabOptions options = new FabOptions();
         if (json == null) return options;
 
         options.id = TextParser.parse(json, "id");
-        options.backgroundColor = ColorParser.parse(json, "backgroundColor");
-        options.clickColor = ColorParser.parse(json, "clickColor");
-        options.rippleColor = ColorParser.parse(json, "rippleColor");
+        options.backgroundColor = ColorParser.parse(context, json, "backgroundColor");
+        options.clickColor = ColorParser.parse(context, json, "clickColor");
+        options.rippleColor = ColorParser.parse(context, json, "rippleColor");
         options.visible = BoolParser.parse(json, "visible");
         if (json.has("icon")) {
             options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
-        options.iconColor = ColorParser.parse(json, "iconColor");
+        options.iconColor = ColorParser.parse(context, json, "iconColor");
         if (json.has("actions")) {
             JSONArray fabsArray = json.optJSONArray("actions");
             for (int i = 0; i < fabsArray.length(); i++) {
-                options.actionsArray.add(FabOptions.parse(fabsArray.optJSONObject(i)));
+                options.actionsArray.add(FabOptions.parse(context, fabsArray.optJSONObject(i)));
             }
         }
         options.alignHorizontally = TextParser.parse(json, "alignHorizontally");

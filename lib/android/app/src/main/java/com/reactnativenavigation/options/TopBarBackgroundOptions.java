@@ -1,5 +1,6 @@
 package com.reactnativenavigation.options;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import com.reactnativenavigation.options.params.Bool;
@@ -12,11 +13,11 @@ import com.reactnativenavigation.options.parsers.ColorParser;
 import org.json.JSONObject;
 
 public class TopBarBackgroundOptions {
-    public static TopBarBackgroundOptions parse(JSONObject json) {
+    public static TopBarBackgroundOptions parse(Context context, JSONObject json) {
         TopBarBackgroundOptions options = new TopBarBackgroundOptions();
         if (json == null) return options;
 
-        options.color = ColorParser.parse(json, "color");
+        options.color = ColorParser.parse(context, json, "color");
         options.component = ComponentOptions.parse(json.optJSONObject("component"));
         options.waitForRender = BoolParser.parse(json, "waitForRender");
 
