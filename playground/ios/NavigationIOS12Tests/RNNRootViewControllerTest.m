@@ -34,6 +34,7 @@
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNComponentViewController* uut;
+@property (nonatomic, strong) RNNComponentPresenter* presenter;
 @end
 
 @implementation RNNRootViewControllerTest
@@ -50,8 +51,8 @@
 	layoutInfo.componentId = self.componentId;
 	layoutInfo.name = self.pageName;
 	
-	id presenter = [OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil]];
-	self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:presenter options:self.options defaultOptions:nil];
+	self.presenter = [OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil]];
+	self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:self.options defaultOptions:nil];
 }
 
 -(void)testTopBarBackgroundColor_validColor{
