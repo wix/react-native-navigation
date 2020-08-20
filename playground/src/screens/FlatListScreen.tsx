@@ -1,9 +1,11 @@
 import React from 'react';
-import { SafeAreaView, FlatList, View, Text } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import {
   Navigation,
   NavigationComponentProps,
   NavigationButtonPressedEvent,
+  NavigationComponent,
+  Options,
 } from 'react-native-navigation';
 
 const FakeListData: { data: FakeDataItem[] } = require('../assets/FakeListData');
@@ -21,8 +23,8 @@ type FakeDataItem = {
   gender: string;
 };
 
-export default class FlatListScreen extends React.Component<NavigationComponentProps, State> {
-  static options() {
+export default class FlatListScreen extends NavigationComponent<NavigationComponentProps, State> {
+  static options(): Options {
     return {
       topBar: {
         title: {
@@ -51,6 +53,9 @@ export default class FlatListScreen extends React.Component<NavigationComponentP
             icon: require('../../img/one.png'),
           },
         ],
+      },
+      bottomTabs: {
+        translucent: true,
       },
     };
   }
@@ -115,16 +120,14 @@ export default class FlatListScreen extends React.Component<NavigationComponentP
 
   render() {
     return (
-      <SafeAreaView style={styles.root}>
-        <FlatList
-          data={FakeListData.data}
-          keyExtractor={this.keyExtractor}
-          onRefresh={this.onRefresh}
-          ItemSeparatorComponent={this.seperatorComponent}
-          refreshing={this.state.isFetching}
-          renderItem={this.renderItem}
-        />
-      </SafeAreaView>
+      <FlatList
+        data={FakeListData.data}
+        keyExtractor={this.keyExtractor}
+        onRefresh={this.onRefresh}
+        ItemSeparatorComponent={this.seperatorComponent}
+        refreshing={this.state.isFetching}
+        renderItem={this.renderItem}
+      />
     );
   }
 }

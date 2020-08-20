@@ -1,4 +1,5 @@
 #import "RNNComponentViewController.h"
+#import "UIView+Utils.h"
 
 @implementation RNNComponentViewController
 
@@ -36,6 +37,9 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self componentDidDisappear];
+    
+    // Fix's momentum scroll bug https://github.com/wix/react-native-navigation/issues/4325
+    [self.view stopMomentumScrollViews];
 }
 
 - (void)loadView {

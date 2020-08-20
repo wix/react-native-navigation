@@ -1,5 +1,29 @@
 # Changelog
 
+# 6.12.0
+
+## Added
+
+### iOS
+
+- Enable PlatformColor / DynamicColorIOS for iOS [#57519ca](https://github.com/wix/react-native-navigation/commit/57519cab1cac1a4c6ebe9165db3bd4a4449d3720) by [danilobuerger](https://github.com/danilobuerger)
+
+## Fixed
+
+- Fix option processors path resolving [#f37d465](https://github.com/wix/react-native-navigation/commit/f37d465dd7339f4e9eca4e6c27be883e711b7ff2) by [yogevbd](https://github.com/yogevbd)
+
+### Android
+
+- Fix white screen when back was pressed during show modal animation [#58f72f8](https://github.com/wix/react-native-navigation/commit/58f72f8033f703b1f83c935fce7c70e67dd9b5c2) by [guyca](https://github.com/guyca)
+- Fix issue where right buttons which were added with mergeOptions were not unmounted [#3c5e8e4](https://github.com/wix/react-native-navigation/commit/3c5e8e4454edef3220fa9f40025b6703446d76fa) by [guyca](https://github.com/guyca)
+- Resole popToRoot promise successfully even when it's called while there's nothing to pop [#ec2b0a0](https://github.com/wix/react-native-navigation/commit/ec2b0a0e367f99807c0c67068cbcff40e6cb23a7) by [guyca](https://github.com/guyca)
+- Resize title component when buttons are added to TopBar [#a66e8e9](https://github.com/wix/react-native-navigation/commit/a66e8e93b456ec911aed7a5a49c14ea0a689c0b9) by [guyca](https://github.com/guyca)
+
+### iOS
+
+- Fix bug where screen became unresponsive if user tried to interact with elements during momentum scroll [#cb74af5](https://github.com/wix/react-native-navigation/commit/cb74af57f0bea7f2a4517e1f7b14959af8a79f20) by [yogevbd](https://github.com/yogevbd)
+- Fix category warnings for RNNInterpolationOptions [#a13698b](https://github.com/wix/react-native-navigation/commit/a13698b0863c46fc2f708e7e6eae3f37d5f55237) by [danilobuerger](https://github.com/danilobuerger)
+
 # 6.11.0
 
 ## Added
