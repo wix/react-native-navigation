@@ -1020,6 +1020,18 @@ export interface StackAnimationOptions {
 }
 
 /**
+ * Used for describing push-specific animations.
+ */
+export type PushAnimationOptions = {
+  /**
+   * Blurs the currently focused responder on push.
+   * #### (iOS specific)
+   * @default false
+   */
+  blur?: boolean;
+} & StackAnimationOptions;
+
+/**
  * Used for configuring command animations
  */
 export interface AnimationOptions {
@@ -1034,7 +1046,7 @@ export interface AnimationOptions {
   /**
    * Configure what animates when a screen is pushed
    */
-  push?: StackAnimationOptions;
+  push?: PushAnimationOptions;
   /**
    * Configure what animates when a screen is popped
    */

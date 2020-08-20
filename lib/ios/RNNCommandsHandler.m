@@ -120,6 +120,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	UIViewController *newVc = [_controllerFactory createLayout:layout];
 	UIViewController *fromVC = [RNNLayoutManager findComponentForId:componentId];
 	
+    if ([newVc.resolveOptionsWithDefault.animations.push.blur getWithDefaultValue:NO]) {
+        __weak UIViewController* weakFromVC = fromVC;
+        RCTExecuteOnMainQueue(^{
+            [weakFromVC.view endEditing:true];
+        });
+    }
+
 	if ([[newVc.resolveOptionsWithDefault.preview.reactTag getWithDefaultValue:@(0)] floatValue] > 0) {
 		if ([fromVC isKindOfClass:[RNNComponentViewController class]]) {
 			RNNComponentViewController* rootVc = (RNNComponentViewController*)fromVC;

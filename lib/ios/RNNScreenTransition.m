@@ -12,6 +12,7 @@
 	self.enable = [BoolParser parse:dict key:@"enabled"];
 	self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
     self.duration = [TimeIntervalParser parse:dict key:@"duration"];
+    self.blur = [BoolParser parse:dict key:@"blur"];
     self.sharedElementTransitions = [OptionsArrayParser parse:dict key:@"sharedElementTransitions" ofClass:SharedElementTransitionOptions.class];
 	self.elementTransitions = [OptionsArrayParser parse:dict key:@"elementTransitions" ofClass:ElementTransitionOptions.class];
     

@@ -14,6 +14,8 @@
 @property (nonatomic, strong) Bool* waitForRender;
 @property (nonatomic, strong) TimeInterval* duration;
 
+@property (nonatomic, strong) Bool* blur;
+
 - (BOOL)hasCustomAnimation;
 - (BOOL)shouldWaitForRender;
 - (NSTimeInterval)maxDuration;
