@@ -214,7 +214,6 @@
 	XCTAssertEqual(uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
 }
 
-
 - (void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
 	self.options.topBar.largeTitle.fontSize = [[Number alloc] initWithValue:topBarTextFontSizeInput];
