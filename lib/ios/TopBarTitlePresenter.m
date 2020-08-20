@@ -8,16 +8,16 @@
     RNNTitleViewHelper* _titleViewHelper;
 }
 
-- (void)applyOptions:(RNNTopBarOptions *)options {
-	[self updateTitleWithOptions:options];
+- (void)applyOptionsOnInit:(RNNTopBarOptions *)initialOptions {
+    [self updateTitleWithOptions:initialOptions];
 }
 
 - (void)updateTitleWithOptions:(RNNTopBarOptions *)options {
     if (options.title.component.hasValue) {
         [self setCustomNavigationTitleView:options perform:nil];
-    }else if (options.subtitle.text.hasValue) {
+    } else if (options.subtitle.text.hasValue) {
         [self setTitleViewWithSubtitle:options];
-    }else if (options.title.text.hasValue) {
+    } else if (options.title.text.hasValue) {
         [self removeTitleComponents];
         self.boundViewController.navigationItem.title = options.title.text.get;
     }
