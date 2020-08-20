@@ -217,6 +217,7 @@
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 - (void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withTextColor {
@@ -231,6 +232,8 @@
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
 - (void)testTopBarLargeTitleFontSize_withTextFontFamily_withTextColor {
@@ -258,6 +261,7 @@
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 
