@@ -18,7 +18,7 @@ module.exports = {
         alt: 'React Native Navigation Logo',
         src: 'img/logo.png',
       },
-      links: [
+      items: [
         { to: 'docs/before-you-start', label: 'Docs', position: 'left', activeBasePath: 'docs' },
         { to: 'api/component', label: 'API', position: 'left', activeBasePath: 'api' },
         {
