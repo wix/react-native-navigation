@@ -172,22 +172,6 @@ export class Commands {
         return result;
     }
 
-    public pushAsPIP(componentId: string, component: Layout) {
-        const input = cloneDeep(component);
-        const layout = this.layoutTreeParser.parse(input);
-        const commandId = this.uniqueIdProvider.generate('pushAsPIP');
-        const result = this.nativeCommandsSender.pushAsPIP(commandId, componentId, layout);
-        this.commandsObserver.notify('pushAsPIP', {commandId, componentId, layout});
-        return result;
-    }
-
-    public closePIP(componentId: string) {
-        const commandId = this.uniqueIdProvider.generate('closePIP');
-        const result = this.nativeCommandsSender.closePIP(commandId, componentId);
-        this.commandsObserver.notify('closePIP', {commandId, componentId});
-        return result;
-    }
-
     public switchToPIP(componentId: string, mergeOptions?: Options) {
         const commandId = this.uniqueIdProvider.generate('switchToPIP');
         const result = this.nativeCommandsSender.switchToPIP(commandId, componentId, mergeOptions);
@@ -199,6 +183,23 @@ export class Commands {
         const commandId = this.uniqueIdProvider.generate('restorePIP');
         const result = this.nativeCommandsSender.restorePIP(commandId, componentId);
         this.commandsObserver.notify('restorePIP', {commandId, componentId});
+        return result;
+    }
+
+    public closePIP(componentId: string) {
+        const commandId = this.uniqueIdProvider.generate('closePIP');
+        const result = this.nativeCommandsSender.closePIP(commandId, componentId);
+        this.commandsObserver.notify('closePIP', {commandId, componentId});
+        return result;
+    }
+
+    public pushAsPIP(componentId: string, simpleApi: Layout) {
+        const input = cloneDeep(simpleApi);
+        const layout = this.layoutTreeParser.parse(input);
+        const commandId = this.uniqueIdProvider.generate('pushAsPIP');
+        this.layoutTreeCrawler.crawl(layout);
+        const result = this.nativeCommandsSender.pushAsPIP(commandId, componentId, layout);
+        this.commandsObserver.notify('pushAsPIP', {commandId, componentId, layout});
         return result;
     }
 }

@@ -57,8 +57,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     @NonNull
     @Override
     protected PIPContainer createView() {
-        PIPContainer containerLayout = new PIPContainer(getActivity());
-        return containerLayout;
+        return new PIPContainer(getActivity());
     }
 
     @Override
@@ -68,6 +67,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
 
     public void setContentLayout(ViewGroup contentLayout) {
         contentLayout.addView(getView());
+        getView().setVisibility(View.GONE);
     }
 
     @NonNull
@@ -80,10 +80,10 @@ public class PIPNavigator extends ParentController<PIPContainer> {
 
     public void pushPIP(ViewController childController) {
         closePIP(null);
+        getView().setVisibility(View.VISIBLE);
         this.childController = childController;
         this.childController.setParentController(this);
         View pipView = this.childController.getView();
-        getView().removeAllViews();
         updatePIPState(PIPStates.MOUNT_START);
         PIPFloatingLayout floatingLayout = new PIPFloatingLayout(getActivity());
         floatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);
@@ -117,17 +117,13 @@ public class PIPNavigator extends ParentController<PIPContainer> {
                     updatePIPState(PIPStates.NOT_STARTED);
                     this.childController.detachView();
                     task.run(this.childController);
-                    getView().removeAllViews();
-                    PIPNavigator.this.childController = null;
-                    PIPNavigator.this.pipFloatingLayout = null;
+                    clearPIP();
                 });
             } else {
                 updatePIPState(PIPStates.NOT_STARTED);
                 this.childController.detachView();
                 task.run(this.childController);
-                getView().removeAllViews();
-                PIPNavigator.this.childController = null;
-                PIPNavigator.this.pipFloatingLayout = null;
+                clearPIP();
             }
 
         }
@@ -168,17 +164,23 @@ public class PIPNavigator extends ParentController<PIPContainer> {
                     PIPNavigator.this.childController.detachView();
                     PIPNavigator.this.childController.onViewWillDisappear();
                     PIPNavigator.this.childController.destroy();
-                    PIPNavigator.this.childController = null;
                     updatePIPState(PIPStates.NOT_STARTED);
                     if (listener != null)
                         listener.onSuccess("PIP Closed");
-                    PIPNavigator.this.childController = null;
+                    clearPIP();
                 } else {
                     if (listener != null)
                         listener.onSuccess("PIP is not available");
                 }
             }
         });
+    }
+
+    private void clearPIP() {
+        getView().removeAllViews();
+        PIPNavigator.this.childController = null;
+        PIPNavigator.this.pipFloatingLayout = null;
+        getView().setVisibility(View.GONE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin">16dp</dimen>
+    <dimen name="pip_dismiss_gradient_height">176dp</dimen>
+    <dimen name="pip_dismiss_text_bottom_margin">24dp</dimen>
 </resources>

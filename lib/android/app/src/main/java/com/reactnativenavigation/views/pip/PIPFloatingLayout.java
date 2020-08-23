@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -31,10 +32,17 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     private CustomPIPDimension pipDimension;
     private IPIPListener pipListener;
     private AnimatorSet runningAnimation;
+    private boolean mDownTouch = false;
+    private int mTouchSlop;
+    private float mPrevRawX = 0;
+    private boolean mIsMoving = false;
+    private int mMoveCount = 0;
 
     public PIPFloatingLayout(@NonNull Activity activity) {
         super(activity);
         this.activity = activity;
+        ViewConfiguration vc = ViewConfiguration.get(this.getContext());
+        mTouchSlop = vc.getScaledTouchSlop();
     }
 
     public PIPFloatingLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -51,15 +59,35 @@ public class PIPFloatingLayout extends CoordinatorLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
+        boolean shouldIntercept = false;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                mPrevRawX = event.getRawX();
+                shouldIntercept = shouldInterceptTouchEvent();
+                break;
             case MotionEvent.ACTION_UP:
-                return shouldInterceptTouchEvent();
+                mPrevRawX = Integer.MIN_VALUE;
+                mIsMoving = false;
+                shouldIntercept = shouldInterceptTouchEvent();
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                mPrevRawX = Integer.MIN_VALUE;
+                mIsMoving = false;
+                break;
             case MotionEvent.ACTION_MOVE:
-                return true;
-            default:
-                return false;
+                if (mIsMoving) {
+                    shouldIntercept = true;
+                } else if (mPrevRawX != Integer.MIN_VALUE) {
+                    int xDiff = (int) (event.getRawX() - mPrevRawX);
+                    if (xDiff < 0) xDiff = -xDiff;
+                    if (xDiff > mTouchSlop) {
+                        mIsMoving = true;
+                        shouldIntercept = true;
+                    }
+                }
+                break;
         }
+        return shouldIntercept;
     }
 
     @Override
@@ -71,31 +99,38 @@ public class PIPFloatingLayout extends CoordinatorLayout {
                     dX = getX() - event.getRawX();
                     dY = getY() - event.getRawY();
                     isHandled = true;
+                    mDownTouch = true;
                 }
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                float halfWidth = getWidth() / 2.0f;
-                float halfHeight = getHeight() / 2.0f;
-                float destX = event.getRawX() + dX - halfWidth;
-                float destY = event.getRawY() + dY - halfHeight;
-                if (destX < 0) {
-                    destX = 0;
+                mMoveCount++;
+                if (mMoveCount > 5) {
+                    float halfWidth = getWidth() / 2.0f;
+                    float halfHeight = getHeight() / 2.0f;
+                    float destX = event.getRawX() + dX - halfWidth;
+                    float destY = event.getRawY() + dY - halfHeight;
+                    if (destX < 0) {
+                        destX = 0;
+                    }
+                    if ((destX + getWidth()) > UiUtils.getWindowWidth(getContext())) {
+                        destX = UiUtils.getWindowWidth(getContext()) - getWidth();
+                    }
+                    if (destY < 0) {
+                        destY = 0;
+                    }
+                    if ((destY + getHeight()) > UiUtils.getWindowHeight(getContext())) {
+                        destY = UiUtils.getWindowHeight(getContext()) - getHeight();
+                    }
+                    animate().x(destX).y(destY).setDuration(0).start();
+                    mDownTouch = false;
                 }
-                if ((destX + getWidth()) > UiUtils.getWindowWidth(getContext())) {
-                    destX = UiUtils.getWindowWidth(getContext()) - getWidth();
-                }
-                if (destY < 0) {
-                    destY = 0;
-                }
-                if ((destY + getHeight()) > UiUtils.getWindowHeight(getContext())) {
-                    destY = UiUtils.getWindowHeight(getContext()) - getHeight();
-                }
-                animate().x(destX).y(destY).setDuration(0).start();
                 isHandled = true;
                 break;
             case MotionEvent.ACTION_UP:
-                if (shouldInterceptTouchEvent()) {
+                mMoveCount = 0;
+                if (mDownTouch && shouldInterceptTouchEvent()) {
+                    mDownTouch = false;
                     isHandled = true;
                     animateToExpand();
                 }
@@ -105,12 +140,12 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     }
 
     private void setNativePIPMode() {
-        dX = 0;
-        dY = 0;
-        animate().x(0).y(0).setDuration(0).start();
         Point loc = ViewUtils.getLocationOnScreen(this);
         this.pipLayoutLeft = loc.x;
         this.pipLayoutTop = loc.y;
+        dX = 0;
+        dY = 0;
+        animate().x(0).y(0).setDuration(0).start();
         this.layoutParams = (FrameLayout.LayoutParams) getLayoutParams();
         FrameLayout.LayoutParams pipLayoutLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         pipLayoutLayoutParams.setMargins(0, 0, 0, 0);
@@ -241,36 +276,39 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     public void updatePIPState(PIPStates pipState) {
         PIPStates oldState = this.pipState;
         this.pipState = pipState;
-        switch (this.pipState) {
-            case NOT_STARTED:
-                resetPIPLayout();
-                break;
-            case MOUNT_START:
-                resetPIPLayout();
-                initializeCustomLayoutParams();
-                setCustomPIPMode();
-                break;
-            case CUSTOM_COMPACT:
-                setCustomCompactState();
-                break;
-            case CUSTOM_EXPANDED:
-                setCustomExpandedState();
-                break;
-            case NATIVE_MOUNTED:
-                cancelAnimations();
-                setNativePIPMode();
-                break;
-            case CUSTOM_MOUNTED:
-                setCustomPIPMode();
-                setCustomCompactState();
-                animateToExpand();
-                break;
+        if (oldState != pipState) {
+            switch (this.pipState) {
+                case NOT_STARTED:
+                    resetPIPLayout();
+                    break;
+                case MOUNT_START:
+                    resetPIPLayout();
+                    initializeCustomLayoutParams();
+                    setCustomPIPMode();
+                    break;
+                case CUSTOM_COMPACT:
+                    setCustomCompactState();
+                    break;
+                case CUSTOM_EXPANDED:
+                    setCustomExpandedState();
+                    break;
+                case NATIVE_MOUNTED:
+                    cancelAnimations();
+                    setNativePIPMode();
+                    break;
+                case CUSTOM_MOUNTED:
+                    setCustomPIPMode();
+                    setCustomCompactState();
+                    animateToExpand();
+                    break;
 
-        }
-        if (this.pipListener != null && oldState != pipState) {
-            this.pipListener.onPIPStateChanged(oldState, pipState);
+            }
+            if (this.pipListener != null) {
+                this.pipListener.onPIPStateChanged(oldState, pipState);
+            }
         }
     }
+
 
     @Override
     public void addView(View child) {

@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.pip;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -14,5 +15,10 @@ public class PIPContainer extends FrameLayout {
         layoutParams.setMargins(0, 0, 0, 0);
         setBackgroundColor(Color.TRANSPARENT);
         setLayoutParams(layoutParams);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return false;
     }
 }
