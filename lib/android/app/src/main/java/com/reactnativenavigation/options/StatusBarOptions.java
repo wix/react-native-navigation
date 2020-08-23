@@ -1,5 +1,7 @@
 package com.reactnativenavigation.options;
 
+import android.content.Context;
+
 import androidx.annotation.Nullable;
 
 import com.reactnativenavigation.options.params.Bool;
@@ -38,11 +40,11 @@ public class StatusBarOptions {
         }
     }
 
-    public static StatusBarOptions parse(JSONObject json) {
+    public static StatusBarOptions parse(Context context, JSONObject json) {
         StatusBarOptions result = new StatusBarOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ColorParser.parse(json, "backgroundColor");
+        result.backgroundColor = ColorParser.parse(context, json, "backgroundColor");
         result.textColorScheme = TextColorScheme.fromString(json.optString("style"));
         result.visible = BoolParser.parse(json, "visible");
         result.drawBehind = BoolParser.parse(json, "drawBehind");

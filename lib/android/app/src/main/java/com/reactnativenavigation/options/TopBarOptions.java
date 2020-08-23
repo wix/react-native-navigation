@@ -1,6 +1,7 @@
 package com.reactnativenavigation.options;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import com.reactnativenavigation.BuildConfig;
@@ -25,29 +26,29 @@ import org.json.JSONObject;
 
 public class TopBarOptions {
 
-    public static TopBarOptions parse(TypefaceLoader typefaceLoader, JSONObject json) {
+    public static TopBarOptions parse(Context context, TypefaceLoader typefaceLoader, JSONObject json) {
         TopBarOptions options = new TopBarOptions();
         if (json == null) return options;
 
-        options.title = TitleOptions.parse(typefaceLoader, json.optJSONObject("title"));
-        options.subtitle = SubtitleOptions.parse(typefaceLoader, json.optJSONObject("subtitle"));
-        options.background = TopBarBackgroundOptions.parse(json.optJSONObject("background"));
+        options.title = TitleOptions.parse(context, typefaceLoader, json.optJSONObject("title"));
+        options.subtitle = SubtitleOptions.parse(context, typefaceLoader, json.optJSONObject("subtitle"));
+        options.background = TopBarBackgroundOptions.parse(context, json.optJSONObject("background"));
         options.visible = BoolParser.parse(json, "visible");
         options.animate = BoolParser.parse(json,"animate");
         options.hideOnScroll = BoolParser.parse(json,"hideOnScroll");
         options.drawBehind = BoolParser.parse(json,"drawBehind");
         options.testId = TextParser.parse(json, "testID");
         options.height = NumberParser.parse(json, "height");
-        options.borderColor = ColorParser.parse(json, "borderColor");
+        options.borderColor = ColorParser.parse(context, json, "borderColor");
         options.borderHeight = FractionParser.parse(json, "borderHeight");
         options.elevation = FractionParser.parse(json, "elevation");
         options.topMargin = NumberParser.parse(json, "topMargin");
-        options.buttons = TopBarButtons.parse(typefaceLoader, json);
+        options.buttons = TopBarButtons.parse(context, typefaceLoader, json);
 
-        options.rightButtonColor = ColorParser.parse(json, "rightButtonColor");
-        options.leftButtonColor = ColorParser.parse(json, "leftButtonColor");
-        options.leftButtonDisabledColor = ColorParser.parse(json, "leftButtonDisabledColor");
-        options.rightButtonDisabledColor = ColorParser.parse(json, "rightButtonDisabledColor");
+        options.rightButtonColor = ColorParser.parse(context, json, "rightButtonColor");
+        options.leftButtonColor = ColorParser.parse(context, json, "leftButtonColor");
+        options.leftButtonDisabledColor = ColorParser.parse(context, json, "leftButtonDisabledColor");
+        options.rightButtonDisabledColor = ColorParser.parse(context, json, "rightButtonDisabledColor");
 
         options.validate();
         return options;
