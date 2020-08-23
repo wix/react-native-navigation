@@ -219,7 +219,7 @@
 	[[[UIApplication sharedApplication] keyWindow] setRootViewController:_uut];
 	[_uut pushViewController:pushedController animated:NO];
 	[pushedController viewDidAppear:YES];
-	XCTAssertTrue([[[_uut.navigationBar.subviews[2] subviews][0] valueForKey:@"accessibilityIdentifier"] isEqualToString:@"TestID"]);
+	XCTAssertTrue([[[_uut.navigationBar.subviews[1] subviews][0] valueForKey:@"accessibilityIdentifier"] isEqualToString:@"TestID"]);
 }
 
 - (RNNStackController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {

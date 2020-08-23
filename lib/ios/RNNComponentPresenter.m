@@ -52,7 +52,6 @@
     UIViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [viewController setBackgroundImage:[withDefault.backgroundImage getWithDefaultValue:nil]];
-    [viewController setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
     [viewController setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor getWithDefaultValue:nil]];
     [viewController setStatusBarBlur:[withDefault.statusBar.blur getWithDefaultValue:NO]];
     [viewController setStatusBarStyle:[withDefault.statusBar.style getWithDefaultValue:@"default"] animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
@@ -72,8 +71,6 @@
         }
         [viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
     }
-    
-    [_topBarTitlePresenter applyOptions:withDefault.topBar];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
@@ -82,9 +79,12 @@
     UIViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     
+    [_topBarTitlePresenter applyOptionsOnInit:withDefault.topBar];
+    
+    [viewController setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
     [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
     [viewController setDrawBehindTabBar:[withDefault.bottomTabs shouldDrawBehind]];
-    
+
     if ((withDefault.topBar.leftButtons || withDefault.topBar.rightButtons)) {
         [_navigationButtons applyLeftButtons:withDefault.topBar.leftButtons rightButtons:withDefault.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
     }
