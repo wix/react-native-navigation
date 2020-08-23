@@ -8,5 +8,12 @@
 //	}
 //}
 
+- (instancetype)initWithDict:(NSDictionary *)dict
+{
+    self.title = [TextParser parse: dict key:@"title"];
+    self.titleFontFamily = [TextParser parse: dict key:@"fontFamily"];
+    return self;
+}
+
 @end
 

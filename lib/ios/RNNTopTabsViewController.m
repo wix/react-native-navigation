@@ -31,6 +31,7 @@
 }
 
 - (void)createTabBar {
+    UIViewController* viewC = self.parentViewController;
 	_segmentedControl = [[RNNSegmentedControl alloc] initWithSectionTitles:@[@"", @"", @""]];
 	_segmentedControl.frame = CGRectMake(0, 0, self.view.bounds.size.width, 50);
 	_segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone;
@@ -60,18 +61,26 @@
 
 - (void)setViewControllers:(NSArray *)viewControllers {
 	_viewControllers = viewControllers;
+    NSMutableArray* titleArray = [NSMutableArray array];
 	for (RNNComponentViewController* childVc in viewControllers) {
 		[childVc.view setFrame:_contentView.bounds];
+        [titleArray addObject: [childVc.resolveOptionsWithDefault.topTab.title getWithDefaultValue:@""]];
 //		[childVc.options.topTab applyOn:childVc];
 		[self addChildViewController:childVc];
 	}
-	
+    
+    _segmentedControl = [_segmentedControl initWithSectionTitles:titleArray];
 	[self setSelectedViewControllerIndex:0];
 }
 
 - (void)viewController:(UIViewController*)vc changedTitle:(NSString*)title {
 	NSUInteger vcIndex = [_viewControllers indexOfObject:vc];
 	[_segmentedControl setTitle:title atIndex:vcIndex];
+}
+
+- (void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem
+{
+    [self.eventEmitter sendOnNavigationButtonPressed:self.layoutInfo.componentId buttonId:barButtonItem.buttonId];
 }
 
 - (void)viewDidLoad {

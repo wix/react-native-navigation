@@ -7,6 +7,7 @@ import testIDs from '../testIDs';
 import Screens from './Screens';
 import { Navigation } from 'react-native-navigation';
 import { stack } from '../commons/Layouts';
+import { Platform } from 'react-native';
 
 const {
   WELCOME_SCREEN_HEADER,
@@ -39,7 +40,7 @@ export default class LayoutsScreen extends NavigationComponent {
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
-        <Button label="TopTabs" testID={TOP_TABS_BTN} platform="android" onPress={this.topTabs} />
+        <Button label="TopTabs" testID={TOP_TABS_BTN} onPress={this.topTabs} />
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -142,7 +143,14 @@ export default class LayoutsScreen extends NavigationComponent {
   };
 
   topTabs = () => {
-    const topTabsChildren = Object.values(Screens)
+    let screen = {
+      Layouts: Screens.Layouts,
+      Options: Screens.Options,
+    };
+    if (Platform.OS === `android`) {
+      screen = Screens;
+    }
+    const topTabsChildren = Object.values(screen)
       .filter((value) => typeof value === 'string')
       .map((name) => ({
         component: {
@@ -166,14 +174,18 @@ export default class LayoutsScreen extends NavigationComponent {
             //@ts-ignore
             topTabs: {
               children: topTabsChildren,
+              options: {
+                //@ts-ignore
+                topTabs: {
+                  tabMode: 'auto',
+                },
+              },
             },
           },
         ],
         options: {
           //@ts-ignore
-          topTabs: {
-            tabMode: 'auto',
-          },
+          modalPresentationStyle: `overCurrentContext`,
         },
       },
     });

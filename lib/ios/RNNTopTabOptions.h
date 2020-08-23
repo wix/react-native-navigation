@@ -2,8 +2,8 @@
 
 @interface RNNTopTabOptions : RNNOptions
 
-@property (nonatomic, strong) NSString* title;
-@property (nonatomic, strong) NSString* titleFontFamily;
+@property (nonatomic, strong) Text* title;
+@property (nonatomic, strong) Text* titleFontFamily;
 
 @end
 
