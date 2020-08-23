@@ -7,7 +7,6 @@ import testIDs from '../testIDs';
 import Screens from './Screens';
 import { Navigation } from 'react-native-navigation';
 import { stack } from '../commons/Layouts';
-import { Platform } from 'react-native';
 
 const {
   WELCOME_SCREEN_HEADER,
@@ -146,10 +145,10 @@ export default class LayoutsScreen extends NavigationComponent {
     let screen = {
       Layouts: Screens.Layouts,
       Options: Screens.Options,
+      Navigation: Screens.Navigation,
+      FlatListScreen: Screens.FlatListScreen,
+      StatusBarFirstTab: Screens.StatusBarFirstTab,
     };
-    if (Platform.OS === `android`) {
-      screen = Screens;
-    }
     const topTabsChildren = Object.values(screen)
       .filter((value) => typeof value === 'string')
       .map((name) => ({

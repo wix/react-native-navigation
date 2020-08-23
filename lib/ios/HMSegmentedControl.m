@@ -10,10 +10,21 @@
 #import <QuartzCore/QuartzCore.h>
 #import <math.h>
 
+NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
+
+@protocol HMAccessibilityDelegate <NSObject>
+@required
+-(void)scrollToAccessibilityElement:(id)sender;
+@end
+
+@interface HMAccessibilityElement : UIAccessibilityElement
+@property (nonatomic, weak) id<HMAccessibilityDelegate> delegate;
+@end
+
 @interface HMScrollView : UIScrollView
 @end
 
-@interface HMSegmentedControl ()
+@interface HMSegmentedControl () <UIScrollViewDelegate, HMAccessibilityDelegate>
 
 @property (nonatomic, strong) CALayer *selectionIndicatorStripLayer;
 @property (nonatomic, strong) CALayer *selectionIndicatorBoxLayer;
@@ -21,6 +32,18 @@
 @property (nonatomic, readwrite) CGFloat segmentWidth;
 @property (nonatomic, readwrite) NSArray<NSNumber *> *segmentWidthsArray;
 @property (nonatomic, strong) HMScrollView *scrollView;
+@property (nonatomic, strong) NSMutableArray *accessibilityElements;
+@property (nonatomic, strong) NSMutableArray *titleBackgroundLayers;
+
+@end
+
+@implementation HMAccessibilityElement
+
+- (void)accessibilityElementDidBecomeFocused
+{
+    if (_delegate!=nil && [_delegate respondsToSelector:@selector(scrollToAccessibilityElement:)])
+        [_delegate performSelector:@selector(scrollToAccessibilityElement:) withObject:self];
+}
 
 @end
 
@@ -54,7 +77,7 @@
 
 @implementation HMSegmentedControl
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self commonInit];
@@ -62,7 +85,7 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     
     if (self) {
@@ -72,47 +95,41 @@
     return self;
 }
 
-- (id)initWithSectionTitles:(NSArray<NSString *> *)sectiontitles {
+- (instancetype)initWithSectionTitles:(NSArray<NSString *> *)sectiontitles {
     self = [super initWithFrame:CGRectZero];
-    
     if (self) {
         [self commonInit];
         self.sectionTitles = sectiontitles;
         self.type = HMSegmentedControlTypeText;
     }
-    
     return self;
 }
 
-- (id)initWithSectionImages:(NSArray<UIImage *> *)sectionImages sectionSelectedImages:(NSArray<UIImage *> *)sectionSelectedImages {
+- (instancetype)initWithSectionImages:(NSArray<UIImage *> *)sectionImages sectionSelectedImages:(NSArray<UIImage *> *)sectionSelectedImages {
     self = [super initWithFrame:CGRectZero];
-    
     if (self) {
         [self commonInit];
         self.sectionImages = sectionImages;
         self.sectionSelectedImages = sectionSelectedImages;
         self.type = HMSegmentedControlTypeImages;
     }
-    
     return self;
 }
 
 - (instancetype)initWithSectionImages:(NSArray<UIImage *> *)sectionImages sectionSelectedImages:(NSArray<UIImage *> *)sectionSelectedImages titlesForSections:(NSArray<NSString *> *)sectiontitles {
-	self = [super initWithFrame:CGRectZero];
-    
+    self = [super initWithFrame:CGRectZero];
     if (self) {
         [self commonInit];
-		
-		if (sectionImages.count != sectiontitles.count) {
-			[NSException raise:NSRangeException format:@"***%s: Images bounds (%ld) Don't match Title bounds (%ld)", sel_getName(_cmd), (unsigned long)sectionImages.count, (unsigned long)sectiontitles.count];
+        
+        if (sectionImages.count != sectiontitles.count) {
+            [NSException raise:NSRangeException format:@"***%s: Images bounds (%ld) Don't match Title bounds (%ld)", sel_getName(_cmd), (unsigned long)sectionImages.count, (unsigned long)sectiontitles.count];
         }
-		
+        
         self.sectionImages = sectionImages;
         self.sectionSelectedImages = sectionSelectedImages;
-		self.sectionTitles = sectiontitles;
+        self.sectionTitles = sectiontitles;
         self.type = HMSegmentedControlTypeTextImages;
     }
-    
     return self;
 }
 
@@ -124,6 +141,7 @@
 
 - (void)commonInit {
     self.scrollView = [[HMScrollView alloc] init];
+    self.scrollView.delegate = self;
     self.scrollView.scrollsToTop = NO;
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.showsHorizontalScrollIndicator = NO;
@@ -139,7 +157,7 @@
     self.selectionIndicatorHeight = 5.0f;
     self.selectionIndicatorEdgeInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
     self.selectionStyle = HMSegmentedControlSelectionStyleTextWidthStripe;
-    self.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationUp;
+    self.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationTop;
     self.segmentWidthStyle = HMSegmentedControlSegmentWidthStyleFixed;
     self.userDraggable = YES;
     self.touchEnabled = YES;
@@ -189,11 +207,11 @@
 }
 
 - (void)setSelectionIndicatorLocation:(HMSegmentedControlSelectionIndicatorLocation)selectionIndicatorLocation {
-	_selectionIndicatorLocation = selectionIndicatorLocation;
-	
-	if (selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationNone) {
-		self.selectionIndicatorHeight = 0.0f;
-	}
+    _selectionIndicatorLocation = selectionIndicatorLocation;
+    
+    if (selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationNone) {
+        self.selectionIndicatorHeight = 0.0f;
+    }
 }
 
 - (void)setSelectionIndicatorBoxOpacity:(CGFloat)selectionIndicatorBoxOpacity {
@@ -216,6 +234,14 @@
     [self setNeedsDisplay];
 }
 
+- (NSMutableArray *)titleBackgroundLayers {
+    if (_titleBackgroundLayers) {
+        return _titleBackgroundLayers;
+    }
+    _titleBackgroundLayers = @[].mutableCopy;
+    return _titleBackgroundLayers;
+}
+
 #pragma mark - Drawing
 
 - (CGSize)measureTitleAtIndex:(NSUInteger)index {
@@ -229,6 +255,8 @@
     if ([title isKindOfClass:[NSString class]] && !self.titleFormatter) {
         NSDictionary *titleAttrs = selected ? [self resultingSelectedTitleTextAttributes] : [self resultingTitleTextAttributes];
         size = [(NSString *)title sizeWithAttributes:titleAttrs];
+        UIFont *font = titleAttrs[@"NSFont"];
+        size = CGSizeMake(ceil(size.width), ceil(size.height-font.descender));
     } else if ([title isKindOfClass:[NSString class]] && self.titleFormatter) {
         size = [self.titleFormatter(self, title, index, selected) size];
     } else if ([title isKindOfClass:[NSAttributedString class]]) {
@@ -255,7 +283,7 @@
         if (titleColor) {
             NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:titleAttrs];
             
-            dict[NSForegroundColorAttributeName] = (id)titleColor.CGColor;
+            dict[NSForegroundColorAttributeName] = titleColor;
             
             titleAttrs = [NSDictionary dictionaryWithDictionary:dict];
         }
@@ -282,7 +310,11 @@
     
     CGRect oldRect = rect;
     
+    if (self.accessibilityElements==nil)
+        self.accessibilityElements = [NSMutableArray arrayWithCapacity:0];
+    
     if (self.type == HMSegmentedControlTypeText) {
+        [self removeTitleBackgroundLayers];
         [self.sectionTitles enumerateObjectsUsingBlock:^(id titleString, NSUInteger idx, BOOL *stop) {
 
             CGFloat stringWidth = 0;
@@ -294,7 +326,7 @@
             CGRect fullRect = CGRectZero;
             
             // Text inside the CATextLayer will appear blurry unless the rect values are rounded
-            BOOL locationUp = (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationUp);
+            BOOL locationUp = (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationTop);
             BOOL selectionStyleNotBox = (self.selectionStyle != HMSegmentedControlSelectionStyleBox);
 
             CGFloat y = roundf((CGRectGetHeight(self.frame) - selectionStyleNotBox * self.selectionIndicatorHeight) / 2 - stringHeight / 2 + self.selectionIndicatorHeight * locationUp);
@@ -306,7 +338,7 @@
             } else {
                 // When we are drawing dynamic widths, we need to loop the widths array to calculate the xOffset
                 CGFloat xOffset = 0;
-                NSInteger i = 0;
+                NSUInteger i = 0;
                 for (NSNumber *width in self.segmentWidthsArray) {
                     if (idx == i)
                         break;
@@ -316,7 +348,7 @@
                 
                 CGFloat widthForIndex = [[self.segmentWidthsArray objectAtIndex:idx] floatValue];
                 rect = CGRectMake(xOffset, y, widthForIndex, stringHeight);
-                fullRect = CGRectMake(self.segmentWidth * idx, 0, widthForIndex, oldRect.size.height);
+                fullRect = CGRectMake(xOffset, 0, widthForIndex, oldRect.size.height);
                 rectDiv = CGRectMake(xOffset - (self.verticalDividerWidth / 2), self.selectionIndicatorHeight * 2, self.verticalDividerWidth, self.frame.size.height - (self.selectionIndicatorHeight * 4));
             }
             
@@ -342,22 +374,48 @@
                 
                 [self.scrollView.layer addSublayer:verticalDividerLayer];
             }
+            
+            if ([self.accessibilityElements count]<=idx) {
+                HMAccessibilityElement *element = [[HMAccessibilityElement alloc] initWithAccessibilityContainer:self];
+                element.delegate = self;
+                element.accessibilityLabel = (self.sectionTitles!=nil&&[self.sectionTitles count]>idx)?[self.sectionTitles objectAtIndex:idx]:[NSString stringWithFormat:@"item %u", (unsigned)idx+1];
+                element.accessibilityFrame = [self convertRect:fullRect toView:nil];
+                if (self.selectedSegmentIndex==idx)
+                    element.accessibilityTraits = UIAccessibilityTraitButton|UIAccessibilityTraitSelected;
+                else
+                    element.accessibilityTraits = UIAccessibilityTraitButton;
+                [self.accessibilityElements addObject:element];
+            } else {
+                CGFloat offset = 0.f;
+                for (NSUInteger i = 0; i<idx; i++) {
+                    HMAccessibilityElement *accessibilityItem = [self.accessibilityElements objectAtIndex:i];
+                    offset += accessibilityItem.accessibilityFrame.size.width;
+                }
+                HMAccessibilityElement *element = [self.accessibilityElements objectAtIndex:idx];
+                CGRect newRect = CGRectMake(offset-self.scrollView.contentOffset.x, 0, element.accessibilityFrame.size.width, element.accessibilityFrame.size.height);
+                element.accessibilityFrame = [self convertRect:newRect toView:nil];
+                if (self.selectedSegmentIndex==idx)
+                    element.accessibilityTraits = UIAccessibilityTraitButton|UIAccessibilityTraitSelected;
+                else
+                    element.accessibilityTraits = UIAccessibilityTraitButton;
+            }
         
             [self addBackgroundAndBorderLayerWithRect:fullRect];
         }];
     } else if (self.type == HMSegmentedControlTypeImages) {
+        [self removeTitleBackgroundLayers];
         [self.sectionImages enumerateObjectsUsingBlock:^(id iconImage, NSUInteger idx, BOOL *stop) {
             UIImage *icon = iconImage;
             CGFloat imageWidth = icon.size.width;
             CGFloat imageHeight = icon.size.height;
-            CGFloat y = roundf(CGRectGetHeight(self.frame) - self.selectionIndicatorHeight) / 2 - imageHeight / 2 + ((self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationUp) ? self.selectionIndicatorHeight : 0);
+            CGFloat y = roundf(CGRectGetHeight(self.frame) - self.selectionIndicatorHeight) / 2 - imageHeight / 2 + ((self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationTop) ? self.selectionIndicatorHeight : 0);
             CGFloat x = self.segmentWidth * idx + (self.segmentWidth - imageWidth)/2.0f;
             CGRect rect = CGRectMake(x, y, imageWidth, imageHeight);
             
             CALayer *imageLayer = [CALayer layer];
             imageLayer.frame = rect;
             
-            if (self.selectedSegmentIndex == idx) {
+            if (self.selectedSegmentIndex == idx && self.selectedSegmentIndex < self.sectionSelectedImages.count) {
                 if (self.sectionSelectedImages) {
                     UIImage *highlightIcon = [self.sectionSelectedImages objectAtIndex:idx];
                     imageLayer.contents = (id)highlightIcon.CGImage;
@@ -378,14 +436,40 @@
                 [self.scrollView.layer addSublayer:verticalDividerLayer];
             }
             
+            if ([self.accessibilityElements count]<=idx) {
+                HMAccessibilityElement *element = [[HMAccessibilityElement alloc] initWithAccessibilityContainer:self];
+                element.delegate = self;
+                element.accessibilityLabel = (self.sectionTitles!=nil&&[self.sectionTitles count]>idx)?[self.sectionTitles objectAtIndex:idx]:[NSString stringWithFormat:@"item %u", (unsigned)idx+1];
+                element.accessibilityFrame = [self convertRect:rect toView:nil];
+                if (self.selectedSegmentIndex==idx)
+                    element.accessibilityTraits = UIAccessibilityTraitButton|UIAccessibilityTraitSelected;
+                else
+                    element.accessibilityTraits = UIAccessibilityTraitButton;
+                [self.accessibilityElements addObject:element];
+            } else {
+                CGFloat offset = 0.f;
+                for (NSUInteger i = 0; i<idx; i++) {
+                    HMAccessibilityElement *accessibilityItem = [self.accessibilityElements objectAtIndex:i];
+                    offset += accessibilityItem.accessibilityFrame.size.width;
+                }
+                HMAccessibilityElement *element = [self.accessibilityElements objectAtIndex:idx];
+                CGRect newRect = CGRectMake(offset-self.scrollView.contentOffset.x, 0, element.accessibilityFrame.size.width, element.accessibilityFrame.size.height);
+                element.accessibilityFrame = [self convertRect:newRect toView:nil];
+                if (self.selectedSegmentIndex==idx)
+                    element.accessibilityTraits = UIAccessibilityTraitButton|UIAccessibilityTraitSelected;
+                else
+                    element.accessibilityTraits = UIAccessibilityTraitButton;
+            }
+            
             [self addBackgroundAndBorderLayerWithRect:rect];
         }];
     } else if (self.type == HMSegmentedControlTypeTextImages){
-		[self.sectionImages enumerateObjectsUsingBlock:^(id iconImage, NSUInteger idx, BOOL *stop) {
+        [self removeTitleBackgroundLayers];
+        [self.sectionImages enumerateObjectsUsingBlock:^(id iconImage, NSUInteger idx, BOOL *stop) {
             UIImage *icon = iconImage;
             CGFloat imageWidth = icon.size.width;
             CGFloat imageHeight = icon.size.height;
-			
+            
             CGSize stringSize = [self measureTitleAtIndex:idx];
             CGFloat stringHeight = stringSize.height;
             CGFloat stringWidth = stringSize.width;
@@ -423,7 +507,7 @@
             } else if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleDynamic) {
                 // When we are drawing dynamic widths, we need to loop the widths array to calculate the xOffset
                 CGFloat xOffset = 0;
-                NSInteger i = 0;
+                NSUInteger i = 0;
                 
                 for (NSNumber *width in self.segmentWidthsArray) {
                     if (idx == i) {
@@ -470,7 +554,7 @@
             }
             CALayer *imageLayer = [CALayer layer];
             imageLayer.frame = imageRect;
-			
+            
             if (self.selectedSegmentIndex == idx) {
                 if (self.sectionSelectedImages) {
                     UIImage *highlightIcon = [self.sectionSelectedImages objectAtIndex:idx];
@@ -483,12 +567,37 @@
             }
             
             [self.scrollView.layer addSublayer:imageLayer];
-			titleLayer.contentsScale = [[UIScreen mainScreen] scale];
+            titleLayer.contentsScale = [[UIScreen mainScreen] scale];
             [self.scrollView.layer addSublayer:titleLayer];
-			
+            
+            if ([self.accessibilityElements count]<=idx) {
+                HMAccessibilityElement *element = [[HMAccessibilityElement alloc] initWithAccessibilityContainer:self];
+                element.delegate = self;
+                element.accessibilityLabel = (self.sectionTitles!=nil&&[self.sectionTitles count]>idx)?[self.sectionTitles objectAtIndex:idx]:[NSString stringWithFormat:@"item %u", (unsigned)idx+1];
+                element.accessibilityFrame = [self convertRect:CGRectUnion(textRect, imageRect) toView:nil];
+                if (self.selectedSegmentIndex==idx)
+                    element.accessibilityTraits = UIAccessibilityTraitButton|UIAccessibilityTraitSelected;
+                else
+                    element.accessibilityTraits = UIAccessibilityTraitButton;
+                [self.accessibilityElements addObject:element];
+            } else {
+                CGFloat offset = 0.f;
+                for (NSUInteger i = 0; i<idx; i++) {
+                    HMAccessibilityElement *accessibilityItem = [self.accessibilityElements objectAtIndex:i];
+                    offset += accessibilityItem.accessibilityFrame.size.width;
+                }
+                HMAccessibilityElement *element = [self.accessibilityElements objectAtIndex:idx];
+                CGRect newRect = CGRectMake(offset-self.scrollView.contentOffset.x, 0, element.accessibilityFrame.size.width, element.accessibilityFrame.size.height);
+                element.accessibilityFrame = [self convertRect:newRect toView:nil];
+                if (self.selectedSegmentIndex==idx)
+                    element.accessibilityTraits = UIAccessibilityTraitButton|UIAccessibilityTraitSelected;
+                else
+                    element.accessibilityTraits = UIAccessibilityTraitButton;
+            }
+            
             [self addBackgroundAndBorderLayerWithRect:imageRect];
         }];
-	}
+    }
     
     // Add the selection indicators
     if (self.selectedSegmentIndex != HMSegmentedControlNoSegment) {
@@ -511,11 +620,17 @@
     }
 }
 
+- (void)removeTitleBackgroundLayers {
+    [self.titleBackgroundLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+    [self.titleBackgroundLayers removeAllObjects];
+}
+
 - (void)addBackgroundAndBorderLayerWithRect:(CGRect)fullRect {
     // Background layer
     CALayer *backgroundLayer = [CALayer layer];
     backgroundLayer.frame = fullRect;
     [self.layer insertSublayer:backgroundLayer atIndex:0];
+    [self.titleBackgroundLayers addObject:backgroundLayer];
     
     // Border layer
     if (self.borderType & HMSegmentedControlBorderTypeTop) {
@@ -555,13 +670,13 @@
     CGPoint p2 = CGPointZero;
     CGPoint p3 = CGPointZero;
     
-    if (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationDown) {
+    if (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationBottom) {
         p1 = CGPointMake(self.selectionIndicatorArrowLayer.bounds.size.width / 2, 0);
         p2 = CGPointMake(0, self.selectionIndicatorArrowLayer.bounds.size.height);
         p3 = CGPointMake(self.selectionIndicatorArrowLayer.bounds.size.width, self.selectionIndicatorArrowLayer.bounds.size.height);
     }
     
-    if (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationUp) {
+    if (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationTop) {
         p1 = CGPointMake(self.selectionIndicatorArrowLayer.bounds.size.width / 2, self.selectionIndicatorArrowLayer.bounds.size.height);
         p2 = CGPointMake(self.selectionIndicatorArrowLayer.bounds.size.width, 0);
         p3 = CGPointMake(0, 0);
@@ -581,11 +696,11 @@
 - (CGRect)frameForSelectionIndicator {
     CGFloat indicatorYOffset = 0.0f;
     
-    if (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationDown) {
+    if (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationBottom) {
         indicatorYOffset = self.bounds.size.height - self.selectionIndicatorHeight + self.selectionIndicatorEdgeInsets.bottom;
     }
     
-    if (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationUp) {
+    if (self.selectionIndicatorLocation == HMSegmentedControlSelectionIndicatorLocationTop) {
         indicatorYOffset = self.selectionIndicatorEdgeInsets.top;
     }
     
@@ -599,11 +714,11 @@
         CGFloat imageWidth = sectionImage.size.width;
         sectionWidth = imageWidth;
     } else if (self.type == HMSegmentedControlTypeTextImages) {
-		CGFloat stringWidth = [self measureTitleAtIndex:self.selectedSegmentIndex].width;
-		UIImage *sectionImage = [self.sectionImages objectAtIndex:self.selectedSegmentIndex];
-		CGFloat imageWidth = sectionImage.size.width;
+        CGFloat stringWidth = [self measureTitleAtIndex:self.selectedSegmentIndex].width;
+        UIImage *sectionImage = [self.sectionImages objectAtIndex:self.selectedSegmentIndex];
+        CGFloat imageWidth = sectionImage.size.width;
         sectionWidth = MAX(stringWidth, imageWidth);
-	}
+    }
     
     if (self.selectionStyle == HMSegmentedControlSelectionStyleArrow) {
         CGFloat widthToEndOfSelectedSegment = (self.segmentWidth * self.selectedSegmentIndex) + self.segmentWidth;
@@ -624,17 +739,21 @@
             if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleDynamic) {
                 CGFloat selectedSegmentOffset = 0.0f;
                 
-                NSInteger i = 0;
+                NSUInteger i = 0;
                 for (NSNumber *width in self.segmentWidthsArray) {
                     if (self.selectedSegmentIndex == i)
                         break;
                     selectedSegmentOffset = selectedSegmentOffset + [width floatValue];
                     i++;
                 }
-                return CGRectMake(selectedSegmentOffset + self.selectionIndicatorEdgeInsets.left, indicatorYOffset, [[self.segmentWidthsArray objectAtIndex:self.selectedSegmentIndex] floatValue] - self.selectionIndicatorEdgeInsets.right, self.selectionIndicatorHeight + self.selectionIndicatorEdgeInsets.bottom);
+                if (self.selectionStyle == HMSegmentedControlSelectionStyleTextWidthStripe) {
+                   return CGRectMake(selectedSegmentOffset + self.selectionIndicatorEdgeInsets.left + self.segmentEdgeInset.left, indicatorYOffset, [[self.segmentWidthsArray objectAtIndex:self.selectedSegmentIndex] floatValue] - self.selectionIndicatorEdgeInsets.right - self.segmentEdgeInset.left - self.segmentEdgeInset.right, self.selectionIndicatorHeight + self.selectionIndicatorEdgeInsets.bottom);
+                } else {
+                    return CGRectMake(selectedSegmentOffset + self.selectionIndicatorEdgeInsets.left, indicatorYOffset, [[self.segmentWidthsArray objectAtIndex:self.selectedSegmentIndex] floatValue] - self.selectionIndicatorEdgeInsets.right, self.selectionIndicatorHeight + self.selectionIndicatorEdgeInsets.bottom);
+                }
             }
             
-            return CGRectMake((self.segmentWidth + self.selectionIndicatorEdgeInsets.left) * self.selectedSegmentIndex, indicatorYOffset, self.segmentWidth - self.selectionIndicatorEdgeInsets.right, self.selectionIndicatorHeight);
+            return CGRectMake(self.segmentWidth * self.selectedSegmentIndex + self.selectionIndicatorEdgeInsets.left, indicatorYOffset, self.segmentWidth - self.selectionIndicatorEdgeInsets.left - self.selectionIndicatorEdgeInsets.right, self.selectionIndicatorHeight);
         }
     }
 }
@@ -643,7 +762,7 @@
     if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleDynamic) {
         CGFloat selectedSegmentOffset = 0.0f;
         
-        NSInteger i = 0;
+        NSUInteger i = 0;
         for (NSNumber *width in self.segmentWidthsArray) {
             if (self.selectedSegmentIndex == i) {
                 break;
@@ -673,11 +792,23 @@
         }];
     } else if (self.type == HMSegmentedControlTypeText && self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleDynamic) {
         NSMutableArray *mutableSegmentWidths = [NSMutableArray array];
-        
+        __block CGFloat totalWidth = 0.0;
+
         [self.sectionTitles enumerateObjectsUsingBlock:^(id titleString, NSUInteger idx, BOOL *stop) {
             CGFloat stringWidth = [self measureTitleAtIndex:idx].width + self.segmentEdgeInset.left + self.segmentEdgeInset.right;
+            totalWidth += stringWidth;
             [mutableSegmentWidths addObject:[NSNumber numberWithFloat:stringWidth]];
         }];
+
+        if (self.shouldStretchSegmentsToScreenSize && totalWidth < self.bounds.size.width) {
+            CGFloat whitespace = self.bounds.size.width - totalWidth;
+            CGFloat whitespaceForSegment = whitespace / [mutableSegmentWidths count];
+            [mutableSegmentWidths enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                CGFloat extendedWidth = whitespaceForSegment + [obj floatValue];
+                [mutableSegmentWidths replaceObjectAtIndex:idx withObject:[NSNumber numberWithFloat:extendedWidth]];
+            }];
+        }
+
         self.segmentWidthsArray = [mutableSegmentWidths copy];
     } else if (self.type == HMSegmentedControlTypeImages) {
         for (UIImage *sectionImage in self.sectionImages) {
@@ -761,7 +892,7 @@
                       self.bounds.size.height + self.enlargeEdgeInset.top + self.enlargeEdgeInset.bottom);
     
     if (CGRectContainsPoint(enlargeRect, touchLocation)) {
-        NSInteger segment = 0;
+        NSUInteger segment = 0;
         if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleFixed) {
             segment = (touchLocation.x + self.scrollView.contentOffset.x) / self.segmentWidth;
         } else if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleDynamic) {
@@ -807,20 +938,24 @@
 }
 
 - (void)scrollToSelectedSegmentIndex:(BOOL)animated {
+    [self scrollTo:self.selectedSegmentIndex animated:animated];
+}
+
+- (void)scrollTo:(NSUInteger)index animated:(BOOL)animated {
     CGRect rectForSelectedIndex = CGRectZero;
     CGFloat selectedSegmentOffset = 0;
     if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleFixed) {
-        rectForSelectedIndex = CGRectMake(self.segmentWidth * self.selectedSegmentIndex,
+        rectForSelectedIndex = CGRectMake(self.segmentWidth * index,
                                           0,
                                           self.segmentWidth,
                                           self.frame.size.height);
         
         selectedSegmentOffset = (CGRectGetWidth(self.frame) / 2) - (self.segmentWidth / 2);
     } else {
-        NSInteger i = 0;
+        NSUInteger i = 0;
         CGFloat offsetter = 0;
         for (NSNumber *width in self.segmentWidthsArray) {
-            if (self.selectedSegmentIndex == i)
+            if (index == i)
                 break;
             offsetter = offsetter + [width floatValue];
             i++;
@@ -828,10 +963,10 @@
         
         rectForSelectedIndex = CGRectMake(offsetter,
                                           0,
-                                          [[self.segmentWidthsArray objectAtIndex:self.selectedSegmentIndex] floatValue],
+                                          [[self.segmentWidthsArray objectAtIndex:index] floatValue],
                                           self.frame.size.height);
         
-        selectedSegmentOffset = (CGRectGetWidth(self.frame) / 2) - ([[self.segmentWidthsArray objectAtIndex:self.selectedSegmentIndex] floatValue] / 2);
+        selectedSegmentOffset = (CGRectGetWidth(self.frame) / 2) - ([[self.segmentWidthsArray objectAtIndex:index] floatValue] / 2);
     }
     
     
@@ -843,7 +978,7 @@
 
 #pragma mark - Index Change
 
-- (void)setSelectedSegmentIndex:(NSInteger)index {
+- (void)setSelectedSegmentIndex:(NSUInteger)index {
     [self setSelectedSegmentIndex:index animated:NO notify:NO];
 }
 
@@ -953,6 +1088,52 @@
     }
     
     return [resultingAttrs copy];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    for (HMAccessibilityElement *element in self.accessibilityElements) {
+        NSUInteger idx = [self.accessibilityElements indexOfObject:element];
+        CGFloat offset = 0.f;
+        for (NSUInteger i = 0; i<idx; i++) {
+            HMAccessibilityElement *elem = [self.accessibilityElements objectAtIndex:i];
+            offset += elem.accessibilityFrame.size.width;
+        }
+        CGRect rect = CGRectMake(offset-scrollView.contentOffset.x, 0, element.accessibilityFrame.size.width, element.accessibilityFrame.size.height);
+        element.accessibilityFrame = [self convertRect:rect toView:nil];
+    }
+}
+
+#pragma mark - HMAccessibilityDelegate
+
+- (void)scrollToAccessibilityElement:(id)sender {
+    NSUInteger index = [self.accessibilityElements indexOfObject:sender];
+    
+    if (index!=NSNotFound)
+        [self scrollTo:index animated:NO];
+}
+
+#pragma mark - UIAccessibilityContainer
+
+- (NSArray *)accessibilityElements {
+    return _accessibilityElements;
+}
+
+- (BOOL)isAccessibilityElement {
+    return NO;
+}
+
+- (NSInteger)accessibilityElementCount {
+    return [[self accessibilityElements] count];
+}
+
+- (NSInteger)indexOfAccessibilityElement:(id)element {
+    return [[self accessibilityElements] indexOfObject:element];
+}
+
+- (id)accessibilityElementAtIndex:(NSInteger)index {
+    return [[self accessibilityElements] objectAtIndex:index];
 }
 
 @end

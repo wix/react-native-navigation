@@ -2,9 +2,9 @@
 #import "RNNLayoutProtocol.h"
 #import "RNNUIBarButtonItem.h"
 
-@interface RNNTopTabsViewController : UIViewController <RNNLayoutProtocol>
+@interface RNNTopTabsViewController : UIViewController <RNNLayoutProtocol, UIScrollViewDelegate>
 
-@property (nonatomic, retain) UIView* contentView;
+@property (nonatomic, retain) UIScrollView* contentView;
 
 - (void)setViewControllers:(NSArray*)viewControllers;
 - (void)viewController:(UIViewController*)vc changedTitle:(NSString*)title;
