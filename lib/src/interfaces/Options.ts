@@ -46,7 +46,8 @@ type Interpolation =
   | 'accelerateDecelerate'
   | 'decelerate'
   | 'accelerate'
-  | 'decelerateAccelerate';
+  | 'decelerateAccelerate'
+  | 'spring';
 
 export interface OptionsSplitView {
   /**

@@ -28,11 +28,36 @@ static CGFloat RNNApplyInterpolation(CGFloat p, RNNInterpolationOptions interpol
             return RNNLinear(p);
         case RNNInterpolationDecelerate:
             return RNNDecelerate(p);
+        case RNNInterpolationSpring:
+            return RNNSpring(p, 0.25, 3);
     }
 }
 
 static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, RNNInterpolationOptions interpolation) {
     return from + RNNApplyInterpolation(p, interpolation) * (to - from);
+}
+
+static CGFloat RNNSpring(CGFloat p, CGFloat springiness, CGFloat mass) {
+	// TODO: Cache those allocations
+	CGFloat T0 = 1;
+	CGFloat v0 = 0;
+	CGFloat s0 = 1;
+
+	CGFloat stiffness = mass * pow((2 * M_PI) / (T0), 2);
+	CGFloat damping = 2 * (1 - springiness) * sqrt(stiffness * mass);
+
+	CGFloat lambda = damping / (2 * mass);
+	CGFloat w0 = sqrt(stiffness / mass);
+
+	CGFloat wd = sqrt(fabs(pow(w0, 2) - pow(lambda, 2)));
+
+	if (lambda < w0) {
+		return fabs(1 - exp(-lambda * p) * (s0 * cos(wd * p) + ((v0 + s0 * lambda)/wd) * sin(wd * p)));
+	} else if (lambda > w0) {
+		return fabs(1 - exp(-lambda * p) * (((v0+s0 * (lambda + wd))/(2 * wd)) * exp(wd * p) + (s0 - (v0 + s0 * (lambda + wd)) / (2 * wd)) * exp(-wd * p)));
+	} else {
+		return fabs(1 - exp(-lambda * p) * (s0 + (v0 + lambda * s0) * p));
+	}
 }
 
 static CGFloat RNNLinear(CGFloat p) {
