@@ -10,6 +10,8 @@ const Screens = {
   CocktailDetailsScreen: 'CocktailDetailsScreen',
   CocktailsListScreen: 'CocktailsListScreen',
   CocktailsListMasterScreen: 'CocktailsListMasterScreen',
+  PostDetailsScreen: 'PostDetailsScreen',
+  PostsListScreen: 'PostsListScreen',
   ContextScreen: 'ContextScreen',
   ExternalComponent: 'ExternalComponent',
   FullScreenModal: 'FullScreenModal',

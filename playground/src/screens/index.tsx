@@ -13,6 +13,14 @@ function registerScreens() {
     () => require('./sharedElementTransition/CocktailsListScreen').default
   );
   Navigation.registerComponent(
+    Screens.PostsListScreen,
+    () => require('./sharedElementTransitionAlt/PostsListScreen').default
+  );
+  Navigation.registerComponent(
+    Screens.PostDetailsScreen,
+    () => require('./sharedElementTransitionAlt/PostDetailsScreen').default
+  );
+  Navigation.registerComponent(
     Screens.CocktailsListMasterScreen,
     () => require('./splitView/CocktailsListMasterScreen').default
   );
