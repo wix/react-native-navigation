@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Platform, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { NavigationFunctionComponent } from 'react-native-navigation';
-import posts from '../../assets/posts';
+import posts, { PostItem } from '../../assets/posts';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import PostCard from './PostCard';
@@ -10,61 +10,64 @@ const MULTIPLIER = 1.15;
 const POP_MULTIPLIER = 1.15;
 const LONG_DURATION = 350 * MULTIPLIER;
 
-const PostsListScreen: NavigationFunctionComponent = () => {
-  const onPostPressed = useCallback((post) => {
-    Navigation.push(this, {
-      component: {
-        name: Screens.PostDetailsScreen,
-        passProps: { post: post },
-        options: {
-          animations: {
-            push: {
-              content: {
-                alpha: {
-                  from: 0,
-                  to: 1,
-                  duration: LONG_DURATION,
+const PostsListScreen: NavigationFunctionComponent = (props) => {
+  const onPostPressed = useCallback(
+    (post: PostItem) => {
+      Navigation.push(props.componentId, {
+        component: {
+          name: Screens.PostDetailsScreen,
+          passProps: { post: post },
+          options: {
+            animations: {
+              push: {
+                content: {
+                  alpha: {
+                    from: 0,
+                    to: 1,
+                    duration: LONG_DURATION,
+                  },
                 },
+                sharedElementTransitions: [
+                  {
+                    fromId: `image${post.id}`,
+                    toId: `image${post.id}Dest`,
+                    duration: LONG_DURATION,
+                  },
+                  {
+                    fromId: `title${post.id}`,
+                    toId: `title${post.id}Dest`,
+                    duration: LONG_DURATION,
+                  },
+                ],
               },
-              // sharedElementTransitions: [
-              //   {
-              //     fromId: `image${post.id}`,
-              //     toId: `image${post.id}Dest`,
-              //     duration: LONG_DURATION,
-              //   },
-              //   {
-              //     fromId: `title${post.id}`,
-              //     toId: `title${post.id}Dest`,
-              //     duration: LONG_DURATION,
-              //   },
-              // ],
-            },
-            pop: {
-              content: {
-                alpha: {
-                  from: 1,
-                  to: 0,
-                  duration: LONG_DURATION * POP_MULTIPLIER,
+              pop: {
+                content: {
+                  alpha: {
+                    from: 1,
+                    to: 0,
+                    duration: LONG_DURATION * POP_MULTIPLIER,
+                  },
                 },
+                sharedElementTransitions: [
+                  {
+                    fromId: `image${post.id}Dest`,
+                    toId: `image${post.id}`,
+                    duration: LONG_DURATION * POP_MULTIPLIER,
+                  },
+                  {
+                    fromId: `title${post.id}Dest`,
+                    toId: `title${post.id}`,
+                    duration: LONG_DURATION * POP_MULTIPLIER,
+                  },
+                ],
               },
-              // sharedElementTransitions: [
-              //   {
-              //     fromId: `image${post.id}Dest`,
-              //     toId: `image${post.id}`,
-              //     duration: LONG_DURATION * POP_MULTIPLIER,
-              //   },
-              //   {
-              //     fromId: `title${post.id}Dest`,
-              //     toId: `title${post.id}`,
-              //     duration: LONG_DURATION * POP_MULTIPLIER,
-              //   },
-              // ],
             },
           },
         },
-      },
-    });
-  }, []);
+      });
+    },
+    [props.componentId]
+  );
 
   return (
     <SafeAreaView>
