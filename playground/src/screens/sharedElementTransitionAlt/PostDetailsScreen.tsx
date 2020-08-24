@@ -49,7 +49,14 @@ const PostDetailsScreen: NavigationFunctionComponent = ({
     </View>
   );
 };
-PostDetailsScreen.options = {};
+PostDetailsScreen.options = {
+  statusBar: {
+    visible: false,
+  },
+  topBar: {
+    visible: false,
+  },
+};
 export default PostDetailsScreen;
 
 const styles = StyleSheet.create({
