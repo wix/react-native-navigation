@@ -26,18 +26,18 @@ const PostsListScreen: NavigationFunctionComponent = () => {
                   duration: LONG_DURATION,
                 },
               },
-              sharedElementTransitions: [
-                {
-                  fromId: `image${post.id}`,
-                  toId: `image${post.id}Dest`,
-                  duration: LONG_DURATION,
-                },
-                {
-                  fromId: `title${post.id}`,
-                  toId: `title${post.id}Dest`,
-                  duration: LONG_DURATION,
-                },
-              ],
+              // sharedElementTransitions: [
+              //   {
+              //     fromId: `image${post.id}`,
+              //     toId: `image${post.id}Dest`,
+              //     duration: LONG_DURATION,
+              //   },
+              //   {
+              //     fromId: `title${post.id}`,
+              //     toId: `title${post.id}Dest`,
+              //     duration: LONG_DURATION,
+              //   },
+              // ],
             },
             pop: {
               content: {
@@ -47,18 +47,18 @@ const PostsListScreen: NavigationFunctionComponent = () => {
                   duration: LONG_DURATION * POP_MULTIPLIER,
                 },
               },
-              sharedElementTransitions: [
-                {
-                  fromId: `image${post.id}Dest`,
-                  toId: `image${post.id}`,
-                  duration: LONG_DURATION * POP_MULTIPLIER,
-                },
-                {
-                  fromId: `title${post.id}Dest`,
-                  toId: `title${post.id}`,
-                  duration: LONG_DURATION * POP_MULTIPLIER,
-                },
-              ],
+              // sharedElementTransitions: [
+              //   {
+              //     fromId: `image${post.id}Dest`,
+              //     toId: `image${post.id}`,
+              //     duration: LONG_DURATION * POP_MULTIPLIER,
+              //   },
+              //   {
+              //     fromId: `title${post.id}Dest`,
+              //     toId: `title${post.id}`,
+              //     duration: LONG_DURATION * POP_MULTIPLIER,
+              //   },
+              // ],
             },
           },
         },

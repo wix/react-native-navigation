@@ -12,13 +12,18 @@ export default function PostCard({
       <Image
         source={post.image}
         // @ts-ignore nativeID isn't included in react-native Image props.
-        nativeID={`image${post.id}Dest`}
+        nativeID={`image${post.id}`}
         style={styles.image}
         resizeMode="cover"
         fadeDuration={0}
       />
       <View style={[styles.textContainer, { backgroundColor: post.color }]}>
-        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+        <Text
+          nativeID={`title${post.id}`}
+          style={styles.title}
+          numberOfLines={2}
+          ellipsizeMode="tail"
+        >
           {post.name}
         </Text>
         <Text style={styles.description} numberOfLines={3} ellipsizeMode="tail">
@@ -54,7 +59,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   description: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 13,
+    marginTop: 5,
+    fontWeight: '500',
+    color: '#333333',
   },
 });

@@ -13,7 +13,7 @@ const posts: PostItem[] = [
     id: '1',
     name: 'Lamborghini Diablo',
     image: require('../../img/posts/diablo.jpg'),
-    color: '#e00001',
+    color: '#b00001',
     description: `The Lamborghini Diablo is a high-performance mid-engine sports car that was built by Italian automotive manufacturer Lamborghini between 1990 and 2001. It is the first production Lamborghini capable of attaining a top speed in excess of 320 kilometres per hour (200 mph). After the end of its production run in 2001, the Diablo was replaced by the Lamborghini Murciélago. The name Diablo means "devil" in Spanish.`,
   },
   {
