@@ -21,6 +21,7 @@
 		501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C86B8239FE9C400E0B631 /* UIImage+Utils.m */; };
 		5022EDCD2405522000852BA6 /* RNNBottomTabsPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.m */; };
 		5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */; };
+		502734AF24F3E9BA0022163C /* ColorParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 502734AE24F3E9110022163C /* ColorParserTest.m */; };
 		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */; };
 		50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.m */; };
 		5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */; };
@@ -113,6 +114,7 @@
 		501C86B7239FE9C400E0B631 /* UIImage+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
 		501C86B8239FE9C400E0B631 /* UIImage+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
 		5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsAppearancePresenterTest.m; sourceTree = "<group>"; };
+		502734AE24F3E9110022163C /* ColorParserTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorParserTest.m; sourceTree = "<group>"; };
 		50364D69238E7ECC000E62A2 /* Pods_playground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_playground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactNativeNavigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNExternalViewControllerTests.m; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 				E58D263F2385888C003F36BA /* RNNStackControllerTest.m */,
 				E58D26322385888B003F36BA /* RNNNavigationOptionsTest.m */,
 				E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */,
+				502734AE24F3E9110022163C /* ColorParserTest.m */,
 				E58D262C2385888B003F36BA /* RNNOptionsTest.h */,
 				E58D262D2385888B003F36BA /* RNNOverlayManagerTest.m */,
 				E58D26262385888B003F36BA /* RNNRootViewControllerTest.m */,
@@ -970,6 +973,7 @@
 				5007B4382472D9A20002AA4E /* RNNCustomViewController.m in Sources */,
 				E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.m in Sources */,
 				E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.m in Sources */,
+				502734AF24F3E9BA0022163C /* ColorParserTest.m in Sources */,
 				50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.m in Sources */,
 				50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.m in Sources */,
 				50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */,
