@@ -65,7 +65,7 @@ public class OptionsTest extends BaseTest {
 
     @Test
     public void parsesNullAsDefaultEmptyOptions() {
-        assertThat(Options.parse(mockLoader, null)).isNotNull();
+        assertThat(Options.parse(null, mockLoader, null)).isNotNull();
     }
 
     @Test
@@ -77,7 +77,7 @@ public class OptionsTest extends BaseTest {
                 .put("fab", createFab())
                 .put("bottomTabs", createBottomTabs())
                 .put("layout", layout);
-        Options result = Options.parse(mockLoader, json);
+        Options result = Options.parse(null, mockLoader, json);
         assertResult(result);
     }
 
@@ -200,12 +200,12 @@ public class OptionsTest extends BaseTest {
     public void mergeDoesNotMutate() throws Exception {
         JSONObject json1 = new JSONObject();
         json1.put("topBar", createTopBar(true));
-        Options options1 = Options.parse(mockLoader, json1);
+        Options options1 = Options.parse(null, mockLoader, json1);
         options1.topBar.title.text = new Text("some title");
 
         JSONObject json2 = new JSONObject();
         json2.put("topBar", createTopBar(false));
-        Options options2 = Options.parse(mockLoader, json2);
+        Options options2 = Options.parse(null, mockLoader, json2);
         options2.topBar.title.text = new NullText();
 
         Options merged = options1.mergeWith(options2);
@@ -223,7 +223,7 @@ public class OptionsTest extends BaseTest {
                 .put("fab", createFab())
                 .put("bottomTabs", createBottomTabs())
                 .put("layout", layout);
-        Options defaultOptions = Options.parse(mockLoader, json);
+        Options defaultOptions = Options.parse(null, mockLoader, json);
         Options options = new Options();
 
         assertResult(options.mergeWith(defaultOptions));
@@ -238,12 +238,12 @@ public class OptionsTest extends BaseTest {
                 .put("fab", createOtherFab())
                 .put("bottomTabs", createOtherBottomTabs())
                 .put("layout", layout);
-        Options defaultOptions = Options.parse(mockLoader, defaultJson);
+        Options defaultOptions = Options.parse(null, mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("bottomTabs", createBottomTabs());
-        Options options = Options.parse(mockLoader, json);
+        Options options = Options.parse(null, mockLoader, json);
         options.withDefaultOptions(defaultOptions);
         assertResult(options);
     }

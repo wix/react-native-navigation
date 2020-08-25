@@ -415,6 +415,8 @@
 		7BEF0D1C1E43771B003E96B0 /* RNNLayoutNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEF0D1A1E43771B003E96B0 /* RNNLayoutNode.h */; };
 		7BEF0D1D1E43771B003E96B0 /* RNNLayoutNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */; };
 		9F8E06B524EBDB48004BDA83 /* RCTConvert+Interpolation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E06B424EBDB48004BDA83 /* RCTConvert+Interpolation.m */; };
+		9FDA2ABE24F2A42C005678CC /* RCTConvert+UIFontWeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDA2ABD24F2A42C005678CC /* RCTConvert+UIFontWeight.m */; };
+		9FDA2AC024F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDA2ABF24F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m */; };
 		A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */; };
 		A7626C011FC5796200492FB8 /* RNNBottomTabsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */; };
 		C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */; };
@@ -914,6 +916,8 @@
 		7BEF0D1A1E43771B003E96B0 /* RNNLayoutNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNLayoutNode.h; sourceTree = "<group>"; };
 		7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNLayoutNode.m; sourceTree = "<group>"; };
 		9F8E06B424EBDB48004BDA83 /* RCTConvert+Interpolation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+Interpolation.m"; sourceTree = "<group>"; };
+		9FDA2ABD24F2A42C005678CC /* RCTConvert+UIFontWeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIFontWeight.m"; sourceTree = "<group>"; };
+		9FDA2ABF24F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+SideMenuOpenGestureMode.m"; sourceTree = "<group>"; };
 		A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopBarOptions.m; sourceTree = "<group>"; };
 		A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopBarOptions.h; sourceTree = "<group>"; };
 		A7626BFF1FC578AB00492FB8 /* RNNBottomTabsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsOptions.h; sourceTree = "<group>"; };
@@ -1024,7 +1028,9 @@
 				5038A3BF216E1E66009280BC /* RNNFontAttributesCreator.h */,
 				5038A3C0216E1E66009280BC /* RNNFontAttributesCreator.m */,
 				50DA74CF232F80FE004A00C1 /* RCTConvert+UIFontWeight.h */,
+				9FDA2ABD24F2A42C005678CC /* RCTConvert+UIFontWeight.m */,
 				50E02BD521A6E54B00A43942 /* RCTConvert+SideMenuOpenGestureMode.h */,
+				9FDA2ABF24F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m */,
 				7365070F21E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h */,
 				7365071021E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.m */,
 				5030B62823D5C9AF008F1642 /* RCTConvert+Interpolation.h */,
@@ -2177,6 +2183,8 @@
 				5039559C2174867000B0A663 /* DoubleParser.m in Sources */,
 				5017D9EF239D2FAF00B74047 /* BottomTabsAfterInitialTabAttacher.m in Sources */,
 				5008641223856A2D00A55BE9 /* UITabBar+utils.m in Sources */,
+				9FDA2ABE24F2A42C005678CC /* RCTConvert+UIFontWeight.m in Sources */,
+				9FDA2AC024F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m in Sources */,
 				50BCB27223F1650800D6C8E5 /* SharedElementAnimator.m in Sources */,
 				E5F6C3A822DB4D0F0093C2CE /* UIView+Utils.m in Sources */,
 				5049593F216F5D73006D2B81 /* BoolParser.m in Sources */,

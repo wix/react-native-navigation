@@ -27,6 +27,7 @@ export class Store {
   }
 
   setComponentClassForName(componentName: string | number, ComponentClass: ComponentProvider) {
+    delete this.wrappedComponents[componentName];
     this.componentsByName[componentName.toString()] = ComponentClass;
   }
 

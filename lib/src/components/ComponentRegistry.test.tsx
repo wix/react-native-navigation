@@ -5,11 +5,8 @@ import { ComponentWrapper } from './ComponentWrapper';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 import { AppRegistryService } from '../adapters/AppRegistryService';
 import { ComponentProvider } from 'react-native';
-import * as React from 'react';
 
 const DummyComponent = () => null;
-
-class MyComponent extends React.Component<any, any> {}
 
 describe('ComponentRegistry', () => {
   let mockedStore: Store;
@@ -57,15 +54,35 @@ describe('ComponentRegistry', () => {
   });
 
   it('should wrap component only once', () => {
+    uut = new ComponentRegistry(
+      new Store(),
+      instance(mockedComponentEventsObserver),
+      componentWrapper,
+      instance(mockedAppRegistryService)
+    );
+
     componentWrapper.wrap = jest.fn();
-    let wrappedComponent: React.ComponentClass<any>;
-    store.hasRegisteredWrappedComponent = jest.fn(() => wrappedComponent !== undefined);
-    store.setWrappedComponent = jest.fn(() => wrappedComponent = MyComponent);
 
     const generator: ComponentProvider = jest.fn(() => DummyComponent);
-    uut.registerComponent('example.MyComponent.name', generator)();
-    uut.registerComponent('example.MyComponent.name', generator)();
+    const componentProvider = uut.registerComponent('example.MyComponent.name', generator);
+    componentProvider();
+    componentProvider();
 
     expect(componentWrapper.wrap).toHaveBeenCalledTimes(1);
+  });
+
+  it('should recreate wrapped component on re-register component', () => {
+    uut = new ComponentRegistry(
+      new Store(),
+      instance(mockedComponentEventsObserver),
+      new ComponentWrapper(),
+      instance(mockedAppRegistryService)
+    );
+
+    const generator: ComponentProvider = () => DummyComponent;
+    const w1 = uut.registerComponent('example.MyComponent.name', generator)();
+    const w2 = uut.registerComponent('example.MyComponent.name', generator)();
+
+    expect(w1).not.toBe(w2);
   });
 });

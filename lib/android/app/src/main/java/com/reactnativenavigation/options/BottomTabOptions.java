@@ -1,5 +1,6 @@
 package com.reactnativenavigation.options;
 
+import android.content.Context;
 import android.graphics.Typeface;
 
 import com.reactnativenavigation.options.params.Bool;
@@ -23,25 +24,25 @@ import androidx.annotation.Nullable;
 
 public class BottomTabOptions {
 
-    public static BottomTabOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
+    public static BottomTabOptions parse(Context context, TypefaceLoader typefaceManager, JSONObject json) {
         BottomTabOptions options = new BottomTabOptions();
         if (json == null) return options;
 
         options.text = TextParser.parse(json, "text");
-        options.textColor = ColorParser.parse(json, "textColor");
-        options.selectedTextColor = ColorParser.parse(json, "selectedTextColor");
+        options.textColor = ColorParser.parse(context, json, "textColor");
+        options.selectedTextColor = ColorParser.parse(context, json, "selectedTextColor");
         options.icon = IconParser.parse(json, "icon");
         options.selectedIcon = IconParser.parse(json, "selectedIcon");
-        options.iconColor = ColorParser.parse(json, "iconColor");
-        options.selectedIconColor = ColorParser.parse(json, "selectedIconColor");
+        options.iconColor = ColorParser.parse(context, json, "iconColor");
+        options.selectedIconColor = ColorParser.parse(context, json, "selectedIconColor");
         options.badge = TextParser.parse(json, "badge");
-        options.badgeColor = ColorParser.parse(json, "badgeColor");
+        options.badgeColor = ColorParser.parse(context, json, "badgeColor");
         options.animateBadge = BoolParser.parse(json, "animateBadge");
         options.testId = TextParser.parse(json, "testID");
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         options.fontSize = NumberParser.parse(json, "fontSize");
         options.selectedFontSize = NumberParser.parse(json, "selectedFontSize");
-        options.dotIndicator = DotIndicatorOptions.parse(json.optJSONObject("dotIndicator"));
+        options.dotIndicator = DotIndicatorOptions.parse(context, json.optJSONObject("dotIndicator"));
         options.selectTabOnPress = BoolParser.parse(json, "selectTabOnPress");
 
         return options;

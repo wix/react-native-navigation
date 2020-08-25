@@ -15,6 +15,6 @@ public class ColorParseTest extends BaseTest {
     public void nullIsParsedAsNoColor() throws JSONException {
         JSONObject json = new JSONObject();
         json.put("color", "NoColor");
-        assertThat(ColorParser.parse(json, "color")).isInstanceOf(DontApplyColour.class);
+        assertThat(ColorParser.parse(null, json, "color")).isInstanceOf(DontApplyColour.class);
     }
 }
