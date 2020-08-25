@@ -71,6 +71,8 @@
         }
         [viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
     }
+    
+    [_topBarTitlePresenter applyOptions:withDefault.topBar];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
@@ -79,7 +81,7 @@
     UIViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     
-    [_topBarTitlePresenter applyOptionsOnInit:withDefault.topBar];
+   [_topBarTitlePresenter applyOptionsOnInit:withDefault.topBar];
     
     [viewController setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
     [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
