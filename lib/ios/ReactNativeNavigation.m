@@ -67,15 +67,18 @@
 }
 
 - (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate {
-	UIWindow* mainWindow = [self initializeKeyWindow];
+	UIWindow* mainWindow = [self initializeKeyWindowIfNeeded];
 	
 	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate mainWindow:mainWindow];
 	[RNNSplashScreen showOnWindow:mainWindow];
 }
 
-- (UIWindow *)initializeKeyWindow {
-	UIWindow* keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	UIApplication.sharedApplication.delegate.window = keyWindow;
+- (UIWindow *)initializeKeyWindowIfNeeded {
+	UIWindow* keyWindow = UIApplication.sharedApplication.delegate.window;
+	if (!keyWindow) {
+		keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+		UIApplication.sharedApplication.delegate.window = keyWindow;
+	}
 	return keyWindow;
 }
 
