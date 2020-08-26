@@ -26,98 +26,18 @@ Once you finish implementing the example, your screen should look similar to thi
 ### Step 1 - Create a Counter store
 Let's first create a counter store using MobX. Our store has a single `count` object and two methods to increment and decrement it.
 
-```tsx
-// counter.store.js
-import React from 'react';
-import { observable, action } from 'mobx';
-
-class CounterStore {
-  @observable count = 0;
-
-  @action.bound
-  increment() {
-    this.count += 1;
-  }
-
-  @action.bound
-  decrement() {
-    this.count -= 1;
-  }
-}
-
-// Instantiate the counter store.
-const counterStore = new CounterStore()
-// Create a React Context with the counter store instance.
-export const CounterStoreContext = React.createContext(counterStore)
+```tsx file=./third-party-mobx/counter-store.tsx
 ```
 
 ### Step 2 - Consuming the store
 You can consume the Counter store in any React components using `React.useContext`.
 
-```tsx
-// CounterScreen.js
-import React from 'react';
-import { Button, Text, View } from 'react-native';
-import { observer } from 'mobx-react-lite';
-import { CounterStoreContext } from './counter.store';
-
-const CounterScreen = observer((props) => {
-  const { count, increment, decrement } = React.useContext(CounterStoreContext);
-
-  return (
-    <Root>
-      <Text>{`Clicked ${count} times!`}</Text>
-      <Button title='Increment' onPress={increment} />
-      <Button title='Decrement' onPress={decrement} />
-      <Button title='Push' onPress={() => Navigation.push(props.componentId, 'CounterScreen')}/>
-    </Root>
-  )
-});
-module.exports = CounterScreen;
+```tsx file=./third-party-mobx/counter-screen.tsx
 ```
 
 ## How to use MobX persistent data
 Often the app will require a persistent data solution and with MobX you can use [`mobx-react-persist`](https://github.com/pinqy520/mobx-persist).
 It only takes few extra steps to integrate the library.
 
-```tsx
-//counter.store.js
-import React from 'react';
-import { observable, action } from 'mobx';
-import { persist } from 'mobx-persist'; // add this.
-
-class CounterStore {
-  @persist @observable count = 0; // count is now persistent.
-
-  @action.bound
-  increment() {
-    this.count += 1;
-  }
-
-  @action.bound
-  decrement() {
-    this.count -= 1;
-  }
-}
-
-export const counterStore = new CounterStore(); // You need to export the counterStore instance.
-export const CounterStoreContext = React.createContext(counterStore);
-
-// index.js
-import { Navigation } from 'react-native-navigation';
-import AsyncStorage from '@react-native-community/async-storage';
-import { create } from 'mobx-persist';
-import { counterStore } from './counter.store'; // import the counter store instance.
-
-// Create a store hydration function.
-async function hydrateStores() {
-  const hydrate = create({ storage: AsyncStorage });
-  await hydrate('CounterStore', counterStore);
-}
-
-Navigation.events().registerAppLaunchedListener(() => {
-  hydrateStores().then(() => {
-    // ...register screens and start the app.
-  });
-});
+```tsx file=./third-party-mobx/persistent-data.tsx
 ```
