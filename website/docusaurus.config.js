@@ -1,3 +1,5 @@
+const remarkCodeImport = require('remark-code-import');
+
 module.exports = {
   title: 'React Native Navigation',
   tagline: '',
@@ -95,6 +97,7 @@ module.exports = {
           routeBasePath: '/',
           path: 'docs',
           editUrl: 'https://github.com/wix/react-native-navigation/edit/master/website',
+          remarkPlugins: [remarkCodeImport],
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
