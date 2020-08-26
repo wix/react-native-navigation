@@ -1,4 +1,4 @@
-// CounterContext.js
+// CounterContext.tsx
 import React from 'react';
 
 // Declaring the state object globally.
@@ -6,22 +6,28 @@ const initialCounterState = {
   count: 0,
 };
 
-const counterContextWrapper = (component) => ({
+const counterContextWrapper = (component?: React.Component) => ({
   ...initialCounterState,
   increment: () => {
     initialCounterState.count += 1;
-    component.setState({ context: counterContextWrapper(component) });
+    component?.setState({ context: counterContextWrapper(component) });
   },
   decrement: () => {
     initialCounterState.count -= 1;
-    component.setState({ context: counterContextWrapper(component) });
+    component?.setState({ context: counterContextWrapper(component) });
   },
 });
 
-export const CounterContext = React.createContext({});
+type Context = ReturnType<typeof counterContextWrapper>;
+
+export const CounterContext = React.createContext<Context>(counterContextWrapper());
+
+interface State {
+  context: Context;
+}
 
 export class CounterContextProvider extends React.Component {
-  state = {
+  state: State = {
     context: counterContextWrapper(this),
   };
 

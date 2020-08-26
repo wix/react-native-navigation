@@ -20,19 +20,22 @@ If you need to trigger a re-render across all screens, there are many popular th
 
 ## Create a Counter context
 
-```tsx file=./third-party-react-context/counter-context.tsx
+```tsx file=./third-party-react-context/CounterContext.tsx
 ```
 
 ## Register the screen
 When registering the screen that will be using the Counter Context, we need to wrap it
 with the Counter Context Provider we created earlier.
 
-```tsx file=./third-party-react-context/register-screen.tsx
+```tsx file=./third-party-react-context/index.tsx
 ```
 
 ## Consuming the context
 You can consume the Counter Context any way you want such as `Provider.Consumer` or `React.useContext` like in the 
 example below.
 
-```tsx file=./third-party-react-context/context-consumer.tsx
+```tsx file=./third-party-react-context/App.tsx
+```
+
+```tsx file=./third-party-react-context/App-consumer.tsx
 ```

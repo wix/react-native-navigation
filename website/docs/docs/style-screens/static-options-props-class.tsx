@@ -5,11 +5,13 @@ interface Props extends NavigationComponentProps {
 }
 
 class OrderScreen extends NavigationComponent<Props> {
-  static options(props: Props): Options = {
-    topBar: {
-      title: {
-        text: props.order.orderId,
+  static options(props: Props): Options {
+    return {
+      topBar: {
+        title: {
+          text: props.order.orderId,
+        },
       },
-    },
-  };
+    };
+  }
 }

@@ -1,10 +1,13 @@
-import { NavigationFunctionalComponent, Options } from 'react-native-navigation';
+import { View } from 'react-native';
+import { NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
 
 interface Props extends NavigationComponentProps {
   order: OrderDetails;
 }
 
-const OrderScreen: NavigationFunctionComponent<Props> = (props: Props) => {};
+const OrderScreen: NavigationFunctionComponent<Props> = (props: Props) => {
+  return <View />;
+};
 
 OrderScreen.options = (props: Props) => {
   return {

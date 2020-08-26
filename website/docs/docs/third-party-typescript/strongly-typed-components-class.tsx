@@ -1,7 +1,7 @@
-import { NavigationComponent } from 'react-native-navigation';
+import { NavigationComponent, NavigationComponentProps } from 'react-native-navigation';
 
 interface Props extends NavigationComponentProps {
-  age: number
+  age: number;
 }
 
 export default class MyComponent extends NavigationComponent<Props> {
@@ -16,9 +16,9 @@ export default class MyComponent extends NavigationComponent<Props> {
       topBar: {
         title: {
           text: 'My Screen',
-        }
-      };
-    }
+        },
+      },
+    };
   }
 
   constructor(props: Props) {

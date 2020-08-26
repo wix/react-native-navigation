@@ -1,4 +1,4 @@
-// index.js
+// index.tsx
 import { Navigation } from 'react-native-navigation';
 import { CounterContextProvider } from './CounterContext';
 import { App } from './App';

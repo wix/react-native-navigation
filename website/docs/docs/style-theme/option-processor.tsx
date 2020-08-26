@@ -1,3 +1,10 @@
+import {
+  CommandName,
+  Navigation,
+  NavigationButtonPressedEvent,
+  OptionsTopBar,
+} from 'react-native-navigation';
+
 Navigation.addOptionProcessor<OptionsTopBar>(
   'topBar',
   (topBar: OptionsTopBar, commandName: CommandName): OptionsTopBar => {

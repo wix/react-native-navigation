@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import { NavigationFunctionComponent } from 'react-native-navigation';
 
 interface Props {

@@ -1,6 +1,8 @@
-Navigation.mergeOptions(this.props.componentId, {
+import { Navigation } from 'react-native-navigation';
+
+Navigation.mergeOptions(componentId, {
   topBar: {
-    backgroundColor: {
+    background: {
       color: 'red',
     },
   },

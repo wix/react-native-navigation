@@ -1,8 +1,11 @@
-import { NavigationFunctionalComponent, Options } from 'react-native-navigation';
+import { View } from 'react-native';
+import { NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
 
-const MyFunctionalScreen: NavigationFunctionComponent = (props: NavigationComponentProps) => {};
+const MyFunctionalScreen: NavigationFunctionComponent = (props: NavigationComponentProps) => {
+  return <View />;
+};
 
-MyFunctionalScreen.options: Options = {
+MyFunctionalScreen.options = {
   topBar: {
     title: {
       text: 'My Screen',
