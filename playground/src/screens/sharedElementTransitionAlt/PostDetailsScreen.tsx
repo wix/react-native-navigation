@@ -1,19 +1,21 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   Dimensions,
-  Image,
-  ScrollView,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
+  Insets
 } from 'react-native';
 import {
-  NavigationComponentProps,
   Navigation,
   NavigationFunctionComponent,
 } from 'react-native-navigation';
 import { PostItem } from '../../assets/posts';
+import Reanimated, { useValue } from 'react-native-reanimated';
+
+const HEADER_HEIGHT = 300;
+const INDICATOR_INSETS: Insets = { top: HEADER_HEIGHT };
 
 interface Props {
   post: PostItem;
@@ -27,22 +29,36 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({
     Navigation.pop(componentId);
   }, [componentId]);
 
+  const scrollY = useValue(0);
+  const onScroll = useMemo(() => Reanimated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }]), [scrollY]);
+
+  const headerY = useMemo(() => Reanimated.interpolate(scrollY, {
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [0, -HEADER_HEIGHT],
+    extrapolateLeft: Reanimated.Extrapolate.CLAMP,
+    extrapolateRight: Reanimated.Extrapolate.EXTEND
+  }), [])
+  const imageStyle = useMemo(() => [styles.headerImage, { transform: [{ translateY: headerY }] }], [headerY]);
+
   return (
     <View style={styles.container}>
-      <Image
+      <Reanimated.Image
         source={post.image}
         // @ts-ignore nativeID isn't included in react-native Image props.
         nativeID={`image${post.id}Dest`}
-        style={styles.headerImage}
+        style={imageStyle}
         resizeMode="cover"
         fadeDuration={0}
       />
-      <ScrollView contentContainerStyle={styles.content}>
+      <Reanimated.ScrollView
+        contentContainerStyle={styles.content}
+        onScroll={onScroll}
+        scrollIndicatorInsets={INDICATOR_INSETS}>
         <Text style={styles.title} nativeID={`title${post.id}Dest`}>
           {post.name}
         </Text>
         <Text style={styles.description}>{post.description}</Text>
-      </ScrollView>
+      </Reanimated.ScrollView>
       <TouchableOpacity style={styles.closeButton} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>
       </TouchableOpacity>
@@ -67,10 +83,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerImage: {
-    height: 300,
+    position: 'absolute',
+    height: HEADER_HEIGHT,
     width: Dimensions.get('window').width,
   },
   content: {
+    paddingTop: HEADER_HEIGHT,
     paddingHorizontal: 25,
   },
   title: {
