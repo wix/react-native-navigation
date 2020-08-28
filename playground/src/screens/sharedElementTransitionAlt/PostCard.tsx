@@ -2,11 +2,15 @@ import React from 'react';
 import { Image, View, StyleSheet, Text, Dimensions, ViewProps } from 'react-native';
 import { PostItem } from '../../assets/posts';
 
+type PostCardProps = {
+  post: PostItem
+} & ViewProps
+
 export default function PostCard({
   post,
   style,
   ...passThroughProps
-}: { post: PostItem } & ViewProps): JSX.Element {
+}: PostCardProps) {
   return (
     <View style={[styles.container, style]} {...passThroughProps}>
       <Image
