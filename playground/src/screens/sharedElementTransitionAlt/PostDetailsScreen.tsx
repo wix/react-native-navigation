@@ -56,6 +56,9 @@ PostDetailsScreen.options = {
   topBar: {
     visible: false,
   },
+  bottomTabs: {
+    visible: false
+  }
 };
 export default PostDetailsScreen;
 
