@@ -1,6 +1,8 @@
 package com.reactnativenavigation;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -11,6 +13,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
@@ -30,7 +33,7 @@ import com.reactnativenavigation.views.pip.PIPStates;
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
     private PermissionListener mPermissionListener;
-
+    private int anotherActivityCount = 0;
     protected Navigator navigator;
 
     @Override
@@ -47,13 +50,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             navigator.bindViews();
             getReactGateway().onActivityCreated(this);
         }
+        getApplication().registerActivityLifecycleCallbacks(lifecycleCallback);
 
     }
 
     @Override
     public void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
+        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
             navigator.setContentLayout(findViewById(android.R.id.content));
         }
     }
@@ -61,24 +65,22 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onResume() {
         super.onResume();
-        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
+        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
             getReactGateway().onActivityResumed(this);
         }
     }
 
     @Override
     public void onNewIntent(Intent intent) {
-        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
-            if (!getReactGateway().onNewIntent(intent)) {
-                super.onNewIntent(intent);
-            }
+        if (!getReactGateway().onNewIntent(intent)) {
+            super.onNewIntent(intent);
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
+        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
             getReactGateway().onActivityPaused(this);
         }
     }
@@ -90,14 +92,15 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             navigator.destroy();
             getReactGateway().onActivityDestroyed(this);
         }
+        getApplication().unregisterActivityLifecycleCallbacks(lifecycleCallback);
     }
 
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        if (navigator.getPipMode() != PIPStates.NOT_STARTED) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                navigator.onPictureInPictureModeChanged(true, null);
+        if (navigator.getPipMode() != PIPStates.NOT_STARTED && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (canEnterPiPMode()) {
+                navigator.updatePIPState(PIPStates.NATIVE_MOUNT_START);
                 enterPictureInPictureMode(navigator.getPictureInPictureParams());
             }
         }
@@ -106,7 +109,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
-        navigator.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
+        if (isInPictureInPictureMode) {
+            navigator.updatePIPState(PIPStates.NATIVE_MOUNTED);
+        } else {
+            navigator.updatePIPState(PIPStates.CUSTOM_MOUNTED);
+        }
     }
 
     @Override
@@ -119,8 +126,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onStop() {
         super.onStop();
-        if (navigator.getPipMode() == PIPStates.NATIVE_MOUNTED) {
+        if (navigator.getPipMode() == PIPStates.NATIVE_MOUNTED && NavigationActivity.this.anotherActivityCount <= 0) {
             finish();
+        } else if (navigator.getPipMode() == PIPStates.NATIVE_MOUNT_START) {
+            navigator.resetPIP();
         }
     }
 
@@ -183,5 +192,51 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         runOnUiThread(() -> navigator.destroyViews());
     }
 
+    private Application.ActivityLifecycleCallbacks lifecycleCallback = new Application.ActivityLifecycleCallbacks() {
 
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+            if (activity != NavigationActivity.this) {
+                NavigationActivity.this.anotherActivityCount++;
+            }
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+            if (activity != NavigationActivity.this) {
+                NavigationActivity.this.anotherActivityCount--;
+            }
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+
+        }
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean canEnterPiPMode() {
+        // AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+        return true;// (AppOpsManager.MODE_ALLOWED == appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_PICTURE_IN_PICTURE, Process.myUid(), getPackageName()));
+    }
 }

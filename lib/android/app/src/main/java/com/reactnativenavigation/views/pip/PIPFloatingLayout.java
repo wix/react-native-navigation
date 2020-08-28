@@ -63,6 +63,7 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mPrevRawX = event.getRawX();
+                mIsMoving = false;
                 shouldIntercept = shouldInterceptTouchEvent();
                 break;
             case MotionEvent.ACTION_UP:
@@ -87,6 +88,7 @@ public class PIPFloatingLayout extends CoordinatorLayout {
                 }
                 break;
         }
+        //Log.v("ReactNativePIP", "onInterceptTouchEvent " + shouldIntercept + "PIPState " + pipState.toString() + "touchEvent " + event.getAction() + " isMoving " + mIsMoving);
         return shouldIntercept;
     }
 
@@ -140,12 +142,6 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     }
 
     private void setNativePIPMode() {
-        Point loc = ViewUtils.getLocationOnScreen(this);
-        this.pipLayoutLeft = loc.x;
-        this.pipLayoutTop = loc.y;
-        dX = 0;
-        dY = 0;
-        animate().x(0).y(0).setDuration(0).start();
         this.layoutParams = (FrameLayout.LayoutParams) getLayoutParams();
         FrameLayout.LayoutParams pipLayoutLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         pipLayoutLayoutParams.setMargins(0, 0, 0, 0);
@@ -293,13 +289,21 @@ public class PIPFloatingLayout extends CoordinatorLayout {
                     setCustomExpandedState();
                     break;
                 case NATIVE_MOUNTED:
-                    cancelAnimations();
                     setNativePIPMode();
                     break;
                 case CUSTOM_MOUNTED:
                     setCustomPIPMode();
                     setCustomCompactState();
                     animateToExpand();
+                    break;
+                case NATIVE_MOUNT_START:
+                    cancelAnimations();
+                    Point loc = ViewUtils.getLocationOnScreen(this);
+                    this.pipLayoutLeft = loc.x;
+                    this.pipLayoutTop = loc.y;
+                    dX = 0;
+                    dY = 0;
+                    animate().x(0).y(0).setDuration(0).start();
                     break;
 
             }

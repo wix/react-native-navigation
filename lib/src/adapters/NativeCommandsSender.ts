@@ -32,7 +32,7 @@ interface NativeCommandsModule {
 
     pushAsPIP(commandId: string, onComponentId: string, component: object): Promise<any>;
 
-    closePIP(commandId: string, componentId: string): Promise<any>;
+    closePIP(commandId: string): Promise<any>;
 
     switchToPIP(commandId: string, componentId: string, options?: object): Promise<any>;
 
@@ -107,8 +107,8 @@ export class NativeCommandsSender {
         return this.nativeCommandsModule.pushAsPIP(commandId, onComponentId, component);
     }
 
-    closePIP(commandId: string, componentId: string) {
-        return this.nativeCommandsModule.closePIP(commandId, componentId);
+    closePIP(commandId: string) {
+        return this.nativeCommandsModule.closePIP(commandId);
     }
 
     switchToPIP(commandId: string, componentId: string, options?: Options) {

@@ -412,18 +412,11 @@ describe('Commands', () => {
     });
 
     describe('closePIP', () => {
-        it('close a component if its in in PIP mode, passing componentId', () => {
-            uut.closePIP('theComponentId');
+        it('close a component if its in in PIP mode', () => {
+            uut.closePIP();
             verify(
-                mockedNativeCommandsSender.closePIP('closePIP+UNIQUE_ID', 'theComponentId')
+                mockedNativeCommandsSender.closePIP('closePIP+UNIQUE_ID')
             ).called();
-        });
-        it('closePIP returns a promise that resolves to componentId', async () => {
-            when(mockedNativeCommandsSender.closePIP(anyString(), anyString())).thenResolve(
-                'theComponentId'
-            );
-            const result = await uut.closePIP('theComponentId');
-            expect(result).toEqual('theComponentId');
         });
     });
 

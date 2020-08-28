@@ -7,7 +7,8 @@ export type PIPState =
     | 'CUSTOM_COMPACT'
     | 'RESTORE_START'
     | 'UNMOUNT_START'
-    | 'NATIVE_MOUNTED';
+    | 'NATIVE_MOUNTED'
+    |'NATIVE_MOUNT_START';
 
 export interface ComponentEvent {
     componentId: string;

@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.util.Rational;
@@ -43,6 +42,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     private PIPStates pipState = PIPStates.NOT_STARTED;
     private PIPFloatingLayout pipFloatingLayout;
     private String EXTRA_CONTROL_TYPE = "control_type";
+    private boolean receiverRegistered = false;
 
     public PIPNavigator(Activity activity, ChildControllersRegistry childRegistry, Presenter presenter, Options initialOptions) {
         super(activity, childRegistry, "PIP " + CompatUtils.generateViewId(), presenter, initialOptions);
@@ -84,7 +84,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         this.childController = childController;
         this.childController.setParentController(this);
         View pipView = this.childController.getView();
-        updatePIPState(PIPStates.MOUNT_START);
+        updatePIPStateInternal(PIPStates.MOUNT_START);
         PIPFloatingLayout floatingLayout = new PIPFloatingLayout(getActivity());
         floatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);
         floatingLayout.addView(pipView);
@@ -99,11 +99,11 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         if (this.childController.options.animations.pipIn.enabled.isTrueOrUndefined()) {
             this.pipInAnimator.pipIn(floatingLayout, this.childController, this.childController.options, () -> {
                 this.pipFloatingLayout = floatingLayout;
-                updatePIPState(PIPStates.CUSTOM_COMPACT);
+                updatePIPStateInternal(PIPStates.CUSTOM_COMPACT);
             });
         } else {
             this.pipFloatingLayout = floatingLayout;
-            updatePIPState(PIPStates.CUSTOM_COMPACT);
+            updatePIPStateInternal(PIPStates.CUSTOM_COMPACT);
         }
     }
 
@@ -111,16 +111,16 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         if (this.childController != null) {
             pipFloatingLayout.cancelAnimations();
             pipFloatingLayout.initiateRestore();
-            updatePIPState(PIPStates.RESTORE_START);
+            updatePIPStateInternal(PIPStates.RESTORE_START);
             if (this.childController.options.animations.pipOut.enabled.isTrueOrUndefined()) {
                 this.pipInAnimator.pipOut(this.pipFloatingLayout, this.childController, this.childController.options, () -> {
-                    updatePIPState(PIPStates.NOT_STARTED);
+                    updatePIPStateInternal(PIPStates.NOT_STARTED);
                     this.childController.detachView();
                     task.run(this.childController);
                     clearPIP();
                 });
             } else {
-                updatePIPState(PIPStates.NOT_STARTED);
+                updatePIPStateInternal(PIPStates.NOT_STARTED);
                 this.childController.detachView();
                 task.run(this.childController);
                 clearPIP();
@@ -141,14 +141,20 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         }
     }
 
-    public void onPictureInPictureModeChanged(Boolean isInPictureInPictureMode, Configuration newConfig) {
-        if (isInPictureInPictureMode) {
-            updatePIPState(PIPStates.NATIVE_MOUNTED);
-            getActivity().registerReceiver(mReceiver, new IntentFilter(childController.options.pipOptions.actionControlGroup));
-        } else {
-            updatePIPState(PIPStates.CUSTOM_MOUNTED);
-            getActivity().unregisterReceiver(mReceiver);
+    public void updatePIPState(PIPStates newPIPState) {
+        switch (newPIPState) {
+            case NATIVE_MOUNTED:
+                receiverRegistered = true;
+                getActivity().registerReceiver(mReceiver, new IntentFilter(childController.options.pipOptions.actionControlGroup));
+                break;
+            case CUSTOM_MOUNTED:
+                if (receiverRegistered) {
+                    receiverRegistered = false;
+                    getActivity().unregisterReceiver(mReceiver);
+                }
+                break;
         }
+        updatePIPStateInternal(newPIPState);
     }
 
     public PIPStates getPipStates() {
@@ -160,11 +166,11 @@ public class PIPNavigator extends ParentController<PIPContainer> {
             @Override
             public void run() {
                 if (PIPNavigator.this.childController != null) {
-                    updatePIPState(PIPStates.UNMOUNT_START);
+                    updatePIPStateInternal(PIPStates.UNMOUNT_START);
                     PIPNavigator.this.childController.detachView();
                     PIPNavigator.this.childController.onViewWillDisappear();
                     PIPNavigator.this.childController.destroy();
-                    updatePIPState(PIPStates.NOT_STARTED);
+                    updatePIPStateInternal(PIPStates.NOT_STARTED);
                     if (listener != null)
                         listener.onSuccess("PIP Closed");
                     clearPIP();
@@ -205,10 +211,10 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         return childController != null ? new Rational(childController.options.pipOptions.aspectRatio.numerator.get(), childController.options.pipOptions.aspectRatio.denominator.get()) : null;
     }
 
-    private void updatePIPState(PIPStates newPIPState) {
+    private void updatePIPStateInternal(PIPStates newPIPState) {
+        pipState = newPIPState;
         if (pipFloatingLayout != null)
             pipFloatingLayout.updatePIPState(newPIPState);
-        pipState = newPIPState;
     }
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {

@@ -220,8 +220,8 @@ export class NavigationRoot {
     /**
      * close pip component
      */
-    public closePIP(componentId: string): Promise<any> {
-        return this.commands.closePIP(componentId);
+    public closePIP(): Promise<any> {
+        return this.commands.closePIP();
     }
 
     /**

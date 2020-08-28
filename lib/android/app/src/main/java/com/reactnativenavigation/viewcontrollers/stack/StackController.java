@@ -186,9 +186,8 @@ public class StackController extends ParentController<StackLayout> {
         child.setParentController(this);
         stack.push(child.getId(), child);
         Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
-        presenter.applyInitialChildLayoutOptions(resolvedOptions);
+        applyChildOptions(resolvedOptions, child);
         getView().addView(child.getView(), getView().getChildCount() - 1, matchParentWithBehaviour(new StackBehaviour(this)));
-
         if (toRemove != null) {
             getView().removeView(toRemove.getView());
         }
@@ -303,10 +302,7 @@ public class StackController extends ParentController<StackLayout> {
             //listener.onError("Nothing to pop");
             return null;
         }
-
         peek().mergeOptions(mergeOptions);
-        Options disappearingOptions = resolveCurrentOptions(presenter.getDefaultOptions());
-
         final ViewController disappearing = stack.pop();
         final ViewController appearing = stack.peek();
 

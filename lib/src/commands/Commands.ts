@@ -186,10 +186,10 @@ export class Commands {
         return result;
     }
 
-    public closePIP(componentId: string) {
+    public closePIP() {
         const commandId = this.uniqueIdProvider.generate('closePIP');
-        const result = this.nativeCommandsSender.closePIP(commandId, componentId);
-        this.commandsObserver.notify('closePIP', {commandId, componentId});
+        const result = this.nativeCommandsSender.closePIP(commandId);
+        this.commandsObserver.notify('closePIP', {commandId});
         return result;
     }
 

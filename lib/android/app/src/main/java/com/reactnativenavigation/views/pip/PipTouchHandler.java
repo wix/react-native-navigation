@@ -1,11 +1,9 @@
 package com.reactnativenavigation.views.pip;
 
-import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.ComponentName;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -14,11 +12,8 @@ import android.os.Handler;
 import android.util.Size;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
-import android.view.accessibility.AccessibilityManager;
 
 import androidx.annotation.RequiresApi;
-
-import com.reactnativenavigation.R;
 
 import java.io.PrintWriter;
 
@@ -44,7 +39,6 @@ public class PipTouchHandler {
     private final PipMenuListener mMenuListener = new PipMenuListener();
     private final PipDismissViewController mDismissViewController;
     private final PipSnapAlgorithm mSnapAlgorithm;
-    private final AccessibilityManager mAccessibilityManager;
     private boolean mShowPipMenuOnAnimationEnd = false;
     // The current movement bounds
     private Rect mMovementBounds = new Rect();
@@ -72,7 +66,7 @@ public class PipTouchHandler {
             new AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    updateDismissFraction();
+                    //updateDismissFraction();
                 }
             };
     // Behaviour states
@@ -119,7 +113,6 @@ public class PipTouchHandler {
     public PipTouchHandler(PIPFloatingLayout floatingLayout) {
         // Initialize the Pip input consumer
         mFloatingLayout = floatingLayout;
-        mAccessibilityManager = floatingLayout.getContext().getSystemService(AccessibilityManager.class);
         mViewConfig = ViewConfiguration.get(floatingLayout.getContext());
         mDismissViewController = new PipDismissViewController(floatingLayout.getContext());
         mSnapAlgorithm = new PipSnapAlgorithm(floatingLayout.getContext());
@@ -183,7 +176,7 @@ public class PipTouchHandler {
                     mTmpBounds.offsetTo((int) left, (int) top);
                     mMotionHelper.movePip(mTmpBounds);
                     if (ENABLE_DISMISS_DRAG_TO_EDGE) {
-                        updateDismissFraction();
+                        //updateDismissFraction();
                     }
                     final PointF curPos = touchState.getLastTouchPosition();
                     if (mMovementWithinMinimize) {
@@ -236,15 +229,6 @@ public class PipTouchHandler {
                             !mIsMinimized && (mMotionHelper.shouldMinimizePip() || isFlingToEdge)) {
                         // Pip should be minimized
                         setMinimizedStateInternal(true);
-                        if (mMenuState == MENU_STATE_FULL) {
-                            // If the user dragged the expanded PiP to the edge, then hiding the menu
-                            // will trigger the PiP to be scaled back to the normal size with the
-                            // minimize offset adjusted
-                            mMenuController.hideMenu();
-                        } else {
-                            mMotionHelper.animateToClosestMinimizedState(mMovementBounds,
-                                    mUpdateScrimListener);
-                        }
                         return true;
                     }
                     if (mIsMinimized) {
@@ -267,7 +251,7 @@ public class PipTouchHandler {
                     mMotionHelper.animateToClosestSnapTarget(mMovementBounds, null /* updateListener */,
                             null /* animatorListener */);
                     setMinimizedStateInternal(false);
-                } else if (mMenuState != MENU_STATE_FULL) {
+                } else if (mPIPState != PIPStates.CUSTOM_EXPANDED) {
                     if (mTouchState.isDoubleTap()) {
                         // Expand to fullscreen if this is a double tap
                         mMotionHelper.expandPip();
@@ -289,10 +273,8 @@ public class PipTouchHandler {
         mMotionHelper = new PIPMotionHelper(floatingLayout,
                 mSnapAlgorithm, mFlingAnimationUtils);
         mTouchState = new PipTouchState(mViewConfig, mHandler,
-                () -> mMenuController.showMenu(MENU_STATE_FULL, mMotionHelper.getBounds(),
-                        mMovementBounds, true /* allowMenuTimeout */, willResizeMenu()));
-        Resources res = context.getResources();
-        mImeOffset = res.getDimensionPixelSize(R.dimen.pip_ime_offset);
+                () -> {
+                });
     }
 
     public void setTouchEnabled(boolean enabled) {
@@ -328,7 +310,7 @@ public class PipTouchHandler {
         // Calculate the expanded size
         float aspectRatio = (float) normalBounds.width() / normalBounds.height();
         Point displaySize = new Point();
-        mFloatingLayout.getRealSize(displaySize);
+        // mFloatingLayout.getRealSize(displaySize);
         mExpandedBounds.set(0, 0, expandedSize.getWidth(), expandedSize.getHeight());
         Rect expandedMovementBounds = new Rect();
         mSnapAlgorithm.getMovementBounds(mExpandedBounds, insetBounds, expandedMovementBounds,
@@ -372,7 +354,7 @@ public class PipTouchHandler {
         mNormalMovementBounds = normalMovementBounds;
         mExpandedMovementBounds = expandedMovementBounds;
         mInsetBounds.set(insetBounds);
-        updateMovementBounds(mMenuState);
+        //updateMovementBounds(mMenuState);
         // If we have a deferred resize, apply it now
         if (mDeferResizeToNormalBoundsUntilRotation == displayRotation) {
             mMotionHelper.animateToUnexpandedState(normalBounds, mSavedSnapFraction,
@@ -407,7 +389,7 @@ public class PipTouchHandler {
             case MotionEvent.ACTION_UP: {
                 // Update the movement bounds again if the state has changed since the user started
                 // dragging (ie. when the IME shows)
-                updateMovementBounds(mMenuState);
+                //updateMovementBounds(mMenuState);
                 for (PipTouchGesture gesture : mGestures) {
                     if (gesture.onUp(mTouchState)) {
                         break;
@@ -420,7 +402,7 @@ public class PipTouchHandler {
                 break;
             }
         }
-        return mMenuState == MENU_STATE_NONE;
+        return true;
     }
 
 

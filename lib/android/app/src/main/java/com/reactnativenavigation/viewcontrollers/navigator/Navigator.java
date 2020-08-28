@@ -2,7 +2,6 @@ package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
 import android.app.PictureInPictureParams;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,6 @@ import java.util.List;
 
 public class Navigator extends ParentController {
     private PIPNavigator pipNavigator;
-    private String lastPushedComponent = "";
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
     private final RootPresenter rootPresenter;
@@ -186,7 +184,6 @@ public class Navigator extends ParentController {
     }
 
     public void push(final String id, final ViewController viewController, CommandListener listener) {
-        this.lastPushedComponent = id;
         applyOnStack(id, listener, stack -> stack.push(viewController, listener));
     }
 
@@ -218,10 +215,12 @@ public class Navigator extends ParentController {
     }
 
 
-    public void closePIP(String componentId, CommandListener listener) {
-        ViewController childController = pipNavigator.findController(componentId);
-        if (childController != null)
-            pipNavigator.closePIP(listener);
+    public void closePIP(CommandListener listener) {
+        pipNavigator.closePIP(listener);
+    }
+
+    public void forceClosePIP() {
+        pipNavigator.closePIP(null);
     }
 
     @Override
@@ -307,17 +306,29 @@ public class Navigator extends ParentController {
         }
     }
 
-    public void onPictureInPictureModeChanged(Boolean isInPictureInPictureMode, Configuration newConfig) {
-        if (isInPictureInPictureMode) {
-            rootLayout.setVisibility(View.GONE);
-            modalsLayout.setVisibility(View.GONE);
-            overlaysLayout.setVisibility(View.GONE);
-        } else {
-            rootLayout.setVisibility(View.VISIBLE);
-            modalsLayout.setVisibility(View.VISIBLE);
-            overlaysLayout.setVisibility(View.VISIBLE);
+    public void updatePIPState(PIPStates newPIPState) {
+        switch (newPIPState) {
+            case NATIVE_MOUNTED:
+                pipNavigator.getView().setVisibility(View.VISIBLE);
+                rootLayout.setVisibility(View.GONE);
+                modalsLayout.setVisibility(View.GONE);
+                overlaysLayout.setVisibility(View.GONE);
+                break;
+            case CUSTOM_MOUNTED:
+                rootLayout.setVisibility(View.VISIBLE);
+                modalsLayout.setVisibility(View.VISIBLE);
+                overlaysLayout.setVisibility(View.VISIBLE);
+                break;
         }
-        pipNavigator.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
+        pipNavigator.updatePIPState(newPIPState);
+    }
+
+
+    public void resetPIP() {
+        rootLayout.setVisibility(View.VISIBLE);
+        modalsLayout.setVisibility(View.VISIBLE);
+        overlaysLayout.setVisibility(View.VISIBLE);
+        forceClosePIP();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
