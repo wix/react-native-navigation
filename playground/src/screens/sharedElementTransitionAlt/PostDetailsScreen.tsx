@@ -58,6 +58,9 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({
           {post.name}
         </Text>
         <Text style={styles.description}>{post.description}</Text>
+        <TouchableOpacity style={styles.buyButton}>
+          <Text style={styles.buyText}>Buy</Text>
+        </TouchableOpacity>
       </Reanimated.ScrollView>
       <TouchableOpacity style={styles.closeButton} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>
@@ -119,4 +122,19 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
   },
+  buyButton: {
+    alignSelf: 'center',
+    marginVertical: 25,
+    width: '100%',
+    height: 45,
+    backgroundColor: 'dodgerblue',
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buyText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white'
+  }
 });
