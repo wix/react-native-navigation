@@ -1,14 +1,12 @@
 import React, { useCallback } from 'react';
-import { Platform, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { Platform, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { NavigationFunctionComponent } from 'react-native-navigation';
 import posts, { PostItem } from '../../assets/posts';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import PostCard from './PostCard';
 
-const MULTIPLIER = 1.15;
-const POP_MULTIPLIER = 1.15;
-const LONG_DURATION = 350 * MULTIPLIER;
+const SET_DURATION = 500;
 
 const PostsListScreen: NavigationFunctionComponent = (props) => {
   const onPostPressed = useCallback(
@@ -24,20 +22,20 @@ const PostsListScreen: NavigationFunctionComponent = (props) => {
                   alpha: {
                     from: 0,
                     to: 1,
-                    duration: LONG_DURATION,
+                    duration: SET_DURATION,
                   },
                 },
                 sharedElementTransitions: [
                   {
                     fromId: `image${post.id}`,
                     toId: `image${post.id}Dest`,
-                    duration: LONG_DURATION,
+                    duration: SET_DURATION,
                     interpolation: 'spring',
                   },
                   {
                     fromId: `title${post.id}`,
                     toId: `title${post.id}Dest`,
-                    duration: LONG_DURATION,
+                    duration: SET_DURATION,
                     interpolation: 'spring',
                   },
                 ],
@@ -47,20 +45,20 @@ const PostsListScreen: NavigationFunctionComponent = (props) => {
                   alpha: {
                     from: 1,
                     to: 0,
-                    duration: LONG_DURATION * POP_MULTIPLIER,
+                    duration: SET_DURATION,
                   },
                 },
                 sharedElementTransitions: [
                   {
                     fromId: `image${post.id}Dest`,
                     toId: `image${post.id}`,
-                    duration: LONG_DURATION * POP_MULTIPLIER,
+                    duration: SET_DURATION,
                     interpolation: 'spring',
                   },
                   {
                     fromId: `title${post.id}Dest`,
                     toId: `title${post.id}`,
-                    duration: LONG_DURATION * POP_MULTIPLIER,
+                    duration: SET_DURATION,
                     interpolation: 'spring',
                   },
                 ],
@@ -75,7 +73,7 @@ const PostsListScreen: NavigationFunctionComponent = (props) => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
         {posts.map((p) => (
           <TouchableOpacity key={p.id} onPress={() => onPostPressed(p)}>
             <PostCard post={p} />
@@ -103,3 +101,9 @@ PostsListScreen.options = {
 };
 
 export default PostsListScreen;
+
+const styles = StyleSheet.create({
+  scrollContent: {
+    paddingVertical: 25
+  }
+})
