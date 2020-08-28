@@ -15,14 +15,14 @@ import {
 } from 'react-native-navigation';
 import { PostItem } from '../../assets/posts';
 
-interface Props extends NavigationComponentProps {
+interface Props {
   post: PostItem;
 }
 
-const PostDetailsScreen: NavigationFunctionComponent = ({
+const PostDetailsScreen: NavigationFunctionComponent<Props> = ({
   post,
   componentId,
-}: Props): JSX.Element => {
+}) => {
   const onClosePressed = useCallback(() => {
     Navigation.pop(componentId);
   }, [componentId]);
