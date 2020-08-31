@@ -56,11 +56,11 @@
 }
 
 - (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
-	UIWindow* mainWindow = [self initializeKeyWindow];
+    UIWindow* mainWindow = [self initializeKeyWindowIfNeeded];
 	
-	self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
-  [self.bridgeManager initializeBridge];
-	[RNNSplashScreen showOnWindow:mainWindow];
+    self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
+    [self.bridgeManager initializeBridge];
+    [RNNSplashScreen showOnWindow:mainWindow];
 }
 
 - (UIWindow *)initializeKeyWindowIfNeeded {
