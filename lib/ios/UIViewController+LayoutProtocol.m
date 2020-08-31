@@ -176,6 +176,14 @@
 
 #pragma mark getters and setters to associated object
 
+- (RNNReactView *)reactView {
+    return objc_getAssociatedObject(self, @selector(reactView));
+}
+
+- (void)setReactView:(RNNReactView *)reactView {
+    objc_setAssociatedObject(self, @selector(reactView), reactView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 - (RNNNavigationOptions *)options {
 	return objc_getAssociatedObject(self, @selector(options));
 }

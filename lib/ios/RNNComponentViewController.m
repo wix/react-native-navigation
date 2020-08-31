@@ -1,7 +1,9 @@
 #import "RNNComponentViewController.h"
 #import "UIView+Utils.h"
 
-@implementation RNNComponentViewController
+@implementation RNNComponentViewController {
+    NSArray* _reactViewConstraints;
+}
 
 @synthesize previewCallback;
 
@@ -31,11 +33,13 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self.reactView componentDidAppear];
     [self componentDidAppear];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    [self.reactView componentDidDisappear];
     [self componentDidDisappear];
     
     // Fix's momentum scroll bug https://github.com/wix/react-native-navigation/issues/4325
@@ -54,14 +58,13 @@
 }
 
 - (void)destroyReactView {
-    if ([self.view isKindOfClass: [RNNReactView class]]) {
-        [((RNNReactView *)self.view) invalidate];
-    }
+    [self.reactView invalidate];
 }
 
 - (void)renderReactViewIfNeeded {
-    if (!self.isViewLoaded) {
-        self.view = [self.creator createRootView:self.layoutInfo.name
+    if (!self.reactView) {
+        self.view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];
+        self.reactView = [self.creator createRootView:self.layoutInfo.name
                                       rootViewId:self.layoutInfo.componentId
                                           ofType:RNNComponentTypeComponent
                              reactViewReadyBlock:^{
@@ -69,10 +72,55 @@
                 [self readyForPresentation];
             }];
         }];
+        self.reactView.backgroundColor = UIColor.clearColor;
+        self.reactView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:self.reactView];
+        [self updateReactViewConstraints];
     } else {
         [self readyForPresentation];
     }
 }
+
+- (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside {
+    self.reactView.passThroughTouches = !interceptTouchOutside;
+}
+
+- (void)viewSafeAreaInsetsDidChange {
+    [super viewSafeAreaInsetsDidChange];
+    [self updateReactViewConstraints];
+}
+
+- (void)updateReactViewConstraints {
+    if (self.isViewLoaded && self.reactView) {
+        [NSLayoutConstraint deactivateConstraints:_reactViewConstraints];
+        _reactViewConstraints = @[
+            [self.reactView.topAnchor constraintEqualToAnchor:self.shouldDrawBehindTopBar ? self.view.topAnchor : self.view.safeAreaLayoutGuide.topAnchor],
+            [self.reactView.bottomAnchor constraintEqualToAnchor:self.shouldDrawBehindBottomTabs ? self.view.bottomAnchor : self.view.safeAreaLayoutGuide.bottomAnchor],
+            [self.reactView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor],
+            [self.reactView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor]
+        ];
+        [NSLayoutConstraint activateConstraints:_reactViewConstraints];
+    }
+}
+
+- (BOOL)shouldDrawBehindBottomTabs {
+    return (!self.tabBarController.tabBar || self.tabBarController.tabBar.isHidden || _drawBehindBottomTabs);
+}
+
+- (BOOL)shouldDrawBehindTopBar {
+    return (!self.navigationController.navigationBar || self.navigationController.navigationBar.isHidden || _drawBehindTopBar);
+}
+
+- (void)setDrawBehindTopBar:(BOOL)drawBehindTopBar {
+    _drawBehindTopBar = drawBehindTopBar;
+    [self updateReactViewConstraints];
+}
+
+- (void)setDrawBehindBottomTabs:(BOOL)drawBehindBottomTabs {
+    _drawBehindBottomTabs = drawBehindBottomTabs;
+    [self updateReactViewConstraints];
+}
+
 
 - (UIViewController *)getCurrentChild {
 	return nil;

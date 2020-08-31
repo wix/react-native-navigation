@@ -4,6 +4,7 @@
 #import "BaseAnimator.h"
 #import "NSArray+utils.h"
 #import "SharedElementAnimator.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @implementation SharedElementTransitionsCreator
 
@@ -13,8 +14,8 @@
                                   containerView:(UIView *)containerView {
     NSMutableArray<DisplayLinkAnimatorDelegate>* transitions = [NSMutableArray<DisplayLinkAnimatorDelegate> new];
     for (SharedElementTransitionOptions* transitionOptions in sharedElementTransitions) {
-        UIView *fromView = [RNNElementFinder findElementForId:transitionOptions.fromId inView:fromVC.view];
-        UIView *toView = [RNNElementFinder findElementForId:transitionOptions.toId inView:toVC.view];
+        UIView *fromView = [RNNElementFinder findElementForId:transitionOptions.fromId inView:fromVC.reactView];
+        UIView *toView = [RNNElementFinder findElementForId:transitionOptions.toId inView:toVC.reactView];
         SharedElementAnimator* sharedElementAnimator = [[SharedElementAnimator alloc] initWithTransitionOptions:transitionOptions
                                                                                                        fromView:fromView
                                                                                                          toView:toView

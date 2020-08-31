@@ -21,8 +21,8 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(setRoot:(NSString*)commandId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTExecuteOnMainQueue(^{
-        [self->_commandsHandler setRoot:layout commandId:commandId completion:^{
-            resolve(layout);
+        [self->_commandsHandler setRoot:layout commandId:commandId completion:^(NSString* componentId) {
+            resolve(componentId);
         }];
     });
 }
@@ -45,8 +45,8 @@ RCT_EXPORT_METHOD(setDefaultOptions:(NSDictionary*)options resolver:(RCTPromiseR
 
 RCT_EXPORT_METHOD(push:(NSString*)commandId componentId:(NSString*)componentId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTExecuteOnMainQueue(^{
-        [self->_commandsHandler push:componentId commandId:commandId layout:layout completion:^{
-            resolve(componentId);
+        [self->_commandsHandler push:componentId commandId:commandId layout:layout completion:^(NSString* pushedComponentId) {
+            resolve(pushedComponentId);
         } rejection:reject];
     });
 }
@@ -93,7 +93,7 @@ RCT_EXPORT_METHOD(showModal:(NSString*)commandId layout:(NSDictionary*)layout re
 
 RCT_EXPORT_METHOD(dismissModal:(NSString*)commandId componentId:(NSString*)componentId mergeOptions:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTExecuteOnMainQueue(^{
-        [self->_commandsHandler dismissModal:componentId commandId:commandId mergeOptions:options completion:^{
+        [self->_commandsHandler dismissModal:componentId commandId:commandId mergeOptions:options completion:^(NSString *componentId) {
             resolve(componentId);
         } rejection:reject];
     });
@@ -109,8 +109,8 @@ RCT_EXPORT_METHOD(dismissAllModals:(NSString*)commandId mergeOptions:(NSDictiona
 
 RCT_EXPORT_METHOD(showOverlay:(NSString*)commandId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTExecuteOnMainQueue(^{
-        [self->_commandsHandler showOverlay:layout commandId:commandId completion:^{
-            resolve(layout[@"id"]);
+        [self->_commandsHandler showOverlay:layout commandId:commandId completion:^(NSString * _Nonnull componentId) {
+            resolve(componentId);
         }];
     });
 }

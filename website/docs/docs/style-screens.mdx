@@ -15,22 +15,7 @@ Options can be passed to layouts as part of a command. For example when pushing 
 
 In the example below we're pushing a user profile screen and we'd like show the user name in the title. To do so, we set the title in the component's options.
 
-```ts
-function showUserProfileScreen(user: User) {
-  Navigation.push(componentId: {
-    component: {
-      name: 'ProfileScreen',
-      passProps: { user },
-      options: {
-        topBar: {
-          title: {
-            text: user.name,
-          },
-        },
-      },
-    },
-  });
-}
+```tsx file=./style-screens/command-options.tsx
 ```
 
 Notice how the title is actually inferred from the `user` object which is set in `passProps`. While this works perfectly fine, declaring the title each time a screen is pushed is a bit tedious and error prone. Later on we'll see a more convenient method to declare dynamic options which are inferred from props.
@@ -48,35 +33,13 @@ Static options are options that are declared statically **on** the component cla
 }>
 <TabItem value="class">
 
-```ts
-import { NavigationComponent, Options } from 'react-native-navigation';
-
-class MyScreen extends NavigationComponent {
-  static options: Options = {
-    topBar: {
-      title: {
-        text: 'My Screen',
-      },
-    },
-  };
-}
+```tsx file=./style-screens/static-options-class.tsx
 ```
 
 </TabItem>
 <TabItem value="functional">
 
-```ts
-import { NavigationFunctionalComponent, Options } from 'react-native-navigation';
-
-const MyFunctionalScreen: NavigationFunctionComponent = (props: NavigationComponentProps) => {};
-
-MyFunctionalScreen.options: Options = {
-  topBar: {
-    title: {
-      text: 'My Screen',
-    },
-  },
-};
+```tsx file=./style-screens/static-options-fn.tsx
 ```
 
 </TabItem>
@@ -97,45 +60,13 @@ Luckily, we can access props from static options and set the title from static o
 }>
 <TabItem value="class">
 
-```ts
-import { NavigationComponent, NavigationComponentProps, Options } from 'react-native-navigation';
-
-interface Props extends NavigationComponentProps {
-  order: OrderDetails;
-}
-
-class OrderScreen extends NavigationComponent<Props> {
-  static options(props: Props): Options = {
-    topBar: {
-      title: {
-        text: props.order.orderId,
-      },
-    },
-  };
-}
+```tsx file=./style-screens/static-options-props-class.tsx
 ```
 
 </TabItem>
 <TabItem value="functional">
 
-```ts
-import { NavigationFunctionalComponent, Options } from 'react-native-navigation';
-
-interface Props extends NavigationComponentProps {
-  order: OrderDetails;
-}
-
-const OrderScreen: NavigationFunctionComponent<Props> = (props: Props) => {};
-
-OrderScreen.options = (props: Props) => {
-  return {
-    topBar: {
-      title: {
-        text: props.order.orderId,
-      },
-    },
-  };
-};
+```tsx file=./style-screens/static-options-props-fn.tsx
 ```
 
 </TabItem>
@@ -143,23 +74,7 @@ OrderScreen.options = (props: Props) => {
 
 Following this approach we can determine options that are dependent on other external factors, such as experiments or A/B tests.
 
-```ts
-import { NavigationComponent, Options } from 'react-native-navigation';
-
-class ExperimentScreen extends NavigationComponent {
-  static options(): Options {
-    const ExperimentsManager = require('./ExperimentsManager');
-    const food = ExperimentsManager.isActive('VeganExperiment') ? 'Tofu' : 'Hamburger';
-
-    return {
-      topBar: {
-        title: {
-          text: `Hello ${food}!`,
-        },
-      },
-    };
-  }
-}
+```tsx file=./style-screens/static-options-experiments.tsx
 ```
 
 ## Merge options
@@ -168,14 +83,7 @@ The `mergeOptions` command is used to update a layout's style. Keep in mind that
 
 The following example shows how to update a TopBar background color to red.
 
-```ts
-Navigation.mergeOptions(this.props.componentId, {
-  topBar: {
-    backgroundColor: {
-      color: 'red',
-    },
-  },
-});
+```tsx file=./style-screens/merge-options.tsx
 ```
 
 ---

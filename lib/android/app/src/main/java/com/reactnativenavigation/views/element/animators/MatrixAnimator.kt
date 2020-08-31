@@ -42,8 +42,12 @@ class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageV
     }
 
     private fun getScaleType(child: View): ScalingUtils.ScaleType? {
-        val scaleType = (child as ReactImageView).hierarchy.actualImageScaleType
-        return if (scaleType is InterpolatingScaleType) scaleType.scaleTypeFrom else scaleType
+        return getScaleType(child as ReactImageView, child.hierarchy.actualImageScaleType!!)
+    }
+
+    private fun getScaleType(child: ReactImageView, scaleType: ScalingUtils.ScaleType): ScalingUtils.ScaleType? {
+        if (scaleType is InterpolatingScaleType) return getScaleType(child, scaleType.scaleTypeTo )
+        return scaleType
     }
 
     private fun calculateBounds(view: View) = Rect(0, 0, view.width, view.height)

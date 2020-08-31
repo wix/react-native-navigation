@@ -7,6 +7,7 @@ import head from 'lodash/head';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
+import { component } from './../commons/Layouts';
 import { stack } from '../commons/Layouts';
 import Screens from './Screens';
 import testIDs from '../testIDs';
@@ -18,6 +19,7 @@ const {
   DISMISS_MODAL_BTN,
   DISMISS_UNKNOWN_MODAL_BTN,
   MODAL_LIFECYCLE_BTN,
+  MODAL_COMMANDS_BTN,
   DISMISS_PREVIOUS_MODAL_BTN,
   DISMISS_ALL_PREVIOUS_MODAL_BTN,
   DISMISS_ALL_MODALS_BTN,
@@ -60,6 +62,7 @@ export default class ModalScreen extends NavigationComponent<Props> {
           testID={MODAL_LIFECYCLE_BTN}
           onPress={this.modalLifecycle}
         />
+        <Button label="Modal Commands" testID={MODAL_COMMANDS_BTN} onPress={this.modalCommands} />
         {this.getPreviousModalId() && (
           <Button
             label="Dismiss Previous Modal"
@@ -124,6 +127,8 @@ export default class ModalScreen extends NavigationComponent<Props> {
         passProps: { isModal: true },
       },
     });
+
+  modalCommands = () => Navigation.push(this, component(Screens.ModalCommands));
 
   push = () => Navigation.push(this, Screens.Pushed);
 
