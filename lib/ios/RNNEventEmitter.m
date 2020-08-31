@@ -92,11 +92,10 @@ static NSString* const BottomTabPressed         = @"RNN.BottomTabPressed";
                                         }];
 }
 
--(void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId params:(NSDictionary*)params {
+- (void)sendOnNavigationCommandCompletion:(NSString *)commandName commandId:(NSString *)commandId {
 	[self send:CommandCompleted body:@{
 									   @"commandId":commandId,
 									   @"commandName":commandName,
-									   @"params": params,
 									   @"completionTime": [RNNUtils getCurrentTimestamp]
 									   }];
 }
@@ -124,10 +123,9 @@ static NSString* const BottomTabPressed         = @"RNN.BottomTabPressed";
     }];
 }
 
-- (void)sendModalsDismissedEvent:(NSString *)componentId componentName:(NSString *)componentName numberOfModalsDismissed:(NSNumber *)modalsDismissed {
+- (void)sendModalsDismissedEvent:(NSString *)componentId numberOfModalsDismissed:(NSNumber *)modalsDismissed {
     [self send:ModalDismissed body:@{
         @"componentId": componentId,
-        @"componentName": componentName,
         @"modalsDismissed": modalsDismissed
     }];
 }
