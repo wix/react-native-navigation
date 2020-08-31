@@ -18,6 +18,7 @@ import {
 } from '../interfaces/ComponentEvents';
 import {NativeEventsReceiver} from '../adapters/NativeEventsReceiver';
 import {Store} from '../components/Store';
+import {Platform} from "react-native";
 
 type ReactComponentWithIndexing = React.Component<any> & Record<string, any>;
 
@@ -38,8 +39,10 @@ export class ComponentEventsObserver {
         this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
         this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
         this.notifyScreenPopped = this.notifyScreenPopped.bind(this);
-        this.notifyPIPStateChangedEvent = this.notifyPIPStateChangedEvent.bind(this);
-        this.notifyPIPButtonPressedEvent = this.notifyPIPButtonPressedEvent.bind(this);
+        if (Platform.OS === 'android') {
+            this.notifyPIPStateChangedEvent = this.notifyPIPStateChangedEvent.bind(this);
+            this.notifyPIPButtonPressedEvent = this.notifyPIPButtonPressedEvent.bind(this);
+        }
     }
 
     public registerOnceForAllComponentEvents() {
@@ -56,8 +59,10 @@ export class ComponentEventsObserver {
         this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
         this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
         this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyPreviewCompleted);
-        this.nativeEventsReceiver.registerPIPStateChangedEventListener(this.notifyPIPStateChangedEvent);
-        this.nativeEventsReceiver.registerPIPButtonPressedEventListener(this.notifyPIPButtonPressedEvent);
+        if (Platform.OS === 'android') {
+            this.nativeEventsReceiver.registerPIPStateChangedEventListener(this.notifyPIPStateChangedEvent);
+            this.nativeEventsReceiver.registerPIPButtonPressedEventListener(this.notifyPIPButtonPressedEvent);
+        }
     }
 
     public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
