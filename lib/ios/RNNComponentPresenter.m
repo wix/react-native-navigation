@@ -5,7 +5,7 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "RNNReactTitleView.h"
 #import "TopBarTitlePresenter.h"
-
+#import "RNNComponentViewController.h"
 
 @implementation RNNComponentPresenter {
     TopBarTitlePresenter* _topBarTitlePresenter;
@@ -24,20 +24,11 @@
 }
 
 - (void)componentDidAppear {
-    RNNReactView* component = (RNNReactView *)self.boundViewController.view;
-    if ([component respondsToSelector:@selector(componentDidAppear)]) {
-        [component componentDidAppear];
-    }
     [_topBarTitlePresenter componentDidAppear];
     [_navigationButtons componentDidAppear];
 }
 
 - (void)componentDidDisappear {
-    RNNReactView* component = (RNNReactView *)self.boundViewController.view;
-    if ([component respondsToSelector:@selector(componentDidDisappear)]) {
-        [component componentDidDisappear];
-    }
-    
     [_topBarTitlePresenter componentDidDisappear];
     [_navigationButtons componentDidDisappear];
 }
@@ -49,7 +40,7 @@
 - (void)applyOptions:(RNNNavigationOptions *)options {
     [super applyOptions:options];
     
-    UIViewController* viewController = self.boundViewController;
+    RNNComponentViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [viewController setBackgroundImage:[withDefault.backgroundImage getWithDefaultValue:nil]];
     [viewController setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor getWithDefaultValue:nil]];
@@ -76,14 +67,14 @@
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
     [super applyOptionsOnInit:options];
     
-    UIViewController* viewController = self.boundViewController;
+    RNNComponentViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     
     [_topBarTitlePresenter applyOptionsOnInit:withDefault.topBar];
     
     [viewController setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
     [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
-    [viewController setDrawBehindTabBar:[withDefault.bottomTabs shouldDrawBehind]];
+    [viewController setDrawBehindBottomTabs:[withDefault.bottomTabs shouldDrawBehind]];
 
     if ((withDefault.topBar.leftButtons || withDefault.topBar.rightButtons)) {
         [_navigationButtons applyLeftButtons:withDefault.topBar.leftButtons rightButtons:withDefault.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
@@ -92,8 +83,8 @@
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)currentOptions {
     [super mergeOptions:options resolvedOptions:currentOptions];
-    RNNNavigationOptions * withDefault    = (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
-    UIViewController* viewController = self.boundViewController;
+	RNNNavigationOptions * withDefault	= (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
+    RNNComponentViewController* viewController = self.boundViewController;
 
     if (options.backgroundImage.hasValue) {
         [viewController setBackgroundImage:options.backgroundImage.get];
@@ -112,7 +103,7 @@
     }
     
     if (options.bottomTabs.drawBehind.hasValue) {
-        [viewController setDrawBehindTabBar:options.bottomTabs.drawBehind.get];
+        [viewController setDrawBehindBottomTabs:options.bottomTabs.drawBehind.get];
     }
 
     if (options.topBar.title.text.hasValue) {
@@ -153,8 +144,7 @@
     
 
     if (options.overlay.interceptTouchOutside.hasValue) {
-        RCTRootView* rootView = (RCTRootView*)viewController.view;
-        rootView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
+        viewController.reactView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
     }
     
     [_topBarTitlePresenter mergeOptions:options.topBar resolvedOptions:withDefault.topBar];

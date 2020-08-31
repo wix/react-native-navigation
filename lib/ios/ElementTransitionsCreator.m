@@ -1,5 +1,6 @@
 #import "ElementTransitionsCreator.h"
 #import "RNNElementFinder.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @implementation ElementTransitionsCreator
 
@@ -29,12 +30,12 @@
 }
 
 + (UIView *)findElementById:(NSString *)elementId fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC {
-    UIView* viewInSourceView = [RNNElementFinder findElementForId:elementId inView:fromVC.view];
+    UIView* viewInSourceView = [RNNElementFinder findElementForId:elementId inView:fromVC.reactView];
     if (viewInSourceView) {
         return viewInSourceView;
     }
     
-    UIView* viewInDestinationView = [RNNElementFinder findElementForId:elementId inView:toVC.view];
+    UIView* viewInDestinationView = [RNNElementFinder findElementForId:elementId inView:toVC.reactView];
     if (viewInDestinationView) {
         return viewInDestinationView;
     }

@@ -5,13 +5,17 @@ project.ext.react = [
         entryFile: "index.js",
         bundleAssetName: "index.android.bundle",
         bundleInAlpha: true,
-        bundleInBeta: true
+        bundleInBeta: true,
+        enableHermes: true,
+        hermesFlagsDebug:['-Xes6-proxy','-output-source-map'],
+        hermesFlagsRelease:['-output-source-map'],
+        hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermesc",
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     ndkVersion "20.1.5948944"
 
     compileOptions {
@@ -22,11 +26,11 @@ android {
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters "armeabi-v7a", "x86", 'x86_64'
         }
 
         testBuildType System.getProperty('testBuildType', 'debug')
@@ -45,12 +49,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
-    }
 }
 
 dependencies {
@@ -60,10 +58,12 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.facebook.soloader:soloader:0.9.0'
+    def hermesPath = '../../../node_modules/hermes-engine/android/'
+    debugImplementation files(hermesPath + "hermes-debug.aar")
+    releaseImplementation files(hermesPath + "hermes-release.aar")
+
 
     //noinspection GradleDynamicVersion
-    implementation 'org.webkit:android-jsc-intl:+'
     implementation project(':react-native-navigation')
 
     androidTestImplementation('com.wix:detox:+') { transitive = true }

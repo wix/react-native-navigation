@@ -18,13 +18,17 @@
 React Native Navigation provides 100% native platform navigation on both iOS and Android for React Native apps. The JavaScript API is simple and cross-platform - just install it in your app and give your users the native feel they deserve. Ready to get started? Check out the [docs](https://wix.github.io/react-native-navigation/).
 
 # Quick Links
+
 - [Documentation](https://wix.github.io/react-native-navigation/)
 - [Changelog](https://github.com/wix/react-native-navigation/blob/master/CHANGELOG.md)
 - [Stack Overflow](http://stackoverflow.com/questions/tagged/wix-react-native-navigation)
 - [Chat with us](https://discord.gg/DhkZjq2)
 - [Contributing](https://wix.github.io/react-native-navigation/docs/meta-contributing)
 
+# Requirements
+
+Apps using React Native Navigation may target iOS 11 and Android 5.0 (API 21). You may use Windows, macOS or Linux as your development operating system.
+
 # Installation
+
 As `react-native-navigation` is a native navigation library - integrating it into your app will require editing native files. Follow the installation guides in the [documentation](https://wix.github.io/react-native-navigation/).
-
-

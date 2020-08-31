@@ -580,11 +580,7 @@ export interface ElementAnimation {
 }
 
 export interface OptionsFab {
-  /**
-   * ID is required when first instantiating the Fab button,
-   * however when updating the existing Fab button, ID is not required.
-   */
-  id?: string;
+  id: string;
   backgroundColor?: Color;
   clickColor?: Color;
   rippleColor?: Color;

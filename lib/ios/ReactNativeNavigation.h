@@ -7,17 +7,15 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBri
 
 @interface ReactNativeNavigation : NSObject
 
-+ (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions;
-
-+ (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate;
++ (void)bootstrapWithlaunchOptions:(NSDictionary *)launchOptions;
 
 + (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions;
+
++ (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge;
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
 
 + (UIViewController *)findViewController:(NSString *)componentId;
-
-+ (void)setJSCodeLocation:(NSURL *)jsCodeLocation;
 
 + (RCTBridge *)getBridge;
 

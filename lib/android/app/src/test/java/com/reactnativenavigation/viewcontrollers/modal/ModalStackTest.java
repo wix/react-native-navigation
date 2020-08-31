@@ -112,12 +112,12 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
-    public void dismissModal_listenerAndEmitterAreInvokedWithGivenId() {
+    public void dismissModal_listenerAndEmitterAreInvokedWithRootViewControllerId() {
         uut.showModal(stack, root, new CommandListenerAdapter());
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.dismissModal(modal4.getId(), root, listener);
-        verify(listener).onSuccess(modal4.getId());
-        verify(emitter).emitModalDismissed(modal4.getId(), modal4.getCurrentComponentName(), 1);
+        verify(listener).onSuccess(stack.getId());
+        verify(emitter).emitModalDismissed(stack.getId(), modal4.getCurrentComponentName(), 1);
     }
 
     @SuppressWarnings("Convert2Lambda")

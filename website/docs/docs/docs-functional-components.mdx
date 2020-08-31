@@ -7,7 +7,7 @@ sidebar_label: Using functional components
 Both class components and functional components can be used as screens. There is no performance difference between the two. Deciding which type component to use boils down to user preference.
 
 ## Declaring static options
-Static options are a great way to declare options close to where they are used. Declaring static options is done by first declaring the functional component, and then declaring the options on the function class.
+Static options are a great way to declare options close to where they are used. Declaring static options is done by first declaring the functional component, and then declaring the options on the function component.
 ```jsx
 const MyScreen = (props) => {
   return (
@@ -27,7 +27,7 @@ MyScreen.options = {
 ```
 
 ## Listening to navigation events
-Navigation events let you react to various events related to a specific component or the app its self. Read more about them [here](/react-native-navigation/api/events)
+Navigation events let you react to various events related to a specific component or the app itself. Read more about them [here](/react-native-navigation/api/events)
 
 ```jsx
 import { useEffect } from 'react';

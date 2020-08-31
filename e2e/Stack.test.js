@@ -110,4 +110,16 @@ describe('Stack', () => {
     await elementByLabel('Start Typing').typeText(query);
     await expect(elementById(TestIDs.SEARCH_RESULT_ITEM)).toHaveText(`Item ${query}`);
   });
+
+  it('push promise is resolved with pushed ViewController id', async () => {
+    await elementById(TestIDs.STACK_COMMANDS_BTN).tap();
+    await elementById(TestIDs.PUSH_BTN).tap();
+
+    await expect(element(by.id(TestIDs.PUSH_PROMISE_RESULT))).toHaveText(
+      'push promise resolved with: ChildId'
+    );
+    await expect(element(by.id(TestIDs.POP_PROMISE_RESULT))).toHaveText(
+      'pop promise resolved with: ChildId'
+    );
+  });
 });
