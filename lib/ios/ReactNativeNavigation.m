@@ -59,13 +59,16 @@
 	UIWindow* mainWindow = [self initializeKeyWindow];
 	
 	self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
-    [self.bridgeManager initializeBridge];
+  [self.bridgeManager initializeBridge];
 	[RNNSplashScreen showOnWindow:mainWindow];
 }
 
-- (UIWindow *)initializeKeyWindow {
-	UIWindow* keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	UIApplication.sharedApplication.delegate.window = keyWindow;
+- (UIWindow *)initializeKeyWindowIfNeeded {
+	UIWindow* keyWindow = UIApplication.sharedApplication.delegate.window;
+	if (!keyWindow) {
+		keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+		UIApplication.sharedApplication.delegate.window = keyWindow;
+	}
 	return keyWindow;
 }
 

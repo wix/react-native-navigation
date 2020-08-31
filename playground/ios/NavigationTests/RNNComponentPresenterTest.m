@@ -31,8 +31,8 @@
 	XCTAssertTrue((self.boundViewController.view.subviews.count) == 0);
 }
 
-- (void)testApplyOptions_topBarPrefersLargeTitleDefaultFalse {
-	[self.uut applyOptions:self.options];
+- (void)testApplyOptionsOnInit_topBarPrefersLargeTitleDefaultFalse {
+	[self.uut applyOptionsOnInit:self.options];
 	
 	XCTAssertTrue(self.boundViewController.navigationItem.largeTitleDisplayMode == UINavigationItemLargeTitleDisplayModeNever);
 }

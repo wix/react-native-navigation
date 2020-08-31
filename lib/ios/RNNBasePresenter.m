@@ -51,7 +51,9 @@
         viewController.modalInPresentation = ![withDefault.modal.swipeToDismiss getWithDefaultValue:YES];
     }
 	
-	UIApplication.sharedApplication.delegate.window.backgroundColor = [withDefault.window.backgroundColor getWithDefaultValue:nil];
+	if (withDefault.window.backgroundColor.hasValue) {
+		UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
+	}
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {

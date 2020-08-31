@@ -92,7 +92,7 @@ In the previous section we created a stack and initialized it with a single chil
 
 In order to push another screen to the stack, we will add a button to the home screen and call `Navigation.push`. The 'push' command accepts two parameters, the first is the id used to indicate into which stack to push the screen and the second is the screen we're pushing. After pushing a screen, a back button is added automatically to the TopBar so the users can navigate easily back to the previous screen.
 
-You can read more about the stack layout [here](stack.mdx) or dive right into the API [here](../api/layout-stack).
+You can read more about the stack layout [here](docs-stack.mdx) or dive right into the API [here](../api/layout-stack).
 
 :::info componentId
 Each React component registered with `Navigation.registerComponent` is assigned a unique `componentId` by Navigation. This unique id is used with Navigation commands (like the push command) to indicate into which stack we'd like to push. In this case, by using the componentId of the Home screen, we are telling Navigation to push into the stack containing the Home screen.
