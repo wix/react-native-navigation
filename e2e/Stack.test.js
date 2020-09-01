@@ -53,6 +53,12 @@ describe('Stack', () => {
     await expect(elementByLabel('back button clicked')).toBeVisible();
   });
 
+  it('push title with subtitle', async () => {
+    await elementById(TestIDs.PUSH_TITLE_WITH_SUBTITLE).tap();
+    await expect(elementByLabel('Title')).toBeVisible();
+    await expect(elementByLabel('Subtitle')).toBeVisible();
+  });
+
   it('screen lifecycle', async () => {
     await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
