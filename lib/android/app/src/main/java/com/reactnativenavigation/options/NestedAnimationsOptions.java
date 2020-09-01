@@ -54,4 +54,8 @@ public class NestedAnimationsOptions {
     public boolean hasValue() {
         return topBar.hasValue() || content.hasValue() || bottomTabs.hasValue() || waitForRender.hasValue();
     }
+
+    public boolean hasElementsTransition() {
+        return sharedElements.hasValue() || elementTransitions.hasValue();
+    }
 }

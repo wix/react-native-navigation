@@ -176,9 +176,9 @@ public class Navigator extends ParentController {
     }
 
     public void popTo(final String id, Options mergeOptions, CommandListener listener) {
-        ViewController target = findController(id);
+        ViewController<?> target = findController(id);
         if (target != null) {
-            target.performOnParentStack(stack -> ((StackController) stack).popTo(target, mergeOptions, listener));
+            target.performOnParentStack(stack -> stack.popTo(target, mergeOptions, listener));
         } else {
             listener.onError("Failed to execute stack command. Stack by " + id + " not found.");
         }
@@ -222,12 +222,12 @@ public class Navigator extends ParentController {
     }
 
     private void applyOnStack(String fromId, CommandListener listener, Func1<StackController> task) {
-        ViewController from = findController(fromId);
+        ViewController<?> from = findController(fromId);
         if (from != null) {
             if (from instanceof StackController) {
                 task.run((StackController) from);
             } else {
-                from.performOnParentStack(stack -> task.run((StackController) stack) );
+                from.performOnParentStack(task);
             }
         } else {
             listener.onError("Failed to execute stack command. Stack " + fromId + " not found.");

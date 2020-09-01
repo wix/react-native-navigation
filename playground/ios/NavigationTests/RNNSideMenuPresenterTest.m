@@ -74,7 +74,7 @@
 }
 
 - (void)testApplyOptionsOnInitShouldSetDefaultDrawerGestureMode {
-	[[self.boundViewController expect] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+	[[self.boundViewController expect] setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
 	[self.uut applyOptionsOnInit:self.options];
 	[self.boundViewController verify];
 }

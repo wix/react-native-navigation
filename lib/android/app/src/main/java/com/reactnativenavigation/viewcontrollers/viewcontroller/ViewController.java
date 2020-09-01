@@ -61,7 +61,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final String id;
     private YellowBoxDelegate yellowBoxDelegate;
     @Nullable protected T view;
-    @Nullable private ParentController<T> parentController;
+    @Nullable private ParentController<? extends ViewGroup> parentController;
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();

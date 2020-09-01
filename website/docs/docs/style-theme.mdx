@@ -40,46 +40,12 @@ Some style requirements can't be facilitated with the `defaultOptions` api. For 
 
 Lets see how we can leverage this API to add a dismiss button to the TopBar when showing a modal.
 
-```ts
-Navigation.addOptionProcessor<OptionsTopBar>(
-  'topBar',
-  (topBar: OptionsTopBar, commandName: CommandName): OptionsTopBar => {
-    if (commandName === CommandName.ShowModal) {
-      if (!topBar.leftButtons) {
-        topBar.leftButtons = [
-          {
-            id: 'dismissModalButton',
-            icon: require('dismissIcon.png'),
-            color: 'black',
-          },
-        ];
-      }
-    }
-    return topBar;
-  }
-);
-
-// Now that each modal has a dismiss button, let's handle the button press event and dismiss the modal when needed.
-Navigation.events().registerNavigationButtonPressedListener(
-  (event: NavigationButtonPressedEvent) => {
-    if (event.buttonId === 'dismissModalButton') {
-      Navigation.dismissModal(event.componentId);
-    }
-  }
-);
+```tsx file=./style-theme/option-processor.tsx
 ```
 
 The Options Processors can also be used to set default options for buttons, here's how:
 
-```ts
-Navigation.addOptionProcessor<OptionsTopBarButton>(
-  'topBar.rightButtons',
-  (button: OptionsTopBarButton, commandName: CommandName): OptionsTopBarButton => {
-    button.fontFamily = 'helvetica';
-    button.color = 'red';
-    return button;
-  }
-);
+```tsx file=./style-theme/option-processor-defaults.tsx
 ```
 
 ## Conditional themes with Layout Processor
@@ -88,25 +54,7 @@ Layout Processor is similar in concept to the Options Processor discussed above.
 
 Through the Layout Processor we can access the layout and it's children, and mutate both options and passProps before the layout is displayed. In this example we iterate on the stack's children and set a dark TopBar color according to a `theme` property in the child's props.
 
-```ts
-interface ScreenProps {
-  theme: 'light' | 'dark';
-}
-
-Navigation.addLayoutProcessor((layout: Layout, commandName: string) => {
-  layout.stack?.children!.forEach((child) => {
-    if ((child.component?.passProps as ScreenProps)?.theme === 'dark') {
-      child.options = {
-        topBar: {
-          background: {
-            color: 'black',
-          },
-        },
-      };
-    }
-  });
-  return layout;
-});
+```tsx file=./style-theme/layout-processor.tsx
 ```
 
 ## Changing theme dynamically
