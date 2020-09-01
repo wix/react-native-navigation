@@ -1,16 +1,22 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
 
-typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBridge* bridge);
+typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props,
+                                                     RCTBridge *bridge);
 
-@interface RNNBridgeManager : NSObject <RCTBridgeDelegate>
+@interface RNNBridgeManager : NSObject
 
-- (instancetype)initWithJsCodeLocation:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate mainWindow:(UIWindow *)mainWindow;
+- (instancetype)initWithlaunchOptions:(NSDictionary *)launchOptions
+                    andBridgeDelegate:(id<RCTBridgeDelegate>)delegate
+                           mainWindow:(UIWindow *)mainWindow;
 
-- (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
+- (void)initializeBridge;
 
-@property (readonly, nonatomic, strong) RCTBridge *bridge;
+- (void)registerExternalComponent:(NSString *)name
+                         callback:(RNNExternalViewCreator)callback;
 
-- (void)setJSCodeLocation:(NSURL *)jsCodeLocation;
+- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge;
+
+@property(readonly, nonatomic, strong) RCTBridge *bridge;
 
 @end

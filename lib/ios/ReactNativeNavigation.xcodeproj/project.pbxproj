@@ -371,6 +371,8 @@
 		50EB93421FE14A3E00BD8EEE /* RNNBottomTabOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EB93401FE14A3E00BD8EEE /* RNNBottomTabOptions.m */; };
 		50EF5BAB24CD96F4009CBFD0 /* NSObject+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 50EF5BA924CD96F4009CBFD0 /* NSObject+Utils.h */; };
 		50EF5BAC24CD96F4009CBFD0 /* NSObject+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EF5BAA24CD96F4009CBFD0 /* NSObject+Utils.m */; };
+		50EF5BC624D1878D009CBFD0 /* RNNModalManagerEventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 50EF5BC424D1878D009CBFD0 /* RNNModalManagerEventHandler.h */; };
+		50EF5BC724D1878D009CBFD0 /* RNNModalManagerEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EF5BC524D1878D009CBFD0 /* RNNModalManagerEventHandler.m */; };
 		50F5DFC11F407A8C001A00BC /* RNNBottomTabsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFBF1F407A8C001A00BC /* RNNBottomTabsController.h */; };
 		50F5DFC21F407A8C001A00BC /* RNNBottomTabsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F5DFC01F407A8C001A00BC /* RNNBottomTabsController.m */; };
 		50F5DFC51F407AA0001A00BC /* RNNStackController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFC31F407AA0001A00BC /* RNNStackController.h */; };
@@ -866,6 +868,8 @@
 		50EB93401FE14A3E00BD8EEE /* RNNBottomTabOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabOptions.m; sourceTree = "<group>"; };
 		50EF5BA924CD96F4009CBFD0 /* NSObject+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Utils.h"; sourceTree = "<group>"; };
 		50EF5BAA24CD96F4009CBFD0 /* NSObject+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Utils.m"; sourceTree = "<group>"; };
+		50EF5BC424D1878D009CBFD0 /* RNNModalManagerEventHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNModalManagerEventHandler.h; sourceTree = "<group>"; };
+		50EF5BC524D1878D009CBFD0 /* RNNModalManagerEventHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalManagerEventHandler.m; sourceTree = "<group>"; };
 		50F5DFBF1F407A8C001A00BC /* RNNBottomTabsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsController.h; sourceTree = "<group>"; };
 		50F5DFC01F407A8C001A00BC /* RNNBottomTabsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsController.m; sourceTree = "<group>"; };
 		50F5DFC31F407AA0001A00BC /* RNNStackController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNStackController.h; sourceTree = "<group>"; };
@@ -1486,6 +1490,8 @@
 				507ACB1023F44D1E00829911 /* RNNComponentView.m */,
 				507ACB1323F44E5200829911 /* RNNComponentRootView.h */,
 				507ACB1423F44E5200829911 /* RNNComponentRootView.m */,
+				50EF5BC424D1878D009CBFD0 /* RNNModalManagerEventHandler.h */,
+				50EF5BC524D1878D009CBFD0 /* RNNModalManagerEventHandler.m */,
 				503A8A1723BCB2ED0094D1C4 /* RNNReactButtonView.h */,
 				503A8A1823BCB2ED0094D1C4 /* RNNReactButtonView.m */,
 				503A8A1B23BCB3230094D1C4 /* RNNReactTitleView.h */,
@@ -1721,6 +1727,7 @@
 				503A8A0923BB86200094D1C4 /* TimeIntervalParser.h in Headers */,
 				263905B01E4C6F440023D7D3 /* MMDrawerController+Subclass.h in Headers */,
 				E8AEDB4A1F5C0BAF000F5A6A /* RNNInteractivePopAnimator.h in Headers */,
+				50EF5BC624D1878D009CBFD0 /* RNNModalManagerEventHandler.h in Headers */,
 				263905B71E4C6F440023D7D3 /* UIViewController+MMDrawerController.h in Headers */,
 				C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */,
 				507F43F41FF4FCFE00D9425B /* HMSegmentedControl.h in Headers */,
@@ -2145,6 +2152,7 @@
 				2DCD9196200014A900EDC75D /* RNNBridgeManager.mm in Sources */,
 				263905D71E4C94970023D7D3 /* RNNSideMenuController.m in Sources */,
 				50EB4ED82068EBE000D6ED34 /* RNNBackgroundOptions.m in Sources */,
+				50EF5BC724D1878D009CBFD0 /* RNNModalManagerEventHandler.m in Sources */,
 				5022EDCA24054C8A00852BA6 /* BottomTabsPresenterCreator.m in Sources */,
 				507F43CA1FF4F9CC00D9425B /* RNNTopTabOptions.m in Sources */,
 				26916C991E4B9E7700D13680 /* RNNReactRootViewCreator.m in Sources */,
@@ -2354,7 +2362,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2401,7 +2409,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -2414,6 +2422,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ReactNativeNavigation;
@@ -2431,6 +2440,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ReactNativeNavigation;

@@ -13,6 +13,7 @@
 	NSMutableArray* _pendingModalIdsToDismiss;
 	NSMutableArray* _presentedModals;
     RCTBridge* _bridge;
+    RNNModalManagerEventHandler* _eventHandler;
 }
 
 
@@ -23,9 +24,10 @@
 	return self;
 }
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge {
+- (instancetype)initWithBridge:(RCTBridge *)bridge eventHandler:(RNNModalManagerEventHandler *)eventHandler {
     self = [self init];
     _bridge = bridge;
+    _eventHandler = eventHandler;
     return self;
 }
 
@@ -68,7 +70,7 @@
 - (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion {
 	UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
 	[root dismissViewControllerAnimated:animated completion:completion];
-	[_delegate dismissedMultipleModals:_presentedModals];
+	[_eventHandler dismissedMultipleModals:_presentedModals];
 	[_pendingModalIdsToDismiss removeAllObjects];
 	[_presentedModals removeAllObjects];
 }
@@ -131,16 +133,16 @@
 
 - (void)dismissedModal:(UIViewController *)viewController {
 	[_presentedModals removeObject:[viewController topMostViewController]];
-	[_delegate dismissedModal:viewController.presentedComponentViewController];
+	[_eventHandler dismissedModal:viewController.presentedComponentViewController];
 }
 
 - (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController {
 	[_presentedModals removeObject:presentationController.presentedViewController];
-    [_delegate dismissedModal:presentationController.presentedViewController.presentedComponentViewController];
+    [_eventHandler dismissedModal:presentationController.presentedViewController.presentedComponentViewController];
 }
 
 - (void)presentationControllerDidAttemptToDismiss:(UIPresentationController *)presentationController {
-    [_delegate attemptedToDismissModal:presentationController.presentedViewController.presentedComponentViewController];
+    [_eventHandler attemptedToDismissModal:presentationController.presentedViewController.presentedComponentViewController];
 }
 
 -(UIViewController*)topPresentedVC {

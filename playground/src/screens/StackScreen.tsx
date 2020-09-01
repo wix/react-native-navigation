@@ -18,6 +18,7 @@ const {
   SEARCH_BTN,
   SET_STACK_ROOT_BTN,
   SET_STACK_ROOT_WITH_ID_BTN,
+  STACK_COMMANDS_BTN,
 } = testIDs;
 
 export default class StackScreen extends React.Component<NavigationComponentProps> {
@@ -47,7 +48,7 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           onPress={this.popNoneExistent}
         />
         <Button
-          label='Push Lazily Registered Screen'
+          label="Push Lazily Registered Screen"
           testID={PUSH_LAZY_BTN}
           onPress={this.pushLazilyRegistered}
         />
@@ -63,6 +64,11 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           onPress={this.setStackRootWithId}
         />
         <Button label="Search" testID={SEARCH_BTN} onPress={this.search} platform="ios" />
+        <Button
+          label="Push Stack Commands"
+          testID={STACK_COMMANDS_BTN}
+          onPress={this.pushStackCommands}
+        />
       </Root>
     );
   }
@@ -108,4 +114,6 @@ export default class StackScreen extends React.Component<NavigationComponentProp
         name: Screens.Stack,
       },
     });
+
+  pushStackCommands = () => Navigation.push(this, component(Screens.StackCommands));
 }

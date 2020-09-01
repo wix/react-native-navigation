@@ -21,6 +21,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
 import static com.github.clans.fab.FloatingActionButton.SIZE_NORMAL;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.utils.ViewUtils.removeFromParent;
 
 public class FabPresenter {
     private static final int DURATION = 200;
@@ -71,6 +72,8 @@ public class FabPresenter {
     }
 
     private void createFab(ViewController component, FabOptions options) {
+        removeFromParent(fabMenu);
+        removeFromParent(fab);
         if (options.actionsArray.size() > 0) {
             fabMenu = new FabMenu(viewGroup.getContext(), options.id.get());
             setParams(component, fabMenu, options);

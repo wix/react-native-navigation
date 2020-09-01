@@ -8,6 +8,7 @@ import Colors from '../commons/Colors';
 interface State {
   topBarHideOnScroll: boolean;
   bottomTabsHideOnScroll: boolean;
+  fabHideOnScroll: boolean;
 }
 
 export default class ScrollViewScreen extends React.Component<NavigationComponentProps, State> {
@@ -18,6 +19,7 @@ export default class ScrollViewScreen extends React.Component<NavigationComponen
           text: 'Hide on scroll',
         },
         drawBehind: true,
+        hideOnScroll: true,
       },
       bottomTabs: {
         hideOnScroll: true,
@@ -35,8 +37,9 @@ export default class ScrollViewScreen extends React.Component<NavigationComponen
   }
 
   state = {
-    topBarHideOnScroll: false,
-    bottomTabsHideOnScroll: false,
+    topBarHideOnScroll: true,
+    bottomTabsHideOnScroll: true,
+    fabHideOnScroll: true,
   };
 
   render() {
@@ -50,16 +53,20 @@ export default class ScrollViewScreen extends React.Component<NavigationComponen
             label="Toggle Top Bar Hide On Scroll"
             onPress={this.onClickToggleTopBarHideOnScroll}
           />
-          <Button label="Pop screen" onPress={this.onClickPop} />
           <Button label="Toggle hide BottomTabs on scroll" onPress={this.hideBottomTabsOnScroll} />
+          <Button label="Toggle hide FAB on scroll" onPress={this.hideFabOnScroll} />
         </View>
       </ScrollView>
     );
   }
 
   onClickToggleTopBarHideOnScroll = () => {
-    this.setState({
-      topBarHideOnScroll: !this.state.topBarHideOnScroll,
+    const hideOnScroll = !this.state.topBarHideOnScroll;
+    this.setState({ topBarHideOnScroll: hideOnScroll });
+    Navigation.mergeOptions(this, {
+      topBar: {
+        hideOnScroll,
+      },
     });
   };
 
@@ -73,26 +80,22 @@ export default class ScrollViewScreen extends React.Component<NavigationComponen
     });
   };
 
-  onClickPop() {
-    Navigation.pop(this.props.componentId);
-  }
-
-  componentDidUpdate() {
-    Navigation.mergeOptions(this.props.componentId, {
-      topBar: {
-        hideOnScroll: this.state.topBarHideOnScroll,
-      },
+  hideFabOnScroll = () => {
+    const hideOnScroll = !this.state.fabHideOnScroll;
+    this.setState({ fabHideOnScroll: hideOnScroll });
+    Navigation.mergeOptions(this, {
       fab: {
-        hideOnScroll: !this.state.topBarHideOnScroll,
+        id: 'FAB',
+        hideOnScroll,
       },
     });
-  }
+  };
 }
 
 const styles = StyleSheet.create({
   contentContainer: {
     alignItems: 'center',
-    paddingTop: 200,
+    paddingTop: 250,
     height: 1200,
   },
 });
