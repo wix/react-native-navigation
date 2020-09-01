@@ -56,32 +56,6 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	self.navigationItem.title = title;
 }
 
-- (void)setDrawBehindTopBar:(BOOL)drawBehind {
-	if (drawBehind) {
-		self.edgesForExtendedLayout |= UIRectEdgeTop;
-	} else {
-		self.edgesForExtendedLayout &= ~UIRectEdgeTop;
-	}
-    
-    if (self.isViewLoaded) {
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
-    }
-}
-
-- (void)setDrawBehindTabBar:(BOOL)drawBehindTabBar {
-	if (drawBehindTabBar) {
-		self.edgesForExtendedLayout |= UIRectEdgeBottom;
-	} else {
-		self.edgesForExtendedLayout &= ~UIRectEdgeBottom;
-	}
-    
-    if (self.isViewLoaded) {
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
-    }
-}
-
 - (void)setTabBarItemBadge:(NSString *)badge {
     UITabBarItem *tabBarItem = self.tabBarItem;
 
@@ -161,13 +135,6 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 		return YES;
 
 	return NO;
-}
-
-- (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside {
-	if ([self.view isKindOfClass:[RCTRootView class]]) {
-		RCTRootView* rootView = (RCTRootView*)self.view;
-		rootView.passThroughTouches = !interceptTouchOutside;
-	}
 }
 
 @end

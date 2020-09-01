@@ -18,6 +18,16 @@ class TransitionSet {
         validElementTransitions.add(transition)
     }
 
+    fun addAll(transitions: List<Transition>) {
+        transitions.forEach {
+            if (it is SharedElementTransition) {
+                validSharedElementTransitions.add(it)
+            } else if (it is ElementTransition) {
+                validElementTransitions.add(it)
+            }
+        }
+    }
+
     fun forEach(action: ((Transition) -> Unit)) {
         validSharedElementTransitions.forEach(action)
         validElementTransitions.forEach(action)

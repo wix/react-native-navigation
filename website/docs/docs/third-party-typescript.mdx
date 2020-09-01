@@ -21,60 +21,14 @@ Both functional and class components can be typed to get the benefits of strongl
 
 <TabItem value="clazz">
 
-```tsx
-import { NavigationComponent } from 'react-native-navigation';
-
-interface Props extends NavigationComponentProps {
-  age: number
-}
-
-export default class MyComponent extends NavigationComponent<Props> {
-  // Options are strongly typed
-  static options() {
-    return {
-      statusBar: {
-        // Some options are of union type. We're using `as const` to let the-
-        // TS compiler know this value is not a regular string
-        style: 'dark' as const,
-      },
-      topBar: {
-        title: {
-          text: 'My Screen',
-        }
-      };
-    }
-  }
-
-  constructor(props: Props) {
-    super(props);
-  }
-}
+```tsx file=./third-party-typescript/strongly-typed-components-class.tsx
 ```
 
 </TabItem>
 
 <TabItem value="functional">
 
-```tsx
-import { NavigationFunctionComponent } from 'react-native-navigation';
-
-interface Props {
-  name: string;
-}
-
-const MyFunctionalComponent: NavigationFunctionComponent<Props> = ({ componentId, name }) => {
-  return <View />;
-};
-
-// Static options are also supported!
-MyFunctionalComponent.options = {
-  topBar: {
-    title: {
-      text: 'Hello functional component',
-    },
-  },
-};
-export default MyFunctionalComponent;
+```tsx file=./third-party-typescript/strongly-typed-components-fn.tsx
 ```
 
 </TabItem>
@@ -85,20 +39,7 @@ export default MyFunctionalComponent;
 
 Arguments are passed to components view the `passProp`. This is a common source for errors as these props tend to change overtime. Luckily we can type the passProps property to avoid these regressions. The example below shows how to declare types for passProps when pushing a screen.
 
-```tsx
-class Props: {
-  name: string
-}
-
-Navigation.push<Props>(componentId, {
-  component: {
-    name: 'MyComponent',
-    passProps: {
-      name: 'Bob',
-      color: 'red', // Compilation error! color isn't declared in Props
-    }
-  }
-});
+```tsx file=./third-party-typescript/typed-props-in-commands.tsx
 ```
 
 The following commands accept typed passProps:

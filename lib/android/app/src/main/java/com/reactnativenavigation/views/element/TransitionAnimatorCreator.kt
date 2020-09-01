@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.element
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -18,24 +19,10 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.*
 
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
-    open class CreatorResultCallback(private val callback: CreatorResultCallback? = null) {
-        open fun onError() {
-            callback?.onError()
-        }
 
-        open fun onSuccess(transitionAnimators: AnimatorSet) {
-
-        }
-    }
-
-    fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, callback: CreatorResultCallback) {
-        transitionSetCreator.create(animation, fromScreen, toScreen) {
-            if (it.isEmpty) {
-                callback.onError()
-            } else {
-                callback.onSuccess(createAnimator(fadeAnimation, it))
-            }
-        }
+    suspend fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
+        val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
+        return createAnimator(fadeAnimation, transitions)
     }
 
     private fun createAnimator(fadeAnimation: AnimationOptions, transitions: TransitionSet): AnimatorSet {

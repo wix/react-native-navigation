@@ -6,7 +6,6 @@ import com.facebook.react.bridge.ColorPropConverter;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.parsers.JSONParser;
 
 import org.json.JSONObject;
 
@@ -18,6 +17,9 @@ public class ColorParser {
                 return new DontApplyColour();
             } else if (color instanceof Integer) {
                 return new Colour(json.optInt(colorName));
+            }
+            if (color.equals("NoColor")) {
+                return new DontApplyColour();
             }
             Object convertedColor = JSONParser.convert(json.optJSONObject(colorName));
             Integer processedColor = ColorPropConverter.getColor(convertedColor, context);
