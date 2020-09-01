@@ -222,7 +222,6 @@
 		505EDD3C214FA8000071C7DE /* RNNComponentPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 505EDD3A214FA8000071C7DE /* RNNComponentPresenter.h */; };
 		505EDD3D214FA8000071C7DE /* RNNComponentPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 505EDD3B214FA8000071C7DE /* RNNComponentPresenter.m */; };
 		5060DE73219DAD7E00D0C052 /* ReactNativeNavigation.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BA500731E2544B9001B9E1B /* ReactNativeNavigation.h */; };
-		5060DE74219DAD8300D0C052 /* RNNBridgeManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */; };
 		5061B6C723D48449008B9827 /* VerticalRotationTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 5061B6C523D48449008B9827 /* VerticalRotationTransition.h */; };
 		5061B6C823D48449008B9827 /* VerticalRotationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5061B6C623D48449008B9827 /* VerticalRotationTransition.m */; };
 		506317AA220B547400B26FC3 /* UIImage+insets.h in Headers */ = {isa = PBXBuildFile; fileRef = 506317A8220B547400B26FC3 /* UIImage+insets.h */; };
@@ -320,7 +319,6 @@
 		50C4A496206BDDBB00DB292E /* RNNSubtitleOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C4A494206BDDBB00DB292E /* RNNSubtitleOptions.h */; };
 		50C4A497206BDDBB00DB292E /* RNNSubtitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C4A495206BDDBB00DB292E /* RNNSubtitleOptions.m */; };
 		50C5FD8220D7D6D600F1EA8A /* ReactNativeNavigation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7BA500731E2544B9001B9E1B /* ReactNativeNavigation.h */; };
-		50C5FD8320D7D6DD00F1EA8A /* RNNBridgeManagerDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */; };
 		50CB3B691FDE911400AA153B /* RNNSideMenuOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */; };
 		50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */; };
 		50CE8503217C6C9B00084EBF /* RNNSideMenuPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CE8502217C6C9B00084EBF /* RNNSideMenuPresenterTest.m */; };
@@ -484,7 +482,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				50C5FD8320D7D6DD00F1EA8A /* RNNBridgeManagerDelegate.h in CopyFiles */,
 				50C5FD8220D7D6D600F1EA8A /* ReactNativeNavigation.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -595,7 +592,6 @@
 		5022EDC424054C6100852BA6 /* BottomTabsAppearancePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsAppearancePresenter.m; sourceTree = "<group>"; };
 		5022EDC724054C8A00852BA6 /* BottomTabsPresenterCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsPresenterCreator.h; sourceTree = "<group>"; };
 		5022EDC824054C8A00852BA6 /* BottomTabsPresenterCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsPresenterCreator.m; sourceTree = "<group>"; };
-		502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBridgeManagerDelegate.h; sourceTree = "<group>"; };
 		502CB46C20CD1DDA0019B2FE /* RNNBackButtonOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBackButtonOptions.h; sourceTree = "<group>"; };
 		502CB46D20CD1DDA0019B2FE /* RNNBackButtonOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBackButtonOptions.m; sourceTree = "<group>"; };
 		502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RNNOptionsTest.m"; sourceTree = "<group>"; };
@@ -1607,7 +1603,6 @@
 				5047E4F32267568700908DD3 /* RNNExternalComponentStore.m */,
 				7B4928061E70415400555040 /* RNNCommandsHandler.h */,
 				7B4928071E70415400555040 /* RNNCommandsHandler.m */,
-				502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */,
 				5038A3AF216DF41B009280BC /* UIViewController+RNNOptions.h */,
 				5038A3B0216DF41B009280BC /* UIViewController+RNNOptions.m */,
 				5038A3B3216DF602009280BC /* UINavigationController+RNNOptions.h */,
@@ -1705,7 +1700,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5060DE74219DAD8300D0C052 /* RNNBridgeManagerDelegate.h in Headers */,
 				5060DE73219DAD7E00D0C052 /* ReactNativeNavigation.h in Headers */,
 				5022EDBD2405237100852BA6 /* BottomTabPresenterCreator.h in Headers */,
 				507ACB1523F44E5200829911 /* RNNComponentRootView.h in Headers */,
