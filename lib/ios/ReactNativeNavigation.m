@@ -16,10 +16,6 @@
 
 # pragma mark - public API
 
-+ (void)bootstrapWithlaunchOptions:(NSDictionary *)launchOptions {
-	[[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:nil launchOptions:launchOptions];
-}
-
 + (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
     [[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:bridgeDelegate launchOptions:launchOptions];
 }
