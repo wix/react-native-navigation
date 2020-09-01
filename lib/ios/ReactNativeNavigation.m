@@ -58,7 +58,7 @@
 - (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
     UIWindow* mainWindow = [self initializeKeyWindowIfNeeded];
 	
-    self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
+    self.bridgeManager = [[RNNBridgeManager alloc] initWithLaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
     [self.bridgeManager initializeBridge];
     [RNNSplashScreen showOnWindow:mainWindow];
 }
