@@ -7,6 +7,7 @@
 #import "AnimatedTextView.h"
 #import "TextStorageTransition.h"
 #import "AnchorTransition.h"
+#import "CornerRadiusTransition.h"
 
 @implementation SharedElementAnimator {
     SharedElementTransitionOptions* _transitionOptions;
@@ -57,17 +58,11 @@
     }
 	
 	if (_fromView.layer.cornerRadius != _toView.layer.cornerRadius) {
-		printf("Should animated borderRadius %f -> %f\n", _fromView.layer.cornerRadius, _toView.layer.cornerRadius);
-		
-		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"cornerRadius"];
-		animation.duration = duration;
-		animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-		animation.toValue = @(_toView.layer.cornerRadius);
-		animation.fillMode = kCAFillModeForwards;
-		animation.removedOnCompletion = NO;
-		[self.view.layer addAnimation:animation forKey:@"setCornerRadius:"];
-		[_fromView.layer addAnimation:animation forKey:@"setCornerRadius:"];
-		[_toView.layer addAnimation:animation forKey:@"setCornerRadius:"];
+		// TODO: Use MaskedCorners to only round specific corners, e.g.: borderTopLeftRadius
+		//   self.view.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner | kCALayerMaxXMaxYCorner;
+		// TODO: On pop the cornerRadius animation doesn't work, even though the CornerRadiusTransition::animateWithProgress function is called.
+		self.view.layer.masksToBounds = YES;
+		[animations addObject:[[CornerRadiusTransition alloc] initWithView:self.view fromFloat:_fromView.layer.cornerRadius toFloat:_toView.layer.cornerRadius startDelay:startDelay duration:duration interpolation:interpolation]];
 	}
     
     return animations;
