@@ -55,6 +55,20 @@
     if ([self.view isKindOfClass:AnimatedTextView.class]) {
         [animations addObject:[[TextStorageTransition alloc] initWithView:self.view from:((AnimatedTextView *)self.view).fromTextStorage to:((AnimatedTextView *)self.view).toTextStorage startDelay:startDelay duration:duration interpolation:interpolation]];
     }
+	
+	if (_fromView.layer.cornerRadius != _toView.layer.cornerRadius) {
+		printf("Should animated borderRadius %f -> %f\n", _fromView.layer.cornerRadius, _toView.layer.cornerRadius);
+		
+		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"cornerRadius"];
+		animation.duration = duration;
+		animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+		animation.toValue = @(_toView.layer.cornerRadius);
+		animation.fillMode = kCAFillModeForwards;
+		animation.removedOnCompletion = NO;
+		[self.view.layer addAnimation:animation forKey:@"setCornerRadius:"];
+		[_fromView.layer addAnimation:animation forKey:@"setCornerRadius:"];
+		[_toView.layer addAnimation:animation forKey:@"setCornerRadius:"];
+	}
     
     return animations;
 }
