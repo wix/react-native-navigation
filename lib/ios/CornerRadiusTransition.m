@@ -10,8 +10,8 @@
 @implementation CornerRadiusTransition
 
 - (CATransform3D)animateWithProgress:(CGFloat)p {
-    CGFloat toRadius = [RNNInterpolator from:self.from to:self.to precent:p interpolation:self.interpolation];
-	self.view.layout.cornerRadius = toRadius;
+    CGFloat toRadius = [RNNInterpolator fromFloat:self.from toFloat:self.to precent:p interpolation:self.interpolation];
+	self.view.layer.cornerRadius = toRadius;
     return CATransform3DIdentity;
 }
 
