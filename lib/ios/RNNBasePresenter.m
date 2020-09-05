@@ -92,8 +92,8 @@
 }
 
 - (UIStatusBarStyle)getStatusBarStyle {
-    RNNNavigationOptions *withDefault = [self.boundViewController.resolveOptions withDefault:[self defaultOptions]];
-    NSString* statusBarStyle = [withDefault.statusBar.style getWithDefaultValue:@"default"];
+    RNNStatusBarOptions *statusBarOptions = [self resolveStatusBarOptions];
+    NSString* statusBarStyle = [statusBarOptions.style getWithDefaultValue:@"default"];
     if ([statusBarStyle isEqualToString:@"light"]) {
         return UIStatusBarStyleLightContent;
     } else if (@available(iOS 13.0, *)) {
@@ -107,22 +107,26 @@
     }
 }
 
+- (BOOL)getStatusBarVisibility {
+    RNNStatusBarOptions *statusBarOptions = [self resolveStatusBarOptions];
+    if (statusBarOptions.visible.hasValue) {
+        return ![statusBarOptions.visible get];
+    } else if ([statusBarOptions.hideWithTopBar getWithDefaultValue:NO]) {
+        return self.boundViewController.stack.isNavigationBarHidden;
+    }
+    return NO;
+}
+
+- (RNNStatusBarOptions*)resolveStatusBarOptions {
+    return (RNNStatusBarOptions*)[[self.boundViewController.options.statusBar mergeInOptions:self.boundViewController.getCurrentChild.presenter.resolveStatusBarOptions] withDefault:self.defaultOptions.statusBar];
+}
+
 - (UINavigationItem *)currentNavigationItem {
     return self.boundViewController.getCurrentChild.navigationItem;
 }
 
 - (UIInterfaceOrientationMask)getOrientation {
     return [self.boundViewController.resolveOptions withDefault:self.defaultOptions].layout.supportedOrientations;
-}
-
-- (BOOL)getStatusBarVisibility {
-    RNNNavigationOptions *withDefault = [self.boundViewController.resolveOptions withDefault:self.defaultOptions];
-    if (withDefault.statusBar.visible.hasValue) {
-        return ![withDefault.statusBar.visible get];
-    } else if ([withDefault.statusBar.hideWithTopBar getWithDefaultValue:NO]) {
-        return self.boundViewController.stack.isNavigationBarHidden;
-    }
-    return NO;
 }
 
 - (BOOL)hidesBottomBarWhenPushed {

@@ -16,6 +16,10 @@
     for (SharedElementTransitionOptions* transitionOptions in sharedElementTransitions) {
         UIView *fromView = [RNNElementFinder findElementForId:transitionOptions.fromId inView:fromVC.reactView];
         UIView *toView = [RNNElementFinder findElementForId:transitionOptions.toId inView:toVC.reactView];
+        if (fromView == nil || toView == nil) {
+            break;
+        }
+
         SharedElementAnimator* sharedElementAnimator = [[SharedElementAnimator alloc] initWithTransitionOptions:transitionOptions
                                                                                                        fromView:fromView
                                                                                                          toView:toView

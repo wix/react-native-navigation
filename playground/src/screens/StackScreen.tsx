@@ -13,6 +13,7 @@ const {
   PUSH_LIFECYCLE_BTN,
   POP_NONE_EXISTENT_SCREEN_BTN,
   PUSH_CUSTOM_BACK_BTN,
+  PUSH_TITLE_WITH_SUBTITLE,
   PUSH_LAZY_BTN,
   CUSTOM_BACK_BTN,
   SEARCH_BTN,
@@ -57,6 +58,11 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           testID={PUSH_CUSTOM_BACK_BTN}
           onPress={this.pushCustomBackButton}
         />
+        <Button
+          label="Push Title With Subtitle"
+          testID={PUSH_TITLE_WITH_SUBTITLE}
+          onPress={this.pushTitleWithSubtitle}
+        />
         <Button label="Set Stack Root" testID={SET_STACK_ROOT_BTN} onPress={this.setStackRoot} />
         <Button
           label="Set Stack Root With ID"
@@ -93,6 +99,23 @@ export default class StackScreen extends React.Component<NavigationComponentProp
               visible: true,
               color: 'black',
               testID: CUSTOM_BACK_BTN,
+            },
+          },
+        },
+      },
+    });
+
+  pushTitleWithSubtitle = () =>
+    Navigation.push(this, {
+      component: {
+        name: Screens.Pushed,
+        options: {
+          topBar: {
+            title: {
+              text: 'Title',
+            },
+            subtitle: {
+              text: 'Subtitle',
             },
           },
         },
