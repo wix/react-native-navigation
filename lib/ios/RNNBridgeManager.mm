@@ -39,7 +39,7 @@
 	RNNCommandsHandler* _commandsHandler;
 }
 
-- (instancetype)initWithlaunchOptions:(NSDictionary *)launchOptions andBridgeDelegate:(id<RCTBridgeDelegate>)delegate mainWindow:(UIWindow *)mainWindow {
+- (instancetype)initWithLaunchOptions:(NSDictionary *)launchOptions andBridgeDelegate:(id<RCTBridgeDelegate>)delegate mainWindow:(UIWindow *)mainWindow {
 	if (self = [super init]) {
 		_mainWindow = mainWindow;
 		_launchOptions = launchOptions;
