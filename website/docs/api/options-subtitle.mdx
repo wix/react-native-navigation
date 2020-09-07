@@ -9,8 +9,8 @@ Controls the top bar subtitle.
 ```js
 const options = {
   topBar: {
-    subtitle: {}
-  }
+    subtitle: {},
+  },
 };
 ```
 
@@ -45,6 +45,14 @@ Subtitle FontFamily.
 | Type       | Required | Platform |
 | ---------- | -------- | -------- |
 | FontFamily | No       | Both     |
+
+### `fontWeight`
+
+Set the font weight for the large title. Ignors fontFamily and use the iOS system fonts instead.
+
+| Type                                                                                           | Required | Platform |
+| ---------------------------------------------------------------------------------------------- | -------- | -------- |
+| enum('regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy', 'black') | No       | iOS      |
 
 ### `alignment`
 

@@ -9,8 +9,8 @@ Controls the top bar large title on iOS, available on iOS 11 and above.
 ```js
 const options = {
   topBar: {
-    largeTitle: {}
-  }
+    largeTitle: {},
+  },
 };
 ```
 
@@ -48,8 +48,8 @@ Set the large title [FontFamily](../docs/style-fonts.mdx).
 
 ### `fontWeight`
 
-Set the font weight for the large title.
+Set the font weight for the large title. Ignors fontFamily and use the iOS system fonts instead.
 
-| Type   | Required | Platform |
-| ------ | -------- | -------- |
-| number | No       | iOS      |
+| Type                                                                                           | Required | Platform |
+| ---------------------------------------------------------------------------------------------- | -------- | -------- |
+| enum('regular', 'bold', 'thin', 'ultraLight', 'light', 'medium', 'semibold', 'heavy', 'black') | No       | iOS      |
