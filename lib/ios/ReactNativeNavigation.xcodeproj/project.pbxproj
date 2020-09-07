@@ -167,6 +167,8 @@
 		503A8A2623BD04410094D1C4 /* ElementTransitionsCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 503A8A2423BD04410094D1C4 /* ElementTransitionsCreator.m */; };
 		50415CBA20553B8E00BB682E /* RNNScreenTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 50415CB820553B8E00BB682E /* RNNScreenTransition.h */; };
 		50415CBB20553B8E00BB682E /* RNNScreenTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 50415CB920553B8E00BB682E /* RNNScreenTransition.m */; };
+		504189572506144D004A6BC7 /* RNNSetRootAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = 504189552506144D004A6BC7 /* RNNSetRootAnimator.h */; };
+		504189582506144D004A6BC7 /* RNNSetRootAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 504189562506144D004A6BC7 /* RNNSetRootAnimator.m */; };
 		5041DC3E2417BBBA0033312F /* BottomTabsBasePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5041DC3C2417BBBA0033312F /* BottomTabsBasePresenter.h */; };
 		5041DC3F2417BBBA0033312F /* BottomTabsBasePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041DC3D2417BBBA0033312F /* BottomTabsBasePresenter.m */; };
 		50451D052042DAEB00695F00 /* RNNPushAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 50451D032042DAEB00695F00 /* RNNPushAnimation.h */; };
@@ -660,6 +662,8 @@
 		503A8A2423BD04410094D1C4 /* ElementTransitionsCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ElementTransitionsCreator.m; sourceTree = "<group>"; };
 		50415CB820553B8E00BB682E /* RNNScreenTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNScreenTransition.h; sourceTree = "<group>"; };
 		50415CB920553B8E00BB682E /* RNNScreenTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNScreenTransition.m; sourceTree = "<group>"; };
+		504189552506144D004A6BC7 /* RNNSetRootAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSetRootAnimator.h; sourceTree = "<group>"; };
+		504189562506144D004A6BC7 /* RNNSetRootAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSetRootAnimator.m; sourceTree = "<group>"; };
 		5041DC3C2417BBBA0033312F /* BottomTabsBasePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsBasePresenter.h; sourceTree = "<group>"; };
 		5041DC3D2417BBBA0033312F /* BottomTabsBasePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsBasePresenter.m; sourceTree = "<group>"; };
 		50451D032042DAEB00695F00 /* RNNPushAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNPushAnimation.h; sourceTree = "<group>"; };
@@ -1383,6 +1387,8 @@
 				503A8A0023BB7B810094D1C4 /* ElementAnimator.m */,
 				50BCB26F23F1650800D6C8E5 /* SharedElementAnimator.h */,
 				50BCB27023F1650800D6C8E5 /* SharedElementAnimator.m */,
+				504189552506144D004A6BC7 /* RNNSetRootAnimator.h */,
+				504189562506144D004A6BC7 /* RNNSetRootAnimator.m */,
 				50D4656B23CE2553005A84B2 /* Transition.h */,
 				50D4656C23CE2553005A84B2 /* Transition.m */,
 			);
@@ -1786,6 +1792,7 @@
 				E5F6C3AF22DB4D0F0093C2CE /* UIView+Utils.h in Headers */,
 				50D3A37623BB5CD900717F95 /* OptionsArrayParser.h in Headers */,
 				5012241E217366D4000F5F98 /* ColorParser.h in Headers */,
+				504189572506144D004A6BC7 /* RNNSetRootAnimator.h in Headers */,
 				50DE2E45238EA14E005CD5F4 /* NSArray+utils.h in Headers */,
 				E8367B801F7A8A4700675C05 /* VICMAImageView.h in Headers */,
 				50AD288823CDB71C00FF3134 /* ElementHorizontalTransition.h in Headers */,
@@ -2076,6 +2083,7 @@
 				5012242721737278000F5F98 /* NullImage.m in Sources */,
 				5022EDC624054C6100852BA6 /* BottomTabsAppearancePresenter.m in Sources */,
 				7B1126A01E2D263F00F9B03B /* RNNEventEmitter.m in Sources */,
+				504189582506144D004A6BC7 /* RNNSetRootAnimator.m in Sources */,
 				A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */,
 				50CF233A2405668C0098042D /* UINavigationController+RNNCommands.m in Sources */,
 				5050465521F8F4490035497A /* RNNReactComponentRegistry.m in Sources */,

@@ -9,6 +9,6 @@
 @property (nonatomic, strong) TransitionOptions* showModal;
 @property (nonatomic, strong) TransitionOptions* dismissModal;
 @property (nonatomic, strong) RNNScreenTransition* setStackRoot;
-@property (nonatomic, strong) RNNScreenTransition* setRoot;
+@property (nonatomic, strong) TransitionOptions* setRoot;
 
 @end

@@ -9,6 +9,7 @@
 #import "UIViewController+Utils.h"
 #import "UINavigationController+RNNCommands.h"
 #import "RNNAssert.h"
+#import "RNNSetRootAnimator.h"
 
 static NSString* const setRoot	= @"setRoot";
 static NSString* const setStackRoot	= @"setStackRoot";
@@ -72,11 +73,15 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_modalManager dismissAllModalsAnimated:NO completion:nil];
     
     UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
+    RNNSetRootAnimator* setRootAnimator = [[RNNSetRootAnimator alloc] initWithTransition:vc.resolveOptionsWithDefault.animations.setRoot];
     vc.waitForRender = [vc.resolveOptionsWithDefault.animations.setRoot.waitForRender getWithDefaultValue:NO];
     __weak UIViewController* weakVC = vc;
     [vc setReactViewReadyCallback:^{
         [self->_mainWindow.rootViewController destroy];
         self->_mainWindow.rootViewController = weakVC;
+        
+        [setRootAnimator animate:self->_mainWindow];
+        
         [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId];
         completion(weakVC.layoutInfo.componentId);
     }];
