@@ -80,10 +80,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
         [self->_mainWindow.rootViewController destroy];
         self->_mainWindow.rootViewController = weakVC;
         
-        [setRootAnimator animate:self->_mainWindow];
-        
-        [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId];
-        completion(weakVC.layoutInfo.componentId);
+        [setRootAnimator animate:self->_mainWindow completion:^{
+            [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId];
+            completion(weakVC.layoutInfo.componentId);
+        }];
     }];
     
     [vc render];

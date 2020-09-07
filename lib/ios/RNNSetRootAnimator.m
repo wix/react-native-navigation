@@ -10,7 +10,7 @@
     return self;
 }
 
-- (void)animate:(UIWindow *)window {
+- (void)animate:(UIWindow *)window completion:(RNNAnimationEndedBlock)completion {
     [window.rootViewController.view setNeedsDisplay];
     [UIView transitionWithView:window
                       duration:self.duration
@@ -18,7 +18,11 @@
                     animations:^{
         [window.rootViewController.view.layer displayIfNeeded];
     }
-                    completion:nil];
+                    completion:^(BOOL finished) {
+        if (completion) {
+            completion();
+        }
+    }];
 }
 
 - (CGFloat)duration {
