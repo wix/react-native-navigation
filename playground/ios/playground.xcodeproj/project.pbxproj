@@ -23,6 +23,13 @@
 		5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */; };
 		502734AF24F3E9BA0022163C /* ColorParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 502734AE24F3E9110022163C /* ColorParserTest.m */; };
 		503F775C24D19D96005E596D /* RNNModalManagerEventHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.m */; };
+		50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m */; };
+		50418978250788AE004A6BC7 /* FBSnapshotTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041896A250788AE004A6BC7 /* FBSnapshotTestController.m */; };
+		5041897A250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5041896C250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist */; };
+		5041897B250788AE004A6BC7 /* FBSnapshotTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041896D250788AE004A6BC7 /* FBSnapshotTestCase.m */; };
+		5041897C250788AE004A6BC7 /* UIImage+Snapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418971250788AE004A6BC7 /* UIImage+Snapshot.m */; };
+		5041897D250788AE004A6BC7 /* UIImage+Compare.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418972250788AE004A6BC7 /* UIImage+Compare.m */; };
+		5041897E250788AE004A6BC7 /* UIImage+Diff.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418973250788AE004A6BC7 /* UIImage+Diff.m */; };
 		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */; };
 		50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.m */; };
 		5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */; };
@@ -38,8 +45,8 @@
 		50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
 		50EF5BAE24CDCF04009CBFD0 /* NSObjectUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EF5BAD24CDCF04009CBFD0 /* NSObjectUtilsTests.m */; };
 		6B102251DCC578519C2DC6A4 /* libPods-NavigationIOS12Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C10F72071A488F801E1F1116 /* libPods-NavigationIOS12Tests.a */; };
+		8EB60A6CB93C527CC6A870A2 /* libPods-SnapshotTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8B4CFA18A5ACE953124E129 /* libPods-SnapshotTests.a */; };
 		A55BD66DD6404C20A23DA948 /* libPods-NavigationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EFC85255DC04E4B557855F /* libPods-NavigationTests.a */; };
-		B95C7155FB7DD61FAC5670EA /* Pods_SnapshotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74C5ACC287F45273536B9633 /* Pods_SnapshotTests.framework */; };
 		CC58376A9F3639711BDD0562 /* libPods-playground.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE713009EFB937EA4BF877 /* libPods-playground.a */; };
 		E5046080227748EA00212BD8 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E504607F227748EA00212BD8 /* JavaScriptCore.framework */; };
 		E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.m */; };
@@ -118,6 +125,19 @@
 		502734AE24F3E9110022163C /* ColorParserTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorParserTest.m; sourceTree = "<group>"; };
 		50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactNativeNavigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalManagerEventHandlerTest.m; sourceTree = "<group>"; };
+		50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSnapshotTestCasePlatform.m; sourceTree = "<group>"; };
+		50418969250788AE004A6BC7 /* FBSnapshotTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestCase.h; sourceTree = "<group>"; };
+		5041896A250788AE004A6BC7 /* FBSnapshotTestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSnapshotTestController.m; sourceTree = "<group>"; };
+		5041896C250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FBSnapshotTestCase-Info.plist"; sourceTree = "<group>"; };
+		5041896D250788AE004A6BC7 /* FBSnapshotTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSnapshotTestCase.m; sourceTree = "<group>"; };
+		5041896E250788AE004A6BC7 /* FBSnapshotTestCasePlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestCasePlatform.h; sourceTree = "<group>"; };
+		50418970250788AE004A6BC7 /* UIImage+Diff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Diff.h"; sourceTree = "<group>"; };
+		50418971250788AE004A6BC7 /* UIImage+Snapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Snapshot.m"; sourceTree = "<group>"; };
+		50418972250788AE004A6BC7 /* UIImage+Compare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Compare.m"; sourceTree = "<group>"; };
+		50418973250788AE004A6BC7 /* UIImage+Diff.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Diff.m"; sourceTree = "<group>"; };
+		50418974250788AE004A6BC7 /* UIImage+Compare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Compare.h"; sourceTree = "<group>"; };
+		50418975250788AE004A6BC7 /* UIImage+Snapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Snapshot.h"; sourceTree = "<group>"; };
+		50418976250788AE004A6BC7 /* FBSnapshotTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestController.h; sourceTree = "<group>"; };
 		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNExternalViewControllerTests.m; sourceTree = "<group>"; };
 		50650A21242FB0F800688104 /* CommandsHandlerCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandsHandlerCreator.h; sourceTree = "<group>"; };
 		50650A22242FB0F800688104 /* CommandsHandlerCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommandsHandlerCreator.m; sourceTree = "<group>"; };
@@ -137,7 +157,6 @@
 		50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNNBottomTabsController+Helpers.m"; sourceTree = "<group>"; };
 		50E4888A2427DA4800B11A8E /* StackOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StackOptionsTest.m; sourceTree = "<group>"; };
 		50EF5BAD24CDCF04009CBFD0 /* NSObjectUtilsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSObjectUtilsTests.m; sourceTree = "<group>"; };
-		74C5ACC287F45273536B9633 /* Pods_SnapshotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapshotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F8E255E2E08F6ECE7DF6FE3 /* Pods-playground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.release.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.release.xcconfig"; sourceTree = "<group>"; };
 		B484A10A046B0046B98A76B5 /* Pods-playground.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.debug.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.debug.xcconfig"; sourceTree = "<group>"; };
 		C10F72071A488F801E1F1116 /* libPods-NavigationIOS12Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NavigationIOS12Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,6 +196,7 @@
 		E58D26422385888C003F36BA /* RNNBasePresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNBasePresenterTest.m; sourceTree = "<group>"; };
 		E58D26432385888C003F36BA /* RNNModalManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNModalManagerTest.m; sourceTree = "<group>"; };
 		E58D26452385888C003F36BA /* RNNTestNoColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTestNoColor.m; sourceTree = "<group>"; };
+		E8B4CFA18A5ACE953124E129 /* libPods-SnapshotTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnapshotTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,7 +213,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B95C7155FB7DD61FAC5670EA /* Pods_SnapshotTests.framework in Frameworks */,
+				8EB60A6CB93C527CC6A870A2 /* libPods-SnapshotTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,9 +270,38 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		50418967250788AE004A6BC7 /* FBSnapshotTestCase */ = {
+			isa = PBXGroup;
+			children = (
+				50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m */,
+				50418969250788AE004A6BC7 /* FBSnapshotTestCase.h */,
+				5041896A250788AE004A6BC7 /* FBSnapshotTestController.m */,
+				5041896C250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist */,
+				5041896D250788AE004A6BC7 /* FBSnapshotTestCase.m */,
+				5041896E250788AE004A6BC7 /* FBSnapshotTestCasePlatform.h */,
+				5041896F250788AE004A6BC7 /* Categories */,
+				50418976250788AE004A6BC7 /* FBSnapshotTestController.h */,
+			);
+			path = FBSnapshotTestCase;
+			sourceTree = "<group>";
+		};
+		5041896F250788AE004A6BC7 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				50418970250788AE004A6BC7 /* UIImage+Diff.h */,
+				50418971250788AE004A6BC7 /* UIImage+Snapshot.m */,
+				50418972250788AE004A6BC7 /* UIImage+Compare.m */,
+				50418973250788AE004A6BC7 /* UIImage+Diff.m */,
+				50418974250788AE004A6BC7 /* UIImage+Compare.h */,
+				50418975250788AE004A6BC7 /* UIImage+Snapshot.h */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		507C80DB2429111F00F765F7 /* SnapshotTests */ = {
 			isa = PBXGroup;
 			children = (
+				50418967250788AE004A6BC7 /* FBSnapshotTestCase */,
 				507C80E9242BC6E200F765F7 /* Utils */,
 				50E4888A2427DA4800B11A8E /* StackOptionsTest.m */,
 				507C80DE2429111F00F765F7 /* Info.plist */,
@@ -321,10 +370,10 @@
 			children = (
 				50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */,
 				E504607F227748EA00212BD8 /* JavaScriptCore.framework */,
-				74C5ACC287F45273536B9633 /* Pods_SnapshotTests.framework */,
 				C10F72071A488F801E1F1116 /* libPods-NavigationIOS12Tests.a */,
 				18EFC85255DC04E4B557855F /* libPods-NavigationTests.a */,
 				33BE713009EFB937EA4BF877 /* libPods-playground.a */,
+				E8B4CFA18A5ACE953124E129 /* libPods-SnapshotTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -426,7 +475,7 @@
 				507C80D62429111F00F765F7 /* Sources */,
 				507C80D72429111F00F765F7 /* Frameworks */,
 				507C80D82429111F00F765F7 /* Resources */,
-				40E41A31FCF2DFE6C17D7FEF /* [CP] Embed Pods Frameworks */,
+				AB86EBB5F0AF15B43F3472FD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -546,6 +595,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5041897A250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,84 +652,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		40E41A31FCF2DFE6C17D7FEF /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/DoubleConversion-framework/DoubleConversion.framework",
-				"${BUILT_PRODUCTS_DIR}/FBReactNativeSpec-framework/FBReactNativeSpec.framework",
-				"${BUILT_PRODUCTS_DIR}/Folly-framework/folly.framework",
-				"${BUILT_PRODUCTS_DIR}/RCTTypeSafety-framework/RCTTypeSafety.framework",
-				"${BUILT_PRODUCTS_DIR}/RNDateTimePicker-framework/RNDateTimePicker.framework",
-				"${BUILT_PRODUCTS_DIR}/RNGestureHandler-framework/RNGestureHandler.framework",
-				"${BUILT_PRODUCTS_DIR}/RNReanimated-framework/RNReanimated.framework",
-				"${BUILT_PRODUCTS_DIR}/React-Core-framework/React.framework",
-				"${BUILT_PRODUCTS_DIR}/React-CoreModules-framework/CoreModules.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTAnimation-framework/RCTAnimation.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTBlob-framework/RCTBlob.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTImage-framework/RCTImage.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTLinking-framework/RCTLinking.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTNetwork-framework/RCTNetwork.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTSettings-framework/RCTSettings.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTText-framework/RCTText.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTVibration-framework/RCTVibration.framework",
-				"${BUILT_PRODUCTS_DIR}/React-cxxreact-framework/cxxreact.framework",
-				"${BUILT_PRODUCTS_DIR}/React-jsi-framework/jsi.framework",
-				"${BUILT_PRODUCTS_DIR}/React-jsiexecutor-framework/jsireact.framework",
-				"${BUILT_PRODUCTS_DIR}/React-jsinspector-framework/jsinspector.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactCommon-framework/ReactCommon.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactNativeKeyboardTrackingView-framework/ReactNativeKeyboardTrackingView.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactNativeNavigation-framework/ReactNativeNavigation.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactNativeUiLib-framework/ReactNativeUiLib.framework",
-				"${BUILT_PRODUCTS_DIR}/Yoga-framework/yoga.framework",
-				"${BUILT_PRODUCTS_DIR}/glog-framework/glog.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-blur-framework/react_native_blur.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-netinfo-framework/react_native_netinfo.framework",
-				"${BUILT_PRODUCTS_DIR}/OCMock-framework/OCMock.framework",
-				"${BUILT_PRODUCTS_DIR}/iOSSnapshotTestCase/FBSnapshotTestCase.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBReactNativeSpec.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/folly.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTTypeSafety.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNDateTimePicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNGestureHandler.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNReanimated.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CoreModules.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTAnimation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTBlob.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTLinking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTNetwork.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTSettings.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTText.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTVibration.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cxxreact.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/jsi.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/jsireact.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/jsinspector.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactCommon.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeKeyboardTrackingView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeNavigation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeUiLib.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_blur.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_netinfo.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSnapshotTestCase.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		4B4DD2714D02BEBC8F96EAD1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -687,7 +659,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-playground/Pods-playground-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core-library/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -749,7 +721,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-NavigationTests/Pods-NavigationTests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core-library/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -758,6 +730,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NavigationTests/Pods-NavigationTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB86EBB5F0AF15B43F3472FD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D80DD80E880A67F5575078C4 /* [CP] Check Pods Manifest.lock */ = {
@@ -789,7 +779,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core-library/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -819,13 +809,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m in Sources */,
 				5007B4362472D3CC0002AA4E /* RNNCustomViewController.m in Sources */,
 				5007B4352472D3C90002AA4E /* RNNNativeViewController.m in Sources */,
+				5041897E250788AE004A6BC7 /* UIImage+Diff.m in Sources */,
 				507C80E8242A1E6F00F765F7 /* AppDelegate.m in Sources */,
+				5041897C250788AE004A6BC7 /* UIImage+Snapshot.m in Sources */,
 				507C80EC242BC6FB00F765F7 /* LayoutCreator.m in Sources */,
 				507C80E7242914C800F765F7 /* StackOptionsTest.m in Sources */,
 				507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.m in Sources */,
 				50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */,
+				5041897D250788AE004A6BC7 /* UIImage+Compare.m in Sources */,
+				5041897B250788AE004A6BC7 /* FBSnapshotTestCase.m in Sources */,
+				50418978250788AE004A6BC7 /* FBSnapshotTestController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

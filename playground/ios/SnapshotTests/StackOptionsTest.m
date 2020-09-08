@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "LayoutCreator.h"
 #import "CommandsHandlerCreator.h"
-#import <FBSnapshotTestCase/FBSnapshotTestCase.h>
+#import "FBSnapshotTestCase.h"
 
 @interface StackOptionsTest : FBSnapshotTestCase
 @property (nonatomic, strong) RNNCommandsHandler* commandsHandler;

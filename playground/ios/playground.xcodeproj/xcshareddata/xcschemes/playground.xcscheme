@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6ADCF369490C694BEBF31C5B4517D035"
-               BuildableName = "ReactNativeNavigation.framework"
+               BuildableName = "libReactNativeNavigation.a"
                BlueprintName = "ReactNativeNavigation"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
             </BuildableReference>
