@@ -156,7 +156,7 @@ export interface OptionsTopBarLargeTitle {
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * Set the font weight
    * #### (iOS specific)
    */
   fontWeight?: string;
@@ -182,10 +182,10 @@ export interface OptionsTopBarTitle {
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * Set the font weight
    * #### (iOS specific)
    */
-  fontWeight?: FontWeight;
+  fontWeight?: string;
   /**
    * Custom component as the title view
    */
@@ -237,10 +237,10 @@ export interface OptionsTopBarSubtitle {
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * Set the font weight
    * #### (iOS specific)
    */
-  fontWeight?: FontWeight;
+  fontWeight?: string;
   /**
    * Set subtitle alignment
    */
@@ -381,10 +381,10 @@ export interface OptionsTopBarButton {
    */
   fontFamily?: string;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * Set the font weight
    * #### (iOS specific)
    */
-  fontWeight?: FontWeight;
+  fontWeight?: string;
   /**
    * Set the font size in dp
    */
@@ -717,10 +717,10 @@ export interface OptionsBottomTab {
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+   * Set the font weight
    * #### (iOS specific)
    */
-  fontWeight?: FontWeight;
+  fontWeight?: string;
   /**
    * Set the text font size
    */
