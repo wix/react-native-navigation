@@ -5,16 +5,6 @@ import { ImageRequireSource, Insets } from 'react-native';
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
 declare type Color = string | symbol;
 type FontFamily = string;
-type FontWeight =
-  | 'regular'
-  | 'bold'
-  | 'thin'
-  | 'ultraLight'
-  | 'light'
-  | 'medium'
-  | 'semibold'
-  | 'heavy'
-  | 'black';
 export type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
 type SystemItemIcon =
@@ -169,7 +159,7 @@ export interface OptionsTopBarLargeTitle {
    * Set the font weight, ignore fontFamily and use the iOS system fonts instead
    * #### (iOS specific)
    */
-  fontWeight?: FontWeight;
+  fontWeight?: string;
 }
 
 export interface OptionsTopBarTitle {
