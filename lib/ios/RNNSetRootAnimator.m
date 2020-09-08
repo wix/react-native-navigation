@@ -1,32 +1,20 @@
 #import "RNNSetRootAnimator.h"
 
-@implementation RNNSetRootAnimator {
-    TransitionOptions* _transition;
-}
+@implementation RNNSetRootAnimator
 
-- (instancetype)initWithTransition:(TransitionOptions *)transition {
-    self = [super init];
-    _transition = transition;
-    return self;
-}
-
-- (void)animate:(UIWindow *)window completion:(RNNAnimationEndedBlock)completion {
-    [window.rootViewController.view setNeedsDisplay];
-    [UIView transitionWithView:window
-                      duration:self.duration
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-        [window.rootViewController.view.layer displayIfNeeded];
-    }
-                    completion:^(BOOL finished) {
-        if (completion) {
-            completion();
+- (void)animate:(UIWindow *)window duration:(CGFloat)duration completion:(RNNAnimationEndedBlock)completion {
+    if (duration > 0) {
+        [window.rootViewController.view setNeedsDisplay];
+        [UIView transitionWithView:window
+                          duration:duration
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+            [window.rootViewController.view.layer displayIfNeeded];
         }
-    }];
-}
-
-- (CGFloat)duration {
-    return [_transition.alpha.duration getWithDefaultValue:0];
+                        completion:^(BOOL finished) {
+            if (completion) completion();
+        }];
+    } else if (completion) completion();
 }
 
 @end

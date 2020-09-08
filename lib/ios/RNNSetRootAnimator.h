@@ -1,12 +1,12 @@
-#import <Foundation/Foundation.h>
 #import "TransitionOptions.h"
+#import <Foundation/Foundation.h>
 
 typedef void (^RNNAnimationEndedBlock)(void);
 
 @interface RNNSetRootAnimator : NSObject
 
-- (instancetype)initWithTransition:(TransitionOptions *)transition;
-
-- (void)animate:(UIWindow *)window completion:(RNNAnimationEndedBlock)completion;
+- (void)animate:(UIWindow *)window
+       duration:(CGFloat)duration
+     completion:(RNNAnimationEndedBlock)completion;
 
 @end
