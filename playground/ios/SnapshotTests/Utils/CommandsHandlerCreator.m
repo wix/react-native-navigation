@@ -4,6 +4,7 @@
 #import <ReactNativeNavigation/RNNOverlayManager.h>
 #import <ReactNativeNavigation/RNNModalManager.h>
 #import <ReactNativeNavigation/RNNControllerFactory.h>
+#import <ReactNativeNavigation/RNNSetRootAnimator.h>
 
 @implementation CommandsHandlerCreator
 
@@ -13,7 +14,7 @@
 	RNNOverlayManager* overlayManager = [RNNOverlayManager new];
 	RNNModalManager* modalManager = [RNNModalManager new];
 	RNNControllerFactory* controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:creator eventEmitter:eventEmmiter store:nil componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
-	RNNCommandsHandler* commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmmiter modalManager:modalManager overlayManager:overlayManager mainWindow:window];
+	RNNCommandsHandler* commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmmiter modalManager:modalManager overlayManager:overlayManager setRootAnimator:[RNNSetRootAnimator new] mainWindow:window];
 	[commandsHandler setReadyToReceiveCommands:YES];
 	[commandsHandler setDefaultOptions:@{
 		@"animations": @{
