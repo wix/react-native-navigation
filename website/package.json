@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
@@ -10,9 +11,12 @@
     "snippets:build": "tsc --noEmit"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.50",
-    "@docusaurus/preset-classic": "^2.0.0-alpha.50",
-    "classnames": "^2.2.6",
+    "@docusaurus/core": "2.0.0-alpha.63",
+    "@docusaurus/plugin-client-redirects": "2.0.0-alpha.63",
+    "@docusaurus/plugin-ideal-image": "2.0.0-alpha.63",
+    "@docusaurus/plugin-pwa": "2.0.0-alpha.63",
+    "@docusaurus/preset-classic": "2.0.0-alpha.63",
+    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.63",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "remark-code-import": "^0.2.0"

@@ -10,7 +10,7 @@ export class Store {
   private lazyRegistratorFn: ((lazyComponentRequest: string | number) => void) | undefined;
 
   updateProps(componentId: string, props: any) {
-    this.propsById[componentId] = props;
+    this.mergeNewPropsForId(componentId, props);
     const component = this.componentsInstancesById[componentId];
     if (component) {
       this.componentsInstancesById[componentId].setProps(props);
@@ -19,6 +19,14 @@ export class Store {
 
   getPropsForId(componentId: string) {
     return this.propsById[componentId] || {};
+  }
+
+  mergeNewPropsForId(componentId: string, newProps: any) {
+    const currentProps = this.getPropsForId(componentId);
+    this.propsById[componentId] = {
+      ...currentProps,
+      ...newProps,
+    };
   }
 
   clearComponent(componentId: string) {
