@@ -25,8 +25,8 @@ public enum Interpolation {
             case ACCELERATE_DECELERATE:
                 return new AccelerateDecelerateInterpolator();
             case SPRING:
-                // TODO: Expose tension property setting
-                return new OvershootInterpolator(0.2f);
+                // TODO: Expose tension property to JS-API and make uniform with iOS implementation (has springiness and mass properties)
+                return new OvershootInterpolator(1f);
             case DEFAULT:
                 return new LinearInterpolator();
         }
