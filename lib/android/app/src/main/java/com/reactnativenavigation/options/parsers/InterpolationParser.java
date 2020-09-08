@@ -14,6 +14,8 @@ public class InterpolationParser {
                 return Interpolation.ACCELERATE_DECELERATE;
             case "accelerate":
                 return Interpolation.ACCELERATE;
+            case "spring":
+                return Interpolation.SPRING;
             default:
                 return Interpolation.DEFAULT;
         }
