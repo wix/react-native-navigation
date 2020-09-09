@@ -57,10 +57,12 @@
     
     if ([withDefault.topBar.searchBar getWithDefaultValue:NO]) {
         BOOL hideNavBarOnFocusSearchBar = YES;
+        
+        [viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
+        
         if (withDefault.topBar.hideNavBarOnFocusSearchBar.hasValue) {
             hideNavBarOnFocusSearchBar = withDefault.topBar.hideNavBarOnFocusSearchBar.get;
         }
-        [viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
     }
     
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
