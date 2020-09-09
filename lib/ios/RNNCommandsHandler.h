@@ -3,10 +3,16 @@
 #import "RNNControllerFactory.h"
 #import "RNNModalManager.h"
 #import "RNNOverlayManager.h"
+#import "RNNSetRootAnimator.h"
 
 @interface RNNCommandsHandler : NSObject
 
-- (instancetype)initWithControllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager mainWindow:(UIWindow *)mainWindow;
+- (instancetype)initWithControllerFactory:(RNNControllerFactory*)controllerFactory
+                             eventEmitter:(RNNEventEmitter *)eventEmitter
+                             modalManager:(RNNModalManager *)modalManager
+                           overlayManager:(RNNOverlayManager *)overlayManager
+                          setRootAnimator:(RNNSetRootAnimator *)setRootAnimator
+                               mainWindow:(UIWindow *)mainWindow;
 
 @property (nonatomic) BOOL readyToReceiveCommands;
 
