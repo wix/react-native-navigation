@@ -1,0 +1,47 @@
+---
+id: options-splitView
+title: SplitView Options
+sidebar_label: SplitView
+---
+
+### `displayMode`
+
+Master view display mode.
+
+| Type                                         | Required | Default | Platform |
+| -------------------------------------------- | -------- | ------- | -------- |
+| enum('auto', 'visible', 'hidden', 'overlay') | No       | 'auto'  | iOS      |
+
+### `primaryEdge`
+
+Master view side. Leading is left. Trailing is right.
+
+| Type                        | Required | Default   | Platform |
+| --------------------------- | -------- | --------- | -------- |
+| enum('leading', 'trailing') | No       | 'leading' | iOS      |
+
+### `minWidth`
+
+Set the minimum width of master view.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | iOS      |
+
+### `maxWidth`
+
+Set the maximum width of master view.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | iOS      |
+
+### `primaryBackgroundStyle`
+
+Set background style of sidebar. Currently works for Mac Catalyst apps only.
+See: [Optimizing Your iPad App for Mac
+](https://developer.apple.com/documentation/uikit/mac_catalyst/optimizing_your_ipad_app_for_mac#3239145)
+
+| Type                        | Required | Default   | Platform |
+| --------------------------- | -------- | --------- | -------- |
+| enum('none', 'sidebar')     | No       | 'none'    | iOS      |

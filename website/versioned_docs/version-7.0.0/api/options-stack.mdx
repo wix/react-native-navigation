@@ -1,0 +1,192 @@
+---
+id: options-stack
+title: Top Bar Options
+sidebar_label: Top Bar
+---
+
+## TopBar
+
+```js
+const options = {
+  topBar: {
+    animate: true,
+    title: {},
+    subtitle: {},
+    backButton: {},
+    background: {}
+  }
+};
+```
+
+### `visible`
+
+Determines if TopBar is visible or not.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+### `animate`
+
+Determines if changing the TopBar visibility will be animated or not.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+### `title`
+
+Controls the top bar title.
+
+| Type                   | Required | Platform |
+| ---------------------- | -------- | -------- |
+| [Title](options-title.mdx) | No       | Both     |
+
+### `subtitle`
+
+Controls the top bar subtitle.
+
+| Type                         | Required | Platform |
+| ---------------------------- | -------- | -------- |
+| [Subitle](options-subtitle.mdx) | No       | Both     |
+
+### `backButton`
+
+Controls the top bar back button.
+
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
+| [BackButton](options-backButton.mdx) | No       | Both     |
+
+### `background`
+
+Controls the top bar background.
+
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
+| [Background](options-background.mdx) | No       | Both     |
+
+### `barStyle`
+
+Control the TopBar blur style. Requires `translucent: true`.
+
+| Type                    | Required | Platform |
+| ----------------------- | -------- | -------- |
+| enum('default','black') | No       | iOS      |
+
+### `borderColor`
+
+Change the topBar border color.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | iOS      |
+
+### `borderHeight`
+
+Set the border height of the navbar in dp.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+### `drawBehind`
+
+Controls if child should be drawn behind the TopBar or below it.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+### `elevation`
+
+Set the elevation of the TopBar in dp. This option changes how the shadow under the TopBar looks. Setting this value to 0 will remove the shadow completely.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+### `hideOnScroll`
+
+Hide the TopBar when a scrolling layout is scrolled.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+### `hideNavBarOnFocusSearchBar`
+
+Indicates whether the navigation bar should be hidden when searching. True by default.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS 11+  |
+
+### `leftButtons`
+
+An array of buttons to be displayed at the right-side of the TopBar. Button layout is from left to right. See the [Buttons](options-button) section for more details.
+
+:::info Android support
+Android currently only supports a single left button and does not support custom left Buttons.
+:::
+
+
+| Type                           | Required | Platform |
+| ------------------------------ | -------- | -------- |
+| [[Button]](options-button.mdx) | No       | Both     |
+
+### `leftButtonColor`
+
+Default color for left buttons.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | Both     |
+
+### `noBorder`
+
+Disables border at the bottom of the TopBar.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+### `rightButtons`
+
+An array of buttons to be displayed at the right side of the TopBar. Button layout is from right to left. See the [Buttons](options-button) section for more details.
+
+| Type                       | Required | Platform |
+| -------------------------- | -------- | -------- |
+| [[Button]](options-button.mdx) | No       | Both     |
+
+### `rightButtonColor`
+
+Default color for the right button.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | Both     |
+
+### `searchBar`
+
+Shows the UISearchBar in the TopBar.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS 11+  |
+
+### `searchBarHiddenWhenScrolling`
+
+Hides the UISearchBar when scrolling.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS 11+  |
+
+### `searchBarPlaceholder`
+
+The placeholder value in the UISearchBar.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | iOS 11+  |

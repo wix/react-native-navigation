@@ -1,0 +1,57 @@
+---
+id: options-layout
+title: Layout Options
+sidebar_label: Layout
+---
+
+```js
+const options = {
+  layout: {}
+};
+```
+
+### `fitSystemWindows`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+### `backgroundColor`
+
+Set the screen background color.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | Both     |
+
+### `componentBackgroundColor`
+
+Set background color only for components. On Android, using this option instead of `backgroundColor` helps reduce overdraw.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | Both     |
+
+### `orientation`
+
+Set the allowed orientations.
+
+| Type                      | Required | Platform |
+| ------------------------- | -------- | -------- |
+| ['portrait', 'landscape'] | No       | Both     |
+
+### `topMargin`
+
+Set the layout top margin.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+### `direction`
+
+Set language direction, only works with DefaultOptions. `locale` is an Android specific option which sets the direction according to the device locale.
+
+| Type               | Required | Platform |
+| ------------------ | -------- | -------- |
+| enum('rtl', 'ltr', 'locale') | No       | Both     |
