@@ -6,13 +6,17 @@ import { ImageRequireSource, Insets } from 'react-native';
 declare type Color = string | symbol;
 type FontFamily = string;
 type FontWeight =
-  | 'regular'
-  | 'bold'
+  | 'normal'
+  | 'ultralight'
   | 'thin'
-  | 'ultraLight'
   | 'light'
+  | 'regular'
   | 'medium'
   | 'semibold'
+  | 'demibold'
+  | 'extrabold'
+  | 'ultrabold'
+  | 'bold'
   | 'heavy'
   | 'black';
 export type LayoutOrientation = 'portrait' | 'landscape';

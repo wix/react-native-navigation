@@ -35,14 +35,21 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNOverlayManager* _overlayManager;
 	RNNEventEmitter* _eventEmitter;
 	UIWindow* _mainWindow;
+    RNNSetRootAnimator* _setRootAnimator;
 }
 
-- (instancetype)initWithControllerFactory:(RNNControllerFactory*)controllerFactory eventEmitter:(RNNEventEmitter *)eventEmitter  modalManager:(RNNModalManager *)modalManager overlayManager:(RNNOverlayManager *)overlayManager mainWindow:(UIWindow *)mainWindow {
+- (instancetype)initWithControllerFactory:(RNNControllerFactory*)controllerFactory
+                             eventEmitter:(RNNEventEmitter *)eventEmitter
+                             modalManager:(RNNModalManager *)modalManager
+                           overlayManager:(RNNOverlayManager *)overlayManager
+                          setRootAnimator:(RNNSetRootAnimator *)setRootAnimator
+     mainWindow:(UIWindow *)mainWindow {
 	self = [super init];
 	_controllerFactory = controllerFactory;
 	_eventEmitter = eventEmitter;
 	_modalManager = modalManager;
 	_overlayManager = overlayManager;
+    _setRootAnimator = setRootAnimator;
 	_mainWindow = mainWindow;
 	return self;
 }
@@ -72,13 +79,19 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_modalManager dismissAllModalsAnimated:NO completion:nil];
     
     UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
-    vc.waitForRender = [vc.resolveOptionsWithDefault.animations.setRoot.waitForRender getWithDefaultValue:NO];
+    RNNNavigationOptions* optionsWithDefault = vc.resolveOptionsWithDefault;
+    vc.waitForRender = [optionsWithDefault.animations.setRoot.waitForRender getWithDefaultValue:NO];
     __weak UIViewController* weakVC = vc;
     [vc setReactViewReadyCallback:^{
         [self->_mainWindow.rootViewController destroy];
         self->_mainWindow.rootViewController = weakVC;
-        [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId];
-        completion(weakVC.layoutInfo.componentId);
+        
+        [self->_setRootAnimator animate:self->_mainWindow
+                         duration:[optionsWithDefault.animations.setRoot.alpha.duration getWithDefaultValue:0]
+                      completion:^{
+            [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId];
+            completion(weakVC.layoutInfo.componentId);
+        }];
     }];
     
     [vc render];

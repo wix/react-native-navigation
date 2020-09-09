@@ -17,6 +17,7 @@ jobs:
           node-version: '12.x'
       - name: Test Build
         run: |
+          cd website/
           npm i
           npm run build
   gh-release:
@@ -47,6 +48,7 @@ jobs:
         run: |
           git config --global user.email "yogevbd@wix.com"
           git config --global user.name "yogevbd"
+          cd website/
           npm i
           npm run build
           npx docusaurus deploy
