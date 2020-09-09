@@ -1,169 +1,4 @@
 {
-  "version-6.12.2/api": [
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "Navigation",
-      "items": [
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/component"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/root"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/stack"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/modal"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/overlay"
-        }
-      ]
-    },
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "Layouts",
-      "items": [
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/layout-layout"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/layout-component"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/layout-stack"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/layout-bottomTabs"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/layout-sideMenu"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/layout-splitView"
-        }
-      ]
-    },
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "Options",
-      "items": [
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-api"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-root"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-bottomTabs"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-bottomTab"
-        },
-        {
-          "collapsed": true,
-          "type": "category",
-          "label": "Stack",
-          "items": [
-            {
-              "type": "doc",
-              "id": "version-6.12.2/api/options-stack"
-            },
-            {
-              "type": "doc",
-              "id": "version-6.12.2/api/options-title"
-            },
-            {
-              "type": "doc",
-              "id": "version-6.12.2/api/options-subtitle"
-            },
-            {
-              "type": "doc",
-              "id": "version-6.12.2/api/options-background"
-            },
-            {
-              "type": "doc",
-              "id": "version-6.12.2/api/options-backButton"
-            },
-            {
-              "type": "doc",
-              "id": "version-6.12.2/api/options-button"
-            },
-            {
-              "type": "doc",
-              "id": "version-6.12.2/api/options-iconInsets"
-            },
-            {
-              "type": "doc",
-              "id": "version-6.12.2/api/options-largeTitle"
-            }
-          ]
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-statusBar"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-layout"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-modal"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-navigationBar"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-overlay"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-sideMenu"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-sideMenuSide"
-        },
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/options-splitView"
-        }
-      ]
-    },
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "Events",
-      "items": [
-        {
-          "type": "doc",
-          "id": "version-6.12.2/api/events"
-        }
-      ]
-    }
-  ],
   "version-6.12.2/docs": [
     {
       "collapsed": true,
@@ -327,6 +162,171 @@
         {
           "type": "doc",
           "id": "version-6.12.2/docs/meta-contributing"
+        }
+      ]
+    }
+  ],
+  "version-6.12.2/api": [
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Navigation",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/component"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/root"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/stack"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/modal"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/overlay"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Layouts",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/layout-layout"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/layout-component"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/layout-stack"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/layout-bottomTabs"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/layout-sideMenu"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/layout-splitView"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Options",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-api"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-root"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-bottomTabs"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-bottomTab"
+        },
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "Stack",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-6.12.2/api/options-stack"
+            },
+            {
+              "type": "doc",
+              "id": "version-6.12.2/api/options-title"
+            },
+            {
+              "type": "doc",
+              "id": "version-6.12.2/api/options-subtitle"
+            },
+            {
+              "type": "doc",
+              "id": "version-6.12.2/api/options-background"
+            },
+            {
+              "type": "doc",
+              "id": "version-6.12.2/api/options-backButton"
+            },
+            {
+              "type": "doc",
+              "id": "version-6.12.2/api/options-button"
+            },
+            {
+              "type": "doc",
+              "id": "version-6.12.2/api/options-iconInsets"
+            },
+            {
+              "type": "doc",
+              "id": "version-6.12.2/api/options-largeTitle"
+            }
+          ]
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-statusBar"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-layout"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-modal"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-navigationBar"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-overlay"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-sideMenu"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-sideMenuSide"
+        },
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/options-splitView"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Events",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-6.12.2/api/events"
         }
       ]
     }
