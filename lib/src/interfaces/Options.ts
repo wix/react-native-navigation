@@ -518,7 +518,7 @@ export interface OptionsTopBar {
    */
   searchBarPlaceholder?: string;
   /**
-   * The background color of the UISearchBar
+   * The background color of the UISearchBar's TextField
    * #### (iOS 13+ specific)
    */
   searchBarBackgroundColor?: string;
