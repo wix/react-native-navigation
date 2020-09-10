@@ -56,11 +56,10 @@
     }
     
     if ([withDefault.topBar.searchBar getWithDefaultValue:NO]) {
-        BOOL hideNavBarOnFocusSearchBar = YES;
-        if (withDefault.topBar.hideNavBarOnFocusSearchBar.hasValue) {
-            hideNavBarOnFocusSearchBar = withDefault.topBar.hideNavBarOnFocusSearchBar.get;
-        }
-        [viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
+        BOOL hideNavBarOnFocusSearchBar = [withDefault.topBar.hideNavBarOnFocusSearchBar getWithDefaultValue:YES];
+        BOOL searchBarHiddenWhenScrolling = [withDefault.topBar.searchBarHiddenWhenScrolling getWithDefaultValue:NO];
+        
+        [viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar searchBarHiddenWhenScrolling:searchBarHiddenWhenScrolling];
     }
     
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
@@ -93,11 +92,10 @@
     }
     
     if ([withDefault.topBar.searchBar getWithDefaultValue:NO]) {
-        BOOL hideNavBarOnFocusSearchBar = YES;
-        if (options.topBar.hideNavBarOnFocusSearchBar.hasValue) {
-            hideNavBarOnFocusSearchBar = options.topBar.hideNavBarOnFocusSearchBar.get;
-        }
-        [viewController setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar];
+        BOOL hideNavBarOnFocusSearchBar = [withDefault.topBar.hideNavBarOnFocusSearchBar getWithDefaultValue:YES];
+        BOOL searchBarHiddenWhenScrolling = [withDefault.topBar.searchBarHiddenWhenScrolling getWithDefaultValue:NO];
+        
+        [viewController setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar searchBarHiddenWhenScrolling:searchBarHiddenWhenScrolling];
     }
 
     if (options.topBar.drawBehind.hasValue) {
