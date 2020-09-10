@@ -1,0 +1,92 @@
+---
+id: options-button
+title: Button Options
+sidebar_label: Button
+---
+
+```js
+const options = {
+  topBar: {
+    leftButtons: [
+      {
+        id: 'id',
+        text: 'Button',
+      },
+    ],
+  },
+};
+```
+
+### `allCaps`
+
+This option will set whether characters are all capitalized or not.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | Android  | true    |
+
+### `fontSize`
+
+If the button has text, this option is used to set font size in DP.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+### `id`
+
+Buttons are identified by their id property. When a button is clicked, a buttonPress event is emitted to js, containing the id of the clicked button.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | Yes      | Both     |
+
+### `icon`
+
+Button icon. If the button is pushed to the overflow menu, the button [text](#text) is used instead.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+### `text`
+
+Button text. Ignored if an icon is specified, unless the button is displayed in the overflow menu.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+### `showAsAction`
+
+| Type                                          | Required | Platform |
+| --------------------------------------------- | -------- | -------- |
+| enum('always', 'never', 'withText', 'ifRoom') | No       | Android  |
+
+- **ifRoom** - Only add button to the TopBar if there is room for it, otherwise add it to the overflow menu.
+- **never** - Never place this button in the TopBar. Instead, list the button in the overflow menu.
+- **always** - Always place this button in the app bar.
+
+### `component`
+
+Set a react [component](layout-component.mdx) as this button's view which will be displayed instead of the regular view.
+
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
+| [Component](layout-component.mdx) | No       | Both     |
+
+### `iconInsets`
+
+[IconInsets](options-iconInsets.mdx) are applied to the icon to translate its original position on the screen.
+
+| Type       | Required | Platform |
+| ---------- | -------- | -------- |
+| IconInsets | No       | iOS      |
+
+### `systemItem`
+
+System icon; ignored if an [icon](#icon-number) is specified. For more information, see [apple's guidelines](https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/system-icons/).
+
+| Type                                                                                                                                                                                                                                          | Required | Platform |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- |
+| enum('done', 'cancel', 'edit', 'save', 'add', 'flexibleSpace', 'fixedSpace', 'compose', 'reply', 'action', 'organize', 'bookmarks', 'search', 'refresh', 'stop', 'camera', 'trash', 'play', 'pause', 'rewind', 'fastForward', 'undo', 'redo') | No       | iOS      |
