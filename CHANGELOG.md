@@ -23,6 +23,16 @@ Add `extraModulesForBridge` in `AppDelegate.m`
 }
 ```
 
+In case your'e bootstraping ReactNativeNavigation like that:
+```objc
+[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+```
+
+Replace it with
+```objc
+[ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];
+```
+
 ### Android
 
 No Change needed 🥳

@@ -518,6 +518,16 @@ export interface OptionsTopBar {
    */
   searchBarPlaceholder?: string;
   /**
+   * The background color of the UISearchBar's TextField
+   * #### (iOS 13+ specific)
+   */
+  searchBarBackgroundColor?: string;
+  /**
+   * The tint color of the UISearchBar
+   * #### (iOS 11+ specific)
+   */
+  searchBarTintColor?: string;
+  /**
    * Controls Hiding NavBar on focus UISearchBar
    * #### (iOS 11+ specific)
    */
