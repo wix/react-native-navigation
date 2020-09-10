@@ -263,6 +263,11 @@ export interface OptionsTopBarSubtitle {
 
 export interface OptionsTopBarBackButton {
   /**
+   * Overrides the text that's read by the screen reader when the user interacts with the back button
+   * #### (Android specific)
+   */
+  accessibilityLabel?: string;
+  /**
    * Button id for reference press event
    * #### (Android specific)
    */
