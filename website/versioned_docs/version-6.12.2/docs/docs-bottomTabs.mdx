@@ -1,0 +1,142 @@
+---
+id: bottomTabs
+title: Bottom tabs
+sidebar_label: Bottom tabs
+---
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+Bottom tabs refers to a row of links, displayed at the bottom of the screen, and is referred to as "Tab Bar" in iOS and as "Bottom Navigation Bar" on Android. Usually these are intended to be used to switch between top-level content views with a single tap.
+
+## Creating bottom tabs
+
+BottomTabs provide flat navigation and access to up to five equally important top-level root destinations. While any type of layout can be displayed in a tab, typically, [Stacks](stack) are used, since they allow for vertical navigation within a tab.
+
+### Example
+Lets see how to create a simple BottomTabs layout. There are a few things to notice here:
+1. Each child represents a tab on the screen.
+2. The root layout for each tab is a stack to allow for vertical navigation within the tab.
+3. Each stack declares `bottomTab` options which are used to configure the tab's text, icon, color etc.
+
+```js
+bottomTabs: {
+  id: 'BOTTOM_TABS_LAYOUT',
+  children: [
+    {
+      stack: {
+        id: 'HOME_TAB',
+        children: [
+          {
+            component: {
+              id: 'HOME_SCREEN',
+              name: 'HomeScreen'
+            }
+          }
+        ],
+        options: {
+          bottomTab: {
+            icon: require('./home.png')
+          }
+        }
+      }
+    },
+    {
+      stack: {
+        id: 'PROFILE_TAB',
+        children: [
+          {
+            component: {
+              id: 'PROFILE_SCREEN',
+              name: 'ProfileScreen'
+            }
+          }
+        ],
+        options: {
+          bottomTab: {
+            icon: require('./profile.png')
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+Once we run this code, our BottomTabs should look like this:
+<img width="40%" src={useBaseUrl('img/bottomTabs.png')} />
+
+## Selecting Tabs Programmatically
+Tabs can be selected programmatically by updating the `currentTabIndex` or `currentTabId` options.
+
+We'll use the BottomTabs layout showcased [above](bottomTabs#example) to demonstrate programmatic tab selection.
+
+### Selecting a tab by index
+The following mergeOptions command will select the second tab. We're passing the id of our BottomTabs layout, but we could also use the id of any of the child components, for example `PROFILE_TAB` or `PROFILE_SCREEN`.
+
+```js
+Navigation.mergeOptions('BOTTOM_TABS_LAYOUT', {
+  bottomTabs: {
+    currentTabIndex: 1
+  }
+});
+```
+
+### Selecting a tab by id
+Tabs can also be selected by id (`componentId`). This is particularly useful in cases where you don't know in which tab a screen is contained.
+For example, if invoked from one of the child components, `HOME_SCREEN` or `SETTINGS_SCREEN`, the following merge command will select the tab containing the child.
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  bottomTabs: {
+    currentTabId: this.props.componentId
+  }
+});
+```
+
+## Changing BottomTabs visibility
+
+The `visible` property is used to control the BottomTab visibility. Visibility can be toggled dynamically using the `mergeOptions` command.
+```js
+Navigation.mergeOptions(componentId, {
+  bottomTabs: {
+    visible: false
+  },
+});
+```
+
+Visibility can also be changed when pushing screens.
+```js
+Navigation.push(componentId, {
+  component: {
+    name: 'pushedScreen',
+    options: {
+      bottomTabs: {
+        visible: false
+      }
+    }
+  }
+});
+```
+
+## Updating tab options dynamically
+
+To update a tab option, like an icon, text or color, simply call `mergeOptions` with new options using the id of a component or layout contained in the tab you wish to update.
+
+For instance, in the example below we update the color of a specific tab:
+```js
+Navigation.mergeOptions(componentId, {
+  bottomTab: {
+    iconColor: 'red',
+    textColor: 'red'
+  },
+});
+```
+
+## Controlling tab loading
+
+By default, all tabs are mounted at the same time. This can have a negative impact on performance since screens which are not visible to the user are mounted.
+
+The order in which tabs are mounted can be configured with the `tabsAttachMode` option:
+
+* `together` - all tabs are mounted at the same time, this is the default behavior.
+* `afterInitialTab` - after initial tab is mounted, other tabs are mounted.
+* `onSwitchToTab` - initial tab is mounted, other tabs are mounted when the user navigates to them for the first time.

@@ -1,5 +1,7 @@
 package com.reactnativenavigation.options;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -23,11 +25,11 @@ public class TopTabsOptions {
     @NonNull public Bool visible = new NullBool();
     @NonNull public Number height = new NullNumber();
 
-    public static TopTabsOptions parse(@Nullable JSONObject json) {
+    public static TopTabsOptions parse(Context context, @Nullable JSONObject json) {
         TopTabsOptions result = new TopTabsOptions();
         if (json == null) return result;
-        result.selectedTabColor = ColorParser.parse(json, "selectedTabColor");
-        result.unselectedTabColor = ColorParser.parse(json, "unselectedTabColor");
+        result.selectedTabColor = ColorParser.parse(context, json, "selectedTabColor");
+        result.unselectedTabColor = ColorParser.parse(context, json, "unselectedTabColor");
         result.fontSize = NumberParser.parse(json, "fontSize");
         result.visible = BoolParser.parse(json, "visible");
         result.height = NumberParser.parse(json, "height");

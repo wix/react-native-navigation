@@ -883,7 +883,7 @@ public class StackControllerTest extends BaseTest {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.popToRoot(Options.EMPTY, listener);
         assertThat(uut.isEmpty()).isTrue();
-        verify(listener, times(1)).onError(any());
+        verify(listener).onSuccess("");
     }
 
     @Test

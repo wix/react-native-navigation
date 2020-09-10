@@ -1,0 +1,47 @@
+---
+id: options-api
+title: Options Commands
+sidebar_label: Options commands
+---
+
+## `setDefaultOptions`
+
+Set default options for all screens. Useful for declaring a consistent style across the app.
+
+#### Parameters
+
+| Name    | Type                        | Required | Description  |
+| ------- | --------------------------- | -------- | ------------ |
+| options | [Options](options-root.mdx) | Yes      | Options root |
+
+#### Example
+
+```js
+Navigation.setDefaultOptions({
+  bottomTab: {
+    textColor: 'black',
+    selectedTextColor: 'blue',
+  },
+});
+```
+
+## `mergeOptions`
+
+Change navigation options of a component or layout.
+
+#### Parameters
+
+| Name        | Type                        | Required | Description                |
+| ----------- | --------------------------- | -------- | -------------------------- |
+| componentId | string                      | Yes      | The component or layout id |
+| options     | [Options](options-root.mdx) | Yes      | Options root               |
+
+#### Example
+
+```js
+Navigation.mergeOptions('componentId', {
+  bottomTabs: {
+    visible: false,
+  },
+});
+```

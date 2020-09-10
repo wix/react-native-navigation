@@ -4,6 +4,7 @@ import {
   NavigationComponent,
   NavigationComponentProps,
   NavigationButtonPressedEvent,
+  Options,
 } from 'react-native-navigation';
 import concat from 'lodash/concat';
 import Navigation from '../services/Navigation';
@@ -34,18 +35,20 @@ interface Props extends NavigationComponentProps {
 }
 
 export default class PushedScreen extends NavigationComponent<Props> {
-  static options() {
+  static options(): Options {
     return {
       topBar: {
         testID: PUSHED_SCREEN_HEADER,
         title: {
           text: 'Pushed Screen',
         },
-        rightButtons: {
-          id: 'singleBtn',
-          text: 'single',
-          testID: TOP_BAR_BTN,
-        },
+        rightButtons: [
+          {
+            id: 'singleBtn',
+            text: 'single',
+            testID: TOP_BAR_BTN,
+          },
+        ],
         backButton: {
           testID: BACK_BUTTON,
         },

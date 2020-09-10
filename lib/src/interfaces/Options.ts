@@ -1,16 +1,22 @@
 // tslint:disable jsdoc-format
 import { ImageRequireSource, Insets } from 'react-native';
 
-type Color = string;
+// TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
+// Only assign PlatformColor or DynamicColorIOS as a Color symbol!
+declare type Color = string | symbol;
 type FontFamily = string;
 type FontWeight =
-  | 'regular'
-  | 'bold'
+  | 'normal'
+  | 'ultralight'
   | 'thin'
-  | 'ultraLight'
   | 'light'
+  | 'regular'
   | 'medium'
   | 'semibold'
+  | 'demibold'
+  | 'extrabold'
+  | 'ultrabold'
+  | 'bold'
   | 'heavy'
   | 'black';
 export type LayoutOrientation = 'portrait' | 'landscape';
@@ -256,6 +262,11 @@ export interface OptionsTopBarSubtitle {
 }
 
 export interface OptionsTopBarBackButton {
+  /**
+   * Overrides the text that's read by the screen reader when the user interacts with the back button
+   * #### (Android specific)
+   */
+  accessibilityLabel?: string;
   /**
    * Button id for reference press event
    * #### (Android specific)
@@ -507,6 +518,16 @@ export interface OptionsTopBar {
    */
   searchBarPlaceholder?: string;
   /**
+   * The background color of the UISearchBar's TextField
+   * #### (iOS 13+ specific)
+   */
+  searchBarBackgroundColor?: string;
+  /**
+   * The tint color of the UISearchBar
+   * #### (iOS 11+ specific)
+   */
+  searchBarTintColor?: string;
+  /**
    * Controls Hiding NavBar on focus UISearchBar
    * #### (iOS 11+ specific)
    */
@@ -578,11 +599,7 @@ export interface ElementAnimation {
 }
 
 export interface OptionsFab {
-  /**
-   * ID is required when first instantiating the Fab button,
-   * however when updating the existing Fab button, ID is not required.
-   */
-  id?: string;
+  id: string;
   backgroundColor?: Color;
   clickColor?: Color;
   rippleColor?: Color;

@@ -17,30 +17,30 @@ import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.options.Alignment;
+import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.SubtitleOptions;
 import com.reactnativenavigation.options.TitleOptions;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.StackLayout;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -53,12 +53,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -68,11 +64,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @LooperMode(LooperMode.Mode.PAUSED)
 public class StackPresenterTest extends BaseTest {
@@ -620,6 +614,18 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
+    public void onChildDestroyed_mergedRightButtonsAreDestroyed() {
+        Options options = new Options();
+        options.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
+        uut.mergeChildOptions(options, Options.EMPTY, parent, child);
+        List<ButtonController> buttons = uut.getComponentButtons(child.getView());
+        assertThat(buttons).hasSize(1);
+
+        uut.onChildDestroyed(child);
+        assertThat(buttons.get(0).isDestroyed()).isTrue();
+    }
+
+    @Test
     public void applyTopInsets_topBarIsDrawnUnderStatusBarIfDrawBehindIsTrue() {
         Options options = new Options();
         options.statusBar.drawBehind = new Bool(true);
@@ -659,17 +665,6 @@ public class StackPresenterTest extends BaseTest {
         verify(topBar, times(t)).setSubtitleColor(anyInt());
         verify(topBar, times(t)).setTestId(any());
         verify(topBarController, times(t)).hide();
-    }
-
-    private TopBar mockTopBar() {
-        TopBar topBar = mock(TopBar.class);
-        Toolbar toolbar = new Toolbar(activity);
-        toolbar.addView(new ActionMenuView(activity));
-        when(topBar.getTitleBar()).then(invocation -> toolbar);
-        when(topBar.getContext()).then(invocation -> activity);
-        when(topBar.dispatchApplyWindowInsets(any())).then(invocation -> invocation.getArguments()[0]);
-        when(topBar.getLayoutParams()).thenReturn(new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-        return topBar;
     }
 
     private void createTopBarController() {

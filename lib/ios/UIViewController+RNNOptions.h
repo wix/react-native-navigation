@@ -8,13 +8,13 @@
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
 
-- (void)setSearchBarWithPlaceholder:(NSString *)placeholder hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar;
+- (void)setSearchBarWithPlaceholder:(NSString *)placeholder
+         hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar
+       searchBarHiddenWhenScrolling:(BOOL)searchBarHiddenWhenScrolling
+                    backgroundColor:(nullable UIColor *)backgroundColor
+                          tintColor:(nullable UIColor *)tintColor;
 
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden;
-
-- (void)setDrawBehindTopBar:(BOOL)drawBehind;
-
-- (void)setDrawBehindTabBar:(BOOL)drawBehindTabBar;
 
 - (void)setTabBarItemBadgeColor:(UIColor *)badgeColor;
 
@@ -31,8 +31,6 @@
 - (void)setBackButtonVisible:(BOOL)visible;
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
-
-- (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside;
 
 - (BOOL)isModal;
 

@@ -1,5 +1,7 @@
 package com.reactnativenavigation.options;
 
+import android.content.Context;
+
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullBool;
@@ -10,11 +12,11 @@ import com.reactnativenavigation.options.parsers.ColorParser;
 import org.json.JSONObject;
 
 public class NavigationBarOptions {
-    public static NavigationBarOptions parse(JSONObject json) {
+    public static NavigationBarOptions parse(Context context, JSONObject json) {
         NavigationBarOptions result = new NavigationBarOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ColorParser.parse(json, "backgroundColor");
+        result.backgroundColor = ColorParser.parse(context, json, "backgroundColor");
         result.isVisible = BoolParser.parse(json, "visible");
 
         return result;

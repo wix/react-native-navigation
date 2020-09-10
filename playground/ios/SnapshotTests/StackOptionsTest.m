@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "LayoutCreator.h"
 #import "CommandsHandlerCreator.h"
-#import <FBSnapshotTestCase/FBSnapshotTestCase.h>
+#import "FBSnapshotTestCase.h"
 
 @interface StackOptionsTest : FBSnapshotTestCase
 @property (nonatomic, strong) RNNCommandsHandler* commandsHandler;
@@ -46,7 +46,7 @@
 	NSString* rootTestName = [NSString stringWithFormat:@"%@_root", testName];
 	[_commandsHandler setRoot:@{@"root": root}
 					commandId:@"SetRoot"
-				   completion:^{}];
+				   completion:^(NSString* componentId){}];
 	FBSnapshotVerifyView(_window, rootTestName);
 }
 
@@ -55,7 +55,7 @@
 	[_commandsHandler push:@"FirstComponent"
 				 commandId:@"push"
 					layout:secondComponent
-				completion:^{}
+				completion:^(NSString* pushedComponentId){}
 				 rejection:^(NSString *code, NSString *message, NSError *error) {}];
 	FBSnapshotVerifyView(_window, pushTestName);
 }

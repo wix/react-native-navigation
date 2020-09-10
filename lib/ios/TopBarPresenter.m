@@ -136,7 +136,7 @@
     [self setBackIndicatorImage:icon withColor:color];
     
     if (showTitle) {
-        backItem.title = title ? title : previousViewControllerInStack.navigationItem.title;
+        backItem.title = title ? title : (previousViewControllerInStack.navigationItem.title ? previousViewControllerInStack.navigationItem.title : @"");;
     } else {
         backItem.title = @"";
     }

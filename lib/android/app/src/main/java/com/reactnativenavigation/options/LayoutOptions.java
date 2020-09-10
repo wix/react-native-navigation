@@ -1,5 +1,7 @@
 package com.reactnativenavigation.options;
 
+import android.content.Context;
+
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullNumber;
@@ -10,12 +12,12 @@ import com.reactnativenavigation.options.parsers.NumberParser;
 import org.json.JSONObject;
 
 public class LayoutOptions {
-    public static LayoutOptions parse(JSONObject json) {
+    public static LayoutOptions parse(Context context, JSONObject json) {
         LayoutOptions result = new LayoutOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ColorParser.parse(json, "backgroundColor");
-        result.componentBackgroundColor = ColorParser.parse(json, "componentBackgroundColor");
+        result.backgroundColor = ColorParser.parse(context, json, "backgroundColor");
+        result.componentBackgroundColor = ColorParser.parse(context, json, "componentBackgroundColor");
         result.topMargin = NumberParser.parse(json, "topMargin");
         result.orientation = OrientationOptions.parse(json);
         result.direction = LayoutDirection.fromString(json.optString("direction", ""));

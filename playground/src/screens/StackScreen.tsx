@@ -13,11 +13,13 @@ const {
   PUSH_LIFECYCLE_BTN,
   POP_NONE_EXISTENT_SCREEN_BTN,
   PUSH_CUSTOM_BACK_BTN,
+  PUSH_TITLE_WITH_SUBTITLE,
   PUSH_LAZY_BTN,
   CUSTOM_BACK_BTN,
   SEARCH_BTN,
   SET_STACK_ROOT_BTN,
   SET_STACK_ROOT_WITH_ID_BTN,
+  STACK_COMMANDS_BTN,
 } = testIDs;
 
 export default class StackScreen extends React.Component<NavigationComponentProps> {
@@ -47,7 +49,7 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           onPress={this.popNoneExistent}
         />
         <Button
-          label='Push Lazily Registered Screen'
+          label="Push Lazily Registered Screen"
           testID={PUSH_LAZY_BTN}
           onPress={this.pushLazilyRegistered}
         />
@@ -56,6 +58,11 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           testID={PUSH_CUSTOM_BACK_BTN}
           onPress={this.pushCustomBackButton}
         />
+        <Button
+          label="Push Title With Subtitle"
+          testID={PUSH_TITLE_WITH_SUBTITLE}
+          onPress={this.pushTitleWithSubtitle}
+        />
         <Button label="Set Stack Root" testID={SET_STACK_ROOT_BTN} onPress={this.setStackRoot} />
         <Button
           label="Set Stack Root With ID"
@@ -63,6 +70,11 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           onPress={this.setStackRootWithId}
         />
         <Button label="Search" testID={SEARCH_BTN} onPress={this.search} platform="ios" />
+        <Button
+          label="Push Stack Commands"
+          testID={STACK_COMMANDS_BTN}
+          onPress={this.pushStackCommands}
+        />
       </Root>
     );
   }
@@ -93,6 +105,23 @@ export default class StackScreen extends React.Component<NavigationComponentProp
       },
     });
 
+  pushTitleWithSubtitle = () =>
+    Navigation.push(this, {
+      component: {
+        name: Screens.Pushed,
+        options: {
+          topBar: {
+            title: {
+              text: 'Title',
+            },
+            subtitle: {
+              text: 'Subtitle',
+            },
+          },
+        },
+      },
+    });
+
   search = () => Navigation.push(this, Screens.Search);
 
   setStackRoot = () =>
@@ -108,4 +137,6 @@ export default class StackScreen extends React.Component<NavigationComponentProp
         name: Screens.Stack,
       },
     });
+
+  pushStackCommands = () => Navigation.push(this, component(Screens.StackCommands));
 }

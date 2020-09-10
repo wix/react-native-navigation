@@ -52,6 +52,7 @@
 - (void)showBorder:(BOOL)showBorder {
     UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
     self.getAppearance.shadowColor = shadowColor;
+    self.getScrollEdgeAppearance.shadowColor = shadowColor;
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {
@@ -72,8 +73,9 @@
     NSString* fontWeight = [largeTitleOptions.fontWeight getWithDefaultValue:nil];
     NSNumber* fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
-    
-    self.getAppearance.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getAppearance.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    NSDictionary* largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getAppearance.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    self.getAppearance.largeTitleTextAttributes = largeTitleTextAttributes;
+    self.getScrollEdgeAppearance.largeTitleTextAttributes = largeTitleTextAttributes;
 }
 
 - (UINavigationBarAppearance *)getAppearance {

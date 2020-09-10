@@ -55,21 +55,13 @@ open class AnimationOptions(json: JSONObject?) {
         if (valueOptions.isEmpty()) valueOptions = defaultOptions.valueOptions
     }
 
-    fun hasValue(): Boolean {
-        return id.hasValue() || enabled.hasValue() || waitForRender.hasValue()
-    }
+    fun hasValue() = id.hasValue() || enabled.hasValue() || waitForRender.hasValue()
 
-    fun getAnimation(view: View): AnimatorSet {
-        return getAnimation(view, AnimatorSet())
-    }
+    fun getAnimation(view: View) = getAnimation(view, AnimatorSet())
 
     fun getAnimation(view: View, defaultAnimation: AnimatorSet): AnimatorSet {
         if (!hasAnimation()) return defaultAnimation
-        val animationSet = AnimatorSet()
-        val animators: MutableList<Animator> = ArrayList()
-        forEach(valueOptions) { options: ValueAnimationOptions -> animators.add(options.getAnimation(view)) }
-        animationSet.playTogether(animators)
-        return animationSet
+        return AnimatorSet().apply { playTogether(valueOptions.map { it.getAnimation(view) }) }
     }
 
     val duration: Int
