@@ -27,6 +27,8 @@
 @property (nonatomic, strong) Text* testID;
 @property (nonatomic, strong) Text* barStyle;
 @property (nonatomic, strong) Text* searchBarPlaceholder;
+@property (nonatomic, strong) Color* searchBarBackgroundColor;
+@property (nonatomic, strong) Color* searchBarTintColor;
 @property (nonatomic, strong) RNNLargeTitleOptions* largeTitle;
 @property (nonatomic, strong) RNNTitleOptions* title;
 @property (nonatomic, strong) RNNSubtitleOptions* subtitle;
