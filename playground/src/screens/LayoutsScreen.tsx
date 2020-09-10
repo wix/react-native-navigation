@@ -7,7 +7,6 @@ import testIDs from '../testIDs';
 import Screens from './Screens';
 import Navigation from '../services/Navigation';
 import { stack } from '../commons/Layouts';
-import { Appearance } from 'react-native';
 
 const {
   WELCOME_SCREEN_HEADER,
@@ -17,39 +16,6 @@ const {
   SIDE_MENU_BTN,
   SPLIT_VIEW_BUTTON,
 } = testIDs;
-
-const lightTheme = {
-  topBar: {
-    title: {
-      color: 'black',
-    },
-    background: {
-      color: 'white',
-    },
-  },
-};
-
-const darkTheme = {
-  topBar: {
-    title: {
-      color: 'white',
-    },
-    background: {
-      color: 'black',
-    },
-  },
-};
-
-Appearance.addChangeListener(({ colorScheme }) => {
-  console.log('RNN_', `${colorScheme}`);
-  if (colorScheme === 'dark') {
-    Navigation.setDefaultOptions(darkTheme);
-  }
-
-  if (colorScheme === 'light') {
-    Navigation.setDefaultOptions(lightTheme);
-  }
-});
 
 export default class LayoutsScreen extends NavigationComponent {
   static options(): Options {
@@ -72,7 +38,6 @@ export default class LayoutsScreen extends NavigationComponent {
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
-        <Button label="setDefaultOptions" onPress={this.setDefaultOptions} />
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -82,16 +47,6 @@ export default class LayoutsScreen extends NavigationComponent {
       </Root>
     );
   }
-
-  setDefaultOptions = () => {
-    Navigation.setDefaultOptions({
-      topBar: {
-        background: {
-          color: 'red',
-        },
-      },
-    });
-  };
 
   stack = () => Navigation.showModal(Screens.Stack);
 
