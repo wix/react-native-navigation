@@ -276,7 +276,7 @@ export interface OptionsTopBarBackButton {
   /**
    * Image to show as the back button
    */
-  icon?: ImageRequireSource;
+  icon?: ImageResource;
   /**
    * Weither the back button is visible or not
    * @default true
@@ -354,7 +354,7 @@ export interface OptionsTopBarButton {
   /**
    * Set the button icon
    */
-  icon?: ImageRequireSource;
+  icon?: ImageResource;
   /**
    * Set the button icon insets
    */
@@ -605,7 +605,7 @@ export interface OptionsFab {
   clickColor?: Color;
   rippleColor?: Color;
   visible?: boolean;
-  icon?: ImageRequireSource;
+  icon?: ImageResource;
   iconColor?: Color;
   alignHorizontally?: 'left' | 'right';
   hideOnScroll?: boolean;
@@ -696,7 +696,12 @@ export interface DotIndicatorOptions {
   visible?: boolean;
 }
 
-export type ImageResource = string;
+export interface ImageSystemSource {
+  system: string;
+  fallback?: ImageRequireSource | string;
+}
+
+export type ImageResource = ImageRequireSource | string | ImageSystemSource;
 
 export interface OptionsBottomTab {
   dotIndicator?: DotIndicatorOptions;
@@ -725,7 +730,7 @@ export interface OptionsBottomTab {
   /**
    * Set the tab icon
    */
-  icon?: ImageRequireSource | ImageResource;
+  icon?: ImageResource;
   /**
    * Set the icon tint
    */
@@ -764,7 +769,7 @@ export interface OptionsBottomTab {
    * Set selected icon image
    * #### (iOS specific)
    */
-  selectedIcon?: ImageRequireSource;
+  selectedIcon?: ImageResource;
   /**
    * Set true if you want to disable the icon tinting
    * #### (iOS specific)
@@ -1171,12 +1176,12 @@ setRoot: {
    * Background image for the screen
    * #### (iOS specific)
    */
-  backgroundImage?: ImageRequireSource;
+  backgroundImage?: ImageResource;
   /**
    * Background image for the Navigation View
    * #### (iOS specific)
    */
-  rootBackgroundImage?: ImageRequireSource;
+  rootBackgroundImage?: ImageResource;
   /**
    * Enable or disable automatically blurring focused input, dismissing keyboard on unmount
    * #### (Android specific)
