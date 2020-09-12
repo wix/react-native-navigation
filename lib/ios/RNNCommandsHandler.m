@@ -59,22 +59,20 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)setRoot:(NSDictionary*)layout commandId:(NSString*)commandId completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
 	[self assertReady];
     RNNAssertMainQueue();
-	
-	if (@available(iOS 9, *)) {
-		if(_controllerFactory.defaultOptions.layout.direction.hasValue) {
-			if ([_controllerFactory.defaultOptions.layout.direction.get isEqualToString:@"rtl"]) {
-				[[RCTI18nUtil sharedInstance] allowRTL:YES];
-				[[RCTI18nUtil sharedInstance] forceRTL:YES];
-				[[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
-				[[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
-			} else {
-				[[RCTI18nUtil sharedInstance] allowRTL:NO];
-				[[RCTI18nUtil sharedInstance] forceRTL:NO];
-				[[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
-				[[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
-			}
-		}
-	}
+
+    if(_controllerFactory.defaultOptions.layout.direction.hasValue) {
+        if ([_controllerFactory.defaultOptions.layout.direction.get isEqualToString:@"rtl"]) {
+            [[RCTI18nUtil sharedInstance] allowRTL:YES];
+            [[RCTI18nUtil sharedInstance] forceRTL:YES];
+            [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+            [[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+        } else {
+            [[RCTI18nUtil sharedInstance] allowRTL:NO];
+            [[RCTI18nUtil sharedInstance] forceRTL:NO];
+            [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+            [[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+        }
+    }
 	
 	[_modalManager dismissAllModalsAnimated:NO completion:nil];
     
