@@ -16,6 +16,57 @@ Stack Overflow is used by developers to find answers and troubleshoot code. User
 
 Another popular communication channel is our [Discord channel](https://discord.gg/DhkZjq2) where users post questions and consult with each other. You're welcome to join the discussions and answer questions. This is also a great place to meet other community members and project maintainers.
 
+## Contributing to React-Native-Navigation
+
+### iOS
+
+There are 2 ways to test your contribution to this project on iOS:
+
+1. You can contribute and test your changes using the playground provided.
+
+
+2. You can install React-Native-Navigation in a new or existing project and set your project to use your local clone of React-Native-Navigation in the podfile.
+The following steps are required in order to make the project work with your local environment:
+
+#### 2.1
+
+Install React-Native-Navigation as you'll usually do in your project, using `npm install --save react-native-navigation`.
+
+#### 2.2
+
+Add the following configuration to the `react-native.config.js` file, at the root of your project.
+
+```javascript
+module.exports = {
+	project: {
+		ios: {},
+		android: {},
+	},
+	dependencies: {
+		'react-native-navigation': {
+			platforms: {
+				ios: null,
+				android: null
+			},
+		},
+	},
+};
+```
+
+#### 2.3
+
+Clone the project using `git clone https://github.com/wix/react-native-navigation` at your desired location.
+
+#### 2.4
+
+Add the following line in the Podfile:
+
+```ruby
+pod 'ReactNativeNavigation', :path => '/path/to/cloned/react-native-navigation'
+```
+
+You're done. Happy coding!
+
 ## GitHub Issues
 
 ### Open an issue
@@ -47,7 +98,7 @@ This will ensure good quality throughout the life of the project and will help a
 
 No PR will be accepted without adequate test coverage.
 
-If you need help running the project, have a look at the [Playground app](playground-app) section. You can run the tests using the scripts below. 
+If you need help running the project, have a look at the [Playground app](playground-app) section. You can run the tests using the scripts below.
 
 
 ### Tests and the Playground app
