@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import Animated from 'react-native-reanimated';
-import { ViewProps, View, Platform } from 'react-native';
+import { ViewProps } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { DismissGestureState } from './useDismissGesture';
 
@@ -26,18 +26,14 @@ export default function DismissableView(props: DismissableViewProps): JSX.Elemen
     [dismissGestureState.cardBorderRadius, dismissGestureState.viewScale, style]
   );
 
-  if (Platform.OS === 'ios') {
-    return (
-      <PanGestureHandler
-        {...dismissGestureState.gestureHandler}
-        maxPointers={1}
-        failOffsetX={GESTURE_HANDLER_FAIL_RANGE}
-        activeOffsetY={GESTURE_HANDLER_RANGE}
-      >
-        <Animated.View style={viewStyle} {...passThroughProps} />
-      </PanGestureHandler>
-    );
-  } else {
-    return <View style={style} {...passThroughProps} />;
-  }
+  return (
+    <PanGestureHandler
+      {...dismissGestureState.gestureHandler}
+      maxPointers={1}
+      failOffsetX={GESTURE_HANDLER_FAIL_RANGE}
+      activeOffsetY={GESTURE_HANDLER_RANGE}
+    >
+      <Animated.View style={viewStyle} {...passThroughProps} />
+    </PanGestureHandler>
+  );
 }
