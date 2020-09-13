@@ -70,6 +70,7 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
         onScroll={onScroll}
         scrollEventThrottle={1}
         scrollIndicatorInsets={INDICATOR_INSETS}
+        indicatorStyle="black"
       >
         <Text style={styles.title} nativeID={`title${post.id}Dest`}>
           {post.name}
