@@ -1,5 +1,7 @@
 const remarkCodeImport = require('remark-code-import');
 
+const versions = require('./versions.json');
+
 module.exports = {
   title: 'React Native Navigation',
   tagline: '',
@@ -21,8 +23,12 @@ module.exports = {
         src: 'img/logo.png',
       },
       items: [
-        { to: 'docs/before-you-start', label: 'Docs', position: 'left', activeBasePath: 'docs' },
-        { to: 'api/component', label: 'API', position: 'left', activeBasePath: 'api' },
+        {
+          type: 'docsVersionDropdown',
+          position: 'left',
+        },
+        {to: 'docs/before-you-start', label: 'Docs', position: 'left', activeBaseRegex: '.*\/docs\/'},
+        {to: 'api/component', label: 'API', position: 'left', activeBaseRegex: '.*\/api\/'},
         {
           href: 'https://github.com/wix/react-native-navigation',
           label: 'GitHub',
@@ -103,6 +109,6 @@ module.exports = {
           customCss: require.resolve('./src/css/custom.css'),
         },
       },
-    ],
+    ]
   ],
 };

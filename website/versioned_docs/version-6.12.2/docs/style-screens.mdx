@@ -1,0 +1,100 @@
+---
+id: style-options
+title: Styling with options
+sidebar_label: Options
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A Screen's look and feel is configured with an [Options](../api/options-root) object. Options can be applied to screens in three ways. Each method of applying options has benefits and draw backs which are important be aware of so we can use the right tool for the job.
+
+## Command options
+
+Options can be passed to layouts as part of a command. For example when pushing a screen. Options passed in commands are typically dynamic options which are determined at runtime.
+
+In the example below we're pushing a user profile screen and we'd like show the user name in the title. To do so, we set the title in the component's options.
+
+```tsx file=./style-screens/command-options.tsx
+```
+
+Notice how the title is actually inferred from the `user` object which is set in `passProps`. While this works perfectly fine, declaring the title each time a screen is pushed is a bit tedious and error prone. Later on we'll see a more convenient method to declare dynamic options which are inferred from props.
+
+## Static options
+
+Static options are options that are declared statically **on** the component class. Whenever a screen has a known predefined style, static options should be used as they are evaluated immediately when the screen is created.
+
+<Tabs
+  defaultValue="class"
+  values={[
+    { label: 'Class Component', value: 'class', },
+    { label: 'Functional Component', value: 'functional', }
+  ]
+}>
+<TabItem value="class">
+
+```tsx file=./style-screens/static-options-class.tsx
+```
+
+</TabItem>
+<TabItem value="functional">
+
+```tsx file=./style-screens/static-options-fn.tsx
+```
+
+</TabItem>
+</Tabs>
+
+### Handle props in static options
+
+Sometimes a screen's style includes properties defined in the calling scope where the screen is used. Like in the user profile screen we've seen above where the the user name is used as the TopBar title. As the user name is unique for each profile, it can't be defined explicitly in the static options.
+
+Luckily, we can access props from static options and set the title from static options! Let's see how this is done:
+
+<Tabs
+  defaultValue="class"
+  values={[
+    { label: 'Class Component', value: 'class', },
+    { label: 'Functional Component', value: 'functional', }
+  ]
+}>
+<TabItem value="class">
+
+```tsx file=./style-screens/static-options-props-class.tsx
+```
+
+</TabItem>
+<TabItem value="functional">
+
+```tsx file=./style-screens/static-options-props-fn.tsx
+```
+
+</TabItem>
+</Tabs>
+
+Following this approach we can determine options that are dependent on other external factors, such as experiments or A/B tests.
+
+```tsx file=./style-screens/static-options-experiments.tsx
+```
+
+## Merge options
+
+The `mergeOptions` command is used to update a layout's style. Keep in mind that the merge happens in native, and not ins JS. This meaning that if `mergeOptions` is called to update a screen's options, the static options declared on the React Component are not affected by mergeOptions.
+
+The following example shows how to update a TopBar background color to red.
+
+```tsx file=./style-screens/merge-options.tsx
+```
+
+---
+
+:::warning
+**Avoid using mergeOptions in a screen's constructor or in componentDidMount!**
+:::
+
+When a screen first appears, it's `constructor` and `componentDidMount` functions are called followed by a `componentDidAppear` event. (read more about screen lifecycle [here](docs-screen-lifecycle.mdx)).
+
+Developers might be tempted to call `mergeOptions` in constructor or componentDidMount to update options. Calling `mergeOptions` before the `componentDidAppear` event has been received has two very negative effects:
+
+1. Updating certain options can trigger additional layout and draw cycles which can have serious impact on performance.
+2. Options applied dynamically with the `mergeOptions` command might be handled in native **after** the screen has already appeared. This will result in noticeable flickering and artifacts as options are updated after the initial options have been applied and are visible to the user.

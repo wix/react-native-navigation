@@ -43,6 +43,7 @@
 @property (nonatomic, strong) id controllerFactory;
 @property (nonatomic, strong) id overlayManager;
 @property (nonatomic, strong) id eventEmmiter;
+@property (nonatomic, strong) id setRootAnimator;
 @property (nonatomic, strong) id creator;
 @property (nonatomic, strong) id layoutManagerClassMock;
 
@@ -57,10 +58,11 @@
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
 	self.modalManager = [OCMockObject partialMockForObject:[RNNModalManager new]];
+	self.setRootAnimator = [OCMockObject partialMockForObject:[RNNSetRootAnimator new]];
 	self.layoutManagerClassMock = OCMClassMock([RNNLayoutManager class]);
 	
 	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:nil componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]]];
-	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter modalManager:self.modalManager overlayManager:self.overlayManager mainWindow:_mainWindow];
+	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter modalManager:self.modalManager overlayManager:self.overlayManager setRootAnimator:_setRootAnimator mainWindow:_mainWindow];
 	self.vc1 = [self generateComponentWithComponentId:@"1"];
 	self.vc2 = [self generateComponentWithComponentId:@"2"];
 	self.vc3 = [self generateComponentWithComponentId:@"3"];
@@ -94,7 +96,7 @@
 - (NSArray*)getPublicMethodNamesForObject:(NSObject*)obj {
 	NSMutableArray* skipMethods = [NSMutableArray new];
 	
-	[skipMethods addObject:@"initWithControllerFactory:eventEmitter:modalManager:overlayManager:mainWindow:"];
+	[skipMethods addObject:@"initWithControllerFactory:eventEmitter:modalManager:overlayManager:setRootAnimator:mainWindow:"];
 	[skipMethods addObject:@"assertReady"];
 	[skipMethods addObject:@"setReadyToReceiveCommands:"];
 	[skipMethods addObject:@"readyToReceiveCommands"];
@@ -403,13 +405,31 @@
 	[tabBarController viewWillAppear:YES];
 	
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
-
+	
+	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
 	[self.uut setRoot:@{} commandId:@"" completion:^(NSString* componentId) {
 		XCTAssertFalse(self->_vc2.isViewLoaded);
+		[expectation fulfill];
 	}];
 
+	[self waitForExpectationsWithTimeout:1 handler:nil];
 	XCTAssertTrue(_vc1.isViewLoaded);
 	XCTAssertTrue(_vc2.isViewLoaded);
+}
+
+- (void)testSetRoot_withAnimation {
+	[self.uut setReadyToReceiveCommands:true];
+	
+	RNNNavigationOptions* stackOptions = [RNNNavigationOptions emptyOptions];
+	stackOptions.animations.setRoot.alpha.duration = [TimeInterval withValue:500];
+	
+	RNNStackController* stack = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:stackOptions defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:@[[RNNComponentViewController createWithComponentId:@"first" initialOptions:nil]]];
+	
+	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(stack);
+	
+	[(RNNSetRootAnimator *)[self.setRootAnimator expect] animate:_mainWindow duration:0.5 completion:[OCMArg any]];
+	[self.uut setRoot:@{} commandId:@"" completion:^(NSString* componentId) {}];
+	[_setRootAnimator verify];
 }
 
 - (void)testMergeOptions_shouldMergeWithChildOnly {

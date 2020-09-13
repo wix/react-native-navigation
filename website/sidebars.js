@@ -1,4 +1,38 @@
 module.exports = {
+  docs: {
+    'Getting Started': [
+      'docs/before-you-start',
+      'docs/installing',
+      'docs/playground-app',
+      'docs/showcases',
+    ],
+    'Using the app': [
+      'docs/app-launch',
+      'docs/basic-navigation',
+      'docs/advanced-navigation',
+      'docs/screen-lifecycle',
+      'docs/passing-data-to-components',
+      'docs/functionalComponents',
+    ],
+    Layouts: ['docs/stack', 'docs/bottomTabs', 'docs/sideMenu', 'docs/externalComponent'],
+    Hierarchy: ['docs/root', 'docs/modal', 'docs/overlay'],
+    Styling: [
+      'docs/style-options',
+      'docs/style-theme',
+      'docs/style-statusBar',
+      'docs/style-orientation',
+      'docs/style-animations',
+      'docs/style-fonts',
+      'docs/style-constants',
+    ],
+    'Third party integration': [
+      'docs/community-libraries',
+      'docs/third-party-typescript',
+      'docs/third-party-mobx',
+      'docs/third-party-react-context',
+    ],
+    Meta: ['docs/meta-contributing'],
+  },
   api: {
     Navigation: ['api/component', 'api/root', 'api/stack', 'api/modal', 'api/overlay'],
     Layouts: [
@@ -36,39 +70,5 @@ module.exports = {
       'api/options-splitView',
     ],
     Events: ['api/events'],
-  },
-  docs: {
-    'Getting Started': [
-      'docs/before-you-start',
-      'docs/installing',
-      'docs/playground-app',
-      'docs/showcases',
-    ],
-    'Using the app': [
-      'docs/app-launch',
-      'docs/basic-navigation',
-      'docs/advanced-navigation',
-      'docs/screen-lifecycle',
-      'docs/passing-data-to-components',
-      'docs/functionalComponents',
-    ],
-    Layouts: ['docs/stack', 'docs/bottomTabs', 'docs/sideMenu', 'docs/externalComponent'],
-    Hierarchy: ['docs/root', 'docs/modal', 'docs/overlay'],
-    Styling: [
-      'docs/style-options',
-      'docs/style-theme',
-      'docs/style-statusBar',
-      'docs/style-orientation',
-      'docs/style-animations',
-      'docs/style-fonts',
-      'docs/style-constants',
-    ],
-    'Third party integration': [
-      'docs/community-libraries',
-      'docs/third-party-typescript',
-      'docs/third-party-mobx',
-      'docs/third-party-react-context',
-    ],
-    Meta: ['docs/meta-contributing'],
   },
 };

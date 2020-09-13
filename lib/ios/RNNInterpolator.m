@@ -29,7 +29,8 @@ static CGFloat RNNApplyInterpolation(CGFloat p, RNNInterpolationOptions interpol
         case RNNInterpolationDecelerate:
             return RNNDecelerate(p);
         case RNNInterpolationSpring:
-            return RNNSpring(p, 0.25, 3);
+			// TODO: Expose springiness and mass properties to JS-API and make uniform with Android implementation (only has tension property)
+            return RNNSpring(p, 0.3, 3);
     }
 }
 

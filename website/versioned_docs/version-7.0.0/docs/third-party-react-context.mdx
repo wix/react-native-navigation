@@ -1,0 +1,41 @@
+---
+id: third-party-react-context
+title: React Context API
+sidebar_label: React Context API
+---
+
+## React Context API 
+React Context API provides a easy way to pass data through the component tree without having to pass props down 
+manually at every level. You can find more about the Context API in [React documentation](https://reactjs.org/docs/context.html).
+
+You can use the React Context API with React Native Navigation with a limitation. In this example, we are going to create a screen which uses the Counter Context.
+
+:::important Limitation
+As RNN screens are not part of the same component tree, updating the values in the shared context does not trigger a re-render across all screens.
+However you can still use the React.Context per RNN screen component tree.
+
+If you need to trigger a re-render across all screens, there are many popular third party libraries such as 
+[MobX](third-party-mobx.mdx) or Redux.
+:::
+
+## Create a Counter context
+
+```tsx file=./third-party-react-context/CounterContext.tsx
+```
+
+## Register the screen
+When registering the screen that will be using the Counter Context, we need to wrap it
+with the Counter Context Provider we created earlier.
+
+```tsx file=./third-party-react-context/index.tsx
+```
+
+## Consuming the context
+You can consume the Counter Context any way you want such as `Provider.Consumer` or `React.useContext` like in the 
+example below.
+
+```tsx file=./third-party-react-context/App.tsx
+```
+
+```tsx file=./third-party-react-context/App-consumer.tsx
+```

@@ -52,6 +52,7 @@
 - (void)showBorder:(BOOL)showBorder {
     UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
     self.getAppearance.shadowColor = shadowColor;
+    self.getScrollEdgeAppearance.shadowColor = shadowColor;
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {
