@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { Platform, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { NavigationFunctionComponent } from 'react-native-navigation';
 import posts, { PostItem } from '../../assets/posts';
-import PressableScale from '../../components/PressableScale';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import { buildSharedElementAnimations } from './Constants';
@@ -18,11 +17,11 @@ import PostCard from './PostCard';
 // TODO: 7. Add bottomTabs animation support so it slides out nicely (translateY): https://github.com/wix/react-native-navigation/issues/6340 and https://github.com/wix/react-native-navigation/issues/6567
 // TODO: 8. Add topBar animation support so it slides out nicely (translateY): (no issue for that yet?)
 
-const PostsListScreen: NavigationFunctionComponent = (props) => {
+const PostsListScreen: NavigationFunctionComponent = ({ componentId }) => {
   const onPostPressed = useCallback(
     async (post: PostItem) => {
       const navigationAnimations = await buildSharedElementAnimations(post);
-      Navigation.push(props.componentId, {
+      Navigation.push(componentId, {
         component: {
           name: Screens.PostDetailsScreen,
           passProps: { post: post },
@@ -32,16 +31,19 @@ const PostsListScreen: NavigationFunctionComponent = (props) => {
         },
       });
     },
-    [props.componentId]
+    [componentId]
   );
 
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {posts.map((p) => (
-          <PressableScale weight="medium" key={p.id} onPress={() => onPostPressed(p)}>
-            <PostCard post={p} />
-          </PressableScale>
+          <PostCard
+            key={p.id}
+            parentComponentId={componentId}
+            onPostPressed={() => onPostPressed(p)}
+            post={p}
+          />
         ))}
       </ScrollView>
     </SafeAreaView>

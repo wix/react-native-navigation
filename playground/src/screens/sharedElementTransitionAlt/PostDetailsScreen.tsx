@@ -6,6 +6,8 @@ import Reanimated, { Easing, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
 import { SET_DURATION } from './Constants';
+import PressableScale from '../../components/PressableScale';
+import colors from '../../commons/Colors';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
 
@@ -77,9 +79,9 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
           {post.name}
         </Text>
         <Text style={styles.description}>{post.description}</Text>
-        <TouchableOpacity style={styles.buyButton}>
+        <PressableScale weight="medium" activeScale={0.95} style={styles.buyButton}>
           <Text style={styles.buyText}>Buy</Text>
-        </TouchableOpacity>
+        </PressableScale>
       </Reanimated.ScrollView>
       <Reanimated.Image
         source={post.image}
@@ -115,6 +117,7 @@ export default PostDetailsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background,
   },
   headerImage: {
     position: 'absolute',
