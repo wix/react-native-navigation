@@ -1,16 +1,31 @@
-import React from 'react';
-import { Image, View, StyleSheet, Text, Dimensions, ViewProps } from 'react-native';
+import { BlurView } from '@react-native-community/blur';
+import React, { useMemo } from 'react';
+import { Image, View, StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
 import { PostItem } from '../../assets/posts';
 
 type PostCardProps = {
-  post: PostItem
-} & ViewProps
+  post: PostItem;
+} & ViewProps;
 
-export default function PostCard({
-  post,
-  style,
-  ...passThroughProps
-}: PostCardProps) {
+export function hexToRgba(hex: string, a = 1): string {
+  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
+        result[3],
+        16
+      )}, ${a})`
+    : hex;
+}
+
+export default function PostCard({ post, style, ...passThroughProps }: PostCardProps) {
+  const color = useMemo(() => hexToRgba(post.color, 0.4), [post.color]);
+
   return (
     <View style={[styles.container, style]} {...passThroughProps}>
       <Image
@@ -21,7 +36,8 @@ export default function PostCard({
         resizeMode="cover"
         fadeDuration={0}
       />
-      <View style={[styles.textContainer, { backgroundColor: post.color }]}>
+      <View style={[styles.textContainer, { backgroundColor: color }]}>
+        {Platform.OS === 'ios' && <BlurView blurType="light" style={StyleSheet.absoluteFill} />}
         <Text
           nativeID={`title${post.id}`}
           style={styles.title}
