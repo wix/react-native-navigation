@@ -105,6 +105,10 @@ PostDetailsScreen.options = {
   bottomTabs: {
     visible: false,
   },
+  layout: {
+    componentBackgroundColor: 'transparent',
+    backgroundColor: 'transparent',
+  },
 };
 export default PostDetailsScreen;
 

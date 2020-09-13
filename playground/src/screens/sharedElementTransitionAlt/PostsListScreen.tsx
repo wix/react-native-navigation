@@ -14,10 +14,9 @@ import PostCard from './PostCard';
 // TODO: 3. Fix weird ScrollView insets on iOS in the PostDetailsScreen, see: https://github.com/wix/react-native-navigation/issues/6510
 // TODO: 4. Fix image transitions on iOS, see: https://github.com/wix/react-native-navigation/issues/6505
 // TODO: 5. Make SETs for Overlays possible OR allow parent screen to be visible beneath PostDetailsScreen to allow animation similar to Apple's App of the Day (AppStore) animation: https://github.com/wix/react-native-navigation/issues/6431
-// TODO: 6. Don't just hard-crash if SET nativeIDs (Views) can't be found
-// TODO: 7. Fix ScaleTypeCenterCrop hard-crash on Android: https://github.com/wix/react-native-navigation/issues/6517
-// TODO: 8. Add bottomTabs animation support so it slides out nicely (translateY): https://github.com/wix/react-native-navigation/issues/6340 and https://github.com/wix/react-native-navigation/issues/6567
-// TODO: 9. Add topBar animation support so it slides out nicely (translateY): (no issue for that yet?)
+// TODO: 6. Fix ScaleTypeCenterCrop hard-crash on Android: https://github.com/wix/react-native-navigation/issues/6517
+// TODO: 7. Add bottomTabs animation support so it slides out nicely (translateY): https://github.com/wix/react-native-navigation/issues/6340 and https://github.com/wix/react-native-navigation/issues/6567
+// TODO: 8. Add topBar animation support so it slides out nicely (translateY): (no issue for that yet?)
 
 const PostsListScreen: NavigationFunctionComponent = (props) => {
   const onPostPressed = useCallback(
@@ -60,7 +59,7 @@ PostsListScreen.options = {
   }),
   topBar: {
     title: {
-      text: 'Posts',
+      text: 'Car Dealer',
     },
   },
 };
