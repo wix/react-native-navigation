@@ -1,8 +1,10 @@
-import React, { useCallback, useMemo } from 'react';
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Insets } from 'react-native';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets } from 'react-native';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 import { PostItem } from '../../assets/posts';
 import Reanimated, { useValue } from 'react-native-reanimated';
+import DismissableView from './DismissableView';
+import useDismissGesture from './useDismissGesture';
 
 const HEADER_HEIGHT = 300;
 const INDICATOR_INSETS: Insets = { top: HEADER_HEIGHT };
@@ -12,9 +14,14 @@ interface Props {
 }
 
 const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, componentId }) => {
+  const isClosing = useRef(false);
+
   const onClosePressed = useCallback(() => {
+    if (isClosing.current === true) return;
+    isClosing.current = true;
     Navigation.pop(componentId);
   }, [componentId]);
+  const dismissGesture = useDismissGesture(onClosePressed);
 
   const scrollY = useValue(0);
   const onScroll = useMemo(
@@ -32,23 +39,20 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
       }),
     [scrollY]
   );
-  const imageStyle = useMemo(() => [styles.headerImage, { transform: [{ translateY: headerY }] }], [
-    headerY,
-  ]);
+  const imageStyle = useMemo(
+    () => [
+      styles.headerImage,
+      { borderRadius: dismissGesture.cardBorderRadius, transform: [{ translateY: headerY }] },
+    ],
+    [dismissGesture.cardBorderRadius, headerY]
+  );
 
   return (
-    <View style={styles.container}>
-      <Reanimated.Image
-        source={post.image}
-        // @ts-ignore nativeID isn't included in react-native Image props.
-        nativeID={`image${post.id}Dest`}
-        style={imageStyle}
-        resizeMode="cover"
-        fadeDuration={0}
-      />
+    <DismissableView dismissGestureState={dismissGesture} style={styles.container}>
       <Reanimated.ScrollView
         contentContainerStyle={styles.content}
         onScroll={onScroll}
+        scrollEventThrottle={1}
         scrollIndicatorInsets={INDICATOR_INSETS}
       >
         <Text style={styles.title} nativeID={`title${post.id}Dest`}>
@@ -59,10 +63,18 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
           <Text style={styles.buyText}>Buy</Text>
         </TouchableOpacity>
       </Reanimated.ScrollView>
+      <Reanimated.Image
+        source={post.image}
+        // @ts-ignore nativeID isn't included in react-native Image props.
+        nativeID={`image${post.id}Dest`}
+        style={imageStyle}
+        resizeMode="cover"
+        fadeDuration={0}
+      />
       <TouchableOpacity style={styles.closeButton} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>
       </TouchableOpacity>
-    </View>
+    </DismissableView>
   );
 };
 PostDetailsScreen.options = {
