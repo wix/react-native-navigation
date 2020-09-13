@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
-import { Platform, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { NavigationFunctionComponent } from 'react-native-navigation';
 import posts, { PostItem } from '../../assets/posts';
+import PressableScale from '../../components/PressableScale';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import { buildSharedElementAnimations } from './Constants';
@@ -38,9 +39,9 @@ const PostsListScreen: NavigationFunctionComponent = (props) => {
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {posts.map((p) => (
-          <TouchableOpacity key={p.id} onPress={() => onPostPressed(p)}>
+          <PressableScale weight="medium" key={p.id} onPress={() => onPostPressed(p)}>
             <PostCard post={p} />
-          </TouchableOpacity>
+          </PressableScale>
         ))}
       </ScrollView>
     </SafeAreaView>
