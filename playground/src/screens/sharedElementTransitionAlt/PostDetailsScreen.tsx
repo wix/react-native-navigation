@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets } from 'react-native';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
-import { PostItem, SET_DURATION } from '../../assets/posts';
+import { PostItem } from '../../assets/posts';
 import Reanimated, { Easing, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
+import { SET_DURATION } from './Constants';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
 

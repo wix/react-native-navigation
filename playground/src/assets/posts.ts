@@ -1,7 +1,5 @@
 import { ImageRequireSource } from 'react-native';
 
-export const SET_DURATION = 500;
-
 export type PostItem = {
   id: string;
   name: string;
