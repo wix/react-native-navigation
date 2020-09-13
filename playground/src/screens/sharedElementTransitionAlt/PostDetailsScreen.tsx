@@ -1,10 +1,12 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets } from 'react-native';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
-import { PostItem } from '../../assets/posts';
-import Reanimated, { useValue } from 'react-native-reanimated';
+import { PostItem, SET_DURATION } from '../../assets/posts';
+import Reanimated, { Easing, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
+
+const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
 
 const HEADER_HEIGHT = 300;
 const INDICATOR_INSETS: Insets = { top: HEADER_HEIGHT };
@@ -29,6 +31,10 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
     [scrollY]
   );
 
+  const closeButtonStyle = useMemo(
+    () => [styles.closeButton, { opacity: dismissGesture.controlsOpacity }],
+    [dismissGesture.controlsOpacity]
+  );
   const headerY = useMemo(
     () =>
       Reanimated.interpolate(scrollY, {
@@ -46,6 +52,16 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
     ],
     [dismissGesture.cardBorderRadius, headerY]
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      Reanimated.timing(dismissGesture.controlsOpacity, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.linear,
+      }).start();
+    }, SET_DURATION);
+  }, [dismissGesture.controlsOpacity]);
 
   return (
     <DismissableView dismissGestureState={dismissGesture} style={styles.container}>
@@ -71,9 +87,9 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
         resizeMode="cover"
         fadeDuration={0}
       />
-      <TouchableOpacity style={styles.closeButton} onPress={onClosePressed}>
+      <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>
-      </TouchableOpacity>
+      </ReanimatedTouchableOpacity>
     </DismissableView>
   );
 };

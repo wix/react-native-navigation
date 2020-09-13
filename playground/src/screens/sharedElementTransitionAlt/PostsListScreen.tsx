@@ -1,12 +1,10 @@
 import React, { useCallback } from 'react';
 import { Platform, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { NavigationFunctionComponent } from 'react-native-navigation';
-import posts, { PostItem } from '../../assets/posts';
+import posts, { PostItem, SET_DURATION } from '../../assets/posts';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import PostCard from './PostCard';
-
-const SET_DURATION = 500;
 
 // SET = Shared Element Transition
 // TODO: 1. Animate borderRadius in SET
