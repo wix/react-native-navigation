@@ -18,7 +18,6 @@ const SET_DURATION = 500;
 // TODO: 7. Don't just hard-crash if SET nativeIDs (Views) can't be found
 // TODO: 8. Fix ScaleTypeCenterCrop hard-crash on Android. See: https://github.com/wix/react-native-navigation/issues/6517
 
-
 const PostsListScreen: NavigationFunctionComponent = (props) => {
   const onPostPressed = useCallback(
     (post: PostItem) => {
@@ -115,6 +114,6 @@ export default PostsListScreen;
 
 const styles = StyleSheet.create({
   scrollContent: {
-    paddingVertical: 25
-  }
-})
+    paddingVertical: 25,
+  },
+});

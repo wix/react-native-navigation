@@ -1,16 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Insets
-} from 'react-native';
-import {
-  Navigation,
-  NavigationFunctionComponent,
-} from 'react-native-navigation';
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Insets } from 'react-native';
+import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 import { PostItem } from '../../assets/posts';
 import Reanimated, { useValue } from 'react-native-reanimated';
 
@@ -21,24 +11,30 @@ interface Props {
   post: PostItem;
 }
 
-const PostDetailsScreen: NavigationFunctionComponent<Props> = ({
-  post,
-  componentId,
-}) => {
+const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, componentId }) => {
   const onClosePressed = useCallback(() => {
     Navigation.pop(componentId);
   }, [componentId]);
 
   const scrollY = useValue(0);
-  const onScroll = useMemo(() => Reanimated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }]), [scrollY]);
+  const onScroll = useMemo(
+    () => Reanimated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }]),
+    [scrollY]
+  );
 
-  const headerY = useMemo(() => Reanimated.interpolate(scrollY, {
-    inputRange: [0, HEADER_HEIGHT],
-    outputRange: [0, -HEADER_HEIGHT],
-    extrapolateLeft: Reanimated.Extrapolate.CLAMP,
-    extrapolateRight: Reanimated.Extrapolate.EXTEND
-  }), [])
-  const imageStyle = useMemo(() => [styles.headerImage, { transform: [{ translateY: headerY }] }], [headerY]);
+  const headerY = useMemo(
+    () =>
+      Reanimated.interpolate(scrollY, {
+        inputRange: [0, HEADER_HEIGHT],
+        outputRange: [0, -HEADER_HEIGHT],
+        extrapolateLeft: Reanimated.Extrapolate.CLAMP,
+        extrapolateRight: Reanimated.Extrapolate.EXTEND,
+      }),
+    [scrollY]
+  );
+  const imageStyle = useMemo(() => [styles.headerImage, { transform: [{ translateY: headerY }] }], [
+    headerY,
+  ]);
 
   return (
     <View style={styles.container}>
@@ -53,7 +49,8 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({
       <Reanimated.ScrollView
         contentContainerStyle={styles.content}
         onScroll={onScroll}
-        scrollIndicatorInsets={INDICATOR_INSETS}>
+        scrollIndicatorInsets={INDICATOR_INSETS}
+      >
         <Text style={styles.title} nativeID={`title${post.id}Dest`}>
           {post.name}
         </Text>
@@ -76,8 +73,8 @@ PostDetailsScreen.options = {
     visible: false,
   },
   bottomTabs: {
-    visible: false
-  }
+    visible: false,
+  },
 };
 export default PostDetailsScreen;
 
@@ -135,6 +132,6 @@ const styles = StyleSheet.create({
   buyText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'white'
-  }
+    color: 'white',
+  },
 });
