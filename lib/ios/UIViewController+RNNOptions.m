@@ -28,37 +28,33 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
        searchBarHiddenWhenScrolling:(BOOL)searchBarHiddenWhenScrolling
                     backgroundColor:(nullable UIColor *)backgroundColor
                           tintColor:(nullable UIColor *)tintColor {
-	if (@available(iOS 11.0, *)) {
-		if (!self.navigationItem.searchController) {
-			UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
-			search.dimsBackgroundDuringPresentation = NO;
-			if ([self conformsToProtocol:@protocol(UISearchResultsUpdating)]) {
-				[search setSearchResultsUpdater:((UIViewController <UISearchResultsUpdating> *) self)];
-			}
-			search.searchBar.delegate = (id<UISearchBarDelegate>)self;
-			if (placeholder) {
-				search.searchBar.placeholder = placeholder;
-			}
-			search.hidesNavigationBarDuringPresentation = hideNavBarOnFocusSearchBar;
-			search.searchBar.searchBarStyle = UISearchBarStyleProminent;
-			search.searchBar.tintColor = tintColor;
-			if (@available(iOS 13.0, *)) {
-				search.searchBar.searchTextField.backgroundColor = backgroundColor;
-			}
+    if (!self.navigationItem.searchController) {
+        UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
+        search.dimsBackgroundDuringPresentation = NO;
+        if ([self conformsToProtocol:@protocol(UISearchResultsUpdating)]) {
+            [search setSearchResultsUpdater:((UIViewController <UISearchResultsUpdating> *) self)];
+        }
+        search.searchBar.delegate = (id<UISearchBarDelegate>)self;
+        if (placeholder) {
+            search.searchBar.placeholder = placeholder;
+        }
+        search.hidesNavigationBarDuringPresentation = hideNavBarOnFocusSearchBar;
+        search.searchBar.searchBarStyle = UISearchBarStyleProminent;
+        search.searchBar.tintColor = tintColor;
+        if (@available(iOS 13.0, *)) {
+            search.searchBar.searchTextField.backgroundColor = backgroundColor;
+        }
 
-			self.navigationItem.searchController = search;
-			[self.navigationItem setHidesSearchBarWhenScrolling:searchBarHiddenWhenScrolling];
+        self.navigationItem.searchController = search;
+        [self.navigationItem setHidesSearchBarWhenScrolling:searchBarHiddenWhenScrolling];
 
-			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
-			self.definesPresentationContext = YES;
-		}
-	}
+        // Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
+        self.definesPresentationContext = YES;
+    }
 }
 
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden {
-	if (@available(iOS 11.0, *)) {
-		self.navigationItem.hidesSearchBarWhenScrolling = searchBarHidden;
-	}
+        self.navigationItem.hidesSearchBarWhenScrolling = searchBarHidden;
 }
 
 - (void)setNavigationItemTitle:(NSString *)title {
@@ -81,7 +77,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	if (@available(iOS 13.0, *)) {
         self.tabBarItem.standardAppearance.stackedLayoutAppearance.normal.badgeBackgroundColor = badgeColor;
     }
-    else if (@available(iOS 10.0, *)) {
+    else {
         self.tabBarItem.badgeColor = badgeColor;
     }
 }
@@ -97,13 +93,11 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 }
 
 - (void)setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle {
-	if (@available(iOS 11.0, *)) {
-		if (prefersLargeTitle) {
-			self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-		} else {
-			self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-		}
-	}
+    if (prefersLargeTitle) {
+        self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+    } else {
+        self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    }
 }
 
 
