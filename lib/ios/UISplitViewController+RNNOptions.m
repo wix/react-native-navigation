@@ -16,13 +16,11 @@
 }
 
 - (void)rnn_setPrimaryEdge:(NSString *)primaryEdge {
-	if (@available(iOS 11.0, *)) {
-		if ([primaryEdge isEqualToString:@"trailing"]) {
-			self.primaryEdge = UISplitViewControllerPrimaryEdgeTrailing;
-		} else {
-			self.primaryEdge = UISplitViewControllerPrimaryEdgeLeading;
-		}
-	}
+    if ([primaryEdge isEqualToString:@"trailing"]) {
+        self.primaryEdge = UISplitViewControllerPrimaryEdgeTrailing;
+    } else {
+        self.primaryEdge = UISplitViewControllerPrimaryEdgeLeading;
+    }
 }
 
 - (void)rnn_setMinWidth:(Number *)minWidth {
