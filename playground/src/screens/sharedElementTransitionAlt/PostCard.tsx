@@ -100,6 +100,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: Dimensions.get('window').width * 0.9,
     height: 350,
+    borderRadius: 20,
+    overflow: 'hidden',
   },
   image: {
     width: '100%',
@@ -114,9 +116,6 @@ const styles = StyleSheet.create({
     right: 0,
     padding: 15,
     zIndex: 1,
-    borderBottomRightRadius: 15,
-    borderBottomLeftRadius: 15,
-    overflow: 'hidden',
   },
   title: {
     fontSize: 16,
