@@ -1,9 +1,11 @@
 #import "AnimatedReactView.h"
 #import <React/UIView+React.h>
+#import "UIView+Utils.h"
 
 @implementation AnimatedReactView {
     UIView* _originalParent;
     CGRect _originalFrame;
+    CGFloat _originalCornerRadius;
     UIView* _toElement;
     UIColor* _fromColor;
     NSInteger _zIndex;
@@ -28,6 +30,11 @@
     _reactView.backgroundColor = backgroundColor;
 }
 
+- (void)setCornerRadius:(CGFloat)cornerRadius {
+    [super setCornerRadius:cornerRadius];
+    [_reactView setCornerRadius:cornerRadius];
+}
+
 - (NSNumber *)reactZIndex {
     return @(_zIndex);
 }
@@ -37,12 +44,14 @@
     _originalFrame = _reactView.frame;
     self.frame = self.location.fromFrame;
     _originalParent = _reactView.superview;
+    _originalCornerRadius = element.layer.cornerRadius;
     _reactView.frame = self.bounds;
     [self addSubview:_reactView];
 }
 
 - (void)reset {
     _reactView.frame = _originalFrame;
+    _reactView.layer.cornerRadius = _originalCornerRadius;
     [_originalParent addSubview:_reactView];
     _toElement.hidden = NO;
     _reactView.backgroundColor = _fromColor;
