@@ -10,6 +10,11 @@
     self.toFrame = [self convertViewFrame:toElement];
     self.fromAngle = [self getViewAngle:fromElement];
     self.toAngle = [self getViewAngle:toElement];
+    self.fromTransform = fromElement.layer.transform;
+    self.toTransform = toElement.layer.transform;
+    self.toBounds = toElement.layer.bounds;
+    self.fromBounds = fromElement.layer.bounds;
+    
 	return self;
 }
 
