@@ -5,7 +5,7 @@ typedef NS_ENUM(NSInteger, RNNInterpolationOptions) {
     RNNInterpolationAccelerateDecelerate,
     RNNInterpolationDecelerate,
     RNNInterpolationAccelerate,
-    RNNInterpolationSpring
+    RNNInterpolationOvershoot
 };
 
 @interface RCTConvert (Interpolation)
