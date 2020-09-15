@@ -39,8 +39,6 @@ static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, RNNInterpolat
 }
 
 static CGFloat RNNOvershoot(CGFloat p, CGFloat tension) {
-	// _o(t) = t * t * ((tension + 1) * t + tension)
-	// o(t) = _o(t - 1) + 1
 	CGFloat t = p - 1;
 	CGFloat _ot = t * t * ((tension + 1) * t + tension) + 1.0f;
 	return _ot;
