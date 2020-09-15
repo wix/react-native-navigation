@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.9,
     height: 350,
     overflow: 'hidden',
+    borderRadius: 20,
   },
   image: {
     width: '100%',

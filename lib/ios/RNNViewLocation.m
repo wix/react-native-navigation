@@ -10,12 +10,24 @@
     self.toFrame = [self convertViewFrame:toElement];
     self.fromAngle = [self getViewAngle:fromElement];
     self.toAngle = [self getViewAngle:toElement];
-    self.fromTransform = fromElement.layer.transform;
-    self.toTransform = toElement.layer.transform;
+    self.fromTransform = [self getTransform:fromElement];;
+    self.toTransform = [self getTransform:toElement];
     self.toBounds = toElement.layer.bounds;
     self.fromBounds = fromElement.layer.bounds;
     
 	return self;
+}
+
+- (CATransform3D)getTransform:(UIView *)view {
+    if (view) {
+        if (!CATransform3DEqualToTransform(view.layer.transform, CATransform3DIdentity)) {
+            return view.layer.transform;
+        } else {
+            return [self getTransform:view.superview];
+        }
+    }
+
+    return CATransform3DIdentity;
 }
 
 - (CGRect)convertViewFrame:(UIView *)view {
