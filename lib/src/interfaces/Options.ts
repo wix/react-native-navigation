@@ -60,12 +60,12 @@ type SystemItemIcon =
   | 'undo'
   | 'redo';
 type Interpolation =
-  | 'linear'
-  | 'accelerateDecelerate'
-  | 'decelerate'
-  | 'accelerate'
-  | 'decelerateAccelerate'
-  | 'overshoot';
+  | { mode: 'linear' }
+  | { mode: 'accelerateDecelerate' }
+  | { mode: 'decelerate' }
+  | { mode: 'accelerate' }
+  | { mode: 'decelerateAccelerate' }
+  | { mode: 'overshoot'; tension?: number };
 
 export interface OptionsSplitView {
   /**
