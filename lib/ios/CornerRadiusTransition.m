@@ -6,12 +6,13 @@
 //
 
 #import "CornerRadiusTransition.h"
+#import "UIView+Utils.h"
 
 @implementation CornerRadiusTransition
 
 - (CATransform3D)animateWithProgress:(CGFloat)p {
     CGFloat toRadius = [RNNInterpolator fromFloat:self.from toFloat:self.to precent:p interpolation:self.interpolation];
-	self.view.layer.cornerRadius = toRadius;
+    [self.view setCornerRadius:toRadius];
     return CATransform3DIdentity;
 }
 
