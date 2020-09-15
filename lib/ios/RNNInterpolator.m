@@ -39,26 +39,11 @@ static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, RNNInterpolat
 }
 
 static CGFloat RNNSpring(CGFloat p, CGFloat springiness, CGFloat mass) {
-	// TODO: Cache those allocations
-	CGFloat T0 = 1;
-	CGFloat v0 = 0;
-	CGFloat s0 = 1;
-
-	CGFloat stiffness = mass * pow((2 * M_PI) / (T0), 2);
-	CGFloat damping = 2 * (1 - springiness) * sqrt(stiffness * mass);
-
-	CGFloat lambda = damping / (2 * mass);
-	CGFloat w0 = sqrt(stiffness / mass);
-
-	CGFloat wd = sqrt(fabs(pow(w0, 2) - pow(lambda, 2)));
-
-	if (lambda < w0) {
-		return fabs(1 - exp(-lambda * p) * (s0 * cos(wd * p) + ((v0 + s0 * lambda)/wd) * sin(wd * p)));
-	} else if (lambda > w0) {
-		return fabs(1 - exp(-lambda * p) * (((v0+s0 * (lambda + wd))/(2 * wd)) * exp(wd * p) + (s0 - (v0 + s0 * (lambda + wd)) / (2 * wd)) * exp(-wd * p)));
-	} else {
-		return fabs(1 - exp(-lambda * p) * (s0 + (v0 + lambda * s0) * p));
-	}
+	// _o(t) = t * t * ((tension + 1) * t + tension)
+	// o(t) = _o(t - 1) + 1
+	CGFloat t = p - 1;
+	CGFloat _ot = t * t * ((tension + 1) * t + tension) + 1.0f;
+	return _ot;
 }
 
 static CGFloat RNNLinear(CGFloat p) {
