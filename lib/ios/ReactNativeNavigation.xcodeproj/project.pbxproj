@@ -425,6 +425,7 @@
 		9FDA2AC024F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDA2ABF24F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m */; };
 		A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */; };
 		A7626C011FC5796200492FB8 /* RNNBottomTabsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */; };
+		B85AB5972510EA29006EA39E /* RNNInterpolation.m in Sources */ = {isa = PBXBuildFile; fileRef = B85AB5962510EA29006EA39E /* RNNInterpolation.m */; };
 		B8B2BB6524FFCC9500FC6575 /* CornerRadiusTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B2BB6324FFCC9500FC6575 /* CornerRadiusTransition.h */; };
 		B8B2BB6624FFCC9500FC6575 /* CornerRadiusTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B2BB6424FFCC9500FC6575 /* CornerRadiusTransition.m */; };
 		C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */; };
@@ -936,6 +937,8 @@
 		A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopBarOptions.h; sourceTree = "<group>"; };
 		A7626BFF1FC578AB00492FB8 /* RNNBottomTabsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsOptions.h; sourceTree = "<group>"; };
 		A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsOptions.m; sourceTree = "<group>"; };
+		B85AB5962510EA29006EA39E /* RNNInterpolation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNInterpolation.m; sourceTree = "<group>"; };
+		B85AB5982510EA3A006EA39E /* RNNInterpolation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNInterpolation.h; sourceTree = "<group>"; };
 		B8B2BB6324FFCC9500FC6575 /* CornerRadiusTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerRadiusTransition.h; sourceTree = "<group>"; };
 		B8B2BB6424FFCC9500FC6575 /* CornerRadiusTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CornerRadiusTransition.m; sourceTree = "<group>"; };
 		C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InteractivePopGestureDelegate.h; sourceTree = "<group>"; };
@@ -1298,6 +1301,8 @@
 				50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */,
 				507E7D55201DDD3000444E6C /* RNNSharedElementAnimationOptions.h */,
 				507E7D56201DDD3000444E6C /* RNNSharedElementAnimationOptions.m */,
+				B85AB5982510EA3A006EA39E /* RNNInterpolation.h */,
+				B85AB5962510EA29006EA39E /* RNNInterpolation.m */,
 				E8E5182C1F83A48B000467AC /* RNNTransitionStateHolder.h */,
 				E8E5182D1F83A48B000467AC /* RNNTransitionStateHolder.m */,
 				50451D072042E20600695F00 /* RNNAnimationsOptions.h */,
@@ -2141,6 +2146,7 @@
 				50EAF68023A7B9260006A86D /* AnimatedTextView.m in Sources */,
 				506A2B1520973DFD00F43A95 /* RNNErrorHandler.m in Sources */,
 				50395588217480C900B0A663 /* IntNumber.m in Sources */,
+				B85AB5972510EA29006EA39E /* RNNInterpolation.m in Sources */,
 				7BBFE5441E25330E002A6182 /* RNNBridgeModule.m in Sources */,
 				506317AF220B550600B26FC3 /* RNNInsetsOptions.m in Sources */,
 				261F0E651E6EC94900989DE2 /* RNNModalManager.m in Sources */,
