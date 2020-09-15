@@ -100,12 +100,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: Dimensions.get('window').width * 0.9,
     height: 350,
-    borderRadius: 20,
     overflow: 'hidden',
   },
   image: {
     width: '100%',
     height: '100%',
+    borderRadius: 20,
+    zIndex: 0,
   },
   textContainer: {
     position: 'absolute',
@@ -113,6 +114,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 15,
+    zIndex: 1,
   },
   title: {
     fontSize: 16,
