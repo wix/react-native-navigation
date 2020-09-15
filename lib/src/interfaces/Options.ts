@@ -917,7 +917,7 @@ export interface OptionsAnimationPropertyConfig {
   /**
    * Animation interplation
    */
-  interpolation?: 'accelerate' | 'decelerate' | 'overshoot';
+  interpolation?: Interpolation;
 }
 
 /**
