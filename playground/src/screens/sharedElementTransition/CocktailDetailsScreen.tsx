@@ -111,5 +111,6 @@ const styles = StyleSheet.create({
     // transform: [{ rotate: '45deg' }],
     marginLeft: 24,
     marginBottom: -24,
+    borderRadius: 20,
   },
 });

@@ -7,6 +7,7 @@
 #import "AnimatedTextView.h"
 #import "TextStorageTransition.h"
 #import "AnchorTransition.h"
+#import "CornerRadiusTransition.h"
 
 @implementation SharedElementAnimator {
     SharedElementTransitionOptions* _transitionOptions;
@@ -44,7 +45,7 @@
         if ([self.view isKindOfClass:AnimatedTextView.class]) {
             [animations addObject:[[RectTransition alloc] initWithView:self.view from:self.view.location.fromFrame to:self.view.location.toFrame startDelay:startDelay duration:duration interpolation:interpolation]];
         } else {
-            [animations addObject:[[TransformRectTransition alloc] initWithView:self.view fromRect:self.view.location.fromFrame toRect:self.view.location.toFrame fromAngle:self.view.location.fromAngle toAngle:self.view.location.toAngle startDelay:startDelay duration:duration interpolation:interpolation]];
+            [animations addObject:[[TransformRectTransition alloc] initWithView:self.view viewLocation:self.view.location startDelay:startDelay duration:duration interpolation:interpolation]];
         }
     }
     
@@ -55,6 +56,14 @@
     if ([self.view isKindOfClass:AnimatedTextView.class]) {
         [animations addObject:[[TextStorageTransition alloc] initWithView:self.view from:((AnimatedTextView *)self.view).fromTextStorage to:((AnimatedTextView *)self.view).toTextStorage startDelay:startDelay duration:duration interpolation:interpolation]];
     }
+	
+	if (_fromView.layer.cornerRadius != _toView.layer.cornerRadius) {
+		// TODO: Use MaskedCorners to only round specific corners, e.g.: borderTopLeftRadius
+		//   self.view.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner | kCALayerMaxXMaxYCorner;
+		// TODO: On pop the cornerRadius animation doesn't work, even though the CornerRadiusTransition::animateWithProgress function is called.
+		self.view.layer.masksToBounds = YES;
+		[animations addObject:[[CornerRadiusTransition alloc] initWithView:self.view fromFloat:_fromView.layer.cornerRadius toFloat:_toView.layer.cornerRadius startDelay:startDelay duration:duration interpolation:interpolation]];
+	}
     
     return animations;
 }
