@@ -66,6 +66,7 @@ export class OptionsProcessor {
       this.processComponent(key, value, objectToProcess);
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
+      this.processSearchBar(key, value, objectToProcess);
 
       onProcess(key, parentOptions);
 
@@ -132,6 +133,21 @@ export class OptionsProcessor {
         this.store.updateProps(value.componentId, value.passProps);
       }
       options[key].passProps = undefined;
+    }
+  }
+
+  private processSearchBar(key: string, value: any, options: Record<string, any>) {
+    if (isEqual(key, 'searchBar') && typeof value === 'boolean' && value) {
+      this.deprecations.onProcessOptions(key, options, '');
+      options[key] = {
+        visible: true,
+        hiddenWhenScrolling: options.searchBarHiddenWhenScrolling ?? false,
+        hideTopBarOnFocus: options.hideNavBarOnFocusSearchBar ?? false,
+        obscuresBackgroundDuringPresentation: false,
+        placeholder: options.searchBarPlaceholder ?? '',
+      };
+      this.processColor('backgroundColor', options.searchBarBackgroundColor, options[key]);
+      this.processColor('tintColor', options.searchBarTintColor, options[key]);
     }
   }
 }

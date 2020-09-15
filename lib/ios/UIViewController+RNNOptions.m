@@ -24,13 +24,14 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 }
 
 - (void)setSearchBarWithPlaceholder:(NSString *)placeholder
-         hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar
-       searchBarHiddenWhenScrolling:(BOOL)searchBarHiddenWhenScrolling
-                    backgroundColor:(nullable UIColor *)backgroundColor
-                          tintColor:(nullable UIColor *)tintColor {
+			hideTopBarOnFocus:(BOOL)hideTopBarOnFocus
+			hideOnScroll:(BOOL)hideOnScroll
+			obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
+			backgroundColor:(nullable UIColor *)backgroundColor
+			tintColor:(nullable UIColor *)tintColor {
     if (!self.navigationItem.searchController) {
         UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
-        search.dimsBackgroundDuringPresentation = NO;
+        search.dimsBackgroundDuringPresentation = obscuresBackgroundDuringPresentation;
         if ([self conformsToProtocol:@protocol(UISearchResultsUpdating)]) {
             [search setSearchResultsUpdater:((UIViewController <UISearchResultsUpdating> *) self)];
         }
@@ -38,7 +39,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         if (placeholder) {
             search.searchBar.placeholder = placeholder;
         }
-        search.hidesNavigationBarDuringPresentation = hideNavBarOnFocusSearchBar;
+        search.hidesNavigationBarDuringPresentation = hideTopBarOnFocus;
         search.searchBar.searchBarStyle = UISearchBarStyleProminent;
         search.searchBar.tintColor = tintColor;
         if (@available(iOS 13.0, *)) {
@@ -46,7 +47,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         }
 
         self.navigationItem.searchController = search;
-        [self.navigationItem setHidesSearchBarWhenScrolling:searchBarHiddenWhenScrolling];
+        [self.navigationItem setHidesSearchBarWhenScrolling:hideOnScroll];
 
         // Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
         self.definesPresentationContext = YES;
