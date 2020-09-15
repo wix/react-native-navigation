@@ -45,7 +45,7 @@
         if ([self.view isKindOfClass:AnimatedTextView.class]) {
             [animations addObject:[[RectTransition alloc] initWithView:self.view from:self.view.location.fromFrame to:self.view.location.toFrame startDelay:startDelay duration:duration interpolation:interpolation]];
         } else {
-            [animations addObject:[[TransformRectTransition alloc] initWithView:self.view fromRect:self.view.location.fromFrame toRect:self.view.location.toFrame fromAngle:self.view.location.fromAngle toAngle:self.view.location.toAngle startDelay:startDelay duration:duration interpolation:interpolation]];
+            [animations addObject:[[TransformRectTransition alloc] initWithView:self.view viewLocation:self.view.location startDelay:startDelay duration:duration interpolation:interpolation]];
         }
     }
     
