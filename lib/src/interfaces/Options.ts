@@ -439,7 +439,7 @@ export interface OptionsTopBarButton {
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font style for a text
+   * Set the font style for the button's text
    */
   fontStyle?: FontStyle;
   /**
