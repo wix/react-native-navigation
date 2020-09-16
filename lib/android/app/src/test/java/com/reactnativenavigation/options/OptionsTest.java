@@ -60,7 +60,8 @@ public class OptionsTest extends BaseTest {
         mockLoader = Mockito.mock(TypefaceLoaderMock.class);
         when(mockLoader.getTypeFace("HelveticaNeue-Condensed", null, null)).then((Answer<Typeface>) invocation -> SUBTITLE_TYPEFACE);
         when(mockLoader.getTypeFace("HelveticaNeue-CondensedBold", null, null)).then((Answer<Typeface>) invocation -> TOP_BAR_TYPEFACE);
-        Mockito.doReturn(TOP_BAR_TYPEFACE).when(mockLoader).getTypeFace(TOP_BAR_FONT_FAMILY, null, null);
+        Mockito.doReturn(TOP_BAR_TYPEFACE).when(mockLoader).getTypeFace(TOP_BAR_FONT_FAMILY, "", "");
+        Mockito.doReturn(SUBTITLE_TYPEFACE).when(mockLoader).getTypeFace(SUBTITLE_FONT_FAMILY, "", "");
     }
 
     @Test
