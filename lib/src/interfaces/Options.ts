@@ -435,7 +435,7 @@ export interface OptionsTopBarButton {
    */
   accessibilityLabel?: string;
   /**
-   * Set the font family for a text
+   * Set the font family for the button's text
    */
   fontFamily?: FontFamily;
   /**
