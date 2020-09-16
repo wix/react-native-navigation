@@ -9,8 +9,8 @@ Controls the top bar title.
 ```js
 const options = {
   topBar: {
-    title: {}
-  }
+    title: {},
+  },
 };
 ```
 
@@ -46,6 +46,18 @@ Set the title font family.
 | ---------- | -------- | -------- |
 | FontFamily | No       | Both     |
 
+### `fontStyle`
+
+| Type                     | Required | Platform |
+| ------------------------ | -------- | -------- |
+| enum('normal', 'italic') | No       | Both     |
+
+### `fontWeight`
+
+| Type                                                                                  | Required | Platform |
+| ------------------------------------------------------------------------------------- | -------- | -------- |
+| enum('normal', 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900') | No       | Both     |
+
 ### `alignment`
 
 `fill` will make the title stretch and consume all available space in the TopBar while `center` will center the title in the middle of the TopBar.
@@ -62,8 +74,8 @@ Set the title font family.
 
 Set a react [component](layout-component.mdx) as the title. If this option is specified then text is ignored.
 
-| Type      | Required | Platform |
-| --------- | -------- | -------- |
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
 | [Component](layout-component.mdx) | No       | Both     |
 
 ### `topMargin`

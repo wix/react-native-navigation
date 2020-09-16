@@ -5,7 +5,8 @@ import { ImageRequireSource, Insets } from 'react-native';
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
 declare type Color = string | symbol;
 type FontFamily = string;
-type FontWeight =
+type FontStyle = 'normal' | 'italic';
+type FontWeightIOS =
   | 'normal'
   | 'ultralight'
   | 'thin'
@@ -19,6 +20,19 @@ type FontWeight =
   | 'bold'
   | 'heavy'
   | 'black';
+type FontWeight =
+  | 'normal'
+  | 'bold'
+  | '100'
+  | '200'
+  | '300'
+  | '400'
+  | '500'
+  | '600'
+  | '700'
+  | '800'
+  | '900'
+  | FontWeightIOS;
 export type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
 type SystemItemIcon =
@@ -167,12 +181,17 @@ export interface OptionsTopBarLargeTitle {
    */
   color?: Color;
   /**
-   * Set the font family of large title's text
+   * Set the font family for a text
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style for a text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
 }
@@ -191,14 +210,17 @@ export interface OptionsTopBarTitle {
    */
   color?: Color;
   /**
-   * Title font family
-   *
-   * Make sure that the font is available
+   * Set the font family for a text
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style for a text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
   /**
@@ -248,12 +270,17 @@ export interface OptionsTopBarSubtitle {
    */
   color?: Color;
   /**
-   * Set subtitle font family
+   * Set the font family for a text
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style for a text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
   /**
@@ -301,9 +328,19 @@ export interface OptionsTopBarBackButton {
    */
   fontSize?: number;
   /**
-   * Set subtitle font family
+   * Set the font family for a text
    */
   fontFamily?: FontFamily;
+  /**
+   * Set the font style for a text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
+   */
+  fontWeight?: FontWeight;
   /**
    * Set testID for reference in E2E tests
    */
@@ -397,12 +434,17 @@ export interface OptionsTopBarButton {
    */
   accessibilityLabel?: string;
   /**
-   * Set the button font family
+   * Set the font family for a text
    */
-  fontFamily?: string;
+  fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style for a text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
   /**
@@ -743,12 +785,17 @@ export interface OptionsBottomTab {
    */
   selectedTextColor?: Color;
   /**
-   * Set the text font family
+   * Set the font family for a text
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style for a text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
   /**
