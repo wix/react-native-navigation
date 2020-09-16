@@ -790,7 +790,7 @@ export interface OptionsBottomTab {
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font style for a text
+   * Set the font style for the tab's text
    */
   fontStyle?: FontStyle;
   /**
