@@ -181,7 +181,7 @@ export interface OptionsTopBarLargeTitle {
    */
   color?: Color;
   /**
-   * Set the font family for a text
+   * Set the font family of the large title text
    */
   fontFamily?: FontFamily;
   /**
