@@ -214,7 +214,7 @@ export interface OptionsTopBarTitle {
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font style for a text
+   * Set the font style for the title
    */
   fontStyle?: FontStyle;
   /**
