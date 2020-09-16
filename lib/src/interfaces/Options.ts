@@ -270,7 +270,7 @@ export interface OptionsTopBarSubtitle {
    */
   color?: Color;
   /**
-   * Set the font family for a text
+   * Set the font family for the subtitle
    */
   fontFamily?: FontFamily;
   /**
