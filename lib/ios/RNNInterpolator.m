@@ -18,6 +18,32 @@
                       RNNInterpolate(from.size.height, to.size.height, p, interpolation));
 }
 
++ (CATransform3D)fromTransform:(CATransform3D)from toTransform:(CATransform3D)to precent:(CGFloat)p interpolation:(RNNInterpolationOptions)interpolation {
+    CATransform3D transform = CATransform3DIdentity;
+
+    transform.m11 = [RNNInterpolator fromFloat:from.m11 toFloat:to.m11 precent:p interpolation:interpolation];
+    transform.m12 = [RNNInterpolator fromFloat:from.m12 toFloat:to.m12 precent:p interpolation:interpolation];
+    transform.m13 = [RNNInterpolator fromFloat:from.m13 toFloat:to.m13 precent:p interpolation:interpolation];
+    transform.m14 = [RNNInterpolator fromFloat:from.m14 toFloat:to.m14 precent:p interpolation:interpolation];
+
+    transform.m21 = [RNNInterpolator fromFloat:from.m21 toFloat:to.m21 precent:p interpolation:interpolation];
+    transform.m22 = [RNNInterpolator fromFloat:from.m22 toFloat:to.m22 precent:p interpolation:interpolation];
+    transform.m23 = [RNNInterpolator fromFloat:from.m23 toFloat:to.m23 precent:p interpolation:interpolation];
+    transform.m24 = [RNNInterpolator fromFloat:from.m24 toFloat:to.m24 precent:p interpolation:interpolation];
+
+    transform.m31 = [RNNInterpolator fromFloat:from.m31 toFloat:to.m31 precent:p interpolation:interpolation];
+    transform.m32 = [RNNInterpolator fromFloat:from.m32 toFloat:to.m32 precent:p interpolation:interpolation];
+    transform.m33 = [RNNInterpolator fromFloat:from.m33 toFloat:to.m33 precent:p interpolation:interpolation];
+    transform.m34 = [RNNInterpolator fromFloat:from.m34 toFloat:to.m34 precent:p interpolation:interpolation];
+
+    transform.m41 = [RNNInterpolator fromFloat:from.m41 toFloat:to.m41 precent:p interpolation:interpolation];
+    transform.m42 = [RNNInterpolator fromFloat:from.m42 toFloat:to.m42 precent:p interpolation:interpolation];
+    transform.m43 = [RNNInterpolator fromFloat:from.m43 toFloat:to.m43 precent:p interpolation:interpolation];
+    transform.m44 = [RNNInterpolator fromFloat:from.m44 toFloat:to.m44 precent:p interpolation:interpolation];
+    
+    return transform;
+}
+
 static CGFloat RNNApplyInterpolation(CGFloat p, RNNInterpolationOptions interpolation) {
     switch (interpolation) {
         case RNNInterpolationAccelerate:
@@ -28,9 +54,9 @@ static CGFloat RNNApplyInterpolation(CGFloat p, RNNInterpolationOptions interpol
             return RNNLinear(p);
         case RNNInterpolationDecelerate:
             return RNNDecelerate(p);
-        case RNNInterpolationSpring:
-			// TODO: Expose springiness and mass properties to JS-API and make uniform with Android implementation (only has tension property)
-            return RNNSpring(p, 0.3, 3);
+        case RNNInterpolationOvershoot:
+			// TODO: Expose tension property
+            return RNNOvershoot(p, 1);
     }
 }
 
@@ -38,27 +64,10 @@ static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, RNNInterpolat
     return from + RNNApplyInterpolation(p, interpolation) * (to - from);
 }
 
-static CGFloat RNNSpring(CGFloat p, CGFloat springiness, CGFloat mass) {
-	// TODO: Cache those allocations
-	CGFloat T0 = 1;
-	CGFloat v0 = 0;
-	CGFloat s0 = 1;
-
-	CGFloat stiffness = mass * pow((2 * M_PI) / (T0), 2);
-	CGFloat damping = 2 * (1 - springiness) * sqrt(stiffness * mass);
-
-	CGFloat lambda = damping / (2 * mass);
-	CGFloat w0 = sqrt(stiffness / mass);
-
-	CGFloat wd = sqrt(fabs(pow(w0, 2) - pow(lambda, 2)));
-
-	if (lambda < w0) {
-		return fabs(1 - exp(-lambda * p) * (s0 * cos(wd * p) + ((v0 + s0 * lambda)/wd) * sin(wd * p)));
-	} else if (lambda > w0) {
-		return fabs(1 - exp(-lambda * p) * (((v0+s0 * (lambda + wd))/(2 * wd)) * exp(wd * p) + (s0 - (v0 + s0 * (lambda + wd)) / (2 * wd)) * exp(-wd * p)));
-	} else {
-		return fabs(1 - exp(-lambda * p) * (s0 + (v0 + lambda * s0) * p));
-	}
+static CGFloat RNNOvershoot(CGFloat p, CGFloat tension) {
+	CGFloat t = p - 1;
+	CGFloat _ot = t * t * ((tension + 1) * t + tension) + 1.0f;
+	return _ot;
 }
 
 static CGFloat RNNLinear(CGFloat p) {

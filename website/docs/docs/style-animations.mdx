@@ -214,6 +214,7 @@ Navigation.push(this.props.componentId, {
             {
               fromId: `image${item.id}`,
               toId: `image${item.id}Dest`,
+              interpolation: 'linear'
             },
           ],
         },
@@ -222,6 +223,15 @@ Navigation.push(this.props.componentId, {
   },
 });
 ```
+
+The `interpolation` property accepts the following modes:
+
+* `linear`: Linearly translate from source to destination without any easing curve.
+* `accelerateDecelerate`: Begin building up speed until half of the animation is complete, then begin slowing down to settle.
+* `decelerate`: Start at a high speed and slow down to settle.
+* `accelerate`: Begin building up speed until destination has been reached.
+* `decelerateAccelerate`: Start at a high speed and slow down until half of the animation is complete, then speed up again to settle.
+* `overshoot`: Begin building up speed and overshoot the destination, then fling back to settle.
 
 ## Element Transitions
 

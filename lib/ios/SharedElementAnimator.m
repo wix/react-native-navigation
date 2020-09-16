@@ -8,6 +8,7 @@
 #import "TextStorageTransition.h"
 #import "AnchorTransition.h"
 #import "CornerRadiusTransition.h"
+#import "LayerBoundsTransition.h"
 
 @implementation SharedElementAnimator {
     SharedElementTransitionOptions* _transitionOptions;
@@ -42,11 +43,15 @@
     Text* interpolation = [_transitionOptions.interpolation getWithDefaultValue:@"accelerateDecelerate"];
     
     if (!CGRectEqualToRect(self.view.location.fromFrame, self.view.location.toFrame)) {
-        if ([self.view isKindOfClass:AnimatedTextView.class]) {
-            [animations addObject:[[RectTransition alloc] initWithView:self.view from:self.view.location.fromFrame to:self.view.location.toFrame startDelay:startDelay duration:duration interpolation:interpolation]];
-        } else {
-            [animations addObject:[[TransformRectTransition alloc] initWithView:self.view viewLocation:self.view.location startDelay:startDelay duration:duration interpolation:interpolation]];
-        }
+        [animations addObject:[[RectTransition alloc] initWithView:self.view from:self.view.location.fromFrame to:self.view.location.toFrame startDelay:startDelay duration:duration interpolation:interpolation]];
+    }
+    
+    if (!CGRectEqualToRect(self.view.location.fromBounds, self.view.location.toBounds)) {
+        [animations addObject:[[LayerBoundsTransition alloc] initWithView:self.view from:self.view.location.fromBounds to:self.view.location.toBounds startDelay:startDelay duration:duration interpolation:interpolation]];
+    }
+    
+    if (!CATransform3DEqualToTransform(self.view.location.fromTransform, self.view.location.toTransform)) {
+        [animations addObject:[[TransformRectTransition alloc] initWithView:self.view viewLocation:self.view.location startDelay:startDelay duration:duration interpolation:interpolation]];
     }
     
     if (![_fromView.backgroundColor isEqual:_toView.backgroundColor]) {

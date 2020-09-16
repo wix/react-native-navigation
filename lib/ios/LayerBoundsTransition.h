@@ -1,6 +1,6 @@
 #import "ElementBaseTransition.h"
 
-@interface RectTransition : ElementBaseTransition
+@interface LayerBoundsTransition : ElementBaseTransition
 
 - (instancetype)initWithView:(UIView *)view
 						from:(CGRect)from
@@ -8,8 +8,5 @@
 				  startDelay:(NSTimeInterval)startDelay
 					duration:(NSTimeInterval)duration
 			   interpolation:(Text *)interpolation;
-
-@property (nonatomic, readonly) CGRect from;
-@property (nonatomic, readonly) CGRect to;
 
 @end
