@@ -328,7 +328,8 @@ export interface OptionsTopBarBackButton {
    */
   fontSize?: number;
   /**
-   * Set the font family for a text
+   * Set the font family for the back button
+   * #### (iOS specific)
    */
   fontFamily?: FontFamily;
   /**
