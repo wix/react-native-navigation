@@ -210,7 +210,7 @@ export interface OptionsTopBarTitle {
    */
   color?: Color;
   /**
-   * Set the font family for a text
+   * Set the font family for the title
    */
   fontFamily?: FontFamily;
   /**
