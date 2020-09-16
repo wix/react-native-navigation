@@ -28,9 +28,9 @@ static CGFloat RNNApplyInterpolation(CGFloat p, RNNInterpolationOptions interpol
             return RNNLinear(p);
         case RNNInterpolationDecelerate:
             return RNNDecelerate(p);
-        case RNNInterpolationSpring:
-			// TODO: Expose springiness and mass properties to JS-API and make uniform with Android implementation (only has tension property)
-            return RNNSpring(p, 0.3, 3);
+        case RNNInterpolationOvershoot:
+			// TODO: Expose tension property
+            return RNNOvershoot(p, 1);
     }
 }
 
@@ -38,27 +38,10 @@ static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, RNNInterpolat
     return from + RNNApplyInterpolation(p, interpolation) * (to - from);
 }
 
-static CGFloat RNNSpring(CGFloat p, CGFloat springiness, CGFloat mass) {
-	// TODO: Cache those allocations
-	CGFloat T0 = 1;
-	CGFloat v0 = 0;
-	CGFloat s0 = 1;
-
-	CGFloat stiffness = mass * pow((2 * M_PI) / (T0), 2);
-	CGFloat damping = 2 * (1 - springiness) * sqrt(stiffness * mass);
-
-	CGFloat lambda = damping / (2 * mass);
-	CGFloat w0 = sqrt(stiffness / mass);
-
-	CGFloat wd = sqrt(fabs(pow(w0, 2) - pow(lambda, 2)));
-
-	if (lambda < w0) {
-		return fabs(1 - exp(-lambda * p) * (s0 * cos(wd * p) + ((v0 + s0 * lambda)/wd) * sin(wd * p)));
-	} else if (lambda > w0) {
-		return fabs(1 - exp(-lambda * p) * (((v0+s0 * (lambda + wd))/(2 * wd)) * exp(wd * p) + (s0 - (v0 + s0 * (lambda + wd)) / (2 * wd)) * exp(-wd * p)));
-	} else {
-		return fabs(1 - exp(-lambda * p) * (s0 + (v0 + lambda * s0) * p));
-	}
+static CGFloat RNNOvershoot(CGFloat p, CGFloat tension) {
+	CGFloat t = p - 1;
+	CGFloat _ot = t * t * ((tension + 1) * t + tension) + 1.0f;
+	return _ot;
 }
 
 static CGFloat RNNLinear(CGFloat p) {
