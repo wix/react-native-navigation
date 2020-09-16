@@ -786,7 +786,7 @@ export interface OptionsBottomTab {
    */
   selectedTextColor?: Color;
   /**
-   * Set the font family for a text
+   * Set the font family for the tab's text
    */
   fontFamily?: FontFamily;
   /**
