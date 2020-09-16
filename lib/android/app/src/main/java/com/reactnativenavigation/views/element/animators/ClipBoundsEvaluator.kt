@@ -2,8 +2,9 @@ package com.reactnativenavigation.views.element.animators
 
 import android.animation.TypeEvaluator
 import android.graphics.Rect
+import android.view.View
 
-class ClipBoundsEvaluator : TypeEvaluator<Rect> {
+class ClipBoundsEvaluator(private val onEvaluate: (Rect) -> Unit) : TypeEvaluator<Rect> {
     private var fromWidth = 0
     private var fromHeight = 0
     private var toWidth = 0
@@ -30,6 +31,7 @@ class ClipBoundsEvaluator : TypeEvaluator<Rect> {
                 result.right = (toWidth + (fromWidth - toWidth) * (1 - ratio)).toInt()
             }
         }
+        onEvaluate(result)
         return result
     }
 
