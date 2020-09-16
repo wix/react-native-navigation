@@ -185,7 +185,7 @@ export interface OptionsTopBarLargeTitle {
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font style for a text
+   * Set the font style of the large title text
    */
   fontStyle?: FontStyle;
   /**
