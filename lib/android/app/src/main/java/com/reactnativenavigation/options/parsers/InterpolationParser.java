@@ -14,6 +14,8 @@ public class InterpolationParser {
                 return Interpolation.ACCELERATE_DECELERATE;
             case "accelerate":
                 return Interpolation.ACCELERATE;
+            case "overshoot":
+                return Interpolation.OVERSHOOT;
             default:
                 return Interpolation.DEFAULT;
         }

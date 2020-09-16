@@ -53,7 +53,7 @@
 	
 	[topVC presentViewController:viewController animated:animated completion:^{
 		if (completion) {
-			completion(nil);
+            completion(viewController.layoutInfo.componentId);
 		}
 		
         [self->_presentedModals addObject:[viewController topMostViewController]];

@@ -12,9 +12,7 @@
     self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
     _stackDelegate = [[StackControllerDelegate alloc] initWithEventEmitter:self.eventEmitter];
     self.delegate = _stackDelegate;
-    if (@available(iOS 11.0, *)) {
-        self.navigationBar.prefersLargeTitles = YES;
-    }
+    self.navigationBar.prefersLargeTitles = YES;
     return self;
 }
 
