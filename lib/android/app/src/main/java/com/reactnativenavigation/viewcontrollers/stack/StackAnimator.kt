@@ -12,6 +12,7 @@ import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.utils.awaitPost
+import com.reactnativenavigation.utils.awaitRender
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
@@ -124,6 +125,7 @@ open class StackAnimator @JvmOverloads constructor(
     private fun pushWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, set: AnimatorSet) = GlobalScope.launch(Dispatchers.Main.immediate) {
         appearing.setWaitForRender(Bool(true))
         appearing.view.alpha = 0f
+        appearing.awaitRender()
         val fade = if (options.animations.push.content.isFadeAnimation()) options.animations.push.content else FadeAnimation().content
         val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade, disappearing, appearing)
         set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
