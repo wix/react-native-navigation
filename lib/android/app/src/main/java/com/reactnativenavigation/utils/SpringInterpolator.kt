@@ -16,12 +16,15 @@ class SpringInterpolator(private val mass: Float, private val damping: Float, pr
 
         return when {
             lambda < w0 -> {
+                // underdamped
                 abs(1 - exp(-lambda * p) * (s0 * cos(wd * p) + (v0 + s0 * lambda) / wd * sin(wd * p)))
             }
             lambda > w0 -> {
+                // overdamped
                 abs(1 - exp(-lambda * p) * ((v0 + s0 * (lambda + wd)) / (2 * wd) * exp(wd * p) + (s0 - (v0 + s0 * (lambda + wd)) / (2 * wd)) * exp(-wd * p)))
             }
             else -> {
+                // critically damped
                 abs(1 - exp(-lambda * p) * (s0 + (v0 + lambda * s0) * p))
             }
         }

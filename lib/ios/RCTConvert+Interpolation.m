@@ -8,6 +8,7 @@ RCT_ENUM_CONVERTER(RNNInterpolationOptions, (@{
   @"decelerate": @(RNNInterpolationDecelerate),
   @"accelerate": @(RNNInterpolationAccelerate),
   @"overshoot": @(RNNInterpolationOvershoot),
+  @"spring": @(RNNInterpolationSpring),
 }), RNNInterpolationLinear, integerValue)
 
 @end
