@@ -5,7 +5,8 @@ import { ImageRequireSource, Insets } from 'react-native';
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
 declare type Color = string | symbol;
 type FontFamily = string;
-type FontWeight =
+type FontStyle = 'normal' | 'italic';
+type FontWeightIOS =
   | 'normal'
   | 'ultralight'
   | 'thin'
@@ -19,6 +20,19 @@ type FontWeight =
   | 'bold'
   | 'heavy'
   | 'black';
+type FontWeight =
+  | 'normal'
+  | 'bold'
+  | '100'
+  | '200'
+  | '300'
+  | '400'
+  | '500'
+  | '600'
+  | '700'
+  | '800'
+  | '900'
+  | FontWeightIOS;
 export type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
 type SystemItemIcon =
@@ -51,7 +65,7 @@ type Interpolation =
   | 'decelerate'
   | 'accelerate'
   | 'decelerateAccelerate'
-  | 'spring';
+  | 'overshoot';
 
 export interface OptionsSplitView {
   /**
@@ -167,12 +181,17 @@ export interface OptionsTopBarLargeTitle {
    */
   color?: Color;
   /**
-   * Set the font family of large title's text
+   * Set the font family of the large title text
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style of the large title text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
 }
@@ -191,14 +210,17 @@ export interface OptionsTopBarTitle {
    */
   color?: Color;
   /**
-   * Title font family
-   *
-   * Make sure that the font is available
+   * Set the font family for the title
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style for the title
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
   /**
@@ -248,12 +270,17 @@ export interface OptionsTopBarSubtitle {
    */
   color?: Color;
   /**
-   * Set subtitle font family
+   * Set the font family for the subtitle
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style for a text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
   /**
@@ -276,7 +303,7 @@ export interface OptionsTopBarBackButton {
   /**
    * Image to show as the back button
    */
-  icon?: ImageRequireSource;
+  icon?: ImageResource;
   /**
    * Weither the back button is visible or not
    * @default true
@@ -301,9 +328,20 @@ export interface OptionsTopBarBackButton {
    */
   fontSize?: number;
   /**
-   * Set subtitle font family
+   * Set the font family for the back button
+   * #### (iOS specific)
    */
   fontFamily?: FontFamily;
+  /**
+   * Set the font style for a text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
+   */
+  fontWeight?: FontWeight;
   /**
    * Set testID for reference in E2E tests
    */
@@ -354,7 +392,7 @@ export interface OptionsTopBarButton {
   /**
    * Set the button icon
    */
-  icon?: ImageRequireSource;
+  icon?: ImageResource;
   /**
    * Set the button icon insets
    */
@@ -397,12 +435,17 @@ export interface OptionsTopBarButton {
    */
   accessibilityLabel?: string;
   /**
-   * Set the button font family
+   * Set the font family for the button's text
    */
-  fontFamily?: string;
+  fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style for the button's text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
   /**
@@ -615,7 +658,7 @@ export interface OptionsFab {
   clickColor?: Color;
   rippleColor?: Color;
   visible?: boolean;
-  icon?: ImageRequireSource;
+  icon?: ImageResource;
   iconColor?: Color;
   alignHorizontally?: 'left' | 'right';
   hideOnScroll?: boolean;
@@ -706,7 +749,12 @@ export interface DotIndicatorOptions {
   visible?: boolean;
 }
 
-export type ImageResource = string;
+export interface ImageSystemSource {
+  system: string;
+  fallback?: ImageRequireSource | string;
+}
+
+export type ImageResource = ImageRequireSource | string | ImageSystemSource;
 
 export interface OptionsBottomTab {
   dotIndicator?: DotIndicatorOptions;
@@ -735,7 +783,7 @@ export interface OptionsBottomTab {
   /**
    * Set the tab icon
    */
-  icon?: ImageRequireSource | ImageResource;
+  icon?: ImageResource;
   /**
    * Set the icon tint
    */
@@ -753,12 +801,17 @@ export interface OptionsBottomTab {
    */
   selectedTextColor?: Color;
   /**
-   * Set the text font family
+   * Set the font family for the tab's text
    */
   fontFamily?: FontFamily;
   /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
+   * Set the font style for the tab's text
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
    */
   fontWeight?: FontWeight;
   /**
@@ -774,7 +827,7 @@ export interface OptionsBottomTab {
    * Set selected icon image
    * #### (iOS specific)
    */
-  selectedIcon?: ImageRequireSource;
+  selectedIcon?: ImageResource;
   /**
    * Set true if you want to disable the icon tinting
    * #### (iOS specific)
@@ -927,7 +980,7 @@ export interface OptionsAnimationPropertyConfig {
   /**
    * Animation interplation
    */
-  interpolation?: 'accelerate' | 'decelerate' | 'spring';
+  interpolation?: Interpolation;
 }
 
 /**
@@ -1181,12 +1234,12 @@ setRoot: {
    * Background image for the screen
    * #### (iOS specific)
    */
-  backgroundImage?: ImageRequireSource;
+  backgroundImage?: ImageResource;
   /**
    * Background image for the Navigation View
    * #### (iOS specific)
    */
-  rootBackgroundImage?: ImageRequireSource;
+  rootBackgroundImage?: ImageResource;
   /**
    * Enable or disable automatically blurring focused input, dismissing keyboard on unmount
    * #### (Android specific)

@@ -13,8 +13,10 @@ import java.util.Map;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.react.views.text.ReactTypefaceUtils;
+
 public class TypefaceLoader {
-	private static final Map<String, Typeface> typefaceCache = new HashMap<>();
+
     private Context context;
 
     public TypefaceLoader(Context context) {
@@ -22,51 +24,16 @@ public class TypefaceLoader {
     }
 
     @Nullable
-	public Typeface getTypeFace(String fontFamilyName) {
+	public Typeface getTypeFace(String fontFamilyName, String fontStyle, String fontWeight) {
 		if (TextUtils.isEmpty(fontFamilyName)) return null;
-		if (typefaceCache.containsKey(fontFamilyName)) return typefaceCache.get(fontFamilyName);
-
-		Typeface result = load(fontFamilyName);
-		typefaceCache.put(fontFamilyName, result);
-		return result;
+		return ReactTypefaceUtils.applyStyles(
+				null,
+				ReactTypefaceUtils.parseFontStyle(fontStyle),
+				ReactTypefaceUtils.parseFontWeight(fontWeight),
+				fontFamilyName,
+				context.getAssets()
+		);
 	}
 
-	private Typeface load(String fontFamilyName) {
-		Typeface typeface = getTypefaceFromAssets(fontFamilyName);
-		if (typeface != null) return typeface;
-
-		int style = getStyle(fontFamilyName);
-		return Typeface.create(fontFamilyName, style);
-	}
-
-	private int getStyle(String fontFamilyName) {
-		int style = Typeface.NORMAL;
-		if (fontFamilyName.toLowerCase().contains("bold")) {
-			style = Typeface.BOLD;
-		} else if (fontFamilyName.toLowerCase().contains("italic")) {
-			style = Typeface.ITALIC;
-		}
-		return style;
-	}
-
-	@Nullable
-    public Typeface getTypefaceFromAssets(String fontFamilyName) {
-		try {
-			if (context != null) {
-				AssetManager assets = context.getAssets();
-				List<String> fonts = Arrays.asList(assets.list("fonts"));
-				if (fonts.contains(fontFamilyName + ".ttf")) {
-					return Typeface.createFromAsset(assets, "fonts/" + fontFamilyName + ".ttf");
-				}
-
-				if (fonts.contains(fontFamilyName + ".otf")) {
-					return Typeface.createFromAsset(assets, "fonts/" + fontFamilyName + ".otf");
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 }
 

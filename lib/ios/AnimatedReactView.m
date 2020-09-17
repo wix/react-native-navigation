@@ -1,9 +1,13 @@
 #import "AnimatedReactView.h"
 #import <React/UIView+React.h>
+#import "UIView+Utils.h"
 
 @implementation AnimatedReactView {
     UIView* _originalParent;
     CGRect _originalFrame;
+    CGFloat _originalCornerRadius;
+    CGRect _originalLayoutBounds;
+    CATransform3D _originalTransform;
     UIView* _toElement;
     UIColor* _fromColor;
     NSInteger _zIndex;
@@ -28,6 +32,11 @@
     _reactView.backgroundColor = backgroundColor;
 }
 
+- (void)setCornerRadius:(CGFloat)cornerRadius {
+    [super setCornerRadius:cornerRadius];
+    [_reactView setCornerRadius:cornerRadius];
+}
+
 - (NSNumber *)reactZIndex {
     return @(_zIndex);
 }
@@ -35,17 +44,25 @@
 - (void)hijackReactElement:(UIView *)element {
     _reactView = element;
     _originalFrame = _reactView.frame;
+    _originalTransform = element.layer.transform;
+    _originalLayoutBounds = element.layer.bounds;
     self.frame = self.location.fromFrame;
     _originalParent = _reactView.superview;
+    _originalCornerRadius = element.layer.cornerRadius;
     _reactView.frame = self.bounds;
+    _reactView.layer.transform = CATransform3DIdentity;
     [self addSubview:_reactView];
 }
 
 - (void)reset {
     _reactView.frame = _originalFrame;
+    _reactView.layer.cornerRadius = _originalCornerRadius;
+    _reactView.bounds = _originalLayoutBounds;
+    _reactView.layer.bounds = _originalLayoutBounds;
     [_originalParent addSubview:_reactView];
     _toElement.hidden = NO;
     _reactView.backgroundColor = _fromColor;
+    _reactView.layer.transform = _originalTransform;
     [self removeFromSuperview];
 }
 
