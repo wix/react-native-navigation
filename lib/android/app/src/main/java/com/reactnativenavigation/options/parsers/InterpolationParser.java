@@ -16,6 +16,8 @@ public class InterpolationParser {
                 return Interpolation.ACCELERATE;
             case "overshoot":
                 return Interpolation.OVERSHOOT;
+            case "spring":
+                return Interpolation.SPRING;
             default:
                 return Interpolation.DEFAULT;
         }

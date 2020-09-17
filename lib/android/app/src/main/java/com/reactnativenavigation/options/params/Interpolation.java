@@ -8,11 +8,14 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
+import com.reactnativenavigation.utils.SpringInterpolator;
+
 public enum Interpolation {
     ACCELERATE,
     DECELERATE,
     ACCELERATE_DECELERATE,
     OVERSHOOT,
+    SPRING,
     DEFAULT,
     NO_VALUE;
 
@@ -27,6 +30,9 @@ public enum Interpolation {
             case OVERSHOOT:
                 // TODO: Expose tension property to JS-API
                 return new OvershootInterpolator(1f);
+            case SPRING:
+                // TODO: Expose mass, damping and stiffness property to JS-API
+                return new SpringInterpolator(3, 500, 1000);
             case DEFAULT:
                 return new LinearInterpolator();
         }

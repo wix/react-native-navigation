@@ -3,13 +3,14 @@ package com.reactnativenavigation.utils
 import android.animation.TimeInterpolator
 import kotlin.math.*
 
-class SpringInterpolator(private val _mass: Float, private val _damping: Float, private val _stiffness: Float) : TimeInterpolator {
+class SpringInterpolator(private val mass: Float, private val damping: Float, private val stiffness: Float) : TimeInterpolator {
     override fun getInterpolation(p: Float): Float {
+        // See: https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator
         val v0 = 0
         val s0 = 1
 
-        val lambda = _damping / (2 * _mass)
-        val w0 = sqrt(_stiffness / _mass)
+        val lambda = damping / (2 * mass)
+        val w0 = sqrt(stiffness / mass)
 
         val wd = sqrt(abs(w0.pow(2) - lambda.pow(2)))
 
