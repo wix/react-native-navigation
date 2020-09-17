@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
     ss.dependency 'Folly/Fabric'
   end
 
-  s.dependency 'React'
+  s.dependency 'React-Core'
   s.dependency 'React-RCTImage'
   s.dependency 'React-RCTText'
   s.frameworks = 'UIKit'
