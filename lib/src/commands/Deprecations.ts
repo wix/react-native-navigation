@@ -4,7 +4,7 @@ import each from 'lodash/each';
 import { Platform } from 'react-native';
 
 export class Deprecations {
-  public deprecatedMethods: Array<{ key: string; showWarning: any }> = [
+  private deprecatedMethods: Array<{ key: string; showWarning: any }> = [
     {
       key: 'topBar.searchBarHiddenWhenScrolling',
       showWarning: once((_key: string, parentOptions: object) => {
