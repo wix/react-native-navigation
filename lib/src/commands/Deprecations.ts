@@ -4,12 +4,12 @@ import each from 'lodash/each';
 import { Platform } from 'react-native';
 
 export class Deprecations {
-  private deprecatedMethods: Array<{ key: string; showWarning: any }> = [
+  private deprecatedOptions: Array<{ key: string; showWarning: any }> = [
     {
       key: 'topBar.searchBarHiddenWhenScrolling',
       showWarning: once((_key: string, parentOptions: object) => {
         console.warn(
-          `${_key} is deprecated and will be deprecated in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
+          `${_key} is deprecated and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
           parentOptions
         );
       }),
@@ -18,7 +18,7 @@ export class Deprecations {
       key: 'topBar.searchBarPlaceholder',
       showWarning: once((_key: string, parentOptions: object) => {
         console.warn(
-          `${_key} is deprecated and will be deprecated in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
+          `${_key} is deprecated and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
           parentOptions
         );
       }),
@@ -27,7 +27,7 @@ export class Deprecations {
       key: 'topBar.searchBarBackgroundColor',
       showWarning: once((_key: string, parentOptions: object) => {
         console.warn(
-          `${_key} is deprecated and will be deprecated in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
+          `${_key} is deprecated and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
           parentOptions
         );
       }),
@@ -36,7 +36,7 @@ export class Deprecations {
       key: 'topBar.searchBarTintColor',
       showWarning: once((_key: string, parentOptions: object) => {
         console.warn(
-          `${_key} is deprecated and will be deprecated in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
+          `${_key} is deprecated and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
           parentOptions
         );
       }),
@@ -45,7 +45,7 @@ export class Deprecations {
       key: 'topBar.hideNavBarOnFocusSearchBar',
       showWarning: once((_key: string, parentOptions: object) => {
         console.warn(
-          `${_key} is deprecated and will be deprecated in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
+          `${_key} is deprecated and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
           parentOptions
         );
       }),
@@ -53,9 +53,9 @@ export class Deprecations {
   ];
 
   public checkForDeprecatedOptions(options: Record<string, any>) {
-    each(this.deprecatedMethods, (method) => {
-      if (get(options, method.key, null)) {
-        method.showWarning(method.key, options);
+    each(this.deprecatedOptions, (option) => {
+      if (get(options, option.key, null)) {
+        option.showWarning(option.key, options);
       }
     });
   }
@@ -78,7 +78,7 @@ export class Deprecations {
 
   private deprecateSearchBarOptions = once((parentOptions: object) => {
     console.warn(
-      `toggling searchBar visibility using a boolean value will be deprecated in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
+      `toggling searchBar visibility using a boolean value will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
       parentOptions
     );
   });
