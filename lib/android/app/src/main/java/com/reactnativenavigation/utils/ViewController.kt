@@ -1,6 +1,5 @@
 package com.reactnativenavigation.utils
 
-import android.view.View
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

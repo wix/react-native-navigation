@@ -7,7 +7,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 class ExistingViewFinder : ViewFinder {
-    override suspend fun find(root: ViewController<*>, nativeId: String): View? {
+    override fun find(root: ViewController<*>, nativeId: String): View? {
         return ReactFindViewUtil.findView(root.view, nativeId)
     }
 }

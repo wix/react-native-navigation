@@ -3,12 +3,12 @@ package com.reactnativenavigation.views.element
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import com.facebook.react.uimanager.ViewGroupManager
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions
@@ -20,7 +20,7 @@ import java.util.*
 
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
 
-    suspend fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
+    fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
         val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
         return createAnimator(fadeAnimation, transitions)
     }
@@ -33,11 +33,12 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         animators.addAll(createElementTransitionAnimators(transitions.validElementTransitions))
 
         setAnimatorsDuration(animators, fadeAnimation)
-        val set = AnimatorSet()
-        set.doOnEnd { restoreViewsToOriginalState(transitions) }
-        set.doOnCancel { restoreViewsToOriginalState(transitions) }
-        set.playTogether(animators)
-        return set
+        return AnimatorSet().apply {
+            playTogether(animators)
+            doOnStart { transitions.validSharedElementTransitions.forEach { it.view.visibility = View.VISIBLE } }
+            doOnEnd { restoreViewsToOriginalState(transitions) }
+            doOnCancel { restoreViewsToOriginalState(transitions) }
+        }
     }
 
     private fun recordIndices(transitions: TransitionSet) {
@@ -60,6 +61,8 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         transitions.transitions
                 .sortedBy { ViewGroupManager.getViewZIndex(it.view) }
                 .forEach { reparent(it) }
+        transitions.validSharedElementTransitions
+                .forEach { it.view.visibility = View.INVISIBLE }
     }
 
     private fun createSharedElementTransitionAnimators(transitions: List<SharedElementTransition>): List<AnimatorSet> {
