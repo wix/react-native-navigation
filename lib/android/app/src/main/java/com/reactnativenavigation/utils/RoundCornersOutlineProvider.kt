@@ -3,10 +3,10 @@ package com.reactnativenavigation.utils
 import android.graphics.Outline
 import android.view.View
 import android.view.ViewOutlineProvider
-import com.facebook.react.views.image.ReactImageView
+import android.widget.ImageView
 
-class RoundCornersOutlineProvider(private val image: ReactImageView, radius: Float) : ViewOutlineProvider() {
-    var radius: Float = radius
+class RoundCornersOutlineProvider(private val image: ImageView, initialRadius: Float) : ViewOutlineProvider() {
+    var radius: Float = initialRadius
         private set
 
     override fun getOutline(view: View, outline: Outline) = outline.setRoundRect(

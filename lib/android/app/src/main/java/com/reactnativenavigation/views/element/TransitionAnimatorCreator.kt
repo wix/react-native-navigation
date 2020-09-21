@@ -20,7 +20,7 @@ import java.util.*
 
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
 
-    fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
+    suspend fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
         val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
         return createAnimator(fadeAnimation, transitions)
     }
@@ -59,7 +59,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
 
     private fun reparentViews(transitions: TransitionSet) {
         transitions.transitions
-                .sortedBy { ViewGroupManager.getViewZIndex(it.view) }
+                .sortedBy { getZIndex(it.view) }
                 .forEach { reparent(it) }
         transitions.validSharedElementTransitions
                 .forEach { it.view.visibility = View.INVISIBLE }
@@ -97,7 +97,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         mutableListOf<Transition>().apply {
             addAll(transitions.validSharedElementTransitions)
             addAll(transitions.validElementTransitions)
-            sortBy { ViewGroupManager.getViewZIndex(it.view) }
+            sortBy { getZIndex(it.view) }
             sortBy { it.view.getTag(R.id.original_index_in_parent) as Int }
             forEach {
                 it.viewController.requireParentController().removeOverlay(it.view)
@@ -121,6 +121,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             view.setTag(R.id.original_left, view.left)
             view.setTag(R.id.original_pivot_x, view.pivotX)
             view.setTag(R.id.original_pivot_y, view.pivotY)
+            view.setTag(R.id.original_z_index, getZIndex(view))
 
             biologicalParent.removeView(view)
 
@@ -146,4 +147,8 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         val index = ViewTags.get<Int>(element, R.id.original_index_in_parent)
         parent.addView(element, index, lp)
     }
+
+    private fun getZIndex(view: View) = ViewGroupManager.getViewZIndex(view)
+            ?: ViewTags.get(view, R.id.original_z_index)
+            ?: 0
 }

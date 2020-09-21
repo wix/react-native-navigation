@@ -73,7 +73,7 @@ open class StackAnimator @JvmOverloads constructor(
         }
     }
 
-    private fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, set: AnimatorSet) {
+    private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, set: AnimatorSet) {
         val fade = if (pop.content.isFadeAnimation()) pop else FadeAnimation()
         val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content, disappearing, appearing)
         set.playTogether(fade.content.getAnimation(disappearing.view), transitionAnimators)

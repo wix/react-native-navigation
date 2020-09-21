@@ -2,7 +2,6 @@ package com.reactnativenavigation.views.element.animators
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
-import android.animation.TypeEvaluator
 import android.view.View
 import androidx.core.animation.doOnEnd
 import com.facebook.react.views.image.ReactImageView

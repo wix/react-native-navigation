@@ -15,4 +15,5 @@
     <item name="original_left" type="id" />
     <item name="original_pivot_x" type="id" />
     <item name="original_pivot_y" type="id" />
+    <item name="original_z_index" type="id" />
 </resources>

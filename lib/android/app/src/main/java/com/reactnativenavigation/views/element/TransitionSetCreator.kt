@@ -5,9 +5,13 @@ import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.SharedElements
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.finder.ExistingViewFinder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 
 class TransitionSetCreator {
-    fun create(
+    suspend fun create(
             animation: NestedAnimationsOptions,
             fromScreen: ViewController<*>,
             toScreen: ViewController<*>
@@ -16,38 +20,46 @@ class TransitionSetCreator {
         addAll(createElementTransitions(fromScreen, toScreen, animation.elementTransitions))
     }
 
-    private fun createSharedElementTransitions(
+    private suspend fun createSharedElementTransitions(
             fromScreen: ViewController<*>,
             toScreen: ViewController<*>,
             sharedElements: SharedElements
-    ) = sharedElements.get()
-            .map { options ->
-                SharedElementTransition(toScreen, options).apply {
-                    ExistingViewFinder().find(fromScreen, fromId)?.let { from = it }
-                    ExistingViewFinder().find(toScreen, toId)?.let { to = it }
+    ): List<Transition> = withContext(Dispatchers.Main.immediate) {
+        sharedElements.get()
+                .map {
+                    async {
+                        SharedElementTransition(toScreen, it).apply {
+                            ExistingViewFinder().find(fromScreen, fromId)?.let { from = it }
+                            ExistingViewFinder().find(toScreen, toId)?.let { to = it }
+                        }
+                    }
                 }
-            }
-            .filter { it.isValid() }
+                .awaitAll()
+                .filter { it.isValid() }
+    }
 
-    private fun createElementTransitions(
+    private suspend fun createElementTransitions(
             fromScreen: ViewController<*>,
             toScreen: ViewController<*>,
             elementTransitions: ElementTransitions
-    ): List<ElementTransition> {
-        return elementTransitions.transitions
-                .map { options ->
-                    val transition = ElementTransition(options)
-                    ExistingViewFinder().find(fromScreen, transition.id)?.let {
-                        transition.view = it
-                        transition.viewController = fromScreen
-                    } ?: run {
-                        ExistingViewFinder().find(toScreen, transition.id)?.let {
+    ): List<ElementTransition> = withContext(Dispatchers.Main.immediate) {
+        elementTransitions.transitions
+                .map {
+                    async {
+                        val transition = ElementTransition(it)
+                        ExistingViewFinder().find(fromScreen, transition.id)?.let {
                             transition.view = it
-                            transition.viewController = toScreen
+                            transition.viewController = fromScreen
+                        } ?: run {
+                            ExistingViewFinder().find(toScreen, transition.id)?.let {
+                                transition.view = it
+                                transition.viewController = toScreen
+                            }
                         }
+                        transition
                     }
-                    transition
                 }
+                .awaitAll()
                 .filter { it.isValid() }
     }
 }

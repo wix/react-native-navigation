@@ -13,7 +13,7 @@ import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
 import kotlin.math.max
 
-class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
+class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
     override fun shouldAnimateProperty(fromChild: ReactImageView, toChild: ReactImageView): Boolean {
         return !ViewUtils.areDimensionsEqual(from, to)
     }
@@ -33,8 +33,10 @@ class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageV
             to.layoutParams.height = max(from.height, to.height)
             return ObjectAnimator.ofObject(TypeEvaluator<Float> { fraction: Float, _: Any, _: Any ->
                 hierarchy.actualImageScaleType?.let {
-                    (hierarchy.actualImageScaleType as InterpolatingScaleType).value = fraction
-                    to.invalidate()
+                    (hierarchy.actualImageScaleType as? InterpolatingScaleType)?.let {
+                        it.value = fraction
+                        to.invalidate()
+                    }
                 }
                 null
             }, 0, 1)
