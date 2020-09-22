@@ -7,13 +7,13 @@ typedef void (^RNNAnimationBlock)(void);
 @implementation UINavigationController (RNNCommands)
 
 - (void)push:(UIViewController *)newTop onTop:(UIViewController *)onTopViewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
-    if([[RCTI18nUtil sharedInstance] isRTL]) {
-        self.view.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
-        self.navigationBar.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
-    } else {
-        self.view.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
-        self.navigationBar.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
-    }
+    // if([[RCTI18nUtil sharedInstance] isRTL]) {
+    //     self.view.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
+    //     self.navigationBar.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
+    // } else {
+    //     self.view.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    //     self.navigationBar.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    // }
     
     [self performAnimationBlock:^{
         [self pushViewController:newTop animated:animated];
