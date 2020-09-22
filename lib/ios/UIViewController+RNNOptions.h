@@ -9,10 +9,11 @@
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
 
 - (void)setSearchBarWithPlaceholder:(NSString *)placeholder
-         hideNavBarOnFocusSearchBar:(BOOL)hideNavBarOnFocusSearchBar
-       searchBarHiddenWhenScrolling:(BOOL)searchBarHiddenWhenScrolling
-                    backgroundColor:(nullable UIColor *)backgroundColor
-                          tintColor:(nullable UIColor *)tintColor;
+			hideTopBarOnFocus:(BOOL)hideNavBarOnFocusSearchBar
+			hideOnScroll:(BOOL)searchBarHiddenWhenScrolling
+			obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
+			backgroundColor:(nullable UIColor *)backgroundColor
+			tintColor:(nullable UIColor *)tintColor;
 
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden;
 

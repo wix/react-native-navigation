@@ -480,6 +480,16 @@ export interface OptionsTopBarButton {
   showAsAction?: 'ifRoom' | 'withText' | 'always' | 'never';
 }
 
+export interface OptionsSearchBar {
+  visible?: boolean;
+  hideOnScroll?: boolean;
+  hideTopBarOnFocus?: boolean;
+  obscuresBackgroundDuringPresentation?: boolean;
+  backgroundColor?: Color;
+  tintColor?: Color;
+  placeholder?: string;
+}
+
 export interface OptionsTopBar {
   /**
    * Show or hide the top bar
@@ -550,7 +560,7 @@ export interface OptionsTopBar {
    * Show a UISearchBar in the Top Bar
    * #### (iOS 11+ specific)
    */
-  searchBar?: boolean;
+  searchBar?: OptionsSearchBar;
   /**
    * Hides the UISearchBar when scrolling
    * #### (iOS 11+ specific)
