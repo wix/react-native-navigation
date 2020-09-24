@@ -11,12 +11,11 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.LayoutDirectionApplier;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -36,7 +35,7 @@ public class RootPresenterTest extends BaseTest {
     private RootPresenter uut;
     private CoordinatorLayout rootContainer;
     private ViewController root;
-    private StackAnimator animator;
+    private RootAnimator animator;
     private LayoutDirectionApplier layoutDirectionApplier;
     private Options defaultOptions;
     private ReactInstanceManager reactInstanceManager;
@@ -131,10 +130,10 @@ public class RootPresenterTest extends BaseTest {
     }
 
     @NonNull
-    private StackAnimator createAnimator(Activity activity) {
-        return new StackAnimator(activity) {
+    private RootAnimator createAnimator(Activity activity) {
+        return new RootAnimator(activity) {
             @Override
-            public void setRoot(View root, AnimationOptions setRoot, Runnable onAnimationEnd) {
+            public void setRoot(@NotNull View root, @NotNull AnimationOptions setRoot, @NotNull Runnable onAnimationEnd) {
                 onAnimationEnd.run();
             }
         };

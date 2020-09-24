@@ -23,7 +23,10 @@ export default class LayoutsScreen extends NavigationComponent {
       topBar: {
         testID: WELCOME_SCREEN_HEADER,
         title: {
-          text: 'React Native Navigation',
+          component: {
+            waitForRender: true,
+            name: Screens.LogoTopBar,
+          },
         },
       },
       layout: {
@@ -34,7 +37,7 @@ export default class LayoutsScreen extends NavigationComponent {
 
   render() {
     return (
-      <Root componentId={this.props.componentId}>
+      <Root nativeID={'layoutScreenRoot'} componentId={this.props.componentId}>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />

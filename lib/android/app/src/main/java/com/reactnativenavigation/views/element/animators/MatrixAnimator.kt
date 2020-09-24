@@ -41,11 +41,11 @@ class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageV
         }
     }
 
-    private fun getScaleType(child: View): ScalingUtils.ScaleType? {
+    private fun getScaleType(child: View): ScalingUtils.ScaleType {
         return getScaleType(child as ReactImageView, child.hierarchy.actualImageScaleType!!)
     }
 
-    private fun getScaleType(child: ReactImageView, scaleType: ScalingUtils.ScaleType): ScalingUtils.ScaleType? {
+    private fun getScaleType(child: ReactImageView, scaleType: ScalingUtils.ScaleType): ScalingUtils.ScaleType {
         if (scaleType is InterpolatingScaleType) return getScaleType(child, scaleType.scaleTypeTo )
         return scaleType
     }

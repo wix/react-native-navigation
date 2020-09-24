@@ -34,6 +34,7 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
 
     private fun animators(): List<PropertyAnimatorCreator<*>> {
         return listOf(
+                SplashImageAnimator(from, to),
                 MatrixAnimator(from, to),
                 XAnimator(from, to),
                 YAnimator(from, to),

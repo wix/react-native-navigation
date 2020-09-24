@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { KeyboardAwareInsetsView } from 'react-native-keyboard-tracking-view';
 import flags from '../flags';
+import colors from '../commons/Colors';
 
 const { showTextInputToTestKeyboardInteraction } = flags;
 
@@ -22,10 +23,11 @@ type RootProps = {
   testID?: string;
   children?: React.ReactNode;
   onLayout?: (event: LayoutChangeEvent) => void;
+  nativeID?: string;
 };
 
-const Root = ({ children, componentId, footer, style, testID, onLayout }: RootProps) => (
-  <SafeAreaView style={styles.root} testID={testID} onLayout={onLayout}>
+const Root = ({ children, componentId, footer, style, testID, onLayout, nativeID }: RootProps) => (
+  <SafeAreaView style={styles.root} testID={testID} onLayout={onLayout} nativeID={nativeID}>
     <ScrollView contentContainerStyle={[styles.scrollView, style]}>
       {children}
       <Footer componentId={componentId} footer={footer} />
@@ -60,6 +62,7 @@ const Footer: React.FC<FooterProps> = ({ componentId, footer }) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: colors.background,
   },
   scrollView: {
     flexGrow: 1,

@@ -1,8 +1,10 @@
 package com.reactnativenavigation.views.element
 
+import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.ElementTransitions
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.SharedElements
+import com.reactnativenavigation.viewcontrollers.splash.SplashViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.finder.ExistingViewFinder
 import com.reactnativenavigation.views.element.finder.OptimisticViewFinder
@@ -12,6 +14,13 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 class TransitionSetCreator {
+    suspend fun create(animation: AnimationOptions, splash: SplashViewController, root: ViewController<*>): TransitionSet {
+        return TransitionSet().apply {
+            addAll(createSharedElementTransitions(splash, root, animation.sharedElements))
+            addAll(createElementTransitions(root, animation.elementTransitions))
+        }
+    }
+
     suspend fun create(
             animation: NestedAnimationsOptions,
             fromScreen: ViewController<*>,
@@ -19,6 +28,26 @@ class TransitionSetCreator {
     ) = TransitionSet().apply {
         addAll(createSharedElementTransitions(fromScreen, toScreen, animation.sharedElements))
         addAll(createElementTransitions(fromScreen, toScreen, animation.elementTransitions))
+    }
+
+    private suspend fun createElementTransitions(
+            screen: ViewController<*>,
+            elementTransitions: ElementTransitions
+    ): List<ElementTransition> = withContext(Dispatchers.Main.immediate) {
+        elementTransitions.transitions
+                .map {
+                    async {
+                        val transition = ElementTransition(it)
+                        OptimisticViewFinder().find(screen, transition.id)?.let {
+                            transition.view = it
+                            transition.viewController = screen
+                        }
+                        transition
+                    }
+                }
+                .awaitAll()
+                .filter { it.isValid() }
+
     }
 
     private suspend fun createSharedElementTransitions(

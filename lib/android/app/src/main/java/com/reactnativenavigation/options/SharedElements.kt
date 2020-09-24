@@ -30,7 +30,6 @@ class SharedElements {
             val result = SharedElements()
             return try {
                 val sharedElements = json.getJSONArray("sharedElementTransitions")
-                if (sharedElements == null || sharedElements.length() == 0) return result
                 for (i in 0 until sharedElements.length()) {
                     result.add(SharedElementTransitionOptions.parse(sharedElements.getJSONObject(i)))
                 }

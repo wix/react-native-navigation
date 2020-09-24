@@ -1,7 +1,8 @@
 package com.reactnativenavigation.playground;
 
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.reactnativenavigation.NavigationActivity;
 
@@ -16,8 +17,9 @@ public class MainActivity extends NavigationActivity {
     }
 
     private void setSplashLayout() {
-        ImageView img = new ImageView(this);
-        img.setImageDrawable(getDrawable(R.drawable.ic_android));
-        setContentView(img);
+        View splash = LayoutInflater.from(this).inflate(R.layout.splash, null);
+        splash.setId(R.id.splash_view);
+        splash.findViewById(R.id.rnnLogo).setTag(com.reactnativenavigation.R.id.nativeId, "rnnLogo");
+        setContentView(splash);
     }
 }

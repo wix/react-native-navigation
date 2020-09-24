@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
+import com.facebook.react.uimanager.util.ReactFindViewUtil;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
@@ -165,7 +166,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (parentController != null) task.run(parentController);
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    @Nullable
     public ParentController getParentController() {
         return parentController;
     }
@@ -369,5 +370,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public int getBottomInset() {
         return perform(parentController, 0, p -> p.getBottomInset(this));
+    }
+
+    @Nullable
+    public View findView(String id) {
+        return perform(view, null, (view) -> ReactFindViewUtil.findView(view, id));
     }
 }

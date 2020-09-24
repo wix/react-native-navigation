@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="react_root_view" type="id"/>
+    <item name="splash_view" type="id"/>
+    <item name="nativeId" type="id"/>
     <item name="fragment_screen_content" type="id"/>
     <item name="topBarBackgroundComponent" type="id"/>
     <item name="bottomTabs" type="id"/>

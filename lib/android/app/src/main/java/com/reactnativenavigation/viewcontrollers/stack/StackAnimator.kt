@@ -6,7 +6,6 @@ import android.animation.AnimatorSet
 import android.content.Context
 import android.view.View
 import androidx.annotation.RestrictTo
-import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.Options
@@ -26,20 +25,6 @@ open class StackAnimator @JvmOverloads constructor(
 ) : BaseAnimator(context) {
     private val runningPushAnimations: MutableMap<View, Animator> = HashMap()
 
-    open fun setRoot(root: View, setRoot: AnimationOptions, onAnimationEnd: Runnable) {
-        root.visibility = View.INVISIBLE
-        val set = setRoot.getAnimation(root)
-        set.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                root.visibility = View.VISIBLE
-            }
-
-            override fun onAnimationEnd(animation: Animator) {
-                onAnimationEnd.run()
-            }
-        })
-        set.start()
-    }
 
     fun push(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, onAnimationEnd: Runnable) {
         val set = createPushAnimator(appearing, onAnimationEnd)
@@ -74,7 +59,7 @@ open class StackAnimator @JvmOverloads constructor(
 
     private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, set: AnimatorSet) {
         val fade = if (pop.content.isFadeAnimation()) pop else FadeAnimation()
-        val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content, disappearing, appearing)
+        val transitionAnimators = transitionAnimatorCreator.create(pop, fade.contentDuration(), disappearing, appearing)
         set.playTogether(fade.content.getAnimation(disappearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
@@ -125,7 +110,7 @@ open class StackAnimator @JvmOverloads constructor(
         appearing.setWaitForRender(Bool(true))
         appearing.view.alpha = 0f
         val fade = if (options.animations.push.content.isFadeAnimation()) options.animations.push.content else FadeAnimation().content
-        val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade, disappearing, appearing)
+        val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade.duration.toLong(), disappearing, appearing)
         set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()

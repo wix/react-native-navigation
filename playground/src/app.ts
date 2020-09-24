@@ -31,9 +31,34 @@ function setRoot() {
   Navigation.setRoot({
     root: {
       bottomTabs: {
+        options: {
+          animations: {
+            setRoot: {
+              sharedElementTransitions: [
+                {
+                  fromId: 'rnnLogo',
+                  toId: 'topBarLogo',
+                  duration: 700,
+                  interpolation: 'decelerate',
+                },
+              ],
+              elementTransitions: [
+                {
+                  id: 'layoutScreenRoot',
+                  alpha: {
+                    from: 0,
+                    to: 1,
+                    duration: 150,
+                  },
+                },
+              ],
+            },
+          },
+        },
         children: [
           {
             stack: {
+              id: 'layoutStack',
               children: [
                 {
                   component: {

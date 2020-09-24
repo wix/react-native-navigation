@@ -58,4 +58,8 @@ public class NestedAnimationsOptions {
     public boolean hasElementsTransition() {
         return sharedElements.hasValue() || elementTransitions.hasValue();
     }
+
+    public long contentDuration() {
+        return content.getDuration();
+    }
 }

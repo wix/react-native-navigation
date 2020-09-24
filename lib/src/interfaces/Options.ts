@@ -243,6 +243,10 @@ export interface OptionsTopBarTitle {
      * Properties to pass down to the component
      */
     passProps?: object;
+    /**
+     * Wait for the view to render before start animation
+     */
+    waitForRender?: boolean;
   };
   /**
    * Top Bar title height in densitiy pixels
@@ -1037,6 +1041,14 @@ export interface ScreenAnimationOptions {
    * @default true
    */
   enabled?: boolean;
+  /**
+   * Animations to be applied on views in the appearing or disappearing screens
+   */
+  elementTransitions?: ElementTransition[];
+  /**
+   * Animations to be applied on elements which are shared between the appearing and disappearing screens
+   */
+  sharedElementTransitions?: SharedElementTransition[];
 }
 
 export interface IconInsets {

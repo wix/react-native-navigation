@@ -4,12 +4,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class FadeAnimation extends NestedAnimationsOptions {
+    public final static long DURATION = 300;
     public FadeAnimation() {
         try {
             JSONObject alpha = new JSONObject();
             alpha.put("from", 0);
             alpha.put("to", 1);
-            alpha.put("duration", 300);
+            alpha.put("duration", DURATION);
 
             JSONObject content = new JSONObject();
             content.put("alpha", alpha);
