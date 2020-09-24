@@ -62,12 +62,11 @@
         [animations addObject:[[TextStorageTransition alloc] initWithView:self.view from:((AnimatedTextView *)self.view).fromTextStorage to:((AnimatedTextView *)self.view).toTextStorage startDelay:startDelay duration:duration interpolation:interpolation]];
     }
 	
-	if (_fromView.layer.cornerRadius != _toView.layer.cornerRadius) {
+    if (self.view.location.fromCornerRadius != self.view.location.toCornerRadius) {
 		// TODO: Use MaskedCorners to only round specific corners, e.g.: borderTopLeftRadius
 		//   self.view.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner | kCALayerMaxXMaxYCorner;
-		// TODO: On pop the cornerRadius animation doesn't work, even though the CornerRadiusTransition::animateWithProgress function is called.
 		self.view.layer.masksToBounds = YES;
-		[animations addObject:[[CornerRadiusTransition alloc] initWithView:self.view fromFloat:_fromView.layer.cornerRadius toFloat:_toView.layer.cornerRadius startDelay:startDelay duration:duration interpolation:interpolation]];
+		[animations addObject:[[CornerRadiusTransition alloc] initWithView:self.view fromFloat:self.view.location.fromCornerRadius toFloat:self.view.location.toCornerRadius startDelay:startDelay duration:duration interpolation:interpolation]];
 	}
     
     return animations;

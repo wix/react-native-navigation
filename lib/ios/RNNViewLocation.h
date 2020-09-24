@@ -8,6 +8,8 @@
 @property (nonatomic) CGRect toBounds;
 @property (nonatomic) CGFloat fromAngle;
 @property (nonatomic) CGFloat toAngle;
+@property (nonatomic) CGFloat fromCornerRadius;
+@property (nonatomic) CGFloat toCornerRadius;
 @property (nonatomic) CATransform3D fromTransform;
 @property (nonatomic) CATransform3D toTransform;
 

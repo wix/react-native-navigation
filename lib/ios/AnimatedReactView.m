@@ -46,6 +46,7 @@
     _originalFrame = _reactView.frame;
     _originalTransform = element.layer.transform;
     _originalLayoutBounds = element.layer.bounds;
+    self.contentMode = element.contentMode;
     self.frame = self.location.fromFrame;
     _originalParent = _reactView.superview;
     _originalCornerRadius = element.layer.cornerRadius;
