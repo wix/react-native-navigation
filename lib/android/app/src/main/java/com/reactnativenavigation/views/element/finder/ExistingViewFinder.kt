@@ -47,7 +47,7 @@ class ExistingViewFinder : ViewFinder {
     }
 
     private fun hasMeasuredDrawable(view: ImageView) = when (view.drawable) {
-        is RootDrawable -> with ((view.drawable as RootDrawable).bounds) { height() != -1 && width() != -1 }
+        is RootDrawable -> true
         else -> with(view.drawable) { intrinsicWidth != -1 && intrinsicHeight != -1 }
     }
 }
