@@ -202,6 +202,9 @@ public class StackController extends ParentController<StackLayout> {
     private void addChildToStack(ViewController child, Options resolvedOptions) {
         child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
         if (size() == 1) presenter.applyInitialChildLayoutOptions(resolvedOptions);
+        if (child.getView().getParent() != null) {
+            ((ViewGroup) child.getView().getParent()).removeView(child.getView());
+        }
         getView().addView(child.getView(), getView().getChildCount() - 1, matchParentWithBehaviour(new StackBehaviour(this)));
     }
 

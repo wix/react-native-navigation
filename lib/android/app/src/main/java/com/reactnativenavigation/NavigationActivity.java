@@ -2,7 +2,9 @@ package com.reactnativenavigation;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AppOpsManager;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -236,7 +238,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean canEnterPiPMode() {
-        // AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-        return true;// (AppOpsManager.MODE_ALLOWED == appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_PICTURE_IN_PICTURE, Process.myUid(), getPackageName()));
+        AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+        return (AppOpsManager.MODE_ALLOWED == appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_PICTURE_IN_PICTURE, android.os.Process.myUid(), getPackageName()));
     }
 }

@@ -9,6 +9,11 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.appcompat.widget.Toolbar;
+
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
@@ -44,12 +49,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.appcompat.widget.Toolbar;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CollectionUtils.difference;
+import static com.reactnativenavigation.utils.CollectionUtils.filter;
+import static com.reactnativenavigation.utils.CollectionUtils.first;
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.getOrDefault;
+import static com.reactnativenavigation.utils.CollectionUtils.keyBy;
+import static com.reactnativenavigation.utils.CollectionUtils.merge;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.ObjectUtils.take;
 
@@ -143,8 +149,10 @@ public class StackPresenter {
     }
 
     public void applyOrientation(OrientationOptions options) {
-        OrientationOptions withDefaultOptions = options.copy().mergeWithDefault(defaultOptions.layout.orientation);
-        ((Activity) topBar.getContext()).setRequestedOrientation(withDefaultOptions.getValue());
+        if (topBar != null) {
+            OrientationOptions withDefaultOptions = options.copy().mergeWithDefault(defaultOptions.layout.orientation);
+            ((Activity) topBar.getContext()).setRequestedOrientation(withDefaultOptions.getValue());
+        }
     }
 
     public void onChildDestroyed(ViewController child) {
@@ -334,7 +342,8 @@ public class StackPresenter {
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
-        if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+        if (topTabOptions.fontFamily != null)
+            topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
     }
 
     public void onChildWillAppear(StackController parent, ViewController appearing, ViewController disappearing) {
@@ -377,7 +386,8 @@ public class StackPresenter {
             topBarController.mergeRightButtons(toMerge, toRemove);
             currentRightButtons = toMerge;
         }
-        if (options.rightButtonColor.hasValue()) topBar.setOverflowButtonColor(options.rightButtonColor.get());
+        if (options.rightButtonColor.hasValue())
+            topBar.setOverflowButtonColor(options.rightButtonColor.get());
     }
 
     private void mergeLeftButton(TopBarOptions options, TopBarButtons buttons, View child) {
@@ -413,15 +423,18 @@ public class StackPresenter {
         AnimationsOptions animationsOptions = options.copy().withDefaultOptions(defaultOptions).animations;
         TopBarOptions topBarOptions = options.topBar;
         final View component = child.getView();
-        if (options.layout.direction.hasValue()) topBar.setLayoutDirection(options.layout.direction);
+        if (options.layout.direction.hasValue())
+            topBar.setLayoutDirection(options.layout.direction);
         if (topBarOptions.height.hasValue()) topBar.setHeight(topBarOptions.height.get());
         if (topBarOptions.elevation.hasValue()) topBar.setElevation(topBarOptions.elevation.get());
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());
         }
 
-        if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
-        if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
+        if (topBarOptions.title.height.hasValue())
+            topBar.setTitleHeight(topBarOptions.title.height.get());
+        if (topBarOptions.title.topMargin.hasValue())
+            topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
 
         if (topBarOptions.title.component.hasValue()) {
             TitleBarReactViewController controller = findTitleComponent(topBarOptions.title.component);
@@ -436,16 +449,24 @@ public class StackPresenter {
             topBar.setTitle(topBarOptions.title.text.get());
         }
 
-        if (topBarOptions.title.color.hasValue()) topBar.setTitleTextColor(topBarOptions.title.color.get());
-        if (topBarOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(topBarOptions.title.fontSize.get());
-        if (topBarOptions.title.fontFamily != null) topBar.setTitleTypeface(topBarOptions.title.fontFamily);
+        if (topBarOptions.title.color.hasValue())
+            topBar.setTitleTextColor(topBarOptions.title.color.get());
+        if (topBarOptions.title.fontSize.hasValue())
+            topBar.setTitleFontSize(topBarOptions.title.fontSize.get());
+        if (topBarOptions.title.fontFamily != null)
+            topBar.setTitleTypeface(topBarOptions.title.fontFamily);
 
-        if (topBarOptions.subtitle.text.hasValue()) topBar.setSubtitle(topBarOptions.subtitle.text.get());
-        if (topBarOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(topBarOptions.subtitle.color.get());
-        if (topBarOptions.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get());
-        if (topBarOptions.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(topBarOptions.subtitle.fontFamily);
+        if (topBarOptions.subtitle.text.hasValue())
+            topBar.setSubtitle(topBarOptions.subtitle.text.get());
+        if (topBarOptions.subtitle.color.hasValue())
+            topBar.setSubtitleColor(topBarOptions.subtitle.color.get());
+        if (topBarOptions.subtitle.fontSize.hasValue())
+            topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get());
+        if (topBarOptions.subtitle.fontFamily != null)
+            topBar.setSubtitleFontFamily(topBarOptions.subtitle.fontFamily);
 
-        if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.get());
+        if (topBarOptions.background.color.hasValue())
+            topBar.setBackgroundColor(topBarOptions.background.color.get());
 
         if (topBarOptions.background.component.hasValue()) {
             if (backgroundControllers.containsKey(component)) {
@@ -495,14 +516,17 @@ public class StackPresenter {
     }
 
     private void mergeTopTabsOptions(TopTabsOptions options) {
-        if (options.selectedTabColor.hasValue() && options.unselectedTabColor.hasValue()) topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
+        if (options.selectedTabColor.hasValue() && options.unselectedTabColor.hasValue())
+            topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         if (options.fontSize.hasValue()) topBar.applyTopTabsFontSize(options.fontSize);
         if (options.visible.hasValue()) topBar.setTopTabsVisible(options.visible.isTrue());
-        if (options.height.hasValue()) topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
+        if (options.height.hasValue())
+            topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
     }
 
     private void mergeTopTabOptions(TopTabOptions topTabOptions) {
-        if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+        if (topTabOptions.fontFamily != null)
+            topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
     }
 
     private LayoutParams getComponentLayoutParams(com.reactnativenavigation.parse.Component component) {

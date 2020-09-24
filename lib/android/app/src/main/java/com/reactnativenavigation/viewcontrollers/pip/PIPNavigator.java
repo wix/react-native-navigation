@@ -91,7 +91,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         floatingLayout.setPipListener(new PIPFloatingLayout.IPIPListener() {
             @Override
             public void onPIPStateChanged(PIPStates oldState, PIPStates newState) {
-                if (PIPNavigator.this.childController != null && !PIPNavigator.this.childController.isDestroyed())
+                if (isChildControlledAvailable())
                     PIPNavigator.this.childController.sendOnPIPStateChanged(oldState.getValue(), newState.getValue());
             }
         });
@@ -144,8 +144,10 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     public void updatePIPState(PIPStates newPIPState) {
         switch (newPIPState) {
             case NATIVE_MOUNTED:
-                receiverRegistered = true;
-                getActivity().registerReceiver(mReceiver, new IntentFilter(childController.options.pipOptions.actionControlGroup));
+                if (isChildControlledAvailable()) {
+                    receiverRegistered = true;
+                    getActivity().registerReceiver(mReceiver, new IntentFilter(childController.options.pipOptions.actionControlGroup));
+                }
                 break;
             case CUSTOM_MOUNTED:
                 if (receiverRegistered) {
@@ -213,8 +215,18 @@ public class PIPNavigator extends ParentController<PIPContainer> {
 
     private void updatePIPStateInternal(PIPStates newPIPState) {
         pipState = newPIPState;
-        if (pipFloatingLayout != null)
-            pipFloatingLayout.updatePIPState(newPIPState);
+        if (pipFloatingLayout != null) {
+            if (newPIPState == PIPStates.CUSTOM_MOUNTED) {
+                if (pipFloatingLayout.isStateAvailable()) {
+                    pipFloatingLayout.updatePIPState(newPIPState);
+                } else {
+                    PIPNavigator.this.childController.sendOnPIPStateChanged(PIPStates.NATIVE_MOUNTED.getValue(), PIPStates.NOT_STARTED.getValue());
+                    clearPIP();
+                }
+            } else {
+                pipFloatingLayout.updatePIPState(newPIPState);
+            }
+        }
     }
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -241,5 +253,9 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void updatePictureInPictureParams() {
         getActivity().setPictureInPictureParams(getPictureInPictureParams());
+    }
+
+    private boolean isChildControlledAvailable() {
+        return PIPNavigator.this.childController != null && !PIPNavigator.this.childController.isDestroyed();
     }
 }

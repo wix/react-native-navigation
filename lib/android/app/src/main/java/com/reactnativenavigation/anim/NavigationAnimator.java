@@ -133,14 +133,18 @@ public class NavigationAnimator extends BaseAnimator {
             @Override
             public void onAnimationCancel(Animator animation) {
                 isCancelled = true;
-                runningPIPAnimations.remove(pip.getView());
+                if (!pip.isDestroyed()) {
+                    runningPIPAnimations.remove(pip.getView());
+                }
                 onAnimationEnd.run();
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (!isCancelled) {
-                    runningPIPAnimations.remove(pip.getView());
+                    if (!pip.isDestroyed()) {
+                        runningPIPAnimations.remove(pip.getView());
+                    }
                     onAnimationEnd.run();
                 }
             }

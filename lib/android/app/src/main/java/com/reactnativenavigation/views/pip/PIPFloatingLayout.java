@@ -150,7 +150,13 @@ public class PIPFloatingLayout extends CoordinatorLayout {
 
     private void setCustomPIPMode() {
         animate().x(this.pipLayoutLeft).y(this.pipLayoutTop).setDuration(0).start();
-        setLayoutParams(layoutParams);
+        if (layoutParams != null) {
+            setLayoutParams(layoutParams);
+        }
+    }
+
+    public boolean isStateAvailable() {
+        return layoutParams != null;
     }
 
     private void initializeCustomLayoutParams() {
