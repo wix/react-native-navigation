@@ -12,6 +12,7 @@ import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
     override fun shouldAnimateProperty(fromChild: ReactImageView, toChild: ReactImageView): Boolean {
@@ -20,12 +21,14 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
 
     override fun create(options: SharedElementTransitionOptions): Animator {
         with(to as ReactImageView) {
+            val parentScaleX = (from.parent as View).scaleX
+            val parentScalyY = (from.parent as View).scaleY
             hierarchy.actualImageScaleType = InterpolatingScaleType(
                     getScaleType(from),
                     getScaleType(to),
-                    calculateBounds(from),
+                    calculateBounds(from, parentScaleX, parentScalyY),
                     calculateBounds(to),
-                    PointF(from.width / 2f, from.height / 2f),
+                    PointF(from.width * parentScaleX / 2f, from.height * parentScalyY / 2f),
                     PointF(to.width / 2f, to.height / 2f)
             )
 
@@ -52,5 +55,11 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
         return scaleType
     }
 
-    private fun calculateBounds(view: View) = Rect(0, 0, view.width, view.height)
+    private fun calculateBounds(view: View, parentScaleX: Float = 1f, parentScaleY: Float = 1f) =
+            Rect(
+                    0,
+                    0,
+                    (view.width * parentScaleX).roundToInt(),
+                    (view.height * parentScaleY).roundToInt()
+            )
 }
