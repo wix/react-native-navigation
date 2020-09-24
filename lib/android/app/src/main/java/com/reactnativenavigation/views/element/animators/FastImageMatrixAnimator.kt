@@ -55,13 +55,10 @@ class FastImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<Im
         ImageView.ScaleType.CENTER_CROP -> centerCropMatrix(from, to)
         ImageView.ScaleType.FIT_XY -> fitXYMatrix(from)
         ImageView.ScaleType.FIT_CENTER -> fitCenterMatrix(from, to)
+        ImageView.ScaleType.CENTER_INSIDE -> fitCenterMatrix(from, to)
         else -> throw RuntimeException("Unsupported ScaleType ${from.scaleType}")
     }
 
-    /**
-     * Calculates the image transformation matrix for an ImageView with ScaleType FIT_XY. This
-     * needs to be manually calculated as the platform does not give us the value for this case.
-     */
     private fun fitXYMatrix(view: ImageView): Matrix {
         val image = view.drawable
         val matrix = Matrix()
@@ -71,10 +68,6 @@ class FastImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<Im
         return matrix
     }
 
-    /**
-     * Calculates the image transformation matrix for an ImageView with ScaleType CENTER_CROP. This
-     * needs to be manually calculated for consistent behavior across all the API levels.
-     */
     private fun centerCropMatrix(from: ImageView, to: ImageView): Matrix {
         val image = to.drawable
         val imageWidth = image.intrinsicWidth
