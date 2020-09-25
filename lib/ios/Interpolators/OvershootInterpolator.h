@@ -7,3 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Interpolator.h"
+
+@interface OvershootInterpolator : NSObject<Interpolator>
+
+@property (readonly) CGFloat from;
+@property (readonly) CGFloat to;
+@property (readonly) CGFloat tension;
+
+- (instancetype)init:(CGFloat)from to:(CGFloat)to tension:(CGFloat)tension;
+
+@end
