@@ -5,9 +5,9 @@ import android.animation.ObjectAnimator
 import android.graphics.Rect
 import android.view.View
 import android.widget.ImageView
-import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.computeInheritedScale
 import kotlin.math.roundToInt
 
 class ClipBoundsAnimator(from: View, to: View) : PropertyAnimatorCreator<ImageView>(from, to) {
@@ -19,10 +19,9 @@ class ClipBoundsAnimator(from: View, to: View) : PropertyAnimatorCreator<ImageVi
         val startDrawingRect = Rect().apply { from.getDrawingRect(this) }
         val endDrawingRect = Rect().apply { to.getDrawingRect(this) }
 
-        val parentScaleX = (from.parent as View).scaleX
-        val parentScaleY = (from.parent as View).scaleY
-        startDrawingRect.right = (startDrawingRect.right * parentScaleX).roundToInt()
-        startDrawingRect.bottom = (startDrawingRect.bottom * parentScaleY).roundToInt()
+        val (inheritedScaleX, inheritedScaleY) = computeInheritedScale(from)
+        startDrawingRect.right = (startDrawingRect.right * inheritedScaleX).roundToInt()
+        startDrawingRect.bottom = (startDrawingRect.bottom * inheritedScaleY).roundToInt()
 
         return ObjectAnimator.ofObject(
                 ClipBoundsEvaluator() {
