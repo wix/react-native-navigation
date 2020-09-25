@@ -10,7 +10,7 @@
 
 @implementation EaseInterpolator
 
-- (instancetype)init:(float)from to:(float)to
+- (instancetype)init:(CGFloat)from to:(CGFloat)to
 {
 	self = [super init];
 	if (self) {
@@ -20,8 +20,8 @@
 	return self;
 }
 
-- (float)interpolate:(float)progress {
-	return _from;
+- (CGFloat)interpolate:(CGFloat)progress {
+	return progress;
 }
 
 @end

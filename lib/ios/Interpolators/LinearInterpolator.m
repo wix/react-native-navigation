@@ -6,4 +6,22 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "LinearInterpolator.h"
+
+@implementation LinearInterpolator
+
+- (instancetype)init:(CGFloat)from to:(CGFloat)to
+{
+	self = [super init];
+	if (self) {
+		_from = from;
+		_to = to;
+	}
+	return self;
+}
+
+- (CGFloat)interpolate:(CGFloat)progress {
+	return progress;
+}
+
+@end
