@@ -21,7 +21,21 @@
 }
 
 - (CGFloat)interpolate:(CGFloat)progress {
-	return progress;
+	// ease = bezier(0.42, 0, 1, 1)
+	CGFloat p0 = 0.42f;
+	CGFloat p1 = 0f;
+	CGFloat p2 = 1;
+	CGFloat p3 = 1;
+	
+	if (progress < 0) {
+		return 0;
+	}
+	if (progress > 1) {
+		return 1;
+	}
+	
+	// https://en.wikipedia.org/wiki/Bézier_curve#Cubic_Bézier_curves
+	return powf(1 - progress, 3) * p0 + 3 * powf(1 - progress, 2) * progress * p1 + 3 * (1 - progress) * powf(progress, 2) * p2 + powf(progress, 3) * p3;
 }
 
 @end
