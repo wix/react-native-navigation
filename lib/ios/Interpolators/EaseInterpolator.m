@@ -20,12 +20,13 @@
 	return self;
 }
 
+static CGFloat p0 = 0.42f;
+static CGFloat p1 = 0;
+static CGFloat p2 = 1;
+static CGFloat p3 = 1;
+
 - (CGFloat)interpolate:(CGFloat)progress {
 	// ease = bezier(0.42, 0, 1, 1)
-	CGFloat p0 = 0.42f;
-	CGFloat p1 = 0f;
-	CGFloat p2 = 1;
-	CGFloat p3 = 1;
 	
 	if (progress < 0) {
 		return 0;
