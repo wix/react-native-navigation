@@ -430,6 +430,8 @@
 		B8415321251E088100467F37 /* LinearInterpolator.h in Headers */ = {isa = PBXBuildFile; fileRef = B841531A251E088100467F37 /* LinearInterpolator.h */; };
 		B8415322251E088100467F37 /* SpringInterpolator.h in Headers */ = {isa = PBXBuildFile; fileRef = B841531B251E088100467F37 /* SpringInterpolator.h */; };
 		B841532A251E08E700467F37 /* Interpolator.h in Sources */ = {isa = PBXBuildFile; fileRef = B8415329251E08E700467F37 /* Interpolator.h */; };
+		B8415331251E116D00467F37 /* BackInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = B841532F251E116D00467F37 /* BackInterpolator.m */; };
+		B8415332251E116D00467F37 /* BackInterpolator.h in Headers */ = {isa = PBXBuildFile; fileRef = B8415330251E116D00467F37 /* BackInterpolator.h */; };
 		B85AB5972510EA29006EA39E /* RNNInterpolation.m in Sources */ = {isa = PBXBuildFile; fileRef = B85AB5962510EA29006EA39E /* RNNInterpolation.m */; };
 		B8B2BB6524FFCC9500FC6575 /* CornerRadiusTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B2BB6324FFCC9500FC6575 /* CornerRadiusTransition.h */; };
 		B8B2BB6624FFCC9500FC6575 /* CornerRadiusTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B2BB6424FFCC9500FC6575 /* CornerRadiusTransition.m */; };
@@ -947,6 +949,8 @@
 		B841531A251E088100467F37 /* LinearInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinearInterpolator.h; sourceTree = "<group>"; };
 		B841531B251E088100467F37 /* SpringInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpringInterpolator.h; sourceTree = "<group>"; };
 		B8415329251E08E700467F37 /* Interpolator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Interpolator.h; sourceTree = "<group>"; };
+		B841532F251E116D00467F37 /* BackInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackInterpolator.m; sourceTree = "<group>"; };
+		B8415330251E116D00467F37 /* BackInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackInterpolator.h; sourceTree = "<group>"; };
 		B85AB5962510EA29006EA39E /* RNNInterpolation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNInterpolation.m; sourceTree = "<group>"; };
 		B85AB5982510EA3A006EA39E /* RNNInterpolation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNInterpolation.h; sourceTree = "<group>"; };
 		B8B2BB6324FFCC9500FC6575 /* CornerRadiusTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerRadiusTransition.h; sourceTree = "<group>"; };
@@ -1621,6 +1625,8 @@
 		B841530E251E078000467F37 /* Interpolators */ = {
 			isa = PBXGroup;
 			children = (
+				B8415330251E116D00467F37 /* BackInterpolator.h */,
+				B841532F251E116D00467F37 /* BackInterpolator.m */,
 				B8415317251E088100467F37 /* EaseInterpolator.h */,
 				B8415315251E088100467F37 /* EaseInterpolator.m */,
 				B841531A251E088100467F37 /* LinearInterpolator.h */,
@@ -1757,6 +1763,7 @@
 				507ACB1523F44E5200829911 /* RNNComponentRootView.h in Headers */,
 				5061B6C723D48449008B9827 /* VerticalRotationTransition.h in Headers */,
 				50EB4ED72068EBE000D6ED34 /* RNNBackgroundOptions.h in Headers */,
+				B8415332251E116D00467F37 /* BackInterpolator.h in Headers */,
 				503A8A2123BCE9C60094D1C4 /* RNNReactBackgroundView.h in Headers */,
 				5030B62B23D5D732008F1642 /* ContentTransitionCreator.h in Headers */,
 				504AFE761FFFF1E00076E904 /* RNNNavigationOptions.h in Headers */,
@@ -2189,6 +2196,7 @@
 				50E02BDC21A6EE7900A43942 /* SideMenuOpenGestureModeParser.m in Sources */,
 				7BEF0D1D1E43771B003E96B0 /* RNNLayoutNode.m in Sources */,
 				7BA500781E254908001B9E1B /* RNNSplashScreen.m in Sources */,
+				B8415331251E116D00467F37 /* BackInterpolator.m in Sources */,
 				50996C6E23AA68B900008F89 /* DisplayLinkAnimator.m in Sources */,
 				5038A3B6216DF602009280BC /* UINavigationController+RNNOptions.m in Sources */,
 				503A8A0A23BB86200094D1C4 /* TimeIntervalParser.m in Sources */,
