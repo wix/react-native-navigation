@@ -6,4 +6,22 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "EaseInterpolator.h"
+
+@implementation EaseInterpolator
+
+- (instancetype)init:(float)from to:(float)to
+{
+	self = [super init];
+	if (self) {
+		_from = from;
+		_to = to;
+	}
+	return self;
+}
+
+- (float)interpolate:(float)progress {
+	return _from;
+}
+
+@end

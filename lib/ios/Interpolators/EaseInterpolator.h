@@ -6,4 +6,13 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "Interpolator.h"
+
+@interface EaseInterpolator : NSObject<Interpolator>
+
+@property (readonly) float from;
+@property (readonly) float to;
+
+- (instancetype)init:(float)from to:(float)to;
+
+@end
