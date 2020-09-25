@@ -8,6 +8,8 @@
 
 #import "BackInterpolator.h"
 
+static const CGFloat s = 1.70158;
+
 @implementation BackInterpolator
 
 - (instancetype)init:(CGFloat)from to:(CGFloat)to
@@ -19,8 +21,6 @@
 	}
 	return self;
 }
-
-static CGFloat s = 1.70158;
 
 - (CGFloat)interpolate:(CGFloat)progress {
 	return progress * progress * ((s + 1) * progress - s);
