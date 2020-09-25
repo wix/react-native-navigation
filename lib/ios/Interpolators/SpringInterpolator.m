@@ -24,6 +24,7 @@
 }
 
 - (CGFloat)interpolate:(CGFloat)progress {
+	// https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator
 	return progress;
 }
 

@@ -8,6 +8,11 @@
 
 #import "EaseInterpolator.h"
 
+static const CGFloat p0 = 0.42f;
+static const CGFloat p1 = 0;
+static const CGFloat p2 = 1;
+static const CGFloat p3 = 1;
+
 @implementation EaseInterpolator
 
 - (instancetype)init:(CGFloat)from to:(CGFloat)to
@@ -19,11 +24,6 @@
 	}
 	return self;
 }
-
-static CGFloat p0 = 0.42f;
-static CGFloat p1 = 0;
-static CGFloat p2 = 1;
-static CGFloat p3 = 1;
 
 - (CGFloat)interpolate:(CGFloat)progress {
 	// ease = bezier(0.42, 0, 1, 1)
