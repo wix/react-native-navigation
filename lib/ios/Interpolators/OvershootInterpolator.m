@@ -22,7 +22,11 @@
 }
 
 - (CGFloat)interpolate:(CGFloat)progress {
-	return progress;
+	// _o(t) = t * t * ((tension + 1) * t + tension)
+	// o(t) = _o(t - 1) + 1
+	CGFloat t = progress - 1;
+	CGFloat _ot = t * t * ((tension + 1) * t + tension) + 1.0f;
+	return _ot;
 }
 
 @end
