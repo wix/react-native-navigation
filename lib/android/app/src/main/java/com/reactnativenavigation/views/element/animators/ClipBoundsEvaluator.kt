@@ -12,24 +12,8 @@ class ClipBoundsEvaluator(private val onEvaluate: (Rect) -> Unit) : TypeEvaluato
 
     override fun evaluate(ratio: Float, from: Rect, to: Rect): Rect {
         sync(from, to)
-        if (toHeight == fromHeight) {
-            result.bottom = toHeight
-        } else {
-            if (toHeight > fromHeight) {
-                result.bottom = (toHeight - (toHeight - fromHeight) * (1 - ratio)).toInt()
-            } else {
-                result.bottom = (toHeight + (fromHeight - toHeight) * (1 - ratio)).toInt()
-            }
-        }
-        if (toWidth == fromWidth) {
-            result.right = toWidth
-        } else {
-            if (toWidth > fromWidth) {
-                result.right = (toWidth - (toWidth - fromWidth) * (1 - ratio)).toInt()
-            } else {
-                result.right = (toWidth + (fromWidth - toWidth) * (1 - ratio)).toInt()
-            }
-        }
+        result.right = (fromWidth + (toWidth - fromWidth) * ratio).toInt()
+        result.bottom = (fromHeight + (toHeight - fromHeight) * ratio).toInt()
         onEvaluate(result)
         return result
     }
