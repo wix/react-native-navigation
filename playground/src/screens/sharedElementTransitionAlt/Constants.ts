@@ -18,13 +18,13 @@ export async function buildSharedElementAnimations(post: PostItem): Promise<Anim
           fromId: `image${post.id}`,
           toId: `image${post.id}Dest`,
           duration: SET_DURATION,
-          interpolation: 'spring',
+          interpolation: 'overshoot',
         },
         {
           fromId: `title${post.id}`,
           toId: `title${post.id}Dest`,
           duration: SET_DURATION,
-          interpolation: 'spring',
+          interpolation: 'overshoot',
         },
       ],
       bottomTabs: {
@@ -55,7 +55,7 @@ export async function buildSharedElementAnimations(post: PostItem): Promise<Anim
           fromId: `image${post.id}Dest`,
           toId: `image${post.id}`,
           duration: SET_DURATION,
-          interpolation: 'spring',
+          interpolation: 'overshoot',
         },
       ],
       bottomTabs: {

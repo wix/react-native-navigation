@@ -33,6 +33,24 @@ If the button has text, this option is used to set font size in DP.
 | ------ | -------- | -------- |
 | number | No       | Both     |
 
+### `fontFamily`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+### `fontStyle`
+
+| Type                     | Required | Platform |
+| ------------------------ | -------- | -------- |
+| enum('normal', 'italic') | No       | Both     |
+
+### `fontWeight`
+
+| Type                                                                                  | Required | Platform |
+| ------------------------------------------------------------------------------------- | -------- | -------- |
+| enum('normal', 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900') | No       | Both     |
+
 ### `id`
 
 Buttons are identified by their id property. When a button is clicked, a buttonPress event is emitted to js, containing the id of the clicked button.

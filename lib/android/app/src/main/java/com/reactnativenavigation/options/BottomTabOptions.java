@@ -39,7 +39,11 @@ public class BottomTabOptions {
         options.badgeColor = ColorParser.parse(context, json, "badgeColor");
         options.animateBadge = BoolParser.parse(json, "animateBadge");
         options.testId = TextParser.parse(json, "testID");
-        options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
+        options.fontFamily = typefaceManager.getTypeFace(
+                json.optString("fontFamily", ""),
+                json.optString("fontStyle", ""),
+                json.optString("fontWeight", "")
+        );
         options.fontSize = NumberParser.parse(json, "fontSize");
         options.selectedFontSize = NumberParser.parse(json, "selectedFontSize");
         options.dotIndicator = DotIndicatorOptions.parse(context, json.optJSONObject("dotIndicator"));

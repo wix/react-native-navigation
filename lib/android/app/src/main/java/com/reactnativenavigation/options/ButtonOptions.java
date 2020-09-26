@@ -45,7 +45,6 @@ public class ButtonOptions {
     public Colour color = new NullColor();
     public Colour disabledColor = new NullColor();
     public Fraction fontSize = new NullFraction();
-    private Text fontWeight = new NullText();
     @Nullable public Typeface fontFamily;
     public Text icon = new NullText();
     public Text testId = new NullText();
@@ -62,7 +61,6 @@ public class ButtonOptions {
                color.equals(other.color) &&
                disabledColor.equals(other.disabledColor) &&
                fontSize.equals(other.fontSize) &&
-               fontWeight.equals(other.fontWeight) &&
                Objects.equals(fontFamily, other.fontFamily) &&
                icon.equals(other.icon) &&
                testId.equals(other.testId) &&
@@ -81,8 +79,11 @@ public class ButtonOptions {
         button.color = ColorParser.parse(context, json, "color");
         button.disabledColor = ColorParser.parse(context, json, "disabledColor");
         button.fontSize = FractionParser.parse(json, "fontSize");
-        button.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
-        button.fontWeight = TextParser.parse(json, "fontWeight");
+        button.fontFamily = typefaceManager.getTypeFace(
+                json.optString("fontFamily", ""),
+                json.optString("fontStyle", ""),
+                json.optString("fontWeight", "")
+        );
         button.testId = TextParser.parse(json, "testID");
         button.component = ComponentOptions.parse(json.optJSONObject("component"));
 
@@ -165,7 +166,6 @@ public class ButtonOptions {
         if (other.disabledColor.hasValue()) disabledColor = other.disabledColor;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.fontFamily != null) fontFamily = other.fontFamily;
-        if (other.fontWeight.hasValue()) fontWeight = other.fontWeight;
         if (other.testId.hasValue()) testId = other.testId;
         if (other.component.hasValue()) component = other.component;
         if (other.showAsAction.hasValue()) showAsAction = other.showAsAction;
@@ -184,7 +184,6 @@ public class ButtonOptions {
         if (!disabledColor.hasValue()) disabledColor = defaultOptions.disabledColor;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
-        if (!fontWeight.hasValue()) fontWeight = defaultOptions.fontWeight;
         if (!testId.hasValue()) testId = defaultOptions.testId;
         if (!component.hasValue()) component = defaultOptions.component;
         if (!showAsAction.hasValue()) showAsAction = defaultOptions.showAsAction;

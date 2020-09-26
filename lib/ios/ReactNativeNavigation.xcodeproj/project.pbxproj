@@ -418,6 +418,8 @@
 		7BEF0D191E437684003E96B0 /* RNNComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF0D171E437684003E96B0 /* RNNComponentViewController.m */; };
 		7BEF0D1C1E43771B003E96B0 /* RNNLayoutNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEF0D1A1E43771B003E96B0 /* RNNLayoutNode.h */; };
 		7BEF0D1D1E43771B003E96B0 /* RNNLayoutNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */; };
+		91CB34C3250ECFEC000C132B /* RNNSearchBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 91CB34BE250EC7F7000C132B /* RNNSearchBarOptions.m */; };
+		91CB34C9250ED50C000C132B /* RNNSearchBarOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 91CB34C5250ED303000C132B /* RNNSearchBarOptions.h */; };
 		9F8E06B524EBDB48004BDA83 /* RCTConvert+Interpolation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E06B424EBDB48004BDA83 /* RCTConvert+Interpolation.m */; };
 		9FDA2ABE24F2A42C005678CC /* RCTConvert+UIFontWeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDA2ABD24F2A42C005678CC /* RCTConvert+UIFontWeight.m */; };
 		9FDA2AC024F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDA2ABF24F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m */; };
@@ -925,6 +927,8 @@
 		7BEF0D171E437684003E96B0 /* RNNComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNComponentViewController.m; sourceTree = "<group>"; };
 		7BEF0D1A1E43771B003E96B0 /* RNNLayoutNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNLayoutNode.h; sourceTree = "<group>"; };
 		7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNLayoutNode.m; sourceTree = "<group>"; };
+		91CB34BE250EC7F7000C132B /* RNNSearchBarOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSearchBarOptions.m; sourceTree = "<group>"; };
+		91CB34C5250ED303000C132B /* RNNSearchBarOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSearchBarOptions.h; sourceTree = "<group>"; };
 		9F8E06B424EBDB48004BDA83 /* RCTConvert+Interpolation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+Interpolation.m"; sourceTree = "<group>"; };
 		9FDA2ABD24F2A42C005678CC /* RCTConvert+UIFontWeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIFontWeight.m"; sourceTree = "<group>"; };
 		9FDA2ABF24F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+SideMenuOpenGestureMode.m"; sourceTree = "<group>"; };
@@ -1314,6 +1318,8 @@
 				50D3A37123B8D77C00717F95 /* SharedElementTransitionOptions.m */,
 				50FCD83523FC102200000DD0 /* DeprecationOptions.h */,
 				50FCD83623FC102200000DD0 /* DeprecationOptions.m */,
+				91CB34BE250EC7F7000C132B /* RNNSearchBarOptions.m */,
+				91CB34C5250ED303000C132B /* RNNSearchBarOptions.h */,
 			);
 			name = Options;
 			sourceTree = "<group>";
@@ -1718,6 +1724,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91CB34C9250ED50C000C132B /* RNNSearchBarOptions.h in Headers */,
 				5060DE73219DAD7E00D0C052 /* ReactNativeNavigation.h in Headers */,
 				5022EDBD2405237100852BA6 /* BottomTabPresenterCreator.h in Headers */,
 				507ACB1523F44E5200829911 /* RNNComponentRootView.h in Headers */,
@@ -2055,6 +2062,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91CB34C3250ECFEC000C132B /* RNNSearchBarOptions.m in Sources */,
 				50C4A497206BDDBB00DB292E /* RNNSubtitleOptions.m in Sources */,
 				509416A823A11C630036092C /* EnumParser.m in Sources */,
 				50AB0B1D2255F8640039DAED /* UIViewController+LayoutProtocol.m in Sources */,

@@ -55,11 +55,12 @@
         [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor getWithDefaultValue:viewController.view.backgroundColor]];
     }
     
-    if ([withDefault.topBar.searchBar getWithDefaultValue:NO]) {
-        BOOL hideNavBarOnFocusSearchBar = [withDefault.topBar.hideNavBarOnFocusSearchBar getWithDefaultValue:YES];
-        BOOL searchBarHiddenWhenScrolling = [withDefault.topBar.searchBarHiddenWhenScrolling getWithDefaultValue:NO];
+    if ([withDefault.topBar.searchBar.visible getWithDefaultValue:NO]) {
+		BOOL hideTopBarOnFocus = [withDefault.topBar.searchBar.hideTopBarOnFocus getWithDefaultValue:YES];
+		BOOL hideOnScroll = [withDefault.topBar.searchBar.hideOnScroll getWithDefaultValue:NO];
+        BOOL obscuresBackgroundDuringPresentation = [withDefault.topBar.searchBar.obscuresBackgroundDuringPresentation getWithDefaultValue:NO];
         
-        [viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar searchBarHiddenWhenScrolling:searchBarHiddenWhenScrolling backgroundColor:[options.topBar.searchBarBackgroundColor getWithDefaultValue:nil] tintColor:[options.topBar.searchBarTintColor getWithDefaultValue:nil]];
+		[viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBar.placeholder getWithDefaultValue:@""] hideTopBarOnFocus:hideTopBarOnFocus hideOnScroll:hideOnScroll obscuresBackgroundDuringPresentation:obscuresBackgroundDuringPresentation backgroundColor:[options.topBar.searchBar.backgroundColor getWithDefaultValue:nil] tintColor:[options.topBar.searchBar.tintColor getWithDefaultValue:nil]];
     }
     
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
@@ -91,11 +92,12 @@
         [viewController setBackgroundImage:options.backgroundImage.get];
     }
     
-    if ([withDefault.topBar.searchBar getWithDefaultValue:NO]) {
-        BOOL hideNavBarOnFocusSearchBar = [withDefault.topBar.hideNavBarOnFocusSearchBar getWithDefaultValue:YES];
-        BOOL searchBarHiddenWhenScrolling = [withDefault.topBar.searchBarHiddenWhenScrolling getWithDefaultValue:NO];
-        
-        [viewController setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""] hideNavBarOnFocusSearchBar:hideNavBarOnFocusSearchBar searchBarHiddenWhenScrolling:searchBarHiddenWhenScrolling backgroundColor:[options.topBar.searchBarBackgroundColor getWithDefaultValue:nil] tintColor:[options.topBar.searchBarTintColor getWithDefaultValue:nil]];
+    if ([withDefault.topBar.searchBar.visible getWithDefaultValue:NO]) {
+        BOOL hideTopBarOnFocus = [withDefault.topBar.searchBar.hideTopBarOnFocus getWithDefaultValue:YES];
+        BOOL hideOnScroll = [withDefault.topBar.searchBar.hideOnScroll getWithDefaultValue:NO];
+        BOOL obscuresBackgroundDuringPresentation = [withDefault.topBar.searchBar.obscuresBackgroundDuringPresentation getWithDefaultValue:NO];
+			
+		[viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBar.placeholder getWithDefaultValue:@""] hideTopBarOnFocus:hideTopBarOnFocus hideOnScroll:hideOnScroll obscuresBackgroundDuringPresentation:obscuresBackgroundDuringPresentation backgroundColor:[options.topBar.searchBar.backgroundColor getWithDefaultValue:nil] tintColor:[options.topBar.searchBar.tintColor getWithDefaultValue:nil]];
     }
 
     if (options.topBar.drawBehind.hasValue) {

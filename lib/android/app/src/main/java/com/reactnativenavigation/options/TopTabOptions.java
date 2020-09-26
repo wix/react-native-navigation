@@ -20,7 +20,7 @@ public class TopTabOptions {
         if (json == null) return result;
 
         result.title = TextParser.parse(json, "title");
-        result.fontFamily = typefaceManager.getTypeFace(json.optString("titleFontFamily"));
+        result.fontFamily = typefaceManager.getTypeFace(json.optString("titleFontFamily"), null, null);
         return result;
     }
 

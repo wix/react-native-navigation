@@ -27,12 +27,14 @@ export default class SearchScreen extends React.Component<NavigationComponentPro
         largeTitle: {
           visible: true,
         },
-        searchBar: true,
+        searchBar: {
+          visible: true,
+          placeholder: 'Start Typing',
+          hideTopBarOnFocus: false,
+        },
         background: {
           translucent: true,
         },
-        searchBarPlaceholder: 'Start Typing',
-        hideNavBarOnFocusSearchBar: false,
       },
     };
   }
