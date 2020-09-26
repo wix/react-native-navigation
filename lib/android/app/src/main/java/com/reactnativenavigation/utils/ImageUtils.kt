@@ -11,8 +11,8 @@ fun areDimensionsWithInheritedScaleEqual(a: View, b: View): Boolean {
 
 fun computeInheritedScale(v: View): Scale {
     return Scale(
-            x = v.scaleX * v.parent.scaleX * v.parent.parent.scaleX,
-            y = v.scaleY * v.parent.scaleY * v.parent.parent.scaleY
+            x = v.scaleX * v.parent.scaleX * v.grandparent.scaleX,
+            y = v.scaleY * v.parent.scaleY * v.grandparent.scaleY
     )
 }
 
