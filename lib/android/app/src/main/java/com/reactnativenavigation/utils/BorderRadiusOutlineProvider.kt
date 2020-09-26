@@ -1,11 +1,14 @@
 package com.reactnativenavigation.utils
 
 import android.graphics.Outline
+import android.os.Build
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 
-class RoundCornersOutlineProvider(private val image: ImageView, initialRadius: Float) : ViewOutlineProvider() {
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+class BorderRadiusOutlineProvider(private val image: ImageView, initialRadius: Float) : ViewOutlineProvider() {
     var radius: Float = initialRadius
         private set
 
