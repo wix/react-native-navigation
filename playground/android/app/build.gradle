@@ -1,16 +1,19 @@
 apply plugin: "com.android.application"
 
+def enableHermes = false
 project.ext.react = [
         root     : "../../../",
         entryFile: "index.js",
         bundleAssetName: "index.android.bundle",
         bundleInAlpha: true,
         bundleInBeta: true,
-        enableHermes: true,
+        enableHermes: enableHermes,
         hermesFlagsDebug:['-Xes6-proxy','-output-source-map'],
         hermesFlagsRelease:['-output-source-map'],
         hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermesc",
 ]
+
+def jscFlavor = 'org.webkit:android-jsc:+'
 
 apply from: "../../../node_modules/react-native/react.gradle"
 
@@ -58,10 +61,15 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
-    def hermesPath = '../../../node_modules/hermes-engine/android/'
-    debugImplementation files(hermesPath + "hermes-debug.aar")
-    releaseImplementation files(hermesPath + "hermes-release.aar")
 
+    implementation project(':react-native-fast-image')
+    if (enableHermes) {
+        def hermesPath = "../../node_modules/hermes-engine/android/";
+        debugImplementation files(hermesPath + "hermes-debug.aar")
+        releaseImplementation files(hermesPath + "hermes-release.aar")
+    } else {
+        implementation jscFlavor
+    }
 
     //noinspection GradleDynamicVersion
     implementation project(':react-native-navigation')
