@@ -16,9 +16,11 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
+import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.SubtitleOptions;
@@ -28,6 +30,7 @@ import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.TitleBarHelper;
@@ -45,6 +48,7 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
 
@@ -67,6 +71,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @LooperMode(LooperMode.Mode.PAUSED)
 public class StackPresenterTest extends BaseTest {
@@ -303,6 +308,9 @@ public class StackPresenterTest extends BaseTest {
 
     @Test
     public void mergeTopBarOptions() {
+        TypefaceLoader mockLoader = Mockito.mock(TypefaceLoaderMock.class);
+        when(mockLoader.getTypeFace(any(), any(), any())).thenReturn(Typeface.DEFAULT_BOLD);
+
         Options options = new Options();
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         assertTopBarOptions(options, 0);
@@ -313,7 +321,8 @@ public class StackPresenterTest extends BaseTest {
         title.component.componentId = new Text("compId");
         title.color = new Colour(0);
         title.fontSize = new Fraction(1.0f);
-        title.fontFamily = Typeface.DEFAULT_BOLD;
+        title.font = new FontOptions(mockLoader);
+        title.font.setFontStyle(new Text("bold"));
         options.topBar.title = title;
         SubtitleOptions subtitleOptions = new SubtitleOptions();
         subtitleOptions.text = new Text("Sub");

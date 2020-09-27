@@ -1,19 +1,12 @@
 package com.reactnativenavigation.options.parsers;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.facebook.react.views.text.ReactTypefaceUtils;
 
 import androidx.annotation.Nullable;
-
-import com.facebook.react.views.text.ReactTypefaceUtils;
 
 public class TypefaceLoader {
 
@@ -34,6 +27,4 @@ public class TypefaceLoader {
 				context.getAssets()
 		);
 	}
-
 }
-

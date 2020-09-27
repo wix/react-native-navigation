@@ -2,7 +2,6 @@ package com.reactnativenavigation.options;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;
@@ -18,6 +17,8 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
+
+import androidx.annotation.NonNull;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -88,7 +89,7 @@ public class OptionsTest extends BaseTest {
         assertThat(result.topBar.title.height.get()).isEqualTo(TITLE_HEIGHT.get());
         assertThat(result.topBar.title.color.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
         assertThat(result.topBar.title.fontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
-        assertThat(result.topBar.title.fontFamily).isEqualTo(TOP_BAR_TYPEFACE);
+        assertThat(result.topBar.title.font.getTypeface()).isEqualTo(TOP_BAR_TYPEFACE);
         assertThat(result.topBar.subtitle.color.get()).isEqualTo(SUBTITLE_TEXT_COLOR);
         assertThat(result.topBar.subtitle.fontSize.get()).isEqualTo(SUBTITLE_FONT_SIZE);
         assertThat(result.topBar.subtitle.alignment).isEqualTo(Alignment.fromString(SUBTITLE_ALIGNMENT));

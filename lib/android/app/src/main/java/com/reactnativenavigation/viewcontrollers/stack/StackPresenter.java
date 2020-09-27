@@ -192,7 +192,7 @@ public class StackPresenter {
 
         topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
         topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
-        topBar.setTitleTypeface(topBarOptions.title.fontFamily);
+        topBar.setTitleTypeface(topBarOptions.title.font.getTypeface());
         topBar.setTitleAlignment(topBarOptions.title.alignment);
 
         topBar.setSubtitle(topBarOptions.subtitle.text.get(""));
@@ -439,7 +439,7 @@ public class StackPresenter {
 
         if (topBarOptions.title.color.hasValue()) topBar.setTitleTextColor(topBarOptions.title.color.get());
         if (topBarOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(topBarOptions.title.fontSize.get());
-        if (topBarOptions.title.fontFamily != null) topBar.setTitleTypeface(topBarOptions.title.fontFamily);
+        if (topBarOptions.title.font.getTypeface() != null) topBar.setTitleTypeface(topBarOptions.title.font.getTypeface());
 
         if (topBarOptions.subtitle.text.hasValue()) topBar.setSubtitle(topBarOptions.subtitle.text.get());
         if (topBarOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(topBarOptions.subtitle.color.get());
