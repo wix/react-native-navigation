@@ -142,8 +142,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setSubtitleTextColor(color);
     }
 
-    public void setSubtitleFontFamily(Typeface fontFamily) {
-        titleBar.setSubtitleTypeface(fontFamily);
+    public void setSubtitleTypeface(FontOptions font) {
+        titleBar.setSubtitleTypeface(font);
     }
 
     public void setSubtitleFontSize(double size) {

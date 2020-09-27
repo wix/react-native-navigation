@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.TypedValue;
@@ -115,9 +114,9 @@ public class TitleBar extends Toolbar {
         titleAlignment = alignment;
     }
 
-    public void setSubtitleTypeface(Typeface typeface) {
+    public void setSubtitleTypeface(FontOptions font) {
         TextView subtitleTextView = findSubtitleTextView();
-        if (subtitleTextView != null) subtitleTextView.setTypeface(typeface);
+        if (subtitleTextView != null) subtitleTextView.setTypeface(font.getTypeface(subtitleTextView.getTypeface()));
     }
 
     public void setSubtitleFontSize(double size) {
