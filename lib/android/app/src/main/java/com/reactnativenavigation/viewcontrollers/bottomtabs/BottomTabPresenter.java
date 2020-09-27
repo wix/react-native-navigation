@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
@@ -51,7 +52,7 @@ public class BottomTabPresenter {
         bottomTabs.perform(bottomTabs -> {
             for (int i = 0; i < tabs.size(); i++) {
                 BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
-                bottomTabs.setTitleTypeface(i, tab.fontFamily);
+                bottomTabs.setTitleTypeface(i, tab.font.getTypeface(Typeface.DEFAULT));
                 if (tab.selectedIconColor.canApplyValue()) bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
                 if (tab.iconColor.canApplyValue()) bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
                 bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
@@ -77,7 +78,7 @@ public class BottomTabPresenter {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
                 BottomTabOptions tab = options.bottomTabOptions;
-                if (tab.fontFamily != null) bottomTabs.setTitleTypeface(index, tab.fontFamily);
+                if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(Typeface.DEFAULT));
                 if (canMerge(tab.selectedIconColor)) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
                 if (canMerge(tab.iconColor)) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
                 if (tab.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, tab.selectedTextColor.get());

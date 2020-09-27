@@ -1,7 +1,6 @@
 package com.reactnativenavigation.options;
 
 import android.content.Context;
-import android.graphics.Typeface;
 
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
@@ -20,8 +19,6 @@ import com.reactnativenavigation.options.parsers.TypefaceLoader;
 
 import org.json.JSONObject;
 
-import androidx.annotation.Nullable;
-
 public class BottomTabOptions {
 
     public static BottomTabOptions parse(Context context, TypefaceLoader typefaceManager, JSONObject json) {
@@ -39,11 +36,7 @@ public class BottomTabOptions {
         options.badgeColor = ColorParser.parse(context, json, "badgeColor");
         options.animateBadge = BoolParser.parse(json, "animateBadge");
         options.testId = TextParser.parse(json, "testID");
-        options.fontFamily = typefaceManager.getTypeFace(
-                json.optString("fontFamily", ""),
-                json.optString("fontStyle", ""),
-                json.optString("fontWeight", "")
-        );
+        options.font = new FontOptions(typefaceManager);
         options.fontSize = NumberParser.parse(json, "fontSize");
         options.selectedFontSize = NumberParser.parse(json, "selectedFontSize");
         options.dotIndicator = DotIndicatorOptions.parse(context, json.optJSONObject("dotIndicator"));
@@ -67,7 +60,7 @@ public class BottomTabOptions {
     public Number fontSize = new NullNumber();
     public Number selectedFontSize = new NullNumber();
     public Bool selectTabOnPress = new NullBool();
-    @Nullable public Typeface fontFamily;
+    public FontOptions font = new FontOptions();
 
 
     void mergeWith(final BottomTabOptions other) {
@@ -84,7 +77,7 @@ public class BottomTabOptions {
         if (other.testId.hasValue()) testId = other.testId;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.selectedFontSize.hasValue()) selectedFontSize = other.selectedFontSize;
-        if (other.fontFamily != null) fontFamily = other.fontFamily;
+        font.mergeWith(other.font);
         if (other.dotIndicator.hasValue()) dotIndicator = other.dotIndicator;
         if (other.selectTabOnPress.hasValue()) selectTabOnPress = other.selectTabOnPress;
     }
@@ -102,7 +95,7 @@ public class BottomTabOptions {
         if (!animateBadge.hasValue()) animateBadge = defaultOptions.animateBadge;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (!selectedFontSize.hasValue()) selectedFontSize = defaultOptions.selectedFontSize;
-        if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
+        font.mergeWithDefault(defaultOptions.font);
         if (!testId.hasValue()) testId = defaultOptions.testId;
         if (!dotIndicator.hasValue()) dotIndicator = defaultOptions.dotIndicator;
         if (!selectTabOnPress.hasValue()) selectTabOnPress = defaultOptions.selectTabOnPress;
