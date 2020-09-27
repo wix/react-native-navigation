@@ -3,7 +3,6 @@ package com.reactnativenavigation.viewcontrollers.stack;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
 
@@ -16,6 +15,7 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
@@ -29,7 +29,6 @@ import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.TitleBarHelper;
@@ -47,7 +46,6 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
 
@@ -70,7 +68,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @LooperMode(LooperMode.Mode.PAUSED)
 public class StackPresenterTest extends BaseTest {
@@ -103,7 +100,7 @@ public class StackPresenterTest extends BaseTest {
             }
         };
         renderChecker = spy(new RenderChecker());
-        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, ImageLoaderMock.mock()), renderChecker, new Options()));
+        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, ImageLoaderMock.mock()), new TypefaceLoaderMock(), renderChecker, new Options()));
         createTopBarController();
 
         parent = TestUtils.newStackController(activity)
@@ -307,9 +304,6 @@ public class StackPresenterTest extends BaseTest {
 
     @Test
     public void mergeTopBarOptions() {
-        TypefaceLoader mockLoader = Mockito.mock(TypefaceLoader.class);
-        when(mockLoader.getTypeFace(any(), any(), any())).thenReturn(Typeface.DEFAULT_BOLD);
-
         Options options = new Options();
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         assertTopBarOptions(options, 0);
@@ -320,7 +314,7 @@ public class StackPresenterTest extends BaseTest {
         title.component.componentId = new Text("compId");
         title.color = new Colour(0);
         title.fontSize = new Fraction(1.0f);
-        title.font = new FontOptions(mockLoader);
+        title.font = new FontOptions();
         title.font.setFontStyle(new Text("bold"));
         options.topBar.title = title;
         SubtitleOptions subtitleOptions = new SubtitleOptions();
@@ -669,7 +663,7 @@ public class StackPresenterTest extends BaseTest {
         verify(topBar, times(t)).setBackgroundColor(anyInt());
         verify(topBar, times(t)).setTitleTextColor(anyInt());
         verify(topBar, times(t)).setTitleFontSize(anyDouble());
-        verify(topBar, times(t)).setTitleTypeface(any());
+        verify(topBar, times(t)).setTitleTypeface(any(), any());
         verify(topBar, times(t)).setSubtitleColor(anyInt());
         verify(topBar, times(t)).setTestId(any());
         verify(topBarController, times(t)).hide();

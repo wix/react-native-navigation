@@ -12,6 +12,7 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
+import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.IconParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 import com.reactnativenavigation.options.parsers.TextParser;
@@ -36,7 +37,7 @@ public class BottomTabOptions {
         options.badgeColor = ColorParser.parse(context, json, "badgeColor");
         options.animateBadge = BoolParser.parse(json, "animateBadge");
         options.testId = TextParser.parse(json, "testID");
-        options.font = new FontOptions(typefaceManager);
+        options.font = FontParser.parse(json);
         options.fontSize = NumberParser.parse(json, "fontSize");
         options.selectedFontSize = NumberParser.parse(json, "selectedFontSize");
         options.dotIndicator = DotIndicatorOptions.parse(context, json.optJSONObject("dotIndicator"));

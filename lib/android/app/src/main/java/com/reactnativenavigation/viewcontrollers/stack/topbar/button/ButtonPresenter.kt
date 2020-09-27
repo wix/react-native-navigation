@@ -14,10 +14,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
+import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 
-open class ButtonPresenter(private val context: Context, private val button: ButtonOptions, private val iconResolver: IconResolver) {
+open class ButtonPresenter @JvmOverloads constructor(
+        private val context: Context,
+        private val typefaceLoader: TypefaceLoader = TypefaceLoader(context),
+        private val button: ButtonOptions,
+        private val iconResolver: IconResolver
+) {
     companion object {
         const val DISABLED_COLOR = Color.LTGRAY
     }
@@ -79,7 +85,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
 
     private fun applyTypeface(view: View) {
         if (view is TextView && button.font.hasValue()) {
-            view.typeface = button.font.getTypeface(view.typeface)
+            view.typeface = button.font.getTypeface(typefaceLoader, view.typeface)
         }
     }
 

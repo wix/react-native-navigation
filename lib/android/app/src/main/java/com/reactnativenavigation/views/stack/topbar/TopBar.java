@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.FontOptions;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Alignment;
@@ -142,8 +143,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setSubtitleTextColor(color);
     }
 
-    public void setSubtitleTypeface(FontOptions font) {
-        titleBar.setSubtitleTypeface(font);
+    public void setSubtitleTypeface(TypefaceLoader typefaceLoader, FontOptions font) {
+        titleBar.setSubtitleTypeface(typefaceLoader, font);
     }
 
     public void setSubtitleFontSize(double size) {
@@ -166,8 +167,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitleFontSize(size);
     }
 
-    public void setTitleTypeface(FontOptions font) {
-        titleBar.setTitleTypeface(font);
+    public void setTitleTypeface(TypefaceLoader typefaceLoader, FontOptions font) {
+        titleBar.setTitleTypeface(typefaceLoader, font);
     }
 
     public void setTitleAlignment(Alignment alignment) {

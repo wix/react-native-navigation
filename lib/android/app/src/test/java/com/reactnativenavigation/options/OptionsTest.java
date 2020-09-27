@@ -88,11 +88,11 @@ public class OptionsTest extends BaseTest {
         assertThat(result.topBar.title.height.get()).isEqualTo(TITLE_HEIGHT.get());
         assertThat(result.topBar.title.color.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
         assertThat(result.topBar.title.fontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
-        assertThat(result.topBar.title.font.getTypeface()).isEqualTo(TOP_BAR_TYPEFACE);
+        assertThat(result.topBar.title.font.getTypeface(mockLoader)).isEqualTo(TOP_BAR_TYPEFACE);
         assertThat(result.topBar.subtitle.color.get()).isEqualTo(SUBTITLE_TEXT_COLOR);
         assertThat(result.topBar.subtitle.fontSize.get()).isEqualTo(SUBTITLE_FONT_SIZE);
         assertThat(result.topBar.subtitle.alignment).isEqualTo(Alignment.fromString(SUBTITLE_ALIGNMENT));
-        assertThat(result.topBar.subtitle.font.getTypeface()).isEqualTo(SUBTITLE_TYPEFACE);
+        assertThat(result.topBar.subtitle.font.getTypeface(mockLoader)).isEqualTo(SUBTITLE_TYPEFACE);
         assertThat(result.topBar.visible.get()).isEqualTo(TOP_BAR_VISIBLE.get());
         assertThat(result.topBar.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
         assertThat(result.topBar.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -105,18 +106,18 @@ public class TitleBar extends Toolbar {
         if (titleTextView != null) titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, (float) size);
     }
 
-    public void setTitleTypeface(FontOptions font) {
+    public void setTitleTypeface(TypefaceLoader typefaceLoader, FontOptions font) {
         TextView titleTextView = findTitleTextView();
-        if (titleTextView != null) titleTextView.setTypeface(font.getTypeface(titleTextView.getTypeface()));
+        if (titleTextView != null) titleTextView.setTypeface(font.getTypeface(typefaceLoader, titleTextView.getTypeface()));
     }
 
     public void setTitleAlignment(Alignment alignment) {
         titleAlignment = alignment;
     }
 
-    public void setSubtitleTypeface(FontOptions font) {
+    public void setSubtitleTypeface(TypefaceLoader typefaceLoader, FontOptions font) {
         TextView subtitleTextView = findSubtitleTextView();
-        if (subtitleTextView != null) subtitleTextView.setTypeface(font.getTypeface(subtitleTextView.getTypeface()));
+        if (subtitleTextView != null) subtitleTextView.setTypeface(font.getTypeface(typefaceLoader, subtitleTextView.getTypeface()));
     }
 
     public void setSubtitleFontSize(double size) {

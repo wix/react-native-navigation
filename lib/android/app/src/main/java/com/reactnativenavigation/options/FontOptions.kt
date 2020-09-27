@@ -5,7 +5,7 @@ import com.reactnativenavigation.options.params.NullText
 import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 
-class FontOptions constructor(private var typefaceLoader: TypefaceLoader? = null) {
+class FontOptions {
     private var isDirty = false
     var fontFamily: Text = NullText()
         set(value) {
@@ -23,26 +23,23 @@ class FontOptions constructor(private var typefaceLoader: TypefaceLoader? = null
             isDirty = true
         }
     private var _typeface: Typeface? = null
-        get() {
-            if (isDirty) {
-                field = typefaceLoader?.getTypeFace(fontFamily.get(""), fontStyle.get(""), fontWeight.get(""))
-                isDirty = false
-            }
-            return field
-        }
 
-    @JvmOverloads fun getTypeface(defaultTypeface: Typeface? = null): Typeface? = _typeface
-            ?: defaultTypeface?.let { typefaceLoader?.getTypeFace(fontFamily.get(""), fontStyle.get(""), fontWeight.get(""), it) }
+    @JvmOverloads fun getTypeface(typefaceLoader: TypefaceLoader, defaultTypeface: Typeface? = null): Typeface? {
+        if (isDirty) {
+            _typeface = typefaceLoader.getTypeFace(fontFamily.get(""), fontStyle.get(""), fontWeight.get(""))
+            isDirty = false
+        }
+        return _typeface
+                ?: defaultTypeface?.let { typefaceLoader.getTypeFace(fontFamily.get(""), fontStyle.get(""), fontWeight.get(""), it) }
+    }
 
     fun mergeWith(other: FontOptions) {
-        if (other.typefaceLoader != null) typefaceLoader = other.typefaceLoader
         if (other.fontFamily.hasValue()) fontFamily = other.fontFamily
         if (other.fontStyle.hasValue()) fontStyle = other.fontStyle
         if (other.fontWeight.hasValue()) fontWeight = other.fontWeight
     }
 
     fun mergeWithDefault(defaultOptions: FontOptions) {
-        if (typefaceLoader == null) typefaceLoader = defaultOptions.typefaceLoader
         if (!fontFamily.hasValue()) fontFamily = defaultOptions.fontFamily
         if (!fontStyle.hasValue()) fontStyle = defaultOptions.fontStyle
         if (!fontWeight.hasValue()) fontWeight = defaultOptions.fontWeight

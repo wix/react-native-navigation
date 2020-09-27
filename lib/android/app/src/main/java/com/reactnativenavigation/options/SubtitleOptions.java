@@ -26,7 +26,7 @@ public class SubtitleOptions {
         options.text = TextParser.parse(json, "text");
         options.color = ColorParser.parse(context, json, "color");
         options.fontSize = FractionParser.parse(json, "fontSize");
-        options.font = FontParser.parse(typefaceManager, json);
+        options.font = FontParser.parse(json);
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
 
         return options;

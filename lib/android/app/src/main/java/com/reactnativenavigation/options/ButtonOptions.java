@@ -18,7 +18,6 @@ import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.TextParser;
-import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.IdFactory;
 
@@ -65,7 +64,7 @@ public class ButtonOptions {
                component.equals(other.component);
     }
 
-    private static ButtonOptions parseJson(Context context, JSONObject json, TypefaceLoader typefaceManager) {
+    private static ButtonOptions parseJson(Context context, JSONObject json) {
         ButtonOptions button = new ButtonOptions();
         button.id = take(json.optString("id"), "btn" + CompatUtils.generateViewId());
         button.accessibilityLabel = TextParser.parse(json, "accessibilityLabel");
@@ -77,7 +76,7 @@ public class ButtonOptions {
         button.color = ColorParser.parse(context, json, "color");
         button.disabledColor = ColorParser.parse(context, json, "disabledColor");
         button.fontSize = FractionParser.parse(json, "fontSize");
-        button.font = FontParser.parse(typefaceManager, json);
+        button.font = FontParser.parse(json);
         button.testId = TextParser.parse(json, "testID");
         button.component = ComponentOptions.parse(json.optJSONObject("component"));
 
@@ -88,7 +87,7 @@ public class ButtonOptions {
         return button;
     }
 
-    public static ArrayList<ButtonOptions> parse(Context context, JSONObject json, String buttonsType, TypefaceLoader typefaceLoader) {
+    public static ArrayList<ButtonOptions> parse(Context context, JSONObject json, String buttonsType) {
         ArrayList<ButtonOptions> buttons = new ArrayList<>();
         if (!json.has(buttonsType)) {
             return null;
@@ -96,18 +95,18 @@ public class ButtonOptions {
 
         JSONArray jsonArray = json.optJSONArray(buttonsType);
         if (jsonArray != null) {
-            buttons.addAll(parseJsonArray(context, jsonArray, typefaceLoader));
+            buttons.addAll(parseJsonArray(context, jsonArray));
         } else {
-            buttons.add(parseJson(context, json.optJSONObject(buttonsType), typefaceLoader));
+            buttons.add(parseJson(context, json.optJSONObject(buttonsType)));
         }
         return buttons;
     }
 
-    private static ArrayList<ButtonOptions> parseJsonArray(Context context, JSONArray jsonArray, TypefaceLoader typefaceLoader) {
+    private static ArrayList<ButtonOptions> parseJsonArray(Context context, JSONArray jsonArray) {
         ArrayList<ButtonOptions> buttons = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.optJSONObject(i);
-            ButtonOptions button = ButtonOptions.parseJson(context, json, typefaceLoader);
+            ButtonOptions button = ButtonOptions.parseJson(context, json);
             buttons.add(button);
         }
         return buttons;
