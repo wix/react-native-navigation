@@ -88,6 +88,6 @@ class ButtonController(activity: Activity,
             Menu.NONE,
             button.intId,
             order,
-            button.text.get("")
+            presenter.styledText
     )
 }

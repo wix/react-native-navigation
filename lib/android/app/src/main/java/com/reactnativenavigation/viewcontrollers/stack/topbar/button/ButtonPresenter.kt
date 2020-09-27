@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
+import android.text.SpannableString
+import android.text.Spanned
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
@@ -24,6 +26,13 @@ open class ButtonPresenter @JvmOverloads constructor(
         private val button: ButtonOptions,
         private val iconResolver: IconResolver
 ) {
+    val styledText: SpannableString
+        get() {
+            return SpannableString(button.text.get("")).apply {
+                setSpan(ButtonSpan(context, button), 0, button.text.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+            }
+        }
+
     companion object {
         const val DISABLED_COLOR = Color.LTGRAY
     }
@@ -40,7 +49,6 @@ open class ButtonPresenter @JvmOverloads constructor(
         applyIcon(menuItem)
 
         applyOptionsDirectlyOnView(titleBar, menuItem) {
-            applyTypeface(it)
             applyFontSize(it)
             applyTestId(it)
             applyTextColor(it)
@@ -81,12 +89,6 @@ open class ButtonPresenter @JvmOverloads constructor(
 
     private fun applyShowAsAction(menuItem: MenuItem) {
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get())
-    }
-
-    private fun applyTypeface(view: View) {
-        if (view is TextView && button.font.hasValue()) {
-            view.typeface = button.font.getTypeface(typefaceLoader, view.typeface)
-        }
     }
 
     private fun applyFontSize(view: View) {
