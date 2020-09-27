@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.options.Alignment;
+import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiUtils;
@@ -105,9 +106,9 @@ public class TitleBar extends Toolbar {
         if (titleTextView != null) titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, (float) size);
     }
 
-    public void setTitleTypeface(Typeface typeface) {
+    public void setTitleTypeface(FontOptions font) {
         TextView titleTextView = findTitleTextView();
-        if (titleTextView != null) titleTextView.setTypeface(typeface);
+        if (titleTextView != null) titleTextView.setTypeface(font.getTypeface(titleTextView.getTypeface()));
     }
 
     public void setTitleAlignment(Alignment alignment) {

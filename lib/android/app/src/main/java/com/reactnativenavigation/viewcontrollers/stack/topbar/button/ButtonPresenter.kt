@@ -5,8 +5,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
-import android.text.SpannableString
-import android.text.Spanned
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
@@ -24,13 +22,6 @@ open class ButtonPresenter(private val context: Context, private val button: But
         const val DISABLED_COLOR = Color.LTGRAY
     }
 
-    val styledText: SpannableString
-        get() {
-            return SpannableString(button.text.get("")).apply {
-                setSpan(ButtonSpan(context, button), 0, button.text.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
-            }
-        }
-
     open fun tint(drawable: Drawable, tint: Int) {
         drawable.colorFilter = PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN)
     }
@@ -43,6 +34,8 @@ open class ButtonPresenter(private val context: Context, private val button: But
         applyIcon(menuItem)
 
         applyOptionsDirectlyOnView(titleBar, menuItem) {
+            applyTypeface(it)
+            applyFontSize(it)
             applyTestId(it)
             applyTextColor(it)
             applyAllCaps(it)
@@ -82,6 +75,18 @@ open class ButtonPresenter(private val context: Context, private val button: But
 
     private fun applyShowAsAction(menuItem: MenuItem) {
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get())
+    }
+
+    private fun applyTypeface(view: View) {
+        if (view is TextView && button.font.hasValue()) {
+            view.typeface = button.font.getTypeface(view.typeface)
+        }
+    }
+
+    private fun applyFontSize(view: View) {
+        if (view is TextView && button.fontSize.hasValue()) {
+            view.textSize = UiUtils.dpToPx(context, button.fontSize.get().toFloat())
+        }
     }
 
     private fun applyTestId(view: View) {

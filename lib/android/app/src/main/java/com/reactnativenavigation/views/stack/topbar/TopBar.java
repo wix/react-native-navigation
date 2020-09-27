@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.reactnativenavigation.R;
+import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Alignment;
@@ -165,8 +166,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitleFontSize(size);
     }
 
-    public void setTitleTypeface(Typeface typeface) {
-        titleBar.setTitleTypeface(typeface);
+    public void setTitleTypeface(FontOptions font) {
+        titleBar.setTitleTypeface(font);
     }
 
     public void setTitleAlignment(Alignment alignment) {

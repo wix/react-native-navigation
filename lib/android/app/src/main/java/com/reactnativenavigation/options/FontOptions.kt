@@ -22,8 +22,7 @@ class FontOptions constructor(private var typefaceLoader: TypefaceLoader? = null
             field = value
             isDirty = true
         }
-    var typeface: Typeface? = null
-        private set
+    private var _typeface: Typeface? = null
         get() {
             if (isDirty) {
                 field = typefaceLoader?.getTypeFace(fontFamily.get(""), fontStyle.get(""), fontWeight.get(""))
@@ -31,6 +30,9 @@ class FontOptions constructor(private var typefaceLoader: TypefaceLoader? = null
             }
             return field
         }
+
+    @JvmOverloads fun getTypeface(defaultTypeface: Typeface? = null): Typeface? = _typeface
+            ?: defaultTypeface?.let { typefaceLoader?.getTypeFace(fontFamily.get(""), fontStyle.get(""), fontWeight.get(""), it) }
 
     fun mergeWith(other: FontOptions) {
         if (other.typefaceLoader != null) typefaceLoader = other.typefaceLoader
@@ -47,4 +49,10 @@ class FontOptions constructor(private var typefaceLoader: TypefaceLoader? = null
     }
 
     fun hasValue() = fontFamily.hasValue() || fontStyle.hasValue() || fontWeight.hasValue()
+
+    override fun equals(other: Any?) = (other as? FontOptions)?.let {
+        fontFamily.equals(other.fontFamily) &&
+        fontStyle.equals(other.fontStyle) &&
+        fontWeight.equals(other.fontWeight)
+    } ?: false
 }

@@ -16,7 +16,6 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
@@ -308,7 +307,7 @@ public class StackPresenterTest extends BaseTest {
 
     @Test
     public void mergeTopBarOptions() {
-        TypefaceLoader mockLoader = Mockito.mock(TypefaceLoaderMock.class);
+        TypefaceLoader mockLoader = Mockito.mock(TypefaceLoader.class);
         when(mockLoader.getTypeFace(any(), any(), any())).thenReturn(Typeface.DEFAULT_BOLD);
 
         Options options = new Options();
