@@ -16,26 +16,20 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
-import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 
-open class ButtonPresenter @JvmOverloads constructor(
-        private val context: Context,
-        private val typefaceLoader: TypefaceLoader = TypefaceLoader(context),
-        private val button: ButtonOptions,
-        private val iconResolver: IconResolver
-) {
+open class ButtonPresenter(private val context: Context, private val button: ButtonOptions, private val iconResolver: IconResolver) {
+    companion object {
+        const val DISABLED_COLOR = Color.LTGRAY
+    }
+
     val styledText: SpannableString
         get() {
             return SpannableString(button.text.get("")).apply {
                 setSpan(ButtonSpan(context, button), 0, button.text.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
             }
         }
-
-    companion object {
-        const val DISABLED_COLOR = Color.LTGRAY
-    }
 
     open fun tint(drawable: Drawable, tint: Int) {
         drawable.colorFilter = PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN)
@@ -49,7 +43,6 @@ open class ButtonPresenter @JvmOverloads constructor(
         applyIcon(menuItem)
 
         applyOptionsDirectlyOnView(titleBar, menuItem) {
-            applyFontSize(it)
             applyTestId(it)
             applyTextColor(it)
             applyAllCaps(it)
@@ -89,12 +82,6 @@ open class ButtonPresenter @JvmOverloads constructor(
 
     private fun applyShowAsAction(menuItem: MenuItem) {
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get())
-    }
-
-    private fun applyFontSize(view: View) {
-        if (view is TextView && button.fontSize.hasValue()) {
-            view.textSize = UiUtils.dpToPx(context, button.fontSize.get().toFloat())
-        }
     }
 
     private fun applyTestId(view: View) {
