@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { Platform, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { NavigationFunctionComponent } from 'react-native-navigation';
-import posts, { PostItem } from '../../assets/posts';
+import cars, { CarItem } from '../../assets/cars';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import { buildSharedElementAnimations } from './Constants';
-import PostCard from './PostCard';
+import CarCard from './CarCard';
 
 // SET = Shared Element Transition
 // TODO: 1. Animate borderRadius in SET: https://github.com/wix/react-native-navigation/issues/6519
@@ -17,14 +17,14 @@ import PostCard from './PostCard';
 // TODO: 7. Add bottomTabs animation support so it slides out nicely (translateY): https://github.com/wix/react-native-navigation/issues/6340 and https://github.com/wix/react-native-navigation/issues/6567
 // TODO: 8. Add topBar animation support so it slides out nicely (translateY): (no issue for that yet?)
 
-const PostsListScreen: NavigationFunctionComponent = ({ componentId }) => {
-  const onPostPressed = useCallback(
-    async (post: PostItem) => {
-      const navigationAnimations = await buildSharedElementAnimations(post);
+const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
+  const onCarPressed = useCallback(
+    async (car: CarItem) => {
+      const navigationAnimations = await buildSharedElementAnimations(car);
       Navigation.push(componentId, {
         component: {
-          name: Screens.PostDetailsScreen,
-          passProps: { post: post },
+          name: Screens.CarDetailsScreen,
+          passProps: { car: car },
           options: {
             animations: navigationAnimations,
           },
@@ -37,12 +37,12 @@ const PostsListScreen: NavigationFunctionComponent = ({ componentId }) => {
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {posts.map((p) => (
-          <PostCard
-            key={p.id}
+        {cars.map((car) => (
+          <CarCard
+            key={car.id}
             parentComponentId={componentId}
-            onPostPressed={() => onPostPressed(p)}
-            post={p}
+            onCarPressed={() => onCarPressed(car)}
+            car={car}
           />
         ))}
       </ScrollView>
@@ -50,7 +50,7 @@ const PostsListScreen: NavigationFunctionComponent = ({ componentId }) => {
   );
 };
 
-PostsListScreen.options = {
+CarsListScreen.options = {
   ...Platform.select({
     android: {
       statusBar: {
@@ -66,7 +66,7 @@ PostsListScreen.options = {
   },
 };
 
-export default PostsListScreen;
+export default CarsListScreen;
 
 const styles = StyleSheet.create({
   scrollContent: {
