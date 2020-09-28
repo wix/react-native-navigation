@@ -71,6 +71,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
   return (
     <DismissableView dismissGestureState={dismissGesture} style={styles.container}>
       <Reanimated.ScrollView
+        contentInsetAdjustmentBehavior="never"
         contentContainerStyle={styles.content}
         onScroll={onScroll}
         scrollEventThrottle={1}

@@ -32,7 +32,10 @@ const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
 
   return (
     <SafeAreaView>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        contentInsetAdjustmentBehavior="never"
+      >
         {cars.map((car) => (
           <CarCard
             key={car.id}
