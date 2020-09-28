@@ -65,7 +65,6 @@ open class StackAnimator @JvmOverloads constructor(
         GlobalScope.launch(Dispatchers.Main.immediate) {
             val set = createPopAnimator(onAnimationEnd)
             if (pop.sharedElements.hasValue()) {
-                appearing.view.awaitPost()
                 popWithElementTransitions(appearing, disappearing, pop, set)
             } else {
                 popWithoutElementTransitions(pop, set, disappearing)
