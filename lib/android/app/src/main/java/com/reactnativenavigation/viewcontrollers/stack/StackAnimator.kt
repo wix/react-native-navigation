@@ -65,7 +65,6 @@ open class StackAnimator @JvmOverloads constructor(
         GlobalScope.launch(Dispatchers.Main.immediate) {
             val set = createPopAnimator(onAnimationEnd)
             if (pop.sharedElements.hasValue()) {
-                appearing.view.awaitPost()
                 popWithElementTransitions(appearing, disappearing, pop, set)
             } else {
                 popWithoutElementTransitions(pop, set, disappearing)
@@ -74,11 +73,14 @@ open class StackAnimator @JvmOverloads constructor(
     }
 
     private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, set: AnimatorSet) {
+        appearing.view.visibility = View.INVISIBLE
+        appearing.view.awaitPost()
         val fade = if (pop.content.isFadeAnimation()) pop else FadeAnimation()
         val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content, disappearing, appearing)
         set.playTogether(fade.content.getAnimation(disappearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
+        appearing.view.visibility = View.VISIBLE
         set.start()
     }
 
