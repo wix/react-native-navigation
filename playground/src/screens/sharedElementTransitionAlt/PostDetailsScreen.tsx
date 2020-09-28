@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets } from 'react-native';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 import { PostItem } from '../../assets/posts';
+import FastImage from 'react-native-fast-image';
 import Reanimated, { Easing, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
@@ -10,6 +11,7 @@ import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
+const ReanimatedFastImage = Reanimated.createAnimatedComponent(FastImage);
 
 const HEADER_HEIGHT = 300;
 const INDICATOR_INSETS: Insets = { top: HEADER_HEIGHT };
@@ -83,13 +85,12 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
           <Text style={styles.buyText}>Buy</Text>
         </PressableScale>
       </Reanimated.ScrollView>
-      <Reanimated.Image
+      <ReanimatedFastImage
         source={post.image}
-        // @ts-ignore nativeID isn't included in react-native Image props.
+        // @ts-ignore nativeID isn't included in react-native-fast-image props.
         nativeID={`image${post.id}Dest`}
         style={imageStyle}
         resizeMode="cover"
-        fadeDuration={0}
       />
       <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>

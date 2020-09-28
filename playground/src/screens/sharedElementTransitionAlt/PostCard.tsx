@@ -1,7 +1,8 @@
 import { BlurView } from '@react-native-community/blur';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Image, StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
+import { StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
 import Reanimated, { Easing, useValue } from 'react-native-reanimated';
+import FastImage from 'react-native-fast-image';
 import { PostItem } from '../../assets/posts';
 import { hexToRgba } from '../../commons/Colors';
 import PressableScale from '../../components/PressableScale';
@@ -68,13 +69,12 @@ export default function PostCard({
 
   return (
     <PressableScale weight="medium" onPress={onPress} style={containerStyle} {...passThroughProps}>
-      <Image
+      <FastImage
         source={post.image}
-        // @ts-ignore nativeID isn't included in react-native Image props.
+        // @ts-ignore nativeID isn't included in react-native-fast-image props.
         nativeID={`image${post.id}`}
         style={styles.image}
         resizeMode="cover"
-        fadeDuration={0}
       />
       <Reanimated.View style={textContainerStyle}>
         {Platform.OS === 'ios' && <BlurView blurType="light" style={StyleSheet.absoluteFill} />}
