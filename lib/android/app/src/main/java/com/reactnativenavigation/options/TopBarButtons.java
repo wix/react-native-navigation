@@ -2,14 +2,14 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import androidx.annotation.Nullable;
-
-import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
+import com.reactnativenavigation.utils.CollectionUtils;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import androidx.annotation.Nullable;
 
 public class TopBarButtons {
 
@@ -26,7 +26,7 @@ public class TopBarButtons {
 
     @Nullable
     private static ArrayList<ButtonOptions> parseButtons(Context context, TypefaceLoader typefaceLoader, JSONObject json, String buttons) {
-        return ButtonOptions.parse(context, json, buttons, typefaceLoader);
+        return ButtonOptions.parse(context, json, buttons);
     }
 
     public BackButton back = new BackButton();

@@ -3,7 +3,6 @@ package com.reactnativenavigation.viewcontrollers.stack;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
 
@@ -16,9 +15,11 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
+import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.SubtitleOptions;
@@ -99,7 +100,7 @@ public class StackPresenterTest extends BaseTest {
             }
         };
         renderChecker = spy(new RenderChecker());
-        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, ImageLoaderMock.mock()), renderChecker, new Options()));
+        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, ImageLoaderMock.mock()), new TypefaceLoaderMock(), renderChecker, new Options()));
         createTopBarController();
 
         parent = TestUtils.newStackController(activity)
@@ -313,7 +314,8 @@ public class StackPresenterTest extends BaseTest {
         title.component.componentId = new Text("compId");
         title.color = new Colour(0);
         title.fontSize = new Fraction(1.0f);
-        title.fontFamily = Typeface.DEFAULT_BOLD;
+        title.font = new FontOptions();
+        title.font.setFontStyle(new Text("bold"));
         options.topBar.title = title;
         SubtitleOptions subtitleOptions = new SubtitleOptions();
         subtitleOptions.text = new Text("Sub");
@@ -661,7 +663,7 @@ public class StackPresenterTest extends BaseTest {
         verify(topBar, times(t)).setBackgroundColor(anyInt());
         verify(topBar, times(t)).setTitleTextColor(anyInt());
         verify(topBar, times(t)).setTitleFontSize(anyDouble());
-        verify(topBar, times(t)).setTitleTypeface(any());
+        verify(topBar, times(t)).setTitleTypeface(any(), any());
         verify(topBar, times(t)).setSubtitleColor(anyInt());
         verify(topBar, times(t)).setTestId(any());
         verify(topBarController, times(t)).hide();

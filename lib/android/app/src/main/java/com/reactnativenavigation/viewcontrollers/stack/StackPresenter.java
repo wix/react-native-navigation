@@ -20,6 +20,7 @@ import com.reactnativenavigation.options.TopTabOptions;
 import com.reactnativenavigation.options.TopTabsOptions;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.CollectionUtils;
@@ -78,12 +79,14 @@ public class StackPresenter {
     private Map<View, Map<String, ButtonController>> componentRightButtons = new HashMap();
     private Map<View, Map<String, ButtonController>> componentLeftButtons = new HashMap();
     private IconResolver iconResolver;
+    private TypefaceLoader typefaceLoader;
 
     public StackPresenter(Activity activity,
                           TitleBarReactViewCreator titleViewCreator,
                           TopBarBackgroundViewCreator topBarBackgroundViewCreator,
                           TitleBarButtonCreator buttonCreator,
                           IconResolver iconResolver,
+                          TypefaceLoader typefaceLoader,
                           RenderChecker renderChecker,
                           Options defaultOptions) {
         this.activity = activity;
@@ -91,6 +94,7 @@ public class StackPresenter {
         this.topBarBackgroundViewCreator = topBarBackgroundViewCreator;
         this.buttonCreator = buttonCreator;
         this.iconResolver = iconResolver;
+        this.typefaceLoader = typefaceLoader;
         this.renderChecker = renderChecker;
         this.defaultOptions = defaultOptions;
         defaultTitleFontSize = 18;
@@ -192,13 +196,13 @@ public class StackPresenter {
 
         topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
         topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
-        topBar.setTitleTypeface(topBarOptions.title.fontFamily);
+        topBar.setTitleTypeface(typefaceLoader, topBarOptions.title.font);
         topBar.setTitleAlignment(topBarOptions.title.alignment);
 
         topBar.setSubtitle(topBarOptions.subtitle.text.get(""));
         topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get(defaultSubtitleFontSize));
         topBar.setSubtitleColor(topBarOptions.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
-        topBar.setSubtitleFontFamily(topBarOptions.subtitle.fontFamily);
+        topBar.setSubtitleTypeface(typefaceLoader, topBarOptions.subtitle.font);
         topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
 
         topBar.setBorderHeight(topBarOptions.borderHeight.get(0d));
@@ -439,12 +443,12 @@ public class StackPresenter {
 
         if (topBarOptions.title.color.hasValue()) topBar.setTitleTextColor(topBarOptions.title.color.get());
         if (topBarOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(topBarOptions.title.fontSize.get());
-        if (topBarOptions.title.fontFamily != null) topBar.setTitleTypeface(topBarOptions.title.fontFamily);
+        if (topBarOptions.title.font.hasValue()) topBar.setTitleTypeface(typefaceLoader, topBarOptions.title.font);
 
         if (topBarOptions.subtitle.text.hasValue()) topBar.setSubtitle(topBarOptions.subtitle.text.get());
         if (topBarOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(topBarOptions.subtitle.color.get());
         if (topBarOptions.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get());
-        if (topBarOptions.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(topBarOptions.subtitle.fontFamily);
+        if (topBarOptions.subtitle.font.hasValue()) topBar.setSubtitleTypeface(typefaceLoader, topBarOptions.subtitle.font);
 
         if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.get());
 

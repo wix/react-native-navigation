@@ -2,10 +2,8 @@ package com.reactnativenavigation.options;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullText;
@@ -18,6 +16,8 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
+
+import androidx.annotation.NonNull;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -57,11 +57,11 @@ public class OptionsTest extends BaseTest {
 
     @Override
     public void beforeEach() {
-        mockLoader = Mockito.mock(TypefaceLoaderMock.class);
-        when(mockLoader.getTypeFace("HelveticaNeue-Condensed", null, null)).then((Answer<Typeface>) invocation -> SUBTITLE_TYPEFACE);
-        when(mockLoader.getTypeFace("HelveticaNeue-CondensedBold", null, null)).then((Answer<Typeface>) invocation -> TOP_BAR_TYPEFACE);
-        Mockito.doReturn(TOP_BAR_TYPEFACE).when(mockLoader).getTypeFace(TOP_BAR_FONT_FAMILY, "", "");
-        Mockito.doReturn(SUBTITLE_TYPEFACE).when(mockLoader).getTypeFace(SUBTITLE_FONT_FAMILY, "", "");
+        mockLoader = Mockito.mock(TypefaceLoader.class);
+        when(mockLoader.getTypeFace("HelveticaNeue-Condensed", null, null, null)).then((Answer<Typeface>) invocation -> SUBTITLE_TYPEFACE);
+        when(mockLoader.getTypeFace("HelveticaNeue-CondensedBold", null, null, null)).then((Answer<Typeface>) invocation -> TOP_BAR_TYPEFACE);
+        Mockito.doReturn(TOP_BAR_TYPEFACE).when(mockLoader).getTypeFace(TOP_BAR_FONT_FAMILY, "", "", null);
+        Mockito.doReturn(SUBTITLE_TYPEFACE).when(mockLoader).getTypeFace(SUBTITLE_FONT_FAMILY, "", "", null);
     }
 
     @Test
@@ -88,11 +88,11 @@ public class OptionsTest extends BaseTest {
         assertThat(result.topBar.title.height.get()).isEqualTo(TITLE_HEIGHT.get());
         assertThat(result.topBar.title.color.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
         assertThat(result.topBar.title.fontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
-        assertThat(result.topBar.title.fontFamily).isEqualTo(TOP_BAR_TYPEFACE);
+        assertThat(result.topBar.title.font.getTypeface(mockLoader)).isEqualTo(TOP_BAR_TYPEFACE);
         assertThat(result.topBar.subtitle.color.get()).isEqualTo(SUBTITLE_TEXT_COLOR);
         assertThat(result.topBar.subtitle.fontSize.get()).isEqualTo(SUBTITLE_FONT_SIZE);
         assertThat(result.topBar.subtitle.alignment).isEqualTo(Alignment.fromString(SUBTITLE_ALIGNMENT));
-        assertThat(result.topBar.subtitle.fontFamily).isEqualTo(SUBTITLE_TYPEFACE);
+        assertThat(result.topBar.subtitle.font.getTypeface(mockLoader)).isEqualTo(SUBTITLE_TYPEFACE);
         assertThat(result.topBar.visible.get()).isEqualTo(TOP_BAR_VISIBLE.get());
         assertThat(result.topBar.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
         assertThat(result.topBar.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());

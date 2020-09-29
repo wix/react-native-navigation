@@ -1,8 +1,6 @@
 package com.reactnativenavigation.options;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import androidx.annotation.Nullable;
 
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
@@ -11,6 +9,7 @@ import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.ColorParser;
+import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.TextParser;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
@@ -27,11 +26,7 @@ public class SubtitleOptions {
         options.text = TextParser.parse(json, "text");
         options.color = ColorParser.parse(context, json, "color");
         options.fontSize = FractionParser.parse(json, "fontSize");
-        options.fontFamily = typefaceManager.getTypeFace(
-                json.optString("fontFamily", ""),
-                json.optString("fontStyle", ""),
-                json.optString("fontWeight", "")
-        );
+        options.font = FontParser.parse(json);
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
 
         return options;
@@ -40,14 +35,14 @@ public class SubtitleOptions {
     public Text text = new NullText();
     public Colour color = new NullColor();
     public Fraction fontSize = new NullFraction();
-    @Nullable public Typeface fontFamily;
+    public FontOptions font = new FontOptions();
     public Alignment alignment = Alignment.Default;
 
     void mergeWith(final SubtitleOptions other) {
         if (other.text.hasValue()) text = other.text;
         if (other.color.hasValue()) color = other.color;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
-        if (other.fontFamily != null) fontFamily = other.fontFamily;
+        font.mergeWith(other.font);
         if (other.alignment != Alignment.Default) alignment = other.alignment;
     }
 
@@ -55,7 +50,7 @@ public class SubtitleOptions {
         if (!text.hasValue()) text = defaultOptions.text;
         if (!color.hasValue()) color = defaultOptions.color;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
-        if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
+        font.mergeWithDefault(defaultOptions.font);
         if (alignment == Alignment.Default) alignment = defaultOptions.alignment;
     }
 }

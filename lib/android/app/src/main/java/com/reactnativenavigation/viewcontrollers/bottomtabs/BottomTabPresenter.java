@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
@@ -8,6 +9,7 @@ import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.DotIndicatorOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Param;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;
@@ -24,17 +26,19 @@ import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 public class BottomTabPresenter {
     private final Context context;
     private ImageLoader imageLoader;
+    private TypefaceLoader typefaceLoader;
     private Options defaultOptions;
     private final BottomTabFinder bottomTabFinder;
     private LateInit<BottomTabs> bottomTabs = new LateInit<>();
     private final List<ViewController> tabs;
     private final int defaultDotIndicatorSize;
 
-    public BottomTabPresenter(Context context, List<ViewController> tabs, ImageLoader imageLoader, Options defaultOptions) {
+    public BottomTabPresenter(Context context, List<ViewController> tabs, ImageLoader imageLoader,  TypefaceLoader typefaceLoader, Options defaultOptions) {
         this.tabs = tabs;
         this.context = context;
         this.bottomTabFinder = new BottomTabFinder(tabs);
         this.imageLoader = imageLoader;
+        this.typefaceLoader = typefaceLoader;
         this.defaultOptions = defaultOptions;
         defaultDotIndicatorSize = dpToPx(context, 6);
     }
@@ -51,7 +55,7 @@ public class BottomTabPresenter {
         bottomTabs.perform(bottomTabs -> {
             for (int i = 0; i < tabs.size(); i++) {
                 BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
-                bottomTabs.setTitleTypeface(i, tab.fontFamily);
+                bottomTabs.setTitleTypeface(i, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));
                 if (tab.selectedIconColor.canApplyValue()) bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
                 if (tab.iconColor.canApplyValue()) bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
                 bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
@@ -77,7 +81,7 @@ public class BottomTabPresenter {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
                 BottomTabOptions tab = options.bottomTabOptions;
-                if (tab.fontFamily != null) bottomTabs.setTitleTypeface(index, tab.fontFamily);
+                if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));
                 if (canMerge(tab.selectedIconColor)) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
                 if (canMerge(tab.iconColor)) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
                 if (tab.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, tab.selectedTextColor.get());

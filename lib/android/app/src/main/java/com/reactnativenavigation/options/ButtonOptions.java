@@ -1,7 +1,6 @@
 package com.reactnativenavigation.options;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.MenuItem;
 
 import com.reactnativenavigation.options.params.Bool;
@@ -16,19 +15,17 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
+import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.TextParser;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.IdFactory;
-import com.reactnativenavigation.options.parsers.TypefaceLoader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
-import androidx.annotation.Nullable;
 
 import static com.reactnativenavigation.utils.ObjectUtils.take;
 
@@ -45,7 +42,7 @@ public class ButtonOptions {
     public Colour color = new NullColor();
     public Colour disabledColor = new NullColor();
     public Fraction fontSize = new NullFraction();
-    @Nullable public Typeface fontFamily;
+    public FontOptions font = new FontOptions();
     public Text icon = new NullText();
     public Text testId = new NullText();
     public ComponentOptions component = new ComponentOptions();
@@ -61,13 +58,13 @@ public class ButtonOptions {
                color.equals(other.color) &&
                disabledColor.equals(other.disabledColor) &&
                fontSize.equals(other.fontSize) &&
-               Objects.equals(fontFamily, other.fontFamily) &&
+               font.equals(other.font) &&
                icon.equals(other.icon) &&
                testId.equals(other.testId) &&
                component.equals(other.component);
     }
 
-    private static ButtonOptions parseJson(Context context, JSONObject json, TypefaceLoader typefaceManager) {
+    private static ButtonOptions parseJson(Context context, JSONObject json) {
         ButtonOptions button = new ButtonOptions();
         button.id = take(json.optString("id"), "btn" + CompatUtils.generateViewId());
         button.accessibilityLabel = TextParser.parse(json, "accessibilityLabel");
@@ -79,11 +76,7 @@ public class ButtonOptions {
         button.color = ColorParser.parse(context, json, "color");
         button.disabledColor = ColorParser.parse(context, json, "disabledColor");
         button.fontSize = FractionParser.parse(json, "fontSize");
-        button.fontFamily = typefaceManager.getTypeFace(
-                json.optString("fontFamily", ""),
-                json.optString("fontStyle", ""),
-                json.optString("fontWeight", "")
-        );
+        button.font = FontParser.parse(json);
         button.testId = TextParser.parse(json, "testID");
         button.component = ComponentOptions.parse(json.optJSONObject("component"));
 
@@ -94,7 +87,7 @@ public class ButtonOptions {
         return button;
     }
 
-    public static ArrayList<ButtonOptions> parse(Context context, JSONObject json, String buttonsType, TypefaceLoader typefaceLoader) {
+    public static ArrayList<ButtonOptions> parse(Context context, JSONObject json, String buttonsType) {
         ArrayList<ButtonOptions> buttons = new ArrayList<>();
         if (!json.has(buttonsType)) {
             return null;
@@ -102,18 +95,18 @@ public class ButtonOptions {
 
         JSONArray jsonArray = json.optJSONArray(buttonsType);
         if (jsonArray != null) {
-            buttons.addAll(parseJsonArray(context, jsonArray, typefaceLoader));
+            buttons.addAll(parseJsonArray(context, jsonArray));
         } else {
-            buttons.add(parseJson(context, json.optJSONObject(buttonsType), typefaceLoader));
+            buttons.add(parseJson(context, json.optJSONObject(buttonsType)));
         }
         return buttons;
     }
 
-    private static ArrayList<ButtonOptions> parseJsonArray(Context context, JSONArray jsonArray, TypefaceLoader typefaceLoader) {
+    private static ArrayList<ButtonOptions> parseJsonArray(Context context, JSONArray jsonArray) {
         ArrayList<ButtonOptions> buttons = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.optJSONObject(i);
-            ButtonOptions button = ButtonOptions.parseJson(context, json, typefaceLoader);
+            ButtonOptions button = ButtonOptions.parseJson(context, json);
             buttons.add(button);
         }
         return buttons;
@@ -165,7 +158,7 @@ public class ButtonOptions {
         if (other.color.hasValue()) color = other.color;
         if (other.disabledColor.hasValue()) disabledColor = other.disabledColor;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
-        if (other.fontFamily != null) fontFamily = other.fontFamily;
+        font.mergeWith(other.font);
         if (other.testId.hasValue()) testId = other.testId;
         if (other.component.hasValue()) component = other.component;
         if (other.showAsAction.hasValue()) showAsAction = other.showAsAction;
@@ -183,7 +176,7 @@ public class ButtonOptions {
         if (!color.hasValue()) color = defaultOptions.color;
         if (!disabledColor.hasValue()) disabledColor = defaultOptions.disabledColor;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
-        if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
+        font.mergeWithDefault(defaultOptions.font);
         if (!testId.hasValue()) testId = defaultOptions.testId;
         if (!component.hasValue()) component = defaultOptions.component;
         if (!showAsAction.hasValue()) showAsAction = defaultOptions.showAsAction;
