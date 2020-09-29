@@ -24,7 +24,7 @@ class ClipBoundsAnimator(from: View, to: View) : PropertyAnimatorCreator<ImageVi
         startDrawingRect.bottom = (startDrawingRect.bottom * inheritedScaleY).roundToInt()
 
         return ObjectAnimator.ofObject(
-                ClipBoundsEvaluator() {
+                BoundsEvaluator() {
                     to.clipBounds = it
                     to.invalidate()
                 },
@@ -32,5 +32,4 @@ class ClipBoundsAnimator(from: View, to: View) : PropertyAnimatorCreator<ImageVi
                 endDrawingRect
         )
     }
-
 }
