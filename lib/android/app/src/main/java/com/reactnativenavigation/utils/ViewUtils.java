@@ -92,16 +92,6 @@ public class ViewUtils {
         return view.getLayoutParams().height < 0 ? view.getHeight() : view.getLayoutParams().height;
     }
 
-    public static <T extends ViewGroup> T findParent(View view, Class<T> clazz) {
-        if (view == null) return null;
-        @Nullable ViewParent parent = view.getParent();
-        if (parent != null) {
-            if (parent.getClass().isAssignableFrom(clazz)) return (T) parent;
-            return findParent((View) parent, clazz);
-        }
-        return null;
-    }
-
     public static Point getLocationOnScreen(View view) {
         int[] xy = new int[2];
         view.getLocationOnScreen(xy);
@@ -110,13 +100,6 @@ public class ViewUtils {
 
     public static boolean areDimensionsEqual(View a, View b) {
         return a.getWidth() == b.getWidth() && a.getHeight() == b.getHeight();
-    }
-
-    public static boolean instanceOf(Class clazz, View... views) {
-        for (View view : views) {
-            if (!view.getClass().isAssignableFrom(clazz)) return false;
-        }
-        return true;
     }
 
     public static int getIndexInParent(View view) {

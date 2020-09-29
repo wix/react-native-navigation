@@ -62,7 +62,7 @@ export default class NavigationScreen extends React.Component<Props> {
         <Button label="Orientation" testID={SHOW_ORIENTATION_SCREEN} onPress={this.orientation} />
         <Button label="React Context API" onPress={this.pushContextScreen} />
         <Button label="Shared Element (Cocktails)" onPress={this.sharedElement} />
-        <Button label="Shared Element (Posts)" onPress={this.sharedElementAlt} />
+        <Button label="Shared Element (Car Dealer)" onPress={this.sharedElementAlt} />
         {Platform.OS === 'ios' && (
           <Navigation.TouchablePreview
             touchableComponent={Button}
@@ -90,7 +90,7 @@ export default class NavigationScreen extends React.Component<Props> {
   orientation = () => Navigation.showModal(Screens.Orientation);
   pushContextScreen = () => Navigation.push(this, Screens.ContextScreen);
   sharedElement = () => Navigation.showModal(Screens.CocktailsListScreen);
-  sharedElementAlt = () => Navigation.push(this, Screens.PostsListScreen);
+  sharedElementAlt = () => Navigation.push(this, Screens.CarsListScreen);
   preview = ({ reactTag }: { reactTag: number | null }) => {
     if (reactTag === null) {
       return;

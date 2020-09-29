@@ -5,40 +5,65 @@ import android.animation.ObjectAnimator
 import android.animation.TypeEvaluator
 import android.graphics.PointF
 import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.core.graphics.drawable.toBitmap
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.drawable.ScalingUtils.InterpolatingScaleType
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
 import kotlin.math.max
+import kotlin.math.roundToInt
 
-class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
+class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
     override fun shouldAnimateProperty(fromChild: ReactImageView, toChild: ReactImageView): Boolean {
         return !ViewUtils.areDimensionsEqual(from, to)
     }
 
     override fun create(options: SharedElementTransitionOptions): Animator {
         with(to as ReactImageView) {
+            val parentScaleX = (from.parent as View).scaleX
+            val parentScalyY = (from.parent as View).scaleY
+
+            val fromBounds = calculateBounds(from, parentScaleX, parentScalyY)
             hierarchy.actualImageScaleType = InterpolatingScaleType(
                     getScaleType(from),
                     getScaleType(to),
-                    calculateBounds(from),
+                    fromBounds,
                     calculateBounds(to),
-                    PointF(from.width / 2f, from.height / 2f),
+                    PointF(from.width * parentScaleX / 2f, from.height * parentScalyY / 2f),
                     PointF(to.width / 2f, to.height / 2f)
             )
+
+            val overlay = BitmapDrawable(
+                    to.resources,
+                    to.drawable.toBitmap(width = fromBounds.width(), height = fromBounds.height())
+            )
+            createAndAddOverlayToWorkAroundImageFlickering(overlay)
 
             to.layoutParams.width = max(from.width, to.width)
             to.layoutParams.height = max(from.height, to.height)
             return ObjectAnimator.ofObject(TypeEvaluator<Float> { fraction: Float, _: Any, _: Any ->
                 hierarchy.actualImageScaleType?.let {
-                    (hierarchy.actualImageScaleType as InterpolatingScaleType?)!!.value = fraction
-                    to.invalidate()
+                    (hierarchy.actualImageScaleType as? InterpolatingScaleType)?.let {
+                        it.value = fraction
+                        to.invalidate()
+                        removeOverlayOnFirstAnimationTick(fraction, overlay)
+                    }
                 }
                 null
             }, 0, 1)
         }
+    }
+
+    private fun createAndAddOverlayToWorkAroundImageFlickering(overlay: Drawable) {
+        to.overlay.add(overlay)
+    }
+
+    private fun removeOverlayOnFirstAnimationTick(fraction: Float, overlay: Drawable) {
+        if (fraction == 0f) to.overlay.remove(overlay)
     }
 
     private fun getScaleType(child: View): ScalingUtils.ScaleType? {
@@ -50,5 +75,11 @@ class MatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageV
         return scaleType
     }
 
-    private fun calculateBounds(view: View) = Rect(0, 0, view.width, view.height)
+    private fun calculateBounds(view: View, parentScaleX: Float = 1f, parentScaleY: Float = 1f) =
+            Rect(
+                    0,
+                    0,
+                    (view.width * parentScaleX).roundToInt(),
+                    (view.height * parentScaleY).roundToInt()
+            )
 }

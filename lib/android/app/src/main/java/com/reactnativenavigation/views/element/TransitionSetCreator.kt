@@ -5,7 +5,6 @@ import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.SharedElements
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.finder.ExistingViewFinder
-import com.reactnativenavigation.views.element.finder.OptimisticViewFinder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -31,7 +30,7 @@ class TransitionSetCreator {
                     async {
                         SharedElementTransition(toScreen, it).apply {
                             ExistingViewFinder().find(fromScreen, fromId)?.let { from = it }
-                            OptimisticViewFinder().find(toScreen, toId)?.let { to = it }
+                            ExistingViewFinder().find(toScreen, toId)?.let { to = it }
                         }
                     }
                 }
@@ -52,7 +51,7 @@ class TransitionSetCreator {
                             transition.view = it
                             transition.viewController = fromScreen
                         } ?: run {
-                            OptimisticViewFinder().find(toScreen, transition.id)?.let {
+                            ExistingViewFinder().find(toScreen, transition.id)?.let {
                                 transition.view = it
                                 transition.viewController = toScreen
                             }

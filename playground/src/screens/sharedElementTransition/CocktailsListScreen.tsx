@@ -6,10 +6,10 @@ import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import { CocktailItem } from '../../assets/cocktails';
 
-const MULTIPLIER = 1.15;
-const POP_MULTIPLIER = 1.15;
-const LONG_DURATION = 350 * MULTIPLIER;
-const SHORT_DURATION = 190 * MULTIPLIER;
+const MULTIPLIER = 1.0;
+const POP_MULTIPLIER = 1.0;
+const LONG_DURATION = 540 * MULTIPLIER;
+const SHORT_DURATION = 210 * MULTIPLIER;
 
 export default class CocktailsListScreen extends NavigationComponent {
   static options() {
@@ -50,7 +50,7 @@ export default class CocktailsListScreen extends NavigationComponent {
                 alpha: {
                   from: 0,
                   to: 1,
-                  duration: LONG_DURATION,
+                  duration: SHORT_DURATION,
                 },
               },
               sharedElementTransitions: [
@@ -92,7 +92,7 @@ export default class CocktailsListScreen extends NavigationComponent {
                 alpha: {
                   from: 1,
                   to: 0,
-                  duration: LONG_DURATION * POP_MULTIPLIER,
+                  duration: SHORT_DURATION * POP_MULTIPLIER,
                 },
               },
               sharedElementTransitions: [

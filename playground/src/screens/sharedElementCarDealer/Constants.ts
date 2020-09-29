@@ -1,8 +1,8 @@
 import { Navigation, AnimationOptions } from 'react-native-navigation';
-import { PostItem } from '../../assets/posts';
+import { CarItem } from '../../assets/cars';
 
 export const SET_DURATION = 500;
-export async function buildSharedElementAnimations(post: PostItem): Promise<AnimationOptions> {
+export async function buildSharedElementAnimations(car: CarItem): Promise<AnimationOptions> {
   const { bottomTabsHeight, topBarHeight } = await Navigation.constants();
   return {
     push: {
@@ -15,14 +15,14 @@ export async function buildSharedElementAnimations(post: PostItem): Promise<Anim
       },
       sharedElementTransitions: [
         {
-          fromId: `image${post.id}`,
-          toId: `image${post.id}Dest`,
+          fromId: `image${car.id}`,
+          toId: `image${car.id}Dest`,
           duration: SET_DURATION,
           interpolation: 'overshoot',
         },
         {
-          fromId: `title${post.id}`,
-          toId: `title${post.id}Dest`,
+          fromId: `title${car.id}`,
+          toId: `title${car.id}Dest`,
           duration: SET_DURATION,
           interpolation: 'overshoot',
         },
@@ -52,8 +52,8 @@ export async function buildSharedElementAnimations(post: PostItem): Promise<Anim
       },
       sharedElementTransitions: [
         {
-          fromId: `image${post.id}Dest`,
-          toId: `image${post.id}`,
+          fromId: `image${car.id}Dest`,
+          toId: `image${car.id}`,
           duration: SET_DURATION,
           interpolation: 'overshoot',
         },

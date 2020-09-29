@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets } from 'react-native';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
-import { PostItem } from '../../assets/posts';
+import { CarItem } from '../../assets/cars';
+import FastImage from 'react-native-fast-image';
 import Reanimated, { Easing, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
@@ -10,15 +11,16 @@ import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
+const ReanimatedFastImage = Reanimated.createAnimatedComponent(FastImage);
 
-const HEADER_HEIGHT = 300;
+const HEADER_HEIGHT = 250;
 const INDICATOR_INSETS: Insets = { top: HEADER_HEIGHT };
 
 interface Props {
-  post: PostItem;
+  car: CarItem;
 }
 
-const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, componentId }) => {
+const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId }) => {
   const isClosing = useRef(false);
 
   const onClosePressed = useCallback(() => {
@@ -69,27 +71,27 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
   return (
     <DismissableView dismissGestureState={dismissGesture} style={styles.container}>
       <Reanimated.ScrollView
+        contentInsetAdjustmentBehavior="never"
         contentContainerStyle={styles.content}
         onScroll={onScroll}
         scrollEventThrottle={1}
         scrollIndicatorInsets={INDICATOR_INSETS}
         indicatorStyle="black"
       >
-        <Text style={styles.title} nativeID={`title${post.id}Dest`}>
-          {post.name}
+        <Text style={styles.title} nativeID={`title${car.id}Dest`}>
+          {car.name}
         </Text>
-        <Text style={styles.description}>{post.description}</Text>
+        <Text style={styles.description}>{car.description}</Text>
         <PressableScale weight="medium" activeScale={0.95} style={styles.buyButton}>
           <Text style={styles.buyText}>Buy</Text>
         </PressableScale>
       </Reanimated.ScrollView>
-      <Reanimated.Image
-        source={post.image}
-        // @ts-ignore nativeID isn't included in react-native Image props.
-        nativeID={`image${post.id}Dest`}
+      <ReanimatedFastImage
+        source={car.image}
+        // @ts-ignore nativeID isn't included in react-native-fast-image props.
+        nativeID={`image${car.id}Dest`}
         style={imageStyle}
         resizeMode="cover"
-        fadeDuration={0}
       />
       <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>
@@ -97,7 +99,7 @@ const PostDetailsScreen: NavigationFunctionComponent<Props> = ({ post, component
     </DismissableView>
   );
 };
-PostDetailsScreen.options = {
+CarDetailsScreen.options = {
   statusBar: {
     visible: false,
   },
@@ -112,7 +114,7 @@ PostDetailsScreen.options = {
     backgroundColor: 'transparent',
   },
 };
-export default PostDetailsScreen;
+export default CarDetailsScreen;
 
 const styles = StyleSheet.create({
   container: {

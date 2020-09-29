@@ -1,16 +1,17 @@
 import { BlurView } from '@react-native-community/blur';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Image, StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
+import { StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
 import Reanimated, { Easing, useValue } from 'react-native-reanimated';
-import { PostItem } from '../../assets/posts';
+import FastImage from 'react-native-fast-image';
+import { CarItem } from '../../assets/cars';
 import { hexToRgba } from '../../commons/Colors';
 import PressableScale from '../../components/PressableScale';
 import { Navigation } from 'react-native-navigation';
 
-type PostCardProps = {
-  post: PostItem;
+type CarCardProps = {
+  car: CarItem;
   parentComponentId: string;
-  onPostPressed: () => unknown;
+  onCarPressed: () => unknown;
 } & ViewProps;
 
 const TEXT_BANNER_OPACITY = Platform.select({
@@ -18,16 +19,16 @@ const TEXT_BANNER_OPACITY = Platform.select({
   ios: 0.4,
 });
 
-export default function PostCard({
-  post,
+export default function CarCard({
+  car,
   parentComponentId,
   style,
-  onPostPressed,
+  onCarPressed,
   ...passThroughProps
-}: PostCardProps) {
+}: CarCardProps) {
   const isTextHidden = useRef(false);
 
-  const color = useMemo(() => hexToRgba(post.color, TEXT_BANNER_OPACITY), [post.color]);
+  const color = useMemo(() => hexToRgba(car.color, TEXT_BANNER_OPACITY), [car.color]);
 
   const textContainerOpacity = useValue(1);
 
@@ -38,14 +39,14 @@ export default function PostCard({
   );
 
   const onPress = useCallback(() => {
-    onPostPressed();
+    onCarPressed();
     isTextHidden.current = true;
     Reanimated.timing(textContainerOpacity, {
       toValue: 0,
       duration: 300,
       easing: Easing.linear,
     }).start();
-  }, [onPostPressed, textContainerOpacity]);
+  }, [onCarPressed, textContainerOpacity]);
   const onFocus = useCallback(() => {
     if (isTextHidden.current === true) {
       isTextHidden.current = false;
@@ -68,26 +69,25 @@ export default function PostCard({
 
   return (
     <PressableScale weight="medium" onPress={onPress} style={containerStyle} {...passThroughProps}>
-      <Image
-        source={post.image}
-        // @ts-ignore nativeID isn't included in react-native Image props.
-        nativeID={`image${post.id}`}
+      <FastImage
+        source={car.image}
+        // @ts-ignore nativeID isn't included in react-native-fast-image props.
+        nativeID={`image${car.id}`}
         style={styles.image}
         resizeMode="cover"
-        fadeDuration={0}
       />
       <Reanimated.View style={textContainerStyle}>
         {Platform.OS === 'ios' && <BlurView blurType="light" style={StyleSheet.absoluteFill} />}
         <Text
-          nativeID={`title${post.id}`}
+          nativeID={`title${car.id}`}
           style={styles.title}
           numberOfLines={2}
           ellipsizeMode="tail"
         >
-          {post.name}
+          {car.name}
         </Text>
         <Text style={styles.description} numberOfLines={3} ellipsizeMode="tail">
-          {post.description}
+          {car.description}
         </Text>
       </Reanimated.View>
     </PressableScale>

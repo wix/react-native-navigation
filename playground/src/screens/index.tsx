@@ -13,12 +13,12 @@ function registerScreens() {
     () => require('./sharedElementTransition/CocktailsListScreen').default
   );
   Navigation.registerComponent(
-    Screens.PostsListScreen,
-    () => require('./sharedElementTransitionAlt/PostsListScreen').default
+    Screens.CarsListScreen,
+    () => require('./sharedElementCarDealer/CarsListScreen').default
   );
   Navigation.registerComponent(
-    Screens.PostDetailsScreen,
-    () => require('./sharedElementTransitionAlt/PostDetailsScreen').default
+    Screens.CarDetailsScreen,
+    () => require('./sharedElementCarDealer/CarDetailsScreen').default
   );
   Navigation.registerComponent(
     Screens.CocktailsListMasterScreen,
