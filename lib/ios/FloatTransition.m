@@ -5,8 +5,8 @@
 - (instancetype)initWithView:(UIView *)view transitionDetails:(TransitionDetailsOptions *)transitionDetails {
     id<Interpolator> interpolator = [RCTConvert interpolatorFromJson:transitionDetails.interpolation];
     self = [self initWithView:view
-                    fromFloat:[transitionDetails.from getWithDefaultValue:0.0]
-                      toFloat:[transitionDetails.to getWithDefaultValue:0.0]
+                         from:transitionDetails.from
+                           to:transitionDetails.to
                    startDelay:[transitionDetails.startDelay getWithDefaultValue:0]
                      duration:[transitionDetails.duration getWithDefaultValue:[self defaultDuration]]
                  interpolator:interpolator];
