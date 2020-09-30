@@ -1123,11 +1123,11 @@ export interface AnimationOptions {
   /**
    * Configure what animates when modal is shown
    */
-  showModal?: ViewAnimationOptions;
+  showModal?: StackAnimationOptions;
   /**
    * Configure what animates when modal is dismissed
    */
-  dismissModal?: ViewAnimationOptions;
+  dismissModal?: StackAnimationOptions;
 }
 
 /**
