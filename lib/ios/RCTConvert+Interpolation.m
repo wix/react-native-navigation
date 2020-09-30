@@ -15,8 +15,15 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
 
 #pragma mark Private
 
++ (id<Interpolator>)defaultInterpolator {
+    return [[LinearInterpolator alloc] init];
+}
+
 + (id<Interpolator>)interpolatorFromJson:(id)json {
-    Text* interpolation = [TextParser parse:json key:@"interpolation"];
+    if (json == nil || ![json isKindOfClass:[NSDictionary class]]) {
+        return [RCTConvert defaultInterpolator];
+    }
+    NSString* interpolation = json[@"type"] ? json[@"type"] : nil;
     
     id<Interpolator> (^interpolator)(void) = @{
         @"back" : ^{
@@ -29,13 +36,13 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
             return [[LinearInterpolator alloc] init];
         },
         @"overshoot" : ^{
-			CGFloat tension = [[NumberParser parse:json key:@"tension"] getWithDefaultValue:[NSNumber numberWithFloat:1.0f]].floatValue;
+            CGFloat tension = [[[NumberParser parse:json key:@"tension"] getWithDefaultValue:[NSNumber numberWithFloat:1.0f]] floatValue];
 			return [[OvershootInterpolator alloc] init:tension];
         },
         @"spring" : ^{
-            CGFloat mass = [[NumberParser parse:json key:@"mass"] getWithDefaultValue:[NSNumber numberWithFloat:3.0f]].floatValue;
-            CGFloat damping = [[NumberParser parse:json key:@"damping"] getWithDefaultValue:[NSNumber numberWithFloat:500.0f]].floatValue;
-            CGFloat stiffness = [[NumberParser parse:json key:@"stiffness"] getWithDefaultValue:[NSNumber numberWithFloat:1000.0f]].floatValue;
+            CGFloat mass = [[[NumberParser parse:json key:@"mass"] getWithDefaultValue:[NSNumber numberWithFloat:3.0f]] floatValue];
+            CGFloat damping = [[[NumberParser parse:json key:@"damping"] getWithDefaultValue:[NSNumber numberWithFloat:500.0f]] floatValue];
+            CGFloat stiffness = [[[NumberParser parse:json key:@"stiffness"] getWithDefaultValue:[NSNumber numberWithFloat:1000.0f]] floatValue];
 			return [[SpringInterpolator alloc] init:mass damping:damping stiffness:stiffness];
         },
     }[interpolation];
@@ -43,7 +50,7 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
     if (interpolator != nil) {
         return interpolator();
     } else {
-        return [[LinearInterpolator alloc] init];
+        return [RCTConvert defaultInterpolator];
     }
 }
 

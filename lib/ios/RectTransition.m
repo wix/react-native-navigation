@@ -2,8 +2,8 @@
 
 @implementation RectTransition
 
-- (instancetype)initWithView:(UIView *)view from:(CGRect)from to:(CGRect)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolation:(Text *)interpolation {
-    self = [super initWithView:view startDelay:startDelay duration:duration interpolation:interpolation];
+- (instancetype)initWithView:(UIView *)view from:(CGRect)from to:(CGRect)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolator:(id<Interpolator>)interpolator {
+    self = [super initWithView:view startDelay:startDelay duration:duration interpolator:interpolator];
     _from = from;
     _to = to;
     return self;
