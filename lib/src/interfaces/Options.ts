@@ -50,7 +50,14 @@ type Interpolation =
   | { type: 'ease' }
   | { type: 'linear' }
   | { type: 'overshoot'; tension?: number }
-  | { type: 'spring'; mass?: number; damping?: number; stiffness?: number };
+  | {
+      type: 'spring';
+      mass?: number;
+      damping?: number;
+      stiffness?: number;
+      allowsOvershooting?: boolean;
+      initialVelocity?: number;
+    };
 
 export interface OptionsSplitView {
   /**
