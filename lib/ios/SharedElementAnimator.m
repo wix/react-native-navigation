@@ -39,7 +39,7 @@
     NSMutableArray* animations = [super createAnimations:_transitionOptions];
     CGFloat startDelay = [_transitionOptions.startDelay getWithDefaultValue:0];
     CGFloat duration = [_transitionOptions.duration getWithDefaultValue:300];
-    id<Interpolator> interpolator = [RCTConvert interpolatorFromJson:_transitionOptions.interpolation];
+    id<Interpolator> interpolator = _transitionOptions.interpolator;
     
     if (!CGRectEqualToRect(self.view.location.fromFrame, self.view.location.toFrame)) {
         if ([self.view isKindOfClass:AnimatedTextView.class]) {

@@ -7,6 +7,6 @@
 @property (nonatomic, strong) NSString* toId;
 @property (nonatomic, strong) TimeInterval* duration;
 @property (nonatomic, strong) TimeInterval* startDelay;
-@property (nonatomic, strong) NSDictionary* interpolation;
+@property (nonatomic, strong) id<Interpolator> interpolator;
 
 @end
