@@ -32,8 +32,8 @@
     return CATransform3DIdentity;
 }
 
-- (RNNInterpolationOptions)interpolation {
-    return [RCTConvert RNNInterpolationOptions:_interpolation];
+- (id<Interpolator>)interpolator {
+    return [RCTConvert Interpolator:_interpolation];
 }
 
 - (void)end { 
