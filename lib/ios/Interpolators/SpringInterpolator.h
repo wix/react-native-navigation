@@ -14,6 +14,9 @@
 @property (readonly) CGFloat mass;
 @property (readonly) CGFloat damping;
 @property (readonly) CGFloat stiffness;
+@property (readonly) CGFloat overshootClamping;
+@property (readonly) CGFloat restDisplacementThreshold;
+@property (readonly) CGFloat restSpeedThreshold;
 
 - (instancetype)init:(CGFloat)mass damping:(CGFloat)damping stiffness:(CGFloat)stiffness;
 
