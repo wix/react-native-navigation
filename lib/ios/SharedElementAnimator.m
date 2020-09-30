@@ -39,22 +39,22 @@
     NSMutableArray* animations = [super createAnimations:_transitionOptions];
     CGFloat startDelay = [_transitionOptions.startDelay getWithDefaultValue:0];
     CGFloat duration = [_transitionOptions.duration getWithDefaultValue:300];
-    Text* interpolation = [_transitionOptions.interpolation getWithDefaultValue:@"accelerateDecelerate"];
+    id<Interpolator> interpolator = [RCTConvert interpolatorFromJson:_transitionOptions.interpolation];
     
     if (!CGRectEqualToRect(self.view.location.fromFrame, self.view.location.toFrame)) {
         if ([self.view isKindOfClass:AnimatedTextView.class]) {
-            [animations addObject:[[RectTransition alloc] initWithView:self.view from:self.view.location.fromFrame to:self.view.location.toFrame startDelay:startDelay duration:duration interpolation:interpolation]];
+            [animations addObject:[[RectTransition alloc] initWithView:self.view from:self.view.location.fromFrame to:self.view.location.toFrame startDelay:startDelay duration:duration interpolator:interpolator]];
         } else {
-            [animations addObject:[[TransformRectTransition alloc] initWithView:self.view viewLocation:self.view.location startDelay:startDelay duration:duration interpolation:interpolation]];
+            [animations addObject:[[TransformRectTransition alloc] initWithView:self.view viewLocation:self.view.location startDelay:startDelay duration:duration interpolator:interpolator]];
         }
     }
     
     if (![_fromView.backgroundColor isEqual:_toView.backgroundColor]) {
-        [animations addObject:[[ColorTransition alloc] initWithView:self.view from:_fromView.backgroundColor to:_toView.backgroundColor startDelay:startDelay duration:duration interpolation:interpolation]];
+        [animations addObject:[[ColorTransition alloc] initWithView:self.view from:_fromView.backgroundColor to:_toView.backgroundColor startDelay:startDelay duration:duration interpolator:interpolator]];
     }
     
     if ([self.view isKindOfClass:AnimatedTextView.class]) {
-        [animations addObject:[[TextStorageTransition alloc] initWithView:self.view from:((AnimatedTextView *)self.view).fromTextStorage to:((AnimatedTextView *)self.view).toTextStorage startDelay:startDelay duration:duration interpolation:interpolation]];
+        [animations addObject:[[TextStorageTransition alloc] initWithView:self.view from:((AnimatedTextView *)self.view).fromTextStorage to:((AnimatedTextView *)self.view).toTextStorage startDelay:startDelay duration:duration interpolator:interpolator]];
     }
 	
 	if (_fromView.layer.cornerRadius != _toView.layer.cornerRadius) {
@@ -62,7 +62,7 @@
 		//   self.view.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner | kCALayerMaxXMaxYCorner;
 		// TODO: On pop the cornerRadius animation doesn't work, even though the CornerRadiusTransition::animateWithProgress function is called.
 		self.view.layer.masksToBounds = YES;
-		[animations addObject:[[CornerRadiusTransition alloc] initWithView:self.view fromFloat:_fromView.layer.cornerRadius toFloat:_toView.layer.cornerRadius startDelay:startDelay duration:duration interpolation:interpolation]];
+		[animations addObject:[[CornerRadiusTransition alloc] initWithView:self.view fromFloat:_fromView.layer.cornerRadius toFloat:_toView.layer.cornerRadius startDelay:startDelay duration:duration interpolator:interpolator]];
 	}
     
     return animations;
