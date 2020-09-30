@@ -10,13 +10,9 @@
 
 @implementation LinearInterpolator
 
-- (instancetype)init:(CGFloat)from to:(CGFloat)to
+- (instancetype)init
 {
 	self = [super init];
-	if (self) {
-		_from = from;
-		_to = to;
-	}
 	return self;
 }
 

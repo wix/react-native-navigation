@@ -11,12 +11,10 @@
 
 @interface SpringInterpolator : NSObject<Interpolator>
 
-@property (readonly) CGFloat from;
-@property (readonly) CGFloat to;
 @property (readonly) CGFloat mass;
 @property (readonly) CGFloat damping;
 @property (readonly) CGFloat stiffness;
 
-- (instancetype)init:(CGFloat)from to:(CGFloat)to mass:(CGFloat)mass damping:(CGFloat)damping stiffness:(CGFloat)stiffness;
+- (instancetype)init:(CGFloat)mass damping:(CGFloat)damping stiffness:(CGFloat)stiffness;
 
 @end
