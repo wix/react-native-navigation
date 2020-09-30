@@ -41,6 +41,7 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
                 XAnimator(from, to),
                 YAnimator(from, to),
                 RotationAnimator(from, to),
+                ReactViewRotationAnimator(from, to),
                 ReactViewBorderRadiusAnimator(from, to),
                 ReactViewBoundsAnimator(from, to),
                 BackgroundColorAnimator(from, to),
