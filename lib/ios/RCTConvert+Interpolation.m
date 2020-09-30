@@ -5,8 +5,8 @@
 #import "Interpolators/BackInterpolator.h"
 #import "Interpolators/OvershootInterpolator.h"
 #import "Interpolators/SpringInterpolator.h"
-#import "TextParser.h"
 #import "NumberParser.h"
+#import "BoolParser.h"
 
 @implementation RCTConvert (Interpolation)
 
@@ -43,7 +43,9 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
             CGFloat mass = [[[NumberParser parse:json key:@"mass"] getWithDefaultValue:[NSNumber numberWithFloat:3.0f]] floatValue];
             CGFloat damping = [[[NumberParser parse:json key:@"damping"] getWithDefaultValue:[NSNumber numberWithFloat:500.0f]] floatValue];
             CGFloat stiffness = [[[NumberParser parse:json key:@"stiffness"] getWithDefaultValue:[NSNumber numberWithFloat:1000.0f]] floatValue];
-			return [[SpringInterpolator alloc] init:mass damping:damping stiffness:stiffness];
+            CGFloat allowsOverdamping = [[BoolParser parse:json key:@"allowsOverdamping"] getWithDefaultValue:NO];
+            CGFloat initialVelocity = [[[NumberParser parse:json key:@"initialVelocity"] getWithDefaultValue:[NSNumber numberWithFloat:0.0f]] floatValue];
+			return [[SpringInterpolator alloc] init:mass damping:damping stiffness:stiffness allowsOverdamping:allowsOverdamping initialVelocity:initialVelocity];
         },
     }[interpolation];
     
