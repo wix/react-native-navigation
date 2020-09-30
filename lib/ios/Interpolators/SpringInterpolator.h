@@ -14,10 +14,9 @@
 @property (readonly) CGFloat mass;
 @property (readonly) CGFloat damping;
 @property (readonly) CGFloat stiffness;
-@property (readonly) CGFloat overshootClamping;
-@property (readonly) CGFloat restDisplacementThreshold;
-@property (readonly) CGFloat restSpeedThreshold;
+@property (readonly) BOOL allowsOverdamping;
+@property (readonly) CGFloat velocity;
 
-- (instancetype)init:(CGFloat)mass damping:(CGFloat)damping stiffness:(CGFloat)stiffness;
+- (instancetype)init:(CGFloat)mass damping:(CGFloat)damping stiffness:(CGFloat)stiffness allowsOverdamping:(BOOL)allowsOverdamping initialVelocity:(CGFloat)initialVelocity;
 
 @end
