@@ -100,19 +100,19 @@ export default class CocktailsListScreen extends NavigationComponent {
                   fromId: `image${item.id}Dest`,
                   toId: `image${item.id}`,
                   duration: LONG_DURATION * POP_MULTIPLIER,
-                  interpolation: { mode: 'overshoot', tension: 1.1 },
+                  interpolation: { type: 'overshoot', tension: 1.1 },
                 },
                 {
                   fromId: `title${item.id}Dest`,
                   toId: `title${item.id}`,
                   duration: LONG_DURATION * POP_MULTIPLIER,
-                  interpolation: { mode: 'overshoot', tension: 1.1 },
+                  interpolation: { type: 'overshoot', tension: 1.1 },
                 },
                 {
                   fromId: 'backdrop',
                   toId: `backdrop${item.id}`,
                   duration: LONG_DURATION * POP_MULTIPLIER,
-                  interpolation: { mode: 'overshoot', tension: 1.1 },
+                  interpolation: { type: 'overshoot', tension: 1.1 },
                 },
               ],
               elementTransitions: [
