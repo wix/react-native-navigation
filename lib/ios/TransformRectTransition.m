@@ -11,8 +11,8 @@
                 viewLocation:(RNNViewLocation *)viewLocation
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
-               interpolation:(Text *)interpolation {
-    self = [super initWithView:view from:viewLocation.fromFrame to:viewLocation.toFrame startDelay:startDelay duration:duration interpolation:interpolation];
+                interpolator:(id<Interpolator>)interpolator {
+    self = [super initWithView:view from:viewLocation.fromFrame to:viewLocation.toFrame startDelay:startDelay duration:duration interpolator:interpolator];
     _fromAngle = viewLocation.fromAngle;
     _toAngle = viewLocation.toAngle;
     _fromTransform = viewLocation.fromTransform;
