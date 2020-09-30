@@ -10,12 +10,10 @@
 
 @implementation OvershootInterpolator
 
-- (instancetype)init:(CGFloat)from to:(CGFloat)to tension:(CGFloat)tension
+- (instancetype)init:(CGFloat)tension
 {
 	self = [super init];
 	if (self) {
-		_from = from;
-		_to = to;
 		_tension = tension;
 	}
 	return self;

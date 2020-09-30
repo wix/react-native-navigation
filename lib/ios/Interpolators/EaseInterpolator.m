@@ -15,13 +15,9 @@ static const CGFloat p3 = 1;
 
 @implementation EaseInterpolator
 
-- (instancetype)init:(CGFloat)from to:(CGFloat)to
+- (instancetype)init
 {
 	self = [super init];
-	if (self) {
-		_from = from;
-		_to = to;
-	}
 	return self;
 }
 

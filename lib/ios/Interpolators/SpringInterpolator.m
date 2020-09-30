@@ -10,12 +10,10 @@
 
 @implementation SpringInterpolator
 
-- (instancetype)init:(CGFloat)from to:(CGFloat)to mass:(CGFloat)mass damping:(CGFloat)damping stiffness:(CGFloat)stiffness
+- (instancetype)init:(CGFloat)mass damping:(CGFloat)damping stiffness:(CGFloat)stiffness
 {
 	self = [super init];
 	if (self) {
-		_from = from;
-		_to = to;
 		_mass = mass;
 		_damping = damping;
 		_stiffness = stiffness;
