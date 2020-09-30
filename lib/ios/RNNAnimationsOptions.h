@@ -8,7 +8,7 @@
 @property (nonatomic, strong) RNNScreenTransition* pop;
 @property (nonatomic, strong) RNNScreenTransition* showModal;
 @property (nonatomic, strong) RNNScreenTransition* dismissModal;
-@property (nonatomic, strong) RNNScreenTransition* setStackRoot; // <-- TODO: Shouldn't that be TransitionOptions* ?
+@property (nonatomic, strong) RNNScreenTransition* setStackRoot;
 @property (nonatomic, strong) TransitionOptions* setRoot;
 
 @end
