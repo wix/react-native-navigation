@@ -15,7 +15,7 @@
   <a href="https://stackoverflow.com/questions/tagged/wix-react-native-navigation"><img src="https://img.shields.io/stackexchange/stackoverflow/t/wix-react-native-navigation.svg?style=flat-square" alt="StackExchange"></a>
 </p>
 
-React Native Navigation provides 100% native platform navigation on both iOS and Android for React Native apps. The JavaScript API is simple and cross-platform - just install it in your app and give your users the native feel they deserve. Ready to get started? Check out the [docs](https://wix.github.io/react-native-navigation/).
+React Native Navigation helps you by providing 100% native platform navigation on both iOS and Android for React Native apps. The JavaScript API is simple and cross-platform - just install it in your device and give your users the native feel that they deserve. Ready to get started? Check out the [docs](https://wix.github.io/react-native-navigation/).
 
 # Quick Links
 
