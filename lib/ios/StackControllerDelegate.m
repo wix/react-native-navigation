@@ -1,5 +1,6 @@
 #import "StackControllerDelegate.h"
-#import "StackTransitionDelegate.h"
+#import "TransitionDelegate.h"
+#import "ReversedTransitionDelegate.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation StackControllerDelegate {
@@ -26,9 +27,9 @@
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
 	if (operation == UINavigationControllerOperationPush && toVC.resolveOptions.animations.push.hasCustomAnimation) {
-		return [[StackTransitionDelegate alloc] initWithScreenTransition:toVC.resolveOptions.animations.push bridge:_eventEmitter.bridge operation:operation];
+		return [[TransitionDelegate alloc] initWithScreenTransition:toVC.resolveOptions.animations.push bridge:_eventEmitter.bridge];
 	} else if (operation == UINavigationControllerOperationPop && fromVC.resolveOptions.animations.pop.hasCustomAnimation) {
-		return [[StackTransitionDelegate alloc] initWithScreenTransition:fromVC.resolveOptions.animations.pop bridge:_eventEmitter.bridge operation:operation];
+		return [[ReversedTransitionDelegate alloc] initWithScreenTransition:fromVC.resolveOptions.animations.pop bridge:_eventEmitter.bridge];
 	} else {
 		return nil;
 	}

@@ -269,7 +269,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController *newVc = [_controllerFactory createLayout:layout];
     __weak UIViewController* weakNewVC = newVc;
-    newVc.waitForRender = [newVc.resolveOptionsWithDefault.animations.showModal.waitForRender getWithDefaultValue:NO];
+    newVc.waitForRender = [newVc.resolveOptionsWithDefault.animations.showModal shouldWaitForRender];
     [newVc setReactViewReadyCallback:^{
         [self->_modalManager showModal:weakNewVC animated:[weakNewVC.resolveOptionsWithDefault.animations.showModal.enable getWithDefaultValue:YES] completion:^(NSString *componentId) {
             [self->_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId];

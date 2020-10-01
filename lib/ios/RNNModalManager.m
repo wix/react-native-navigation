@@ -1,11 +1,13 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "UIViewController+LayoutProtocol.h"
-#import "StackTransitionDelegate.h"
+#import "TransitionDelegate.h"
+#import "ReversedTransitionDelegate.h"
 #import "RNNConvert.h"
 
 @interface RNNModalManager ()
-@property (nonatomic, strong) StackTransitionDelegate* stackTransitionDelegate;
+@property (nonatomic, strong) TransitionDelegate* showModalTransitionDelegate;
+@property (nonatomic, strong) TransitionDelegate* dismissModalTransitionDelegate;
 @end
 
 @implementation RNNModalManager {
@@ -45,8 +47,9 @@
 	}
 	    
 	if (viewController.resolveOptionsWithDefault.animations.showModal.hasCustomAnimation) {
-        _stackTransitionDelegate = [[StackTransitionDelegate alloc] initWithScreenTransition:viewController.resolveOptionsWithDefault.animations.showModal bridge:_bridge operation:UINavigationControllerOperationPush];
-        viewController.transitioningDelegate = _stackTransitionDelegate;
+        _showModalTransitionDelegate = [[TransitionDelegate alloc] initWithScreenTransition:viewController.resolveOptionsWithDefault.animations.showModal bridge:_bridge];
+        
+        viewController.transitioningDelegate = _showModalTransitionDelegate;
         viewController.modalPresentationStyle = UIModalPresentationCustom;
 	}
 	
@@ -101,8 +104,9 @@
 	UIViewController* topPresentedVC = [self topPresentedVC];
 	
 	if (optionsWithDefault.animations.dismissModal.hasCustomAnimation) {
-        _stackTransitionDelegate = [[StackTransitionDelegate alloc] initWithScreenTransition:modalToDismiss.resolveOptionsWithDefault.animations.dismissModal bridge:_bridge operation:UINavigationControllerOperationPush];
-		[self topViewControllerParent:modalToDismiss].transitioningDelegate = _stackTransitionDelegate;
+        _dismissModalTransitionDelegate = [[ReversedTransitionDelegate alloc] initWithScreenTransition:modalToDismiss.resolveOptionsWithDefault.animations.dismissModal bridge:_bridge];
+        modalToDismiss.modalPresentationStyle = UIModalPresentationCustom;
+		[self topViewControllerParent:modalToDismiss].transitioningDelegate = _dismissModalTransitionDelegate;
 	}
 
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
