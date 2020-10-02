@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import com.reactnativenavigation.options.params.NullText
 import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.options.parsers.TypefaceLoader
-import java.lang.RuntimeException
 
 class FontOptions {
     private var isDirty = false
