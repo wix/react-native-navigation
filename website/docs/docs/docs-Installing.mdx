@@ -29,6 +29,8 @@ Make sure to commit the changes introduced by the `rnn-link` script.
 
 > The automatic linking is optimized for new applications created via the `react-native init` command. If you are migrating from a version of react-native-navigation older than v5, it's recommended to check the steps manually after the script runs.
 
+On iOS, update the `ios/Podfile` version by replacing `platform :ios, '10.0'` by `platform :ios, '11.0'` or higher.
+
 If the link script completed successfully, you're good to go! No more native configuration is required.
 
 If one of the steps failed or you can't run (or are not comfortable with) the automatic scripts, you'll need to complete the relevant steps in the manual installation steps below, for both platforms.
