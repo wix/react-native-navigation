@@ -37,17 +37,17 @@ class ModalStack {
         presenter.setRootLayout(rootLayout)
     }
 
-    fun setDefaultOptions(defaultOptions: Options?) {
+    fun setDefaultOptions(defaultOptions: Options) {
         presenter.setDefaultOptions(defaultOptions)
     }
 
-    fun showModal(viewController: ViewController<*>, root: ViewController<*>, listener: CommandListener?) {
+    fun showModal(viewController: ViewController<*>, root: ViewController<*>, listener: CommandListener) {
         val toRemove = if (isEmpty) root else peek()
         modals.add(viewController)
         presenter.showModal(viewController, toRemove, listener)
     }
 
-    fun dismissModal(componentId: String, root: ViewController<*>?, listener: CommandListener): Boolean {
+    fun dismissModal(componentId: String, root: ViewController<*>, listener: CommandListener): Boolean {
         val toDismiss = findModalByComponentId(componentId)
         return if (toDismiss != null) {
             val isDismissingTopModal = isTop(toDismiss)
@@ -72,7 +72,7 @@ class ModalStack {
         }
     }
 
-    fun dismissAllModals(root: ViewController<*>?, mergeOptions: Options?, listener: CommandListener) {
+    fun dismissAllModals(root: ViewController<*>, mergeOptions: Options?, listener: CommandListener) {
         if (modals.isEmpty()) {
             listener.onSuccess(ObjectUtils.perform<ViewController<*>?, String>(root, "", { obj: ViewController<*>? -> obj!!.id }))
             return
@@ -96,7 +96,7 @@ class ModalStack {
         }
     }
 
-    fun handleBack(listener: CommandListener, root: ViewController<*>?): Boolean {
+    fun handleBack(listener: CommandListener, root: ViewController<*>): Boolean {
         if (isEmpty) return false
         return if (peek().handleBack(listener)) {
             true
