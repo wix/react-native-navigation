@@ -44,31 +44,20 @@
     
     if (!_allowsOverdamping && beta > omega0) beta = omega0;
     
-    CGFloat (^oscillation)(CGFloat);
+    CGFloat t = progress;
     if (beta < omega0) {
         // Underdamped
-        oscillation = ^(CGFloat t) {
-            CGFloat envelope = expf(-beta * t);
-            
-            return -x0 + envelope * (x0 * cosf(omega1 * t) + ((beta * x0 + v0) / omega1) * sinf(omega1 * t));
-        };
-    } else if (beta == omega0) {
-        // Critically damped
-        oscillation = ^(CGFloat t) {
-            CGFloat envelope = expf(-beta * t);
-            
-            return -x0 + envelope * (x0 + (beta * x0 + v0) * t);
-        };
-    } else {
+        CGFloat envelope = expf(-beta * t);
+        return -x0 + envelope * (x0 * cosf(omega1 * t) + ((beta * x0 + v0) / omega1) * sinf(omega1 * t));
+    } else if (beta > omega0) {
         // Overdamped
-        oscillation = ^(CGFloat t) {
-            CGFloat envelope = expf(-beta * t);
-            
-            return -x0 + envelope * (x0 * coshf(omega2 * t) + ((beta * x0 + v0) / omega2) * sinhf(omega2 * t));
-        };
+        CGFloat envelope = expf(-beta * t);
+        return -x0 + envelope * (x0 * coshf(omega2 * t) + ((beta * x0 + v0) / omega2) * sinhf(omega2 * t));
+    } else {
+        // Critically damped
+        CGFloat envelope = expf(-beta * t);
+        return -x0 + envelope * (x0 + (beta * x0 + v0) * t);
     }
-    
-    return oscillation(progress);
 }
 
 #pragma mark Private
