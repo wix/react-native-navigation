@@ -38,8 +38,8 @@ class ReactViewOutlineAnimator(from: View, to: View) : PropertyAnimatorCreator<R
         startDrawingRect.right = (startDrawingRect.right * inheritedScaleX).roundToInt()
         startDrawingRect.bottom = (startDrawingRect.bottom * inheritedScaleY).roundToInt()
         val fromOutline = ViewOutline(
-                startDrawingRect.right * inheritedScaleX,
-                startDrawingRect.bottom * inheritedScaleY,
+                startDrawingRect.width().toFloat(),
+                startDrawingRect.height().toFloat(),
                 from.borderRadius
         )
         val toOutline = ViewOutline(
