@@ -8,6 +8,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
+import com.reactnativenavigation.options.interpolators.SpringInterpolator;
+
 import org.json.JSONObject;
 
 public class InterpolationParser {
@@ -22,6 +24,13 @@ public class InterpolationParser {
             case "overshoot":
                 double tension = json.optDouble("tension", 1.0);
                 return new OvershootInterpolator((float)tension);
+            case "spring":
+                float mass = (float)json.optDouble("mass", 3.0);
+                float damping = (float)json.optDouble("damping", 500.0);
+                float stiffness = (float)json.optDouble("stiffness", 1000.0);
+                boolean allowsOverdamping = json.optBoolean("allowsOverdamping", false);
+                float initialVelocity = (float)json.optDouble("initialVelocity", 0);
+                return new SpringInterpolator(mass, damping, stiffness, allowsOverdamping, initialVelocity);
             case "linear":
             default:
                 return new LinearInterpolator();
