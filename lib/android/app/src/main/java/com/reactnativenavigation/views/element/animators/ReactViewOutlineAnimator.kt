@@ -2,7 +2,7 @@ package com.reactnativenavigation.views.element.animators
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
-import android.graphics.Rect
+import android.graphics.RectF
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -14,7 +14,6 @@ import com.reactnativenavigation.utils.areDimensionsWithInheritedScaleEqual
 import com.reactnativenavigation.utils.borderRadius
 import com.reactnativenavigation.utils.computeInheritedScale
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.roundToInt
 
 class ReactViewOutlineAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactViewGroup>(from, to) {
@@ -33,18 +32,18 @@ class ReactViewOutlineAnimator(from: View, to: View) : PropertyAnimatorCreator<R
         to.layoutParams.width = max((from.width * inheritedScaleX).roundToInt(), to.width)
         to.layoutParams.height = max((from.height * inheritedScaleY).roundToInt(), to.height)
 
-        val startDrawingRect = Rect(from.background.bounds)
-        val endDrawingRect = Rect(to.background.bounds)
-        startDrawingRect.right = (startDrawingRect.right * inheritedScaleX).roundToInt()
-        startDrawingRect.bottom = (startDrawingRect.bottom * inheritedScaleY).roundToInt()
+        val startDrawingRect = RectF(from.background.bounds)
+        val endDrawingRect = RectF(to.background.bounds)
+        startDrawingRect.right = startDrawingRect.right * inheritedScaleX
+        startDrawingRect.bottom = startDrawingRect.bottom * inheritedScaleY
         val fromOutline = ViewOutline(
-                startDrawingRect.right * inheritedScaleX,
-                startDrawingRect.bottom * inheritedScaleY,
+                startDrawingRect.width(),
+                startDrawingRect.height(),
                 from.borderRadius
         )
         val toOutline = ViewOutline(
-                endDrawingRect.width().toFloat(),
-                endDrawingRect.height().toFloat(),
+                endDrawingRect.width(),
+                endDrawingRect.height(),
                 to.borderRadius
         )
 
