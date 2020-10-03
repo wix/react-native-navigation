@@ -72,8 +72,8 @@ class ModalStack {
         }
     }
 
-    fun dismissAllModals(root: ViewController<*>, mergeOptions: Options?, listener: CommandListener) {
-        if (modals.isEmpty()) {
+    fun dismissAllModals(root: ViewController<*>?, mergeOptions: Options?, listener: CommandListener) {
+        if (modals.isEmpty() || root == null) {
             listener.onSuccess(ObjectUtils.perform<ViewController<*>?, String>(root, "", { obj: ViewController<*>? -> obj!!.id }))
             return
         }

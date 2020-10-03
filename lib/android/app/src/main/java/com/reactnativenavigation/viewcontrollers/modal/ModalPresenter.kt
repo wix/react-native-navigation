@@ -8,6 +8,7 @@ import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.react.CommandListener
 import com.reactnativenavigation.utils.CoordinatorLayoutUtils
 import com.reactnativenavigation.utils.ScreenAnimationListener
+import com.reactnativenavigation.utils.awaitRender
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
 class ModalPresenter internal constructor(private val animator: ModalAnimator) {
@@ -32,18 +33,20 @@ class ModalPresenter internal constructor(private val animator: ModalAnimator) {
             return
         }
         val options = toAdd.resolveCurrentOptions(defaultOptions)
-        toAdd.setWaitForRender(options.animations.showModal.waitForRender)
+        val animations = options.animations.showModal
+        toAdd.setWaitForRender(animations.waitForRender)
+
         modalsLayout!!.visibility = View.VISIBLE
         modalsLayout!!.addView(toAdd.view, CoordinatorLayoutUtils.matchParentLP())
-        if (options.animations.showModal.enabled.isTrueOrUndefined) {
+        if (animations.enabled.isTrueOrUndefined) {
             toAdd.view.alpha = 0f
-            if (options.animations.showModal.waitForRender.isTrue) {
+            if (animations.waitForRender.isTrue) {
                 toAdd.addOnAppearedListener { animateShow(toAdd, toRemove, listener, options) }
             } else {
                 animateShow(toAdd, toRemove, listener, options)
             }
         } else {
-            if (options.animations.showModal.waitForRender.isTrue) {
+            if (animations.waitForRender.isTrue) {
                 toAdd.addOnAppearedListener { onShowModalEnd(toAdd, toRemove, listener) }
             } else {
                 onShowModalEnd(toAdd, toRemove, listener)
@@ -52,7 +55,7 @@ class ModalPresenter internal constructor(private val animator: ModalAnimator) {
     }
 
     private fun animateShow(toAdd: ViewController<*>, toRemove: ViewController<*>, listener: CommandListener, options: Options) {
-        animator.show(toAdd.view, options.animations.showModal, object : ScreenAnimationListener() {
+        animator.show(toAdd, toRemove, options, object : ScreenAnimationListener() {
             override fun onStart() {
                 toAdd.view.alpha = 1f
             }

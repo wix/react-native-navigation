@@ -13,8 +13,8 @@ public class AnimationsOptions {
         options.pop = NestedAnimationsOptions.parse(json.optJSONObject("pop"));
         options.setStackRoot = NestedAnimationsOptions.parse(json.optJSONObject("setStackRoot"));
         options.setRoot = new AnimationOptions(json.optJSONObject("setRoot"));
-        options.showModal = new AnimationOptions(json.optJSONObject("showModal"));
-        options.dismissModal = new AnimationOptions(json.optJSONObject("dismissModal"));
+        options.showModal = NestedAnimationsOptions.parse(json.optJSONObject("showModal"));
+        options.dismissModal = NestedAnimationsOptions.parse(json.optJSONObject("dismissModal"));
 
         return options;
     }
@@ -23,8 +23,8 @@ public class AnimationsOptions {
     public NestedAnimationsOptions pop = new NestedAnimationsOptions();
     public NestedAnimationsOptions setStackRoot = new NestedAnimationsOptions();
     public AnimationOptions setRoot = new AnimationOptions();
-    public AnimationOptions showModal = new AnimationOptions();
-    public AnimationOptions dismissModal = new AnimationOptions();
+    public NestedAnimationsOptions showModal = new NestedAnimationsOptions();
+    public NestedAnimationsOptions dismissModal = new NestedAnimationsOptions();
 
     public void mergeWith(AnimationsOptions other) {
         push.mergeWith(other.push);
