@@ -14,21 +14,18 @@ import CarCard from './CarCard';
 // TODO: 4. Add topBar animation support so it slides out nicely (translateY): (no issue for that yet?)
 
 const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
-  const onCarPressed = useCallback(
-    async (car: CarItem) => {
-      const navigationAnimations = await buildSharedElementAnimations(car);
-      Navigation.push(componentId, {
-        component: {
-          name: Screens.CarDetailsScreen,
-          passProps: { car: car },
-          options: {
-            animations: navigationAnimations,
-          },
+  const onCarPressed = useCallback(async (car: CarItem) => {
+    const navigationAnimations = await buildSharedElementAnimations(car);
+    Navigation.showModal({
+      component: {
+        name: Screens.CarDetailsScreen,
+        passProps: { car: car },
+        options: {
+          animations: navigationAnimations,
         },
-      });
-    },
-    [componentId]
-  );
+      },
+    });
+  }, []);
 
   return (
     <SafeAreaView>

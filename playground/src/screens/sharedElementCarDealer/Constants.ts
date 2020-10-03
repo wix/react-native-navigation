@@ -5,7 +5,7 @@ export const SET_DURATION = 500;
 export async function buildSharedElementAnimations(car: CarItem): Promise<AnimationOptions> {
   const { bottomTabsHeight, topBarHeight } = await Navigation.constants();
   return {
-    push: {
+    showModal: {
       content: {
         alpha: {
           from: 0,
@@ -42,7 +42,7 @@ export async function buildSharedElementAnimations(car: CarItem): Promise<Animat
         },
       },
     },
-    pop: {
+    dismissModal: {
       content: {
         alpha: {
           from: 1,
