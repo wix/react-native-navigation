@@ -55,7 +55,7 @@ class ModalPresenter internal constructor(private val animator: ModalAnimator) {
     }
 
     private fun animateShow(toAdd: ViewController<*>, toRemove: ViewController<*>, listener: CommandListener, options: Options) {
-        animator.show(toAdd, toRemove, options, object : ScreenAnimationListener() {
+        animator.show(toAdd, toRemove, options.animations.showModal, object : ScreenAnimationListener() {
             override fun onStart() {
                 toAdd.view.alpha = 1f
             }
@@ -89,7 +89,7 @@ class ModalPresenter internal constructor(private val animator: ModalAnimator) {
         }
         val options = toDismiss.resolveCurrentOptions(defaultOptions)
         if (options.animations.dismissModal.enabled.isTrueOrUndefined) {
-            animator.dismiss(toDismiss.view, options.animations.dismissModal, object : ScreenAnimationListener() {
+            animator.dismiss(toDismiss, root, options.animations.dismissModal, object : ScreenAnimationListener() {
                 override fun onEnd() {
                     onDismissEnd(toDismiss, listener)
                 }
