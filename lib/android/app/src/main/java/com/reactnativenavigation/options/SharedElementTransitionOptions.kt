@@ -14,11 +14,10 @@ class SharedElementTransitionOptions {
     var toId: Text = NullText()
     var duration: Number = NullNumber()
     var startDelay: Number = NullNumber()
-    var interpolation: TimeInterpolator = LinearInterpolator()
+    var interpolator: TimeInterpolator = LinearInterpolator()
 
     fun getDuration() = duration[0].toLong()
     fun getStartDelay() = startDelay[0].toLong()
-    fun getInterpolator(): TimeInterpolator = LinearInterpolator()
 
     companion object {
         @JvmStatic
@@ -29,7 +28,7 @@ class SharedElementTransitionOptions {
             transition.toId = TextParser.parse(json, "toId")
             transition.duration = NumberParser.parse(json, "duration")
             transition.startDelay = NumberParser.parse(json, "startDelay")
-            transition.interpolation = InterpolationParser.parse(json)
+            transition.interpolator = InterpolationParser.parse(json)
             return transition
         }
     }
