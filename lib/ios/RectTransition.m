@@ -7,8 +7,8 @@
 						  to:(CGRect)to
 				  startDelay:(NSTimeInterval)startDelay
 					duration:(NSTimeInterval)duration
-			   interpolation:(Text *)interpolation {
-	self = [super initWithView:view startDelay:startDelay duration:duration interpolation:interpolation];
+			    interpolator:(id<Interpolator>)interpolator {
+	self = [super initWithView:view startDelay:startDelay duration:duration interpolator:interpolator];
 	_from = from;
 	_to = to;
 	return self;
