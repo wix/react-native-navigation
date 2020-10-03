@@ -69,7 +69,7 @@ type Interpolation =
       mass?: number;
       damping?: number;
       stiffness?: number;
-      allowsOvershooting?: boolean;
+      allowsOverdamping?: boolean;
       initialVelocity?: number;
     };
 
