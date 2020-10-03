@@ -2,9 +2,11 @@ package com.reactnativenavigation.options
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
+import android.animation.TimeInterpolator
 import android.util.Property
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.LinearInterpolator
 import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.options.params.Number
 import com.reactnativenavigation.options.parsers.FloatParser
@@ -23,7 +25,7 @@ class ValueAnimationOptions {
     private var toDelta = FloatParam(0f)
     var duration: Number = NullNumber()
     private var startDelay: Number = NullNumber()
-    private var interpolation = Interpolation.NO_VALUE
+    private var interpolator: TimeInterpolator = LinearInterpolator()
 
     fun setFromDelta(fromDelta: Float) {
         this.fromDelta = FloatParam(fromDelta)
@@ -50,7 +52,7 @@ class ValueAnimationOptions {
                 from,
                 to
         )
-        animator.interpolator = interpolation.interpolator
+        animator.interpolator = interpolator
         if (duration.hasValue()) animator.duration = duration.get().toLong()
         if (startDelay.hasValue()) animator.startDelay = startDelay.get().toLong()
         return animator
@@ -81,7 +83,7 @@ class ValueAnimationOptions {
             options.to = FloatParser.parse(json, "to")
             options.duration = NumberParser.parse(json, "duration")
             options.startDelay = NumberParser.parse(json, "startDelay")
-            options.interpolation = InterpolationParser.parse(json, "interpolation")
+            options.interpolator = InterpolationParser.parse(json)
             return options
         }
     }

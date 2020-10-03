@@ -1,23 +1,30 @@
 package com.reactnativenavigation.options.parsers;
 
 
-import com.reactnativenavigation.options.params.Interpolation;
+import android.animation.TimeInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 
 import org.json.JSONObject;
 
 public class InterpolationParser {
-    public static Interpolation parse(JSONObject json, String interpolation) {
-        switch (json.optString(interpolation, "default")) {
+    public static TimeInterpolator parse(JSONObject json) {
+        switch (json.optString("interpolation", "linear")) {
             case "decelerate":
-                return Interpolation.DECELERATE;
+                return new DecelerateInterpolator();
             case "accelerateDecelerate":
-                return Interpolation.ACCELERATE_DECELERATE;
+                return new AccelerateDecelerateInterpolator();
             case "accelerate":
-                return Interpolation.ACCELERATE;
+                return new AccelerateInterpolator();
             case "overshoot":
-                return Interpolation.OVERSHOOT;
+                double tension = json.optDouble("tension", 1.0);
+                return new OvershootInterpolator((float)tension);
+            case "linear":
             default:
-                return Interpolation.DEFAULT;
+                return new LinearInterpolator();
         }
     }
 }
