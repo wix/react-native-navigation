@@ -13,7 +13,7 @@ import colors from '../../commons/Colors';
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
 const ReanimatedFastImage = Reanimated.createAnimatedComponent(FastImage);
 
-const HEADER_HEIGHT = 250;
+const HEADER_HEIGHT = 300;
 const INDICATOR_INSETS: Insets = { top: HEADER_HEIGHT };
 
 interface Props {

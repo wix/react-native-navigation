@@ -18,13 +18,13 @@ export async function buildSharedElementAnimations(car: CarItem): Promise<Animat
           fromId: `image${car.id}`,
           toId: `image${car.id}Dest`,
           duration: SET_DURATION,
-          interpolation: 'overshoot',
+          interpolation: { type: 'spring', mass: 3, damping: 300, stiffness: 200 },
         },
         {
           fromId: `title${car.id}`,
           toId: `title${car.id}Dest`,
           duration: SET_DURATION,
-          interpolation: 'overshoot',
+          interpolation: { type: 'spring', mass: 3, damping: 300, stiffness: 200 },
         },
       ],
       bottomTabs: {
@@ -55,7 +55,7 @@ export async function buildSharedElementAnimations(car: CarItem): Promise<Animat
           fromId: `image${car.id}Dest`,
           toId: `image${car.id}`,
           duration: SET_DURATION,
-          interpolation: 'overshoot',
+          interpolation: { type: 'spring', mass: 3, damping: 300, stiffness: 200 },
         },
       ],
       bottomTabs: {
