@@ -25,7 +25,7 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
                 .map { it.create(options).apply {
                     duration = options.getDuration()
                     startDelay = options.getStartDelay()
-                    interpolator = options.getInterpolator()
+                    interpolator = options.interpolator
                 } }
         val set = AnimatorSet()
         set.playTogether(animators)

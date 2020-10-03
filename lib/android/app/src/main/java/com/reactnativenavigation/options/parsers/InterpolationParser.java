@@ -14,7 +14,9 @@ import org.json.JSONObject;
 
 public class InterpolationParser {
     public static TimeInterpolator parse(JSONObject json) {
-        switch (json.optString("interpolation", "linear")) {
+        JSONObject interpolation = json.optJSONObject("interpolation");
+        String type = interpolation == null ? "linear" : interpolation.optString("type", "linear");
+        switch (type) {
             case "decelerate":
                 return new DecelerateInterpolator();
             case "accelerateDecelerate":
@@ -22,14 +24,14 @@ public class InterpolationParser {
             case "accelerate":
                 return new AccelerateInterpolator();
             case "overshoot":
-                double tension = json.optDouble("tension", 1.0);
+                double tension = interpolation.optDouble("tension", 1.0);
                 return new OvershootInterpolator((float)tension);
             case "spring":
-                float mass = (float)json.optDouble("mass", 3.0);
-                float damping = (float)json.optDouble("damping", 500.0);
-                float stiffness = (float)json.optDouble("stiffness", 1000.0);
-                boolean allowsOverdamping = json.optBoolean("allowsOverdamping", false);
-                float initialVelocity = (float)json.optDouble("initialVelocity", 0);
+                float mass = (float)interpolation.optDouble("mass", 3.0);
+                float damping = (float)interpolation.optDouble("damping", 500.0);
+                float stiffness = (float)interpolation.optDouble("stiffness", 1000.0);
+                boolean allowsOverdamping = interpolation.optBoolean("allowsOverdamping", false);
+                float initialVelocity = (float)interpolation.optDouble("initialVelocity", 0);
                 return new SpringInterpolator(mass, damping, stiffness, allowsOverdamping, initialVelocity);
             case "linear":
             default:
