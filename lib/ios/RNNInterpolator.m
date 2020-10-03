@@ -18,28 +18,28 @@
                       RNNInterpolate(from.size.height, to.size.height, p, interpolator));
 }
 
-+ (CATransform3D)fromTransform:(CATransform3D)from toTransform:(CATransform3D)to precent:(CGFloat)p interpolation:(RNNInterpolationOptions)interpolation {
++ (CATransform3D)fromTransform:(CATransform3D)from toTransform:(CATransform3D)to precent:(CGFloat)p interpolator:(id<Interpolator>)interpolator {
     CATransform3D transform = CATransform3DIdentity;
 
-    transform.m11 = [RNNInterpolator fromFloat:from.m11 toFloat:to.m11 precent:p interpolation:interpolation];
-    transform.m12 = [RNNInterpolator fromFloat:from.m12 toFloat:to.m12 precent:p interpolation:interpolation];
-    transform.m13 = [RNNInterpolator fromFloat:from.m13 toFloat:to.m13 precent:p interpolation:interpolation];
-    transform.m14 = [RNNInterpolator fromFloat:from.m14 toFloat:to.m14 precent:p interpolation:interpolation];
+    transform.m11 = [RNNInterpolator fromFloat:from.m11 toFloat:to.m11 precent:p interpolator:interpolator];
+    transform.m12 = [RNNInterpolator fromFloat:from.m12 toFloat:to.m12 precent:p interpolator:interpolator];
+    transform.m13 = [RNNInterpolator fromFloat:from.m13 toFloat:to.m13 precent:p interpolator:interpolator];
+    transform.m14 = [RNNInterpolator fromFloat:from.m14 toFloat:to.m14 precent:p interpolator:interpolator];
 
-    transform.m21 = [RNNInterpolator fromFloat:from.m21 toFloat:to.m21 precent:p interpolation:interpolation];
-    transform.m22 = [RNNInterpolator fromFloat:from.m22 toFloat:to.m22 precent:p interpolation:interpolation];
-    transform.m23 = [RNNInterpolator fromFloat:from.m23 toFloat:to.m23 precent:p interpolation:interpolation];
-    transform.m24 = [RNNInterpolator fromFloat:from.m24 toFloat:to.m24 precent:p interpolation:interpolation];
+    transform.m21 = [RNNInterpolator fromFloat:from.m21 toFloat:to.m21 precent:p interpolator:interpolator];
+    transform.m22 = [RNNInterpolator fromFloat:from.m22 toFloat:to.m22 precent:p interpolator:interpolator];
+    transform.m23 = [RNNInterpolator fromFloat:from.m23 toFloat:to.m23 precent:p interpolator:interpolator];
+    transform.m24 = [RNNInterpolator fromFloat:from.m24 toFloat:to.m24 precent:p interpolator:interpolator];
 
-    transform.m31 = [RNNInterpolator fromFloat:from.m31 toFloat:to.m31 precent:p interpolation:interpolation];
-    transform.m32 = [RNNInterpolator fromFloat:from.m32 toFloat:to.m32 precent:p interpolation:interpolation];
-    transform.m33 = [RNNInterpolator fromFloat:from.m33 toFloat:to.m33 precent:p interpolation:interpolation];
-    transform.m34 = [RNNInterpolator fromFloat:from.m34 toFloat:to.m34 precent:p interpolation:interpolation];
+    transform.m31 = [RNNInterpolator fromFloat:from.m31 toFloat:to.m31 precent:p interpolator:interpolator];
+    transform.m32 = [RNNInterpolator fromFloat:from.m32 toFloat:to.m32 precent:p interpolator:interpolator];
+    transform.m33 = [RNNInterpolator fromFloat:from.m33 toFloat:to.m33 precent:p interpolator:interpolator];
+    transform.m34 = [RNNInterpolator fromFloat:from.m34 toFloat:to.m34 precent:p interpolator:interpolator];
 
-    transform.m41 = [RNNInterpolator fromFloat:from.m41 toFloat:to.m41 precent:p interpolation:interpolation];
-    transform.m42 = [RNNInterpolator fromFloat:from.m42 toFloat:to.m42 precent:p interpolation:interpolation];
-    transform.m43 = [RNNInterpolator fromFloat:from.m43 toFloat:to.m43 precent:p interpolation:interpolation];
-    transform.m44 = [RNNInterpolator fromFloat:from.m44 toFloat:to.m44 precent:p interpolation:interpolation];
+    transform.m41 = [RNNInterpolator fromFloat:from.m41 toFloat:to.m41 precent:p interpolator:interpolator];
+    transform.m42 = [RNNInterpolator fromFloat:from.m42 toFloat:to.m42 precent:p interpolator:interpolator];
+    transform.m43 = [RNNInterpolator fromFloat:from.m43 toFloat:to.m43 precent:p interpolator:interpolator];
+    transform.m44 = [RNNInterpolator fromFloat:from.m44 toFloat:to.m44 precent:p interpolator:interpolator];
 
     return transform;
 }
