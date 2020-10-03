@@ -15,8 +15,8 @@ import CarCard from './CarCard';
 
 const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
   const onCarPressed = useCallback(
-    async (car: CarItem) => {
-      const navigationAnimations = await buildSharedElementAnimations(car);
+    (car: CarItem) => {
+      const navigationAnimations = buildSharedElementAnimations(car);
       Navigation.push(componentId, {
         component: {
           name: Screens.CarDetailsScreen,
