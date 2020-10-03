@@ -89,7 +89,6 @@
     "jest": "26.1.0",
     "jest-circus": "26.1.0",
     "lint-staged": "10.2.11",
-    "lodash": "^4.17.15",
     "metro-react-native-babel-preset": "0.59.0",
     "prettier": "2.0.5",
     "react": "16.13.1",
