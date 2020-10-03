@@ -58,19 +58,19 @@ export default class CocktailsListScreen extends NavigationComponent {
                   fromId: `image${item.id}`,
                   toId: `image${item.id}Dest`,
                   duration: LONG_DURATION,
-                  interpolation: { type: 'spring' },
+                  interpolation: { type: 'spring', mass: 3, damping: 500, stiffness: 400 },
                 },
                 {
                   fromId: `title${item.id}`,
                   toId: `title${item.id}Dest`,
                   duration: LONG_DURATION,
-                  interpolation: { type: 'spring' },
+                  interpolation: { type: 'spring', mass: 3, damping: 500, stiffness: 400 },
                 },
                 {
                   fromId: `backdrop${item.id}`,
                   toId: 'backdrop',
                   duration: LONG_DURATION,
-                  interpolation: { type: 'spring' },
+                  interpolation: { type: 'spring', mass: 3, damping: 500, stiffness: 400 },
                 },
               ],
               elementTransitions: [
