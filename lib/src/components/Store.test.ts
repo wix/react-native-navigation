@@ -56,7 +56,24 @@ describe('Store', () => {
     expect(instance.setProps).toHaveBeenCalledWith(props);
   });
 
-  it('not throw exeption when set props by id component not found', () => {
+  it('not throw exception when set props by id component not found', () => {
     expect(() => uut.updateProps('component1', { foo: 'bar' })).not.toThrow();
+  });
+
+  it('tries to register components lazily when given a lazy registrator', () => {
+    const MyLazyComponent = () => class MyComponent extends React.Component {};
+    const MyEagerComponent = () => class MyComponent extends React.Component {};
+    uut.setComponentClassForName('eager', MyEagerComponent);
+    const lazyRegistrator = jest.fn((name) => {
+      if (name === 'lazy') {
+        uut.setComponentClassForName(name, MyLazyComponent);
+      }
+    });
+    uut.setLazyComponentRegistrator(lazyRegistrator);
+
+    expect(uut.getComponentClassForName('eager')).toEqual(MyEagerComponent);
+    expect(uut.getComponentClassForName('lazy')).toEqual(MyLazyComponent);
+    expect(uut.getComponentClassForName('lazy')).toEqual(MyLazyComponent);
+    expect(lazyRegistrator).toHaveBeenCalledTimes(1);
   });
 });

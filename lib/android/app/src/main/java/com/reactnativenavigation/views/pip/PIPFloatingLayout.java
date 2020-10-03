@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.reactnativenavigation.parse.CustomPIPDimension;
+import com.reactnativenavigation.options.CustomPIPDimension;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ViewExtension;

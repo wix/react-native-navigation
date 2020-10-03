@@ -2,8 +2,8 @@ package com.reactnativenavigation.views.element
 
 import android.animation.AnimatorSet
 import android.view.View
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
-import com.reactnativenavigation.viewcontrollers.ViewController
+import com.reactnativenavigation.options.SharedElementTransitionOptions
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.animators.*
 
 class SharedElementTransition(appearing: ViewController<*>, private val options: SharedElementTransitionOptions) : Transition() {
@@ -17,7 +17,7 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
     override val topInset: Int
         get() = viewController.topInset
 
-    fun isValid(): Boolean = this::from.isInitialized
+    fun isValid(): Boolean = this::from.isInitialized && this::to.isInitialized
 
     override fun createAnimators(): AnimatorSet {
         val animators = animators()

@@ -3,8 +3,8 @@ package com.reactnativenavigation.views.element
 import android.animation.AnimatorSet
 import android.util.Property
 import android.view.View
-import com.reactnativenavigation.parse.ElementTransitionOptions
-import com.reactnativenavigation.viewcontrollers.ViewController
+import com.reactnativenavigation.options.ElementTransitionOptions
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
 class ElementTransition(private val transitionOptions: ElementTransitionOptions) : Transition() {
     val id: String

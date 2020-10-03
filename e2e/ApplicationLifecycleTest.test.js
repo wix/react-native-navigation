@@ -1,7 +1,7 @@
-const Utils = require('./Utils');
-const Android = require('./AndroidUtils');
-const TestIDs = require('../playground/src/testIDs');
-const includes = require('lodash/includes');
+import Utils from './Utils';
+import Android from './AndroidUtils';
+import TestIDs from '../playground/src/testIDs';
+import includes from 'lodash/includes';
 
 const { elementByLabel, elementById, sleep } = Utils;
 const IS_RELEASE = includes(process.argv, '--release');
@@ -9,7 +9,7 @@ const KEY_CODE_R = 46;
 
 describe('application lifecycle test', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
   });
 
   it('push a screen to ensure its not there after reload', async () => {
@@ -26,7 +26,7 @@ describe('application lifecycle test', () => {
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
     await device.sendToHome();
-    await device.launchApp();
+    await device.launchApp({ newInstance: false });
 
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
@@ -38,7 +38,7 @@ describe('application lifecycle test', () => {
 
     Android.pressBack();
 
-    await device.launchApp();
+    await device.launchApp({ newInstance: false });
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();
   });
 
@@ -60,7 +60,7 @@ describe('application lifecycle test', () => {
 
     await togglePhonePermission();
     await sleep(1000);
-    await device.launchApp();
+    await device.launchApp({ newInstance: false });
 
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();
     await expect(elementById(TestIDs.WELCOME_SCREEN_HEADER)).toBeVisible();

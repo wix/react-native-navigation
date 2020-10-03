@@ -1,11 +1,12 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
+import Android from './AndroidUtils';
+
 const { elementByLabel, elementById, sleep } = Utils;
-const Android = require('./AndroidUtils');
 
 describe('Stack', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.STACK_BTN).tap();
   });
 
@@ -100,7 +101,8 @@ describe('Stack', () => {
     await expect(elementByLabel('Stack Position: 2')).toBeVisible();
   });
 
-  xit(':ios: set searchBar and handle onSearchUpdated event', async () => { // Broken on iOS 13
+  xit(':ios: set searchBar and handle onSearchUpdated event', async () => {
+    // Broken on iOS 13
     await elementById(TestIDs.SEARCH_BTN).tap();
     await expect(elementByLabel('Start Typing')).toBeVisible();
     await elementByLabel('Start Typing').tap();

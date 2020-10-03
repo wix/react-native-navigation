@@ -26,9 +26,9 @@
 }
 
 - (void)prepareTransitionContext:(id<UIViewControllerContextTransitioning>)transitionContext {
-    UIViewController* toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    toVC.view.alpha = 0;
-    [transitionContext.containerView addSubview:toVC.view];
+    UIView* toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    toView.alpha = 0;
+    [transitionContext.containerView addSubview:toView];
 }
 
 - (void)performAnimationOnce {
@@ -57,7 +57,7 @@
 }
 
 - (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
-    @throw [NSException exceptionWithName:@"Unimplemented method" reason:@"createTransitionFromVC:fromVC:toVC:containerView must be overridden by subclass" userInfo:nil];
+    @throw [NSException exceptionWithName:@"Unimplemented method" reason:@"createTransitionsFromVC:fromVC:toVC:containerView must be overridden by subclass" userInfo:nil];
     return @[];
 }
 

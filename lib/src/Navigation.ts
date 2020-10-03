@@ -3,6 +3,7 @@ import {NativeCommandsSender} from './adapters/NativeCommandsSender';
 import {NativeEventsReceiver} from './adapters/NativeEventsReceiver';
 import {UniqueIdProvider} from './adapters/UniqueIdProvider';
 import {Store} from './components/Store';
+import {OptionProcessorsStore} from './processors/OptionProcessorsStore';
 import {ComponentRegistry} from './components/ComponentRegistry';
 import {Commands} from './commands/Commands';
 import {LayoutTreeParser} from './commands/LayoutTreeParser';
@@ -21,11 +22,17 @@ import {ColorService} from './adapters/ColorService';
 import {AssetService} from './adapters/AssetResolver';
 import {AppRegistryService} from './adapters/AppRegistryService';
 import {Deprecations} from './commands/Deprecations';
+import {ProcessorSubscription} from './interfaces/ProcessorSubscription';
+import {LayoutProcessor} from './processors/LayoutProcessor';
+import {LayoutProcessorsStore} from './processors/LayoutProcessorsStore';
+import {CommandName} from './interfaces/CommandName';
 
 export class NavigationRoot {
     public readonly TouchablePreview = TouchablePreview;
 
     private readonly store: Store;
+    private readonly optionProcessorsStore: OptionProcessorsStore;
+    private readonly layoutProcessorsStore: LayoutProcessorsStore;
     private readonly nativeEventsReceiver: NativeEventsReceiver;
     private readonly uniqueIdProvider: UniqueIdProvider;
     private readonly componentRegistry: ComponentRegistry;
@@ -41,9 +48,14 @@ export class NavigationRoot {
     constructor() {
         this.componentWrapper = new ComponentWrapper();
         this.store = new Store();
+        this.optionProcessorsStore = new OptionProcessorsStore();
+        this.layoutProcessorsStore = new LayoutProcessorsStore();
         this.nativeEventsReceiver = new NativeEventsReceiver();
         this.uniqueIdProvider = new UniqueIdProvider();
-        this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver, this.store);
+        this.componentEventsObserver = new ComponentEventsObserver(
+            this.nativeEventsReceiver,
+            this.store
+        );
         const appRegistryService = new AppRegistryService();
         this.componentRegistry = new ComponentRegistry(
             this.store,
@@ -52,7 +64,15 @@ export class NavigationRoot {
             appRegistryService
         );
         this.layoutTreeParser = new LayoutTreeParser(this.uniqueIdProvider);
-        const optionsProcessor = new OptionsProcessor(this.store, this.uniqueIdProvider, new ColorService(), new AssetService(), new Deprecations());
+        const optionsProcessor = new OptionsProcessor(
+            this.store,
+            this.uniqueIdProvider,
+            this.optionProcessorsStore,
+            new ColorService(),
+            new AssetService(),
+            new Deprecations()
+        );
+        const layoutProcessor = new LayoutProcessor(this.layoutProcessorsStore);
         this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
         this.nativeCommandsSender = new NativeCommandsSender();
         this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
@@ -63,18 +83,58 @@ export class NavigationRoot {
             this.layoutTreeCrawler,
             this.commandsObserver,
             this.uniqueIdProvider,
-            optionsProcessor
+            optionsProcessor,
+            layoutProcessor
         );
-        this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
+        this.eventsRegistry = new EventsRegistry(
+            this.nativeEventsReceiver,
+            this.commandsObserver,
+            this.componentEventsObserver
+        );
+
         this.componentEventsObserver.registerOnceForAllComponentEvents();
     }
+
 
     /**
      * Every navigation component in your app must be registered with a unique name.
      * The component itself is a traditional React component extending React.Component.
      */
-    public registerComponent(componentName: string | number, componentProvider: ComponentProvider, concreteComponentProvider?: ComponentProvider): ComponentProvider {
-        return this.componentRegistry.registerComponent(componentName, componentProvider, concreteComponentProvider);
+    public registerComponent(
+        componentName: string | number,
+        componentProvider: ComponentProvider,
+        concreteComponentProvider?: ComponentProvider
+    ): ComponentProvider {
+        return this.componentRegistry.registerComponent(
+            componentName,
+            componentProvider,
+            concreteComponentProvider
+        );
+    }
+
+    /**
+     * Adds an option processor which allows option interpolation by optionPath.
+     */
+    public addOptionProcessor<T>(
+        optionPath: string,
+        processor: (value: T, commandName: CommandName) => T
+    ): ProcessorSubscription {
+        return this.optionProcessorsStore.addProcessor(optionPath, processor);
+    }
+
+    /**
+     * Method to be invoked when a layout is processed and is about to be created. This can be used to change layout options or even inject props to components.
+     */
+    public addLayoutProcessor(
+        processor: (layout: Layout, commandName: CommandName) => Layout
+    ): ProcessorSubscription {
+        return this.layoutProcessorsStore.addProcessor(processor);
+    }
+
+    public setLazyComponentRegistrator(
+        lazyRegistratorFn: (lazyComponentRequest: string | number) => void
+    ) {
+        this.store.setLazyComponentRegistrator(lazyRegistratorFn);
     }
 
     /**
@@ -87,7 +147,13 @@ export class NavigationRoot {
         ReduxProvider: any,
         reduxStore: any
     ): ComponentProvider {
-        return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, undefined, ReduxProvider, reduxStore);
+        return this.componentRegistry.registerComponent(
+            componentName,
+            getComponentClassFunc,
+            undefined,
+            ReduxProvider,
+            reduxStore
+        );
     }
 
     /**

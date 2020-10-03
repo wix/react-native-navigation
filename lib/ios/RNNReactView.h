@@ -1,7 +1,12 @@
+#ifdef RN_FABRIC_ENABLED
+#import <React/RCTFabricSurfaceHostingProxyRootView.h>
+#else
 #import <React/RCTRootView.h>
-#import <React/RCTRootViewDelegate.h>
-#import "UIView+Utils.h"
+#endif
+
 #import "RNNEventEmitter.h"
+#import "UIView+Utils.h"
+#import <React/RCTRootViewDelegate.h>
 #import <React/RCTUIManager.h>
 
 #define ComponentTypeScreen @"Component"
@@ -11,12 +16,22 @@
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
-@interface RNNReactView : RCTRootView
+#ifdef RN_FABRIC_ENABLED
+@interface RNNReactView
+    : RCTFabricSurfaceHostingProxyRootView <RCTRootViewDelegate>
+#else
+@interface RNNReactView : RCTRootView <RCTRootViewDelegate>
+#endif
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties eventEmitter:(RNNEventEmitter *)eventEmitter reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
+- (instancetype)initWithBridge:(RCTBridge *)bridge
+                    moduleName:(NSString *)moduleName
+             initialProperties:(NSDictionary *)initialProperties
+                  eventEmitter:(RNNEventEmitter *)eventEmitter
+           reactViewReadyBlock:
+               (RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 
-@property (nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
-@property (nonatomic, strong) RNNEventEmitter* eventEmitter;
+@property(nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
+@property(nonatomic, strong) RNNEventEmitter *eventEmitter;
 
 - (NSString *)componentId;
 

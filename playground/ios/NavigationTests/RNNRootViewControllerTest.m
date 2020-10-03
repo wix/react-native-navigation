@@ -33,6 +33,8 @@
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNComponentViewController* uut;
+@property (nonatomic, strong) RNNComponentPresenter* presenter;
+
 @end
 
 @implementation RNNRootViewControllerTest
@@ -49,8 +51,8 @@
 	layoutInfo.componentId = self.componentId;
 	layoutInfo.name = self.pageName;
 	
-	id presenter = [OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil]];
-	self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:presenter options:self.options defaultOptions:nil];
+	self.presenter = [OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil]];
+	self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:self.options defaultOptions:nil];
 }
 
 - (void)testTopBarBackgroundColor_validColor {
@@ -109,11 +111,12 @@
 }
 
 - (void)testTitle_string {
-	NSString* title =@"some title";
-	self.options.topBar.title.text = [[Text alloc] initWithValue:title];
-
-	[self.uut viewWillAppear:false];
-	XCTAssertTrue([self.uut.navigationItem.title isEqual:title]);
+	NSString* title = @"some title";
+	RNNNavigationOptions* options = RNNNavigationOptions.emptyOptions;
+	options.topBar.title.text = [[Text alloc] initWithValue:title];
+	UIViewController* uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:options defaultOptions:nil];
+	
+	XCTAssertTrue([uut.navigationItem.title isEqual:title]);
 }
 
 - (void)testTitle_default{
@@ -182,31 +185,34 @@
 	NSMutableArray* controllers = [NSMutableArray new];
 	[controllers addObject:self.uut];
 	__unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
+	[vc viewWillAppear:NO];
 	[self.uut willMoveToParentViewController:vc];
 	XCTAssertTrue([self.uut.tabBarItem.badgeValue isEqualToString:tabBadgeInput]);
 
 }
 
 - (void)testTopBarLargeTitle_default {
-	[self.uut viewWillAppear:false];
-
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
+	RNNNavigationOptions* options = RNNNavigationOptions.emptyOptions;
+	UIViewController* uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:options defaultOptions:nil];
+	
+	XCTAssertEqual(uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
 }
 
 - (void)testTopBarLargeTitle_true {
-	self.options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(1)];
-	[self.uut viewWillAppear:false];
+	RNNNavigationOptions* options = RNNNavigationOptions.emptyOptions;
+	options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(1)];
+	UIViewController* uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:options defaultOptions:nil];
 	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
+	XCTAssertEqual(uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
 }
 
 - (void)testTopBarLargeTitle_false {
-	self.options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(0)];
-	[self.uut viewWillAppear:false];
+	RNNNavigationOptions* options = RNNNavigationOptions.emptyOptions;
+	options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(0)];
+	UIViewController* uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:options defaultOptions:nil];
 	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
+	XCTAssertEqual(uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
 }
-
 
 - (void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
@@ -216,6 +222,7 @@
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 - (void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withTextColor {
@@ -230,6 +237,8 @@
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
 - (void)testTopBarLargeTitleFontSize_withTextFontFamily_withTextColor {
@@ -257,6 +266,7 @@
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 
@@ -369,9 +379,8 @@
 	self.options.layout.orientation = supportedOrientations;
 	NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
     __unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
-
-	[self.uut viewWillAppear:false];
-
+	[vc viewWillAppear:NO];
+	[self.uut viewWillAppear:NO];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskPortrait;
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
 }
@@ -381,8 +390,8 @@
 	self.options.layout.orientation = supportedOrientations;
     NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
     __unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
-
-	[self.uut viewWillAppear:false];
+	[vc viewWillAppear:NO];
+	[self.uut viewWillAppear:NO];
 
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape);
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
@@ -393,8 +402,8 @@
 	self.options.layout.orientation = supportedOrientations;
 	NSMutableArray* controllers = [[NSMutableArray alloc] initWithArray:@[self.uut]];
 	__unused RNNBottomTabsController* vc = [RNNBottomTabsController createWithChildren:controllers];
-
-	[self.uut viewWillAppear:false];
+	[vc viewWillAppear:NO];
+	[self.uut viewWillAppear:NO];
 
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
@@ -553,7 +562,7 @@
 
 - (RNNStackController *)createNavigationController {
 	RNNStackController* nav = [[RNNStackController alloc] initWithLayoutInfo:nil creator:nil options:[[RNNNavigationOptions alloc] initEmptyOptions] defaultOptions:nil presenter:[[RNNStackPresenter alloc] init] eventEmitter:nil childViewControllers:@[self.uut]];
-	
+
 	return nav;
 }
 

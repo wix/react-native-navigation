@@ -1,6 +1,4 @@
-const exec = require('shell-utils').exec;
-
-module.exports = {
+const utils = {
   elementByLabel: (label) => {
     return element(by.text(label));
   },
@@ -9,10 +7,14 @@ module.exports = {
   },
   tapBackIos: () => {
     try {
-      return element(by.traits(['button']).and(by.label('Back'))).atIndex(0).tap();
+      return element(by.traits(['button']).and(by.label('Back')))
+        .atIndex(0)
+        .tap();
     } catch (err) {
       return element(by.type('_UIModernBarButton').and(by.label('Back'))).tap();
     }
   },
-  sleep: ms => new Promise(res => setTimeout(res, ms))
+  sleep: (ms) => new Promise((res) => setTimeout(res, ms)),
 };
+
+export default utils;

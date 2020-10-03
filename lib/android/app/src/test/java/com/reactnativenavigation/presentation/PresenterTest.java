@@ -5,8 +5,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
 
 import org.junit.Test;
 import org.mockito.Mockito;

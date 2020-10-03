@@ -2,10 +2,10 @@ package com.reactnativenavigation.utils;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.parse.LayoutFactory;
-import com.reactnativenavigation.parse.LayoutNode;
+import com.reactnativenavigation.options.LayoutFactory;
+import com.reactnativenavigation.options.LayoutNode;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 
 import org.json.JSONException;
 import org.json.JSONObject;

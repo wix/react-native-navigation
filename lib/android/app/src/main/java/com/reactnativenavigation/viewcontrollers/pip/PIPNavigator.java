@@ -17,17 +17,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.reactnativenavigation.anim.NavigationAnimator;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.PIPActionButton;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.PIPActionButton;
+import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.Functions.Func1;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.element.ElementTransitionManager;
+import com.reactnativenavigation.utils.Functions;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.pip.PIPContainer;
 import com.reactnativenavigation.views.pip.PIPFloatingLayout;
 import com.reactnativenavigation.views.pip.PIPStates;
@@ -37,8 +36,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class PIPNavigator extends ParentController<PIPContainer> {
-    private NavigationAnimator pipInAnimator;
     private ViewController childController;
+    private StackAnimator animator;
     private PIPStates pipState = PIPStates.NOT_STARTED;
     private PIPFloatingLayout pipFloatingLayout;
     private String EXTRA_CONTROL_TYPE = "control_type";
@@ -46,17 +45,17 @@ public class PIPNavigator extends ParentController<PIPContainer> {
 
     public PIPNavigator(Activity activity, ChildControllersRegistry childRegistry, Presenter presenter, Options initialOptions) {
         super(activity, childRegistry, "PIP " + CompatUtils.generateViewId(), presenter, initialOptions);
-        pipInAnimator = new NavigationAnimator(getActivity(), new ElementTransitionManager());
+        animator = new StackAnimator(getActivity());
     }
 
     @Override
-    protected ViewController getCurrentChild() {
+    public ViewController getCurrentChild() {
         return childController;
     }
 
     @NonNull
     @Override
-    protected PIPContainer createView() {
+    public PIPContainer createView() {
         return new PIPContainer(getActivity());
     }
 
@@ -78,7 +77,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         return children;
     }
 
-    public void pushPIP(ViewController childController) {
+    public void pushPIP(ViewController childController, boolean toNative) {
         closePIP(null);
         getView().setVisibility(View.VISIBLE);
         this.childController = childController;
@@ -96,8 +95,8 @@ public class PIPNavigator extends ParentController<PIPContainer> {
             }
         });
         getView().addView(floatingLayout);
-        if (this.childController.options.animations.pipIn.enabled.isTrueOrUndefined()) {
-            this.pipInAnimator.pipIn(floatingLayout, this.childController, this.childController.options, () -> {
+        if (this.childController.options.animations.pipIn.enabled.isTrueOrUndefined() && !toNative) {
+            this.animator.pipIn(floatingLayout, this.childController, this.childController.options, () -> {
                 this.pipFloatingLayout = floatingLayout;
                 updatePIPStateInternal(PIPStates.CUSTOM_COMPACT);
             });
@@ -107,13 +106,13 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         }
     }
 
-    public void restorePIP(Func1<ViewController> task) {
+    public void restorePIP(Functions.Func1<ViewController> task, boolean fromNative) {
         if (this.childController != null) {
             pipFloatingLayout.cancelAnimations();
             pipFloatingLayout.initiateRestore();
             updatePIPStateInternal(PIPStates.RESTORE_START);
-            if (this.childController.options.animations.pipOut.enabled.isTrueOrUndefined()) {
-                this.pipInAnimator.pipOut(this.pipFloatingLayout, this.childController, this.childController.options, () -> {
+            if (this.childController.options.animations.pipOut.enabled.isTrueOrUndefined() && !fromNative) {
+                this.animator.pipOut(this.pipFloatingLayout, this.childController, this.childController.options, () -> {
                     updatePIPStateInternal(PIPStates.NOT_STARTED);
                     this.childController.detachView();
                     task.run(this.childController);

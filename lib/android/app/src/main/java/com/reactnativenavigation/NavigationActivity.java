@@ -21,14 +21,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
-import com.reactnativenavigation.presentation.OverlayManager;
-import com.reactnativenavigation.presentation.RootPresenter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.react.ReactGateway;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
+import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.views.pip.PIPStates;
 
 
@@ -41,6 +41,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (isFinishing()) {
+            return;
+        }
         if (navigator == null || navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             addDefaultSplashLayout();
             navigator = new Navigator(this,
@@ -90,21 +93,20 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
+        if (navigator != null && navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             navigator.destroy();
             getReactGateway().onActivityDestroyed(this);
         }
         getApplication().unregisterActivityLifecycleCallbacks(lifecycleCallback);
+
     }
 
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        if (navigator.getPipMode() != PIPStates.NOT_STARTED && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            if (canEnterPiPMode()) {
-                navigator.updatePIPState(PIPStates.NATIVE_MOUNT_START);
-                enterPictureInPictureMode(navigator.getPictureInPictureParams());
-            }
+        if (navigator.shouldSwitchToPIP() && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && canEnterPiPMode()) {
+            navigator.updatePIPState(PIPStates.NATIVE_MOUNT_START);
+            enterPictureInPictureMode(navigator.getPictureInPictureParams());
         }
     }
 

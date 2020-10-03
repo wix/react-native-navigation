@@ -1,0 +1,49 @@
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
+import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import Colors from '../commons/Colors';
+
+interface Props extends NavigationComponentProps {
+  title: string;
+}
+
+export default class RoundedButton extends React.Component<Props> {
+  constructor(props: Props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.button}>
+          <TouchableOpacity onPress={() => Alert.alert(this.props.title, 'Thanks for that :)')}>
+            <Text style={styles.text}>{this.props.title}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 4,
+  },
+  button: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.primary,
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'white',
+    alignSelf: 'center',
+  },
+});

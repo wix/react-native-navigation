@@ -9,6 +9,10 @@ static UITabBarButton_layoutSubviews__IMP original_UITabBarButton_layoutSubviews
 
 @implementation UITabBar (utils)
 
+- (UIView *)tabBarItemViewAtIndex:(NSUInteger)index {
+    return [self.items[index] valueForKey:@"view"];
+}
+
 - (void)centerTabItems {
 	[self removeTabBarItemTitles];
 	[self swizzleUITabBarButton];

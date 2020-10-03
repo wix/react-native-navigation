@@ -2,7 +2,7 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import androidx.annotation.IntRange;
 
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import java.util.List;
 

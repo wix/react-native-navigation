@@ -22,8 +22,8 @@
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-	UIViewController* toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-	UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+	UIView* toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+	UIView* fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
@@ -31,12 +31,12 @@
 	}];
 	
 	if (_isDismiss) {
-		[[transitionContext containerView] addSubview:toViewController.view];
-		[[transitionContext containerView] addSubview:fromViewController.view];
-		[self animateElement:self.transitionOptions view:fromViewController.view elementName:@"content"];
+		[[transitionContext containerView] addSubview:toView];
+		[[transitionContext containerView] addSubview:fromView];
+		[self animateElement:self.transitionOptions view:fromView elementName:@"content"];
 	} else {
-		[[transitionContext containerView] addSubview:toViewController.view];
-		[self animateElement:self.transitionOptions view:toViewController.view elementName:@"content"];
+		[[transitionContext containerView] addSubview:toView];
+		[self animateElement:self.transitionOptions view:toView elementName:@"content"];
 	}
 	
 	[CATransaction commit];

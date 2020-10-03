@@ -3,7 +3,7 @@ package com.reactnativenavigation.views.element.animators
 import android.animation.Animator
 import android.view.View
 import androidx.annotation.CallSuper
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.options.SharedElementTransitionOptions
 import java.lang.reflect.ParameterizedType
 
 abstract class PropertyAnimatorCreator<T : View> internal constructor(protected var from: View, protected var to: View) {

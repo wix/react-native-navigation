@@ -3,12 +3,11 @@ package com.reactnativenavigation.viewcontrollers.modal;
 import android.app.Activity;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.anim.ModalAnimator;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
@@ -62,20 +61,19 @@ public class ModalStack {
             boolean isDismissingTopModal = isTop(toDismiss);
             modals.remove(toDismiss);
             @Nullable ViewController toAdd = isEmpty() ? root : isDismissingTopModal ? get(size() - 1) : null;
-            CommandListenerAdapter onDismiss = new CommandListenerAdapter(listener) {
-                @Override
-                public void onSuccess(String childId) {
-                    eventEmitter.emitModalDismissed(componentId, toDismiss.getCurrentComponentName(), 1);
-                    super.onSuccess(componentId);
-                }
-            };
             if (isDismissingTopModal) {
                 if (toAdd == null) {
                     listener.onError("Could not dismiss modal");
                     return false;
                 }
             }
-            presenter.dismissModal(toDismiss, toAdd, root, onDismiss);
+            presenter.dismissModal(toDismiss, toAdd, root, new CommandListenerAdapter(listener) {
+                @Override
+                public void onSuccess(String childId) {
+                    eventEmitter.emitModalDismissed(componentId, toDismiss.getCurrentComponentName(), 1);
+                    super.onSuccess(componentId);
+                }
+            });
             return true;
         } else {
             listener.onError("Nothing to dismiss");

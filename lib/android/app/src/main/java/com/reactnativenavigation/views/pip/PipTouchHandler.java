@@ -270,8 +270,7 @@ public class PipTouchHandler {
         mGestures = new PipTouchGesture[]{
                 mDefaultMovementGesture
         };
-        mMotionHelper = new PIPMotionHelper(floatingLayout,
-                mSnapAlgorithm, mFlingAnimationUtils);
+        mMotionHelper = new PIPMotionHelper(floatingLayout, mSnapAlgorithm, mFlingAnimationUtils);
         mTouchState = new PipTouchState(mViewConfig, mHandler,
                 () -> {
                 });

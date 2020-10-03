@@ -3,8 +3,8 @@ package com.reactnativenavigation.mocks;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.views.topbar.TopBarBackgroundView;
-import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
+import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundView;
+import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 
 import static org.mockito.Mockito.mock;
 

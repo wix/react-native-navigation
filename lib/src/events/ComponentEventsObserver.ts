@@ -1,9 +1,10 @@
-import isString from 'lodash/isString';
-import isNil from 'lodash/isNil';
-import uniqueId from 'lodash/uniqueId';
-import unset from 'lodash/unset';
-import forEach from 'lodash/forEach';
-import {EventSubscription} from '../interfaces/EventSubscription';
+import isString from 'lodash/isString'
+import isNil from 'lodash/isNil'
+import uniqueId from 'lodash/uniqueId'
+import unset from 'lodash/unset'
+import forEach from 'lodash/forEach'
+import { EventSubscription } from '../interfaces/EventSubscription';
+import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
 import {
     ComponentDidAppearEvent,
     ComponentDidDisappearEvent,
@@ -20,7 +21,7 @@ import {NativeEventsReceiver} from '../adapters/NativeEventsReceiver';
 import {Store} from '../components/Store';
 import {Platform} from "react-native";
 
-type ReactComponentWithIndexing = React.Component<any> & Record<string, any>;
+type ReactComponentWithIndexing = NavigationComponentListener & Record<string, any>;
 
 export class ComponentEventsObserver {
     private listeners: Record<string, Record<string, ReactComponentWithIndexing>> = {};
@@ -68,17 +69,25 @@ export class ComponentEventsObserver {
     public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
         const computedComponentId = componentId || component.props.componentId;
 
-        if (!isString(computedComponentId)) {
-            throw new Error(`bindComponent expects a component with a componentId in props or a componentId as the second argument`);
-        }
-        if (isNil(this.listeners[computedComponentId])) {
-            this.listeners[computedComponentId] = {};
-        }
-        const key = uniqueId();
-        this.listeners[computedComponentId][key] = component;
-
-        return {remove: () => unset(this.listeners[computedComponentId], key)};
+    if (!isString(computedComponentId)) {
+      throw new Error(`bindComponent expects a component with a componentId in props or a componentId as the second argument`);
     }
+
+    return this.registerComponentListener(component as NavigationComponentListener, computedComponentId);
+  }
+
+  public registerComponentListener(listener: NavigationComponentListener, componentId: string): EventSubscription {
+    if (!isString(componentId)) {
+      throw new Error(`registerComponentListener expects a componentId as the second argument`);
+    }
+    if (isNil(this.listeners[componentId])) {
+      this.listeners[componentId] = {};
+    }
+    const key = uniqueId();
+    this.listeners[componentId][key] = listener;
+
+    return { remove: () => unset(this.listeners[componentId], key) };
+  }
 
     public unmounted(componentId: string) {
         unset(this.listeners, componentId);

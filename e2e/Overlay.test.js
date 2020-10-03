@@ -1,10 +1,11 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
+
 const { elementByLabel, elementById } = Utils;
 
 describe('Overlay', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.OVERLAY_BTN).tap();
   });
@@ -33,6 +34,17 @@ describe('Overlay', () => {
     await elementById(TestIDs.SHOW_TOUCH_THROUGH_OVERLAY_BTN).tap();
     await elementById(TestIDs.SET_ROOT_BTN).tap();
     await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
+  });
+
+  fit('nested touchables work as expected', async () => {
+    await elementById(TestIDs.TOAST_BTN).tap();
+    await elementById(TestIDs.TOAST_OK_BTN_INNER).tap();
+    await expect(elementByLabel('Inner button clicked')).toBeVisible();
+    await elementById(TestIDs.OK_BUTTON).tap();
+
+    await elementById(TestIDs.TOAST_BTN).tap();
+    await elementById(TestIDs.TOAST_OK_BTN_OUTER).tap();
+    await expect(elementByLabel('Outer button clicked')).toBeVisible();
   });
 
   xtest('overlay pass touches - false', async () => {

@@ -13,6 +13,8 @@ describe('ComponentRegistry', () => {
   let mockedComponentEventsObserver: ComponentEventsObserver;
   let mockedComponentWrapper: ComponentWrapper;
   let mockedAppRegistryService: AppRegistryService;
+  let componentWrapper: ComponentWrapper;
+  let store: Store;
   let uut: ComponentRegistry;
 
   beforeEach(() => {
@@ -20,11 +22,13 @@ describe('ComponentRegistry', () => {
     mockedComponentEventsObserver = mock(ComponentEventsObserver);
     mockedComponentWrapper = mock(ComponentWrapper);
     mockedAppRegistryService = mock(AppRegistryService);
+    store = instance(mockedStore);
+    componentWrapper = instance(mockedComponentWrapper);
 
     uut = new ComponentRegistry(
-      instance(mockedStore),
+      store,
       instance(mockedComponentEventsObserver),
-      instance(mockedComponentWrapper),
+      componentWrapper,
       instance(mockedAppRegistryService)
     );
   });
@@ -47,5 +51,38 @@ describe('ComponentRegistry', () => {
     const generator: ComponentProvider = jest.fn(() => DummyComponent);
     uut.registerComponent('example.MyComponent.name', generator);
     expect(generator).toHaveBeenCalledTimes(0);
+  });
+
+  it('should wrap component only once', () => {
+    uut = new ComponentRegistry(
+      new Store(),
+      instance(mockedComponentEventsObserver),
+      componentWrapper,
+      instance(mockedAppRegistryService)
+    );
+
+    componentWrapper.wrap = jest.fn();
+
+    const generator: ComponentProvider = jest.fn(() => DummyComponent);
+    const componentProvider = uut.registerComponent('example.MyComponent.name', generator);
+    componentProvider();
+    componentProvider();
+
+    expect(componentWrapper.wrap).toHaveBeenCalledTimes(1);
+  });
+
+  it('should recreate wrapped component on re-register component', () => {
+    uut = new ComponentRegistry(
+      new Store(),
+      instance(mockedComponentEventsObserver),
+      new ComponentWrapper(),
+      instance(mockedAppRegistryService)
+    );
+
+    const generator: ComponentProvider = () => DummyComponent;
+    const w1 = uut.registerComponent('example.MyComponent.name', generator)();
+    const w2 = uut.registerComponent('example.MyComponent.name', generator)();
+
+    expect(w1).not.toBe(w2);
   });
 });

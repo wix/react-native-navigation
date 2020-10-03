@@ -11,10 +11,6 @@
     return nil;
 }
 
-- (void)layout:(CGFloat)p {
-    
-}
-
 - (ViewType)viewType {
     if ([self isKindOfClass:[RCTImageView class]]) {
         return ViewTypeImage;
@@ -23,6 +19,17 @@
     }
     
     return ViewTypeOther;
+}
+
+- (void)stopMomentumScrollViews {
+    if ([self isKindOfClass:[UIScrollView class]]){
+        UIScrollView* scrollView = (UIScrollView*)self;
+        [scrollView setContentOffset:scrollView.contentOffset animated:NO];
+    } else {
+      for (UIView *subview in self.subviews) {
+        [subview stopMomentumScrollViews];
+      }
+    }
 }
 
 @end

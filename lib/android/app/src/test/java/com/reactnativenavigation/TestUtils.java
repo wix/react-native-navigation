@@ -8,20 +8,21 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.presentation.RenderChecker;
-import com.reactnativenavigation.presentation.StackPresenter;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.utils.RenderChecker;
+import com.reactnativenavigation.viewcontrollers.stack.StackPresenter;
 import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.button.IconResolver;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
-import com.reactnativenavigation.views.StackLayout;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
+import com.reactnativenavigation.views.stack.StackLayout;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 import org.mockito.Mockito;
 
@@ -36,7 +37,7 @@ public class TestUtils {
             }
         };
         return new StackControllerBuilder(activity, Mockito.mock(EventEmitter.class))
-                .setId("stack")
+                .setId("stack" + CompatUtils.generateViewId())
                 .setChildRegistry(new ChildControllersRegistry())
                 .setTopBarController(topBarController)
                 .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, new ImageLoader()), new RenderChecker(), new Options()))

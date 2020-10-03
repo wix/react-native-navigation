@@ -1,12 +1,11 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
-const Android = require('./AndroidUtils');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
 
 const { elementByLabel, elementById } = Utils;
 
 describe('External Component', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.EXTERNAL_COMP_BTN).tap();
   });

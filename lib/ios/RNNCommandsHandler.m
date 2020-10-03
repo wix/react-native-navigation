@@ -102,14 +102,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 }
 
 - (void)setDefaultOptions:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion {
-	[self assertReady];
     RNNAssertMainQueue();
     
 	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initWithDict:optionsDict];
 	[_controllerFactory setDefaultOptions:defaultOptions];
 	
 	UIViewController *rootViewController = UIApplication.sharedApplication.delegate.window.rootViewController;
-	[RNNDefaultOptionsHelper recrusivelySetDefaultOptions:defaultOptions onRootViewController:rootViewController];
+	[RNNDefaultOptionsHelper recursivelySetDefaultOptions:defaultOptions onRootViewController:rootViewController];
 
 	completion();
 }

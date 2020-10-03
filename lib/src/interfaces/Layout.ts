@@ -47,18 +47,22 @@ export interface LayoutStack {
 }
 
 export interface LayoutTabsChildren {
-    /**
-     * Set stack
-     */
-    stack?: LayoutStack;
-    /**
-     * Set component
-     */
-    component?: LayoutComponent;
-    /**
-     * Set the external component
-     */
-    externalComponent?: ExternalComponent;
+  /**
+   * Set stack
+   */
+  stack?: LayoutStack;
+  /**
+   * Set component
+   */
+  component?: LayoutComponent;
+  /**
+   * Set the external component
+   */
+  externalComponent?: ExternalComponent;
+  /**
+   * Set the side menu
+   */
+  sideMenu?: LayoutSideMenu;
 }
 
 export interface LayoutBottomTabs {

@@ -2,12 +2,12 @@ package com.reactnativenavigation.mocks;
 
 import android.content.Context;
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 
 public class SimpleOverlay extends RelativeLayout implements IReactView {
     public SimpleOverlay(Context context) {
@@ -20,7 +20,7 @@ public class SimpleOverlay extends RelativeLayout implements IReactView {
     }
 
     @Override
-    public View asView() {
+    public ViewGroup asView() {
         FrameLayout root = new FrameLayout(getContext());
         FrameLayout overlay = new FrameLayout(getContext());
         root.addView(overlay);

@@ -1,15 +1,12 @@
 package com.reactnativenavigation.views.element.animators
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.animation.addListener
-import androidx.core.animation.doOnStart
 import com.facebook.react.views.text.ReactTextView
 import com.facebook.react.views.view.ReactViewBackgroundDrawable
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.*
 
 class BackgroundColorAnimator(from: View, to: View) : PropertyAnimatorCreator<ViewGroup>(from, to) {

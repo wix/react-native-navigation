@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ComponentProvider } from 'react-native';
-import merge from 'lodash/merge'
 import { polyfill } from 'react-lifecycles-compat';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
@@ -28,7 +27,10 @@ export class ComponentWrapper {
     class WrappedComponent extends React.Component<HocProps, HocState> {
       static getDerivedStateFromProps(nextProps: any, prevState: HocState) {
         return {
-          allProps: merge({}, nextProps, store.getPropsForId(prevState.componentId))
+          allProps: {
+            ...nextProps,
+            ...store.getPropsForId(prevState.componentId)
+          }
         };
       }
 
@@ -68,7 +70,7 @@ export class ComponentWrapper {
     }
 
     polyfill(WrappedComponent);
-    hoistNonReactStatics(WrappedComponent, concreteComponentProvider());
+    hoistNonReactStatics(WrappedComponent, concreteComponentProvider === OriginalComponentGenerator ? GeneratedComponentClass : concreteComponentProvider());
     return ReduxProvider ? this.wrapWithRedux(WrappedComponent, ReduxProvider, reduxStore) : WrappedComponent;
   }
 

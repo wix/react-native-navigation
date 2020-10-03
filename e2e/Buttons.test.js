@@ -1,11 +1,11 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
 
 const { elementById, elementByLabel } = Utils;
 
 describe('Buttons', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
@@ -44,5 +44,16 @@ describe('Buttons', () => {
   it('change button props without rendering all buttons', async () => {
     await elementById(TestIDs.CHANGE_BUTTON_PROPS).tap();
     await expect(elementByLabel('Three')).toBeVisible();
+  });
+
+  it('pop using back button', async () => {
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await elementById(TestIDs.BACK_BUTTON).tap();
+    await expect(elementByLabel('Buttons')).toBeVisible();
+  });
+
+  it('resizes title component when a button is added with mergeOptions', async () => {
+    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.BUTTON_THREE).tap();
   });
 });

@@ -3,6 +3,7 @@ import { EmitterSubscription } from 'react-native';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { CommandsObserver } from './CommandsObserver';
 import { EventSubscription } from '../interfaces/EventSubscription';
+import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
 import {
   ComponentDidAppearEvent,
@@ -132,6 +133,13 @@ export class EventsRegistry {
     componentId?: string
   ): EventSubscription {
     return this.componentEventsObserver.bindComponent(component, componentId);
+  }
+
+  public registerComponentListener(
+    listener: NavigationComponentListener,
+    componentId: string
+  ): EventSubscription {
+    return this.componentEventsObserver.registerComponentListener(listener, componentId);
   }
 
   public registerScreenPoppedListener(

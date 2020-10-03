@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.facebook.react.views.text.ReactTextView
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.*
 import com.shazam.android.widget.text.reflow.ReflowTextAnimatorHelper
 
@@ -24,7 +24,7 @@ class TextChangeAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactTe
                 .setBoundsCalculator { view: View ->
                     val loc = IntArray(2)
                     view.getLocationInWindow(loc)
-                    val x = loc[0]
+                    val x = if (view == to) (to.layoutParams as ViewGroup.MarginLayoutParams).leftMargin else loc[0]
                     val y = if (view == to) (to.layoutParams as ViewGroup.MarginLayoutParams).topMargin else loc[1]
                     Rect(
                             x,

@@ -1,29 +1,15 @@
-
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
 
 const { elementById } = Utils;
 
 describe(':ios: orientation', () => {
-
   beforeEach(async () => {
-    await device.relaunchApp();
-    waitForDeviceToSettleAfterOrientationChangeAndroid = ms => new Promise(res => setTimeout(res, device.getPlatform() === 'ios' ? 0 : 400));
+    await device.launchApp({ newInstance: true });
+    waitForDeviceToSettleAfterOrientationChangeAndroid = (ms) =>
+      new Promise((res) => setTimeout(res, device.getPlatform() === 'ios' ? 0 : 400));
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.SHOW_ORIENTATION_SCREEN).tap();
-  });
-
-  it('default allows all', async () => {
-    await elementById(TestIDs.DEFAULT_ORIENTATION_BTN).tap();
-    waitForDeviceToSettleAfterOrientationChangeAndroid();
-    await expect(elementById(TestIDs.PORTRAIT_ELEMENT)).toBeVisible();
-    await device.setOrientation('landscape');
-    waitForDeviceToSettleAfterOrientationChangeAndroid();
-    await expect(elementById(TestIDs.LANDSCAPE_ELEMENT)).toBeVisible();
-    await device.setOrientation('portrait');
-    waitForDeviceToSettleAfterOrientationChangeAndroid();
-    await expect(elementById(TestIDs.PORTRAIT_ELEMENT)).toBeVisible();
-    await elementById(TestIDs.DISMISS_BTN).tap();
   });
 
   it('landscape and portrait array', async () => {
