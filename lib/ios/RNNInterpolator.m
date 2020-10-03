@@ -7,15 +7,15 @@
     return [fromColor ?: UIColor.clearColor interpolateToValue:toColor ?: UIColor.clearColor progress:precent behavior:RNNInterpolationBehaviorUseLABColorSpace];
 }
 
-+ (CGFloat)fromFloat:(CGFloat)from toFloat:(CGFloat)to precent:(CGFloat)precent interpolation:(RNNInterpolationOptions)interpolation {
-    return RNNInterpolate(from, to, precent, interpolation);
++ (CGFloat)fromFloat:(CGFloat)from toFloat:(CGFloat)to precent:(CGFloat)precent interpolator:(id<Interpolator>)interpolator {
+    return RNNInterpolate(from, to, precent, interpolator);
 }
 
-+ (CGRect)fromRect:(CGRect)from toRect:(CGRect)to precent:(CGFloat)p interpolation:(RNNInterpolationOptions)interpolation {
-    return CGRectMake(RNNInterpolate(from.origin.x, to.origin.x, p, interpolation),
-                      RNNInterpolate(from.origin.y, to.origin.y, p, interpolation),
-                      RNNInterpolate(from.size.width, to.size.width, p, interpolation),
-                      RNNInterpolate(from.size.height, to.size.height, p, interpolation));
++ (CGRect)fromRect:(CGRect)from toRect:(CGRect)to precent:(CGFloat)p interpolator:(id<Interpolator>)interpolator {
+    return CGRectMake(RNNInterpolate(from.origin.x, to.origin.x, p, interpolator),
+                      RNNInterpolate(from.origin.y, to.origin.y, p, interpolator),
+                      RNNInterpolate(from.size.width, to.size.width, p, interpolator),
+                      RNNInterpolate(from.size.height, to.size.height, p, interpolator));
 }
 
 + (CATransform3D)fromTransform:(CATransform3D)from toTransform:(CATransform3D)to precent:(CGFloat)p interpolation:(RNNInterpolationOptions)interpolation {
@@ -44,53 +44,8 @@
     return transform;
 }
 
-static CGFloat RNNApplyInterpolation(CGFloat p, RNNInterpolationOptions interpolation) {
-    switch (interpolation) {
-        case RNNInterpolationAccelerate:
-            return RNNAccelerate(p);
-        case RNNInterpolationAccelerateDecelerate:
-            return RNNAccelerateDecelerate(p);
-        case RNNInterpolationLinear:
-            return RNNLinear(p);
-        case RNNInterpolationDecelerate:
-            return RNNDecelerate(p);
-        case RNNInterpolationOvershoot:
-			// TODO: Expose tension property
-            return RNNOvershoot(p, 1);
-    }
-}
-
-static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, RNNInterpolationOptions interpolation) {
-    return from + RNNApplyInterpolation(p, interpolation) * (to - from);
-}
-
-static CGFloat RNNOvershoot(CGFloat p, CGFloat tension) {
-	// _o(t) = t * t * ((tension + 1) * t + tension)
-	// o(t) = _o(t - 1) + 1
-	CGFloat t = p - 1;
-	CGFloat _ot = t * t * ((tension + 1) * t + tension) + 1.0f;
-	return _ot;
-}
-
-static CGFloat RNNLinear(CGFloat p) {
-    return p;
-}
-
-static CGFloat RNNAccelerate(CGFloat p) {
-    return p * p;
-}
-
-static CGFloat RNNDecelerate(CGFloat p) {
-    return -(p * (p - 2));
-}
-
-static CGFloat RNNAccelerateDecelerate(CGFloat p) {
-    if (p < 0.5) {
-        return 4 * p * p * p;
-    } else {
-        CGFloat f = ((2 * p) - 2);
-        return 0.5 * f * f * f + 1;
-    }
+static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, id<Interpolator> interpolator) {
+    return from + [interpolator interpolate:p] * (to - from);
 }
 
 
