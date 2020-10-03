@@ -1,4 +1,5 @@
 #import "TransitionDetailsOptions.h"
+#import "RCTConvert+Interpolation.h"
 
 @implementation TransitionDetailsOptions
 
@@ -9,7 +10,7 @@
 	self.to = [DoubleParser parse:dict key:@"to"];
 	self.startDelay = [TimeIntervalParser parse:dict key:@"startDelay"];
 	self.duration = [TimeIntervalParser parse:dict key:@"duration"];
-	self.interpolation = dict[@"interpolation"];
+	self.interpolator = [RCTConvert Interpolator:dict[@"interpolation"]];
 
 	return self;
 }

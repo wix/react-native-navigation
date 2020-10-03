@@ -3,13 +3,12 @@
 @implementation FloatTransition
 
 - (instancetype)initWithView:(UIView *)view transitionDetails:(TransitionDetailsOptions *)transitionDetails {
-    id<Interpolator> interpolator = [RCTConvert interpolatorFromJson:transitionDetails.interpolation];
     self = [self initWithView:view
                          from:transitionDetails.from
                            to:transitionDetails.to
                    startDelay:[transitionDetails.startDelay getWithDefaultValue:0]
                      duration:[transitionDetails.duration getWithDefaultValue:[self defaultDuration]]
-                 interpolator:interpolator];
+                 interpolator:transitionDetails.interpolator];
     return self;
 }
 
