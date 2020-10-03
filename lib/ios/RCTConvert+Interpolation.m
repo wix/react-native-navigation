@@ -24,7 +24,7 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
         return [RCTConvert defaultInterpolator];
     }
     NSString* interpolation = json[@"type"] ? json[@"type"] : nil;
-    
+
     id<Interpolator> (^interpolator)(void) = @{
         @"back" : ^{
             return [[BackInterpolator alloc] init];
@@ -42,13 +42,13 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
         @"spring" : ^{
             CGFloat mass = [[[NumberParser parse:json key:@"mass"] getWithDefaultValue:[NSNumber numberWithFloat:3.0f]] floatValue];
             CGFloat damping = [[[NumberParser parse:json key:@"damping"] getWithDefaultValue:[NSNumber numberWithFloat:500.0f]] floatValue];
-            CGFloat stiffness = [[[NumberParser parse:json key:@"stiffness"] getWithDefaultValue:[NSNumber numberWithFloat:1000.0f]] floatValue];
+            CGFloat stiffness = [[[NumberParser parse:json key:@"stiffness"] getWithDefaultValue:[NSNumber numberWithFloat:200.0f]] floatValue];
             CGFloat allowsOverdamping = [[BoolParser parse:json key:@"allowsOverdamping"] getWithDefaultValue:NO];
             CGFloat initialVelocity = [[[NumberParser parse:json key:@"initialVelocity"] getWithDefaultValue:[NSNumber numberWithFloat:0.0f]] floatValue];
 			return [[SpringInterpolator alloc] init:mass damping:damping stiffness:stiffness allowsOverdamping:allowsOverdamping initialVelocity:initialVelocity];
         },
     }[interpolation];
-    
+
     if (interpolator != nil) {
         return interpolator();
     } else {

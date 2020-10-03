@@ -29,7 +29,7 @@ public class InterpolationParser {
             case "spring":
                 float mass = (float)interpolation.optDouble("mass", 3.0);
                 float damping = (float)interpolation.optDouble("damping", 500.0);
-                float stiffness = (float)interpolation.optDouble("stiffness", 1000.0);
+                float stiffness = (float)interpolation.optDouble("stiffness", 200.0);
                 boolean allowsOverdamping = interpolation.optBoolean("allowsOverdamping", false);
                 float initialVelocity = (float)interpolation.optDouble("initialVelocity", 0);
                 return new SpringInterpolator(mass, damping, stiffness, allowsOverdamping, initialVelocity);

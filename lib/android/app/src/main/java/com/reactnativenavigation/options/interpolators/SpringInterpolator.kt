@@ -3,7 +3,7 @@ package com.reactnativenavigation.options.interpolators
 import android.animation.TimeInterpolator
 import kotlin.math.*
 
-class SpringInterpolator(private val mass: Float = 3f, private val damping: Float = 500f, private val stiffness: Float = 1000f, private val allowsOverdamping: Boolean = false, initialVelocity: Float = 0f) : TimeInterpolator {
+class SpringInterpolator(private val mass: Float = 3f, private val damping: Float = 500f, private val stiffness: Float = 200f, private val allowsOverdamping: Boolean = false, initialVelocity: Float = 0f) : TimeInterpolator {
     private val velocity: Float = initialVelocity
 
     override fun getInterpolation(t: Float): Float {
