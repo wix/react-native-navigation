@@ -44,6 +44,9 @@
     return transform;
 }
 
+/**
+ Lerp Function for float values. The formula for lerping numbers is `from + (to - from) * fraction`, where fraction represents the percent the animation has completed.
+ */
 static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, id<Interpolator> interpolator) {
     return from + [interpolator interpolate:p] * (to - from);
 }
