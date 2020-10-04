@@ -83,7 +83,6 @@
         self.navigationController.navigationBar.translucent = YES;
     } else {
         self.navigationController.navigationBar.translucent = NO;
-        self.navigationController.navigationBar.barTintColor = nil;
     }
 }
 
