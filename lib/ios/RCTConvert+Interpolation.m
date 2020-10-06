@@ -29,10 +29,12 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
 
     id<Interpolator> (^interpolator)(void) = @{
         @"decelerate" : ^{
-            return [[DecelerateInterpolator alloc] init];
+			CGFloat factor = [[[NumberParser parse:json key:@"factor"] getWithDefaultValue:[NSNumber numberWithFloat:1.0f]] floatValue];
+            return [[DecelerateInterpolator alloc] init:factor];
         },
 		@"accelerate" : ^{
-			return [[AccelerateInterpolator alloc] init];
+			CGFloat factor = [[[NumberParser parse:json key:@"factor"] getWithDefaultValue:[NSNumber numberWithFloat:1.0f]] floatValue];
+			return [[AccelerateInterpolator alloc] init:factor];
 		},
 		@"accelerateDecelerate" : ^{
 			return [[AccelerateDecelerateInterpolator alloc] init];

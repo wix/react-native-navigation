@@ -10,14 +10,21 @@
 
 @implementation AccelerateInterpolator
 
-- (instancetype)init
+- (instancetype)init:(CGFloat)factor
 {
 	self = [super init];
+	if (self) {
+		_factor = factor;
+	}
 	return self;
 }
 
 - (CGFloat)interpolate:(CGFloat)progress {
-	return progress * progress;
+	if (_factor == 1.0f) {
+		return progress * progress;
+	} else {
+		return powf(progress, _factor * 2);
+	}
 }
 
 @end

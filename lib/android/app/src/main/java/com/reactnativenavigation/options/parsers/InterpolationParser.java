@@ -17,28 +17,36 @@ public class InterpolationParser {
         JSONObject interpolation = json.optJSONObject("interpolation");
         String type = interpolation == null ? "linear" : interpolation.optString("type", "linear");
         switch (type) {
-            case "decelerate":
-                float factor = (float)interpolation.optDouble("factor", 1.0);
+            case "decelerate": {
+                float factor = (float) interpolation.optDouble("factor", 1.0);
                 return new DecelerateInterpolator(factor);
-            case "accelerateDecelerate":
+            }
+            case "accelerateDecelerate": {
                 return new AccelerateDecelerateInterpolator();
-            case "accelerate":
-                return new AccelerateInterpolator();
-            case "decelerateAccelerate":
+            }
+            case "accelerate": {
+                float factor = (float) interpolation.optDouble("factor", 1.0);
+                return new AccelerateInterpolator(factor);
+            }
+            case "decelerateAccelerate": {
                 return new DecelerateAccelerateInterpolator();
-            case "overshoot":
+            }
+            case "overshoot": {
                 double tension = interpolation.optDouble("tension", 1.0);
-                return new OvershootInterpolator((float)tension);
-            case "spring":
-                float mass = (float)interpolation.optDouble("mass", 3.0);
-                float damping = (float)interpolation.optDouble("damping", 500.0);
-                float stiffness = (float)interpolation.optDouble("stiffness", 200.0);
+                return new OvershootInterpolator((float) tension);
+            }
+            case "spring": {
+                float mass = (float) interpolation.optDouble("mass", 3.0);
+                float damping = (float) interpolation.optDouble("damping", 500.0);
+                float stiffness = (float) interpolation.optDouble("stiffness", 200.0);
                 boolean allowsOverdamping = interpolation.optBoolean("allowsOverdamping", false);
-                float initialVelocity = (float)interpolation.optDouble("initialVelocity", 0);
+                float initialVelocity = (float) interpolation.optDouble("initialVelocity", 0);
                 return new SpringInterpolator(mass, damping, stiffness, allowsOverdamping, initialVelocity);
+            }
             case "linear":
-            default:
+            default: {
                 return new LinearInterpolator();
+            }
         }
     }
 }

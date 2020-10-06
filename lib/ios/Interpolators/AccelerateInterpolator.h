@@ -11,6 +11,8 @@
 
 @interface AccelerateInterpolator : NSObject<Interpolator>
 
-- (instancetype)init;
+@property (readonly) CGFloat factor;
+
+- (instancetype)init:(CGFloat)factor;
 
 @end
