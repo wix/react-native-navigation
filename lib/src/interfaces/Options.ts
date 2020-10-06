@@ -60,8 +60,10 @@ type SystemItemIcon =
   | 'undo'
   | 'redo';
 type Interpolation =
-  | { type: 'back' }
-  | { type: 'ease' }
+  | { type: 'accelerate'; factor?: number }
+  | { type: 'decelerate'; factor?: number }
+  | { type: 'decelerateAccelerate' }
+  | { type: 'accelerateDecelerate' }
   | { type: 'linear' }
   | { type: 'overshoot'; tension?: number }
   | {
