@@ -8,6 +8,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
+import com.reactnativenavigation.options.interpolators.DecelerateAccelerateInterpolator;
 import com.reactnativenavigation.options.interpolators.SpringInterpolator;
 
 import org.json.JSONObject;
