@@ -1138,6 +1138,13 @@ export interface NavigationBarOptions {
   visible?: boolean;
 }
 
+/**
+ * Configure iOS' default background color of View
+ */
+export interface WindowOptions {
+  backgroundColor?: Color;
+}
+
 export interface Options {
   /**
    * Configure the status bar
@@ -1240,6 +1247,11 @@ setRoot: {
    * #### (iOS specific)
    */
   rootBackgroundImage?: ImageResource;
+  /**
+   * Background color for the screen
+   * #### (iOS specific)
+   */
+  window?: WindowOptions;
   /**
    * Enable or disable automatically blurring focused input, dismissing keyboard on unmount
    * #### (Android specific)
