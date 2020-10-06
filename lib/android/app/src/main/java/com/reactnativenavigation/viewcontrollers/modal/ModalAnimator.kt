@@ -35,7 +35,7 @@ open class ModalAnimator(context: Context?) : BaseAnimator(context) {
 
     open fun dismiss(view: View?, dismiss: AnimationOptions, listener: ScreenAnimationListener) {
         if (runningAnimators.containsKey(view)) {
-            runningAnimators[view]!!.cancel()
+            Objects.requireNonNull(runningAnimators[view]).cancel()
             listener.onEnd()
             return
         }
@@ -60,5 +60,5 @@ open class ModalAnimator(context: Context?) : BaseAnimator(context) {
     }
 
     val isRunning: Boolean
-        get() = runningAnimators.isNotEmpty()
+        get() = !runningAnimators.isEmpty()
 }
