@@ -1,10 +1,12 @@
 #import "RCTConvert+Interpolation.h"
 #import "Interpolators/Interpolator.h"
 #import "Interpolators/LinearInterpolator.h"
-#import "Interpolators/EaseInterpolator.h"
-#import "Interpolators/BackInterpolator.h"
 #import "Interpolators/OvershootInterpolator.h"
 #import "Interpolators/SpringInterpolator.h"
+#import "Interpolators/AccelerateDecelerateInterpolator.h"
+#import "Interpolators/AccelerateInterpolator.h"
+#import "Interpolators/DecelerateInterpolator.h"
+#import "Interpolators/DecelerateAccelerateInterpolator.h"
 #import "NumberParser.h"
 #import "BoolParser.h"
 
@@ -26,12 +28,18 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
     NSString* interpolation = json[@"type"] ? json[@"type"] : nil;
 
     id<Interpolator> (^interpolator)(void) = @{
-        @"back" : ^{
-            return [[BackInterpolator alloc] init];
+        @"decelerate" : ^{
+            return [[DecelerateInterpolator alloc] init];
         },
-        @"ease" : ^{
-            return [[EaseInterpolator alloc] init];
-        },
+		@"accelerate" : ^{
+			return [[AccelerateInterpolator alloc] init];
+		},
+		@"accelerateDecelerate" : ^{
+			return [[AccelerateDecelerateInterpolator alloc] init];
+		},
+		@"decelerateAccelerate" : ^{
+			return [[DecelerateAccelerateInterpolator alloc] init];
+		},
         @"linear" : ^{
             return [[LinearInterpolator alloc] init];
         },
