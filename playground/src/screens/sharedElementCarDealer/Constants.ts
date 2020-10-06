@@ -1,6 +1,8 @@
 import { AnimationOptions } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
 
+const SPRING_CONFIG = { mass: 3, damping: 500, stiffness: 200 };
+
 export const SET_DURATION = 500;
 export function buildSharedElementAnimations(car: CarItem): AnimationOptions {
   return {
@@ -17,13 +19,13 @@ export function buildSharedElementAnimations(car: CarItem): AnimationOptions {
           fromId: `image${car.id}`,
           toId: `image${car.id}Dest`,
           duration: SET_DURATION,
-          interpolation: { type: 'spring', mass: 3, damping: 500, stiffness: 200 },
+          interpolation: { type: 'spring', ...SPRING_CONFIG },
         },
         {
           fromId: `title${car.id}`,
           toId: `title${car.id}Dest`,
           duration: SET_DURATION,
-          interpolation: { type: 'spring', mass: 3, damping: 500, stiffness: 200 },
+          interpolation: { type: 'spring', ...SPRING_CONFIG },
         },
       ],
     },
@@ -40,7 +42,7 @@ export function buildSharedElementAnimations(car: CarItem): AnimationOptions {
           fromId: `image${car.id}Dest`,
           toId: `image${car.id}`,
           duration: SET_DURATION,
-          interpolation: { type: 'spring', mass: 3, damping: 500, stiffness: 200 },
+          interpolation: { type: 'spring', ...SPRING_CONFIG },
         },
       ],
     },
