@@ -18,11 +18,14 @@ public class InterpolationParser {
         String type = interpolation == null ? "linear" : interpolation.optString("type", "linear");
         switch (type) {
             case "decelerate":
-                return new DecelerateInterpolator();
+                float factor = (float)interpolation.optDouble("factor", 1.0);
+                return new DecelerateInterpolator(factor);
             case "accelerateDecelerate":
                 return new AccelerateDecelerateInterpolator();
             case "accelerate":
                 return new AccelerateInterpolator();
+            case "decelerateAccelerate":
+                return new DecelerateAccelerateInterpolator();
             case "overshoot":
                 double tension = interpolation.optDouble("tension", 1.0);
                 return new OvershootInterpolator((float)tension);
