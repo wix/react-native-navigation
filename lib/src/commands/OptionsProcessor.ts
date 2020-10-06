@@ -167,10 +167,12 @@ export class OptionsProcessor {
 
   private processInterpolation(key: string, value: any, options: Record<string, any>) {
     if (isEqual(key, 'interpolation')) {
-      typeof value === 'string' && this.deprecations.onProcessOptions(key, options, '');
-      options[key] = {
-        type: options[key],
-      };
+      if (typeof value === 'string') {
+        this.deprecations.onProcessOptions(key, options, '');
+        options[key] = {
+          type: options[key],
+        };
+      }
     }
   }
 }
