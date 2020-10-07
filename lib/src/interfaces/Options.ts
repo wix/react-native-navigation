@@ -1139,9 +1139,12 @@ export interface NavigationBarOptions {
 }
 
 /**
- * Configure iOS' default background color of View
+ * Used for configuring and controlling the main window in iOS
  */
 export interface WindowOptions {
+  /**
+   * Configure the background color of the application's main window.
+   */
   backgroundColor?: Color;
 }
 
@@ -1248,7 +1251,7 @@ setRoot: {
    */
   rootBackgroundImage?: ImageResource;
   /**
-   * Background color for the screen
+   * Provides a way to configure the overall presentation of your application's main user interface
    * #### (iOS specific)
    */
   window?: WindowOptions;
