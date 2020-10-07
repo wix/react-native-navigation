@@ -120,14 +120,15 @@
 			[self removePendingNextModalIfOnTop:nil];
 		}];
 	} else {
-		[modalToDismiss.view removeFromSuperview];
-		modalToDismiss.view = nil;
-		modalToDismiss.getCurrentChild.resolveOptions.animations.dismissModal.enable = [[Bool alloc] initWithBOOL:NO];
-		[self dismissedModal:modalToDismiss];
-		
-		if (completion) {
-			completion();
-		}
+		[modalToDismiss dismissViewControllerAnimated:[optionsWithDefault.animations.dismissModal.enable getWithDefaultValue:YES] completion: ^ {
+			if (modalToDismiss.view) {
+				modalToDismiss.view = nil;
+				[self dismissedModal:modalToDismiss];
+			}
+			if (completion) {
+				completion();
+			}
+		}];
 	}
 }
 
