@@ -10,6 +10,22 @@
 #import "RNNUIBarButtonItem.h"
 #import "RNNBottomTabsController+Helpers.h"
 
+@interface UIFont (Utils)
+
+- (BOOL)isEqual:(UIFont *)font;
+
+@end
+
+@implementation UIFont (Utils)
+
+- (BOOL)isEqualToFont:(UIFont *)font {
+	return [self.fontName isEqualToString:font.fontName] &&
+			self.pointSize == font.pointSize &&
+			[[self.fontDescriptor objectForKey:UIFontDescriptorFaceAttribute] isEqualToString:[font.fontDescriptor objectForKey:UIFontDescriptorFaceAttribute]];
+}
+
+@end
+
 @interface RNNComponentViewController (EmbedInTabBar)
 - (void)embedInTabBarController;
 @end
@@ -33,6 +49,8 @@
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNComponentViewController* uut;
+@property (nonatomic, strong) RNNComponentPresenter* presenter;
+
 @end
 
 @implementation RNNRootViewControllerTest
@@ -49,8 +67,8 @@
 	layoutInfo.componentId = self.componentId;
 	layoutInfo.name = self.pageName;
 	
-	id presenter = [OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil]];
-	self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:presenter options:self.options defaultOptions:nil];
+	self.presenter = [OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil]];
+	self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:self.options defaultOptions:nil];
 }
 
 - (void)testTopBarBackgroundColor_validColor {
@@ -109,11 +127,12 @@
 }
 
 - (void)testTitle_string {
-	NSString* title =@"some title";
-	self.options.topBar.title.text = [[Text alloc] initWithValue:title];
-
-	[self.uut viewWillAppear:false];
-	XCTAssertTrue([self.uut.navigationItem.title isEqual:title]);
+	NSString* title = @"some title";
+	RNNNavigationOptions* options = RNNNavigationOptions.emptyOptions;
+	options.topBar.title.text = [[Text alloc] initWithValue:title];
+	UIViewController* uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:options defaultOptions:nil];
+	
+	XCTAssertTrue([uut.navigationItem.title isEqual:title]);
 }
 
 - (void)testTitle_default{
@@ -189,25 +208,27 @@
 }
 
 - (void)testTopBarLargeTitle_default {
-	[self.uut viewWillAppear:false];
-
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
+	RNNNavigationOptions* options = RNNNavigationOptions.emptyOptions;
+	UIViewController* uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:options defaultOptions:nil];
+	
+	XCTAssertEqual(uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
 }
 
 - (void)testTopBarLargeTitle_true {
-	self.options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(1)];
-	[self.uut viewWillAppear:false];
+	RNNNavigationOptions* options = RNNNavigationOptions.emptyOptions;
+	options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(1)];
+	UIViewController* uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:options defaultOptions:nil];
 	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
+	XCTAssertEqual(uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
 }
 
 - (void)testTopBarLargeTitle_false {
-	self.options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(0)];
-	[self.uut viewWillAppear:false];
+	RNNNavigationOptions* options = RNNNavigationOptions.emptyOptions;
+	options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(0)];
+	UIViewController* uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:self.creator eventEmitter:self.emitter presenter:self.presenter options:options defaultOptions:nil];
 	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
+	XCTAssertEqual(uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
 }
-
 
 - (void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
@@ -215,8 +236,11 @@
 	__unused RNNStackController* nav = [self createNavigationController];
 	UIFont* initialFont = self.uut.navigationController.navigationBar.standardAppearance.largeTitleTextAttributes[@"NSFont"];
 	[self.uut viewWillAppear:false];
+
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
-	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqualToFont:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSFont"] isEqualToFont:expectedFont]);
 }
 
 - (void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withTextColor {
@@ -229,8 +253,8 @@
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
-	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqualToFont:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSFont"] isEqualToFont:expectedFont]);
 }
 
 - (void)testTopBarLargeTitleFontSize_withTextFontFamily_withTextColor {
@@ -245,7 +269,7 @@
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
-	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqualToFont:expectedFont]);
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
@@ -257,7 +281,8 @@
 	__unused RNNStackController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
-	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.largeTitleTextAttributes[@"NSFont"] isEqualToFont:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.scrollEdgeAppearance.largeTitleTextAttributes[@"NSFont"] isEqualToFont:expectedFont]);
 }
 
 
@@ -268,7 +293,7 @@
 	UIFont* initialFont = self.uut.navigationController.navigationBar.standardAppearance.titleTextAttributes[@"NSFont"];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
-	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSFont"] isEqualToFont:expectedFont]);
 }
 
 - (void)testTopBarTextFontSize_withoutTextFontFamily_withTextColor {
@@ -281,7 +306,7 @@
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithDescriptor:initialFont.fontDescriptor size:topBarTextFontSizeInput.floatValue];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSFont"] isEqualToFont:expectedFont]);
 	XCTAssertTrue([self.uut.navigationItem.standardAppearance.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 

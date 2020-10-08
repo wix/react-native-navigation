@@ -44,7 +44,7 @@
 }
 
 - (void)testInitWithLayoutInfo_shouldSetMultipleViewControllers {
-	self.uut = [[RNNStackController alloc] initWithLayoutInfo:nil creator:_creator options:[[RNNNavigationOptions alloc] initWithDict:@{}] defaultOptions:nil presenter:[[RNNComponentPresenter alloc] init] eventEmitter:nil childViewControllers:@[_vc1, _vc2]];
+	self.uut = [[RNNStackController alloc] initWithLayoutInfo:nil creator:_creator options:[RNNNavigationOptions emptyOptions] defaultOptions:nil presenter:[RNNStackPresenter new] eventEmitter:nil childViewControllers:@[_vc1, _vc2]];
 	XCTAssertTrue(self.uut.viewControllers.count == 2);
 }
 
@@ -219,7 +219,7 @@
 	[[[UIApplication sharedApplication] keyWindow] setRootViewController:_uut];
 	[_uut pushViewController:pushedController animated:NO];
 	[pushedController viewDidAppear:YES];
-	XCTAssertTrue([[[_uut.navigationBar.subviews[2] subviews][0] valueForKey:@"accessibilityIdentifier"] isEqualToString:@"TestID"]);
+	XCTAssertTrue([[[_uut.navigationBar.subviews[1] subviews][0] valueForKey:@"accessibilityIdentifier"] isEqualToString:@"TestID"]);
 }
 
 - (RNNStackController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {

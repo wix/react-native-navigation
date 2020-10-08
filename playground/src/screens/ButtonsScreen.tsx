@@ -12,6 +12,8 @@ const {
   TOP_BAR,
   ROUND_BUTTON,
   BUTTON_ONE,
+  BUTTON_THREE,
+  ADD_BUTTON,
   LEFT_BUTTON,
   SHOW_LIFECYCLE_BTN,
   RESET_BUTTONS,
@@ -29,7 +31,14 @@ export default class ButtonOptions extends NavigationComponent {
       topBar: {
         testID: TOP_BAR,
         title: {
-          text: 'Buttons',
+          component: {
+            name: Screens.ReactTitleView,
+            alignment: 'fill',
+            passProps: {
+              text: 'Buttons',
+              clickable: false,
+            },
+          },
         },
         rightButtons: [
           {
@@ -78,9 +87,41 @@ export default class ButtonOptions extends NavigationComponent {
           testID={CHANGE_BUTTON_PROPS}
           onPress={this.changeButtonProps}
         />
+        <Button testID={ADD_BUTTON} label="Add button" onPress={this.addButton} />
       </Root>
     );
   }
+
+  addButton = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        rightButtons: [
+          {
+            id: 'ONE',
+            testID: BUTTON_ONE,
+            text: 'One',
+            color: Colors.primary,
+          },
+          {
+            id: 'ROUND',
+            testID: ROUND_BUTTON,
+            component: {
+              id: 'ROUND_COMPONENT',
+              name: Screens.RoundButton,
+              passProps: {
+                title: 'Two',
+              },
+            },
+          },
+          {
+            id: 'Three',
+            text: 'Three',
+            testID: BUTTON_THREE,
+            color: Colors.primary,
+          },
+        ],
+      },
+    });
 
   push = () => Navigation.push(this, Screens.Pushed);
 

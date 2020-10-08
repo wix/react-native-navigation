@@ -134,10 +134,7 @@
     }
     
     UIImage* defaultIcon = [defaultStyle.icon getWithDefaultValue:nil];
-    UIImage* iconImage = [self getValue:dictionary[@"icon"] withDefault:defaultIcon];
-    if (![iconImage isKindOfClass:[UIImage class]]) {
-        iconImage = [RCTConvert UIImage:iconImage];
-    }
+    UIImage *iconImage = [[ImageParser parse:dictionary key:@"icon"] getWithDefaultValue:defaultIcon];
     
     if (iconImage) {
         iconImage = [iconImage imageWithInsets:insets];

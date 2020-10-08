@@ -38,11 +38,15 @@
 }
 
 - (void)end {
-    for (id<DisplayLinkAnimatorDelegate> animation in _animations) {
+    CATransform3D transform = CATransform3DIdentity;
+    for (id<DisplayLinkAnimation> animation in _mutableAnimations) {
         if ([animation respondsToSelector:@selector(end)]) {
+            transform = CATransform3DConcat(transform, [animation animateWithProgress:1]);
             [animation end];
         }
     }
+    
+    self.view.layer.transform = transform;
 }
 
 @end

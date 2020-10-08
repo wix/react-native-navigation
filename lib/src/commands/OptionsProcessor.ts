@@ -31,6 +31,7 @@ export class OptionsProcessor {
       clone(options),
       (key, parentOptions) => {
         this.deprecations.onProcessOptions(key, parentOptions, commandName);
+        this.deprecations.checkForDeprecatedOptions(parentOptions);
       },
       commandName
     );
@@ -66,6 +67,7 @@ export class OptionsProcessor {
       this.processComponent(key, value, objectToProcess);
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
+      this.processSearchBar(key, value, objectToProcess);
 
       onProcess(key, parentOptions);
 
@@ -132,6 +134,33 @@ export class OptionsProcessor {
         this.store.updateProps(value.componentId, value.passProps);
       }
       options[key].passProps = undefined;
+    }
+  }
+
+  private processSearchBar(key: string, value: any, options: Record<string, any>) {
+    if (isEqual(key, 'searchBar')) {
+      typeof value === 'boolean' && this.deprecations.onProcessOptions(key, options, '');
+      options[key] = {
+        ...options[key],
+        visible: options[key].visible ?? value,
+        hiddenWhenScrolling:
+          options[key].hiddenWhenScrolling ?? options.searchBarHiddenWhenScrolling ?? false,
+        hideTopBarOnFocus:
+          options[key].hideTopBarOnFocus ?? options.hideNavBarOnFocusSearchBar ?? false,
+        obscuresBackgroundDuringPresentation:
+          options[key].obscuresBackgroundDuringPresentation ?? false,
+        placeholder: options[key].placeholder ?? options.searchBarPlaceholder ?? '',
+      };
+      this.processColor(
+        'backgroundColor',
+        options[key].backgroundColor ?? options.searchBarBackgroundColor,
+        options[key]
+      );
+      this.processColor(
+        'tintColor',
+        options[key].tintColor ?? options.searchBarTintColor,
+        options[key]
+      );
     }
   }
 }

@@ -36,18 +36,18 @@ describe('Store', () => {
   });
 
   it('clear instance by component id when clear component', () => {
-    uut.setComponentInstance('refUniqueId', ({} as IWrappedComponent));
+    uut.setComponentInstance('refUniqueId', {} as IWrappedComponent);
     uut.clearComponent('refUniqueId');
     expect(uut.getComponentInstance('refUniqueId')).toEqual(undefined);
   });
 
   it('holds component instance by id', () => {
-    uut.setComponentInstance('component1', ({} as IWrappedComponent));
+    uut.setComponentInstance('component1', {} as IWrappedComponent);
     expect(uut.getComponentInstance('component1')).toEqual({});
   });
 
   it('calls component setProps when set props by id', () => {
-    const instance: any = {setProps: jest.fn()};
+    const instance: any = { setProps: jest.fn() };
     const props = { foo: 'bar' };
 
     uut.setComponentInstance('component1', instance);
@@ -75,5 +75,12 @@ describe('Store', () => {
     expect(uut.getComponentClassForName('lazy')).toEqual(MyLazyComponent);
     expect(uut.getComponentClassForName('lazy')).toEqual(MyLazyComponent);
     expect(lazyRegistrator).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the old props when updateProps is called', () => {
+    uut.updateProps('component1', { foo: 'foo', bar: 'bar' });
+    uut.updateProps('component1', { foo: 'foo2' });
+
+    expect(uut.getPropsForId('component1')).toEqual({ foo: 'foo2', bar: 'bar' });
   });
 });

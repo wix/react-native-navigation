@@ -15,5 +15,8 @@ class ElementTransition(private val transitionOptions: ElementTransitionOptions)
 
     override fun createAnimators(): AnimatorSet = transitionOptions.getAnimation(view)
 
+    fun isInvalid(): Boolean = !isValid()
+
     fun isValid(): Boolean = ::view.isInitialized
+
 }

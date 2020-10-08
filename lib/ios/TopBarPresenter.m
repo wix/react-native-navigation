@@ -109,9 +109,7 @@
     NSNumber* fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
     UIColor* fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
     
-    if (@available(iOS 11.0, *)) {
-        self.navigationController.navigationBar.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.navigationController.navigationBar.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
-    }
+    self.navigationController.navigationBar.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.navigationController.navigationBar.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
 }
 
 - (void)componentDidAppear {
@@ -136,7 +134,7 @@
     [self setBackIndicatorImage:icon withColor:color];
     
     if (showTitle) {
-        backItem.title = title ? title : previousViewControllerInStack.navigationItem.title;
+        backItem.title = title ? title : (previousViewControllerInStack.navigationItem.title ? previousViewControllerInStack.navigationItem.title : @"");;
     } else {
         backItem.title = @"";
     }

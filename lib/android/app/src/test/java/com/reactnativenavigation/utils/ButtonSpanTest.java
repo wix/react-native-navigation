@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
@@ -26,7 +27,7 @@ public class ButtonSpanTest extends BaseTest {
     public void beforeEach() {
         button = createButton();
         activity = newActivity();
-        uut = new ButtonSpan(activity, button);
+        uut = new ButtonSpan(activity, button, new TypefaceLoaderMock());
     }
 
     @Test

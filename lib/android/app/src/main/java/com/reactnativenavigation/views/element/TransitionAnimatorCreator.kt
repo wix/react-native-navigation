@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import com.facebook.react.uimanager.ViewGroupManager
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions
@@ -18,24 +19,10 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.*
 
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
-    open class CreatorResultCallback(private val callback: CreatorResultCallback? = null) {
-        open fun onError() {
-            callback?.onError()
-        }
 
-        open fun onSuccess(transitionAnimators: AnimatorSet) {
-
-        }
-    }
-
-    fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, callback: CreatorResultCallback) {
-        transitionSetCreator.create(animation, fromScreen, toScreen) {
-            if (it.isEmpty) {
-                callback.onError()
-            } else {
-                callback.onSuccess(createAnimator(fadeAnimation, it))
-            }
-        }
+    suspend fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
+        val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
+        return createAnimator(fadeAnimation, transitions)
     }
 
     private fun createAnimator(fadeAnimation: AnimationOptions, transitions: TransitionSet): AnimatorSet {
@@ -46,11 +33,12 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         animators.addAll(createElementTransitionAnimators(transitions.validElementTransitions))
 
         setAnimatorsDuration(animators, fadeAnimation)
-        val set = AnimatorSet()
-        set.doOnEnd { restoreViewsToOriginalState(transitions) }
-        set.doOnCancel { restoreViewsToOriginalState(transitions) }
-        set.playTogether(animators)
-        return set
+        return AnimatorSet().apply {
+            playTogether(animators)
+            doOnStart { transitions.validSharedElementTransitions.forEach { it.view.visibility = View.VISIBLE } }
+            doOnEnd { restoreViewsToOriginalState(transitions) }
+            doOnCancel { restoreViewsToOriginalState(transitions) }
+        }
     }
 
     private fun recordIndices(transitions: TransitionSet) {
@@ -71,8 +59,10 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
 
     private fun reparentViews(transitions: TransitionSet) {
         transitions.transitions
-                .sortedBy { ViewGroupManager.getViewZIndex(it.view) }
+                .sortedBy { getZIndex(it.view) }
                 .forEach { reparent(it) }
+        transitions.validSharedElementTransitions
+                .forEach { it.view.visibility = View.INVISIBLE }
     }
 
     private fun createSharedElementTransitionAnimators(transitions: List<SharedElementTransition>): List<AnimatorSet> {
@@ -107,7 +97,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         mutableListOf<Transition>().apply {
             addAll(transitions.validSharedElementTransitions)
             addAll(transitions.validElementTransitions)
-            sortBy { ViewGroupManager.getViewZIndex(it.view) }
+            sortBy { getZIndex(it.view) }
             sortBy { it.view.getTag(R.id.original_index_in_parent) as Int }
             forEach {
                 it.viewController.requireParentController().removeOverlay(it.view)
@@ -131,6 +121,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             view.setTag(R.id.original_left, view.left)
             view.setTag(R.id.original_pivot_x, view.pivotX)
             view.setTag(R.id.original_pivot_y, view.pivotY)
+            view.setTag(R.id.original_z_index, getZIndex(view))
 
             biologicalParent.removeView(view)
 
@@ -156,4 +147,8 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         val index = ViewTags.get<Int>(element, R.id.original_index_in_parent)
         parent.addView(element, index, lp)
     }
+
+    private fun getZIndex(view: View) = ViewGroupManager.getViewZIndex(view)
+            ?: ViewTags.get(view, R.id.original_z_index)
+            ?: 0
 }

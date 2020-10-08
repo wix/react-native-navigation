@@ -8,11 +8,12 @@ def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 28
+def DEFAULT_COMPILE_SDK_VERSION = 29
 def DEFAULT_MIN_SDK_VERSION = 19
-def DEFAULT_TARGET_SDK_VERSION = 28
+def DEFAULT_TARGET_SDK_VERSION = 29
 def kotlinVersion = rootProject.ext.get("RNNKotlinVersion")
 def kotlinStdlib = safeExtGet('RNNKotlinStdlib', 'kotlin-stdlib-jdk8')
+def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.3.7')
 
 android {
     compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
@@ -93,6 +94,10 @@ android {
             dimension "RNN.reactNativeVersion"
             buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "62")
         }
+        reactNative63 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "63")
+        }
     }
 
     def flavor = resolveFlavor()
@@ -109,7 +114,9 @@ String resolveFlavor() {
     Integer reactNativeMinorComponent = reactNativeVersionComponents[1].toInteger()
     Integer reactNativePatchComponent = reactNativeVersionComponents[2].toInteger()
 
-    if (reactNativeMinorComponent >= 62) {
+    if (reactNativeMinorComponent >= 63) {
+        return "reactNative63"
+    } else if (reactNativeMinorComponent >= 62) {
         return "reactNative62"
     } else if (reactNativeMinorComponent >= 60) {
         return "reactNative60"
@@ -159,6 +166,8 @@ allprojects { p ->
 dependencies {
     implementation "androidx.core:core-ktx:1.3.0"
     implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesCore"
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.annotation:annotation:1.1.0'

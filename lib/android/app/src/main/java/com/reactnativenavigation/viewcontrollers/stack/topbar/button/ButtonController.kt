@@ -19,6 +19,7 @@ class ButtonController(activity: Activity,
                        val button: ButtonOptions,
                        private val viewCreator: TitleBarButtonCreator,
                        private val onPressListener: OnClickListener) : ViewController<TitleBarReactButtonView>(activity, button.id, YellowBoxDelegate(activity), Options(), ViewControllerOverlay(activity)), MenuItem.OnMenuItemClickListener {
+
     private var menuItem: MenuItem? = null
 
     interface OnClickListener {
@@ -83,5 +84,10 @@ class ButtonController(activity: Activity,
         }
     }
 
-    fun createAndAddButtonToTitleBar(titleBar: TitleBar, order: Int): MenuItem = titleBar.menu.add(Menu.NONE, button.intId, order, presenter.styledText)
+    fun createAndAddButtonToTitleBar(titleBar: TitleBar, order: Int): MenuItem = titleBar.menu.add(
+            Menu.NONE,
+            button.intId,
+            order,
+            presenter.styledText
+    )
 }

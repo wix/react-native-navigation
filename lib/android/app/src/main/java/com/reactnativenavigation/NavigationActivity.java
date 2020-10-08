@@ -2,6 +2,7 @@ package com.reactnativenavigation;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         );
         navigator.bindViews();
         getReactGateway().onActivityCreated(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        getReactGateway().onConfigurationChanged(this, newConfig);
     }
 
     @Override

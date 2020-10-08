@@ -53,5 +53,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic) RNNReactViewReadyCompletionBlock reactViewReadyCallback;
 @property (nonatomic) BOOL waitForRender;
 @property (nonatomic) BOOL isChildViewControllersLoaded;
+@property (nonatomic, strong) RNNReactView* reactView;
 
 @end

@@ -13,6 +13,14 @@ function registerScreens() {
     () => require('./sharedElementTransition/CocktailsListScreen').default
   );
   Navigation.registerComponent(
+    Screens.CarsListScreen,
+    () => require('./sharedElementCarDealer/CarsListScreen').default
+  );
+  Navigation.registerComponent(
+    Screens.CarDetailsScreen,
+    () => require('./sharedElementCarDealer/CarDetailsScreen').default
+  );
+  Navigation.registerComponent(
     Screens.CocktailsListMasterScreen,
     () => require('./splitView/CocktailsListMasterScreen').default
   );
@@ -33,6 +41,14 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Layouts, () => require('./LayoutsScreen').default);
   Navigation.registerComponent(Screens.Lifecycle, () => require('./LifecycleScreen').default);
   Navigation.registerComponent(Screens.Modal, () => require('./ModalScreen').default);
+  Navigation.registerComponent(
+    Screens.ModalCommands,
+    () => require('./ModalCommandsScreen').default
+  );
+  Navigation.registerComponent(
+    Screens.StackCommands,
+    () => require('./StackCommandsScreen').default
+  );
   Navigation.registerComponent(
     Screens.FullScreenModal,
     () => require('./FullScreenModalScreen').default

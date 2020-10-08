@@ -175,6 +175,8 @@
 //	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithDefaultOptions :_defaultOptions];
     RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions];
     
+	// RNNBasePresenter* presenter = [[RNNBasePresenter alloc] initWithDefaultOptions :_defaultOptions];
+
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
 	RNNTopTabsViewController* topTabsController = [[RNNTopTabsViewController alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:presenter eventEmitter:_eventEmitter childViewControllers:childViewControllers];
@@ -200,7 +202,7 @@
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 
-	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:[[RNNComponentPresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions] eventEmitter:_eventEmitter childViewController:childVc type:type];
+	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:[[RNNBasePresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions] eventEmitter:_eventEmitter childViewController:childVc type:type];
 	
 	return sideMenuChild;
 }

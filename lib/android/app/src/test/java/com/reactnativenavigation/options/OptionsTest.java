@@ -2,10 +2,8 @@ package com.reactnativenavigation.options;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullText;
@@ -18,6 +16,8 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
+
+import androidx.annotation.NonNull;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -57,15 +57,16 @@ public class OptionsTest extends BaseTest {
 
     @Override
     public void beforeEach() {
-        mockLoader = Mockito.mock(TypefaceLoaderMock.class);
-        when(mockLoader.getTypeFace("HelveticaNeue-Condensed")).then((Answer<Typeface>) invocation -> SUBTITLE_TYPEFACE);
-        when(mockLoader.getTypeFace("HelveticaNeue-CondensedBold")).then((Answer<Typeface>) invocation -> TOP_BAR_TYPEFACE);
-        Mockito.doReturn(TOP_BAR_TYPEFACE).when(mockLoader).getTypeFace(TOP_BAR_FONT_FAMILY);
+        mockLoader = Mockito.mock(TypefaceLoader.class);
+        when(mockLoader.getTypeFace("HelveticaNeue-Condensed", null, null, null)).then((Answer<Typeface>) invocation -> SUBTITLE_TYPEFACE);
+        when(mockLoader.getTypeFace("HelveticaNeue-CondensedBold", null, null, null)).then((Answer<Typeface>) invocation -> TOP_BAR_TYPEFACE);
+        Mockito.doReturn(TOP_BAR_TYPEFACE).when(mockLoader).getTypeFace(TOP_BAR_FONT_FAMILY, "", "", null);
+        Mockito.doReturn(SUBTITLE_TYPEFACE).when(mockLoader).getTypeFace(SUBTITLE_FONT_FAMILY, "", "", null);
     }
 
     @Test
     public void parsesNullAsDefaultEmptyOptions() {
-        assertThat(Options.parse(mockLoader, null)).isNotNull();
+        assertThat(Options.parse(null, mockLoader, null)).isNotNull();
     }
 
     @Test
@@ -77,7 +78,7 @@ public class OptionsTest extends BaseTest {
                 .put("fab", createFab())
                 .put("bottomTabs", createBottomTabs())
                 .put("layout", layout);
-        Options result = Options.parse(mockLoader, json);
+        Options result = Options.parse(null, mockLoader, json);
         assertResult(result);
     }
 
@@ -87,11 +88,11 @@ public class OptionsTest extends BaseTest {
         assertThat(result.topBar.title.height.get()).isEqualTo(TITLE_HEIGHT.get());
         assertThat(result.topBar.title.color.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
         assertThat(result.topBar.title.fontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
-        assertThat(result.topBar.title.fontFamily).isEqualTo(TOP_BAR_TYPEFACE);
+        assertThat(result.topBar.title.font.getTypeface(mockLoader)).isEqualTo(TOP_BAR_TYPEFACE);
         assertThat(result.topBar.subtitle.color.get()).isEqualTo(SUBTITLE_TEXT_COLOR);
         assertThat(result.topBar.subtitle.fontSize.get()).isEqualTo(SUBTITLE_FONT_SIZE);
         assertThat(result.topBar.subtitle.alignment).isEqualTo(Alignment.fromString(SUBTITLE_ALIGNMENT));
-        assertThat(result.topBar.subtitle.fontFamily).isEqualTo(SUBTITLE_TYPEFACE);
+        assertThat(result.topBar.subtitle.font.getTypeface(mockLoader)).isEqualTo(SUBTITLE_TYPEFACE);
         assertThat(result.topBar.visible.get()).isEqualTo(TOP_BAR_VISIBLE.get());
         assertThat(result.topBar.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
         assertThat(result.topBar.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());
@@ -200,12 +201,12 @@ public class OptionsTest extends BaseTest {
     public void mergeDoesNotMutate() throws Exception {
         JSONObject json1 = new JSONObject();
         json1.put("topBar", createTopBar(true));
-        Options options1 = Options.parse(mockLoader, json1);
+        Options options1 = Options.parse(null, mockLoader, json1);
         options1.topBar.title.text = new Text("some title");
 
         JSONObject json2 = new JSONObject();
         json2.put("topBar", createTopBar(false));
-        Options options2 = Options.parse(mockLoader, json2);
+        Options options2 = Options.parse(null, mockLoader, json2);
         options2.topBar.title.text = new NullText();
 
         Options merged = options1.mergeWith(options2);
@@ -223,7 +224,7 @@ public class OptionsTest extends BaseTest {
                 .put("fab", createFab())
                 .put("bottomTabs", createBottomTabs())
                 .put("layout", layout);
-        Options defaultOptions = Options.parse(mockLoader, json);
+        Options defaultOptions = Options.parse(null, mockLoader, json);
         Options options = new Options();
 
         assertResult(options.mergeWith(defaultOptions));
@@ -238,12 +239,12 @@ public class OptionsTest extends BaseTest {
                 .put("fab", createOtherFab())
                 .put("bottomTabs", createOtherBottomTabs())
                 .put("layout", layout);
-        Options defaultOptions = Options.parse(mockLoader, defaultJson);
+        Options defaultOptions = Options.parse(null, mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("bottomTabs", createBottomTabs());
-        Options options = Options.parse(mockLoader, json);
+        Options options = Options.parse(null, mockLoader, json);
         options.withDefaultOptions(defaultOptions);
         assertResult(options);
     }

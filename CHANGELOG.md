@@ -1,5 +1,117 @@
 # Changelog
 
+# 7.0.0
+
+This release mainly focuses on adding support for TurboModules (Integrating Reanimated2 is now possible!) and aligning the Navigation commands API once and for all.
+
+## Key Features
+
+- Support TurboModules (and Reanimated v2)
+- New layout system on iOS. Layout insets are now handled via constraints and safeAreaLayoutGuide instead of margins and edgesForExtendedLayout as per Apple's recommendations. This is not a breaking change and is done in preparation to deprecate the `bottomTabs.drawBehind` option on iOS.
+- Deprecate registerComponentWithRedux. [registerComponent with providers](https://wix.github.io/react-native-navigation/api/component#registering-a-component-wrapped-with-providers) should be used instead.
+- Align promise results of all Navigation commands on both iOS and Android
+
+## Upgrading from v6
+
+### iOS
+
+Add `extraModulesForBridge` in `AppDelegate.m`
+
+```objc
+- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
+	return [ReactNativeNavigation extraModulesForBridge:bridge];
+}
+```
+
+In case your'e bootstraping ReactNativeNavigation like that:
+```objc
+[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+```
+
+Replace it with
+```objc
+[ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];
+```
+
+### Android
+
+No Change needed 🥳
+
+## Breaking changes
+
+- Starting from this version, both `modalDismissed` and `modalAttemptedToDismiss` events can no longer be handled in components. Handling them is only supported via the `Navigation.events()` api.
+- `dismissModal` promise is resolved with the id of the root layout. For example, if a modal which contains a stack and a few children was dismissed, the `Navigation.dismissModal()` promise will be resolved with the stack's id.
+- Change Navigation commands promise resolve type from any to string
+
+### iOS
+
+- The default value of `sideMenu.openGestureMode` is now `bezel`. Up until now `entireScreen` was the default value which made it difficult for users to interact with scrollable components, Carousel for instance, as the SideMenu intercepted the scroll events. The `bezel` option solves this issue as the SideMenu will respond only to touch events from the edge of the screen.
+- Resolve all Navigation commands with id of root layout instead of actual layout.
+- Resolve push command promise with id of pushed layout instead of current layout.
+
+### Android
+
+- `fab.id` is mandatory. We plan to rework some of the native components on Android, mainly Fab and BottomTabs. This change is mostly a cosmetic change needed for future work on Fab.
+
+## Changes
+
+### Added
+
+- allow assigning OpaqueColorValue as a color [#8f67d9f](https://github.com/wix/react-native-navigation/commit/8f67d9f2dced62b441bcce4ab6e9e21ee62eb177) by [danilobuerger](https://github.com/danilobuerger)
+
+#### Android
+
+- Support PlatformColor [#d7ba3ff](https://github.com/wix/react-native-navigation/commit/d7ba3ffc19c88b313729757d158b4495f9f97d29) by [danilobuerger](https://github.com/danilobuerger)
+
+### Fixes
+
+- Recreate wrapped component on re-register component [#12a615b](https://github.com/wix/react-native-navigation/commit/12a615bd70112571a43f73463376c7a9cfc683ec) by [danilobuerger](https://github.com/danilobuerger)
+- Calling UpdateProps multiple times does not discard previous props [#fff6d23](https://github.com/wix/react-native-navigation/commit/fff6d23c8b6d380ac50f9b1c1af03d254ba3dd65) by [jinshin1013](https://github.com/jinshin1013)
+- Fix props type passed to options function in `NavigationFunctionalComponent` interface [#a3a796a](https://github.com/wix/react-native-navigation/commit/a3a796ae0c7c6a5341cdf3f7db06acc01377e0c2) by [mrousavy](https://github.com/mrousavy)
+
+#### iOS
+
+- Fix options not being applied on large title [#e845afe](https://github.com/wix/react-native-navigation/commit/e845afecaeea16dc92ef2461038079eab1e09a6f) by [yogevbd](https://github.com/yogevbd)
+- Fix crash after calling setStackRoot and pressing the back button [#8a7d34b](https://github.com/wix/react-native-navigation/commit/8a7d34b22a1226cab7ad03e58a858d2ab4ea43fb) by [yogevbd](https://github.com/yogevbd)
+- Initialize UIWindow only if needed [#e5cc0c3](https://github.com/wix/react-native-navigation/commit/e5cc0c3594b495f89b4912f2019be8fec2499fcd) by [danilobuerger](https://github.com/danilobuerger)
+- Change default modalPresentationStyle from overFullScreen to fullScreen on iOS 12 and below [#0869fd0](https://github.com/wix/react-native-navigation/commit/0869fd0197a621123ae16e183965dd05fdf4521d) by [danilobuerger](https://github.com/danilobuerger)
+- Don't crash if specified Shared Element ID could not be found/invalid nativeID has been set [#fcf23d2](https://github.com/wix/react-native-navigation/commit/fcf23d2e283e4031767864f6360051d9326c2475) by [mrousavy](https://github.com/mrousavy)
+- Fix edge case where title wasn't visible if subtitle was also declared [#1878393](https://github.com/wix/react-native-navigation/commit/1878393eb05d42bbb2099567a55cc35d6fc61595) by [yogevbd](https://github.com/yogevbd)
+- Fix Bicolor status bar disappears on setRoot [#83a5afa](https://github.com/wix/react-native-navigation/commit/83a5afa84b3ed79284a1c28c4634506d0641df02) by [yogevbd](https://github.com/yogevbd)
+- Remove obsolete bootstrap methods [#5c5ec9e](https://github.com/wix/react-native-navigation/commit/5c5ec9e04901b5825953e6c9e3bcb587a45984cd), [#8d9e358](https://github.com/wix/react-native-navigation/commit/8d9e35895712d8c5f6685a6f92c93429246ebb96) by [danilobuerger](https://github.com/danilobuerger)
+- Support fade animation in setRoot [#acc7f12](https://github.com/wix/react-native-navigation/commit/acc7f1276803d6bdb7fa5e1affc9f958d9923466) by [yogevbd](https://github.com/yogevbd)
+- Properly resolve fontFamily and fontWeight [#a3e8189](https://github.com/wix/react-native-navigation/commit/a3e8189d3725a292277c138a3da234b7864fc131) by [yogevbd](https://github.com/yogevbd)
+- Fix crash when navigating to a screen without a TopBar title text from a screen with LargeTitle [#0c9c996](https://github.com/wix/react-native-navigation/commit/0c9c99691909c292f69aca16738a0aba97630e5c) by [mateioprea](https://github.com/mateioprea)
+- Fix border being visible when LargeTitle is used even though `noBorder:true` was specified [#29365dc](https://github.com/wix/react-native-navigation/commit/29365dc86d92f7de2bf94231b0d59d3e2bf6c073) by [mateioprea](https://github.com/mateioprea)
+
+#### Android
+
+- Fixed animating images with different `scaleType` in Shared Element Trnaisiton [#382e69a](https://github.com/wix/react-native-navigation/commit/382e69abddf5eae95969e12e648f04197a7b2a89) by [guyca](https://github.com/guyca)
+
+# 6.12.0
+
+## Added
+
+### iOS
+
+- Enable PlatformColor / DynamicColorIOS for iOS [#57519ca](https://github.com/wix/react-native-navigation/commit/57519cab1cac1a4c6ebe9165db3bd4a4449d3720) by [danilobuerger](https://github.com/danilobuerger)
+
+## Fixed
+
+- Fix option processors path resolving [#f37d465](https://github.com/wix/react-native-navigation/commit/f37d465dd7339f4e9eca4e6c27be883e711b7ff2) by [yogevbd](https://github.com/yogevbd)
+
+### Android
+
+- Fix white screen when back was pressed during show modal animation [#58f72f8](https://github.com/wix/react-native-navigation/commit/58f72f8033f703b1f83c935fce7c70e67dd9b5c2) by [guyca](https://github.com/guyca)
+- Fix issue where right buttons which were added with mergeOptions were not unmounted [#3c5e8e4](https://github.com/wix/react-native-navigation/commit/3c5e8e4454edef3220fa9f40025b6703446d76fa) by [guyca](https://github.com/guyca)
+- Resole popToRoot promise successfully even when it's called while there's nothing to pop [#ec2b0a0](https://github.com/wix/react-native-navigation/commit/ec2b0a0e367f99807c0c67068cbcff40e6cb23a7) by [guyca](https://github.com/guyca)
+- Resize title component when buttons are added to TopBar [#a66e8e9](https://github.com/wix/react-native-navigation/commit/a66e8e93b456ec911aed7a5a49c14ea0a689c0b9) by [guyca](https://github.com/guyca)
+
+### iOS
+
+- Fix bug where screen became unresponsive if user tried to interact with elements during momentum scroll [#cb74af5](https://github.com/wix/react-native-navigation/commit/cb74af57f0bea7f2a4517e1f7b14959af8a79f20) by [yogevbd](https://github.com/yogevbd)
+- Fix category warnings for RNNInterpolationOptions [#a13698b](https://github.com/wix/react-native-navigation/commit/a13698b0863c46fc2f708e7e6eae3f37d5f55237) by [danilobuerger](https://github.com/danilobuerger)
+
 # 6.11.0
 
 ## Added

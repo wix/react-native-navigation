@@ -3,6 +3,6 @@
 
 @interface RNNDefaultOptionsHelper : NSObject
 
-+ (void)recrusivelySetDefaultOptions:(RNNNavigationOptions *)defaultOptions onRootViewController:(UIViewController *)rootViewController;
++ (void)recursivelySetDefaultOptions:(RNNNavigationOptions *)defaultOptions onRootViewController:(UIViewController *)rootViewController;
 
 @end

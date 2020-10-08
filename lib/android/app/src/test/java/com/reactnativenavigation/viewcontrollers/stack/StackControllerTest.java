@@ -14,6 +14,7 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.NestedAnimationsOptions;
 import com.reactnativenavigation.options.Options;
@@ -104,6 +105,7 @@ public class StackControllerTest extends BaseTest {
                     new TopBarBackgroundViewCreatorMock(),
                     new TitleBarButtonCreatorMock(),
                     new IconResolver(activity, ImageLoaderMock.mock()),
+                    new TypefaceLoaderMock(),
                     new RenderChecker(),
                     new Options()
                 )
@@ -883,7 +885,7 @@ public class StackControllerTest extends BaseTest {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.popToRoot(Options.EMPTY, listener);
         assertThat(uut.isEmpty()).isTrue();
-        verify(listener, times(1)).onError(any());
+        verify(listener).onSuccess("");
     }
 
     @Test

@@ -4,6 +4,8 @@
 
 @interface TopBarTitlePresenter : RNNBasePresenter
 
+- (void)applyOptionsOnInit:(RNNTopBarOptions *)options;
+
 - (void)applyOptions:(RNNTopBarOptions *)options;
 
 - (void)mergeOptions:(RNNTopBarOptions *)options resolvedOptions:(RNNTopBarOptions *)resolvedOptions;

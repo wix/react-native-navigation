@@ -1,5 +1,7 @@
 package com.reactnativenavigation.options;
 
+import android.content.Context;
+
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
@@ -21,11 +23,11 @@ import org.json.JSONObject;
 
 public class BottomTabsOptions {
 
-	public static BottomTabsOptions parse(JSONObject json) {
+	public static BottomTabsOptions parse(Context context, JSONObject json) {
 		BottomTabsOptions options = new BottomTabsOptions();
 		if (json == null) return options;
 
-        options.backgroundColor = ColorParser.parse(json, "backgroundColor");
+        options.backgroundColor = ColorParser.parse(context, json, "backgroundColor");
         options.currentTabId = TextParser.parse(json, "currentTabId");
 		options.currentTabIndex = NumberParser.parse(json,"currentTabIndex");
         options.hideOnScroll = BoolParser.parse(json, "hideOnScroll");
