@@ -1150,7 +1150,7 @@ export interface WindowOptions {
 
 export interface Options {
   /**
-   * Configure the status bar
+   * Controls the system status bar styling
    */
   statusBar?: OptionsStatusBar;
   /**
@@ -1168,12 +1168,17 @@ export interface Options {
    */
   modalTransitionStyle?: OptionsModalTransitionStyle;
   /**
-   * Configure the top bar
+   * Controls the Stack top bar styling
    */
   topBar?: OptionsTopBar;
+  /**
+   * Configure floating action button (FAB)
+   *
+   * #### (Android specific)
+   */
   fab?: OptionsFab;
   /**
-   * Configure the bottom tabs
+   * Configure the bottom tabs container
    */
   bottomTabs?: OptionsBottomTabs;
   /**
@@ -1205,19 +1210,21 @@ export interface Options {
    *
    * Example:
 ```js
-setRoot: {
-  y: {
-    from: 1000,
-    to: 0,
-    duration: 500,
-    interpolation: 'accelerate',
-  },
-  alpha: {
-    from: 0,
-    to: 1,
-    duration: 400,
-    startDelay: 100,
-    interpolation: 'accelerate'
+{
+  setRoot: {
+    y: {
+      from: 1000,
+      to: 0,
+      duration: 500,
+      interpolation: 'accelerate',
+    },
+    alpha: {
+      from: 0,
+      to: 1,
+      duration: 400,
+      startDelay: 100,
+      interpolation: 'accelerate'
+    }
   }
 }
 ```

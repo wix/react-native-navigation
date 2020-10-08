@@ -6,97 +6,124 @@ sidebar_label: Options object
 
 ```js
 const options = {
+  animations,
+  backgroundImage,
+  blurOnUnmount,
   bottomTab,
   bottomTabs,
-  topBar,
+  fab,
   layout,
-  sideMenu,
-  overlay,
   modal,
+  modalPresentationStyle,
+  modalTransitionStyle,
+  navigationBar,
+  overlay,
+  popGesture,
   preview,
-  navigationBar
+  rootBackgroundImage,
+  sideMenu,
+  splitView,
+  statusBar,
+  topBar,
+  window,
 };
 ```
 
+## `animations`
+
+Animation used for navigation commands that modify the layout hierarchy can be controlled in options.
+
+Animations can be modified per command and it's also possible to change the default animation for each command.
+
+| Type                                        | Required | Platform |
+| ------------------------------------------- | -------- | -------- |
+| [AnimationsOptions](options-animations.mdx) | No       | Both     |
+
+#### Example
+
+```js
+{
+  setRoot: {
+    y: {
+      from: 1000,
+      to: 0,
+      duration: 500,
+      interpolation: 'accelerate',
+    },
+    alpha: {
+      from: 0,
+      to: 1,
+      duration: 400,
+      startDelay: 100,
+      interpolation: 'accelerate',
+    },
+  },
+}
+```
+
+## `backgroundImage`
+
+Background image of the screen.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Image | No       | iOS      |
+
+#### Example
+
+```js
+{
+  backgroundImage: require('backgroundImage.png'),
+}
+```
+
+## `blurOnUnmount`
+
+Enable or disable automatically blurring focused input, dismissing keyboard on unmount.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | Android  | false   |
+
 ## `bottomTab`
 
-Controls the bottom tab icon, font, color, and more.
+Configure the bottom tab associated to the screen.
 
-| Type                                  | Required | Platform |
-| ------------------------------------- | -------- | -------- |
+| Type                                      | Required | Platform |
+| ----------------------------------------- | -------- | -------- |
 | [BottomTabOptions](options-bottomTab.mdx) | No       | Both     |
 
 ## `bottomTabs`
 
 Controls the bottom tabs container.
 
-| Type                                    | Required | Platform |
-| --------------------------------------- | -------- | -------- |
+| Type                                        | Required | Platform |
+| ------------------------------------------- | -------- | -------- |
 | [BottomTabsOptions](options-bottomTabs.mdx) | No       | Both     |
-
-## `topBar`
-
-Controls the Stack top bar styling.
-
-| Type                           | Required | Platform |
-| ------------------------------ | -------- | -------- |
-| [TopBarOptions](options-stack.mdx) |          | No       |
-
-## `statusBar`
-
-Controls the system status bar styling.
-
-| Type                                  | Required | Platform |
-| ------------------------------------- | -------- | -------- |
-| [StatusBarOptions](options-statusBar.mdx) | No       | Both     |
-
-## `layout`
-
-| Type                            | Required | Platform |
-| ------------------------------- | -------- | -------- |
-| [LayoutOptions](options-layout.mdx) | No       | Both     |
-
-## `sideMenu`
-
-| Type                                | Required | Platform |
-| ----------------------------------- | -------- | -------- |
-| [SideMenuOptions](options-sideMenu.mdx) | No       | Both     |
-
-## `overlay`
-
-| Type                              | Required | Platform |
-| --------------------------------- | -------- | -------- |
-| [OverlayOptions](options-overlay.mdx) | No       | Both     |
-
-## `animations`
-
-| Type                                    | Required | Platform |
-| --------------------------------------- | -------- | -------- |
-| [AnimationsOptions](options-animations.mdx) | No       | Both     |
-
-## `modal`
-
-| Type                          | Required | Platform |
-| ----------------------------- | -------- | -------- |
-| [ModalOptions](options-modal.mdx) | No       | Both     |
-
-## `preview`
-
-| Type                              | Required | Platform |
-| --------------------------------- | -------- | -------- |
-| [PreviewOptions](options-preview.mdx) | No       | iOS      |
-
-## `splitView`
-
-| Type                                  | Required | Platform |
-| ------------------------------------- | -------- | -------- |
-| [SplitViewOptions](options-splitView.mdx) | No       | iOS      |
 
 ## `fab`
 
-| Type               | Required | Platform |
-| ------------------ | -------- | -------- |
-| [Fab](options-fab.mdx) | No       | Android  |
+Configure floating action button.
+
+| Type                          | Required | Platform |
+| ----------------------------- | -------- | -------- |
+| [FabOptions](options-fab.mdx) | No       | Android  |
+
+## `layout`
+
+Configure the layout.
+
+| Type                                | Required | Platform |
+| ----------------------------------- | -------- | -------- |
+| [LayoutOptions](options-layout.mdx) | No       | Both     |
+
+## `modal`
+
+Configure the modal.
+
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
+| [ModalOptions](options-modal.mdx) | No       | Both     |
 
 ## `modalPresentationStyle`
 
@@ -133,6 +160,22 @@ Configure the transition style of the modal.
 | ----------------------------------------------------------------------- | -------- | -------- |
 | enum('coverVertical', 'crossDissolve', 'flipHorizontal', 'partialCurl') | No       | Both     |
 
+## `navigationBar`
+
+Configure Android's NavigationBar.
+
+| Type                                              | Required | Platform |
+| ------------------------------------------------- | -------- | -------- |
+| [NavigationBarOptions](options-navigationBar.mdx) | No       | Android  |
+
+## `overlay`
+
+Configure the overlay.
+
+| Type                                  | Required | Platform |
+| ------------------------------------- | -------- | -------- |
+| [OverlayOptions](options-overlay.mdx) | No       | Both     |
+
 ## `popGesture`
 
 Enable or disable swipe back to pop gesture.
@@ -141,13 +184,13 @@ Enable or disable swipe back to pop gesture.
 | ------- | -------- | -------- |
 | boolean | No       | iOS      |
 
-## `backgroundImage`
+## `preview`
 
-Background image of the screen.
+Preview configuration for Peek and Pop.
 
-| Type  | Required | Platform |
-| ----- | -------- | -------- |
-| Image | No       | iOS      |
+| Type                                  | Required | Platform |
+| ------------------------------------- | -------- | -------- |
+| [PreviewOptions](options-preview.mdx) | No       | iOS      |
 
 ## `rootBackgroundImage`
 
@@ -155,19 +198,44 @@ Background image for the Navigation View.
 
 | Type  | Required | Platform |
 | ----- | -------- | -------- |
-| Image | No       | Android  |
+| Image | No       | iOS      |
 
-## `blurOnUnmount`
+## `sideMenu`
 
-Enable or disable automaticall blur of the focused input, dismissing keyboard on unmount.
+Configure the side menu.
 
-| Type    | Required | Platform | Default |
-| ------- | -------- | -------- | ------- |
-| boolean | No       | Android  | false   |
+| Type                                    | Required | Platform |
+| --------------------------------------- | -------- | -------- |
+| [SideMenuOptions](options-sideMenu.mdx) | No       | Both     |
 
-## `navigationBar`
-Enable or disable automaticall blur of the focused input, dismissing keyboard on unmount.
+## `splitView`
 
-| Type    | Required | Platform |
-| ------- | -------- | -------- |
-| boolean | No       | Android  |
+Configure the SplitView controller.
+
+| Type                                      | Required | Platform |
+| ----------------------------------------- | -------- | -------- |
+| [SplitViewOptions](options-splitView.mdx) | No       | iOS      |
+
+## `statusBar`
+
+Controls the system status bar styling.
+
+| Type                                      | Required | Platform |
+| ----------------------------------------- | -------- | -------- |
+| [StatusBarOptions](options-statusBar.mdx) | No       | Both     |
+
+## `topBar`
+
+Controls the Stack top bar styling.
+
+| Type                               | Required | Platform |
+| ---------------------------------- | -------- | -------- |
+| [TopBarOptions](options-stack.mdx) | No       | Both     |
+
+## `window`
+
+Provides a way to configure the overall presentation of your application's main user interface.
+
+| Type                                | Required | Platform |
+| ----------------------------------- | -------- | -------- |
+| [WindowOptions](options-window.mdx) | No       | iOS      |
