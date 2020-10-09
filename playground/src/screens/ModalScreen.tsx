@@ -32,7 +32,11 @@ interface Props {
   modalPosition?: number;
 }
 
-export default class ModalScreen extends NavigationComponent<Props> {
+interface State {
+  swipeableToDismiss: boolean;
+}
+
+export default class ModalScreen extends NavigationComponent<Props, State> {
   static options() {
     return {
       topBar: {
@@ -41,6 +45,13 @@ export default class ModalScreen extends NavigationComponent<Props> {
           text: 'Modal',
         },
       },
+    };
+  }
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      swipeableToDismiss: false,
     };
   }
 
@@ -91,6 +102,10 @@ export default class ModalScreen extends NavigationComponent<Props> {
         )}
         <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
         <Button label="Set Root" testID={SET_ROOT} onPress={this.setRoot} />
+        <Button
+          label={`Toggle to swipeToDismiss: ${this.state.swipeableToDismiss}`}
+          onPress={this.toggleSwipeToDismiss}
+        />
       </Root>
     );
   }
@@ -137,4 +152,15 @@ export default class ModalScreen extends NavigationComponent<Props> {
   getModalPosition = () => this.props.modalPosition || 1;
 
   getPreviousModalId = () => last(this.props.previousModalIds)!;
+
+  toggleSwipeToDismiss = () => {
+    this.setState((prevState) => {
+      Navigation.mergeOptions(this.props.componentId, {
+        modal: {
+          swipeToDismiss: !prevState.swipeableToDismiss,
+        },
+      });
+      return { swipeableToDismiss: !prevState.swipeableToDismiss };
+    });
+  };
 }
