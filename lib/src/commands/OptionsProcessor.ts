@@ -10,7 +10,7 @@ import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
-import { Options } from '../interfaces/Options';
+import { Options, OptionsTopBar } from '../interfaces/Options';
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
@@ -137,29 +137,28 @@ export class OptionsProcessor {
     }
   }
 
-  private processSearchBar(key: string, value: any, options: Record<string, any>) {
-    if (isEqual(key, 'searchBar')) {
+  private processSearchBar(key: string, value: any, options: OptionsTopBar) {
+    if (key === 'searchBar') {
       typeof value === 'boolean' && this.deprecations.onProcessOptions(key, options, '');
       options[key] = {
         ...options[key],
-        visible: options[key].visible ?? value,
-        hiddenWhenScrolling:
-          options[key].hiddenWhenScrolling ?? options.searchBarHiddenWhenScrolling ?? false,
+        visible: options[key]?.visible ?? value,
+        hideOnScroll: options[key]?.hideOnScroll ?? options.searchBarHiddenWhenScrolling ?? false,
         hideTopBarOnFocus:
-          options[key].hideTopBarOnFocus ?? options.hideNavBarOnFocusSearchBar ?? false,
+          options[key]?.hideTopBarOnFocus ?? options.hideNavBarOnFocusSearchBar ?? false,
         obscuresBackgroundDuringPresentation:
-          options[key].obscuresBackgroundDuringPresentation ?? false,
-        placeholder: options[key].placeholder ?? options.searchBarPlaceholder ?? '',
+          options[key]?.obscuresBackgroundDuringPresentation ?? false,
+        placeholder: options[key]?.placeholder ?? options.searchBarPlaceholder ?? '',
       };
       this.processColor(
         'backgroundColor',
-        options[key].backgroundColor ?? options.searchBarBackgroundColor,
-        options[key]
+        options[key]?.backgroundColor ?? options.searchBarBackgroundColor,
+        options[key] as Record<string, any>
       );
       this.processColor(
         'tintColor',
-        options[key].tintColor ?? options.searchBarTintColor,
-        options[key]
+        options[key]?.tintColor ?? options.searchBarTintColor,
+        options[key] as Record<string, any>
       );
     }
   }
