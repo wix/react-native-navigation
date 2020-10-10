@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponentProps } from 'lib/src';
 import Colors from '../commons/Colors';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
-import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import { Navigation, NavigationComponentProps } from 'lib/src';
 import Colors from '../commons/Colors';
 
 interface Props extends NavigationComponentProps {

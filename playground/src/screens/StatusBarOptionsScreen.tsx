@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Image, View } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponentProps } from 'lib/src';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';

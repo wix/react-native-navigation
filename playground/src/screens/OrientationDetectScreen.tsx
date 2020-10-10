@@ -8,7 +8,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { Navigation, NavigationComponentProps, LayoutOrientation } from 'react-native-navigation';
+import { Navigation, NavigationComponentProps, LayoutOrientation } from 'lib/src';
 import TestIDs from '../testIDs';
 
 interface Props extends NavigationComponentProps {

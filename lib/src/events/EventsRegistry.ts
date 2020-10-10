@@ -14,13 +14,13 @@ import {
   PreviewCompletedEvent,
   ModalDismissedEvent,
   ScreenPoppedEvent,
-  ModalAttemptedToDismissEvent
+  ModalAttemptedToDismissEvent,
 } from '../interfaces/ComponentEvents';
 import {
   CommandCompletedEvent,
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,
-  BottomTabPressedEvent
+  BottomTabPressedEvent,
 } from '../interfaces/Events';
 
 export class EventsRegistry {
@@ -30,26 +30,20 @@ export class EventsRegistry {
     private componentEventsObserver: ComponentEventsObserver
   ) {}
 
-  public registerAppLaunchedListener(
-    callback: () => void
-  ): EmitterSubscription {
+  public registerAppLaunchedListener(callback: () => void): EmitterSubscription {
     return this.nativeEventsReceiver.registerAppLaunchedListener(callback);
   }
 
   public registerComponentDidAppearListener(
     callback: (event: ComponentDidAppearEvent) => void
   ): EmitterSubscription {
-    return this.nativeEventsReceiver.registerComponentDidAppearListener(
-      callback
-    );
+    return this.nativeEventsReceiver.registerComponentDidAppearListener(callback);
   }
 
   public registerComponentDidDisappearListener(
     callback: (event: ComponentDidDisappearEvent) => void
   ): EmitterSubscription {
-    return this.nativeEventsReceiver.registerComponentDidDisappearListener(
-      callback
-    );
+    return this.nativeEventsReceiver.registerComponentDidDisappearListener(callback);
   }
 
   public registerCommandCompletedListener(
@@ -61,9 +55,7 @@ export class EventsRegistry {
   public registerBottomTabSelectedListener(
     callback: (event: BottomTabSelectedEvent) => void
   ): EmitterSubscription {
-    return this.nativeEventsReceiver.registerBottomTabSelectedListener(
-      callback
-    );
+    return this.nativeEventsReceiver.registerBottomTabSelectedListener(callback);
   }
 
   public registerBottomTabPressedListener(
@@ -75,17 +67,13 @@ export class EventsRegistry {
   public registerBottomTabLongPressedListener(
     callback: (event: BottomTabLongPressedEvent) => void
   ): EmitterSubscription {
-    return this.nativeEventsReceiver.registerBottomTabLongPressedListener(
-      callback
-    );
+    return this.nativeEventsReceiver.registerBottomTabLongPressedListener(callback);
   }
 
   public registerNavigationButtonPressedListener(
     callback: (event: NavigationButtonPressedEvent) => void
   ): EmitterSubscription {
-    return this.nativeEventsReceiver.registerNavigationButtonPressedListener(
-      callback
-    );
+    return this.nativeEventsReceiver.registerNavigationButtonPressedListener(callback);
   }
 
   public registerModalDismissedListener(
@@ -97,9 +85,7 @@ export class EventsRegistry {
   public registerModalAttemptedToDismissListener(
     callback: (event: ModalAttemptedToDismissEvent) => void
   ): EmitterSubscription {
-    return this.nativeEventsReceiver.registerModalAttemptedToDismissListener(
-      callback
-    );
+    return this.nativeEventsReceiver.registerModalAttemptedToDismissListener(callback);
   }
 
   public registerSearchBarUpdatedListener(
@@ -111,9 +97,7 @@ export class EventsRegistry {
   public registerSearchBarCancelPressedListener(
     callback: (event: SearchBarCancelPressedEvent) => void
   ): EmitterSubscription {
-    return this.nativeEventsReceiver.registerSearchBarCancelPressedListener(
-      callback
-    );
+    return this.nativeEventsReceiver.registerSearchBarCancelPressedListener(callback);
   }
 
   public registerPreviewCompletedListener(
@@ -122,16 +106,11 @@ export class EventsRegistry {
     return this.nativeEventsReceiver.registerPreviewCompletedListener(callback);
   }
 
-  public registerCommandListener(
-    callback: (name: string, params: any) => void
-  ): EventSubscription {
+  public registerCommandListener(callback: (name: string, params: any) => void): EventSubscription {
     return this.commandsObserver.register(callback);
   }
 
-  public bindComponent(
-    component: React.Component<any>,
-    componentId?: string
-  ): EventSubscription {
+  public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
     return this.componentEventsObserver.bindComponent(component, componentId);
   }
 

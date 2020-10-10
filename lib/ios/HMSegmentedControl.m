@@ -9,6 +9,7 @@
 #import "HMSegmentedControl.h"
 #import <QuartzCore/QuartzCore.h>
 #import <math.h>
+#import "PPBadgeView.h"
 
 NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
 
@@ -100,6 +101,17 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
     if (self) {
         [self commonInit];
         self.sectionTitles = sectiontitles;
+        self.type = HMSegmentedControlTypeText;
+    }
+    return self;
+}
+
+- (instancetype)initWithSectionTitlesAndBadges:(NSArray<NSString *> *)sectiontitles badges: (NSArray<NSString *> *)sectionbadges {
+    self = [super initWithFrame:CGRectZero];
+    if (self) {
+        [self commonInit];
+        [self setSectionTitlesAndBadges: sectiontitles badges: sectionbadges];
+//        self.sectionTitles = sectiontitles;
         self.type = HMSegmentedControlTypeText;
     }
     return self;
@@ -199,6 +211,23 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
     [self setNeedsDisplay];
 }
 
+- (void)setSectionBadges:(NSArray<NSString *> *)sectionBadges {
+    _sectionBadges = sectionBadges;
+    
+    [self setNeedsLayout];
+    [self setNeedsDisplay];
+}
+
+- (void)setSectionTitlesAndBadges:(NSArray<NSString *> *)sectionTitles badges: (NSArray<NSString *> *)sectionBadges{
+    _sectionTitles = sectionTitles;
+    _sectionBadges = sectionBadges;
+    
+    [self setNeedsLayout];
+    [self setNeedsDisplay];
+}
+
+
+
 - (void)setSectionImages:(NSArray<UIImage *> *)sectionImages {
     _sectionImages = sectionImages;
     
@@ -294,6 +323,11 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
     }
 }
 
+- (NSString *)attributedBadgeAtIndex:(NSUInteger)index {
+    id title = self.sectionBadges[index];
+    return (NSString *)title;
+}
+
 - (void)drawRect:(CGRect)rect {
     [self.backgroundColor setFill];
     UIRectFill([self bounds]);
@@ -354,17 +388,27 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
             
             // Fix rect position/size to avoid blurry labels
             rect = CGRectMake(ceilf(rect.origin.x), ceilf(rect.origin.y), ceilf(rect.size.width), ceilf(rect.size.height));
+              // change by ws
+//            CATextLayer *titleLayer = [CATextLayer layer];
+//            titleLayer.frame = rect;
+//            titleLayer.alignmentMode = kCAAlignmentCenter;
+//            if ([UIDevice currentDevice].systemVersion.floatValue < 10.0 ) {
+//                titleLayer.truncationMode = kCATruncationEnd;
+//            }
+//            titleLayer.string = [self attributedTitleAtIndex:idx];
+//            titleLayer.contentsScale = [[UIScreen mainScreen] scale];
+//
+//            [self.scrollView.layer addSublayer:titleLayer];
             
-            CATextLayer *titleLayer = [CATextLayer layer];
-            titleLayer.frame = rect;
-            titleLayer.alignmentMode = kCAAlignmentCenter;
-            if ([UIDevice currentDevice].systemVersion.floatValue < 10.0 ) {
-                titleLayer.truncationMode = kCATruncationEnd;
+            UILabel *label = [UILabel new];
+            label.frame = rect;
+            label.attributedText = [self attributedTitleAtIndex:idx];
+            label.textAlignment = NSTextAlignmentCenter;
+            NSString* badge = [self attributedBadgeAtIndex:idx];
+            if(![badge isEqual:@""]){
+                [label pp_addBadgeWithText: [self attributedBadgeAtIndex:idx] ];
             }
-            titleLayer.string = [self attributedTitleAtIndex:idx];
-            titleLayer.contentsScale = [[UIScreen mainScreen] scale];
-            
-            [self.scrollView.layer addSublayer:titleLayer];
+            [self.scrollView addSubview: label];
             
             // Vertical Divider
             if (self.isVerticalDividerEnabled && idx > 0) {

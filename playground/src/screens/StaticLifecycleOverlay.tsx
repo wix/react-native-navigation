@@ -8,12 +8,7 @@ import {
   TextStyle,
   EmitterSubscription,
 } from 'react-native';
-import {
-  Navigation,
-  NavigationComponentProps,
-  EventSubscription,
-  Options,
-} from 'react-native-navigation';
+import { Navigation, NavigationComponentProps, EventSubscription, Options } from 'lib/src';
 import TestIDs from '../testIDs';
 
 type Event = {

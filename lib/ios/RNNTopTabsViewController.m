@@ -31,9 +31,9 @@
     _currentViewController = childController;
 }
 
-- (void)createTabBar: (NSArray<NSString *> *)sectiontitles{
+- (void)createTabBar: (NSArray<NSString *> *)sectiontitles badges: (NSArray<NSString *> *)sectionbadges{
     UIViewController* viewC = self.parentViewController;
-	_segmentedControl = [[RNNSegmentedControl alloc] initWithSectionTitles: sectiontitles];
+    _segmentedControl = [[RNNSegmentedControl alloc] initWithSectionTitlesAndBadges: sectiontitles badges: sectionbadges];
 	_segmentedControl.frame = CGRectMake(0, 0, self.view.bounds.size.width, 50);
 	_segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationBottom;
     _segmentedControl.selectionStyle = HMSegmentedControlSelectionStyleBox;
@@ -71,10 +71,12 @@
 - (void)setViewControllers:(NSArray *)viewControllers {
 	_viewControllers = viewControllers;
     NSMutableArray* titleArray = [NSMutableArray array];
+    NSMutableArray* badgeArray = [NSMutableArray array];
 	for (RNNComponentViewController* childVc in viewControllers) {
         [titleArray addObject: [childVc.resolveOptionsWithDefault.topTab.title getWithDefaultValue:@""]];
+        [badgeArray addObject: [childVc.resolveOptionsWithDefault.topTab.badge getWithDefaultValue:@""]];
 	}
-    [self createTabBar: titleArray];
+    [self createTabBar: titleArray badges: badgeArray];
     [self createContentView];
 
     CGFloat viewWidth = CGRectGetWidth(self.view.frame);
@@ -101,6 +103,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+}
+
+- (void)setTopTabOptions: (RNNNavigationOptions *)options child: (UIViewController *)vc {
+//    [self.parentViewController ]
+    NSUInteger vcIndex = [_viewControllers indexOfObject:vc];
+    if(options.topTab.badge.hasValue){
+        [_segmentedControl setBadge:[options.topTab.badge getWithDefaultValue:@""] atIndex:vcIndex];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate

@@ -1,4 +1,4 @@
-#import "RNNComponentPresenter.h"
+#import "RNNTopTabsPresenter.h"
 #import "UIViewController+RNNOptions.h"
 #import "UITabBarController+RNNOptions.h"
 #import "RNNTitleViewHelper.h"
@@ -6,8 +6,11 @@
 #import "RNNReactTitleView.h"
 #import "TopBarTitlePresenter.h"
 #import "RNNComponentViewController.h"
+#import "RNNTopTabsViewController.h"
 
-@implementation RNNComponentPresenter {
+
+
+@implementation RNNTopTabsPresenter{
     TopBarTitlePresenter* _topBarTitlePresenter;
 }
 
@@ -40,15 +43,16 @@
 - (void)applyOptions:(RNNNavigationOptions *)options {
     [super applyOptions:options];
     
-    RNNComponentViewController* viewController = self.boundViewController;
+//    RNNComponentViewController* viewController = self.boundViewController;
+    RNNTopTabsViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [viewController setBackgroundImage:[withDefault.backgroundImage getWithDefaultValue:nil]];
     [viewController setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor getWithDefaultValue:nil]];
     [viewController setStatusBarBlur:[withDefault.statusBar.blur getWithDefaultValue:NO]];
     [viewController setStatusBarStyle:[withDefault.statusBar.style getWithDefaultValue:@"default"] animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
     [viewController setBackButtonVisible:[withDefault.topBar.backButton.visible getWithDefaultValue:YES]];
-  
-    [viewController setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside getWithDefaultValue:YES]];
+    //todo change
+//    [viewController setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside getWithDefaultValue:YES]];
     
     if (@available(iOS 13.0, *)) {
         [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor getWithDefaultValue:UIColor.systemBackgroundColor]];
@@ -57,11 +61,11 @@
     }
     
     if ([withDefault.topBar.searchBar.visible getWithDefaultValue:NO]) {
-		BOOL hideTopBarOnFocus = [withDefault.topBar.searchBar.hideTopBarOnFocus getWithDefaultValue:YES];
-		BOOL hideOnScroll = [withDefault.topBar.searchBar.hideOnScroll getWithDefaultValue:NO];
+        BOOL hideTopBarOnFocus = [withDefault.topBar.searchBar.hideTopBarOnFocus getWithDefaultValue:YES];
+        BOOL hideOnScroll = [withDefault.topBar.searchBar.hideOnScroll getWithDefaultValue:NO];
         BOOL obscuresBackgroundDuringPresentation = [withDefault.topBar.searchBar.obscuresBackgroundDuringPresentation getWithDefaultValue:NO];
         
-		[viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBar.placeholder getWithDefaultValue:@""] hideTopBarOnFocus:hideTopBarOnFocus hideOnScroll:hideOnScroll obscuresBackgroundDuringPresentation:obscuresBackgroundDuringPresentation backgroundColor:[options.topBar.searchBar.backgroundColor getWithDefaultValue:nil] tintColor:[options.topBar.searchBar.tintColor getWithDefaultValue:nil]];
+        [viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBar.placeholder getWithDefaultValue:@""] hideTopBarOnFocus:hideTopBarOnFocus hideOnScroll:hideOnScroll obscuresBackgroundDuringPresentation:obscuresBackgroundDuringPresentation backgroundColor:[options.topBar.searchBar.backgroundColor getWithDefaultValue:nil] tintColor:[options.topBar.searchBar.tintColor getWithDefaultValue:nil]];
     }
     
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
@@ -70,15 +74,16 @@
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
     [super applyOptionsOnInit:options];
     
-    RNNComponentViewController* viewController = self.boundViewController;
+//    RNNComponentViewController* viewController = self.boundViewController;
+    RNNTopTabsViewController* viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     
    [_topBarTitlePresenter applyOptionsOnInit:withDefault.topBar];
     
     [viewController setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
-   
-    [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
-    [viewController setDrawBehindBottomTabs:[withDefault.bottomTabs shouldDrawBehind]];
+    //todo change
+//    [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
+//    [viewController setDrawBehindBottomTabs:[withDefault.bottomTabs shouldDrawBehind]];
 
     if ((withDefault.topBar.leftButtons || withDefault.topBar.rightButtons)) {
         [_navigationButtons applyLeftButtons:withDefault.topBar.leftButtons rightButtons:withDefault.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
@@ -87,9 +92,10 @@
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)currentOptions {
     [super mergeOptions:options resolvedOptions:currentOptions];
-	RNNNavigationOptions * withDefault	= (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
-    RNNComponentViewController* viewController = self.boundViewController;
+    RNNNavigationOptions * withDefault    = (RNNNavigationOptions *) [[currentOptions overrideOptions:options] withDefault:[self defaultOptions]];
+//    RNNComponentViewController* viewController = self.boundViewController;
 
+    RNNTopTabsViewController* viewController = self.boundViewController;
     if (options.backgroundImage.hasValue) {
         [viewController setBackgroundImage:options.backgroundImage.get];
     }
@@ -98,16 +104,16 @@
         BOOL hideTopBarOnFocus = [withDefault.topBar.searchBar.hideTopBarOnFocus getWithDefaultValue:YES];
         BOOL hideOnScroll = [withDefault.topBar.searchBar.hideOnScroll getWithDefaultValue:NO];
         BOOL obscuresBackgroundDuringPresentation = [withDefault.topBar.searchBar.obscuresBackgroundDuringPresentation getWithDefaultValue:NO];
-			
-		[viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBar.placeholder getWithDefaultValue:@""] hideTopBarOnFocus:hideTopBarOnFocus hideOnScroll:hideOnScroll obscuresBackgroundDuringPresentation:obscuresBackgroundDuringPresentation backgroundColor:[options.topBar.searchBar.backgroundColor getWithDefaultValue:nil] tintColor:[options.topBar.searchBar.tintColor getWithDefaultValue:nil]];
+            
+        [viewController setSearchBarWithPlaceholder:[withDefault.topBar.searchBar.placeholder getWithDefaultValue:@""] hideTopBarOnFocus:hideTopBarOnFocus hideOnScroll:hideOnScroll obscuresBackgroundDuringPresentation:obscuresBackgroundDuringPresentation backgroundColor:[options.topBar.searchBar.backgroundColor getWithDefaultValue:nil] tintColor:[options.topBar.searchBar.tintColor getWithDefaultValue:nil]];
     }
 
     if (options.topBar.drawBehind.hasValue) {
-        [viewController setDrawBehindTopBar:options.topBar.drawBehind.get];
+//        [viewController setDrawBehindTopBar:options.topBar.drawBehind.get];
     }
     
     if (options.bottomTabs.drawBehind.hasValue) {
-        [viewController setDrawBehindBottomTabs:options.bottomTabs.drawBehind.get];
+//        [viewController setDrawBehindBottomTabs:options.bottomTabs.drawBehind.get];
     }
 
     if (options.topBar.title.text.hasValue) {
@@ -146,15 +152,18 @@
         [_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
     }
     
+
     if (options.overlay.interceptTouchOutside.hasValue) {
         viewController.reactView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
     }
     
     if (options.topTab.badge.hasValue) {
-        [viewController setTopTabOptions:options];
+        
     }
     
     [_topBarTitlePresenter mergeOptions:options.topBar resolvedOptions:withDefault.topBar];
+    
+
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
@@ -166,4 +175,7 @@
 - (void)dealloc {
     [self.componentRegistry clearComponentsForParentId:self.boundComponentId];
 }
+
+
+
 @end

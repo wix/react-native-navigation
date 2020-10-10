@@ -33,6 +33,8 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 
 - (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside;
 
+- (void)setTopTabOptions: (RNNNavigationOptions *)options;
+
 @property (nonatomic) BOOL drawBehindTopBar;
 @property (nonatomic) BOOL drawBehindBottomTabs;
 

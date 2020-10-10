@@ -38,10 +38,22 @@ function setRoot() {
                 {
                   component: {
                     name: 'Layouts',
+                    options: {
+                      topBar: {
+                        title: {
+                          text: 'Layouts',
+                        },
+                      },
+                    },
                   },
                 },
               ],
               options: {
+                topBar: {
+                  title: {
+                    text: 'Layouts',
+                  },
+                },
                 bottomTab: {
                   text: 'Layouts',
                   icon: require('../img/layouts.png'),
@@ -57,6 +69,13 @@ function setRoot() {
                 {
                   component: {
                     name: 'Options',
+                    options: {
+                      topBar: {
+                        title: {
+                          text: 'Options',
+                        },
+                      },
+                    },
                   },
                 },
               ],
@@ -84,6 +103,19 @@ function setRoot() {
                   },
                 },
               ],
+              options: {
+                topBar: {
+                  title: {
+                    text: 'Default Title',
+                  },
+                },
+                bottomTab: {
+                  text: 'Navigation',
+                  icon: require('../img/options.png'),
+                  selectedIcon: require('../img/options_selected.png'),
+                  testID: testIDs.OPTIONS_TAB,
+                },
+              },
             },
           },
         ],

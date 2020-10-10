@@ -10,6 +10,8 @@
 #import "BottomTabsAttachModeFactory.h"
 #import "BottomTabsPresenterCreator.h"
 #import "BottomTabPresenterCreator.h"
+#import "RNNTopTabsPresenter.h"
+
 
 @implementation RNNControllerFactory {
 	id<RNNComponentViewCreator> _creator;
@@ -173,9 +175,11 @@
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 //	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithDefaultOptions :_defaultOptions];
-    RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions];
+//    RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions];
     
-	// RNNBasePresenter* presenter = [[RNNBasePresenter alloc] initWithDefaultOptions :_defaultOptions];
+
+    RNNTopTabsPresenter* presenter = [[RNNTopTabsPresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions];
+//	 RNNBasePresenter* presenter = [[RNNBasePresenter alloc] initWithDefaultOptions :_defaultOptions];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	

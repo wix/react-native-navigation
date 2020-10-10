@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps, NavigationButtonPressedEvent } from 'react-native-navigation';
+import { NavigationComponentProps, NavigationButtonPressedEvent } from 'lib/src';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';

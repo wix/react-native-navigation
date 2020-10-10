@@ -8,6 +8,10 @@ buildscript {
     }
 
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven{ url 'https://maven.aliyun.com/repository/jcenter'}
+        maven{ url 'http://maven.oschina.net/content/groups/public/'}
+
         google()
         mavenLocal()
         mavenCentral()
@@ -24,6 +28,10 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven{ url 'https://maven.aliyun.com/repository/jcenter'}
+        maven{ url 'http://maven.oschina.net/content/groups/public/'}
+
         jcenter()
         maven { url 'https://www.jitpack.io' }
         google()

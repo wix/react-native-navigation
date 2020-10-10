@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationComponentProps, Options } from 'lib/src';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';

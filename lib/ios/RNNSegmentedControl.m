@@ -8,4 +8,10 @@
 	[self setSectionTitles:mutableTitles];
 }
 
+- (void)setBadge:(NSString*)badge atIndex:(NSUInteger)index {
+    NSMutableArray* mutableBadges = [[NSMutableArray alloc] initWithArray:self.sectionBadges];
+    [mutableBadges setObject:badge atIndexedSubscript:index];
+    [self setSectionBadges:mutableBadges];
+}
+
 @end

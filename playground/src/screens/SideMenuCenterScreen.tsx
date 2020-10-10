@@ -3,7 +3,7 @@ import {
   NavigationComponent,
   NavigationButtonPressedEvent,
   NavigationComponentProps,
-} from 'react-native-navigation';
+} from 'lib/src';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';

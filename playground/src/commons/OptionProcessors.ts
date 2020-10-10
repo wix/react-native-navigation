@@ -1,4 +1,4 @@
-import { Navigation, OptionsTopBar, NavigationButtonPressedEvent } from 'react-native-navigation';
+import { Navigation, OptionsTopBar, NavigationButtonPressedEvent } from 'lib/src';
 
 export default function addOptionsProcessors() {
   addDismissModalProcessor();

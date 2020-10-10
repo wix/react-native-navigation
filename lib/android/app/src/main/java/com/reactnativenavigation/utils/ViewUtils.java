@@ -18,6 +18,7 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 public class ViewUtils {
     @Nullable
     public static <T extends View> T findChildByClass(ViewGroup root, Class<T> clazz) {
+        if(null == root)return null;
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
             if (clazz.isAssignableFrom(view.getClass())) {

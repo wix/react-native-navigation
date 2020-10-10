@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView, Dimensions, StyleSheet, Image, Text, TextInput } from 'react-native';
-import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import { Navigation, NavigationComponentProps } from 'lib/src';
 
 const screenWidth = Dimensions.get('window').width;
 

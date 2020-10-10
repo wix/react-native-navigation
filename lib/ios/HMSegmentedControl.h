@@ -63,6 +63,7 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlImagePosition) {
 @interface HMSegmentedControl : UIControl
 
 @property (nonatomic, strong, nullable) NSArray<NSString *> *sectionTitles;
+@property (nonatomic, strong, nullable) NSArray<NSString *> *sectionBadges;
 @property (nonatomic, strong, nullable) NSArray<UIImage *> *sectionImages;
 @property (nonatomic, strong, nullable) NSArray<UIImage *> *sectionSelectedImages;
 
@@ -256,6 +257,7 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlImagePosition) {
 @property (nonatomic) BOOL shouldAnimateUserSelection;
 
 - (instancetype)initWithSectionTitles:(NSArray<NSString *> *)sectiontitles;
+- (instancetype)initWithSectionTitlesAndBadges:(NSArray<NSString *> *)sectiontitles badges: (NSArray<NSString *> *)sectionbadges;
 - (instancetype)initWithSectionImages:(NSArray<UIImage *> *)sectionImages sectionSelectedImages:(NSArray<UIImage *> *)sectionSelectedImages;
 - (instancetype)initWithSectionImages:(NSArray<UIImage *> *)sectionImages sectionSelectedImages:(NSArray<UIImage *> *)sectionSelectedImages titlesForSections:(NSArray<NSString *> *)sectiontitles;
 

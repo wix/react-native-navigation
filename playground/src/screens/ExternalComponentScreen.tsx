@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponentProps } from 'lib/src';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';

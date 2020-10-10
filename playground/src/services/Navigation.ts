@@ -1,4 +1,4 @@
-import { Navigation, Layout, Options, LayoutRoot } from 'react-native-navigation';
+import { Navigation, Layout, Options, LayoutRoot } from 'lib/src';
 import get from 'lodash/get';
 import isString from 'lodash/isString';
 import { stack, component } from '../commons/Layouts';

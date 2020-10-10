@@ -1,5 +1,7 @@
 #import "RNNComponentViewController.h"
 #import "UIView+Utils.h"
+#import "RNNTopTabsViewController.h"
+
 
 @implementation RNNComponentViewController {
     NSArray* _reactViewConstraints;
@@ -212,6 +214,13 @@
 
 - (BOOL)hidesBottomBarWhenPushed {
     return [self.presenter hidesBottomBarWhenPushed];
+}
+
+- (void)setTopTabOptions: (RNNNavigationOptions *)options {
+//    [self.parentViewController ]
+    if([self.parentViewController isKindOfClass:[RNNTopTabsViewController class]]){
+        [(RNNTopTabsViewController*)self.parentViewController setTopTabOptions:options child:self];
+    }
 }
 
 @end

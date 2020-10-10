@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { NavigationFunctionComponent } from 'react-native-navigation';
+import { NavigationFunctionComponent } from 'lib/src';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
