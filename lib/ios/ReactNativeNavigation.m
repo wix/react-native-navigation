@@ -32,6 +32,10 @@
 	return [[ReactNativeNavigation sharedInstance].bridgeManager bridge];
 }
 
++ (void)setDisableRefreshApp:(BOOL) disableRefreshApp {
+    [[ReactNativeNavigation sharedInstance].bridgeManager setDisableRefreshApp:disableRefreshApp];
+}
+
 + (UIViewController *)findViewController:(NSString *)componentId {
     return [RNNLayoutManager findComponentForId:componentId];
 }

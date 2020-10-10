@@ -15,6 +15,8 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBri
 
 + (UIViewController *)findViewController:(NSString *)componentId;
 
++ (void)setDisableRefreshApp:(BOOL) disableRefreshApp;
+
 + (RCTBridge *)getBridge;
 
 @end

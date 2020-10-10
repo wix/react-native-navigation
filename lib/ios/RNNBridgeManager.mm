@@ -37,6 +37,8 @@
 	RNNExternalComponentStore* _store;
 
 	RNNCommandsHandler* _commandsHandler;
+    
+    BOOL _disableRefreshApp;
 }
 
 - (instancetype)initWithLaunchOptions:(NSDictionary *)launchOptions andBridgeDelegate:(id<RCTBridgeDelegate>)delegate mainWindow:(UIWindow *)mainWindow {
@@ -101,7 +103,10 @@
 
 - (void)onJavaScriptLoaded {
 	[_commandsHandler setReadyToReceiveCommands:true];
-	[[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
+    if(!_disableRefreshApp){
+       [[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
+    }
+	
 }
 
 - (void)onBridgeWillReload {
@@ -109,6 +114,10 @@
 	[_modalManager dismissAllModalsSynchronosly];
 	[_componentRegistry clear];
 	UIApplication.sharedApplication.delegate.window.rootViewController = nil;
+}
+
+- (void)setDisableRefreshApp:(BOOL) disableRefreshApp{
+    _disableRefreshApp = disableRefreshApp;
 }
 
 @end

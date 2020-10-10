@@ -19,4 +19,6 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props,
 
 @property(readonly, nonatomic, strong) RCTBridge *bridge;
 
+@property (nonatomic) BOOL disableRefreshApp;
+
 @end
