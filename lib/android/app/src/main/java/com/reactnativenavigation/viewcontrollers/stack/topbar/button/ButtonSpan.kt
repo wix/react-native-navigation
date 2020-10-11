@@ -15,6 +15,11 @@ class ButtonSpan(
         private val button: ButtonOptions,
         private val typefaceLoader: TypefaceLoader = TypefaceLoader(context)
 ) : MetricAffectingSpan() {
+    val fontSize: Float?
+        get() {
+            return if (button.fontSize.hasValue()) UiUtils.dpToPx(context, button.fontSize.get().toFloat()) else null
+        }
+
     override fun updateDrawState(drawState: TextPaint) = apply(drawState)
 
     override fun updateMeasureState(paint: TextPaint) = apply(paint)
@@ -25,7 +30,7 @@ class ButtonSpan(
             val fakeStyle = (paint.typeface?.style ?: 0) and (typeface?.style?.inv() ?: 1)
             if (fakeStyle and Typeface.BOLD != 0) paint.isFakeBoldText = true
             if (fakeStyle and Typeface.ITALIC != 0) paint.textSkewX = -0.25f
-            if (button.fontSize.hasValue()) paint.textSize = UiUtils.dpToPx(context, button.fontSize.get().toFloat())
+            fontSize?.let { paint.textSize = it }
             paint.typeface = typeface
         }
     }

@@ -52,6 +52,7 @@
     _originalCornerRadius = element.layer.cornerRadius;
     _reactView.frame = self.bounds;
     _reactView.layer.transform = CATransform3DIdentity;
+    _reactView.layer.cornerRadius = self.location.fromCornerRadius;
     [self addSubview:_reactView];
 }
 

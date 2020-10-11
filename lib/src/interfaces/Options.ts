@@ -1138,6 +1138,16 @@ export interface NavigationBarOptions {
   visible?: boolean;
 }
 
+/**
+ * Used for configuring and controlling the main window in iOS
+ */
+export interface WindowOptions {
+  /**
+   * Configure the background color of the application's main window.
+   */
+  backgroundColor?: Color;
+}
+
 export interface Options {
   /**
    * Configure the status bar
@@ -1240,6 +1250,11 @@ setRoot: {
    * #### (iOS specific)
    */
   rootBackgroundImage?: ImageResource;
+  /**
+   * Provides a way to configure the overall presentation of your application's main user interface
+   * #### (iOS specific)
+   */
+  window?: WindowOptions;
   /**
    * Enable or disable automatically blurring focused input, dismissing keyboard on unmount
    * #### (Android specific)

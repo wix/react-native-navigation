@@ -42,9 +42,8 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
                 YAnimator(from, to),
                 RotationAnimator(from, to),
                 ReactViewRotationAnimator(from, to),
-                ReactViewBorderRadiusAnimator(from, to),
-                ReactViewBoundsAnimator(from, to),
                 BackgroundColorAnimator(from, to),
+                ReactViewOutlineAnimator(from ,to),
                 TextChangeAnimator(from, to)
         )
     }

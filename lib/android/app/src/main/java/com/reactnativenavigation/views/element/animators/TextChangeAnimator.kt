@@ -14,8 +14,9 @@ class TextChangeAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactTe
     override fun shouldAnimateProperty(fromChild: ReactTextView, toChild: ReactTextView): Boolean {
         val fromXy = ViewUtils.getLocationOnScreen(from)
         val toXy = ViewUtils.getLocationOnScreen(to)
-        return TextViewUtils.getTextSize(fromChild) != TextViewUtils.getTextSize(toChild) ||
-                !fromXy.equals(toXy.x, toXy.y)
+        return fromChild.text.toString() == toChild.text.toString() && (
+                TextViewUtils.getTextSize(fromChild) != TextViewUtils.getTextSize(toChild) || !fromXy.equals(toXy.x, toXy.y)
+                )
     }
 
     override fun create(options: SharedElementTransitionOptions): Animator {

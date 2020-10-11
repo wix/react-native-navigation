@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.params.Colour;
@@ -63,6 +64,8 @@ public class TitleBar extends Toolbar {
 
     public TitleBar(Context context) {
         super(context);
+        setTitleTextAppearance(context, R.style.TitleBarTitle);
+        setSubtitleTextAppearance(context, R.style.TitleBarSubtitle);
         getMenu();
     }
 
