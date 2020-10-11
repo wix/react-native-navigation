@@ -51,7 +51,7 @@
     _originalParent = _reactView.superview;
     _originalCornerRadius = element.layer.cornerRadius;
     _reactView.frame = self.bounds;
-    _reactView.layer.transform = CATransform3DIdentity;
+   _reactView.layer.transform = CATransform3DIdentity;
     [self addSubview:_reactView];
 }
 
@@ -60,10 +60,10 @@
     _reactView.layer.cornerRadius = _originalCornerRadius;
     _reactView.bounds = _originalLayoutBounds;
     _reactView.layer.bounds = _originalLayoutBounds;
+    _reactView.layer.transform = _originalTransform;
     [_originalParent addSubview:_reactView];
     _toElement.hidden = NO;
-    _reactView.backgroundColor = _fromColor;
-    _reactView.layer.transform = _originalTransform;
+   _reactView.backgroundColor = _fromColor;
     [self removeFromSuperview];
 }
 
