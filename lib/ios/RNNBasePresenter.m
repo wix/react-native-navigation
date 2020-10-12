@@ -5,7 +5,9 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "DotIndicatorOptions.h"
 
-@implementation RNNBasePresenter
+@implementation RNNBasePresenter {
+    BOOL _prefersHomeIndicatorAutoHidden;
+}
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
     self = [super init];
@@ -22,6 +24,8 @@
 - (void)bindViewController:(UIViewController *)boundViewController {
     self.boundComponentId = boundViewController.layoutInfo.componentId;
     _boundViewController = boundViewController;
+    RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[self.boundViewController.topMostViewController.resolveOptions withDefault:self.defaultOptions];
+    _prefersHomeIndicatorAutoHidden = [withDefault.layout.autoHideHomeIndicator getWithDefaultValue:NO];
 }
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
@@ -50,33 +54,38 @@
     if (@available(iOS 13.0, *)) {
         viewController.modalInPresentation = ![withDefault.modal.swipeToDismiss getWithDefaultValue:YES];
     }
-	
-	if (withDefault.window.backgroundColor.hasValue) {
-		UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
-	}
+    
+    if (withDefault.window.backgroundColor.hasValue) {
+        UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
+    }
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
-
+    
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
-
+    
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
-
+    
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:_defaultOptions] overrideOptions:options];
-	
-	if (options.window.backgroundColor.hasValue) {
-		UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
-	}
+    
+    if (options.window.backgroundColor.hasValue) {
+        UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
+    }
     
     if (options.statusBar.visible.hasValue) {
         [self.boundViewController setNeedsStatusBarAppearanceUpdate];
+    }
+    
+    if (options.layout.autoHideHomeIndicator.hasValue && options.layout.autoHideHomeIndicator.get != _prefersHomeIndicatorAutoHidden) {
+        _prefersHomeIndicatorAutoHidden = options.layout.autoHideHomeIndicator.get;
+        [self.boundViewController setNeedsUpdateOfHomeIndicatorAutoHidden];
     }
 }
 
@@ -88,7 +97,7 @@
 }
 
 - (void)viewDidLayoutSubviews {
-
+    
 }
 
 - (UIStatusBarStyle)getStatusBarStyle {
@@ -132,6 +141,10 @@
 - (BOOL)hidesBottomBarWhenPushed {
     RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[self.boundViewController.topMostViewController.resolveOptions withDefault:self.defaultOptions];
     return ![withDefault.bottomTabs.visible getWithDefaultValue:YES];
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return _prefersHomeIndicatorAutoHidden;
 }
 
 @end
