@@ -113,6 +113,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
+    public Options resolveCurrentOptions() {
+        return super.resolveCurrentOptions().withDefaultOptions(presenter.defaultOptions);
+    }
+
+    @Override
     public int getTopInset() {
         int statusBarInset = resolveCurrentOptions().statusBar.isHiddenOrDrawBehind() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
