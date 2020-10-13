@@ -312,10 +312,11 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
 		[self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals commandId:commandId];
-		completion();
 	}];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-	[_modalManager dismissAllModalsAnimated:[options.animations.dismissModal.enable getWithDefaultValue:YES] completion:nil];
+	[_modalManager dismissAllModalsAnimated:[options.animations.dismissModal.enable getWithDefaultValue:YES] completion:^{
+		completion();
+    }];
 	
 	[CATransaction commit];
 }
