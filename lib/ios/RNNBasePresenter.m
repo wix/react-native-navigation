@@ -72,7 +72,7 @@
     RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:_defaultOptions] overrideOptions:options];
 	
     if (@available(iOS 13.0, *)) {
-        self.boundViewController.modalInPresentation = ![withDefault.modal.swipeToDismiss getWithDefaultValue:YES];
+        if (withDefault.modal.swipeToDismiss.hasValue) self.boundViewController.modalInPresentation = !withDefault.modal.swipeToDismiss.get;
     }
 
     if (options.window.backgroundColor.hasValue) {
