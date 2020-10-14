@@ -54,7 +54,7 @@
     if (@available(iOS 13.0, *)) {
         viewController.modalInPresentation = ![withDefault.modal.swipeToDismiss getWithDefaultValue:YES];
     }
-    
+
     if (withDefault.window.backgroundColor.hasValue) {
         UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
     }
@@ -74,11 +74,14 @@
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     RNNNavigationOptions* withDefault = (RNNNavigationOptions *) [[resolvedOptions withDefault:_defaultOptions] overrideOptions:options];
-    
+    if (@available(iOS 13.0, *)) {
+        if (withDefault.modal.swipeToDismiss.hasValue) self.boundViewController.modalInPresentation = !withDefault.modal.swipeToDismiss.get;
+    }
+
     if (options.window.backgroundColor.hasValue) {
         UIApplication.sharedApplication.delegate.window.backgroundColor = withDefault.window.backgroundColor.get;
     }
-    
+
     if (options.statusBar.visible.hasValue) {
         [self.boundViewController setNeedsStatusBarAppearanceUpdate];
     }
