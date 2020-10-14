@@ -24,7 +24,7 @@
 - (void)bindViewController:(UIViewController *)boundViewController {
     self.boundComponentId = boundViewController.layoutInfo.componentId;
     _boundViewController = boundViewController;
-    RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[self.boundViewController.topMostViewController.resolveOptions withDefault:self.defaultOptions];
+    RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[self.boundViewController.resolveOptions withDefault:self.defaultOptions];
     _prefersHomeIndicatorAutoHidden = [withDefault.layout.autoHideHomeIndicator getWithDefaultValue:NO];
 }
 
