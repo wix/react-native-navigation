@@ -31,7 +31,7 @@ class PodfileLinker {
     const minimumIOSVersion = contents.match(/(?<=platform\s:ios,\s(?:"|'))(.*)(?=(?:"|'))/);
 
     if (parseFloat(minimumIOSVersion) < 11) {
-      debugn("   Set the minumum iOS version to iOS 11.0");
+      debugn("   Bump minumum iOS version to iOS 11.0");
       return contents.replace(platformDefinition, "platform :ios, '11.0'");
     }
 
