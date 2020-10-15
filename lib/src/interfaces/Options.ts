@@ -147,6 +147,12 @@ export interface OptionsLayout {
    * only works with DefaultOptions
    */
   direction?: 'rtl' | 'ltr' | 'locale';
+
+  /**
+   * Controls the application's preferred home indicator auto-hiding.
+   * #### (iOS specific)
+   */
+  autoHideHomeIndicator?: boolean;
 }
 
 export enum OptionsModalPresentationStyle {
