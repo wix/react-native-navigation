@@ -1,5 +1,5 @@
 #import "ElementBaseTransition.h"
-#import "Interpolators/Interpolator.h"
+#import "Interpolator.h"
 
 @interface AnchorTransition : ElementBaseTransition
 

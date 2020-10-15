@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "Interpolators/Interpolator.h"
+#import "Interpolator.h"
 
 @interface RNNInterpolator : NSObject
 

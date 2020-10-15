@@ -1,5 +1,5 @@
 #import "RNNOptions.h"
-#import "Interpolators/Interpolator.h"
+#import "Interpolator.h"
 
 @interface TransitionDetailsOptions : RNNOptions
 
