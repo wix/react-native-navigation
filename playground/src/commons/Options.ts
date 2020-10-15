@@ -14,6 +14,9 @@ const SHOW_DURATION = 250 * (useSlowOpenScreenAnimations ? 2.5 : 1);
 
 const setDefaultOptions = () =>
   Navigation.setDefaultOptions({
+    window: {
+      backgroundColor: Colors.primary,
+    },
     layout: {
       componentBackgroundColor: Colors.background,
       orientation: ['portrait'],

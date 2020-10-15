@@ -214,4 +214,8 @@
     return [self.presenter hidesBottomBarWhenPushed];
 }
 
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return [self.presenter prefersHomeIndicatorAutoHidden];
+}
+
 @end

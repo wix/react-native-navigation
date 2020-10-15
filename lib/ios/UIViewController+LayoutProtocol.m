@@ -18,9 +18,9 @@
 	self.creator = creator;
     self.eventEmitter = eventEmitter;
     self.presenter = presenter;
+    [self loadChildren:childViewControllers];
     [self.presenter bindViewController:self];
     self.extendedLayoutIncludesOpaqueBars = YES;
-    [self loadChildren:childViewControllers];
     [self.presenter applyOptionsOnInit:self.resolveOptions];
 
 	return self;

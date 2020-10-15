@@ -11,6 +11,7 @@ const Screens = {
   CocktailsListScreen: 'CocktailsListScreen',
   CocktailsListMasterScreen: 'CocktailsListMasterScreen',
   CarDetailsScreen: 'CarDetailsScreen',
+  CarStoryScreen: 'CarStoryScreen',
   CarsListScreen: 'CarsListScreen',
   ContextScreen: 'ContextScreen',
   ExternalComponent: 'ExternalComponent',

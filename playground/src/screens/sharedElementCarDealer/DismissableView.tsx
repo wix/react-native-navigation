@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import Animated from 'react-native-reanimated';
-import { ViewProps } from 'react-native';
+import { StyleSheet, ViewProps } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { DismissGestureState } from './useDismissGesture';
+import { BlurView } from '@react-native-community/blur';
 
 export interface DismissableViewProps extends ViewProps {
   dismissGestureState: DismissGestureState;
@@ -27,13 +28,16 @@ export default function DismissableView(props: DismissableViewProps): JSX.Elemen
   );
 
   return (
-    <PanGestureHandler
-      {...dismissGestureState.gestureHandler}
-      maxPointers={1}
-      failOffsetX={GESTURE_HANDLER_FAIL_RANGE}
-      activeOffsetY={GESTURE_HANDLER_RANGE}
-    >
-      <Animated.View style={viewStyle} {...passThroughProps} />
-    </PanGestureHandler>
+    <>
+      <BlurView style={StyleSheet.absoluteFill} blurAmount={25} blurRadius={25} blurType="light" />
+      <PanGestureHandler
+        {...dismissGestureState.gestureHandler}
+        maxPointers={1}
+        failOffsetX={GESTURE_HANDLER_FAIL_RANGE}
+        activeOffsetY={GESTURE_HANDLER_RANGE}
+      >
+        <Animated.View style={viewStyle} {...passThroughProps} />
+      </PanGestureHandler>
+    </>
   );
 }

@@ -1,11 +1,15 @@
 import React, { useCallback } from 'react';
-import { Platform, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { Platform, SafeAreaView, ScrollView, StyleSheet, View, Text } from 'react-native';
 import { NavigationFunctionComponent } from 'react-native-navigation';
 import cars, { CarItem } from '../../assets/cars';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
-import { buildSharedElementAnimations } from './Constants';
+import { buildSharedElementAnimations, buildStorySharedElementAnimations } from './Constants';
 import CarCard from './CarCard';
+import PressableScale from '../../components/PressableScale';
+import colors from '../../commons/Colors';
+
+const STORY_SIZE = 60;
 
 // SET = Shared Element Transition
 // TODO: 1. Spring interpolation including configuration of mass/springiness: https://github.com/wix/react-native-navigation/issues/6431
@@ -29,6 +33,21 @@ const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
     },
     [componentId]
   );
+  const onCarStoryPressed = useCallback(
+    (car: CarItem) => {
+      const navigationAnimations = buildStorySharedElementAnimations(car);
+      Navigation.push(componentId, {
+        component: {
+          name: Screens.CarStoryScreen,
+          passProps: { car: car },
+          options: {
+            animations: navigationAnimations,
+          },
+        },
+      });
+    },
+    [componentId]
+  );
 
   return (
     <SafeAreaView>
@@ -36,6 +55,30 @@ const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
         contentContainerStyle={styles.scrollContent}
         contentInsetAdjustmentBehavior="never"
       >
+        <ScrollView horizontal={true} style={styles.storyScrollView}>
+          {cars.map((car) => (
+            <PressableScale
+              key={car.id}
+              style={styles.storyContainer}
+              onPress={() => onCarStoryPressed(car)}
+            >
+              <View style={styles.storyBackground} nativeID={`story.${car.id}.background.from`} />
+              <View style={styles.story}>
+                <Text style={styles.storyIcon} nativeID={`story.${car.id}.icon.from`}>
+                  {car.name.charAt(0)}
+                </Text>
+              </View>
+              <Text
+                style={styles.storyTitle}
+                nativeID={`story.${car.id}.title.from`}
+                ellipsizeMode="tail"
+                numberOfLines={1}
+              >
+                {car.name}
+              </Text>
+            </PressableScale>
+          ))}
+        </ScrollView>
         {cars.map((car) => (
           <CarCard
             key={car.id}
@@ -70,5 +113,37 @@ export default CarsListScreen;
 const styles = StyleSheet.create({
   scrollContent: {
     paddingVertical: 25,
+  },
+  storyScrollView: {
+    paddingLeft: 20,
+  },
+  storyContainer: {
+    width: STORY_SIZE,
+    marginRight: 15,
+    borderRadius: STORY_SIZE / 2,
+  },
+  storyBackground: {
+    position: 'absolute',
+    width: STORY_SIZE,
+    height: STORY_SIZE,
+    borderRadius: STORY_SIZE / 2,
+    backgroundColor: colors.primary,
+  },
+  story: {
+    width: STORY_SIZE,
+    height: STORY_SIZE,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  storyIcon: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  storyTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: 'black',
+    maxWidth: '100%',
   },
 });
