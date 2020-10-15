@@ -6,7 +6,7 @@ sidebar_label: Layout
 
 ```js
 const options = {
-  layout: {}
+  layout: {},
 };
 ```
 
@@ -52,6 +52,14 @@ Set the layout top margin.
 
 Set language direction, only works with DefaultOptions. `locale` is an Android specific option which sets the direction according to the device locale.
 
-| Type               | Required | Platform |
-| ------------------ | -------- | -------- |
+| Type                         | Required | Platform |
+| ---------------------------- | -------- | -------- |
 | enum('rtl', 'ltr', 'locale') | No       | Both     |
+
+### `autoHideHomeIndicator`
+
+Controls the application's preferred home indicator auto-hiding.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
