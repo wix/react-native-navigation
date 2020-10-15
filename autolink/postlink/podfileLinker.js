@@ -1,7 +1,7 @@
 // @ts-check
 var path = require("./path");
 var fs = require("fs");
-var { logn, debugn, infon, errorn, warnn } = require("./log");
+var {logn, debugn, infon, errorn, warnn} = require("./log");
 
 class PodfileLinker {
   constructor() {
@@ -18,8 +18,19 @@ class PodfileLinker {
     var podfileContent = fs.readFileSync(this.podfilePath, "utf8");
 
     podfileContent = this._removeRNNPodLink(podfileContent);
+    podfileContent = this._setMinimumIOSVersion(podfileContent);
 
     fs.writeFileSync(this.podfilePath, podfileContent);
+  }
+
+  /**
+   * Sets the minimum iOS version to iOS 11.0 which is the minimum version required by the library.
+   */
+  _setMinimumIOSVersion(contents) {
+    const minimumIOSVersion = contents.match(/platform :ios, '.*'/);
+
+    debugn("   Set the minumum iOS version to iOS 11.0");
+    return contents.replace(minimumIOSVersion, "platform :ios, '11.0'");
   }
 
   /**
