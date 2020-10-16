@@ -3,7 +3,7 @@
 
 @interface TextStorageTransition : ElementBaseTransition
 
-- (instancetype)initWithView:(UIView *)view from:(NSTextStorage *)from to:(NSTextStorage *)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolation:(Text *)interpolation;
+- (instancetype)initWithView:(UIView *)view from:(NSTextStorage *)from to:(NSTextStorage *)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolator:(id<Interpolator>)interpolator;
 
 @property (nonatomic, strong) AnimatedTextView* view;
 

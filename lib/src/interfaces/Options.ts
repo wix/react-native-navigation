@@ -60,12 +60,20 @@ type SystemItemIcon =
   | 'undo'
   | 'redo';
 type Interpolation =
-  | 'linear'
-  | 'accelerateDecelerate'
-  | 'decelerate'
-  | 'accelerate'
-  | 'decelerateAccelerate'
-  | 'overshoot';
+  | { type: 'accelerate'; factor?: number }
+  | { type: 'decelerate'; factor?: number }
+  | { type: 'decelerateAccelerate' }
+  | { type: 'accelerateDecelerate' }
+  | { type: 'linear' }
+  | { type: 'overshoot'; tension?: number }
+  | {
+      type: 'spring';
+      mass?: number;
+      damping?: number;
+      stiffness?: number;
+      allowsOverdamping?: boolean;
+      initialVelocity?: number;
+    };
 
 export interface OptionsSplitView {
   /**
@@ -147,6 +155,12 @@ export interface OptionsLayout {
    * only works with DefaultOptions
    */
   direction?: 'rtl' | 'ltr' | 'locale';
+
+  /**
+   * Controls the application's preferred home indicator auto-hiding.
+   * #### (iOS specific)
+   */
+  autoHideHomeIndicator?: boolean;
 }
 
 export enum OptionsModalPresentationStyle {

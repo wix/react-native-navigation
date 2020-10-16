@@ -11,6 +11,8 @@ const POP_MULTIPLIER = 1.0;
 const LONG_DURATION = 540 * MULTIPLIER;
 const SHORT_DURATION = 210 * MULTIPLIER;
 
+const SPRING_CONFIG = { mass: 2, damping: 500, stiffness: 200 };
+
 export default class CocktailsListScreen extends NavigationComponent {
   static options() {
     return {
@@ -58,19 +60,19 @@ export default class CocktailsListScreen extends NavigationComponent {
                   fromId: `image${item.id}`,
                   toId: `image${item.id}Dest`,
                   duration: LONG_DURATION,
-                  interpolation: 'overshoot',
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
                 {
                   fromId: `title${item.id}`,
                   toId: `title${item.id}Dest`,
                   duration: LONG_DURATION,
-                  interpolation: 'overshoot',
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
                 {
                   fromId: `backdrop${item.id}`,
                   toId: 'backdrop',
                   duration: LONG_DURATION,
-                  interpolation: 'overshoot',
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
               ],
               elementTransitions: [
@@ -100,19 +102,19 @@ export default class CocktailsListScreen extends NavigationComponent {
                   fromId: `image${item.id}Dest`,
                   toId: `image${item.id}`,
                   duration: LONG_DURATION * POP_MULTIPLIER,
-                  interpolation: 'overshoot',
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
                 {
                   fromId: `title${item.id}Dest`,
                   toId: `title${item.id}`,
                   duration: LONG_DURATION * POP_MULTIPLIER,
-                  interpolation: 'overshoot',
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
                 {
                   fromId: 'backdrop',
                   toId: `backdrop${item.id}`,
                   duration: LONG_DURATION * POP_MULTIPLIER,
-                  interpolation: 'overshoot',
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
               ],
               elementTransitions: [

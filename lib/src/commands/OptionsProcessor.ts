@@ -68,6 +68,7 @@ export class OptionsProcessor {
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
       this.processSearchBar(key, value, objectToProcess);
+      this.processInterpolation(key, value, objectToProcess);
 
       onProcess(key, parentOptions);
 
@@ -160,6 +161,17 @@ export class OptionsProcessor {
         options[key]?.tintColor ?? options.searchBarTintColor,
         options[key] as Record<string, any>
       );
+    }
+  }
+
+  private processInterpolation(key: string, value: any, options: Record<string, any>) {
+    if (isEqual(key, 'interpolation')) {
+      if (typeof value === 'string') {
+        this.deprecations.onProcessOptions(key, options, '');
+        options[key] = {
+          type: options[key],
+        };
+      }
     }
   }
 }

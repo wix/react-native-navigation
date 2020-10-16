@@ -1,18 +1,17 @@
 #import "ElementBaseTransition.h"
 
-@implementation ElementBaseTransition {
-    Text* _interpolation;
-}
+@implementation ElementBaseTransition
 
 @synthesize duration = _duration;
 @synthesize startDelay = _startDelay;
+@synthesize interpolator = _interpolator;
 
-- (instancetype)initWithView:(UIView *)view startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolation:(Text *)interpolation {
+- (instancetype)initWithView:(UIView *)view startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolator:(id<Interpolator>)interpolator {
     self = [super init];
     _view = view;
     _startDelay = startDelay;
     _duration = duration;
-    _interpolation = interpolation;
+    _interpolator = interpolator;
     return self;
 }
 
@@ -32,8 +31,8 @@
     return CATransform3DIdentity;
 }
 
-- (RNNInterpolationOptions)interpolation {
-    return [RCTConvert RNNInterpolationOptions:_interpolation];
+- (id<Interpolator>)interpolator {
+    return _interpolator;
 }
 
 - (void)end { 
