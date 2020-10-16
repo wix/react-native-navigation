@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class PIPOptions {
 
-    public boolean enablePIP = false;
+    public boolean enabled = false;
 
     public String actionControlGroup;
 
@@ -24,7 +24,7 @@ public class PIPOptions {
         if (json != null) {
             pipOptions = new PIPOptions();
             pipOptions.actionControlGroup = json.optString("actionControlGroup");
-            pipOptions.enablePIP = json.optBoolean("enablePIP");
+            pipOptions.enabled = json.optBoolean("enabled");
             pipOptions.aspectRatio = AspectRatio.parse(json.optJSONObject("aspectRatio"));
             pipOptions.customPIP = CustomPIPDimension.parse(json.optJSONObject("customPIP"));
             JSONArray array = json.optJSONArray("actionButtons");
@@ -46,6 +46,7 @@ public class PIPOptions {
 
     public PIPOptions mergeWith(final PIPOptions other) {
         if (other != null) {
+            this.enabled = other.enabled;
             this.actionControlGroup = other.actionControlGroup;
             this.aspectRatio.mergeWith(other.aspectRatio);
             this.actionButtons = other.actionButtons;

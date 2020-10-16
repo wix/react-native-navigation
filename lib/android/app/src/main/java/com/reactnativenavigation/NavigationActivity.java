@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -17,13 +18,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.react.ReactGateway;
+import com.reactnativenavigation.utils.ILogger;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
@@ -37,24 +38,30 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private PermissionListener mPermissionListener;
     private int anotherActivityCount = 0;
     protected Navigator navigator;
+    private ILogger logger;
+    private static String TAG = "NavigationActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        logger = NavigationApplication.getLogger();
         if (isFinishing()) {
             return;
         }
+
         if (navigator == null || navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             addDefaultSplashLayout();
             navigator = new Navigator(this,
                     new ChildControllersRegistry(),
                     new ModalStack(this),
                     new OverlayManager(),
-                    new RootPresenter(this)
+                    new RootPresenter(this),
+                    logger
             );
             navigator.bindViews();
             getReactGateway().onActivityCreated(this);
         }
+
         getApplication().registerActivityLifecycleCallbacks(lifecycleCallback);
 
     }
@@ -62,6 +69,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        logger.log(Log.INFO, TAG, "onPostCreate PIPMode " + navigator.getPipMode());
         if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
             navigator.setContentLayout(findViewById(android.R.id.content));
         }
@@ -70,6 +78,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onResume() {
         super.onResume();
+        logger.log(Log.INFO, TAG, "onResume PIPMode " + navigator.getPipMode());
         if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
             getReactGateway().onActivityResumed(this);
         }
@@ -77,6 +86,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void onNewIntent(Intent intent) {
+        logger.log(Log.INFO, TAG, "onNewIntent PIPMode " + navigator.getPipMode());
+
         if (!getReactGateway().onNewIntent(intent)) {
             super.onNewIntent(intent);
         }
@@ -85,6 +96,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onPause() {
         super.onPause();
+        logger.log(Log.INFO, TAG, "onPause PIPMode " + navigator.getPipMode());
         if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
             getReactGateway().onActivityPaused(this);
         }
@@ -93,7 +105,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        logger.log(Log.INFO, TAG, "onDestroy");
         if (navigator != null && navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
+            logger.log(Log.INFO, TAG, "onDestroy PIPMode " + navigator.getPipMode());
             navigator.destroy();
             getReactGateway().onActivityDestroyed(this);
         }
@@ -104,6 +118,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
+        logger.log(Log.INFO, TAG, "onUserLeaveHint shouldSwitchToPIP " + navigator.shouldSwitchToPIP() + "  PIPMode " + navigator.getPipMode());
         if (navigator.shouldSwitchToPIP() && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && canEnterPiPMode()) {
             navigator.updatePIPState(PIPStates.NATIVE_MOUNT_START);
             enterPictureInPictureMode(navigator.getPictureInPictureParams());
@@ -113,8 +128,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
+        logger.log(Log.VERBOSE, TAG, "onPictureInPictureModeChanged isInPictureInPictureMode " + isInPictureInPictureMode + "  PIPMode " + navigator.getPipMode() + " isFinishing " + isFinishing());
         if (isInPictureInPictureMode) {
             navigator.updatePIPState(PIPStates.NATIVE_MOUNTED);
+        } else if (isFinishing()) {
+            navigator.updatePIPState(PIPStates.UNMOUNT_START);
         } else {
             navigator.updatePIPState(PIPStates.CUSTOM_MOUNTED);
         }
@@ -122,6 +140,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void invokeDefaultOnBackPressed() {
+        logger.log(Log.VERBOSE, TAG, "invokeDefaultOnBackPressed  PIPMode " + navigator.getPipMode());
         if (!navigator.handleBack(new CommandListenerAdapter())) {
             super.onBackPressed();
         }
@@ -130,6 +149,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onStop() {
         super.onStop();
+        logger.log(Log.VERBOSE, TAG, "onStop PIPMode " + navigator.getPipMode());
         if (navigator.getPipMode() == PIPStates.NATIVE_MOUNTED && NavigationActivity.this.anotherActivityCount <= 0) {
             finish();
         } else if (navigator.getPipMode() == PIPStates.NATIVE_MOUNT_START) {
@@ -140,11 +160,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        logger.log(Log.VERBOSE, TAG, "onStop PIPMode " + navigator.getPipMode());
         getReactGateway().onActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override
     public void onBackPressed() {
+        logger.log(Log.VERBOSE, TAG, "onBackPressed PIPMode " + navigator.getPipMode());
         getReactGateway().onBackPressed();
     }
 
@@ -181,6 +203,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void onReload() {
+        logger.log(Log.VERBOSE, TAG, "onReload PIPMode " + navigator.getPipMode());
         if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
             navigator.destroyViews();
         }

@@ -1,77 +1,77 @@
 import forEach from 'lodash/forEach';
 import filter from 'lodash/filter';
 import invoke from 'lodash/invoke';
-import { mock, verify, instance, deepEqual, when, anything, anyString } from 'ts-mockito';
+import {mock, verify, instance, deepEqual, when, anything, anyString} from 'ts-mockito';
 
-import { LayoutTreeParser } from './LayoutTreeParser';
-import { LayoutTreeCrawler } from './LayoutTreeCrawler';
-import { Store } from '../components/Store';
-import { Commands } from './Commands';
-import { CommandsObserver } from '../events/CommandsObserver';
-import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
-import { OptionsProcessor } from './OptionsProcessor';
-import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
-import { Options } from '../interfaces/Options';
-import { LayoutProcessor } from '../processors/LayoutProcessor';
-import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
-import { CommandName } from '../interfaces/CommandName';
+import {LayoutTreeParser} from './LayoutTreeParser';
+import {LayoutTreeCrawler} from './LayoutTreeCrawler';
+import {Store} from '../components/Store';
+import {Commands} from './Commands';
+import {CommandsObserver} from '../events/CommandsObserver';
+import {NativeCommandsSender} from '../adapters/NativeCommandsSender';
+import {OptionsProcessor} from './OptionsProcessor';
+import {UniqueIdProvider} from '../adapters/UniqueIdProvider';
+import {Options} from '../interfaces/Options';
+import {LayoutProcessor} from '../processors/LayoutProcessor';
+import {LayoutProcessorsStore} from '../processors/LayoutProcessorsStore';
+import {CommandName} from '../interfaces/CommandName';
 
 describe('Commands', () => {
-  let uut: Commands;
-  let mockedNativeCommandsSender: NativeCommandsSender;
-  let mockedStore: Store;
-  let commandsObserver: CommandsObserver;
-  let mockedUniqueIdProvider: UniqueIdProvider;
-  let layoutProcessor: LayoutProcessor;
+    let uut: Commands;
+    let mockedNativeCommandsSender: NativeCommandsSender;
+    let mockedStore: Store;
+    let commandsObserver: CommandsObserver;
+    let mockedUniqueIdProvider: UniqueIdProvider;
+    let layoutProcessor: LayoutProcessor;
 
-  beforeEach(() => {
-    mockedNativeCommandsSender = mock(NativeCommandsSender);
-    mockedUniqueIdProvider = mock(UniqueIdProvider);
-    when(mockedUniqueIdProvider.generate(anything())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
-    const uniqueIdProvider = instance(mockedUniqueIdProvider);
-    mockedStore = mock(Store);
-    commandsObserver = new CommandsObserver(uniqueIdProvider);
-    const layoutProcessorsStore = new LayoutProcessorsStore();
+    beforeEach(() => {
+        mockedNativeCommandsSender = mock(NativeCommandsSender);
+        mockedUniqueIdProvider = mock(UniqueIdProvider);
+        when(mockedUniqueIdProvider.generate(anything())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
+        const uniqueIdProvider = instance(mockedUniqueIdProvider);
+        mockedStore = mock(Store);
+        commandsObserver = new CommandsObserver(uniqueIdProvider);
+        const layoutProcessorsStore = new LayoutProcessorsStore();
 
         const mockedOptionsProcessor = mock(OptionsProcessor);
         const optionsProcessor = instance(mockedOptionsProcessor) as OptionsProcessor;
 
-    layoutProcessor = new LayoutProcessor(layoutProcessorsStore);
-    jest.spyOn(layoutProcessor, 'process');
+        layoutProcessor = new LayoutProcessor(layoutProcessorsStore);
+        jest.spyOn(layoutProcessor, 'process');
 
-    uut = new Commands(
-      mockedStore,
-      instance(mockedNativeCommandsSender),
-      new LayoutTreeParser(uniqueIdProvider),
-      new LayoutTreeCrawler(instance(mockedStore), optionsProcessor),
-      commandsObserver,
-      uniqueIdProvider,
-      optionsProcessor,
-      layoutProcessor
-    );
-  });
-
-  describe('setRoot', () => {
-    it('sends setRoot to native after parsing into a correct layout tree', () => {
-      uut.setRoot({
-        root: { component: { name: 'com.example.MyScreen' } },
-      });
-      verify(
-        mockedNativeCommandsSender.setRoot(
-          'setRoot+UNIQUE_ID',
-          deepEqual({
-            root: {
-              type: 'Component',
-              id: 'Component+UNIQUE_ID',
-              children: [],
-              data: { name: 'com.example.MyScreen', options: {}, passProps: undefined },
-            },
-            modals: [],
-            overlays: [],
-          })
-        )
-      ).called();
+        uut = new Commands(
+            mockedStore,
+            instance(mockedNativeCommandsSender),
+            new LayoutTreeParser(uniqueIdProvider),
+            new LayoutTreeCrawler(instance(mockedStore), optionsProcessor),
+            commandsObserver,
+            uniqueIdProvider,
+            optionsProcessor,
+            layoutProcessor
+        );
     });
+
+    describe('setRoot', () => {
+        it('sends setRoot to native after parsing into a correct layout tree', () => {
+            uut.setRoot({
+                root: {component: {name: 'com.example.MyScreen'}},
+            });
+            verify(
+                mockedNativeCommandsSender.setRoot(
+                    'setRoot+UNIQUE_ID',
+                    deepEqual({
+                        root: {
+                            type: 'Component',
+                            id: 'Component+UNIQUE_ID',
+                            children: [],
+                            data: {name: 'com.example.MyScreen', options: {}, passProps: undefined},
+                        },
+                        modals: [],
+                        overlays: [],
+                    })
+                )
+            ).called();
+        });
 
         it('returns a promise with the resolved layout', async () => {
             when(mockedNativeCommandsSender.setRoot(anything(), anything())).thenResolve(
@@ -81,65 +81,65 @@ describe('Commands', () => {
             expect(result).toEqual('the resolved layout');
         });
 
-    it('inputs modals and overlays', () => {
-      uut.setRoot({
-        root: { component: { name: 'com.example.MyScreen' } },
-        modals: [{ component: { name: 'com.example.MyModal' } }],
-        overlays: [{ component: { name: 'com.example.MyOverlay' } }],
-      });
-      verify(
-        mockedNativeCommandsSender.setRoot(
-          'setRoot+UNIQUE_ID',
-          deepEqual({
-            root: {
-              type: 'Component',
-              id: 'Component+UNIQUE_ID',
-              children: [],
-              data: {
-                name: 'com.example.MyScreen',
-                options: {},
-                passProps: undefined,
-              },
-            },
-            modals: [
-              {
-                type: 'Component',
-                id: 'Component+UNIQUE_ID',
-                children: [],
-                data: {
-                  name: 'com.example.MyModal',
-                  options: {},
-                  passProps: undefined,
-                },
-              },
-            ],
-            overlays: [
-              {
-                type: 'Component',
-                id: 'Component+UNIQUE_ID',
-                children: [],
-                data: {
-                  name: 'com.example.MyOverlay',
-                  options: {},
-                  passProps: undefined,
-                },
-              },
-            ],
-          })
-        )
-      ).called();
-    });
+        it('inputs modals and overlays', () => {
+            uut.setRoot({
+                root: {component: {name: 'com.example.MyScreen'}},
+                modals: [{component: {name: 'com.example.MyModal'}}],
+                overlays: [{component: {name: 'com.example.MyOverlay'}}],
+            });
+            verify(
+                mockedNativeCommandsSender.setRoot(
+                    'setRoot+UNIQUE_ID',
+                    deepEqual({
+                        root: {
+                            type: 'Component',
+                            id: 'Component+UNIQUE_ID',
+                            children: [],
+                            data: {
+                                name: 'com.example.MyScreen',
+                                options: {},
+                                passProps: undefined,
+                            },
+                        },
+                        modals: [
+                            {
+                                type: 'Component',
+                                id: 'Component+UNIQUE_ID',
+                                children: [],
+                                data: {
+                                    name: 'com.example.MyModal',
+                                    options: {},
+                                    passProps: undefined,
+                                },
+                            },
+                        ],
+                        overlays: [
+                            {
+                                type: 'Component',
+                                id: 'Component+UNIQUE_ID',
+                                children: [],
+                                data: {
+                                    name: 'com.example.MyOverlay',
+                                    options: {},
+                                    passProps: undefined,
+                                },
+                            },
+                        ],
+                    })
+                )
+            ).called();
+        });
 
-    it('process layout with layoutProcessor', () => {
-      uut.setRoot({
-        root: { component: { name: 'com.example.MyScreen' } },
-      });
-      expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
-        CommandName.SetRoot
-      );
+        it('process layout with layoutProcessor', () => {
+            uut.setRoot({
+                root: {component: {name: 'com.example.MyScreen'}},
+            });
+            expect(layoutProcessor.process).toBeCalledWith(
+                {component: {name: 'com.example.MyScreen'}},
+                CommandName.SetRoot
+            );
+        });
     });
-  });
 
     describe('mergeOptions', () => {
         it('passes options for component', () => {
@@ -153,59 +153,59 @@ describe('Commands', () => {
         });
     });
 
-  describe('updateProps', () => {
-    it('delegates to store', () => {
-      uut.updateProps('theComponentId', { someProp: 'someValue' });
-      verify(mockedStore.updateProps('theComponentId', deepEqual({ someProp: 'someValue' })));
+    describe('updateProps', () => {
+        it('delegates to store', () => {
+            uut.updateProps('theComponentId', {someProp: 'someValue'});
+            verify(mockedStore.updateProps('theComponentId', deepEqual({someProp: 'someValue'})));
+        });
+
+        it('notifies commands observer', () => {
+            uut.updateProps('theComponentId', {someProp: 'someValue'});
+            verify(
+                commandsObserver.notify(
+                    'updateProps',
+                    deepEqual({componentId: 'theComponentId', props: {someProp: 'someValue'}})
+                )
+            );
+        });
     });
 
-    it('notifies commands observer', () => {
-      uut.updateProps('theComponentId', { someProp: 'someValue' });
-      verify(
-        commandsObserver.notify(
-          'updateProps',
-          deepEqual({ componentId: 'theComponentId', props: { someProp: 'someValue' } })
-        )
-      );
-    });
-  });
+    describe('showModal', () => {
+        it('sends command to native after parsing into a correct layout tree', () => {
+            uut.showModal({component: {name: 'com.example.MyScreen'}});
+            verify(
+                mockedNativeCommandsSender.showModal(
+                    'showModal+UNIQUE_ID',
+                    deepEqual({
+                        type: 'Component',
+                        id: 'Component+UNIQUE_ID',
+                        data: {
+                            name: 'com.example.MyScreen',
+                            options: {},
+                            passProps: undefined,
+                        },
+                        children: [],
+                    })
+                )
+            ).called();
+        });
 
-  describe('showModal', () => {
-    it('sends command to native after parsing into a correct layout tree', () => {
-      uut.showModal({ component: { name: 'com.example.MyScreen' } });
-      verify(
-        mockedNativeCommandsSender.showModal(
-          'showModal+UNIQUE_ID',
-          deepEqual({
-            type: 'Component',
-            id: 'Component+UNIQUE_ID',
-            data: {
-              name: 'com.example.MyScreen',
-              options: {},
-              passProps: undefined,
-            },
-            children: [],
-          })
-        )
-      ).called();
-    });
+        it('returns a promise with the resolved layout', async () => {
+            when(mockedNativeCommandsSender.showModal(anything(), anything())).thenResolve(
+                'the resolved layout'
+            );
+            const result = await uut.showModal({component: {name: 'com.example.MyScreen'}});
+            expect(result).toEqual('the resolved layout');
+        });
 
-    it('returns a promise with the resolved layout', async () => {
-      when(mockedNativeCommandsSender.showModal(anything(), anything())).thenResolve(
-        'the resolved layout'
-      );
-      const result = await uut.showModal({ component: { name: 'com.example.MyScreen' } });
-      expect(result).toEqual('the resolved layout');
+        it('process layout with layoutProcessor', () => {
+            uut.showModal({component: {name: 'com.example.MyScreen'}});
+            expect(layoutProcessor.process).toBeCalledWith(
+                {component: {name: 'com.example.MyScreen'}},
+                CommandName.ShowModal
+            );
+        });
     });
-
-    it('process layout with layoutProcessor', () => {
-      uut.showModal({ component: { name: 'com.example.MyScreen' } });
-      expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
-        CommandName.ShowModal
-      );
-    });
-  });
 
     describe('dismissModal', () => {
         it('sends command to native', () => {
@@ -245,45 +245,45 @@ describe('Commands', () => {
         });
     });
 
-  describe('push', () => {
-    it('resolves with the parsed layout', async () => {
-      when(mockedNativeCommandsSender.push(anyString(), anyString(), anything())).thenResolve(
-        'the resolved layout'
-      );
-      const result = await uut.push('theComponentId', {
-        component: { name: 'com.example.MyScreen' },
-      });
-      expect(result).toEqual('the resolved layout');
-    });
+    describe('push', () => {
+        it('resolves with the parsed layout', async () => {
+            when(mockedNativeCommandsSender.push(anyString(), anyString(), anything())).thenResolve(
+                'the resolved layout'
+            );
+            const result = await uut.push('theComponentId', {
+                component: {name: 'com.example.MyScreen'},
+            });
+            expect(result).toEqual('the resolved layout');
+        });
 
-    it('parses into correct layout node and sends to native', () => {
-      uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
-      verify(
-        mockedNativeCommandsSender.push(
-          'push+UNIQUE_ID',
-          'theComponentId',
-          deepEqual({
-            type: 'Component',
-            id: 'Component+UNIQUE_ID',
-            data: {
-              name: 'com.example.MyScreen',
-              options: {},
-              passProps: undefined,
-            },
-            children: [],
-          })
-        )
-      ).called();
-    });
+        it('parses into correct layout node and sends to native', () => {
+            uut.push('theComponentId', {component: {name: 'com.example.MyScreen'}});
+            verify(
+                mockedNativeCommandsSender.push(
+                    'push+UNIQUE_ID',
+                    'theComponentId',
+                    deepEqual({
+                        type: 'Component',
+                        id: 'Component+UNIQUE_ID',
+                        data: {
+                            name: 'com.example.MyScreen',
+                            options: {},
+                            passProps: undefined,
+                        },
+                        children: [],
+                    })
+                )
+            ).called();
+        });
 
-    it('process layout with layoutProcessor', () => {
-      uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
-      expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
-        CommandName.Push
-      );
+        it('process layout with layoutProcessor', () => {
+            uut.push('theComponentId', {component: {name: 'com.example.MyScreen'}});
+            expect(layoutProcessor.process).toBeCalledWith(
+                {component: {name: 'com.example.MyScreen'}},
+                CommandName.Push
+            );
+        });
     });
-  });
 
     describe('pop', () => {
         it('pops a component, passing componentId', () => {
@@ -341,74 +341,74 @@ describe('Commands', () => {
         });
     });
 
-  describe('setStackRoot', () => {
-    it('parses into correct layout node and sends to native', () => {
-      uut.setStackRoot('theComponentId', [{ component: { name: 'com.example.MyScreen' } }]);
-      verify(
-        mockedNativeCommandsSender.setStackRoot(
-          'setStackRoot+UNIQUE_ID',
-          'theComponentId',
-          deepEqual([
-            {
-              type: 'Component',
-              id: 'Component+UNIQUE_ID',
-              data: {
-                name: 'com.example.MyScreen',
-                options: {},
-                passProps: undefined,
-              },
-              children: [],
-            },
-          ])
-        )
-      ).called();
+    describe('setStackRoot', () => {
+        it('parses into correct layout node and sends to native', () => {
+            uut.setStackRoot('theComponentId', [{component: {name: 'com.example.MyScreen'}}]);
+            verify(
+                mockedNativeCommandsSender.setStackRoot(
+                    'setStackRoot+UNIQUE_ID',
+                    'theComponentId',
+                    deepEqual([
+                        {
+                            type: 'Component',
+                            id: 'Component+UNIQUE_ID',
+                            data: {
+                                name: 'com.example.MyScreen',
+                                options: {},
+                                passProps: undefined,
+                            },
+                            children: [],
+                        },
+                    ])
+                )
+            ).called();
+        });
+
+        it('process layout with layoutProcessor', () => {
+            uut.setStackRoot('theComponentId', [{component: {name: 'com.example.MyScreen'}}]);
+            expect(layoutProcessor.process).toBeCalledWith(
+                {component: {name: 'com.example.MyScreen'}},
+                CommandName.SetStackRoot
+            );
+        });
     });
 
-    it('process layout with layoutProcessor', () => {
-      uut.setStackRoot('theComponentId', [{ component: { name: 'com.example.MyScreen' } }]);
-      expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
-        CommandName.SetStackRoot
-      );
-    });
-  });
+    describe('showOverlay', () => {
+        it('sends command to native after parsing into a correct layout tree', () => {
+            uut.showOverlay({component: {name: 'com.example.MyScreen'}});
+            verify(
+                mockedNativeCommandsSender.showOverlay(
+                    'showOverlay+UNIQUE_ID',
+                    deepEqual({
+                        type: 'Component',
+                        id: 'Component+UNIQUE_ID',
+                        data: {
+                            name: 'com.example.MyScreen',
+                            options: {},
+                            passProps: undefined,
+                        },
+                        children: [],
+                    })
+                )
+            ).called();
+        });
 
-  describe('showOverlay', () => {
-    it('sends command to native after parsing into a correct layout tree', () => {
-      uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
-      verify(
-        mockedNativeCommandsSender.showOverlay(
-          'showOverlay+UNIQUE_ID',
-          deepEqual({
-            type: 'Component',
-            id: 'Component+UNIQUE_ID',
-            data: {
-              name: 'com.example.MyScreen',
-              options: {},
-              passProps: undefined,
-            },
-            children: [],
-          })
-        )
-      ).called();
-    });
+        it('resolves with the component id', async () => {
+            when(mockedNativeCommandsSender.showOverlay(anyString(), anything())).thenResolve(
+                'Component1'
+            );
+            const result = await uut.showOverlay({component: {name: 'com.example.MyScreen'}});
+            expect(result).toEqual('Component1');
+        });
 
-    it('resolves with the component id', async () => {
-      when(mockedNativeCommandsSender.showOverlay(anyString(), anything())).thenResolve(
-        'Component1'
-      );
-      const result = await uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
-      expect(result).toEqual('Component1');
+        it('process layout with layoutProcessor', () => {
+            uut.showOverlay({component: {name: 'com.example.MyScreen'}});
+            expect(layoutProcessor.process).toBeCalledWith(
+                {component: {name: 'com.example.MyScreen'}},
+                CommandName.ShowOverlay
+            );
+        });
     });
-
-    it('process layout with layoutProcessor', () => {
-      uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
-      expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
-        CommandName.ShowOverlay
-      );
-    });
-  });
 
     describe('dismissOverlay', () => {
         it('check promise returns true', async () => {
@@ -436,6 +436,7 @@ describe('Commands', () => {
         it('switch a component to PIP mode, passing componentId and options', () => {
             const options: Options = {
                 pipOptions: {
+                    enabled: true,
                     actionButtons: [],
                     actionControlGroup: 'test',
                     customPIP: {
@@ -538,17 +539,17 @@ describe('Commands', () => {
                 (prefix) => `${prefix}+UNIQUE_ID`
             );
 
-      uut = new Commands(
-        mockedStore,
-        mockedNativeCommandsSender,
-        instance(mockedLayoutTreeParser),
-        instance(mockedLayoutTreeCrawler),
-        commandsObserver,
-        instance(anotherMockedUniqueIdProvider),
-        instance(mockedOptionsProcessor),
-        new LayoutProcessor(new LayoutProcessorsStore())
-      );
-    });
+            uut = new Commands(
+                mockedStore,
+                mockedNativeCommandsSender,
+                instance(mockedLayoutTreeParser),
+                instance(mockedLayoutTreeCrawler),
+                commandsObserver,
+                instance(anotherMockedUniqueIdProvider),
+                instance(mockedOptionsProcessor),
+                new LayoutProcessor(new LayoutProcessorsStore())
+            );
+        });
 
         function getAllMethodsOfUut() {
             const uutFns = Object.getOwnPropertyNames(Commands.prototype);
@@ -557,57 +558,57 @@ describe('Commands', () => {
             return methods;
         }
 
-    describe('passes correct params', () => {
-      const argsForMethodName: Record<string, any[]> = {
-        setRoot: [{}],
-        setDefaultOptions: [{}],
-        mergeOptions: ['id', {}],
-        updateProps: ['id', {}],
-        showModal: [{}],
-        dismissModal: ['id', {}],
-        dismissAllModals: [{}],
-        push: ['id', {}],
-        pop: ['id', {}],
-        popTo: ['id', {}],
-        popToRoot: ['id', {}],
-        setStackRoot: ['id', [{}]],
-        showOverlay: [{}],
-        dismissOverlay: ['id'],
-        getLaunchArgs: ['id'],
-      };
-      const paramsForMethodName: Record<string, object> = {
-        setRoot: {
-          commandId: 'setRoot+UNIQUE_ID',
-          layout: { root: null, modals: [], overlays: [] },
-        },
-        setDefaultOptions: { options: {} },
-        mergeOptions: { componentId: 'id', options: {} },
-        updateProps: { componentId: 'id', props: {} },
-        showModal: { commandId: 'showModal+UNIQUE_ID', layout: null },
-        dismissModal: { commandId: 'dismissModal+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
-        dismissAllModals: { commandId: 'dismissAllModals+UNIQUE_ID', mergeOptions: {} },
-        push: { commandId: 'push+UNIQUE_ID', componentId: 'id', layout: null },
-        pop: { commandId: 'pop+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
-        popTo: { commandId: 'popTo+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
-        popToRoot: { commandId: 'popToRoot+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
-        setStackRoot: {
-          commandId: 'setStackRoot+UNIQUE_ID',
-          componentId: 'id',
-          layout: [null],
-        },
-        showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: null },
-        dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
-        getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' },
-      };
-      forEach(getAllMethodsOfUut(), (m) => {
-        it(`for ${m}`, () => {
-          expect(argsForMethodName).toHaveProperty(m);
-          expect(paramsForMethodName).toHaveProperty(m);
-          invoke(uut, m, ...argsForMethodName[m]);
-          expect(cb).toHaveBeenCalledTimes(1);
-          expect(cb).toHaveBeenCalledWith(m, paramsForMethodName[m]);
+        describe('passes correct params', () => {
+            const argsForMethodName: Record<string, any[]> = {
+                setRoot: [{}],
+                setDefaultOptions: [{}],
+                mergeOptions: ['id', {}],
+                updateProps: ['id', {}],
+                showModal: [{}],
+                dismissModal: ['id', {}],
+                dismissAllModals: [{}],
+                push: ['id', {}],
+                pop: ['id', {}],
+                popTo: ['id', {}],
+                popToRoot: ['id', {}],
+                setStackRoot: ['id', [{}]],
+                showOverlay: [{}],
+                dismissOverlay: ['id'],
+                getLaunchArgs: ['id'],
+            };
+            const paramsForMethodName: Record<string, object> = {
+                setRoot: {
+                    commandId: 'setRoot+UNIQUE_ID',
+                    layout: {root: null, modals: [], overlays: []},
+                },
+                setDefaultOptions: {options: {}},
+                mergeOptions: {componentId: 'id', options: {}},
+                updateProps: {componentId: 'id', props: {}},
+                showModal: {commandId: 'showModal+UNIQUE_ID', layout: null},
+                dismissModal: {commandId: 'dismissModal+UNIQUE_ID', componentId: 'id', mergeOptions: {}},
+                dismissAllModals: {commandId: 'dismissAllModals+UNIQUE_ID', mergeOptions: {}},
+                push: {commandId: 'push+UNIQUE_ID', componentId: 'id', layout: null},
+                pop: {commandId: 'pop+UNIQUE_ID', componentId: 'id', mergeOptions: {}},
+                popTo: {commandId: 'popTo+UNIQUE_ID', componentId: 'id', mergeOptions: {}},
+                popToRoot: {commandId: 'popToRoot+UNIQUE_ID', componentId: 'id', mergeOptions: {}},
+                setStackRoot: {
+                    commandId: 'setStackRoot+UNIQUE_ID',
+                    componentId: 'id',
+                    layout: [null],
+                },
+                showOverlay: {commandId: 'showOverlay+UNIQUE_ID', layout: null},
+                dismissOverlay: {commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id'},
+                getLaunchArgs: {commandId: 'getLaunchArgs+UNIQUE_ID'},
+            };
+            forEach(getAllMethodsOfUut(), (m) => {
+                it(`for ${m}`, () => {
+                    expect(argsForMethodName).toHaveProperty(m);
+                    expect(paramsForMethodName).toHaveProperty(m);
+                    invoke(uut, m, ...argsForMethodName[m]);
+                    expect(cb).toHaveBeenCalledTimes(1);
+                    expect(cb).toHaveBeenCalledWith(m, paramsForMethodName[m]);
+                });
+            });
         });
-      });
     });
-  });
 });

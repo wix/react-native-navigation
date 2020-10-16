@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Icon;
 import android.os.Build;
+import android.util.Log;
 import android.util.Rational;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.reactnativenavigation.options.PIPActionButton;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions;
+import com.reactnativenavigation.utils.ILogger;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
@@ -41,10 +43,14 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     private PIPStates pipState = PIPStates.NOT_STARTED;
     private PIPFloatingLayout pipFloatingLayout;
     private String EXTRA_CONTROL_TYPE = "control_type";
+    private ILogger logger;
     private boolean receiverRegistered = false;
+    private boolean wasDirectLaunchToNative = false;
+    private String TAG = "PIPNavigator";
 
-    public PIPNavigator(Activity activity, ChildControllersRegistry childRegistry, Presenter presenter, Options initialOptions) {
+    public PIPNavigator(Activity activity, ChildControllersRegistry childRegistry, Presenter presenter, Options initialOptions, ILogger logger) {
         super(activity, childRegistry, "PIP " + CompatUtils.generateViewId(), presenter, initialOptions);
+        this.logger = logger;
         animator = new StackAnimator(getActivity());
     }
 
@@ -78,20 +84,23 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     }
 
     public void pushPIP(ViewController childController, boolean toNative) {
+        wasDirectLaunchToNative = toNative;
         closePIP(null);
         getView().setVisibility(View.VISIBLE);
         this.childController = childController;
         this.childController.setParentController(this);
         View pipView = this.childController.getView();
         updatePIPStateInternal(PIPStates.MOUNT_START);
-        PIPFloatingLayout floatingLayout = new PIPFloatingLayout(getActivity());
+        PIPFloatingLayout floatingLayout = new PIPFloatingLayout(getActivity(), logger);
         floatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);
         floatingLayout.addView(pipView);
         floatingLayout.setPipListener(new PIPFloatingLayout.IPIPListener() {
             @Override
             public void onPIPStateChanged(PIPStates oldState, PIPStates newState) {
-                if (isChildControlledAvailable())
+                if (isChildControlledAvailable()) {
+                    logger.log(Log.INFO, TAG, "Old State " + oldState.toString() + " New State " + newState.toString());
                     PIPNavigator.this.childController.sendOnPIPStateChanged(oldState.getValue(), newState.getValue());
+                }
             }
         });
         getView().addView(floatingLayout);
@@ -106,12 +115,12 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         }
     }
 
-    public void restorePIP(Functions.Func1<ViewController> task, boolean fromNative) {
+    public void restorePIP(Functions.Func1<ViewController> task) {
         if (this.childController != null) {
             pipFloatingLayout.cancelAnimations();
             pipFloatingLayout.initiateRestore();
             updatePIPStateInternal(PIPStates.RESTORE_START);
-            if (this.childController.options.animations.pipOut.enabled.isTrueOrUndefined() && !fromNative) {
+            if (this.childController.options.animations.pipOut.enabled.isTrueOrUndefined() && !wasDirectLaunchToNative) {
                 this.animator.pipOut(this.pipFloatingLayout, this.childController, this.childController.options, () -> {
                     updatePIPStateInternal(PIPStates.NOT_STARTED);
                     this.childController.detachView();
@@ -124,7 +133,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
                 task.run(this.childController);
                 clearPIP();
             }
-
+            wasDirectLaunchToNative = false;
         }
     }
 
@@ -147,15 +156,26 @@ public class PIPNavigator extends ParentController<PIPContainer> {
                     receiverRegistered = true;
                     getActivity().registerReceiver(mReceiver, new IntentFilter(childController.options.pipOptions.actionControlGroup));
                 }
+                updatePIPStateInternal(newPIPState);
                 break;
             case CUSTOM_MOUNTED:
                 if (receiverRegistered) {
                     receiverRegistered = false;
                     getActivity().unregisterReceiver(mReceiver);
                 }
+                updatePIPStateInternal(newPIPState);
+                break;
+            case UNMOUNT_START:
+                if (receiverRegistered) {
+                    receiverRegistered = false;
+                    getActivity().unregisterReceiver(mReceiver);
+                }
+                closePIP(null);
+                break;
+            default:
+                updatePIPStateInternal(newPIPState);
                 break;
         }
-        updatePIPStateInternal(newPIPState);
     }
 
     public PIPStates getPipStates() {
@@ -213,18 +233,10 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     }
 
     private void updatePIPStateInternal(PIPStates newPIPState) {
+        logger.log(Log.INFO, TAG, "updatePIPStateInternal " + newPIPState.toString());
         pipState = newPIPState;
         if (pipFloatingLayout != null) {
-            if (newPIPState == PIPStates.CUSTOM_MOUNTED) {
-                if (pipFloatingLayout.isStateAvailable()) {
-                    pipFloatingLayout.updatePIPState(newPIPState);
-                } else {
-                    PIPNavigator.this.childController.sendOnPIPStateChanged(PIPStates.NATIVE_MOUNTED.getValue(), PIPStates.NOT_STARTED.getValue());
-                    clearPIP();
-                }
-            } else {
-                pipFloatingLayout.updatePIPState(newPIPState);
-            }
+            pipFloatingLayout.updatePIPState(newPIPState);
         }
     }
 
@@ -256,5 +268,9 @@ public class PIPNavigator extends ParentController<PIPContainer> {
 
     private boolean isChildControlledAvailable() {
         return PIPNavigator.this.childController != null && !PIPNavigator.this.childController.isDestroyed();
+    }
+
+    public boolean wasDirectLaunchToNative() {
+        return wasDirectLaunchToNative;
     }
 }

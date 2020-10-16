@@ -7,100 +7,100 @@ import {PIPActionButton} from "./Layout";
 declare type Color = string | symbol;
 type FontFamily = string;
 type FontWeight =
-  | 'regular'
-  | 'bold'
-  | 'thin'
-  | 'ultraLight'
-  | 'light'
-  | 'medium'
-  | 'semibold'
-  | 'heavy'
-  | 'black';
+    | 'regular'
+    | 'bold'
+    | 'thin'
+    | 'ultraLight'
+    | 'light'
+    | 'medium'
+    | 'semibold'
+    | 'heavy'
+    | 'black';
 export type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
 type SystemItemIcon =
-  | 'done'
-  | 'cancel'
-  | 'edit'
-  | 'save'
-  | 'add'
-  | 'flexibleSpace'
-  | 'fixedSpace'
-  | 'compose'
-  | 'reply'
-  | 'action'
-  | 'organize'
-  | 'bookmarks'
-  | 'search'
-  | 'refresh'
-  | 'stop'
-  | 'camera'
-  | 'trash'
-  | 'play'
-  | 'pause'
-  | 'rewind'
-  | 'fastForward'
-  | 'undo'
-  | 'redo';
+    | 'done'
+    | 'cancel'
+    | 'edit'
+    | 'save'
+    | 'add'
+    | 'flexibleSpace'
+    | 'fixedSpace'
+    | 'compose'
+    | 'reply'
+    | 'action'
+    | 'organize'
+    | 'bookmarks'
+    | 'search'
+    | 'refresh'
+    | 'stop'
+    | 'camera'
+    | 'trash'
+    | 'play'
+    | 'pause'
+    | 'rewind'
+    | 'fastForward'
+    | 'undo'
+    | 'redo';
 type Interpolation =
-  | 'linear'
-  | 'accelerateDecelerate'
-  | 'decelerate'
-  | 'accelerate'
-  | 'decelerateAccelerate';
+    | 'linear'
+    | 'accelerateDecelerate'
+    | 'decelerate'
+    | 'accelerate'
+    | 'decelerateAccelerate';
 
 export interface OptionsSplitView {
-  /**
-   * Master view display mode
-   * @default 'auto'
-   */
-  displayMode?: 'auto' | 'visible' | 'hidden' | 'overlay';
-  /**
-   * Master view side. Leading is left. Trailing is right.
-   * @default 'leading'
-   */
-  primaryEdge?: 'leading' | 'trailing';
-  /**
-   * Set the minimum width of master view
-   */
-  minWidth?: number;
-  /**
-   * Set the maximum width of master view
-   */
-  maxWidth?: number;
-  /**
-   * Set background style of sidebar. Currently works for Mac Catalyst apps only.
-   * @default 'none'
-   */
-  primaryBackgroundStyle?: 'none' | 'sidebar';
+    /**
+     * Master view display mode
+     * @default 'auto'
+     */
+    displayMode?: 'auto' | 'visible' | 'hidden' | 'overlay';
+    /**
+     * Master view side. Leading is left. Trailing is right.
+     * @default 'leading'
+     */
+    primaryEdge?: 'leading' | 'trailing';
+    /**
+     * Set the minimum width of master view
+     */
+    minWidth?: number;
+    /**
+     * Set the maximum width of master view
+     */
+    maxWidth?: number;
+    /**
+     * Set background style of sidebar. Currently works for Mac Catalyst apps only.
+     * @default 'none'
+     */
+    primaryBackgroundStyle?: 'none' | 'sidebar';
 }
 
 export interface OptionsStatusBar {
-  /**
-   * Set the status bar visibility
-   * @default true
-   */
-  visible?: boolean;
-  /**
-   * Set the text color of the status bar
-   * @default 'light'
-   */
-  style?: 'light' | 'dark';
-  /**
-   * Set the background color of the status bar
-   * #### (Android specific)
-   */
-  backgroundColor?: Color;
-  /**
-   * Draw screen behind the status bar
-   * #### (Android specific)
-   */
-  drawBehind?: boolean;
-  /**
-   * Allows the StatusBar to be translucent (blurred)
-   * #### (Android specific)
-   */
-  translucent?: boolean;
+    /**
+     * Set the status bar visibility
+     * @default true
+     */
+    visible?: boolean;
+    /**
+     * Set the text color of the status bar
+     * @default 'light'
+     */
+    style?: 'light' | 'dark';
+    /**
+     * Set the background color of the status bar
+     * #### (Android specific)
+     */
+    backgroundColor?: Color;
+    /**
+     * Draw screen behind the status bar
+     * #### (Android specific)
+     */
+    drawBehind?: boolean;
+    /**
+     * Allows the StatusBar to be translucent (blurred)
+     * #### (Android specific)
+     */
+    translucent?: boolean;
 }
 
 export interface OptionsLayout {
@@ -124,29 +124,29 @@ export interface OptionsLayout {
      */
     topMargin?: number;
 
-  /**
-   * Set language direction.
-   * only works with DefaultOptions
-   */
-  direction?: 'rtl' | 'ltr' | 'locale';
+    /**
+     * Set language direction.
+     * only works with DefaultOptions
+     */
+    direction?: 'rtl' | 'ltr' | 'locale';
 }
 
 export enum OptionsModalPresentationStyle {
-  formSheet = 'formSheet',
-  pageSheet = 'pageSheet',
-  overFullScreen = 'overFullScreen',
-  overCurrentContext = 'overCurrentContext',
-  currentContext = 'currentContext',
-  popover = 'popover',
-  fullScreen = 'fullScreen',
-  none = 'none',
+    formSheet = 'formSheet',
+    pageSheet = 'pageSheet',
+    overFullScreen = 'overFullScreen',
+    overCurrentContext = 'overCurrentContext',
+    currentContext = 'currentContext',
+    popover = 'popover',
+    fullScreen = 'fullScreen',
+    none = 'none',
 }
 
 export enum OptionsModalTransitionStyle {
-  coverVertical = 'coverVertical',
-  crossDissolve = 'crossDissolve',
-  flipHorizontal = 'flipHorizontal',
-  partialCurl = 'partialCurl',
+    coverVertical = 'coverVertical',
+    crossDissolve = 'crossDissolve',
+    flipHorizontal = 'flipHorizontal',
+    partialCurl = 'partialCurl',
 }
 
 export interface OptionsTopBarLargeTitle {
@@ -259,46 +259,46 @@ export interface OptionsTopBarSubtitle {
 }
 
 export interface OptionsTopBarBackButton {
-  /**
-   * Button id for reference press event
-   * #### (Android specific)
-   */
-  id?: string;
-  /**
-   * Image to show as the back button
-   */
-  icon?: ImageRequireSource;
-  /**
-   * Weither the back button is visible or not
-   * @default true
-   */
-  visible?: boolean;
-  /**
-   * Set the back button title
-   * #### (iOS specific)
-   */
-  title?: string;
-  /**
-   * Show title or just the icon
-   * #### (iOS specific)
-   */
-  showTitle?: boolean;
-  /**
-   * Back button icon and text color
-   */
-  color?: Color;
-  /**
-   * Set subtitle font size
-   */
-  fontSize?: number;
-  /**
-   * Set subtitle font family
-   */
-  fontFamily?: FontFamily;
-  /**
-   * Set testID for reference in E2E tests
-   */
-  testID?: string;
+    /**
+     * Button id for reference press event
+     * #### (Android specific)
+     */
+    id?: string;
+    /**
+     * Image to show as the back button
+     */
+    icon?: ImageRequireSource;
+    /**
+     * Weither the back button is visible or not
+     * @default true
+     */
+    visible?: boolean;
+    /**
+     * Set the back button title
+     * #### (iOS specific)
+     */
+    title?: string;
+    /**
+     * Show title or just the icon
+     * #### (iOS specific)
+     */
+    showTitle?: boolean;
+    /**
+     * Back button icon and text color
+     */
+    color?: Color;
+    /**
+     * Set subtitle font size
+     */
+    fontSize?: number;
+    /**
+     * Set subtitle font family
+     */
+    fontFamily?: FontFamily;
+    /**
+     * Set testID for reference in E2E tests
+     */
+    testID?: string;
 }
 
 export interface OptionsTopBarBackground {
@@ -334,98 +334,98 @@ export interface OptionsTopBarBackground {
 }
 
 export interface OptionsTopBarButton {
-  /**
-   * (Android only) Sets a textual button to be ALL CAPS. default value is true
-   */
-  allCaps?: boolean;
-  /**
-   * Button id for reference press event
-   */
-  id: string;
-  /**
-   * Set the button icon
-   */
-  icon?: ImageRequireSource;
-  /**
-   * Set the button icon insets
-   */
-  iconInsets?: IconInsets;
-  /**
-   * Set the button as a custom component
-   */
-  component?: {
     /**
-     * Component reference id, Auto generated if empty
+     * (Android only) Sets a textual button to be ALL CAPS. default value is true
      */
-    id?: string;
+    allCaps?: boolean;
     /**
-     * Name of your component
+     * Button id for reference press event
      */
-    name: string;
+    id: string;
     /**
-     * Properties to pass down to the component
+     * Set the button icon
      */
-    passProps?: object;
+    icon?: ImageRequireSource;
     /**
-     * (Android only) component width
+     * Set the button icon insets
      */
-    width?: number;
+    iconInsets?: IconInsets;
     /**
-     * (Android only) component height
+     * Set the button as a custom component
      */
-    height?: number;
-  };
-  /**
-   * (iOS only) Set the button as an iOS system icon
-   */
-  systemItem?: SystemItemIcon;
-  /**
-   * Set the button text
-   */
-  text?: string;
-  /**
-   * Overrides the text that's read by the screen reader when the user interacts with the element
-   */
-  accessibilityLabel?: string;
-  /**
-   * Set the button font family
-   */
-  fontFamily?: string;
-  /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
-   */
-  fontWeight?: FontWeight;
-  /**
-   * Set the font size in dp
-   */
-  fontSize?: number;
-  /**
-   * Set the button enabled or disabled
-   * @default true
-   */
-  enabled?: boolean;
-  /**
-   * Disable icon tinting
-   */
-  disableIconTint?: boolean;
-  /**
-   * Set text color
-   */
-  color?: Color;
-  /**
-   * Set text color in disabled state
-   */
-  disabledColor?: Color;
-  /**
-   * Set testID for reference in E2E tests
-   */
-  testID?: string;
-  /**
-   * (Android only) Set showAsAction value
-   * @see {@link https://developer.android.com/guide/topics/resources/menu-resource|Android developer guide: Menu resource}
-   */
-  showAsAction?: 'ifRoom' | 'withText' | 'always' | 'never';
+    component?: {
+        /**
+         * Component reference id, Auto generated if empty
+         */
+        id?: string;
+        /**
+         * Name of your component
+         */
+        name: string;
+        /**
+         * Properties to pass down to the component
+         */
+        passProps?: object;
+        /**
+         * (Android only) component width
+         */
+        width?: number;
+        /**
+         * (Android only) component height
+         */
+        height?: number;
+    };
+    /**
+     * (iOS only) Set the button as an iOS system icon
+     */
+    systemItem?: SystemItemIcon;
+    /**
+     * Set the button text
+     */
+    text?: string;
+    /**
+     * Overrides the text that's read by the screen reader when the user interacts with the element
+     */
+    accessibilityLabel?: string;
+    /**
+     * Set the button font family
+     */
+    fontFamily?: string;
+    /**
+     * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+     * #### (iOS specific)
+     */
+    fontWeight?: FontWeight;
+    /**
+     * Set the font size in dp
+     */
+    fontSize?: number;
+    /**
+     * Set the button enabled or disabled
+     * @default true
+     */
+    enabled?: boolean;
+    /**
+     * Disable icon tinting
+     */
+    disableIconTint?: boolean;
+    /**
+     * Set text color
+     */
+    color?: Color;
+    /**
+     * Set text color in disabled state
+     */
+    disabledColor?: Color;
+    /**
+     * Set testID for reference in E2E tests
+     */
+    testID?: string;
+    /**
+     * (Android only) Set showAsAction value
+     * @see {@link https://developer.android.com/guide/topics/resources/menu-resource|Android developer guide: Menu resource}
+     */
+    showAsAction?: 'ifRoom' | 'withText' | 'always' | 'never';
 }
 
 export interface OptionsTopBar {
@@ -547,10 +547,10 @@ export interface OptionsTopBar {
 }
 
 export interface SharedElementTransition {
-  fromId: string;
-  toId: string;
-  duration?: number;
-  interpolation?: Interpolation;
+    fromId: string;
+    toId: string;
+    duration?: number;
+    interpolation?: Interpolation;
 }
 
 export interface ElementTransition {
@@ -577,101 +577,101 @@ export interface DisappearingElementAnimation extends ElementAnimation {
 }
 
 export interface ElementAnimation {
-  duration: number;
-  startDelay?: number;
-  interpolation?: Interpolation;
+    duration: number;
+    startDelay?: number;
+    interpolation?: Interpolation;
 }
 
 export interface OptionsFab {
-  /**
-   * ID is required when first instantiating the Fab button,
-   * however when updating the existing Fab button, ID is not required.
-   */
-  id?: string;
-  backgroundColor?: Color;
-  clickColor?: Color;
-  rippleColor?: Color;
-  visible?: boolean;
-  icon?: ImageRequireSource;
-  iconColor?: Color;
-  alignHorizontally?: 'left' | 'right';
-  hideOnScroll?: boolean;
-  size?: 'mini' | 'regular';
+    /**
+     * ID is required when first instantiating the Fab button,
+     * however when updating the existing Fab button, ID is not required.
+     */
+    id?: string;
+    backgroundColor?: Color;
+    clickColor?: Color;
+    rippleColor?: Color;
+    visible?: boolean;
+    icon?: ImageRequireSource;
+    iconColor?: Color;
+    alignHorizontally?: 'left' | 'right';
+    hideOnScroll?: boolean;
+    size?: 'mini' | 'regular';
 }
 
 export interface OptionsBottomTabs {
-  /**
-   * Show or hide the bottom tabs
-   */
-  visible?: boolean;
-  /**
-   * Enable animations when toggling visibility
-   */
-  animate?: boolean;
-  /**
-   * Use large icons when possible, even when three tabs without titles are displayed
-   * #### (android specific)
-   * @default false
-   */
-  preferLargeIcons?: boolean;
-  /**
-   * Switch to another screen within the bottom tabs via index (starting from 0)
-   */
-  currentTabIndex?: number;
-  /**
-   * Switch to another screen within the bottom tabs via screen name
-   */
-  currentTabId?: string;
-  /**
-   * Set a testID to reference the bottom tabs
-   */
-  testID?: string;
-  /**
-   * Draw screen component under the tab bar
-   */
-  drawBehind?: boolean;
-  /**
-   * Set a background color for the bottom tabs
-   */
-  backgroundColor?: Color;
-  /**
-   * Set when tabs are attached to hierarchy consequently when the
-   * RootView's constructor is called.
-   */
-  tabsAttachMode?: 'together' | 'afterInitialTab' | 'onSwitchToTab';
-  /**
-   * Control the Bottom Tabs blur style
-   * #### (iOS specific)
-   * @requires translucent: true
-   * @default 'default'
-   */
-  barStyle?: 'default' | 'black';
-  /**
-   * Allows the Bottom Tabs to be translucent (blurred)
-   * #### (iOS specific)
-   */
-  translucent?: boolean;
-  /**
-   * Hide the top line of the Tab Bar
-   * #### (iOS specific)
-   */
-  hideShadow?: boolean;
-  /**
-   * Control the text display mode below the tab icon
-   * #### (Android specific)
-   */
-  titleDisplayMode?: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' | 'showWhenActiveForce';
-  /**
-   * Set the elevation of the Bottom Tabs in dp
-   * #### (Android specific)
-   */
-  elevation?: AndroidDensityNumber;
-  /**
-   * Hides the BottomTabs on scroll to increase the amount of content visible to the user.
-   * The options requires that the scrollable view will be the root view of the screen and that it specifies `nestedScrollEnabled: true`.
-   * #### (Android specific)
-   */
-  hideOnScroll?: boolean;
+    /**
+     * Show or hide the bottom tabs
+     */
+    visible?: boolean;
+    /**
+     * Enable animations when toggling visibility
+     */
+    animate?: boolean;
+    /**
+     * Use large icons when possible, even when three tabs without titles are displayed
+     * #### (android specific)
+     * @default false
+     */
+    preferLargeIcons?: boolean;
+    /**
+     * Switch to another screen within the bottom tabs via index (starting from 0)
+     */
+    currentTabIndex?: number;
+    /**
+     * Switch to another screen within the bottom tabs via screen name
+     */
+    currentTabId?: string;
+    /**
+     * Set a testID to reference the bottom tabs
+     */
+    testID?: string;
+    /**
+     * Draw screen component under the tab bar
+     */
+    drawBehind?: boolean;
+    /**
+     * Set a background color for the bottom tabs
+     */
+    backgroundColor?: Color;
+    /**
+     * Set when tabs are attached to hierarchy consequently when the
+     * RootView's constructor is called.
+     */
+    tabsAttachMode?: 'together' | 'afterInitialTab' | 'onSwitchToTab';
+    /**
+     * Control the Bottom Tabs blur style
+     * #### (iOS specific)
+     * @requires translucent: true
+     * @default 'default'
+     */
+    barStyle?: 'default' | 'black';
+    /**
+     * Allows the Bottom Tabs to be translucent (blurred)
+     * #### (iOS specific)
+     */
+    translucent?: boolean;
+    /**
+     * Hide the top line of the Tab Bar
+     * #### (iOS specific)
+     */
+    hideShadow?: boolean;
+    /**
+     * Control the text display mode below the tab icon
+     * #### (Android specific)
+     */
+    titleDisplayMode?: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' | 'showWhenActiveForce';
+    /**
+     * Set the elevation of the Bottom Tabs in dp
+     * #### (Android specific)
+     */
+    elevation?: AndroidDensityNumber;
+    /**
+     * Hides the BottomTabs on scroll to increase the amount of content visible to the user.
+     * The options requires that the scrollable view will be the root view of the screen and that it specifies `nestedScrollEnabled: true`.
+     * #### (Android specific)
+     */
+    hideOnScroll?: boolean;
 }
 
 export interface DotIndicatorOptions {
@@ -688,90 +688,90 @@ export type ImageResource = string;
 export interface OptionsBottomTab {
     dotIndicator?: DotIndicatorOptions;
 
-  /**
-   * Set the text to display below the icon
-   */
-  text?: string;
-  /**
-   * Set the text in a badge that is overlayed over the component
-   */
-  badge?: string;
-  /**
-   * Set the background color of the badge that is overlayed over the component
-   */
-  badgeColor?: string;
-  /**
-   * Show the badge with the animation.
-   * #### (Android specific)
-   */
-  animateBadge?: boolean;
-  /**
-   * Set a testID to reference the tab in E2E tests
-   */
-  testID?: string;
-  /**
-   * Set the tab icon
-   */
-  icon?: ImageRequireSource | ImageResource;
-  /**
-   * Set the icon tint
-   */
-  iconColor?: Color;
-  /**
-   * Set the text color
-   */
-  textColor?: Color;
-  /**
-   * Set the selected icon tint
-   */
-  selectedIconColor?: Color;
-  /**
-   * Set the selected text color
-   */
-  selectedTextColor?: Color;
-  /**
-   * Set the text font family
-   */
-  fontFamily?: FontFamily;
-  /**
-   * Set the font weight, ignore fontFamily and use the iOS system fonts instead
-   * #### (iOS specific)
-   */
-  fontWeight?: FontWeight;
-  /**
-   * Set the text font size
-   */
-  fontSize?: number;
-  /**
-   * Set the insets of the icon
-   * #### (iOS specific)
-   */
-  iconInsets?: Insets;
-  /**
-   * Set selected icon image
-   * #### (iOS specific)
-   */
-  selectedIcon?: ImageRequireSource;
-  /**
-   * Set true if you want to disable the icon tinting
-   * #### (iOS specific)
-   */
-  disableIconTint?: boolean;
-  /**
-   * Set true if you want to disable the text tinting
-   * #### (iOS specific)
-   */
-  disableSelectedIconTint?: boolean;
-  /**
-   * Set the font size for selected tabs
-   * #### (Android specific)
-   */
-  selectedFontSize?: number;
-  /**
-   * If it's set to false, pressing a tab won't select the tab
-   * instead it will emit a bottomTabPressedEvent
-   */
-  selectTabOnPress?: boolean;
+    /**
+     * Set the text to display below the icon
+     */
+    text?: string;
+    /**
+     * Set the text in a badge that is overlayed over the component
+     */
+    badge?: string;
+    /**
+     * Set the background color of the badge that is overlayed over the component
+     */
+    badgeColor?: string;
+    /**
+     * Show the badge with the animation.
+     * #### (Android specific)
+     */
+    animateBadge?: boolean;
+    /**
+     * Set a testID to reference the tab in E2E tests
+     */
+    testID?: string;
+    /**
+     * Set the tab icon
+     */
+    icon?: ImageRequireSource | ImageResource;
+    /**
+     * Set the icon tint
+     */
+    iconColor?: Color;
+    /**
+     * Set the text color
+     */
+    textColor?: Color;
+    /**
+     * Set the selected icon tint
+     */
+    selectedIconColor?: Color;
+    /**
+     * Set the selected text color
+     */
+    selectedTextColor?: Color;
+    /**
+     * Set the text font family
+     */
+    fontFamily?: FontFamily;
+    /**
+     * Set the font weight, ignore fontFamily and use the iOS system fonts instead
+     * #### (iOS specific)
+     */
+    fontWeight?: FontWeight;
+    /**
+     * Set the text font size
+     */
+    fontSize?: number;
+    /**
+     * Set the insets of the icon
+     * #### (iOS specific)
+     */
+    iconInsets?: Insets;
+    /**
+     * Set selected icon image
+     * #### (iOS specific)
+     */
+    selectedIcon?: ImageRequireSource;
+    /**
+     * Set true if you want to disable the icon tinting
+     * #### (iOS specific)
+     */
+    disableIconTint?: boolean;
+    /**
+     * Set true if you want to disable the text tinting
+     * #### (iOS specific)
+     */
+    disableSelectedIconTint?: boolean;
+    /**
+     * Set the font size for selected tabs
+     * #### (Android specific)
+     */
+    selectedFontSize?: number;
+    /**
+     * If it's set to false, pressing a tab won't select the tab
+     * instead it will emit a bottomTabPressedEvent
+     */
+    selectTabOnPress?: boolean;
 }
 
 export interface SideMenuSide {
@@ -856,30 +856,30 @@ export interface OptionsPreviewAction {
 }
 
 export interface OptionsPreview {
-  /**
-   * Pass a react node tag to mark a SourceRect for a specific
-   * peek and pop preview element.
-   */
-  reactTag?: number;
-  /**
-   * You can set this property specify the width of the preview.
-   * If the width is greater than the device width, it will be zoomed in.
-   */
-  width?: number;
-  /**
-   * Height of the preview
-   */
-  height?: number;
-  /**
-   * You can control if the users gesture will result in pushing
-   * the preview screen into the stack.
-   */
-  commit?: boolean;
-  /**
-   * List of actions that will appear underneath the preview window.
-   * They can be nested for sub actions.
-   */
-  actions?: OptionsPreviewAction[];
+    /**
+     * Pass a react node tag to mark a SourceRect for a specific
+     * peek and pop preview element.
+     */
+    reactTag?: number;
+    /**
+     * You can set this property specify the width of the preview.
+     * If the width is greater than the device width, it will be zoomed in.
+     */
+    width?: number;
+    /**
+     * Height of the preview
+     */
+    height?: number;
+    /**
+     * You can control if the users gesture will result in pushing
+     * the preview screen into the stack.
+     */
+    commit?: boolean;
+    /**
+     * List of actions that will appear underneath the preview window.
+     * They can be nested for sub actions.
+     */
+    actions?: OptionsPreviewAction[];
 }
 
 export interface OptionsAnimationPropertyConfig {
@@ -1080,6 +1080,8 @@ export interface NavigationBarOptions {
 }
 
 export interface PIPOptions {
+    enabled: boolean;
+
     actionControlGroup: string;
 
     actionButtons?: PIPActionButton[];

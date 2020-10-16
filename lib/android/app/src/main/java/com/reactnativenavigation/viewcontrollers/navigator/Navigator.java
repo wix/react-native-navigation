@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.navigator;
 import android.app.Activity;
 import android.app.PictureInPictureParams;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +20,7 @@ import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
+import com.reactnativenavigation.utils.ILogger;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
@@ -48,6 +50,8 @@ public class Navigator extends ParentController {
     private ViewGroup contentLayout;
     private Options defaultOptions = new Options();
     private StackController activeStack = null;
+    private ILogger logger;
+    private String TAG = "Navigator";
 
     @Override
     public void setDefaultOptions(Options defaultOptions) {
@@ -78,15 +82,16 @@ public class Navigator extends ParentController {
         pipNavigator.setContentLayout(contentLayout);
     }
 
-    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
+    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter, ILogger logger) {
         super(activity, childRegistry, "navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
+        this.logger = logger;
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
-        this.pipNavigator = new PIPNavigator(activity, new ChildControllersRegistry(), new Presenter(activity, new Options()), new Options());
+        this.pipNavigator = new PIPNavigator(activity, new ChildControllersRegistry(), new Presenter(activity, new Options()), new Options(), this.logger);
         this.pipNavigator.setParentController(this);
     }
 
@@ -216,7 +221,7 @@ public class Navigator extends ParentController {
             public void onError(String message) {
                 listener.onError(message);
             }
-        }), false));
+        })));
     }
 
     public void closePIP(CommandListener listener) {
@@ -301,25 +306,45 @@ public class Navigator extends ParentController {
     }
 
     public void updatePIPState(PIPStates newPIPState) {
+        logger.log(Log.INFO, TAG, "pipState " + newPIPState);
         switch (newPIPState) {
             case NATIVE_MOUNTED:
                 pipNavigator.getView().setVisibility(View.VISIBLE);
                 rootLayout.setVisibility(View.GONE);
                 modalsLayout.setVisibility(View.GONE);
                 overlaysLayout.setVisibility(View.GONE);
+                pipNavigator.updatePIPState(newPIPState);
                 break;
             case CUSTOM_MOUNTED:
                 rootLayout.setVisibility(View.VISIBLE);
                 modalsLayout.setVisibility(View.VISIBLE);
                 overlaysLayout.setVisibility(View.VISIBLE);
+                pipNavigator.updatePIPState(newPIPState);
+                if (pipNavigator.wasDirectLaunchToNative()) {
+                    this.pipNavigator.restorePIP(child -> activeStack.restorePIP(child, new CommandListener() {
+                        @Override
+                        public void onSuccess(String childId) {
+                        }
+
+                        @Override
+                        public void onError(String message) {
+                        }
+                    }));
+                }
                 break;
             case NATIVE_MOUNT_START:
                 if (getPipMode() == PIPStates.NOT_STARTED && activeStack != null) {
+                    pipNavigator.updatePIPState(newPIPState);
                     pipNavigator.pushPIP(activeStack.switchToPIP(null), true);
+                } else {
+                    pipNavigator.updatePIPState(newPIPState);
                 }
                 break;
+            default:
+                pipNavigator.updatePIPState(newPIPState);
+                break;
         }
-        pipNavigator.updatePIPState(newPIPState);
+
     }
 
     public boolean shouldSwitchToPIP() {

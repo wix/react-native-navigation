@@ -365,7 +365,7 @@ public class PipTouchHandler {
     }
 
 
-    private boolean handleTouchEvent(MotionEvent ev) {
+    public boolean handleTouchEvent(MotionEvent ev) {
 
         // Update the touch state
         mTouchState.onTouchEvent(ev);
