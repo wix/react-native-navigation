@@ -49,7 +49,7 @@ export class OptionsProcessor {
   }
 
   private processObject(
-    objectToProcess: object,
+    objectToProcess: Record<string, any>,
     parentOptions: object,
     onProcess: (key: string, parentOptions: object) => void,
     commandName: CommandName,
@@ -72,8 +72,9 @@ export class OptionsProcessor {
 
       onProcess(key, parentOptions);
 
-      if (!isEqual(key, 'passProps') && (isObject(value) || isArray(value))) {
-        this.processObject(value, parentOptions, onProcess, commandName, objectPath);
+      const processedValue = objectToProcess[key];
+      if (!isEqual(key, 'passProps') && (isObject(processedValue) || isArray(processedValue))) {
+        this.processObject(processedValue, parentOptions, onProcess, commandName, objectPath);
       }
     });
   }
