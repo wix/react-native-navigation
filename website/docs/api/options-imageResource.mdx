@@ -22,15 +22,14 @@ The following icon types are available:
 | ------ | -------- | -------- |
 | ImageRequireSource | No       | Both     |
 | string | No       | Both     |
-| [ImageSystemSource](#imagesystemresource) | No | Both |
+| [ImageSystemSource](#imagesystemresource) | No | iOS |
 
 
 ## `ImageSystemSource`
 
 ### `system`
 
-You can use platform specific system icons.
-For iOS, [SF Symbols](https://developer.apple.com/sf-symbols/) is available.
+You can use platform specific system icons for [iOS only]((https://developer.apple.com/sf-symbols/)).
 
 Example:
 
@@ -39,7 +38,7 @@ const options = {
   topBar: {
     leftButtons: [
         icon: {
-            system: Platform.os === 'ios' ? 'calendar' : 'ic_menu_my_calendar',
+            system: 'calendar',
             fallback: require('./calendar.png')
         }
     ]
