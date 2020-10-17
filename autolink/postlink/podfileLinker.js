@@ -1,7 +1,7 @@
 // @ts-check
-var path = require("./path");
-var fs = require("fs");
-var {logn, debugn, infon, errorn, warnn} = require("./log");
+var path = require('./path');
+var fs = require('fs');
+var { logn, debugn, infon, errorn, warnn } = require('./log');
 
 class PodfileLinker {
   constructor() {
@@ -10,12 +10,14 @@ class PodfileLinker {
 
   link() {
     if (!this.podfilePath) {
-      errorn("Podfile not found! Does the file exist in the correct folder?\n   Please check the manual installation docs.");
+      errorn(
+        'Podfile not found! Does the file exist in the correct folder?\n   Please check the manual installation docs.'
+      );
       return;
     }
 
-    logn("Updating Podfile...");
-    var podfileContent = fs.readFileSync(this.podfilePath, "utf8");
+    logn('Updating Podfile...');
+    var podfileContent = fs.readFileSync(this.podfilePath, 'utf8');
 
     podfileContent = this._removeRNNPodLink(podfileContent);
     podfileContent = this._setMinimumIOSVersion(podfileContent);
@@ -31,7 +33,7 @@ class PodfileLinker {
     const minimumIOSVersion = contents.match(/(?<=platform\s:ios,\s(?:"|'))(.*)(?=(?:"|'))/);
 
     if (parseFloat(minimumIOSVersion) < 11) {
-      debugn("   Bump minumum iOS version to iOS 11.0");
+      debugn('   Bump minumum iOS version to iOS 11.0');
       return contents.replace(platformDefinition, "platform :ios, '11.0'");
     }
 
@@ -45,12 +47,12 @@ class PodfileLinker {
     const rnnPodLink = contents.match(/\s+.*pod 'ReactNativeNavigation'.+react-native-navigation'/);
 
     if (!rnnPodLink) {
-      warnn("   RNN Pod has not been added to Podfile");
+      warnn('   RNN Pod has not been added to Podfile');
       return contents;
     }
 
-    debugn("   Removing RNN Pod from Podfile");
-    return contents.replace(rnnPodLink, "");
+    debugn('   Removing RNN Pod from Podfile');
+    return contents.replace(rnnPodLink, '');
   }
 }
 

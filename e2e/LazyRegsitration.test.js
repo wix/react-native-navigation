@@ -16,5 +16,4 @@ describe('Lazy Registration', () => {
     await elementById(TestIDs.POP_BTN).tap();
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
   });
-
 });
