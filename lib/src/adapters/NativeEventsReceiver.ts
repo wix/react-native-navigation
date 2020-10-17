@@ -1,9 +1,4 @@
-import {
-  NativeModules,
-  NativeEventEmitter,
-  EventEmitter,
-  EmitterSubscription
-} from 'react-native';
+import { NativeModules, NativeEventEmitter, EventEmitter, EmitterSubscription } from 'react-native';
 import {
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
@@ -13,13 +8,13 @@ import {
   PreviewCompletedEvent,
   ModalDismissedEvent,
   ScreenPoppedEvent,
-  ModalAttemptedToDismissEvent
+  ModalAttemptedToDismissEvent,
 } from '../interfaces/ComponentEvents';
 import {
   CommandCompletedEvent,
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,
-  BottomTabPressedEvent
+  BottomTabPressedEvent,
 } from '../interfaces/Events';
 
 export class NativeEventsReceiver {
@@ -33,16 +28,14 @@ export class NativeEventsReceiver {
       this.emitter = ({
         addListener: () => {
           return {
-            remove: () => undefined
+            remove: () => undefined,
           };
-        }
+        },
       } as any) as EventEmitter;
     }
   }
 
-  public registerAppLaunchedListener(
-    callback: () => void
-  ): EmitterSubscription {
+  public registerAppLaunchedListener(callback: () => void): EmitterSubscription {
     return this.emitter.addListener('RNN.AppLaunched', callback);
   }
 
