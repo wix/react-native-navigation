@@ -19,32 +19,27 @@ const STORY_SIZE = 60;
 
 const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
   const onCarPressed = useCallback((car: CarItem) => {
-    const navigationAnimations = buildSharedElementAnimations(car);
     Navigation.showModal({
       component: {
         name: Screens.CarDetailsScreen,
         passProps: { car: car },
         options: {
-          animations: navigationAnimations,
+          animations: buildSharedElementAnimations(car),
         },
       },
     });
   }, []);
-  const onCarStoryPressed = useCallback(
-    (car: CarItem) => {
-      const navigationAnimations = buildStorySharedElementAnimations(car);
-      Navigation.push(componentId, {
-        component: {
-          name: Screens.CarStoryScreen,
-          passProps: { car: car },
-          options: {
-            animations: navigationAnimations,
-          },
+  const onCarStoryPressed = useCallback((car: CarItem) => {
+    Navigation.showModal({
+      component: {
+        name: Screens.CarStoryScreen,
+        passProps: { car: car },
+        options: {
+          animations: buildStorySharedElementAnimations(car),
         },
-      });
-    },
-    [componentId]
-  );
+      },
+    });
+  }, []);
 
   return (
     <SafeAreaView>

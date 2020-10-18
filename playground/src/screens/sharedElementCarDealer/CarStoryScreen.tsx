@@ -19,7 +19,7 @@ const CarStoryScreen: NavigationFunctionComponent<Props> = ({ car, componentId }
   const onClosePressed = useCallback(() => {
     if (isClosing.current === true) return;
     isClosing.current = true;
-    Navigation.pop(componentId);
+    Navigation.dismissModal(componentId);
   }, [componentId]);
   const dismissGesture = useDismissGesture(onClosePressed);
 
