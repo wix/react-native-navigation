@@ -20,12 +20,18 @@ const STORY_SIZE = 60;
 const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
   const onCarPressed = useCallback((car: CarItem) => {
     Navigation.showModal({
-      component: {
-        name: Screens.CarDetailsScreen,
-        passProps: { car: car },
-        options: {
-          animations: buildSharedElementAnimations(car),
-        },
+      stack: {
+        children: [
+          {
+            component: {
+              name: Screens.CarDetailsScreen,
+              passProps: { car: car },
+              options: {
+                animations: buildSharedElementAnimations(car),
+              },
+            },
+          },
+        ],
       },
     });
   }, []);

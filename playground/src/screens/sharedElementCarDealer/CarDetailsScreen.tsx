@@ -113,6 +113,9 @@ CarDetailsScreen.options = {
     componentBackgroundColor: 'transparent',
     backgroundColor: 'transparent',
   },
+  window: {
+    backgroundColor: 'transparent',
+  },
 };
 export default CarDetailsScreen;
 
