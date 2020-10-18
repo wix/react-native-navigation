@@ -11,7 +11,7 @@ export class CommandsObserver {
     const id = this.uniqueIdProvider.generate();
     this.listeners[id] = listener;
     return {
-      remove: () => delete this.listeners[id]
+      remove: () => delete this.listeners[id],
     };
   }
 

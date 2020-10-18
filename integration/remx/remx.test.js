@@ -19,7 +19,9 @@ describe('remx support', () => {
 
   it('rerenders as a result of an underlying state change (by selector)', () => {
     const renderCountIncrement = jest.fn();
-    const tree = renderer.create(<MyConnectedComponent renderCountIncrement={renderCountIncrement} />);
+    const tree = renderer.create(
+      <MyConnectedComponent renderCountIncrement={renderCountIncrement} />
+    );
 
     expect(tree.toJSON().children).toEqual(['no name']);
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
@@ -33,7 +35,9 @@ describe('remx support', () => {
 
   it('rerenders as a result of an underlying state change with a new key', () => {
     const renderCountIncrement = jest.fn();
-    const tree = renderer.create(<MyConnectedComponent printAge={true} renderCountIncrement={renderCountIncrement} />);
+    const tree = renderer.create(
+      <MyConnectedComponent printAge={true} renderCountIncrement={renderCountIncrement} />
+    );
 
     expect(tree.toJSON().children).toEqual(null);
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
@@ -48,7 +52,10 @@ describe('remx support', () => {
   it('support for static members in connected components', () => {
     expect(MyConnectedComponent.options).toEqual({ title: 'MyComponent' });
 
-    const registeredComponentClass = Navigation.registerComponent('MyComponentName', () => MyConnectedComponent)();
+    const registeredComponentClass = Navigation.registerComponent(
+      'MyComponentName',
+      () => MyConnectedComponent
+    )();
     expect(registeredComponentClass.options).toEqual({ title: 'MyComponent' });
   });
 });
