@@ -1,7 +1,10 @@
 ---
-name: 🐛 Bug Report
+name: "\U0001F41B Bug Report"
 about: Submit a bug report to help us improve
-labels: 'type: bug, needs triage'
+title: ''
+labels: 'type: accepted/bug'
+assignees: ''
+
 ---
 
 ## 🐛 Bug Report

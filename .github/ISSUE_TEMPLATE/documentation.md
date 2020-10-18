@@ -1,7 +1,10 @@
 ---
-name: 📚 Documentation
+name: "\U0001F4DA Documentation"
 about: Report an issue related to documentation
-labels: 'type: documentation, needs triage'
+title: ''
+labels: 'type: documentation'
+assignees: ''
+
 ---
 
 ## 📚 Documentation

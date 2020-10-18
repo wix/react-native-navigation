@@ -1,7 +1,10 @@
 ---
-name: ❓ Questions/Help
+name: "❓ Questions/Help"
 about: If you have questions, please check Stack Overflow or Discord
+title: ''
 labels: 'type: question/stack overflow'
+assignees: ''
+
 ---
 
 ## ❓ Questions and Help
