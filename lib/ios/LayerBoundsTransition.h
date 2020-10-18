@@ -7,6 +7,6 @@
 						  to:(CGRect)to
 				  startDelay:(NSTimeInterval)startDelay
 					duration:(NSTimeInterval)duration
-			   interpolation:(Text *)interpolation;
+                interpolator:(id<Interpolator>)interpolator;
 
 @end

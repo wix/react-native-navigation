@@ -6,9 +6,9 @@
 
 @interface UIViewController (RNNOptions)
 
-- (void)setBackgroundImage:(UIImage *)backgroundImage;
+- (void)setBackgroundImage:(UIImage * _Nullable)backgroundImage;
 
-- (void)setSearchBarWithPlaceholder:(NSString *)placeholder
+- (void)setSearchBarWithPlaceholder:(NSString * _Nullable)placeholder
 			hideTopBarOnFocus:(BOOL)hideNavBarOnFocusSearchBar
 			hideOnScroll:(BOOL)searchBarHiddenWhenScrolling
 			obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
@@ -17,21 +17,21 @@
 
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden;
 
-- (void)setTabBarItemBadgeColor:(UIColor *)badgeColor;
+- (void)setTabBarItemBadgeColor:(UIColor * _Nullable)badgeColor;
 
-- (void)setTabBarItemBadge:(NSString *)badge;
+- (void)setTabBarItemBadge:(NSString * _Nullable)badge;
 
 - (void)setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;
 
-- (void)setNavigationItemTitle:(NSString *)title;
+- (void)setNavigationItemTitle:(NSString * _Nullable)title;
 
-- (void)setStatusBarStyle:(NSString *)style animated:(BOOL)animated;
+- (void)setStatusBarStyle:(NSString * _Nullable)style animated:(BOOL)animated;
 
 - (void)setStatusBarBlur:(BOOL)blur;
 
 - (void)setBackButtonVisible:(BOOL)visible;
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor;
+- (void)setBackgroundColor:(UIColor * _Nullable)backgroundColor;
 
 - (BOOL)isModal;
 

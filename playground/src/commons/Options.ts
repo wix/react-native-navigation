@@ -14,6 +14,9 @@ const SHOW_DURATION = 250 * (useSlowOpenScreenAnimations ? 2.5 : 1);
 
 const setDefaultOptions = () =>
   Navigation.setDefaultOptions({
+    window: {
+      backgroundColor: Colors.primary,
+    },
     layout: {
       componentBackgroundColor: Colors.background,
       orientation: ['portrait'],
@@ -70,13 +73,13 @@ const customAnimations: AnimationOptions = {
       from: height,
       to: 0,
       duration: SHOW_DURATION,
-      interpolation: 'decelerate',
+      interpolation: { type: 'ease' },
     },
     alpha: {
       from: 0.65,
       to: 1,
       duration: SHOW_DURATION * 0.7,
-      interpolation: 'accelerate',
+      interpolation: { type: 'ease' },
     },
   },
   dismissModal: {
@@ -93,13 +96,13 @@ const customAnimations: AnimationOptions = {
         from: 0.65,
         to: 1,
         duration: SHOW_DURATION * 0.7,
-        interpolation: 'accelerate',
+        interpolation: { type: 'ease' },
       },
       translationY: {
         from: height * 0.3,
         to: 0,
         duration: SHOW_DURATION,
-        interpolation: 'decelerate',
+        interpolation: { type: 'ease' },
       },
     },
   },

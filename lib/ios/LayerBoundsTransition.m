@@ -10,15 +10,15 @@
 						  to:(CGRect)to
 				  startDelay:(NSTimeInterval)startDelay
 					duration:(NSTimeInterval)duration
-			   interpolation:(Text *)interpolation {
-    self = [super initWithView:view startDelay:startDelay duration:duration interpolation:interpolation];
+                interpolator:(id<Interpolator>)interpolator {
+    self = [super initWithView:view startDelay:startDelay duration:duration interpolator:interpolator];
     _fromBounds = from;
     _toBounds = to;
     return self;
 }
 
 - (CATransform3D)animateWithProgress:(CGFloat)p {
-    CGRect toBounds = [RNNInterpolator fromRect:_fromBounds toRect:_toBounds precent:p interpolation:self.interpolation];
+    CGRect toBounds = [RNNInterpolator fromRect:_fromBounds toRect:_toBounds precent:p interpolator:self.interpolator];
     self.view.layer.bounds = toBounds;
 
     return CATransform3DIdentity;

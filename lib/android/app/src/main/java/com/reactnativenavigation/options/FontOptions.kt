@@ -47,6 +47,10 @@ class FontOptions {
 
     fun hasValue() = fontFamily.hasValue() || fontStyle.hasValue() || fontWeight.hasValue()
 
+    @JvmOverloads fun get(defaultValue: FontOptions? = null): FontOptions? {
+        return if (hasValue()) this else defaultValue
+    }
+
     override fun equals(other: Any?) = (other as? FontOptions)?.let {
         fontFamily.equals(other.fontFamily) &&
         fontStyle.equals(other.fontStyle) &&

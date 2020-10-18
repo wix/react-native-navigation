@@ -72,6 +72,9 @@ export class Deprecations {
     if (key === 'searchBar' && Platform.OS === 'ios' && typeof parentOptions[key] === 'boolean') {
       this.deprecateSearchBarOptions(parentOptions);
     }
+    if (key === 'interpolation' && typeof parentOptions[key] === 'string') {
+      this.deprecateInterpolationOptions(parentOptions);
+    }
   }
 
   public onProcessDefaultOptions(_key: string, _parentOptions: Record<string, any>) {}
@@ -79,6 +82,12 @@ export class Deprecations {
   private deprecateSearchBarOptions = once((parentOptions: object) => {
     console.warn(
       `toggling searchBar visibility using a boolean value will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6585`,
+      parentOptions
+    );
+  });
+  private deprecateInterpolationOptions = once((parentOptions: object) => {
+    console.warn(
+      `Using Interpolation types as strings has been deprecated and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/pull/6644`,
       parentOptions
     );
   });

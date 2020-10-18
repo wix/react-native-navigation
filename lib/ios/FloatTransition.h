@@ -5,7 +5,7 @@
 
 - (instancetype)initWithView:(UIView *)view transitionDetails:(TransitionDetailsOptions *)transitionDetails;
 
-- (instancetype)initWithView:(UIView *)view fromFloat:(CGFloat)from toFloat:(CGFloat)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolation:(Text *)interpolation;
+- (instancetype)initWithView:(UIView *)view fromFloat:(CGFloat)from toFloat:(CGFloat)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolator:(id<Interpolator>)interpolator;
 
 - (CGFloat)calculateFrom:(Double*)from;
 

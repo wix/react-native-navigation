@@ -60,12 +60,20 @@ type SystemItemIcon =
   | 'undo'
   | 'redo';
 type Interpolation =
-  | 'linear'
-  | 'accelerateDecelerate'
-  | 'decelerate'
-  | 'accelerate'
-  | 'decelerateAccelerate'
-  | 'overshoot';
+  | { type: 'accelerate'; factor?: number }
+  | { type: 'decelerate'; factor?: number }
+  | { type: 'decelerateAccelerate' }
+  | { type: 'accelerateDecelerate' }
+  | { type: 'linear' }
+  | { type: 'overshoot'; tension?: number }
+  | {
+      type: 'spring';
+      mass?: number;
+      damping?: number;
+      stiffness?: number;
+      allowsOverdamping?: boolean;
+      initialVelocity?: number;
+    };
 
 export interface OptionsSplitView {
   /**
@@ -147,6 +155,12 @@ export interface OptionsLayout {
    * only works with DefaultOptions
    */
   direction?: 'rtl' | 'ltr' | 'locale';
+
+  /**
+   * Controls the application's preferred home indicator auto-hiding.
+   * #### (iOS specific)
+   */
+  autoHideHomeIndicator?: boolean;
 }
 
 export enum OptionsModalPresentationStyle {
@@ -1138,6 +1152,16 @@ export interface NavigationBarOptions {
   visible?: boolean;
 }
 
+/**
+ * Used for configuring and controlling the main window in iOS
+ */
+export interface WindowOptions {
+  /**
+   * Configure the background color of the application's main window.
+   */
+  backgroundColor?: Color;
+}
+
 export interface Options {
   /**
    * Configure the status bar
@@ -1240,6 +1264,11 @@ setRoot: {
    * #### (iOS specific)
    */
   rootBackgroundImage?: ImageResource;
+  /**
+   * Provides a way to configure the overall presentation of your application's main user interface
+   * #### (iOS specific)
+   */
+  window?: WindowOptions;
   /**
    * Enable or disable automatically blurring focused input, dismissing keyboard on unmount
    * #### (Android specific)

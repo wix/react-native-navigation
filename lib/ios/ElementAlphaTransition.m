@@ -3,7 +3,7 @@
 @implementation ElementAlphaTransition
 
 - (CATransform3D)animateWithProgress:(CGFloat)p {
-    self.view.alpha = [RNNInterpolator fromFloat:self.from toFloat:self.to precent:p interpolation:self.interpolation];
+    self.view.alpha = [RNNInterpolator fromFloat:self.from toFloat:self.to precent:p interpolator:self.interpolator];
     return CATransform3DIdentity;
 }
 
