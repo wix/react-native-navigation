@@ -214,7 +214,7 @@ Navigation.push(this.props.componentId, {
             {
               fromId: `image${item.id}`,
               toId: `image${item.id}Dest`,
-              interpolation: 'linear'
+              interpolation: { type: 'linear' }
             },
           ],
         },
@@ -224,14 +224,25 @@ Navigation.push(this.props.componentId, {
 });
 ```
 
-The `interpolation` property accepts the following modes:
+The `interpolation` property is an object which consists of a `type` property, and optional parameters to further configure the interpolation function. The following `type`s are supported:
 
-* `linear`: Linearly translate from source to destination without any easing curve.
-* `accelerateDecelerate`: Begin building up speed until half of the animation is complete, then begin slowing down to settle.
-* `decelerate`: Start at a high speed and slow down to settle.
-* `accelerate`: Begin building up speed until destination has been reached.
-* `decelerateAccelerate`: Start at a high speed and slow down until half of the animation is complete, then speed up again to settle.
-* `overshoot`: Begin building up speed and overshoot the destination, then fling back to settle.
+* `'accelerate'`: Begin building up speed until destination has been reached.
+  - `factor`: The acceleration factor. Higher values look faster.
+* `'decelerate'`: Start at a high speed and slow down to settle.
+  - `factor`: The acceleration factor. Higher values look slower.
+* `'accelerateDecelerate'`: Begin building up speed until half of the animation is complete, then begin slowing down to settle.
+* `'decelerateAccelerate'`: Start at a high speed and slow down until half of the animation is complete, then speed up again to settle.
+* `'linear'`: Linearly move towards the destination.
+* `'overshoot'`: Begin building up speed and overshoot the destination, then fling back to settle.
+  - `tension`: The tension of the overshoot animation defines how far the object can overshoot. _Default: `1`_
+* `'spring'`: Acts like an actual spring. Depending on the configuration, this interpolation can overshoot the destination multiple times, or be very stiff and smoothly ease towards the destination.
+  - `mass`: The mass defines how "heavy" the object is. _Default: `3`_
+  - `damping`: The damping property specifies how much the moving object is being slowed down. Higher values can lead to overdamping, lower values to underdamping. _Default: `500`_
+  - `stiffness`: The stiffness property defines how stiff the animated object is. _Default: `1000`_
+
+:::caution
+Since a Spring interpolation is not a time based animation, you have to manually tweak the configuration to match the duration of the animation, otherwise the remaining time of the Spring interpolation will get skipped.
+:::
 
 ## Element Transitions
 

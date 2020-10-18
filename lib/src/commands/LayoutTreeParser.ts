@@ -8,7 +8,7 @@ import {
   LayoutBottomTabs,
   LayoutSideMenu,
   LayoutSplitView,
-  ExternalComponent
+  ExternalComponent,
 } from '../interfaces/Layout';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
@@ -41,7 +41,7 @@ export class LayoutTreeParser {
       id: api.id || this.uniqueIdProvider.generate(LayoutType.TopTabs),
       type: LayoutType.TopTabs,
       data: { options: api.options },
-      children: api.children ? api.children.map(this.parse) : []
+      children: api.children ? api.children.map(this.parse) : [],
     };
   }
 
@@ -50,7 +50,7 @@ export class LayoutTreeParser {
       id: api.id || this.uniqueIdProvider.generate(LayoutType.SideMenuRoot),
       type: LayoutType.SideMenuRoot,
       data: { options: api.options },
-      children: this.sideMenuChildren(api)
+      children: this.sideMenuChildren(api),
     };
   }
 
@@ -61,21 +61,21 @@ export class LayoutTreeParser {
         id: this.uniqueIdProvider.generate(LayoutType.SideMenuLeft),
         type: LayoutType.SideMenuLeft,
         data: {},
-        children: [this.parse(api.left)]
+        children: [this.parse(api.left)],
       });
     }
     children.push({
       id: this.uniqueIdProvider.generate(LayoutType.SideMenuCenter),
       type: LayoutType.SideMenuCenter,
       data: {},
-      children: [this.parse(api.center)]
+      children: [this.parse(api.center)],
     });
     if (api.right) {
       children.push({
         id: this.uniqueIdProvider.generate(LayoutType.SideMenuRight),
         type: LayoutType.SideMenuRight,
         data: {},
-        children: [this.parse(api.right)]
+        children: [this.parse(api.right)],
       });
     }
     return children;
@@ -86,7 +86,7 @@ export class LayoutTreeParser {
       id: api.id || this.uniqueIdProvider.generate(LayoutType.BottomTabs),
       type: LayoutType.BottomTabs,
       data: { options: api.options },
-      children: api.children ? api.children.map(this.parse) : []
+      children: api.children ? api.children.map(this.parse) : [],
     };
   }
 
@@ -95,7 +95,7 @@ export class LayoutTreeParser {
       id: api.id || this.uniqueIdProvider.generate(LayoutType.Stack),
       type: LayoutType.Stack,
       data: { options: api.options },
-      children: api.children ? api.children.map(this.parse) : []
+      children: api.children ? api.children.map(this.parse) : [],
     };
   }
 
@@ -106,9 +106,9 @@ export class LayoutTreeParser {
       data: {
         name: api.name.toString(),
         options: api.options,
-        passProps: api.passProps
+        passProps: api.passProps,
       },
-      children: []
+      children: [],
     };
   }
 
@@ -119,9 +119,9 @@ export class LayoutTreeParser {
       data: {
         name: api.name.toString(),
         options: api.options,
-        passProps: api.passProps
+        passProps: api.passProps,
       },
-      children: []
+      children: [],
     };
   }
 
@@ -133,7 +133,7 @@ export class LayoutTreeParser {
       id: api.id || this.uniqueIdProvider.generate(LayoutType.SplitView),
       type: LayoutType.SplitView,
       data: { options: api.options },
-      children: master && detail ? [master, detail] : []
+      children: master && detail ? [master, detail] : [],
     };
   }
 }

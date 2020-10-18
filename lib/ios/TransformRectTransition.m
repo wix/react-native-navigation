@@ -9,15 +9,15 @@
                 viewLocation:(RNNViewLocation *)viewLocation
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
-               interpolation:(Text *)interpolation {
-    self = [super initWithView:view from:viewLocation.fromFrame to:viewLocation.toFrame startDelay:startDelay duration:duration interpolation:interpolation];
+                interpolator:(id<Interpolator>)interpolator {
+    self = [super initWithView:view from:viewLocation.fromFrame to:viewLocation.toFrame startDelay:startDelay duration:duration interpolator:interpolator];
     _fromTransform = viewLocation.fromTransform;
     _toTransform = viewLocation.toTransform;
     return self;
 }
 
 - (CATransform3D)animateWithProgress:(CGFloat)p {
-    CATransform3D toTransform = [RNNInterpolator fromTransform:_fromTransform toTransform:_toTransform precent:p interpolation:self.interpolation];
+    CATransform3D toTransform = [RNNInterpolator fromTransform:_fromTransform toTransform:_toTransform precent:p interpolator:self.interpolator];
 
     return toTransform;
 }

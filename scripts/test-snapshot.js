@@ -14,9 +14,7 @@ function run() {
   }
 }
 
-function runAndroidSnapshotTests() {
-
-}
+function runAndroidSnapshotTests() {}
 
 function runIosSnapshotTests() {
   exec.execSync('npm run build');
@@ -53,8 +51,7 @@ function testTarget(scheme, device, OS = 'latest') {
     if (!RECORD) {
       throw 'Snapshot tests failed';
     }
-  }
-  finally {
+  } finally {
     if (RECORD) {
       pushSnapshots();
     }
@@ -74,7 +71,9 @@ function setupGit() {
   exec.execSyncSilent(`git config --global user.email "${process.env.GIT_EMAIL}"`);
   exec.execSyncSilent(`git config --global user.name "${process.env.GIT_USER}"`);
   const remoteUrl = new RegExp(`https?://(\\S+)`).exec(exec.execSyncRead(`git remote -v`))[1];
-  exec.execSyncSilent(`git remote add deploy "https://${process.env.GIT_USER}:${process.env.GIT_TOKEN}@${remoteUrl}"`);
+  exec.execSyncSilent(
+    `git remote add deploy "https://${process.env.GIT_USER}:${process.env.GIT_TOKEN}@${remoteUrl}"`
+  );
 }
 
 run();
