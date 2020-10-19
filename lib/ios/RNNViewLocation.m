@@ -42,10 +42,7 @@
 }
 
 - (CGRect)convertViewFrame:(UIView *)view {
-    UIView* topMostView = [self topMostView:view];
     CGPoint center = [view.superview convertPoint:view.center toView:nil];
-    CGFloat safeAreaTopOffset = [self safeAreaOffsetForView:view inView:topMostView];
-    center.y += safeAreaTopOffset;
     CGRect frame = CGRectMake(center.x - view.bounds.size.width / 2, center.y - view.bounds.size.height / 2, view.bounds.size.width, view.bounds.size.height);
     return frame;
 }
@@ -61,18 +58,6 @@
     } else {
         return [self topMostView:view.superview];
     }
-}
-
-- (CGFloat)safeAreaOffsetForView:(UIView *)view inView:(UIView *)inView {
-    CGFloat safeAreaOffset = inView.layoutMarginsGuide.layoutFrame.origin.y;
-    
-    if ([view isKindOfClass:RCTSafeAreaView.class] && [[view valueForKey:@"_currentSafeAreaInsets"] UIEdgeInsetsValue].top != safeAreaOffset) {
-        return safeAreaOffset;
-    } else if (view.superview) {
-        return [self safeAreaOffsetForView:view.superview inView:inView];
-    }
-    
-    return 0;
 }
 
 @end

@@ -61,10 +61,10 @@
     _reactView.layer.cornerRadius = _originalCornerRadius;
     _reactView.bounds = _originalLayoutBounds;
     _reactView.layer.bounds = _originalLayoutBounds;
+    _reactView.layer.transform = _originalTransform;
     [_originalParent addSubview:_reactView];
     _toElement.hidden = NO;
-    _reactView.backgroundColor = _fromColor;
-    _reactView.layer.transform = _originalTransform;
+   _reactView.backgroundColor = _fromColor;
     [self removeFromSuperview];
 }
 

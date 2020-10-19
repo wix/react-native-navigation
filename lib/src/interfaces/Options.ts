@@ -127,6 +127,21 @@ export interface OptionsStatusBar {
    * #### (Android specific)
    */
   translucent?: boolean;
+  /**
+   * Animate StatusBar style changes.
+   * #### (iOS specific)
+   */
+  animated?: boolean;
+  /**
+   * Automatically hide the StatusBar when the TopBar hides.
+   * #### (iOS specific)
+   */
+  hideWithTopBar?: boolean;
+  /**
+   * Blur content beneath the StatusBar.
+   * #### (iOS specific)
+   */
+  blur?: boolean;
 }
 
 export interface OptionsLayout {
