@@ -64,6 +64,7 @@
 		[childVc.view setFrame:_contentView.bounds];
 //		[childVc.options.topTab applyOn:childVc];
 		[self addChildViewController:childVc];
+        [childVc didMoveToParentViewController:self];
 	}
 	
 	[self setSelectedViewControllerIndex:0];
