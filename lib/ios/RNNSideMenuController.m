@@ -120,8 +120,6 @@
 			else if(child.type == RNNSideMenuChildTypeRight) {
 				self.right = child;
 			}
-
-			[self addChildViewController:child];
 		}
 
 		else {
