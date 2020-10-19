@@ -10,6 +10,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 public class TopBarButtons {
 
@@ -33,9 +36,18 @@ public class TopBarButtons {
     @Nullable public ArrayList<ButtonOptions> left;
     @Nullable public ArrayList<ButtonOptions> right;
 
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public TopBarButtons(@Nullable ArrayList<ButtonOptions> right) {
+        this.right = right;
+    }
+
+    public TopBarButtons() {
+
+    }
+
     void mergeWith(TopBarButtons other) {
         if (other.left != null) left = mergeLeftButton(other.left);
-        if (other.right != null) right = other.right;
+        if (other.right != null) right = map(other.right, ButtonOptions::copy);
         back.mergeWith(other.back);
     }
 
