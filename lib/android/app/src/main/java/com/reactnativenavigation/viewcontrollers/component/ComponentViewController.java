@@ -3,10 +3,6 @@ package com.reactnativenavigation.viewcontrollers.component;
 import android.app.Activity;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -16,6 +12,10 @@ import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.ComponentLayout;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 

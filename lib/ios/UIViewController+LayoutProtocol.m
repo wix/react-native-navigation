@@ -18,9 +18,9 @@
 	self.creator = creator;
     self.eventEmitter = eventEmitter;
     self.presenter = presenter;
+    [self loadChildren:childViewControllers];
     [self.presenter bindViewController:self];
     self.extendedLayoutIncludesOpaqueBars = YES;
-    [self loadChildren:childViewControllers];
     [self.presenter applyOptionsOnInit:self.resolveOptions];
 
 	return self;
@@ -175,6 +175,14 @@
 }
 
 #pragma mark getters and setters to associated object
+
+- (RNNReactView *)reactView {
+    return objc_getAssociatedObject(self, @selector(reactView));
+}
+
+- (void)setReactView:(RNNReactView *)reactView {
+    objc_setAssociatedObject(self, @selector(reactView), reactView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 - (RNNNavigationOptions *)options {
 	return objc_getAssociatedObject(self, @selector(options));

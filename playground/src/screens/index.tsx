@@ -1,4 +1,5 @@
 import React from 'react';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import { Navigation } from 'react-native-navigation';
 import Screens from './Screens';
 
@@ -11,6 +12,16 @@ function registerScreens() {
   Navigation.registerComponent(
     Screens.CocktailsListScreen,
     () => require('./sharedElementTransition/CocktailsListScreen').default
+  );
+  Navigation.registerComponent(
+    Screens.CarsListScreen,
+    () => require('./sharedElementCarDealer/CarsListScreen').default
+  );
+  Navigation.registerComponent(Screens.CarDetailsScreen, () =>
+    gestureHandlerRootHOC(require('./sharedElementCarDealer/CarDetailsScreen').default)
+  );
+  Navigation.registerComponent(Screens.CarStoryScreen, () =>
+    gestureHandlerRootHOC(require('./sharedElementCarDealer/CarStoryScreen').default)
   );
   Navigation.registerComponent(
     Screens.CocktailsListMasterScreen,
@@ -33,6 +44,14 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Layouts, () => require('./LayoutsScreen').default);
   Navigation.registerComponent(Screens.Lifecycle, () => require('./LifecycleScreen').default);
   Navigation.registerComponent(Screens.Modal, () => require('./ModalScreen').default);
+  Navigation.registerComponent(
+    Screens.ModalCommands,
+    () => require('./ModalCommandsScreen').default
+  );
+  Navigation.registerComponent(
+    Screens.StackCommands,
+    () => require('./StackCommandsScreen').default
+  );
   Navigation.registerComponent(
     Screens.FullScreenModal,
     () => require('./FullScreenModalScreen').default

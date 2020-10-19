@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "RNNInterpolator.h"
+#import "Interpolator.h"
 
 @protocol DisplayLinkAnimation <NSObject>
 
@@ -13,6 +14,6 @@
 
 - (NSTimeInterval)startDelay;
 
-- (RNNInterpolationOptions)interpolation;
+- (id<Interpolator>)interpolator;
 
 @end

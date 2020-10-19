@@ -76,4 +76,11 @@ describe('Store', () => {
     expect(uut.getComponentClassForName('lazy')).toEqual(MyLazyComponent);
     expect(lazyRegistrator).toHaveBeenCalledTimes(1);
   });
+
+  it('keeps the old props when updateProps is called', () => {
+    uut.updateProps('component1', { foo: 'foo', bar: 'bar' });
+    uut.updateProps('component1', { foo: 'foo2' });
+
+    expect(uut.getPropsForId('component1')).toEqual({ foo: 'foo2', bar: 'bar' });
+  });
 });

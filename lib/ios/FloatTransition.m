@@ -8,19 +8,19 @@
                            to:transitionDetails.to
                    startDelay:[transitionDetails.startDelay getWithDefaultValue:0]
                      duration:[transitionDetails.duration getWithDefaultValue:[self defaultDuration]]
-                interpolation:[transitionDetails.interpolation getWithDefaultValue:@"accelerateDecelerate"]];
+                 interpolator:transitionDetails.interpolator];
     return self;
 }
 
-- (instancetype)initWithView:(UIView *)view fromFloat:(CGFloat)from toFloat:(CGFloat)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolation:(Text *)interpolation {
-    self = [super initWithView:view startDelay:startDelay duration:duration interpolation:interpolation];
+- (instancetype)initWithView:(UIView *)view fromFloat:(CGFloat)from toFloat:(CGFloat)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolator:(id<Interpolator>)interpolator {
+    self = [super initWithView:view startDelay:startDelay duration:duration interpolator:interpolator];
     self.from = from;
     self.to = to;
     return self;
 }
 
-- (instancetype)initWithView:(UIView *)view from:(Double*)from to:(Double*)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolation:(Text *)interpolation {
-    self = [super initWithView:view startDelay:startDelay duration:duration interpolation:interpolation];
+- (instancetype)initWithView:(UIView *)view from:(Double*)from to:(Double*)to startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolator:(id<Interpolator>)interpolator {
+    self = [super initWithView:view startDelay:startDelay duration:duration interpolator:interpolator];
     _initialValue = self.initialValue;
     _from = [self calculateFrom:from];
     _to = [self calculateTo:to];

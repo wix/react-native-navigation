@@ -8,12 +8,15 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.Toolbar;
+
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.AnimationsOptions;
+import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
@@ -21,25 +24,25 @@ import com.reactnativenavigation.options.TopBarButtons;
 import com.reactnativenavigation.options.TopBarOptions;
 import com.reactnativenavigation.options.TopTabOptions;
 import com.reactnativenavigation.options.TopTabsOptions;
-import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
-import com.reactnativenavigation.utils.RenderChecker;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.ObjectUtils;
+import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,12 +85,14 @@ public class StackPresenter {
     private Map<View, Map<String, ButtonController>> componentRightButtons = new HashMap();
     private Map<View, Map<String, ButtonController>> componentLeftButtons = new HashMap();
     private IconResolver iconResolver;
+    private TypefaceLoader typefaceLoader;
 
     public StackPresenter(Activity activity,
                           TitleBarReactViewCreator titleViewCreator,
                           TopBarBackgroundViewCreator topBarBackgroundViewCreator,
                           TitleBarButtonCreator buttonCreator,
                           IconResolver iconResolver,
+                          TypefaceLoader typefaceLoader,
                           RenderChecker renderChecker,
                           Options defaultOptions) {
         this.activity = activity;
@@ -95,6 +100,7 @@ public class StackPresenter {
         this.topBarBackgroundViewCreator = topBarBackgroundViewCreator;
         this.buttonCreator = buttonCreator;
         this.iconResolver = iconResolver;
+        this.typefaceLoader = typefaceLoader;
         this.renderChecker = renderChecker;
         this.defaultOptions = defaultOptions;
         defaultTitleFontSize = 18;
@@ -126,9 +132,10 @@ public class StackPresenter {
     }
 
     public void mergeOptions(Options options, StackController stack, ViewController currentChild) {
+        TopBarOptions withDefault = options.topBar.mergeWithDefault(stack.resolveChildOptions(currentChild).topBar).mergeWithDefault(defaultOptions.topBar);
         mergeOrientation(options.layout.orientation);
 //        mergeButtons(topBar, withDefault.topBar.buttons, child);
-        mergeTopBarOptions(options, stack, currentChild);
+        mergeTopBarOptions(withDefault, options, stack, currentChild);
         mergeTopTabsOptions(options.topTabs);
         mergeTopTabOptions(options.topTabOptions);
     }
@@ -198,13 +205,13 @@ public class StackPresenter {
 
         topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
         topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
-        topBar.setTitleTypeface(topBarOptions.title.fontFamily);
+        topBar.setTitleTypeface(typefaceLoader, topBarOptions.title.font);
         topBar.setTitleAlignment(topBarOptions.title.alignment);
 
         topBar.setSubtitle(topBarOptions.subtitle.text.get(""));
         topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get(defaultSubtitleFontSize));
         topBar.setSubtitleColor(topBarOptions.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
-        topBar.setSubtitleFontFamily(topBarOptions.subtitle.fontFamily);
+        topBar.setSubtitleTypeface(typefaceLoader, topBarOptions.subtitle.font);
         topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
 
         topBar.setBorderHeight(topBarOptions.borderHeight.get(0d));
@@ -355,10 +362,10 @@ public class StackPresenter {
     }
 
     public void mergeChildOptions(Options toMerge, Options resolvedOptions, StackController stack, ViewController child) {
-        TopBarOptions topBar = toMerge.copy().mergeWith(resolvedOptions).withDefaultOptions(defaultOptions).topBar;
+        TopBarOptions topBar = toMerge.copy().topBar.mergeWithDefault(resolvedOptions.topBar).mergeWithDefault(defaultOptions.topBar);
         mergeOrientation(toMerge.layout.orientation);
         mergeButtons(topBar, toMerge.topBar.buttons, child.getView());
-        mergeTopBarOptions(toMerge, stack, child);
+        mergeTopBarOptions(topBar, toMerge, stack, child);
         mergeTopTabsOptions(toMerge.topTabs);
         mergeTopTabOptions(toMerge.topTabOptions);
     }
@@ -418,7 +425,7 @@ public class StackPresenter {
         return result;
     }
 
-    private void mergeTopBarOptions(Options options, StackController stack, ViewController child) {
+    private void mergeTopBarOptions(TopBarOptions resolveOptions, Options options, StackController stack, ViewController child) {
         AnimationsOptions animationsOptions = options.copy().withDefaultOptions(defaultOptions).animations;
         TopBarOptions topBarOptions = options.topBar;
         final View component = child.getView();
@@ -448,24 +455,16 @@ public class StackPresenter {
             topBar.setTitle(topBarOptions.title.text.get());
         }
 
-        if (topBarOptions.title.color.hasValue())
-            topBar.setTitleTextColor(topBarOptions.title.color.get());
-        if (topBarOptions.title.fontSize.hasValue())
-            topBar.setTitleFontSize(topBarOptions.title.fontSize.get());
-        if (topBarOptions.title.fontFamily != null)
-            topBar.setTitleTypeface(topBarOptions.title.fontFamily);
+        if (resolveOptions.title.color.hasValue()) topBar.setTitleTextColor(resolveOptions.title.color.get());
+        if (resolveOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
+        if (resolveOptions.title.font.hasValue()) topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 
-        if (topBarOptions.subtitle.text.hasValue())
-            topBar.setSubtitle(topBarOptions.subtitle.text.get());
-        if (topBarOptions.subtitle.color.hasValue())
-            topBar.setSubtitleColor(topBarOptions.subtitle.color.get());
-        if (topBarOptions.subtitle.fontSize.hasValue())
-            topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get());
-        if (topBarOptions.subtitle.fontFamily != null)
-            topBar.setSubtitleFontFamily(topBarOptions.subtitle.fontFamily);
+        if (topBarOptions.subtitle.text.hasValue()) topBar.setSubtitle(topBarOptions.subtitle.text.get());
+        if (resolveOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(resolveOptions.subtitle.color.get());
+        if (resolveOptions.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(resolveOptions.subtitle.fontSize.get());
+        if (resolveOptions.subtitle.font.hasValue()) topBar.setSubtitleTypeface(typefaceLoader, resolveOptions.subtitle.font);
 
-        if (topBarOptions.background.color.hasValue())
-            topBar.setBackgroundColor(topBarOptions.background.color.get());
+        if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.get());
 
         if (topBarOptions.background.component.hasValue()) {
             if (backgroundControllers.containsKey(component)) {

@@ -192,6 +192,7 @@ public class LayoutFactory {
                         new TopBarBackgroundViewCreator(reactInstanceManager),
                         new TitleBarButtonCreator(reactInstanceManager),
                         new IconResolver(activity, new ImageLoader()),
+                        new TypefaceLoader(activity),
                         new RenderChecker(),
                         defaultOptions
                 ))
@@ -223,7 +224,7 @@ public class LayoutFactory {
                 new Presenter(activity, defaultOptions),
                 new BottomTabsAttacher(tabs, bottomTabsPresenter, defaultOptions),
                 bottomTabsPresenter,
-                new BottomTabPresenter(activity, tabs, new ImageLoader(), defaultOptions));
+                new BottomTabPresenter(activity, tabs, new ImageLoader(), new TypefaceLoader(activity), defaultOptions));
 	}
 
     private ViewController createTopTabs(ReactContext context, LayoutNode node) {

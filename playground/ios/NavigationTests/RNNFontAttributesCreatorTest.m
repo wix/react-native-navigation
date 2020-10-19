@@ -19,16 +19,17 @@
 	XCTAssertEqual(font.pointSize, fontSize.floatValue);
 }
 
-- (void)testCreateWithFontFamily_shouldIgnoreFontFamilyWhenFontWeightIsNotNil {
-	NSString* familyName = @"Helvetica";
+- (void)testCreateWithFontFamily_shouldResolveFontFamilyWithFontWeight {
+	NSString* familyName = @"Courier";
 	NSString* fontWeight = @"bold";
 	NSNumber* fontSize = @(20);
 	UIColor* fontColor = UIColor.blueColor;
 	
 	NSDictionary* attributes = [RNNFontAttributesCreator createWithFontFamily:familyName fontSize:fontSize fontWeight:fontWeight color:fontColor];
 	UIFont* font = attributes[NSFontAttributeName];
+
 	XCTAssertEqual(attributes[NSForegroundColorAttributeName], fontColor);
-    XCTAssertFalse([familyName isEqualToString:font.familyName]);
+    XCTAssertTrue([[font.fontDescriptor objectForKey:UIFontDescriptorFaceAttribute] isEqualToString:@"Bold"]);
 	XCTAssertEqual(font.pointSize, fontSize.floatValue);
 }
 

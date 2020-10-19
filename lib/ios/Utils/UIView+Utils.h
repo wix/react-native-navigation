@@ -15,4 +15,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (void)stopMomentumScrollViews;
 
+- (void)setCornerRadius:(CGFloat)cornerRadius;
+
 @end

@@ -6,10 +6,6 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
-import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.react.CommandListener;
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
@@ -17,6 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiThread;
@@ -60,10 +60,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final Activity activity;
     private final String id;
     private YellowBoxDelegate yellowBoxDelegate;
-    @Nullable
-    protected T view;
-    @Nullable
-    private ParentController<T> parentController;
+    @Nullable protected T view;
+    @Nullable private ParentController<? extends ViewGroup> parentController;
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();

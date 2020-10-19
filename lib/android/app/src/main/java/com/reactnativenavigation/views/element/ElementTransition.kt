@@ -16,9 +16,12 @@ class ElementTransition(private val transitionOptions: ElementTransitionOptions)
 
     override fun createAnimators(): AnimatorSet = transitionOptions.getAnimation(view)
 
+    fun isInvalid(): Boolean = !isValid()
+
     fun setValueDy(animation: Property<View?, Float?>?, fromDelta: Float, toDelta: Float) {
         transitionOptions.setValueDy(animation, fromDelta, toDelta)
     }
 
     fun isValid(): Boolean = ::view.isInitialized
+
 }

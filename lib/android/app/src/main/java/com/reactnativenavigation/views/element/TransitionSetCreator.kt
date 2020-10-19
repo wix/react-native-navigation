@@ -6,22 +6,66 @@ import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.SharedElements
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.finder.ExistingViewFinder
-import com.reactnativenavigation.views.element.finder.OptimisticViewFinder
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 
 class TransitionSetCreator {
-    fun create(animation: NestedAnimationsOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
-        val sharedElements = animation.sharedElements
-        val elementTransitions = animation.elementTransitions
-        if (!sharedElements.hasValue() && !elementTransitions.hasValue()) {
-            onAnimatorsCreated(TransitionSet())
-            return
-        }
-        val transitionSet = TransitionSet()
-        createSharedElementTransitions(fromScreen, toScreen, transitionSet, sharedElements, elementTransitions, onAnimatorsCreated)
-        createElementTransitions(fromScreen, toScreen, transitionSet, sharedElements, elementTransitions, onAnimatorsCreated)
+    suspend fun create(
+            animation: NestedAnimationsOptions,
+            fromScreen: ViewController<*>,
+            toScreen: ViewController<*>
+    ) = TransitionSet().apply {
+        addAll(createSharedElementTransitions(fromScreen, toScreen, animation.sharedElements))
+        addAll(createElementTransitions(fromScreen, toScreen, animation.elementTransitions))
     }
 
-    fun createPIPIn(pipContainer: View, animation: NestedAnimationsOptions, screen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
+    private suspend fun createSharedElementTransitions(
+            fromScreen: ViewController<*>,
+            toScreen: ViewController<*>,
+            sharedElements: SharedElements
+    ): List<Transition> = withContext(Dispatchers.Main.immediate) {
+        sharedElements.get()
+                .map {
+                    async {
+                        SharedElementTransition(toScreen, it).apply {
+                            ExistingViewFinder().find(fromScreen, fromId)?.let { from = it }
+                            ExistingViewFinder().find(toScreen, toId)?.let { to = it }
+                        }
+                    }
+                }
+                .awaitAll()
+                .filter { it.isValid() }
+    }
+
+    private suspend fun createElementTransitions(
+            fromScreen: ViewController<*>,
+            toScreen: ViewController<*>,
+            elementTransitions: ElementTransitions
+    ): List<ElementTransition> = withContext(Dispatchers.Main.immediate) {
+        elementTransitions.transitions
+                .map {
+                    async {
+                        val transition = ElementTransition(it)
+                        ExistingViewFinder().find(fromScreen, transition.id)?.let {
+                            transition.view = it
+                            transition.viewController = fromScreen
+                        } ?: run {
+                            ExistingViewFinder().find(toScreen, transition.id)?.let {
+                                transition.view = it
+                                transition.viewController = toScreen
+                            }
+                        }
+                        transition
+                    }
+                }
+                .awaitAll()
+                .filter { it.isValid() }
+    }
+
+    suspend fun createPIPIn(pipContainer: View, animation: NestedAnimationsOptions, screen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
         val elementTransitions = animation.elementTransitions
         if (!elementTransitions.hasValue()) {
             onAnimatorsCreated(TransitionSet())
@@ -31,7 +75,7 @@ class TransitionSetCreator {
         createPIPInElementTransitions(pipContainer, screen, transitionSet, elementTransitions, onAnimatorsCreated)
     }
 
-    fun createPIPOut(pipContainer: View, animation: NestedAnimationsOptions, screen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
+    suspend fun createPIPOut(pipContainer: View, animation: NestedAnimationsOptions, screen: ViewController<*>, onAnimatorsCreated: (TransitionSet) -> Unit) {
         val elementTransitions = animation.elementTransitions
         if (!elementTransitions.hasValue()) {
             onAnimatorsCreated(TransitionSet())
@@ -41,10 +85,10 @@ class TransitionSetCreator {
         createPIPOutElementTransitions(pipContainer, screen, transitionSet, elementTransitions, onAnimatorsCreated)
     }
 
-    private fun createPIPInElementTransitions(pipContainer: View, screen: ViewController<*>, transitionSet: TransitionSet, elementTransitions: ElementTransitions, onTransitionCreated: (TransitionSet) -> Unit) {
+    private suspend fun createPIPInElementTransitions(pipContainer: View, screen: ViewController<*>, transitionSet: TransitionSet, elementTransitions: ElementTransitions, onTransitionCreated: (TransitionSet) -> Unit) {
         for (transitionOptions in elementTransitions.transitions) {
             val transition = ElementTransition(transitionOptions)
-            ExistingViewFinder().find(screen, transition.id) {
+            ExistingViewFinder().find(screen, transition.id)?.let {
                 transition.view = it
                 transition.viewController = screen
                 reportPIPTransitionCreated(transitionSet, elementTransitions, transition, onTransitionCreated)
@@ -53,10 +97,10 @@ class TransitionSetCreator {
         }
     }
 
-    private fun createPIPOutElementTransitions(pipContainer: View, screen: ViewController<*>, transitionSet: TransitionSet, elementTransitions: ElementTransitions, onTransitionCreated: (TransitionSet) -> Unit) {
+    private suspend fun createPIPOutElementTransitions(pipContainer: View, screen: ViewController<*>, transitionSet: TransitionSet, elementTransitions: ElementTransitions, onTransitionCreated: (TransitionSet) -> Unit) {
         for (transitionOptions in elementTransitions.transitions) {
             val transition = ElementTransition(transitionOptions)
-            ExistingViewFinder().find(screen, transition.id) {
+            ExistingViewFinder().find(screen, transition.id)?.let {
                 transition.viewController = screen
                 transition.view = it
                 transition.setValueDy(View.X, pipContainer.x, 0.toFloat())
@@ -64,36 +108,6 @@ class TransitionSetCreator {
                 reportPIPTransitionCreated(transitionSet, elementTransitions, transition, onTransitionCreated)
             }
             if (transition.isValid()) continue
-        }
-    }
-
-    private fun createSharedElementTransitions(fromScreen: ViewController<*>, toScreen: ViewController<*>, transitionSet: TransitionSet, sharedElements: SharedElements, elementTransitions: ElementTransitions, onTransitionCreated: (TransitionSet) -> Unit) {
-        for (transitionOptions in sharedElements.get()) {
-            val transition = SharedElementTransition(toScreen, transitionOptions)
-            OptimisticViewFinder().find(fromScreen, transition.fromId) {
-                transition.from = it
-                reportTransitionCreated(transitionSet, sharedElements, elementTransitions, transition, onTransitionCreated)
-            }
-            OptimisticViewFinder().find(toScreen, transition.toId) {
-                transition.to = it
-                reportTransitionCreated(transitionSet, sharedElements, elementTransitions, transition, onTransitionCreated)
-            }
-        }
-    }
-
-
-    private fun createElementTransitions(fromScreen: ViewController<*>, toScreen: ViewController<*>, transitionSet: TransitionSet, sharedElements: SharedElements, elementTransitions: ElementTransitions, onAnimatorsCreated: (TransitionSet) -> Unit) {
-        for (transitionOptions in elementTransitions.transitions) {
-            val transition = ElementTransition(transitionOptions)
-            ExistingViewFinder().find(fromScreen, transition.id) {
-                transition.viewController = fromScreen
-                reportTransitionCreated(transitionSet, sharedElements, elementTransitions, transition, it, onAnimatorsCreated)
-            }
-            if (transition.isValid()) continue
-            OptimisticViewFinder().find(toScreen, transition.id) {
-                transition.viewController = toScreen
-                reportTransitionCreated(transitionSet, sharedElements, elementTransitions, transition, it, onAnimatorsCreated)
-            }
         }
     }
 

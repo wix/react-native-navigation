@@ -50,7 +50,12 @@ export class ComponentWrapper {
       }
 
       public setProps(newProps: any) {
-        this.setState({ allProps: newProps });
+        this.setState((prevState) => ({
+          allProps: {
+            ...prevState.allProps,
+            ...newProps,
+          },
+        }));
       }
 
       componentWillUnmount() {

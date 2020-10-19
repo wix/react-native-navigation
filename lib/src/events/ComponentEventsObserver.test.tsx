@@ -17,8 +17,6 @@ describe('ComponentEventsObserver', () => {
   const searchBarUpdatedFn = jest.fn();
   const searchBarCancelPressedFn = jest.fn();
   const previewCompletedFn = jest.fn();
-  const modalDismissedFn = jest.fn();
-  const modalAttemptedToDismissFn = jest.fn();
   const screenPoppedFn = jest.fn();
   let subscription: EventSubscription;
   let uut: ComponentEventsObserver;
@@ -52,14 +50,6 @@ describe('ComponentEventsObserver', () => {
 
     navigationButtonPressed(event: any) {
       navigationButtonPressedFn(event);
-    }
-
-    modalDismissed(event: any) {
-      modalDismissedFn(event);
-    }
-
-    modalAttemptedToDismiss(event: any) {
-      modalAttemptedToDismissFn(event);
     }
 
     searchBarUpdated(event: any) {
@@ -107,14 +97,6 @@ describe('ComponentEventsObserver', () => {
 
     navigationButtonPressed(event: any) {
       navigationButtonPressedFn(event);
-    }
-
-    modalDismissed(event: any) {
-      modalDismissedFn(event);
-    }
-
-    modalAttemptedToDismiss(event: any) {
-      modalAttemptedToDismissFn(event);
     }
 
     searchBarUpdated(event: any) {
@@ -214,22 +196,6 @@ describe('ComponentEventsObserver', () => {
       buttonId: 'myButtonId',
       componentId: 'myCompId',
     });
-
-    uut.notifyModalDismissed({
-      componentId: 'myCompId',
-      componentName: 'myCompName',
-      modalsDismissed: 1,
-    });
-    expect(modalDismissedFn).toHaveBeenCalledTimes(1);
-    expect(modalDismissedFn).toHaveBeenLastCalledWith({
-      componentId: 'myCompId',
-      componentName: 'myCompName',
-      modalsDismissed: 1,
-    });
-
-    uut.notifyModalAttemptedToDismiss({ componentId: 'myCompId' });
-    expect(modalAttemptedToDismissFn).toHaveBeenCalledTimes(1);
-    expect(modalAttemptedToDismissFn).toHaveBeenLastCalledWith({ componentId: 'myCompId' });
 
     uut.notifySearchBarUpdated({ componentId: 'myCompId', text: 'theText', isFocused: true });
     expect(searchBarUpdatedFn).toHaveBeenCalledTimes(1);

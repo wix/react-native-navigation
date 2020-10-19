@@ -9,17 +9,17 @@
 }
 
 - (void)applyOptionsOnInit:(RNNTopBarOptions *)initialOptions {
-    [self updateTitleWithOptions:initialOptions];
+    if (initialOptions.title.component.hasValue) {
+        [self setCustomNavigationTitleView:initialOptions perform:nil];
+    } else if (initialOptions.title.text.hasValue) {
+        [self removeTitleComponents];
+        self.boundViewController.navigationItem.title = initialOptions.title.text.get;
+    }
 }
 
-- (void)updateTitleWithOptions:(RNNTopBarOptions *)options {
-    if (options.title.component.hasValue) {
-        [self setCustomNavigationTitleView:options perform:nil];
-    } else if (options.subtitle.text.hasValue) {
+- (void)applyOptions:(RNNTopBarOptions *)options {
+    if (options.subtitle.text.hasValue) {
         [self setTitleViewWithSubtitle:options];
-    } else if (options.title.text.hasValue) {
-        [self removeTitleComponents];
-        self.boundViewController.navigationItem.title = options.title.text.get;
     }
 }
 
@@ -35,18 +35,18 @@
 }
 
 - (void)setTitleViewWithSubtitle:(RNNTopBarOptions *)options {
-	if (!_customTitleView && ![options.largeTitle.visible getWithDefaultValue:NO]) {
-		_titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.title subTitleOptions:options.subtitle viewController:self.boundViewController];
+    if (!_customTitleView && ![options.largeTitle.visible getWithDefaultValue:NO]) {
+        _titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.title subTitleOptions:options.subtitle viewController:self.boundViewController];
 
-		if (options.title.text.hasValue) {
-			[_titleViewHelper setTitleOptions:options.title];
-		}
-		if (options.subtitle.text.hasValue) {
-			[_titleViewHelper setSubtitleOptions:options.subtitle];
-		}
+        if (options.title.text.hasValue) {
+            [_titleViewHelper setTitleOptions:options.title];
+        }
+        if (options.subtitle.text.hasValue) {
+            [_titleViewHelper setSubtitleOptions:options.subtitle];
+        }
 
-		[_titleViewHelper setup];
-	}
+        [_titleViewHelper setup];
+    }
 }
 
 - (void)renderComponents:(RNNTopBarOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {

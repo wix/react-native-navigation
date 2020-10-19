@@ -7,6 +7,7 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
@@ -51,7 +52,7 @@ public class BottomTabPresenterTest extends BaseTest {
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", tab2Options));
         child3 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
         tabs = Arrays.asList(child1, child2, child3);
-        uut = new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options());
+        uut = new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), new Options());
         uut.bindView(bottomTabs);
         uut.setDefaultOptions(new Options());
     }

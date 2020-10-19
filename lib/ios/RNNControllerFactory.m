@@ -172,7 +172,7 @@
 - (UIViewController *)createTopTabs:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
-	RNNComponentPresenter* presenter = [[RNNComponentPresenter alloc] initWithDefaultOptions :_defaultOptions];
+	RNNBasePresenter* presenter = [[RNNBasePresenter alloc] initWithDefaultOptions :_defaultOptions];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
@@ -199,7 +199,7 @@
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 
-	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:[[RNNComponentPresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions] eventEmitter:_eventEmitter childViewController:childVc type:type];
+	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:layoutInfo creator:_creator options:options defaultOptions:_defaultOptions presenter:[[RNNBasePresenter alloc] initWithComponentRegistry:_componentRegistry defaultOptions:_defaultOptions] eventEmitter:_eventEmitter childViewController:childVc type:type];
 	
 	return sideMenuChild;
 }

@@ -4,13 +4,6 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.Size;
-import androidx.annotation.VisibleForTesting;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.viewpager.widget.ViewPager;
-
 import com.reactnativenavigation.options.NestedAnimationsOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
@@ -36,7 +29,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.reactnativenavigation.utils.CollectionUtils.requireLast;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.Size;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.viewpager.widget.ViewPager;
+
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.updateBottomMargin;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
