@@ -12,7 +12,7 @@
 }
 
 - (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
-    return [RNNScreenTransitionsCreator createTransitionsFromVC:fromVC toVC:toVC containerView:containerView screenTransition:self.screenTransition reversed:YES];
+    return [RNNScreenTransitionsCreator createTransitionsFromVC:fromVC toVC:toVC containerView:containerView contentTransition:self.content elementTransitions:self.elementTransitions sharedElementTransitions:self.sharedElementTransitions reversed:YES];
 }
 
 @end

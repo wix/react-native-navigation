@@ -43,14 +43,14 @@ describe('navigation options', () => {
       blurOnUnmount: false,
       popGesture: false,
       modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
-      animations: { dismissModal: { content: { alpha: { from: 0, to: 1 } } } },
+      animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
     };
     uut.processOptions(options, CommandName.SetRoot);
     expect(options).toEqual({
       blurOnUnmount: false,
       popGesture: false,
       modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
-      animations: { dismissModal: { content: { alpha: { from: 0, to: 1 } } } },
+      animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
     });
   });
 

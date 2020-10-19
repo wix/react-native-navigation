@@ -1,4 +1,5 @@
 #import "ContentTransitionCreator.h"
+#import "RCTConvert+Interpolation.h"
 
 @implementation ContentTransitionCreator
 
@@ -17,6 +18,8 @@
     defaultAlphaTransition.duration = [TimeInterval withValue:300];
     defaultAlphaTransition.from = [Double withValue:from];
     defaultAlphaTransition.to = [Double withValue:to];
+    defaultAlphaTransition.startDelay = [TimeInterval withValue:0];
+    defaultAlphaTransition.interpolator = [RCTConvert defaultInterpolator];
     return defaultAlphaTransition;
 }
 

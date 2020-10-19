@@ -7,12 +7,20 @@
     RCTBridge* _bridge;
     id <UIViewControllerContextTransitioning> _transitionContext;
     BOOL _animate;
+    CGFloat _duration;
 }
 
-- (instancetype)initWithScreenTransition:(RNNScreenTransition *)screenTransition bridge:(RCTBridge *)bridge {
+- (instancetype)initWithContentTransition:(TransitionOptions *)contentTransition
+                       elementTransitions:(NSArray<ElementTransitionOptions *>*)elementTransitions
+                 sharedElementTransitions:(NSArray<SharedElementTransitionOptions *>*)sharedElementTransitions
+                                 duration:(CGFloat)duration
+                                   bridge:(RCTBridge *)bridge {
     self = [super init];
     _bridge = bridge;
-    _screenTransition = screenTransition;
+    _content = contentTransition;
+    _elementTransitions = elementTransitions;
+    _sharedElementTransitions = sharedElementTransitions;
+    _duration = duration;
     return self;
 }
 
@@ -40,7 +48,7 @@
 }
 
 - (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
-    return [RNNScreenTransitionsCreator createTransitionsFromVC:fromVC toVC:toVC containerView:containerView screenTransition:self.screenTransition reversed:NO];
+    return [RNNScreenTransitionsCreator createTransitionsFromVC:fromVC toVC:toVC containerView:containerView contentTransition:self.content elementTransitions:self.elementTransitions sharedElementTransitions:self.sharedElementTransitions reversed:NO];
 }
 
 - (void)performAnimationOnce {
@@ -69,7 +77,7 @@
 }
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
-    return _screenTransition.maxDuration;
+    return _duration;
 }
 
 - (void)uiManagerDidPerformMounting:(RCTUIManager *)manager {

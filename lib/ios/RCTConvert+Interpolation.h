@@ -7,4 +7,6 @@
 
 + (id<Interpolator>)interpolatorFromJson:(id)json;
 
++ (id<Interpolator>)defaultInterpolator;
+
 @end
