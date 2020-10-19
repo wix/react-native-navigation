@@ -14,7 +14,7 @@
     tabItem.standardAppearance.compactInlineLayoutAppearance.normal.titleTextAttributes = titleAttributes;
     tabItem.standardAppearance.inlineLayoutAppearance.normal.titleTextAttributes = titleAttributes;
     if (@available(iOS 14.0, *)) {
-      UIColor *color = [titleAttributes valueForKey:@"NSColor"];
+      UIColor *color = [titleAttributes valueForKey:NSForegroundColorAttributeName];
       if (color) {
         tabItem.standardAppearance.inlineLayoutAppearance.normal.titleTextAttributes = @{NSForegroundColorAttributeName: color};
       }
@@ -27,7 +27,7 @@
     tabItem.standardAppearance.compactInlineLayoutAppearance.selected.titleTextAttributes = selectedTitleAttributes;
     tabItem.standardAppearance.inlineLayoutAppearance.selected.titleTextAttributes = selectedTitleAttributes;
     if (@available(iOS 14.0, *)) {
-      UIColor *color = [selectedTitleAttributes valueForKey:@"NSColor"];
+      UIColor *color = [selectedTitleAttributes valueForKey:NSForegroundColorAttributeName];
       if (color) {
         tabItem.standardAppearance.inlineLayoutAppearance.selected.titleTextAttributes = @{NSForegroundColorAttributeName: color};
       }
