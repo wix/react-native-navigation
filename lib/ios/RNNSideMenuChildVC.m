@@ -33,7 +33,7 @@
 
     [self.child didMoveToParentViewController:self];
 
-    [self.child render];
+    [super render];
 }
 
 - (void)setChild:(UIViewController<RNNLayoutProtocol> *)child {

@@ -3,6 +3,7 @@
 
 @interface RNNSideMenuController ()
 
+@property (nonatomic, strong) NSArray *childViewControllers;
 @property (readwrite) RNNSideMenuChildVC *center;
 @property (readwrite) RNNSideMenuChildVC *left;
 @property (readwrite) RNNSideMenuChildVC *right;
@@ -12,8 +13,9 @@
 @implementation RNNSideMenuController
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo creator:(id<RNNComponentViewCreator>)creator childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNBasePresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter {
-	[self setControllers:childViewControllers];
 	self = [super init];
+
+    self.childViewControllers = childViewControllers;
 	
 	self.presenter = presenter;
     [self.presenter bindViewController:self];
@@ -43,9 +45,12 @@
 
 - (void)render {
     [super render];
-    [self.center render];
-    [self.left render];
-    [self.right render];
+    UIViewController *currentChild = self.getCurrentChild;
+    for (UIViewController *vc in self.childViewControllers) {
+        if (vc != currentChild) {
+            [vc render];
+        }
+    }
 }
 
 - (void)setAnimationType:(NSString *)animationType {
@@ -102,8 +107,9 @@
 	}
 }
 
--(void)setControllers:(NSArray*)controllers {
-	for (id controller in controllers) {
+-(void)setChildViewControllers:(NSArray *)childViewControllers {
+    _childViewControllers = childViewControllers;
+	for (id controller in childViewControllers) {
 		if ([controller isKindOfClass:[RNNSideMenuChildVC class]]) {
 			RNNSideMenuChildVC *child = (RNNSideMenuChildVC*)controller;
 
