@@ -21,7 +21,7 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
-    private ComponentPresenter presenter;
+    private final ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
     private enum VisibilityState { Appear, Disappear }
     private VisibilityState lastVisibilityState = VisibilityState.Disappear;
@@ -114,7 +114,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public int getTopInset() {
-        int statusBarInset = resolveCurrentOptions().statusBar.isHiddenOrDrawBehind() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
+        int statusBarInset = resolveCurrentOptions(presenter.defaultOptions).statusBar.isHiddenOrDrawBehind() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 

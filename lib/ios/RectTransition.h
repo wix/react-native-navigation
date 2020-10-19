@@ -7,7 +7,7 @@
 						  to:(CGRect)to
 				  startDelay:(NSTimeInterval)startDelay
 					duration:(NSTimeInterval)duration
-			   interpolation:(Text *)interpolation;
+			    interpolator:(id<Interpolator>)interpolator;
 
 @property (nonatomic, readonly) CGRect from;
 @property (nonatomic, readonly) CGRect to;

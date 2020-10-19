@@ -292,32 +292,22 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
 	[modalToDismiss.getCurrentChild overrideOptions:options];
-	
-	[CATransaction begin];
-	[CATransaction setCompletionBlock:^{
-        [self->_eventEmitter sendOnNavigationCommandCompletion:dismissModal commandId:commandId];
-	}];
-	
+
     [_modalManager dismissModal:modalToDismiss completion:^{
+        [self->_eventEmitter sendOnNavigationCommandCompletion:dismissModal commandId:commandId];
         completion(modalToDismiss.topMostViewController.layoutInfo.componentId);
     }];
-	
-	[CATransaction commit];
 }
 
 - (void)dismissAllModals:(NSDictionary *)mergeOptions commandId:(NSString*)commandId completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
     RNNAssertMainQueue();
-	
-	[CATransaction begin];
-	[CATransaction setCompletionBlock:^{
-		[self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals commandId:commandId];
-		completion();
-	}];
+
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-	[_modalManager dismissAllModalsAnimated:[options.animations.dismissModal.enable getWithDefaultValue:YES] completion:nil];
-	
-	[CATransaction commit];
+	[_modalManager dismissAllModalsAnimated:[options.animations.dismissModal.enable getWithDefaultValue:YES] completion:^{
+        [self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals commandId:commandId];
+		completion();
+    }];
 }
 
 - (void)showOverlay:(NSDictionary *)layout commandId:(NSString*)commandId completion:(RNNTransitionWithComponentIdCompletionBlock)completion {

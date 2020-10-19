@@ -41,7 +41,7 @@ topBar: {
   background: {
     color: 'red'
   }
-}  
+}
 ```
 
 ## navBarCustomView
@@ -87,7 +87,7 @@ topBar: {
       alignment: 'center' | 'fill'
     }
   }
-}  
+}
 ```
 
 ## navBarCustomViewInitialProps
@@ -107,7 +107,7 @@ topBar: {
       passProps: {}
     }
   }
-} 
+}
 ```
 
 ## navBarButtonColor
@@ -137,7 +137,7 @@ TopBar visibility. When setting `visible: false`, you probably want to set `draw
 ```js
 topBar: {
   visible: false
-} 
+}
 ```
 
 ## navBarTransparent
@@ -148,7 +148,7 @@ topBar: {
   background: {
     color: 'transparent'
   }
-}  
+}
 ```
 
 ## drawUnderNavBar
@@ -157,7 +157,7 @@ Draw the screen behind the TopBar, Useful when the TopBar is toggled or transpar
 ```js
 topBar: {
   drawBehind: true
-}  
+}
 ```
 
 ## drawUnderTabBar
@@ -166,7 +166,7 @@ Draw the screen behind the BottomTabs, Useful when toggling BottomTabs or when t
 ```js
 bottomTabs: {
   drawBehind: true
-}  
+}
 ```
 
 ## tabBarHidden
@@ -174,7 +174,7 @@ BottomTabs visibility.
 ```js
 bottomTabs: {
   visible: false
-}  
+}
 ```
 
 The BottomTab's visibility can be toggled only on **Android** using `mergeOptions`:
@@ -193,7 +193,7 @@ StatusBar visibility. For android, also set `drawBehind: true`.
 ```js
 statusBar: {
   visible: false
-}  
+}
 ```
 
 ## statusBarTextColorScheme
@@ -244,7 +244,7 @@ Screen color, visible before the actual React view is rendered
 ```js
 layout: {
   backgroundColor: 'red'
-}  
+}
 ```
 
 ## orientation
@@ -283,7 +283,7 @@ topBar: {
       fontSize: 13
     }
   ]
-}  
+}
 ```
 
 ## navBarLeftButtonFontSize
@@ -328,7 +328,7 @@ Left button font weight
       }
     ]
   }
-}  
+}
 ```
 
 ## navBarRightButtonFontSize
@@ -367,11 +367,11 @@ topBar: {
       weight: '400'
     }
   ]
-} 
+}
 ```
 
 ## modalPresentationStyle
-Controls the behavior of screens displayed modally. 
+Controls the behavior of screens displayed modally.
 
 ### Options supported on iOS
 * `overCurrentContext` - Content is displayed over the previous screen. Useful for **transparent modals**
@@ -435,7 +435,7 @@ Remove TopBar border (hair line)
 ```js
 topBar: {
   noBorder: true
-}  
+}
 ```
 
 ## navBarBlur
@@ -448,7 +448,7 @@ topBar: {
     blur: true,
     transparent: true
   }
-}  
+}
 ```
 
 ## rootBackgroundImageName
@@ -486,16 +486,25 @@ Blur the area behind the StatusBar
 ```js
 statusBar: {
   blur: true
-}  
+}
+```
+
+## statusBarAnimate
+Animate between style changes of the StatusBar
+
+```js
+statusBar: {
+  animate: true
+}
 ```
 
 ## disabledBackGesture
-Disable the back (swipe) gesture used to pop screens 
+Disable the back (swipe) gesture used to pop screens
 
 ```js
 {
   popGesture: false
-} 
+}
 ```
 
 ## largeTitle
@@ -603,7 +612,7 @@ TopBar border height
 ```js
 topBar: {
   borderHeight: 1.3
-} 
+}
 ```
 
 # Unsupported options

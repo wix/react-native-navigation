@@ -1,4 +1,5 @@
 #import "RNNOptions.h"
+#import "Interpolator.h"
 
 @interface TransitionDetailsOptions : RNNOptions
 
@@ -6,7 +7,7 @@
 @property (nonatomic, strong) Double* to;
 @property (nonatomic, strong) TimeInterval* duration;
 @property (nonatomic, strong) TimeInterval* startDelay;
-@property (nonatomic, strong) Text* interpolation;
+@property (nonatomic, strong) id<Interpolator> interpolator;
 
 - (BOOL)hasAnimation;
 

@@ -60,12 +60,20 @@ type SystemItemIcon =
   | 'undo'
   | 'redo';
 type Interpolation =
-  | 'linear'
-  | 'accelerateDecelerate'
-  | 'decelerate'
-  | 'accelerate'
-  | 'decelerateAccelerate'
-  | 'overshoot';
+  | { type: 'accelerate'; factor?: number }
+  | { type: 'decelerate'; factor?: number }
+  | { type: 'decelerateAccelerate' }
+  | { type: 'accelerateDecelerate' }
+  | { type: 'linear' }
+  | { type: 'overshoot'; tension?: number }
+  | {
+      type: 'spring';
+      mass?: number;
+      damping?: number;
+      stiffness?: number;
+      allowsOverdamping?: boolean;
+      initialVelocity?: number;
+    };
 
 export interface OptionsSplitView {
   /**
@@ -119,6 +127,21 @@ export interface OptionsStatusBar {
    * #### (Android specific)
    */
   translucent?: boolean;
+  /**
+   * Animate StatusBar style changes.
+   * #### (iOS specific)
+   */
+  animated?: boolean;
+  /**
+   * Automatically hide the StatusBar when the TopBar hides.
+   * #### (iOS specific)
+   */
+  hideWithTopBar?: boolean;
+  /**
+   * Blur content beneath the StatusBar.
+   * #### (iOS specific)
+   */
+  blur?: boolean;
 }
 
 export interface OptionsLayout {
@@ -147,6 +170,12 @@ export interface OptionsLayout {
    * only works with DefaultOptions
    */
   direction?: 'rtl' | 'ltr' | 'locale';
+
+  /**
+   * Controls the application's preferred home indicator auto-hiding.
+   * #### (iOS specific)
+   */
+  autoHideHomeIndicator?: boolean;
 }
 
 export enum OptionsModalPresentationStyle {

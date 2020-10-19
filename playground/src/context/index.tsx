@@ -3,7 +3,7 @@ import React from 'react';
 const _context = {
   title: 'Title from global context',
   count: 0,
-  incrementCount: () => { },
+  incrementCount: () => {},
 };
 const contextWrapper = (component: any) => ({
   ..._context,

@@ -27,8 +27,13 @@ module.exports = {
           type: 'docsVersionDropdown',
           position: 'left',
         },
-        {to: 'docs/before-you-start', label: 'Docs', position: 'left', activeBaseRegex: '.*\/docs\/'},
-        {to: 'api/component', label: 'API', position: 'left', activeBaseRegex: '.*\/api\/'},
+        {
+          to: 'docs/before-you-start',
+          label: 'Docs',
+          position: 'left',
+          activeBaseRegex: '.*/docs/',
+        },
+        { to: 'api/component', label: 'API', position: 'left', activeBaseRegex: '.*/api/' },
         {
           href: 'https://github.com/wix/react-native-navigation',
           label: 'GitHub',
@@ -109,6 +114,6 @@ module.exports = {
           customCss: require.resolve('./src/css/custom.css'),
         },
       },
-    ]
+    ],
   ],
 };

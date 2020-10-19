@@ -3,7 +3,7 @@
 @implementation VerticalTranslationTransition
 
 - (CATransform3D)animateWithProgress:(CGFloat)p {
-    CGFloat y = [RNNInterpolator fromFloat:self.from toFloat:self.to precent:p interpolation:self.interpolation];
+    CGFloat y = [RNNInterpolator fromFloat:self.from toFloat:self.to precent:p interpolator:self.interpolator];
     return CATransform3DMakeTranslation(0, y, 0);
 }
 

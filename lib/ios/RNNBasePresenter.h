@@ -49,4 +49,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (BOOL)hidesBottomBarWhenPushed;
 
+- (BOOL)prefersHomeIndicatorAutoHidden;
+
 @end
