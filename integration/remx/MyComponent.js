@@ -7,7 +7,7 @@ const store = require('./MyStore');
 
 class MyComponent extends Component {
   static options = {
-    title: 'MyComponent'
+    title: 'MyComponent',
   };
 
   render() {
@@ -19,16 +19,14 @@ class MyComponent extends Component {
   }
 
   renderText(txt) {
-    return (
-      <Text>{txt}</Text>
-    );
+    return <Text>{txt}</Text>;
   }
 }
 
 function mapStateToProps() {
   return {
     name: store.getters.getName(),
-    age: store.getters.getAge()
+    age: store.getters.getAge(),
   };
 }
 

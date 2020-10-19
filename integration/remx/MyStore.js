@@ -2,8 +2,8 @@ const remx = require('remx');
 
 const state = remx.state({
   person: {
-    name: 'no name'
-  }
+    name: 'no name',
+  },
 });
 
 const setters = remx.setters({
@@ -13,7 +13,7 @@ const setters = remx.setters({
 
   setAge(age) {
     state.person.age = age;
-  }
+  },
 });
 
 const getters = remx.getters({
@@ -23,10 +23,10 @@ const getters = remx.getters({
 
   getAge() {
     return state.person.age;
-  }
+  },
 });
 
 module.exports = {
   setters,
-  getters
+  getters,
 };

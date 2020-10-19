@@ -47,7 +47,7 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           onPress={this.popNoneExistent}
         />
         <Button
-          label='Push Lazily Registered Screen'
+          label="Push Lazily Registered Screen"
           testID={PUSH_LAZY_BTN}
           onPress={this.pushLazilyRegistered}
         />
