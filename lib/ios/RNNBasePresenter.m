@@ -28,10 +28,6 @@
     _prefersHomeIndicatorAutoHidden = [withDefault.layout.autoHideHomeIndicator getWithDefaultValue:NO];
 }
 
-- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-    _defaultOptions = defaultOptions;
-}
-
 - (void)componentDidAppear {
     
 }

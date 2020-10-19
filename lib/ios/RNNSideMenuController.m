@@ -34,10 +34,6 @@
 	return self;
 }
 
-- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-	[self.presenter setDefaultOptions:defaultOptions];
-}
-
 - (void)loadView {
     [super loadView];
     [self setCenterViewController:self.center];

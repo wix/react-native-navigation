@@ -198,6 +198,7 @@
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
 	objc_setAssociatedObject(self, @selector(defaultOptions), defaultOptions, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.presenter.defaultOptions = defaultOptions;
 }
 
 - (RNNLayoutInfo *)layoutInfo {

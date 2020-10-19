@@ -16,11 +16,6 @@
     return self;
 }
 
-- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-	[super setDefaultOptions:defaultOptions];
-	[self.presenter setDefaultOptions:defaultOptions];
-}
-
 - (void)viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 	[self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
