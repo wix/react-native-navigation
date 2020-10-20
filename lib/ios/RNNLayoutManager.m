@@ -21,10 +21,6 @@
 	}
 	
 	if (parentViewController.presentedViewController) {
-		if ([parentViewController.presentedViewController.layoutInfo.componentId isEqualToString:componentId]) {
-			return parentViewController.presentedViewController;
-		}
-		
 		UIViewController *modalResult = [self findChildComponentForParent:parentViewController.presentedViewController forId:componentId];
 		if (modalResult) {
 			return modalResult;
