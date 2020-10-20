@@ -4,6 +4,6 @@
 
 @interface RNNLayoutManager : NSObject
 
-+ (UIViewController *)findComponentForId:(NSString *)componentId;
+- (UIViewController *)findComponentForId:(NSString *)componentId;
 
 @end

@@ -4,7 +4,7 @@
 
 @implementation RNNLayoutManager
 
-+ (UIViewController *)findComponentForId:(NSString *)componentId {
+- (UIViewController *)findComponentForId:(NSString *)componentId {
 	for (UIWindow *window in UIApplication.sharedApplication.windows) {
 		UIViewController *result = [self findChildComponentForParent:window.rootViewController forId:componentId];
 		if (result) {
@@ -15,7 +15,7 @@
 	return nil;
 }
 
-+ (UIViewController *)findChildComponentForParent:(UIViewController *)parentViewController forId:(NSString *)componentId {
+- (UIViewController *)findChildComponentForParent:(UIViewController *)parentViewController forId:(NSString *)componentId {
 	if ([parentViewController.layoutInfo.componentId isEqualToString:componentId]) {
 		return parentViewController;
 	}

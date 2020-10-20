@@ -19,4 +19,6 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props,
 
 @property(readonly, nonatomic, strong) RCTBridge *bridge;
 
+- (UIViewController *)findComponentForId:(NSString *)componentId;
+
 @end

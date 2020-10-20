@@ -33,7 +33,7 @@
 }
 
 + (UIViewController *)findViewController:(NSString *)componentId {
-    return [RNNLayoutManager findComponentForId:componentId];
+    return [[ReactNativeNavigation sharedInstance].bridgeManager findComponentForId:componentId];
 }
 
 

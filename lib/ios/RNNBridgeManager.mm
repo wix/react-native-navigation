@@ -7,6 +7,7 @@
 #import <React/RCTSurfacePresenter.h>
 #endif
 
+#import "RNNLayoutManager.h"
 #import "RNNEventEmitter.h"
 #import "RNNSplashScreen.h"
 #import "RNNBridgeModule.h"
@@ -23,6 +24,7 @@
 @property (nonatomic, strong, readwrite) RCTBridge *bridge;
 @property (nonatomic, strong, readwrite) RNNExternalComponentStore *store;
 @property (nonatomic, strong, readwrite) RNNReactComponentRegistry *componentRegistry;
+@property (nonatomic, strong, readonly) RNNLayoutManager *layoutManager;
 @property (nonatomic, strong, readonly) RNNOverlayManager *overlayManager;
 @property (nonatomic, strong, readonly) RNNModalManager *modalManager;
 
@@ -44,7 +46,7 @@
 		_mainWindow = mainWindow;
 		_launchOptions = launchOptions;
 		_delegate = delegate;
-		
+
 		_overlayManager = [RNNOverlayManager new];
 		
 		_store = [RNNExternalComponentStore new];
@@ -82,15 +84,21 @@
 	RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
     RNNModalManagerEventHandler* modalManagerEventHandler = [[RNNModalManagerEventHandler alloc] initWithEventEmitter:eventEmitter];
     _modalManager = [[RNNModalManager alloc] initWithBridge:bridge eventHandler:modalManagerEventHandler];
+
+    _layoutManager = [[RNNLayoutManager alloc] init];
     
 	id<RNNComponentViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge eventEmitter:eventEmitter];
 	_componentRegistry = [[RNNReactComponentRegistry alloc] initWithCreator:rootViewCreator];
 	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter store:_store componentRegistry:_componentRegistry andBridge:bridge bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
     RNNSetRootAnimator* setRootAnimator = [RNNSetRootAnimator new];
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter modalManager:_modalManager overlayManager:_overlayManager setRootAnimator:setRootAnimator mainWindow:_mainWindow];
+	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory layoutManager:_layoutManager eventEmitter:eventEmitter modalManager:_modalManager overlayManager:_overlayManager setRootAnimator:setRootAnimator mainWindow:_mainWindow];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 
 	return @[bridgeModule,eventEmitter];
+}
+
+- (UIViewController *)findComponentForId:(NSString *)componentId {
+    return [_layoutManager findComponentForId:componentId];
 }
 
 # pragma mark - JavaScript & Bridge Notifications
