@@ -80,8 +80,11 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_modalManager dismissAllModalsAnimated:NO completion:nil];
     
     UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
+    [_layoutManager addPendingViewController:vc];
+
     RNNNavigationOptions* optionsWithDefault = vc.resolveOptionsWithDefault;
     vc.waitForRender = [optionsWithDefault.animations.setRoot.waitForRender getWithDefaultValue:NO];
+
     __weak UIViewController* weakVC = vc;
     [vc setReactViewReadyCallback:^{
         [self->_mainWindow.rootViewController destroy];
@@ -90,6 +93,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
         [self->_setRootAnimator animate:self->_mainWindow
                          duration:[optionsWithDefault.animations.setRoot.alpha.duration getWithDefaultValue:0]
                       completion:^{
+            [self->_layoutManager removePendingViewController:weakVC];
             [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId];
             completion(weakVC.layoutInfo.componentId);
         }];
@@ -131,6 +135,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
     RNNAssertMainQueue();
 	
 	UIViewController *newVc = [_controllerFactory createLayout:layout];
+    [_layoutManager addPendingViewController:newVc];
+
 	UIViewController *fromVC = [_layoutManager findComponentForId:componentId];
 	
 	if ([[newVc.resolveOptionsWithDefault.preview.reactTag getWithDefaultValue:@(0)] floatValue] > 0) {
@@ -145,6 +151,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 				if ([newVc.resolveOptionsWithDefault.preview.commit getWithDefaultValue:NO]) {
 					[CATransaction begin];
 					[CATransaction setCompletionBlock:^{
+                        [self->_layoutManager removePendingViewController:newVc];
 						[self->_eventEmitter sendOnNavigationCommandCompletion:push commandId:commandId ];
 						completion(newVc.layoutInfo.componentId);
 					}];
@@ -176,6 +183,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
         __weak UIViewController* weakNewVC = newVc;
         [newVc setReactViewReadyCallback:^{
             [fromVC.stack push:weakNewVC onTop:fromVC animated:[weakNewVC.resolveOptionsWithDefault.animations.push.enable getWithDefaultValue:YES] completion:^{
+                [self->_layoutManager removePendingViewController:weakNewVC];
                 [self->_eventEmitter sendOnNavigationCommandCompletion:push commandId:commandId];
                 completion(weakNewVC.layoutInfo.componentId);
             } rejection:rejection];
@@ -195,14 +203,20 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			[viewController render];
 		}
 	}
-	UIViewController *newVC = childViewControllers.lastObject;
-	UIViewController *fromVC = [_layoutManager findComponentForId:componentId];
-	RNNNavigationOptions* options = newVC.resolveOptionsWithDefault;
-	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
 
+	UIViewController *newVC = childViewControllers.lastObject;
+    [_layoutManager addPendingViewController:newVC];
+
+	UIViewController *fromVC = [_layoutManager findComponentForId:componentId];
+
+	RNNNavigationOptions* options = newVC.resolveOptionsWithDefault;
     newVC.waitForRender = ([options.animations.setStackRoot.waitForRender getWithDefaultValue:NO]);
+
+    __weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
+    __weak UIViewController *weakNewVC = newVC;
     [newVC setReactViewReadyCallback:^{
         [fromVC.stack setStackChildren:childViewControllers fromViewController:fromVC animated:[options.animations.setStackRoot.enable getWithDefaultValue:YES] completion:^{
+            [self->_layoutManager removePendingViewController:weakNewVC];
             [weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot commandId:commandId];
             completion();
         } rejection:rejection];
@@ -271,10 +285,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
     RNNAssertMainQueue();
 	
 	UIViewController *newVc = [_controllerFactory createLayout:layout];
+    [_layoutManager addPendingViewController:newVc];
+
     __weak UIViewController* weakNewVC = newVc;
     newVc.waitForRender = [newVc.resolveOptionsWithDefault.animations.showModal shouldWaitForRender];
     [newVc setReactViewReadyCallback:^{
         [self->_modalManager showModal:weakNewVC animated:[weakNewVC.resolveOptionsWithDefault.animations.showModal.enable getWithDefaultValue:YES] completion:^(NSString *componentId) {
+            [self->_layoutManager removePendingViewController:weakNewVC];
             [self->_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId];
             completion(weakNewVC.layoutInfo.componentId);
         }];
@@ -318,6 +335,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
     RNNAssertMainQueue();
     
 	UIViewController* overlayVC = [_controllerFactory createLayout:layout];
+    [_layoutManager addPendingViewController:overlayVC];
+
     __weak UIViewController* weakOverlayVC = overlayVC;
     [overlayVC setReactViewReadyCallback:^{UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         overlayWindow.rootViewController = weakOverlayVC;
@@ -326,7 +345,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
         } else {
             [self->_overlayManager showOverlayWindow:overlayWindow];
         }
-        
+
+        [self->_layoutManager removePendingViewController:weakOverlayVC];
         [self->_eventEmitter sendOnNavigationCommandCompletion:showOverlay commandId:commandId];
         completion(weakOverlayVC.layoutInfo.componentId);
         

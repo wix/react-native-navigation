@@ -2,9 +2,43 @@
 #import "RNNLayoutProtocol.h"
 #import "UIViewController+LayoutProtocol.h"
 
+@interface RNNLayoutManager ()
+
+@property (nonatomic, strong) NSHashTable<UIViewController *> *pendingViewControllers;
+
+@end
+
 @implementation RNNLayoutManager
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _pendingViewControllers = [NSHashTable weakObjectsHashTable];
+    }
+    return self;
+}
+
+- (void)addPendingViewController:(UIViewController *)vc {
+    if (!vc) {
+        return;
+    }
+    [self.pendingViewControllers addObject:vc];
+}
+
+- (void)removePendingViewController:(UIViewController *)vc {
+    if (!vc) {
+        return;
+    }
+    [self.pendingViewControllers removeObject:vc];
+}
+
 - (UIViewController *)findComponentForId:(NSString *)componentId {
+    for (UIViewController *vc in self.pendingViewControllers) {
+        UIViewController *result = [self findChildComponentForParent:vc forId:componentId];
+        if (result) {
+            return result;
+        }
+    }
+
 	for (UIWindow *window in UIApplication.sharedApplication.windows) {
 		UIViewController *result = [self findChildComponentForParent:window.rootViewController forId:componentId];
 		if (result) {
