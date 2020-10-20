@@ -41,11 +41,11 @@
 @property (nonatomic, strong) id mainWindow;
 @property (nonatomic, strong) id sharedApplication;
 @property (nonatomic, strong) id controllerFactory;
+@property (nonatomic, strong) id layoutManager;
 @property (nonatomic, strong) id overlayManager;
 @property (nonatomic, strong) id eventEmmiter;
 @property (nonatomic, strong) id setRootAnimator;
 @property (nonatomic, strong) id creator;
-@property (nonatomic, strong) id layoutManagerClassMock;
 
 @end
 
@@ -55,14 +55,14 @@
 	[super setUp];
 	self.creator = [OCMockObject partialMockForObject:[RNNTestRootViewCreator new]];
 	self.mainWindow = [OCMockObject partialMockForObject:[UIWindow new]];
+	self.layoutManager = [OCMockObject partialMockForObject:[[RNNLayoutManager alloc] init]];
 	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
 	self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
 	self.modalManager = [OCMockObject partialMockForObject:[RNNModalManager new]];
 	self.setRootAnimator = [OCMockObject partialMockForObject:[RNNSetRootAnimator new]];
-	self.layoutManagerClassMock = OCMClassMock([RNNLayoutManager class]);
 	
 	self.controllerFactory = [OCMockObject partialMockForObject:[[RNNControllerFactory alloc] initWithRootViewCreator:nil eventEmitter:self.eventEmmiter store:nil componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]]];
-	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory eventEmitter:self.eventEmmiter modalManager:self.modalManager overlayManager:self.overlayManager setRootAnimator:_setRootAnimator mainWindow:_mainWindow];
+	self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory layoutManager:self.layoutManager eventEmitter:self.eventEmmiter modalManager:self.modalManager overlayManager:self.overlayManager setRootAnimator:_setRootAnimator mainWindow:_mainWindow];
 	self.vc1 = [self generateComponentWithComponentId:@"1"];
 	self.vc2 = [self generateComponentWithComponentId:@"2"];
 	self.vc3 = [self generateComponentWithComponentId:@"3"];
@@ -96,7 +96,7 @@
 - (NSArray*)getPublicMethodNamesForObject:(NSObject*)obj {
 	NSMutableArray* skipMethods = [NSMutableArray new];
 	
-	[skipMethods addObject:@"initWithControllerFactory:eventEmitter:modalManager:overlayManager:setRootAnimator:mainWindow:"];
+	[skipMethods addObject:@"initWithControllerFactory:layoutManager:eventEmitter:modalManager:overlayManager:setRootAnimator:mainWindow:"];
 	[skipMethods addObject:@"assertReady"];
 	[skipMethods addObject:@"setReadyToReceiveCommands:"];
 	[skipMethods addObject:@"readyToReceiveCommands"];
@@ -214,9 +214,9 @@
 	[self.uut setReadyToReceiveCommands:true];
 	NSString* componentId = @"componentId";
 
-	[[self.layoutManagerClassMock expect] findComponentForId:componentId];
+	[[self.layoutManager expect] findComponentForId:componentId];
 	[self.uut dismissOverlay:componentId commandId:@"" completion:^{} rejection:^(NSString *code, NSString *message, NSError *error) {}];
-	[self.layoutManagerClassMock verify];
+	[self.layoutManager verify];
 }
 
 - (void)testDismissOverlay_dismissReturnedViewController {
@@ -224,7 +224,7 @@
 	NSString* componentId = @"componentId";
 	UIViewController* returnedView = [UIViewController new];
 	
-	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:componentId])).andReturn(returnedView);
+	OCMStub([self.layoutManager findComponentForId:componentId]).andReturn(returnedView);
 	
 	[[self.overlayManager expect] dismissOverlay:returnedView];
 	[self.uut dismissOverlay:componentId commandId:@"" completion:^{} rejection:^(NSString *code, NSString *message, NSError *error) {}];
@@ -245,7 +245,7 @@
 	[self.uut setReadyToReceiveCommands:true];
 	NSString* componentId = @"componentId";
 	
-	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:componentId])).andReturn([UIViewController new]);
+	OCMStub([self.layoutManager findComponentForId:componentId]).andReturn([UIViewController new]);
 	
 	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"dismissOverlay" commandId:[OCMArg any]];
 	[self.uut dismissOverlay:componentId commandId:@"" completion:^{
@@ -267,7 +267,7 @@
 - (void)testSetStackRoot_resetStackWithSingleComponent {
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(@[self.vc2]);
 	[self.uut setReadyToReceiveCommands:true];
-	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:@"vc1"])).andReturn(_nvc);
+	OCMStub([self.layoutManager findComponentForId:@"vc1"]).andReturn(_nvc);
 	self.vc2.options.animations.setStackRoot.enable = [[Bool alloc] initWithBOOL:NO];
 	
 	[self.uut setStackRoot:@"vc1" commandId:@"" children:nil completion:^{
@@ -283,7 +283,7 @@
 - (void)testSetStackRoot_setMultipleChildren {
 	NSArray* newViewControllers = @[_vc1, _vc3];
 
-	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:@"vc1"])).andReturn(_nvc);
+	OCMStub([self.layoutManager findComponentForId:@"vc1"]).andReturn(_nvc);
 	OCMStub([self.controllerFactory createChildrenLayout:[OCMArg any]]).andReturn(newViewControllers);
 	[self.uut setReadyToReceiveCommands:true];
 	
@@ -538,7 +538,7 @@
 	
 	OCMStub([self.modalManager dismissModal:OCMArg.any completion:OCMArg.invokeBlock]);
 	OCMStub(child.isModal).andReturn(YES);
-	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:@"child"])).andReturn(child);
+	OCMStub([self.layoutManager findComponentForId:@"child"]).andReturn(child);
 	
 	[self.uut dismissModal:@"child" commandId:@"commandId" mergeOptions:nil completion:^(NSString * _Nonnull componentId) {
 		XCTAssertTrue([componentId isEqualToString:@"stack"]);
@@ -554,7 +554,7 @@
 	RNNComponentViewController* pushedComponent = [RNNComponentViewController createWithComponentId:expectedComponentId];
 	__unused RNNStackController* stack = [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo creator:nil options:nil defaultOptions:nil presenter:nil eventEmitter:nil childViewControllers:@[currentComponent]];
 
-	OCMStub(ClassMethod([self.layoutManagerClassMock findComponentForId:@"currentComponent"])).andReturn(currentComponent);
+	OCMStub([self.layoutManager findComponentForId:@"currentComponent"]).andReturn(currentComponent);
 	OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(pushedComponent);
 	
 	[[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"push" commandId:@"pushCommandId"];
