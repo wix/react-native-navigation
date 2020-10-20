@@ -1,4 +1,3 @@
-
 #import "RNNLayoutManager.h"
 #import "RNNLayoutProtocol.h"
 #import "UIViewController+LayoutProtocol.h"
@@ -6,8 +5,8 @@
 @implementation RNNLayoutManager
 
 + (UIViewController *)findComponentForId:(NSString *)componentId {
-	for (UIWindow* window in UIApplication.sharedApplication.windows) {
-		UIViewController* result = [self findChildComponentForParent:window.rootViewController forId:componentId];
+	for (UIWindow *window in UIApplication.sharedApplication.windows) {
+		UIViewController *result = [self findChildComponentForParent:window.rootViewController forId:componentId];
 		if (result) {
 			return result;
 		}
@@ -26,15 +25,14 @@
 			return parentViewController.presentedViewController;
 		}
 		
-		UIViewController* modalResult = [self findChildComponentForParent:parentViewController.presentedViewController forId:componentId];
+		UIViewController *modalResult = [self findChildComponentForParent:parentViewController.presentedViewController forId:componentId];
 		if (modalResult) {
 			return modalResult;
 		}
-		
 	}
 	
-	for (UIViewController* childVC in parentViewController.childViewControllers) {
-		UIViewController* result = [self findChildComponentForParent:childVC forId:componentId];
+	for (UIViewController *childVC in parentViewController.childViewControllers) {
+		UIViewController *result = [self findChildComponentForParent:childVC forId:componentId];
 		if (result) {
 			return result;
 		}
@@ -42,6 +40,5 @@
 	
 	return nil;
 }
-
 
 @end
