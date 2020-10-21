@@ -31,7 +31,8 @@ const pop = (selfOrCompId: SelfOrCompId, mergeOptions?: Options) =>
 const showModal = (screen: string | Layout, options?: Options) =>
   Navigation.showModal(isString(screen) ? stack(component(screen, options)) : screen);
 
-const dismissModal = (selfOrCompId: SelfOrCompId) => Navigation.dismissModal(compId(selfOrCompId));
+const dismissModal = (selfOrCompId: SelfOrCompId, mergeOptions?: Options) =>
+  Navigation.dismissModal(compId(selfOrCompId), mergeOptions);
 
 const dismissAllModals = () => Navigation.dismissAllModals();
 

@@ -14,12 +14,11 @@
 
 RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFromJson:json])
 
-
-#pragma mark Private
-
 + (id<Interpolator>)defaultInterpolator {
     return [[LinearInterpolator alloc] init];
 }
+
+#pragma mark Private
 
 + (id<Interpolator>)interpolatorFromJson:(id)json {
     if (json == nil || ![json isKindOfClass:[NSDictionary class]]) {
