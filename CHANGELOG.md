@@ -41,9 +41,6 @@ Replace it with
 >```
 >platform :ios, '11.0'
 >```
->
->Starting with v7.0.0, the support for iOS 10 was dropped. The corresponding podspec was correct in this release to reflect that change.
-
 
 ### Android
 
