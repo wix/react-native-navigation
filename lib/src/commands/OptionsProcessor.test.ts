@@ -3,7 +3,7 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
-import { mock, when, anyString, instance, anyNumber, verify } from 'ts-mockito';
+import { mock, when, instance, anyNumber, verify } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Deprecations } from './Deprecations';
@@ -25,7 +25,9 @@ describe('navigation options', () => {
     const assetService = instance(mockedAssetService);
 
     const mockedColorService = mock(ColorService) as ColorService;
-    when(mockedColorService.toNativeColor(anyString())).thenReturn(666);
+    when(mockedColorService.toNativeColor('red')).thenReturn(0xffff0000);
+    when(mockedColorService.toNativeColor('green')).thenReturn(0xff00ff00);
+    when(mockedColorService.toNativeColor('blue')).thenReturn(0xff0000ff);
     const colorService = instance(mockedColorService);
     optionProcessorsRegistry = new OptionProcessorsStore();
     uut = new OptionsProcessor(
@@ -172,8 +174,8 @@ describe('navigation options', () => {
     };
     uut.processOptions(options, CommandName.SetRoot);
     expect(options).toEqual({
-      statusBar: { backgroundColor: 666 },
-      topBar: { background: { color: 666 } },
+      statusBar: { backgroundColor: 0xffff0000 },
+      topBar: { background: { color: 0xff0000ff } },
     });
   });
 
@@ -278,5 +280,42 @@ describe('navigation options', () => {
         bottomTabs: { visible: false },
       }
     );
+  });
+
+  it('transform searchBar bool to object', () => {
+    const options = { topBar: { searchBar: true as any } };
+    uut.processOptions(options, CommandName.SetRoot);
+    expect(options.topBar.searchBar).toStrictEqual({
+      visible: true,
+      hideOnScroll: false,
+      hideTopBarOnFocus: false,
+      obscuresBackgroundDuringPresentation: false,
+      backgroundColor: null,
+      tintColor: null,
+      placeholder: '',
+    });
+  });
+
+  it('transform searchBar bool to object and merges in deprecated values', () => {
+    const options = {
+      topBar: {
+        searchBar: true as any,
+        searchBarHiddenWhenScrolling: true,
+        hideNavBarOnFocusSearchBar: true,
+        searchBarBackgroundColor: 'red',
+        searchBarTintColor: 'green',
+        searchBarPlaceholder: 'foo',
+      },
+    };
+    uut.processOptions(options, CommandName.SetRoot);
+    expect(options.topBar.searchBar).toStrictEqual({
+      visible: true,
+      hideOnScroll: true,
+      hideTopBarOnFocus: true,
+      obscuresBackgroundDuringPresentation: false,
+      backgroundColor: 0xffff0000,
+      tintColor: 0xff00ff00,
+      placeholder: 'foo',
+    });
   });
 });
