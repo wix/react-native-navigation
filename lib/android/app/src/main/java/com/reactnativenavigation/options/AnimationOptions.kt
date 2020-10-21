@@ -1,12 +1,12 @@
 package com.reactnativenavigation.options
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.util.Property
 import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.util.TypedValue.COMPLEX_UNIT_FRACTION
 import android.view.View
 import android.view.View.*
+import com.reactnativenavigation.options.ElementTransitions.Companion.parse
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.options.params.NullBool
 import com.reactnativenavigation.options.params.NullText
@@ -14,7 +14,6 @@ import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.options.parsers.BoolParser
 import com.reactnativenavigation.options.parsers.TextParser
 import com.reactnativenavigation.utils.CollectionUtils
-import com.reactnativenavigation.utils.CollectionUtils.forEach
 import org.json.JSONObject
 import java.util.*
 import kotlin.math.max
@@ -30,6 +29,8 @@ open class AnimationOptions(json: JSONObject?) {
                     "id" -> id = TextParser.parse(json, key)
                     "enable", "enabled" -> enabled = BoolParser.parse(json, key)
                     "waitForRender" -> waitForRender = BoolParser.parse(json, key)
+                    "sharedElementTransitions" -> sharedElements = SharedElements.parse(json)
+                    "elementTransitions" -> elementTransitions = ElementTransitions.parse(json)
                     else -> valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)))
                 }
             }
@@ -39,6 +40,8 @@ open class AnimationOptions(json: JSONObject?) {
     @JvmField var id: Text = NullText()
     @JvmField var enabled: Bool = NullBool()
     @JvmField var waitForRender: Bool = NullBool()
+    @JvmField var sharedElements = SharedElements()
+    @JvmField var elementTransitions = ElementTransitions()
     private var valueOptions = HashSet<ValueAnimationOptions>()
 
     fun mergeWith(other: AnimationOptions) {
