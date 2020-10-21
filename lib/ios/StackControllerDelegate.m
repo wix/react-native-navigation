@@ -30,7 +30,7 @@
         RNNScreenTransition* screenTransition = toVC.resolveOptions.animations.push;
 		return [[TransitionDelegate alloc] initWithContentTransition:screenTransition.content elementTransitions:screenTransition.elementTransitions sharedElementTransitions:screenTransition.sharedElementTransitions duration:screenTransition.maxDuration bridge:_eventEmitter.bridge];
 	} else if (operation == UINavigationControllerOperationPop && fromVC.resolveOptionsWithDefault.animations.pop.hasCustomAnimation) {
-        RNNScreenTransition* screenTransition = toVC.resolveOptions.animations.pop;
+        RNNScreenTransition* screenTransition = fromVC.resolveOptions.animations.pop;
         return [[ReversedTransitionDelegate alloc] initWithContentTransition:screenTransition.content elementTransitions:screenTransition.elementTransitions sharedElementTransitions:screenTransition.sharedElementTransitions
                                                                     duration:screenTransition.maxDuration bridge:_eventEmitter.bridge];
 	} else {

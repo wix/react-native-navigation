@@ -7,12 +7,10 @@ export const SET_DURATION = 500;
 export function buildSharedElementAnimations(car: CarItem): AnimationOptions {
   return {
     showModal: {
-      content: {
-        alpha: {
-          from: 0,
-          to: 1,
-          duration: SET_DURATION,
-        },
+      alpha: {
+        from: 0,
+        to: 1,
+        duration: SET_DURATION,
       },
       sharedElementTransitions: [
         {
@@ -30,12 +28,10 @@ export function buildSharedElementAnimations(car: CarItem): AnimationOptions {
       ],
     },
     dismissModal: {
-      content: {
-        alpha: {
-          from: 1,
-          to: 0,
-          duration: SET_DURATION,
-        },
+      alpha: {
+        from: 1,
+        to: 0,
+        duration: SET_DURATION,
       },
       sharedElementTransitions: [
         {
@@ -52,12 +48,10 @@ export function buildSharedElementAnimations(car: CarItem): AnimationOptions {
 export function buildStorySharedElementAnimations(car: CarItem): AnimationOptions {
   return {
     showModal: {
-      content: {
-        alpha: {
-          from: 0,
-          to: 1,
-          duration: SET_DURATION,
-        },
+      alpha: {
+        from: 0,
+        to: 1,
+        duration: SET_DURATION,
       },
       sharedElementTransitions: [
         {
@@ -81,12 +75,10 @@ export function buildStorySharedElementAnimations(car: CarItem): AnimationOption
       ],
     },
     dismissModal: {
-      content: {
-        alpha: {
-          from: 1,
-          to: 0,
-          duration: SET_DURATION,
-        },
+      alpha: {
+        from: 1,
+        to: 0,
+        duration: SET_DURATION,
       },
       sharedElementTransitions: [
         {
