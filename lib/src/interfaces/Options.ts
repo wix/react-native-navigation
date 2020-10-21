@@ -1094,6 +1094,17 @@ export interface ViewAnimationOptions extends ScreenAnimationOptions {
   id?: string;
 }
 
+export interface ModalAnimationOptions extends ViewAnimationOptions {
+  /**
+   * Animations to be applied on elements which are shared between the appearing and disappearing screens
+   */
+  sharedElementTransitions?: SharedElementTransition[];
+  /**
+   * Animations to be applied on views in the appearing or disappearing screens
+   */
+  elementTransitions?: ElementTransition[];
+}
+
 /**
  * Used for describing stack commands animations.
  */
@@ -1152,11 +1163,11 @@ export interface AnimationOptions {
   /**
    * Configure what animates when modal is shown
    */
-  showModal?: ViewAnimationOptions;
+  showModal?: ModalAnimationOptions;
   /**
    * Configure what animates when modal is dismissed
    */
-  dismissModal?: ViewAnimationOptions;
+  dismissModal?: ModalAnimationOptions;
 }
 
 /**

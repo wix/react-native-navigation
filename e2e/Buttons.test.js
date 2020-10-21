@@ -32,10 +32,10 @@ describe('Buttons', () => {
 
   it('custom button is clickable', async () => {
     await elementByLabel('Two').tap();
-    await expect(elementByLabel('Thanks for that :)')).toExist();
+    await expect(elementByLabel('Times created: 1')).toExist();
   });
 
-  it(':ios: Reseting buttons should unmount button react view', async () => {
+  it(':ios: Resetting buttons should unmount button react view', async () => {
     await elementById(TestIDs.SHOW_LIFECYCLE_BTN).tap();
     await elementById(TestIDs.RESET_BUTTONS).tap();
     await expect(elementByLabel('Button component unmounted')).toBeVisible();
@@ -55,5 +55,11 @@ describe('Buttons', () => {
   it('resizes title component when a button is added with mergeOptions', async () => {
     await elementById(TestIDs.ADD_BUTTON).tap();
     await elementById(TestIDs.BUTTON_THREE).tap();
+  });
+
+  it('Button component is not recreated if it has a predefined componentId', async () => {
+    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.ROUND_BUTTON).tap();
+    await expect(elementByLabel('Times created: 1')).toBeVisible();
   });
 });
