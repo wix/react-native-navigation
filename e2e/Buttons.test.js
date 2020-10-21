@@ -32,7 +32,7 @@ describe('Buttons', () => {
 
   it('custom button is clickable', async () => {
     await elementByLabel('Two').tap();
-    await expect(elementByLabel('Thanks for that :)')).toExist();
+    await expect(elementByLabel('Times created: 1')).toExist();
   });
 
   it(':ios: Resetting buttons should unmount button react view', async () => {
