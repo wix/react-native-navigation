@@ -1,12 +1,14 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "UIViewController+LayoutProtocol.h"
-#import "ModalTransitionDelegate.h"
-#import "ModalDismissTransitionDelegate.h"
+#import "TransitionDelegate.h"
+#import "ReversedTransitionDelegate.h"
 #import "RNNConvert.h"
+#import "ViewAnimationOptions.h"
 
 @interface RNNModalManager ()
-@property (nonatomic, strong) ModalTransitionDelegate* modalTransitionDelegate;
+@property (nonatomic, strong) TransitionDelegate* showModalTransitionDelegate;
+@property (nonatomic, strong) TransitionDelegate* dismissModalTransitionDelegate;
 @end
 
 @implementation RNNModalManager {
@@ -46,8 +48,10 @@
 	}
 	    
 	if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
-        _modalTransitionDelegate = [[ModalTransitionDelegate alloc] initWithContentTransition:viewController.resolveOptionsWithDefault.animations.showModal bridge:_bridge];
-        viewController.transitioningDelegate = _modalTransitionDelegate;
+        ViewAnimationOptions* viewAnimationOptions = viewController.resolveOptionsWithDefault.animations.showModal;
+        _showModalTransitionDelegate = [[TransitionDelegate alloc] initWithContentTransition:viewAnimationOptions elementTransitions:viewAnimationOptions.elementTransitions sharedElementTransitions:viewAnimationOptions.sharedElementTransitions duration:viewAnimationOptions.maxDuration bridge:_bridge];
+        
+        viewController.transitioningDelegate = _showModalTransitionDelegate;
         viewController.modalPresentationStyle = UIModalPresentationCustom;
 	}
 	
@@ -102,8 +106,11 @@
 	UIViewController* topPresentedVC = [self topPresentedVC];
 	
 	if (optionsWithDefault.animations.dismissModal.hasAnimation) {
-        _modalTransitionDelegate = [[ModalDismissTransitionDelegate alloc] initWithContentTransition:modalToDismiss.resolveOptionsWithDefault.animations.dismissModal bridge:_bridge];
-		[self topViewControllerParent:modalToDismiss].transitioningDelegate = _modalTransitionDelegate;
+        ViewAnimationOptions* viewAnimationOptions = modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
+        _dismissModalTransitionDelegate = [[ReversedTransitionDelegate alloc] initWithContentTransition:viewAnimationOptions elementTransitions:viewAnimationOptions.elementTransitions sharedElementTransitions:viewAnimationOptions.sharedElementTransitions duration:viewAnimationOptions.maxDuration bridge:_bridge];
+
+        modalToDismiss.modalPresentationStyle = UIModalPresentationCustom;
+		[self topViewControllerParent:modalToDismiss].transitioningDelegate = _dismissModalTransitionDelegate;
 	}
 
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {

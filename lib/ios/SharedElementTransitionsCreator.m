@@ -14,8 +14,8 @@
                                   containerView:(UIView *)containerView {
     NSMutableArray<DisplayLinkAnimatorDelegate>* transitions = [NSMutableArray<DisplayLinkAnimatorDelegate> new];
     for (SharedElementTransitionOptions* transitionOptions in sharedElementTransitions) {
-        UIView *fromView = [RNNElementFinder findElementForId:transitionOptions.fromId inView:fromVC.reactView];
-        UIView *toView = [RNNElementFinder findElementForId:transitionOptions.toId inView:toVC.reactView];
+        UIView *fromView = [RNNElementFinder findElementForId:transitionOptions.fromId inView:fromVC.presentedComponentViewController.reactView];
+        UIView *toView = [RNNElementFinder findElementForId:transitionOptions.toId inView:toVC.presentedComponentViewController.reactView];
         if (fromView == nil || toView == nil) {
             break;
         }

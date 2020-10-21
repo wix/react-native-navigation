@@ -18,36 +18,34 @@ const STORY_SIZE = 60;
 // TODO: 4. Add topBar animation support so it slides out nicely (translateY): (no issue for that yet?)
 
 const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
-  const onCarPressed = useCallback(
-    (car: CarItem) => {
-      const navigationAnimations = buildSharedElementAnimations(car);
-      Navigation.push(componentId, {
-        component: {
-          name: Screens.CarDetailsScreen,
-          passProps: { car: car },
-          options: {
-            animations: navigationAnimations,
+  const onCarPressed = useCallback((car: CarItem) => {
+    Navigation.showModal({
+      stack: {
+        children: [
+          {
+            component: {
+              name: Screens.CarDetailsScreen,
+              passProps: { car: car },
+              options: {
+                animations: buildSharedElementAnimations(car),
+              },
+            },
           },
+        ],
+      },
+    });
+  }, []);
+  const onCarStoryPressed = useCallback((car: CarItem) => {
+    Navigation.showModal({
+      component: {
+        name: Screens.CarStoryScreen,
+        passProps: { car: car },
+        options: {
+          animations: buildStorySharedElementAnimations(car),
         },
-      });
-    },
-    [componentId]
-  );
-  const onCarStoryPressed = useCallback(
-    (car: CarItem) => {
-      const navigationAnimations = buildStorySharedElementAnimations(car);
-      Navigation.push(componentId, {
-        component: {
-          name: Screens.CarStoryScreen,
-          passProps: { car: car },
-          options: {
-            animations: navigationAnimations,
-          },
-        },
-      });
-    },
-    [componentId]
-  );
+      },
+    });
+  }, []);
 
   return (
     <SafeAreaView>

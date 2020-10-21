@@ -30,7 +30,10 @@
         [self.child.view.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.child.view.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
     ]];
-    [self.child render];
+
+    [self.child didMoveToParentViewController:self];
+
+    [super render];
 }
 
 - (void)setChild:(UIViewController<RNNLayoutProtocol> *)child {

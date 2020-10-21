@@ -1,15 +1,26 @@
 #import "TransitionDelegate.h"
 #import "DisplayLinkAnimator.h"
+#import "ContentTransitionCreator.h"
+#import "RNNScreenTransitionsCreator.h"
 
 @implementation TransitionDelegate {
     RCTBridge* _bridge;
     id <UIViewControllerContextTransitioning> _transitionContext;
     BOOL _animate;
+    CGFloat _duration;
 }
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge {
+- (instancetype)initWithContentTransition:(TransitionOptions *)contentTransition
+                       elementTransitions:(NSArray<ElementTransitionOptions *>*)elementTransitions
+                 sharedElementTransitions:(NSArray<SharedElementTransitionOptions *>*)sharedElementTransitions
+                                 duration:(CGFloat)duration
+                                   bridge:(RCTBridge *)bridge {
     self = [super init];
     _bridge = bridge;
+    _content = contentTransition;
+    _elementTransitions = elementTransitions;
+    _sharedElementTransitions = sharedElementTransitions;
+    _duration = duration;
     return self;
 }
 
@@ -27,8 +38,17 @@
 
 - (void)prepareTransitionContext:(id<UIViewControllerContextTransitioning>)transitionContext {
     UIView* toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    [toView setNeedsLayout];
+    [toView layoutIfNeeded];
+    UIView* fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+    
     toView.alpha = 0;
+    [transitionContext.containerView addSubview:fromView];
     [transitionContext.containerView addSubview:toView];
+}
+
+- (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
+    return [RNNScreenTransitionsCreator createTransitionsFromVC:fromVC toVC:toVC containerView:containerView contentTransition:self.content elementTransitions:self.elementTransitions sharedElementTransitions:self.sharedElementTransitions reversed:NO];
 }
 
 - (void)performAnimationOnce {
@@ -56,17 +76,20 @@
     [displayLinkAnimator start];
 }
 
-- (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
-    @throw [NSException exceptionWithName:@"Unimplemented method" reason:@"createTransitionsFromVC:fromVC:toVC:containerView must be overridden by subclass" userInfo:nil];
-    return @[];
-}
-
-- (NSTimeInterval)transitionDuration:(nullable id<UIViewControllerContextTransitioning>)transitionContext {
-    return 1;
+- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
+    return _duration;
 }
 
 - (void)uiManagerDidPerformMounting:(RCTUIManager *)manager {
     [self performAnimationOnce];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+    return self;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    return self;
 }
 
 @end

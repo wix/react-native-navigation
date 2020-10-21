@@ -11,11 +11,15 @@ sidebar_label: Installation
 
 ## npm or yarn
 
-- `npm install --save react-native-navigation`
+npm:
+```sh
+npm install --save react-native-navigation
+```
 
-...or if you use `yarn`:
-
-- `yarn add react-native-navigation`
+yarn:
+```sh
+yarn add react-native-navigation
+```
 
 ## Installing with `npx rnn-link`
 
@@ -29,11 +33,15 @@ Make sure to commit the changes introduced by the `rnn-link` script.
 
 > The automatic linking is optimized for new applications created via the `react-native init` command. If you are migrating from a version of react-native-navigation older than v5, it's recommended to check the steps manually after the script runs.
 
-If the link script completed successfully, you're good to go! No more native configuration is required.
-
 If one of the steps failed or you can't run (or are not comfortable with) the automatic scripts, you'll need to complete the relevant steps in the manual installation steps below, for both platforms.
 
-## Displaying the app root
+### CocoaPods
+
+After the the automatic scripts completed successfully, run pod install:
+
+```sh
+pod install --project-directory=ios
+```
 
 ### Update index.js file
 
@@ -67,7 +75,14 @@ import App from "./App";
 +});
 ```
 
-If you followed the steps successfully up to this point, then this should be all!
+### Finish
+
+If you followed the steps successfully up to this point, then rebuild your application and you are good to go:
+
+```sh
+react-native run-ios
+react-native run-android
+```
 
 :::tip
 This is a good moment to build your application in both platforms, validate that everything is working properly and commit your changes. If you're coming from a fresh `react-native init` project, then you should be seeing the Welcome screen as usual, but under the hood your application is using react-native-navigation!

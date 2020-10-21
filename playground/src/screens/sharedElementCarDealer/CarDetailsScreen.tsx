@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets } from 'react-native';
-import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
+import {
+  Navigation,
+  NavigationFunctionComponent,
+  OptionsModalPresentationStyle,
+  OptionsModalTransitionStyle,
+} from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
 import FastImage from 'react-native-fast-image';
 import Reanimated, { Easing, useValue } from 'react-native-reanimated';
@@ -26,7 +31,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
   const onClosePressed = useCallback(() => {
     if (isClosing.current === true) return;
     isClosing.current = true;
-    Navigation.pop(componentId);
+    Navigation.dismissModal(componentId);
   }, [componentId]);
   const dismissGesture = useDismissGesture(onClosePressed);
 
@@ -113,6 +118,11 @@ CarDetailsScreen.options = {
     componentBackgroundColor: 'transparent',
     backgroundColor: 'transparent',
   },
+  window: {
+    backgroundColor: 'transparent',
+  },
+  modalTransitionStyle: OptionsModalTransitionStyle.coverVertical,
+  modalPresentationStyle: OptionsModalPresentationStyle.overCurrentContext,
 };
 export default CarDetailsScreen;
 
