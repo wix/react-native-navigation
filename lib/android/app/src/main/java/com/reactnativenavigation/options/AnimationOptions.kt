@@ -6,7 +6,6 @@ import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.util.TypedValue.COMPLEX_UNIT_FRACTION
 import android.view.View
 import android.view.View.*
-import com.reactnativenavigation.options.ElementTransitions.Companion.parse
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.options.params.NullBool
 import com.reactnativenavigation.options.params.NullText
@@ -18,7 +17,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.max
 
-open class AnimationOptions(json: JSONObject?) {
+open class AnimationOptions(json: JSONObject?) : LayoutAnimation {
     constructor() : this(null)
 
     private fun parse(json: JSONObject?) {
@@ -40,8 +39,8 @@ open class AnimationOptions(json: JSONObject?) {
     @JvmField var id: Text = NullText()
     @JvmField var enabled: Bool = NullBool()
     @JvmField var waitForRender: Bool = NullBool()
-    @JvmField var sharedElements = SharedElements()
-    @JvmField var elementTransitions = ElementTransitions()
+    override var sharedElements = SharedElements()
+    override var elementTransitions = ElementTransitions()
     private var valueOptions = HashSet<ValueAnimationOptions>()
 
     fun mergeWith(other: AnimationOptions) {
@@ -66,6 +65,10 @@ open class AnimationOptions(json: JSONObject?) {
         if (!hasAnimation()) return defaultAnimation
         return AnimatorSet().apply { playTogether(valueOptions.map { it.getAnimation(view) }) }
     }
+
+    fun shouldWaitForRender() = Bool(waitForRender.isTrue or hasElementTransitions())
+
+    fun hasElementTransitions() = sharedElements.hasValue() or elementTransitions.hasValue()
 
     val duration: Int
         get() = CollectionUtils.reduce(valueOptions, 0, { item: ValueAnimationOptions, currentValue: Int -> max(item.duration[currentValue], currentValue) })

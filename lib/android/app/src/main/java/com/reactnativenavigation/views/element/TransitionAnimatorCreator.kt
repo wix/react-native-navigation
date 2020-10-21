@@ -12,7 +12,7 @@ import androidx.core.animation.doOnStart
 import com.facebook.react.uimanager.ViewGroupManager
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions
-import com.reactnativenavigation.options.NestedAnimationsOptions
+import com.reactnativenavigation.options.LayoutAnimation
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
@@ -20,7 +20,7 @@ import java.util.*
 
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
 
-    suspend fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
+    suspend fun create(animation: LayoutAnimation, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
         val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
         return createAnimator(fadeAnimation, transitions)
     }

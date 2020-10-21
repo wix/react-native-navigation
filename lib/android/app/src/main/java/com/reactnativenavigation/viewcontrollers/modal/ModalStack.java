@@ -20,7 +20,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ModalStack {
-    private List<ViewController> modals = new ArrayList<>();
+    private final List<ViewController> modals = new ArrayList<>();
     private final ModalPresenter presenter;
     private EventEmitter eventEmitter;
 

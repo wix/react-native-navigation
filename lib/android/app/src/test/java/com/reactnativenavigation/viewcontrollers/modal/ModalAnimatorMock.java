@@ -13,7 +13,7 @@ public class ModalAnimatorMock extends ModalAnimator {
     }
 
     @Override
-    public void show(View view, AnimationOptions show, ScreenAnimationListener listener) {
+    public void show(View appearing, AnimationOptions show, ScreenAnimationListener listener) {
         try {
             listener.onStart();
             Thread.sleep(10);

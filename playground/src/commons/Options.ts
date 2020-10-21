@@ -23,6 +23,7 @@ const setDefaultOptions = () =>
     },
     bottomTabs: {
       titleDisplayMode: 'alwaysShow',
+      currentTabIndex: 2,
     },
     bottomTab: {
       selectedIconColor: Colors.primary,
