@@ -1099,6 +1099,10 @@ export interface ModalAnimationOptions extends ViewAnimationOptions {
    * Animations to be applied on elements which are shared between the appearing and disappearing screens
    */
   sharedElementTransitions?: SharedElementTransition[];
+  /**
+   * Animations to be applied on views in the appearing or disappearing screens
+   */
+  elementTransitions?: ElementTransition[];
 }
 
 /**
