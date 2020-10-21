@@ -15,9 +15,9 @@ typedef void (^RNNAnimationBlock)(void);
         self.navigationBar.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
     }
     
-    [self performAnimationBlock:^{
+    [self performBlock:^{
         [self pushViewController:newTop animated:animated];
-    } completion:completion];
+    } animated:animated completion:completion];
 }
 
 - (void)pop:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
@@ -29,15 +29,15 @@ typedef void (^RNNAnimationBlock)(void);
     if ([self topViewController] != viewController) {
         NSMutableArray * vcs = self.viewControllers.mutableCopy;
         [vcs removeObject:viewController];
-        [self performAnimationBlock:^{
+        [self performBlock:^{
             [self setViewControllers:vcs animated:animated];
-        } completion:^{
+        } animated:animated completion:^{
             completion();
         }];
     } else {
-        [self performAnimationBlock:^{
+        [self performBlock:^{
             [self popViewControllerAnimated:animated];
-        } completion:^{
+        } animated:animated completion:^{
             completion();
         }];
     }
@@ -46,9 +46,9 @@ typedef void (^RNNAnimationBlock)(void);
 - (void)popTo:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection; {
     __block NSArray* poppedVCs;
     if ([self.childViewControllers containsObject:viewController]) {
-        [self performAnimationBlock:^{
+        [self performBlock:^{
             poppedVCs = [self popToViewController:viewController animated:animated];
-        } completion:^{
+        } animated:animated completion:^{
             if (completion) {
                 completion(poppedVCs);
             }
@@ -60,22 +60,30 @@ typedef void (^RNNAnimationBlock)(void);
 
 - (void)popToRoot:(UIViewController*)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
     __block NSArray* poppedVCs;
-    [self performAnimationBlock:^{
+    [self performBlock:^{
         poppedVCs = [self popToRootViewControllerAnimated:animated];
-    } completion:^{
+    } animated:animated completion:^{
         completion(poppedVCs);
     }];
 }
 
 - (void)setStackChildren:(NSArray<UIViewController *> *)children fromViewController:(UIViewController *)fromViewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
-    [self performAnimationBlock:^{
+    [self performBlock:^{
         [self setViewControllers:children animated:animated];
-    } completion:completion];
+    } animated:animated completion:completion];
 }
 
 # pragma mark Private
 
-- (void)performAnimationBlock:(RNNAnimationBlock)animationBlock completion:(RNNTransitionCompletionBlock)completion {
+- (void)performBlock:(RNNAnimationBlock)animationBlock animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion {
+    if (!animated) {
+        animationBlock();
+        if (completion) {
+            completion();
+        }
+        return;
+    }
+
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
         if (completion) {
