@@ -55,6 +55,7 @@ export default class ButtonOptions extends NavigationComponent {
               name: Screens.RoundButton,
               passProps: {
                 title: 'Two',
+                timesCreated: 1,
               },
             },
           },

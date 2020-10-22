@@ -128,6 +128,21 @@ export interface OptionsStatusBar {
    * #### (Android specific)
    */
   translucent?: boolean;
+  /**
+   * Animate StatusBar style changes.
+   * #### (iOS specific)
+   */
+  animated?: boolean;
+  /**
+   * Automatically hide the StatusBar when the TopBar hides.
+   * #### (iOS specific)
+   */
+  hideWithTopBar?: boolean;
+  /**
+   * Blur content beneath the StatusBar.
+   * #### (iOS specific)
+   */
+  blur?: boolean;
 }
 
 export interface OptionsLayout {
@@ -1094,6 +1109,17 @@ export interface ViewAnimationOptions extends ScreenAnimationOptions {
   id?: string;
 }
 
+export interface ModalAnimationOptions extends ViewAnimationOptions {
+  /**
+   * Animations to be applied on elements which are shared between the appearing and disappearing screens
+   */
+  sharedElementTransitions?: SharedElementTransition[];
+  /**
+   * Animations to be applied on views in the appearing or disappearing screens
+   */
+  elementTransitions?: ElementTransition[];
+}
+
 /**
  * Used for describing stack commands animations.
  */
@@ -1152,11 +1178,11 @@ export interface AnimationOptions {
   /**
    * Configure what animates when modal is shown
    */
-  showModal?: ViewAnimationOptions;
+  showModal?: ModalAnimationOptions;
   /**
    * Configure what animates when modal is dismissed
    */
-  dismissModal?: ViewAnimationOptions;
+  dismissModal?: ModalAnimationOptions;
 
   /**
    * Configure what animates when a screen is pushed
@@ -1177,7 +1203,7 @@ export interface NavigationBarOptions {
 }
 
 export interface PIPOptions {
-  enabled: boolean;
+  enabled?: boolean;
 
   actionControlGroup: string;
 

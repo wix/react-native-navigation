@@ -10,7 +10,7 @@ import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
-import { Options } from '../interfaces/Options';
+import { Options, OptionsSearchBar, OptionsTopBar } from '../interfaces/Options';
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
@@ -49,7 +49,7 @@ export class OptionsProcessor {
   }
 
   private processObject(
-    objectToProcess: object,
+    objectToProcess: Record<string, any>,
     parentOptions: object,
     onProcess: (key: string, parentOptions: object) => void,
     commandName: CommandName,
@@ -72,8 +72,9 @@ export class OptionsProcessor {
 
       onProcess(key, parentOptions);
 
-      if (!isEqual(key, 'passProps') && (isObject(value) || isArray(value))) {
-        this.processObject(value, parentOptions, onProcess, commandName, objectPath);
+      const processedValue = objectToProcess[key];
+      if (!isEqual(key, 'passProps') && (isObject(processedValue) || isArray(processedValue))) {
+        this.processObject(processedValue, parentOptions, onProcess, commandName, objectPath);
       }
     });
   }
@@ -138,30 +139,34 @@ export class OptionsProcessor {
     }
   }
 
-  private processSearchBar(key: string, value: any, options: Record<string, any>) {
-    if (isEqual(key, 'searchBar')) {
-      typeof value === 'boolean' && this.deprecations.onProcessOptions(key, options, '');
+  private processSearchBar(key: string, value: OptionsSearchBar | boolean, options: OptionsTopBar) {
+    if (key !== 'searchBar') {
+      return;
+    }
+
+    const deprecatedSearchBarOptions: OptionsSearchBar = {
+      visible: false,
+      hideOnScroll: options.searchBarHiddenWhenScrolling ?? false,
+      hideTopBarOnFocus: options.hideNavBarOnFocusSearchBar ?? false,
+      obscuresBackgroundDuringPresentation: false,
+      backgroundColor: options.searchBarBackgroundColor,
+      tintColor: options.searchBarTintColor,
+      placeholder: options.searchBarPlaceholder ?? '',
+    };
+
+    if (typeof value === 'boolean') {
+      // Deprecated
+      this.deprecations.onProcessOptions(key, options, '');
+
       options[key] = {
-        ...options[key],
-        visible: options[key].visible ?? value,
-        hiddenWhenScrolling:
-          options[key].hiddenWhenScrolling ?? options.searchBarHiddenWhenScrolling ?? false,
-        hideTopBarOnFocus:
-          options[key].hideTopBarOnFocus ?? options.hideNavBarOnFocusSearchBar ?? false,
-        obscuresBackgroundDuringPresentation:
-          options[key].obscuresBackgroundDuringPresentation ?? false,
-        placeholder: options[key].placeholder ?? options.searchBarPlaceholder ?? '',
+        ...deprecatedSearchBarOptions,
+        visible: value,
       };
-      this.processColor(
-        'backgroundColor',
-        options[key].backgroundColor ?? options.searchBarBackgroundColor,
-        options[key]
-      );
-      this.processColor(
-        'tintColor',
-        options[key].tintColor ?? options.searchBarTintColor,
-        options[key]
-      );
+    } else {
+      options[key] = {
+        ...deprecatedSearchBarOptions,
+        ...value,
+      };
     }
   }
 

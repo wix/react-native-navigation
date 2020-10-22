@@ -5,19 +5,24 @@ import Colors from '../commons/Colors';
 
 interface Props extends NavigationComponentProps {
   title: string;
+  timesCreated?: number;
 }
 
+let timesCreated = 0;
 export default class RoundedButton extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     Navigation.events().bindComponent(this);
+    timesCreated = props.timesCreated ?? timesCreated + 1;
   }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.button}>
-          <TouchableOpacity onPress={() => Alert.alert(this.props.title, 'Thanks for that :)')}>
+          <TouchableOpacity
+            onPress={() => Alert.alert(this.props.title, `Times created: ${timesCreated}`)}
+          >
             <Text style={styles.text}>{this.props.title}</Text>
           </TouchableOpacity>
         </View>

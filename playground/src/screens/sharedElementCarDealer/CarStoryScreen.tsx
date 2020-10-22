@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
+import {
+  Navigation,
+  NavigationFunctionComponent,
+  OptionsModalPresentationStyle,
+  OptionsModalTransitionStyle,
+} from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
 import Reanimated, { Easing } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
@@ -19,7 +24,7 @@ const CarStoryScreen: NavigationFunctionComponent<Props> = ({ car, componentId }
   const onClosePressed = useCallback(() => {
     if (isClosing.current === true) return;
     isClosing.current = true;
-    Navigation.pop(componentId);
+    Navigation.dismissModal(componentId);
   }, [componentId]);
   const dismissGesture = useDismissGesture(onClosePressed);
 
@@ -81,6 +86,8 @@ CarStoryScreen.options = {
     componentBackgroundColor: 'transparent',
     backgroundColor: 'transparent',
   },
+  modalTransitionStyle: OptionsModalTransitionStyle.coverVertical,
+  modalPresentationStyle: OptionsModalPresentationStyle.overCurrentContext,
 };
 export default CarStoryScreen;
 

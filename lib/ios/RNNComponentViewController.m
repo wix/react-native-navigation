@@ -16,11 +16,6 @@
 	return self;
 }
 
-- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-    _defaultOptions = defaultOptions;
-	[_presenter setDefaultOptions:defaultOptions];
-}
-
 - (void)overrideOptions:(RNNNavigationOptions *)options {
 	[self.options overrideOptions:options];
 }

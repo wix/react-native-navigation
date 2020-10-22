@@ -1,5 +1,6 @@
 #import "StackControllerDelegate.h"
-#import "StackTransitionDelegate.h"
+#import "TransitionDelegate.h"
+#import "ReversedTransitionDelegate.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation StackControllerDelegate {
@@ -25,10 +26,13 @@
 								  animationControllerForOperation:(UINavigationControllerOperation)operation
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
-	if (operation == UINavigationControllerOperationPush && toVC.resolveOptions.animations.push.hasCustomAnimation) {
-		return [[StackTransitionDelegate alloc] initWithScreenTransition:toVC.resolveOptions.animations.push bridge:_eventEmitter.bridge operation:operation];
-	} else if (operation == UINavigationControllerOperationPop && fromVC.resolveOptions.animations.pop.hasCustomAnimation) {
-		return [[StackTransitionDelegate alloc] initWithScreenTransition:fromVC.resolveOptions.animations.pop bridge:_eventEmitter.bridge operation:operation];
+	if (operation == UINavigationControllerOperationPush && toVC.resolveOptionsWithDefault.animations.push.hasCustomAnimation) {
+        RNNScreenTransition* screenTransition = toVC.resolveOptions.animations.push;
+		return [[TransitionDelegate alloc] initWithContentTransition:screenTransition.content elementTransitions:screenTransition.elementTransitions sharedElementTransitions:screenTransition.sharedElementTransitions duration:screenTransition.maxDuration bridge:_eventEmitter.bridge];
+	} else if (operation == UINavigationControllerOperationPop && fromVC.resolveOptionsWithDefault.animations.pop.hasCustomAnimation) {
+        RNNScreenTransition* screenTransition = fromVC.resolveOptions.animations.pop;
+        return [[ReversedTransitionDelegate alloc] initWithContentTransition:screenTransition.content elementTransitions:screenTransition.elementTransitions sharedElementTransitions:screenTransition.sharedElementTransitions
+                                                                    duration:screenTransition.maxDuration bridge:_eventEmitter.bridge];
 	} else {
 		return nil;
 	}

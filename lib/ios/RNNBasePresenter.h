@@ -17,8 +17,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry defaultOptions:(RNNNavigationOptions *)defaultOptions;
 
-- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
-
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions;
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options;
