@@ -79,6 +79,7 @@
     "@typescript-eslint/eslint-plugin": "3.3.0",
     "@typescript-eslint/parser": "3.3.0",
     "babel-jest": "26.1.0",
+    "clang-format": "^1.4.0",
     "detox": "17.3.1",
     "eslint": "7.3.0",
     "eslint-config-prettier": "6.11.0",
@@ -93,9 +94,9 @@
     "prettier": "2.1.2",
     "react": "16.13.1",
     "react-native": "0.63.2",
+    "react-native-fast-image": "8.x.x",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
-    "react-native-fast-image": "8.x.x",
     "react-native-ui-lib": "5.11.0",
     "react-redux": "5.x.x",
     "react-test-renderer": "16.13.1",
@@ -143,7 +144,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": "eslint"
+    "*.{js,ts,tsx}": "eslint",
+    "*.{h,m,mm}": "node ./scripts/check-clang-format"
   },
   "detox": {
     "test-runner": "jest",
