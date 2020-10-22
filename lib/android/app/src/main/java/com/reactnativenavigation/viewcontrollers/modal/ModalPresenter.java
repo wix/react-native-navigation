@@ -50,7 +50,7 @@ public class ModalPresenter {
 
         if (options.animations.showModal.enabled.isTrueOrUndefined()) {
             toAdd.getView().setAlpha(0);
-            if (options.animations.showModal.waitForRender.isTrue()) {
+            if (options.animations.showModal.shouldWaitForRender().isTrue()) {
                 toAdd.addOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
             } else {
                 animateShow(toAdd, toRemove, listener, options);

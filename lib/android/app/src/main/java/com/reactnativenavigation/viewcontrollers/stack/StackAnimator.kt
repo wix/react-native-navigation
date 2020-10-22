@@ -11,6 +11,8 @@ import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Bool
+import com.reactnativenavigation.utils.awaitLayout
+import com.reactnativenavigation.utils.awaitNextLayout
 import com.reactnativenavigation.utils.awaitPost
 import com.reactnativenavigation.utils.awaitRender
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
@@ -18,6 +20,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -73,6 +76,11 @@ open class StackAnimator @JvmOverloads constructor(
     }
 
     private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, set: AnimatorSet) {
+//        awaitFrame()
+//        awaitFrame()
+//        appearing.view.awaitNextLayout()
+//        appearing.view.awaitPost()
+
         val fade = if (pop.content.isFadeAnimation()) pop else FadeAnimation()
         val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content, disappearing, appearing)
         set.playTogether(fade.content.getAnimation(disappearing.view), transitionAnimators)

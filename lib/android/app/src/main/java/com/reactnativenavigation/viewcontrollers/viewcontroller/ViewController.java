@@ -165,7 +165,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (parentController != null) task.run(parentController);
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    @Nullable
     public ParentController getParentController() {
         return parentController;
     }

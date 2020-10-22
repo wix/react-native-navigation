@@ -100,7 +100,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             sortBy { getZIndex(it.view) }
             sortBy { it.view.getTag(R.id.original_index_in_parent) as Int }
             forEach {
-                it.viewController.requireParentController().removeOverlay(it.view)
+                removeFromOverlay(it.viewController, it.view)
                 returnToOriginalParent(it.view)
             }
         }
@@ -130,7 +130,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             lp.leftMargin = loc.x
             lp.width = view.width
             lp.height = view.height
-            transition.viewController.requireParentController().addOverlay(view, lp)
+            addToOverlay(viewController, view, lp)
         }
     }
 
@@ -151,4 +151,21 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
     private fun getZIndex(view: View) = ViewGroupManager.getViewZIndex(view)
             ?: ViewTags.get(view, R.id.original_z_index)
             ?: 0
+
+    private fun addToOverlay(vc: ViewController<*>, element: View, lp: FrameLayout.LayoutParams) {
+        val viewController = vc.parentController!!
+        viewController.addOverlay(element, lp)
+
+//        view.layoutParams = lp
+//        (viewController.view.parent as ViewGroup).overlay.add(view)
+    }
+
+    private fun removeFromOverlay(vc: ViewController<*>, element: View) {
+        val viewController = vc.parentController
+        viewController!!.removeOverlay(element)
+
+//        if (!viewController.isDestroyed) {
+//            (viewController.view.parent as ViewGroup).overlay.remove(element)
+//        }
+    }
 }
