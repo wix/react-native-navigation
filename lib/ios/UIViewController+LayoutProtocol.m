@@ -5,17 +5,17 @@
 @implementation UIViewController (LayoutProtocol)
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
-						   creator:(id<RNNComponentViewCreator>)creator
-						   options:(RNNNavigationOptions *)options
-					defaultOptions:(RNNNavigationOptions *)defaultOptions
-						 presenter:(RNNBasePresenter *)presenter
-					  eventEmitter:(RNNEventEmitter *)eventEmitter
-			  childViewControllers:(NSArray *)childViewControllers {
-	self = [self init];
-	self.options = options;
-	self.defaultOptions = defaultOptions;
-	self.layoutInfo = layoutInfo;
-	self.creator = creator;
+                           creator:(id<RNNComponentViewCreator>)creator
+                           options:(RNNNavigationOptions *)options
+                    defaultOptions:(RNNNavigationOptions *)defaultOptions
+                         presenter:(RNNBasePresenter *)presenter
+                      eventEmitter:(RNNEventEmitter *)eventEmitter
+              childViewControllers:(NSArray *)childViewControllers {
+    self = [self init];
+    self.options = options;
+    self.defaultOptions = defaultOptions;
+    self.layoutInfo = layoutInfo;
+    self.creator = creator;
     self.eventEmitter = eventEmitter;
     self.presenter = presenter;
     [self loadChildren:childViewControllers];
@@ -23,7 +23,7 @@
     self.extendedLayoutIncludesOpaqueBars = YES;
     [self.presenter applyOptionsOnInit:self.resolveOptions];
 
-	return self;
+    return self;
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
@@ -38,15 +38,17 @@
 }
 
 - (RNNNavigationOptions *)resolveOptions {
-    return (RNNNavigationOptions *) [self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy];
+    return (RNNNavigationOptions *)[self.options
+        mergeInOptions:self.getCurrentChild.resolveOptions.copy];
 }
 
 - (RNNNavigationOptions *)resolveOptionsWithDefault {
-    return [(RNNNavigationOptions *) [self.options mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
+    return [(RNNNavigationOptions *)[self.options
+        mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
 }
 
 - (void)overrideOptions:(RNNNavigationOptions *)options {
-	[self.options overrideOptions:options];
+    [self.options overrideOptions:options];
 }
 
 - (UINavigationController *)stack {
@@ -61,18 +63,20 @@
     if (!self.waitForRender) {
         [self readyForPresentation];
     }
-    
+
     [self.getCurrentChild setReactViewReadyCallback:^{
-        [self.presenter renderComponents:self.resolveOptionsWithDefault perform:^{
-            [self readyForPresentation];
-        }];
+      [self.presenter renderComponents:self.resolveOptionsWithDefault
+                               perform:^{
+                                 [self readyForPresentation];
+                               }];
     }];
-    
+
     [self.getCurrentChild render];
 }
 
 - (void)loadChildren:(NSArray *)children {
-    if (!self.isChildViewControllersLoaded && [self respondsToSelector:@selector(setViewControllers:)]) {
+    if (!self.isChildViewControllersLoaded &&
+        [self respondsToSelector:@selector(setViewControllers:)]) {
         self.isChildViewControllersLoaded = YES;
         [self performSelector:@selector(setViewControllers:) withObject:children];
     }
@@ -83,35 +87,35 @@
         self.reactViewReadyCallback();
         self.reactViewReadyCallback = nil;
     }
-    
+
     [self.parentViewController readyForPresentation];
 }
 
 - (UIViewController *)getCurrentChild {
-    for (UIViewController* childViewController in self.childViewControllers.reverseObjectEnumerator.allObjects) {
+    for (UIViewController *childViewController in self.childViewControllers.reverseObjectEnumerator
+             .allObjects) {
         if (childViewController.layoutInfo) {
             return childViewController;
         }
     }
-    
+
     return nil;
 }
 
 - (void)destroy {
     [self destroyReactView];
     [self.presentedViewController destroy];
-    
-    for (UIViewController* child in self.childViewControllers) {
+
+    for (UIViewController *child in self.childViewControllers) {
         [child destroy];
     }
 }
 
 - (void)destroyReactView {
-    
 }
 
 - (UIViewController *)presentedComponentViewController {
-    UIViewController* currentChild = self.getCurrentChild;
+    UIViewController *currentChild = self.getCurrentChild;
     return currentChild ? currentChild.presentedComponentViewController : self;
 }
 
@@ -123,41 +127,44 @@
 }
 
 - (UIViewController *)findViewController:(UIViewController *)child {
-    if (self == child) return child;
-    
-    for (UIViewController* childController in self.childViewControllers) {
-        UIViewController* fromChild = [childController findViewController:child];
-        if (fromChild) return childController;
+    if (self == child)
+        return child;
+
+    for (UIViewController *childController in self.childViewControllers) {
+        UIViewController *fromChild = [childController findViewController:child];
+        if (fromChild)
+            return childController;
     }
-    
+
     return nil;
 }
 
 - (CGFloat)getTopBarHeight {
-    for(UIViewController * child in [self childViewControllers]) {
+    for (UIViewController *child in [self childViewControllers]) {
         CGFloat childTopBarHeight = [child getTopBarHeight];
-        if (childTopBarHeight > 0) return childTopBarHeight;
+        if (childTopBarHeight > 0)
+            return childTopBarHeight;
     }
-    
+
     return 0;
 }
 
 - (CGFloat)getBottomTabsHeight {
-    for(UIViewController * child in [self childViewControllers]) {
+    for (UIViewController *child in [self childViewControllers]) {
         CGFloat childBottomTabsHeight = [child getBottomTabsHeight];
-        if (childBottomTabsHeight > 0) return childBottomTabsHeight;
+        if (childBottomTabsHeight > 0)
+            return childBottomTabsHeight;
     }
-    
+
     return 0;
 }
 
 - (void)screenPopped {
-    
 }
 
 - (void)onChildWillAppear {
-	[self.presenter applyOptions:self.resolveOptions];
-	[self.parentViewController onChildWillAppear];
+    [self.presenter applyOptions:self.resolveOptions];
+    [self.parentViewController onChildWillAppear];
 }
 
 - (void)onChildAddToParent:(UIViewController *)child options:(RNNNavigationOptions *)options {
@@ -181,48 +188,53 @@
 }
 
 - (void)setReactView:(RNNReactView *)reactView {
-    objc_setAssociatedObject(self, @selector(reactView), reactView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(reactView), reactView,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (RNNNavigationOptions *)options {
-	return objc_getAssociatedObject(self, @selector(options));
+    return objc_getAssociatedObject(self, @selector(options));
 }
 
 - (void)setOptions:(RNNNavigationOptions *)options {
-	objc_setAssociatedObject(self, @selector(options), options, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(options), options, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (RNNNavigationOptions *)defaultOptions {
-	return objc_getAssociatedObject(self, @selector(defaultOptions));
+    return objc_getAssociatedObject(self, @selector(defaultOptions));
 }
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-	objc_setAssociatedObject(self, @selector(defaultOptions), defaultOptions, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(defaultOptions), defaultOptions,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.presenter.defaultOptions = defaultOptions;
 }
 
 - (RNNLayoutInfo *)layoutInfo {
-	return objc_getAssociatedObject(self, @selector(layoutInfo));
+    return objc_getAssociatedObject(self, @selector(layoutInfo));
 }
 
 - (void)setLayoutInfo:(RNNLayoutInfo *)layoutInfo {
-	objc_setAssociatedObject(self, @selector(layoutInfo), layoutInfo, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(layoutInfo), layoutInfo,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (RNNBasePresenter *)presenter {
-	return objc_getAssociatedObject(self, @selector(presenter));
+    return objc_getAssociatedObject(self, @selector(presenter));
 }
 
 - (void)setPresenter:(RNNBasePresenter *)presenter {
-	objc_setAssociatedObject(self, @selector(presenter), presenter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(presenter), presenter,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (RNNEventEmitter *)eventEmitter {
-	return objc_getAssociatedObject(self, @selector(eventEmitter));
+    return objc_getAssociatedObject(self, @selector(eventEmitter));
 }
 
 - (void)setEventEmitter:(RNNEventEmitter *)eventEmitter {
-	objc_setAssociatedObject(self, @selector(eventEmitter), eventEmitter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(eventEmitter), eventEmitter,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL)isChildViewControllersLoaded {
@@ -230,15 +242,17 @@
 }
 
 - (void)setIsChildViewControllersLoaded:(BOOL)isChildViewControllersLoaded {
-    objc_setAssociatedObject(self, @selector(isChildViewControllersLoaded), [NSNumber numberWithBool:isChildViewControllersLoaded], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(isChildViewControllersLoaded),
+                             [NSNumber numberWithBool:isChildViewControllersLoaded],
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (id<RNNComponentViewCreator>)creator {
-	return objc_getAssociatedObject(self, @selector(creator));
+    return objc_getAssociatedObject(self, @selector(creator));
 }
 
 - (void)setCreator:(id<RNNComponentViewCreator>)creator {
-	objc_setAssociatedObject(self, @selector(creator), creator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(creator), creator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (RNNReactViewReadyCompletionBlock)reactViewReadyCallback {
@@ -246,15 +260,19 @@
 }
 
 - (void)setReactViewReadyCallback:(RNNReactViewReadyCompletionBlock)reactViewReadyCallback {
-    objc_setAssociatedObject(self, @selector(reactViewReadyCallback), reactViewReadyCallback, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(reactViewReadyCallback), reactViewReadyCallback,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL)waitForRender {
-    return [objc_getAssociatedObject(self.parentViewController ?: self, @selector(waitForRender)) boolValue];
+    return [objc_getAssociatedObject(self.parentViewController ?: self, @selector(waitForRender))
+        boolValue];
 }
 
 - (void)setWaitForRender:(BOOL)waitForRender {
-    objc_setAssociatedObject(self, @selector(waitForRender), [NSNumber numberWithBool:waitForRender], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(waitForRender),
+                             [NSNumber numberWithBool:waitForRender],
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.getCurrentChild.waitForRender = waitForRender;
 }
 

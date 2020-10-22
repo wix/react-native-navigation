@@ -4,7 +4,7 @@
 
 @interface RNNLayoutManager ()
 
-@property (nonatomic, strong) NSHashTable<UIViewController *> *pendingViewControllers;
+@property(nonatomic, strong) NSHashTable<UIViewController *> *pendingViewControllers;
 
 @end
 
@@ -39,34 +39,38 @@
         }
     }
 
-	for (UIWindow *window in UIApplication.sharedApplication.windows) {
-		UIViewController *result = [self findChildComponentForParent:window.rootViewController forId:componentId];
-		if (result) {
-			return result;
-		}
-	}
-	
-	return nil;
+    for (UIWindow *window in UIApplication.sharedApplication.windows) {
+        UIViewController *result = [self findChildComponentForParent:window.rootViewController
+                                                               forId:componentId];
+        if (result) {
+            return result;
+        }
+    }
+
+    return nil;
 }
 
-- (UIViewController *)findChildComponentForParent:(UIViewController *)parentViewController forId:(NSString *)componentId {
-	if ([parentViewController.layoutInfo.componentId isEqualToString:componentId]) {
-		return parentViewController;
-	}
-	
-	if (parentViewController.presentedViewController) {
-		UIViewController *modalResult = [self findChildComponentForParent:parentViewController.presentedViewController forId:componentId];
-		if (modalResult) {
-			return modalResult;
-		}
-	}
-	
-	for (UIViewController *childVC in parentViewController.childViewControllers) {
-		UIViewController *result = [self findChildComponentForParent:childVC forId:componentId];
-		if (result) {
-			return result;
-		}
-	}
+- (UIViewController *)findChildComponentForParent:(UIViewController *)parentViewController
+                                            forId:(NSString *)componentId {
+    if ([parentViewController.layoutInfo.componentId isEqualToString:componentId]) {
+        return parentViewController;
+    }
+
+    if (parentViewController.presentedViewController) {
+        UIViewController *modalResult =
+            [self findChildComponentForParent:parentViewController.presentedViewController
+                                        forId:componentId];
+        if (modalResult) {
+            return modalResult;
+        }
+    }
+
+    for (UIViewController *childVC in parentViewController.childViewControllers) {
+        UIViewController *result = [self findChildComponentForParent:childVC forId:componentId];
+        if (result) {
+            return result;
+        }
+    }
 
     if ([parentViewController respondsToSelector:@selector(pendingChildViewControllers)]) {
         NSArray *pendingChildVCs = [parentViewController pendingChildViewControllers];
@@ -77,8 +81,8 @@
             }
         }
     }
-	
-	return nil;
+
+    return nil;
 }
 
 @end

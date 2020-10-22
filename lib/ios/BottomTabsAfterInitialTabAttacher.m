@@ -5,12 +5,12 @@
 
 - (void)attach:(UITabBarController *)bottomTabsController {
     [bottomTabsController.selectedViewController setReactViewReadyCallback:^{
-        [bottomTabsController readyForPresentation];
-        for (UIViewController* viewController in bottomTabsController.deselectedViewControllers) {
-            [viewController render];
-        }
+      [bottomTabsController readyForPresentation];
+      for (UIViewController *viewController in bottomTabsController.deselectedViewControllers) {
+          [viewController render];
+      }
     }];
-    
+
     [bottomTabsController.selectedViewController render];
 }
 

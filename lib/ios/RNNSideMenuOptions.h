@@ -4,10 +4,10 @@
 
 @interface RNNSideMenuOptions : RNNOptions
 
-@property (nonatomic, strong) RNNSideMenuSideOptions* left;
-@property (nonatomic, strong) RNNSideMenuSideOptions* right;
+@property(nonatomic, strong) RNNSideMenuSideOptions *left;
+@property(nonatomic, strong) RNNSideMenuSideOptions *right;
 
-@property (nonatomic, strong) Text* animationType;
-@property (nonatomic, strong) SideMenuOpenMode* openGestureMode;
+@property(nonatomic, strong) Text *animationType;
+@property(nonatomic, strong) SideMenuOpenMode *openGestureMode;
 
 @end

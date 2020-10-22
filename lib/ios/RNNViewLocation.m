@@ -5,18 +5,19 @@
 @implementation RNNViewLocation
 
 - (instancetype)initWithFromElement:(UIView *)fromElement toElement:(UIView *)toElement {
-	self = [super init];
+    self = [super init];
     self.fromFrame = [self convertViewFrame:fromElement];
     self.toFrame = [self convertViewFrame:toElement];
     self.fromAngle = [self getViewAngle:fromElement];
     self.toAngle = [self getViewAngle:toElement];
-    self.fromTransform = [self getTransform:fromElement];;
+    self.fromTransform = [self getTransform:fromElement];
+    ;
     self.toTransform = [self getTransform:toElement];
     self.toBounds = toElement.layer.bounds;
     self.fromBounds = fromElement.layer.bounds;
     self.fromCornerRadius = [self getCornerRadius:fromElement];
     self.toCornerRadius = [self getCornerRadius:toElement];
-	return self;
+    return self;
 }
 
 - (CGFloat)getCornerRadius:(UIView *)view {
@@ -25,7 +26,7 @@
     } else if (CGRectEqualToRect(view.frame, view.superview.bounds)) {
         return [self getCornerRadius:view.superview];
     }
-    
+
     return 0;
 }
 
@@ -43,7 +44,9 @@
 
 - (CGRect)convertViewFrame:(UIView *)view {
     CGPoint center = [view.superview convertPoint:view.center toView:nil];
-    CGRect frame = CGRectMake(center.x - view.bounds.size.width / 2, center.y - view.bounds.size.height / 2, view.bounds.size.width, view.bounds.size.height);
+    CGRect frame =
+        CGRectMake(center.x - view.bounds.size.width / 2, center.y - view.bounds.size.height / 2,
+                   view.bounds.size.width, view.bounds.size.height);
     return frame;
 }
 
@@ -52,7 +55,7 @@
     return radians;
 }
 
- - (UIView *)topMostView:(UIView *)view {
+- (UIView *)topMostView:(UIView *)view {
     if ([view isKindOfClass:[RNNReactView class]]) {
         return view;
     } else {

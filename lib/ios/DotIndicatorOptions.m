@@ -1,8 +1,7 @@
 #import "DotIndicatorOptions.h"
+#import "NullBool.h"
 #import "NullColor.h"
 #import "NullNumber.h"
-#import "NullBool.h"
-
 
 @implementation DotIndicatorOptions
 - (instancetype)initWithDict:(NSDictionary *)dict {

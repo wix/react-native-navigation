@@ -7,8 +7,8 @@
 }
 
 - (int)getWithDefaultValue:(int)defaultValue {
-    NSString* value = [super getWithDefaultValue:nil];
-	if (value) {
+    NSString *value = [super getWithDefaultValue:nil];
+    if (value) {
         return [self convertString:value];
     } else {
         return defaultValue;

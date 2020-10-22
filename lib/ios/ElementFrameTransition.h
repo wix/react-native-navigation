@@ -1,9 +1,9 @@
-#import <Foundation/Foundation.h>
 #import "ElementBaseTransition.h"
+#import <Foundation/Foundation.h>
 
 @interface ElementFrameTransition : ElementBaseTransition
 
-@property (nonatomic) CGRect from;
-@property (nonatomic) CGRect to;
+@property(nonatomic) CGRect from;
+@property(nonatomic) CGRect to;
 
 @end

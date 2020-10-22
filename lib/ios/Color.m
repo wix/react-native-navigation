@@ -1,8 +1,8 @@
 #import "Color.h"
 
-@interface Color()
+@interface Color ()
 
-@property (nonatomic, retain) UIColor* value;
+@property(nonatomic, retain) UIColor *value;
 
 @end
 
@@ -13,19 +13,19 @@
 }
 
 - (instancetype)initWithValue:(UIColor *)value {
-	return [super initWithValue:value];
+    return [super initWithValue:value];
 }
 
 - (UIColor *)get {
-	return self.value;
+    return self.value;
 }
 
 - (UIColor *)getWithDefaultValue:(id)defaultValue {
-	return [super getWithDefaultValue:defaultValue];
+    return [super getWithDefaultValue:defaultValue];
 }
 
--(NSString *)description {
-	return [self hexStringFromColor:[self getWithDefaultValue:nil]];
+- (NSString *)description {
+    return [self hexStringFromColor:[self getWithDefaultValue:nil]];
 }
 
 - (NSString *)hexStringFromColor:(UIColor *)color {
@@ -35,10 +35,8 @@
     CGFloat g = components[1];
     CGFloat b = components[2];
 
-    return [NSString stringWithFormat:@"#%02lX%02lX%02lX",
-                                      lroundf(r * 255),
-                                      lroundf(g * 255),
-                                      lroundf(b * 255)];
+    return [NSString
+        stringWithFormat:@"#%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255)];
 }
 
 @end

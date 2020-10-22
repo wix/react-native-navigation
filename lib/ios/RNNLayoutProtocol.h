@@ -1,21 +1,22 @@
-#import "RNNLayoutInfo.h"
 #import "RNNBasePresenter.h"
 #import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
+#import "RNNLayoutInfo.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
-@protocol RNNLayoutProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
+@protocol RNNLayoutProtocol <NSObject, UINavigationControllerDelegate,
+                             UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
 
 @required
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
-						   creator:(id<RNNComponentViewCreator>)creator
-						   options:(RNNNavigationOptions *)options
-					defaultOptions:(RNNNavigationOptions *)defaultOptions
-						 presenter:(RNNBasePresenter *)presenter
-					  eventEmitter:(RNNEventEmitter *)eventEmitter
-			  childViewControllers:(NSArray *)childViewControllers;
+                           creator:(id<RNNComponentViewCreator>)creator
+                           options:(RNNNavigationOptions *)options
+                    defaultOptions:(RNNNavigationOptions *)defaultOptions
+                         presenter:(RNNBasePresenter *)presenter
+                      eventEmitter:(RNNEventEmitter *)eventEmitter
+              childViewControllers:(NSArray *)childViewControllers;
 
 - (void)render;
 

@@ -1,9 +1,9 @@
 #import "TopBarPresenter.h"
-#import "UIImage+tint.h"
 #import "RNNFontAttributesCreator.h"
 #import "UIColor+RNNUtils.h"
-#import "UIViewController+LayoutProtocol.h"
+#import "UIImage+tint.h"
 #import "UINavigationController+RNNOptions.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @implementation TopBarPresenter
 
@@ -32,24 +32,25 @@
     if (options.background.color.hasValue) {
         [self setBackgroundColor:options.background.color.get];
     }
-    
+
     if (options.noBorder.hasValue) {
         [self showBorder:![options.noBorder get]];
     }
-    
+
     if (options.background.translucent.hasValue) {
         [self setTranslucent:[options.background.translucent get]];
     }
-    
-    RNNLargeTitleOptions* largeTitleOptions = options.largeTitle;
-    if (largeTitleOptions.color.hasValue || largeTitleOptions.fontSize.hasValue || largeTitleOptions.fontFamily.hasValue) {
+
+    RNNLargeTitleOptions *largeTitleOptions = options.largeTitle;
+    if (largeTitleOptions.color.hasValue || largeTitleOptions.fontSize.hasValue ||
+        largeTitleOptions.fontFamily.hasValue) {
         [self setLargeTitleAttributes:largeTitleOptions];
     }
 
     if (options.title.hasValue) {
         [self setTitleAttributes:withDefault.title];
     }
-    
+
     if (options.backButton.hasValue) {
         [self setBackButtonOptions:withDefault.backButton];
     }
@@ -91,68 +92,99 @@
     self.navigationController.navigationBar.barTintColor = UIColor.clearColor;
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.navigationBar.shadowImage = [UIImage new];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)setTitleAttributes:(RNNTitleOptions *)titleOptions {
-    NSString* fontFamily = [titleOptions.fontFamily getWithDefaultValue:nil];
-    NSString* fontWeight = [titleOptions.fontWeight getWithDefaultValue:nil];
-    NSNumber* fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
-    UIColor* fontColor = [titleOptions.color getWithDefaultValue:nil];
-    
-    self.navigationController.navigationBar.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.navigationController.navigationBar.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    NSString *fontFamily = [titleOptions.fontFamily getWithDefaultValue:nil];
+    NSString *fontWeight = [titleOptions.fontWeight getWithDefaultValue:nil];
+    NSNumber *fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
+    UIColor *fontColor = [titleOptions.color getWithDefaultValue:nil];
+
+    self.navigationController.navigationBar.titleTextAttributes = [RNNFontAttributesCreator
+        createFromDictionary:self.navigationController.navigationBar.titleTextAttributes
+                  fontFamily:fontFamily
+                    fontSize:fontSize
+             defaultFontSize:nil
+                  fontWeight:fontWeight
+                       color:fontColor
+                defaultColor:nil];
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
-    NSString* fontFamily = [largeTitleOptions.fontFamily getWithDefaultValue:nil];
-    NSString* fontWeight = [largeTitleOptions.fontWeight getWithDefaultValue:nil];
-    NSNumber* fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
-    UIColor* fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
-    
-    self.navigationController.navigationBar.largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.navigationController.navigationBar.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    NSString *fontFamily = [largeTitleOptions.fontFamily getWithDefaultValue:nil];
+    NSString *fontWeight = [largeTitleOptions.fontWeight getWithDefaultValue:nil];
+    NSNumber *fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
+    UIColor *fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
+
+    self.navigationController.navigationBar.largeTitleTextAttributes = [RNNFontAttributesCreator
+        createFromDictionary:self.navigationController.navigationBar.largeTitleTextAttributes
+                  fontFamily:fontFamily
+                    fontSize:fontSize
+             defaultFontSize:nil
+                  fontWeight:fontWeight
+                       color:fontColor
+                defaultColor:nil];
 }
 
 - (void)componentDidAppear {
-    NSString* backButtonTestID = [self.navigationController.topViewController.resolveOptionsWithDefault.topBar.backButton.testID getWithDefaultValue:nil];
+    NSString *backButtonTestID =
+        [self.navigationController.topViewController.resolveOptionsWithDefault.topBar.backButton
+                .testID getWithDefaultValue:nil];
     [self.navigationController setBackButtonTestID:backButtonTestID];
 }
 
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
-    UIImage* icon = [backButtonOptions.icon getWithDefaultValue:nil];
-    UIColor* color = [backButtonOptions.color getWithDefaultValue:nil];
-    NSString* title = [backButtonOptions.title getWithDefaultValue:nil];
+    UIImage *icon = [backButtonOptions.icon getWithDefaultValue:nil];
+    UIColor *color = [backButtonOptions.color getWithDefaultValue:nil];
+    NSString *title = [backButtonOptions.title getWithDefaultValue:nil];
     BOOL showTitle = [backButtonOptions.showTitle getWithDefaultValue:YES];
-    NSString* fontFamily = [backButtonOptions.fontFamily getWithDefaultValue:nil];
-    NSNumber* fontSize = [backButtonOptions.fontSize getWithDefaultValue:nil];
-    
+    NSString *fontFamily = [backButtonOptions.fontFamily getWithDefaultValue:nil];
+    NSNumber *fontSize = [backButtonOptions.fontSize getWithDefaultValue:nil];
+
     UIViewController *previousViewControllerInStack = self.previousViewControllerInStack;
     UIBarButtonItem *backItem = [UIBarButtonItem new];
 
-    icon = color
-    ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-    : icon;
+    icon = color ? [[icon withTintColor:color]
+                       imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                 : icon;
     [self setBackIndicatorImage:icon withColor:color];
-    
+
     if (showTitle) {
-        backItem.title = title ? title : (previousViewControllerInStack.navigationItem.title ? previousViewControllerInStack.navigationItem.title : @"");;
+        backItem.title = title ? title
+                               : (previousViewControllerInStack.navigationItem.title
+                                      ? previousViewControllerInStack.navigationItem.title
+                                      : @"");
+        ;
     } else {
         backItem.title = @"";
     }
-    
+
     backItem.tintColor = color;
-	
+
     if (fontFamily) {
         CGFloat resolvedFontSize = fontSize ? fontSize.floatValue : 17.0;
-        [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:resolvedFontSize], NSFontAttributeName, nil] forState:UIControlStateNormal];
-        [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:fontFamily size:resolvedFontSize], NSFontAttributeName, nil] forState:UIControlStateHighlighted];
+        [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIFont fontWithName:fontFamily
+                                                                           size:resolvedFontSize],
+                                                           NSFontAttributeName, nil]
+                                forState:UIControlStateNormal];
+        [backItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIFont fontWithName:fontFamily
+                                                                           size:resolvedFontSize],
+                                                           NSFontAttributeName, nil]
+                                forState:UIControlStateHighlighted];
     }
-    
+
     previousViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
 - (UIViewController *)previousViewControllerInStack {
-    NSArray* stackChildren = self.navigationController.viewControllers;
-    UIViewController *previousViewControllerInStack = stackChildren.count > 1 ? stackChildren[stackChildren.count - 2] : self.navigationController.topViewController;
+    NSArray *stackChildren = self.navigationController.viewControllers;
+    UIViewController *previousViewControllerInStack =
+        stackChildren.count > 1 ? stackChildren[stackChildren.count - 2]
+                                : self.navigationController.topViewController;
     return previousViewControllerInStack;
 }
 

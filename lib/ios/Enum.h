@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "Param.h"
+#import <Foundation/Foundation.h>
 
 @interface Enum : Param
 

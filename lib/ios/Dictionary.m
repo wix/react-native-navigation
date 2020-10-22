@@ -1,8 +1,8 @@
 #import "Dictionary.h"
 
-@interface Dictionary()
+@interface Dictionary ()
 
-@property (nonatomic, retain) NSDictionary* value;
+@property(nonatomic, retain) NSDictionary *value;
 
 @end
 
