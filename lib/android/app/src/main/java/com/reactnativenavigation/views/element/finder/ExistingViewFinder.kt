@@ -19,12 +19,20 @@ class ExistingViewFinder : ViewFinder {
             null -> cont.resume(null)
             is ImageView -> {
                 if (hasMeasuredDrawable(view)) {
-                    cont.resume(view)
+                    resume(view, cont)
                 } else {
                     resumeOnImageLoad(view, cont)
                 }
             }
             else -> cont.resume(view)
+        }
+    }
+
+    private fun resume(view: ImageView, cont: Continuation<View?>) {
+        if (view.drawable is RootDrawable) {
+            view.post { cont.resume(view) }
+        } else {
+            cont.resume(view)
         }
     }
 
