@@ -117,11 +117,6 @@
     [self.navigationController setBackButtonTestID:backButtonTestID];
 }
 
-- (void)componentDidAppear {
-    NSString* backButtonTestID = [self.navigationController.topViewController.resolveOptionsWithDefault.topBar.backButton.testID getWithDefaultValue:nil];
-    [self.navigationController setBackButtonTestID:backButtonTestID];
-}
-
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
     UIImage* icon = [backButtonOptions.icon getWithDefaultValue:nil];
     UIColor* color = [backButtonOptions.color getWithDefaultValue:nil];
