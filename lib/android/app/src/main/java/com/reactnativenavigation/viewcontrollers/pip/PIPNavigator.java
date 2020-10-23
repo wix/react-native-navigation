@@ -104,15 +104,15 @@ public class PIPNavigator extends ParentController<PIPContainer> {
             }
         });
         getView().addView(floatingLayout);
-//        if (this.childController.options.animations.pipIn.enabled.isTrueOrUndefined() && !toNative) {
-//            this.animator.pipIn(floatingLayout, this.childController, this.childController.options, () -> {
-//                this.pipFloatingLayout = floatingLayout;
-//                updatePIPStateInternal(PIPStates.CUSTOM_COMPACT);
-//            });
-//        } else {
+        if (this.childController.options.animations.pipIn.enabled.isTrueOrUndefined() && !toNative) {
+            this.animator.pipIn(floatingLayout, this.childController, this.childController.options, () -> {
+                this.pipFloatingLayout = floatingLayout;
+                updatePIPStateInternal(PIPStates.CUSTOM_COMPACT);
+            });
+        } else {
             this.pipFloatingLayout = floatingLayout;
             updatePIPStateInternal(PIPStates.CUSTOM_COMPACT);
-//        }
+        }
     }
 
     public void restorePIP(Functions.Func1<ViewController> task) {
@@ -120,19 +120,22 @@ public class PIPNavigator extends ParentController<PIPContainer> {
             pipFloatingLayout.cancelAnimations();
             pipFloatingLayout.initiateRestore();
             updatePIPStateInternal(PIPStates.RESTORE_START);
-//            if (this.childController.options.animations.pipOut.enabled.isTrueOrUndefined() && !wasDirectLaunchToNative) {
-//                this.animator.pipOut(this.pipFloatingLayout, this.childController, this.childController.options, () -> {
-//                    updatePIPStateInternal(PIPStates.NOT_STARTED);
-//                    this.childController.detachView();
-//                    task.run(this.childController);
-//                    clearPIP();
-//                });
-//            } else {
+            if (this.childController.options.animations.pipOut.enabled.isTrueOrUndefined() && !wasDirectLaunchToNative) {
+                this.animator.pipOut(this.pipFloatingLayout,
+                        this.childController,
+                        this.childController.options,
+                        () -> {
+                            updatePIPStateInternal(PIPStates.NOT_STARTED);
+                            this.childController.detachView();
+                            task.run(this.childController);
+                            clearPIP();
+                        });
+            } else {
                 updatePIPStateInternal(PIPStates.NOT_STARTED);
                 this.childController.detachView();
                 task.run(this.childController);
                 clearPIP();
-//            }
+            }
             wasDirectLaunchToNative = false;
         }
     }
