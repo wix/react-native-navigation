@@ -11,7 +11,7 @@
 
 - (void)applyOptions:(RNNTopBarOptions *)options {
     [self setTranslucent:[options.background.translucent getWithDefaultValue:NO]];
-    [self setScrollEdgeTranslucent:[options.scrollEdgeAppearance.background.translucent getWithDefaultValue:NO]];
+    [self setScrollEdgeTranslucent:[options.scrollEdgeAppearance.background.translucent getWithDefaultValue:[options.background.translucent getWithDefaultValue:NO]]];
     [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
     [self setScrollEdgeAppearanceColor:[options.scrollEdgeAppearance.background.color getWithDefaultValue:nil]];
     [self setTitleAttributes:options.title];
