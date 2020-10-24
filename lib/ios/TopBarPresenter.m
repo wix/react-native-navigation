@@ -73,6 +73,11 @@
     [self updateBackgroundAppearance];
 }
 
+- (void)setScrollEdgeAppearanceColor:(UIColor *)backgroundColor {
+    _scrollEdgeAppearanceColor = backgroundColor;
+    [self updateBackgroundAppearance];
+}
+
 - (void)updateBackgroundAppearance {
     if (self.transparent) {
         [self setBackgroundColorTransparent];
@@ -158,6 +163,10 @@
 
 - (BOOL)transparent {
     return self.backgroundColor.isTransparent;
+}
+
+- (BOOL)scrollEdgeTransparent {
+    return self.scrollEdgeAppearanceColor.isTransparent;
 }
 
 @end
