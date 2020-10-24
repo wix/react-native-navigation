@@ -1,10 +1,10 @@
 #import "RNNOptions.h"
 #import "RNNComponentOptions.h"
-#import "RNNBackgroundOptions.h"
+#import "RNNScrollEdgeAppearanceBackgroundOptions.h"
 
 
 @interface RNNScrollEdgeAppearanceOptions : RNNOptions
 
-@property (nonatomic, strong) RNNBackgroundOptions* background;
+@property (nonatomic, strong) RNNScrollEdgeAppearanceBackgroundOptions* background;
 
 @end

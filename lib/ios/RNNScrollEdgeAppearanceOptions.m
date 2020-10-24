@@ -5,7 +5,7 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super init];
     
-    self.background = [[RNNBackgroundOptions alloc] initWithDict:dict[@"background"]];
+    self.background = [[RNNScrollEdgeAppearanceBackgroundOptions alloc] initWithDict:dict[@"background"]];
     
     return self;
 }
