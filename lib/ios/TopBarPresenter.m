@@ -75,7 +75,6 @@
 
 - (void)setScrollEdgeAppearanceColor:(UIColor *)backgroundColor {
     _scrollEdgeAppearanceColor = backgroundColor;
-    [self updateBackgroundAppearance];
 }
 
 - (void)updateBackgroundAppearance {

@@ -64,7 +64,6 @@
         [self.getAppearance configureWithDefaultBackground];
     }  else {
         [self.getAppearance configureWithOpaqueBackground];
-        [self.getScrollEdgeAppearance configureWithOpaqueBackground];
     }
 }
 
