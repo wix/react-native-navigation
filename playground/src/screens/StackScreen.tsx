@@ -27,6 +27,7 @@ export default class StackScreen extends React.Component<NavigationComponentProp
     return {
       topBar: {
         testID: STACK_SCREEN_HEADER,
+        noBorder: false,
         title: {
           text: 'Stack',
         },

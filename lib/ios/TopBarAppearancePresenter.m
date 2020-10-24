@@ -14,7 +14,7 @@
     [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
     [self setTitleAttributes:options.title];
     [self setLargeTitleAttributes:options.largeTitle];
-    [self showBorder:![options.noBorder getWithDefaultValue:NO]];
+    [self showBorder:![options.noBorder getWithDefaultValue:NO]:[options.borderColor getWithDefaultValue:nil]];
     [self setBackButtonOptions:options.backButton];
 }
 
@@ -49,10 +49,10 @@
     }
 }
 
-- (void)showBorder:(BOOL)showBorder {
-    UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
-    self.getAppearance.shadowColor = shadowColor;
-    self.getScrollEdgeAppearance.shadowColor = shadowColor;
+- (void)showBorder:(BOOL)showBorder :(UIColor *)borderColor {
+    UIColor* shadowColor = borderColor ? borderColor : [[UINavigationBarAppearance new] shadowColor];
+    self.getAppearance.shadowColor = showBorder ? shadowColor : nil;
+    self.getScrollEdgeAppearance.shadowColor = showBorder ? shadowColor : nil;
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {

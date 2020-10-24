@@ -21,6 +21,7 @@
 @property (nonatomic, strong) Color* rightButtonDisabledColor;
 @property (nonatomic, strong) Bool* drawBehind;
 @property (nonatomic, strong) Bool* noBorder;
+@property (nonatomic, strong) Color* borderColor;
 @property (nonatomic, strong) Bool* animate;
 @property (nonatomic, strong) RNNSearchBarOptions* searchBar;
 @property (nonatomic, strong) Bool* searchBarHiddenWhenScrolling;
