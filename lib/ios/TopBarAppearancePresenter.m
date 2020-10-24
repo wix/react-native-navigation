@@ -18,7 +18,9 @@
     [self setLargeTitleAttributes:options.largeTitle];
     [self showBorder:![options.noBorder getWithDefaultValue:NO]];
     [self setBackButtonOptions:options.backButton];
-    [self updateScrollEdgeAppearance];
+    if ([options.scrollEdgeAppearance.active getWithDefaultValue:NO]) {
+        [self updateScrollEdgeAppearance];
+    }
 }
 
 - (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options {
@@ -38,7 +40,7 @@
 }
 
 - (void)updateScrollEdgeAppearance {
-    if (self.scrollEdgeTransparent || self.transparent) {
+    if (self.scrollEdgeTransparent) {
         [self.getScrollEdgeAppearance configureWithTransparentBackground];
     } else if (self.scrollEdgeAppearanceColor) {
         [self.getScrollEdgeAppearance configureWithOpaqueBackground];

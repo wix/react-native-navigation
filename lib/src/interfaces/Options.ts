@@ -391,6 +391,7 @@ export interface OptionsTopBarScrollEdgeAppearanceBackground {
 
 export interface OptionsTopBarScrollEdgeAppearance {
   background?: OptionsTopBarScrollEdgeAppearanceBackground;
+  active: boolean;
 }
 
 export interface OptionsTopBarBackground {

@@ -6,5 +6,6 @@
 @interface RNNScrollEdgeAppearanceOptions : RNNOptions
 
 @property (nonatomic, strong) RNNScrollEdgeAppearanceBackgroundOptions* background;
+@property (nonatomic, strong) Bool* active;
 
 @end
