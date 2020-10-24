@@ -38,7 +38,7 @@
 }
 
 - (void)updateScrollEdgeAppearance {
-    if (self.scrollEdgeTransparent) {
+    if (self.scrollEdgeTransparent || self.transparent) {
         [self.getScrollEdgeAppearance configureWithTransparentBackground];
     } else if (self.scrollEdgeAppearanceColor) {
         [self.getScrollEdgeAppearance configureWithOpaqueBackground];
