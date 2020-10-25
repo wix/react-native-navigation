@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.reactnativenavigation.utils.ViewUtils.removeFromParent
-import com.reactnativenavigation.viewcontrollers.viewcontroller.OverlayLayout
 
 open class ViewControllerOverlay(context: Context) {
     private val overlay = OverlayLayout(context)

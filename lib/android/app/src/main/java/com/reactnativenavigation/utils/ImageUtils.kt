@@ -3,7 +3,7 @@ package com.reactnativenavigation.utils
 import android.view.View
 import android.view.ViewParent
 import com.reactnativenavigation.react.ReactView
-import com.reactnativenavigation.viewcontrollers.viewcontroller.OverlayLayout
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.OverlayLayout
 
 fun areDimensionsWithInheritedScaleEqual(a: View, b: View): Boolean {
     val (aScaleX, aScaleY) = computeInheritedScale(a)

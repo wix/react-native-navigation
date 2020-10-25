@@ -6,19 +6,20 @@ import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
-import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.parent.ParentController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
+import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOverlay;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -141,6 +142,7 @@ public class Navigator extends ParentController {
         final boolean removeSplashView = isRootNotCreated();
         if (isRootNotCreated()) getView();
         root = viewController;
+        root.setOverlay(new RootOverlay(getActivity(), contentLayout));
         rootPresenter.setRoot(root, defaultOptions, new CommandListenerAdapter(commandListener) {
             @Override
             public void onSuccess(String childId) {
