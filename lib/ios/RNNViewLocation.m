@@ -14,16 +14,16 @@
     self.toTransform = [self getTransform:toElement];
     self.toBounds = toElement.layer.bounds;
     self.fromBounds = fromElement.layer.bounds;
-    self.fromCornerRadius = [self getCornerRadius:fromElement];
-    self.toCornerRadius = [self getCornerRadius:toElement];
+    self.fromCornerRadius = fromElement.layer.cornerRadius ?: [self getClippedCornerRadius:fromElement];
+    self.toCornerRadius = toElement.layer.cornerRadius ?: [self getClippedCornerRadius:toElement];
 	return self;
 }
 
-- (CGFloat)getCornerRadius:(UIView *)view {
-    if (view.layer.cornerRadius > 0) {
+- (CGFloat)getClippedCornerRadius:(UIView *)view {
+    if (view.layer.cornerRadius > 0 && view.clipsToBounds) {
         return view.layer.cornerRadius;
     } else if (CGRectEqualToRect(view.frame, view.superview.bounds)) {
-        return [self getCornerRadius:view.superview];
+        return [self getClippedCornerRadius:view.superview];
     }
     
     return 0;
