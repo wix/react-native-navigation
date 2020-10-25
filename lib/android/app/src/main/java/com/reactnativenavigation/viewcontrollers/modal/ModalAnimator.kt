@@ -19,17 +19,21 @@ open class ModalAnimator @JvmOverloads constructor(
         context: Context,
         private val transitionAnimatorCreator: TransitionAnimatorCreator = TransitionAnimatorCreator()
 ) : BaseAnimator(context) {
-    private val runningAnimators: MutableMap<ViewController<*>, Animator?> = HashMap()
-    open fun show(appearing: ViewController<*>, disappearing: ViewController<*>, show: AnimationOptions, listener: ScreenAnimationListener) = GlobalScope.launch(Dispatchers.Main.immediate) {
-        val set = AnimatorSet()
-        if (show.hasElementTransitions()) {
-            val fade = if (show.isFadeAnimation()) show else FadeAnimation().content
-            val transitionAnimators = transitionAnimatorCreator.create(show, fade, disappearing, appearing)
-            set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
-            transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
-            transitionAnimators.removeAllListeners()
-        }
+    val isRunning: Boolean
+        get() = runningAnimators.isNotEmpty()
 
+    private val runningAnimators: MutableMap<ViewController<*>, Animator?> = HashMap()
+
+    open fun show(appearing: ViewController<*>, disappearing: ViewController<*>, show: AnimationOptions, listener: ScreenAnimationListener) = GlobalScope.launch(Dispatchers.Main.immediate) {
+        val set = createShowModalAnimator(appearing, listener)
+        if (show.hasElementTransitions()) {
+            setupShowModalWithSharedElementTransition(disappearing, appearing, show, set)
+        }
+        set.start()
+    }
+
+    private fun createShowModalAnimator(appearing: ViewController<*>, listener: ScreenAnimationListener): AnimatorSet {
+        val set = AnimatorSet()
         set.addListener(object : AnimatorListenerAdapter() {
             private var isCancelled = false
             override fun onAnimationStart(animation: Animator) {
@@ -47,7 +51,20 @@ open class ModalAnimator @JvmOverloads constructor(
                 if (!isCancelled) listener.onEnd()
             }
         })
-        set.start()
+        return set
+    }
+
+    private suspend fun setupShowModalWithSharedElementTransition(
+            disappearing: ViewController<*>,
+            appearing: ViewController<*>,
+            show: AnimationOptions,
+            set: AnimatorSet
+    ) {
+        val fade = if (show.isFadeAnimation()) show else FadeAnimation().content
+        val transitionAnimators = transitionAnimatorCreator.create(show, fade, disappearing, appearing)
+        set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
+        transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
+        transitionAnimators.removeAllListeners()
     }
 
     open fun dismiss(appearing: ViewController<*>?, disappearing: ViewController<*>, dismiss: AnimationOptions, listener: ScreenAnimationListener) = GlobalScope.launch(Dispatchers.Main.immediate) {
@@ -55,39 +72,47 @@ open class ModalAnimator @JvmOverloads constructor(
             runningAnimators[disappearing]?.cancel()
             listener.onEnd()
         } else {
-            val set = AnimatorSet()
+            val set = createDismissAnimator(disappearing, listener)
             if (dismiss.hasElementTransitions() && appearing != null) {
-                val fade = if (dismiss.isFadeAnimation()) dismiss else FadeAnimation().content
-                val transitionAnimators = transitionAnimatorCreator.create(dismiss, fade, disappearing, appearing)
-                set.playTogether(fade.getAnimation(disappearing.view), transitionAnimators)
-                transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
-                transitionAnimators.removeAllListeners()
+                setupDismissAnimationWithSharedElementTransition(disappearing, appearing, dismiss, set)
             } else {
                 set.play(dismiss.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
             }
-
-
-
-            set.addListener(object : AnimatorListenerAdapter() {
-                private var isCancelled = false
-                override fun onAnimationStart(animation: Animator) {
-                    listener.onStart()
-                }
-
-                override fun onAnimationCancel(animation: Animator) {
-                    isCancelled = true
-                    listener.onCancel()
-                }
-
-                override fun onAnimationEnd(animation: Animator) {
-                    runningAnimators.remove(disappearing)
-                    if (!isCancelled) listener.onEnd()
-                }
-            })
             set.start()
         }
     }
 
-    val isRunning: Boolean
-        get() = !runningAnimators.isEmpty()
+    private fun createDismissAnimator(disappearing: ViewController<*>, listener: ScreenAnimationListener): AnimatorSet {
+        val set = AnimatorSet()
+        set.addListener(object : AnimatorListenerAdapter() {
+            private var isCancelled = false
+            override fun onAnimationStart(animation: Animator) {
+                listener.onStart()
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+                isCancelled = true
+                listener.onCancel()
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                runningAnimators.remove(disappearing)
+                if (!isCancelled) listener.onEnd()
+            }
+        })
+        return set
+    }
+
+    private suspend fun setupDismissAnimationWithSharedElementTransition(
+            disappearing: ViewController<*>,
+            appearing: ViewController<*>,
+            dismiss: AnimationOptions,
+            set: AnimatorSet
+    ) {
+        val fade = if (dismiss.isFadeAnimation()) dismiss else FadeAnimation().content
+        val transitionAnimators = transitionAnimatorCreator.create(dismiss, fade, disappearing, appearing)
+        set.playTogether(fade.getAnimation(disappearing.view), transitionAnimators)
+        transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
+        transitionAnimators.removeAllListeners()
+    }
 }
