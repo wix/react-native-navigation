@@ -22,6 +22,7 @@
     self.rightButtonDisabledColor = [ColorParser parse:dict key:@"rightButtonDisabledColor"];
     self.drawBehind = [BoolParser parse:dict key:@"drawBehind"];
     self.noBorder = [BoolParser parse:dict key:@"noBorder"];
+    self.borderColor = [ColorParser parse:dict key:@"borderColor"];
     self.animate = [BoolParser parse:dict key:@"animate"];
     self.searchBar = [[RNNSearchBarOptions alloc] initWithDict:dict[@"searchBar"]];
     self.searchBarHiddenWhenScrolling = [BoolParser parse:dict key:@"searchBarHiddenWhenScrolling"];

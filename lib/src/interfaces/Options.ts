@@ -649,7 +649,6 @@ export interface OptionsTopBar {
   height?: AndroidDensityNumber;
   /**
    * Change the navbar border color
-   * #### (Android specific)
    */
   borderColor?: Color;
   /**
