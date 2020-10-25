@@ -153,19 +153,12 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             ?: 0
 
     private fun addToOverlay(vc: ViewController<*>, element: View, lp: FrameLayout.LayoutParams) {
-        val viewController = vc.parentController!!
+        val viewController = vc.parentController ?: vc
         viewController.addOverlay(element, lp)
-
-//        view.layoutParams = lp
-//        (viewController.view.parent as ViewGroup).overlay.add(view)
     }
 
     private fun removeFromOverlay(vc: ViewController<*>, element: View) {
-        val viewController = vc.parentController
-        viewController!!.removeOverlay(element)
-
-//        if (!viewController.isDestroyed) {
-//            (viewController.view.parent as ViewGroup).overlay.remove(element)
-//        }
+        val viewController = vc.parentController ?: vc
+        viewController.removeOverlay(element)
     }
 }

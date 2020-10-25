@@ -102,7 +102,7 @@ public class ModalPresenter {
         }
         Options options = toDismiss.resolveCurrentOptions(defaultOptions);
         if (options.animations.dismissModal.enabled.isTrueOrUndefined()) {
-            animator.dismiss(toDismiss, options.animations.dismissModal, new ScreenAnimationListener() {
+            animator.dismiss(toAdd, toDismiss, options.animations.dismissModal, new ScreenAnimationListener() {
                 @Override
                 public void onEnd() {
                     onDismissEnd(toDismiss, listener);

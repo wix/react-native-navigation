@@ -50,30 +50,42 @@ open class ModalAnimator @JvmOverloads constructor(
         set.start()
     }
 
-    open fun dismiss(disappearing: ViewController<*>, dismiss: AnimationOptions, listener: ScreenAnimationListener) {
+    open fun dismiss(appearing: ViewController<*>?, disappearing: ViewController<*>, dismiss: AnimationOptions, listener: ScreenAnimationListener) = GlobalScope.launch(Dispatchers.Main.immediate) {
         if (runningAnimators.containsKey(disappearing)) {
             runningAnimators[disappearing]?.cancel()
             listener.onEnd()
-            return
+        } else {
+            val set = AnimatorSet()
+            if (dismiss.hasElementTransitions() && appearing != null) {
+                val fade = if (dismiss.isFadeAnimation()) dismiss else FadeAnimation().content
+                val transitionAnimators = transitionAnimatorCreator.create(dismiss, fade, disappearing, appearing)
+                set.playTogether(fade.getAnimation(disappearing.view), transitionAnimators)
+                transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
+                transitionAnimators.removeAllListeners()
+            } else {
+                set.play(dismiss.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+            }
+
+
+
+            set.addListener(object : AnimatorListenerAdapter() {
+                private var isCancelled = false
+                override fun onAnimationStart(animation: Animator) {
+                    listener.onStart()
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                    isCancelled = true
+                    listener.onCancel()
+                }
+
+                override fun onAnimationEnd(animation: Animator) {
+                    runningAnimators.remove(disappearing)
+                    if (!isCancelled) listener.onEnd()
+                }
+            })
+            set.start()
         }
-        val animator: Animator = dismiss.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view))
-        animator.addListener(object : AnimatorListenerAdapter() {
-            private var isCancelled = false
-            override fun onAnimationStart(animation: Animator) {
-                listener.onStart()
-            }
-
-            override fun onAnimationCancel(animation: Animator) {
-                isCancelled = true
-                listener.onCancel()
-            }
-
-            override fun onAnimationEnd(animation: Animator) {
-                runningAnimators.remove(disappearing)
-                if (!isCancelled) listener.onEnd()
-            }
-        })
-        animator.start()
     }
 
     val isRunning: Boolean

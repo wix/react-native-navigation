@@ -18,6 +18,7 @@ import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.component.Component;
 
 import org.assertj.android.api.Assertions;
