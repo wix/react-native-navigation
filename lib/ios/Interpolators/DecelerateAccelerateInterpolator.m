@@ -10,19 +10,18 @@
 
 @implementation DecelerateAccelerateInterpolator
 
-- (instancetype)init
-{
-	self = [super init];
-	return self;
+- (instancetype)init {
+    self = [super init];
+    return self;
 }
 
 - (CGFloat)interpolate:(CGFloat)progress {
-	if (progress < 0.5) {
-		CGFloat f = ((2 * progress) - 2);
-		return 0.5 * f * f * f + 1;
-	} else {
-		return 4 * progress * progress * progress;
-	}
+    if (progress < 0.5) {
+        CGFloat f = ((2 * progress) - 2);
+        return 0.5 * f * f * f + 1;
+    } else {
+        return 4 * progress * progress * progress;
+    }
 }
 
 @end

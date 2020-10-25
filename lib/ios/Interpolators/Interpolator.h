@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@protocol Interpolator<NSObject>
+@protocol Interpolator <NSObject>
 
 /**
  * Interpolates the progress value on a custom interpolation function such as Ease/Bezier.
- * In Mathematical terms, the `progress` parameter is the `x` value of the interpolation function `f(x)`,
- * while the return value is `f` (or `y`)
+ * In Mathematical terms, the `progress` parameter is the `x` value of the interpolation function
+ * `f(x)`, while the return value is `f` (or `y`)
  */
-- (CGFloat) interpolate:(CGFloat)progress;
+- (CGFloat)interpolate:(CGFloat)progress;
 
 @end

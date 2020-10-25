@@ -6,17 +6,21 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Interpolator.h"
+#import <Foundation/Foundation.h>
 
-@interface SpringInterpolator : NSObject<Interpolator>
+@interface SpringInterpolator : NSObject <Interpolator>
 
-@property (readonly) CGFloat mass;
-@property (readonly) CGFloat damping;
-@property (readonly) CGFloat stiffness;
-@property (readonly) BOOL allowsOverdamping;
-@property (readonly) CGFloat velocity;
+@property(readonly) CGFloat mass;
+@property(readonly) CGFloat damping;
+@property(readonly) CGFloat stiffness;
+@property(readonly) BOOL allowsOverdamping;
+@property(readonly) CGFloat velocity;
 
-- (instancetype)init:(CGFloat)mass damping:(CGFloat)damping stiffness:(CGFloat)stiffness allowsOverdamping:(BOOL)allowsOverdamping initialVelocity:(CGFloat)initialVelocity;
+- (instancetype)init:(CGFloat)mass
+              damping:(CGFloat)damping
+            stiffness:(CGFloat)stiffness
+    allowsOverdamping:(BOOL)allowsOverdamping
+      initialVelocity:(CGFloat)initialVelocity;
 
 @end

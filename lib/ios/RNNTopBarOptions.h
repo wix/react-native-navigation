@@ -4,8 +4,8 @@
 #import "RNNComponentOptions.h"
 #import "RNNLargeTitleOptions.h"
 #import "RNNOptions.h"
-#import "RNNSearchBarOptions.h"
 #import "RNNScrollEdgeAppearanceOptions.h"
+#import "RNNSearchBarOptions.h"
 #import "RNNSubtitleOptions.h"
 #import "RNNTitleOptions.h"
 

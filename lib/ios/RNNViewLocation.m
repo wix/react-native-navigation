@@ -14,7 +14,8 @@
     self.toTransform = [self getTransform:toElement];
     self.toBounds = toElement.layer.bounds;
     self.fromBounds = fromElement.layer.bounds;
-    self.fromCornerRadius = fromElement.layer.cornerRadius ?: [self getClippedCornerRadius:fromElement];
+    self.fromCornerRadius =
+        fromElement.layer.cornerRadius ?: [self getClippedCornerRadius:fromElement];
     self.toCornerRadius = toElement.layer.cornerRadius ?: [self getClippedCornerRadius:toElement];
     return self;
 }

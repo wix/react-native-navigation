@@ -10,12 +10,16 @@
 
 - (void)applyOptions:(RNNTopBarOptions *)options {
     [self setTranslucent:[options.background.translucent getWithDefaultValue:NO]];
-    [self setScrollEdgeTranslucent:[options.scrollEdgeAppearance.background.translucent getWithDefaultValue:[options.background.translucent getWithDefaultValue:NO]]];
+    [self setScrollEdgeTranslucent:[options.scrollEdgeAppearance.background.translucent
+                                       getWithDefaultValue:[options.background.translucent
+                                                               getWithDefaultValue:NO]]];
     [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
-    [self setScrollEdgeAppearanceColor:[options.scrollEdgeAppearance.background.color getWithDefaultValue:nil]];
+    [self setScrollEdgeAppearanceColor:[options.scrollEdgeAppearance.background.color
+                                           getWithDefaultValue:nil]];
     [self setTitleAttributes:options.title];
     [self setLargeTitleAttributes:options.largeTitle];
-    [self showBorder:![options.noBorder getWithDefaultValue:NO]:[options.borderColor getWithDefaultValue:nil]];
+    [self showBorder:![options.noBorder getWithDefaultValue:NO
+    ]:[options.borderColor getWithDefaultValue:nil]];
     [self setBackButtonOptions:options.backButton];
     if ([options.scrollEdgeAppearance.active getWithDefaultValue:NO]) {
         [self updateScrollEdgeAppearance];
@@ -30,7 +34,7 @@
     [self updateBackgroundAppearance];
 }
 
-- (void)setScrollEdgeTranslucent: (BOOL)translucent {
+- (void)setScrollEdgeTranslucent:(BOOL)translucent {
     [super setScrollEdgeTranslucent:translucent];
 }
 
@@ -73,7 +77,8 @@
 }
 
 - (void)showBorder:(BOOL)showBorder:(UIColor *)borderColor {
-    UIColor* shadowColor = borderColor ? borderColor : [[UINavigationBarAppearance new] shadowColor];
+    UIColor *shadowColor =
+        borderColor ? borderColor : [[UINavigationBarAppearance new] shadowColor];
     self.getAppearance.shadowColor = showBorder ? shadowColor : nil;
     self.getScrollEdgeAppearance.shadowColor = showBorder ? shadowColor : nil;
 }
