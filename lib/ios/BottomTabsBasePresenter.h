@@ -1,9 +1,9 @@
-#import <Foundation/Foundation.h>
 #import "RNNBasePresenter.h"
+#import "UIColor+RNNUtils.h"
 #import "UITabBarController+RNNOptions.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+Utils.h"
-#import "UIColor+RNNUtils.h"
+#import <Foundation/Foundation.h>
 
 @interface BottomTabsBasePresenter : RNNBasePresenter
 

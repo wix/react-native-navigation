@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "Text.h"
+#import <Foundation/Foundation.h>
 
 @interface TextParser : NSObject
 

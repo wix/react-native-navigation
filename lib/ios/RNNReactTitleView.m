@@ -25,14 +25,14 @@
         self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
         __weak RNNReactView *weakSelf = self;
         [self setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicSize) {
-            [weakSelf setFrame:CGRectMake(0, 0, intrinsicSize.width, intrinsicSize.height)];
+          [weakSelf setFrame:CGRectMake(0, 0, intrinsicSize.width, intrinsicSize.height)];
         }];
     }
 }
 
 - (void)setRootViewDidChangeIntrinsicSize:(void (^)(CGSize))rootViewDidChangeIntrinsicSize {
-        _rootViewDidChangeIntrinsicSize = rootViewDidChangeIntrinsicSize;
-        self.delegate = self;
+    _rootViewDidChangeIntrinsicSize = rootViewDidChangeIntrinsicSize;
+    self.delegate = self;
 }
 
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {

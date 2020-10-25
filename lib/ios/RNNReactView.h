@@ -39,8 +39,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
                     moduleName:(NSString *)moduleName
              initialProperties:(NSDictionary *)initialProperties
                   eventEmitter:(RNNEventEmitter *)eventEmitter
-           reactViewReadyBlock:
-               (RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
+           reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 
 @property(nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
 @property(nonatomic, strong) RNNEventEmitter *eventEmitter;

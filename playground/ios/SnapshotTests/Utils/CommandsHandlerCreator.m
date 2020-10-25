@@ -1,5 +1,6 @@
 #import "CommandsHandlerCreator.h"
 #import "RNNTestRootViewCreator.h"
+#import <ReactNativeNavigation/RNNLayoutManager.h>
 #import <ReactNativeNavigation/RNNEventEmitter.h>
 #import <ReactNativeNavigation/RNNOverlayManager.h>
 #import <ReactNativeNavigation/RNNModalManager.h>
@@ -10,11 +11,12 @@
 
 + (RNNCommandsHandler *)createWithWindow:(UIWindow *)window {
 	RNNTestRootViewCreator* creator = [RNNTestRootViewCreator new];
+	RNNLayoutManager *layoutManager = [[RNNLayoutManager alloc] init];
 	RNNEventEmitter* eventEmmiter = [RNNEventEmitter new];
 	RNNOverlayManager* overlayManager = [RNNOverlayManager new];
 	RNNModalManager* modalManager = [RNNModalManager new];
 	RNNControllerFactory* controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:creator eventEmitter:eventEmmiter store:nil componentRegistry:nil andBridge:nil bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
-	RNNCommandsHandler* commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmmiter modalManager:modalManager overlayManager:overlayManager setRootAnimator:[RNNSetRootAnimator new] mainWindow:window];
+	RNNCommandsHandler* commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory layoutManager:layoutManager eventEmitter:eventEmmiter modalManager:modalManager overlayManager:overlayManager setRootAnimator:[RNNSetRootAnimator new] mainWindow:window];
 	[commandsHandler setReadyToReceiveCommands:YES];
 	[commandsHandler setDefaultOptions:@{
 		@"animations": @{

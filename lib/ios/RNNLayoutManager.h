@@ -4,6 +4,9 @@
 
 @interface RNNLayoutManager : NSObject
 
-+ (UIViewController *)findComponentForId:(NSString *)componentId;
+- (void)addPendingViewController:(UIViewController *)vc;
+- (void)removePendingViewController:(UIViewController *)vc;
+
+- (UIViewController *)findComponentForId:(NSString *)componentId;
 
 @end

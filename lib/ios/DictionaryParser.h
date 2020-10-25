@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "Dictionary.h"
+#import <Foundation/Foundation.h>
 
 @interface DictionaryParser : NSObject
 
