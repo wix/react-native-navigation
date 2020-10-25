@@ -3,7 +3,6 @@
 @implementation BottomTabsBaseAttacher
 
 - (void)attach:(UITabBarController *)bottomTabsController {
-    
 }
 
 @end

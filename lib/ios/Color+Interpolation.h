@@ -16,7 +16,8 @@
 #endif
 
 /**
- Interpolate using the LAB color space for optimal quality. This constant is equal to @c LNUseDefaultInterpolationBehavior.
+ Interpolate using the LAB color space for optimal quality. This constant is
+ equal to @c LNUseDefaultInterpolationBehavior.
  */
 extern LNInterpolationBehavior const RNNInterpolationBehaviorUseLABColorSpace;
 
@@ -27,13 +28,17 @@ extern LNInterpolationBehavior const RNNInterpolationBehaviorUseRGBColorSpace;
 
 /**
  Interpolates between colors.
- 
- By default, colors are interpolated in the Lab color space for optimal quality at the expense of some performance. Use @c LNUseRGBInterpolationBehavior for better performance but suboptimal quality.
+
+ By default, colors are interpolated in the Lab color space for optimal quality
+ at the expense of some performance. Use @c LNUseRGBInterpolationBehavior for
+ better performance but suboptimal quality.
  */
 #if __has_include(<UIKit/UIKit.h>)
-@interface UIColor (LNInterpolation) <LNInterpolable> @end
+@interface UIColor (LNInterpolation) <LNInterpolable>
+@end
 #else
-@interface NSColor (LNInterpolation) <LNInterpolable> @end
+@interface NSColor (LNInterpolation) <LNInterpolable>
+@end
 #endif
 
 #endif

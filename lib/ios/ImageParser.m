@@ -12,7 +12,8 @@
 
     UIImage *image;
 
-    if ([data isKindOfClass:[NSDictionary class]] && [data[@"system"] isKindOfClass:[NSString class]]) {
+    if ([data isKindOfClass:[NSDictionary class]] &&
+        [data[@"system"] isKindOfClass:[NSString class]]) {
         if (@available(iOS 13.0, *)) {
             image = [UIImage systemImageNamed:data[@"system"]];
         }
