@@ -1,5 +1,5 @@
-#import <React/RCTConvert.h>
 #import "Interpolator.h"
+#import <React/RCTConvert.h>
 
 @interface RCTConvert (Interpolation)
 

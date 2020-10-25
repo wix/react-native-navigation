@@ -1,8 +1,8 @@
 
+#import "RNNLayoutInfo.h"
+#import "ReactNativeNavigation.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ReactNativeNavigation.h"
-#import "RNNLayoutInfo.h"
 
 @interface RNNExternalComponentStore : NSObject
 

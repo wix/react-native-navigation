@@ -7,11 +7,11 @@
     return [self.class AttachMode:string];
 }
 
-RCT_ENUM_CONVERTER(AttachMode,
-(@{@"together": @(BottomTabsAttachModeTogether),
-   @"afterInitialTab": @(BottomTabsAttachModeAfterInitialTab),
-   @"onSwitchToTab": @(BottomTabsAttachModeOnSwitchToTab)
-}), BottomTabsAttachModeTogether, integerValue)
-
+RCT_ENUM_CONVERTER(AttachMode, (@{
+                       @"together" : @(BottomTabsAttachModeTogether),
+                       @"afterInitialTab" : @(BottomTabsAttachModeAfterInitialTab),
+                       @"onSwitchToTab" : @(BottomTabsAttachModeOnSwitchToTab)
+                   }),
+                   BottomTabsAttachModeTogether, integerValue)
 
 @end

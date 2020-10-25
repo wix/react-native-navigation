@@ -2,7 +2,7 @@
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation RNNModalManagerEventHandler {
-    RNNEventEmitter* _eventEmitter;
+    RNNEventEmitter *_eventEmitter;
 }
 
 - (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter {
@@ -12,17 +12,23 @@
 }
 
 - (void)dismissedModal:(UIViewController *)viewController {
-    [_eventEmitter sendModalsDismissedEvent:viewController.topMostViewController.layoutInfo.componentId numberOfModalsDismissed:@(1)];
+    [_eventEmitter
+        sendModalsDismissedEvent:viewController.topMostViewController.layoutInfo.componentId
+         numberOfModalsDismissed:@(1)];
 }
 
 - (void)attemptedToDismissModal:(UIViewController *)viewController {
-    [_eventEmitter sendModalAttemptedToDismissEvent:viewController.topMostViewController.layoutInfo.componentId];
+    [_eventEmitter sendModalAttemptedToDismissEvent:viewController.topMostViewController.layoutInfo
+                                                        .componentId];
 }
 
 - (void)dismissedMultipleModals:(NSArray *)viewControllers {
     if (viewControllers && viewControllers.count) {
-        UIViewController* lastViewController = [viewControllers.lastObject presentedComponentViewController];
-        [_eventEmitter sendModalsDismissedEvent:lastViewController.topMostViewController.layoutInfo.componentId numberOfModalsDismissed:@(viewControllers.count)];
+        UIViewController *lastViewController =
+            [viewControllers.lastObject presentedComponentViewController];
+        [_eventEmitter
+            sendModalsDismissedEvent:lastViewController.topMostViewController.layoutInfo.componentId
+             numberOfModalsDismissed:@(viewControllers.count)];
     }
 }
 

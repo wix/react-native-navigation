@@ -7,9 +7,7 @@
 
 #import "LNInterpolable.h"
 
-LNInterpolationBehavior const LNInterpolationBehaviorUseDefault = @"LNInterpolationBehaviorUseDefault";
+LNInterpolationBehavior const LNInterpolationBehaviorUseDefault =
+    @"LNInterpolationBehaviorUseDefault";
 
-double LNLinearInterpolate(double from, double to, double p)
-{
-	return from + p * (to - from);
-}
+double LNLinearInterpolate(double from, double to, double p) { return from + p * (to - from); }

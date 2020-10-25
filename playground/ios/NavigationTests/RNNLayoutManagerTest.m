@@ -6,6 +6,8 @@
 
 @interface RNNLayoutManagerTest : XCTestCase
 
+@property (nonatomic, strong) RNNLayoutManager *layoutManager;
+
 @property (nonatomic, strong) UIViewController* vc1;
 @property (nonatomic, strong) UIViewController* vc2;
 @property (nonatomic, strong) UIViewController* vc3;
@@ -18,6 +20,8 @@
 @implementation RNNLayoutManagerTest
 
 - (void)setUp {
+	_layoutManager = [[RNNLayoutManager alloc] init];
+
 	_vc1 = [self createMockViewControllerWithComponentId:@"vc1"];
 	_vc2 = [self createMockViewControllerWithComponentId:@"vc2"];
 	_vc3 = [self createMockViewControllerWithComponentId:@"vc3"];
@@ -35,13 +39,13 @@
 
 - (void)testFindComponentForIdShouldReturnVCInFirstWindowRoot {
 	_firstWindow.rootViewController = _vc1;
-	UIViewController *resultVC = [RNNLayoutManager findComponentForId:@"vc1"];
+	UIViewController *resultVC = [_layoutManager findComponentForId:@"vc1"];
 	XCTAssertEqual(resultVC, _vc1);
 }
 
 - (void)testFindComponentForIdShouldReturnVCFromSecondWindowRoot {
 	_secondWindow.rootViewController = _vc1;
-	UIViewController *resultVC = [RNNLayoutManager findComponentForId:@"vc1"];
+	UIViewController *resultVC = [_layoutManager findComponentForId:@"vc1"];
 	XCTAssertEqual(resultVC, _vc1);
 }
 
@@ -51,7 +55,7 @@
 	UIViewController* modal = _vc1;
 	OCMStub([rootViewController presentedViewController]).andReturn(modal);
 	_firstWindow.rootViewController = rootViewController;
-	UIViewController *resultVC = [RNNLayoutManager findComponentForId:@"vc1"];
+	UIViewController *resultVC = [_layoutManager findComponentForId:@"vc1"];
 	XCTAssertEqual(resultVC, modal);
 }
 
@@ -60,13 +64,13 @@
 	UIViewController* modal = _vc1;
 	OCMStub([rootViewController presentedViewController]).andReturn(modal);
 	_secondWindow.rootViewController = rootViewController;
-	UIViewController *resultVC = [RNNLayoutManager findComponentForId:@"vc1"];
+	UIViewController *resultVC = [_layoutManager findComponentForId:@"vc1"];
 	XCTAssertEqual(resultVC, modal);
 }
 
 - (void)testFindComponentShouldReturnNilForUndefindComponent {
 	_firstWindow.rootViewController = _vc1;
-	UIViewController *resultVC = [RNNLayoutManager findComponentForId:@"vvc"];
+	UIViewController *resultVC = [_layoutManager findComponentForId:@"vvc"];
 	XCTAssertNil(resultVC);
 }
 
@@ -75,7 +79,7 @@
 	[nvc setViewControllers:@[_vc1, _vc2, _vc3]];
 	_secondWindow.rootViewController = nvc;
 	
-	UIViewController *resultVC = [RNNLayoutManager findComponentForId:@"vc3"];
+	UIViewController *resultVC = [_layoutManager findComponentForId:@"vc3"];
 	XCTAssertEqual(resultVC, _vc3);
 }
 

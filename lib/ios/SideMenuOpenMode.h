@@ -2,6 +2,4 @@
 
 @interface SideMenuOpenMode : Number
 
-
-
 @end

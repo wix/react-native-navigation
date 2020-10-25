@@ -6,7 +6,6 @@
 
 @end
 
-
 @implementation TopBarAppearancePresenter
 
 - (void)applyOptions:(RNNTopBarOptions *)options {
@@ -67,14 +66,14 @@
     } else if (self.translucent) {
         [self.getAppearance configureWithDefaultBackground];
         [self.getScrollEdgeAppearance configureWithDefaultBackground];
-    }  else {
+    } else {
         [self.getAppearance configureWithOpaqueBackground];
         [self.getScrollEdgeAppearance configureWithOpaqueBackground];
     }
 }
 
 - (void)showBorder:(BOOL)showBorder {
-    UIColor* shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
+    UIColor *shadowColor = showBorder ? [[UINavigationBarAppearance new] shadowColor] : nil;
     self.getAppearance.shadowColor = shadowColor;
     self.getScrollEdgeAppearance.shadowColor = shadowColor;
 }
@@ -84,20 +83,34 @@
 }
 
 - (void)setTitleAttributes:(RNNTitleOptions *)titleOptions {
-    NSString* fontFamily = [titleOptions.fontFamily getWithDefaultValue:nil];
-    NSString* fontWeight = [titleOptions.fontWeight getWithDefaultValue:nil];
-    NSNumber* fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
-    UIColor* fontColor = [titleOptions.color getWithDefaultValue:nil];
+    NSString *fontFamily = [titleOptions.fontFamily getWithDefaultValue:nil];
+    NSString *fontWeight = [titleOptions.fontWeight getWithDefaultValue:nil];
+    NSNumber *fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
+    UIColor *fontColor = [titleOptions.color getWithDefaultValue:nil];
 
-    self.getAppearance.titleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getAppearance.titleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    self.getAppearance.titleTextAttributes =
+        [RNNFontAttributesCreator createFromDictionary:self.getAppearance.titleTextAttributes
+                                            fontFamily:fontFamily
+                                              fontSize:fontSize
+                                       defaultFontSize:nil
+                                            fontWeight:fontWeight
+                                                 color:fontColor
+                                          defaultColor:nil];
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
-    NSString* fontFamily = [largeTitleOptions.fontFamily getWithDefaultValue:nil];
-    NSString* fontWeight = [largeTitleOptions.fontWeight getWithDefaultValue:nil];
-    NSNumber* fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
-    UIColor* fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
-    NSDictionary* largeTitleTextAttributes = [RNNFontAttributesCreator createFromDictionary:self.getAppearance.largeTitleTextAttributes fontFamily:fontFamily fontSize:fontSize defaultFontSize:nil fontWeight:fontWeight color:fontColor defaultColor:nil];
+    NSString *fontFamily = [largeTitleOptions.fontFamily getWithDefaultValue:nil];
+    NSString *fontWeight = [largeTitleOptions.fontWeight getWithDefaultValue:nil];
+    NSNumber *fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
+    UIColor *fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
+    NSDictionary *largeTitleTextAttributes =
+        [RNNFontAttributesCreator createFromDictionary:self.getAppearance.largeTitleTextAttributes
+                                            fontFamily:fontFamily
+                                              fontSize:fontSize
+                                       defaultFontSize:nil
+                                            fontWeight:fontWeight
+                                                 color:fontColor
+                                          defaultColor:nil];
     self.getAppearance.largeTitleTextAttributes = largeTitleTextAttributes;
     self.getScrollEdgeAppearance.largeTitleTextAttributes = largeTitleTextAttributes;
 }
