@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "Bool.h"
+#import <Foundation/Foundation.h>
 
 @interface BoolParser : NSObject
 

@@ -4,8 +4,9 @@
 
 @interface RNNComponentPresenter : RNNBasePresenter
 
-- (void)renderComponents:(RNNNavigationOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+- (void)renderComponents:(RNNNavigationOptions *)options
+                 perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
-@property (nonatomic, strong) RNNNavigationButtons* navigationButtons;
+@property(nonatomic, strong) RNNNavigationButtons *navigationButtons;
 
 @end

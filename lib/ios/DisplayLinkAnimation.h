@@ -1,6 +1,6 @@
-#import <Foundation/Foundation.h>
-#import "RNNInterpolator.h"
 #import "Interpolator.h"
+#import "RNNInterpolator.h"
+#import <Foundation/Foundation.h>
 
 @protocol DisplayLinkAnimation <NSObject>
 

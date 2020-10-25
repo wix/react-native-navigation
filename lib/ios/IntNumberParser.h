@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "IntNumber.h"
+#import <Foundation/Foundation.h>
 
 @interface IntNumberParser : NSObject
 

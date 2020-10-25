@@ -1,9 +1,9 @@
-#import <Foundation/Foundation.h>
 #import "AnimatedReactView.h"
+#import <Foundation/Foundation.h>
 
 @interface AnimatedTextView : AnimatedReactView
 
-@property (nonatomic, strong) NSTextStorage* fromTextStorage;
-@property (nonatomic, strong) NSTextStorage* toTextStorage;
+@property(nonatomic, strong) NSTextStorage *fromTextStorage;
+@property(nonatomic, strong) NSTextStorage *toTextStorage;
 
 @end

@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "SideMenuOpenMode.h"
+#import <Foundation/Foundation.h>
 
 @interface SideMenuOpenGestureModeParser : NSObject
 
