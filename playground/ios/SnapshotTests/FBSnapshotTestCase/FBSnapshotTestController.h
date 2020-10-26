@@ -28,69 +28,79 @@ typedef NS_ENUM(NSInteger, FBSnapshotTestControllerErrorCode) {
 extern NSString *const FBSnapshotTestControllerErrorDomain;
 
 /**
- Errors returned by the methods of FBSnapshotTestController sometimes contain this key in the `userInfo` dictionary.
+ Errors returned by the methods of FBSnapshotTestController sometimes contain this key in the
+ `userInfo` dictionary.
  */
 extern NSString *const FBReferenceImageFilePathKey;
 
 /**
- Errors returned by the methods of FBSnapshotTestController sometimes contain this key in the `userInfo` dictionary.
+ Errors returned by the methods of FBSnapshotTestController sometimes contain this key in the
+ `userInfo` dictionary.
  */
 extern NSString *const FBReferenceImageKey;
 
 /**
- Errors returned by the methods of FBSnapshotTestController sometimes contain this key in the `userInfo` dictionary.
+ Errors returned by the methods of FBSnapshotTestController sometimes contain this key in the
+ `userInfo` dictionary.
  */
 extern NSString *const FBCapturedImageKey;
 
 /**
- Errors returned by the methods of FBSnapshotTestController sometimes contain this key in the `userInfo` dictionary.
+ Errors returned by the methods of FBSnapshotTestController sometimes contain this key in the
+ `userInfo` dictionary.
  */
 extern NSString *const FBDiffedImageKey;
 
 /**
- Provides the heavy-lifting for FBSnapshotTestCase. It loads and saves images, along with performing the actual pixel-
- by-pixel comparison of images.
- Instances are initialized with the test class, and directories to read and write to.
+ Provides the heavy-lifting for FBSnapshotTestCase. It loads and saves images, along with performing
+ the actual pixel- by-pixel comparison of images. Instances are initialized with the test class, and
+ directories to read and write to.
  */
 @interface FBSnapshotTestController : NSObject
 
 /**
  Record snapshots.
  */
-@property (readwrite, nonatomic, assign) BOOL recordMode;
+@property(readwrite, nonatomic, assign) BOOL recordMode;
 
 /**
  When set, allows fine-grained control over what you want the file names to include.
 
- Allows you to combine which device or simulator specific details you want in your snapshot file names.
+ Allows you to combine which device or simulator specific details you want in your snapshot file
+ names.
 
  The default value is FBSnapshotTestCaseFileNameIncludeOptionScreenScale.
 
- @discussion If you are migrating from the now deleted FBSnapshotTestCaseAgnosticOption to FBSnapshotTestCaseFileNameIncludeOption, we default to using FBSnapshotTestCaseFileNameIncludeOptionScreenScale for fileNameOptions to make the transition easier. If you don't want to have the screen scale included in your file name, you need to set fileNameOptions to a mask that doesn't include FBSnapshotTestCaseFileNameIncludeOptionScreenScale:
+ @discussion If you are migrating from the now deleted FBSnapshotTestCaseAgnosticOption to
+ FBSnapshotTestCaseFileNameIncludeOption, we default to using
+ FBSnapshotTestCaseFileNameIncludeOptionScreenScale for fileNameOptions to make the transition
+ easier. If you don't want to have the screen scale included in your file name, you need to set
+ fileNameOptions to a mask that doesn't include FBSnapshotTestCaseFileNameIncludeOptionScreenScale:
 
- self.fileNameOptions = (FBSnapshotTestCaseFileNameIncludeOptionDevice | FBSnapshotTestCaseFileNameIncludeOptionOS);
+ self.fileNameOptions = (FBSnapshotTestCaseFileNameIncludeOptionDevice |
+ FBSnapshotTestCaseFileNameIncludeOptionOS);
  */
-@property (readwrite, nonatomic, assign) FBSnapshotTestCaseFileNameIncludeOption fileNameOptions;
+@property(readwrite, nonatomic, assign) FBSnapshotTestCaseFileNameIncludeOption fileNameOptions;
 
 /**
  Uses drawViewHierarchyInRect:afterScreenUpdates: to draw the image instead of renderInContext:
  */
-@property (readwrite, nonatomic, assign) BOOL usesDrawViewHierarchyInRect;
+@property(readwrite, nonatomic, assign) BOOL usesDrawViewHierarchyInRect;
 
 /**
  The directory in which reference images are stored.
  */
-@property (readwrite, nonatomic, copy, nullable) NSString *referenceImagesDirectory;
+@property(readwrite, nonatomic, copy, nullable) NSString *referenceImagesDirectory;
 
 /**
  The directory in which failed snapshot images are stored.
  */
-@property (readwrite, nonatomic, copy) NSString *imageDiffDirectory;
+@property(readwrite, nonatomic, copy) NSString *imageDiffDirectory;
 
 /**
  The name folder in which the snapshots will be saved for a given test case.
 */
-@property (readwrite, nonatomic, copy) NSString *folderName;
+@property(readwrite, nonatomic, copy) NSString *folderName;
 
 /**
  @param testClass The subclass of FBSnapshotTestCase that is using this controller.
@@ -102,8 +112,10 @@ extern NSString *const FBDiffedImageKey;
  Performs the comparison of the layer.
  @param layer The Layer to snapshot.
  @param selector The test method being run.
- @param identifier An optional identifier, used is there are muliptle snapshot tests in a given -test method.
- @param errorPtr An error to log in an XCTAssert() macro if the method fails (missing reference image, images differ, etc).
+ @param identifier An optional identifier, used is there are muliptle snapshot tests in a given
+ -test method.
+ @param errorPtr An error to log in an XCTAssert() macro if the method fails (missing reference
+ image, images differ, etc).
  @returns YES if the comparison (or saving of the reference image) succeeded.
  */
 - (BOOL)compareSnapshotOfLayer:(CALayer *)layer
@@ -115,8 +127,10 @@ extern NSString *const FBDiffedImageKey;
  Performs the comparison of the view.
  @param view The view to snapshot.
  @param selector The test method being run.
- @param identifier An optional identifier, used is there are muliptle snapshot tests in a given -test method.
- @param errorPtr An error to log in an XCTAssert() macro if the method fails (missing reference image, images differ, etc).
+ @param identifier An optional identifier, used is there are muliptle snapshot tests in a given
+ -test method.
+ @param errorPtr An error to log in an XCTAssert() macro if the method fails (missing reference
+ image, images differ, etc).
  @returns YES if the comparison (or saving of the reference image) succeeded.
  */
 - (BOOL)compareSnapshotOfView:(UIView *)view
@@ -128,9 +142,12 @@ extern NSString *const FBDiffedImageKey;
  Performs the comparison of a view or layer.
  @param viewOrLayer The view or layer to snapshot.
  @param selector The test method being run.
- @param identifier An optional identifier, used is there are muliptle snapshot tests in a given -test method.
- @param overallTolerance The percentage of pixels that can differ and still be considered 'identical'.
- @param errorPtr An error to log in an XCTAssert() macro if the method fails (missing reference image, images differ, etc).
+ @param identifier An optional identifier, used is there are muliptle snapshot tests in a given
+ -test method.
+ @param overallTolerance The percentage of pixels that can differ and still be considered
+ 'identical'.
+ @param errorPtr An error to log in an XCTAssert() macro if the method fails (missing reference
+ image, images differ, etc).
  @returns YES if the comparison (or saving of the reference image) succeeded.
  */
 - (BOOL)compareSnapshotOfViewOrLayer:(id)viewOrLayer
@@ -143,10 +160,14 @@ extern NSString *const FBDiffedImageKey;
  Performs the comparison of a view or layer.
  @param viewOrLayer The view or layer to snapshot.
  @param selector The test method being run.
- @param identifier An optional identifier, used is there are muliptle snapshot tests in a given -test method.
- @param perPixelTolerance The percentage a given pixel's R,G,B and A components can differ and still be considered 'identical'.
- @param overallTolerance The percentage of pixels that can differ and still be considered 'identical'.
- @param errorPtr An error to log in an XCTAssert() macro if the method fails (missing reference image, images differ, etc).
+ @param identifier An optional identifier, used is there are muliptle snapshot tests in a given
+ -test method.
+ @param perPixelTolerance The percentage a given pixel's R,G,B and A components can differ and still
+ be considered 'identical'.
+ @param overallTolerance The percentage of pixels that can differ and still be considered
+ 'identical'.
+ @param errorPtr An error to log in an XCTAssert() macro if the method fails (missing reference
+ image, images differ, etc).
  @returns YES if the comparison (or saving of the reference image) succeeded.
  */
 - (BOOL)compareSnapshotOfViewOrLayer:(id)viewOrLayer
@@ -159,7 +180,8 @@ extern NSString *const FBDiffedImageKey;
 /**
  Loads a reference image.
  @param selector The test method being run.
- @param identifier The optional identifier, used when multiple images are tested in a single -test method.
+ @param identifier The optional identifier, used when multiple images are tested in a single -test
+ method.
  @param errorPtr An error, if this methods returns nil, the error will be something useful.
  @returns An image.
  */
@@ -171,7 +193,8 @@ extern NSString *const FBDiffedImageKey;
  Performs a pixel-by-pixel comparison of the two images with an allowable margin of error.
  @param referenceImage The reference (correct) image.
  @param image The image to test against the reference.
- @param overallTolerance The percentage of pixels that can differ and still be considered 'identical'.
+ @param overallTolerance The percentage of pixels that can differ and still be considered
+ 'identical'.
  @param errorPtr An error that indicates why the comparison failed if it does.
  @returns YES if the comparison succeeded and the images are the same(ish).
  */
@@ -184,8 +207,10 @@ extern NSString *const FBDiffedImageKey;
  Performs a pixel-by-pixel comparison of the two images with an allowable margin of error.
  @param referenceImage The reference (correct) image.
  @param image The image to test against the reference.
- @param perPixelTolerance The percentage a given pixel's R,G,B and A components can differ and still be considered 'identical'.
- @param overallTolerance The percentage of pixels that can differ and still be considered 'identical'.
+ @param perPixelTolerance The percentage a given pixel's R,G,B and A components can differ and still
+ be considered 'identical'.
+ @param overallTolerance The percentage of pixels that can differ and still be considered
+ 'identical'.
  @param errorPtr An error that indicates why the comparison failed if it does.
  @returns YES if the comparison succeeded and the images are the same(ish).
  */
@@ -200,7 +225,8 @@ extern NSString *const FBDiffedImageKey;
  @param referenceImage The reference (correct) image.
  @param testImage The image to test against the reference.
  @param selector The test method being run.
- @param identifier The optional identifier, used when multiple images are tested in a single -test method.
+ @param identifier The optional identifier, used when multiple images are tested in a single -test
+ method.
  @param errorPtr An error that indicates why the comparison failed if it does.
  @returns YES if the save succeeded.
  */

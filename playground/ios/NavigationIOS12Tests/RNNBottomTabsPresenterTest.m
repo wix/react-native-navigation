@@ -1,8 +1,8 @@
-#import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
 #import "RNNBottomTabsPresenter.h"
-#import "UITabBarController+RNNOptions.h"
 #import "RNNBottomTabsController.h"
+#import "UITabBarController+RNNOptions.h"
+#import <OCMock/OCMock.h>
+#import <XCTest/XCTest.h>
 
 @interface RNNBottomTabsPresenterTest : XCTestCase
 
@@ -25,10 +25,10 @@
 - (void)testApplyOptions_shouldSetDefaultEmptyOptions {
     RNNNavigationOptions *emptyOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
     [[self.boundViewController expect] setTabBarTestID:nil];
-	[[(id)self.uut expect] applyBackgroundColor:nil translucent:NO];
+    [[(id)self.uut expect] applyBackgroundColor:nil translucent:NO];
     [[self.boundViewController expect] setTabBarHideShadow:NO];
     [[self.boundViewController expect] setTabBarStyle:UIBarStyleDefault];
-	[[self.boundViewController expect] setTabBarVisible:YES];
+    [[self.boundViewController expect] setTabBarVisible:YES];
     [self.uut applyOptions:emptyOptions];
     [self.boundViewController verify];
 }
@@ -54,42 +54,44 @@
 - (void)testApplyOptions_shouldRestoreHiddenTabBar {
     RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
     initialOptions.bottomTabs.visible = [[Bool alloc] initWithValue:@(1)];
-	
-	[[self.boundViewController expect] setTabBarVisible:YES];
+
+    [[self.boundViewController expect] setTabBarVisible:YES];
 
     [self.uut applyOptions:initialOptions];
     [self.boundViewController verify];
 }
 
 - (void)testApplyOptionsOnInit_alwaysShow_shouldNotCenterTabImages {
-	RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysShow"];
-	[[self.boundViewController reject] centerTabItems];
-	[self.uut applyOptionsOnInit:initialOptions];
-	[self.boundViewController verify];
+    RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysShow"];
+    [[self.boundViewController reject] centerTabItems];
+    [self.uut applyOptionsOnInit:initialOptions];
+    [self.boundViewController verify];
 }
 
 - (void)testApplyOptions_shouldApplyOptionsOnInit_alwaysHide_shouldCenterTabImages {
-	RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-	initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysHide"];
-	[[self.boundViewController expect] centerTabItems];
-	[self.uut applyOptionsOnInit:initialOptions];
-	[self.boundViewController verify];
+    RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysHide"];
+    [[self.boundViewController expect] centerTabItems];
+    [self.uut applyOptionsOnInit:initialOptions];
+    [self.boundViewController verify];
 }
 
 - (void)testBackgroundColor_validColor {
-	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
-	self.options.layout.backgroundColor = [[Color alloc] initWithValue:inputColor];
-	[self.uut applyOptions:self.options];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([((UIViewController *)self.boundViewController).view.backgroundColor isEqual:expectedColor]);
+    UIColor *inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
+    self.options.layout.backgroundColor = [[Color alloc] initWithValue:inputColor];
+    [self.uut applyOptions:self.options];
+    UIColor *expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+    XCTAssertTrue([((UIViewController *)self.boundViewController).view.backgroundColor
+        isEqual:expectedColor]);
 }
 
 - (void)testTabBarBackgroundColor {
-	UIColor* tabBarBackgroundColor = [UIColor redColor];
+    UIColor *tabBarBackgroundColor = [UIColor redColor];
 
-	[self.uut setTabBarBackgroundColor:tabBarBackgroundColor];
-	XCTAssertTrue([((UIViewController *)self.uut).tabBarController.tabBar.barTintColor isEqual:tabBarBackgroundColor]);
+    [self.uut setTabBarBackgroundColor:tabBarBackgroundColor];
+    XCTAssertTrue([((UIViewController *)self.uut).tabBarController.tabBar.barTintColor
+        isEqual:tabBarBackgroundColor]);
 }
 
 @end

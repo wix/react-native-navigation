@@ -2,11 +2,11 @@
 
 @implementation UIImage (Utils)
 
-+ (UIImage*)emptyImage {
-	UIGraphicsBeginImageContext(CGSizeMake(10, 10));
++ (UIImage *)emptyImage {
+    UIGraphicsBeginImageContext(CGSizeMake(10, 10));
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-	return image;
+    return image;
 }
 
 - (BOOL)isEqual:(UIImage *)image {
