@@ -1,20 +1,22 @@
 #import "AnimatedReactView.h"
-#import <React/UIView+React.h>
 #import "UIView+Utils.h"
+#import <React/UIView+React.h>
 
 @implementation AnimatedReactView {
-    UIView* _originalParent;
+    UIView *_originalParent;
     CGRect _originalFrame;
     CGFloat _originalCornerRadius;
     CGRect _originalLayoutBounds;
     CATransform3D _originalTransform;
-    UIView* _toElement;
-    UIColor* _fromColor;
+    UIView *_toElement;
+    UIColor *_fromColor;
     NSInteger _zIndex;
-    SharedElementTransitionOptions* _transitionOptions;
+    SharedElementTransitionOptions *_transitionOptions;
 }
 
-- (instancetype)initElement:(UIView *)element toElement:(UIView *)toElement transitionOptions:(SharedElementTransitionOptions *)transitionOptions {
+- (instancetype)initElement:(UIView *)element
+                  toElement:(UIView *)toElement
+          transitionOptions:(SharedElementTransitionOptions *)transitionOptions {
     self.location = [[RNNViewLocation alloc] initWithFromElement:element toElement:toElement];
     self = [super initWithFrame:self.location.fromFrame];
     _transitionOptions = transitionOptions;
@@ -23,7 +25,7 @@
     _fromColor = element.backgroundColor;
     _zIndex = toElement.reactZIndex;
     [self hijackReactElement:element];
-    
+
     return self;
 }
 
@@ -64,7 +66,7 @@
     _reactView.layer.transform = _originalTransform;
     [_originalParent addSubview:_reactView];
     _toElement.hidden = NO;
-   _reactView.backgroundColor = _fromColor;
+    _reactView.backgroundColor = _fromColor;
     [self removeFromSuperview];
 }
 

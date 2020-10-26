@@ -3,7 +3,7 @@
 @implementation RNNReactBackgroundView
 
 - (NSString *)componentType {
-	return ComponentTypeBackground;
+    return ComponentTypeBackground;
 }
 
 @end

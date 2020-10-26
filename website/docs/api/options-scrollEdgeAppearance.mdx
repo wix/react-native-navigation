@@ -1,0 +1,45 @@
+---
+id: options-scrollEdgeAppearance
+title: Scroll Edge Appearance Options
+sidebar_label: Scroll Edge Appearance
+---
+
+Controls the top bar background styling.
+
+```js
+const options = {
+  topBar: {
+    scrollEdgeAppearance: {
+        background: {},
+        enabled: true
+    }
+  }
+};
+```
+
+
+### `enabled`
+
+Since this might be considered as a breaking change (meaning that previous configs might behave different), you'll need to
+pass enabled `true/false` to activate this option.
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Bool | No       | iOS     |
+
+
+### `color`
+
+Set the background color.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | iOS     |
+
+
+### `translucent`
+
+Allows the Scroll Edge Appearance to be translucent (blurred).
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |

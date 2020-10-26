@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "TimeInterval.h"
+#import <Foundation/Foundation.h>
 
 @interface TimeIntervalParser : NSObject
 

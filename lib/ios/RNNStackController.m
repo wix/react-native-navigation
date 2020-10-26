@@ -1,15 +1,27 @@
 #import "RNNStackController.h"
 #import "RNNComponentViewController.h"
-#import "UIViewController+Utils.h"
 #import "StackControllerDelegate.h"
+#import "UIViewController+Utils.h"
 
 @implementation RNNStackController {
-    UIViewController* _presentedViewController;
-    StackControllerDelegate* _stackDelegate;
+    UIViewController *_presentedViewController;
+    StackControllerDelegate *_stackDelegate;
 }
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo creator:(id<RNNComponentViewCreator>)creator options:(RNNNavigationOptions *)options defaultOptions:(RNNNavigationOptions *)defaultOptions presenter:(RNNBasePresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter childViewControllers:(NSArray *)childViewControllers {
-    self = [super initWithLayoutInfo:layoutInfo creator:creator options:options defaultOptions:defaultOptions presenter:presenter eventEmitter:eventEmitter childViewControllers:childViewControllers];
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+                           creator:(id<RNNComponentViewCreator>)creator
+                           options:(RNNNavigationOptions *)options
+                    defaultOptions:(RNNNavigationOptions *)defaultOptions
+                         presenter:(RNNBasePresenter *)presenter
+                      eventEmitter:(RNNEventEmitter *)eventEmitter
+              childViewControllers:(NSArray *)childViewControllers {
+    self = [super initWithLayoutInfo:layoutInfo
+                             creator:creator
+                             options:options
+                      defaultOptions:defaultOptions
+                           presenter:presenter
+                        eventEmitter:eventEmitter
+                childViewControllers:childViewControllers];
     _stackDelegate = [[StackControllerDelegate alloc] initWithEventEmitter:self.eventEmitter];
     self.delegate = _stackDelegate;
     self.navigationBar.prefersLargeTitles = YES;
@@ -17,8 +29,8 @@
 }
 
 - (void)viewDidLayoutSubviews {
-	[super viewDidLayoutSubviews];
-	[self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
+    [super viewDidLayoutSubviews];
+    [self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
 }
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
@@ -30,7 +42,7 @@
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     [self prepareForPop];
-	return [super popViewControllerAnimated:animated];
+    return [super popViewControllerAnimated:animated];
 }
 
 - (void)prepareForPop {
@@ -44,10 +56,10 @@
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
-	return self.topViewController;
+    return self.topViewController;
 }
 
-# pragma mark - UIViewController overrides
+#pragma mark - UIViewController overrides
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     [self.presenter willMoveToParentViewController:parent];

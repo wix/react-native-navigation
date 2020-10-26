@@ -18,11 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
-#import <Foundation/Foundation.h>
 #import "MMDrawerVisualState.h"
+#import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, MMDrawerAnimationType){
+typedef NS_ENUM(NSInteger, MMDrawerAnimationType) {
     MMDrawerAnimationTypeNone,
     MMDrawerAnimationTypeSlide,
     MMDrawerAnimationTypeSlideAndScale,
@@ -32,11 +31,12 @@ typedef NS_ENUM(NSInteger, MMDrawerAnimationType){
 
 @interface MMExampleDrawerVisualStateManager : NSObject
 
-@property (nonatomic,assign) MMDrawerAnimationType leftDrawerAnimationType;
-@property (nonatomic,assign) MMDrawerAnimationType rightDrawerAnimationType;
+@property(nonatomic, assign) MMDrawerAnimationType leftDrawerAnimationType;
+@property(nonatomic, assign) MMDrawerAnimationType rightDrawerAnimationType;
 
 + (MMExampleDrawerVisualStateManager *)sharedManager;
 
--(MMDrawerControllerDrawerVisualStateBlock)drawerVisualStateBlockForDrawerSide:(MMDrawerSide)drawerSide;
+- (MMDrawerControllerDrawerVisualStateBlock)drawerVisualStateBlockForDrawerSide:
+    (MMDrawerSide)drawerSide;
 
 @end

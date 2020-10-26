@@ -3,12 +3,14 @@
 
 @interface AnimatedReactView : UIView
 
-@property (nonatomic, strong) RNNViewLocation* location;
-@property (nonatomic, strong) UIView* reactView;
+@property(nonatomic, strong) RNNViewLocation *location;
+@property(nonatomic, strong) UIView *reactView;
 
 - (NSNumber *)reactZIndex;
 
-- (instancetype)initElement:(UIView*)element toElement:(UIView *)toElement transitionOptions:(SharedElementTransitionOptions *)transitionOptions;
+- (instancetype)initElement:(UIView *)element
+                  toElement:(UIView *)toElement
+          transitionOptions:(SharedElementTransitionOptions *)transitionOptions;
 
 - (void)reset;
 
