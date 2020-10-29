@@ -1,7 +1,7 @@
 ---
 name: 📚 Documentation
 about: Report an issue related to documentation
-labels: 'type: documentation, needs triage'
+labels: 'triage: documentation, needs triage'
 ---
 
 ## 📚 Documentation
