@@ -5,3 +5,15 @@
     Instead, please ask a question on Stack Overflow with the `wix-react-native-navigation` tag or on [Discord](https://discord.gg/DhkZjq2).
   close: true
   lock: false
+
+invalid:
+  comment: |
+    This issue did not follow one of the provided issue templates and was therefor closed.
+
+    Please remember that:
+
+      * Issues without reproducible demos have a very low priority.
+      * The person fixing the bug would have to do that anyway. Please be respectful of their time.
+      * You might figure out the issues yourself as you work on extracting it.
+  close: true
+  lock: false
