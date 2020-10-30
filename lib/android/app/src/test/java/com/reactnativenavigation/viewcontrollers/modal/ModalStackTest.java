@@ -67,7 +67,7 @@ public class ModalStackTest extends BaseTest {
 
         animator = spy(new ModalAnimatorMock(activity));
         presenter = spy(new ModalPresenter(animator));
-        uut = new ModalStack(presenter);
+        uut = new ModalStack(activity, presenter);
         uut.setModalsLayout(modalsLayout);
         uut.setRootLayout(rootLayout);
         emitter = Mockito.mock(EventEmitter.class);
@@ -215,8 +215,8 @@ public class ModalStackTest extends BaseTest {
         uut.dismissAllModals(root, Options.EMPTY, listener);
         verify(presenter).dismissModal(eq(modal2), eq(root), eq(root), any());
         verify(listener).onSuccess(modal2.getId());
-        verify(animator, times(0)).dismiss(eq(view1), eq(modal1.options.animations.dismissModal), any());
-        verify(animator).dismiss(eq(view2), eq(resolvedOptions.animations.dismissModal), any());
+        verify(animator, times(0)).dismiss(eq(modal1), eq(modal2), eq(modal1.options.animations.dismissModal), any());
+        verify(animator).dismiss(eq(modal1), eq(modal2), eq(resolvedOptions.animations.dismissModal), any());
         assertThat(uut.size()).isEqualTo(0);
     }
 

@@ -41,7 +41,6 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
             val overlay = BitmapDrawable(
                     to.resources,
                     to.drawable.toBitmap(width = fromBounds.width(), height = fromBounds.height())
-//                    from.drawable.toBitmap(width = fromBounds.width(), height = fromBounds.height())
             )
             createAndAddOverlayToWorkAroundImageFlickering(overlay)
 

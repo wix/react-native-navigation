@@ -12,6 +12,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -24,12 +25,33 @@ open class ModalAnimator @JvmOverloads constructor(
 
     private val runningAnimators: MutableMap<ViewController<*>, Animator?> = HashMap()
 
-    open fun show(appearing: ViewController<*>, disappearing: ViewController<*>, show: AnimationOptions, listener: ScreenAnimationListener) = GlobalScope.launch(Dispatchers.Main.immediate) {
-        val set = createShowModalAnimator(appearing, listener)
-        if (show.hasElementTransitions()) {
-            setupShowModalWithSharedElementTransition(disappearing, appearing, show, set)
+    open fun show(appearing: ViewController<*>, disappearing: ViewController<*>, show: AnimationOptions, listener: ScreenAnimationListener) {
+        GlobalScope.launch(Dispatchers.Main.immediate) {
+            val set = createShowModalAnimator(appearing, listener)
+            if (show.hasElementTransitions()) {
+                setupShowModalWithSharedElementTransition(disappearing, appearing, show, set)
+            } else {
+                set.playTogether(show.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
+            }
+            set.start()
         }
-        set.start()
+    }
+
+    open fun dismiss(appearing: ViewController<*>?, disappearing: ViewController<*>, dismiss: AnimationOptions, listener: ScreenAnimationListener) {
+        GlobalScope.launch(Dispatchers.Main.immediate) {
+            if (runningAnimators.containsKey(disappearing)) {
+                runningAnimators[disappearing]?.cancel()
+                listener.onEnd()
+            } else {
+                val set = createDismissAnimator(disappearing, listener)
+                if (dismiss.hasElementTransitions() && appearing != null) {
+                    setupDismissAnimationWithSharedElementTransition(disappearing, appearing, dismiss, set)
+                } else {
+                    set.play(dismiss.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+                }
+                set.start()
+            }
+        }
     }
 
     private fun createShowModalAnimator(appearing: ViewController<*>, listener: ScreenAnimationListener): AnimatorSet {
@@ -65,21 +87,6 @@ open class ModalAnimator @JvmOverloads constructor(
         set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
-    }
-
-    open fun dismiss(appearing: ViewController<*>?, disappearing: ViewController<*>, dismiss: AnimationOptions, listener: ScreenAnimationListener) = GlobalScope.launch(Dispatchers.Main.immediate) {
-        if (runningAnimators.containsKey(disappearing)) {
-            runningAnimators[disappearing]?.cancel()
-            listener.onEnd()
-        } else {
-            val set = createDismissAnimator(disappearing, listener)
-            if (dismiss.hasElementTransitions() && appearing != null) {
-                setupDismissAnimationWithSharedElementTransition(disappearing, appearing, dismiss, set)
-            } else {
-                set.play(dismiss.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
-            }
-            set.start()
-        }
     }
 
     private fun createDismissAnimator(disappearing: ViewController<*>, listener: ScreenAnimationListener): AnimatorSet {

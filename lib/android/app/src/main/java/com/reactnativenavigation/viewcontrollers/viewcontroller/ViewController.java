@@ -26,7 +26,6 @@ import java.util.List;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -179,7 +178,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return parentController;
     }
 
-    public void setParentController(@NonNull final ParentController parentController) {
+    public void setParentController(ParentController parentController) {
         this.parentController = parentController;
     }
 
