@@ -20,6 +20,7 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
     }
 
     override fun create(options: SharedElementTransitionOptions): Animator {
+        from as ReactImageView
         with(to as ReactImageView) {
             val parentScaleX = (from.parent as View).scaleX
             val parentScalyY = (from.parent as View).scaleY
