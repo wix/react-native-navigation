@@ -36,12 +36,9 @@ open class AnimationOptions(json: JSONObject?) : LayoutAnimation {
         }
     }
 
-    @JvmField
-    var id: Text = NullText()
-    @JvmField
-    var enabled: Bool = NullBool()
-    @JvmField
-    var waitForRender: Bool = NullBool()
+    @JvmField var id: Text = NullText()
+    @JvmField var enabled: Bool = NullBool()
+    @JvmField var waitForRender: Bool = NullBool()
     override var sharedElements = SharedElements()
     override var elementTransitions = ElementTransitions()
     private var valueOptions = HashSet<ValueAnimationOptions>()

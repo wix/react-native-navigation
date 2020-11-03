@@ -94,8 +94,7 @@ public class NavigatorTest extends BaseTest {
         uut = new Navigator(activity, childRegistry, modalStack, overlayManager, rootPresenter);
         activity.setNavigator(uut);
 
-        ViewController initialChild =
-                new SimpleViewController(activity, childRegistry, "initialChild", Options.EMPTY);
+        ViewController initialChild = new SimpleViewController(activity, childRegistry, "initialChild", Options.EMPTY);
         parentController = newStack(initialChild);
         parentVisibilityListener = spy(new ViewController.ViewVisibilityListener() {
             @Override
