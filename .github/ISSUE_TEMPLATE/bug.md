@@ -1,7 +1,7 @@
 ---
 name: 🐛 Bug Report
 about: Submit a bug report to help us improve
-labels: 'type: bug, needs triage'
+labels: 'triage: bug, needs triage'
 ---
 
 ## 🐛 Bug Report
@@ -45,10 +45,10 @@ labels: 'type: bug, needs triage'
 
 <!-- Include as many relevant details about the environment you experienced the bug in -->
 
-* React Native Navigation version: FILL THIS OUT
-* React Native version: FILL THIS OUT
-* Platform(s) (iOS, Android, or both?): FILL THIS OUT
-* Device info (Simulator/Device? OS version? Debug/Release?): FILL THIS OUT
+- React Native Navigation version: FILL THIS OUT
+- React Native version: FILL THIS OUT
+- Platform(s) (iOS, Android, or both?): FILL THIS OUT
+- Device info (Simulator/Device? OS version? Debug/Release?): FILL THIS OUT
 
 ## Reproducible Demo
 
