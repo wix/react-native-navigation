@@ -12,7 +12,6 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -25,10 +24,10 @@ open class ModalAnimator @JvmOverloads constructor(
 
     private val runningAnimators: MutableMap<ViewController<*>, Animator?> = HashMap()
 
-    open fun show(appearing: ViewController<*>, disappearing: ViewController<*>, show: AnimationOptions, listener: ScreenAnimationListener) {
+    open fun show(appearing: ViewController<*>, disappearing: ViewController<*>?, show: AnimationOptions, listener: ScreenAnimationListener) {
         GlobalScope.launch(Dispatchers.Main.immediate) {
             val set = createShowModalAnimator(appearing, listener)
-            if (show.hasElementTransitions()) {
+            if (show.hasElementTransitions() && disappearing != null) {
                 setupShowModalWithSharedElementTransition(disappearing, appearing, show, set)
             } else {
                 set.playTogether(show.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))

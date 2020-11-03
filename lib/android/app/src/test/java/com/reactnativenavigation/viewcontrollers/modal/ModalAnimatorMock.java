@@ -7,7 +7,8 @@ import com.reactnativenavigation.utils.ScreenAnimationListener;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import androidx.annotation.Nullable;
 
 public class ModalAnimatorMock extends ModalAnimator {
 
@@ -16,7 +17,7 @@ public class ModalAnimatorMock extends ModalAnimator {
     }
 
     @Override
-    public void show(@NotNull ViewController<?> appearing, @NotNull ViewController<?> disappearing, @NotNull AnimationOptions show, @NotNull ScreenAnimationListener listener) {
+    public void show(@NotNull ViewController<?> appearing, @Nullable ViewController<?> disappearing, @NotNull AnimationOptions show, @NotNull ScreenAnimationListener listener) {
         try {
             listener.onStart();
             Thread.sleep(10);
