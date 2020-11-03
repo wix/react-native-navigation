@@ -1,10 +1,15 @@
 //counter.store.js
 import React from 'react';
-import { observable, action } from 'mobx';
+import { makeObservable, observable, action } from 'mobx';
 import { persist } from 'mobx-persist'; // add this.
 
 class CounterStore {
+  constructor() {
+    makeObservable(this)
+  }
+  
   @persist @observable count = 0; // count is now persistent.
+
 
   @action.bound
   increment() {
@@ -19,6 +24,7 @@ class CounterStore {
 
 export const counterStore = new CounterStore(); // You need to export the counterStore instance.
 export const CounterStoreContext = React.createContext(counterStore);
+export const useCounterStore = () => React.useContext(CounterStoreContext)
 
 // index.js
 import { Navigation } from 'react-native-navigation';
