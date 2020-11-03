@@ -21,6 +21,7 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
 
     override fun create(options: SharedElementTransitionOptions): Animator {
         with(to as ReactImageView) {
+            to.hierarchy.fadeDuration = 0
             val parentScaleX = (from.parent as View).scaleX
             val parentScalyY = (from.parent as View).scaleY
 
