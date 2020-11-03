@@ -393,7 +393,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     }
 
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-    [modalToDismiss.getCurrentChild overrideOptions:options];
+    [modalToDismiss.presentedComponentViewController overrideOptions:options];
 
     [_modalManager dismissModal:modalToDismiss
                      completion:^{

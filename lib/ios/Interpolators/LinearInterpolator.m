@@ -10,14 +10,13 @@
 
 @implementation LinearInterpolator
 
-- (instancetype)init
-{
-	self = [super init];
-	return self;
+- (instancetype)init {
+    self = [super init];
+    return self;
 }
 
 - (CGFloat)interpolate:(CGFloat)progress {
-	return progress;
+    return progress;
 }
 
 @end

@@ -1,13 +1,13 @@
 #import "UITabBarController+RNNUtils.h"
 #import "UIView+Utils.h"
 
-
 @implementation UITabBarController (RNNUtils)
 - (UIView *)getTabView:(int)tabIndex {
     int index = 0;
     for (UIView *view in [[self tabBar] subviews]) {
         if ([NSStringFromClass([view class]) isEqualToString:@"UITabBarButton"]) {
-            if (index == tabIndex) return view;
+            if (index == tabIndex)
+                return view;
             index++;
         }
     }
@@ -20,7 +20,8 @@
 }
 
 - (NSArray *)deselectedViewControllers {
-    NSMutableArray* childViewControllers = [NSMutableArray arrayWithArray:self.childViewControllers];
+    NSMutableArray *childViewControllers =
+        [NSMutableArray arrayWithArray:self.childViewControllers];
     [childViewControllers removeObject:self.selectedViewController];
     return [NSArray arrayWithArray:childViewControllers];
 }
