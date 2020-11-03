@@ -1,10 +1,14 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.content.Context;
-import android.view.View;
 
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.utils.ScreenAnimationListener;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+
+import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.Nullable;
 
 public class ModalAnimatorMock extends ModalAnimator {
 
@@ -13,7 +17,7 @@ public class ModalAnimatorMock extends ModalAnimator {
     }
 
     @Override
-    public void show(View view, AnimationOptions show, ScreenAnimationListener listener) {
+    public void show(@NotNull ViewController<?> appearing, @Nullable ViewController<?> disappearing, @NotNull AnimationOptions show, @NotNull ScreenAnimationListener listener) {
         try {
             listener.onStart();
             Thread.sleep(10);
@@ -24,7 +28,7 @@ public class ModalAnimatorMock extends ModalAnimator {
     }
 
     @Override
-    public void dismiss(View view, AnimationOptions dismiss, ScreenAnimationListener listener) {
+    public void dismiss(@Nullable ViewController<?> appearing, @NotNull ViewController<?> disappearing, @NotNull AnimationOptions dismiss, @NotNull ScreenAnimationListener listener) {
         try {
             listener.onStart();
             Thread.sleep(10);

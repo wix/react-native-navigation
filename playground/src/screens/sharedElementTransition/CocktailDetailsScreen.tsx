@@ -1,6 +1,10 @@
 import React from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { NavigationComponentProps, NavigationButtonPressedEvent } from 'react-native-navigation';
+import {
+  NavigationComponentProps,
+  NavigationButtonPressedEvent,
+  Options,
+} from 'react-native-navigation';
 import Screens from '../Screens';
 import Navigation from '../../services/Navigation';
 import { CocktailItem } from '../../assets/cocktails';
@@ -11,7 +15,7 @@ const { COCKTAILS_DETAILS_HEADER, PUSH_DETAILS_BTN } = testIDs;
 interface Props extends NavigationComponentProps, CocktailItem {}
 
 export default class CocktailDetailsScreen extends React.Component<Props> {
-  static options() {
+  static options(): Options {
     return {
       ...Platform.select({
         android: {
