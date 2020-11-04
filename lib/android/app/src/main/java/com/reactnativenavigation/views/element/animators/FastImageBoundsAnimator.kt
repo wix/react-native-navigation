@@ -5,14 +5,17 @@ import android.animation.ObjectAnimator
 import android.graphics.Rect
 import android.view.View
 import android.widget.ImageView
+import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.computeInheritedScale
 import kotlin.math.roundToInt
 
-class ClipBoundsAnimator(from: View, to: View) : PropertyAnimatorCreator<ImageView>(from, to) {
+class FastImageBoundsAnimator(from: View, to: View) : PropertyAnimatorCreator<ImageView>(from, to) {
     override fun shouldAnimateProperty(fromChild: ImageView, toChild: ImageView): Boolean {
         return !ViewUtils.areDimensionsEqual(from, to)
+                && fromChild !is ReactImageView
+                && toChild !is ReactImageView
     }
 
     override fun create(options: SharedElementTransitionOptions): Animator {

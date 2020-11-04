@@ -2,7 +2,9 @@ package com.reactnativenavigation.views.element.animators
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.core.animation.doOnEnd
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
@@ -14,8 +16,10 @@ import kotlin.math.min
 class ReactImageCornerRadiusAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
     override fun shouldAnimateProperty(fromChild: ReactImageView, toChild: ReactImageView): Boolean {
         return fromChild.getCornerRadius() != toChild.getCornerRadius()
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun create(options: SharedElementTransitionOptions): Animator {
         to as ReactImageView; from as ReactImageView
         val outlineProvider = BorderRadiusOutlineProvider(to, from.getCornerRadius())
@@ -31,6 +35,7 @@ class ReactImageCornerRadiusAnimator(from: View, to: View) : PropertyAnimatorCre
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun setInitialOutline(to: ReactImageView, provider: BorderRadiusOutlineProvider) {
         to.outlineProvider = provider
         to.clipToOutline = true

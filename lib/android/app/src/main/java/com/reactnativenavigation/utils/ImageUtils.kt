@@ -3,7 +3,7 @@ package com.reactnativenavigation.utils
 import android.view.View
 import android.view.ViewParent
 import com.reactnativenavigation.react.ReactView
-import com.reactnativenavigation.viewcontrollers.viewcontroller.OverlayLayout
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.OverlayLayout
 
 fun areDimensionsWithInheritedScaleEqual(a: View, b: View): Boolean {
     val (aScaleX, aScaleY) = computeInheritedScale(a)
@@ -17,7 +17,7 @@ fun computeInheritedScale(v: View): Scale {
 }
 
 private fun computeInheritedScale(v: ViewParent, childrenScale: Scale): Scale {
-    return if (v is ReactView || v is OverlayLayout) {
+    return if (v is ReactView || v is OverlayLayout || v.parent == null) {
         childrenScale
     } else {
         computeInheritedScale(v.parent, Scale(x = childrenScale.x * v.scaleX, y = childrenScale.y * v.scaleY))
