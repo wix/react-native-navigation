@@ -84,7 +84,7 @@
     "eslint": "7.3.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",
-    "github-release-notes": "0.17.3",
+    "github-release-notes": "https://github.com/yogevbd/github-release-notes/tarball/e601b3dba72dcd6cba323c1286ea6dd0c0110b58",
     "husky": "4.2.5",
     "identity-obj-proxy": "3.0.0",
     "jest": "26.1.0",
