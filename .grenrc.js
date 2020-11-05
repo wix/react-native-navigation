@@ -23,10 +23,9 @@ module.exports = {
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
-      if (line.includes('## ')) continue;
+      if (line.includes('## ') || line === '') continue;
       else if (line.includes('[iOS] ')) iosIssues.push(line.replace('[iOS] ', ''));
       else if (line.includes('[Android] ')) androidIssues.push(line.replace('[Android] ', ''));
-      else otherIssues.push(line);
     }
 
     const groupHeader = groupContent.substr(0, groupContent.indexOf(':\n'));
@@ -43,10 +42,10 @@ module.exports = {
 
 function generateSection(name, issues) {
   if (!issues.length) return '';
-  let section = `${name ? `### ${name}\n` : ''}`;
+  let section = `\n${name ? `### ${name}\n` : ''}`;
 
   issues.forEach(issue => {
-    section += `${issue}\n`;
+    section += `- ${issue}\n`;
   });
 
   return `${section}\n`;

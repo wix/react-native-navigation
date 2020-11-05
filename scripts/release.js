@@ -67,8 +67,8 @@ function versionTagAndPublish() {
   const version = isRelease
     ? process.env.VERSION
     : semver.gt(packageVersion, currentPublished)
-    ? `${packageVersion}-snapshot.${process.env.BUILD_ID}`
-    : `${currentPublished}-snapshot.${process.env.BUILD_ID}`;
+      ? `${packageVersion}-snapshot.${process.env.BUILD_ID}`
+      : `${currentPublished}-snapshot.${process.env.BUILD_ID}`;
 
   console.log(`Publishing version: ${version}`);
 
@@ -135,6 +135,7 @@ function updatePackageJsonGit(version) {
 }
 
 function draftGitRelease(version) {
+  exec.execSync(`sleep 1m`);
   exec.execSync(`npx gren release --tags=${version}`);
 }
 
