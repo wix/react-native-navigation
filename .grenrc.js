@@ -12,7 +12,7 @@ module.exports = {
   },
   groupBy: {
     'Enhancements:': ['type: accepted/enhancement', 'internal'],
-    'Bug fixes:': ['type: accepted/bug'],
+    'Fixed:': ['type: accepted/bug'],
     Features: ['feature'],
   },
   groupPostProcessor: (groupContent) => {
