@@ -51,25 +51,20 @@ export default class LayoutsScreen extends NavigationComponent {
   stack = () => Navigation.showModal(Screens.Stack);
 
   bottomTabs = () =>
-    Navigation.showModal({
-      bottomTabs: {
-        children: [
-          stack(Screens.FirstBottomTabsScreen),
-          stack(
-            {
-              component: {
-                name: Screens.SecondBottomTabsScreen,
-              },
+    Navigation.mergeOptions(this, {
+        topBar: {
+            backButton: {
+                visible: false
             },
-            'SecondTab'
-          ),
-        ],
-        options: {
-          bottomTabs: {
-            testID: BOTTOM_TABS,
-          },
+            title: {
+                text: 'Updated',
+            },
+            leftButtons: [
+                {
+                    icon: require('../../img/star.png'),
+                }
+            ]
         },
-      },
     });
 
   sideMenu = () =>
