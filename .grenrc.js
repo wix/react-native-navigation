@@ -26,6 +26,7 @@ module.exports = {
       if (line.includes('## ') || line === '') continue;
       else if (line.includes('[iOS] ')) iosIssues.push(line.replace('[iOS] ', ''));
       else if (line.includes('[Android] ')) androidIssues.push(line.replace('[Android] ', ''));
+      else otherIssues.push(line);
     }
 
     const groupHeader = groupContent.substr(0, groupContent.indexOf(':\n'));
