@@ -111,7 +111,7 @@ export default class LayoutsScreen extends NavigationComponent {
       root: {
         splitView: {
           id: 'SPLITVIEW_ID',
-          master: {
+          primary: {
             stack: {
               id: 'PRIMARY_ID',
               children: [
@@ -123,7 +123,7 @@ export default class LayoutsScreen extends NavigationComponent {
               ],
             },
           },
-          detail: {
+          secondary: {
             stack: {
               id: 'SECONDARY_ID',
               children: [
