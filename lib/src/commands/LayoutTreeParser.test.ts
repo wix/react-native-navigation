@@ -1,6 +1,7 @@
 import keys from 'lodash/keys';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutType } from './LayoutType';
+import { Deprecations } from './Deprecations';
 import { Options } from '../interfaces/Options';
 import { Layout } from '../interfaces/Layout';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
@@ -13,7 +14,7 @@ describe('LayoutTreeParser', () => {
   beforeEach(() => {
     mockedUniqueIdProvider = mock(UniqueIdProvider);
     when(mockedUniqueIdProvider.generate(anything())).thenReturn('myUniqueId');
-    uut = new LayoutTreeParser(instance(mockedUniqueIdProvider));
+    uut = new LayoutTreeParser(instance(mockedUniqueIdProvider), new Deprecations());
   });
 
   describe('parses into { type, data, children }', () => {
@@ -293,13 +294,13 @@ const complexLayout: Layout = {
 
 const splitView: Layout = {
   splitView: {
-    master: {
+    primary: {
       stack: {
         children: [singleComponent],
         options,
       },
     },
-    detail: stackWithTopBar,
+    secondary: stackWithTopBar,
     options: optionsSplitView,
   },
 };

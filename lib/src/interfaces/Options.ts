@@ -77,21 +77,32 @@ type Interpolation =
 
 export interface OptionsSplitView {
   /**
-   * Master view display mode
+   * Primary view display mode.
+   * The following options will only work on iOS 14+: twoBesideSecondary, twoDisplaceSecondary, twoOverSecondary
    * @default 'auto'
    */
-  displayMode?: 'auto' | 'visible' | 'hidden' | 'overlay';
+  displayMode?:
+    | 'auto'
+    | 'visible'
+    | 'hidden'
+    | 'overlay'
+    | 'secondaryOnly'
+    | 'oneBesideSecondary'
+    | 'oneOverSecondary'
+    | 'twoBesideSecondary' // iOS 14+ only
+    | 'twoDisplaceSecondary' // iOS 14+ only
+    | 'twoOverSecondary'; // iOS 14+ only
   /**
-   * Master view side. Leading is left. Trailing is right.
+   * Primary view side. Leading is left. Trailing is right.
    * @default 'leading'
    */
   primaryEdge?: 'leading' | 'trailing';
   /**
-   * Set the minimum width of master view
+   * Set the minimum width of primary view
    */
   minWidth?: number;
   /**
-   * Set the maximum width of master view
+   * Set the maximum width of primary view
    */
   maxWidth?: number;
   /**
@@ -99,6 +110,11 @@ export interface OptionsSplitView {
    * @default 'none'
    */
   primaryBackgroundStyle?: 'none' | 'sidebar';
+  /**
+   * Describe the number of columns the split view interface displays (iOS 14+)
+   * @default 'unspecified'
+   */
+  style?: 'unspecified' | 'doubleColumn' | 'tripleColumn';
 }
 
 export interface OptionsStatusBar {

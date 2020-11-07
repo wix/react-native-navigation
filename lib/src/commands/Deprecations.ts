@@ -2,6 +2,7 @@ import once from 'lodash/once';
 import get from 'lodash/get';
 import each from 'lodash/each';
 import { Platform } from 'react-native';
+import { Layout, LayoutSplitView } from 'react-native-navigation/interfaces/Layout';
 
 export class Deprecations {
   private deprecatedOptions: Array<{ key: string; showWarning: any }> = [
@@ -77,6 +78,17 @@ export class Deprecations {
     }
   }
 
+  public onParseLayout(api: Layout) {
+    if (
+      api.splitView &&
+      Platform.OS === 'ios' &&
+      typeof api.splitView.master !== 'undefined' &&
+      typeof api.splitView.detail !== 'undefined'
+    ) {
+      this.deprecateMasterDetailSplitView(api.splitView);
+    }
+  }
+
   public onProcessDefaultOptions(_key: string, _parentOptions: Record<string, any>) {}
 
   private deprecateSearchBarOptions = once((parentOptions: object) => {
@@ -95,6 +107,12 @@ export class Deprecations {
     console.warn(
       `toggling bottomTabs visibility is deprecated on iOS. For more information see https://github.com/wix/react-native-navigation/issues/6416`,
       parentOptions
+    );
+  });
+  private deprecateMasterDetailSplitView = once((api: LayoutSplitView) => {
+    console.warn(
+      `using SplitView with master and detail is deprecated on iOS. For more information see https://github.com/wix/react-native-navigation/pull/6705`,
+      api
     );
   });
 }

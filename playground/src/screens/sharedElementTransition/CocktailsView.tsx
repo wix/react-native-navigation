@@ -68,6 +68,7 @@ export default class CocktailsView extends React.Component<Props> {
 const SIZE = 150;
 const styles = StyleSheet.create({
   root: {
+    paddingLeft: 100,
     paddingTop: 16,
   },
   itemContainer: {

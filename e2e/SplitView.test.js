@@ -17,7 +17,7 @@ describe(':ios: SplitView', () => {
   });
 
   it('push screen to master screen', async () => {
-    await elementById(TestIDs.PUSH_MASTER_BTN).tap();
+    await elementById(TestIDs.PUSH_PRIMARY_BTN).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 

@@ -149,7 +149,7 @@ At the moment, the transition is available for push and pop commands. We are wor
 
 Let's take a more in-depth look at the following example, which you can find in the playground app:
 
-> [Source screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailsListScreen.tsx) and the [Destination screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailDetailsScreen.tsx)
+> [Source screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailsListScreen.tsx) and the [Destination screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailSecondaryScreen.tsx)
 
 <p align="center">
   <img alt="Shared Element Transition" src={useBaseUrl('img/sharedElement.gif')} />
@@ -205,7 +205,7 @@ each element must include a unique `nativeID` prop.
 ```jsx
 Navigation.push(this.props.componentId, {
   component: {
-    name: Screens.CocktailDetailsScreen,
+    name: Screens.CocktailSecondaryScreen,
     passProps: { ...item },
     options: {
       animations: {
@@ -265,7 +265,7 @@ An element can either be in the source or destination screen.
 ```jsx
 Navigation.push(this.props.componentId, {
   component: {
-    name: Screens.CocktailDetailsScreen,
+    name: Screens.CocktailSecondaryScreen,
     passProps: { ...item },
     options: {
       animations: {

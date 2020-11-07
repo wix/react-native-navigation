@@ -43,7 +43,7 @@ export default class CocktailsListScreen extends NavigationComponent {
   pushCocktailDetails = (item: CocktailItem) => {
     Navigation.push(this, {
       component: {
-        name: Screens.CocktailDetailsScreen,
+        name: Screens.CocktailSecondaryScreen,
         passProps: { ...item },
         options: {
           animations: {

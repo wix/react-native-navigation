@@ -7,9 +7,9 @@ const StatusBarFirstTab = 'StatusBarFirstTab';
 
 const Screens = {
   Buttons: 'Buttons',
-  CocktailDetailsScreen: 'CocktailDetailsScreen',
+  CocktailSecondaryScreen: 'CocktailSecondaryScreen',
   CocktailsListScreen: 'CocktailsListScreen',
-  CocktailsListMasterScreen: 'CocktailsListMasterScreen',
+  CocktailsListPrimaryScreen: 'CocktailsListPrimaryScreen',
   CarDetailsScreen: 'CarDetailsScreen',
   CarStoryScreen: 'CarStoryScreen',
   CarsListScreen: 'CarsListScreen',

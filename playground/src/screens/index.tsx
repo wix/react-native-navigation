@@ -6,8 +6,8 @@ import Screens from './Screens';
 function registerScreens() {
   Navigation.registerComponent(Screens.Alert, () => require('./Alert').default);
   Navigation.registerComponent(
-    Screens.CocktailDetailsScreen,
-    () => require('./sharedElementTransition/CocktailDetailsScreen').default
+    Screens.CocktailSecondaryScreen,
+    () => require('./sharedElementTransition/CocktailSecondaryScreen').default
   );
   Navigation.registerComponent(
     Screens.CocktailsListScreen,
@@ -24,8 +24,8 @@ function registerScreens() {
     gestureHandlerRootHOC(require('./sharedElementCarDealer/CarStoryScreen').default)
   );
   Navigation.registerComponent(
-    Screens.CocktailsListMasterScreen,
-    () => require('./splitView/CocktailsListMasterScreen').default
+    Screens.CocktailsListPrimaryScreen,
+    () => require('./splitView/CocktailsListPrimaryScreen').default
   );
   Navigation.registerComponent(
     Screens.EventsOverlay,

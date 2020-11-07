@@ -63,7 +63,7 @@ export class NavigationRoot {
       this.componentWrapper,
       appRegistryService
     );
-    this.layoutTreeParser = new LayoutTreeParser(this.uniqueIdProvider);
+    this.layoutTreeParser = new LayoutTreeParser(this.uniqueIdProvider, new Deprecations());
     const optionsProcessor = new OptionsProcessor(
       this.store,
       this.uniqueIdProvider,

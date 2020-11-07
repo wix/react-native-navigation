@@ -8,9 +8,9 @@ import CocktailsListScreen from '../sharedElementTransition/CocktailsListScreen'
 
 import testIDs from '../../testIDs';
 
-const { PUSH_MASTER_BTN } = testIDs;
+const { PUSH_PRIMARY_BTN } = testIDs;
 
-export default class CocktailsListMasterScreen extends CocktailsListScreen {
+export default class CocktailsListPrimaryScreen extends CocktailsListScreen {
   static options() {
     return {
       ...Platform.select({
@@ -27,8 +27,8 @@ export default class CocktailsListMasterScreen extends CocktailsListScreen {
         },
         rightButtons: [
           {
-            id: 'pushMaster',
-            testID: PUSH_MASTER_BTN,
+            id: 'pushPrimary',
+            testID: PUSH_PRIMARY_BTN,
             text: 'push',
           },
         ],
@@ -42,7 +42,7 @@ export default class CocktailsListMasterScreen extends CocktailsListScreen {
   }
 
   navigationButtonPressed(event: NavigationButtonPressedEvent) {
-    if (event.buttonId === 'pushMaster') {
+    if (event.buttonId === 'pushPrimary') {
       Navigation.push(this, Screens.Pushed);
     }
   }

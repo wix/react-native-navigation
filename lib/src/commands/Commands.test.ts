@@ -7,6 +7,7 @@ import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { Store } from '../components/Store';
 import { Commands } from './Commands';
+import { Deprecations } from './Deprecations';
 import { CommandsObserver } from '../events/CommandsObserver';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { OptionsProcessor } from './OptionsProcessor';
@@ -42,7 +43,7 @@ describe('Commands', () => {
     uut = new Commands(
       mockedStore,
       instance(mockedNativeCommandsSender),
-      new LayoutTreeParser(uniqueIdProvider),
+      new LayoutTreeParser(uniqueIdProvider, new Deprecations()),
       new LayoutTreeCrawler(instance(mockedStore), optionsProcessor),
       commandsObserver,
       uniqueIdProvider,
