@@ -8,7 +8,13 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { Navigation, NavigationComponentProps, LayoutOrientation } from 'react-native-navigation';
+import {
+  Navigation,
+  NavigationComponentProps,
+  LayoutOrientation,
+  NavigationComponent,
+  Options,
+} from 'react-native-navigation';
 import TestIDs from '../testIDs';
 
 interface Props extends NavigationComponentProps {
@@ -19,17 +25,22 @@ interface State {
   horizontal: boolean;
 }
 
-export default class OrientationDetectScreen extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.detectHorizontal = this.detectHorizontal.bind(this);
-    this.state = { horizontal: false };
-    Navigation.mergeOptions(this.props.componentId, {
+export default class OrientationDetectScreen extends NavigationComponent<Props, State> {
+  static options = (props: Props): Options => {
+    return {
       layout: {
         orientation: props.orientation,
       },
-    });
+    };
+  };
+
+  state: State = {
+    horizontal: false,
+  };
+
+  constructor(props: Props) {
+    super(props);
+    this.detectHorizontal = this.detectHorizontal.bind(this);
   }
 
   render() {
