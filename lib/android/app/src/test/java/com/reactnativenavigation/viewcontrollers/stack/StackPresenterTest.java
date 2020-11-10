@@ -72,6 +72,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -312,6 +313,24 @@ public class StackPresenterTest extends BaseTest {
 
         ShadowLooper.idleMainLooper();
         assertThat(topBar.getTitleBar().getNavigationIcon()).isNull();
+    }
+
+    @Test
+    public void mergeButtons_actualLeftButtonIsAppliedEvenIfBackButtonHasValue() {
+        Options toMerge = new Options();
+        toMerge.topBar.buttons.back.setHidden();
+        toMerge.topBar.buttons.left = new ArrayList<>();
+        ButtonOptions leftButton = new ButtonOptions();
+        leftButton.id = "id";
+        leftButton.icon = new Text("");
+        toMerge.topBar.buttons.left.add(leftButton);
+
+        assertThat(toMerge.topBar.buttons.back.hasValue()).isTrue();
+
+        uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child);
+        verify(topBarController).setLeftButtons(any());
+        verify(topBar, never()).clearLeftButtons();
+
     }
 
     @Test
