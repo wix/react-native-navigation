@@ -7,7 +7,7 @@ jest.setTimeout(300000);
 jasmine.getEnv().addReporter(adapter);
 
 beforeAll(async () => {
-  await detox.init(config, {launchApp: false});
+  await detox.init(config, { launchApp: false });
   disableAndroidEmulatorAnimations();
 });
 

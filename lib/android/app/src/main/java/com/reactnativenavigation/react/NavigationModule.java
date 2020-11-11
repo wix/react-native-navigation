@@ -11,20 +11,19 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.parse.LayoutFactory;
-import com.reactnativenavigation.parse.LayoutNode;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.parsers.JSONParser;
-import com.reactnativenavigation.parse.parsers.LayoutNodeParser;
+import com.reactnativenavigation.options.LayoutFactory;
+import com.reactnativenavigation.options.LayoutNode;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.parsers.JSONParser;
+import com.reactnativenavigation.options.parsers.LayoutNodeParser;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.LaunchArgsParser;
-import com.reactnativenavigation.utils.NativeCommandListener;
 import com.reactnativenavigation.utils.Now;
 import com.reactnativenavigation.utils.StatusBarUtils;
-import com.reactnativenavigation.utils.TypefaceLoader;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import java.util.ArrayList;
@@ -190,8 +189,9 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     private Options parse(@Nullable ReadableMap mergeOptions) {
+        ReactApplicationContext ctx = getReactApplicationContext();
         return mergeOptions ==
-               null ? Options.EMPTY : Options.parse(new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
+               null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
     }
 
     protected void handle(Runnable task) {

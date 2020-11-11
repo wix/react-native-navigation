@@ -1,11 +1,14 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.view.View;
 
-import com.reactnativenavigation.anim.ModalAnimator;
-import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.utils.ScreenAnimationListener;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+
+import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.Nullable;
 
 public class ModalAnimatorMock extends ModalAnimator {
 
@@ -14,22 +17,22 @@ public class ModalAnimatorMock extends ModalAnimator {
     }
 
     @Override
-    public void show(View view, AnimationOptions show, AnimatorListenerAdapter listener) {
+    public void show(@NotNull ViewController<?> appearing, @Nullable ViewController<?> disappearing, @NotNull AnimationOptions show, @NotNull ScreenAnimationListener listener) {
         try {
-            listener.onAnimationStart(null);
+            listener.onStart();
             Thread.sleep(10);
-            listener.onAnimationEnd(null);
+            listener.onEnd();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void dismiss(View view, AnimationOptions dismiss, AnimatorListenerAdapter listener) {
+    public void dismiss(@Nullable ViewController<?> appearing, @NotNull ViewController<?> disappearing, @NotNull AnimationOptions dismiss, @NotNull ScreenAnimationListener listener) {
         try {
-            listener.onAnimationStart(null);
+            listener.onStart();
             Thread.sleep(10);
-            listener.onAnimationEnd(null);
+            listener.onEnd();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

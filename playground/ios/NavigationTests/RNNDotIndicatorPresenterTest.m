@@ -1,28 +1,29 @@
-#import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
 #import "RNNDotIndicatorPresenter.h"
 #import "DotIndicatorOptions.h"
+#import "RNNBottomTabsController+Helpers.h"
 #import "RNNBottomTabsController.h"
-#import <ReactNativeNavigation/RNNComponentViewController.h>
 #import "RNNTestBase.h"
 #import "UITabBarController+RNNUtils.h"
+#import <OCMock/OCMock.h>
 #import <ReactNativeNavigation/BottomTabPresenterCreator.h>
-#import "RNNBottomTabsController+Helpers.h"
+#import <ReactNativeNavigation/RNNComponentViewController.h>
+#import <XCTest/XCTest.h>
 
 @interface RNNDotIndicatorPresenterTest : RNNTestBase
 @property(nonatomic, strong) id uut;
 @property(nonatomic, strong) RNNComponentViewController *child;
 @property(nonatomic, strong) id bottomTabs;
-@property(nonatomic, strong) BottomTabPresenter* bottomTabPresenter;
+@property(nonatomic, strong) BottomTabPresenter *bottomTabPresenter;
 @end
 
 @implementation RNNDotIndicatorPresenterTest
 - (void)setUp {
     [super setUp];
-	self.child = [self createChild];
-	self.bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:nil];
+    self.child = [self createChild];
+    self.bottomTabPresenter = [BottomTabPresenterCreator createWithDefaultOptions:nil];
     self.uut = [OCMockObject partialMockForObject:[RNNDotIndicatorPresenter new]];
-    self.bottomTabs = [OCMockObject partialMockForObject:[RNNBottomTabsController createWithChildren:@[self.child]]];
+    self.bottomTabs = [OCMockObject
+        partialMockForObject:[RNNBottomTabsController createWithChildren:@[ self.child ]]];
 
     [self setupTopLevelUI:self.bottomTabs];
 }
@@ -34,7 +35,7 @@
 
 - (void)testApply_doesNothingIfDoesNotHaveValue {
     DotIndicatorOptions *empty = [DotIndicatorOptions new];
-    [[self uut] apply:self.child :empty];
+    [[self uut] apply:self.child:empty];
     XCTAssertFalse([self tabHasIndicator]);
 }
 
@@ -49,7 +50,7 @@
 
     DotIndicatorOptions *options = [DotIndicatorOptions new];
     options.visible = [[Bool alloc] initWithBOOL:NO];
-    [[self uut] apply:self.child :options];
+    [[self uut] apply:self.child:options];
 
     XCTAssertFalse([self tabHasIndicator]);
 }
@@ -57,7 +58,7 @@
 - (void)testApply_invisibleIndicatorIsNotAdded {
     DotIndicatorOptions *options = [DotIndicatorOptions new];
     options.visible = [[Bool alloc] initWithBOOL:NO];
-    [[self uut] apply:self.child :options];
+    [[self uut] apply:self.child:options];
 
     XCTAssertFalse([self tabHasIndicator]);
 }
@@ -95,11 +96,11 @@
     options.color = [[Color alloc] initWithValue:[UIColor redColor]];
     options.size = [[Number alloc] initWithValue:[[NSNumber alloc] initWithInt:8]];
 
-    [[self uut] apply:self.child :options];
+    [[self uut] apply:self.child:options];
     XCTAssertTrue([self tabHasIndicator]);
 
     options.visible = [[Bool alloc] initWithBOOL:NO];
-    [[self uut] apply:self.child :options];
+    [[self uut] apply:self.child:options];
     XCTAssertFalse([self tabHasIndicator]);
 }
 
@@ -107,9 +108,9 @@
     DotIndicatorOptions *options = [DotIndicatorOptions new];
     options.visible = [[Bool alloc] initWithBOOL:YES];
     options.size = [[Number alloc] initWithValue:[[NSNumber alloc] initWithInt:8]];
-    [[self uut] apply:self.child :options];
+    [[self uut] apply:self.child:options];
     UIView *indicator = [self getIndicator];
-    UIView * icon = [_bottomTabs getTabIcon:0];
+    UIView *icon = [_bottomTabs getTabIcon:0];
 
     NSArray<NSLayoutConstraint *> *alignmentConstraints = [_bottomTabs getTabView:0].constraints;
     XCTAssertEqual([alignmentConstraints count], 2);
@@ -132,20 +133,20 @@
 }
 
 - (void)testApply_onBottomTabsViewDidLayout {
-	[[self.uut expect] apply:self.child :self.child.resolveOptions.bottomTab.dotIndicator];
-	[self.uut bottomTabsDidLayoutSubviews:self.bottomTabs];
-	[self.uut verify];
+    [[self.uut expect] apply:self.child:self.child.resolveOptions.bottomTab.dotIndicator];
+    [self.uut bottomTabsDidLayoutSubviews:self.bottomTabs];
+    [self.uut verify];
 }
 
 - (void)applyIndicator {
     [self applyIndicator:[UIColor redColor]];
 }
 
-- (void)applyIndicator:(UIColor *) color {
+- (void)applyIndicator:(UIColor *)color {
     DotIndicatorOptions *options = [DotIndicatorOptions new];
     options.visible = [[Bool alloc] initWithBOOL:YES];
     options.color = [[Color alloc] initWithValue:color];
-    [[self uut] apply:self.child :options];
+    [[self uut] apply:self.child:options];
 }
 
 - (RNNComponentViewController *)createChild {
@@ -154,7 +155,15 @@
     id img = [OCMockObject partialMockForObject:[UIImage new]];
 
     options.bottomTab.icon = [[Image alloc] initWithValue:img];
-    return [[RNNComponentViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNComponentPresenter alloc] initWithDefaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]] options:options defaultOptions:nil];
+    return [[RNNComponentViewController alloc]
+        initWithLayoutInfo:nil
+           rootViewCreator:nil
+              eventEmitter:nil
+                 presenter:[[RNNComponentPresenter alloc]
+                               initWithDefaultOptions:[[RNNNavigationOptions alloc]
+                                                          initEmptyOptions]]
+                   options:options
+            defaultOptions:nil];
 }
 
 - (BOOL)tabHasIndicator {
@@ -162,6 +171,8 @@
 }
 
 - (UIView *)getIndicator {
-    return [self tabHasIndicator] ? [[((UITabBarController *) _bottomTabs) tabBar] viewWithTag:_child.tabBarItem.tag] : nil;
+    return [self tabHasIndicator]
+               ? [[((UITabBarController *)_bottomTabs) tabBar] viewWithTag:_child.tabBarItem.tag]
+               : nil;
 }
 @end

@@ -1,19 +1,19 @@
 #import "Number.h"
 
-@interface Number()
+@interface Number ()
 
-@property (nonatomic, retain) NSNumber* value;
+@property(nonatomic, retain) NSNumber *value;
 
 @end
 
 @implementation Number
 
 - (NSNumber *)get {
-	return [super get];
+    return [super get];
 }
 
 - (NSNumber *)getWithDefaultValue:(NSNumber *)defaultValue {
-	return [super getWithDefaultValue:defaultValue];
+    return [super getWithDefaultValue:defaultValue];
 }
 
 @end

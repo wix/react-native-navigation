@@ -1,12 +1,11 @@
-#import <XCTest/XCTest.h>
 #import "NoColor.h"
+#import <XCTest/XCTest.h>
 
 @interface RNNTestNoColor : XCTestCase
 
-@property (nonatomic, retain) NoColor* uut;
+@property(nonatomic, retain) NoColor *uut;
 
 @end
-
 
 @implementation RNNTestNoColor
 - (void)setUp {
@@ -19,7 +18,7 @@
 }
 
 - (void)testGet_returnsNil {
-    XCTAssertEqual(_uut.get, (UIColor *) nil);
+    XCTAssertEqual(_uut.get, (UIColor *)nil);
 }
 
 @end

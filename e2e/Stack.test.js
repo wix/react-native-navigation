@@ -1,11 +1,12 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
+import Android from './AndroidUtils';
+
 const { elementByLabel, elementById, sleep } = Utils;
-const Android = require('./AndroidUtils');
 
 describe('Stack', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.STACK_BTN).tap();
   });
 
@@ -50,6 +51,12 @@ describe('Stack', () => {
     await elementById(TestIDs.PUSH_CUSTOM_BACK_BTN).tap();
     await elementById(TestIDs.CUSTOM_BACK_BTN).tap();
     await expect(elementByLabel('back button clicked')).toBeVisible();
+  });
+
+  it('push title with subtitle', async () => {
+    await elementById(TestIDs.PUSH_TITLE_WITH_SUBTITLE).tap();
+    await expect(elementByLabel('Title')).toBeVisible();
+    await expect(elementByLabel('Subtitle')).toBeVisible();
   });
 
   it('screen lifecycle', async () => {
@@ -100,12 +107,25 @@ describe('Stack', () => {
     await expect(elementByLabel('Stack Position: 2')).toBeVisible();
   });
 
-  xit(':ios: set searchBar and handle onSearchUpdated event', async () => { // Broken on iOS 13
+  xit(':ios: set searchBar and handle onSearchUpdated event', async () => {
+    // Broken on iOS 13
     await elementById(TestIDs.SEARCH_BTN).tap();
     await expect(elementByLabel('Start Typing')).toBeVisible();
     await elementByLabel('Start Typing').tap();
     const query = '124';
     await elementByLabel('Start Typing').typeText(query);
     await expect(elementById(TestIDs.SEARCH_RESULT_ITEM)).toHaveText(`Item ${query}`);
+  });
+
+  it('push promise is resolved with pushed ViewController id', async () => {
+    await elementById(TestIDs.STACK_COMMANDS_BTN).tap();
+    await elementById(TestIDs.PUSH_BTN).tap();
+
+    await expect(element(by.id(TestIDs.PUSH_PROMISE_RESULT))).toHaveText(
+      'push promise resolved with: ChildId'
+    );
+    await expect(element(by.id(TestIDs.POP_PROMISE_RESULT))).toHaveText(
+      'pop promise resolved with: ChildId'
+    );
   });
 });

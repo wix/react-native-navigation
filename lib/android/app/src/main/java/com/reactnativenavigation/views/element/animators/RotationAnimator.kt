@@ -4,7 +4,7 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
 import com.facebook.react.views.image.ReactImageView
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
+import com.reactnativenavigation.options.SharedElementTransitionOptions
 
 class RotationAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
     private val fromRotation = from.rotation

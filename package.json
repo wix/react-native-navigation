@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "6.7.1",
+  "version": "7.3.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -16,6 +16,9 @@
     "type": "git",
     "url": "https://github.com/wix/react-native-navigation.git"
   },
+  "bin": {
+    "rnn-link": "./autolink/postlink/run.js"
+  },
   "main": "lib/dist/index.js",
   "typings": "lib/dist/index.d.ts",
   "scripts": {
@@ -27,7 +30,6 @@
     "clean": "node ./scripts/clean",
     "prestart": "npm run build",
     "start": "node ./scripts/start",
-    "start-windows": "node ./scripts/start-windows",
     "pretest-js": "npm run build",
     "test-js": "node ./scripts/test-js",
     "pod-install": "pod install --project-directory=playground/ios",
@@ -43,9 +45,8 @@
     "test-all": "node ./scripts/test-all",
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
-    "local-docs": "node ./scripts/local-docs",
-    "gen-docs": "ts-node ./scripts/gen-docs/Main",
-    "docusaurus": "npm start --prefix website"
+    "docusaurus": "npm start --prefix website",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
   },
   "peerDependencies": {
     "react": "*",
@@ -59,40 +60,53 @@
     "tslib": "1.9.3"
   },
   "devDependencies": {
-    "@babel/core": "7.6.4",
-    "@babel/plugin-proposal-export-default-from": "7.2.0",
-    "@babel/plugin-proposal-export-namespace-from": "7.2.0",
+    "@babel/core": "7.10.3",
+    "@babel/plugin-proposal-export-default-from": "7.10.1",
+    "@babel/plugin-proposal-export-namespace-from": "7.10.1",
     "@babel/types": "7.6.x",
-    "@react-native-community/eslint-config": "0.0.3",
+    "@react-native-community/blur": "^3.6.0",
+    "@react-native-community/datetimepicker": "^2.5.0",
+    "@react-native-community/eslint-config": "2.0.0",
+    "@react-native-community/netinfo": "^5.9.4",
+    "@types/detox": "16.4.1",
     "@types/hoist-non-react-statics": "^3.0.1",
-    "@types/jest": "24.x.x",
+    "@types/jasmine": "3.5.10",
+    "@types/jest": "26.0.3",
     "@types/lodash": "^4.14.149",
-    "@types/react": "16.x.x",
-    "@types/react-native": "0.61.10",
-    "@types/react-test-renderer": "16.x.x",
-    "babel-jest": "24.9.x",
-    "detox": "14.x.x",
-    "jest": "24.9.x",
-    "lodash": "^4.17.15",
-    "metro-react-native-babel-preset": "0.57.x",
-    "react": "16.9.0",
-    "react-native": "0.61.5",
-    "react-native-keyboard-tracking-view": "5.x.x",
-    "react-native-typescript-transformer": "1.2.12",
-    "react-native-ui-lib": "3.24.2",
+    "@types/react": "16.9.41",
+    "@types/react-native": "0.63.1",
+    "@types/react-test-renderer": "16.9.2",
+    "@typescript-eslint/eslint-plugin": "3.3.0",
+    "@typescript-eslint/parser": "3.3.0",
+    "babel-jest": "26.1.0",
+    "clang-format": "^1.4.0",
+    "detox": "17.3.1",
+    "eslint": "7.3.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "github-release-notes": "https://github.com/yogevbd/github-release-notes/tarball/e601b3dba72dcd6cba323c1286ea6dd0c0110b58",
+    "husky": "4.2.5",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "26.1.0",
+    "jest-circus": "26.1.0",
+    "lint-staged": "10.2.11",
+    "metro-react-native-babel-preset": "0.59.0",
+    "prettier": "2.1.2",
+    "react": "16.13.1",
+    "react-native": "0.63.2",
+    "react-native-fast-image": "8.x.x",
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-reanimated": "^1.9.0",
+    "react-native-ui-lib": "5.11.0",
     "react-redux": "5.x.x",
-    "react-test-renderer": "16.9.x",
+    "react-test-renderer": "16.13.1",
     "redux": "3.x.x",
     "remx": "2.x.x",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",
-    "ts-node": "5.x.x",
-    "tslint": "5.x.x",
     "typedoc": "0.x.x",
-    "typescript": "3.2.2",
-    "identity-obj-proxy": "3.0.0",
-    "github-release-notes": "0.17.3"
+    "typescript": "3.9.5"
   },
   "jest": {
     "preset": "react-native",
@@ -123,6 +137,15 @@
       "text",
       "html"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint",
+    "*.{h,m,mm}": "node ./scripts/check-clang-format"
   },
   "detox": {
     "test-runner": "jest",

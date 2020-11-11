@@ -1,10 +1,11 @@
-const Utils = require('./Utils');
-const TestIDs = require('../playground/src/testIDs');
+import Utils from './Utils';
+import TestIDs from '../playground/src/testIDs';
+
 const { elementByLabel, elementById } = Utils;
 
 describe('SideMenu', () => {
   beforeEach(async () => {
-    await device.relaunchApp();
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.SIDE_MENU_BTN).tap();
   });
 
@@ -41,5 +42,14 @@ describe('SideMenu', () => {
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
     await device.setOrientation('landscape');
     await expect(elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN)).toBeVisible();
+  });
+
+  it(':ios: rotation should update drawer height', async () => {
+    await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+    await expect(elementByLabel('left drawer height: 842')).toBeVisible();
+    await device.setOrientation('landscape');
+    await expect(elementByLabel('left drawer height: 414')).toBeVisible();
+    await device.setOrientation('portrait');
+    await expect(elementByLabel('left drawer height: 842')).toBeVisible();
   });
 });

@@ -3,80 +3,74 @@
 #import <React/RCTUIManager.h>
 
 #import "RNNBridgeManager.h"
-#import "RNNSplashScreen.h"
 #import "RNNLayoutManager.h"
+#import "RNNSplashScreen.h"
 
-@interface ReactNativeNavigation()
+@interface ReactNativeNavigation ()
 
-@property (nonatomic, strong) RNNBridgeManager *bridgeManager;
+@property(nonatomic, strong) RNNBridgeManager *bridgeManager;
 
 @end
 
 @implementation ReactNativeNavigation
 
-# pragma mark - public API
+#pragma mark - public API
 
-+ (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
-	[[ReactNativeNavigation sharedInstance] bootstrap:jsCodeLocation launchOptions:launchOptions];
-}
-
-+ (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate {
-	[[ReactNativeNavigation sharedInstance] bootstrap:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate];
-}
-
-+ (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
-    [[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:bridgeDelegate launchOptions:launchOptions];
++ (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate
+                launchOptions:(NSDictionary *)launchOptions {
+    [[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:bridgeDelegate
+                                                    launchOptions:launchOptions];
 }
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
-	[[ReactNativeNavigation sharedInstance].bridgeManager registerExternalComponent:name callback:callback];
+    [[ReactNativeNavigation sharedInstance].bridgeManager registerExternalComponent:name
+                                                                           callback:callback];
+}
+
++ (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
+    return [[ReactNativeNavigation sharedInstance].bridgeManager extraModulesForBridge:bridge];
 }
 
 + (RCTBridge *)getBridge {
-	return [[ReactNativeNavigation sharedInstance].bridgeManager bridge];
+    return [[ReactNativeNavigation sharedInstance].bridgeManager bridge];
 }
 
 + (UIViewController *)findViewController:(NSString *)componentId {
-    return [RNNLayoutManager findComponentForId:componentId];
+    return [[ReactNativeNavigation sharedInstance].bridgeManager findComponentForId:componentId];
 }
 
-+ (void)setJSCodeLocation:(NSURL *)jsCodeLocation {
-	[[ReactNativeNavigation sharedInstance].bridgeManager setJSCodeLocation:jsCodeLocation];
+#pragma mark - instance
+
++ (instancetype)sharedInstance {
+    static ReactNativeNavigation *instance = nil;
+    static dispatch_once_t onceToken = 0;
+    dispatch_once(&onceToken, ^{
+      if (instance == nil) {
+          instance = [[ReactNativeNavigation alloc] init];
+      }
+    });
+
+    return instance;
 }
 
-# pragma mark - instance
+- (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate
+                launchOptions:(NSDictionary *)launchOptions {
+    UIWindow *mainWindow = [self initializeKeyWindowIfNeeded];
 
-+ (instancetype) sharedInstance {
-	static ReactNativeNavigation *instance = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken,^{
-		if (instance == nil) {
-			instance = [[ReactNativeNavigation alloc] init];
-		}
-	});
-	
-	return instance;
+    self.bridgeManager = [[RNNBridgeManager alloc] initWithLaunchOptions:launchOptions
+                                                       andBridgeDelegate:bridgeDelegate
+                                                              mainWindow:mainWindow];
+    [self.bridgeManager initializeBridge];
+    [RNNSplashScreen showOnWindow:mainWindow];
 }
 
-- (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
-	[self bootstrap:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:nil];
-}
-
-- (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
-    [self bootstrap:nil launchOptions:launchOptions bridgeManagerDelegate:bridgeDelegate];
-}
-
-- (void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RCTBridgeDelegate>)delegate {
-	UIWindow* mainWindow = [self initializeKeyWindow];
-	
-	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate mainWindow:mainWindow];
-	[RNNSplashScreen showOnWindow:mainWindow];
-}
-
-- (UIWindow *)initializeKeyWindow {
-	UIWindow* keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	UIApplication.sharedApplication.delegate.window = keyWindow;
-	return keyWindow;
+- (UIWindow *)initializeKeyWindowIfNeeded {
+    UIWindow *keyWindow = UIApplication.sharedApplication.delegate.window;
+    if (!keyWindow) {
+        keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        UIApplication.sharedApplication.delegate.window = keyWindow;
+    }
+    return keyWindow;
 }
 
 @end

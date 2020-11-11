@@ -11,20 +11,20 @@ import android.view.Window;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.SideMenuOptions;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.presentation.SideMenuPresenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.SideMenuOptions;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.Functions;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.SideMenu;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.sidemenu.SideMenu;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -59,9 +59,9 @@ public class SideMenuControllerTest extends BaseTest {
         childRegistry = new ChildControllersRegistry();
         presenter = spy(new SideMenuPresenter());
         child = new SimpleComponentViewController(activity, childRegistry, "child", new Options());
-        left = new SimpleComponentViewController(activity, childRegistry, "left", new Options());
-        right = new SimpleComponentViewController(activity, childRegistry, "right", new Options());
-        center = spy(new SimpleComponentViewController(activity, childRegistry, "center", new Options()));
+        left = spy(new SimpleComponentViewController(activity, childRegistry, "left", new Options()));
+        right = spy(new SimpleComponentViewController(activity, childRegistry, "right", createSideMenuOptions()));
+        center = spy(new SimpleComponentViewController(activity, childRegistry, "center", createSideMenuOptions()));
         uut = new SideMenuController(activity, childRegistry, "sideMenu", new Options(), presenter, new Presenter(activity, new Options())) {
             @Override
             public Options resolveCurrentOptions() {
@@ -72,6 +72,14 @@ public class SideMenuControllerTest extends BaseTest {
         uut.setCenterController(center);
         parent = mock(ParentController.class);
         uut.setParentController(parent);
+    }
+
+    @NotNull
+    private Options createSideMenuOptions() {
+        Options options = new Options();
+        options.sideMenuRootOptions.left.animate = new Bool(false);
+        options.sideMenuRootOptions.right.animate = new Bool(false);
+        return options;
     }
 
     @Test
@@ -119,7 +127,7 @@ public class SideMenuControllerTest extends BaseTest {
 
         setLeftRight(left, right);
 
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         verify(leftView).requestLayout();
         verify(rightView).requestLayout();
     }
@@ -289,11 +297,11 @@ public class SideMenuControllerTest extends BaseTest {
         activity.setContentView(uut.getView());
 
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
-        verify(spy, times(0)).onViewAppeared();
+        verify(spy, times(0)).onViewWillAppear();
 
         openLeftMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isTrue();
-        verify(spy).onViewAppeared();
+        verify(spy).onViewDidAppear();
 
         closeLeftMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
@@ -307,11 +315,11 @@ public class SideMenuControllerTest extends BaseTest {
         activity.setContentView(uut.getView());
 
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
-        verify(spy, times(0)).onViewAppeared();
+        verify(spy, times(0)).onViewWillAppear();
 
         openRightMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isTrue();
-        verify(spy).onViewAppeared();
+        verify(spy).onViewDidAppear();
 
         closeRightMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
@@ -329,6 +337,25 @@ public class SideMenuControllerTest extends BaseTest {
 
         openDrawerAndAssertVisibility(left, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.left);
         closeDrawerAndAssertVisibility(left, (side) -> side.resolveCurrentOptions().sideMenuRootOptions.left);
+    }
+
+    @Test
+    public void onDrawerSlide_componentDidAppearIsEmittedWhenDrawerIsFullyOpened() {
+        uut.setLeftController(left);
+        uut.setRightController(right);
+        uut.ensureViewIsCreated();
+
+        uut.onDrawerSlide(left.getView(),0.1f);
+        uut.onDrawerSlide(right.getView(),0.1f);
+
+        verify(left, times(0)).onViewDidAppear();
+        verify(right, times(0)).onViewDidAppear();
+
+        uut.onDrawerSlide(left.getView(),1);
+        uut.onDrawerSlide(right.getView(),1);
+
+        verify(left).onViewDidAppear();
+        verify(right).onViewDidAppear();
     }
 
     @Test

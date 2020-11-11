@@ -1,5 +1,5 @@
-#import <UIKit/UIKit.h>
 #import "AnimatedReactView.h"
+#import <UIKit/UIKit.h>
 
 @interface AnimatedImageView : AnimatedReactView
 

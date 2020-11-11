@@ -2,6 +2,7 @@ package com.reactnativenavigation.utils;
 
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.react.NativeCommandListener;
 import com.reactnativenavigation.react.events.EventEmitter;
 
 import org.junit.Test;

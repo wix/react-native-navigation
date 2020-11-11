@@ -11,17 +11,20 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.ComponentPresenter;
-import com.reactnativenavigation.presentation.Presenter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
-import com.reactnativenavigation.views.StackLayout;
-import com.reactnativenavigation.views.topbar.TopBar;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
+import com.reactnativenavigation.views.stack.StackLayout;
+import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 import org.junit.Test;
 
@@ -81,7 +84,7 @@ public class OptionsApplyingTest extends BaseTest {
         uut.setParentController(null);
         assertThat(uut.getParentController()).isNull();
         uut.ensureViewIsCreated();
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         assertThat(uut.getParentController()).isNull();
     }
 
@@ -93,7 +96,7 @@ public class OptionsApplyingTest extends BaseTest {
         stackController.push(uut, new CommandListenerAdapter());
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
-        uut.onViewAppeared();
+        uut.onViewWillAppear();
         assertThat(stackController.getTopBar().getTitle()).isEqualTo("the title");
     }
 

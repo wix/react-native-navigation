@@ -5,8 +5,8 @@ import android.graphics.Typeface;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ViewUtils;
 

@@ -4,9 +4,9 @@
 
 - (void)attach:(UITabBarController *)bottomTabsController {
     [bottomTabsController.selectedViewController setReactViewReadyCallback:^{
-        [bottomTabsController readyForPresentation];
+      [bottomTabsController readyForPresentation];
     }];
-    
+
     [bottomTabsController.selectedViewController render];
 }
 

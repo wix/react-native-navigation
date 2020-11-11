@@ -1,8 +1,8 @@
 #import "Double.h"
 
-@interface Double()
+@interface Double ()
 
-@property (nonatomic, retain) NSNumber* value;
+@property(nonatomic, retain) NSNumber *value;
 
 @end
 
@@ -13,17 +13,17 @@
 }
 
 - (double)get {
-	return [[super get] doubleValue];
+    return [[super get] doubleValue];
 }
 
 - (double)getWithDefaultValue:(double)defaultValue {
-	if (self.value) {
-		return [self.value doubleValue];
-	} else if (defaultValue) {
-		return defaultValue;
-	}
-	
-	return 0;
+    if (self.value) {
+        return [self.value doubleValue];
+    } else if (defaultValue) {
+        return defaultValue;
+    }
+
+    return 0;
 }
 
 @end

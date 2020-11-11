@@ -2,8 +2,8 @@ package com.reactnativenavigation.views.element
 
 import android.animation.AnimatorSet
 import android.view.View
-import com.reactnativenavigation.parse.SharedElementTransitionOptions
-import com.reactnativenavigation.viewcontrollers.ViewController
+import com.reactnativenavigation.options.SharedElementTransitionOptions
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.animators.*
 
 class SharedElementTransition(appearing: ViewController<*>, private val options: SharedElementTransitionOptions) : Transition() {
@@ -17,7 +17,7 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
     override val topInset: Int
         get() = viewController.topInset
 
-    fun isValid(): Boolean = this::from.isInitialized
+    fun isValid(): Boolean = this::from.isInitialized && this::to.isInitialized
 
     override fun createAnimators(): AnimatorSet {
         val animators = animators()
@@ -25,7 +25,7 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
                 .map { it.create(options).apply {
                     duration = options.getDuration()
                     startDelay = options.getStartDelay()
-                    interpolator = options.getInterpolator()
+                    interpolator = options.interpolator
                 } }
         val set = AnimatorSet()
         set.playTogether(animators)
@@ -34,13 +34,17 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
 
     private fun animators(): List<PropertyAnimatorCreator<*>> {
         return listOf(
-                MatrixAnimator(from, to),
+                ReactImageMatrixAnimator(from, to),
+                FastImageMatrixAnimator(from, to),
+                ReactImageBoundsAnimator(from, to),
+                FastImageBoundsAnimator(from, to),
+                FastImageBorderRadiusAnimator(from, to),
                 XAnimator(from, to),
                 YAnimator(from, to),
                 RotationAnimator(from, to),
-                ScaleXAnimator(from, to),
-                ScaleYAnimator(from, to),
+                ReactViewRotationAnimator(from, to),
                 BackgroundColorAnimator(from, to),
+                ReactViewOutlineAnimator(from ,to),
                 TextChangeAnimator(from, to)
         )
     }

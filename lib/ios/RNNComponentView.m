@@ -5,9 +5,9 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    #ifdef DEBUG
-        [RCTHelpers removeYellowBox:self];
-    #endif
+#ifdef DEBUG
+    [RCTHelpers removeYellowBox:self];
+#endif
 }
 
 @end

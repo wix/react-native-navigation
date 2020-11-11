@@ -1,0 +1,55 @@
+---
+id: layout-component
+title: Component
+sidebar_label: Component
+---
+
+```js
+{
+  name: "MyRegisteredComponent";
+}
+```
+
+## `name`
+
+| Type   | Required | Description                                                                      |
+| ------ | -------- | -------------------------------------------------------------------------------- |
+| string | Yes      | Key used when registering the component with `Navigation.registerComponent`. |
+
+## `id`
+
+| Type   | Required | Description                                                                                                                                                    |
+| ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| string | No       | Unique id used to interact with the view via the Navigation api, usually `Navigation.mergeOptions` which accepts the componentId as it's first argument. |
+
+## `options`
+
+| Type                    | Required | Description                       |
+| ----------------------- | -------- | --------------------------------- |
+| [Options](options-root.mdx) | No       | dynamic options for the component |
+
+## `alignment`
+
+| Type                   | Required | Description                                                                                                                                                                                                                                                                         |
+| ---------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| enum('center', 'fill') | No       | This option is relevant only to title components. `fill` will make the component stretch and consume all available space in the TopBar while `center` will center it in the middle of the TopBar. `center` is the default option in iOS while `fill` is the default for Android. |
+
+## `waitForRender`
+
+| Type    | Required | Description                                                        |
+| ------- | -------- | ------------------------------------------------------------------ |
+| boolean | No       | Wait for this component to fully render before showing the screen. |
+
+This option is useful for ensuring that both a child screen pushed into the stack and all of the TopBar components (title, background and buttons) are displayed to the user at the same time.
+
+To enable this option, `waitForRender` in the relevant screen animation option needs to be enabled as well.
+
+:::caution
+This option might introduce delays when pushing screens and should be used with caution.
+:::
+
+## `passProps`
+
+| Type   | Required | Description                                                                        |
+| ------ | -------- | ---------------------------------------------------------------------------------- |
+| object | No       | A JavaScript object with props accessible inside the component using `this.props`. |

@@ -5,14 +5,14 @@ import android.content.Context;
 import android.view.MotionEvent;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.ComponentPresenterBase;
-import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.component.ComponentPresenterBase;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.viewcontrollers.ChildController;
-import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.viewcontrollers.child.ChildController;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.views.component.ReactComponent;
 
 import org.mockito.Mockito;
 
@@ -32,7 +32,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
     }
 
     @Override
-    protected SimpleView createView() {
+    public SimpleView createView() {
         return new SimpleView(getActivity());
     }
 
@@ -55,7 +55,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public int getTopInset() {
-        int statusBarInset = resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : 63;
+        int statusBarInset = resolveCurrentOptions().statusBar.isHiddenOrDrawBehind() ? 0 : 63;
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 

@@ -6,19 +6,19 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.IReactView;
-import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
-import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.component.Component;
 
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 @SuppressLint("ViewConstructor")
-public class TopTabsViewPager extends ViewPager implements Component, TitleBarButtonController.OnClickListener {
+public class TopTabsViewPager extends ViewPager implements Component, ButtonController.OnClickListener {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
     private List<ViewController> tabs;

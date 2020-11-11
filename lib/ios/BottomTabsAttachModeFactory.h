@@ -1,6 +1,6 @@
-#import <Foundation/Foundation.h>
-#import "RNNNavigationOptions.h"
 #import "BottomTabsBaseAttacher.h"
+#import "RNNNavigationOptions.h"
+#import <Foundation/Foundation.h>
 
 @interface BottomTabsAttachModeFactory : NSObject
 
@@ -8,6 +8,6 @@
 
 - (BottomTabsBaseAttacher *)fromOptions:(RNNNavigationOptions *)options;
 
-@property (nonatomic, retain) RNNNavigationOptions* defaultOptions;
+@property(nonatomic, retain) RNNNavigationOptions *defaultOptions;
 
 @end

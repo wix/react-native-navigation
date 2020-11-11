@@ -12,6 +12,7 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Size;
 import androidx.core.util.Pair;
 
 @SuppressWarnings("WeakerAccess")
@@ -44,9 +45,9 @@ public class CollectionUtils {
         S map(T value);
     }
 
-    public static @Nullable <T, S> List<S> map(@Nullable Collection<T> items, Mapper<T, S> map) {
+    public static @Nullable <T, S> ArrayList<S> map(@Nullable Collection<T> items, Mapper<T, S> map) {
         if (items == null) return null;
-        List<S> result = new ArrayList<>();
+        ArrayList<S> result = new ArrayList<>();
         for (T item : items) {
             result.add(map.map(item));
         }
@@ -151,6 +152,10 @@ public class CollectionUtils {
 
     public static <T> T last(@Nullable List<T> items) {
         return CollectionUtils.isNullOrEmpty(items) ? null : items.get(items.size() - 1);
+    }
+
+    public static <T> T requireLast(@Size(min = 1) List<T> items) {
+        return items.get(items.size() - 1);
     }
 
     public static <T> T removeLast(@NonNull List<T> items) {

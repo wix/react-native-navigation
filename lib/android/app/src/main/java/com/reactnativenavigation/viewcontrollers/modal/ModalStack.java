@@ -1,14 +1,14 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.anim.ModalAnimator;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
-import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ModalOverlay;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
@@ -21,25 +21,29 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ModalStack {
-    private List<ViewController> modals = new ArrayList<>();
+    private final List<ViewController> modals = new ArrayList<>();
     private final ModalPresenter presenter;
+    private final ModalOverlay overlay;
     private EventEmitter eventEmitter;
 
     public void setEventEmitter(EventEmitter eventEmitter) {
         this.eventEmitter = eventEmitter;
     }
 
-    public ModalStack(Activity activity) {
-        this.presenter = new ModalPresenter(new ModalAnimator(activity));
+    public ModalStack(Context context) {
+        this.presenter = new ModalPresenter(new ModalAnimator(context));
+        overlay = new ModalOverlay(context);
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    ModalStack(ModalPresenter presenter) {
+    ModalStack(Context context, ModalPresenter presenter) {
         this.presenter = presenter;
+        overlay = new ModalOverlay(context);
     }
 
     public void setModalsLayout(CoordinatorLayout modalsLayout) {
         presenter.setModalsLayout(modalsLayout);
+        overlay.setModalsLayout(modalsLayout);
     }
 
     public void setRootLayout(ViewGroup rootLayout) {
@@ -53,6 +57,7 @@ public class ModalStack {
     public void showModal(ViewController viewController, ViewController root, CommandListener listener) {
         ViewController toRemove = isEmpty() ? root : peek();
         modals.add(viewController);
+        viewController.setOverlay(overlay);
         presenter.showModal(viewController, toRemove, listener);
     }
 
@@ -62,20 +67,19 @@ public class ModalStack {
             boolean isDismissingTopModal = isTop(toDismiss);
             modals.remove(toDismiss);
             @Nullable ViewController toAdd = isEmpty() ? root : isDismissingTopModal ? get(size() - 1) : null;
-            CommandListenerAdapter onDismiss = new CommandListenerAdapter(listener) {
-                @Override
-                public void onSuccess(String childId) {
-                    eventEmitter.emitModalDismissed(componentId, toDismiss.getCurrentComponentName(), 1);
-                    super.onSuccess(componentId);
-                }
-            };
             if (isDismissingTopModal) {
                 if (toAdd == null) {
                     listener.onError("Could not dismiss modal");
                     return false;
                 }
             }
-            presenter.dismissModal(toDismiss, toAdd, root, onDismiss);
+            presenter.dismissModal(toDismiss, toAdd, root, new CommandListenerAdapter(listener) {
+                @Override
+                public void onSuccess(String childId) {
+                    eventEmitter.emitModalDismissed(toDismiss.getId(), toDismiss.getCurrentComponentName(), 1);
+                    super.onSuccess(toDismiss.getId());
+                }
+            });
             return true;
         } else {
             listener.onError("Nothing to dismiss");
