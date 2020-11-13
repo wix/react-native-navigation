@@ -139,6 +139,16 @@
     [self.navigationController setBackButtonTestID:backButtonTestID];
 }
 
+- (UINavigationItemBackButtonDisplayMode)getBackButtonDisplayMode:(NSString *)displayMode {
+    if ([displayMode isEqualToString:@"generic"]) {
+        return UINavigationItemBackButtonDisplayModeGeneric;
+    } else if ([displayMode isEqualToString:@"minimal"]) {
+        return UINavigationItemBackButtonDisplayModeMinimal;
+    } else {
+        return UINavigationItemBackButtonDisplayModeDefault;
+    }
+}
+
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
     UIImage *icon = [backButtonOptions.icon getWithDefaultValue:nil];
     UIColor *color = [backButtonOptions.color getWithDefaultValue:nil];
@@ -146,8 +156,10 @@
     BOOL showTitle = [backButtonOptions.showTitle getWithDefaultValue:YES];
     NSString *fontFamily = [backButtonOptions.fontFamily getWithDefaultValue:nil];
     NSNumber *fontSize = [backButtonOptions.fontSize getWithDefaultValue:nil];
+    NSString *displayMode = [backButtonOptions.displayMode getWithDefaultValue:nil];
 
     UIViewController *previousViewControllerInStack = self.previousViewControllerInStack;
+    UINavigationItem *previousNavigationItem = previousViewControllerInStack.navigationItem;
     UIBarButtonItem *backItem = [UIBarButtonItem new];
 
     icon = color ? [[icon withTintColor:color]
@@ -155,12 +167,13 @@
                  : icon;
     [self setBackIndicatorImage:icon withColor:color];
 
+    title = title ? title
+                  : (previousNavigationItem.title
+                         ? previousNavigationItem.title
+                         : @"");
+
     if (showTitle) {
-        backItem.title = title ? title
-                               : (previousViewControllerInStack.navigationItem.title
-                                      ? previousViewControllerInStack.navigationItem.title
-                                      : @"");
-        ;
+        backItem.title = title;
     } else {
         backItem.title = @"";
     }
@@ -181,7 +194,13 @@
                                 forState:UIControlStateHighlighted];
     }
 
-    previousViewControllerInStack.navigationItem.backBarButtonItem = backItem;
+    if (@available(iOS 14.0, *) && displayMode) {
+        previousNavigationItem.backButtonTitle = title;
+        previousNavigationItem.backButtonDisplayMode = [self getBackButtonDisplayMode:displayMode];
+
+    } else {
+        previousNavigationItem.backBarButtonItem = backItem;
+    }
 }
 
 - (UIViewController *)previousViewControllerInStack {
