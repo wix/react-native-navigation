@@ -1,16 +1,15 @@
-package com.reactnativenavigation.viewcontrollers.viewcontroller
+package com.reactnativenavigation.viewcontrollers.viewcontroller.overlay
 
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.widget.FrameLayout
 import com.reactnativenavigation.utils.ViewUtils.removeFromParent
 
-class ViewControllerOverlay(context: Context) {
+open class ViewControllerOverlay(context: Context) {
     private val overlay = OverlayLayout(context)
 
-    fun add(parent: ViewGroup, view: View, layoutParams: ViewGroup.LayoutParams) {
+    open fun add(parent: ViewGroup, view: View, layoutParams: ViewGroup.LayoutParams) {
         attachOverlayToParent(parent)
         overlay.addView(view, layoutParams)
     }

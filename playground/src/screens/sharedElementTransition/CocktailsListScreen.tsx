@@ -6,7 +6,7 @@ import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import { CocktailItem } from '../../assets/cocktails';
 
-const MULTIPLIER = 1.0;
+const MULTIPLIER = 1.2;
 const POP_MULTIPLIER = 1.0;
 const LONG_DURATION = 540 * MULTIPLIER;
 const SHORT_DURATION = 210 * MULTIPLIER;

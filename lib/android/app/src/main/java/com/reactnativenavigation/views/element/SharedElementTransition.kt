@@ -36,7 +36,8 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
         return listOf(
                 ReactImageMatrixAnimator(from, to),
                 FastImageMatrixAnimator(from, to),
-                ClipBoundsAnimator(from, to),
+                ReactImageBoundsAnimator(from, to),
+                FastImageBoundsAnimator(from, to),
                 FastImageBorderRadiusAnimator(from, to),
                 XAnimator(from, to),
                 YAnimator(from, to),
