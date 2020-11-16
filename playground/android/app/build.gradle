@@ -1,0 +1,88 @@
+apply plugin: "com.android.application"
+
+def enableHermes = false
+project.ext.react = [
+        root     : "../../../",
+        entryFile: "index.js",
+        bundleAssetName: "index.android.bundle",
+        bundleInAlpha: true,
+        bundleInBeta: true,
+        enableHermes: enableHermes,
+        hermesFlagsDebug:['-Xes6-proxy','-output-source-map'],
+        hermesFlagsRelease:['-output-source-map'],
+        hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermesc",
+]
+
+def jscFlavor = 'org.webkit:android-jsc:+'
+
+apply from: "../../../node_modules/react-native/react.gradle"
+
+android {
+    compileSdkVersion 29
+    ndkVersion "20.1.5948944"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "com.reactnativenavigation.playground"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86", 'x86_64'
+        }
+
+        testBuildType System.getProperty('testBuildType', 'debug')
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    signingConfigs {
+        release {
+            storeFile file('../playground.keystore')
+            storePassword "playground"
+            keyAlias "playground"
+            keyPassword "playground"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+
+    //noinspection GradleDynamicVersion
+    implementation 'com.facebook.react:react-native:+'
+
+    implementation project(':react-native-fast-image')
+    if (enableHermes) {
+        def hermesPath = "../../node_modules/hermes-engine/android/";
+        debugImplementation files(hermesPath + "hermes-debug.aar")
+        releaseImplementation files(hermesPath + "hermes-release.aar")
+    } else {
+        implementation jscFlavor
+    }
+
+    //noinspection GradleDynamicVersion
+    implementation project(':react-native-navigation')
+
+    androidTestImplementation('com.wix:detox:+') { transitive = true }
+    androidTestImplementation 'junit:junit:4.12'
+}
+
+
+task copyDownloadableDepsToLibs(type: Copy) {
+    from configurations.compile
+    into 'libs'
+}
+
+apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
+applyNativeModulesAppBuildGradle(project)

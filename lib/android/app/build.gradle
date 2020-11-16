@@ -1,0 +1,192 @@
+import groovy.json.JsonSlurper
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+def DEFAULT_COMPILE_SDK_VERSION = 29
+def DEFAULT_MIN_SDK_VERSION = 19
+def DEFAULT_TARGET_SDK_VERSION = 29
+def kotlinVersion = rootProject.ext.get("RNNKotlinVersion")
+def kotlinStdlib = safeExtGet('RNNKotlinStdlib', 'kotlin-stdlib-jdk8')
+def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.3.7')
+
+android {
+    compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
+
+    defaultConfig {
+        minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
+        targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.all { t ->
+            reports {
+                html.enabled true
+            }
+            testLogging {
+                events "PASSED", "SKIPPED", "FAILED", "standardOut", "standardError"
+            }
+            afterSuite { desc, result ->
+                if (!desc.parent) { // will match the outermost suite
+                    def output = "      ${result.resultType} (${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)     "
+                    def repeatLength = output.length()
+                    println '\n\n' + ('-' * repeatLength) + '\n' + output + '\n' + ('-' * repeatLength) + '\n'
+
+                    println "see report at file://${t.reports.html.destination}/index.html"
+                }
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    flavorDimensions "RNN.reactNativeVersion"
+    productFlavors {
+        reactNative51 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "51")
+        }
+        reactNative55 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "55")
+        }
+        reactNative56 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "56")
+        }
+        reactNative57 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
+        }
+        reactNative57_5 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
+        }
+        reactNative60 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "60")
+        }
+        reactNative62 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "62")
+        }
+        reactNative63 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "63")
+        }
+    }
+
+    def flavor = resolveFlavor()
+    variantFilter { variant ->
+        def names = variant.flavors*.name
+        if (!names.contains(flavor)) {
+            setIgnore(true)
+        }
+    }
+}
+
+String resolveFlavor() {
+    List reactNativeVersionComponents = reactNativeVersionComponents(findReactNativePackageJson())
+    Integer reactNativeMinorComponent = reactNativeVersionComponents[1].toInteger()
+    Integer reactNativePatchComponent = reactNativeVersionComponents[2].toInteger()
+
+    if (reactNativeMinorComponent >= 63) {
+        return "reactNative63"
+    } else if (reactNativeMinorComponent >= 62) {
+        return "reactNative62"
+    } else if (reactNativeMinorComponent >= 60) {
+        return "reactNative60"
+    } else if (reactNativeMinorComponent >= 57 && reactNativePatchComponent >= 5) {
+        return "reactNative57_5"
+    } else if (reactNativeMinorComponent >= 57) {
+        return "reactNative57"
+    } else if (reactNativeMinorComponent >= 56) {
+        return "reactNative56"
+    } else if (reactNativeMinorComponent >= 55) {
+        return "reactNative55"
+    } else if (reactNativeMinorComponent >= 51) {
+        return "reactNative51"
+    }
+}
+
+
+Object findReactNativePackageJson() {
+    def searchPath = 'node_modules/react-native/package.json'
+    def projectDir = project.projectDir.toString() + '/'
+    def rnPackageJsonFile = new File(projectDir + searchPath)
+    while (!rnPackageJsonFile.exists()) {
+        searchPath = '../' + searchPath
+        rnPackageJsonFile = new File(projectDir + searchPath)
+    }
+    return rnPackageJsonFile
+}
+
+List reactNativeVersionComponents(rnPackageJsonFile) {
+    def packageSlurper = new JsonSlurper()
+    def reactNativePackageJson = packageSlurper.parseText(rnPackageJsonFile.text)
+    def reactNativeVersion = reactNativePackageJson.version
+
+    return reactNativeVersion.tokenize('-')[0].tokenize('.')
+}
+
+allprojects { p ->
+    p.afterEvaluate {
+        p.android.compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
+        p.android.compileOptions.targetCompatibility JavaVersion.VERSION_1_8
+    }
+    p.repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:1.3.0"
+    implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesCore"
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha03'
+
+    implementation 'com.github.wix-playground:ahbottomnavigation:3.2.0'
+    implementation 'com.github.wix-playground:reflow-animator:1.0.6'
+    implementation 'com.github.clans:fab:1.6.4'
+
+    //noinspection GradleDynamicVersion
+    implementation 'com.facebook.react:react-native:+'
+
+    // tests
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.robolectric:robolectric:4.3-beta-1"
+    testImplementation 'org.assertj:assertj-core:3.8.0'
+    testImplementation 'com.squareup.assertj:assertj-android:1.1.1'
+    testImplementation 'org.mockito:mockito-core:2.28.2'
+
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+}

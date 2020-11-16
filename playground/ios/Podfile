@@ -1,0 +1,30 @@
+require_relative '../../node_modules/react-native/scripts/react_native_pods'
+require_relative '../../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '11.0'
+
+def all_pods  
+  config = use_native_modules!
+  use_react_native!(:path => config[:reactNativePath])
+  
+  pod 'ReactNativeNavigation', :path => '../../'
+end
+
+target 'playground' do
+  all_pods
+end
+
+target 'NavigationTests' do
+  all_pods
+  pod 'OCMock'
+end
+
+target 'NavigationIOS12Tests' do
+  all_pods
+  pod 'OCMock'
+end
+
+target 'SnapshotTests' do
+  all_pods
+  pod 'OCMock'
+end

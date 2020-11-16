@@ -1,0 +1,107 @@
+---
+id: options-fab
+title: Fab
+sidebar_label: Fab
+---
+
+Controls the FAB button styling on Android.
+
+```js
+const options = {
+  fab: {
+    id: 'id',
+    icon: require('path-to-fab-icon'),
+    backgroundColor: 'coral',
+    actions: [
+      {
+        id: 'id2',
+        icon: require('path-to-fab-icon-2),
+      }
+    ]
+  },
+};
+```
+
+### `id`
+
+Button id for reference press event.
+
+:::info Note
+This option is mandatory when you are initiating the FAB button. However you do not need to pass in `id` when updating the Fab button options with `Navigation.mergeOptions`.
+:::
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Android  |
+
+### `icon`
+
+Change the default back button icon.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+### `iconColor`
+
+Change the icon color of the FAB button.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Android  |
+
+### `backgroundColor`
+
+Change the background color of the FAB button.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Android  |
+
+### `clickColor`
+
+Change the on-clicked background color of the FAB button.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Android  |
+
+### `rippleColor`
+
+Change the ripple color of the FAB button.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Android  |
+
+### `visible`
+
+Show or hide the FAB button.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+### `alignHorizontally`
+
+Set the horizontal position of the FAB button on the screen.
+
+| Type              | Required | Platform |
+| ----------------- | -------- | -------- |
+| 'left' or 'right' | No       | Android  |
+
+### `hideOnScroll`
+
+Hide the FAB button on scroll.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+### `size`
+
+Set the size of the FAB button.
+
+| Type                | Required | Platform |
+| ------------------- | -------- | -------- |
+| 'mini' or 'regular' | No       | Android  |

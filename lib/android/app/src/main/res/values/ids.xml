@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="react_root_view" type="id"/>
+    <item name="fragment_screen_content" type="id"/>
+    <item name="topBarBackgroundComponent" type="id"/>
+    <item name="bottomTabs" type="id"/>
+    <item name="fab_bottom_margin" type="id" />
+
+    <item name="original_parent" type="id" />
+    <item name="original_layout_params" type="id" />
+    <item name="original_index_in_parent" type="id" />
+    <item name="original_top" type="id" />
+    <item name="original_bottom" type="id" />
+    <item name="original_right" type="id" />
+    <item name="original_left" type="id" />
+    <item name="original_pivot_x" type="id" />
+    <item name="original_pivot_y" type="id" />
+    <item name="original_z_index" type="id" />
+</resources>

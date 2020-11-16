@@ -1,0 +1,173 @@
+---
+id: options-root
+title: The options object
+sidebar_label: Options object
+---
+
+```js
+const options = {
+  bottomTab,
+  bottomTabs,
+  topBar,
+  layout,
+  sideMenu,
+  overlay,
+  modal,
+  preview,
+  navigationBar
+};
+```
+
+## `bottomTab`
+
+Controls the bottom tab icon, font, color, and more.
+
+| Type                                  | Required | Platform |
+| ------------------------------------- | -------- | -------- |
+| [BottomTabOptions](options-bottomTab.mdx) | No       | Both     |
+
+## `bottomTabs`
+
+Controls the bottom tabs container.
+
+| Type                                    | Required | Platform |
+| --------------------------------------- | -------- | -------- |
+| [BottomTabsOptions](options-bottomTabs.mdx) | No       | Both     |
+
+## `topBar`
+
+Controls the Stack top bar styling.
+
+| Type                           | Required | Platform |
+| ------------------------------ | -------- | -------- |
+| [TopBarOptions](options-stack.mdx) |          | No       |
+
+## `statusBar`
+
+Controls the system status bar styling.
+
+| Type                                  | Required | Platform |
+| ------------------------------------- | -------- | -------- |
+| [StatusBarOptions](options-statusBar.mdx) | No       | Both     |
+
+## `layout`
+
+| Type                            | Required | Platform |
+| ------------------------------- | -------- | -------- |
+| [LayoutOptions](options-layout.mdx) | No       | Both     |
+
+## `sideMenu`
+
+| Type                                | Required | Platform |
+| ----------------------------------- | -------- | -------- |
+| [SideMenuOptions](options-sideMenu.mdx) | No       | Both     |
+
+## `overlay`
+
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
+| [OverlayOptions](options-overlay.mdx) | No       | Both     |
+
+## `animations`
+
+| Type                                    | Required | Platform |
+| --------------------------------------- | -------- | -------- |
+| [AnimationsOptions](options-animations.mdx) | No       | Both     |
+
+## `modal`
+
+| Type                          | Required | Platform |
+| ----------------------------- | -------- | -------- |
+| [ModalOptions](options-modal.mdx) | No       | Both     |
+
+## `preview`
+
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
+| [PreviewOptions](options-preview.mdx) | No       | iOS      |
+
+## `splitView`
+
+| Type                                  | Required | Platform |
+| ------------------------------------- | -------- | -------- |
+| [SplitViewOptions](options-splitView.mdx) | No       | iOS      |
+
+## `fab`
+
+| Type               | Required | Platform |
+| ------------------ | -------- | -------- |
+| [Fab](options-fab.mdx) | No       | Android  |
+
+## `modalPresentationStyle`
+
+Configure the presentation style of the modal.
+
+| Type                                                                                                    | Required | Platform |
+| ------------------------------------------------------------------------------------------------------- | -------- | -------- |
+| enum('formSheet', 'pageSheet', 'fullScreen', 'overFullScreen', 'overCurrentContext', 'popOver', 'none') | No       | Both     |
+
+#### Styles supported on both platforms
+
+- **overCurrentContext** - Display the modal and do not remove previous content when the show animation ends.
+- **none** - default system presentation style
+
+#### Styles supported only on iOS
+
+- **fullScreen** - The view covers the underlying content completely.
+- **pageSheet** - partially cover the underlying content.
+- **formSheet** - display content centered in the screen.
+- **overFullScreen** - display the modal in full screen mode and do not remove previous content when the show animation ends.
+- **popOver** - Center content on screen and dim the content behind it.
+
+The default presentation style is different on each platform.
+
+| iOS                                                                                      | Android      |
+| ---------------------------------------------------------------------------------------- | ------------ |
+| <ul><li>iOS 12 and below - `fullScreen`</li><li>iOS 13 and above - `pageSheet`</li></ul> | `fullScreen` |
+
+## `modalTransitionStyle`
+
+Configure the transition style of the modal.
+
+| Type                                                                    | Required | Platform |
+| ----------------------------------------------------------------------- | -------- | -------- |
+| enum('coverVertical', 'crossDissolve', 'flipHorizontal', 'partialCurl') | No       | Both     |
+
+## `popGesture`
+
+Enable or disable swipe back to pop gesture.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+## `backgroundImage`
+
+Background image of the screen.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Image | No       | iOS      |
+
+## `rootBackgroundImage`
+
+Background image for the Navigation View.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Image | No       | Android  |
+
+## `blurOnUnmount`
+
+Enable or disable automaticall blur of the focused input, dismissing keyboard on unmount.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | Android  | false   |
+
+## `navigationBar`
+Enable or disable automaticall blur of the focused input, dismissing keyboard on unmount.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |

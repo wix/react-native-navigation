@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TopBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!--The following is a workaround needed to run unit tests in command line-->
+    <style name="Widget.Support.CoordinatorLayout" parent="android:Widget">
+        @null
+    </style>
+
+    <style name="TitleBarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="TitleBarSubtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">14dp</item>
+    </style>
+</resources>
