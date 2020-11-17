@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "Double.h"
+#import <Foundation/Foundation.h>
 
 @interface DoubleParser : NSObject
 

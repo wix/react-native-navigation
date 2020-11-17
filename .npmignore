@@ -229,3 +229,35 @@ buck-out/
 \.buckd/
 lib/android/app/libs
 lib/android/keystores/debug.keystore
+
+# Tests
+**/*.test.js
+**/*.test.jsx
+**/*.test.ts
+**/*.test.d.ts
+**/*.test.tsx
+
+# TS configs
+tsconfig.build.json
+tsconfig.json
+tsconfig-strict.json
+tslint.json
+
+# Eslint
+.eslintignore
+.eslintrc.js
+
+# Docs
+CONTRIBUTING.md
+
+# Editor
+.vscode
+jsconfig.json
+
+# Other
+babel.config.js
+.watchmanconfig
+.logo.png
+.grenrc.js
+.clang-format
+.prettierrc

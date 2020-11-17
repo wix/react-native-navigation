@@ -1,14 +1,14 @@
-#import "RCTConvert+Interpolation.h"
-#import "Interpolator.h"
-#import "LinearInterpolator.h"
-#import "OvershootInterpolator.h"
-#import "SpringInterpolator.h"
 #import "AccelerateDecelerateInterpolator.h"
 #import "AccelerateInterpolator.h"
-#import "DecelerateInterpolator.h"
-#import "DecelerateAccelerateInterpolator.h"
-#import "NumberParser.h"
 #import "BoolParser.h"
+#import "DecelerateAccelerateInterpolator.h"
+#import "DecelerateInterpolator.h"
+#import "Interpolator.h"
+#import "LinearInterpolator.h"
+#import "NumberParser.h"
+#import "OvershootInterpolator.h"
+#import "RCTConvert+Interpolation.h"
+#import "SpringInterpolator.h"
 
 @implementation RCTConvert (Interpolation)
 
@@ -24,37 +24,49 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
     if (json == nil || ![json isKindOfClass:[NSDictionary class]]) {
         return [RCTConvert defaultInterpolator];
     }
-    NSString* interpolation = json[@"type"] ? json[@"type"] : nil;
+    NSString *interpolation = json[@"type"] ? json[@"type"] : nil;
 
     id<Interpolator> (^interpolator)(void) = @{
         @"decelerate" : ^{
-			CGFloat factor = [[[NumberParser parse:json key:@"factor"] getWithDefaultValue:[NSNumber numberWithFloat:1.0f]] floatValue];
-            return [[DecelerateInterpolator alloc] init:factor];
+          CGFloat factor = [[[NumberParser parse:json key:@"factor"]
+              getWithDefaultValue:[NSNumber numberWithFloat:1.0f]] floatValue];
+          return [[DecelerateInterpolator alloc] init:factor];
         },
-		@"accelerate" : ^{
-			CGFloat factor = [[[NumberParser parse:json key:@"factor"] getWithDefaultValue:[NSNumber numberWithFloat:1.0f]] floatValue];
-			return [[AccelerateInterpolator alloc] init:factor];
-		},
-		@"accelerateDecelerate" : ^{
-			return [[AccelerateDecelerateInterpolator alloc] init];
-		},
-		@"decelerateAccelerate" : ^{
-			return [[DecelerateAccelerateInterpolator alloc] init];
-		},
+        @"accelerate" : ^{
+          CGFloat factor = [[[NumberParser parse:json key:@"factor"]
+              getWithDefaultValue:[NSNumber numberWithFloat:1.0f]] floatValue];
+          return [[AccelerateInterpolator alloc] init:factor];
+        },
+        @"accelerateDecelerate" : ^{
+          return [[AccelerateDecelerateInterpolator alloc] init];
+        },
+        @"decelerateAccelerate" : ^{
+          return [[DecelerateAccelerateInterpolator alloc] init];
+        },
         @"linear" : ^{
-            return [[LinearInterpolator alloc] init];
+          return [[LinearInterpolator alloc] init];
         },
         @"overshoot" : ^{
-            CGFloat tension = [[[NumberParser parse:json key:@"tension"] getWithDefaultValue:[NSNumber numberWithFloat:1.0f]] floatValue];
-			return [[OvershootInterpolator alloc] init:tension];
+          CGFloat tension = [[[NumberParser parse:json key:@"tension"]
+              getWithDefaultValue:[NSNumber numberWithFloat:1.0f]] floatValue];
+          return [[OvershootInterpolator alloc] init:tension];
         },
         @"spring" : ^{
-            CGFloat mass = [[[NumberParser parse:json key:@"mass"] getWithDefaultValue:[NSNumber numberWithFloat:3.0f]] floatValue];
-            CGFloat damping = [[[NumberParser parse:json key:@"damping"] getWithDefaultValue:[NSNumber numberWithFloat:500.0f]] floatValue];
-            CGFloat stiffness = [[[NumberParser parse:json key:@"stiffness"] getWithDefaultValue:[NSNumber numberWithFloat:200.0f]] floatValue];
-            CGFloat allowsOverdamping = [[BoolParser parse:json key:@"allowsOverdamping"] getWithDefaultValue:NO];
-            CGFloat initialVelocity = [[[NumberParser parse:json key:@"initialVelocity"] getWithDefaultValue:[NSNumber numberWithFloat:0.0f]] floatValue];
-			return [[SpringInterpolator alloc] init:mass damping:damping stiffness:stiffness allowsOverdamping:allowsOverdamping initialVelocity:initialVelocity];
+          CGFloat mass = [[[NumberParser parse:json key:@"mass"]
+              getWithDefaultValue:[NSNumber numberWithFloat:3.0f]] floatValue];
+          CGFloat damping = [[[NumberParser parse:json key:@"damping"]
+              getWithDefaultValue:[NSNumber numberWithFloat:500.0f]] floatValue];
+          CGFloat stiffness = [[[NumberParser parse:json key:@"stiffness"]
+              getWithDefaultValue:[NSNumber numberWithFloat:200.0f]] floatValue];
+          CGFloat allowsOverdamping =
+              [[BoolParser parse:json key:@"allowsOverdamping"] getWithDefaultValue:NO];
+          CGFloat initialVelocity = [[[NumberParser parse:json key:@"initialVelocity"]
+              getWithDefaultValue:[NSNumber numberWithFloat:0.0f]] floatValue];
+          return [[SpringInterpolator alloc] init:mass
+                                          damping:damping
+                                        stiffness:stiffness
+                                allowsOverdamping:allowsOverdamping
+                                  initialVelocity:initialVelocity];
         },
     }[interpolation];
 

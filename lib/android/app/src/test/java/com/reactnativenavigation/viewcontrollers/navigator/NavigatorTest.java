@@ -65,13 +65,12 @@ public class NavigatorTest extends BaseTest {
     private Navigator uut;
     private RootPresenter rootPresenter;
     private StackController parentController;
-    private ViewController initialChild;
     private SimpleViewController child1;
     private ViewController child2;
     private ViewController child3;
     private ViewController child4;
     private ViewController child5;
-    private Options tabOptions = OptionHelper.createBottomTabOptions();
+    private final Options tabOptions = OptionHelper.createBottomTabOptions();
     private ImageLoader imageLoaderMock;
     private ActivityController<TestActivity> activityController;
     private OverlayManager overlayManager;
@@ -95,7 +94,7 @@ public class NavigatorTest extends BaseTest {
         uut = new Navigator(activity, childRegistry, modalStack, overlayManager, rootPresenter);
         activity.setNavigator(uut);
 
-        initialChild = new SimpleViewController(activity, childRegistry, "initialChild", Options.EMPTY);
+        ViewController initialChild = new SimpleViewController(activity, childRegistry, "initialChild", Options.EMPTY);
         parentController = newStack(initialChild);
         parentVisibilityListener = spy(new ViewController.ViewVisibilityListener() {
             @Override

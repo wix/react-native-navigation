@@ -6,10 +6,10 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Interpolator.h"
+#import <Foundation/Foundation.h>
 
-@interface DecelerateAccelerateInterpolator : NSObject<Interpolator>
+@interface DecelerateAccelerateInterpolator : NSObject <Interpolator>
 
 - (instancetype)init;
 

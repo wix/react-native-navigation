@@ -378,6 +378,23 @@ export interface OptionsTopBarBackButton {
   testID?: string;
 }
 
+export interface OptionsTopBarScrollEdgeAppearanceBackground {
+  /**
+   * Background color of the top bar
+   */
+  color?: Color;
+  /**
+   * Allows the NavBar to be translucent (blurred)
+   * #### (iOS specific)
+   */
+  translucent?: boolean;
+}
+
+export interface OptionsTopBarScrollEdgeAppearance {
+  background?: OptionsTopBarScrollEdgeAppearanceBackground;
+  active: boolean;
+}
+
 export interface OptionsTopBarBackground {
   /**
    * Background color of the top bar
@@ -573,6 +590,11 @@ export interface OptionsTopBar {
    * Background configuration
    */
   background?: OptionsTopBarBackground;
+
+  /**
+   *
+   */
+  scrollEdgeAppearance?: OptionsTopBarScrollEdgeAppearance;
   /**
    * Control the NavBar blur style
    * #### (iOS specific)
@@ -628,7 +650,6 @@ export interface OptionsTopBar {
   height?: AndroidDensityNumber;
   /**
    * Change the navbar border color
-   * #### (Android specific)
    */
   borderColor?: Color;
   /**

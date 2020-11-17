@@ -6,13 +6,6 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
@@ -23,6 +16,7 @@ import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.component.Renderable;
@@ -30,7 +24,14 @@ import com.reactnativenavigation.views.component.Renderable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import androidx.annotation.CallSuper;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener,
@@ -59,7 +60,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     private final Activity activity;
     private final String id;
-    private YellowBoxDelegate yellowBoxDelegate;
+    private final YellowBoxDelegate yellowBoxDelegate;
     @Nullable protected T view;
     @Nullable private ParentController<? extends ViewGroup> parentController;
     private boolean isShown;
@@ -69,6 +70,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @Nullable
     public abstract String getCurrentComponentName();
+
+    public void setOverlay(ViewControllerOverlay overlay) {
+        this.overlay = overlay;
+    }
 
     public boolean isDestroyed() {
         return isDestroyed;
@@ -167,7 +172,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (parentController != null) task.run(parentController);
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    @Nullable
     public ParentController getParentController() {
         return parentController;
     }
@@ -176,7 +181,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return parentController;
     }
 
-    public void setParentController(@NonNull final ParentController parentController) {
+    public void setParentController(ParentController parentController) {
         this.parentController = parentController;
     }
 

@@ -2,7 +2,7 @@
 
 @interface UIImage (Utils)
 
-+ (UIImage*)emptyImage;
++ (UIImage *)emptyImage;
 
 - (BOOL)isEqual:(UIImage *)image;
 

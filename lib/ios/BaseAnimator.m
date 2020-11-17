@@ -1,7 +1,7 @@
 #import "BaseAnimator.h"
 
 @implementation BaseAnimator {
-    NSMutableArray* _mutableAnimations;
+    NSMutableArray *_mutableAnimations;
 }
 
 - (void)setAnimations:(NSArray<id<DisplayLinkAnimation>> *)animations {
@@ -14,7 +14,8 @@
     for (int i = 0; i < _mutableAnimations.count; i++) {
         id<DisplayLinkAnimation> animation = _mutableAnimations[i];
         if (elapsed < animation.duration + animation.startDelay && elapsed > animation.startDelay) {
-            CGFloat p = (elapsed-animation.startDelay)/(animation.duration-animation.startDelay);
+            CGFloat p =
+                (elapsed - animation.startDelay) / (animation.duration - animation.startDelay);
             transform = CATransform3DConcat(transform, [animation animateWithProgress:p]);
         } else if (elapsed >= animation.duration + animation.startDelay) {
             transform = CATransform3DConcat(transform, [animation animateWithProgress:1]);
@@ -22,7 +23,7 @@
             [_mutableAnimations removeObject:animation];
         }
     }
-    
+
     self.view.layer.transform = transform;
 }
 
@@ -33,7 +34,7 @@
             maxDuration = animation.duration;
         }
     }
-    
+
     return maxDuration;
 }
 
@@ -45,7 +46,7 @@
             [animation end];
         }
     }
-    
+
     self.view.layer.transform = transform;
 }
 

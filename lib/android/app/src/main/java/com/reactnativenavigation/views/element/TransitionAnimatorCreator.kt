@@ -12,6 +12,7 @@ import androidx.core.animation.doOnStart
 import com.facebook.react.uimanager.ViewGroupManager
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions
+import com.reactnativenavigation.options.LayoutAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
@@ -29,7 +30,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         }
     }
 
-    suspend fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
+    suspend fun create(animation: LayoutAnimation, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
         val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
         return createAnimator(fadeAnimation, transitions)
     }
@@ -163,7 +164,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             sortBy { getZIndex(it.view) }
             sortBy { it.view.getTag(R.id.original_index_in_parent) as Int }
             forEach {
-                it.viewController.requireParentController().removeOverlay(it.view)
+                removeFromOverlay(it.viewController, it.view)
                 returnToOriginalParent(it.view)
             }
         }
@@ -193,7 +194,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             lp.leftMargin = loc.x
             lp.width = view.width
             lp.height = view.height
-            transition.viewController.requireParentController().addOverlay(view, lp)
+            addToOverlay(viewController, view, lp)
         }
     }
 
@@ -216,4 +217,14 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
     private fun getZIndex(view: View) = ViewGroupManager.getViewZIndex(view)
             ?: ViewTags.get(view, R.id.original_z_index)
             ?: 0
+
+    private fun addToOverlay(vc: ViewController<*>, element: View, lp: FrameLayout.LayoutParams) {
+        val viewController = vc.parentController ?: vc
+        viewController.addOverlay(element, lp)
+    }
+
+    private fun removeFromOverlay(vc: ViewController<*>, element: View) {
+        val viewController = vc.parentController ?: vc
+        viewController.removeOverlay(element)
+    }
 }

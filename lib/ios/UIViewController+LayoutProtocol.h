@@ -1,6 +1,6 @@
-#import <UIKit/UIKit.h>
 #import "RNNEventEmitter.h"
 #import "RNNLayoutProtocol.h"
+#import <UIKit/UIKit.h>
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
@@ -44,15 +44,15 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)loadChildren:(NSArray *)children;
 
-@property (nonatomic, retain) RNNBasePresenter* presenter;
-@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
-@property (nonatomic, strong) RNNEventEmitter* eventEmitter;
-@property (nonatomic) id<RNNComponentViewCreator> creator;
-@property (nonatomic) RNNReactViewReadyCompletionBlock reactViewReadyCallback;
-@property (nonatomic) BOOL waitForRender;
-@property (nonatomic) BOOL isChildViewControllersLoaded;
-@property (nonatomic, strong) RNNReactView* reactView;
+@property(nonatomic, retain) RNNBasePresenter *presenter;
+@property(nonatomic, retain) RNNLayoutInfo *layoutInfo;
+@property(nonatomic, strong) RNNNavigationOptions *options;
+@property(nonatomic, strong) RNNNavigationOptions *defaultOptions;
+@property(nonatomic, strong) RNNEventEmitter *eventEmitter;
+@property(nonatomic) id<RNNComponentViewCreator> creator;
+@property(nonatomic) RNNReactViewReadyCompletionBlock reactViewReadyCallback;
+@property(nonatomic) BOOL waitForRender;
+@property(nonatomic) BOOL isChildViewControllersLoaded;
+@property(nonatomic, strong) RNNReactView *reactView;
 
 @end

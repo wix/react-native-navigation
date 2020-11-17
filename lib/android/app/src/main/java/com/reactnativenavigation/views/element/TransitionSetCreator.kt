@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.element
 
 import android.view.View
 import com.reactnativenavigation.options.ElementTransitions
+import com.reactnativenavigation.options.LayoutAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.SharedElements
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
@@ -14,7 +15,7 @@ import kotlinx.coroutines.withContext
 
 class TransitionSetCreator {
     suspend fun create(
-            animation: NestedAnimationsOptions,
+            animation: LayoutAnimation,
             fromScreen: ViewController<*>,
             toScreen: ViewController<*>
     ) = TransitionSet().apply {

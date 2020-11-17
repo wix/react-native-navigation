@@ -1,0 +1,16 @@
+name: Process Label Action
+
+on:
+  issues:
+    types: labeled
+
+jobs:
+  processLabelAction:
+    name: Process Label Action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Process Label Action
+        uses: hramos/label-actions@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

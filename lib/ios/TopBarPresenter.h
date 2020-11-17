@@ -12,10 +12,13 @@
 - (instancetype)initWithNavigationController:(UINavigationController *)boundNavigationController;
 
 - (BOOL)transparent;
+- (BOOL)scrollEdgeTransparent;
 
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions;
 
-@property (nonatomic) BOOL translucent;
-@property (nonatomic, strong) UIColor* backgroundColor;
+@property(nonatomic) BOOL translucent;
+@property(nonatomic) BOOL scrollEdgeTranslucent;
+@property(nonatomic, strong) UIColor *backgroundColor;
+@property(nonatomic, strong) UIColor *scrollEdgeAppearanceColor;
 
 @end

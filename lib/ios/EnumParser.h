@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "Enum.h"
+#import <Foundation/Foundation.h>
 
 @interface EnumParser : NSObject
 

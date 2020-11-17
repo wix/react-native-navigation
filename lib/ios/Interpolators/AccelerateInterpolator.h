@@ -6,12 +6,12 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Interpolator.h"
+#import <Foundation/Foundation.h>
 
-@interface AccelerateInterpolator : NSObject<Interpolator>
+@interface AccelerateInterpolator : NSObject <Interpolator>
 
-@property (readonly) CGFloat factor;
+@property(readonly) CGFloat factor;
 
 - (instancetype)init:(CGFloat)factor;
 

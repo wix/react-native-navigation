@@ -19,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Uses renderInContext: to get a snapshot of the view layer.
 + (nullable UIImage *)fb_imageForViewLayer:(UIView *)view;
 
-/// Uses drawViewHierarchyInRect: to get a snapshot of the view and adds the view into a window if needed.
+/// Uses drawViewHierarchyInRect: to get a snapshot of the view and adds the view into a window if
+/// needed.
 + (nullable UIImage *)fb_imageForView:(UIView *)view;
 
 @end

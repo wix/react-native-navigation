@@ -6,7 +6,10 @@
 @synthesize startDelay = _startDelay;
 @synthesize interpolator = _interpolator;
 
-- (instancetype)initWithView:(UIView *)view startDelay:(NSTimeInterval)startDelay duration:(NSTimeInterval)duration interpolator:(id<Interpolator>)interpolator {
+- (instancetype)initWithView:(UIView *)view
+                  startDelay:(NSTimeInterval)startDelay
+                    duration:(NSTimeInterval)duration
+                interpolator:(id<Interpolator>)interpolator {
     self = [super init];
     _view = view;
     _startDelay = startDelay;
@@ -35,8 +38,7 @@
     return _interpolator;
 }
 
-- (void)end { 
-
+- (void)end {
 }
 
 - (CGFloat)initialValue {

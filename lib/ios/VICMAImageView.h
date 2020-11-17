@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-
 /**
  *  Content mode animatable image view.
  */
 @interface VICMAImageView : UIView
 
-@property (nonatomic, strong) UIImage *image;
+@property(nonatomic, strong) UIImage *image;
 
 - (instancetype)initWithImage:(UIImage *)image;
 

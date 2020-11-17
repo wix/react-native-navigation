@@ -1,16 +1,22 @@
 // counter.store.js
 import React from 'react';
-import { observable, action } from 'mobx';
+import { makeObservable, action, observable } from 'mobx';
 
 class CounterStore {
-  @observable count = 0;
+  count = 0;
 
-  @action.bound
+  constructor() {
+    makeObservable(this, {
+      count: observable,
+      increment: action.bound,
+      decrement: action.bound
+    })
+  }
+
   increment() {
     this.count += 1;
   }
 
-  @action.bound
   decrement() {
     this.count -= 1;
   }
@@ -20,3 +26,4 @@ class CounterStore {
 const counterStore = new CounterStore();
 // Create a React Context with the counter store instance.
 export const CounterStoreContext = React.createContext(counterStore);
+export const useCounterStore = () => React.useContext(CounterStoreContext)

@@ -6,12 +6,12 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Interpolator.h"
+#import <Foundation/Foundation.h>
 
-@interface OvershootInterpolator : NSObject<Interpolator>
+@interface OvershootInterpolator : NSObject <Interpolator>
 
-@property (readonly) CGFloat tension;
+@property(readonly) CGFloat tension;
 
 - (instancetype)init:(CGFloat)tension;
 
