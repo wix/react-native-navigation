@@ -74,4 +74,13 @@ describe('static lifecycle events', () => {
 
     await expect(elementByLabel('setRoot complete - previous root is unmounted')).toBeVisible();
   });
+  it('top bar custom button didAppear after pop, on a root screen', async () => {
+    await elementById(TestIDs.SHOW_RIGHT_BUTTON).tap();
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+    await elementById(TestIDs.BACK_BUTTON).tap();
+    await expect(
+      elementByLabel('componentDidAppear | CustomRoundedButton | TopBarButton')
+    ).toBeVisible();
+  })
 });
