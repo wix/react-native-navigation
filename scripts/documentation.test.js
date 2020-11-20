@@ -30,13 +30,13 @@ describe('Documentation script', () => {
     documentation.release(version, true);
 
     expect(exec.execSync).toHaveBeenCalledTimes(4);
-    expect(exec.execSync).toHaveBeenCalledWith(`rm -rf ${websitePath()}/versioned_docs/version-${version}`);
-    expect(exec.execSync).toHaveBeenCalledWith(`rm -f ${websitePath()}/versioned_sidebars/version-${version}-sidebars.json`);
-    expect(exec.execSync).toHaveBeenCalledWith(`npm --prefix ${websitePath()} run docusaurus docs:version ${version}`);
+    expect(exec.execSync).toHaveBeenCalledWith(`rm -rf ${docsPath()}/versioned_docs/version-${version}`);
+    expect(exec.execSync).toHaveBeenCalledWith(`rm -f ${docsPath()}/versioned_sidebars/version-${version}-sidebars.json`);
+    expect(exec.execSync).toHaveBeenCalledWith(`npm --prefix ${docsPath()} run docusaurus docs:version ${version}`);
     expect(exec.execSync).toHaveBeenCalledWith(`git add website`);
   });
 });
 
-function websitePath() {
+function docsPath() {
   return `${process.cwd()}/website`;
 }
