@@ -3,10 +3,12 @@ const exec = require('shell-utils').exec;
 const semver = require('semver');
 const fs = require('fs');
 const includes = require('lodash/includes');
-const path = require('path');
+const documentation = require('./documentation');
 
 // Workaround JS
 const isRelease = process.env.RELEASE_BUILD === 'true';
+const BUMP_DOCUMENTATION_VERSION = process.env.BUMP_DOCUMENTATION_VERSION === 'true';
+const OVERRIDE_DOCS = process.env.OVERRIDE_DOCS === 'true';
 
 const BRANCH = process.env.BRANCH;
 let VERSION_TAG = process.env.NPM_TAG;
@@ -105,6 +107,7 @@ function tagAndPublish(newVersion) {
   exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
   exec.execSync(`npm publish --tag ${VERSION_TAG}`);
   if (isRelease) {
+    if (BUMP_DOCUMENTATION_VERSION) documentation.release(VERSION_TAG, OVERRIDE_DOCS);
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);
     updatePackageJsonGit(newVersion);
