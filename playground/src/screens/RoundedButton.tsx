@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
-import Colors from '../commons/Colors';
+import { Assets, Image } from 'react-native-ui-lib';
 
 interface Props extends NavigationComponentProps {
   title: string;
@@ -9,23 +9,29 @@ interface Props extends NavigationComponentProps {
 }
 
 let timesCreated = 0;
+console.log('RoundedButton file init');
+
 export default class RoundedButton extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     Navigation.events().bindComponent(this);
     timesCreated = props.timesCreated ?? timesCreated + 1;
+    console.log('RoundedButton -> constructor -> timesCreated', timesCreated);
+    console.log('RoundedButton constructor');
   }
 
   render() {
+    console.log('RoundedButton render');
+    console.log('RoundedButton -> render -> Assets.icons.settings', Assets.icons.search);
+
     return (
-      <View style={styles.container}>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={() => Alert.alert(this.props.title, `Times created: ${timesCreated}`)}
-          >
-            <Text style={styles.text}>{this.props.title}</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.button}>
+        <TouchableOpacity
+          onPress={() => Alert.alert(this.props.title, `Times created: ${timesCreated}`)}
+        >
+          {/* <Image source={Assets.icons.settings} width={40} height={40} /> */}
+          <Image style={styles.button} source={require('../../img/Icon-87.png')} fadeDuration={0} />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -43,8 +49,8 @@ const styles = StyleSheet.create({
   button: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.primary,
+    // borderRadius: 20,
+    // backgroundColor: Colors.primary,
     justifyContent: 'center',
   },
   text: {

@@ -15,7 +15,7 @@ const {
   SHOW_RIGHT_BUTTON,
   ROUND_BUTTON,
 } = testIDs;
-
+let increment = 0;
 export default class StaticEventsScreen extends React.Component<NavigationComponentProps> {
   render() {
     return (
@@ -39,14 +39,29 @@ export default class StaticEventsScreen extends React.Component<NavigationCompon
   }
 
   showRightButton = () => {
+    increment += 1;
     Navigation.mergeOptions(this, {
       topBar: {
+        title: { text: 'title' + increment },
+        subtitle: { text: '' },
         rightButtons: [
           {
             id: 'ROUND',
             testID: ROUND_BUTTON,
             component: {
-              id: 'ROUND_COMPONENT',
+              id: 'ROUND_COMPONENT' + '1',
+              name: Screens.RoundButton,
+              passProps: {
+                title: 'Two',
+                timesCreated: 1,
+              },
+            },
+          },
+          {
+            id: 'ROUND',
+            testID: ROUND_BUTTON,
+            component: {
+              id: 'ROUND_COMPONENT' + '1',
               name: Screens.RoundButton,
               passProps: {
                 title: 'Two',
