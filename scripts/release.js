@@ -7,6 +7,7 @@ const path = require('path');
 
 // Workaround JS
 const isRelease = process.env.RELEASE_BUILD === 'true';
+const bumpDocumentation = process.env.BUMP_DOCUMENTATION_VERSION === 'true';
 
 const BRANCH = process.env.BRANCH;
 let VERSION_TAG = process.env.NPM_TAG;
@@ -105,6 +106,10 @@ function tagAndPublish(newVersion) {
   exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
   exec.execSync(`npm publish --tag ${VERSION_TAG}`);
   if (isRelease) {
+    if (bumpDocumentation) {
+      exec.execSync(`npm --prefix website/ run  docusaurus docs:version ${newVersion}`);
+      exec.execSync(`git add website/`);
+    }
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);
     updatePackageJsonGit(newVersion);
