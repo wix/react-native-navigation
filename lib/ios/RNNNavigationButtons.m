@@ -85,7 +85,7 @@
         [self.viewController.navigationItem setRightBarButtonItems:barButtonItems
                                                           animated:animated];
     }
-
+    [self notifyButtonsWillAppear:barButtonItems];
     [self notifyButtonsDidAppear:barButtonItems];
 }
 
@@ -94,6 +94,14 @@
     [currentButtons addObjectsFromArray:self.viewController.navigationItem.leftBarButtonItems];
     [currentButtons addObjectsFromArray:self.viewController.navigationItem.rightBarButtonItems];
     return currentButtons;
+}
+
+- (void)componentWillAppear {
+    for (UIBarButtonItem *barButtonItem in [self currentButtons]) {
+        if ([self isRNNUIBarButton:barButtonItem]) {
+            [(RNNUIBarButtonItem *)barButtonItem notifyWillAppear];
+        }
+    }
 }
 
 - (void)componentDidAppear {
@@ -108,6 +116,14 @@
     for (UIBarButtonItem *barButtonItem in [self currentButtons]) {
         if ([self isRNNUIBarButton:barButtonItem]) {
             [(RNNUIBarButtonItem *)barButtonItem notifyDidDisappear];
+        }
+    }
+}
+
+- (void)notifyButtonsWillAppear:(NSArray *)barButtonItems {
+    for (UIBarButtonItem *barButtonItem in barButtonItems) {
+        if ([self isRNNUIBarButton:barButtonItem]) {
+            [(RNNUIBarButtonItem *)barButtonItem notifyWillAppear];
         }
     }
 }

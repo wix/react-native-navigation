@@ -36,6 +36,11 @@
         boundViewController.interactivePopGestureRecognizer.delegate;
 }
 
+- (void)componentWillAppear {
+    [_topBarBackgroundReactView componentWillAppear];
+    [_topBarPresenter componentWillAppear];
+}
+
 - (void)componentDidAppear {
     [_topBarBackgroundReactView componentDidAppear];
     [_topBarPresenter componentDidAppear];

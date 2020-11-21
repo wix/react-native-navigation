@@ -33,6 +33,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.reactView componentWillAppear];
+    [self componentWillAppear];
     [_presenter applyOptions:self.resolveOptions];
     [self.parentViewController onChildWillAppear];
 }

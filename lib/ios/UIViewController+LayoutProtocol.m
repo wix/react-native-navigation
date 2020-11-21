@@ -171,6 +171,11 @@
     [self.parentViewController onChildAddToParent:child options:options];
 }
 
+- (void)componentWillAppear {
+    [self.presenter componentWillAppear];
+    [self.parentViewController componentWillAppear];
+}
+
 - (void)componentDidAppear {
     [self.presenter componentDidAppear];
     [self.parentViewController componentDidAppear];

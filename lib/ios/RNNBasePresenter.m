@@ -32,6 +32,9 @@
         [withDefault.layout.autoHideHomeIndicator getWithDefaultValue:NO];
 }
 
+- (void)componentWillAppear {
+}
+
 - (void)componentDidAppear {
 }
 

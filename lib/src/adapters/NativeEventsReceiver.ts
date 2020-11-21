@@ -1,5 +1,6 @@
 import { NativeModules, NativeEventEmitter, EventEmitter, EmitterSubscription } from 'react-native';
 import {
+  ComponentWillAppearEvent,
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
   NavigationButtonPressedEvent,
@@ -37,6 +38,12 @@ export class NativeEventsReceiver {
 
   public registerAppLaunchedListener(callback: () => void): EmitterSubscription {
     return this.emitter.addListener('RNN.AppLaunched', callback);
+  }
+
+  public registerComponentWillAppearListener(
+    callback: (event: ComponentWillAppearEvent) => void
+  ): EmitterSubscription {
+    return this.emitter.addListener('RNN.ComponentWillAppear', callback);
   }
 
   public registerComponentDidAppearListener(

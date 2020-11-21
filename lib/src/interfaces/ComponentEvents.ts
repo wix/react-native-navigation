@@ -4,6 +4,12 @@ export interface ComponentEvent {
   componentId: string;
 }
 
+export interface ComponentWillAppearEvent extends ComponentEvent {
+  componentName: string;
+  passProps?: object;
+  componentType: ComponentType;
+}
+
 export interface ComponentDidAppearEvent extends ComponentEvent {
   componentName: string;
   passProps?: object;

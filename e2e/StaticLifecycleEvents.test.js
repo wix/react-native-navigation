@@ -1,17 +1,18 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementByLabel, elementById } = Utils;
+const {elementByLabel, elementById} = Utils;
 
 describe('static lifecycle events', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.SHOW_STATIC_EVENTS_SCREEN).tap();
     await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
   });
 
-  it('didAppear didDisappear', async () => {
+  it('willAppear didAppear didDisappear', async () => {
+    await expect(elementByLabel('componentWillAppear | EventsOverlay | Component')).toBeVisible();
     await expect(elementByLabel('componentDidAppear | EventsOverlay | Component')).toBeVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('componentDidAppear | Pushed | Component')).toBeVisible();
@@ -42,11 +43,14 @@ describe('static lifecycle events', () => {
     await elementByLabel('OK').tap();
   });
 
-  it('top bar buttons didAppear didDisappear', async () => {
+  it('top bar buttons willAppear didAppear didDisappear', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
+    await expect(
+      elementByLabel('componentWillAppear | CustomRoundedButton | TopBarButton')
+    ).toBeVisible();
     await expect(
       elementByLabel('componentDidAppear | CustomRoundedButton | TopBarButton')
     ).toBeVisible();
@@ -56,11 +60,12 @@ describe('static lifecycle events', () => {
     ).toBeVisible();
   });
 
-  it('top bar title didAppear didDisappear', async () => {
+  it('top bar title willAppear didAppear didDisappear', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
+    await expect(elementByLabel('componentWillAppear | ReactTitleView | TopBarTitle')).toBeVisible();
     await expect(elementByLabel('componentDidAppear | ReactTitleView | TopBarTitle')).toBeVisible();
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(
@@ -70,15 +75,19 @@ describe('static lifecycle events', () => {
 
   it('unmounts previous root before resolving setRoot promise', async () => {
     await elementById(TestIDs.SET_ROOT_BTN).tap();
+    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.SET_ROOT_BTN).tap();
 
     await expect(elementByLabel('setRoot complete - previous root is unmounted')).toBeVisible();
   });
-  it('top bar custom button didAppear after pop, on a root screen', async () => {
+  it('top bar custom button willAppear didAppear after pop, on a root screen', async () => {
     await elementById(TestIDs.SHOW_RIGHT_BUTTON).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.BACK_BUTTON).tap();
+    await expect(
+      elementByLabel('componentWillAppear | CustomRoundedButton | TopBarButton')
+    ).toBeVisible();
     await expect(
       elementByLabel('componentDidAppear | CustomRoundedButton | TopBarButton')
     ).toBeVisible();

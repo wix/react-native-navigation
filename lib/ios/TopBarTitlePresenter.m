@@ -80,6 +80,7 @@
 
         viewController.navigationItem.titleView = nil;
         viewController.navigationItem.titleView = _customTitleView;
+        [_customTitleView componentWillAppear];
         [_customTitleView componentDidAppear];
     } else {
         [_customTitleView removeFromSuperview];
@@ -94,6 +95,10 @@
     [_customTitleView removeFromSuperview];
     _customTitleView = nil;
     self.boundViewController.navigationItem.titleView = nil;
+}
+
+- (void)componentWillAppear {
+    [_customTitleView componentWillAppear];
 }
 
 - (void)componentDidAppear {

@@ -28,6 +28,11 @@
                                            componentRegistry:self.componentRegistry];
 }
 
+- (void)componentWillAppear {
+    [_topBarTitlePresenter componentWillAppear];
+    [_navigationButtons componentWillAppear];
+}
+
 - (void)componentDidAppear {
     [_topBarTitlePresenter componentDidAppear];
     [_navigationButtons componentDidAppear];

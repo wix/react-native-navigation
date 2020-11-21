@@ -14,6 +14,8 @@
      defaultLeftButtonStyle:(RNNButtonOptions *)defaultLeftButtonStyle
     defaultRightButtonStyle:(RNNButtonOptions *)defaultRightButtonStyle;
 
+- (void)componentWillAppear;
+
 - (void)componentDidAppear;
 
 - (void)componentDidDisappear;
