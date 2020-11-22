@@ -1,7 +1,7 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementById, elementByLabel } = Utils;
+const { elementById, elementByLabel, sleep } = Utils;
 
 describe('Buttons', () => {
   beforeEach(async () => {
@@ -57,7 +57,17 @@ describe('Buttons', () => {
     await elementById(TestIDs.BUTTON_THREE).tap();
   });
 
-  it('Button component is not recreated if it has a predefined componentId', async () => {
+  it.only('Button component is not recreated if it has a predefined componentId', async () => {
+    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.ROUND_BUTTON).tap();
+    await expect(elementByLabel('Times created: 1')).toBeVisible();
+    await elementById(TestIDs.OK_BUTTON).tap();
+
+    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.ROUND_BUTTON).tap();
+    await expect(elementByLabel('Times created: 1')).toBeVisible();
+    await elementById(TestIDs.OK_BUTTON).tap();
+
     await elementById(TestIDs.ADD_BUTTON).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
