@@ -1,11 +1,11 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementById, elementByLabel, sleep } = Utils;
+const {elementById, elementByLabel, sleep} = Utils;
 
 describe('Buttons', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
@@ -57,7 +57,7 @@ describe('Buttons', () => {
     await elementById(TestIDs.BUTTON_THREE).tap();
   });
 
-  it.only('Button component is not recreated if it has a predefined componentId', async () => {
+  it('Button component is not recreated if it has a predefined componentId', async () => {
     await elementById(TestIDs.ADD_BUTTON).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
