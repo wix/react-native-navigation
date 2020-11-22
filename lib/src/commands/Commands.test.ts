@@ -1,7 +1,7 @@
 import forEach from 'lodash/forEach';
 import filter from 'lodash/filter';
 import invoke from 'lodash/invoke';
-import { mock, verify, instance, deepEqual, when, anything, anyString } from 'ts-mockito';
+import { mock, verify, instance, deepEqual, when, anything, anyString, capture } from 'ts-mockito';
 
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
@@ -139,6 +139,13 @@ describe('Commands', () => {
         CommandName.SetRoot
       );
     });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.setRoot({ root: { component: { name: 'com.example.MyScreen', passProps: { obj } } } });
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
+    });
   });
 
   describe('mergeOptions', () => {
@@ -204,6 +211,13 @@ describe('Commands', () => {
         { component: { name: 'com.example.MyScreen' } },
         CommandName.ShowModal
       );
+    });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.showModal({ component: { name: 'com.example.MyScreen', passProps: { obj } } });
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
     });
   });
 
@@ -282,6 +296,15 @@ describe('Commands', () => {
         { component: { name: 'com.example.MyScreen' } },
         CommandName.Push
       );
+    });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.push('theComponentId', {
+        component: { name: 'com.example.MyScreen', passProps: { obj } },
+      });
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
     });
   });
 
@@ -371,6 +394,15 @@ describe('Commands', () => {
         CommandName.SetStackRoot
       );
     });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.setStackRoot('theComponentId', [
+        { component: { name: 'com.example.MyScreen', passProps: { obj } } },
+      ]);
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
+    });
   });
 
   describe('showOverlay', () => {
@@ -407,6 +439,13 @@ describe('Commands', () => {
         { component: { name: 'com.example.MyScreen' } },
         CommandName.ShowOverlay
       );
+    });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.showOverlay({ component: { name: 'com.example.MyScreen', passProps: { obj } } });
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
     });
   });
 

@@ -369,6 +369,19 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
+    public void mergeOptions_defaultOptionsAreNotApplied() {
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.background.color = new Colour(10);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options toMerge = new Options();
+        toMerge.topBar.title.text = new Text("someText");
+        uut.mergeOptions(toMerge, parent, child);
+
+        verify(topBar, never()).setBackgroundColor(anyInt());
+    }
+
+    @Test
     public void mergeOptions_resolvedTitleFontOptionsAreApplied() {
         Options childOptions = new Options();
         childOptions.topBar.title.font.setFontFamily(new Text(SOME_FONT_FAMILY));
@@ -461,6 +474,19 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
+    public void mergeChildOptions_defaultOptionsAreNotApplied() {
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.background.color = new Colour(10);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options childOptions = new Options();
+        childOptions.topBar.title.text = new Text("someText");
+        uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, parent, child);
+
+        verify(topBar, never()).setBackgroundColor(anyInt());
+    }
+
+    @Test
     public void applyTopBarOptions_setTitleComponent() {
         Options applyComponent = new Options();
         applyComponent.topBar.title.component.name = new Text("Component1");
@@ -539,19 +565,6 @@ public class StackPresenterTest extends BaseTest {
 
         uut.applyInitialChildLayoutOptions(options);
         verify(topBarController).hide();
-    }
-
-    @Test
-    public void mergeOptions_defaultOptionsAreNotApplied() {
-        Options defaultOptions = new Options();
-        defaultOptions.topBar.background.color = new Colour(10);
-        uut.setDefaultOptions(defaultOptions);
-
-        Options childOptions = new Options();
-        childOptions.topBar.title.text = new Text("someText");
-        uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, parent, child);
-
-        verify(topBar, times(0)).setBackgroundColor(anyInt());
     }
 
     @Test
