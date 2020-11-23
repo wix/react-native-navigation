@@ -2,8 +2,10 @@ const shellUtils = require('shell-utils');
 const exec = shellUtils.exec;
 const fs = require('fs');
 
-export function release(version, override = false) {
-  if (override) _removeDocsVersion(version);
+const docsVersionsJsonPath = `${_docsPath}/versions.json`;
+
+export function release(version) {
+  if (_versionExists(version)) _removeDocsVersion(version);
   exec.execSync(`npm --prefix ${_docsPath()} run docusaurus docs:version ${version}`);
   exec.execSync(`git add website`);
 }
@@ -16,16 +18,16 @@ function _removeDocsVersion(version) {
   _writeDocsVersionsJson(docsVersionsJson);
 }
 
+function _versionExists(version) {
+  return _readDocsVersionsJson().indexOf(version) > 0;
+}
+
 function _readDocsVersionsJson() {
-  return JSON.parse(fs.readFileSync(_getDocsVersionsJsonPath()));
+  return JSON.parse(fs.readFileSync(docsVersionsJsonPath));
 }
 
 function _writeDocsVersionsJson(versionsJson) {
-  fs.writeFileSync(_getDocsVersionsJsonPath(), JSON.stringify(versionsJson, null, 2));
-}
-
-function _getDocsVersionsJsonPath() {
-  return `${_docsPath}/versions.json`;
+  fs.writeFileSync(docsVersionsJsonPath, JSON.stringify(versionsJson, null, 2));
 }
 
 function _docsPath() {

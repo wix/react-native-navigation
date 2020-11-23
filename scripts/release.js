@@ -5,10 +5,11 @@ const fs = require('fs');
 const includes = require('lodash/includes');
 const documentation = require('./documentation');
 
+const packageJsonPath = `${process.cwd()}/package.json`;
+
 // Workaround JS
 const isRelease = process.env.RELEASE_BUILD === 'true';
 const BUMP_DOCUMENTATION_VERSION = process.env.BUMP_DOCUMENTATION_VERSION === 'true';
-const OVERRIDE_DOCS = process.env.OVERRIDE_DOCS === 'true';
 
 const BRANCH = process.env.BRANCH;
 let VERSION_TAG = process.env.NPM_TAG;
@@ -107,23 +108,19 @@ function tagAndPublish(newVersion) {
   exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
   exec.execSync(`npm publish --tag ${VERSION_TAG}`);
   if (isRelease) {
-    if (BUMP_DOCUMENTATION_VERSION) documentation.release(VERSION_TAG, OVERRIDE_DOCS);
+    if (BUMP_DOCUMENTATION_VERSION) documentation.release(VERSION_TAG);
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);
     updatePackageJsonGit(newVersion);
   }
 }
 
-function getPackageJsonPath() {
-  return `${process.cwd()}/package.json`;
-}
-
 function writePackageJson(packageJson) {
-  fs.writeFileSync(getPackageJsonPath(), JSON.stringify(packageJson, null, 2));
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 }
 
 function readPackageJson() {
-  return JSON.parse(fs.readFileSync(getPackageJsonPath()));
+  return JSON.parse(fs.readFileSync(packageJsonPath));
 }
 
 function updatePackageJsonGit(version) {

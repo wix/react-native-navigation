@@ -13,8 +13,9 @@ describe('Documentation script', () => {
 
   it('should build new version', () => {
     const version = '1.0.0';
+    fs.readFileSync.mockReturnValue(JSON.stringify([]))
 
-    documentation.release('1.0.0', false);
+    documentation.release('1.0.0');
     expect(exec.execSync).toHaveBeenCalledTimes(2);
     expect(exec.execSync).toHaveBeenCalledWith(`npm --prefix ${process.cwd()}/website run docusaurus docs:version ${version}`);
     expect(exec.execSync).toHaveBeenCalledWith(`git add website`);
@@ -27,7 +28,7 @@ describe('Documentation script', () => {
     ]))
 
     const version = '2.0.0';
-    documentation.release(version, true);
+    documentation.release(version);
 
     expect(exec.execSync).toHaveBeenCalledTimes(4);
     expect(exec.execSync).toHaveBeenCalledWith(`rm -rf ${docsPath()}/versioned_docs/version-${version}`);
