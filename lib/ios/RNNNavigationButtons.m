@@ -90,8 +90,9 @@
 }
 
 - (NSArray *)currentButtons {
-    NSArray *currentButtons = [self.viewController.navigationItem.leftBarButtonItems
-        arrayByAddingObjectsFromArray:self.viewController.navigationItem.rightBarButtonItems];
+    NSMutableArray *currentButtons = [NSMutableArray new];
+    [currentButtons addObjectsFromArray:self.viewController.navigationItem.leftBarButtonItems];
+    [currentButtons addObjectsFromArray:self.viewController.navigationItem.rightBarButtonItems];
     return currentButtons;
 }
 
