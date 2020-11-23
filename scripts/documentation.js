@@ -2,17 +2,18 @@ const shellUtils = require('shell-utils');
 const exec = shellUtils.exec;
 const fs = require('fs');
 
-const docsVersionsJsonPath = `${_docsPath}/versions.json`;
+const docsPath = `${process.cwd()}/website`;
+const docsVersionsJsonPath = `${docsPath}/versions.json`;
 
 export function release(version) {
   if (_versionExists(version)) _removeDocsVersion(version);
-  exec.execSync(`npm --prefix ${_docsPath()} run docusaurus docs:version ${version}`);
+  exec.execSync(`npm --prefix ${docsPath} run docusaurus docs:version ${version}`);
   exec.execSync(`git add website`);
 }
 
 function _removeDocsVersion(version) {
-  exec.execSync(`rm -rf ${_docsPath()}/versioned_docs/version-${version}`);
-  exec.execSync(`rm -f ${_docsPath()}/versioned_sidebars/version-${version}-sidebars.json`);
+  exec.execSync(`rm -rf ${docsPath}/versioned_docs/version-${version}`);
+  exec.execSync(`rm -f ${docsPath}/versioned_sidebars/version-${version}-sidebars.json`);
   const docsVersionsJson = _readDocsVersionsJson();
   docsVersionsJson.splice(docsVersionsJson.indexOf(version), 1);
   _writeDocsVersionsJson(docsVersionsJson);
@@ -28,8 +29,4 @@ function _readDocsVersionsJson() {
 
 function _writeDocsVersionsJson(versionsJson) {
   fs.writeFileSync(docsVersionsJsonPath, JSON.stringify(versionsJson, null, 2));
-}
-
-function _docsPath() {
-  return `${process.cwd()}/website`;
 }
