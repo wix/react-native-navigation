@@ -316,6 +316,24 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
+    public void mergeButtons_actualLeftButtonIsAppliedEvenIfBackButtonHasValue() {
+        Options toMerge = new Options();
+        toMerge.topBar.buttons.back.setHidden();
+        toMerge.topBar.buttons.left = new ArrayList<>();
+        ButtonOptions leftButton = new ButtonOptions();
+        leftButton.id = "id";
+        leftButton.icon = new Text("");
+        toMerge.topBar.buttons.left.add(leftButton);
+
+        assertThat(toMerge.topBar.buttons.back.hasValue()).isTrue();
+
+        uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child);
+        verify(topBarController).setLeftButtons(any());
+        verify(topBar, never()).clearLeftButtons();
+
+    }
+
+    @Test
     public void mergeTopBarOptions() {
         Options options = new Options();
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
