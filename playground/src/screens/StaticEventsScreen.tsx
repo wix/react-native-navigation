@@ -6,7 +6,15 @@ import Button from '../components/Button';
 import Screens from './Screens';
 import testIDs from '../testIDs';
 
-const { PUSH_BTN, POP_BTN, STATIC_EVENTS_OVERLAY_BTN, MODAL_BTN, SET_ROOT_BTN } = testIDs;
+const {
+  PUSH_BTN,
+  POP_BTN,
+  STATIC_EVENTS_OVERLAY_BTN,
+  MODAL_BTN,
+  SET_ROOT_BTN,
+  SHOW_RIGHT_BUTTON,
+  ROUND_BUTTON,
+} = testIDs;
 
 export default class StaticEventsScreen extends React.Component<NavigationComponentProps> {
   render() {
@@ -21,9 +29,35 @@ export default class StaticEventsScreen extends React.Component<NavigationCompon
         <Button label="Pop" testID={POP_BTN} onPress={this.pop} />
         <Button label="Show Modal" testID={MODAL_BTN} onPress={this.showModal} />
         <Button label="Set Root" testID={SET_ROOT_BTN} onPress={this.setRoot} />
+        <Button
+          label="Show Custom Right Button"
+          testID={SHOW_RIGHT_BUTTON}
+          onPress={this.showRightButton}
+        />
       </Root>
     );
   }
+
+  showRightButton = () => {
+    Navigation.mergeOptions(this, {
+      topBar: {
+        rightButtons: [
+          {
+            id: 'ROUND',
+            testID: ROUND_BUTTON,
+            component: {
+              id: 'ROUND_COMPONENT',
+              name: Screens.RoundButton,
+              passProps: {
+                title: 'Two',
+                timesCreated: 1,
+              },
+            },
+          },
+        ],
+      },
+    });
+  };
 
   showModal = () => {
     Navigation.showModal({

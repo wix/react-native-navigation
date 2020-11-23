@@ -1,3 +1,4 @@
+import cloneDeepWith from 'lodash/cloneDeepWith';
 import cloneDeep from 'lodash/cloneDeep';
 import map from 'lodash/map';
 import { CommandsObserver } from '../events/CommandsObserver';
@@ -25,7 +26,7 @@ export class Commands {
   ) {}
 
   public setRoot(simpleApi: LayoutRoot) {
-    const input = cloneDeep(simpleApi);
+    const input = cloneLayout(simpleApi);
     const processedRoot = this.layoutProcessor.process(input.root, CommandName.SetRoot);
     const root = this.layoutTreeParser.parse(processedRoot);
 
@@ -79,7 +80,7 @@ export class Commands {
   }
 
   public showModal(layout: Layout) {
-    const layoutCloned = cloneDeep(layout);
+    const layoutCloned = cloneLayout(layout);
     const layoutProcessed = this.layoutProcessor.process(layoutCloned, CommandName.ShowModal);
     const layoutNode = this.layoutTreeParser.parse(layoutProcessed);
 
@@ -110,7 +111,7 @@ export class Commands {
   }
 
   public push(componentId: string, simpleApi: Layout) {
-    const input = cloneDeep(simpleApi);
+    const input = cloneLayout(simpleApi);
     const layoutProcessed = this.layoutProcessor.process(input, CommandName.Push);
     const layout = this.layoutTreeParser.parse(layoutProcessed);
 
@@ -144,7 +145,7 @@ export class Commands {
   }
 
   public setStackRoot(componentId: string, children: Layout[]) {
-    const input = map(cloneDeep(children), (simpleApi) => {
+    const input = map(cloneLayout(children), (simpleApi) => {
       const layoutProcessed = this.layoutProcessor.process(simpleApi, CommandName.SetStackRoot);
       const layout = this.layoutTreeParser.parse(layoutProcessed);
       return layout;
@@ -165,7 +166,7 @@ export class Commands {
   }
 
   public showOverlay(simpleApi: Layout) {
-    const input = cloneDeep(simpleApi);
+    const input = cloneLayout(simpleApi);
     const layoutProcessed = this.layoutProcessor.process(input, CommandName.ShowOverlay);
     const layout = this.layoutTreeParser.parse(layoutProcessed);
 
@@ -190,4 +191,10 @@ export class Commands {
     this.commandsObserver.notify(CommandName.GetLaunchArgs, { commandId });
     return result;
   }
+}
+
+function cloneLayout<L>(layout: L): L {
+  return cloneDeepWith(layout, (value, key) => {
+    if (key === 'passProps' && typeof value === 'object' && value !== null) return { ...value };
+  });
 }

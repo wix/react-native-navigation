@@ -72,6 +72,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -315,6 +316,24 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
+    public void mergeButtons_actualLeftButtonIsAppliedEvenIfBackButtonHasValue() {
+        Options toMerge = new Options();
+        toMerge.topBar.buttons.back.setHidden();
+        toMerge.topBar.buttons.left = new ArrayList<>();
+        ButtonOptions leftButton = new ButtonOptions();
+        leftButton.id = "id";
+        leftButton.icon = new Text("");
+        toMerge.topBar.buttons.left.add(leftButton);
+
+        assertThat(toMerge.topBar.buttons.back.hasValue()).isTrue();
+
+        uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child);
+        verify(topBarController).setLeftButtons(any());
+        verify(topBar, never()).clearLeftButtons();
+
+    }
+
+    @Test
     public void mergeTopBarOptions() {
         Options options = new Options();
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
@@ -347,6 +366,19 @@ public class StackPresenterTest extends BaseTest {
 
         options.topBar.drawBehind = new Bool(true);
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
+    }
+
+    @Test
+    public void mergeOptions_defaultOptionsAreNotApplied() {
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.background.color = new Colour(10);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options toMerge = new Options();
+        toMerge.topBar.title.text = new Text("someText");
+        uut.mergeOptions(toMerge, parent, child);
+
+        verify(topBar, never()).setBackgroundColor(anyInt());
     }
 
     @Test
@@ -442,6 +474,19 @@ public class StackPresenterTest extends BaseTest {
     }
 
     @Test
+    public void mergeChildOptions_defaultOptionsAreNotApplied() {
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.background.color = new Colour(10);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options childOptions = new Options();
+        childOptions.topBar.title.text = new Text("someText");
+        uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, parent, child);
+
+        verify(topBar, never()).setBackgroundColor(anyInt());
+    }
+
+    @Test
     public void applyTopBarOptions_setTitleComponent() {
         Options applyComponent = new Options();
         applyComponent.topBar.title.component.name = new Text("Component1");
@@ -520,19 +565,6 @@ public class StackPresenterTest extends BaseTest {
 
         uut.applyInitialChildLayoutOptions(options);
         verify(topBarController).hide();
-    }
-
-    @Test
-    public void mergeOptions_defaultOptionsAreNotApplied() {
-        Options defaultOptions = new Options();
-        defaultOptions.topBar.background.color = new Colour(10);
-        uut.setDefaultOptions(defaultOptions);
-
-        Options childOptions = new Options();
-        childOptions.topBar.title.text = new Text("someText");
-        uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, parent, child);
-
-        verify(topBar, times(0)).setBackgroundColor(anyInt());
     }
 
     @Test
