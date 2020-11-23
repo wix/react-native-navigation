@@ -3,7 +3,7 @@ package com.reactnativenavigation.options.parsers
 import android.content.Context
 import android.graphics.Typeface
 import android.text.TextUtils
-import com.facebook.react.views.text.ReactTypefaceUtils
+import com.reactnativenavigation.utils.ReactTypefaceUtils
 
 open class TypefaceLoader(private val context: Context) {
     @JvmOverloads open fun getTypeFace(

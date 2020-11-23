@@ -1,11 +1,11 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementById, elementByLabel } = Utils;
+const {elementById, elementByLabel, sleep} = Utils;
 
 describe('Buttons', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
@@ -35,7 +35,7 @@ describe('Buttons', () => {
     await expect(elementByLabel('Times created: 1')).toExist();
   });
 
-  it(':ios: Resetting buttons should unmount button react view', async () => {
+  it('Resetting buttons should unmount button react view', async () => {
     await elementById(TestIDs.SHOW_LIFECYCLE_BTN).tap();
     await elementById(TestIDs.RESET_BUTTONS).tap();
     await expect(elementByLabel('Button component unmounted')).toBeVisible();
@@ -58,6 +58,16 @@ describe('Buttons', () => {
   });
 
   it('Button component is not recreated if it has a predefined componentId', async () => {
+    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.ROUND_BUTTON).tap();
+    await expect(elementByLabel('Times created: 1')).toBeVisible();
+    await elementById(TestIDs.OK_BUTTON).tap();
+
+    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.ROUND_BUTTON).tap();
+    await expect(elementByLabel('Times created: 1')).toBeVisible();
+    await elementById(TestIDs.OK_BUTTON).tap();
+
     await elementById(TestIDs.ADD_BUTTON).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();

@@ -8,7 +8,13 @@
     for (NSObject *object in array) {
         NSArray *filteredArray = [self
             filteredArrayUsingPredicate:[NSPredicate
-                                            predicateWithFormat:@"%@ == %@", propertyName, object]];
+                                            predicateWithBlock:^BOOL(
+                                                id _Nullable evaluatedObject,
+                                                NSDictionary<NSString *, id> *_Nullable bindings) {
+                                              return [evaluatedObject valueForKey:propertyName] &&
+                                                     [evaluatedObject valueForKey:propertyName] ==
+                                                         [object valueForKey:propertyName];
+                                            }]];
         [intersection addObjectsFromArray:filteredArray];
     }
 

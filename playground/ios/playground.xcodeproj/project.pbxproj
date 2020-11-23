@@ -30,6 +30,7 @@
 		5041897D250788AE004A6BC7 /* UIImage+Compare.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418972250788AE004A6BC7 /* UIImage+Compare.m */; };
 		5041897E250788AE004A6BC7 /* UIImage+Diff.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418973250788AE004A6BC7 /* UIImage+Diff.m */; };
 		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */; };
+		5064A388256A85EB00D7AC84 /* NSArray+utilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5064A387256A85EB00D7AC84 /* NSArray+utilsTest.m */; };
 		50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.m */; };
 		5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */; };
 		507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */; };
@@ -138,6 +139,7 @@
 		50418975250788AE004A6BC7 /* UIImage+Snapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Snapshot.h"; sourceTree = "<group>"; };
 		50418976250788AE004A6BC7 /* FBSnapshotTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestController.h; sourceTree = "<group>"; };
 		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNExternalViewControllerTests.m; sourceTree = "<group>"; };
+		5064A387256A85EB00D7AC84 /* NSArray+utilsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+utilsTest.m"; sourceTree = "<group>"; usesTabs = 0; };
 		50650A21242FB0F800688104 /* CommandsHandlerCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandsHandlerCreator.h; sourceTree = "<group>"; };
 		50650A22242FB0F800688104 /* CommandsHandlerCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommandsHandlerCreator.m; sourceTree = "<group>"; };
 		5078DF37242BE8AA007B0B4F /* TestingAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestingAppDelegate.h; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 				E58D262C2385888B003F36BA /* RNNOptionsTest.h */,
 				E58D262D2385888B003F36BA /* RNNOverlayManagerTest.m */,
 				E58D26262385888B003F36BA /* RNNRootViewControllerTest.m */,
+				5064A387256A85EB00D7AC84 /* NSArray+utilsTest.m */,
 				E58D26372385888B003F36BA /* RNNSideMenuControllerTest.m */,
 				E58D262B2385888B003F36BA /* RNNSideMenuParserTest.m */,
 				E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.m */,
@@ -866,6 +869,7 @@
 				E58D26602385888C003F36BA /* RNNModalManagerTest.m in Sources */,
 				E58D26502385888C003F36BA /* RNNNavigationOptionsTest.m in Sources */,
 				E58D264E2385888C003F36BA /* RNNTestBase.m in Sources */,
+				5064A388256A85EB00D7AC84 /* NSArray+utilsTest.m in Sources */,
 				5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.m in Sources */,
 				503F775C24D19D96005E596D /* RNNModalManagerEventHandlerTest.m in Sources */,
 				500E9FE72406A52100C61231 /* BottomTabPresenterTest.m in Sources */,

@@ -8,6 +8,9 @@
     UITabBarController *bottomTabs = self.tabBarController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [bottomTabs setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex getWithDefaultValue:0]];
+    if (withDefault.bottomTabs.currentTabId.hasValue) {
+        [bottomTabs setCurrentTabID:withDefault.bottomTabs.currentTabId.get];
+    }
     if ([[withDefault.bottomTabs.titleDisplayMode getWithDefaultValue:@"alwaysShow"]
             isEqualToString:@"alwaysHide"]) {
         [bottomTabs centerTabItems];
