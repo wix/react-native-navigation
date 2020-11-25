@@ -327,6 +327,7 @@ public class StackController extends ParentController<StackLayout> {
         }
         presenter.onChildWillAppear(this, appearing, disappearing);
         disappearing.detachView();
+        appearing.onViewDidAppear();
         return disappearing;
     }
 
