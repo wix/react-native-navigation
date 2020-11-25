@@ -64,6 +64,7 @@ type Interpolation =
   | { type: 'decelerate'; factor?: number }
   | { type: 'decelerateAccelerate' }
   | { type: 'accelerateDecelerate' }
+  | { type: 'fastOutSlowIn' }
   | { type: 'linear' }
   | { type: 'overshoot'; tension?: number }
   | {

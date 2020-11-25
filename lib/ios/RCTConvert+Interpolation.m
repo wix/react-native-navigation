@@ -3,6 +3,7 @@
 #import "BoolParser.h"
 #import "DecelerateAccelerateInterpolator.h"
 #import "DecelerateInterpolator.h"
+#import "FastOutSlowIn.h"
 #import "Interpolator.h"
 #import "LinearInterpolator.h"
 #import "NumberParser.h"
@@ -42,6 +43,9 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
         },
         @"decelerateAccelerate" : ^{
           return [[DecelerateAccelerateInterpolator alloc] init];
+        },
+        @"fastOutSlowIn" : ^{
+          return [FastOutSlowIn new];
         },
         @"linear" : ^{
           return [[LinearInterpolator alloc] init];
