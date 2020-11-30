@@ -1,11 +1,11 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementByLabel, elementById } = Utils;
+const {elementByLabel, elementById} = Utils;
 
 describe('SideMenu', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.SIDE_MENU_BTN).tap();
   });
 
@@ -46,10 +46,10 @@ describe('SideMenu', () => {
 
   it(':ios: rotation should update drawer height', async () => {
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
-    await expect(elementByLabel('left drawer height: 842')).toBeVisible();
+    await expect(elementByLabel('left drawer height: 838')).toBeVisible();
     await device.setOrientation('landscape');
     await expect(elementByLabel('left drawer height: 414')).toBeVisible();
     await device.setOrientation('portrait');
-    await expect(elementByLabel('left drawer height: 842')).toBeVisible();
+    await expect(elementByLabel('left drawer height: 838')).toBeVisible();
   });
 });
