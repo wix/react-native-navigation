@@ -7,6 +7,7 @@ const docsVersionsJsonPath = `${docsPath}/versions.json`;
 
 function release(version) {
   if (_versionExists(version)) _removeDocsVersion(version);
+  exec.execSync(`npm --prefix ${docsPath} install`);
   exec.execSync(`npm --prefix ${docsPath} run docusaurus docs:version ${version}`);
   exec.execSync(`git add website`);
 }

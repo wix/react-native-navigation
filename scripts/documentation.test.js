@@ -16,7 +16,8 @@ describe('Documentation script', () => {
     fs.readFileSync.mockReturnValue(JSON.stringify([]))
 
     documentation.release('1.0.0');
-    expect(exec.execSync).toHaveBeenCalledTimes(2);
+    expect(exec.execSync).toHaveBeenCalledTimes(3);
+    expect(exec.execSync).toHaveBeenCalledWith(`npm --prefix ${process.cwd()}/website install`);
     expect(exec.execSync).toHaveBeenCalledWith(`npm --prefix ${process.cwd()}/website run docusaurus docs:version ${version}`);
     expect(exec.execSync).toHaveBeenCalledWith(`git add website`);
   });
@@ -30,7 +31,7 @@ describe('Documentation script', () => {
     const version = '2.0.0';
     documentation.release(version);
 
-    expect(exec.execSync).toHaveBeenCalledTimes(4);
+    expect(exec.execSync).toHaveBeenCalledTimes(5);
     expect(exec.execSync).toHaveBeenCalledWith(`rm -rf ${docsPath()}/versioned_docs/version-${version}`);
     expect(exec.execSync).toHaveBeenCalledWith(`rm -f ${docsPath()}/versioned_sidebars/version-${version}-sidebars.json`);
     expect(exec.execSync).toHaveBeenCalledWith(`npm --prefix ${docsPath()} run docusaurus docs:version ${version}`);
