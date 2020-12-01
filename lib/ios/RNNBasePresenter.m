@@ -114,12 +114,9 @@
     } else if (@available(iOS 13.0, *)) {
         if ([statusBarStyle isEqualToString:@"dark"]) {
             return UIStatusBarStyleDarkContent;
-        } else {
-            return UIStatusBarStyleDefault;
         }
-    } else {
-        return UIStatusBarStyleDefault;
     }
+    return UIStatusBarStyleDefault;
 }
 
 - (BOOL)getStatusBarVisibility {
