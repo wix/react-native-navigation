@@ -10,6 +10,8 @@ const Screens = {
   CocktailDetailsScreen: 'CocktailDetailsScreen',
   CocktailsListScreen: 'CocktailsListScreen',
   CocktailsListMasterScreen: 'CocktailsListMasterScreen',
+  ImageGalleryListScreen: 'ImageGalleryListScreen',
+  ImageGalleryItemScreen: 'ImageGalleryItemScreen',
   CarDetailsScreen: 'CarDetailsScreen',
   CarStoryScreen: 'CarStoryScreen',
   CarsListScreen: 'CarsListScreen',

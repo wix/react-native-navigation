@@ -24,6 +24,14 @@ function registerScreens() {
     gestureHandlerRootHOC(require('./sharedElementCarDealer/CarStoryScreen').default)
   );
   Navigation.registerComponent(
+    Screens.ImageGalleryListScreen,
+    () => require('./imageGallery/ImageGalleryListScreen').default
+  );
+  Navigation.registerComponent(
+    Screens.ImageGalleryItemScreen,
+    () => require('./imageGallery/ImageGalleryItemScreen').default
+  );
+  Navigation.registerComponent(
     Screens.CocktailsListMasterScreen,
     () => require('./splitView/CocktailsListMasterScreen').default
   );
