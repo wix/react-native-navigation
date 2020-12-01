@@ -85,9 +85,13 @@
 - (UIStatusBarStyle)preferredStatusBarStyle {
     NSString *styleString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIStatusBarStyle"];
 
-    if ([styleString isEqualToString:@"UIStatusBarStyleLightContent"])
+    if ([styleString isEqualToString:@"UIStatusBarStyleLightContent"]) {
         return UIStatusBarStyleLightContent;
-
+    } else if (@available(iOS 13.0, *)) {
+        if ([styleString isEqualToString:@"UIStatusBarStyleDarkContent"]) {
+            return UIStatusBarStyleDarkContent;
+        }
+    }
     return UIStatusBarStyleDefault;
 }
 
