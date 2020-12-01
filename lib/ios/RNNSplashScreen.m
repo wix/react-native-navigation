@@ -16,7 +16,12 @@
         @try {
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:launchStoryBoard
                                                                  bundle:nil];
-            viewController = [storyboard instantiateInitialViewController];
+            UIViewController *launchVC = [storyboard instantiateInitialViewController];
+
+            viewController = [[RNNSplashScreen alloc] init];
+            [viewController addChildViewController:launchVC];
+            [viewController.view addSubview:launchVC.view];
+            [launchVC didMoveToParentViewController:viewController];
         } @catch (NSException *e) {
             UIView *splashView = [[NSBundle mainBundle] loadNibNamed:launchStoryBoard
                                                                owner:self
