@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class OverlayManager {
     private final HashMap<String, ViewController> overlayRegistry = new HashMap<>();
@@ -32,6 +33,16 @@ public class OverlayManager {
         } else {
             destroyOverlay(overlaysContainer, overlay);
             listener.onSuccess(componentId);
+        }
+    }
+
+    public void dismissAll(ViewGroup overlaysContainer, CommandListener listener) {
+        for (ViewController overlay : overlayRegistry.values()) {
+            if (overlay != null) {
+                System.out.println(1);
+                dismiss(overlaysContainer, overlay.getId(), listener);
+                //destroyOverlay(overlaysContainer, overlay);
+            }
         }
     }
 

@@ -131,7 +131,8 @@
 }
 
 - (void)onBridgeWillReload {
-    [_overlayManager dismissAllOverlays];
+    [_overlayManager dismissAllOverlays:^{
+    }];
     [_modalManager dismissAllModalsSynchronosly];
     [_componentRegistry clear];
     UIApplication.sharedApplication.delegate.window.rootViewController = nil;

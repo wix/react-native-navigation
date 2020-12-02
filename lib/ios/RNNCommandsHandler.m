@@ -22,6 +22,7 @@ static NSString *const dismissModal = @"dismissModal";
 static NSString *const dismissAllModals = @"dismissAllModals";
 static NSString *const showOverlay = @"showOverlay";
 static NSString *const dismissOverlay = @"dismissOverlay";
+static NSString *const dismissAllOverlays = @"dismissAllOverlays";
 static NSString *const mergeOptions = @"mergeOptions";
 static NSString *const setDefaultOptions = @"setDefaultOptions";
 
@@ -465,6 +466,18 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                   withErrorCode:1010
                errorDescription:@"ComponentId not found"];
     }
+}
+
+- (void)dismissAllOverlays:(NSString *)commandId
+                completion:(RNNTransitionCompletionBlock)completion {
+    [self assertReady];
+    RNNAssertMainQueue();
+
+    [_overlayManager dismissAllOverlays:^{
+      [self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllOverlays
+                                                   commandId:commandId];
+      completion();
+    }];
 }
 
 #pragma mark - private

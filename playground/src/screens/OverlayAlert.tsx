@@ -5,7 +5,12 @@ import { component } from '../commons/Layouts';
 import Screens from './Screens';
 import testIDs from '../testIDs';
 
-const { OVERLAY_ALERT_HEADER, DISMISS_BTN, SET_INTERCEPT_TOUCH } = testIDs;
+const {
+  OVERLAY_ALERT_HEADER,
+  DISMISS_BTN,
+  SET_INTERCEPT_TOUCH,
+  DISMISS_ALL_OVERLAYS_BUTTON,
+} = testIDs;
 
 export default class OverlayAlert extends React.PureComponent<NavigationComponentProps> {
   render() {
@@ -15,6 +20,11 @@ export default class OverlayAlert extends React.PureComponent<NavigationComponen
           Test view
         </Text>
         <Button title="Dismiss" testID={DISMISS_BTN} onPress={this.dismiss} />
+        <Button
+          title="Dismiss All Overlays"
+          testID={DISMISS_ALL_OVERLAYS_BUTTON}
+          onPress={this.dismissAllOverlays}
+        />
         <Button title="Set Root" onPress={this.setRoot} />
         <Button
           title="Set Intercept touch"
@@ -25,6 +35,7 @@ export default class OverlayAlert extends React.PureComponent<NavigationComponen
     );
   }
 
+  dismissAllOverlays = () => Navigation.dismissAllOverlays();
   dismiss = () => Navigation.dismissOverlay(this.props.componentId);
   setRoot = () => Navigation.setRoot({ root: component(Screens.Pushed) });
 
@@ -46,7 +57,7 @@ const styles = StyleSheet.create<Style>({
     position: 'absolute',
     backgroundColor: 'green',
     alignItems: 'center',
-    height: 160,
+    height: 200,
     bottom: 0,
     left: 0,
     right: 0,

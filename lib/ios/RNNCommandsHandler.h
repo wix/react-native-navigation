@@ -82,4 +82,7 @@
             completion:(RNNTransitionCompletionBlock)completion
              rejection:(RNNTransitionRejectionBlock)reject;
 
+- (void)dismissAllOverlays:(NSString *)commandId
+                completion:(RNNTransitionCompletionBlock)completion;
+
 @end

@@ -41,6 +41,8 @@ const showOverlay = (name: CompIdOrLayout, options?: Options) =>
 
 const dismissOverlay = (compId: string) => Navigation.dismissOverlay(compId);
 
+const dismissAllOverlays = () => Navigation.dismissAllOverlays();
+
 const popToRoot = (self: ComponentIdProp) => Navigation.popToRoot(self.props.componentId);
 
 const mergeOptions = (selfOrCompId: SelfOrCompId, options: Options) =>
@@ -76,6 +78,7 @@ const CustomNavigation = {
   dismissAllModals,
   showOverlay,
   dismissOverlay,
+  dismissAllOverlays,
   events: Navigation.events.bind(Navigation),
   popTo: Navigation.popTo.bind(Navigation),
   setDefaultOptions: Navigation.setDefaultOptions.bind(Navigation),
