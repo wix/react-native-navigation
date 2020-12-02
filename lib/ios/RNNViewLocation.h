@@ -8,6 +8,7 @@
 @property(nonatomic) CGFloat toAngle;
 @property(nonatomic) CGFloat fromCornerRadius;
 @property(nonatomic) CGFloat toCornerRadius;
+@property(nonatomic) NSUInteger index;
 @property(nonatomic) CATransform3D fromTransform;
 @property(nonatomic) CATransform3D toTransform;
 

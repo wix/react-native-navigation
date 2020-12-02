@@ -64,7 +64,7 @@
     _reactView.bounds = _originalLayoutBounds;
     _reactView.layer.bounds = _originalLayoutBounds;
     _reactView.layer.transform = _originalTransform;
-    [_originalParent addSubview:_reactView];
+    [_originalParent insertSubview:_reactView atIndex:self.location.index];
     _toElement.hidden = NO;
     _reactView.backgroundColor = _fromColor;
     [self removeFromSuperview];
