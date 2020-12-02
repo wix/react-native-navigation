@@ -39,9 +39,7 @@ public class OverlayManager {
     public void dismissAll(ViewGroup overlaysContainer, CommandListener listener) {
         for (ViewController overlay : overlayRegistry.values()) {
             if (overlay != null) {
-                System.out.println(1);
                 dismiss(overlaysContainer, overlay.getId(), listener);
-                //destroyOverlay(overlaysContainer, overlay);
             }
         }
     }
