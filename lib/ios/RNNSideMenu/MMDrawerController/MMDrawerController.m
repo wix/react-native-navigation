@@ -1556,6 +1556,19 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
 }
 
 #pragma mark Gesture Recogizner Delegate Helpers
+- (BOOL)shouldReceiveTouch:(UITouch *)touch {
+    CGPoint point = [touch locationInView:self.childControllerContainerView];
+    if ([self isPointContainedWithinLeftBezelRect:point] && self.leftDrawerViewController &&
+        !self.leftSideEnabled) {
+        return NO;
+    } else if ([self isPointContainedWithinRightBezelRect:point] &&
+               self.rightDrawerViewController && !self.rightSideEnabled) {
+        return NO;
+    }
+
+    return YES;
+}
+
 - (MMCloseDrawerGestureMode)possibleCloseGestureModesForGestureRecognizer:
                                 (UIGestureRecognizer *)gestureRecognizer
                                                                 withTouch:(UITouch *)touch {
