@@ -225,7 +225,7 @@ RCT_EXPORT_METHOD(dismissAllOverlays
     RCTExecuteOnMainQueue(^{
       [self->_commandsHandler dismissAllOverlays:commandId
                                       completion:^{
-                                        resolve(@(1));
+                                        resolve(nil);
                                       }];
     });
 }
