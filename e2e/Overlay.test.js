@@ -36,6 +36,19 @@ describe('Overlay', () => {
     await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
   });
 
+  it('dismissAllOverlays should dismiss all opened overlays', async() => {
+    await elementById(TestIDs.SHOW_FULLSCREEN_OVERLAY_BTN).tap();
+    await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
+    await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
+    await expect(elementById(TestIDs.OVERLAY_DISMISSED_COUNT)).toHaveText('2');
+  });
+
+  it('dismissAllOverlays should be able to dismiss only one overlay', async() => {
+    await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
+    await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
+    await expect(elementById(TestIDs.OVERLAY_DISMISSED_COUNT)).toHaveText('1');
+  })
+
   fit('nested touchables work as expected', async () => {
     await elementById(TestIDs.TOAST_BTN).tap();
     await elementById(TestIDs.TOAST_OK_BTN_INNER).tap();

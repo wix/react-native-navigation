@@ -12,7 +12,21 @@ const {
   DISMISS_ALL_OVERLAYS_BUTTON,
 } = testIDs;
 
-export default class OverlayAlert extends React.PureComponent<NavigationComponentProps> {
+interface Props extends NavigationComponentProps {
+  incrementDismissedOverlays: any;
+}
+
+export default class OverlayAlert extends React.PureComponent<Props> {
+  constructor(props: Props) {
+    super(props);
+    Navigation.events().registerCommandCompletedListener((event) => {
+      if (event.commandName === 'dismissAllOverlays') {
+        if (this.props.incrementDismissedOverlays) {
+          this.props.incrementDismissedOverlays();
+        }
+      }
+    });
+  }
   render() {
     return (
       <View style={styles.root}>
