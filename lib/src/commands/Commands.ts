@@ -188,7 +188,7 @@ export class Commands {
   public dismissAllOverlays() {
     const commandId = this.uniqueIdProvider.generate(CommandName.DismissAllOverlays);
     const result = this.nativeCommandsSender.dismissAllOverlays(commandId);
-    this.commandsObserver.notify(CommandName.DismissOverlay, { commandId });
+    this.commandsObserver.notify(CommandName.DismissAllOverlays, { commandId });
     return result;
   }
 
