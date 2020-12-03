@@ -223,10 +223,8 @@ RCT_EXPORT_METHOD(dismissAllOverlays
                   : (RCTPromiseResolveBlock)resolve rejecter
                   : (RCTPromiseRejectBlock)reject) {
     RCTExecuteOnMainQueue(^{
-      [self->_commandsHandler dismissAllOverlays:commandId
-                                      completion:^{
-                                        resolve(nil);
-                                      }];
+      [self->_commandsHandler dismissAllOverlays:commandId];
+      resolve(nil);
     });
 }
 

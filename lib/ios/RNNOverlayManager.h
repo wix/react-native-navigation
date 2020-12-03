@@ -7,7 +7,7 @@
 - (void)showOverlayWindow:(UIWindow *)viewController;
 - (void)showOverlayWindowAsKeyWindow:(UIWindow *)overlayWindow;
 - (void)dismissOverlay:(UIViewController *)viewController;
-- (void)dismissAllOverlays:(void (^__nullable)(void))completion;
+- (void)dismissAllOverlays;
 
 @property(nonatomic, retain) NSMutableArray *overlayWindows;
 

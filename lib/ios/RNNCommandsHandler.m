@@ -468,16 +468,12 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     }
 }
 
-- (void)dismissAllOverlays:(NSString *)commandId
-                completion:(RNNTransitionCompletionBlock)completion {
+- (void)dismissAllOverlays:(NSString *)commandId {
     [self assertReady];
     RNNAssertMainQueue();
 
-    [_overlayManager dismissAllOverlays:^{
-      [self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllOverlays
-                                                   commandId:commandId];
-      completion();
-    }];
+    [_overlayManager dismissAllOverlays];
+    [self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllOverlays commandId:commandId];
 }
 
 #pragma mark - private

@@ -29,11 +29,10 @@
     [self detachOverlayWindow:overlayWindow];
 }
 
-- (void)dismissAllOverlays:(void (^__nullable)(void))completion {
+- (void)dismissAllOverlays {
     for (RNNOverlayWindow *overlayWindow in [_overlayWindows reverseObjectEnumerator]) {
         [self detachOverlayWindow:overlayWindow];
     }
-    completion();
 }
 
 #pragma mark - private
