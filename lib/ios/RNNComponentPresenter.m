@@ -138,6 +138,8 @@
                                                         getWithDefaultValue:nil]
                                           tintColor:[options.topBar.searchBar.tintColor
                                                         getWithDefaultValue:nil]];
+    } else {
+        [viewController setSearchBarVisible:NO];
     }
 
     if (options.topBar.drawBehind.hasValue) {

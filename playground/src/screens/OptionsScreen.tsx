@@ -11,6 +11,8 @@ const {
   CHANGE_TITLE_BTN,
   HIDE_TOP_BAR_BTN,
   SHOW_TOP_BAR_BTN,
+  SHOW_SEARCH_BAR_BTN,
+  HIDE_SEARCH_BAR_BTN,
   TOP_BAR,
   PUSH_BTN,
   HIDE_TOPBAR_DEFAULT_OPTIONS,
@@ -44,6 +46,8 @@ export default class Options extends React.Component<Props> {
         <Button label="Change title" testID={CHANGE_TITLE_BTN} onPress={this.changeTitle} />
         <Button label="Hide TopBar" testID={HIDE_TOP_BAR_BTN} onPress={this.hideTopBar} />
         <Button label="Show TopBar" testID={SHOW_TOP_BAR_BTN} onPress={this.showTopBar} />
+        <Button label="Hide SearchBar" testID={HIDE_SEARCH_BAR_BTN} onPress={this.hideSearchBar} />
+        <Button label="Show SearchBar" testID={SHOW_SEARCH_BAR_BTN} onPress={this.showSearchBar} />
         <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
         <Button
           label="Hide TopBar in DefaultOptions"
@@ -95,6 +99,24 @@ export default class Options extends React.Component<Props> {
     Navigation.mergeOptions(this, {
       topBar: {
         visible: true,
+      },
+    });
+
+  hideSearchBar = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        searchBar: {
+          visible: false,
+        },
+      },
+    });
+
+  showSearchBar = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        searchBar: {
+          visible: true,
+        },
       },
     });
 

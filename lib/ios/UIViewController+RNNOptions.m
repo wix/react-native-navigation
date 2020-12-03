@@ -61,6 +61,12 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     self.navigationItem.hidesSearchBarWhenScrolling = searchBarHidden;
 }
 
+- (void)setSearchBarVisible:(BOOL)visible {
+    if (!visible) {
+        self.navigationItem.searchController = nil;
+    }
+}
+
 - (void)setNavigationItemTitle:(NSString *)title {
     self.navigationItem.title = title;
 }
