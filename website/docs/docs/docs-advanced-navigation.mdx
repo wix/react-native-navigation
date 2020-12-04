@@ -15,9 +15,9 @@ Lets return to the example code from the previous section ([Basic navigation](ba
 Lets change our code to the following and reload the app.
 
 ```jsx
-const Navigation = require('./services/Navigation');
-const React = require('react');
-const { View, Text, Button, StyleSheet } = require('react-native');
+import React from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { Navigation } from 'react-native-navigation';
 
 const HomeScreen = (props) => {
   return (

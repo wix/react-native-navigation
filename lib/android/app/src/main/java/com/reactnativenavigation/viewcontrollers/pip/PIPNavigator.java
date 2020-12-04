@@ -121,12 +121,15 @@ public class PIPNavigator extends ParentController<PIPContainer> {
             pipFloatingLayout.initiateRestore();
             updatePIPStateInternal(PIPStates.RESTORE_START);
             if (this.childController.options.animations.pipOut.enabled.isTrueOrUndefined() && !wasDirectLaunchToNative) {
-                this.animator.pipOut(this.pipFloatingLayout, this.childController, this.childController.options, () -> {
-                    updatePIPStateInternal(PIPStates.NOT_STARTED);
-                    this.childController.detachView();
-                    task.run(this.childController);
-                    clearPIP();
-                });
+                this.animator.pipOut(this.pipFloatingLayout,
+                        this.childController,
+                        this.childController.options,
+                        () -> {
+                            updatePIPStateInternal(PIPStates.NOT_STARTED);
+                            this.childController.detachView();
+                            task.run(this.childController);
+                            clearPIP();
+                        });
             } else {
                 updatePIPStateInternal(PIPStates.NOT_STARTED);
                 this.childController.detachView();

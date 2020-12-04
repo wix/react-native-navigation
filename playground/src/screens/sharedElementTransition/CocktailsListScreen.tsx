@@ -6,10 +6,12 @@ import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import { CocktailItem } from '../../assets/cocktails';
 
-const MULTIPLIER = 1.15;
-const POP_MULTIPLIER = 1.15;
-const LONG_DURATION = 350 * MULTIPLIER;
-const SHORT_DURATION = 190 * MULTIPLIER;
+const MULTIPLIER = 1.2;
+const POP_MULTIPLIER = 1.0;
+const LONG_DURATION = 540 * MULTIPLIER;
+const SHORT_DURATION = 210 * MULTIPLIER;
+
+const SPRING_CONFIG = { mass: 2, damping: 500, stiffness: 200 };
 
 export default class CocktailsListScreen extends NavigationComponent {
   static options() {
@@ -50,7 +52,7 @@ export default class CocktailsListScreen extends NavigationComponent {
                 alpha: {
                   from: 0,
                   to: 1,
-                  duration: LONG_DURATION,
+                  duration: SHORT_DURATION,
                 },
               },
               sharedElementTransitions: [
@@ -58,16 +60,19 @@ export default class CocktailsListScreen extends NavigationComponent {
                   fromId: `image${item.id}`,
                   toId: `image${item.id}Dest`,
                   duration: LONG_DURATION,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
                 {
                   fromId: `title${item.id}`,
                   toId: `title${item.id}Dest`,
                   duration: LONG_DURATION,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
                 {
                   fromId: `backdrop${item.id}`,
                   toId: 'backdrop',
                   duration: LONG_DURATION,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
               ],
               elementTransitions: [
@@ -89,7 +94,7 @@ export default class CocktailsListScreen extends NavigationComponent {
                 alpha: {
                   from: 1,
                   to: 0,
-                  duration: LONG_DURATION * POP_MULTIPLIER,
+                  duration: SHORT_DURATION * POP_MULTIPLIER,
                 },
               },
               sharedElementTransitions: [
@@ -97,16 +102,19 @@ export default class CocktailsListScreen extends NavigationComponent {
                   fromId: `image${item.id}Dest`,
                   toId: `image${item.id}`,
                   duration: LONG_DURATION * POP_MULTIPLIER,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
                 {
                   fromId: `title${item.id}Dest`,
                   toId: `title${item.id}`,
                   duration: LONG_DURATION * POP_MULTIPLIER,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
                 {
                   fromId: 'backdrop',
                   toId: `backdrop${item.id}`,
                   duration: LONG_DURATION * POP_MULTIPLIER,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
               ],
               elementTransitions: [

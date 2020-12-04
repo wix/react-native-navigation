@@ -8,7 +8,7 @@ import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewControllerOverlay;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 

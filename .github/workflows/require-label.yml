@@ -8,6 +8,6 @@ jobs:
   enforce-label:
     runs-on: ubuntu-latest
     steps:
-    - uses: yogevbd/enforce-label-action@2.0.0
+    - uses: yogevbd/enforce-label-action@2.2.1
       with:
         REQUIRED_LABELS_ANY: "type: accepted/bug,type: accepted/enhancement,Infrastructure,type: documentation"

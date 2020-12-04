@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import com.facebook.react.uimanager.ViewGroupManager
-import com.facebook.react.uimanager.util.ReactFindViewUtil
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions
+import com.reactnativenavigation.options.LayoutAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
@@ -29,17 +30,12 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         }
     }
 
-    fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>, callback: CreatorResultCallback) {
-        transitionSetCreator.create(animation, fromScreen, toScreen) {
-            if (it.isEmpty) {
-                callback.onError()
-            } else {
-                callback.onSuccess(createAnimator(fadeAnimation, it))
-            }
-        }
+    suspend fun create(animation: LayoutAnimation, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
+        val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
+        return createAnimator(fadeAnimation, transitions)
     }
 
-    fun createPIPTransitions(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, pipContainer: View, pipScreen: ViewController<*>, callback: CreatorResultCallback) {
+    suspend fun createPIPTransitions(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, pipContainer: View, pipScreen: ViewController<*>, callback: CreatorResultCallback) {
         /*val elementTransitions = animation.elementTransitions
         if (!elementTransitions.hasValue()) {
             onAnimatorsCreated.run(TransitionSet())
@@ -64,7 +60,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         }
     }
 
-    fun createPIPOutTransitions(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, pipContainer: View, pipScreen: ViewController<*>, callback: CreatorResultCallback) {
+    suspend fun createPIPOutTransitions(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, pipContainer: View, pipScreen: ViewController<*>, callback: CreatorResultCallback) {
         /*val elementTransitions = animation.elementTransitions
         if (!elementTransitions.hasValue()) {
             onAnimatorsCreated.run(TransitionSet())
@@ -100,11 +96,12 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         animators.addAll(createSharedElementTransitionAnimators(transitions.validSharedElementTransitions))
         animators.addAll(createElementTransitionAnimators(transitions.validElementTransitions))
         setAnimatorsDuration(animators, fadeAnimation)
-        val set = AnimatorSet()
-        set.doOnEnd { restoreViewsToOriginalState(transitions) }
-        set.doOnCancel { restoreViewsToOriginalState(transitions) }
-        set.playTogether(animators)
-        return set
+        return AnimatorSet().apply {
+            playTogether(animators)
+            doOnStart { transitions.validSharedElementTransitions.forEach { it.view.visibility = View.VISIBLE } }
+            doOnEnd { restoreViewsToOriginalState(transitions) }
+            doOnCancel { restoreViewsToOriginalState(transitions) }
+        }
     }
 
 
@@ -126,8 +123,10 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
 
     private fun reparentViews(transitions: TransitionSet) {
         transitions.transitions
-                .sortedBy { ViewGroupManager.getViewZIndex(it.view) }
+                .sortedBy { getZIndex(it.view) }
                 .forEach { reparent(it) }
+        transitions.validSharedElementTransitions
+                .forEach { it.view.visibility = View.INVISIBLE }
     }
 
     private fun createSharedElementTransitionAnimators(transitions: List<SharedElementTransition>): List<AnimatorSet> {
@@ -162,10 +161,10 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         mutableListOf<Transition>().apply {
             addAll(transitions.validSharedElementTransitions)
             addAll(transitions.validElementTransitions)
-            sortBy { ViewGroupManager.getViewZIndex(it.view) }
+            sortBy { getZIndex(it.view) }
             sortBy { it.view.getTag(R.id.original_index_in_parent) as Int }
             forEach {
-                it.viewController.requireParentController().removeOverlay(it.view)
+                removeFromOverlay(it.viewController, it.view)
                 returnToOriginalParent(it.view)
             }
         }
@@ -186,6 +185,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             view.setTag(R.id.original_left, view.left)
             view.setTag(R.id.original_pivot_x, view.pivotX)
             view.setTag(R.id.original_pivot_y, view.pivotY)
+            view.setTag(R.id.original_z_index, getZIndex(view))
 
             biologicalParent.removeView(view)
 
@@ -194,7 +194,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             lp.leftMargin = loc.x
             lp.width = view.width
             lp.height = view.height
-            transition.viewController.requireParentController().addOverlay(view, lp)
+            addToOverlay(viewController, view, lp)
         }
     }
 
@@ -212,5 +212,19 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         element.x = element.left.toFloat()
         element.y = element.top.toFloat()
         parent.addView(element, index, lp)
+    }
+
+    private fun getZIndex(view: View) = ViewGroupManager.getViewZIndex(view)
+            ?: ViewTags.get(view, R.id.original_z_index)
+            ?: 0
+
+    private fun addToOverlay(vc: ViewController<*>, element: View, lp: FrameLayout.LayoutParams) {
+        val viewController = vc.parentController ?: vc
+        viewController.addOverlay(element, lp)
+    }
+
+    private fun removeFromOverlay(vc: ViewController<*>, element: View) {
+        val viewController = vc.parentController ?: vc
+        viewController.removeOverlay(element)
     }
 }

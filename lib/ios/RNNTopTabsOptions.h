@@ -2,6 +2,6 @@
 
 @interface RNNTopTabsOptions : RNNOptions
 
-@property (nonatomic, strong) Color* backgroundColor;
+@property(nonatomic, strong) Color *backgroundColor;
 
 @end

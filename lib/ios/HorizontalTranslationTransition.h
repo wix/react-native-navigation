@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "FloatTransition.h"
+#import <Foundation/Foundation.h>
 
 @interface HorizontalTranslationTransition : FloatTransition
 

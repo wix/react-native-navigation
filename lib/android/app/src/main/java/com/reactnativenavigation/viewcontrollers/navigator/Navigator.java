@@ -15,12 +15,16 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.utils.ILogger;
+import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
-import com.reactnativenavigation.utils.ILogger;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
@@ -31,6 +35,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.pip.PIPStates;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOverlay;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -159,6 +164,7 @@ public class Navigator extends ParentController {
         final boolean removeSplashView = isRootNotCreated();
         if (isRootNotCreated()) getView();
         root = viewController;
+        root.setOverlay(new RootOverlay(getActivity(), contentLayout));
         rootPresenter.setRoot(root, defaultOptions, new CommandListenerAdapter(commandListener) {
             @Override
             public void onSuccess(String childId) {
@@ -247,9 +253,9 @@ public class Navigator extends ParentController {
     }
 
     public void popTo(final String id, Options mergeOptions, CommandListener listener) {
-        ViewController target = findController(id);
+        ViewController<?> target = findController(id);
         if (target != null) {
-            target.performOnParentStack(stack -> ((StackController) stack).popTo(target, mergeOptions, listener));
+            target.performOnParentStack(stack -> stack.popTo(target, mergeOptions, listener));
         } else {
             listener.onError("Failed to execute stack command. Stack by " + id + " not found.");
         }
@@ -293,12 +299,12 @@ public class Navigator extends ParentController {
     }
 
     private void applyOnStack(String fromId, CommandListener listener, Func1<StackController> task) {
-        ViewController from = findController(fromId);
+        ViewController<?> from = findController(fromId);
         if (from != null) {
             if (from instanceof StackController) {
                 task.run((StackController) from);
             } else {
-                from.performOnParentStack(stack -> task.run((StackController) stack));
+                from.performOnParentStack(task);
             }
         } else {
             listener.onError("Failed to execute stack command. Stack " + fromId + " not found.");

@@ -1,4 +1,4 @@
-const includes = require('lodash/includes')
+const includes = require('lodash/includes');
 const exec = require('shell-utils').exec;
 
 const release = includes(process.argv, '--release');
@@ -9,8 +9,12 @@ run();
 
 function run() {
   if (isWindows) {
-  	exec.execSync(`cd playground/android && gradlew ${release ? 'installRelease' : 'installDebug'}`);
+    exec.execSync(
+      `cd playground/android && gradlew ${release ? 'installRelease' : 'installDebug'}`
+    );
   } else {
-  	exec.execSync(`cd playground/android && ./gradlew ${release ? 'installRelease' : 'installDebug'}`);
+    exec.execSync(
+      `cd playground/android && ./gradlew ${release ? 'installRelease' : 'installDebug'}`
+    );
   }
 }

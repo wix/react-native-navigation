@@ -5,8 +5,6 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
@@ -14,6 +12,8 @@ import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 
@@ -86,16 +86,6 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     }
 
     @Override
-    public void sendOnPIPStateChanged(String prevState, String newState) {
-        reactView.sendOnPIPStateChanged(prevState, newState);
-    }
-
-    @Override
-    public void sendOnPIPButtonPressed(String buttonId) {
-        reactView.sendOnPIPButtonPressed(buttonId);
-    }
-
-    @Override
     public void onPress(String buttonId) {
         reactView.sendOnNavigationButtonPressed(buttonId);
     }
@@ -107,5 +97,15 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
 
     public boolean superOnInterceptTouchEvent(MotionEvent event) {
         return super.onInterceptTouchEvent(event);
+    }
+
+    @Override
+    public void sendOnPIPStateChanged(String prevState, String newState) {
+        reactView.sendOnPIPStateChanged(prevState, newState);
+    }
+
+    @Override
+    public void sendOnPIPButtonPressed(String buttonId) {
+        reactView.sendOnPIPButtonPressed(buttonId);
     }
 }

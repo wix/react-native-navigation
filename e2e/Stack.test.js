@@ -53,6 +53,12 @@ describe('Stack', () => {
     await expect(elementByLabel('back button clicked')).toBeVisible();
   });
 
+  it('push title with subtitle', async () => {
+    await elementById(TestIDs.PUSH_TITLE_WITH_SUBTITLE).tap();
+    await expect(elementByLabel('Title')).toBeVisible();
+    await expect(elementByLabel('Subtitle')).toBeVisible();
+  });
+
   it('screen lifecycle', async () => {
     await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
@@ -109,5 +115,17 @@ describe('Stack', () => {
     const query = '124';
     await elementByLabel('Start Typing').typeText(query);
     await expect(elementById(TestIDs.SEARCH_RESULT_ITEM)).toHaveText(`Item ${query}`);
+  });
+
+  it('push promise is resolved with pushed ViewController id', async () => {
+    await elementById(TestIDs.STACK_COMMANDS_BTN).tap();
+    await elementById(TestIDs.PUSH_BTN).tap();
+
+    await expect(element(by.id(TestIDs.PUSH_PROMISE_RESULT))).toHaveText(
+      'push promise resolved with: ChildId'
+    );
+    await expect(element(by.id(TestIDs.POP_PROMISE_RESULT))).toHaveText(
+      'pop promise resolved with: ChildId'
+    );
   });
 });

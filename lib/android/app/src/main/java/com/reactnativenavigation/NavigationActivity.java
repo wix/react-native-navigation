@@ -21,10 +21,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
-import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
-import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.utils.ILogger;
+import com.reactnativenavigation.react.ReactGateway;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
@@ -64,6 +66,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
         getApplication().registerActivityLifecycleCallbacks(lifecycleCallback);
 
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        getReactGateway().onConfigurationChanged(this, newConfig);
     }
 
     @Override

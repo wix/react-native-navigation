@@ -1,7 +1,7 @@
-#import <XCTest/XCTest.h>
+#import "RNNBottomTabOptions.h"
 #import "UIViewController+RNNOptions.h"
 #import <OCMock/OCMock.h>
-#import "RNNBottomTabOptions.h"
+#import <XCTest/XCTest.h>
 
 @interface UIViewController_RNNOptionsTest : XCTestCase
 
@@ -30,7 +30,7 @@
 
 - (void)test_setTabBarItemBadge_shouldResetWhenValueIsNullObject {
     [self.uut setTabBarItemBadge:@"badge"];
-    [self.uut setTabBarItemBadge:(id) [NSNull new]];
+    [self.uut setTabBarItemBadge:(id)[NSNull new]];
     XCTAssertEqual([self.uut tabBarItem].badgeValue, nil);
 }
 

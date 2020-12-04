@@ -6,7 +6,7 @@ import androidx.annotation.CallSuper
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import java.lang.reflect.ParameterizedType
 
-abstract class PropertyAnimatorCreator<T : View> internal constructor(protected var from: View, protected var to: View) {
+abstract class PropertyAnimatorCreator<T : View> internal constructor(protected val from: View, protected val to: View) {
     @CallSuper
     fun shouldAnimateProperty(): Boolean {
         val type = childClass

@@ -1,5 +1,9 @@
 import React from 'react';
-import { Options, NavigationComponent } from 'react-native-navigation';
+import {
+  Options,
+  OptionsModalPresentationStyle,
+  NavigationComponent,
+} from 'react-native-navigation';
 
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -92,6 +96,12 @@ export default class LayoutsScreen extends NavigationComponent {
             id: 'right',
             name: Screens.SideMenuRight,
           },
+        },
+        options: {
+          layout: {
+            orientation: ['portrait', 'landscape'],
+          },
+          modalPresentationStyle: OptionsModalPresentationStyle.pageSheet,
         },
       },
     });

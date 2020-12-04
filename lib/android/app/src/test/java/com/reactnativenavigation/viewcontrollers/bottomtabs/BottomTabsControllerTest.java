@@ -11,6 +11,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
@@ -283,7 +284,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 new Presenter(activity , new Options()),
                 tabsAttacher,
                 presenter,
-                new BottomTabPresenter(activity , tabs, ImageLoaderMock.mock(), new Options())) {
+                new BottomTabPresenter(activity , tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), new Options())) {
             @Override
             public Options resolveCurrentOptions() {
                 return resolvedOptions;
@@ -409,7 +410,7 @@ public class BottomTabsControllerTest extends BaseTest {
         createChildren();
         tabs = Arrays.asList(child1, child2, child3, child4, child5);
         presenter = spy(new BottomTabsPresenter(tabs, Options.EMPTY));
-        bottomTabPresenter = spy(new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), Options.EMPTY));
+        bottomTabPresenter = spy(new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), Options.EMPTY));
         tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter, Options.EMPTY));
         uut = createBottomTabs();
 

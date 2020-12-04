@@ -9,7 +9,7 @@ import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewControllerOverlay
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactButtonView
@@ -19,6 +19,7 @@ class ButtonController(activity: Activity,
                        val button: ButtonOptions,
                        private val viewCreator: TitleBarButtonCreator,
                        private val onPressListener: OnClickListener) : ViewController<TitleBarReactButtonView>(activity, button.id, YellowBoxDelegate(activity), Options(), ViewControllerOverlay(activity)), MenuItem.OnMenuItemClickListener {
+
     private var menuItem: MenuItem? = null
 
     interface OnClickListener {
@@ -83,5 +84,10 @@ class ButtonController(activity: Activity,
         }
     }
 
-    fun createAndAddButtonToTitleBar(titleBar: TitleBar, order: Int): MenuItem = titleBar.menu.add(Menu.NONE, button.intId, order, presenter.styledText)
+    fun createAndAddButtonToTitleBar(titleBar: TitleBar, order: Int): MenuItem = titleBar.menu.add(
+            Menu.NONE,
+            button.intId,
+            order,
+            presenter.styledText
+    )
 }

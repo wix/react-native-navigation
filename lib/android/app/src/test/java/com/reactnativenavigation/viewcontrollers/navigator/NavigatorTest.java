@@ -12,28 +12,29 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabPresenter;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
-import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
-import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabPresenter;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
+import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import org.junit.Test;
@@ -64,13 +65,12 @@ public class NavigatorTest extends BaseTest {
     private Navigator uut;
     private RootPresenter rootPresenter;
     private StackController parentController;
-    private ViewController initialChild;
     private SimpleViewController child1;
     private ViewController child2;
     private ViewController child3;
     private ViewController child4;
     private ViewController child5;
-    private Options tabOptions = OptionHelper.createBottomTabOptions();
+    private final Options tabOptions = OptionHelper.createBottomTabOptions();
     private ImageLoader imageLoaderMock;
     private ActivityController<TestActivity> activityController;
     private OverlayManager overlayManager;
@@ -94,7 +94,7 @@ public class NavigatorTest extends BaseTest {
         uut = new Navigator(activity, childRegistry, modalStack, overlayManager, rootPresenter);
         activity.setNavigator(uut);
 
-        initialChild = new SimpleViewController(activity, childRegistry, "initialChild", Options.EMPTY);
+        ViewController initialChild = new SimpleViewController(activity, childRegistry, "initialChild", Options.EMPTY);
         parentController = newStack(initialChild);
         parentVisibilityListener = spy(new ViewController.ViewVisibilityListener() {
             @Override
@@ -389,7 +389,7 @@ public class NavigatorTest extends BaseTest {
     @NonNull
     private BottomTabsController newTabs(List<ViewController> tabs) {
         BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, new Options());
-        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new Presenter(activity, new Options()), new BottomTabsAttacher(tabs, bottomTabsPresenter, Options.EMPTY), bottomTabsPresenter, new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options())) {
+        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new Presenter(activity, new Options()), new BottomTabsAttacher(tabs, bottomTabsPresenter, Options.EMPTY), bottomTabsPresenter, new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), new Options())) {
             @NonNull
             @Override
             protected BottomTabs createBottomTabs() {

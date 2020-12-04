@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.authors      = "Wix.com"
   s.homepage     = package['homepage']
   s.license      = package['license']
-  s.platform     = :ios, "9.0"
+  s.platform     = :ios, "11.0"
 
   s.module_name  = 'ReactNativeNavigation'
   s.default_subspec = 'Core'
@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
     ss.dependency 'Folly/Fabric'
   end
 
-  s.dependency 'React'
+  s.dependency 'React-Core'
   s.dependency 'React-RCTImage'
   s.dependency 'React-RCTText'
   s.frameworks = 'UIKit'

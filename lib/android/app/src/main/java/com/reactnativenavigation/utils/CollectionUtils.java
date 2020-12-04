@@ -45,9 +45,9 @@ public class CollectionUtils {
         S map(T value);
     }
 
-    public static @Nullable <T, S> List<S> map(@Nullable Collection<T> items, Mapper<T, S> map) {
+    public static @Nullable <T, S> ArrayList<S> map(@Nullable Collection<T> items, Mapper<T, S> map) {
         if (items == null) return null;
-        List<S> result = new ArrayList<>();
+        ArrayList<S> result = new ArrayList<>();
         for (T item : items) {
             result.add(map.map(item));
         }

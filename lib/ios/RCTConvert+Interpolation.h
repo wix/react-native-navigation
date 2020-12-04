@@ -1,14 +1,12 @@
+#import "Interpolator.h"
 #import <React/RCTConvert.h>
-
-typedef NS_ENUM(NSInteger, RNNInterpolationOptions) {
-    RNNInterpolationLinear = 0,
-    RNNInterpolationAccelerateDecelerate,
-    RNNInterpolationDecelerate,
-    RNNInterpolationAccelerate
-};
 
 @interface RCTConvert (Interpolation)
 
-+ (RNNInterpolationOptions)RNNInterpolationOptions:(id)json;
++ (id<Interpolator>)Interpolator:(id)json;
+
++ (id<Interpolator>)interpolatorFromJson:(id)json;
+
++ (id<Interpolator>)defaultInterpolator;
 
 @end

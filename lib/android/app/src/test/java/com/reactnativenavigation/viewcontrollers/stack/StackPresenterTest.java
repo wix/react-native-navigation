@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
@@ -16,9 +17,11 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
+import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.SubtitleOptions;
@@ -28,6 +31,7 @@ import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.TitleBarHelper;
@@ -42,16 +46,20 @@ import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -64,6 +72,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -72,6 +81,9 @@ import static org.mockito.Mockito.verify;
 public class StackPresenterTest extends BaseTest {
 
     private static final Options EMPTY_OPTIONS = new Options();
+    public static final String SOME_FONT_FAMILY = "someFontFamily";
+    public static final Typeface SOME_TYPEFACE = Mockito.mock(Typeface.class);
+
     private StackController parent;
     private StackPresenter uut;
     private ViewController child;
@@ -88,6 +100,7 @@ public class StackPresenterTest extends BaseTest {
     private ComponentOptions titleComponent2 = TitleBarHelper.titleComponent("component2");
     private TopBarController topBarController;
     private ChildControllersRegistry childRegistry;
+    private TypefaceLoader typefaceLoader;
 
     @Override
     public void beforeEach() {
@@ -99,7 +112,8 @@ public class StackPresenterTest extends BaseTest {
             }
         };
         renderChecker = spy(new RenderChecker());
-        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, ImageLoaderMock.mock()), renderChecker, new Options()));
+        typefaceLoader = createTypeFaceLoader();
+        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, ImageLoaderMock.mock()), typefaceLoader, renderChecker, new Options()));
         createTopBarController();
 
         parent = TestUtils.newStackController(activity)
@@ -313,7 +327,8 @@ public class StackPresenterTest extends BaseTest {
         title.component.componentId = new Text("compId");
         title.color = new Colour(0);
         title.fontSize = new Fraction(1.0f);
-        title.fontFamily = Typeface.DEFAULT_BOLD;
+        title.font = new FontOptions();
+        title.font.setFontStyle(new Text("bold"));
         options.topBar.title = title;
         SubtitleOptions subtitleOptions = new SubtitleOptions();
         subtitleOptions.text = new Text("Sub");
@@ -333,6 +348,124 @@ public class StackPresenterTest extends BaseTest {
 
         options.topBar.drawBehind = new Bool(true);
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
+    }
+
+    @Test
+    public void mergeOptions_defaultOptionsAreNotApplied() {
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.background.color = new Colour(10);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options toMerge = new Options();
+        toMerge.topBar.title.text = new Text("someText");
+        uut.mergeOptions(toMerge, parent, child);
+
+        verify(topBar, never()).setBackgroundColor(anyInt());
+    }
+
+    @Test
+    public void mergeOptions_resolvedTitleFontOptionsAreApplied() {
+        Options childOptions = new Options();
+        childOptions.topBar.title.font.setFontFamily(new Text(SOME_FONT_FAMILY));
+        child.mergeOptions(childOptions);
+
+        Options parentOptions = new Options();
+        parentOptions.topBar.title.color = new Colour(Color.RED);
+        parent.mergeOptions(parentOptions);
+
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.title.fontSize = new Fraction(9);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options toMerge = new Options();
+        toMerge.topBar.title.text = new Text("New Title");
+        uut.mergeOptions(toMerge, parent, child);
+
+        TextView title = topBar.getTitleBar().findTitleTextView();
+        assertThat(title).isNotNull();
+        assertThat(title.getTypeface()).isEqualTo(SOME_TYPEFACE);
+        verify(topBar).setTitleFontSize(9);
+        verify(topBar).setTitleTextColor(Color.RED);
+    }
+
+    @Test
+    public void mergeOptions_resolvedSubtitleFontOptionsAreApplied() {
+        Options childOptions = new Options();
+        childOptions.topBar.subtitle.font.setFontFamily(new Text(SOME_FONT_FAMILY));
+        child.mergeOptions(childOptions);
+
+        Options parentOptions = new Options();
+        parentOptions.topBar.subtitle.color = new Colour(Color.RED);
+        parent.mergeOptions(parentOptions);
+
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.subtitle.fontSize = new Fraction(9);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options toMerge = new Options();
+        toMerge.topBar.subtitle.text = new Text("New Title");
+        uut.mergeOptions(toMerge, parent, child);
+
+        TextView subtitle = topBar.getTitleBar().findSubtitleTextView();
+        assertThat(subtitle).isNotNull();
+        assertThat(subtitle.getTypeface()).isEqualTo(SOME_TYPEFACE);
+        verify(topBar).setSubtitleFontSize(9);
+        verify(topBar).setSubtitleColor(Color.RED);
+    }
+
+    @Test
+    public void mergeChildOptions_resolvedTitleFontOptionsAreApplied() {
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.title.fontSize = new Fraction(9);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options resolvedOptions = new Options();
+        resolvedOptions.topBar.title.font.setFontFamily(new Text(SOME_FONT_FAMILY));
+        resolvedOptions.topBar.title.color = new Colour(Color.RED);
+
+        Options toMerge = new Options();
+        toMerge.topBar.title.text = new Text("New Title");
+        uut.mergeChildOptions(toMerge, resolvedOptions, parent, child);
+
+        TextView title = topBar.getTitleBar().findTitleTextView();
+        assertThat(title).isNotNull();
+        assertThat(title.getTypeface()).isEqualTo(SOME_TYPEFACE);
+        verify(topBar).setTitleFontSize(9);
+        verify(topBar).setTitleTextColor(Color.RED);
+    }
+
+    @Test
+    public void mergeChildOptions_resolvedSubtitleFontOptionsAreApplied() {
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.subtitle.fontSize = new Fraction(9);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options resolvedOptions = new Options();
+        resolvedOptions.topBar.subtitle.font.setFontFamily(new Text(SOME_FONT_FAMILY));
+        resolvedOptions.topBar.subtitle.color = new Colour(Color.RED);
+
+        Options toMerge = new Options();
+        toMerge.topBar.subtitle.text = new Text("New Title");
+        uut.mergeChildOptions(toMerge, resolvedOptions, parent, child);
+
+        TextView subtitle = topBar.getTitleBar().findSubtitleTextView();
+        assertThat(subtitle).isNotNull();
+        assertThat(subtitle.getTypeface()).isEqualTo(SOME_TYPEFACE);
+        verify(topBar).setSubtitleFontSize(9);
+        verify(topBar).setSubtitleColor(Color.RED);
+    }
+
+    @Test
+    public void mergeChildOptions_defaultOptionsAreNotApplied() {
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.background.color = new Colour(10);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options childOptions = new Options();
+        childOptions.topBar.title.text = new Text("someText");
+        uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, parent, child);
+
+        verify(topBar, never()).setBackgroundColor(anyInt());
     }
 
     @Test
@@ -414,19 +547,6 @@ public class StackPresenterTest extends BaseTest {
 
         uut.applyInitialChildLayoutOptions(options);
         verify(topBarController).hide();
-    }
-
-    @Test
-    public void mergeOptions_defaultOptionsAreNotApplied() {
-        Options defaultOptions = new Options();
-        defaultOptions.topBar.background.color = new Colour(10);
-        uut.setDefaultOptions(defaultOptions);
-
-        Options childOptions = new Options();
-        childOptions.topBar.title.text = new Text("someText");
-        uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, parent, child);
-
-        verify(topBar, times(0)).setBackgroundColor(anyInt());
     }
 
     @Test
@@ -661,7 +781,7 @@ public class StackPresenterTest extends BaseTest {
         verify(topBar, times(t)).setBackgroundColor(anyInt());
         verify(topBar, times(t)).setTitleTextColor(anyInt());
         verify(topBar, times(t)).setTitleFontSize(anyDouble());
-        verify(topBar, times(t)).setTitleTypeface(any());
+        verify(topBar, times(t)).setTitleTypeface(any(), any());
         verify(topBar, times(t)).setSubtitleColor(anyInt());
         verify(topBar, times(t)).setTestId(any());
         verify(topBarController, times(t)).hide();
@@ -684,5 +804,12 @@ public class StackPresenterTest extends BaseTest {
         component.alignment = alignment;
         component.componentId = new Text("compId");
         return component;
+    }
+
+    @NotNull
+    private TypefaceLoaderMock createTypeFaceLoader() {
+        Map<String, Typeface> map = new HashMap<>();
+        map.put(SOME_FONT_FAMILY, SOME_TYPEFACE);
+        return new TypefaceLoaderMock(map);
     }
 }

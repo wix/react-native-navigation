@@ -2,9 +2,12 @@ package com.reactnativenavigation.react;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 
 import com.facebook.react.ReactNativeHost;
 import com.reactnativenavigation.NavigationActivity;
+
+import androidx.annotation.NonNull;
 
 public class ReactGateway {
 
@@ -37,6 +40,12 @@ public class ReactGateway {
             return true;
         }
         return false;
+    }
+
+    public void onConfigurationChanged(NavigationActivity activity, @NonNull Configuration newConfig) {
+        if (host.hasInstance()) {
+            host.getReactInstanceManager().onConfigurationChanged(activity, newConfig);
+        }
     }
 
 	public void onActivityPaused(NavigationActivity activity) {
