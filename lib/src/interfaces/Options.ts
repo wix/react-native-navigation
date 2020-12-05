@@ -529,6 +529,7 @@ export interface OptionsTopBarButton {
 
 export interface OptionsSearchBar {
   visible?: boolean;
+  focus?: boolean;
   hideOnScroll?: boolean;
   hideTopBarOnFocus?: boolean;
   obscuresBackgroundDuringPresentation?: boolean;

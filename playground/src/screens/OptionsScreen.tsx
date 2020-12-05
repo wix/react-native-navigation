@@ -30,6 +30,10 @@ export default class Options extends React.Component<Props> {
         title: {
           text: 'Styling Options',
         },
+        searchBar: {
+          visible: true,
+          focus: true,
+        },
       },
     };
   }
