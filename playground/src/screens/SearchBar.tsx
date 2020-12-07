@@ -23,7 +23,7 @@ export default class SearchBar extends React.Component<Props> {
         visible: true,
         testID: TOP_BAR,
         title: {
-          text: 'Styling Options',
+          text: 'SearchBar Options',
         },
       },
     };
