@@ -5,8 +5,8 @@ const utils = {
   elementById: (id) => {
     return element(by.id(id));
   },
-  elementByTraits: (trait) => {
-    return element(by.traits([trait]));
+  elementByTraits: (traits) => {
+    return element(by.traits(traits));
   },
   tapBackIos: () => {
     try {
