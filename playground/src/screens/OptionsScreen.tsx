@@ -67,7 +67,12 @@ export default class Options extends React.Component<Props> {
           onPress={this.pushButtonsScreen}
         />
         <Button label="StatusBar" onPress={this.statusBarScreen} />
-        <Button testID={GOTO_SEARCHBAR_SCREEN} label="Search Bar" onPress={this.searchBarScreen} />
+        <Button
+          platform={'ios'}
+          testID={GOTO_SEARCHBAR_SCREEN}
+          label="Search Bar"
+          onPress={this.searchBarScreen}
+        />
         <Button
           label="Toggle Navigation bar visibility"
           platform="android"
