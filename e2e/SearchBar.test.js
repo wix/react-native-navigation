@@ -10,7 +10,7 @@ describe('SearchBar', () => {
     await elementById(TestIDs.GOTO_SEARCHBAR_SCREEN).tap();
   });
 
-  it('ios show and hide search bar', async () => {
+  it(':ios: show and hide search bar', async () => {
     await elementById(TestIDs.SHOW_SEARCH_BAR_BTN).tap();
     await expect(elementByTraits(['searchField'])).toBeVisible();
     await elementById(TestIDs.HIDE_SEARCH_BAR_BTN).tap();
