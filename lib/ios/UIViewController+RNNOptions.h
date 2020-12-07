@@ -8,7 +8,8 @@
 
 - (void)setBackgroundImage:(UIImage *_Nullable)backgroundImage;
 
-- (void)setSearchBarWithPlaceholder:(NSString *_Nullable)placeholder
+- (void)setSearchBarWithOptions:(NSString *_Nullable)placeholder
+                                   focus:(BOOL)focus
                        hideTopBarOnFocus:(BOOL)hideNavBarOnFocusSearchBar
                             hideOnScroll:(BOOL)searchBarHiddenWhenScrolling
     obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation

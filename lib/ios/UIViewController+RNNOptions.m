@@ -24,7 +24,8 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     }
 }
 
-- (void)setSearchBarWithPlaceholder:(NSString *)placeholder
+- (void)setSearchBarWithOptions:(NSString *)placeholder
+                                   focus:(BOOL)focus
                        hideTopBarOnFocus:(BOOL)hideTopBarOnFocus
                             hideOnScroll:(BOOL)hideOnScroll
     obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
@@ -46,6 +47,13 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         search.searchBar.tintColor = tintColor;
         if (@available(iOS 13.0, *)) {
             search.searchBar.searchTextField.backgroundColor = backgroundColor;
+        }
+
+        if (focus) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              self.navigationItem.searchController.active = true;
+              [self.navigationItem.searchController.searchBar becomeFirstResponder];
+            });
         }
 
         self.navigationItem.searchController = search;

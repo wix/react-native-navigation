@@ -184,6 +184,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         handle(() -> navigator().dismissOverlay(componentId, new NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now)));
     }
 
+    @ReactMethod
+    public void dismissAllOverlays(String commandId, Promise promise) {
+        handle(() -> navigator().dismissAllOverlays(new NativeCommandListener("dismissAllOverlays", commandId, promise, eventEmitter, now)));
+    }
+
     private Navigator navigator() {
         return activity().getNavigator();
     }
