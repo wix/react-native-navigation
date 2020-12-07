@@ -6,6 +6,7 @@
     self = [super init];
 
     self.visible = [BoolParser parse:dict key:@"visible"];
+    self.focus = [BoolParser parse:dict key:@"focus"];
     self.hideOnScroll = [BoolParser parse:dict key:@"hiddenWhenScrolling"];
     self.hideTopBarOnFocus = [BoolParser parse:dict key:@"hideTopBarOnFocus"];
     self.obscuresBackgroundDuringPresentation =
