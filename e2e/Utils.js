@@ -5,6 +5,9 @@ const utils = {
   elementById: (id) => {
     return element(by.id(id));
   },
+  elementByTraits: (trait) => {
+    return element(by.traits([trait]));
+  },
   tapBackIos: () => {
     try {
       return element(by.traits(['button']).and(by.label('Back')))

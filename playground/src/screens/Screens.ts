@@ -124,6 +124,7 @@ const Screens = {
   Orientation: 'Orientation',
   OrientationDetect: 'OrientationDetect',
   Search: 'Search',
+  SearchBar: 'SearchBar',
 };
 
 export default Screens;
