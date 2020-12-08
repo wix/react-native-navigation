@@ -12,9 +12,9 @@
 }
 
 - (void)mergeOptions:(RNNScrollEdgeAppearanceBackgroundOptions *)options {
-    if (options.color)
+    if (options.color.hasValue)
         self.color = options.color;
-    if (options.translucent)
+    if (options.translucent.hasValue)
         self.translucent = options.translucent;
 }
 
