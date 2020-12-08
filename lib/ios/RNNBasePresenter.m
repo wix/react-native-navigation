@@ -135,9 +135,6 @@
     [options.statusBar
         mergeOptions:self.boundViewController.getCurrentChild.presenter.resolveStatusBarOptions];
     return [[options withDefault:self.defaultOptions] statusBar];
-    //    return (RNNStatusBarOptions *)[[self.boundViewController.options.statusBar
-    //        mergeInOptions:self.boundViewController.getCurrentChild.presenter.resolveStatusBarOptions]
-    //        withDefault:self.defaultOptions.statusBar];
 }
 
 - (UINavigationItem *)currentNavigationItem {
