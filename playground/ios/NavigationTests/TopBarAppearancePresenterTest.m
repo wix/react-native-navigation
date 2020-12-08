@@ -20,19 +20,18 @@
     [super setUp];
     _componentViewController = [RNNComponentViewController createWithComponentId:@"componentId"];
     _uut = [[TopBarAppearancePresenter alloc] initWithNavigationController:_stack];
-    _stack = [[RNNStackController alloc]
-          initWithLayoutInfo:nil
-                     creator:nil
-                     options:[[RNNNavigationOptions alloc] initEmptyOptions]
-              defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]
-                   presenter:_uut
-                eventEmitter:nil
-        childViewControllers:@[ _componentViewController ]];
+    _stack = [[RNNStackController alloc] initWithLayoutInfo:nil
+                                                    creator:nil
+                                                    options:[RNNNavigationOptions emptyOptions]
+                                             defaultOptions:[RNNNavigationOptions emptyOptions]
+                                                  presenter:_uut
+                                               eventEmitter:nil
+                                       childViewControllers:@[ _componentViewController ]];
 }
 
 - (void)testMergeOptions_shouldMergeWithDefault {
-    RNNNavigationOptions *mergeOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-    RNNNavigationOptions *defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *mergeOptions = [RNNNavigationOptions emptyOptions];
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
     defaultOptions.topBar.title.color = [Color withColor:UIColor.redColor];
 
     mergeOptions.topBar.title.fontSize = [Number withValue:@(21)];

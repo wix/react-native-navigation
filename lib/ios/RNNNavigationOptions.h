@@ -41,12 +41,12 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property(nonatomic, strong) Text *modalPresentationStyle;
 @property(nonatomic, strong) Text *modalTransitionStyle;
 
-- (instancetype)initEmptyOptions;
-
 + (instancetype)emptyOptions;
 
 - (RNNNavigationOptions *)withDefault:(RNNNavigationOptions *)defaultOptions;
 
 - (RNNNavigationOptions *)copy;
+
+- (RNNNavigationOptions *)mergeOptions:(RNNNavigationOptions *)options;
 
 @end

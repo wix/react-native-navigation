@@ -369,8 +369,6 @@
 		50EB4ED72068EBE000D6ED34 /* RNNBackgroundOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50EB4ED52068EBE000D6ED34 /* RNNBackgroundOptions.h */; };
 		50EB4ED82068EBE000D6ED34 /* RNNBackgroundOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EB4ED62068EBE000D6ED34 /* RNNBackgroundOptions.m */; };
 		50EB93421FE14A3E00BD8EEE /* RNNBottomTabOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EB93401FE14A3E00BD8EEE /* RNNBottomTabOptions.m */; };
-		50EF5BAB24CD96F4009CBFD0 /* NSObject+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 50EF5BA924CD96F4009CBFD0 /* NSObject+Utils.h */; };
-		50EF5BAC24CD96F4009CBFD0 /* NSObject+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EF5BAA24CD96F4009CBFD0 /* NSObject+Utils.m */; };
 		50EF5BC624D1878D009CBFD0 /* RNNModalManagerEventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 50EF5BC424D1878D009CBFD0 /* RNNModalManagerEventHandler.h */; };
 		50EF5BC724D1878D009CBFD0 /* RNNModalManagerEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EF5BC524D1878D009CBFD0 /* RNNModalManagerEventHandler.m */; };
 		50F5DFC11F407A8C001A00BC /* RNNBottomTabsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFBF1F407A8C001A00BC /* RNNBottomTabsController.h */; };
@@ -883,8 +881,6 @@
 		50EB4ED62068EBE000D6ED34 /* RNNBackgroundOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBackgroundOptions.m; sourceTree = "<group>"; };
 		50EB933F1FE14A3E00BD8EEE /* RNNBottomTabOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabOptions.h; sourceTree = "<group>"; };
 		50EB93401FE14A3E00BD8EEE /* RNNBottomTabOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabOptions.m; sourceTree = "<group>"; };
-		50EF5BA924CD96F4009CBFD0 /* NSObject+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Utils.h"; sourceTree = "<group>"; };
-		50EF5BAA24CD96F4009CBFD0 /* NSObject+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Utils.m"; sourceTree = "<group>"; };
 		50EF5BC424D1878D009CBFD0 /* RNNModalManagerEventHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNModalManagerEventHandler.h; sourceTree = "<group>"; };
 		50EF5BC524D1878D009CBFD0 /* RNNModalManagerEventHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalManagerEventHandler.m; sourceTree = "<group>"; };
 		50F5DFBF1F407A8C001A00BC /* RNNBottomTabsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsController.h; sourceTree = "<group>"; };
@@ -1075,8 +1071,6 @@
 				9F8E06B424EBDB48004BDA83 /* RCTConvert+Interpolation.m */,
 				5095BB702416A3B900C4CD41 /* RNNConvert.h */,
 				5095BB712416A3B900C4CD41 /* RNNConvert.m */,
-				50EF5BA924CD96F4009CBFD0 /* NSObject+Utils.h */,
-				50EF5BAA24CD96F4009CBFD0 /* NSObject+Utils.m */,
 				5038A3BB216E1490009280BC /* RNNTabBarItemCreator.h */,
 				5038A3BC216E1490009280BC /* RNNTabBarItemCreator.m */,
 				5022EDBF24053C9F00852BA6 /* TabBarItemAppearanceCreator.h */,
@@ -1890,7 +1884,6 @@
 				5039559B2174867000B0A663 /* DoubleParser.h in Headers */,
 				E8AEDB3C1F55A1C2000F5A6A /* RNNElementView.h in Headers */,
 				E8E518321F83B3E0000467AC /* RNNUtils.h in Headers */,
-				50EF5BAB24CD96F4009CBFD0 /* NSObject+Utils.h in Headers */,
 				50E5F791223FA04C002AFEAD /* TransitionDetailsOptions.h in Headers */,
 				50D4656D23CE2553005A84B2 /* Transition.h in Headers */,
 				5049594E216F6277006D2B81 /* NumberParser.h in Headers */,
@@ -2125,7 +2118,6 @@
 				5022EDBE2405237100852BA6 /* BottomTabPresenterCreator.m in Sources */,
 				5038A3C7216E2D93009280BC /* Number.m in Sources */,
 				E5F6C3A622DB4D0F0093C2CE /* UIViewController+Utils.m in Sources */,
-				50EF5BAC24CD96F4009CBFD0 /* NSObject+Utils.m in Sources */,
 				5048862E20BE976D000908DE /* RNNLayoutOptions.m in Sources */,
 				501CD320214A5B6900A6E225 /* RNNLayoutInfo.m in Sources */,
 				7BEF0D191E437684003E96B0 /* RNNComponentViewController.m in Sources */,

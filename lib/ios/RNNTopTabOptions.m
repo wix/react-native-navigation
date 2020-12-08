@@ -9,4 +9,7 @@
 //    }
 //}
 
+- (void)mergeOptions:(RNNTopTabOptions *)options {
+}
+
 @end

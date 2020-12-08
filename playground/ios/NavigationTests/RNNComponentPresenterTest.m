@@ -1,5 +1,6 @@
 #import "RNNComponentPresenter.h"
 #import "RNNComponentViewController.h"
+#import "RNNReactTitleView.h"
 #import "RNNTitleViewHelper.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
@@ -22,10 +23,10 @@
     self.componentRegistry = [OCMockObject partialMockForObject:[RNNReactComponentRegistry new]];
     self.uut = [[RNNComponentPresenter alloc]
         initWithComponentRegistry:self.componentRegistry
-                   defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+                   defaultOptions:[RNNNavigationOptions emptyOptions]];
     self.boundViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
     [self.uut bindViewController:self.boundViewController];
-    self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.options = [RNNNavigationOptions emptyOptions];
 }
 
 - (void)testApplyOptions_backgroundImageDefaultNilShouldNotAddSubview {
@@ -140,7 +141,7 @@
     RNNComponentViewController *boundViewController = [RNNComponentViewController new];
     RNNLayoutInfo *layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
     boundViewController.layoutInfo = layoutInfo;
-    boundViewController.defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    boundViewController.defaultOptions = [RNNNavigationOptions emptyOptions];
     [self.uut bindViewController:boundViewController];
 
     self.options.topBar.title.component = [[RNNComponentOptions alloc]
@@ -163,7 +164,7 @@
 - (void)testRenderComponentsCreateReactViewFromDefaultOptions {
     RNNComponentViewController *boundViewController = [RNNComponentViewController new];
     boundViewController.layoutInfo = [self createLayoutInfoWithComponentId:@"componentId"];
-    self.uut.defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.uut.defaultOptions = [RNNNavigationOptions emptyOptions];
     [self.uut bindViewController:boundViewController];
 
     self.uut.defaultOptions.topBar.title.component = [[RNNComponentOptions alloc]
@@ -196,16 +197,14 @@
     component.componentId = [[Text alloc] initWithValue:@"someId"];
     _options.topBar.title.component = component;
 
-    [self.uut mergeOptions:_options
-           resolvedOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    [self.uut mergeOptions:_options resolvedOptions:[RNNNavigationOptions emptyOptions]];
     XCTAssertNotNil(self.boundViewController.navigationItem.titleView);
     XCTAssertEqual(self.boundViewController.navigationItem.titleView, mockTitle);
 
     [[mockTitle expect] removeFromSuperview];
-    _options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    _options = [RNNNavigationOptions emptyOptions];
     _options.topBar.title.text = [[Text alloc] initWithValue:@""];
-    [self.uut mergeOptions:_options
-           resolvedOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    [self.uut mergeOptions:_options resolvedOptions:[RNNNavigationOptions emptyOptions]];
     XCTAssertNotEqual(self.boundViewController.navigationItem.titleView, mockTitle);
     [mockTitle verify];
 }
@@ -224,15 +223,13 @@
     component.componentId = [[Text alloc] initWithValue:@"someId"];
     _options.topBar.title.component = component;
 
-    [self.uut mergeOptions:_options
-           resolvedOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    [self.uut mergeOptions:_options resolvedOptions:[RNNNavigationOptions emptyOptions]];
     XCTAssertNotNil(self.boundViewController.navigationItem.titleView);
     XCTAssertEqual(self.boundViewController.navigationItem.titleView, mockTitle);
 
-    _options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    _options = [RNNNavigationOptions emptyOptions];
     _options.bottomTabs.visible = [[Bool alloc] initWithBOOL:NO];
-    [self.uut mergeOptions:_options
-           resolvedOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    [self.uut mergeOptions:_options resolvedOptions:[RNNNavigationOptions emptyOptions]];
     XCTAssertEqual(self.boundViewController.navigationItem.titleView, mockTitle);
 }
 

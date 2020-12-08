@@ -1,6 +1,5 @@
 #import "RNNComponentPresenter.h"
 #import "RNNComponentViewController.h"
-#import "RNNReactTitleView.h"
 #import "RNNTitleViewHelper.h"
 #import "TopBarTitlePresenter.h"
 #import "UITabBarController+RNNOptions.h"
@@ -112,15 +111,15 @@
     }
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options
+- (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
      resolvedOptions:(RNNNavigationOptions *)currentOptions {
-    [super mergeOptions:options resolvedOptions:currentOptions];
+    [super mergeOptions:mergeOptions resolvedOptions:currentOptions];
     RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[[currentOptions
-        overrideOptions:options] withDefault:[self defaultOptions]];
+        mergeOptions:mergeOptions] withDefault:self.defaultOptions];
     RNNComponentViewController *viewController = self.boundViewController;
 
-    if (options.backgroundImage.hasValue) {
-        [viewController setBackgroundImage:options.backgroundImage.get];
+    if (mergeOptions.backgroundImage.hasValue) {
+        [viewController setBackgroundImage:mergeOptions.backgroundImage.get];
     }
 
     if ([withDefault.topBar.searchBar.visible getWithDefaultValue:NO]) {
@@ -130,7 +129,6 @@
         BOOL obscuresBackgroundDuringPresentation =
             [withDefault.topBar.searchBar.obscuresBackgroundDuringPresentation
                 getWithDefaultValue:NO];
-
         BOOL focus = [withDefault.topBar.searchBar.focus getWithDefaultValue:NO];
 
         [viewController setSearchBarWithOptions:[withDefault.topBar.searchBar.placeholder
@@ -139,69 +137,70 @@
                                hideTopBarOnFocus:hideTopBarOnFocus
                                     hideOnScroll:hideOnScroll
             obscuresBackgroundDuringPresentation:obscuresBackgroundDuringPresentation
-                                 backgroundColor:[options.topBar.searchBar.backgroundColor
+                                 backgroundColor:[mergeOptions.topBar.searchBar.backgroundColor
                                                      getWithDefaultValue:nil]
-                                       tintColor:[options.topBar.searchBar.tintColor
+                                       tintColor:[mergeOptions.topBar.searchBar.tintColor
                                                      getWithDefaultValue:nil]];
     } else {
         [viewController setSearchBarVisible:NO];
     }
 
-    if (options.topBar.drawBehind.hasValue) {
-        [viewController setDrawBehindTopBar:options.topBar.drawBehind.get];
+    if (mergeOptions.topBar.drawBehind.hasValue) {
+        [viewController setDrawBehindTopBar:mergeOptions.topBar.drawBehind.get];
     }
 
-    if (options.bottomTabs.drawBehind.hasValue) {
-        [viewController setDrawBehindBottomTabs:options.bottomTabs.drawBehind.get];
+    if (mergeOptions.bottomTabs.drawBehind.hasValue) {
+        [viewController setDrawBehindBottomTabs:mergeOptions.bottomTabs.drawBehind.get];
     }
 
-    if (options.topBar.title.text.hasValue) {
-        [viewController setNavigationItemTitle:options.topBar.title.text.get];
+    if (mergeOptions.topBar.title.text.hasValue) {
+        [viewController setNavigationItemTitle:mergeOptions.topBar.title.text.get];
     }
 
-    if (options.topBar.largeTitle.visible.hasValue) {
-        [viewController setTopBarPrefersLargeTitle:options.topBar.largeTitle.visible.get];
+    if (mergeOptions.topBar.largeTitle.visible.hasValue) {
+        [viewController setTopBarPrefersLargeTitle:mergeOptions.topBar.largeTitle.visible.get];
     }
 
-    if (options.layout.componentBackgroundColor.hasValue) {
-        [viewController setBackgroundColor:options.layout.componentBackgroundColor.get];
+    if (mergeOptions.layout.componentBackgroundColor.hasValue) {
+        [viewController setBackgroundColor:mergeOptions.layout.componentBackgroundColor.get];
     }
 
-    if (options.bottomTab.badgeColor.hasValue) {
-        [viewController setTabBarItemBadgeColor:options.bottomTab.badgeColor.get];
+    if (mergeOptions.bottomTab.badgeColor.hasValue) {
+        [viewController setTabBarItemBadgeColor:mergeOptions.bottomTab.badgeColor.get];
     }
 
-    if (options.bottomTab.visible.hasValue) {
+    if (mergeOptions.bottomTab.visible.hasValue) {
         [viewController.tabBarController
             setCurrentTabIndex:[viewController.tabBarController.viewControllers
                                    indexOfObject:viewController]];
     }
 
-    if (options.statusBar.blur.hasValue) {
-        [viewController setStatusBarBlur:options.statusBar.blur.get];
+    if (mergeOptions.statusBar.blur.hasValue) {
+        [viewController setStatusBarBlur:mergeOptions.statusBar.blur.get];
     }
 
-    if (options.statusBar.style.hasValue) {
-        [viewController setStatusBarStyle:options.statusBar.style.get
+    if (mergeOptions.statusBar.style.hasValue) {
+        [viewController setStatusBarStyle:mergeOptions.statusBar.style.get
                                  animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
     }
 
-    if (options.topBar.backButton.visible.hasValue) {
-        [viewController setBackButtonVisible:options.topBar.backButton.visible.get];
+    if (mergeOptions.topBar.backButton.visible.hasValue) {
+        [viewController setBackButtonVisible:mergeOptions.topBar.backButton.visible.get];
     }
 
-    if (options.topBar.leftButtons || options.topBar.rightButtons) {
-        [_navigationButtons applyLeftButtons:options.topBar.leftButtons
-                                rightButtons:options.topBar.rightButtons
+    if (mergeOptions.topBar.leftButtons || mergeOptions.topBar.rightButtons) {
+        [_navigationButtons applyLeftButtons:mergeOptions.topBar.leftButtons
+                                rightButtons:mergeOptions.topBar.rightButtons
                       defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle
                      defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
     }
 
-    if (options.overlay.interceptTouchOutside.hasValue) {
-        viewController.reactView.passThroughTouches = !options.overlay.interceptTouchOutside.get;
+    if (mergeOptions.overlay.interceptTouchOutside.hasValue) {
+        viewController.reactView.passThroughTouches =
+            !mergeOptions.overlay.interceptTouchOutside.get;
     }
 
-    [_topBarTitlePresenter mergeOptions:options.topBar resolvedOptions:withDefault.topBar];
+    [_topBarTitlePresenter mergeOptions:mergeOptions.topBar resolvedOptions:withDefault.topBar];
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options

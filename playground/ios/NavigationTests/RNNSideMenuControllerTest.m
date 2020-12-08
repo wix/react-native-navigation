@@ -95,9 +95,9 @@
 - (void)testResolveOptions {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
 
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.sideMenu.left.visible = [[Bool alloc] initWithBOOL:YES];
-    [_centerVC overrideOptions:options];
+    [_centerVC mergeOptions:options];
 
     XCTAssertTrue(_uut.resolveOptions.sideMenu.left.visible);
 

@@ -20,21 +20,21 @@
 }
 
 - (void)applyDotIndicator:(UIViewController *)child {
-    [self apply:child:[child resolveOptions].bottomTab.dotIndicator];
+    [self apply:child options:[child resolveOptions].bottomTab.dotIndicator];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options
+- (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
      resolvedOptions:(RNNNavigationOptions *)resolvedOptions
                child:(UIViewController *)child {
     RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[[resolvedOptions
-        withDefault:self.defaultOptions] overrideOptions:options];
+        withDefault:self.defaultOptions] mergeOptions:mergeOptions];
 
-    if ([options.bottomTab.dotIndicator hasValue]) {
-        [self apply:child:withDefault.bottomTab.dotIndicator];
+    if ([mergeOptions.bottomTab.dotIndicator hasValue]) {
+        [self apply:child options:withDefault.bottomTab.dotIndicator];
     }
 }
 
-- (void)apply:(UIViewController *)child:(DotIndicatorOptions *)options {
+- (void)apply:(UIViewController *)child options:(DotIndicatorOptions *)options {
     if (![options hasValue])
         return;
 
@@ -43,7 +43,7 @@
             [self remove:child];
         return;
     }
-    if ([self currentIndicatorEquals:child:options])
+    if ([self currentIndicatorEquals:child options:options])
         return;
 
     if ([self hasIndicator:child])
@@ -81,7 +81,7 @@
     ]];
 }
 
-- (BOOL)currentIndicatorEquals:(UIViewController *)child:(DotIndicatorOptions *)options {
+- (BOOL)currentIndicatorEquals:(UIViewController *)child options:(DotIndicatorOptions *)options {
     if (![self hasIndicator:child])
         return NO;
     UIView *currentIndicator = [self getCurrentIndicator:child];
@@ -96,7 +96,7 @@
 }
 
 - (BOOL)hasIndicator:(UIViewController *)child {
-    return [child tabBarItem].tag > 0;
+    return [[[self getTabBarController:child] tabBar] viewWithTag:child.tabBarItem.tag];
 }
 
 - (void)remove:(UIViewController *)child {

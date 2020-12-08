@@ -40,9 +40,10 @@
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     if (parent) {
-        [self applyOptionsOnWillMoveToParentViewController:self.boundViewController.resolveOptions];
+        RNNNavigationOptions *resolvedOptions = [self.boundViewController resolveOptions];
+        [self applyOptionsOnWillMoveToParentViewController:resolvedOptions];
         [self.boundViewController onChildAddToParent:self.boundViewController
-                                             options:self.boundViewController.resolveOptions];
+                                             options:resolvedOptions];
     }
 }
 
@@ -70,27 +71,27 @@
 - (void)applyOptions:(RNNNavigationOptions *)options {
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options
+- (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
      resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[[resolvedOptions
-        withDefault:_defaultOptions] overrideOptions:options];
+        withDefault:_defaultOptions] mergeOptions:mergeOptions];
     if (@available(iOS 13.0, *)) {
         if (withDefault.modal.swipeToDismiss.hasValue)
             self.boundViewController.modalInPresentation = !withDefault.modal.swipeToDismiss.get;
     }
 
-    if (options.window.backgroundColor.hasValue) {
+    if (mergeOptions.window.backgroundColor.hasValue) {
         UIApplication.sharedApplication.delegate.window.backgroundColor =
             withDefault.window.backgroundColor.get;
     }
 
-    if (options.statusBar.visible.hasValue) {
+    if (mergeOptions.statusBar.visible.hasValue) {
         [self.boundViewController setNeedsStatusBarAppearanceUpdate];
     }
 
-    if (options.layout.autoHideHomeIndicator.hasValue &&
-        options.layout.autoHideHomeIndicator.get != _prefersHomeIndicatorAutoHidden) {
-        _prefersHomeIndicatorAutoHidden = options.layout.autoHideHomeIndicator.get;
+    if (mergeOptions.layout.autoHideHomeIndicator.hasValue &&
+        mergeOptions.layout.autoHideHomeIndicator.get != _prefersHomeIndicatorAutoHidden) {
+        _prefersHomeIndicatorAutoHidden = mergeOptions.layout.autoHideHomeIndicator.get;
         [self.boundViewController setNeedsUpdateOfHomeIndicatorAutoHidden];
     }
 }
@@ -130,9 +131,10 @@
 }
 
 - (RNNStatusBarOptions *)resolveStatusBarOptions {
-    return (RNNStatusBarOptions *)[[self.boundViewController.options.statusBar
-        mergeInOptions:self.boundViewController.getCurrentChild.presenter.resolveStatusBarOptions]
-        withDefault:self.defaultOptions.statusBar];
+    RNNNavigationOptions *options = self.boundViewController.options.copy;
+    [options.statusBar
+        mergeOptions:self.boundViewController.getCurrentChild.presenter.resolveStatusBarOptions];
+    return [[options withDefault:self.defaultOptions] statusBar];
 }
 
 - (UINavigationItem *)currentNavigationItem {
