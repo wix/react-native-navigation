@@ -15,7 +15,7 @@
     [self.background mergeOptions:options.background];
 
     if (options.active.hasValue)
-        self.active = options.active.hasValue;
+        self.active = options.active;
 }
 
 @end
