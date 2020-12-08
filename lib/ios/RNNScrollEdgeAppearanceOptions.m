@@ -14,8 +14,8 @@
 - (void)mergeOptions:(RNNScrollEdgeAppearanceOptions *)options {
     [self.background mergeOptions:options.background];
 
-    if (options.active)
-        self.active = options.active;
+    if (options.active.hasValue)
+        self.active = options.active.hasValue;
 }
 
 @end
