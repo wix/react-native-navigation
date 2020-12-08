@@ -1,6 +1,7 @@
 
 #import "RNNReactRootViewCreator.h"
 #import "RNNComponentRootView.h"
+#import "RNNReactTitleView.h"
 #import "RNNReactView.h"
 
 @implementation RNNReactRootViewCreator {

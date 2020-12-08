@@ -32,18 +32,18 @@
            rootViewCreator:nil
               eventEmitter:nil
                  presenter:[OCMockObject partialMockForObject:[[RNNComponentPresenter alloc] init]]
-                   options:[[RNNNavigationOptions alloc] initEmptyOptions]
-            defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
-    _vc2 = [[RNNComponentViewController alloc]
-        initWithLayoutInfo:[RNNLayoutInfo new]
-           rootViewCreator:nil
-              eventEmitter:nil
-                 presenter:[[RNNComponentPresenter alloc] init]
-                   options:[[RNNNavigationOptions alloc] initEmptyOptions]
-            defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+                   options:[RNNNavigationOptions emptyOptions]
+            defaultOptions:[RNNNavigationOptions emptyOptions]];
+    _vc2 =
+        [[RNNComponentViewController alloc] initWithLayoutInfo:[RNNLayoutInfo new]
+                                               rootViewCreator:nil
+                                                  eventEmitter:nil
+                                                     presenter:[[RNNComponentPresenter alloc] init]
+                                                       options:[RNNNavigationOptions emptyOptions]
+                                                defaultOptions:[RNNNavigationOptions emptyOptions]];
     _vc2Mock = [OCMockObject partialMockForObject:_vc2];
     _vc3 = [UIViewController new];
-    _options = [OCMockObject partialMockForObject:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    _options = [OCMockObject partialMockForObject:[RNNNavigationOptions emptyOptions]];
     self.uut = [[RNNStackController alloc] initWithLayoutInfo:nil
                                                       creator:_creator
                                                       options:_options
@@ -119,7 +119,7 @@
 
 - (void)testPopGestureEnabled_false {
     NSNumber *popGestureEnabled = @(0);
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.popGesture = [[Bool alloc] initWithValue:popGestureEnabled];
 
     self.uut = [self createNavigationControllerWithOptions:options];
@@ -130,7 +130,7 @@
 
 - (void)testPopGestureEnabled_true {
     NSNumber *popGestureEnabled = @(1);
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.popGesture = [[Bool alloc] initWithValue:popGestureEnabled];
 
     self.uut = [self createNavigationControllerWithOptions:options];
@@ -141,7 +141,7 @@
 
 - (void)testRootBackgroundImage {
     UIImage *rootBackgroundImage = [[UIImage alloc] init];
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.rootBackgroundImage = [[Image alloc] initWithValue:rootBackgroundImage];
 
     self.uut = [self createNavigationControllerWithOptions:options];
@@ -151,7 +151,7 @@
 }
 
 - (void)testTopBarBackgroundClipToBounds_true {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.topBar.background.clipToBounds = [[Bool alloc] initWithValue:@(1)];
 
     self.uut = [self createNavigationControllerWithOptions:options];
@@ -161,7 +161,7 @@
 }
 
 - (void)testTopBarBackgroundClipToBounds_false {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.topBar.background.clipToBounds = [[Bool alloc] initWithValue:@(0)];
 
     self.uut = [self createNavigationControllerWithOptions:options];
@@ -182,7 +182,7 @@
 
 - (void)testPopViewControllerSetTopBarBackgroundForPoppingViewController {
     _options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
-    [_vc1 overrideOptions:_options];
+    [_vc1 mergeOptions:_options];
 
     [self.uut popViewControllerAnimated:NO];
     [_vc1 viewWillAppear:YES];
@@ -218,15 +218,15 @@
     [(id)uut.eventEmitter verify];
 }
 
-- (void)testOverrideOptionsShouldOverrideOptionsState {
-    RNNNavigationOptions *overrideOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-    [(RNNNavigationOptions *)[(id)self.uut.options expect] overrideOptions:overrideOptions];
-    [self.uut overrideOptions:overrideOptions];
+- (void)testMergeOptionsShouldOverrideOptionsState {
+    RNNNavigationOptions *overrideOptions = [RNNNavigationOptions emptyOptions];
+    [(RNNNavigationOptions *)[(id)self.uut.options expect] mergeOptions:overrideOptions];
+    [self.uut mergeOptions:overrideOptions];
     [(id)self.uut.options verify];
 }
 
 - (void)testMergeChildOptionsShouldUpdatePresenterForVisibleChild {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
 
     [[_presenter expect] mergeOptions:options resolvedOptions:[OCMArg any]];
     [self.uut mergeChildOptions:options child:self.uut.childViewControllers.lastObject];
@@ -234,7 +234,7 @@
 }
 
 - (void)testMergeChildOptionsShouldNotUpdatePresenterForInvisibleChild {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
 
     [[_presenter reject] mergeOptions:options resolvedOptions:self.uut.resolveOptions];
     [self.uut mergeChildOptions:options child:self.uut.childViewControllers.firstObject];
@@ -242,7 +242,7 @@
 }
 
 - (void)testOnChildWillAppear_shouldSetBackButtonTestID {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.topBar.backButton.testID = [Text withValue:@"TestID"];
     RNNComponentViewController *pushedController =
         [RNNComponentViewController createWithComponentId:@"pushedController"];

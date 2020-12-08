@@ -16,6 +16,13 @@
     return self;
 }
 
+- (void)mergeOptions:(ViewAnimationOptions *)options {
+    if (options.sharedElementTransitions)
+        self.sharedElementTransitions = options.sharedElementTransitions;
+    if (options.elementTransitions)
+        self.elementTransitions = options.elementTransitions;
+}
+
 - (BOOL)hasAnimation {
     return super.hasAnimation || self.sharedElementTransitions || self.elementTransitions;
 }

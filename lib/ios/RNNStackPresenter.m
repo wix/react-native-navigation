@@ -85,55 +85,55 @@
     [_topBarPresenter applyOptionsBeforePopping:options.topBar];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options
+- (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
      resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
-    [super mergeOptions:options resolvedOptions:resolvedOptions];
+    [super mergeOptions:mergeOptions resolvedOptions:resolvedOptions];
     RNNStackController *stack = self.stackController;
 
-    if (options.popGesture.hasValue) {
-        [_interactivePopGestureDelegate setEnabled:options.popGesture.get];
+    if (mergeOptions.popGesture.hasValue) {
+        [_interactivePopGestureDelegate setEnabled:mergeOptions.popGesture.get];
     }
 
-    if (options.rootBackgroundImage.hasValue) {
-        [stack setRootBackgroundImage:options.rootBackgroundImage.get];
+    if (mergeOptions.rootBackgroundImage.hasValue) {
+        [stack setRootBackgroundImage:mergeOptions.rootBackgroundImage.get];
     }
 
-    if (options.topBar.testID.hasValue) {
-        [stack setNavigationBarTestId:options.topBar.testID.get];
+    if (mergeOptions.topBar.testID.hasValue) {
+        [stack setNavigationBarTestId:mergeOptions.topBar.testID.get];
     }
 
-    if (options.topBar.visible.hasValue) {
-        [stack setNavigationBarVisible:options.topBar.visible.get
-                              animated:[options.topBar.animate getWithDefaultValue:YES]];
+    if (mergeOptions.topBar.visible.hasValue) {
+        [stack setNavigationBarVisible:mergeOptions.topBar.visible.get
+                              animated:[mergeOptions.topBar.animate getWithDefaultValue:YES]];
     }
 
-    if (options.topBar.hideOnScroll.hasValue) {
-        [stack hideBarsOnScroll:[options.topBar.hideOnScroll get]];
+    if (mergeOptions.topBar.hideOnScroll.hasValue) {
+        [stack hideBarsOnScroll:[mergeOptions.topBar.hideOnScroll get]];
     }
 
-    if (options.topBar.barStyle.hasValue) {
-        [stack setBarStyle:[RCTConvert UIBarStyle:options.topBar.barStyle.get]];
+    if (mergeOptions.topBar.barStyle.hasValue) {
+        [stack setBarStyle:[RCTConvert UIBarStyle:mergeOptions.topBar.barStyle.get]];
     }
 
-    if (options.topBar.background.clipToBounds.hasValue) {
-        [stack setNavigationBarClipsToBounds:[options.topBar.background.clipToBounds get]];
+    if (mergeOptions.topBar.background.clipToBounds.hasValue) {
+        [stack setNavigationBarClipsToBounds:[mergeOptions.topBar.background.clipToBounds get]];
     }
 
-    if (options.topBar.background.blur.hasValue) {
-        [stack setNavigationBarBlur:[options.topBar.background.blur get]];
+    if (mergeOptions.topBar.background.blur.hasValue) {
+        [stack setNavigationBarBlur:[mergeOptions.topBar.background.blur get]];
     }
 
-    if (options.topBar.background.component.name.hasValue) {
-        [self setCustomNavigationComponentBackground:options perform:nil];
+    if (mergeOptions.topBar.background.component.name.hasValue) {
+        [self setCustomNavigationComponentBackground:mergeOptions perform:nil];
     }
 
-    if (options.layout.backgroundColor.hasValue) {
-        [stack.view setBackgroundColor:options.layout.backgroundColor.get];
+    if (mergeOptions.layout.backgroundColor.hasValue) {
+        [stack.view setBackgroundColor:mergeOptions.layout.backgroundColor.get];
     }
 
-    RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[[options
-        mergeInOptions:resolvedOptions] withDefault:[self defaultOptions]];
-    [_topBarPresenter mergeOptions:options.topBar withDefault:withDefault.topBar];
+    RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[[resolvedOptions
+        mergeOptions:mergeOptions] withDefault:[self defaultOptions]];
+    [_topBarPresenter mergeOptions:mergeOptions.topBar withDefault:withDefault.topBar];
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options

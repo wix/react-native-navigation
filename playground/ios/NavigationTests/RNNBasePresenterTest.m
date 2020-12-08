@@ -17,14 +17,14 @@
 
 - (void)setUp {
     [super setUp];
-    self.uut = [[RNNBasePresenter alloc]
-        initWithDefaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    self.uut =
+        [[RNNBasePresenter alloc] initWithDefaultOptions:[RNNNavigationOptions emptyOptions]];
     self.boundViewController =
         [RNNComponentViewController createWithComponentId:@"componentId"
                                            initialOptions:[RNNNavigationOptions emptyOptions]];
     self.mockBoundViewController = [OCMockObject partialMockForObject:self.boundViewController];
     [self.uut bindViewController:self.mockBoundViewController];
-    self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.options = [RNNNavigationOptions emptyOptions];
 }
 
 - (void)tearDown {
@@ -74,7 +74,7 @@
 }
 
 - (void)testGetPreferredStatusBarStyle_considersDefaultOptions {
-    RNNNavigationOptions *lightOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *lightOptions = [RNNNavigationOptions emptyOptions];
     lightOptions.statusBar.style = [[Text alloc] initWithValue:@"light"];
     [_uut setDefaultOptions:lightOptions];
 

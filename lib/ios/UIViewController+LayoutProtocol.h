@@ -32,8 +32,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
-- (void)overrideOptions:(RNNNavigationOptions *)options;
-
 - (void)readyForPresentation;
 
 - (void)componentDidAppear;

@@ -2,7 +2,6 @@
 #import "RNNComponentOptions.h"
 #import "RNNReactBackgroundView.h"
 #import "RNNReactButtonView.h"
-#import "RNNReactTitleView.h"
 #import "RNNReactView.h"
 #import <UIKit/UIKit.h>
 

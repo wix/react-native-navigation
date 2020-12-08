@@ -10,13 +10,12 @@
 }
 
 + (RNNBottomTabsController *)createWithChildren:(NSArray *)children {
-    return [self createWithChildren:children
-                            options:[[RNNNavigationOptions alloc] initEmptyOptions]];
+    return [self createWithChildren:children options:[RNNNavigationOptions emptyOptions]];
 }
 
 + (RNNBottomTabsController *)createWithChildren:(NSArray *)children
                                         options:(RNNNavigationOptions *)options {
-    RNNNavigationOptions *defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
     return [[RNNBottomTabsController alloc]
            initWithLayoutInfo:nil
                       creator:nil

@@ -27,10 +27,6 @@
     return self;
 }
 
-- (void)overrideOptions:(RNNNavigationOptions *)options {
-    [self.options overrideOptions:options];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [_presenter applyOptions:self.resolveOptions];

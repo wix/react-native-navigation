@@ -698,31 +698,35 @@
 }
 
 - (void)testMergeOptionsShouldCallPresenterMergeOptions {
-    RNNNavigationOptions *newOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-    [[(id)self.uut.presenter expect] mergeOptions:newOptions resolvedOptions:self.uut.options];
+    RNNNavigationOptions *newOptions = [RNNNavigationOptions emptyOptions];
+    [[(id)self.uut.presenter expect]
+           mergeOptions:newOptions
+        resolvedOptions:[OCMArg checkWithBlock:^BOOL(RNNNavigationOptions *options) {
+          return [options isKindOfClass:RNNNavigationOptions.class];
+        }]];
     [self.uut mergeOptions:newOptions];
     [(id)self.uut.presenter verify];
 }
 
 - (void)testOverrideOptions {
-    RNNNavigationOptions *newOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *newOptions = [RNNNavigationOptions emptyOptions];
     newOptions.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
 
-    [self.uut overrideOptions:newOptions];
+    [self.uut mergeOptions:newOptions];
     XCTAssertEqual([UIColor redColor], self.uut.options.topBar.background.color.get);
 }
 
 #pragma mark BottomTabs
 
 - (RNNStackController *)createNavigationController {
-    RNNStackController *nav = [[RNNStackController alloc]
-          initWithLayoutInfo:nil
-                     creator:nil
-                     options:[[RNNNavigationOptions alloc] initEmptyOptions]
-              defaultOptions:nil
-                   presenter:[[RNNStackPresenter alloc] init]
-                eventEmitter:nil
-        childViewControllers:@[ self.uut ]];
+    RNNStackController *nav =
+        [[RNNStackController alloc] initWithLayoutInfo:nil
+                                               creator:nil
+                                               options:[RNNNavigationOptions emptyOptions]
+                                        defaultOptions:nil
+                                             presenter:[[RNNStackPresenter alloc] init]
+                                          eventEmitter:nil
+                                  childViewControllers:@[ self.uut ]];
 
     return nav;
 }

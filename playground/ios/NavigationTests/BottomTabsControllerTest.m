@@ -218,7 +218,7 @@
 }
 
 - (void)testSetSelectedIndex_ShouldSetSelectedIndexWithCurrentTabIndex {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.bottomTabs.currentTabIndex = [[IntNumber alloc] initWithValue:@(1)];
 
     RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
@@ -236,7 +236,7 @@
 }
 
 - (void)testDidSelectViewController_emitEventOnTabPress {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                                             rootViewCreator:nil
                                                                                eventEmitter:nil
@@ -255,7 +255,7 @@
 }
 
 - (void)testTabLongPress_ShouldEmitEvent {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                                             rootViewCreator:nil
                                                                                eventEmitter:nil
