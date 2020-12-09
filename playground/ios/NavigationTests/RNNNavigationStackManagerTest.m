@@ -36,7 +36,7 @@
         }
          rejection:nil];
 
-    [self waitForExpectationsWithTimeout:1 handler:nil];
+    [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
 - (void)testPopToSpecificVC_removeAllPopedVCFromStack {
@@ -50,7 +50,7 @@
         }
          rejection:nil];
 
-    [self waitForExpectationsWithTimeout:1 handler:nil];
+    [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
 - (void)testPopToRoot_removeAllTopVCsFromStack {
@@ -79,7 +79,7 @@
                 }
                  rejection:nil];
 
-    [self waitForExpectationsWithTimeout:1 handler:nil];
+    [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
 @end

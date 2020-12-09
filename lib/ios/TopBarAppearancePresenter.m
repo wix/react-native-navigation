@@ -8,6 +8,8 @@
 
 @implementation TopBarAppearancePresenter
 
+@synthesize borderColor = _borderColor;
+
 - (void)applyOptions:(RNNTopBarOptions *)options {
     [self setTranslucent:[options.background.translucent getWithDefaultValue:NO]];
     [self setScrollEdgeTranslucent:[options.scrollEdgeAppearance.background.translucent
@@ -18,8 +20,8 @@
                                            getWithDefaultValue:nil]];
     [self setTitleAttributes:options.title];
     [self setLargeTitleAttributes:options.largeTitle];
-    [self showBorder:![options.noBorder getWithDefaultValue:NO
-    ]:[options.borderColor getWithDefaultValue:nil]];
+    [self setBorderColor:[options.borderColor getWithDefaultValue:nil]];
+    [self showBorder:![options.noBorder getWithDefaultValue:NO]];
     [self setBackButtonOptions:options.backButton];
     if ([options.scrollEdgeAppearance.active getWithDefaultValue:NO]) {
         [self updateScrollEdgeAppearance];
@@ -27,6 +29,14 @@
 }
 
 - (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options {
+}
+
+- (void)mergeOptions:(RNNTopBarOptions *)options withDefault:(RNNTopBarOptions *)defaultOptions {
+    [super mergeOptions:options withDefault:defaultOptions];
+
+    if (options.borderColor.hasValue) {
+        [self setBorderColor:options.borderColor.get];
+    }
 }
 
 - (void)setTranslucent:(BOOL)translucent {
@@ -76,11 +86,23 @@
     }
 }
 
-- (void)showBorder:(BOOL)showBorder:(UIColor *)borderColor {
-    UIColor *shadowColor =
-        borderColor ? borderColor : [[UINavigationBarAppearance new] shadowColor];
-    self.getAppearance.shadowColor = showBorder ? shadowColor : nil;
-    self.getScrollEdgeAppearance.shadowColor = showBorder ? shadowColor : nil;
+- (void)showBorder:(BOOL)showBorder {
+    _showBorder = showBorder;
+    [self updateBorder];
+}
+
+- (void)setBorderColor:(UIColor *)borderColor {
+    _borderColor = borderColor;
+    [self updateBorder];
+}
+
+- (UIColor *)borderColor {
+    return _borderColor ?: [[UINavigationBarAppearance new] shadowColor];
+}
+
+- (void)updateBorder {
+    self.getAppearance.shadowColor = self.showBorder ? self.borderColor : nil;
+    self.getScrollEdgeAppearance.shadowColor = self.showBorder ? self.borderColor : nil;
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {

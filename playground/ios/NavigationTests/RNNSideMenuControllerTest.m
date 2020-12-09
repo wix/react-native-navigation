@@ -112,22 +112,22 @@
 }
 
 - (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleTrue {
-    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(1)];
+    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:YES];
     XCTAssertFalse(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleFalse {
-    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(0)];
+    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:NO];
     XCTAssertTrue(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPreferredStatusHidden_shouldHideStatusBar {
-    self.uut.options.statusBar.visible = [Bool withValue:@(1)];
+    self.uut.options.statusBar.visible = [Bool withValue:YES];
     XCTAssertFalse(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPreferredStatusHidden_shouldShowStatusBar {
-    self.uut.options.statusBar.visible = [Bool withValue:@(0)];
+    self.uut.options.statusBar.visible = [Bool withValue:NO];
     XCTAssertTrue(self.uut.prefersStatusBarHidden);
 }
 
