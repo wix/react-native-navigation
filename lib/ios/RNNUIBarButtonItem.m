@@ -18,7 +18,7 @@
                   action:@selector(onButtonPressed)
         forControlEvents:UIControlEventTouchUpInside];
     [button setImage:iconImage forState:UIControlStateNormal];
-    [button setFrame:CGRectMake(0, 0, iconImage.size.width, iconImage.size.height)];
+    [button setFrame:CGRectMake(0, 0, iconImage.size.width, MAX(44, iconImage.size.height))];
     self = [super initWithCustomView:button];
     self.buttonId = buttonId;
     return self;
