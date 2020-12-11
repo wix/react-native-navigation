@@ -52,7 +52,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
 
         if (navigator == null || navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
-            addDefaultSplashLayout();
             navigator = new Navigator(this,
                     new ChildControllersRegistry(),
                     new ModalStack(this),
@@ -60,6 +59,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
                     new RootPresenter(this),
                     logger
             );
+            addDefaultSplashLayout();
             navigator.bindViews();
             getReactGateway().onActivityCreated(this);
         }

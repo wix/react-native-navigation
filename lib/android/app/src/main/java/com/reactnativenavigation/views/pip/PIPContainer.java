@@ -13,7 +13,6 @@ public class PIPContainer extends FrameLayout {
         super(context);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         layoutParams.setMargins(0, 0, 0, 0);
-        setBackgroundColor(Color.TRANSPARENT);
         setLayoutParams(layoutParams);
     }
 

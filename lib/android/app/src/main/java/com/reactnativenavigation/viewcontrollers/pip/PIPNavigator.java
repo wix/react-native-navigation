@@ -37,10 +37,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.reactnativenavigation.views.pip.PIPStates.NATIVE_MOUNT_START;
+import static com.reactnativenavigation.views.pip.PIPStates.NOT_STARTED;
+
 public class PIPNavigator extends ParentController<PIPContainer> {
     private ViewController childController;
     private StackAnimator animator;
-    private PIPStates pipState = PIPStates.NOT_STARTED;
+    private PIPStates pipState = NOT_STARTED;
     private PIPFloatingLayout pipFloatingLayout;
     private String EXTRA_CONTROL_TYPE = "control_type";
     private ILogger logger;
@@ -90,7 +93,6 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         this.childController = childController;
         this.childController.setParentController(this);
         View pipView = this.childController.getView();
-        updatePIPStateInternal(PIPStates.MOUNT_START);
         PIPFloatingLayout floatingLayout = new PIPFloatingLayout(getActivity(), logger);
         floatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);
         floatingLayout.addView(pipView);
@@ -104,13 +106,15 @@ public class PIPNavigator extends ParentController<PIPContainer> {
             }
         });
         getView().addView(floatingLayout);
+        this.pipFloatingLayout = floatingLayout;
+        if (this.childController != null && toNative) {
+            updatePIPStateInternal(NATIVE_MOUNT_START);
+        }
         if (this.childController.options.animations.pipIn.enabled.isTrueOrUndefined() && !toNative) {
             this.animator.pipIn(floatingLayout, this.childController, this.childController.options, () -> {
-                this.pipFloatingLayout = floatingLayout;
                 updatePIPStateInternal(PIPStates.CUSTOM_COMPACT);
             });
         } else {
-            this.pipFloatingLayout = floatingLayout;
             updatePIPStateInternal(PIPStates.CUSTOM_COMPACT);
         }
     }
@@ -125,13 +129,13 @@ public class PIPNavigator extends ParentController<PIPContainer> {
                         this.childController,
                         this.childController.options,
                         () -> {
-                            updatePIPStateInternal(PIPStates.NOT_STARTED);
+                            updatePIPStateInternal(NOT_STARTED);
                             this.childController.detachView();
                             task.run(this.childController);
                             clearPIP();
                         });
             } else {
-                updatePIPStateInternal(PIPStates.NOT_STARTED);
+                updatePIPStateInternal(NOT_STARTED);
                 this.childController.detachView();
                 task.run(this.childController);
                 clearPIP();
@@ -194,7 +198,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
                     PIPNavigator.this.childController.detachView();
                     PIPNavigator.this.childController.onViewWillDisappear();
                     PIPNavigator.this.childController.destroy();
-                    updatePIPStateInternal(PIPStates.NOT_STARTED);
+                    updatePIPStateInternal(NOT_STARTED);
                     if (listener != null)
                         listener.onSuccess("PIP Closed");
                     clearPIP();

@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
 import android.app.PictureInPictureParams;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
@@ -15,16 +16,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.utils.ILogger;
-import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
-import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
+import com.reactnativenavigation.utils.ILogger;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
@@ -34,8 +31,8 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.pip.PIPStates;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOverlay;
+import com.reactnativenavigation.views.pip.PIPStates;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -78,6 +75,7 @@ public class Navigator extends ParentController {
     }
 
     public void setContentLayout(ViewGroup contentLayout) {
+        contentLayout.setBackgroundColor(Color.WHITE);
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
         modalsLayout.setVisibility(View.GONE);
@@ -354,7 +352,7 @@ public class Navigator extends ParentController {
     }
 
     public boolean shouldSwitchToPIP() {
-        return getPipMode() != PIPStates.NOT_STARTED || (this.activeStack != null && this.activeStack.shouldSwitchToPIP());
+        return getPipMode() != PIPStates.NOT_STARTED || (this.activeStack != null && this.activeStack.shouldSwitchToPIP() && modalStack.isEmpty());
     }
 
     public void resetPIP() {

@@ -47,7 +47,7 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         super(activity);
         this.activity = activity;
         ViewConfiguration vc = ViewConfiguration.get(this.getContext());
-        mTouchSlop = vc.getScaledTouchSlop();
+        mTouchSlop = vc.getScaledTouchSlop() * 3;
         touchHandler = new PipTouchHandler(this);
     }
 

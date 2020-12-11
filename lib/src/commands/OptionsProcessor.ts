@@ -146,12 +146,12 @@ export class OptionsProcessor {
 
     const deprecatedSearchBarOptions: OptionsSearchBar = {
       visible: false,
-      hideOnScroll: options.searchBarHiddenWhenScrolling ?? false,
-      hideTopBarOnFocus: options.hideNavBarOnFocusSearchBar ?? false,
+      hideOnScroll: options.searchBarHiddenWhenScrolling || false,
+      hideTopBarOnFocus: options.hideNavBarOnFocusSearchBar || false,
       obscuresBackgroundDuringPresentation: false,
       backgroundColor: options.searchBarBackgroundColor,
       tintColor: options.searchBarTintColor,
-      placeholder: options.searchBarPlaceholder ?? '',
+      placeholder: options.searchBarPlaceholder || '',
     };
 
     if (typeof value === 'boolean') {
