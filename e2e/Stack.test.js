@@ -25,6 +25,13 @@ describe('Stack', () => {
     await expect(elementByLabel('Stack Position: 1')).toBeVisible();
   });
 
+  it('pop using stack id', async () => {
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    await elementById(TestIDs.POP_USING_STACK_ID_BTN).tap();
+    await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
+  });
+
   it('pop using previous screen id', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
