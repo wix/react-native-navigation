@@ -19,6 +19,7 @@ const {
   PUSH_BTN,
   POP_BTN,
   PUSH_NO_ANIM_BTN,
+  POP_USING_PREVIOUS_SCREEN_ID_BTN,
   POP_TO_FIRST_SCREEN_BTN,
   POP_TO_ROOT_BTN,
   ADD_BACK_HANDLER,
@@ -76,6 +77,13 @@ export default class PushedScreen extends NavigationComponent<Props> {
           testID={PUSH_NO_ANIM_BTN}
           onPress={this.pushWithoutAnimations}
         />
+        {stackPosition > 1 && (
+          <Button
+            label="Pop Using Previous Screen ID"
+            testID={POP_USING_PREVIOUS_SCREEN_ID_BTN}
+            onPress={this.popUsingPreviousScreenId}
+          />
+        )}
         {stackPosition > 2 && (
           <Button
             label="Pop to First Screen"
@@ -121,6 +129,9 @@ export default class PushedScreen extends NavigationComponent<Props> {
     });
 
   pop = () => Navigation.pop(this);
+
+  popUsingPreviousScreenId = () =>
+    Navigation.pop(this.props.previousScreenIds[this.getStackPosition() - 2]);
 
   pushWithoutAnimations = () =>
     Navigation.push(this, {
