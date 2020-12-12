@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackHandler } from 'react-native';
+import { BackHandler, StyleSheet, View } from 'react-native';
 import {
   NavigationComponent,
   NavigationComponentProps,
@@ -71,8 +71,10 @@ export default class PushedScreen extends NavigationComponent<Props> {
     const stackPosition = this.getStackPosition();
     return (
       <Root componentId={this.props.componentId} footer={`Stack Position: ${stackPosition}`}>
-        <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
-        <Button label="Pop" testID={POP_BTN} onPress={this.pop} />
+        <View style={styles.container}>
+          <Button label="Push" testID={PUSH_BTN} onPress={this.push} marginH-5 />
+          <Button label="Pop" testID={POP_BTN} onPress={this.pop} marginH-5 />
+        </View>
         <Button
           label="Push Without Animation"
           testID={PUSH_NO_ANIM_BTN}
@@ -246,3 +248,10 @@ export default class PushedScreen extends NavigationComponent<Props> {
   };
   getStackPosition = () => this.props.stackPosition || 1;
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+});
