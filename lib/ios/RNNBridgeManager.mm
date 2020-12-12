@@ -134,7 +134,9 @@
     [_overlayManager dismissAllOverlays];
     [_modalManager dismissAllModalsSynchronosly];
     [_componentRegistry clear];
+#ifdef DEBUG
     UIApplication.sharedApplication.delegate.window.rootViewController = nil;
+#endif
 }
 
 @end
