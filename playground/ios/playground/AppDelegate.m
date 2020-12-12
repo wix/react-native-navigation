@@ -13,6 +13,9 @@
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     if (@available(iOS 13.0, *)) {
         self.window.backgroundColor = [UIColor systemBackgroundColor];
@@ -21,7 +24,7 @@
     }
     [self.window makeKeyWindow];
 
-    [ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];
+    [ReactNativeNavigation bootstrapWithBridge:bridge];
     [ReactNativeNavigation
         registerExternalComponent:@"RNNCustomComponent"
                          callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
