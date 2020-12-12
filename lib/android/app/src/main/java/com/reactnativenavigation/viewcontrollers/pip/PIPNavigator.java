@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.reactnativenavigation.views.pip.PIPStates.MOUNT_START;
 import static com.reactnativenavigation.views.pip.PIPStates.NATIVE_MOUNT_START;
 import static com.reactnativenavigation.views.pip.PIPStates.NOT_STARTED;
 
@@ -107,8 +108,12 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         });
         getView().addView(floatingLayout);
         this.pipFloatingLayout = floatingLayout;
-        if (this.childController != null && toNative) {
-            updatePIPStateInternal(NATIVE_MOUNT_START);
+        if (this.childController != null) {
+            if (toNative) {
+                updatePIPStateInternal(NATIVE_MOUNT_START);
+            } else {
+                updatePIPStateInternal(MOUNT_START);
+            }
         }
         if (this.childController.options.animations.pipIn.enabled.isTrueOrUndefined() && !toNative) {
             this.animator.pipIn(floatingLayout, this.childController, this.childController.options, () -> {

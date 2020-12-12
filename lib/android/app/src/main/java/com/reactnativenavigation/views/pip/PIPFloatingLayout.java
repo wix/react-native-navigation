@@ -328,11 +328,6 @@ public class PIPFloatingLayout extends CoordinatorLayout {
                 case NOT_STARTED:
                     resetPIPLayout();
                     break;
-                case MOUNT_START:
-                    resetPIPLayout();
-                    initializeCustomLayoutParams();
-                    setCustomPIPMode();
-                    break;
                 case CUSTOM_COMPACT:
                     setCustomCompactState();
                     break;

@@ -18,15 +18,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
-import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
-import com.reactnativenavigation.react.JsDevReloadHandler;
-import com.reactnativenavigation.utils.ILogger;
-import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.react.JsDevReloadHandler;
+import com.reactnativenavigation.react.ReactGateway;
+import com.reactnativenavigation.utils.ILogger;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
@@ -149,7 +148,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void invokeDefaultOnBackPressed() {
         logger.log(Log.VERBOSE, TAG, "invokeDefaultOnBackPressed  PIPMode " + navigator.getPipMode());
-        if (!navigator.handleBack(new CommandListenerAdapter())) {
+        if (navigator.shouldSwitchToPIP()) {
+            navigator.updatePIPState(PIPStates.MOUNT_START);
+        } else if (!navigator.handleBack(new CommandListenerAdapter())) {
             super.onBackPressed();
         }
     }

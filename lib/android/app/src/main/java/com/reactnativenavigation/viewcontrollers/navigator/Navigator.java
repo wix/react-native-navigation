@@ -312,6 +312,9 @@ public class Navigator extends ParentController {
     public void updatePIPState(PIPStates newPIPState) {
         logger.log(Log.INFO, TAG, "pipState " + newPIPState);
         switch (newPIPState) {
+            case MOUNT_START:
+                pipNavigator.pushPIP(activeStack.switchToPIP(null), false);
+                break;
             case NATIVE_MOUNTED:
                 pipNavigator.getView().setVisibility(View.VISIBLE);
                 rootLayout.setVisibility(View.GONE);
