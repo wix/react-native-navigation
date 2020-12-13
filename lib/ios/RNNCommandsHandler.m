@@ -278,13 +278,13 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
         RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
         [vc mergeOptions:options];
 
-        [vc.stack pop:vc
-              animated:[vc.resolveOptionsWithDefault.animations.pop.enable getWithDefaultValue:YES]
-            completion:^{
-              [self->_eventEmitter sendOnNavigationCommandCompletion:pop commandId:commandId];
-              completion();
-            }
-             rejection:rejection];
+        [vc.stack
+            popAnimated:[vc.resolveOptionsWithDefault.animations.pop.enable getWithDefaultValue:YES]
+             completion:^{
+               [self->_eventEmitter sendOnNavigationCommandCompletion:pop commandId:commandId];
+               completion();
+             }
+              rejection:rejection];
     } else {
         [RNNErrorHandler
                       reject:rejection
