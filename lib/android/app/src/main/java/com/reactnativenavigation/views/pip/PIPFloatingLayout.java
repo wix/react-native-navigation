@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,7 @@ public class PIPFloatingLayout extends FrameLayout {
     private String TAG = "PIPFloatingLayout";
     private ILogger logger;
     private PIPButtonsLayout pipButtonsLayout;
+    private int statusBarHeight = 0;
 
     public PIPFloatingLayout(@NonNull Activity activity) {
         super(activity);
@@ -51,7 +54,7 @@ public class PIPFloatingLayout extends FrameLayout {
         pipButtonsLayout.setPipButtonListener(buttonListener);
         ViewConfiguration vc = ViewConfiguration.get(this.getContext());
         mTouchSlop = vc.getScaledTouchSlop() * 3;
-        touchHandler = new PipTouchHandler(this);
+        statusBarHeight = getStatusBarHeight();
     }
 
     public PIPFloatingLayout(@NonNull Activity activity, ILogger logger) {
@@ -136,8 +139,8 @@ public class PIPFloatingLayout extends FrameLayout {
                     if ((destX + getWidth()) > UiUtils.getWindowWidth(getContext())) {
                         destX = UiUtils.getWindowWidth(getContext()) - getWidth();
                     }
-                    if (destY < 0) {
-                        destY = 0;
+                    if (destY < statusBarHeight) {
+                        destY = statusBarHeight;
                     }
                     if ((destY + getHeight()) > UiUtils.getWindowHeight(getContext())) {
                         destY = UiUtils.getWindowHeight(getContext()) - getHeight();
@@ -361,6 +364,14 @@ public class PIPFloatingLayout extends FrameLayout {
         }
     }
 
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 
     @Override
     public void addView(View child) {
@@ -397,5 +408,6 @@ public class PIPFloatingLayout extends FrameLayout {
             }
         }
     };
+
 
 }

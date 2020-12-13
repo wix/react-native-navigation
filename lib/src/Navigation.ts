@@ -314,6 +314,6 @@ export class NavigationRoot {
    * set pip host
    */
   public setPIPHostId(componentId: string) {
-    this.commands.restorePIP(componentId);
+    this.commands.setPIPHostId(componentId);
   }
 }
