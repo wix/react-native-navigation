@@ -10,7 +10,7 @@ const packageJsonPath = `${process.cwd()}/package.json`;
 // Workaround JS
 const isRelease = process.env.RELEASE_BUILD === 'true';
 
-const BUMP_DOCUMENTATION_VERSION = process.env.BUMP_DOCUMENTATION_VERSION === 'true';
+const BUILD_DOCUMENTATION_VERSION = process.env.BUILD_DOCUMENTATION_VERSION;
 
 const BRANCH = process.env.BRANCH;
 let VERSION_TAG = process.env.NPM_TAG;
