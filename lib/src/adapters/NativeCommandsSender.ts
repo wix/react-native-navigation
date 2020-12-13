@@ -37,6 +37,8 @@ interface NativeCommandsModule {
   switchToPIP(commandId: string, componentId: string, options?: object): Promise<any>;
 
   restorePIP(commandId: string, componentId: string): Promise<any>;
+
+  setPIPHostId(componentId: string): void;
 }
 
 export class NativeCommandsSender {
@@ -116,5 +118,9 @@ export class NativeCommandsSender {
 
   restorePIP(commandId: string, componentId: string) {
     return this.nativeCommandsModule.restorePIP(commandId, componentId);
+  }
+
+  setPIPHostId(componentId: string) {
+    return this.nativeCommandsModule.setPIPHostId(componentId);
   }
 }

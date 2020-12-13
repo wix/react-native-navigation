@@ -309,4 +309,11 @@ export class NavigationRoot {
   public restorePIP(componentId: string): Promise<any> {
     return this.commands.restorePIP(componentId);
   }
+
+  /**
+   * set pip host
+   */
+  public setPIPHostId(componentId: string) {
+    this.commands.restorePIP(componentId);
+  }
 }

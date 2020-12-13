@@ -32,6 +32,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOverlay;
+import com.reactnativenavigation.views.pip.IPIPListener;
 import com.reactnativenavigation.views.pip.PIPStates;
 
 import java.util.Collection;
@@ -53,6 +54,7 @@ public class Navigator extends ParentController {
     private Options defaultOptions = new Options();
     private StackController activeStack = null;
     private ILogger logger;
+    private String pipHostId = "";
     private String TAG = "Navigator";
 
     @Override
@@ -96,6 +98,7 @@ public class Navigator extends ParentController {
         overlaysLayout = new CoordinatorLayout(getActivity());
         this.pipNavigator = new PIPNavigator(activity, new ChildControllersRegistry(), new Presenter(activity, new Options()), new Options(), this.logger);
         this.pipNavigator.setParentController(this);
+        this.pipNavigator.setPipListener(pipListener);
     }
 
     public void bindViews() {
@@ -203,6 +206,7 @@ public class Navigator extends ParentController {
 
     public void pushAsPIP(final String id, final ViewController viewController, CommandListener listener) {
         applyOnStack(id, listener, stack -> {
+            setPIPHostId(stack.getId());
             this.pipNavigator.pushPIP(viewController, false);
             viewController.start();
         });
@@ -210,20 +214,27 @@ public class Navigator extends ParentController {
 
     public void switchToPIP(String id, Options mergeOptions, CommandListener listener) {
         applyOnStack(id, listener, stack -> {
+            setPIPHostId(stack.getId());
             this.pipNavigator.pushPIP(stack.switchToPIP(mergeOptions), false);
         });
+    }
+
+    public void setPIPHostId(String id) {
+        this.pipHostId = id;
     }
 
     public void restorePIP(String id, CommandListener listener) {
         applyOnStack(id, listener, stack -> this.pipNavigator.restorePIP(child -> stack.restorePIP(child, new CommandListener() {
             @Override
             public void onSuccess(String childId) {
-                listener.onSuccess(childId);
+                if (listener != null)
+                    listener.onSuccess(childId);
             }
 
             @Override
             public void onError(String message) {
-                listener.onError(message);
+                if (listener != null)
+                    listener.onError(message);
             }
         })));
     }
@@ -369,6 +380,23 @@ public class Navigator extends ParentController {
     public PictureInPictureParams getPictureInPictureParams() {
         return pipNavigator.getPictureInPictureParams();
     }
+
+    private IPIPListener pipListener = new IPIPListener() {
+        @Override
+        public void onPIPStateChanged(PIPStates oldPIPState, PIPStates pipState) {
+
+        }
+
+        @Override
+        public void onCloseClick() {
+            closePIP(null);
+        }
+
+        @Override
+        public void onFullScreenClick() {
+            restorePIP(pipHostId, null);
+        }
+    };
 
 
     private boolean isRootNotCreated() {

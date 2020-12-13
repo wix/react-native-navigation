@@ -90,7 +90,7 @@ public class PipTouchHandler {
     /**
      * A listener for the PIP menu activity.
      */
-    private class PipMenuListener implements PIPFloatingLayout.IPIPListener {
+    private class PipMenuListener implements IPIPListener {
         @Override
         public void onPIPStateChanged(PIPStates oldPIPState, PIPStates pipState) {
             switch (pipState) {
@@ -107,6 +107,16 @@ public class PipTouchHandler {
                     mMotionHelper.dismissPip();
 
             }
+        }
+
+        @Override
+        public void onCloseClick() {
+
+        }
+
+        @Override
+        public void onFullScreenClick() {
+
         }
     }
 

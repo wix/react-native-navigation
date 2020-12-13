@@ -19,15 +19,15 @@ import com.reactnativenavigation.options.LayoutNode;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.parsers.JSONParser;
 import com.reactnativenavigation.options.parsers.LayoutNodeParser;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.LaunchArgsParser;
 import com.reactnativenavigation.utils.Now;
 import com.reactnativenavigation.utils.StatusBarUtils;
-import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import java.util.ArrayList;
 
@@ -209,6 +209,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         handle(() -> navigator().dismissOverlay(componentId, new NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now)));
     }
 
+    @ReactMethod
+    public void setPIPHostId(String componentId) {
+        handle(() -> navigator().setPIPHostId(componentId));
+    }
+
     private Navigator navigator() {
         return activity().getNavigator();
     }
@@ -216,7 +221,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private Options parse(@Nullable ReadableMap mergeOptions) {
         ReactApplicationContext ctx = getReactApplicationContext();
         return mergeOptions ==
-               null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
+                null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
     }
 
     protected void handle(Runnable task) {

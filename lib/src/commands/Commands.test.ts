@@ -471,6 +471,13 @@ describe('Commands', () => {
     });
   });
 
+  describe('setPIPHostId', () => {
+    it('close a component if its in in PIP mode', () => {
+      uut.setPIPHostId('theComponentId');
+      verify(mockedNativeCommandsSender.setPIPHostId('setPIPHostId+UNIQUE_ID')).called();
+    });
+  });
+
   describe('closePIP', () => {
     it('close a component if its in in PIP mode', () => {
       uut.closePIP();

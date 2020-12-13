@@ -221,4 +221,9 @@ export class Commands {
     this.commandsObserver.notify('pushAsPIP', { commandId, componentId, layout });
     return result;
   }
+
+  public setPIPHostId(componentId: string) {
+    this.nativeCommandsSender.setPIPHostId(componentId);
+    this.commandsObserver.notify('setPIPHostId', {componentId });
+  }
 }

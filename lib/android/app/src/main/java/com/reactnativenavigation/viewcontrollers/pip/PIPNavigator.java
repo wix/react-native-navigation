@@ -29,6 +29,7 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.pip.IPIPListener;
 import com.reactnativenavigation.views.pip.PIPContainer;
 import com.reactnativenavigation.views.pip.PIPFloatingLayout;
 import com.reactnativenavigation.views.pip.PIPStates;
@@ -51,6 +52,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     private boolean receiverRegistered = false;
     private boolean wasDirectLaunchToNative = false;
     private String TAG = "PIPNavigator";
+    private IPIPListener pipListener;
 
     public PIPNavigator(Activity activity, ChildControllersRegistry childRegistry, Presenter presenter, Options initialOptions, ILogger logger) {
         super(activity, childRegistry, "PIP " + CompatUtils.generateViewId(), presenter, initialOptions);
@@ -97,15 +99,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         PIPFloatingLayout floatingLayout = new PIPFloatingLayout(getActivity(), logger);
         floatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);
         floatingLayout.addView(pipView);
-        floatingLayout.setPipListener(new PIPFloatingLayout.IPIPListener() {
-            @Override
-            public void onPIPStateChanged(PIPStates oldState, PIPStates newState) {
-                if (isChildControlledAvailable()) {
-                    logger.log(Log.INFO, TAG, "Old State " + oldState.toString() + " New State " + newState.toString());
-                    PIPNavigator.this.childController.sendOnPIPStateChanged(oldState.getValue(), newState.getValue());
-                }
-            }
-        });
+        floatingLayout.setPIPListener(pipFloatingLayoutListener);
         getView().addView(floatingLayout);
         this.pipFloatingLayout = floatingLayout;
         if (this.childController != null) {
@@ -222,6 +216,10 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         getView().setVisibility(View.GONE);
     }
 
+    public void setPipListener(IPIPListener pipListener) {
+        this.pipListener = pipListener;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private List<RemoteAction> getPIPActionButtons() {
         List<RemoteAction> actionList = new ArrayList<RemoteAction>();
@@ -285,4 +283,28 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     public boolean wasDirectLaunchToNative() {
         return wasDirectLaunchToNative;
     }
+
+    private IPIPListener pipFloatingLayoutListener = new IPIPListener() {
+        @Override
+        public void onPIPStateChanged(PIPStates oldState, PIPStates newState) {
+            if (isChildControlledAvailable()) {
+                logger.log(Log.INFO, TAG, "Old State " + oldState.toString() + " New State " + newState.toString());
+                PIPNavigator.this.childController.sendOnPIPStateChanged(oldState.getValue(), newState.getValue());
+            }
+            if (pipListener != null)
+                pipListener.onPIPStateChanged(oldState, newState);
+        }
+
+        @Override
+        public void onCloseClick() {
+            if (pipListener != null)
+                pipListener.onCloseClick();
+        }
+
+        @Override
+        public void onFullScreenClick() {
+            if (pipListener != null)
+                pipListener.onFullScreenClick();
+        }
+    };
 }

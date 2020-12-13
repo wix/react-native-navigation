@@ -25,7 +25,7 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ViewExtension;
 
-public class PIPFloatingLayout extends CoordinatorLayout {
+public class PIPFloatingLayout extends FrameLayout {
     private float dX, dY;
     private Activity activity;
     private int pipLayoutLeft = 0, pipLayoutTop = 0;
@@ -42,10 +42,13 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     private PipTouchHandler touchHandler;
     private String TAG = "PIPFloatingLayout";
     private ILogger logger;
+    private PIPButtonsLayout pipButtonsLayout;
 
     public PIPFloatingLayout(@NonNull Activity activity) {
         super(activity);
         this.activity = activity;
+        pipButtonsLayout = new PIPButtonsLayout(activity);
+        pipButtonsLayout.setPipButtonListener(buttonListener);
         ViewConfiguration vc = ViewConfiguration.get(this.getContext());
         mTouchSlop = vc.getScaledTouchSlop() * 3;
         touchHandler = new PipTouchHandler(this);
@@ -68,9 +71,13 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         this.pipDimension = dimension;
     }
 
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         boolean shouldIntercept = false;
+        if (pipButtonsLayout.isWithinBounds(event)) {
+            return shouldIntercept;
+        }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mPrevRawX = event.getRawX();
@@ -157,6 +164,7 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         FrameLayout.LayoutParams pipLayoutLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         pipLayoutLayoutParams.setMargins(0, 0, 0, 0);
         setLayoutParams(pipLayoutLayoutParams);
+        this.pipButtonsLayout.hide();
     }
 
     private void setCustomPIPMode() {
@@ -164,15 +172,6 @@ public class PIPFloatingLayout extends CoordinatorLayout {
             setLayoutParams(layoutParams);
         }
         logger.log(Log.INFO, TAG, " setCustomPIPMode  pipLayoutLeft " + this.pipLayoutLeft + " pipLayoutTop " + this.pipLayoutTop);
-    }
-
-    private void initializeCustomLayoutParams() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        layoutParams = new FrameLayout.LayoutParams(this.pipDimension.compact.width.get(), this.pipDimension.compact.height.get());
-        this.pipLayoutTop = 0;
-        this.pipLayoutLeft = 0;
-        logger.log(Log.INFO, TAG, " initializeCustomLayoutParams  width " + this.pipDimension.compact.width.get() + " height " + this.pipDimension.compact.height.get());
     }
 
     private void resetPIPLayout() {
@@ -203,6 +202,7 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         params.width = UiUtils.dpToPx(activity, pipDimension.compact.width.get());
         params.height = UiUtils.dpToPx(activity, pipDimension.compact.height.get());
         setLayoutParams(params);
+        pipButtonsLayout.makeShortTimeVisible();
     }
 
     private void setCustomExpandedState() {
@@ -210,6 +210,7 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         params.width = UiUtils.dpToPx(activity, pipDimension.expanded.width.get());
         params.height = UiUtils.dpToPx(activity, pipDimension.expanded.height.get());
         setLayoutParams(params);
+        pipButtonsLayout.makePermanentVisible();
         animateToCompact(5000);
     }
 
@@ -364,12 +365,13 @@ public class PIPFloatingLayout extends CoordinatorLayout {
     @Override
     public void addView(View child) {
         super.addView(child);
-        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, 0);
         child.setLayoutParams(params);
+        super.addView(pipButtonsLayout);
     }
 
-    public void setPipListener(IPIPListener pipListener) {
+    public void setPIPListener(IPIPListener pipListener) {
         this.pipListener = pipListener;
     }
 
@@ -380,7 +382,20 @@ public class PIPFloatingLayout extends CoordinatorLayout {
         }
     }
 
-    public interface IPIPListener {
-        void onPIPStateChanged(PIPStates oldPIPState, PIPStates pipState);
-    }
+    private PIPButtonsLayout.IPIPButtonListener buttonListener = new PIPButtonsLayout.IPIPButtonListener() {
+        @Override
+        public void onFullScreenClick() {
+            if (pipListener != null) {
+                pipListener.onFullScreenClick();
+            }
+        }
+
+        @Override
+        public void onCloseClick() {
+            if (pipListener != null) {
+                pipListener.onCloseClick();
+            }
+        }
+    };
+
 }
