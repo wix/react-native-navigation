@@ -15,6 +15,7 @@ const Screens = {
   CarDetailsScreen: 'CarDetailsScreen',
   CarStoryScreen: 'CarStoryScreen',
   CarsListScreen: 'CarsListScreen',
+  ImageFullScreenViewer: 'ImageFullScreenViewer',
   ContextScreen: 'ContextScreen',
   ExternalComponent: 'ExternalComponent',
   FullScreenModal: 'FullScreenModal',

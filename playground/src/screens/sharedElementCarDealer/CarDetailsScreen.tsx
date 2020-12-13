@@ -11,7 +11,7 @@ import FastImage from 'react-native-fast-image';
 import Reanimated, { Easing, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
-import { SET_DURATION } from './Constants';
+import { buildFullScreenSharedElementAnimations, SET_DURATION } from './Constants';
 import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
 
@@ -63,6 +63,21 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
     [dismissGesture.cardBorderRadius, headerY]
   );
 
+  const openImage = useCallback(() => {
+    Navigation.showModal({
+      component: {
+        name: 'ImageFullScreenViewer',
+        passProps: {
+          source: car.image,
+          sharedElementId: `image${car.id}Full`,
+        },
+        options: {
+          animations: buildFullScreenSharedElementAnimations(car),
+        },
+      },
+    });
+  }, [car]);
+
   useEffect(() => {
     setTimeout(() => {
       Reanimated.timing(dismissGesture.controlsOpacity, {
@@ -91,13 +106,15 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
           <Text style={styles.buyText}>Buy</Text>
         </PressableScale>
       </Reanimated.ScrollView>
-      <ReanimatedFastImage
-        source={car.image}
-        // @ts-ignore nativeID isn't included in react-native-fast-image props.
-        nativeID={`image${car.id}Dest`}
-        style={imageStyle}
-        resizeMode="cover"
-      />
+      <ReanimatedTouchableOpacity style={imageStyle} onPress={openImage}>
+        <ReanimatedFastImage
+          source={car.image}
+          // @ts-ignore nativeID isn't included in react-native-fast-image props.
+          nativeID={`image${car.id}Dest`}
+          resizeMode="cover"
+          style={StyleSheet.absoluteFill}
+        />
+      </ReanimatedTouchableOpacity>
       <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>
       </ReanimatedTouchableOpacity>
