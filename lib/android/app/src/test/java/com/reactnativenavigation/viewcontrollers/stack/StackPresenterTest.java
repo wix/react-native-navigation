@@ -133,6 +133,7 @@ public class StackPresenterTest extends BaseTest {
         o1.topBar.title.component = component(Alignment.Default);
         o1.topBar.background.component = component(Alignment.Default);
         o1.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
+        o1.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
         uut.applyChildOptions(o1, parent, child);
 
         uut.isRendered(child.getView());
@@ -140,9 +141,10 @@ public class StackPresenterTest extends BaseTest {
         verify(renderChecker).areRendered(controllers.capture());
         ArrayList<ViewController> items = new ArrayList<>(controllers.getValue());
         assertThat(items.contains(uut.getComponentButtons(child.getView()).get(0))).isTrue();
+        assertThat(items.contains(uut.getComponentButtons(child.getView()).get(1))).isTrue();
         assertThat(items.contains(uut.getTitleComponents().get(child.getView()))).isTrue();
         assertThat(items.contains(uut.getBackgroundComponents().get(child.getView()))).isTrue();
-        assertThat(items.size()).isEqualTo(3);
+        assertThat(items.size()).isEqualTo(4);
     }
 
     @Test

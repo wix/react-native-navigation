@@ -120,7 +120,9 @@ public class StackPresenter {
     }
 
     public boolean isRendered(View component) {
-        ArrayList<ViewController> controllers = new ArrayList<>(perform(componentRightButtons.get(component), new ArrayList<>(), Map::values));
+        ArrayList<ViewController> controllers = new ArrayList<>();
+        controllers.addAll(perform(componentRightButtons.get(component), new ArrayList<>(), Map::values));
+        controllers.addAll(perform(componentLeftButtons.get(component), new ArrayList<>(), Map::values));
         controllers.add(backgroundControllers.get(component));
         controllers.add(titleControllers.get(component));
         return renderChecker.areRendered(filter(controllers, ObjectUtils::notNull));
