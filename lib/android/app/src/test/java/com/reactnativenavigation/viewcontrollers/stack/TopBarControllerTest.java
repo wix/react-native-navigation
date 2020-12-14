@@ -45,13 +45,13 @@ public class TopBarControllerTest extends BaseTest {
     @Test
     public void setButton_setsTextButton() {
         uut.applyRightButtons(rightButtons(textButton1));
-        uut.setLeftButtons(leftButton(leftButton));
+        uut.applyLeftButtons(leftButton(leftButton));
         assertThat(uut.getRightButton(0).getTitle().toString()).isEqualTo(textButton1.text.get());
     }
 
     @Test
     public void setButton_setsCustomButton() {
-        uut.setLeftButtons(leftButton(leftButton));
+        uut.applyLeftButtons(leftButton(leftButton));
         uut.applyRightButtons(rightButtons(componentButton));
         ReactView btnView = (ReactView) uut.getRightButton(0).getActionView();
         assertThat(btnView.getComponentName()).isEqualTo(componentButton.component.name.get());
@@ -59,9 +59,9 @@ public class TopBarControllerTest extends BaseTest {
 
     @Test
     public void applyRightButtons_emptyButtonsListClearsRightButtons() {
-        uut.setLeftButtons(new ArrayList<>());
+        uut.applyLeftButtons(new ArrayList<>());
         uut.applyRightButtons(rightButtons(componentButton, textButton1));
-        uut.setLeftButtons(new ArrayList<>());
+        uut.applyLeftButtons(new ArrayList<>());
         uut.applyRightButtons(new ArrayList<>());
         assertThat(uut.getRightButtonsCount()).isEqualTo(0);
     }
@@ -77,7 +77,7 @@ public class TopBarControllerTest extends BaseTest {
 
     @Test
     public void applyRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
-        uut.setLeftButtons(new ArrayList<>());
+        uut.applyLeftButtons(new ArrayList<>());
         uut.applyRightButtons(rightButtons(textButton1, componentButton));
         assertThat(uut.getRightButton(1).getTitle().toString()).isEqualTo(textButton1.text.get());
     }
@@ -105,14 +105,14 @@ public class TopBarControllerTest extends BaseTest {
     }
 
     @Test
-    public void setLeftButtons_emptyButtonsListClearsLeftButton() {
-        uut.setLeftButtons(leftButton(leftButton));
+    public void applyLeftButtons_emptyButtonsListClearsLeftButton() {
+        uut.applyLeftButtons(leftButton(leftButton));
         uut.applyRightButtons(rightButtons(componentButton));
-        assertThat(uut.getLeftButton()).isNotNull();
+        assertThat(uut.getLeftButtonsCount()).isNotZero();
 
-        uut.setLeftButtons(new ArrayList<>());
+        uut.applyLeftButtons(new ArrayList<>());
         uut.applyRightButtons(rightButtons(textButton1));
-        assertThat(uut.getLeftButton()).isNull();
+        assertThat(uut.getLeftButtonsCount()).isZero();
     }
 
     private void createButtons() {

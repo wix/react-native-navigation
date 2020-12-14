@@ -17,7 +17,6 @@ import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.utils.*
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 
 open class ButtonPresenter(private val context: Context, private val button: ButtonOptions, private val iconResolver: IconResolver) {
     companion object {
@@ -35,14 +34,14 @@ open class ButtonPresenter(private val context: Context, private val button: But
         drawable.colorFilter = PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN)
     }
 
-    fun applyOptions(titleBar: TitleBar, menuItem: MenuItem, viewCreator: () -> View) {
+    fun applyOptions(toolbar: Toolbar, menuItem: MenuItem, viewCreator: () -> View) {
         applyShowAsAction(menuItem)
         applyEnabled(menuItem)
         applyComponent(menuItem, viewCreator)
         applyAccessibilityLabel(menuItem)
         applyIcon(menuItem)
 
-        applyOptionsDirectlyOnView(titleBar, menuItem) {
+        applyOptionsDirectlyOnView(toolbar, menuItem) {
             applyTestId(it)
             applyTextColor(it)
             applyAllCaps(it)
@@ -102,7 +101,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         if (view is TextView) view.isAllCaps = button.allCaps.get(true)
     }
 
-    private fun applyOptionsDirectlyOnView(titleBar: TitleBar, menuItem: MenuItem, onViewFound: (View) -> Unit) {
+    private fun applyOptionsDirectlyOnView(titleBar: Toolbar, menuItem: MenuItem, onViewFound: (View) -> Unit) {
         titleBar.doOnPreDraw {
             if (button.hasComponent()) onViewFound(menuItem.actionView!!)
             val buttonsLayout = ViewUtils.findChildByClass(titleBar, ActionMenuView::class.java)
@@ -121,13 +120,13 @@ open class ButtonPresenter(private val context: Context, private val button: But
         iconResolver.resolve(button) { drawable: Drawable? -> callback.onComplete(drawable!!) }
     }
 
-    fun applyNavigationIcon(titleBar: TitleBar, onPress: (String) -> Unit) {
+    fun applyNavigationIcon(toolbar: Toolbar, onPress: (String) -> Unit) {
         iconResolver.resolve(button) { icon: Drawable ->
             setIconColor(icon)
-            titleBar.setNavigationOnClickListener { onPress(button.id) }
-            titleBar.navigationIcon = icon
-            setLeftButtonTestId(titleBar)
-            if (button.accessibilityLabel.hasValue()) titleBar.navigationContentDescription = button.accessibilityLabel.get()
+            toolbar.setNavigationOnClickListener { onPress(button.id) }
+            toolbar.navigationIcon = icon
+            setLeftButtonTestId(toolbar)
+            if (button.accessibilityLabel.hasValue()) toolbar.navigationContentDescription = button.accessibilityLabel.get()
         }
     }
 

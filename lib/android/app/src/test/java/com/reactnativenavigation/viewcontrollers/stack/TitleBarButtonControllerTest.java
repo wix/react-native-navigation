@@ -40,14 +40,14 @@ public class TitleBarButtonControllerTest extends BaseTest {
     @Test
     public void addToMenu_componentButtonIsNotRecreatedIfAlreadyAddedWithSameOrder() {
         uut.addToMenu(titleBar, 0);
-        MenuItem first = titleBar.getRightButton(0);
+        MenuItem first = titleBar.getButton(0);
 
         uut.addToMenu(titleBar, 0);
-        MenuItem second = titleBar.getRightButton(0);
+        MenuItem second = titleBar.getButton(0);
         assertThat(first).isEqualTo(second);
 
         uut.addToMenu(titleBar, 1);
-        MenuItem third = titleBar.getRightButton(0);
+        MenuItem third = titleBar.getButton(0);
         assertThat(third).isNotEqualTo(second);
     }
 

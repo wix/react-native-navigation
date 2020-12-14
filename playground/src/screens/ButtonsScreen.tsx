@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponent, Options } from 'react-native-navigation';
+import { NavigationComponent, Options, OptionsTopBarButton } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -14,7 +14,9 @@ const {
   BUTTON_ONE,
   BUTTON_THREE,
   ADD_BUTTON,
+  ADD_COMPONENT_BUTTON,
   LEFT_BUTTON,
+  TEXTUAL_LEFT_BUTTON,
   SHOW_LIFECYCLE_BTN,
   RESET_BUTTONS,
   CHANGE_BUTTON_PROPS,
@@ -33,7 +35,7 @@ export default class ButtonOptions extends NavigationComponent {
         title: {
           component: {
             name: Screens.ReactTitleView,
-            alignment: 'fill',
+            alignment: 'center',
             passProps: {
               text: 'Buttons',
               clickable: false,
@@ -68,6 +70,12 @@ export default class ButtonOptions extends NavigationComponent {
             color: Colors.primary,
             accessibilityLabel: 'Close button',
           },
+          {
+            id: 'TextualLeft',
+            testID: TEXTUAL_LEFT_BUTTON,
+            text: 'Cancel',
+            color: Colors.primary,
+          },
         ],
       },
     };
@@ -89,9 +97,34 @@ export default class ButtonOptions extends NavigationComponent {
           onPress={this.changeButtonProps}
         />
         <Button testID={ADD_BUTTON} label="Add button" onPress={this.addButton} />
+        <Button
+          testID={ADD_COMPONENT_BUTTON}
+          label="Add component button"
+          onPress={this.addComponentButtons}
+        />
       </Root>
     );
   }
+
+  leftButtons: OptionsTopBarButton[] = [];
+  addComponentButtons = () => {
+    this.leftButtons.push({
+      id: `leftButton${this.leftButtons.length}`,
+      text: `L${this.leftButtons.length}`,
+      testID: `leftButton${this.leftButtons.length}`,
+      component: {
+        name: Screens.RoundButton,
+        passProps: {
+          title: `L${this.leftButtons.length}`,
+        },
+      },
+    });
+    Navigation.mergeOptions(this, {
+      topBar: {
+        leftButtons: this.leftButtons,
+      },
+    });
+  };
 
   addButton = () =>
     Navigation.mergeOptions(this, {

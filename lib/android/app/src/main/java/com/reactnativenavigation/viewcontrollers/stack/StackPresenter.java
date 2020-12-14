@@ -74,6 +74,7 @@ public class StackPresenter {
     private Options defaultOptions;
 
     private List<ButtonController> currentRightButtons = new ArrayList<>();
+    private List<ButtonController> currentLeftButtons = new ArrayList<>();
     private Map<View, TitleBarReactViewController> titleControllers = new HashMap();
     private Map<View, TopBarBackgroundViewController> backgroundControllers = new HashMap();
     private Map<View, Map<String, ButtonController>> componentRightButtons = new HashMap();
@@ -293,8 +294,12 @@ public class StackPresenter {
             List<ButtonOptions> leftButtons = mergeButtonsWithColor(options.buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
             List<ButtonController> leftButtonControllers = getOrCreateButtonControllersByInstanceId(componentLeftButtons.get(child.getView()), leftButtons);
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, ButtonController::getButtonInstanceId));
-            topBarController.setLeftButtons(leftButtonControllers);
+            if (!CollectionUtils.equals(currentLeftButtons, leftButtonControllers)) {
+                currentLeftButtons = leftButtonControllers;
+                topBarController.applyLeftButtons(currentLeftButtons);
+            }
         } else {
+            currentLeftButtons = null;
             topBar.clearLeftButtons();
         }
 
@@ -390,8 +395,13 @@ public class StackPresenter {
         if (buttons.left == null) return;
         List<ButtonOptions> leftButtons = mergeButtonsWithColor(buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
         List<ButtonController> toMerge = getOrCreateButtonControllers(componentLeftButtons.get(child), leftButtons);
-        componentLeftButtons.put(child, keyBy(toMerge, ButtonController::getButtonInstanceId));
-        topBarController.setLeftButtons(toMerge);
+        List<ButtonController> toRemove = difference(currentLeftButtons, toMerge, ButtonController::areButtonsEqual);
+        forEach(toRemove, ButtonController::destroy);
+        if (!CollectionUtils.equals(currentLeftButtons, toMerge)) {
+            componentLeftButtons.put(child, keyBy(toMerge, ButtonController::getButtonInstanceId));
+            topBarController.mergeLeftButtons(toMerge, toRemove);
+            currentLeftButtons = toMerge;
+        }
     }
 
     private void mergeBackButton(TopBarButtons buttons) {
