@@ -125,8 +125,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        logger.log(Log.INFO, TAG, "onUserLeaveHint shouldSwitchToPIP " + navigator.shouldSwitchToPIP() + "  PIPMode " + navigator.getPipMode());
-        if (navigator.shouldSwitchToPIP() && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && canEnterPiPMode()) {
+        logger.log(Log.INFO, TAG, "onUserLeaveHint shouldSwitchToPIP " + navigator.shouldSwitchToPIPonHomePress() + "  PIPMode " + navigator.getPipMode());
+        if (navigator.shouldSwitchToPIPonHomePress() && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && canEnterPiPMode()) {
             navigator.updatePIPState(PIPStates.NATIVE_MOUNT_START);
             enterPictureInPictureMode(navigator.getPictureInPictureParams());
         }
@@ -148,7 +148,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void invokeDefaultOnBackPressed() {
         logger.log(Log.VERBOSE, TAG, "invokeDefaultOnBackPressed  PIPMode " + navigator.getPipMode());
-        if (navigator.shouldSwitchToPIP()) {
+        if (navigator.shouldSwitchToPIPonBackPress()) {
             navigator.updatePIPState(PIPStates.MOUNT_START);
         } else if (!navigator.handleBack(new CommandListenerAdapter())) {
             super.onBackPressed();

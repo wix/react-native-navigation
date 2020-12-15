@@ -61,14 +61,16 @@ public class PIPButtonsLayout extends FrameLayout {
     public void makeShortTimeVisible() {
         shouldVisible = false;
         setVisibility(VISIBLE);
-        getHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!shouldVisible) {
-                    setVisibility(GONE);
+        if (getHandler() != null) {
+            getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!shouldVisible) {
+                        setVisibility(GONE);
+                    }
                 }
-            }
-        }, 5000);
+            }, 5000);
+        }
     }
 
     public void makePermanentVisible() {

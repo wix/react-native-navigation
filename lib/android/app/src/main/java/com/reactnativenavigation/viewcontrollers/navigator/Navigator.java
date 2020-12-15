@@ -227,6 +227,7 @@ public class Navigator extends ParentController {
         applyOnStack(id, listener, stack -> this.pipNavigator.restorePIP(child -> stack.restorePIP(child, new CommandListener() {
             @Override
             public void onSuccess(String childId) {
+                activeStack = stack;
                 if (listener != null)
                     listener.onSuccess(childId);
             }
@@ -365,8 +366,12 @@ public class Navigator extends ParentController {
 
     }
 
-    public boolean shouldSwitchToPIP() {
-        return getPipMode() != PIPStates.NOT_STARTED || (this.activeStack != null && this.activeStack.shouldSwitchToPIP() && modalStack.isEmpty());
+    public boolean shouldSwitchToPIPonHomePress() {
+        return (getPipMode() != PIPStates.NOT_STARTED || (this.activeStack != null && this.activeStack.shouldSwitchToPIP())) && modalStack.isEmpty();
+    }
+
+    public boolean shouldSwitchToPIPonBackPress() {
+        return (this.activeStack != null && this.activeStack.shouldSwitchToPIP()) && modalStack.isEmpty();
     }
 
     public void resetPIP() {
