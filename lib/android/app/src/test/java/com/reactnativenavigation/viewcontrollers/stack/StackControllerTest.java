@@ -214,7 +214,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter());
         ShadowLooper.idleMainLooper();
 
-        assertThat(topBarController.getView().getTitleBar().getNavigationIcon()).isNotNull();
+        assertThat(topBarController.getLeftButtonsCount()).isOne();
         verify(topBarController.getView(), times(0)).setBackButton(any());
     }
 
@@ -336,13 +336,13 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter());
 
         ShadowLooper.idleMainLooper();
-        assertThat(uut.getTopBar().getTitleBar().getNavigationIcon()).isNotNull();
+        assertThat(uut.getTopBar().getNavigationIcon()).isNotNull();
         uut.setRoot(Collections.singletonList(child3), new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 assertContainsOnlyId(child3.getId());
                 ShadowLooper.idleMainLooper();
-                assertThat(uut.getTopBar().getTitleBar().getNavigationIcon()).isNull();
+                assertThat(uut.getTopBar().getNavigationIcon()).isNull();
             }
         });
     }
@@ -360,7 +360,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter());
 
         ShadowLooper.idleMainLooper();
-        assertThat(uut.getTopBar().getTitleBar().getNavigationIcon()).isNotNull();
+        assertThat(uut.getTopBar().getNavigationIcon()).isNotNull();
 
         uut.setRoot(Arrays.asList(child3, child4), new CommandListenerAdapter() {
             @Override

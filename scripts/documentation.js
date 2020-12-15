@@ -6,6 +6,7 @@ const docsPath = `${process.cwd()}/website`;
 const docsVersionsJsonPath = `${docsPath}/versions.json`;
 
 function release(version) {
+  console.log(`Building documentation version: ${version}`);
   if (_versionExists(version)) _removeDocsVersion(version);
   exec.execSync(`npm --prefix ${docsPath} install`);
   exec.execSync(`npm --prefix ${docsPath} run docusaurus docs:version ${version}`);
@@ -13,6 +14,7 @@ function release(version) {
 }
 
 function _removeDocsVersion(version) {
+  console.log(`Removing documentation version: ${version}`);
   exec.execSync(`rm -rf ${docsPath}/versioned_docs/version-${version}`);
   exec.execSync(`rm -f ${docsPath}/versioned_sidebars/version-${version}-sidebars.json`);
   const docsVersionsJson = _readDocsVersionsJson();

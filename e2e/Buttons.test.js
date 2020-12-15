@@ -1,11 +1,11 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const {elementById, elementByLabel, sleep} = Utils;
+const { elementById, elementByLabel } = Utils;
 
 describe('Buttons', () => {
   beforeEach(async () => {
-    await device.launchApp({newInstance: true});
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
@@ -71,5 +71,17 @@ describe('Buttons', () => {
     await elementById(TestIDs.ADD_BUTTON).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
+  });
+
+  it('Accepts textual left button', async () => {
+    await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+  });
+
+  it('Updates left button', async () => {
+    await elementById(TestIDs.ADD_COMPONENT_BUTTON).tap();
+    await expect(elementById('leftButton0')).toBeVisible();
+
+    await elementById(TestIDs.ADD_COMPONENT_BUTTON).tap();
+    await expect(elementById('leftButton1')).toBeVisible();
   });
 });

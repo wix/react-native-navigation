@@ -11,8 +11,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage {
     if (backgroundImage) {
-        UIImageView *backgroundImageView =
-            (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
+        UIImageView *backgroundImageView = self.view.subviews.firstObject;
         if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
             backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
             [self.view insertSubview:backgroundImageView atIndex:0];

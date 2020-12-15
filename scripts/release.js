@@ -108,9 +108,8 @@ function tagAndPublish(newVersion) {
   console.log(`trying to publish ${newVersion}...`);
   exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
   exec.execSync(`npm publish --tag ${VERSION_TAG}`);
+  if (BUILD_DOCUMENTATION_VERSION && BUILD_DOCUMENTATION_VERSION !== '') documentation.release(BUILD_DOCUMENTATION_VERSION);
   if (isRelease) {
-    if (BUILD_DOCUMENTATION_VERSION && BUILD_DOCUMENTATION_VERSION !== '') documentation.release(BUILD_DOCUMENTATION_VERSION);
-
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);
     updatePackageJsonGit(newVersion);

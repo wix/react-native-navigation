@@ -38,6 +38,10 @@ public enum LayoutDirection {
         return direction;
     }
 
+    public int inverse() {
+        return (isRtl() ? LTR : RTL).direction;
+    }
+
     public boolean isRtl() {
         switch (direction) {
             case View.LAYOUT_DIRECTION_LTR:
