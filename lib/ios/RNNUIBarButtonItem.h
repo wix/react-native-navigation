@@ -7,7 +7,6 @@
 
 @property(nonatomic, strong) NSString *buttonId;
 
-- (instancetype)init:(NSString *)buttonId withIcon:(UIImage *)iconImage;
 - (instancetype)init:(NSString *)buttonId
             withIcon:(UIImage *)iconImage
           withInsets:(UIEdgeInsets)edgeInsets;

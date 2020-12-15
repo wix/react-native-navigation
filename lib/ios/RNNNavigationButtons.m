@@ -186,12 +186,10 @@
                          componentType:RNNComponentTypeTopBarButton
                    reactViewReadyBlock:nil];
         barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
-    } else if (iconImage && !UIEdgeInsetsEqualToEdgeInsets(insets, UIEdgeInsetsZero)) {
+    } else if (iconImage) {
         barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId
                                                 withIcon:iconImage
                                               withInsets:insets];
-    } else if (iconImage) {
-        barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];
     } else if (title) {
         barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withTitle:title];
 
