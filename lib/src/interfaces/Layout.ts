@@ -16,7 +16,7 @@ export interface LayoutComponent<P = {}> {
   /**
    * Properties to pass down to the component
    */
-  passProps?: P;
+  passProps?: Omit<P, 'componentId'>;
 }
 
 export interface LayoutStackChildren {
