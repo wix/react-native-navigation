@@ -26,6 +26,7 @@ The stack manages the TopBar at the top of the stack. The TopBar displays the cu
 }>
 <TabItem value="single">
 
+
 A stack declared with a single child.
 
 ```js
@@ -42,6 +43,7 @@ const stack = {
 
 </TabItem>
 <TabItem value="multiple">
+
 
 A stack can be initialized with more than one child, in which case the last child will be the currently displayed child and the first child will be hidden. In this case the back button will be visible automatically, clicking it will go back in the stack revealing the first (previous) child.
 Once the root child becomes visible, the back button is hidden.
@@ -66,6 +68,7 @@ const stack = {
 </TabItem>
 </Tabs>
 
+
 ## TopBar Buttons
 
 Buttons can be added to the [right](#rightButtons) and [left](#leftButtons) areas of the TopBar. Buttons can have either an icon or a text. They are declared in the the options object and, as with any other option, can be updated dynamically with the `Navigation.mergeOptions` command.
@@ -82,20 +85,9 @@ To do so on iOS, include a button with a menu icon and open an [ActionSheet](htt
 
 On Android, use the [showAsAction](../api/options-button#showasaction) options to control when the button should appear in the menu.
 
-### Left button
-
-Left buttons behave like right buttons with two caveats on Android:
-
-- Only a single left button is allowed
-- Textual left button isn't supported
-
 ### Using a react component in a button
 
-:::caution
-At the moment, custom buttons in `leftButtons` are supported only on iOS.
-:::
-
-Sometimes we require more from our buttons. In order to support every product need React Components can be used as custom views of buttons.
+Sometimes we require more from our buttons. In order to support every product need, React Components can be used as custom views of buttons.
 To do so, you'll first need to register the view with Navigation, just like you register your components used as screens:
 
 ```js
