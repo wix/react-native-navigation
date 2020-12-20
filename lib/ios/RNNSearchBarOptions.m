@@ -6,7 +6,7 @@
     self = [super initWithDict:dict];
     self.visible = [BoolParser parse:dict key:@"visible"];
     self.focus = [BoolParser parse:dict key:@"focus"];
-    self.hideOnScroll = [BoolParser parse:dict key:@"hiddenWhenScrolling"];
+    self.hideOnScroll = [BoolParser parse:dict key:@"hideOnScroll"];
     self.hideTopBarOnFocus = [BoolParser parse:dict key:@"hideTopBarOnFocus"];
     self.obscuresBackgroundDuringPresentation =
         [BoolParser parse:dict key:@"obscuresBackgroundDuringPresentation"];
@@ -19,6 +19,8 @@
 - (void)mergeOptions:(RNNSearchBarOptions *)options {
     if (options.visible.hasValue)
         self.visible = options.visible;
+    if (options.focus.hasValue)
+        self.focus = options.focus;
     if (options.hideOnScroll.hasValue)
         self.hideOnScroll = options.hideOnScroll;
     if (options.hideTopBarOnFocus.hasValue)
