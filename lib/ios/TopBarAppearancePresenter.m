@@ -115,7 +115,7 @@
     NSNumber *fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
     UIColor *fontColor = [titleOptions.color getWithDefaultValue:nil];
 
-    self.getAppearance.titleTextAttributes =
+    NSDictionary *titleTextAttributes =
         [RNNFontAttributesCreator createFromDictionary:self.getAppearance.titleTextAttributes
                                             fontFamily:fontFamily
                                               fontSize:fontSize
@@ -123,6 +123,9 @@
                                             fontWeight:fontWeight
                                                  color:fontColor
                                           defaultColor:nil];
+
+    self.getAppearance.titleTextAttributes = titleTextAttributes;
+    self.getScrollEdgeAppearance.titleTextAttributes = titleTextAttributes;
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {

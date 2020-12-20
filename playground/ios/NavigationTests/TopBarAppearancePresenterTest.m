@@ -106,4 +106,25 @@
         UIColor.blueColor);
 }
 
+- (void)testMergeOptions_shouldApplyTitleAppearance {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.topBar.title.color = [Color withColor:UIColor.redColor];
+    options.topBar.title.fontSize = [Number withValue:@(21)];
+
+    [_uut applyOptions:options.topBar];
+    XCTAssertEqual(_stack.childViewControllers.lastObject.navigationItem.standardAppearance
+                       .titleTextAttributes[NSForegroundColorAttributeName],
+                   UIColor.redColor);
+    XCTAssertEqual([_stack.childViewControllers.lastObject.navigationItem.standardAppearance
+                           .titleTextAttributes[NSFontAttributeName] pointSize],
+                   21);
+
+    XCTAssertEqual(_stack.childViewControllers.lastObject.navigationItem.scrollEdgeAppearance
+                       .titleTextAttributes[NSForegroundColorAttributeName],
+                   UIColor.redColor);
+    XCTAssertEqual([_stack.childViewControllers.lastObject.navigationItem.scrollEdgeAppearance
+                           .titleTextAttributes[NSFontAttributeName] pointSize],
+                   21);
+}
+
 @end
