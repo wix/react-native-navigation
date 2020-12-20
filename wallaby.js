@@ -16,7 +16,8 @@ module.exports = function (wallaby) {
       '!lib/src/**/*.test.js',
       '!lib/src/**/*.test.ts',
       'integration/**/*.js',
-      '!integration/**/*.test.js',
+      '!scripts/**/*.test.js',
+      'scripts/**/*.js',
     ],
 
     tests: [
@@ -24,6 +25,7 @@ module.exports = function (wallaby) {
       'lib/src/**/*.test.ts',
       'lib/src/**/*.test.tsx',
       'integration/**/*.test.js',
+      'scripts/**/*.test.js',
     ],
 
     setup: (w) => {

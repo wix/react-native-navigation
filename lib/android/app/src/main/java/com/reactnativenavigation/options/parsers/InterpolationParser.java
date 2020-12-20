@@ -13,6 +13,8 @@ import com.reactnativenavigation.options.interpolators.SpringInterpolator;
 
 import org.json.JSONObject;
 
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+
 public class InterpolationParser {
     public static TimeInterpolator parse(JSONObject json) {
         JSONObject interpolation = json.optJSONObject("interpolation");
@@ -31,6 +33,9 @@ public class InterpolationParser {
             }
             case "decelerateAccelerate": {
                 return new DecelerateAccelerateInterpolator();
+            }
+            case "fastOutSlowIn": {
+                return new FastOutSlowInInterpolator();
             }
             case "overshoot": {
                 double tension = interpolation.optDouble("tension", 1.0);

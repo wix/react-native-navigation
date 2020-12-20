@@ -185,6 +185,13 @@ export class Commands {
     return result;
   }
 
+  public dismissAllOverlays() {
+    const commandId = this.uniqueIdProvider.generate(CommandName.DismissAllOverlays);
+    const result = this.nativeCommandsSender.dismissAllOverlays(commandId);
+    this.commandsObserver.notify(CommandName.DismissAllOverlays, { commandId });
+    return result;
+  }
+
   public getLaunchArgs() {
     const commandId = this.uniqueIdProvider.generate(CommandName.GetLaunchArgs);
     const result = this.nativeCommandsSender.getLaunchArgs(commandId);

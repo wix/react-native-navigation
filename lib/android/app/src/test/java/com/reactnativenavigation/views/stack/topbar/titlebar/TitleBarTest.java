@@ -1,30 +1,25 @@
-package com.reactnativenavigation.viewcontrollers.stack;
+package com.reactnativenavigation.views.stack.topbar.titlebar;
 
 import android.app.Activity;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
-import com.reactnativenavigation.fakes.IconResolverFake;
-import com.reactnativenavigation.options.ButtonOptions;
-import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 
 import static com.reactnativenavigation.utils.Assertions.assertNotNull;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -32,6 +27,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TitleBarTest extends BaseTest {
+    private static final int UUT_WIDTH = 1000;
+    private static final int UUT_HEIGHT = 100;
+    private static final int PARENT_WIDTH = 1200;
+    private static final int PARENT_HEIGHT = 100;
+    private static final int COMPONENT_WIDTH = 100;
+    private static final int COMPONENT_HEIGHT = 40;
 
     private TitleBar uut;
     private Activity activity;
@@ -43,14 +44,13 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void setLeftButton_titleIsAligned() {
+    public void onLayout_alignsTitleOnLayout() {
         uut.setTitle("Title");
         TextView title = new TextView(activity);
         uut.addView(title);
         when(uut.findTitleTextView()).thenReturn(title);
 
-        uut.setLeftButtons(singletonList(createButtonController(createIconButton())));
-        dispatchPreDraw(title);
+        uut.onLayout(true, 0, 0, UUT_WIDTH, UUT_HEIGHT);
         verify(uut).alignTextView(any(), eq(title));
     }
 
@@ -68,6 +68,50 @@ public class TitleBarTest extends BaseTest {
 
         uut.setComponent(component);
         verify(uut).addView(component);
+    }
+
+    @Test
+    public void setComponent_alignedAfterMeasure() {
+        uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
+
+        View component = new View(activity);
+        component.layout(0, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT);
+        uut.setComponent(component);
+
+        dispatchOnGlobalLayout(component);
+        assertThat(component.getX()).isEqualTo((UUT_WIDTH - COMPONENT_WIDTH) / 2f);
+    }
+
+    @Test
+    public void onLayout_centersComponent_ltr() {
+        uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
+
+        View component = new View(activity);
+        component.layout(0, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT);
+        uut.setComponent(component);
+        ((Toolbar.LayoutParams) component.getLayoutParams()).gravity = Gravity.CENTER;
+
+        uut.onLayout(true, 0, 0, 0 ,0);
+        assertThat(component.getX()).isEqualTo((UUT_WIDTH - COMPONENT_WIDTH) / 2f);
+    }
+
+    @Test
+    public void onLayout_centersComponent_rtl() {
+        ViewGroup parent = new FrameLayout(activity);
+        parent.layout(0, 0, PARENT_WIDTH, PARENT_WIDTH);
+        parent.addView(uut);
+
+        when(uut.getLayoutDirection()).thenReturn(View.LAYOUT_DIRECTION_RTL);
+        uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
+
+        View component = new View(activity);
+        uut.setComponent(component);
+        ((Toolbar.LayoutParams) component.getLayoutParams()).gravity = Gravity.CENTER;
+
+        uut.onLayout(true, 0, 0, 0 ,0);
+        component.layout(0, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT);
+        dispatchOnGlobalLayout(component);
+        assertThat(component.getX()).isEqualTo((UUT_WIDTH - COMPONENT_WIDTH + (PARENT_WIDTH - UUT_WIDTH)) / 2f);
     }
 
     @Test
@@ -117,24 +161,5 @@ public class TitleBarTest extends BaseTest {
         uut.setTitleFontSize(10);
 
         verify(mockTitleView).setTextSize(eq(TypedValue.COMPLEX_UNIT_DIP), eq(10f));
-    }
-
-    @NotNull
-    private ButtonController createButtonController(ButtonOptions b) {
-        return new ButtonController(
-                activity,
-                new ButtonPresenter(activity, b, new IconResolverFake(activity)),
-                b,
-                mock(TitleBarButtonCreator.class),
-                mock(ButtonController.OnClickListener.class)
-        );
-    }
-
-    @NotNull
-    private ButtonOptions createIconButton() {
-        ButtonOptions b = new ButtonOptions();
-        b.id = "id";
-        b.icon = new Text("");
-        return b;
     }
 }

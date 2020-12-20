@@ -64,6 +64,7 @@ type Interpolation =
   | { type: 'decelerate'; factor?: number }
   | { type: 'decelerateAccelerate' }
   | { type: 'accelerateDecelerate' }
+  | { type: 'fastOutSlowIn' }
   | { type: 'linear' }
   | { type: 'overshoot'; tension?: number }
   | {
@@ -528,6 +529,7 @@ export interface OptionsTopBarButton {
 
 export interface OptionsSearchBar {
   visible?: boolean;
+  focus?: boolean;
   hideOnScroll?: boolean;
   hideTopBarOnFocus?: boolean;
   obscuresBackgroundDuringPresentation?: boolean;

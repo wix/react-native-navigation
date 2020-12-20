@@ -1,7 +1,6 @@
 #import "RNNComponentOptions.h"
 #import "RNNComponentViewCreator.h"
 #import "RNNReactButtonView.h"
-#import "RNNReactTitleView.h"
 #import <Foundation/Foundation.h>
 
 @interface RNNReactComponentRegistry : NSObject

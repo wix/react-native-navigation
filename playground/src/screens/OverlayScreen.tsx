@@ -6,6 +6,7 @@ import { component } from '../commons/Layouts';
 import Navigation from '../services/Navigation';
 import Screens from './Screens';
 import testIDs from '../testIDs';
+import { Text } from 'react-native';
 
 const {
   SHOW_OVERLAY_BTN,
@@ -13,9 +14,17 @@ const {
   ALERT_BUTTON,
   SET_ROOT_BTN,
   TOAST_BTN,
+  SHOW_FULLSCREEN_OVERLAY_BTN,
+  OVERLAY_DISMISSED_COUNT,
 } = testIDs;
 
-export default class OverlayScreen extends React.Component<NavigationComponentProps> {
+interface State {
+  overlayDismissedCount?: number;
+}
+interface Props extends NavigationComponentProps {
+  incrementDismissedOverlays: any;
+}
+export default class OverlayScreen extends React.Component<Props, State> {
   static options() {
     return {
       topBar: {
@@ -26,15 +35,43 @@ export default class OverlayScreen extends React.Component<NavigationComponentPr
     };
   }
 
+  state = {
+    overlayDismissedCount: 0,
+  };
+
+  constructor(props: Props) {
+    super(props);
+    Navigation.events().registerCommandCompletedListener((event) => {
+      if (event.commandName === 'dismissAllOverlays') {
+        if (this.props.incrementDismissedOverlays) {
+          this.props.incrementDismissedOverlays();
+        }
+      }
+    });
+    this.incrementDismissedOverlays = this.incrementDismissedOverlays.bind(this);
+  }
+
+  incrementDismissedOverlays() {
+    this.setState({
+      overlayDismissedCount: this.state.overlayDismissedCount + 1,
+    });
+  }
+
   render() {
     return (
       <Root componentId={this.props.componentId}>
+        <Text testID={OVERLAY_DISMISSED_COUNT}>{this.state?.overlayDismissedCount || ''}</Text>
         <Button label="Toast" testID={TOAST_BTN} onPress={this.toast} />
         <Button label="Alert" testID={ALERT_BUTTON} onPress={() => alert('Alert displayed')} />
         <Button
           label="Show overlay"
           testID={SHOW_OVERLAY_BTN}
           onPress={() => this.showOverlay(true)}
+        />
+        <Button
+          label="Show fullscreen overlay"
+          testID={SHOW_FULLSCREEN_OVERLAY_BTN}
+          onPress={() => this.showFullScreenOverlay()}
         />
         <Button
           label="Show touch through overlay"
@@ -50,10 +87,27 @@ export default class OverlayScreen extends React.Component<NavigationComponentPr
   toast = () => Navigation.showOverlay(Screens.Toast);
 
   showOverlay = (interceptTouchOutside: boolean) =>
-    Navigation.showOverlay(Screens.OverlayAlert, {
-      layout: { componentBackgroundColor: 'transparent' },
-      overlay: { interceptTouchOutside },
-    });
+    Navigation.showOverlay(
+      Screens.OverlayAlert,
+      {
+        layout: { componentBackgroundColor: 'transparent' },
+        overlay: { interceptTouchOutside },
+      },
+      {
+        incrementDismissedOverlays:
+          this.props.incrementDismissedOverlays || this.incrementDismissedOverlays,
+      }
+    );
+
+  showFullScreenOverlay = () =>
+    Navigation.showOverlay(
+      Screens.Overlay,
+      {},
+      {
+        incrementDismissedOverlays:
+          this.props.incrementDismissedOverlays || this.incrementDismissedOverlays,
+      }
+    );
 
   setRoot = () => Navigation.setRoot({ root: component(Screens.Pushed) });
 

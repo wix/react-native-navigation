@@ -7,7 +7,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 @implementation UINavigationController (RNNOptions)
 
 - (void)setRootBackgroundImage:(UIImage *)backgroundImage {
-    UIImageView *backgroundImageView = (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
+    UIImageView *backgroundImageView = self.view.subviews.firstObject;
     if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
         backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
         [self.view insertSubview:backgroundImageView atIndex:0];

@@ -156,14 +156,14 @@
         [RNNComponentViewController createWithComponentId:@"componentId"
                                            initialOptions:initialOptions];
 
-    RNNStackController *nav = [[RNNStackController alloc]
-          initWithLayoutInfo:nil
-                     creator:creator
-                     options:[[RNNNavigationOptions alloc] initEmptyOptions]
-              defaultOptions:nil
-                   presenter:[[RNNStackPresenter alloc] init]
-                eventEmitter:nil
-        childViewControllers:@[ vc ]];
+    RNNStackController *nav =
+        [[RNNStackController alloc] initWithLayoutInfo:nil
+                                               creator:creator
+                                               options:[RNNNavigationOptions emptyOptions]
+                                        defaultOptions:nil
+                                             presenter:[[RNNStackPresenter alloc] init]
+                                          eventEmitter:nil
+                                  childViewControllers:@[ vc ]];
     [self.mainWindow setRootViewController:nav];
     [vc viewWillAppear:false];
     XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
@@ -433,7 +433,7 @@
 
 - (void)testSetRoot_waitForRenderTrue {
     [self.uut setReadyToReceiveCommands:true];
-    self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.vc1.options = [RNNNavigationOptions emptyOptions];
     self.vc1.options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
 
     id mockedVC = [OCMockObject partialMockForObject:self.vc1];
@@ -449,7 +449,7 @@
 
 - (void)testSetRoot_waitForRenderFalse {
     [self.uut setReadyToReceiveCommands:true];
-    self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.vc1.options = [RNNNavigationOptions emptyOptions];
     self.vc1.options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:NO];
 
     id mockedVC = [OCMockObject partialMockForObject:self.vc1];
@@ -465,22 +465,22 @@
 
 - (void)testSetRoot_withBottomTabsAttachModeTogether {
     [self.uut setReadyToReceiveCommands:true];
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.bottomTabs.tabsAttachMode = [[BottomTabsAttachMode alloc] initWithValue:@"together"];
 
     BottomTabsBaseAttacher *attacher =
         [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
-    RNNBottomTabsController *tabBarController = [[RNNBottomTabsController alloc]
-           initWithLayoutInfo:nil
-                      creator:nil
-                      options:options
-               defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]
-                    presenter:[RNNBasePresenter new]
-           bottomTabPresenter:nil
-        dotIndicatorPresenter:nil
-                 eventEmitter:_eventEmmiter
-         childViewControllers:@[ _vc1, _vc2 ]
-           bottomTabsAttacher:attacher];
+    RNNBottomTabsController *tabBarController =
+        [[RNNBottomTabsController alloc] initWithLayoutInfo:nil
+                                                    creator:nil
+                                                    options:options
+                                             defaultOptions:[RNNNavigationOptions emptyOptions]
+                                                  presenter:[RNNBasePresenter new]
+                                         bottomTabPresenter:nil
+                                      dotIndicatorPresenter:nil
+                                               eventEmitter:_eventEmmiter
+                                       childViewControllers:@[ _vc1, _vc2 ]
+                                         bottomTabsAttacher:attacher];
 
     OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 
@@ -496,24 +496,24 @@
 
 - (void)testSetRoot_withBottomTabsAttachModeOnSwitchToTab {
     [self.uut setReadyToReceiveCommands:true];
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.bottomTabs.tabsAttachMode =
         [[BottomTabsAttachMode alloc] initWithValue:@"onSwitchToTab"];
     options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
 
     BottomTabsBaseAttacher *attacher =
         [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
-    RNNBottomTabsController *tabBarController = [[RNNBottomTabsController alloc]
-           initWithLayoutInfo:nil
-                      creator:nil
-                      options:options
-               defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]
-                    presenter:[RNNBasePresenter new]
-           bottomTabPresenter:nil
-        dotIndicatorPresenter:nil
-                 eventEmitter:_eventEmmiter
-         childViewControllers:@[ _vc1, _vc2 ]
-           bottomTabsAttacher:attacher];
+    RNNBottomTabsController *tabBarController =
+        [[RNNBottomTabsController alloc] initWithLayoutInfo:nil
+                                                    creator:nil
+                                                    options:options
+                                             defaultOptions:[RNNNavigationOptions emptyOptions]
+                                                  presenter:[RNNBasePresenter new]
+                                         bottomTabPresenter:nil
+                                      dotIndicatorPresenter:nil
+                                               eventEmitter:_eventEmmiter
+                                       childViewControllers:@[ _vc1, _vc2 ]
+                                         bottomTabsAttacher:attacher];
     [tabBarController viewWillAppear:YES];
     OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
 
@@ -529,24 +529,24 @@
 
 - (void)testSetRoot_withBottomTabsAttachModeAfterInitialTab {
     [self.uut setReadyToReceiveCommands:true];
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.bottomTabs.tabsAttachMode =
         [[BottomTabsAttachMode alloc] initWithValue:@"afterInitialTab"];
     options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
 
     BottomTabsBaseAttacher *attacher =
         [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
-    RNNBottomTabsController *tabBarController = [[RNNBottomTabsController alloc]
-           initWithLayoutInfo:nil
-                      creator:nil
-                      options:options
-               defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]
-                    presenter:[RNNBasePresenter new]
-           bottomTabPresenter:nil
-        dotIndicatorPresenter:nil
-                 eventEmitter:_eventEmmiter
-         childViewControllers:@[ _vc1, _vc2 ]
-           bottomTabsAttacher:attacher];
+    RNNBottomTabsController *tabBarController =
+        [[RNNBottomTabsController alloc] initWithLayoutInfo:nil
+                                                    creator:nil
+                                                    options:options
+                                             defaultOptions:[RNNNavigationOptions emptyOptions]
+                                                  presenter:[RNNBasePresenter new]
+                                         bottomTabPresenter:nil
+                                      dotIndicatorPresenter:nil
+                                               eventEmitter:_eventEmmiter
+                                       childViewControllers:@[ _vc1, _vc2 ]
+                                         bottomTabsAttacher:attacher];
     [tabBarController viewWillAppear:YES];
 
     OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
@@ -612,7 +612,7 @@
            initWithLayoutInfo:nil
                       creator:nil
                       options:[RNNNavigationOptions emptyOptions]
-               defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]
+               defaultOptions:[RNNNavigationOptions emptyOptions]
                     presenter:[RNNBasePresenter new]
            bottomTabPresenter:[BottomTabPresenterCreator
                                   createWithDefaultOptions:[RNNNavigationOptions emptyOptions]]
@@ -667,7 +667,7 @@
            initWithLayoutInfo:nil
                       creator:nil
                       options:[RNNNavigationOptions emptyOptions]
-               defaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]
+               defaultOptions:[RNNNavigationOptions emptyOptions]
                     presenter:[RNNBasePresenter new]
            bottomTabPresenter:[BottomTabPresenterCreator
                                   createWithDefaultOptions:[RNNNavigationOptions emptyOptions]]
@@ -694,7 +694,7 @@
 
 - (void)testShowModal_shouldShowAnimated {
     [self.uut setReadyToReceiveCommands:true];
-    self.vc1.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.vc1.options = [RNNNavigationOptions emptyOptions];
     self.vc1.options.animations.showModal.enable = [[Bool alloc] initWithBOOL:YES];
 
     id mockedVC = [OCMockObject partialMockForObject:self.vc1];

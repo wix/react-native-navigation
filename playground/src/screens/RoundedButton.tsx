@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
 import Colors from '../commons/Colors';
 
@@ -21,7 +21,8 @@ export default class RoundedButton extends React.Component<Props> {
       <View style={styles.container}>
         <View style={styles.button}>
           <TouchableOpacity
-            onPress={() => Alert.alert(this.props.title, `Times created: ${timesCreated}`)}
+            // @ts-ignore
+            onPress={() => alert(this.props.title, `Times created: ${timesCreated}`)}
           >
             <Text style={styles.text}>{this.props.title}</Text>
           </TouchableOpacity>

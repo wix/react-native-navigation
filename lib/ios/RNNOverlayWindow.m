@@ -1,4 +1,5 @@
 #import "RNNOverlayWindow.h"
+#import "RNNReactView.h"
 
 @implementation RNNOverlayWindow
 
@@ -6,7 +7,7 @@
     UIView *hitTestResult = [super hitTest:point withEvent:event];
 
     if ([hitTestResult isKindOfClass:[UIWindow class]] ||
-        [hitTestResult isMemberOfClass:UIView.class]) {
+        [hitTestResult.subviews.firstObject isKindOfClass:RNNReactView.class]) {
         return nil;
     }
 

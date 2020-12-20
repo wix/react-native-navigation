@@ -1,1 +1,1 @@
-See https://wix.github.io/react-native-navigation/docs/meta-contributing
+See https://wix.github.io/react-native-navigation/docs/meta-contributing/

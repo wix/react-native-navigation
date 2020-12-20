@@ -19,13 +19,13 @@
     layoutInfo.componentId = @"externalComponentId";
     RNNComponentPresenter *presenter =
         [[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil];
-    self.uut = [[RNNExternalViewController alloc]
-        initWithLayoutInfo:layoutInfo
-              eventEmitter:nil
-                 presenter:presenter
-                   options:[[RNNNavigationOptions alloc] initEmptyOptions]
-            defaultOptions:nil
-            viewController:self.customViewController];
+    self.uut =
+        [[RNNExternalViewController alloc] initWithLayoutInfo:layoutInfo
+                                                 eventEmitter:nil
+                                                    presenter:presenter
+                                                      options:[RNNNavigationOptions emptyOptions]
+                                               defaultOptions:nil
+                                               viewController:self.customViewController];
 }
 
 - (void)testLoadView_withMainScreenBounds {

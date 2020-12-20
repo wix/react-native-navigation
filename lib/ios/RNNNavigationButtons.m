@@ -4,7 +4,6 @@
 #import "RNNComponentViewController.h"
 #import "RNNFontAttributesCreator.h"
 #import "RNNUIBarButtonItem.h"
-#import "UIImage+insets.h"
 #import "UIImage+tint.h"
 #import "UIViewController+LayoutProtocol.h"
 #import <React/RCTConvert.h>
@@ -187,11 +186,8 @@
     UIImage *iconImage = [[ImageParser parse:dictionary
                                          key:@"icon"] getWithDefaultValue:defaultIcon];
 
-    if (iconImage) {
-        iconImage = [iconImage imageWithInsets:insets];
-        if (color) {
-            iconImage = [iconImage withTintColor:color];
-        }
+    if (color) {
+        iconImage = [iconImage withTintColor:color];
     }
 
     RNNUIBarButtonItem *barButtonItem;
@@ -207,7 +203,9 @@
                    reactViewReadyBlock:nil];
         barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
     } else if (iconImage) {
-        barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];
+        barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId
+                                                withIcon:iconImage
+                                              withInsets:insets];
     } else if (title) {
         barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withTitle:title];
 
@@ -293,16 +291,12 @@
     return value ? value : defaultValue;
 }
 
-- (UIEdgeInsets)leftButtonInsets:(RNNInsetsOptions *)defaultInsets {
-    return UIEdgeInsetsMake(
-        [defaultInsets.top getWithDefaultValue:0], [defaultInsets.left getWithDefaultValue:0],
-        [defaultInsets.bottom getWithDefaultValue:0], [defaultInsets.right getWithDefaultValue:15]);
+- (UIEdgeInsets)leftButtonInsets:(RNNInsetsOptions *)insets {
+    return [insets edgeInsetsWithDefault:UIEdgeInsetsZero];
 }
 
-- (UIEdgeInsets)rightButtonInsets:(RNNInsetsOptions *)defaultInsets {
-    return UIEdgeInsetsMake(
-        [defaultInsets.top getWithDefaultValue:0], [defaultInsets.left getWithDefaultValue:15],
-        [defaultInsets.bottom getWithDefaultValue:0], [defaultInsets.right getWithDefaultValue:0]);
+- (UIEdgeInsets)rightButtonInsets:(RNNInsetsOptions *)insets {
+    return [insets edgeInsetsWithDefault:UIEdgeInsetsZero];
 }
 
 @end

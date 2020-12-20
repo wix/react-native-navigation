@@ -35,7 +35,7 @@ describe('Buttons', () => {
     await expect(elementByLabel('Times created: 1')).toExist();
   });
 
-  it(':ios: Resetting buttons should unmount button react view', async () => {
+  it('Resetting buttons should unmount button react view', async () => {
     await elementById(TestIDs.SHOW_LIFECYCLE_BTN).tap();
     await elementById(TestIDs.RESET_BUTTONS).tap();
     await expect(elementByLabel('Button component unmounted')).toBeVisible();
@@ -61,5 +61,27 @@ describe('Buttons', () => {
     await elementById(TestIDs.ADD_BUTTON).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
+    await elementById(TestIDs.OK_BUTTON).tap();
+
+    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.ROUND_BUTTON).tap();
+    await expect(elementByLabel('Times created: 1')).toBeVisible();
+    await elementById(TestIDs.OK_BUTTON).tap();
+
+    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.ROUND_BUTTON).tap();
+    await expect(elementByLabel('Times created: 1')).toBeVisible();
+  });
+
+  it('Accepts textual left button', async () => {
+    await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+  });
+
+  it('Updates left button', async () => {
+    await elementById(TestIDs.ADD_COMPONENT_BUTTON).tap();
+    await expect(elementById('leftButton0')).toBeVisible();
+
+    await elementById(TestIDs.ADD_COMPONENT_BUTTON).tap();
+    await expect(elementById('leftButton1')).toBeVisible();
   });
 });
