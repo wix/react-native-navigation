@@ -517,6 +517,22 @@ export interface OptionsTopBarButton {
    */
   disabledColor?: Color;
   /**
+   * Set background color
+   */
+  backgroundColor?: Color;
+  /**
+   * Set corner radius
+   */
+  cornerRadius?: number;
+  /**
+   * Set width
+   */
+  width?: number;
+  /**
+   * Set height
+   */
+  height?: number;
+  /**
    * Set testID for reference in E2E tests
    */
   testID?: string;

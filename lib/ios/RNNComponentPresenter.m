@@ -8,6 +8,7 @@
 
 @implementation RNNComponentPresenter {
     TopBarTitlePresenter *_topBarTitlePresenter;
+    RNNButtonsPresenter *_buttonsPresenter;
 }
 
 - (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry
@@ -22,19 +23,18 @@
 - (void)bindViewController:(id)boundViewController {
     [super bindViewController:boundViewController];
     [_topBarTitlePresenter bindViewController:boundViewController];
-    _navigationButtons =
-        [[RNNNavigationButtons alloc] initWithViewController:boundViewController
-                                           componentRegistry:self.componentRegistry];
+    _buttonsPresenter = [[RNNButtonsPresenter alloc] initWithViewController:boundViewController
+                                                          componentRegistry:self.componentRegistry];
 }
 
 - (void)componentDidAppear {
     [_topBarTitlePresenter componentDidAppear];
-    [_navigationButtons componentDidAppear];
+    [_buttonsPresenter componentDidAppear];
 }
 
 - (void)componentDidDisappear {
     [_topBarTitlePresenter componentDidDisappear];
-    [_navigationButtons componentDidDisappear];
+    [_buttonsPresenter componentDidDisappear];
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
@@ -103,11 +103,14 @@
     [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
     [viewController setDrawBehindBottomTabs:[withDefault.bottomTabs shouldDrawBehind]];
 
-    if ((withDefault.topBar.leftButtons || withDefault.topBar.rightButtons)) {
-        [_navigationButtons applyLeftButtons:withDefault.topBar.leftButtons
-                                rightButtons:withDefault.topBar.rightButtons
-                      defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle
-                     defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
+    if (withDefault.topBar.leftButtons) {
+        [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
+                         defaultButtonStyle:withDefault.topBar.leftButtonStyle];
+    }
+
+    if (withDefault.topBar.rightButtons) {
+        [_buttonsPresenter applyRightButtons:withDefault.topBar.rightButtons
+                          defaultButtonStyle:withDefault.topBar.rightButtonStyle];
     }
 }
 
@@ -188,11 +191,14 @@
         [viewController setBackButtonVisible:mergeOptions.topBar.backButton.visible.get];
     }
 
-    if (mergeOptions.topBar.leftButtons || mergeOptions.topBar.rightButtons) {
-        [_navigationButtons applyLeftButtons:mergeOptions.topBar.leftButtons
-                                rightButtons:mergeOptions.topBar.rightButtons
-                      defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle
-                     defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
+    if (mergeOptions.topBar.leftButtons) {
+        [_buttonsPresenter applyLeftButtons:mergeOptions.topBar.leftButtons
+                         defaultButtonStyle:withDefault.topBar.leftButtonStyle];
+    }
+
+    if (mergeOptions.topBar.rightButtons) {
+        [_buttonsPresenter applyRightButtons:mergeOptions.topBar.rightButtons
+                          defaultButtonStyle:withDefault.topBar.rightButtonStyle];
     }
 
     if (mergeOptions.overlay.interceptTouchOutside.hasValue) {

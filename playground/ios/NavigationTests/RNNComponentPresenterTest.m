@@ -76,10 +76,10 @@
     [(id)self.boundViewController verify];
 }
 
-- (void)testBindViewControllerShouldCreateNavigationButtonsCreator {
+- (void)testBindViewControllerShouldCreateNavigationButtonsPresenter {
     RNNComponentPresenter *presenter = [[RNNComponentPresenter alloc] init];
     [presenter bindViewController:self.boundViewController];
-    XCTAssertNotNil(presenter.navigationButtons);
+    XCTAssertNotNil([presenter valueForKey:@"_buttonsPresenter"]);
 }
 
 - (void)testApplyOptionsOnInit_TopBarDrawUnder_true {

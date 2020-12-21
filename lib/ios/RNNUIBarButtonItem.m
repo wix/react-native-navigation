@@ -13,24 +13,29 @@
 
 @implementation RNNUIBarButtonItem
 
-- (instancetype)init:(NSString *)buttonId
-            withIcon:(UIImage *)iconImage
-          withInsets:(UIEdgeInsets)edgeInsets {
+- (instancetype)init:(NSString *)buttonId icon:(UIImage *)iconImage {
+    self = [super initWithImage:iconImage style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.buttonId = buttonId;
+    return self;
+}
 
-    if (UIEdgeInsetsEqualToEdgeInsets(edgeInsets, UIEdgeInsetsZero)) {
-        self = [super initWithImage:iconImage
-                              style:UIBarButtonItemStylePlain
-                             target:nil
-                             action:nil];
-    } else {
-        UIButton *button = [[UIButton alloc] init];
-        [button addTarget:self
-                      action:@selector(onButtonPressed)
-            forControlEvents:UIControlEventTouchUpInside];
-        [button setImage:[iconImage imageWithInsets:edgeInsets] forState:UIControlStateNormal];
-        [button setFrame:CGRectMake(0, 0, iconImage.size.width, iconImage.size.height)];
-        self = [super initWithCustomView:button];
-    }
+- (instancetype)init:(NSString *)buttonId
+                icon:(UIImage *)iconImage
+                size:(CGSize)size
+     backgroundColor:(UIColor *)backgroundColor
+        cornerRadius:(CGFloat)cornerRadius
+              insets:(UIEdgeInsets)edgeInsets {
+
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    [button addTarget:self
+                  action:@selector(onButtonPressed)
+        forControlEvents:UIControlEventTouchUpInside];
+    [button setImage:[iconImage imageWithInsets:edgeInsets] forState:UIControlStateNormal];
+    button.backgroundColor = backgroundColor;
+    button.layer.cornerRadius = cornerRadius;
+    button.clipsToBounds = !!cornerRadius;
+
+    self = [super initWithCustomView:button];
 
     self.buttonId = buttonId;
     return self;

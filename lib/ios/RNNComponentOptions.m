@@ -13,6 +13,15 @@
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    RNNComponentOptions *newOptions = RNNComponentOptions.new;
+    newOptions.name = self.name.copy;
+    newOptions.componentId = self.componentId.copy;
+    newOptions.alignment = self.alignment.copy;
+    newOptions.waitForRender = self.waitForRender.copy;
+    return newOptions;
+}
+
 - (void)mergeOptions:(RNNComponentOptions *)options {
     if (options.name.hasValue)
         self.name = options.name;

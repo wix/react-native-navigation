@@ -4,15 +4,16 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface RNNNavigationButtons : NSObject
+@interface RNNButtonsPresenter : NSObject
 
 - (instancetype)initWithViewController:(UIViewController *)viewController
                      componentRegistry:(RNNReactComponentRegistry *)componentRegistry;
 
-- (void)applyLeftButtons:(NSArray *)leftButtons
-               rightButtons:(NSArray *)rightButtons
-     defaultLeftButtonStyle:(RNNButtonOptions *)defaultLeftButtonStyle
-    defaultRightButtonStyle:(RNNButtonOptions *)defaultRightButtonStyle;
+- (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
+      defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle;
+
+- (void)applyRightButtons:(NSArray<RNNButtonOptions *> *)rightButtons
+       defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle;
 
 - (void)componentDidAppear;
 

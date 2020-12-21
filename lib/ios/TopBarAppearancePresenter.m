@@ -119,10 +119,8 @@
         [RNNFontAttributesCreator createFromDictionary:self.getAppearance.titleTextAttributes
                                             fontFamily:fontFamily
                                               fontSize:fontSize
-                                       defaultFontSize:nil
                                             fontWeight:fontWeight
-                                                 color:fontColor
-                                          defaultColor:nil];
+                                                 color:fontColor];
 
     self.getAppearance.titleTextAttributes = titleTextAttributes;
     self.getScrollEdgeAppearance.titleTextAttributes = titleTextAttributes;
@@ -137,10 +135,8 @@
         [RNNFontAttributesCreator createFromDictionary:self.getAppearance.largeTitleTextAttributes
                                             fontFamily:fontFamily
                                               fontSize:fontSize
-                                       defaultFontSize:nil
                                             fontWeight:fontWeight
-                                                 color:fontColor
-                                          defaultColor:nil];
+                                                 color:fontColor];
     self.getAppearance.largeTitleTextAttributes = largeTitleTextAttributes;
     self.getScrollEdgeAppearance.largeTitleTextAttributes = largeTitleTextAttributes;
 }
