@@ -164,7 +164,7 @@
     barButtonItem.accessibilityLabel = [button.accessibilityLabel getWithDefaultValue:nil];
     barButtonItem.target = self.viewController;
     barButtonItem.enabled = [button.enabled getWithDefaultValue:YES];
-
+    barButtonItem.action = @selector(onButtonPress:);
     NSMutableDictionary *textAttributes = [NSMutableDictionary
         dictionaryWithDictionary:[RNNFontAttributesCreator
                                      createWithFontFamily:[button.fontFamily
