@@ -6,7 +6,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
-import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -46,6 +45,8 @@ public class PIPFloatingLayout extends FrameLayout {
     private ILogger logger;
     private PIPButtonsLayout pipButtonsLayout;
     private int statusBarHeight = 0;
+    private GradientDrawable roundedBackground;
+    private GradientDrawable defaultBackground;
 
     public PIPFloatingLayout(@NonNull Activity activity) {
         super(activity);
@@ -55,6 +56,10 @@ public class PIPFloatingLayout extends FrameLayout {
         ViewConfiguration vc = ViewConfiguration.get(this.getContext());
         mTouchSlop = vc.getScaledTouchSlop() * 3;
         statusBarHeight = getStatusBarHeight();
+        roundedBackground = new GradientDrawable();
+        roundedBackground.setCornerRadius(4);
+        defaultBackground = new GradientDrawable();
+        defaultBackground.setCornerRadius(0);
     }
 
     public PIPFloatingLayout(@NonNull Activity activity, ILogger logger) {
@@ -72,6 +77,7 @@ public class PIPFloatingLayout extends FrameLayout {
 
     public void setCustomPIPDimensions(CustomPIPDimension dimension) {
         this.pipDimension = dimension;
+        pipButtonsLayout.setPIPHeight(UiUtils.dpToPx(activity, pipDimension.compact.height.get()));
     }
 
 
@@ -167,6 +173,7 @@ public class PIPFloatingLayout extends FrameLayout {
         FrameLayout.LayoutParams pipLayoutLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         pipLayoutLayoutParams.setMargins(0, 0, 0, 0);
         setLayoutParams(pipLayoutLayoutParams);
+        setBackground(defaultBackground);
         this.pipButtonsLayout.hide();
     }
 
@@ -205,6 +212,7 @@ public class PIPFloatingLayout extends FrameLayout {
         params.width = UiUtils.dpToPx(activity, pipDimension.compact.width.get());
         params.height = UiUtils.dpToPx(activity, pipDimension.compact.height.get());
         setLayoutParams(params);
+        setBackground(roundedBackground);
         pipButtonsLayout.makeShortTimeVisible();
     }
 

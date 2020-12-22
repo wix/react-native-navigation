@@ -1,10 +1,12 @@
 package com.reactnativenavigation.views.pip;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -39,8 +41,8 @@ public class PIPButtonsLayout extends FrameLayout {
 
     private void initView(Context context) {
         addView(LayoutInflater.from(context).inflate(R.layout.pip_buttons_layout, null));
-        FrameLayout.LayoutParams buttonParams = new FrameLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-        buttonParams.setMargins(0, 8, 0, 0);
+        FrameLayout.LayoutParams buttonParams = new FrameLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+        buttonParams.setMargins(0, 0, 0, 0);
         setLayoutParams(buttonParams);
         findViewById(R.id.fullScreenButton).setOnClickListener(new OnClickListener() {
             @Override
@@ -58,9 +60,17 @@ public class PIPButtonsLayout extends FrameLayout {
         });
     }
 
+    public void setPIPHeight(int pipHeight)
+    {
+        ViewGroup.LayoutParams params = getLayoutParams();
+        params.height = pipHeight / 2;
+        setLayoutParams(params);
+    }
+
     public void makeShortTimeVisible() {
         shouldVisible = false;
         setVisibility(VISIBLE);
+        setBackgroundResource(R.drawable.pip_button_background);
         if (getHandler() != null) {
             getHandler().postDelayed(new Runnable() {
                 @Override
@@ -75,6 +85,7 @@ public class PIPButtonsLayout extends FrameLayout {
 
     public void makePermanentVisible() {
         shouldVisible = true;
+        setBackgroundColor(Color.TRANSPARENT);
         setVisibility(VISIBLE);
     }
 

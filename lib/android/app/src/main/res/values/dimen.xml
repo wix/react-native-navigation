@@ -4,4 +4,5 @@
     <dimen name="pip_dismiss_gradient_height">176dp</dimen>
     <dimen name="pip_dismiss_text_bottom_margin">24dp</dimen>
     <dimen name="pip_button_horizontal_margin">8dp</dimen>
+    <dimen name="pip_button_top_margin">8dp</dimen>
 </resources>
