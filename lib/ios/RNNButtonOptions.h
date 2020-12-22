@@ -1,4 +1,5 @@
 #import "RNNComponentOptions.h"
+#import "RNNIconBackgroundOptions.h"
 #import "RNNInsetsOptions.h"
 #import "RNNOptions.h"
 
@@ -14,15 +15,12 @@
 @property(nonatomic, strong) Text *testID;
 @property(nonatomic, strong) Color *color;
 @property(nonatomic, strong) Color *disabledColor;
-@property(nonatomic, strong) Color *backgroundColor;
 @property(nonatomic, strong) Image *icon;
 @property(nonatomic, strong) Bool *enabled;
 @property(nonatomic, strong) RNNInsetsOptions *iconInsets;
 @property(nonatomic, strong) Bool *selectTabOnPress;
-@property(nonatomic, strong) Number *cornerRadius;
-@property(nonatomic, strong) Number *width;
-@property(nonatomic, strong) Number *height;
 @property(nonatomic, strong) RNNComponentOptions *component;
+@property(nonatomic, strong) RNNIconBackgroundOptions *iconBackground;
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions;
 

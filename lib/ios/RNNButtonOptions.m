@@ -15,14 +15,11 @@
     self.accessibilityLabel = [TextParser parse:dict key:@"accessibilityLabel"];
     self.color = [ColorParser parse:dict key:@"color"];
     self.disabledColor = [ColorParser parse:dict key:@"disabledColor"];
-    self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
     self.icon = [ImageParser parse:dict key:@"icon"];
     self.iconInsets = [[RNNInsetsOptions alloc] initWithDict:dict[@"iconInsets"]];
     self.enabled = [BoolParser parse:dict key:@"enabled"];
     self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
-    self.cornerRadius = [NumberParser parse:dict key:@"cornerRadius"];
-    self.width = [NumberParser parse:dict key:@"width"];
-    self.height = [NumberParser parse:dict key:@"height"];
+    self.iconBackground = [[RNNIconBackgroundOptions alloc] initWithDict:dict[@"iconBackground"]];
 
     return self;
 }
@@ -39,19 +36,17 @@
     newOptions.accessibilityLabel = self.accessibilityLabel.copy;
     newOptions.color = self.color.copy;
     newOptions.disabledColor = self.disabledColor.copy;
-    newOptions.backgroundColor = self.backgroundColor.copy;
     newOptions.icon = self.icon.copy;
     newOptions.iconInsets = self.iconInsets.copy;
     newOptions.enabled = self.enabled.copy;
     newOptions.selectTabOnPress = self.selectTabOnPress.copy;
-    newOptions.cornerRadius = self.cornerRadius.copy;
-    newOptions.width = self.width.copy;
-    newOptions.height = self.height.copy;
+    newOptions.iconBackground = self.iconBackground.copy;
     return newOptions;
 }
 
 - (void)mergeOptions:(RNNButtonOptions *)options {
     [self.iconInsets mergeOptions:options.iconInsets];
+    [self.iconBackground mergeOptions:options.iconBackground];
 
     if (options.identifier.hasValue)
         self.identifier = options.identifier;
@@ -71,26 +66,16 @@
         self.color = options.color;
     if (options.disabledColor.hasValue)
         self.disabledColor = options.disabledColor;
-    if (options.backgroundColor.hasValue)
-        self.backgroundColor = options.backgroundColor;
     if (options.icon.hasValue)
         self.icon = options.icon;
     if (options.enabled.hasValue)
         self.enabled = options.enabled;
     if (options.selectTabOnPress.hasValue)
         self.selectTabOnPress = options.selectTabOnPress;
-    if (options.cornerRadius.hasValue)
-        self.cornerRadius = options.cornerRadius;
-    if (options.width.hasValue)
-        self.width = options.width;
-    if (options.height.hasValue)
-        self.height = options.height;
 }
 
 - (BOOL)shouldCreateCustomView {
-    return self.icon.hasValue &&
-           (self.backgroundColor.hasValue || self.cornerRadius.hasValue ||
-            self.iconInsets.hasValue || self.width.hasValue || self.height.hasValue);
+    return self.icon.hasValue && (self.iconBackground.hasValue || self.iconInsets.hasValue);
 }
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions {

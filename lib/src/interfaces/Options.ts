@@ -517,21 +517,9 @@ export interface OptionsTopBarButton {
    */
   disabledColor?: Color;
   /**
-   * Set background color
+   * Set icon background style
    */
-  backgroundColor?: Color;
-  /**
-   * Set corner radius
-   */
-  cornerRadius?: number;
-  /**
-   * Set width
-   */
-  width?: number;
-  /**
-   * Set height
-   */
-  height?: number;
+  iconBackground?: IconBackgroundOptions;
   /**
    * Set testID for reference in E2E tests
    */
@@ -1225,6 +1213,25 @@ export interface WindowOptions {
    * Configure the background color of the application's main window.
    */
   backgroundColor?: Color;
+}
+
+export interface IconBackgroundOptions {
+  /**
+   * Set background color
+   */
+  color?: Color;
+  /**
+   * Set corner radius
+   */
+  cornerRadius?: number;
+  /**
+   * Set width
+   */
+  width?: number;
+  /**
+   * Set height
+   */
+  height?: number;
 }
 
 export interface Options {

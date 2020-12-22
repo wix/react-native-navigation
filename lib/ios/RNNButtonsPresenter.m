@@ -141,10 +141,13 @@
         barButtonItem = [[RNNUIBarButtonItem alloc]
                        init:button.identifier.get
                        icon:iconImage
-                       size:CGSizeMake([button.width getWithDefaultValue:BUTTON_WIDTH].floatValue,
-                                       [button.height getWithDefaultValue:BUTTON_HEIGHT].floatValue)
-            backgroundColor:[button.backgroundColor getWithDefaultValue:nil]
-               cornerRadius:[button.cornerRadius getWithDefaultValue:@(0)].floatValue
+                       size:CGSizeMake(
+                                [button.iconBackground.width getWithDefaultValue:BUTTON_WIDTH]
+                                    .floatValue,
+                                [button.iconBackground.height getWithDefaultValue:BUTTON_HEIGHT]
+                                    .floatValue)
+            backgroundColor:[button.iconBackground.color getWithDefaultValue:nil]
+               cornerRadius:[button.iconBackground.cornerRadius getWithDefaultValue:@(0)].floatValue
                      insets:button.iconInsets.UIEdgeInsets];
     } else if (iconImage) {
         barButtonItem = [[RNNUIBarButtonItem alloc] init:button.identifier.get icon:iconImage];
