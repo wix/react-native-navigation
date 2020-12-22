@@ -47,8 +47,7 @@
 }
 
 - (BOOL)hasValue {
-    return UIEdgeInsetsEqualToEdgeInsets([self edgeInsetsWithDefault:UIEdgeInsetsZero],
-                                         UIEdgeInsetsZero);
+    return self.top.hasValue || self.left.hasValue || self.bottom.hasValue || self.right.hasValue;
 }
 
 @end

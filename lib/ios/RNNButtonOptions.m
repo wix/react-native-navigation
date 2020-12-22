@@ -88,8 +88,9 @@
 }
 
 - (BOOL)shouldCreateCustomView {
-    return self.icon && (self.backgroundColor.hasValue || self.cornerRadius.hasValue ||
-                         self.iconInsets.hasValue || self.width.hasValue || self.height.hasValue);
+    return self.icon.hasValue &&
+           (self.backgroundColor.hasValue || self.cornerRadius.hasValue ||
+            self.iconInsets.hasValue || self.width.hasValue || self.height.hasValue);
 }
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions {

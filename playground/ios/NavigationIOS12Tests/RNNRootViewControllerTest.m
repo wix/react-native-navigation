@@ -469,7 +469,9 @@
 }
 
 - (void)testRightButtonsWithTitle_withoutStyle {
-    self.options.topBar.rightButtons = @[ @{@"id" : @"testId", @"text" : @"test"} ];
+    RNNButtonOptions *buttonOptions =
+        [[RNNButtonOptions alloc] initWithDict:@{@"id" : @"testId", @"text" : @"test"}];
+    self.options.topBar.rightButtons = @[ buttonOptions ];
     self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                       rootViewCreator:nil
                                                          eventEmitter:nil
@@ -495,15 +497,15 @@
 
 - (void)testRightButtonsWithTitle_withStyle {
     NSNumber *inputColor = @(0xFFFF0000);
-
-    self.options.topBar.rightButtons = @[ @{
+    RNNButtonOptions *buttonOptions = [[RNNButtonOptions alloc] initWithDict:@{
         @"id" : @"testId",
         @"text" : @"test",
         @"enabled" : @false,
         @"buttonColor" : inputColor,
         @"buttonFontSize" : @22,
         @"buttonFontWeight" : @"800"
-    } ];
+    }];
+    self.options.topBar.rightButtons = @[ buttonOptions ];
     self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                       rootViewCreator:nil
                                                          eventEmitter:nil
@@ -531,7 +533,9 @@
 }
 
 - (void)testLeftButtonsWithTitle_withoutStyle {
-    self.options.topBar.leftButtons = @[ @{@"id" : @"testId", @"text" : @"test"} ];
+    RNNButtonOptions *buttonOptions =
+        [[RNNButtonOptions alloc] initWithDict:@{@"id" : @"testId", @"text" : @"test"}];
+    self.options.topBar.leftButtons = @[ buttonOptions ];
     self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                       rootViewCreator:nil
                                                          eventEmitter:nil
@@ -559,14 +563,16 @@
 - (void)testLeftButtonsWithTitle_withStyle {
     NSNumber *inputColor = @(0xFFFF0000);
 
-    self.options.topBar.leftButtons = @[ @{
+    RNNButtonOptions *buttonOptions = [[RNNButtonOptions alloc] initWithDict:@{
         @"id" : @"testId",
         @"text" : @"test",
         @"enabled" : @false,
         @"buttonColor" : inputColor,
         @"buttonFontSize" : @22,
         @"buttonFontWeight" : @"800"
-    } ];
+    }];
+
+    self.options.topBar.leftButtons = @[ buttonOptions ];
     self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                       rootViewCreator:nil
                                                          eventEmitter:nil
