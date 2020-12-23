@@ -79,7 +79,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
             loadIcon(object : ImageLoadingListenerAdapter() {
                 override fun onComplete(drawable: Drawable) {
                     setIconColor(drawable)
-                    menuItem.icon = if (button.iconBackground.hasValue()) IconBackgroundDrawable(drawable, button.iconBackground, getIconColor()) else drawable
+                    menuItem.icon = if (button.iconBackground.hasValue()) IconBackgroundDrawable(context, drawable, button.iconBackground, getIconColor()) else drawable
                 }
             })
         }

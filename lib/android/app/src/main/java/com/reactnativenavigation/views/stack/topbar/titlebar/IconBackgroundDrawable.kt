@@ -1,14 +1,16 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import androidx.core.graphics.drawable.toBitmap
 import com.reactnativenavigation.options.IconBackgroundOptions
+import com.reactnativenavigation.utils.UiUtils
 
 
-class IconBackgroundDrawable(private val wrapped: Drawable, private val iconBackgroundOptions: IconBackgroundOptions, private val iconColor: Int?) : Drawable() {
+class IconBackgroundDrawable(private val context: Context, private val wrapped: Drawable, private val iconBackgroundOptions: IconBackgroundOptions, private val iconColor: Int?) : Drawable() {
     private val path: Path = Path()
     private val bitmapPaint = Paint().apply {
         isAntiAlias = true
@@ -22,10 +24,6 @@ class IconBackgroundDrawable(private val wrapped: Drawable, private val iconBack
 
     }
 
-    private val mIntrinsicWidth: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getBackgroundWidth().toFloat(), Resources
-            .getSystem().displayMetrics).toInt()
-    private val mIntrinsicHeight: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getBackgroundHeight().toFloat(), Resources
-            .getSystem().displayMetrics).toInt()
     private val cornerRadius: Float =  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, iconBackgroundOptions.cornerRadius.get().toFloat(), Resources
             .getSystem().displayMetrics).toFloat()
 
@@ -35,14 +33,56 @@ class IconBackgroundDrawable(private val wrapped: Drawable, private val iconBack
         drawBitmap(canvas)
     }
 
+    override fun getIntrinsicWidth(): Int {
+        return UiUtils.dpToPx(context, getBackgroundWidth())
+    }
+
+    override fun getIntrinsicHeight(): Int {
+        return UiUtils.dpToPx(context, getBackgroundHeight())
+    }
+
+    override fun setBounds(l: Int, t: Int, r: Int, b: Int) {
+        updatePath(RectF(l.toFloat(), t.toFloat(), getBackgroundWidth().toFloat(), getBackgroundHeight().toFloat()))
+        super.setBounds(l, t, getBackgroundWidth(), getBackgroundHeight())
+    }
+
+    override fun setBounds(r: Rect) {
+        r.right = getBackgroundWidth()
+        r.bottom = getBackgroundHeight()
+        updatePath(RectF(r))
+        super.setBounds(r)
+    }
+
+    override fun setAlpha(alpha: Int) {
+        wrapped.alpha = alpha
+    }
+
+    override fun getOpacity(): Int {
+        return PixelFormat.UNKNOWN
+    }
+
+    override fun setColorFilter(colorFilter: ColorFilter?) {
+        wrapped.colorFilter = colorFilter
+    }
+
     private fun getBackgroundWidth(): Int {
-        return if (iconBackgroundOptions.width.get(getBitmapWidth()) < getBitmapWidth()) getBitmapWidth()
-        else iconBackgroundOptions.width.get(getBitmapWidth())
+        val backgroundWidth = iconBackgroundOptions.width.get(getBitmapWidthDp())
+        return if (backgroundWidth < getBitmapWidthDp()) UiUtils.dpToPx(context, getBitmapWidthDp())
+        else UiUtils.dpToPx(context, backgroundWidth)
     }
 
     private fun getBackgroundHeight(): Int {
-        return if (iconBackgroundOptions.height.get(getBitmapHeight()) < getBitmapHeight()) getBitmapHeight()
-        else iconBackgroundOptions.height.get(getBitmapHeight())
+        val backgroundHeight = iconBackgroundOptions.height.get(getBitmapHeightDp())
+        return if (backgroundHeight < getBitmapHeightDp()) UiUtils.dpToPx(context, getBitmapHeightDp())
+        else UiUtils.dpToPx(context, backgroundHeight)
+    }
+
+    private fun getBitmapWidthDp(): Int {
+        return UiUtils.pxToDp(context, getBitmapWidth().toFloat()).toInt()
+    }
+
+    private fun getBitmapHeightDp(): Int {
+        return UiUtils.pxToDp(context, getBitmapHeight().toFloat()).toInt()
     }
 
     private fun getBitmapWidth(): Int {
@@ -73,36 +113,6 @@ class IconBackgroundDrawable(private val wrapped: Drawable, private val iconBack
                 bounds.width() - (bounds.width()-getBitmapWidth()) / 2,
                 bounds.height() - (bounds.height()-getBitmapHeight()) / 2)
         canvas.drawBitmap(wrapped.toBitmap(), null, bitmapRect, bitmapPaint)
-    }
-
-    override fun getIntrinsicWidth(): Int {
-        return mIntrinsicWidth
-    }
-
-    override fun getIntrinsicHeight(): Int {
-        return mIntrinsicHeight
-    }
-
-    override fun setBounds(l: Int, t: Int, r: Int, b: Int) {
-        updatePath(RectF(l.toFloat(), t.toFloat(), r.toFloat(), b.toFloat()))
-        super.setBounds(l, t, r, b)
-    }
-
-    override fun setBounds(r: Rect) {
-        updatePath(RectF(r))
-        super.setBounds(r)
-    }
-
-    override fun setAlpha(alpha: Int) {
-        wrapped.alpha = alpha
-    }
-
-    override fun getOpacity(): Int {
-        return PixelFormat.UNKNOWN
-    }
-
-    override fun setColorFilter(colorFilter: ColorFilter?) {
-        wrapped.colorFilter = colorFilter
     }
 
     private fun updatePath(r: RectF) {
