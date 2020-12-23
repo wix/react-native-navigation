@@ -1,3 +1,5 @@
+>⚠️ This changelog is no longer maintained. Release notes can be found [here](https://github.com/wix/react-native-navigation/releases).
+___
 # Changelog
 
 # 7.0.0
