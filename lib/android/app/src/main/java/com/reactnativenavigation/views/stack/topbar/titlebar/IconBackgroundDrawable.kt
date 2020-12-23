@@ -24,8 +24,7 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
 
     }
 
-    private val cornerRadius: Float =  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, iconBackgroundOptions.cornerRadius.get().toFloat(), Resources
-            .getSystem().displayMetrics).toFloat()
+    private val cornerRadius: Float =  UiUtils.dpToPx(context, iconBackgroundOptions.cornerRadius.get(0.0).toFloat())
 
     override fun draw(canvas: Canvas) {
         drawPath(canvas)
