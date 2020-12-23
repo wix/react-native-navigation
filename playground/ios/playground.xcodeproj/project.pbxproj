@@ -43,6 +43,7 @@
 		50C9A8D1240EB95F00BD699F /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
 		50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.m */; };
 		50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
+		50FDEFBC258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m */; };
 		6B102251DCC578519C2DC6A4 /* libPods-NavigationIOS12Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C10F72071A488F801E1F1116 /* libPods-NavigationIOS12Tests.a */; };
 		8EB60A6CB93C527CC6A870A2 /* libPods-SnapshotTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8B4CFA18A5ACE953124E129 /* libPods-SnapshotTests.a */; };
 		9F9A3A9625260DA900AAAF37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F9A3A9525260DA900AAAF37 /* LaunchScreen.storyboard */; };
@@ -156,6 +157,7 @@
 		50CF233B240695B10098042D /* RNNBottomTabsController+Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNNBottomTabsController+Helpers.h"; sourceTree = "<group>"; };
 		50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNNBottomTabsController+Helpers.m"; sourceTree = "<group>"; };
 		50E4888A2427DA4800B11A8E /* StackOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StackOptionsTest.m; sourceTree = "<group>"; };
+		50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSearchBarOptionsTest.m; sourceTree = "<group>"; };
 		7F8E255E2E08F6ECE7DF6FE3 /* Pods-playground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.release.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.release.xcconfig"; sourceTree = "<group>"; };
 		9F9A3A9525260DA900AAAF37 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B484A10A046B0046B98A76B5 /* Pods-playground.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.debug.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.debug.xcconfig"; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 				E58D263F2385888C003F36BA /* RNNStackControllerTest.m */,
 				E58D26322385888B003F36BA /* RNNNavigationOptionsTest.m */,
 				E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */,
+				50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m */,
 				502734AE24F3E9110022163C /* ColorParserTest.m */,
 				E58D262C2385888B003F36BA /* RNNOptionsTest.h */,
 				E58D262D2385888B003F36BA /* RNNOverlayManagerTest.m */,
@@ -848,6 +851,7 @@
 				50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.m in Sources */,
 				50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.m in Sources */,
 				50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */,
+				50FDEFBC258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m in Sources */,
 				E58D264D2385888C003F36BA /* RNNOverlayManagerTest.m in Sources */,
 				501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */,
 				E58D265F2385888C003F36BA /* RNNBasePresenterTest.m in Sources */,
