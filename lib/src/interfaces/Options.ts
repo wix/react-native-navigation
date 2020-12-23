@@ -731,6 +731,12 @@ export interface OptionsBottomTabs {
    */
   animate?: boolean;
   /**
+   * Controls wether tab selection is animated or not
+   * #### (android specific)
+   * @default true
+   */
+  animateTabSelection?: boolean;
+  /**
    * Use large icons when possible, even when three tabs without titles are displayed
    * #### (android specific)
    * @default false
@@ -845,6 +851,16 @@ export interface OptionsBottomTab {
    */
   iconColor?: Color;
   /**
+   * Set the icon width
+   * #### (Android specific)
+   */
+  iconWidth?: number;
+  /**
+   * Set the icon height
+   * #### (Android specific)
+   */
+  iconHeight?: number;
+  /**
    * Set the text color
    */
   textColor?: Color;
@@ -876,7 +892,6 @@ export interface OptionsBottomTab {
   fontSize?: number;
   /**
    * Set the insets of the icon
-   * #### (iOS specific)
    */
   iconInsets?: Insets;
   /**
