@@ -25,14 +25,8 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     private val cornerRadius = iconBackground.cornerRadius.get(0)
     private val bitmapWidth = wrapped.intrinsicWidth
     private val bitmapHeight = wrapped.intrinsicHeight
-
-    private val backgroundWidth =  iconBackground.width.get(bitmapWidth).let {
-        max(it, bitmapWidth)
-    }
-
-    private val backgroundHeight =  iconBackground.height.get(bitmapHeight).let {
-        max(it, bitmapHeight)
-    }
+    private val backgroundWidth =  iconBackground.width.get(bitmapWidth).let { max(it, bitmapWidth) }
+    private val backgroundHeight =  iconBackground.height.get(bitmapHeight).let { max(it, bitmapHeight) }
 
     override fun draw(canvas: Canvas) {
         drawPath(canvas)
