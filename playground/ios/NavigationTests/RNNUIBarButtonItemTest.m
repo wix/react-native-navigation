@@ -17,7 +17,8 @@
                                                                     size:size
                                                          backgroundColor:backgroundColor
                                                             cornerRadius:cornerRadius
-                                                                  insets:insets];
+                                                                  insets:insets
+                                                               tintColor:nil];
 
     UIButton *button = barButtonItem.customView;
     XCTAssertEqual(button.backgroundColor, backgroundColor);

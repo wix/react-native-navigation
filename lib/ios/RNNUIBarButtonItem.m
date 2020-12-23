@@ -1,6 +1,7 @@
 #import "RNNUIBarButtonItem.h"
 #import "RCTConvert+UIBarButtonSystemItem.h"
 #import "UIImage+insets.h"
+#import "UIImage+tint.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
@@ -13,8 +14,11 @@
 
 @implementation RNNUIBarButtonItem
 
-- (instancetype)init:(NSString *)buttonId icon:(UIImage *)iconImage {
-    self = [super initWithImage:iconImage style:UIBarButtonItemStylePlain target:nil action:nil];
+- (instancetype)init:(NSString *)buttonId icon:(UIImage *)iconImage tintColor:(UIColor *)tintColor {
+    self = [super initWithImage:tintColor ? [iconImage withTintColor:tintColor] : iconImage
+                          style:UIBarButtonItemStylePlain
+                         target:nil
+                         action:nil];
     self.buttonId = buttonId;
     return self;
 }
@@ -24,13 +28,16 @@
                 size:(CGSize)size
      backgroundColor:(UIColor *)backgroundColor
         cornerRadius:(CGFloat)cornerRadius
-              insets:(UIEdgeInsets)edgeInsets {
+              insets:(UIEdgeInsets)edgeInsets
+           tintColor:(UIColor *)tintColor {
 
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
     [button addTarget:self
                   action:@selector(onButtonPressed)
         forControlEvents:UIControlEventTouchUpInside];
-    [button setImage:[iconImage imageWithInsets:edgeInsets] forState:UIControlStateNormal];
+    [button setImage:[(tintColor ? [iconImage withTintColor:tintColor]
+                                 : iconImage) imageWithInsets:edgeInsets]
+            forState:UIControlStateNormal];
     button.backgroundColor = backgroundColor;
     button.layer.cornerRadius = cornerRadius;
     button.clipsToBounds = !!cornerRadius;

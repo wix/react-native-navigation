@@ -322,6 +322,8 @@
 		50C085EC259143F200B0502C /* RNNButtonsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C085EA259143F200B0502C /* RNNButtonsParser.m */; };
 		50C085EF2591FC5000B0502C /* RNNIconBackgroundOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C085ED2591FC5000B0502C /* RNNIconBackgroundOptions.h */; };
 		50C085F02591FC5000B0502C /* RNNIconBackgroundOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C085EE2591FC5000B0502C /* RNNIconBackgroundOptions.m */; };
+		50C085F325939F6200B0502C /* RNNButtonBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C085F125939F6200B0502C /* RNNButtonBuilder.h */; };
+		50C085F425939F6200B0502C /* RNNButtonBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C085F225939F6200B0502C /* RNNButtonBuilder.m */; };
 		50C4A496206BDDBB00DB292E /* RNNSubtitleOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50C4A494206BDDBB00DB292E /* RNNSubtitleOptions.h */; };
 		50C4A497206BDDBB00DB292E /* RNNSubtitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C4A495206BDDBB00DB292E /* RNNSubtitleOptions.m */; };
 		50C5FD8220D7D6D600F1EA8A /* ReactNativeNavigation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7BA500731E2544B9001B9E1B /* ReactNativeNavigation.h */; };
@@ -836,6 +838,8 @@
 		50C085EA259143F200B0502C /* RNNButtonsParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNButtonsParser.m; sourceTree = "<group>"; };
 		50C085ED2591FC5000B0502C /* RNNIconBackgroundOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNIconBackgroundOptions.h; sourceTree = "<group>"; };
 		50C085EE2591FC5000B0502C /* RNNIconBackgroundOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNIconBackgroundOptions.m; sourceTree = "<group>"; };
+		50C085F125939F6200B0502C /* RNNButtonBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNButtonBuilder.h; sourceTree = "<group>"; };
+		50C085F225939F6200B0502C /* RNNButtonBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNButtonBuilder.m; sourceTree = "<group>"; };
 		50C4A494206BDDBB00DB292E /* RNNSubtitleOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSubtitleOptions.h; sourceTree = "<group>"; };
 		50C4A495206BDDBB00DB292E /* RNNSubtitleOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSubtitleOptions.m; sourceTree = "<group>"; };
 		50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSideMenuOptions.h; sourceTree = "<group>"; };
@@ -1528,6 +1532,8 @@
 				50BAFE482399403200798674 /* Child View Controllers */,
 				50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */,
 				50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */,
+				50C085F125939F6200B0502C /* RNNButtonBuilder.h */,
+				50C085F225939F6200B0502C /* RNNButtonBuilder.m */,
 				501CD31D214A5B6900A6E225 /* RNNLayoutInfo.h */,
 				501CD31E214A5B6900A6E225 /* RNNLayoutInfo.m */,
 				501E0215213E7EA3003365C5 /* RNNReactView.h */,
@@ -1888,6 +1894,7 @@
 				503A8A0123BB7B810094D1C4 /* ElementAnimator.h in Headers */,
 				50CED44D239EA78700C42EE2 /* TopBarAppearancePresenter.h in Headers */,
 				50D3A37223B8D77C00717F95 /* SharedElementTransitionOptions.h in Headers */,
+				50C085F325939F6200B0502C /* RNNButtonBuilder.h in Headers */,
 				50887C1520ECC5C200D06111 /* RNNButtonOptions.h in Headers */,
 				5049593E216F5D73006D2B81 /* BoolParser.h in Headers */,
 				E5F6C3A522DB4D0F0093C2CE /* UIViewController+Utils.h in Headers */,
@@ -2253,6 +2260,7 @@
 				E33AC20020B5BA0B0090DB8A /* RNNSplitViewController.m in Sources */,
 				50BAFE4C2399405800798674 /* RNNExternalViewController.m in Sources */,
 				503A8A2623BD04410094D1C4 /* ElementTransitionsCreator.m in Sources */,
+				50C085F425939F6200B0502C /* RNNButtonBuilder.m in Sources */,
 				5038A3C2216E1E66009280BC /* RNNFontAttributesCreator.m in Sources */,
 				506317AB220B547400B26FC3 /* UIImage+insets.m in Sources */,
 				E8A430121F9CB87B00B61A20 /* ElementAlphaTransition.m in Sources */,

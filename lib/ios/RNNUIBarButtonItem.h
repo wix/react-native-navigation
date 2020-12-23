@@ -12,8 +12,9 @@
                 size:(CGSize)size
      backgroundColor:(UIColor *)backgroundColor
         cornerRadius:(CGFloat)cornerRadius
-              insets:(UIEdgeInsets)edgeInsets;
-- (instancetype)init:(NSString *)buttonId icon:(UIImage *)iconImage;
+              insets:(UIEdgeInsets)edgeInsets
+           tintColor:(UIColor *)tintColor;
+- (instancetype)init:(NSString *)buttonId icon:(UIImage *)iconImage tintColor:(UIColor *)tintColor;
 - (instancetype)init:(NSString *)buttonId withTitle:(NSString *)title;
 - (instancetype)init:(NSString *)buttonId withCustomView:(RCTRootView *)reactView;
 - (instancetype)init:(NSString *)buttonId withSystemItem:(NSString *)systemItemName;
