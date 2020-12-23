@@ -1,16 +1,15 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.util.TypedValue
 import androidx.core.graphics.drawable.toBitmap
 import com.reactnativenavigation.options.IconBackgroundOptions
 import com.reactnativenavigation.utils.UiUtils
+import kotlin.math.max
 
 
-class IconBackgroundDrawable(private val context: Context, private val wrapped: Drawable, private val iconBackgroundOptions: IconBackgroundOptions, private val iconColor: Int?) : Drawable() {
+class IconBackgroundDrawable(private val context: Context, private val wrapped: Drawable, private val iconBackground: IconBackgroundOptions, private val iconColor: Int?) : Drawable() {
     private val path: Path = Path()
     private val bitmapPaint = Paint().apply {
         isAntiAlias = true
@@ -20,11 +19,18 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     private val backgroundPaint = Paint().apply {
         isAntiAlias = true
         isFilterBitmap = true
-        color = iconBackgroundOptions.color.get(Color.TRANSPARENT)
-
+        color = iconBackground.color.get(Color.TRANSPARENT)
     }
 
-    private val cornerRadius: Float =  UiUtils.dpToPx(context, iconBackgroundOptions.cornerRadius.get(0.0).toFloat())
+    private val cornerRadius: Float =  UiUtils.dpToPx(context, iconBackground.cornerRadius.get(0.0).toFloat())
+    private val bitmapWidth = wrapped.intrinsicWidth
+    private val bitmapHeight = wrapped.intrinsicHeight
+    private val backgroundWidth =  iconBackground.width.get(getBitmapWidthDp()).let {
+        UiUtils.dpToPx(context, max(it, getBitmapWidthDp()))
+    }
+    private val backgroundHeight = iconBackground.height.get(getBitmapHeightDp()).let {
+        UiUtils.dpToPx(context, max(it, getBitmapHeightDp()))
+    }
 
     override fun draw(canvas: Canvas) {
         drawPath(canvas)
@@ -33,21 +39,21 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     }
 
     override fun getIntrinsicWidth(): Int {
-        return UiUtils.dpToPx(context, getBackgroundWidth())
+        return UiUtils.dpToPx(context, backgroundWidth)
     }
 
     override fun getIntrinsicHeight(): Int {
-        return UiUtils.dpToPx(context, getBackgroundHeight())
+        return UiUtils.dpToPx(context, backgroundHeight)
     }
 
     override fun setBounds(l: Int, t: Int, r: Int, b: Int) {
-        updatePath(RectF(l.toFloat(), t.toFloat(), getBackgroundWidth().toFloat(), getBackgroundHeight().toFloat()))
-        super.setBounds(l, t, getBackgroundWidth(), getBackgroundHeight())
+        updatePath(RectF(l.toFloat(), t.toFloat(), backgroundWidth.toFloat(), backgroundHeight.toFloat()))
+        super.setBounds(l, t, backgroundWidth, backgroundHeight)
     }
 
     override fun setBounds(r: Rect) {
-        r.right = getBackgroundWidth()
-        r.bottom = getBackgroundHeight()
+        r.right = backgroundWidth
+        r.bottom = backgroundHeight
         updatePath(RectF(r))
         super.setBounds(r)
     }
@@ -64,58 +70,38 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
         wrapped.colorFilter = colorFilter
     }
 
-    private fun getBackgroundWidth(): Int {
-        val backgroundWidth = iconBackgroundOptions.width.get(getBitmapWidthDp())
-        return if (backgroundWidth < getBitmapWidthDp()) UiUtils.dpToPx(context, getBitmapWidthDp())
-        else UiUtils.dpToPx(context, backgroundWidth)
-    }
-
-    private fun getBackgroundHeight(): Int {
-        val backgroundHeight = iconBackgroundOptions.height.get(getBitmapHeightDp())
-        return if (backgroundHeight < getBitmapHeightDp()) UiUtils.dpToPx(context, getBitmapHeightDp())
-        else UiUtils.dpToPx(context, backgroundHeight)
-    }
-
     private fun getBitmapWidthDp(): Int {
-        return UiUtils.pxToDp(context, getBitmapWidth().toFloat()).toInt()
+        return UiUtils.pxToDp(context, bitmapWidth.toFloat()).toInt()
     }
 
     private fun getBitmapHeightDp(): Int {
-        return UiUtils.pxToDp(context, getBitmapHeight().toFloat()).toInt()
+        return UiUtils.pxToDp(context, bitmapHeight.toFloat()).toInt()
     }
-
-    private fun getBitmapWidth(): Int {
-        return wrapped.intrinsicWidth
-    }
-
-    private fun getBitmapHeight(): Int {
-        return wrapped.intrinsicHeight
-    }
-
+    
     private fun drawBackgroundColor(canvas: Canvas) {
-        val r = Rect((bounds.width() - getBackgroundWidth()) / 2,
-                (bounds.height() - getBackgroundHeight()) / 2,
-                bounds.width() - (bounds.width() - getBackgroundWidth()) / 2,
-                bounds.height() - (bounds.height() - getBackgroundHeight()) / 2)
+        val r = Rect((bounds.width() - backgroundWidth) / 2,
+                (bounds.height() - backgroundHeight) / 2,
+                bounds.width() - (bounds.width() - backgroundWidth) / 2,
+                bounds.height() - (bounds.height() - backgroundHeight) / 2)
         canvas.drawRect(r, backgroundPaint)
     }
 
     private fun drawPath(canvas: Canvas) {
-        if (iconBackgroundOptions.cornerRadius.hasValue()) {
+        if (iconBackground.cornerRadius.hasValue()) {
             canvas.clipPath(path)
         }
     }
 
     private fun drawBitmap(canvas: Canvas) {
-        val bitmapRect = Rect((bounds.width()-getBitmapWidth()) / 2,
-                (bounds.height()-getBitmapHeight()) / 2,
-                bounds.width() - (bounds.width()-getBitmapWidth()) / 2,
-                bounds.height() - (bounds.height()-getBitmapHeight()) / 2)
+        val bitmapRect = Rect((bounds.width()-bitmapWidth) / 2,
+                (bounds.height()-bitmapHeight) / 2,
+                bounds.width() - (bounds.width()-bitmapWidth) / 2,
+                bounds.height() - (bounds.height()-bitmapHeight) / 2)
         canvas.drawBitmap(wrapped.toBitmap(), null, bitmapRect, bitmapPaint)
     }
 
     private fun updatePath(r: RectF) {
-        if (iconBackgroundOptions.cornerRadius.hasValue()) {
+        if (iconBackground.cornerRadius.hasValue()) {
             path.reset()
             path.addRoundRect(r, cornerRadius, cornerRadius, Path.Direction.CW)
         }
