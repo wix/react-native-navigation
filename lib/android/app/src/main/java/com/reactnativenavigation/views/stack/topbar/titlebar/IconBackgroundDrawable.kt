@@ -22,9 +22,9 @@ class IconBackgroundDrawable(private val wrapped: Drawable, private val iconBack
 
     }
 
-    private val intrinsicWidth: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, iconBackgroundOptions.width.get(wrapped.intrinsicWidth).toFloat(), Resources
+    private val mIntrinsicWidth: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getBackgroundWidth().toFloat(), Resources
             .getSystem().displayMetrics).toInt()
-    private val intrinsicHeight: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, iconBackgroundOptions.height.get(wrapped.intrinsicHeight).toFloat(), Resources
+    private val mIntrinsicHeight: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getBackgroundHeight().toFloat(), Resources
             .getSystem().displayMetrics).toInt()
     private val cornerRadius: Float =  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, iconBackgroundOptions.cornerRadius.get().toFloat(), Resources
             .getSystem().displayMetrics).toFloat()
@@ -32,12 +32,33 @@ class IconBackgroundDrawable(private val wrapped: Drawable, private val iconBack
     override fun draw(canvas: Canvas) {
         drawPath(canvas)
         drawBackgroundColor(canvas)
+        drawBitmap(canvas)
+    }
 
-        canvas.drawBitmap(wrapped.toBitmap(), null, bounds, bitmapPaint)
+    private fun getBackgroundWidth(): Int {
+        return if (iconBackgroundOptions.width.get(getBitmapWidth()) < getBitmapWidth()) getBitmapWidth()
+        else iconBackgroundOptions.width.get(getBitmapWidth())
+    }
+
+    private fun getBackgroundHeight(): Int {
+        return if (iconBackgroundOptions.height.get(getBitmapHeight()) < getBitmapHeight()) getBitmapHeight()
+        else iconBackgroundOptions.height.get(getBitmapHeight())
+    }
+
+    private fun getBitmapWidth(): Int {
+        return wrapped.intrinsicWidth
+    }
+
+    private fun getBitmapHeight(): Int {
+        return wrapped.intrinsicHeight
     }
 
     private fun drawBackgroundColor(canvas: Canvas) {
-        canvas.drawRect(bounds, backgroundPaint)
+        val r = Rect((bounds.width() - getBackgroundWidth()) / 2,
+                (bounds.height() - getBackgroundHeight()) / 2,
+                bounds.width() - (bounds.width() - getBackgroundWidth()) / 2,
+                bounds.height() - (bounds.height() - getBackgroundHeight()) / 2)
+        canvas.drawRect(r, backgroundPaint)
     }
 
     private fun drawPath(canvas: Canvas) {
@@ -46,12 +67,20 @@ class IconBackgroundDrawable(private val wrapped: Drawable, private val iconBack
         }
     }
 
+    private fun drawBitmap(canvas: Canvas) {
+        val bitmapRect = Rect((bounds.width()-getBitmapWidth()) / 2,
+                (bounds.height()-getBitmapHeight()) / 2,
+                bounds.width() - (bounds.width()-getBitmapWidth()) / 2,
+                bounds.height() - (bounds.height()-getBitmapHeight()) / 2)
+        canvas.drawBitmap(wrapped.toBitmap(), null, bitmapRect, bitmapPaint)
+    }
+
     override fun getIntrinsicWidth(): Int {
-        return intrinsicWidth
+        return mIntrinsicWidth
     }
 
     override fun getIntrinsicHeight(): Int {
-        return intrinsicHeight
+        return mIntrinsicHeight
     }
 
     override fun setBounds(l: Int, t: Int, r: Int, b: Int) {
