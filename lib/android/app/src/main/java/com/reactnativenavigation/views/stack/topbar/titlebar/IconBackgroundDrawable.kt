@@ -19,7 +19,7 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     private val backgroundPaint = Paint().apply {
         isAntiAlias = true
         isFilterBitmap = true
-        color = iconBackground.color.get(Color.TRANSPARENT)
+        color = iconBackground.color.get(null)
     }
 
     private val cornerRadius: Float =  UiUtils.dpToPx(context, iconBackground.cornerRadius.get(0.0).toFloat())
@@ -36,14 +36,6 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
         drawPath(canvas)
         drawBackgroundColor(canvas)
         drawBitmap(canvas)
-    }
-
-    override fun getIntrinsicWidth(): Int {
-        return UiUtils.dpToPx(context, backgroundWidth)
-    }
-
-    override fun getIntrinsicHeight(): Int {
-        return UiUtils.dpToPx(context, backgroundHeight)
     }
 
     override fun setBounds(l: Int, t: Int, r: Int, b: Int) {
