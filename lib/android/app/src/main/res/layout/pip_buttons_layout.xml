@@ -7,10 +7,10 @@
 
     <ImageView
         android:id="@+id/fullScreenButton"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/fullscreen_svg" />
+        android:src="@drawable/fullscreen_icon" />
 
     <ImageView
         android:id="@+id/closeButton"
