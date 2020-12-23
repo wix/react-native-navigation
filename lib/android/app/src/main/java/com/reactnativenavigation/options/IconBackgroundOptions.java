@@ -6,26 +6,26 @@ import androidx.annotation.Nullable;
 
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullPixelDensity;
-import com.reactnativenavigation.options.params.PixelDensity;
+import com.reactnativenavigation.options.params.NullDensityPixel;
+import com.reactnativenavigation.options.params.DensityPixel;
 import com.reactnativenavigation.options.parsers.ColorParser;
-import com.reactnativenavigation.options.parsers.PixelDensityParser;
+import com.reactnativenavigation.options.parsers.DensityPixelParser;
 
 import org.json.JSONObject;
 
 public class IconBackgroundOptions {
     public Colour color = new NullColor();
-    public PixelDensity width = new NullPixelDensity();
-    public PixelDensity height = new NullPixelDensity();
-    public PixelDensity cornerRadius = new NullPixelDensity();
+    public DensityPixel width = new NullDensityPixel();
+    public DensityPixel height = new NullDensityPixel();
+    public DensityPixel cornerRadius = new NullDensityPixel();
 
     public static IconBackgroundOptions parse(Context context, @Nullable JSONObject json) {
         IconBackgroundOptions button = new IconBackgroundOptions();
         if (json == null) return button;
         button.color = ColorParser.parse(context, json, "color");
-        button.width = PixelDensityParser.parse(json, "width");
-        button.height = PixelDensityParser.parse(json, "height");
-        button.cornerRadius = PixelDensityParser.parse(json, "cornerRadius");
+        button.width = DensityPixelParser.parse(json, "width");
+        button.height = DensityPixelParser.parse(json, "height");
+        button.cornerRadius = DensityPixelParser.parse(json, "cornerRadius");
         return button;
     }
 

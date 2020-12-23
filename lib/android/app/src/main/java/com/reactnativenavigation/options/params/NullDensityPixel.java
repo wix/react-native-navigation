@@ -1,7 +1,7 @@
 package com.reactnativenavigation.options.params;
 
-public class NullPixelDensity extends PixelDensity {
-    public NullPixelDensity() {
+public class NullDensityPixel extends DensityPixel {
+    public NullDensityPixel() {
         super(0);
     }
 
