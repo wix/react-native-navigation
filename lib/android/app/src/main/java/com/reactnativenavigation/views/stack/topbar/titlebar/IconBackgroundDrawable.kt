@@ -22,14 +22,16 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
         color = iconBackground.color.get(null)
     }
 
-    private val cornerRadius: Float =  UiUtils.dpToPx(context, iconBackground.cornerRadius.get(0.0).toFloat())
+    private val cornerRadius = iconBackground.cornerRadius.get(0)
     private val bitmapWidth = wrapped.intrinsicWidth
     private val bitmapHeight = wrapped.intrinsicHeight
-    private val backgroundWidth =  iconBackground.width.get(getBitmapWidthDp()).let {
-        UiUtils.dpToPx(context, max(it, getBitmapWidthDp()))
+
+    private val backgroundWidth =  iconBackground.width.get(bitmapWidth).let {
+        max(it, bitmapWidth)
     }
-    private val backgroundHeight = iconBackground.height.get(getBitmapHeightDp()).let {
-        UiUtils.dpToPx(context, max(it, getBitmapHeightDp()))
+
+    private val backgroundHeight =  iconBackground.height.get(bitmapHeight).let {
+        max(it, bitmapHeight)
     }
 
     override fun draw(canvas: Canvas) {
@@ -95,7 +97,7 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     private fun updatePath(r: RectF) {
         if (iconBackground.cornerRadius.hasValue()) {
             path.reset()
-            path.addRoundRect(r, cornerRadius, cornerRadius, Path.Direction.CW)
+            path.addRoundRect(r, cornerRadius.toFloat(), cornerRadius.toFloat(), Path.Direction.CW)
         }
     }
 }

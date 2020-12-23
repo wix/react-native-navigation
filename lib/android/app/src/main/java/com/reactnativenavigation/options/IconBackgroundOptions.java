@@ -1,50 +1,31 @@
 package com.reactnativenavigation.options;
 
 import android.content.Context;
-import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 
-import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.Fraction;
-import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullFraction;
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.options.parsers.BoolParser;
+import com.reactnativenavigation.options.params.NullPixelDensity;
+import com.reactnativenavigation.options.params.PixelDensity;
 import com.reactnativenavigation.options.parsers.ColorParser;
-import com.reactnativenavigation.options.parsers.FontParser;
-import com.reactnativenavigation.options.parsers.FractionParser;
-import com.reactnativenavigation.options.parsers.NumberParser;
-import com.reactnativenavigation.options.parsers.TextParser;
-import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.IdFactory;
+import com.reactnativenavigation.options.parsers.PixelDensityParser;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Objects;
-
-import static com.reactnativenavigation.utils.ObjectUtils.take;
 
 public class IconBackgroundOptions {
     public Colour color = new NullColor();
-    public Number width = new NullNumber();
-    public Number height = new NullNumber();
-    public Fraction cornerRadius = new NullFraction();
+    public PixelDensity width = new NullPixelDensity();
+    public PixelDensity height = new NullPixelDensity();
+    public PixelDensity cornerRadius = new NullPixelDensity();
 
     public static IconBackgroundOptions parse(Context context, @Nullable JSONObject json) {
         IconBackgroundOptions button = new IconBackgroundOptions();
         if (json == null) return button;
         button.color = ColorParser.parse(context, json, "color");
-        button.width = NumberParser.parse(json, "width");
-        button.height = NumberParser.parse(json, "height");
-        button.cornerRadius = FractionParser.parse(json, "cornerRadius");
+        button.width = PixelDensityParser.parse(json, "width");
+        button.height = PixelDensityParser.parse(json, "height");
+        button.cornerRadius = PixelDensityParser.parse(json, "cornerRadius");
         return button;
     }
 
