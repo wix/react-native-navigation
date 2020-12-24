@@ -5,7 +5,6 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.drawable.toBitmap
 import com.reactnativenavigation.options.IconBackgroundOptions
-import com.reactnativenavigation.utils.UiUtils
 import kotlin.math.max
 
 
@@ -27,11 +26,27 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     private val bitmapHeight = wrapped.intrinsicHeight
     private val backgroundWidth =  iconBackground.width.get(bitmapWidth).let { max(it, bitmapWidth) }
     private val backgroundHeight =  iconBackground.height.get(bitmapHeight).let { max(it, bitmapHeight) }
+    private var backgroundRect = Rect()
+    private var bitmapRect = Rect();
 
     override fun draw(canvas: Canvas) {
         drawPath(canvas)
         drawBackgroundColor(canvas)
         drawBitmap(canvas)
+    }
+
+    private fun drawBackgroundColor(canvas: Canvas) {
+        canvas.drawRect(backgroundRect, backgroundPaint)
+    }
+
+    private fun drawPath(canvas: Canvas) {
+        if (iconBackground.cornerRadius.hasValue()) {
+            canvas.clipPath(path)
+        }
+    }
+
+    private fun drawBitmap(canvas: Canvas) {
+        canvas.drawBitmap(wrapped.toBitmap(), null, bitmapRect, bitmapPaint)
     }
 
     override fun setBounds(l: Int, t: Int, r: Int, b: Int) {
@@ -46,6 +61,20 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
         super.setBounds(r)
     }
 
+    override fun onBoundsChange(bounds: Rect?) {
+        if (bounds != null) {
+            backgroundRect = Rect((bounds.width() - backgroundWidth) / 2,
+                    (bounds.height() - backgroundHeight) / 2,
+                    bounds.width() - (bounds.width() - backgroundWidth) / 2,
+                    bounds.height() - (bounds.height() - backgroundHeight) / 2)
+            bitmapRect = Rect((bounds.width()-bitmapWidth) / 2,
+                    (bounds.height()-bitmapHeight) / 2,
+                    bounds.width() - (bounds.width()-bitmapWidth) / 2,
+                    bounds.height() - (bounds.height()-bitmapHeight) / 2)
+        }
+        super.onBoundsChange(bounds)
+    }
+
     override fun setAlpha(alpha: Int) {
         wrapped.alpha = alpha
     }
@@ -56,36 +85,6 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
 
     override fun setColorFilter(colorFilter: ColorFilter?) {
         wrapped.colorFilter = colorFilter
-    }
-
-    private fun getBitmapWidthDp(): Int {
-        return UiUtils.pxToDp(context, bitmapWidth.toFloat()).toInt()
-    }
-
-    private fun getBitmapHeightDp(): Int {
-        return UiUtils.pxToDp(context, bitmapHeight.toFloat()).toInt()
-    }
-    
-    private fun drawBackgroundColor(canvas: Canvas) {
-        val r = Rect((bounds.width() - backgroundWidth) / 2,
-                (bounds.height() - backgroundHeight) / 2,
-                bounds.width() - (bounds.width() - backgroundWidth) / 2,
-                bounds.height() - (bounds.height() - backgroundHeight) / 2)
-        canvas.drawRect(r, backgroundPaint)
-    }
-
-    private fun drawPath(canvas: Canvas) {
-        if (iconBackground.cornerRadius.hasValue()) {
-            canvas.clipPath(path)
-        }
-    }
-
-    private fun drawBitmap(canvas: Canvas) {
-        val bitmapRect = Rect((bounds.width()-bitmapWidth) / 2,
-                (bounds.height()-bitmapHeight) / 2,
-                bounds.width() - (bounds.width()-bitmapWidth) / 2,
-                bounds.height() - (bounds.height()-bitmapHeight) / 2)
-        canvas.drawBitmap(wrapped.toBitmap(), null, bitmapRect, bitmapPaint)
     }
 
     private fun updatePath(r: RectF) {

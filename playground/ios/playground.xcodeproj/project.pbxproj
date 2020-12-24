@@ -42,6 +42,7 @@
 		50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.m */; };
 		50C085E62591341600B0502C /* RNNUIBarButtonItemTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C085E52591341600B0502C /* RNNUIBarButtonItemTest.m */; };
 		50C085E8259141E200B0502C /* RNNButtonsPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C085E7259141E200B0502C /* RNNButtonsPresenterTest.m */; };
+		50C085F52594973000B0502C /* RNNComponentViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.m */; };
 		50C9A8D1240EB95F00BD699F /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
 		50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.m */; };
 		50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
@@ -839,6 +840,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5022EDCD2405522000852BA6 /* RNNBottomTabsPresenterTest.m in Sources */,
+				50C085F52594973000B0502C /* RNNComponentViewController+Utils.m in Sources */,
 				50C9A8D1240EB95F00BD699F /* RNNBottomTabsController+Helpers.m in Sources */,
 				50996C6923AA487800008F89 /* RNNTestRootViewCreator.m in Sources */,
 				50996C6823AA477400008F89 /* RNNRootViewControllerTest.m in Sources */,

@@ -7,8 +7,8 @@
 
 - (instancetype)initWithComponentRegistry:(id)componentRegistry;
 
-- (RNNUIBarButtonItem *)build:(RNNButtonOptions *)button onPress:(RNNButtonPressCallback)onPress;
-
-- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)viewController;
+- (RNNUIBarButtonItem *)build:(RNNButtonOptions *)button
+            parentComponentId:(NSString *)parentComponentId
+                      onPress:(RNNButtonPressCallback)onPress;
 
 @end

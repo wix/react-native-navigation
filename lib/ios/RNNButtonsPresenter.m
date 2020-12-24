@@ -15,7 +15,8 @@
                              eventEmitter:(RNNEventEmitter *)eventEmitter {
     self = [super init];
     self.componentRegistry = componentRegistry;
-    self.buttonBuilder = [[RNNButtonBuilder alloc] initWithComponentRegistry:componentRegistry];
+    self.buttonBuilder =
+        [[RNNButtonBuilder alloc] initWithComponentRegistry:self.componentRegistry];
     return self;
 }
 
@@ -40,12 +41,13 @@
     NSMutableArray *barButtonItems = [NSMutableArray new];
     for (RNNButtonOptions *button in buttons) {
         RNNUIBarButtonItem *barButtonItem = [_buttonBuilder
-              build:[button withDefault:defaultStyle]
-            onPress:^(NSString *buttonId) {
-              [self.eventEmitter
-                  sendOnNavigationButtonPressed:self.viewController.layoutInfo.componentId
-                                       buttonId:buttonId];
-            }];
+                        build:[button withDefault:defaultStyle]
+            parentComponentId:_viewController.layoutInfo.componentId
+                      onPress:^(NSString *buttonId) {
+                        [self.eventEmitter
+                            sendOnNavigationButtonPressed:self.viewController.layoutInfo.componentId
+                                                 buttonId:buttonId];
+                      }];
         if (barButtonItem)
             [barButtonItems addObject:barButtonItem];
     }

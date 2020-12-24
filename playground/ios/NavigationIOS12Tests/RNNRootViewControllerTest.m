@@ -1,5 +1,6 @@
 #import "RNNBottomTabsController+Helpers.h"
 #import "RNNBottomTabsController.h"
+#import "RNNComponentViewController+Utils.h"
 #import "RNNNavigationOptions.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNStackController.h"
@@ -52,7 +53,8 @@
 
     self.presenter = [OCMockObject
         partialMockForObject:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil
-                                                                       defaultOptions:nil]];
+                                                                       defaultOptions:nil
+                                                                     buttonsPresenter:nil]];
     self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo
                                                       rootViewCreator:self.creator
                                                          eventEmitter:self.emitter
@@ -472,12 +474,8 @@
     RNNButtonOptions *buttonOptions =
         [[RNNButtonOptions alloc] initWithDict:@{@"id" : @"testId", @"text" : @"test"}];
     self.options.topBar.rightButtons = @[ buttonOptions ];
-    self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
-                                                      rootViewCreator:nil
-                                                         eventEmitter:nil
-                                                            presenter:[RNNComponentPresenter new]
-                                                              options:self.options
-                                                       defaultOptions:nil];
+    self.uut = [RNNComponentViewController createWithComponentId:@"componentId"
+                                                  initialOptions:self.options];
     RNNStackController *nav = [[RNNStackController alloc] initWithLayoutInfo:nil
                                                                      creator:_creator
                                                                      options:nil
@@ -506,12 +504,8 @@
         @"buttonFontWeight" : @"800"
     }];
     self.options.topBar.rightButtons = @[ buttonOptions ];
-    self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
-                                                      rootViewCreator:nil
-                                                         eventEmitter:nil
-                                                            presenter:[RNNComponentPresenter new]
-                                                              options:self.options
-                                                       defaultOptions:nil];
+    self.uut = [RNNComponentViewController createWithComponentId:@"componentId"
+                                                  initialOptions:self.options];
     RNNStackController *nav = [[RNNStackController alloc] initWithLayoutInfo:nil
                                                                      creator:_creator
                                                                      options:nil
@@ -536,12 +530,8 @@
     RNNButtonOptions *buttonOptions =
         [[RNNButtonOptions alloc] initWithDict:@{@"id" : @"testId", @"text" : @"test"}];
     self.options.topBar.leftButtons = @[ buttonOptions ];
-    self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
-                                                      rootViewCreator:nil
-                                                         eventEmitter:nil
-                                                            presenter:[RNNComponentPresenter new]
-                                                              options:self.options
-                                                       defaultOptions:nil];
+    self.uut = [RNNComponentViewController createWithComponentId:@"componentId"
+                                                  initialOptions:self.options];
     RNNStackController *nav = [[RNNStackController alloc] initWithLayoutInfo:nil
                                                                      creator:_creator
                                                                      options:nil
@@ -573,12 +563,8 @@
     }];
 
     self.options.topBar.leftButtons = @[ buttonOptions ];
-    self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
-                                                      rootViewCreator:nil
-                                                         eventEmitter:nil
-                                                            presenter:[RNNComponentPresenter new]
-                                                              options:self.options
-                                                       defaultOptions:nil];
+    self.uut = [RNNComponentViewController createWithComponentId:@"componentId"
+                                                  initialOptions:self.options];
     RNNStackController *nav = [[RNNStackController alloc] initWithLayoutInfo:nil
                                                                      creator:_creator
                                                                      options:nil
