@@ -17,6 +17,7 @@
     self.componentRegistry = componentRegistry;
     self.buttonBuilder =
         [[RNNButtonBuilder alloc] initWithComponentRegistry:self.componentRegistry];
+    self.eventEmitter = eventEmitter;
     return self;
 }
 

@@ -71,8 +71,8 @@
                       onPress:(RNNButtonPressCallback)onPress {
     self = [super initWithTitle:buttonOptions.text.get
                           style:UIBarButtonItemStylePlain
-                         target:nil
-                         action:nil];
+                         target:self
+                         action:@selector(onButtonPressed:)];
     self.onPress = onPress;
     [self applyOptions:buttonOptions];
     return self;
@@ -116,7 +116,9 @@
     UIBarButtonSystemItem systemItem =
         [RCTConvert UIBarButtonSystemItem:buttonOptions.systemItem.get];
     [self applyOptions:buttonOptions];
-    self = [super initWithBarButtonSystemItem:systemItem target:nil action:nil];
+    self = [super initWithBarButtonSystemItem:systemItem
+                                       target:self
+                                       action:@selector(onButtonPressed:)];
     self.onPress = onPress;
     return self;
 }
