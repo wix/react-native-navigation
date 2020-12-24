@@ -21,9 +21,10 @@
 - (void)setUp {
     [super setUp];
     self.componentRegistry = [OCMockObject partialMockForObject:[RNNReactComponentRegistry new]];
-    self.uut = [[RNNComponentPresenter alloc]
-        initWithComponentRegistry:self.componentRegistry
-                   defaultOptions:[RNNNavigationOptions emptyOptions]];
+    self.uut =
+        [[RNNComponentPresenter alloc] initWithComponentRegistry:self.componentRegistry
+                                                  defaultOptions:[RNNNavigationOptions emptyOptions]
+                                                buttonsPresenter:nil];
     self.boundViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
     [self.uut bindViewController:self.boundViewController];
     self.options = [RNNNavigationOptions emptyOptions];
@@ -74,12 +75,6 @@
         setInterceptTouchOutside:YES];
     [self.uut applyOptions:self.options];
     [(id)self.boundViewController verify];
-}
-
-- (void)testBindViewControllerShouldCreateNavigationButtonsPresenter {
-    RNNComponentPresenter *presenter = [[RNNComponentPresenter alloc] init];
-    [presenter bindViewController:self.boundViewController];
-    XCTAssertNotNil([presenter valueForKey:@"_buttonsPresenter"]);
 }
 
 - (void)testApplyOptionsOnInit_TopBarDrawUnder_true {

@@ -1,13 +1,14 @@
 #import "RNNButtonOptions.h"
 #import "RNNComponentViewCreator.h"
 #import "RNNReactComponentRegistry.h"
+#import "UIViewController+LayoutProtocol.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 @interface RNNButtonsPresenter : NSObject
 
-- (instancetype)initWithViewController:(UIViewController *)viewController
-                     componentRegistry:(RNNReactComponentRegistry *)componentRegistry;
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry
+                             eventEmitter:(RNNEventEmitter *)eventEmitter;
 
 - (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
       defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle;
@@ -18,5 +19,7 @@
 - (void)componentDidAppear;
 
 - (void)componentDidDisappear;
+
+- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)viewController;
 
 @end

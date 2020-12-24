@@ -86,4 +86,11 @@
     return withDefault;
 }
 
+- (Color *)color {
+    if (![_enabled getWithDefaultValue:YES] && _disabledColor.hasValue)
+        return _disabledColor;
+    else
+        return _color;
+}
+
 @end

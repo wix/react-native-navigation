@@ -7,6 +7,8 @@
 @property(nonatomic, strong) Double *right;
 @property(nonatomic, strong) Double *bottom;
 
++ (RNNInsetsOptions *)withValue:(UIEdgeInsets)insets;
+
 - (UIEdgeInsets)edgeInsetsWithDefault:(UIEdgeInsets)defaultInsets;
 
 - (UIEdgeInsets)UIEdgeInsets;

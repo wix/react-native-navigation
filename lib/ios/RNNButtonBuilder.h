@@ -5,9 +5,10 @@
 
 @interface RNNButtonBuilder : NSObject
 
-- (instancetype)initWithViewController:(UIViewController<RNNLayoutProtocol> *)viewController
-                     componentRegistry:(id)componentRegistry;
+- (instancetype)initWithComponentRegistry:(id)componentRegistry;
 
-- (RNNUIBarButtonItem *)build:(RNNButtonOptions *)button;
+- (RNNUIBarButtonItem *)build:(RNNButtonOptions *)button onPress:(RNNButtonPressCallback)onPress;
+
+- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)viewController;
 
 @end

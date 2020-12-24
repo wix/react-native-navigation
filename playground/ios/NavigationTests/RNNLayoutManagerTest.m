@@ -50,6 +50,7 @@
 }
 
 - (void)testFindComponentShouldReturnModalFromFirstWindow {
+    _firstWindow.rootViewController = nil;
     UIViewController *rootViewController =
         [OCMockObject partialMockForObject:[UIViewController new]];
 
@@ -61,6 +62,7 @@
 }
 
 - (void)testFindComponentShouldReturnModalFromSecondWindow {
+    _secondWindow.rootViewController = nil;
     UIViewController *rootViewController =
         [OCMockObject partialMockForObject:[UIViewController new]];
     UIViewController *modal = _vc1;

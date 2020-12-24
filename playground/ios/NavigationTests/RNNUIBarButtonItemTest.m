@@ -1,3 +1,4 @@
+#import <OCMock/OCMock.h>
 #import <ReactNativeNavigation/RNNUIBarButtonItem.h>
 #import <XCTest/XCTest.h>
 
@@ -11,20 +12,22 @@
     CGSize size = CGSizeMake(40, 40);
     UIColor *backgroundColor = UIColor.redColor;
     CGFloat cornerRadius = 10;
-    UIEdgeInsets insets = UIEdgeInsetsMake(10, 10, 10, 10);
-    RNNUIBarButtonItem *barButtonItem = [[RNNUIBarButtonItem alloc] init:@"buttonId"
-                                                                    icon:UIImage.new
-                                                                    size:size
-                                                         backgroundColor:backgroundColor
-                                                            cornerRadius:cornerRadius
-                                                                  insets:insets
-                                                               tintColor:nil];
+
+    RNNButtonOptions *buttonOptions = RNNButtonOptions.new;
+    buttonOptions.iconBackground = RNNIconBackgroundOptions.new;
+    buttonOptions.iconBackground.width = buttonOptions.iconBackground.height =
+        [Number withValue:@(40)];
+    buttonOptions.iconBackground.color = [Color withValue:backgroundColor];
+    buttonOptions.iconBackground.cornerRadius = [Number withValue:@(cornerRadius)];
+    RNNUIBarButtonItem *barButtonItem =
+        [[RNNUIBarButtonItem alloc] initCustomIcon:buttonOptions
+                                           onPress:^(NSString *buttonId){
+                                           }];
 
     UIButton *button = barButtonItem.customView;
     XCTAssertEqual(button.backgroundColor, backgroundColor);
     XCTAssertEqual(button.layer.cornerRadius, cornerRadius);
     XCTAssertTrue(CGSizeEqualToSize(button.frame.size, size));
-    XCTAssertTrue(CGRectEqualToRect(button.imageView.frame, CGRectMake(10, 10, 20, 20)));
 }
 
 @end

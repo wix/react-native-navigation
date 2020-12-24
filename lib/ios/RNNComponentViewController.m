@@ -1,5 +1,4 @@
 #import "RNNComponentViewController.h"
-#import "UIView+Utils.h"
 
 @implementation RNNComponentViewController {
     NSArray *_reactViewConstraints;

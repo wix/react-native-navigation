@@ -1,29 +1,26 @@
 #import "RNNButtonsPresenter.h"
 #import "NSArray+utils.h"
 #import "RNNButtonBuilder.h"
-#import "RNNFontAttributesCreator.h"
-#import "RNNUIBarButtonItem.h"
-#import "UIImage+tint.h"
-#import "UIViewController+LayoutProtocol.h"
-#import <React/RCTConvert.h>
 
 @interface RNNButtonsPresenter ()
 @property(weak, nonatomic) UIViewController<RNNLayoutProtocol> *viewController;
 @property(strong, nonatomic) RNNReactComponentRegistry *componentRegistry;
+@property(strong, nonatomic) RNNEventEmitter *eventEmitter;
 @property(strong, nonatomic) RNNButtonBuilder *buttonBuilder;
 @end
 
 @implementation RNNButtonsPresenter
 
-- (instancetype)initWithViewController:(UIViewController<RNNLayoutProtocol> *)viewController
-                     componentRegistry:(id)componentRegistry {
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry
+                             eventEmitter:(RNNEventEmitter *)eventEmitter {
     self = [super init];
-
-    self.viewController = viewController;
     self.componentRegistry = componentRegistry;
-    self.buttonBuilder = [[RNNButtonBuilder alloc] initWithViewController:viewController
-                                                        componentRegistry:componentRegistry];
+    self.buttonBuilder = [[RNNButtonBuilder alloc] initWithComponentRegistry:componentRegistry];
     return self;
+}
+
+- (void)bindViewController:(UIViewController<RNNLayoutProtocol> *)viewController {
+    _viewController = viewController;
 }
 
 - (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
@@ -42,8 +39,13 @@
       defaultStyle:(RNNButtonOptions *)defaultStyle {
     NSMutableArray *barButtonItems = [NSMutableArray new];
     for (RNNButtonOptions *button in buttons) {
-        RNNUIBarButtonItem *barButtonItem =
-            [_buttonBuilder build:[button withDefault:defaultStyle]];
+        RNNUIBarButtonItem *barButtonItem = [_buttonBuilder
+              build:[button withDefault:defaultStyle]
+            onPress:^(NSString *buttonId) {
+              [self.eventEmitter
+                  sendOnNavigationButtonPressed:self.viewController.layoutInfo.componentId
+                                       buttonId:buttonId];
+            }];
         if (barButtonItem)
             [barButtonItems addObject:barButtonItem];
     }

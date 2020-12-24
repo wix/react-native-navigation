@@ -15,8 +15,8 @@
     _viewController = UIViewController.new;
     __unused UINavigationController *navigationController =
         [[UINavigationController alloc] initWithRootViewController:_viewController];
-    _uut = [[RNNButtonsPresenter alloc] initWithViewController:_viewController
-                                             componentRegistry:nil];
+    _uut = [[RNNButtonsPresenter alloc] initWithComponentRegistry:nil eventEmitter:nil];
+    [_uut bindViewController:_viewController];
 }
 
 - (void)testApplyButtons_shouldNotAddEmptyButton {

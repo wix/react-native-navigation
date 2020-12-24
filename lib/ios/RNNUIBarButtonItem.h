@@ -1,23 +1,26 @@
+#import "RNNButtonOptions.h"
 #import "RNNReactComponentRegistry.h"
 #import <Foundation/Foundation.h>
 #import <React/RCTRootView.h>
 #import <React/RCTRootViewDelegate.h>
 
+typedef void (^RNNButtonPressCallback)(NSString *buttonId);
+
 @interface RNNUIBarButtonItem : UIBarButtonItem <RCTRootViewDelegate>
 
 @property(nonatomic, strong) NSString *buttonId;
 
-- (instancetype)init:(NSString *)buttonId
-                icon:(UIImage *)iconImage
-                size:(CGSize)size
-     backgroundColor:(UIColor *)backgroundColor
-        cornerRadius:(CGFloat)cornerRadius
-              insets:(UIEdgeInsets)edgeInsets
-           tintColor:(UIColor *)tintColor;
-- (instancetype)init:(NSString *)buttonId icon:(UIImage *)iconImage tintColor:(UIColor *)tintColor;
-- (instancetype)init:(NSString *)buttonId withTitle:(NSString *)title;
-- (instancetype)init:(NSString *)buttonId withCustomView:(RCTRootView *)reactView;
-- (instancetype)init:(NSString *)buttonId withSystemItem:(NSString *)systemItemName;
+- (instancetype)initCustomIcon:(RNNButtonOptions *)buttonOptions
+                       onPress:(RNNButtonPressCallback)onPress;
+- (instancetype)initWithIcon:(RNNButtonOptions *)buttonOptions
+                     onPress:(RNNButtonPressCallback)onPress;
+- (instancetype)initWithTitle:(RNNButtonOptions *)buttonOptions
+                      onPress:(RNNButtonPressCallback)onPress;
+- (instancetype)initWithCustomView:(RNNReactView *)reactView
+                     buttonOptions:(RNNButtonOptions *)buttonOptions
+                           onPress:(RNNButtonPressCallback)onPress;
+- (instancetype)initWithSystemItem:(RNNButtonOptions *)buttonOptions
+                           onPress:(RNNButtonPressCallback)onPress;
 
 - (void)notifyDidAppear;
 - (void)notifyDidDisappear;

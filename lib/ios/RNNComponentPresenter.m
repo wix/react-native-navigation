@@ -1,9 +1,7 @@
 #import "RNNComponentPresenter.h"
 #import "RNNComponentViewController.h"
-#import "RNNTitleViewHelper.h"
 #import "TopBarTitlePresenter.h"
 #import "UITabBarController+RNNOptions.h"
-#import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 
 @implementation RNNComponentPresenter {
@@ -12,19 +10,20 @@
 }
 
 - (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry
-                           defaultOptions:(RNNNavigationOptions *)defaultOptions {
+                           defaultOptions:(RNNNavigationOptions *)defaultOptions
+                         buttonsPresenter:(RNNButtonsPresenter *)buttonsPresenter {
     self = [super initWithComponentRegistry:componentRegistry defaultOptions:defaultOptions];
     _topBarTitlePresenter =
         [[TopBarTitlePresenter alloc] initWithComponentRegistry:componentRegistry
                                                  defaultOptions:defaultOptions];
+    _buttonsPresenter = buttonsPresenter;
     return self;
 }
 
-- (void)bindViewController:(id)boundViewController {
-    [super bindViewController:boundViewController];
-    [_topBarTitlePresenter bindViewController:boundViewController];
-    _buttonsPresenter = [[RNNButtonsPresenter alloc] initWithViewController:boundViewController
-                                                          componentRegistry:self.componentRegistry];
+- (void)bindViewController:(UIViewController *)viewController {
+    [super bindViewController:viewController];
+    [_topBarTitlePresenter bindViewController:viewController];
+    [_buttonsPresenter bindViewController:viewController];
 }
 
 - (void)componentDidAppear {
