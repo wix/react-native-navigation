@@ -23,7 +23,7 @@ function _removeDocsVersion(version) {
 }
 
 function _versionExists(version) {
-  return _readDocsVersionsJson().indexOf(version) > 0;
+  return version !== '', _readDocsVersionsJson().indexOf(version) > 0;
 }
 
 function _readDocsVersionsJson() {
