@@ -4,6 +4,26 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 
+@interface RNNMockViewController : UIViewController
+- (instancetype)initWithPresentedViewController:(UIViewController *)presentedViewController;
+@end
+
+@implementation RNNMockViewController {
+    UIViewController *_mockPresentedVC;
+}
+
+- (instancetype)initWithPresentedViewController:(UIViewController *)presentedViewController {
+    self = [super init];
+    _mockPresentedVC = presentedViewController;
+    return self;
+}
+
+- (UIViewController *)presentedViewController {
+    return _mockPresentedVC;
+}
+
+@end
+
 @interface RNNLayoutManagerTest : XCTestCase
 
 @property(nonatomic, strong) RNNLayoutManager *layoutManager;
@@ -50,26 +70,20 @@
 }
 
 - (void)testFindComponentShouldReturnModalFromFirstWindow {
-    _firstWindow.rootViewController = nil;
     UIViewController *rootViewController =
-        [OCMockObject partialMockForObject:[UIViewController new]];
+        [[RNNMockViewController alloc] initWithPresentedViewController:_vc1];
 
-    UIViewController *modal = _vc1;
-    OCMStub([rootViewController presentedViewController]).andReturn(modal);
     _firstWindow.rootViewController = rootViewController;
     UIViewController *resultVC = [_layoutManager findComponentForId:@"vc1"];
-    XCTAssertEqual(resultVC, modal);
+    XCTAssertEqual(resultVC, _vc1);
 }
 
 - (void)testFindComponentShouldReturnModalFromSecondWindow {
-    _secondWindow.rootViewController = nil;
     UIViewController *rootViewController =
-        [OCMockObject partialMockForObject:[UIViewController new]];
-    UIViewController *modal = _vc1;
-    OCMStub([rootViewController presentedViewController]).andReturn(modal);
+        [[RNNMockViewController alloc] initWithPresentedViewController:_vc1];
     _secondWindow.rootViewController = rootViewController;
     UIViewController *resultVC = [_layoutManager findComponentForId:@"vc1"];
-    XCTAssertEqual(resultVC, modal);
+    XCTAssertEqual(resultVC, _vc1);
 }
 
 - (void)testFindComponentShouldReturnNilForUndefindComponent {
