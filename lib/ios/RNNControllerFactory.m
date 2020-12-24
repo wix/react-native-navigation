@@ -141,9 +141,13 @@
     RNNLayoutInfo *layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
     RNNNavigationOptions *options =
         [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+    RNNButtonsPresenter *buttonsPresenter =
+        [[RNNButtonsPresenter alloc] initWithComponentRegistry:_componentRegistry
+                                                  eventEmitter:_eventEmitter];
     RNNComponentPresenter *presenter =
         [[RNNComponentPresenter alloc] initWithComponentRegistry:_componentRegistry
-                                                  defaultOptions:_defaultOptions];
+                                                  defaultOptions:_defaultOptions
+                                                buttonsPresenter:buttonsPresenter];
 
     UIViewController *externalVC = [_store getExternalComponent:layoutInfo bridge:_bridge];
 
