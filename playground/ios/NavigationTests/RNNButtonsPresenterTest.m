@@ -42,7 +42,7 @@
 - (void)testApplyButtons_shouldCreateCustomButtonView {
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
     button.icon = [Image withValue:UIImage.new];
-    button.iconBackground.cornerRadius = [Number withValue:@(10)];
+    button.iconBackground.color = [Color withValue:UIColor.blackColor];
     [_uut applyLeftButtons:@[ button ] defaultButtonStyle:nil];
     XCTAssertNotNil([_viewController.navigationItem.leftBarButtonItems.lastObject customView]);
 }

@@ -1234,7 +1234,7 @@ export interface IconBackgroundOptions {
   /**
    * Set background color
    */
-  color?: Color;
+  color: Color;
   /**
    * Set background color on disabled state
    */
