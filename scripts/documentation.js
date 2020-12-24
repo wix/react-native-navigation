@@ -5,9 +5,9 @@ const fs = require('fs');
 const docsPath = `${process.cwd()}/website`;
 const docsVersionsJsonPath = `${docsPath}/versions.json`;
 
-function release(version) {
+function release(version, removeVersion) {
   console.log(`Building documentation version: ${version}`);
-  if (_versionExists(version)) _removeDocsVersion(version);
+  if (_versionExists(removeVersion)) _removeDocsVersion(removeVersion);
   exec.execSync(`npm --prefix ${docsPath} install`);
   exec.execSync(`npm --prefix ${docsPath} run docusaurus docs:version ${version}`);
   exec.execSync(`git add website`);
