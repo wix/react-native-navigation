@@ -9,7 +9,7 @@ function release(version, removeVersion) {
   console.log(`Building documentation version: ${version}`);
   if (_versionExists(removeVersion)) _removeDocsVersion(removeVersion);
   exec.execSync(`npm --prefix ${docsPath} install`);
-  exec.execSync(`npm --prefix ${docsPath} run docusaurus docs:version ${version}`);
+  exec.execSync(`npx docusaurus docs:version ${version}`);
   exec.execSync(`git add website`);
 }
 
