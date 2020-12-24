@@ -19,7 +19,8 @@
     self.iconInsets = [[RNNInsetsOptions alloc] initWithDict:dict[@"iconInsets"]];
     self.enabled = [BoolParser parse:dict key:@"enabled"];
     self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
-    self.iconBackground = [[RNNIconBackgroundOptions alloc] initWithDict:dict[@"iconBackground"]];
+    self.iconBackground = [[RNNIconBackgroundOptions alloc] initWithDict:dict[@"iconBackground"]
+                                                                 enabled:self.enabled];
 
     return self;
 }
@@ -68,8 +69,10 @@
         self.disabledColor = options.disabledColor;
     if (options.icon.hasValue)
         self.icon = options.icon;
-    if (options.enabled.hasValue)
+    if (options.enabled.hasValue) {
         self.enabled = options.enabled;
+        [self.iconBackground setEnabled:self.enabled];
+    }
     if (options.selectTabOnPress.hasValue)
         self.selectTabOnPress = options.selectTabOnPress;
 }

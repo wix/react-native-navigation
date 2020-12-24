@@ -1236,6 +1236,10 @@ export interface IconBackgroundOptions {
    */
   color?: Color;
   /**
+   * Set background color on disabled state
+   */
+  disabledColor?: Color;
+  /**
    * Set corner radius
    */
   cornerRadius?: number;

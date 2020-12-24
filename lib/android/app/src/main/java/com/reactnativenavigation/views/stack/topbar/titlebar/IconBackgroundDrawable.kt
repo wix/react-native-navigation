@@ -8,7 +8,7 @@ import com.reactnativenavigation.options.IconBackgroundOptions
 import kotlin.math.max
 
 
-class IconBackgroundDrawable(private val context: Context, private val wrapped: Drawable, private val iconBackground: IconBackgroundOptions, private val iconColor: Int?) : Drawable() {
+class IconBackgroundDrawable(private val context: Context, private val wrapped: Drawable, private val iconBackground: IconBackgroundOptions, private val iconColor: Int?, private val backgroundColor: Int) : Drawable() {
     private val path: Path = Path()
     private val bitmapPaint = Paint().apply {
         isAntiAlias = true
@@ -18,7 +18,7 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     private val backgroundPaint = Paint().apply {
         isAntiAlias = true
         isFilterBitmap = true
-        color = iconBackground.color.get(null)
+        color = backgroundColor
     }
 
     private val cornerRadius = iconBackground.cornerRadius.get(0)

@@ -79,7 +79,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
             loadIcon(object : ImageLoadingListenerAdapter() {
                 override fun onComplete(drawable: Drawable) {
                     setIconColor(drawable)
-                    menuItem.icon = if (button.iconBackground.hasValue()) IconBackgroundDrawable(context, drawable, button.iconBackground, getIconColor()) else drawable
+                    menuItem.icon = if (button.iconBackground.hasValue()) IconBackgroundDrawable(context, drawable, button.iconBackground, getIconColor(), getBackgroundColor()) else drawable
                 }
             })
         }
@@ -149,6 +149,14 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
 
         return null
+    }
+
+    private fun getBackgroundColor(): Int {
+        return if (button.enabled.isTrueOrUndefined || !button.iconBackground.disabledColor.hasValue()) {
+            button.color.get()
+        } else {
+            button.iconBackground.disabledColor[null]
+        }
     }
 
     private fun setLeftButtonTestId(toolbar: Toolbar) {
