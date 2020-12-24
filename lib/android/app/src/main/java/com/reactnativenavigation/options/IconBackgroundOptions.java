@@ -46,10 +46,7 @@ public class IconBackgroundOptions {
     }
 
     public boolean hasValue() {
-        return color.hasValue() &&
-                (width.hasValue() ||
-                height.hasValue() ||
-                cornerRadius.hasValue());
+        return color.hasValue();
     }
 
     public void mergeWith(IconBackgroundOptions other) {

@@ -33,8 +33,7 @@
 }
 
 - (BOOL)hasValue {
-    return self.color.hasValue &&
-           (self.cornerRadius.hasValue || self.width.hasValue || self.height.hasValue);
+    return self.color.hasValue;
 }
 
 - (Color *)color {
