@@ -80,9 +80,9 @@ const SideMenuLeftScreen: NavigationFunctionComponent<Props> = ({ componentId, m
       <Button label="Close" testID={CLOSE_LEFT_SIDE_MENU_BTN} onPress={close} />
 
       <Text testID={SIDE_MENU_LEFT_DRAWER_HEIGHT_TEXT}>{`left drawer height: ${height}`}</Text>
-      <Text testID={SIDE_MENU_LEFT_DRAWER_WIDTH_TEXT}>{`left drawer width: 
-      ${Math.round(width)}
-      `}</Text>
+      <Text testID={SIDE_MENU_LEFT_DRAWER_WIDTH_TEXT}>{`left drawer width: ${Math.round(
+        width
+      )}`}</Text>
     </Root>
   );
 };

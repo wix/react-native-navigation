@@ -30,9 +30,9 @@ const SideMenuRightScreen: NavigationFunctionComponent<Props> = ({ componentId, 
       }}
     >
       <Button label="Close" testID={CLOSE_RIGHT_SIDE_MENU_BTN} onPress={close} />
-      <Text testID={SIDE_MENU_RIGHT_DRAWER_WIDTH_TEXT}>{`right drawer width: 
-      ${Math.round(width)}
-      `}</Text>
+      <Text testID={SIDE_MENU_RIGHT_DRAWER_WIDTH_TEXT}>{`right drawer width: ${Math.round(
+        width
+      )}`}</Text>
     </Root>
   );
 };
