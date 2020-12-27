@@ -9,11 +9,25 @@ import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
 
-const { OPEN_LEFT_SIDE_MENU_BTN, OPEN_RIGHT_SIDE_MENU_BTN, CENTER_SCREEN_HEADER } = testIDs;
+const {
+  OPEN_LEFT_SIDE_MENU_BTN,
+  OPEN_RIGHT_SIDE_MENU_BTN,
+  CENTER_SCREEN_HEADER,
+  CHANGE_LEFT_SIDE_MENU_WIDTH_BTN,
+  CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN,
+} = testIDs;
 
 export default class SideMenuCenterScreen extends NavigationComponent {
   static options() {
     return {
+      sideMenu: {
+        left: {
+          width: 250,
+        },
+        right: {
+          width: 250,
+        },
+      },
       topBar: {
         testID: CENTER_SCREEN_HEADER,
         title: {
@@ -49,6 +63,16 @@ export default class SideMenuCenterScreen extends NavigationComponent {
           testID={OPEN_RIGHT_SIDE_MENU_BTN}
           onPress={() => this.open('right')}
         />
+        <Button
+          label="Change Left Drawer Width"
+          testID={CHANGE_LEFT_SIDE_MENU_WIDTH_BTN}
+          onPress={() => this.changeDrawerWidth('left', 50)}
+        />
+        <Button
+          label="Change Right Drawer Width"
+          testID={CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN}
+          onPress={() => this.changeDrawerWidth('right', 50)}
+        />
       </Root>
     );
   }
@@ -56,7 +80,19 @@ export default class SideMenuCenterScreen extends NavigationComponent {
   open = (side: 'left' | 'right') =>
     Navigation.mergeOptions(this, {
       sideMenu: {
-        [side]: { visible: true },
+        [side]: {
+          visible: true,
+        },
       },
     });
+
+  changeDrawerWidth = (side: 'left' | 'right', newWidth: number) => {
+    Navigation.mergeOptions(this, {
+      sideMenu: {
+        [side]: {
+          width: newWidth,
+        },
+      },
+    });
+  };
 }
