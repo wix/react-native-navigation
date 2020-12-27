@@ -97,7 +97,7 @@ public class SideMenuPresenter {
         }
     }
 
-    private void handleLeftWidth(SideMenuRootOptions sideMenuRootOptions) {
+    private void applyLeftWidth(SideMenuRootOptions sideMenuRootOptions) {
         if (left != null && sideMenuRootOptions.left.width.hasValue()) {
             left.getView().getLayoutParams().width = (int) TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
