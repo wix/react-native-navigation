@@ -54,8 +54,8 @@ public class SideMenuPresenter {
     public void applyChildOptions(Options options) {
         applyLockMode(options.sideMenuRootOptions);
         mergeVisibility(options.sideMenuRootOptions);
-        handleLeftWidth(options.sideMenuRootOptions);
-        handleRightWith(options.sideMenuRootOptions);
+        applyLeftWidth(options.sideMenuRootOptions);
+        applyRightWidth(options.sideMenuRootOptions);
     }
 
     private void applyLockMode(SideMenuRootOptions options) {
