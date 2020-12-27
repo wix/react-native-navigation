@@ -44,13 +44,15 @@
     CGFloat cornerRadius =
         [buttonOptions.iconBackground.cornerRadius getWithDefaultValue:@(0)].floatValue;
 
-    UIButton *button = [[UIButton alloc]
-        initWithFrame:CGRectMake(
-                          0, 0,
-                          [buttonOptions.iconBackground.width getWithDefaultValue:BUTTON_WIDTH]
-                              .floatValue,
-                          [buttonOptions.iconBackground.height getWithDefaultValue:BUTTON_HEIGHT]
-                              .floatValue)];
+    UIButton *button =
+        [[UIButton alloc] initWithFrame:CGRectMake(0, 0,
+                                                   [buttonOptions.iconBackground.width
+                                                       getWithDefaultValue:@(iconImage.size.width)]
+                                                       .floatValue,
+                                                   [buttonOptions.iconBackground.height
+                                                       getWithDefaultValue:@(iconImage.size.width)]
+                                                       .floatValue)];
+
     [button addTarget:self
                   action:@selector(onButtonPressed:)
         forControlEvents:UIControlEventTouchUpInside];
