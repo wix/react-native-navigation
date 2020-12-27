@@ -4,9 +4,6 @@
 #import "UIImage+insets.h"
 #import "UIImage+tint.h"
 
-#define BUTTON_WIDTH @(40)
-#define BUTTON_HEIGHT @(40)
-
 @interface RNNUIBarButtonItem ()
 
 @property(nonatomic, strong) NSLayoutConstraint *widthConstraint;
