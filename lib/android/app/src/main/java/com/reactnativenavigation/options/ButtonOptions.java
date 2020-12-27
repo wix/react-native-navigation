@@ -46,6 +46,7 @@ public class ButtonOptions {
     public Text icon = new NullText();
     public Text testId = new NullText();
     public ComponentOptions component = new ComponentOptions();
+    public IconBackgroundOptions iconBackground = new IconBackgroundOptions();
 
     public boolean equals(ButtonOptions other) {
         return Objects.equals(id, other.id) &&
@@ -79,7 +80,7 @@ public class ButtonOptions {
         button.font = FontParser.parse(json);
         button.testId = TextParser.parse(json, "testID");
         button.component = ComponentOptions.parse(json.optJSONObject("component"));
-
+        button.iconBackground = IconBackgroundOptions.parse(context, json.optJSONObject("iconBackground"));
         if (json.has("icon")) {
             button.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
@@ -165,6 +166,7 @@ public class ButtonOptions {
         if (other.icon.hasValue()) icon = other.icon;
         if (other.id != null) id = other.id;
         if (other.instanceId != null) instanceId = other.instanceId;
+        if (other.iconBackground.hasValue()) iconBackground = other.iconBackground;
     }
 
     public void mergeWithDefault(ButtonOptions defaultOptions) {
@@ -181,5 +183,6 @@ public class ButtonOptions {
         if (!component.hasValue()) component = defaultOptions.component;
         if (!showAsAction.hasValue()) showAsAction = defaultOptions.showAsAction;
         if (!icon.hasValue()) icon = defaultOptions.icon;
+        if (!iconBackground.hasValue()) iconBackground = defaultOptions.iconBackground;
     }
 }

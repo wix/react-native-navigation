@@ -57,6 +57,7 @@ module.exports = {
           'api/options-backButton',
           'api/options-button',
           'api/options-iconInsets',
+          'api/options-iconBackground',
           'api/options-largeTitle',
         ],
       },

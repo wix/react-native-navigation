@@ -1,12 +1,14 @@
 package com.reactnativenavigation.viewcontrollers.stack.topbar.button
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.text.SpannableString
 import android.text.Spanned
+import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
@@ -16,7 +18,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
-import com.reactnativenavigation.utils.*
+import com.reactnativenavigation.utils.ArrayUtils
+import com.reactnativenavigation.utils.ImageLoader
+import com.reactnativenavigation.utils.ImageLoadingListenerAdapter
+import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.views.stack.topbar.titlebar.IconBackgroundDrawable
 
 open class ButtonPresenter(private val context: Context, private val button: ButtonOptions, private val iconResolver: IconResolver) {
     companion object {
@@ -73,7 +79,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
             loadIcon(object : ImageLoadingListenerAdapter() {
                 override fun onComplete(drawable: Drawable) {
                     setIconColor(drawable)
-                    menuItem.icon = drawable
+                    menuItem.icon = if (button.iconBackground.hasValue()) IconBackgroundDrawable(context, drawable, button.iconBackground, getIconColor(), getBackgroundColor()) else drawable
                 }
             })
         }
@@ -131,11 +137,25 @@ open class ButtonPresenter(private val context: Context, private val button: But
     }
 
     private fun setIconColor(icon: Drawable) {
-        if (button.disableIconTint.isTrue) return
+        this.getIconColor()?.let { tint(icon, it) }
+    }
+
+    private fun getIconColor(): Int? {
+        if (button.disableIconTint.isTrue) return null
         if (button.enabled.isTrueOrUndefined && button.color.hasValue()) {
-            tint(icon, button.color.get())
+            return button.color.get()
         } else if (button.enabled.isFalse) {
-            tint(icon, button.disabledColor[Color.LTGRAY])
+            return button.disabledColor[Color.LTGRAY]
+        }
+
+        return null
+    }
+
+    private fun getBackgroundColor(): Int {
+        return if (button.enabled.isTrueOrUndefined || !button.iconBackground.disabledColor.hasValue()) {
+            button.color.get()
+        } else {
+            button.iconBackground.disabledColor[null]
         }
     }
 

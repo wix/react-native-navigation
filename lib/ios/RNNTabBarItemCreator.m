@@ -72,30 +72,27 @@
 
 + (void)appendTitleAttributes:(UITabBarItem *)tabItem
              bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
-    UIColor *textColor = [bottomTabOptions.textColor getWithDefaultValue:nil];
-    UIColor *selectedTextColor = [bottomTabOptions.selectedTextColor getWithDefaultValue:nil];
+    UIColor *textColor = [bottomTabOptions.textColor getWithDefaultValue:[UIColor blackColor]];
+    UIColor *selectedTextColor =
+        [bottomTabOptions.selectedTextColor getWithDefaultValue:[UIColor blackColor]];
     NSString *fontFamily = [bottomTabOptions.fontFamily getWithDefaultValue:nil];
-    NSNumber *fontSize = [bottomTabOptions.fontSize getWithDefaultValue:nil];
+    NSNumber *fontSize = [bottomTabOptions.fontSize getWithDefaultValue:@(10)];
     NSString *fontWeight = [bottomTabOptions.fontWeight getWithDefaultValue:nil];
 
     NSDictionary *selectedAttributes = [RNNFontAttributesCreator
         createFromDictionary:[tabItem titleTextAttributesForState:UIControlStateSelected]
                   fontFamily:fontFamily
                     fontSize:fontSize
-             defaultFontSize:@(10)
                   fontWeight:fontWeight
-                       color:selectedTextColor
-                defaultColor:[UIColor blackColor]];
+                       color:selectedTextColor];
     [self setSelectedTitleAttributes:tabItem selectedTitleAttributes:selectedAttributes];
 
     NSDictionary *normalAttributes = [RNNFontAttributesCreator
         createFromDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]
                   fontFamily:fontFamily
                     fontSize:fontSize
-             defaultFontSize:@(10)
                   fontWeight:fontWeight
-                       color:textColor
-                defaultColor:[UIColor blackColor]];
+                       color:textColor];
     [self setTitleAttributes:tabItem titleAttributes:normalAttributes];
 }
 

@@ -517,6 +517,10 @@ export interface OptionsTopBarButton {
    */
   disabledColor?: Color;
   /**
+   * Set icon background style
+   */
+  iconBackground?: IconBackgroundOptions;
+  /**
    * Set testID for reference in E2E tests
    */
   testID?: string;
@@ -727,6 +731,12 @@ export interface OptionsBottomTabs {
    */
   animate?: boolean;
   /**
+   * Controls wether tab selection is animated or not
+   * #### (android specific)
+   * @default true
+   */
+  animateTabSelection?: boolean;
+  /**
    * Use large icons when possible, even when three tabs without titles are displayed
    * #### (android specific)
    * @default false
@@ -841,6 +851,16 @@ export interface OptionsBottomTab {
    */
   iconColor?: Color;
   /**
+   * Set the icon width
+   * #### (Android specific)
+   */
+  iconWidth?: number;
+  /**
+   * Set the icon height
+   * #### (Android specific)
+   */
+  iconHeight?: number;
+  /**
    * Set the text color
    */
   textColor?: Color;
@@ -872,7 +892,6 @@ export interface OptionsBottomTab {
   fontSize?: number;
   /**
    * Set the insets of the icon
-   * #### (iOS specific)
    */
   iconInsets?: Insets;
   /**
@@ -1209,6 +1228,29 @@ export interface WindowOptions {
    * Configure the background color of the application's main window.
    */
   backgroundColor?: Color;
+}
+
+export interface IconBackgroundOptions {
+  /**
+   * Set background color
+   */
+  color: Color;
+  /**
+   * Set background color on disabled state
+   */
+  disabledColor?: Color;
+  /**
+   * Set corner radius
+   */
+  cornerRadius?: number;
+  /**
+   * Set width
+   */
+  width?: number;
+  /**
+   * Set height
+   */
+  height?: number;
 }
 
 export interface Options {

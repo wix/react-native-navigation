@@ -30,8 +30,6 @@ typedef void (^PreviewCallback)(UIViewController *vc);
                            options:(RNNNavigationOptions *)options
                     defaultOptions:(RNNNavigationOptions *)defaultOptions;
 
-- (void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem;
-
 - (void)destroyReactView;
 
 - (void)setInterceptTouchOutside:(BOOL)interceptTouchOutside;

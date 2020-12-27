@@ -3,12 +3,9 @@
 #import "RNNComponentViewController.h"
 #import "RNNDefaultOptionsHelper.h"
 #import "RNNErrorHandler.h"
-#import "RNNLayoutManager.h"
 #import "React/RCTI18nUtil.h"
 #import "UINavigationController+RNNCommands.h"
-#import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
-#import "UIViewController+Utils.h"
 
 static NSString *const setRoot = @"setRoot";
 static NSString *const setStackRoot = @"setStackRoot";

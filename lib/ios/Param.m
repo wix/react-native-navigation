@@ -19,6 +19,12 @@
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    Param *param = [[self.class alloc] initWithValue:self.value];
+    param.consumed = self.consumed;
+    return param;
+}
+
 - (id)get {
     if (!self.value) {
         @throw [NSException exceptionWithName:@"Param get"

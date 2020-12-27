@@ -1,5 +1,5 @@
 #import "RNNBasePresenter.h"
-#import "RNNNavigationButtons.h"
+#import "RNNButtonsPresenter.h"
 #import "RNNReactComponentRegistry.h"
 
 @interface RNNComponentPresenter : RNNBasePresenter
@@ -7,6 +7,8 @@
 - (void)renderComponents:(RNNNavigationOptions *)options
                  perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 
-@property(nonatomic, strong) RNNNavigationButtons *navigationButtons;
+- (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry
+                           defaultOptions:(RNNNavigationOptions *)defaultOptions
+                         buttonsPresenter:(RNNButtonsPresenter *)buttonsPresenter;
 
 @end

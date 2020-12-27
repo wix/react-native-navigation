@@ -110,10 +110,8 @@
         createFromDictionary:self.navigationController.navigationBar.titleTextAttributes
                   fontFamily:fontFamily
                     fontSize:fontSize
-             defaultFontSize:nil
                   fontWeight:fontWeight
-                       color:fontColor
-                defaultColor:nil];
+                       color:fontColor];
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
@@ -126,10 +124,8 @@
         createFromDictionary:self.navigationController.navigationBar.largeTitleTextAttributes
                   fontFamily:fontFamily
                     fontSize:fontSize
-             defaultFontSize:nil
                   fontWeight:fontWeight
-                       color:fontColor
-                defaultColor:nil];
+                       color:fontColor];
 }
 
 - (void)componentDidAppear {

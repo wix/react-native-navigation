@@ -1,14 +1,8 @@
 #import "RNNTopBarOptions.h"
+#import "RNNButtonsParser.h"
 #import "RNNCustomTitleView.h"
-#import "RNNNavigationButtons.h"
 #import "UINavigationController+RNNOptions.h"
 #import "UIViewController+RNNOptions.h"
-
-@interface RNNTopBarOptions ()
-
-@property(nonatomic, strong) RNNNavigationButtons *navigationButtons;
-
-@end
 
 @implementation RNNTopBarOptions
 
@@ -58,8 +52,8 @@
         self.rightButtonStyle.disabledColor = self.rightButtonDisabledColor;
     }
 
-    self.leftButtons = dict[@"leftButtons"];
-    self.rightButtons = dict[@"rightButtons"];
+    self.leftButtons = [RNNButtonsParser parse:dict[@"leftButtons"]];
+    self.rightButtons = [RNNButtonsParser parse:dict[@"rightButtons"]];
 
     return self;
 }

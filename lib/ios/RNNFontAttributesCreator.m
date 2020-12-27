@@ -8,22 +8,6 @@
 
 + (NSDictionary *)createWithFontFamily:(NSString *)fontFamily
                               fontSize:(NSNumber *)fontSize
-                       defaultFontSize:(NSNumber *)defaultFontSize
-                            fontWeight:(NSString *)fontWeight
-                                 color:(UIColor *)color
-                          defaultColor:(UIColor *)defaultColor {
-    NSMutableDictionary *titleTextAttributes = [NSMutableDictionary new];
-    return [self createFromDictionary:titleTextAttributes
-                           fontFamily:fontFamily
-                             fontSize:fontSize
-                      defaultFontSize:defaultFontSize
-                           fontWeight:fontWeight
-                                color:color
-                         defaultColor:defaultColor];
-}
-
-+ (NSDictionary *)createWithFontFamily:(NSString *)fontFamily
-                              fontSize:(NSNumber *)fontSize
                             fontWeight:(NSString *)fontWeight
                                  color:(UIColor *)color {
     NSMutableDictionary *titleTextAttributes = [NSMutableDictionary new];
@@ -32,20 +16,6 @@
                              fontSize:fontSize
                            fontWeight:fontWeight
                                 color:color];
-}
-
-+ (NSDictionary *)createFromDictionary:(NSDictionary *)attributesDictionary
-                            fontFamily:(NSString *)fontFamily
-                              fontSize:(NSNumber *)fontSize
-                       defaultFontSize:(NSNumber *)defaultFontSize
-                            fontWeight:(NSString *)fontWeight
-                                 color:(UIColor *)color
-                          defaultColor:(UIColor *)defaultColor {
-    return [self createFromDictionary:attributesDictionary
-                           fontFamily:fontFamily
-                             fontSize:fontSize ?: defaultFontSize
-                           fontWeight:fontWeight
-                                color:color ?: defaultColor];
 }
 
 + (NSDictionary *)createFromDictionary:(NSDictionary *)attributesDictionary
