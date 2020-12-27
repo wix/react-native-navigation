@@ -127,4 +127,40 @@
                    21);
 }
 
+- (void)testMergeOptions_shouldShowScrollEdgeBorder {
+    RNNNavigationOptions *mergeOptions = [RNNNavigationOptions emptyOptions];
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
+
+    mergeOptions.topBar.scrollEdgeAppearance.noBorder = [Bool withValue:NO];
+    RNNNavigationOptions *withDefault = [mergeOptions withDefault:defaultOptions];
+    [_uut mergeOptions:mergeOptions.topBar withDefault:withDefault.topBar];
+    XCTAssertEqual(
+        _stack.childViewControllers.lastObject.navigationItem.scrollEdgeAppearance.shadowColor,
+        [[UINavigationBarAppearance new] shadowColor]);
+}
+
+- (void)testMergeOptions_shouldHideScrollEdgeBorder {
+    RNNNavigationOptions *mergeOptions = [RNNNavigationOptions emptyOptions];
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
+
+    mergeOptions.topBar.noBorder = [Bool withValue:YES];
+    RNNNavigationOptions *withDefault = [mergeOptions withDefault:defaultOptions];
+    [_uut mergeOptions:mergeOptions.topBar withDefault:withDefault.topBar];
+    XCTAssertEqual(
+        _stack.childViewControllers.lastObject.navigationItem.standardAppearance.shadowColor, nil);
+}
+
+- (void)testMergeOptions_shouldSetScrollEdgeBorderColor {
+    RNNNavigationOptions *mergeOptions = [RNNNavigationOptions emptyOptions];
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
+
+    mergeOptions.topBar.scrollEdgeAppearance.noBorder = [Bool withValue:NO];
+    mergeOptions.topBar.scrollEdgeAppearance.borderColor = [Color withValue:UIColor.blueColor];
+    RNNNavigationOptions *withDefault = [mergeOptions withDefault:defaultOptions];
+    [_uut mergeOptions:mergeOptions.topBar withDefault:withDefault.topBar];
+    XCTAssertEqual(
+        _stack.childViewControllers.lastObject.navigationItem.scrollEdgeAppearance.shadowColor,
+        UIColor.blueColor);
+}
+
 @end

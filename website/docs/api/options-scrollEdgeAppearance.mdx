@@ -10,22 +10,20 @@ Controls the top bar background styling.
 const options = {
   topBar: {
     scrollEdgeAppearance: {
-        background: {},
-        active: true
-    }
-  }
+      background: {},
+      active: true,
+    },
+  },
 };
 ```
-
 
 ### `active`
 
 Since this might be considered as a breaking change (meaning that previous configs might behave different), you'll need to
 pass active `true/false` to activate this option.
-| Type  | Required | Platform |
+| Type | Required | Platform |
 | ----- | -------- | -------- |
-| Bool | No       | iOS     |
-
+| Bool | No | iOS |
 
 ### `color`
 
@@ -33,12 +31,27 @@ Set the background color.
 
 | Type  | Required | Platform |
 | ----- | -------- | -------- |
-| Color | No       | iOS     |
-
+| Color | No       | iOS      |
 
 ### `translucent`
 
 Allows the Scroll Edge Appearance to be translucent (blurred).
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+### `borderColor`
+
+Change the topBar border color.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | Both     |
+
+### `noBorder`
+
+Disables border at the bottom of the TopBar.
 
 | Type    | Required | Platform |
 | ------- | -------- | -------- |

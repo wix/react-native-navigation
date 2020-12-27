@@ -393,6 +393,16 @@ export interface OptionsTopBarScrollEdgeAppearanceBackground {
 export interface OptionsTopBarScrollEdgeAppearance {
   background?: OptionsTopBarScrollEdgeAppearanceBackground;
   active: boolean;
+  /**
+   * Disable the border on bottom of the navbar
+   * #### (iOS specific)
+   * @default false
+   */
+  noBorder?: boolean;
+  /**
+   * Change the navbar border color
+   */
+  borderColor?: Color;
 }
 
 export interface OptionsTopBarBackground {
