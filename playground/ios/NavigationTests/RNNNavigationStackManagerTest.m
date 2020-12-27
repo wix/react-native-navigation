@@ -29,7 +29,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
     XCTAssertTrue([self.nvc.topViewController isEqual:self.vc3]);
     [_nvc popTo:self.vc2
-          animated:YES
+          animated:NO
         completion:^(NSArray *poppedViewControllers) {
           XCTAssertTrue([self.nvc.topViewController isEqual:self.vc2]);
           [expectation fulfill];
