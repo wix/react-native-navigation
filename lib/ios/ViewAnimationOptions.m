@@ -17,6 +17,10 @@
 }
 
 - (void)mergeOptions:(ViewAnimationOptions *)options {
+    if (options.enable.hasValue)
+        self.enable = options.enable;
+    if (options.waitForRender.hasValue)
+        self.waitForRender = options.waitForRender;
     if (options.sharedElementTransitions)
         self.sharedElementTransitions = options.sharedElementTransitions;
     if (options.elementTransitions)
