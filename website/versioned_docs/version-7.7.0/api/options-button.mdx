@@ -33,6 +33,24 @@ If the button has text, this option is used to set font size in DP.
 | ------ | -------- | -------- |
 | number | No       | Both     |
 
+### `fontFamily`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+### `fontStyle`
+
+| Type                     | Required | Platform |
+| ------------------------ | -------- | -------- |
+| enum('normal', 'italic') | No       | Both     |
+
+### `fontWeight`
+
+| Type                                                                                  | Required | Platform |
+| ------------------------------------------------------------------------------------- | -------- | -------- |
+| enum('normal', 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900') | No       | Both     |
+
 ### `id`
 
 Buttons are identified by their id property. When a button is clicked, a buttonPress event is emitted to js, containing the id of the clicked button.
@@ -45,9 +63,9 @@ Buttons are identified by their id property. When a button is clicked, a buttonP
 
 Button icon. If the button is pushed to the overflow menu, the button [text](#text) is used instead.
 
-| Type   | Required | Platform |
-| ------ | -------- | -------- |
-| number | No       | Both     |
+| Type                                       | Required | Platform |
+| ------------------------------------------ | -------- | -------- |
+| [ImageResource](options-imageResource.mdx) | No       | Both     |
 
 ### `text`
 
@@ -90,3 +108,11 @@ System icon; ignored if an [icon](#icon-number) is specified. For more informati
 | Type                                                                                                                                                                                                                                          | Required | Platform |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- |
 | enum('done', 'cancel', 'edit', 'save', 'add', 'flexibleSpace', 'fixedSpace', 'compose', 'reply', 'action', 'organize', 'bookmarks', 'search', 'refresh', 'stop', 'camera', 'trash', 'play', 'pause', 'rewind', 'fastForward', 'undo', 'redo') | No       | iOS      |
+
+### `iconBackground`
+
+[iconBackground](options-iconBackground.mdx) is applied to the icon's background.
+
+| Type           | Required | Platform |
+| -------------- | -------- | -------- |
+| iconBackground | No       | Both     |

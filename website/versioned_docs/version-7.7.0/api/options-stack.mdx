@@ -66,6 +66,14 @@ Controls the top bar background.
 | --------------------------------- | -------- | -------- |
 | [Background](options-background.mdx) | No       | Both     |
 
+### `scrollEdgeAppearance`
+
+Controls the appearance settings when the scrollable content reaches the matching edge of the navigation bar.
+
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
+| [Scroll Edge Background](options-scrollEdgeAppearance.mdx) | No       | iOS     |
+
 ### `barStyle`
 
 Control the TopBar blur style. Requires `translucent: true`.
@@ -80,7 +88,7 @@ Change the topBar border color.
 
 | Type  | Required | Platform |
 | ----- | -------- | -------- |
-| Color | No       | iOS      |
+| Color | No       | Both     |
 
 ### `borderHeight`
 
@@ -113,6 +121,10 @@ Hide the TopBar when a scrolling layout is scrolled.
 | Type    | Required | Platform |
 | ------- | -------- | -------- |
 | boolean | No       | Both     |
+
+:::warning Deprecation warning
+This option is currently deprecated and will be removed in a future release. Please use the [OptionsSearchBar](topBar-searchBar.mdx) option instead.
+:::
 
 ### `hideNavBarOnFocusSearchBar`
 
@@ -169,11 +181,16 @@ Default color for the right button.
 
 ### `searchBar`
 
-Shows the UISearchBar in the TopBar.
+Controls the SearchBar.
 
 | Type    | Required | Platform |
 | ------- | -------- | -------- |
-| boolean | No       | iOS 11+  |
+| [OptionsSearchBar](topBar-searchBar.mdx) | No       | iOS 11+  |
+
+
+:::warning Deprecation warning
+This option is currently deprecated and will be removed in a future release. Please use the [OptionsSearchBar](topBar-searchBar.mdx) option instead.
+:::
 
 ### `searchBarHiddenWhenScrolling`
 
@@ -183,6 +200,10 @@ Hides the UISearchBar when scrolling.
 | ------- | -------- | -------- |
 | boolean | No       | iOS 11+  |
 
+:::warning Deprecation warning
+This option is currently deprecated and will be removed in a future release. Please use the [OptionsSearchBar](topBar-searchBar.mdx) option instead.
+:::
+
 ### `searchBarPlaceholder`
 
 The placeholder value in the UISearchBar.
@@ -190,3 +211,27 @@ The placeholder value in the UISearchBar.
 | Type   | Required | Platform |
 | ------ | -------- | -------- |
 | string | No       | iOS 11+  |
+
+:::warning Deprecation warning
+This option is currently deprecated and will be removed in a future release. Please use the [OptionsSearchBar](topBar-searchBar.mdx) option instead.
+:::
+
+### `searchBarBackgroundColor`
+
+The background color of the UISearchBar's TextField.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| Color  | No       | iOS 13+  |
+
+:::warning Deprecation warning
+This option is currently deprecated and will be removed in a future release. Please use the [OptionsSearchBar](topBar-searchBar.mdx) option instead.
+:::
+
+### `searchBarTintColor`
+
+The tint color of the UISearchBar. Affects text selection color, as well as "Cancel" button color.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| Color  | No       | iOS 13+  |
