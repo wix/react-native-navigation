@@ -106,7 +106,7 @@
         UIColor.blueColor);
 }
 
-- (void)testMergeOptions_shouldApplyTitleAppearance {
+- (void)testApplyOptions_shouldApplyTitleAppearance {
     RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.topBar.title.color = [Color withColor:UIColor.redColor];
     options.topBar.title.fontSize = [Number withValue:@(21)];
@@ -161,6 +161,38 @@
     XCTAssertEqual(
         _stack.childViewControllers.lastObject.navigationItem.scrollEdgeAppearance.shadowColor,
         UIColor.blueColor);
+}
+
+- (void)testApplyOptions_shouldHideScrollEdgeBorder {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.topBar.scrollEdgeAppearance.noBorder = [Bool withValue:YES];
+    options.topBar.scrollEdgeAppearance.borderColor = [Color withColor:UIColor.redColor];
+
+    [_uut applyOptions:options.topBar];
+    XCTAssertEqual(
+        _stack.childViewControllers.lastObject.navigationItem.scrollEdgeAppearance.shadowColor,
+        nil);
+}
+
+- (void)testApplyOptions_shouldShowScrollEdgeBorderWithDefaultColor {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.topBar.scrollEdgeAppearance.noBorder = [Bool withValue:NO];
+
+    [_uut applyOptions:options.topBar];
+    XCTAssertEqual(
+        _stack.childViewControllers.lastObject.navigationItem.scrollEdgeAppearance.shadowColor,
+        [[UINavigationBarAppearance new] shadowColor]);
+}
+
+- (void)testApplyOptions_shouldShowScrollEdgeBorderWithColor {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.topBar.scrollEdgeAppearance.noBorder = [Bool withValue:NO];
+    options.topBar.scrollEdgeAppearance.borderColor = [Color withColor:UIColor.redColor];
+
+    [_uut applyOptions:options.topBar];
+    XCTAssertEqual(
+        _stack.childViewControllers.lastObject.navigationItem.scrollEdgeAppearance.shadowColor,
+        UIColor.redColor);
 }
 
 @end

@@ -47,7 +47,7 @@
     }
 
     if (options.scrollEdgeAppearance.noBorder.hasValue) {
-        [self showScrollEdgeBorder:options.scrollEdgeAppearance.noBorder.get];
+        [self showScrollEdgeBorder:!options.scrollEdgeAppearance.noBorder.get];
     }
 }
 
@@ -127,7 +127,7 @@
 
 - (void)updateScrollEdgeBorder {
     self.getScrollEdgeAppearance.shadowColor =
-        self.scrollEdgeBorderColor ? self.scrollEdgeBorderColor : nil;
+        self.showScrollEdgeBorder ? self.scrollEdgeBorderColor : nil;
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {
