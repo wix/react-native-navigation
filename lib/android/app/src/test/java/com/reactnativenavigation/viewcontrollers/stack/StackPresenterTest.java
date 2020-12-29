@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
@@ -787,6 +788,23 @@ public class StackPresenterTest extends BaseTest {
     public void applyTopInsets_delegatesToChild() {
         uut.applyTopInsets(parent, child);
         verify(child).applyTopInset();
+    }
+
+    @Test
+    public void applyChildOptions_shouldNotChangeTopMargin() {
+        Options options = new Options();
+        ((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin = 20;
+        uut.applyChildOptions(options, parent, child);
+        assertThat(((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin).isEqualTo(20);
+    }
+
+    @Test
+    public void applyChildOptions_shouldChangeTopMargin() {
+        Options options = new Options();
+        ((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin = 20;
+        options.topBar.topMargin = new Number(10);
+        uut.applyChildOptions(options, parent, child);
+        assertThat(((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin).isEqualTo(10);
     }
 
     private void assertTopBarOptions(Options options, int t) {
