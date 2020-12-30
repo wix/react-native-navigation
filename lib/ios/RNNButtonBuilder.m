@@ -42,7 +42,7 @@
         @throw [NSException
             exceptionWithName:@"NSInvalidArgumentException"
                        reason:[@"button id is not specified "
-                                  stringByAppendingString:[button.text getWithDefaultValue:@""]]
+                                  stringByAppendingString:[button.text withDefault:@""]]
                      userInfo:nil];
     }
 }
