@@ -10,8 +10,9 @@
                          presenter:(RNNBasePresenter *)presenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
     if (@available(iOS 14.0, *)) {
-        NSString* style = options.splitView.style;
+        NSString *style = options.splitView.style;
         if ([style isEqualToString:@"tripleColumn"]) {
             self = [self initWithStyle:UISplitViewControllerStyleTripleColumn];
         } else if ([style isEqualToString:@"doubleColumn"]) {
@@ -23,6 +24,10 @@
         // Fallback on earlier versions
         self = [self init];
     }
+#else
+    self = [self init];
+#endif
+
     self.options = options;
     self.defaultOptions = defaultOptions;
     self.layoutInfo = layoutInfo;

@@ -13,7 +13,9 @@
     } else if ([displayMode isEqualToString:@"overlay"]) {
         // deprecated since iOS 14
         self.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
-    } else if ([displayMode isEqualToString:@"secondaryOnly"]) {
+    }
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
+    else if ([displayMode isEqualToString:@"secondaryOnly"]) {
         self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
     } else if ([displayMode isEqualToString:@"oneBesideSecondary"]) {
         self.preferredDisplayMode = UISplitViewControllerDisplayModeOneBesideSecondary;
@@ -29,7 +31,9 @@
         } else {
             self.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
         }
-    } else {
+    }
+#endif
+    else {
         self.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
     }
 }
