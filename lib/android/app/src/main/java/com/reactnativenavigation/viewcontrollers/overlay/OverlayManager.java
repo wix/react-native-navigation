@@ -35,6 +35,11 @@ public class OverlayManager {
         }
     }
 
+    public void dismissAll(ViewGroup overlaysContainer, CommandListener listener) {
+        destroy(overlaysContainer);
+        listener.onSuccess("");
+    }
+
     public void destroy(ViewGroup overlaysContainer) {
         forEach(overlayRegistry.values(), overlay -> destroyOverlay(overlaysContainer, overlay));
     }

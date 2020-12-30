@@ -7,11 +7,11 @@
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
-- (void)apply:(UIViewController *)child:(DotIndicatorOptions *)options;
+- (void)apply:(UIViewController *)child options:(DotIndicatorOptions *)options;
 
 - (void)bottomTabsDidLayoutSubviews:(UITabBarController *)bottomTabs;
 
-- (void)mergeOptions:(RNNNavigationOptions *)options
+- (void)mergeOptions:(NSDictionary *)options
      resolvedOptions:(RNNNavigationOptions *)resolvedOptions
                child:(UIViewController *)child;
 

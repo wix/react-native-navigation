@@ -12,10 +12,9 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, N
     completion:(RNNTransitionCompletionBlock)completion
      rejection:(RNNTransitionRejectionBlock)rejection;
 
-- (void)pop:(UIViewController *)viewController
-      animated:(BOOL)animated
-    completion:(RNNTransitionCompletionBlock)completion
-     rejection:(RNNTransitionRejectionBlock)rejection;
+- (void)popAnimated:(BOOL)animated
+         completion:(RNNTransitionCompletionBlock)completion
+          rejection:(RNNTransitionRejectionBlock)rejection;
 
 - (void)popTo:(UIViewController *)viewController
       animated:(BOOL)animated

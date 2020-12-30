@@ -40,6 +40,20 @@
     [self readyForPresentation];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.eventEmitter sendComponentDidAppear:self.layoutInfo.componentId
+                                componentName:self.layoutInfo.name
+                                componentType:ComponentTypeScreen];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.eventEmitter sendComponentDidDisappear:self.layoutInfo.componentId
+                                   componentName:self.layoutInfo.name
+                                   componentType:ComponentTypeScreen];
+}
+
 #pragma mark - UIViewController overrides
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {

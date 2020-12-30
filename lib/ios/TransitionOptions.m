@@ -3,7 +3,7 @@
 @implementation TransitionOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
-    self = [super init];
+    self = [super initWithDict:dict];
 
     self.alpha = [[TransitionDetailsOptions alloc] initWithDict:dict[@"alpha"]];
     self.x = [[TransitionDetailsOptions alloc] initWithDict:dict[@"x"]];
@@ -17,6 +17,21 @@
     self.enable = [BoolParser parse:dict key:@"enabled"];
 
     return self;
+}
+
+- (void)mergeOptions:(TransitionOptions *)options {
+    [self.alpha mergeOptions:options.alpha];
+    [self.x mergeOptions:options.x];
+    [self.y mergeOptions:options.y];
+    [self.translationX mergeOptions:options.translationX];
+    [self.translationY mergeOptions:options.translationY];
+    [self.rotationX mergeOptions:options.rotationX];
+    [self.rotationY mergeOptions:options.rotationY];
+
+    if (options.enable.hasValue)
+        self.enable = options.enable;
+    if (options.waitForRender.hasValue)
+        self.waitForRender = options.waitForRender;
 }
 
 - (BOOL)hasAnimation {

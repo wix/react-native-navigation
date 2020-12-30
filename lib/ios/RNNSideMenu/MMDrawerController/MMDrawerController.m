@@ -1547,15 +1547,30 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
     if (self.openSide == MMDrawerSideNone) {
         MMOpenDrawerGestureMode possibleOpenGestureModes =
             [self possibleOpenGestureModesForGestureRecognizer:gestureRecognizer withTouch:touch];
-        return ((self.openDrawerGestureModeMask & possibleOpenGestureModes) > 0);
+        return ((self.openDrawerGestureModeMask & possibleOpenGestureModes) > 0) &&
+               [self shouldReceiveTouch:touch];
     } else {
         MMCloseDrawerGestureMode possibleCloseGestureModes =
             [self possibleCloseGestureModesForGestureRecognizer:gestureRecognizer withTouch:touch];
-        return ((self.closeDrawerGestureModeMask & possibleCloseGestureModes) > 0);
+        return ((self.closeDrawerGestureModeMask & possibleCloseGestureModes) > 0) &&
+               [self shouldReceiveTouch:touch];
     }
 }
 
 #pragma mark Gesture Recogizner Delegate Helpers
+- (BOOL)shouldReceiveTouch:(UITouch *)touch {
+    CGPoint point = [touch locationInView:self.childControllerContainerView];
+    if ([self isPointContainedWithinLeftBezelRect:point] && self.leftDrawerViewController &&
+        !self.leftSideEnabled) {
+        return NO;
+    } else if ([self isPointContainedWithinRightBezelRect:point] &&
+               self.rightDrawerViewController && !self.rightSideEnabled) {
+        return NO;
+    }
+
+    return YES;
+}
+
 - (MMCloseDrawerGestureMode)possibleCloseGestureModesForGestureRecognizer:
                                 (UIGestureRecognizer *)gestureRecognizer
                                                                 withTouch:(UITouch *)touch {

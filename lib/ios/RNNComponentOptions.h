@@ -1,6 +1,6 @@
 #import "RNNOptions.h"
 
-@interface RNNComponentOptions : RNNOptions
+@interface RNNComponentOptions : RNNOptions <NSCopying>
 
 @property(nonatomic, strong) Text *name;
 @property(nonatomic, strong) Text *componentId;

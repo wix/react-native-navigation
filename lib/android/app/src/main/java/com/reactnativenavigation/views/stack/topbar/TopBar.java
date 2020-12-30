@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -15,25 +15,24 @@ import android.widget.RelativeLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.reactnativenavigation.R;
-import com.reactnativenavigation.options.FontOptions;
-import com.reactnativenavigation.options.parsers.TypefaceLoader;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Alignment;
+import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.LayoutDirection;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.views.stack.topbar.titlebar.LeftButtonsBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.viewpager.widget.ViewPager;
 
@@ -43,6 +42,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
     private TitleBar titleBar;
+    private LeftButtonsBar leftButtonsBar;
     private final TopBarCollapseBehavior collapsingBehavior;
     private TopTabs topTabs;
     private FrameLayout root;
@@ -51,7 +51,16 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private float elevation = -1;
 
     public int getRightButtonsCount() {
-        return titleBar.getRightButtonsCount();
+        return titleBar.getButtonsCount();
+    }
+
+    public int getLeftButtonsCount() {
+        return leftButtonsBar.getButtonsCount();
+    }
+
+    @Nullable
+    public Drawable getNavigationIcon() {
+        return leftButtonsBar.getNavigationIcon();
     }
 
     public TopBar(final Context context) {
@@ -67,13 +76,17 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         setId(CompatUtils.generateViewId());
         setFitsSystemWindows(true);
         titleBar = createTitleBar(getContext());
+        leftButtonsBar = createLeftButtonsBar(getContext());
         topTabs = createTopTabs();
         border = createBorder();
         LinearLayout content = createContentLayout();
+        LinearLayout bars = new LinearLayout(getContext()); bars.setOrientation(HORIZONTAL);
 
         root = new FrameLayout(getContext());
         root.setId(CompatUtils.generateViewId());
-        content.addView(titleBar, MATCH_PARENT, UiUtils.getTopBarHeight(getContext()));
+        bars.addView(leftButtonsBar, WRAP_CONTENT, UiUtils.getTopBarHeight(getContext()));
+        bars.addView(titleBar, MATCH_PARENT, UiUtils.getTopBarHeight(getContext()));
+        content.addView(bars);
         content.addView(topTabs);
         root.addView(content);
         root.addView(border);
@@ -109,6 +122,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         TitleBar titleBar = new TitleBar(context);
         titleBar.setId(CompatUtils.generateViewId());
         return titleBar;
+    }
+
+    protected LeftButtonsBar createLeftButtonsBar(Context context) {
+        LeftButtonsBar leftButtonsBar = new LeftButtonsBar(context);
+        leftButtonsBar.setId(CompatUtils.generateViewId());
+        return leftButtonsBar;
     }
 
     public void setHeight(int height) {
@@ -208,15 +227,15 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setBackButton(ButtonController backButton) {
-        titleBar.setBackButton(backButton);
+        leftButtonsBar.setBackButton(backButton);
     }
 
     public void clearLeftButtons() {
-        titleBar.setLeftButtons(Collections.emptyList());
+        leftButtonsBar.clearButtons();
     }
 
     public void clearRightButtons() {
-        titleBar.clearRightButtons();
+        titleBar.clearButtons();
     }
 
     public void setElevation(Double elevation) {
@@ -237,12 +256,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return titleBar;
     }
 
-    public List<MenuItem> getRightButtons() {
-        return titleBar.getRightButtons();
-    }
-
-    public MenuItem getRightButton(int index) {
-        return titleBar.getRightButton(getRightButtonsCount() - index - 1);
+    public LeftButtonsBar getLeftButtonsBar() {
+        return leftButtonsBar;
     }
 
     public void initTopTabs(ViewPager viewPager) {
@@ -289,6 +304,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setLayoutDirection(LayoutDirection direction) {
+        leftButtonsBar.setLayoutDirection(direction.inverse());
         titleBar.setLayoutDirection(direction.get());
     }
 
@@ -296,11 +312,15 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         removeRightButton(button.getButtonIntId());
     }
 
-    public void removeRightButton(int buttonId) {
-        titleBar.removeRightButton(buttonId);
+    public void removeLeftButton(ButtonController button) {
+        removeLeftButton(button.getButtonIntId());
     }
 
-    public boolean containsRightButton(ButtonController button) {
-        return titleBar.containsRightButton(button);
+    public void removeRightButton(int buttonId) {
+        titleBar.removeButton(buttonId);
+    }
+
+    public void removeLeftButton(int buttonId) {
+        leftButtonsBar.removeButton(buttonId);
     }
 }

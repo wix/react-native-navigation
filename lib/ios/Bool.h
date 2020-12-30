@@ -12,4 +12,6 @@
 
 - (bool)isFalse;
 
++ (instancetype)withValue:(BOOL)value;
+
 @end

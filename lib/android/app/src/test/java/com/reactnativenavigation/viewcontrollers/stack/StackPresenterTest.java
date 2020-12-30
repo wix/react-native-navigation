@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
@@ -133,6 +134,7 @@ public class StackPresenterTest extends BaseTest {
         o1.topBar.title.component = component(Alignment.Default);
         o1.topBar.background.component = component(Alignment.Default);
         o1.topBar.buttons.right = new ArrayList<>(singletonList(componentBtn1));
+        o1.topBar.buttons.left = new ArrayList<>(singletonList(componentBtn2));
         uut.applyChildOptions(o1, parent, child);
 
         uut.isRendered(child.getView());
@@ -140,9 +142,10 @@ public class StackPresenterTest extends BaseTest {
         verify(renderChecker).areRendered(controllers.capture());
         ArrayList<ViewController> items = new ArrayList<>(controllers.getValue());
         assertThat(items.contains(uut.getComponentButtons(child.getView()).get(0))).isTrue();
+        assertThat(items.contains(uut.getComponentButtons(child.getView()).get(1))).isTrue();
         assertThat(items.contains(uut.getTitleComponents().get(child.getView()))).isTrue();
         assertThat(items.contains(uut.getBackgroundComponents().get(child.getView()))).isTrue();
-        assertThat(items.size()).isEqualTo(3);
+        assertThat(items.size()).isEqualTo(4);
     }
 
     @Test
@@ -206,7 +209,7 @@ public class StackPresenterTest extends BaseTest {
     public void mergeButtons() {
         uut.mergeChildOptions(EMPTY_OPTIONS, EMPTY_OPTIONS, parent, child);
         verify(topBarController, times(0)).applyRightButtons(any());
-        verify(topBarController, times(0)).setLeftButtons(any());
+        verify(topBarController, times(0)).applyLeftButtons(any());
 
         Options options = new Options();
 
@@ -216,9 +219,9 @@ public class StackPresenterTest extends BaseTest {
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
         verify(topBarController).mergeRightButtons(any(), any());
 
-        options.topBar.buttons.left = new ArrayList<>();
+        options.topBar.buttons.left = new ArrayList<>(Collections.singleton(button));
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child);
-        verify(topBarController).setLeftButtons(any());
+        verify(topBarController).mergeLeftButtons(any(), any());
     }
 
     @Test
@@ -300,19 +303,37 @@ public class StackPresenterTest extends BaseTest {
         disablePushAnimation(child, pushedChild);
         parent.push(child, new CommandListenerAdapter());
 
-        assertThat(topBar.getTitleBar().getNavigationIcon()).isNull();
+        assertThat(topBar.getNavigationIcon()).isNull();
 
         parent.push(pushedChild, new CommandListenerAdapter());
         ShadowLooper.idleMainLooper();
         verify(pushedChild).onViewWillAppear();
-        assertThat(topBar.getTitleBar().getNavigationIcon()).isInstanceOf(BackDrawable.class);
+        assertThat(topBar.getNavigationIcon()).isInstanceOf(BackDrawable.class);
 
         Options backButtonHidden = new Options();
         backButtonHidden.topBar.buttons.back.setHidden();
         uut.mergeChildOptions(backButtonHidden, backButtonHidden, parent, child);
 
         ShadowLooper.idleMainLooper();
-        assertThat(topBar.getTitleBar().getNavigationIcon()).isNull();
+        assertThat(topBar.getNavigationIcon()).isNull();
+    }
+
+    @Test
+    public void mergeButtons_actualLeftButtonIsAppliedEvenIfBackButtonHasValue() {
+        Options toMerge = new Options();
+        toMerge.topBar.buttons.back.setHidden();
+        toMerge.topBar.buttons.left = new ArrayList<>();
+        ButtonOptions leftButton = new ButtonOptions();
+        leftButton.id = "id";
+        leftButton.icon = new Text("");
+        toMerge.topBar.buttons.left.add(leftButton);
+
+        assertThat(toMerge.topBar.buttons.back.hasValue()).isTrue();
+
+        uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child);
+        verify(topBarController).mergeLeftButtons(any(), any());
+        verify(topBar, never()).clearLeftButtons();
+
     }
 
     @Test
@@ -575,7 +596,7 @@ public class StackPresenterTest extends BaseTest {
         assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
 
         ArgumentCaptor<List<ButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBarController).setLeftButtons(leftCaptor.capture());
+        verify(topBarController).applyLeftButtons(leftCaptor.capture());
         assertThat(leftCaptor.getValue().get(0).getButton().color).isEqualTo(options.topBar.leftButtonColor);
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
     }
@@ -620,7 +641,7 @@ public class StackPresenterTest extends BaseTest {
         assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
 
         ArgumentCaptor<List<ButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBarController).setLeftButtons(leftCaptor.capture());
+        verify(topBarController).mergeLeftButtons(leftCaptor.capture(), any());
         assertThat(leftCaptor.getValue().get(0).getButton().color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get());
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
     }
@@ -652,7 +673,7 @@ public class StackPresenterTest extends BaseTest {
         assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
 
         ArgumentCaptor<List<ButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topBarController).setLeftButtons(leftCaptor.capture());
+        verify(topBarController).mergeLeftButtons(leftCaptor.capture(), any());
         assertThat(leftCaptor.getValue().get(0).getButton().color.get()).isEqualTo(resolvedOptions.topBar.leftButtonColor.get());
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
     }
@@ -667,7 +688,7 @@ public class StackPresenterTest extends BaseTest {
         ArgumentCaptor<List<ButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
         ArgumentCaptor<List<ButtonController>> leftCaptor = ArgumentCaptor.forClass(List.class);
         verify(topBarController).applyRightButtons(rightCaptor.capture());
-        verify(topBarController).setLeftButtons(leftCaptor.capture());
+        verify(topBarController).applyLeftButtons(leftCaptor.capture());
 
         assertThat(rightCaptor.getValue().size()).isOne();
         assertThat(leftCaptor.getValue().size()).isOne();
@@ -767,6 +788,23 @@ public class StackPresenterTest extends BaseTest {
     public void applyTopInsets_delegatesToChild() {
         uut.applyTopInsets(parent, child);
         verify(child).applyTopInset();
+    }
+
+    @Test
+    public void applyChildOptions_shouldNotChangeTopMargin() {
+        Options options = new Options();
+        ((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin = 20;
+        uut.applyChildOptions(options, parent, child);
+        assertThat(((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin).isEqualTo(20);
+    }
+
+    @Test
+    public void applyChildOptions_shouldChangeTopMargin() {
+        Options options = new Options();
+        ((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin = 20;
+        options.topBar.topMargin = new Number(10);
+        uut.applyChildOptions(options, parent, child);
+        assertThat(((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin).isEqualTo(10);
     }
 
     private void assertTopBarOptions(Options options, int t) {

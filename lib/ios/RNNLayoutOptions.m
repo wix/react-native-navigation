@@ -5,13 +5,26 @@
 @implementation RNNLayoutOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
-    self = [super init];
+    self = [super initWithDict:dict];
     self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
     self.componentBackgroundColor = [ColorParser parse:dict key:@"componentBackgroundColor"];
     self.direction = [TextParser parse:dict key:@"direction"];
     self.orientation = dict[@"orientation"];
     self.autoHideHomeIndicator = [BoolParser parse:dict key:@"autoHideHomeIndicator"];
     return self;
+}
+
+- (void)mergeOptions:(RNNLayoutOptions *)options {
+    if (options.backgroundColor.hasValue)
+        self.backgroundColor = options.backgroundColor;
+    if (options.componentBackgroundColor.hasValue)
+        self.componentBackgroundColor = options.componentBackgroundColor;
+    if (options.direction.hasValue)
+        self.direction = options.direction;
+    if (options.orientation)
+        self.orientation = options.orientation;
+    if (options.autoHideHomeIndicator)
+        self.autoHideHomeIndicator = options.autoHideHomeIndicator;
 }
 
 - (UIInterfaceOrientationMask)supportedOrientations {

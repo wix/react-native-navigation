@@ -21,13 +21,13 @@
 - (void)setUp {
     [super setUp];
     self.uut = [[BottomTabAppearancePresenter alloc]
-        initWithDefaultOptions:[[RNNNavigationOptions alloc] initEmptyOptions]];
+        initWithDefaultOptions:[RNNNavigationOptions emptyOptions]];
     self.componentViewController = [RNNComponentViewController new];
     self.boundViewController =
         [RNNBottomTabsController createWithChildren:@[ self.componentViewController ]];
     self.mockBoundViewController = [OCMockObject partialMockForObject:self.boundViewController];
     [self.uut bindViewController:self.mockBoundViewController];
-    self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.options = [RNNNavigationOptions emptyOptions];
 }
 
 - (void)tearDown {
@@ -43,11 +43,11 @@
 }
 
 - (void)testMergeOptions_shouldSetTabBarItemColorWithDefaultOptions {
-    RNNNavigationOptions *defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
     defaultOptions.bottomTab.selectedIconColor = [Color withColor:UIColor.greenColor];
     self.uut.defaultOptions = defaultOptions;
 
-    RNNNavigationOptions *mergeOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *mergeOptions = [RNNNavigationOptions emptyOptions];
     mergeOptions.bottomTab.text = [[Text alloc] initWithValue:@"title"];
 
     [self.uut mergeOptions:mergeOptions
@@ -57,11 +57,11 @@
 }
 
 - (void)testMergeOptions_shouldCreateNewTabBarItemInstance {
-    RNNNavigationOptions *defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
     defaultOptions.bottomTab.selectedIconColor = [Color withColor:UIColor.greenColor];
     self.uut.defaultOptions = defaultOptions;
 
-    RNNNavigationOptions *mergeOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *mergeOptions = [RNNNavigationOptions emptyOptions];
     mergeOptions.bottomTab.text = [[Text alloc] initWithValue:@"title"];
 
     UITabBarItem *currentTabBarItem = self.componentViewController.tabBarItem;

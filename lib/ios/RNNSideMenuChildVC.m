@@ -30,6 +30,8 @@
 }
 
 - (void)render {
+    [super render];
+
     [self addChildViewController:self.child];
     [self.child.view setFrame:self.view.bounds];
     [self.view addSubview:self.child.view];
@@ -44,8 +46,6 @@
     ]];
 
     [self.child didMoveToParentViewController:self];
-
-    [super render];
 }
 
 - (void)setChild:(UIViewController<RNNLayoutProtocol> *)child {

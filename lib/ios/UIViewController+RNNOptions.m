@@ -11,8 +11,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage {
     if (backgroundImage) {
-        UIImageView *backgroundImageView =
-            (self.view.subviews.count > 0) ? self.view.subviews[0] : nil;
+        UIImageView *backgroundImageView = self.view.subviews.firstObject;
         if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
             backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
             [self.view insertSubview:backgroundImageView atIndex:0];
@@ -24,7 +23,8 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     }
 }
 
-- (void)setSearchBarWithPlaceholder:(NSString *)placeholder
+- (void)setSearchBarWithOptions:(NSString *)placeholder
+                                   focus:(BOOL)focus
                        hideTopBarOnFocus:(BOOL)hideTopBarOnFocus
                             hideOnScroll:(BOOL)hideOnScroll
     obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
@@ -48,6 +48,13 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
             search.searchBar.searchTextField.backgroundColor = backgroundColor;
         }
 
+        if (focus) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              self.navigationItem.searchController.active = true;
+              [self.navigationItem.searchController.searchBar becomeFirstResponder];
+            });
+        }
+
         self.navigationItem.searchController = search;
         [self.navigationItem setHidesSearchBarWhenScrolling:hideOnScroll];
 
@@ -59,6 +66,12 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden {
     self.navigationItem.hidesSearchBarWhenScrolling = searchBarHidden;
+}
+
+- (void)setSearchBarVisible:(BOOL)visible {
+    if (!visible) {
+        self.navigationItem.searchController = nil;
+    }
 }
 
 - (void)setNavigationItemTitle:(NSString *)title {

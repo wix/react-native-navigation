@@ -27,38 +27,25 @@ typedef void (^RNNAnimationBlock)(void);
           completion:completion];
 }
 
-- (void)pop:(UIViewController *)viewController
-      animated:(BOOL)animated
-    completion:(RNNTransitionCompletionBlock)completion
-     rejection:(RNNTransitionRejectionBlock)rejection {
-    if ([self.viewControllers indexOfObject:viewController] < 0) {
-        [RNNErrorHandler reject:rejection
-                  withErrorCode:1012
-               errorDescription:@"popping component failed"];
-        return;
-    }
+- (void)popAnimated:(BOOL)animated
+         completion:(RNNTransitionCompletionBlock)completion
+          rejection:(RNNTransitionRejectionBlock)rejection {
 
-    if ([self topViewController] != viewController) {
-        NSMutableArray *vcs = self.viewControllers.mutableCopy;
-        [vcs removeObject:viewController];
-        [self
-            performBlock:^{
-              [self setViewControllers:vcs animated:animated];
-            }
-            animated:animated
-            completion:^{
+    __block UIViewController *poppedVC = nil;
+    [self
+        performBlock:^{
+          poppedVC = [self popViewControllerAnimated:animated];
+        }
+        animated:animated
+        completion:^{
+          if (poppedVC) {
               completion();
-            }];
-    } else {
-        [self
-            performBlock:^{
-              [self popViewControllerAnimated:animated];
-            }
-            animated:animated
-            completion:^{
-              completion();
-            }];
-    }
+          } else {
+              [RNNErrorHandler reject:rejection
+                        withErrorCode:1012
+                     errorDescription:@"popping component failed"];
+          }
+        }];
 }
 
 - (void)popTo:(UIViewController *)viewController

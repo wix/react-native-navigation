@@ -1,9 +1,12 @@
 package com.reactnativenavigation.viewcontrollers.sidemenu;
 
+import android.content.res.Resources;
+import android.util.TypedValue;
 import android.view.Gravity;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.SideMenuRootOptions;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.sidemenu.SideMenu;
 
 import androidx.annotation.RestrictTo;
@@ -12,9 +15,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 public class SideMenuPresenter {
 
     private SideMenu sideMenu;
+    private ViewController left;
+    private ViewController right;
 
     public void bindView(SideMenu sideMenu) {
         this.sideMenu = sideMenu;
+    }
+
+    public void bindLeft(ViewController left) {
+        this.left = left;
+    }
+
+    public void bindRight(ViewController right) {
+        this.right = right;
     }
 
     public boolean handleBack() {
@@ -41,6 +54,8 @@ public class SideMenuPresenter {
     public void applyChildOptions(Options options) {
         applyLockMode(options.sideMenuRootOptions);
         mergeVisibility(options.sideMenuRootOptions);
+        applyLeftWidth(options.sideMenuRootOptions);
+        applyRightWidth(options.sideMenuRootOptions);
     }
 
     private void applyLockMode(SideMenuRootOptions options) {
@@ -79,6 +94,28 @@ public class SideMenuPresenter {
             sideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         } else if (options.right.enabled.isTrue()) {
             sideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
+        }
+    }
+
+    private void applyLeftWidth(SideMenuRootOptions sideMenuRootOptions) {
+        if (left != null && sideMenuRootOptions.left.width.hasValue()) {
+            left.getView().getLayoutParams().width = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    sideMenuRootOptions.left.width.get(),
+                    Resources.getSystem().getDisplayMetrics());
+
+            left.getView().requestLayout();
+        }
+    }
+
+    private void applyRightWidth(SideMenuRootOptions sideMenuRootOptions) {
+        if (right != null && sideMenuRootOptions.right.width.hasValue()) {
+            right.getView().getLayoutParams().width = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    sideMenuRootOptions.right.width.get(),
+                    Resources.getSystem().getDisplayMetrics());
+
+            right.getView().requestLayout();
         }
     }
 

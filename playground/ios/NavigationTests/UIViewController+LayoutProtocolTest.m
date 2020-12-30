@@ -24,8 +24,8 @@
 
 - (void)testInitWithLayoutApplyDefaultOptions {
     RNNComponentPresenter *presenter = [[RNNComponentPresenter alloc] init];
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
-    RNNNavigationOptions *defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
     defaultOptions.modalPresentationStyle = [[Text alloc] initWithValue:@"default"];
 
     RNNComponentViewController *uut =
@@ -89,11 +89,11 @@
 }
 
 - (void)testResolveOptions {
-    RNNNavigationOptions *childOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
-    RNNNavigationOptions *parentOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *childOptions = [RNNNavigationOptions emptyOptions];
+    RNNNavigationOptions *parentOptions = [RNNNavigationOptions emptyOptions];
     parentOptions.bottomTab.text = [[Text alloc] initWithValue:@"text"];
     parentOptions.bottomTab.selectedIconColor = [[Color alloc] initWithValue:UIColor.redColor];
-    RNNNavigationOptions *defaultOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
     defaultOptions.bottomTab.text = [[Text alloc] initWithValue:@"default text"];
     defaultOptions.bottomTab.selectedIconColor = [[Color alloc] initWithValue:UIColor.blueColor];
 
@@ -129,7 +129,7 @@
                                                                 eventEmitter:nil
                                                         childViewControllers:nil];
 
-    RNNNavigationOptions *toMerge = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *toMerge = [RNNNavigationOptions emptyOptions];
     [(UIViewController *)[parent expect] mergeChildOptions:toMerge child:uut];
 
     [parent addChildViewController:uut];
@@ -141,7 +141,7 @@
 - (void)testMergeOptions_presenterIsInvokedWithResolvedOptions {
     id parent = [OCMockObject partialMockForObject:[RNNStackController new]];
     id presenter = [OCMockObject partialMockForObject:[RNNStackPresenter new]];
-    RNNNavigationOptions *toMerge = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *toMerge = [RNNNavigationOptions emptyOptions];
     toMerge.topBar.title.color = [[Color alloc] initWithValue:[UIColor redColor]];
 
     [[presenter expect] mergeOptions:toMerge
@@ -152,7 +152,7 @@
                        return YES;
                      }]];
 
-    RNNNavigationOptions *childOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *childOptions = [RNNNavigationOptions emptyOptions];
     childOptions.bottomTab.text = [[Text alloc] initWithValue:@"Child tab text"];
     RNNComponentViewController *child =
         [[RNNComponentViewController alloc] initWithLayoutInfo:[RNNLayoutInfo new]
@@ -162,7 +162,7 @@
                                                      presenter:[RNNComponentPresenter new]
                                                   eventEmitter:nil
                                           childViewControllers:nil];
-    RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
     initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"Initial title"];
     RNNStackController *uut = [[RNNStackController alloc] initWithLayoutInfo:[RNNLayoutInfo new]
                                                                      creator:nil
@@ -181,12 +181,12 @@
     UIViewController *uut =
         [[UIViewController alloc] initWithLayoutInfo:nil
                                              creator:nil
-                                             options:[[RNNNavigationOptions alloc] initEmptyOptions]
+                                             options:[RNNNavigationOptions emptyOptions]
                                       defaultOptions:nil
                                            presenter:nil
                                         eventEmitter:nil
                                 childViewControllers:nil];
-    RNNNavigationOptions *toMerge = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *toMerge = [RNNNavigationOptions emptyOptions];
     toMerge.topBar.title.text = [[Text alloc] initWithValue:@"merged"];
 
     [uut mergeOptions:toMerge];
@@ -197,27 +197,27 @@
     UIViewController *component =
         [[UIViewController alloc] initWithLayoutInfo:nil
                                              creator:nil
-                                             options:[[RNNNavigationOptions alloc] initEmptyOptions]
+                                             options:[RNNNavigationOptions emptyOptions]
                                       defaultOptions:nil
                                            presenter:nil
                                         eventEmitter:nil
                                 childViewControllers:nil];
-    UINavigationController *stack = [[UINavigationController alloc]
-          initWithLayoutInfo:nil
-                     creator:nil
-                     options:[[RNNNavigationOptions alloc] initEmptyOptions]
-              defaultOptions:nil
-                   presenter:nil
-                eventEmitter:nil
-        childViewControllers:nil];
-    UITabBarController *tabBar = [[UITabBarController alloc]
-          initWithLayoutInfo:nil
-                     creator:nil
-                     options:[[RNNNavigationOptions alloc] initEmptyOptions]
-              defaultOptions:nil
-                   presenter:nil
-                eventEmitter:nil
-        childViewControllers:nil];
+    UINavigationController *stack =
+        [[UINavigationController alloc] initWithLayoutInfo:nil
+                                                   creator:nil
+                                                   options:[RNNNavigationOptions emptyOptions]
+                                            defaultOptions:nil
+                                                 presenter:nil
+                                              eventEmitter:nil
+                                      childViewControllers:nil];
+    UITabBarController *tabBar =
+        [[UITabBarController alloc] initWithLayoutInfo:nil
+                                               creator:nil
+                                               options:[RNNNavigationOptions emptyOptions]
+                                        defaultOptions:nil
+                                             presenter:nil
+                                          eventEmitter:nil
+                                  childViewControllers:nil];
 
     XCTAssertTrue(component.extendedLayoutIncludesOpaqueBars);
     XCTAssertTrue(stack.extendedLayoutIncludesOpaqueBars);
