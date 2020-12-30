@@ -159,7 +159,6 @@
     UIViewController *previousViewControllerInStack = self.previousViewControllerInStack;
     UIBarButtonItem *backItem = [[RNNUIBarBackButtonItem alloc] initWithOptions:backButtonOptions];
     UINavigationItem *previousNavigationItem = previousViewControllerInStack.navigationItem;
-    UIBarButtonItem *backItem = [UIBarButtonItem new];
 
     icon = color ? [[icon withTintColor:color]
                        imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
