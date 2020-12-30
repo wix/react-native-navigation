@@ -136,6 +136,18 @@
     [self.navigationController setBackButtonTestID:backButtonTestID];
 }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
+- (UINavigationItemBackButtonDisplayMode)getBackButtonDisplayMode:(NSString *)displayMode {
+    if ([displayMode isEqualToString:@"generic"]) {
+        return UINavigationItemBackButtonDisplayModeGeneric;
+    } else if ([displayMode isEqualToString:@"minimal"]) {
+        return UINavigationItemBackButtonDisplayModeMinimal;
+    } else {
+        return UINavigationItemBackButtonDisplayModeDefault;
+    }
+}
+#endif
+
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
     UIImage *icon = [backButtonOptions.icon getWithDefaultValue:nil];
     UIColor *color = [backButtonOptions.color getWithDefaultValue:nil];
@@ -146,18 +158,18 @@
 
     UIViewController *previousViewControllerInStack = self.previousViewControllerInStack;
     UIBarButtonItem *backItem = [[RNNUIBarBackButtonItem alloc] initWithOptions:backButtonOptions];
+    UINavigationItem *previousNavigationItem = previousViewControllerInStack.navigationItem;
+    UIBarButtonItem *backItem = [UIBarButtonItem new];
 
     icon = color ? [[icon withTintColor:color]
                        imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
                  : icon;
     [self setBackIndicatorImage:icon withColor:color];
 
+    title = title ? title : (previousNavigationItem.title ? previousNavigationItem.title : @"");
+
     if (showTitle) {
-        backItem.title = title ? title
-                               : (previousViewControllerInStack.navigationItem.title
-                                      ? previousViewControllerInStack.navigationItem.title
-                                      : @"");
-        ;
+        backItem.title = title;
     } else {
         backItem.title = @"";
     }
@@ -178,7 +190,20 @@
                                 forState:UIControlStateHighlighted];
     }
 
-    previousViewControllerInStack.navigationItem.backBarButtonItem = backItem;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
+    if (@available(iOS 14.0, *)) {
+        if (backButtonOptions.displayMode.hasValue) {
+            previousNavigationItem.backButtonTitle = title;
+            previousNavigationItem.backButtonDisplayMode =
+                [self getBackButtonDisplayMode:backButtonOptions.displayMode.get];
+        } else {
+            previousNavigationItem.backBarButtonItem = backItem;
+        }
+    } else
+        previousNavigationItem.backBarButtonItem = backItem;
+#else
+    previousNavigationItem.backBarButtonItem = backItem;
+#endif
 }
 
 - (UIViewController *)previousViewControllerInStack {
