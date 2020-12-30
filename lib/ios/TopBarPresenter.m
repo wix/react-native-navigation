@@ -1,5 +1,6 @@
 #import "TopBarPresenter.h"
 #import "RNNFontAttributesCreator.h"
+#import "RNNUIBarBackButtonItem.h"
 #import "UIColor+RNNUtils.h"
 #import "UIImage+tint.h"
 #import "UINavigationController+RNNOptions.h"
@@ -144,7 +145,7 @@
     NSNumber *fontSize = [backButtonOptions.fontSize getWithDefaultValue:nil];
 
     UIViewController *previousViewControllerInStack = self.previousViewControllerInStack;
-    UIBarButtonItem *backItem = [UIBarButtonItem new];
+    UIBarButtonItem *backItem = [[RNNUIBarBackButtonItem alloc] initWithOptions:backButtonOptions];
 
     icon = color ? [[icon withTintColor:color]
                        imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]

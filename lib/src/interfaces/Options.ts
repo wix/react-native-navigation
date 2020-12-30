@@ -376,6 +376,13 @@ export interface OptionsTopBarBackButton {
    * Set testID for reference in E2E tests
    */
   testID?: string;
+
+  /**
+   * Enables iOS 14 back button menu display
+   * #### (iOS specific)
+   * @default true
+   */
+  enableMenu?: boolean;
 }
 
 export interface OptionsTopBarScrollEdgeAppearanceBackground {

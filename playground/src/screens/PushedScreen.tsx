@@ -53,6 +53,7 @@ export default class PushedScreen extends NavigationComponent<Props> {
         ],
         backButton: {
           testID: BACK_BUTTON,
+          enableMenu: false,
         },
       },
     };
