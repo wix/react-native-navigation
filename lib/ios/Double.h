@@ -6,6 +6,6 @@
 
 - (double)get;
 
-- (double)getWithDefaultValue:(double)defaultValue;
+- (double)withDefault:(double)defaultValue;
 
 @end

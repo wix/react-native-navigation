@@ -20,12 +20,12 @@
     return self.value;
 }
 
-- (UIColor *)getWithDefaultValue:(id)defaultValue {
-    return [super getWithDefaultValue:defaultValue];
+- (UIColor *)withDefault:(id)defaultValue {
+    return [super withDefault:defaultValue];
 }
 
 - (NSString *)description {
-    return [self hexStringFromColor:[self getWithDefaultValue:nil]];
+    return [self hexStringFromColor:[self withDefault:nil]];
 }
 
 - (NSString *)hexStringFromColor:(UIColor *)color {

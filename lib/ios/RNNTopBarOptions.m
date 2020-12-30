@@ -110,10 +110,8 @@
 }
 
 - (BOOL)shouldDrawBehind {
-    return [self.drawBehind getWithDefaultValue:NO] ||
-           [self.background.translucent getWithDefaultValue:NO] ||
-           ![self.visible getWithDefaultValue:YES] ||
-           [self.largeTitle.visible getWithDefaultValue:NO];
+    return [self.drawBehind withDefault:NO] || [self.background.translucent withDefault:NO] ||
+           ![self.visible withDefault:YES] || [self.largeTitle.visible withDefault:NO];
 }
 
 @end

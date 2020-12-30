@@ -2,8 +2,8 @@
 
 @implementation TimeInterval
 
-- (NSTimeInterval)getWithDefaultValue:(double)defaultValue {
-    return [super getWithDefaultValue:defaultValue] / 1000;
+- (NSTimeInterval)withDefault:(double)defaultValue {
+    return [super withDefault:defaultValue] / 1000;
 }
 
 - (NSTimeInterval)get {

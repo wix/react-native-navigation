@@ -7,11 +7,11 @@
     [super applyOptionsOnInit:options];
     UITabBarController *bottomTabs = self.tabBarController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
-    [bottomTabs setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex getWithDefaultValue:0]];
+    [bottomTabs setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex withDefault:0]];
     if (withDefault.bottomTabs.currentTabId.hasValue) {
         [bottomTabs setCurrentTabID:withDefault.bottomTabs.currentTabId.get];
     }
-    if ([[withDefault.bottomTabs.titleDisplayMode getWithDefaultValue:@"alwaysShow"]
+    if ([[withDefault.bottomTabs.titleDisplayMode withDefault:@"alwaysShow"]
             isEqualToString:@"alwaysHide"]) {
         [bottomTabs centerTabItems];
     }
@@ -21,16 +21,15 @@
     RNNBottomTabsController *bottomTabs = self.tabBarController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
-    [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID getWithDefaultValue:nil]];
-    [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible getWithDefaultValue:YES]];
+    [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID withDefault:nil]];
+    [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible withDefault:YES]];
 
-    [bottomTabs.view
-        setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
-    [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor getWithDefaultValue:nil]
-                   translucent:[withDefault.bottomTabs.translucent getWithDefaultValue:NO]];
-    [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow getWithDefaultValue:NO]];
+    [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
+    [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor withDefault:nil]
+                   translucent:[withDefault.bottomTabs.translucent withDefault:NO]];
+    [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow withDefault:NO]];
     [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:[withDefault.bottomTabs.barStyle
-                                                          getWithDefaultValue:@"default"]]];
+                                                          withDefault:@"default"]]];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
@@ -71,7 +70,7 @@
     if (mergeOptions.bottomTabs.visible.hasValue) {
         if (mergeOptions.bottomTabs.animate.hasValue) {
             [bottomTabs setTabBarVisible:mergeOptions.bottomTabs.visible.get
-                                animated:[mergeOptions.bottomTabs.animate getWithDefaultValue:NO]];
+                                animated:[mergeOptions.bottomTabs.animate withDefault:NO]];
         } else {
             [bottomTabs setTabBarVisible:mergeOptions.bottomTabs.visible.get animated:NO];
         }

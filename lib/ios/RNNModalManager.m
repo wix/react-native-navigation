@@ -46,10 +46,10 @@
 
     viewController.modalPresentationStyle = [RNNConvert
         UIModalPresentationStyle:[viewController.resolveOptionsWithDefault.modalPresentationStyle
-                                     getWithDefaultValue:@"default"]];
+                                     withDefault:@"default"]];
     viewController.modalTransitionStyle = [RNNConvert
         UIModalTransitionStyle:[viewController.resolveOptionsWithDefault.modalTransitionStyle
-                                   getWithDefaultValue:@"coverVertical"]];
+                                   withDefault:@"coverVertical"]];
 
     if (viewController.presentationController) {
         viewController.presentationController.delegate = self;
@@ -142,7 +142,7 @@
         [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
         [modalToDismiss
             dismissViewControllerAnimated:[optionsWithDefault.animations.dismissModal.enable
-                                              getWithDefaultValue:YES]
+                                              withDefault:YES]
                                completion:^{
                                  [self->_pendingModalIdsToDismiss removeObject:modalToDismiss];
                                  if (modalToDismiss.view) {

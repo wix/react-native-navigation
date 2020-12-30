@@ -10,6 +10,6 @@ typedef NS_ENUM(NSInteger, AttachMode) {
 
 - (AttachMode)get;
 
-- (AttachMode)getWithDefaultValue:(id)defaultValue;
+- (AttachMode)withDefault:(id)defaultValue;
 
 @end

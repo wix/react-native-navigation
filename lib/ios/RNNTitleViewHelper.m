@@ -41,11 +41,11 @@
 }
 
 - (NSString *)title {
-    return [self.titleOptions.text getWithDefaultValue:nil];
+    return [self.titleOptions.text withDefault:nil];
 }
 
 - (NSString *)subtitle {
-    return [self.subtitleOptions.text getWithDefaultValue:nil];
+    return [self.subtitleOptions.text withDefault:nil];
 }
 
 + (NSString *)validateString:(NSString *)string {
@@ -107,11 +107,11 @@
     subtitleLabel.backgroundColor = [UIColor clearColor];
     subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-    NSDictionary *fontAttributes = [RNNFontAttributesCreator
-        createWithFontFamily:[_subtitleOptions.fontFamily getWithDefaultValue:nil]
-                    fontSize:[_subtitleOptions.fontSize getWithDefaultValue:@(12)]
-                  fontWeight:[_subtitleOptions.fontWeight getWithDefaultValue:nil]
-                       color:[_subtitleOptions.color getWithDefaultValue:nil]];
+    NSDictionary *fontAttributes =
+        [RNNFontAttributesCreator createWithFontFamily:[_subtitleOptions.fontFamily withDefault:nil]
+                                              fontSize:[_subtitleOptions.fontSize withDefault:@(12)]
+                                            fontWeight:[_subtitleOptions.fontWeight withDefault:nil]
+                                                 color:[_subtitleOptions.color withDefault:nil]];
     [subtitleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.subtitle
                                                                      attributes:fontAttributes]];
 
@@ -142,11 +142,11 @@
 
     titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-    NSDictionary *fontAttributes = [RNNFontAttributesCreator
-        createWithFontFamily:[_titleOptions.fontFamily getWithDefaultValue:nil]
-                    fontSize:[_titleOptions.fontSize getWithDefaultValue:@(16)]
-                  fontWeight:[_titleOptions.fontWeight getWithDefaultValue:nil]
-                       color:[_subtitleOptions.color getWithDefaultValue:nil]];
+    NSDictionary *fontAttributes =
+        [RNNFontAttributesCreator createWithFontFamily:[_titleOptions.fontFamily withDefault:nil]
+                                              fontSize:[_titleOptions.fontSize withDefault:@(16)]
+                                            fontWeight:[_titleOptions.fontWeight withDefault:nil]
+                                                 color:[_subtitleOptions.color withDefault:nil]];
     [titleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.title
                                                                   attributes:fontAttributes]];
 

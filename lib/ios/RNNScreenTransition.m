@@ -45,7 +45,7 @@
 }
 
 - (BOOL)shouldWaitForRender {
-    return [self.waitForRender getWithDefaultValue:NO] || self.hasCustomAnimation;
+    return [self.waitForRender withDefault:NO] || self.hasCustomAnimation;
 }
 
 - (NSTimeInterval)maxDuration {

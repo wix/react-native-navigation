@@ -23,7 +23,7 @@
 
 - (instancetype)initWithIcon:(RNNButtonOptions *)buttonOptions
                      onPress:(RNNButtonPressCallback)onPress {
-    UIColor *tintColor = [buttonOptions.color getWithDefaultValue:nil];
+    UIColor *tintColor = [buttonOptions.color withDefault:nil];
     UIImage *iconImage = buttonOptions.icon.get;
     [self applyOptions:buttonOptions];
     self = [super initWithImage:tintColor ? [iconImage withTintColor:tintColor] : iconImage
@@ -37,18 +37,16 @@
 - (instancetype)initCustomIcon:(RNNButtonOptions *)buttonOptions
                        onPress:(RNNButtonPressCallback)onPress {
     UIImage *iconImage = buttonOptions.icon.get;
-    UIColor *tintColor = [buttonOptions.color getWithDefaultValue:nil];
-    CGFloat cornerRadius =
-        [buttonOptions.iconBackground.cornerRadius getWithDefaultValue:@(0)].floatValue;
+    UIColor *tintColor = [buttonOptions.color withDefault:nil];
+    CGFloat cornerRadius = [buttonOptions.iconBackground.cornerRadius withDefault:@(0)].floatValue;
 
-    UIButton *button =
-        [[UIButton alloc] initWithFrame:CGRectMake(0, 0,
-                                                   [buttonOptions.iconBackground.width
-                                                       getWithDefaultValue:@(iconImage.size.width)]
-                                                       .floatValue,
-                                                   [buttonOptions.iconBackground.height
-                                                       getWithDefaultValue:@(iconImage.size.width)]
-                                                       .floatValue)];
+    UIButton *button = [[UIButton alloc]
+        initWithFrame:CGRectMake(
+                          0, 0,
+                          [buttonOptions.iconBackground.width withDefault:@(iconImage.size.width)]
+                              .floatValue,
+                          [buttonOptions.iconBackground.height withDefault:@(iconImage.size.width)]
+                              .floatValue)];
 
     [button addTarget:self
                   action:@selector(onButtonPressed:)
@@ -56,7 +54,7 @@
     [button setImage:[(tintColor ? [iconImage withTintColor:tintColor]
                                  : iconImage) imageWithInsets:buttonOptions.iconInsets.UIEdgeInsets]
             forState:UIControlStateNormal];
-    button.backgroundColor = [buttonOptions.iconBackground.color getWithDefaultValue:nil];
+    button.backgroundColor = [buttonOptions.iconBackground.color withDefault:nil];
     button.layer.cornerRadius = cornerRadius;
     button.clipsToBounds = !!cornerRadius;
 
@@ -124,9 +122,9 @@
 
 - (void)applyOptions:(RNNButtonOptions *)buttonOptions {
     self.buttonId = buttonOptions.identifier.get;
-    self.accessibilityLabel = [buttonOptions.accessibilityLabel getWithDefaultValue:nil];
-    self.enabled = [buttonOptions.enabled getWithDefaultValue:YES];
-    self.accessibilityIdentifier = [buttonOptions.testID getWithDefaultValue:nil];
+    self.accessibilityLabel = [buttonOptions.accessibilityLabel withDefault:nil];
+    self.enabled = [buttonOptions.enabled withDefault:YES];
+    self.accessibilityIdentifier = [buttonOptions.testID withDefault:nil];
     [self applyTitleTextAttributes:buttonOptions];
     [self applyDisabledTitleTextAttributes:buttonOptions];
 }
@@ -134,12 +132,9 @@
 - (void)applyTitleTextAttributes:(RNNButtonOptions *)button {
     NSMutableDictionary *textAttributes = [NSMutableDictionary
         dictionaryWithDictionary:[RNNFontAttributesCreator
-                                     createWithFontFamily:[button.fontFamily
-                                                              getWithDefaultValue:nil]
-                                                 fontSize:[button.fontSize
-                                                              getWithDefaultValue:@(17)]
-                                               fontWeight:[button.fontWeight
-                                                              getWithDefaultValue:nil]
+                                     createWithFontFamily:[button.fontFamily withDefault:nil]
+                                                 fontSize:[button.fontSize withDefault:@(17)]
+                                               fontWeight:[button.fontWeight withDefault:nil]
                                                     color:button.color.get]];
 
     [self setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
@@ -149,14 +144,10 @@
 - (void)applyDisabledTitleTextAttributes:(RNNButtonOptions *)button {
     NSMutableDictionary *disabledTextAttributes = [NSMutableDictionary
         dictionaryWithDictionary:[RNNFontAttributesCreator
-                                     createWithFontFamily:[button.fontFamily
-                                                              getWithDefaultValue:nil]
-                                                 fontSize:[button.fontSize
-                                                              getWithDefaultValue:@(17)]
-                                               fontWeight:[button.fontWeight
-                                                              getWithDefaultValue:nil]
-                                                    color:[button.disabledColor
-                                                              getWithDefaultValue:nil]]];
+                                     createWithFontFamily:[button.fontFamily withDefault:nil]
+                                                 fontSize:[button.fontSize withDefault:@(17)]
+                                               fontWeight:[button.fontWeight withDefault:nil]
+                                                    color:[button.disabledColor withDefault:nil]]];
 
     [self setTitleTextAttributes:disabledTextAttributes forState:UIControlStateDisabled];
 }

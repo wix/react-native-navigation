@@ -45,8 +45,8 @@
 
 - (NSMutableArray<id<DisplayLinkAnimation>> *)createAnimations {
     NSMutableArray *animations = [super createAnimations:_transitionOptions];
-    CGFloat startDelay = [_transitionOptions.startDelay getWithDefaultValue:0];
-    CGFloat duration = [_transitionOptions.duration getWithDefaultValue:300];
+    CGFloat startDelay = [_transitionOptions.startDelay withDefault:0];
+    CGFloat duration = [_transitionOptions.duration withDefault:300];
     id<Interpolator> interpolator = _transitionOptions.interpolator;
 
     if (!CGRectEqualToRect(self.view.location.fromFrame, self.view.location.toFrame)) {

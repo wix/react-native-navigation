@@ -4,6 +4,6 @@
 
 - (NSTimeInterval)get;
 
-- (NSTimeInterval)getWithDefaultValue:(double)defaultValue;
+- (NSTimeInterval)withDefault:(double)defaultValue;
 
 @end

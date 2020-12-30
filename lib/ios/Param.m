@@ -34,7 +34,7 @@
     return self.value;
 }
 
-- (id)getWithDefaultValue:(id)defaultValue {
+- (id)withDefault:(id)defaultValue {
     if (self.value) {
         return self.value;
     } else if (defaultValue) {

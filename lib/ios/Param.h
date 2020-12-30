@@ -8,7 +8,7 @@
 
 - (id)get;
 
-- (id)getWithDefaultValue:(id)defaultValue;
+- (id)withDefault:(id)defaultValue;
 
 - (BOOL)hasValue;
 

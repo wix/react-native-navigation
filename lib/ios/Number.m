@@ -12,8 +12,8 @@
     return [super get];
 }
 
-- (NSNumber *)getWithDefaultValue:(NSNumber *)defaultValue {
-    return [super getWithDefaultValue:defaultValue];
+- (NSNumber *)withDefault:(NSNumber *)defaultValue {
+    return [super withDefault:defaultValue];
 }
 
 @end

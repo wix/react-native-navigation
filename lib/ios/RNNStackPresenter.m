@@ -54,24 +54,24 @@
     RNNStackController *stack = self.stackController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
-    [_interactivePopGestureDelegate setEnabled:[withDefault.popGesture getWithDefaultValue:YES]];
+    [_interactivePopGestureDelegate setEnabled:[withDefault.popGesture withDefault:YES]];
     stack.interactivePopGestureRecognizer.delegate = _interactivePopGestureDelegate;
 
-    [stack setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle
-                                                  getWithDefaultValue:@"default"]]];
-    [stack setRootBackgroundImage:[withDefault.rootBackgroundImage getWithDefaultValue:nil]];
-    [stack setNavigationBarTestId:[withDefault.topBar.testID getWithDefaultValue:nil]];
-    [stack setNavigationBarVisible:[withDefault.topBar.visible getWithDefaultValue:YES]
-                          animated:[withDefault.topBar.animate getWithDefaultValue:YES]];
-    [stack hideBarsOnScroll:[withDefault.topBar.hideOnScroll getWithDefaultValue:NO]];
+    [stack
+        setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle withDefault:@"default"]]];
+    [stack setRootBackgroundImage:[withDefault.rootBackgroundImage withDefault:nil]];
+    [stack setNavigationBarTestId:[withDefault.topBar.testID withDefault:nil]];
+    [stack setNavigationBarVisible:[withDefault.topBar.visible withDefault:YES]
+                          animated:[withDefault.topBar.animate withDefault:YES]];
+    [stack hideBarsOnScroll:[withDefault.topBar.hideOnScroll withDefault:NO]];
 
     [_topBarPresenter applyOptions:withDefault.topBar];
 
-    [stack setNavigationBarBlur:[withDefault.topBar.background.blur getWithDefaultValue:NO]];
-    [stack setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds
-                                             getWithDefaultValue:NO]];
+    [stack setNavigationBarBlur:[withDefault.topBar.background.blur withDefault:NO]];
+    [stack
+        setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds withDefault:NO]];
 
-    [stack.view setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
+    [stack.view setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
@@ -104,7 +104,7 @@
 
     if (mergeOptions.topBar.visible.hasValue) {
         [stack setNavigationBarVisible:mergeOptions.topBar.visible.get
-                              animated:[mergeOptions.topBar.animate getWithDefaultValue:YES]];
+                              animated:[mergeOptions.topBar.animate withDefault:YES]];
     }
 
     if (mergeOptions.topBar.hideOnScroll.hasValue) {
@@ -163,8 +163,7 @@
                                        perform:(RNNReactViewReadyCompletionBlock)readyBlock {
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     RNNStackController *stack = self.stackController;
-    if (![withDefault.topBar.background.component.waitForRender getWithDefaultValue:NO] &&
-        readyBlock) {
+    if (![withDefault.topBar.background.component.waitForRender withDefault:NO] && readyBlock) {
         readyBlock();
         readyBlock = nil;
     }

@@ -44,16 +44,15 @@
 }
 
 - (UIEdgeInsets)edgeInsetsWithDefault:(UIEdgeInsets)defaultInsets {
-    return UIEdgeInsetsMake([self.top getWithDefaultValue:defaultInsets.top],
-                            [self.left getWithDefaultValue:defaultInsets.left],
-                            [self.bottom getWithDefaultValue:defaultInsets.bottom],
-                            [self.right getWithDefaultValue:defaultInsets.right]);
+    return UIEdgeInsetsMake([self.top withDefault:defaultInsets.top],
+                            [self.left withDefault:defaultInsets.left],
+                            [self.bottom withDefault:defaultInsets.bottom],
+                            [self.right withDefault:defaultInsets.right]);
 }
 
 - (UIEdgeInsets)UIEdgeInsets {
-    return UIEdgeInsetsMake([self.top getWithDefaultValue:0], [self.left getWithDefaultValue:0],
-                            [self.bottom getWithDefaultValue:0],
-                            [self.right getWithDefaultValue:0]);
+    return UIEdgeInsetsMake([self.top withDefault:0], [self.left withDefault:0],
+                            [self.bottom withDefault:0], [self.right withDefault:0]);
 }
 
 - (BOOL)hasValue {

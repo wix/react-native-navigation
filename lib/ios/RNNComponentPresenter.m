@@ -45,45 +45,40 @@
 
     RNNComponentViewController *viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
-    [viewController setBackgroundImage:[withDefault.backgroundImage getWithDefaultValue:nil]];
+    [viewController setBackgroundImage:[withDefault.backgroundImage withDefault:nil]];
+    [viewController setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor withDefault:nil]];
+    [viewController setStatusBarBlur:[withDefault.statusBar.blur withDefault:NO]];
+    [viewController setStatusBarStyle:[withDefault.statusBar.style withDefault:@"default"]
+                             animated:[withDefault.statusBar.animate withDefault:YES]];
+    [viewController setBackButtonVisible:[withDefault.topBar.backButton.visible withDefault:YES]];
     [viewController
-        setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor getWithDefaultValue:nil]];
-    [viewController setStatusBarBlur:[withDefault.statusBar.blur getWithDefaultValue:NO]];
-    [viewController setStatusBarStyle:[withDefault.statusBar.style getWithDefaultValue:@"default"]
-                             animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
-    [viewController
-        setBackButtonVisible:[withDefault.topBar.backButton.visible getWithDefaultValue:YES]];
-    [viewController setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside
-                                                 getWithDefaultValue:YES]];
+        setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside withDefault:YES]];
 
     if (@available(iOS 13.0, *)) {
         [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor
-                                               getWithDefaultValue:UIColor.systemBackgroundColor]];
+                                               withDefault:UIColor.systemBackgroundColor]];
     } else {
-        [viewController
-            setBackgroundColor:[withDefault.layout.componentBackgroundColor
-                                   getWithDefaultValue:viewController.view.backgroundColor]];
+        [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor
+                                               withDefault:viewController.view.backgroundColor]];
     }
 
-    if ([withDefault.topBar.searchBar.visible getWithDefaultValue:NO]) {
-        BOOL hideTopBarOnFocus =
-            [withDefault.topBar.searchBar.hideTopBarOnFocus getWithDefaultValue:YES];
-        BOOL hideOnScroll = [withDefault.topBar.searchBar.hideOnScroll getWithDefaultValue:NO];
+    if ([withDefault.topBar.searchBar.visible withDefault:NO]) {
+        BOOL hideTopBarOnFocus = [withDefault.topBar.searchBar.hideTopBarOnFocus withDefault:YES];
+        BOOL hideOnScroll = [withDefault.topBar.searchBar.hideOnScroll withDefault:NO];
         BOOL obscuresBackgroundDuringPresentation =
-            [withDefault.topBar.searchBar.obscuresBackgroundDuringPresentation
-                getWithDefaultValue:NO];
-        BOOL focus = [withDefault.topBar.searchBar.focus getWithDefaultValue:NO];
+            [withDefault.topBar.searchBar.obscuresBackgroundDuringPresentation withDefault:NO];
+        BOOL focus = [withDefault.topBar.searchBar.focus withDefault:NO];
 
         [viewController setSearchBarWithOptions:[withDefault.topBar.searchBar.placeholder
-                                                    getWithDefaultValue:@""]
+                                                    withDefault:@""]
                                            focus:focus
                                hideTopBarOnFocus:hideTopBarOnFocus
                                     hideOnScroll:hideOnScroll
             obscuresBackgroundDuringPresentation:obscuresBackgroundDuringPresentation
                                  backgroundColor:[options.topBar.searchBar.backgroundColor
-                                                     getWithDefaultValue:nil]
+                                                     withDefault:nil]
                                        tintColor:[options.topBar.searchBar.tintColor
-                                                     getWithDefaultValue:nil]];
+                                                     withDefault:nil]];
     }
 
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
@@ -98,7 +93,7 @@
     [_topBarTitlePresenter applyOptionsOnInit:withDefault.topBar];
 
     [viewController
-        setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible getWithDefaultValue:NO]];
+        setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible withDefault:NO]];
     [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
     [viewController setDrawBehindBottomTabs:[withDefault.bottomTabs shouldDrawBehind]];
 
@@ -124,25 +119,23 @@
         [viewController setBackgroundImage:mergeOptions.backgroundImage.get];
     }
 
-    if ([withDefault.topBar.searchBar.visible getWithDefaultValue:NO]) {
-        BOOL hideTopBarOnFocus =
-            [withDefault.topBar.searchBar.hideTopBarOnFocus getWithDefaultValue:YES];
-        BOOL hideOnScroll = [withDefault.topBar.searchBar.hideOnScroll getWithDefaultValue:NO];
+    if ([withDefault.topBar.searchBar.visible withDefault:NO]) {
+        BOOL hideTopBarOnFocus = [withDefault.topBar.searchBar.hideTopBarOnFocus withDefault:YES];
+        BOOL hideOnScroll = [withDefault.topBar.searchBar.hideOnScroll withDefault:NO];
         BOOL obscuresBackgroundDuringPresentation =
-            [withDefault.topBar.searchBar.obscuresBackgroundDuringPresentation
-                getWithDefaultValue:NO];
-        BOOL focus = [withDefault.topBar.searchBar.focus getWithDefaultValue:NO];
+            [withDefault.topBar.searchBar.obscuresBackgroundDuringPresentation withDefault:NO];
+        BOOL focus = [withDefault.topBar.searchBar.focus withDefault:NO];
 
         [viewController setSearchBarWithOptions:[withDefault.topBar.searchBar.placeholder
-                                                    getWithDefaultValue:@""]
+                                                    withDefault:@""]
                                            focus:focus
                                hideTopBarOnFocus:hideTopBarOnFocus
                                     hideOnScroll:hideOnScroll
             obscuresBackgroundDuringPresentation:obscuresBackgroundDuringPresentation
                                  backgroundColor:[mergeOptions.topBar.searchBar.backgroundColor
-                                                     getWithDefaultValue:nil]
+                                                     withDefault:nil]
                                        tintColor:[mergeOptions.topBar.searchBar.tintColor
-                                                     getWithDefaultValue:nil]];
+                                                     withDefault:nil]];
     } else {
         [viewController setSearchBarVisible:NO];
     }
@@ -183,7 +176,7 @@
 
     if (mergeOptions.statusBar.style.hasValue) {
         [viewController setStatusBarStyle:mergeOptions.statusBar.style.get
-                                 animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
+                                 animated:[withDefault.statusBar.animate withDefault:YES]];
     }
 
     if (mergeOptions.topBar.backButton.visible.hasValue) {

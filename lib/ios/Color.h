@@ -9,6 +9,6 @@
 
 - (UIColor *)get;
 
-- (UIColor *)getWithDefaultValue:(id)defaultValue;
+- (UIColor *)withDefault:(id)defaultValue;
 
 @end

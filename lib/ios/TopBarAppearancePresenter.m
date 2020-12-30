@@ -12,22 +12,21 @@
 @synthesize scrollEdgeBorderColor = _scrollEdgeBorderColor;
 
 - (void)applyOptions:(RNNTopBarOptions *)options {
-    [self setTranslucent:[options.background.translucent getWithDefaultValue:NO]];
-    [self setScrollEdgeTranslucent:[options.scrollEdgeAppearance.background.translucent
-                                       getWithDefaultValue:[options.background.translucent
-                                                               getWithDefaultValue:NO]]];
-    [self setBackgroundColor:[options.background.color getWithDefaultValue:nil]];
+    [self setTranslucent:[options.background.translucent withDefault:NO]];
+    [self
+        setScrollEdgeTranslucent:[options.scrollEdgeAppearance.background.translucent
+                                     withDefault:[options.background.translucent withDefault:NO]]];
+    [self setBackgroundColor:[options.background.color withDefault:nil]];
     [self setScrollEdgeAppearanceColor:[options.scrollEdgeAppearance.background.color
-                                           getWithDefaultValue:nil]];
+                                           withDefault:nil]];
     [self setTitleAttributes:options.title];
     [self setLargeTitleAttributes:options.largeTitle];
-    [self setBorderColor:[options.borderColor getWithDefaultValue:nil]];
-    [self showBorder:![options.noBorder getWithDefaultValue:NO]];
-    [self setScrollEdgeBorderColor:[options.scrollEdgeAppearance.borderColor
-                                       getWithDefaultValue:nil]];
-    [self showScrollEdgeBorder:![options.scrollEdgeAppearance.noBorder getWithDefaultValue:NO]];
+    [self setBorderColor:[options.borderColor withDefault:nil]];
+    [self showBorder:![options.noBorder withDefault:NO]];
+    [self setScrollEdgeBorderColor:[options.scrollEdgeAppearance.borderColor withDefault:nil]];
+    [self showScrollEdgeBorder:![options.scrollEdgeAppearance.noBorder withDefault:NO]];
     [self setBackButtonOptions:options.backButton];
-    if ([options.scrollEdgeAppearance.active getWithDefaultValue:NO]) {
+    if ([options.scrollEdgeAppearance.active withDefault:NO]) {
         [self updateScrollEdgeAppearance];
     }
 }
@@ -135,10 +134,10 @@
 }
 
 - (void)setTitleAttributes:(RNNTitleOptions *)titleOptions {
-    NSString *fontFamily = [titleOptions.fontFamily getWithDefaultValue:nil];
-    NSString *fontWeight = [titleOptions.fontWeight getWithDefaultValue:nil];
-    NSNumber *fontSize = [titleOptions.fontSize getWithDefaultValue:nil];
-    UIColor *fontColor = [titleOptions.color getWithDefaultValue:nil];
+    NSString *fontFamily = [titleOptions.fontFamily withDefault:nil];
+    NSString *fontWeight = [titleOptions.fontWeight withDefault:nil];
+    NSNumber *fontSize = [titleOptions.fontSize withDefault:nil];
+    UIColor *fontColor = [titleOptions.color withDefault:nil];
 
     NSDictionary *titleTextAttributes =
         [RNNFontAttributesCreator createFromDictionary:self.getAppearance.titleTextAttributes
@@ -152,10 +151,10 @@
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
-    NSString *fontFamily = [largeTitleOptions.fontFamily getWithDefaultValue:nil];
-    NSString *fontWeight = [largeTitleOptions.fontWeight getWithDefaultValue:nil];
-    NSNumber *fontSize = [largeTitleOptions.fontSize getWithDefaultValue:nil];
-    UIColor *fontColor = [largeTitleOptions.color getWithDefaultValue:nil];
+    NSString *fontFamily = [largeTitleOptions.fontFamily withDefault:nil];
+    NSString *fontWeight = [largeTitleOptions.fontWeight withDefault:nil];
+    NSNumber *fontSize = [largeTitleOptions.fontSize withDefault:nil];
+    UIColor *fontColor = [largeTitleOptions.color withDefault:nil];
     NSDictionary *largeTitleTextAttributes =
         [RNNFontAttributesCreator createFromDictionary:self.getAppearance.largeTitleTextAttributes
                                             fontFamily:fontFamily

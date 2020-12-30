@@ -28,8 +28,7 @@
     RNNNavigationOptions *withDefault =
         (RNNNavigationOptions *)[self.boundViewController.resolveOptions
             withDefault:self.defaultOptions];
-    _prefersHomeIndicatorAutoHidden =
-        [withDefault.layout.autoHideHomeIndicator getWithDefaultValue:NO];
+    _prefersHomeIndicatorAutoHidden = [withDefault.layout.autoHideHomeIndicator withDefault:NO];
 }
 
 - (void)componentDidAppear {
@@ -52,8 +51,7 @@
     RNNNavigationOptions *withDefault = [initialOptions withDefault:[self defaultOptions]];
 
     if (@available(iOS 13.0, *)) {
-        viewController.modalInPresentation =
-            ![withDefault.modal.swipeToDismiss getWithDefaultValue:YES];
+        viewController.modalInPresentation = ![withDefault.modal.swipeToDismiss withDefault:YES];
     }
 
     if (withDefault.window.backgroundColor.hasValue) {
@@ -109,7 +107,7 @@
 
 - (UIStatusBarStyle)getStatusBarStyle {
     RNNStatusBarOptions *statusBarOptions = [self resolveStatusBarOptions];
-    NSString *statusBarStyle = [statusBarOptions.style getWithDefaultValue:@"default"];
+    NSString *statusBarStyle = [statusBarOptions.style withDefault:@"default"];
     if ([statusBarStyle isEqualToString:@"light"]) {
         return UIStatusBarStyleLightContent;
     } else if (@available(iOS 13.0, *)) {
@@ -124,7 +122,7 @@
     RNNStatusBarOptions *statusBarOptions = [self resolveStatusBarOptions];
     if (statusBarOptions.visible.hasValue) {
         return ![statusBarOptions.visible get];
-    } else if ([statusBarOptions.hideWithTopBar getWithDefaultValue:NO]) {
+    } else if ([statusBarOptions.hideWithTopBar withDefault:NO]) {
         return self.boundViewController.stack.isNavigationBarHidden;
     }
     return NO;
@@ -150,7 +148,7 @@
     RNNNavigationOptions *withDefault =
         (RNNNavigationOptions *)[self.boundViewController.topMostViewController.resolveOptions
             withDefault:self.defaultOptions];
-    return ![withDefault.bottomTabs.visible getWithDefaultValue:YES];
+    return ![withDefault.bottomTabs.visible withDefault:YES];
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {

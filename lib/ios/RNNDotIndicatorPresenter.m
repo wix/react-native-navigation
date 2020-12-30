@@ -61,8 +61,8 @@
 - (UIView *)createIndicator:(DotIndicatorOptions *)options {
     UIView *indicator = [UIView new];
     indicator.translatesAutoresizingMaskIntoConstraints = NO;
-    indicator.layer.cornerRadius = [[options.size getWithDefaultValue:@6] floatValue] / 2;
-    indicator.backgroundColor = [options.color getWithDefaultValue:[UIColor redColor]];
+    indicator.layer.cornerRadius = [[options.size withDefault:@6] floatValue] / 2;
+    indicator.backgroundColor = [options.color withDefault:[UIColor redColor]];
     indicator.tag = arc4random();
     return indicator;
 }
@@ -72,7 +72,7 @@
                   tabBar:(UITabBarController *)bottomTabs
                    index:(int)index {
     UIView *icon = [bottomTabs getTabIcon:index];
-    float size = [[options.size getWithDefaultValue:@6] floatValue];
+    float size = [[options.size withDefault:@6] floatValue];
     [NSLayoutConstraint activateConstraints:@[
         [badge.leftAnchor constraintEqualToAnchor:icon.rightAnchor constant:-size / 2],
         [badge.topAnchor constraintEqualToAnchor:icon.topAnchor constant:-size / 2],
@@ -85,8 +85,8 @@
     if (![self hasIndicator:child])
         return NO;
     UIView *currentIndicator = [self getCurrentIndicator:child];
-    return [[currentIndicator backgroundColor]
-        isEqual:[options.color getWithDefaultValue:[UIColor redColor]]];
+    return
+        [[currentIndicator backgroundColor] isEqual:[options.color withDefault:[UIColor redColor]]];
 }
 
 - (UIView *)getCurrentIndicator:(UIViewController *)child {
