@@ -139,6 +139,7 @@
     [self.navigationController setBackButtonTestID:backButtonTestID];
 }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
 - (UINavigationItemBackButtonDisplayMode)getBackButtonDisplayMode:(NSString *)displayMode {
     if ([displayMode isEqualToString:@"generic"]) {
         return UINavigationItemBackButtonDisplayModeGeneric;
@@ -148,6 +149,7 @@
         return UINavigationItemBackButtonDisplayModeDefault;
     }
 }
+#endif
 
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
     UIImage *icon = [backButtonOptions.icon getWithDefaultValue:nil];
@@ -156,7 +158,6 @@
     BOOL showTitle = [backButtonOptions.showTitle getWithDefaultValue:YES];
     NSString *fontFamily = [backButtonOptions.fontFamily getWithDefaultValue:nil];
     NSNumber *fontSize = [backButtonOptions.fontSize getWithDefaultValue:nil];
-    NSString *displayMode = [backButtonOptions.displayMode getWithDefaultValue:nil];
 
     UIViewController *previousViewControllerInStack = self.previousViewControllerInStack;
     UINavigationItem *previousNavigationItem = previousViewControllerInStack.navigationItem;
@@ -167,10 +168,7 @@
                  : icon;
     [self setBackIndicatorImage:icon withColor:color];
 
-    title = title ? title
-                  : (previousNavigationItem.title
-                         ? previousNavigationItem.title
-                         : @"");
+    title = title ? title : (previousNavigationItem.title ? previousNavigationItem.title : @"");
 
     if (showTitle) {
         backItem.title = title;
@@ -194,13 +192,20 @@
                                 forState:UIControlStateHighlighted];
     }
 
-    if (@available(iOS 14.0, *) && displayMode) {
-        previousNavigationItem.backButtonTitle = title;
-        previousNavigationItem.backButtonDisplayMode = [self getBackButtonDisplayMode:displayMode];
-
-    } else {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
+    if (@available(iOS 14.0, *)) {
+        if (backButtonOptions.displayMode.hasValue) {
+            previousNavigationItem.backButtonTitle = title;
+            previousNavigationItem.backButtonDisplayMode =
+                [self getBackButtonDisplayMode:backButtonOptions.displayMode.get];
+        } else {
+            previousNavigationItem.backBarButtonItem = backItem;
+        }
+    } else
         previousNavigationItem.backBarButtonItem = backItem;
-    }
+#else
+    previousNavigationItem.backBarButtonItem = backItem;
+#endif
 }
 
 - (UIViewController *)previousViewControllerInStack {
