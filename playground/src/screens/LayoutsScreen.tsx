@@ -52,7 +52,7 @@ export default class LayoutsScreen extends NavigationComponent {
     );
   }
 
-  stack = () => Navigation.showModal(Screens.Stack);
+  stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
   bottomTabs = () =>
     Navigation.showModal({

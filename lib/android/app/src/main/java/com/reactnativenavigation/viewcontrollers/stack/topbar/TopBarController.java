@@ -1,16 +1,16 @@
 package com.reactnativenavigation.viewcontrollers.stack.topbar;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.views.stack.StackLayout;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.LeftButtonsBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 
 import java.util.List;
 
@@ -19,16 +19,18 @@ import androidx.viewpager.widget.ViewPager;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.utils.UiUtils.runOnPreDrawOnce;
 import static com.reactnativenavigation.utils.ViewUtils.isVisible;
 
 
 public class TopBarController {
     private TopBar topBar;
     private TitleBar titleBar;
+    private LeftButtonsBar leftButtonsBar;
     private TopBarAnimator animator;
 
     public MenuItem getRightButton(int index) {
-        return titleBar.getRightButton(index);
+        return titleBar.getButton(index);
     }
 
     public TopBar getView() {
@@ -43,8 +45,8 @@ public class TopBarController {
         return topBar.getRightButtonsCount();
     }
 
-    public Drawable getLeftButton() {
-        return titleBar.getNavigationIcon();
+    public int getLeftButtonsCount() {
+        return topBar.getLeftButtonsCount();
     }
 
     @VisibleForTesting
@@ -60,6 +62,7 @@ public class TopBarController {
         if (topBar == null) {
             topBar = createTopBar(context, parent);
             titleBar = topBar.getTitleBar();
+            leftButtonsBar = topBar.getLeftButtonsBar();
             animator.bindView(topBar, parent);
         }
         return topBar;
@@ -127,7 +130,17 @@ public class TopBarController {
         forEachIndexed(toAdd, (b, i) -> b.addToMenu(titleBar, (toAdd.size() - i) * 10));
     }
 
-    public void setLeftButtons(List<ButtonController> leftButtons) {
-        titleBar.setLeftButtons(leftButtons);
+    public void applyLeftButtons(List<ButtonController> toAdd) {
+        leftButtonsBar.setMinimumWidth(leftButtonsBar.getWidth());
+        topBar.clearLeftButtons();
+        forEachIndexed(toAdd, (b, i) -> b.addToMenu(leftButtonsBar, (toAdd.size() - i) * 10));
+        runOnPreDrawOnce(leftButtonsBar, () -> leftButtonsBar.setMinimumWidth(0));
+    }
+
+    public void mergeLeftButtons(List<ButtonController> toAdd, List<ButtonController> toRemove) {
+        leftButtonsBar.setMinimumWidth(leftButtonsBar.getWidth());
+        forEach(toRemove, btn -> topBar.removeLeftButton(btn));
+        forEachIndexed(toAdd, (b, i) -> b.addToMenu(leftButtonsBar, (toAdd.size() - i) * 10));
+        runOnPreDrawOnce(leftButtonsBar, () -> leftButtonsBar.setMinimumWidth(0));
     }
 }

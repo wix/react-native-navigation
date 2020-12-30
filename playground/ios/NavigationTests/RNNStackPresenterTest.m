@@ -22,7 +22,7 @@
     RNNStackController *stackController = [[RNNStackController alloc]
           initWithLayoutInfo:nil
                      creator:nil
-                     options:[[RNNNavigationOptions alloc] initEmptyOptions]
+                     options:[RNNNavigationOptions emptyOptions]
               defaultOptions:nil
                    presenter:self.uut
                 eventEmitter:nil
@@ -32,7 +32,7 @@
         ]];
     self.boundViewController = [OCMockObject partialMockForObject:stackController];
     [self.uut bindViewController:self.boundViewController];
-    self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.options = [RNNNavigationOptions emptyOptions];
 }
 
 - (void)testApplyOptionsBeforePoppingShouldSetTopBarBackgroundForPoppingViewController {

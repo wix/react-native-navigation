@@ -1,5 +1,5 @@
 // tslint:disable jsdoc-format
-import { ImageRequireSource, Insets } from 'react-native';
+import { ImageRequireSource, ImageSourcePropType, Insets } from 'react-native';
 
 // TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
@@ -64,6 +64,7 @@ type Interpolation =
   | { type: 'decelerate'; factor?: number }
   | { type: 'decelerateAccelerate' }
   | { type: 'accelerateDecelerate' }
+  | { type: 'fastOutSlowIn' }
   | { type: 'linear' }
   | { type: 'overshoot'; tension?: number }
   | {
@@ -391,6 +392,12 @@ export interface OptionsTopBarBackButton {
    * Set testID for reference in E2E tests
    */
   testID?: string;
+
+  /**
+   * Allows the NavBar to be translucent (blurred)
+   * #### (iOS specific)
+   */
+  displayMode?: 'default' | 'generic' | 'minimal';
 }
 
 export interface OptionsTopBarScrollEdgeAppearanceBackground {
@@ -408,6 +415,16 @@ export interface OptionsTopBarScrollEdgeAppearanceBackground {
 export interface OptionsTopBarScrollEdgeAppearance {
   background?: OptionsTopBarScrollEdgeAppearanceBackground;
   active: boolean;
+  /**
+   * Disable the border on bottom of the navbar
+   * #### (iOS specific)
+   * @default false
+   */
+  noBorder?: boolean;
+  /**
+   * Change the navbar border color
+   */
+  borderColor?: Color;
 }
 
 export interface OptionsTopBarBackground {
@@ -532,6 +549,10 @@ export interface OptionsTopBarButton {
    */
   disabledColor?: Color;
   /**
+   * Set icon background style
+   */
+  iconBackground?: IconBackgroundOptions;
+  /**
    * Set testID for reference in E2E tests
    */
   testID?: string;
@@ -544,6 +565,7 @@ export interface OptionsTopBarButton {
 
 export interface OptionsSearchBar {
   visible?: boolean;
+  focus?: boolean;
   hideOnScroll?: boolean;
   hideTopBarOnFocus?: boolean;
   obscuresBackgroundDuringPresentation?: boolean;
@@ -741,6 +763,12 @@ export interface OptionsBottomTabs {
    */
   animate?: boolean;
   /**
+   * Controls wether tab selection is animated or not
+   * #### (android specific)
+   * @default true
+   */
+  animateTabSelection?: boolean;
+  /**
    * Use large icons when possible, even when three tabs without titles are displayed
    * #### (android specific)
    * @default false
@@ -820,7 +848,7 @@ export interface ImageSystemSource {
   fallback?: ImageRequireSource | string;
 }
 
-export type ImageResource = ImageRequireSource | string | ImageSystemSource;
+export type ImageResource = ImageSourcePropType | string | ImageSystemSource;
 
 export interface OptionsBottomTab {
   dotIndicator?: DotIndicatorOptions;
@@ -855,6 +883,16 @@ export interface OptionsBottomTab {
    */
   iconColor?: Color;
   /**
+   * Set the icon width
+   * #### (Android specific)
+   */
+  iconWidth?: number;
+  /**
+   * Set the icon height
+   * #### (Android specific)
+   */
+  iconHeight?: number;
+  /**
    * Set the text color
    */
   textColor?: Color;
@@ -886,7 +924,6 @@ export interface OptionsBottomTab {
   fontSize?: number;
   /**
    * Set the insets of the icon
-   * #### (iOS specific)
    */
   iconInsets?: Insets;
   /**
@@ -1223,6 +1260,29 @@ export interface WindowOptions {
    * Configure the background color of the application's main window.
    */
   backgroundColor?: Color;
+}
+
+export interface IconBackgroundOptions {
+  /**
+   * Set background color
+   */
+  color: Color;
+  /**
+   * Set background color on disabled state
+   */
+  disabledColor?: Color;
+  /**
+   * Set corner radius
+   */
+  cornerRadius?: number;
+  /**
+   * Set width
+   */
+  width?: number;
+  /**
+   * Set height
+   */
+  height?: number;
 }
 
 export interface Options {

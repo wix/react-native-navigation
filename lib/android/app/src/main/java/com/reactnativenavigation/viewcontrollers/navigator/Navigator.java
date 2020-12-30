@@ -210,6 +210,10 @@ public class Navigator extends ParentController {
         overlayManager.dismiss(overlaysLayout, componentId, listener);
     }
 
+    public void dismissAllOverlays(CommandListener listener) {
+        overlayManager.dismissAll(overlaysLayout, listener);
+    }
+
     @Nullable
     @Override
     public ViewController findController(String id) {

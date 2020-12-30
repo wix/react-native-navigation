@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "7.4.0",
+  "version": "7.7.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -80,7 +80,7 @@
     "@typescript-eslint/parser": "3.3.0",
     "babel-jest": "26.1.0",
     "clang-format": "^1.4.0",
-    "detox": "17.3.1",
+    "detox": "17.14.3",
     "eslint": "7.3.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",

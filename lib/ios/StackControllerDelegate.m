@@ -30,9 +30,11 @@
     animationControllerForOperation:(UINavigationControllerOperation)operation
                  fromViewController:(UIViewController *)fromVC
                    toViewController:(UIViewController *)toVC {
+    RNNNavigationOptions *toVCOptionsWithDefault = toVC.resolveOptionsWithDefault;
+    RNNNavigationOptions *fromVCOptionsWithDefault = fromVC.resolveOptionsWithDefault;
     if (operation == UINavigationControllerOperationPush &&
-        toVC.resolveOptionsWithDefault.animations.push.hasCustomAnimation) {
-        RNNScreenTransition *screenTransition = toVC.resolveOptions.animations.push;
+        toVCOptionsWithDefault.animations.push.hasCustomAnimation) {
+        RNNScreenTransition *screenTransition = toVCOptionsWithDefault.animations.push;
         return [[TransitionDelegate alloc]
             initWithContentTransition:screenTransition.content
                    elementTransitions:screenTransition.elementTransitions
@@ -40,8 +42,8 @@
                              duration:screenTransition.maxDuration
                                bridge:_eventEmitter.bridge];
     } else if (operation == UINavigationControllerOperationPop &&
-               fromVC.resolveOptionsWithDefault.animations.pop.hasCustomAnimation) {
-        RNNScreenTransition *screenTransition = fromVC.resolveOptions.animations.pop;
+               fromVCOptionsWithDefault.animations.pop.hasCustomAnimation) {
+        RNNScreenTransition *screenTransition = fromVCOptionsWithDefault.animations.pop;
         return [[ReversedTransitionDelegate alloc]
             initWithContentTransition:screenTransition.content
                    elementTransitions:screenTransition.elementTransitions

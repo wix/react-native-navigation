@@ -23,6 +23,17 @@ function registerScreens() {
   Navigation.registerComponent(Screens.CarStoryScreen, () =>
     gestureHandlerRootHOC(require('./sharedElementCarDealer/CarStoryScreen').default)
   );
+  Navigation.registerComponent(Screens.ImageFullScreenViewer, () =>
+    gestureHandlerRootHOC(require('./sharedElementCarDealer/ImageFullScreenViewer').default)
+  );
+  Navigation.registerComponent(
+    Screens.ImageGalleryListScreen,
+    () => require('./imageGallery/ImageGalleryListScreen').default
+  );
+  Navigation.registerComponent(
+    Screens.ImageGalleryItemScreen,
+    () => require('./imageGallery/ImageGalleryItemScreen').default
+  );
   Navigation.registerComponent(
     Screens.CocktailsListPrimaryScreen,
     () => require('./splitView/CocktailsListPrimaryScreen').default
@@ -87,6 +98,7 @@ function registerScreens() {
     () => require('./SecondBottomTabScreen').default
   );
   Navigation.registerComponent(Screens.Search, () => require('./SearchScreen').default);
+  Navigation.registerComponent(Screens.SearchBar, () => require('./SearchBar').default);
   Navigation.registerComponent(Screens.SetRoot, () => require('./SetRootScreen').default);
   Navigation.registerComponent(
     Screens.SideMenuCenter,

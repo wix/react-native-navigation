@@ -54,6 +54,16 @@ Show or hide the text displayed next to the back button.
 | ------ | -------- | -------- |
 | number | No       | iOS      |
 
+### `displayMode`
+
+Set display mode of the back button. Currently works for iOS 14+ only.
+See: [UINavigationItem.BackButtonDisplayMode
+](https://developer.apple.com/documentation/uikit/uinavigationitem/backbuttondisplaymode)
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| enum('default', 'generic', 'minimal') | No       | iOS      |
+
 ### `title`
 
 Change the text displayed next to the title. Usually the back button shows the title of the previous screen.

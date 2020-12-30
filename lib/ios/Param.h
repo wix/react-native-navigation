@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface Param : NSObject
+@interface Param : NSObject <NSCopying>
 
 + (instancetype)withValue:(id)value;
 

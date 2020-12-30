@@ -28,7 +28,7 @@
                                                           presenter:nil
                                                        eventEmitter:nil]];
     [self.uut bindViewController:self.boundViewController];
-    self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.options = [RNNNavigationOptions emptyOptions];
 }
 
 - (RNNSideMenuChildVC *)createChildVC:(RNNSideMenuChildType)type {

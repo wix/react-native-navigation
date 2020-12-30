@@ -11,8 +11,8 @@
 
 @interface RNNTopBarOptions : RNNOptions
 
-@property(nonatomic, strong) NSArray *leftButtons;
-@property(nonatomic, strong) NSArray *rightButtons;
+@property(nonatomic, strong) NSArray<RNNButtonOptions *> *leftButtons;
+@property(nonatomic, strong) NSArray<RNNButtonOptions *> *rightButtons;
 
 @property(nonatomic, strong) Bool *visible;
 @property(nonatomic, strong) Bool *hideOnScroll;

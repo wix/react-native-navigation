@@ -53,9 +53,13 @@ function generateSection(name, issues) {
 }
 
 function processLabels(labels) {
-  if (labels.includes('**platform: iOS**')) {
+  const includesIOS = labels.includes('**platform: iOS**');
+  const includesAndroid = labels.includes('**platform: Android**');
+  if (includesIOS && includesAndroid) {
+    return '';
+  } else if (includesIOS) {
     return '[iOS] '
-  } else if (labels.includes('**platform: Android**')) {
+  } else if (includesAndroid) {
     return '[Android] '
   }
 

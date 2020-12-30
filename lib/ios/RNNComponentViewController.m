@@ -1,5 +1,4 @@
 #import "RNNComponentViewController.h"
-#import "UIView+Utils.h"
 
 @implementation RNNComponentViewController {
     NSArray *_reactViewConstraints;
@@ -25,10 +24,6 @@
         self.navigationItem.scrollEdgeAppearance = [UINavigationBarAppearance new];
     }
     return self;
-}
-
-- (void)overrideOptions:(RNNNavigationOptions *)options {
-    [self.options overrideOptions:options];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -209,11 +204,6 @@
         }
     }
     return actions;
-}
-
-- (void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem {
-    [self.eventEmitter sendOnNavigationButtonPressed:self.layoutInfo.componentId
-                                            buttonId:barButtonItem.buttonId];
 }
 
 #pragma mark - UIViewController overrides

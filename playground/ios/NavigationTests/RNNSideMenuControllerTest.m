@@ -95,9 +95,9 @@
 - (void)testResolveOptions {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
 
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.sideMenu.left.visible = [[Bool alloc] initWithBOOL:YES];
-    [_centerVC overrideOptions:options];
+    [_centerVC mergeOptions:options];
 
     XCTAssertTrue(_uut.resolveOptions.sideMenu.left.visible);
 
@@ -112,22 +112,22 @@
 }
 
 - (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleTrue {
-    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(1)];
+    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:YES];
     XCTAssertFalse(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleFalse {
-    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(0)];
+    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:NO];
     XCTAssertTrue(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPreferredStatusHidden_shouldHideStatusBar {
-    self.uut.options.statusBar.visible = [Bool withValue:@(1)];
+    self.uut.options.statusBar.visible = [Bool withValue:YES];
     XCTAssertFalse(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPreferredStatusHidden_shouldShowStatusBar {
-    self.uut.options.statusBar.visible = [Bool withValue:@(0)];
+    self.uut.options.statusBar.visible = [Bool withValue:NO];
     XCTAssertTrue(self.uut.prefersStatusBarHidden);
 }
 

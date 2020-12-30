@@ -5,13 +5,16 @@ const fs = require('fs');
 const docsPath = `${process.cwd()}/website`;
 const docsVersionsJsonPath = `${docsPath}/versions.json`;
 
-export function release(version) {
-  if (_versionExists(version)) _removeDocsVersion(version);
+function release(version, removeVersion) {
+  console.log(`Building documentation version: ${version}`);
+  if (_versionExists(removeVersion)) _removeDocsVersion(removeVersion);
+  exec.execSync(`npm --prefix ${docsPath} install`);
   exec.execSync(`npm --prefix ${docsPath} run docusaurus docs:version ${version}`);
   exec.execSync(`git add website`);
 }
 
 function _removeDocsVersion(version) {
+  console.log(`Removing documentation version: ${version}`);
   exec.execSync(`rm -rf ${docsPath}/versioned_docs/version-${version}`);
   exec.execSync(`rm -f ${docsPath}/versioned_sidebars/version-${version}-sidebars.json`);
   const docsVersionsJson = _readDocsVersionsJson();
@@ -20,7 +23,7 @@ function _removeDocsVersion(version) {
 }
 
 function _versionExists(version) {
-  return _readDocsVersionsJson().indexOf(version) > 0;
+  return version !== '', _readDocsVersionsJson().indexOf(version) > 0;
 }
 
 function _readDocsVersionsJson() {
@@ -29,4 +32,8 @@ function _readDocsVersionsJson() {
 
 function _writeDocsVersionsJson(versionsJson) {
   fs.writeFileSync(docsVersionsJsonPath, JSON.stringify(versionsJson, null, 2));
+}
+
+module.exports = {
+  release
 }

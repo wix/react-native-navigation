@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.react.events.ComponentType
+import com.reactnativenavigation.utils.Functions
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay
@@ -68,23 +70,22 @@ class ButtonController(activity: Activity,
         return if (other.id != id) false else button.equals(other.button)
     }
 
-    fun applyNavigationIcon(titleBar: TitleBar) {
-        presenter.applyNavigationIcon(titleBar) {
+    fun applyNavigationIcon(toolbar: Toolbar) {
+        presenter.applyNavigationIcon(toolbar) {
             onPressListener.onPress(it)
         }
     }
-
-    fun addToMenu(titleBar: TitleBar, order: Int) {
-        if (button.component.hasValue() && titleBar.containsRightButton(menuItem, order)) return
-        titleBar.menu.removeItem(button.intId)
-        createAndAddButtonToTitleBar(titleBar, order).apply {
+    fun addToMenu(toolbar: TitleBar, order: Int) {
+        if (button.component.hasValue() && toolbar.containsButton(menuItem, order)) return
+        toolbar.menu.removeItem(button.intId)
+        createAndAddButtonToTitleBar(toolbar, order).apply {
             menuItem = this
             setOnMenuItemClickListener(this@ButtonController)
-            presenter.applyOptions(titleBar, this, this@ButtonController::getView)
+            presenter.applyOptions(toolbar, this, this@ButtonController::getView)
         }
     }
 
-    fun createAndAddButtonToTitleBar(titleBar: TitleBar, order: Int): MenuItem = titleBar.menu.add(
+    fun createAndAddButtonToTitleBar(titleBar: Toolbar, order: Int): MenuItem = titleBar.menu.add(
             Menu.NONE,
             button.intId,
             order,
