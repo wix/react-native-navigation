@@ -14,6 +14,7 @@
     self.testID = [TextParser parse:dict key:@"testID"];
     self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
     self.fontSize = [NumberParser parse:dict key:@"fontSize"];
+    self.enableMenu = [BoolParser parse:dict key:@"enableMenu"];
     self.displayMode = [TextParser parse:dict key:@"displayMode"];
 
     return self;
@@ -38,12 +39,14 @@
         self.fontFamily = options.fontFamily;
     if (options.fontSize.hasValue)
         self.fontSize = options.fontSize;
+    if (options.enableMenu.hasValue)
+        self.enableMenu = options.enableMenu;
 }
 
 - (BOOL)hasValue {
     return self.icon.hasValue || self.showTitle.hasValue || self.color.hasValue ||
            self.fontFamily.hasValue || self.fontSize.hasValue || self.title.hasValue ||
-           self.displayMode.hasValue;
+           self.enableMenu.hasValue || self.displayMode.hasValue;
 }
 
 @end

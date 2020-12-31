@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F76B1D7259BFE7F00A1D3A3 /* RNNUIBarBackButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F76B1D6259BFE7F00A1D3A3 /* RNNUIBarBackButtonItem.m */; };
 		214545251F4DC125006E8DA1 /* RNNUIBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 214545241F4DC125006E8DA1 /* RNNUIBarButtonItem.m */; };
 		2145452A1F4DC85F006E8DA1 /* RCTHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 214545291F4DC85F006E8DA1 /* RCTHelpers.m */; };
 		21B85E5D1F44480200B314B5 /* RNNButtonsPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 21B85E5C1F44480200B314B5 /* RNNButtonsPresenter.m */; };
@@ -512,6 +513,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1F76B1D2259BFE2300A1D3A3 /* RNNUIBarBackButtonItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNUIBarBackButtonItem.h; sourceTree = "<group>"; };
+		1F76B1D6259BFE7F00A1D3A3 /* RNNUIBarBackButtonItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNUIBarBackButtonItem.m; sourceTree = "<group>"; };
 		214545241F4DC125006E8DA1 /* RNNUIBarButtonItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNUIBarButtonItem.m; sourceTree = "<group>"; };
 		214545261F4DC164006E8DA1 /* RNNUIBarButtonItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNUIBarButtonItem.h; sourceTree = "<group>"; };
 		214545281F4DC81F006E8DA1 /* RCTHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTHelpers.h; sourceTree = "<group>"; };
@@ -1562,6 +1565,8 @@
 				507F43F71FF525B500D9425B /* RNNSegmentedControl.m */,
 				50887CA820F26BFE00D06111 /* RNNOverlayWindow.h */,
 				50887CA720F26BFD00D06111 /* RNNOverlayWindow.m */,
+				1F76B1D2259BFE2300A1D3A3 /* RNNUIBarBackButtonItem.h */,
+				1F76B1D6259BFE7F00A1D3A3 /* RNNUIBarBackButtonItem.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -2122,6 +2127,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F76B1D7259BFE7F00A1D3A3 /* RNNUIBarBackButtonItem.m in Sources */,
 				91CB34C3250ECFEC000C132B /* RNNSearchBarOptions.m in Sources */,
 				50C4A497206BDDBB00DB292E /* RNNSubtitleOptions.m in Sources */,
 				509416A823A11C630036092C /* EnumParser.m in Sources */,
