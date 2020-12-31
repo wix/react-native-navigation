@@ -15,7 +15,7 @@
 }
 
 - (void)setMenu:(UIMenu *)menu {
-    if ([_options.enableMenu getWithDefaultValue:YES]) {
+    if ([_options.enableMenu withDefault:YES]) {
         super.menu = menu;
     }
 }
