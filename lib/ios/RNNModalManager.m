@@ -89,11 +89,16 @@
 }
 
 - (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^__nullable)(void))completion {
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:completion];
+
     UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
     [root dismissViewControllerAnimated:animated completion:completion];
     [_eventHandler dismissedMultipleModals:_presentedModals];
     [_pendingModalIdsToDismiss removeAllObjects];
     [_presentedModals removeAllObjects];
+
+    [CATransaction commit];
 }
 
 - (void)dismissAllModalsSynchronosly {
