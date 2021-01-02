@@ -66,6 +66,18 @@
     [_modalManagerEventHandler verify];
 }
 
+- (void)testDismissAllModals_InvokeCompletionWhenNoModalsPresented {
+    XCTestExpectation *expectation =
+        [self expectationWithDescription:@"Should invoke completion block"];
+
+    [_modalManager dismissAllModalsAnimated:NO
+                                 completion:^{
+                                   [expectation fulfill];
+                                 }];
+
+    [self waitForExpectationsWithTimeout:10 handler:nil];
+}
+
 - (void)testDismissModal_InvokeDelegateWithCorrectParameters {
     [_modalManager showModal:_vc1 animated:NO completion:nil];
     [_modalManager showModal:_vc2 animated:NO completion:nil];
