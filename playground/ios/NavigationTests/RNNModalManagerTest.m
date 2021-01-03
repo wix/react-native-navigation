@@ -21,6 +21,7 @@
 @end
 
 @interface MockModalManager : RNNModalManager
+@property(nonatomic, strong) MockViewController *rootViewController;
 @property(nonatomic, strong) MockViewController *topPresentedVC;
 @end
 
@@ -57,6 +58,10 @@
 }
 
 - (void)testDismissMultipleModalsInvokeDelegateWithCorrectParameters {
+    _modalManager.rootViewController = [OCMockObject partialMockForObject:UIViewController.new];
+    OCMStub(_modalManager.rootViewController.presentedViewController)
+        .andReturn(UIViewController.new);
+
     [_modalManager showModal:_vc1 animated:NO completion:nil];
     [_modalManager showModal:_vc2 animated:NO completion:nil];
     [_modalManager showModal:_vc3 animated:NO completion:nil];
@@ -99,6 +104,10 @@
 }
 
 - (void)testDismissAllModals_AfterDismissingPreviousModal_InvokeDelegateWithCorrectParameters {
+    _modalManager.rootViewController = [OCMockObject partialMockForObject:UIViewController.new];
+    OCMStub(_modalManager.rootViewController.presentedViewController)
+        .andReturn(UIViewController.new);
+
     [_modalManager showModal:_vc1 animated:NO completion:nil];
     [_modalManager showModal:_vc2 animated:NO completion:nil];
     [_modalManager showModal:_vc3 animated:NO completion:nil];
