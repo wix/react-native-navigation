@@ -81,7 +81,10 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
         }
     }
 
-    [_modalManager dismissAllModalsAnimated:NO completion:nil];
+    [_modalManager dismissAllModalsAnimated:NO
+                                 completion:^{
+
+                                 }];
 
     UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
     [_layoutManager addPendingViewController:vc];

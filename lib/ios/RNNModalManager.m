@@ -89,11 +89,14 @@
 }
 
 - (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^__nullable)(void))completion {
-    UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
-    [root dismissViewControllerAnimated:animated completion:completion];
-    [_eventHandler dismissedMultipleModals:_presentedModals];
-    [_pendingModalIdsToDismiss removeAllObjects];
-    [_presentedModals removeAllObjects];
+    UIViewController *root = [self rootViewController];
+    if (root.presentedViewController) {
+        [root dismissViewControllerAnimated:animated completion:completion];
+        [_eventHandler dismissedMultipleModals:_presentedModals];
+        [_pendingModalIdsToDismiss removeAllObjects];
+        [_presentedModals removeAllObjects];
+    } else if (completion)
+        completion();
 }
 
 - (void)dismissAllModalsSynchronosly {
@@ -185,8 +188,12 @@
                                                .presentedComponentViewController];
 }
 
+- (UIViewController *)rootViewController {
+    return UIApplication.sharedApplication.delegate.window.rootViewController;
+}
+
 - (UIViewController *)topPresentedVC {
-    UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
+    UIViewController *root = [self rootViewController];
     while (root.presentedViewController) {
         root = root.presentedViewController;
     }
