@@ -95,7 +95,7 @@
         [_eventHandler dismissedMultipleModals:_presentedModals];
         [_pendingModalIdsToDismiss removeAllObjects];
         [_presentedModals removeAllObjects];
-    } else
+    } else if (completion)
         completion();
 }
 
