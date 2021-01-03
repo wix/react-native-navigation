@@ -14,6 +14,7 @@
     return self;
 }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
 - (void)setMenu:(UIMenu *)menu {
     if ([_options.enableMenu withDefault:YES]) {
         super.menu = menu;
@@ -23,5 +24,6 @@
 - (UIMenu *)menu {
     return super.menu;
 }
+#endif
 
 @end
