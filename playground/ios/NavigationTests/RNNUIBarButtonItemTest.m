@@ -55,6 +55,20 @@
     XCTAssertTrue(CGSizeEqualToSize(button.frame.size, size));
 }
 
+- (void)testInitWithIcon_ShouldApplyTintColor {
+    UIColor *buttonColor = UIColor.redColor;
+
+    RNNButtonOptions *buttonOptions = RNNButtonOptions.new;
+    buttonOptions.icon = [Image withValue:UIImage.new];
+    buttonOptions.color = [Color withColor:buttonColor];
+    RNNUIBarButtonItem *barButtonItem =
+        [[RNNUIBarButtonItem alloc] initWithIcon:buttonOptions
+                                         onPress:^(NSString *buttonId){
+                                         }];
+
+    XCTAssertEqual(barButtonItem.tintColor, buttonColor);
+}
+
 - (UIImage *)imageWithSize:(CGSize)size {
     UIGraphicsBeginImageContextWithOptions(size, YES, 0);
     [[UIColor whiteColor] setFill];

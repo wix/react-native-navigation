@@ -125,6 +125,7 @@
     self.accessibilityLabel = [buttonOptions.accessibilityLabel withDefault:nil];
     self.enabled = [buttonOptions.enabled withDefault:YES];
     self.accessibilityIdentifier = [buttonOptions.testID withDefault:nil];
+    self.tintColor = [buttonOptions.color withDefault:nil];
     [self applyTitleTextAttributes:buttonOptions];
     [self applyDisabledTitleTextAttributes:buttonOptions];
 }
