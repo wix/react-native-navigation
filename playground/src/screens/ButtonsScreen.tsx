@@ -12,6 +12,7 @@ const {
   TOP_BAR,
   ROUND_BUTTON,
   BUTTON_ONE,
+  BUTTON_TWO,
   BUTTON_THREE,
   ADD_BUTTON,
   ADD_COMPONENT_BUTTON,
@@ -20,6 +21,7 @@ const {
   SHOW_LIFECYCLE_BTN,
   RESET_BUTTONS,
   CHANGE_BUTTON_PROPS,
+  CHANGE_BUTTON_COLOR,
 } = testIDs;
 
 export default class ButtonOptions extends NavigationComponent {
@@ -50,8 +52,14 @@ export default class ButtonOptions extends NavigationComponent {
             color: Colors.primary,
           },
           {
+            id: 'TWO',
+            testID: BUTTON_TWO,
+            text: 'Two',
+          },
+          {
             id: 'ROUND',
             testID: ROUND_BUTTON,
+            color: 'red',
             component: {
               id: 'ROUND_COMPONENT',
               name: Screens.RoundButton,
@@ -67,16 +75,15 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'LEFT',
             testID: LEFT_BUTTON,
             icon: require('../../img/clear.png'),
-            color: Colors.primary,
             accessibilityLabel: 'Close button',
           },
           {
             id: 'TextualLeft',
             testID: TEXTUAL_LEFT_BUTTON,
             text: 'Cancel',
-            color: Colors.primary,
           },
         ],
+        leftButtonColor: 'black',
       },
     };
   }
@@ -95,6 +102,11 @@ export default class ButtonOptions extends NavigationComponent {
           label="Change Button Props"
           testID={CHANGE_BUTTON_PROPS}
           onPress={this.changeButtonProps}
+        />
+        <Button
+          label="Change Buttons Color"
+          testID={CHANGE_BUTTON_COLOR}
+          onPress={this.changeButtonsColor}
         />
         <Button testID={ADD_BUTTON} label="Add button" onPress={this.addButton} />
         <Button
@@ -185,6 +197,14 @@ export default class ButtonOptions extends NavigationComponent {
       },
     });
 
+  changeButtonsColor = () => {
+    Navigation.mergeOptions(this, {
+      topBar: {
+        leftButtonColor: 'red',
+        rightButtonColor: 'pink',
+      },
+    });
+  };
   changeButtonProps = () => {
     Navigation.updateProps('ROUND_COMPONENT', {
       title: 'Three',
