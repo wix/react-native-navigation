@@ -35,6 +35,18 @@
     [self setButtons:rightButtons side:@"right" animated:NO defaultStyle:defaultButtonStyle];
 }
 
+- (void)applyLeftButtonsColor:(UIColor *)color {
+    for (RNNUIBarButtonItem *button in self.viewController.navigationItem.leftBarButtonItems) {
+        [button applyColor:color];
+    }
+}
+
+- (void)applyRightButtonsColor:(UIColor *)color {
+    for (RNNUIBarButtonItem *button in self.viewController.navigationItem.rightBarButtonItems) {
+        [button applyColor:color];
+    }
+}
+
 - (void)setButtons:(NSArray<RNNButtonOptions *> *)buttons
               side:(NSString *)side
           animated:(BOOL)animated

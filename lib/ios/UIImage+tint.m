@@ -4,7 +4,7 @@
 
 - (UIImage *)withTintColor:(UIColor *)color {
     if (@available(iOS 13.0, *)) {
-        return [self imageWithTintColor:color renderingMode:UIImageRenderingModeAlwaysOriginal];
+        return [self imageWithTintColor:color renderingMode:UIImageRenderingModeAlwaysTemplate];
     }
 
     UIImage *newImage = [self imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];

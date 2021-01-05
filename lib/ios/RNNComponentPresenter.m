@@ -193,6 +193,14 @@
                           defaultButtonStyle:withDefault.topBar.rightButtonStyle];
     }
 
+    if (mergeOptions.topBar.leftButtonColor.hasValue) {
+        [_buttonsPresenter applyLeftButtonsColor:mergeOptions.topBar.leftButtonColor.get];
+    }
+
+    if (mergeOptions.topBar.rightButtonColor.hasValue) {
+        [_buttonsPresenter applyRightButtonsColor:mergeOptions.topBar.rightButtonColor.get];
+    }
+
     if (mergeOptions.overlay.interceptTouchOutside.hasValue) {
         viewController.reactView.passThroughTouches =
             !mergeOptions.overlay.interceptTouchOutside.get;

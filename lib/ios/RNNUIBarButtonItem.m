@@ -23,13 +23,12 @@
 
 - (instancetype)initWithIcon:(RNNButtonOptions *)buttonOptions
                      onPress:(RNNButtonPressCallback)onPress {
-    UIColor *tintColor = [buttonOptions.color withDefault:nil];
     UIImage *iconImage = buttonOptions.icon.get;
-    [self applyOptions:buttonOptions];
-    self = [super initWithImage:tintColor ? [iconImage withTintColor:tintColor] : iconImage
+    self = [super initWithImage:iconImage
                           style:UIBarButtonItemStylePlain
                          target:self
                          action:@selector(onButtonPressed:)];
+    [self applyOptions:buttonOptions];
     self.onPress = onPress;
     return self;
 }
@@ -58,8 +57,8 @@
     button.layer.cornerRadius = cornerRadius;
     button.clipsToBounds = !!cornerRadius;
 
-    [self applyOptions:buttonOptions];
     self = [super initWithCustomView:button];
+    [self applyOptions:buttonOptions];
     self.onPress = onPress;
     return self;
 }
@@ -78,8 +77,8 @@
 - (instancetype)initWithCustomView:(RNNReactView *)reactView
                      buttonOptions:(RNNButtonOptions *)buttonOptions
                            onPress:(RNNButtonPressCallback)onPress {
-    [self applyOptions:buttonOptions];
     self = [super initWithCustomView:reactView];
+    [self applyOptions:buttonOptions];
 
     reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
     reactView.delegate = self;
@@ -112,10 +111,10 @@
                            onPress:(RNNButtonPressCallback)onPress {
     UIBarButtonSystemItem systemItem =
         [RCTConvert UIBarButtonSystemItem:buttonOptions.systemItem.get];
-    [self applyOptions:buttonOptions];
     self = [super initWithBarButtonSystemItem:systemItem
                                        target:self
                                        action:@selector(onButtonPressed:)];
+    [self applyOptions:buttonOptions];
     self.onPress = onPress;
     return self;
 }
@@ -125,9 +124,20 @@
     self.accessibilityLabel = [buttonOptions.accessibilityLabel withDefault:nil];
     self.enabled = [buttonOptions.enabled withDefault:YES];
     self.accessibilityIdentifier = [buttonOptions.testID withDefault:nil];
-    self.tintColor = [buttonOptions.color withDefault:nil];
+    [self applyColor:[buttonOptions.color withDefault:nil]];
     [self applyTitleTextAttributes:buttonOptions];
     [self applyDisabledTitleTextAttributes:buttonOptions];
+}
+
+- (void)applyColor:(UIColor *)color {
+    if (color) {
+        NSMutableDictionary *titleTextAttributes = [NSMutableDictionary
+            dictionaryWithDictionary:[self titleTextAttributesForState:UIControlStateNormal]];
+        [titleTextAttributes setValue:color forKey:NSForegroundColorAttributeName];
+        [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
+        [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateHighlighted];
+    }
+    self.tintColor = color;
 }
 
 - (void)applyTitleTextAttributes:(RNNButtonOptions *)button {

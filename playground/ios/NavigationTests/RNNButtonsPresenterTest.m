@@ -47,6 +47,52 @@
     XCTAssertNotNil([_viewController.navigationItem.leftBarButtonItems.lastObject customView]);
 }
 
+- (void)testApplyLeftButtonColor_shouldApplyTintColor {
+    RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
+    button.icon = [Image withValue:UIImage.new];
+    [_uut applyLeftButtons:@[ button ] defaultButtonStyle:nil];
+    [_uut applyLeftButtonsColor:UIColor.redColor];
+    XCTAssertEqual(_viewController.navigationItem.leftBarButtonItems.firstObject.tintColor,
+                   UIColor.redColor);
+}
+
+- (void)testApplyLeftButtonColor_shouldApplyTextAttributesColor {
+    RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId", @"text" : @"title"}];
+    [_uut applyLeftButtons:@[ button ] defaultButtonStyle:nil];
+    [_uut applyLeftButtonsColor:UIColor.redColor];
+    XCTAssertEqual([[_viewController.navigationItem.leftBarButtonItems.firstObject
+                       titleTextAttributesForState:UIControlStateNormal]
+                       valueForKey:NSForegroundColorAttributeName],
+                   UIColor.redColor);
+    XCTAssertEqual([[_viewController.navigationItem.leftBarButtonItems.firstObject
+                       titleTextAttributesForState:UIControlStateHighlighted]
+                       valueForKey:NSForegroundColorAttributeName],
+                   UIColor.redColor);
+}
+
+- (void)testApplyRightButtonColor_shouldApplyTintColor {
+    RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
+    button.icon = [Image withValue:UIImage.new];
+    [_uut applyRightButtons:@[ button ] defaultButtonStyle:nil];
+    [_uut applyRightButtonsColor:UIColor.redColor];
+    XCTAssertEqual(_viewController.navigationItem.rightBarButtonItems.firstObject.tintColor,
+                   UIColor.redColor);
+}
+
+- (void)testApplyRightButtonColor_shouldApplyTextAttributesColor {
+    RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId", @"text" : @"title"}];
+    [_uut applyRightButtons:@[ button ] defaultButtonStyle:nil];
+    [_uut applyRightButtonsColor:UIColor.redColor];
+    XCTAssertEqual([[_viewController.navigationItem.rightBarButtonItems.firstObject
+                       titleTextAttributesForState:UIControlStateNormal]
+                       valueForKey:NSForegroundColorAttributeName],
+                   UIColor.redColor);
+    XCTAssertEqual([[_viewController.navigationItem.rightBarButtonItems.firstObject
+                       titleTextAttributesForState:UIControlStateHighlighted]
+                       valueForKey:NSForegroundColorAttributeName],
+                   UIColor.redColor);
+}
+
 - (RNNButtonOptions *)buttonWithDict:(NSDictionary *)buttonDict {
     return [[RNNButtonOptions alloc] initWithDict:buttonDict];
 }

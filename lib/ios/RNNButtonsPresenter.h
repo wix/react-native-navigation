@@ -16,6 +16,10 @@
 - (void)applyRightButtons:(NSArray<RNNButtonOptions *> *)rightButtons
        defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle;
 
+- (void)applyLeftButtonsColor:(UIColor *)color;
+
+- (void)applyRightButtonsColor:(UIColor *)color;
+
 - (void)componentDidAppear;
 
 - (void)componentDidDisappear;
