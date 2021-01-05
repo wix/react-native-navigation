@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
+import com.reactnativenavigation.fakes.IconResolverFake;
 import com.reactnativenavigation.mocks.BackDrawable;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.Mocks;
@@ -34,12 +35,14 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
@@ -48,10 +51,13 @@ import com.reactnativenavigation.views.stack.topbar.TopBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
 
@@ -73,10 +79,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.validateMockitoUsage;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @LooperMode(LooperMode.Mode.PAUSED)
 public class StackPresenterTest extends BaseTest {
@@ -102,6 +113,8 @@ public class StackPresenterTest extends BaseTest {
     private TopBarController topBarController;
     private ChildControllersRegistry childRegistry;
     private TypefaceLoader typefaceLoader;
+    private IconResolver iconResolver;
+    private TitleBarButtonCreatorMock buttonCreator;
 
     @Override
     public void beforeEach() {
@@ -114,7 +127,9 @@ public class StackPresenterTest extends BaseTest {
         };
         renderChecker = spy(new RenderChecker());
         typefaceLoader = createTypeFaceLoader();
-        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, ImageLoaderMock.mock()), typefaceLoader, renderChecker, new Options()));
+        iconResolver = new IconResolver(activity, ImageLoaderMock.mock());
+        buttonCreator = new TitleBarButtonCreatorMock();
+        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarBackgroundViewCreatorMock(), buttonCreator, iconResolver, typefaceLoader, renderChecker, new Options()));
         createTopBarController();
 
         parent = TestUtils.newStackController(activity)
@@ -615,6 +630,50 @@ public class StackPresenterTest extends BaseTest {
         assertThat(uut.getBackgroundComponents().size()).isOne();
     }
 
+
+    @Test
+    public void mergeChildOptions_applyTopBarButtonsChanges() {
+        validateMockitoUsage();
+
+
+        Options mergeOptions = new Options();
+        Options resolvedOptions = new Options();
+        ButtonOptions rightButton1 = new ButtonOptions();
+        ButtonOptions rightButton2 = new ButtonOptions();
+        rightButton2.color = new Colour(10);
+        ArrayList<ButtonOptions> rightButtons = new ArrayList<>();
+        rightButtons.add(rightButton2);
+        rightButtons.add(rightButton1);
+        mergeOptions.topBar.buttons.right = rightButtons;
+        //add right buttons
+        uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
+        List<ButtonOptions> buttonOptions = CollectionUtils.map(uut.getComponentButtons(child.getView()), ButtonController::getButton);
+        assertThat(buttonOptions).usingRecursiveFieldByFieldElementComparator().hasSameElementsAs(rightButtons);
+
+        ButtonOptions leftButton1 = new ButtonOptions();
+        mergeOptions = new Options();
+        mergeOptions.topBar.buttons.left = new ArrayList<>();
+        mergeOptions.topBar.buttons.left.add(leftButton1);
+
+        //add left buttons
+        uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
+        buttonOptions = CollectionUtils.map(uut.getComponentButtons(child.getView()), ButtonController::getButton);
+        assertThat(buttonOptions).usingRecursiveFieldByFieldElementComparator().contains(rightButton1, rightButton2, leftButton1);
+
+        mergeOptions = new Options();
+        mergeOptions.topBar.rightButtonColor = new Colour(100);
+        mergeOptions.topBar.leftButtonColor = new Colour(10);
+
+        ButtonController rightController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn1, iconResolver), this.componentBtn1, buttonCreator, buttonId -> {
+        }));
+        ButtonController leftController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn2, iconResolver), this.componentBtn2, buttonCreator, buttonId -> {
+        }));
+        uut.setComponentsButtonController(child.getView(), rightController, leftController);
+        uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
+        verify(rightController, times(2)).applyColor(mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
+        verify(leftController, times(1)).applyColor(mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
+    }
+
     @Test
     public void mergeChildOptions_buttonColorIsResolvedFromAppliedOptions() {
         Options appliedOptions = new Options();
@@ -798,18 +857,18 @@ public class StackPresenterTest extends BaseTest {
     @Test
     public void applyChildOptions_shouldNotChangeTopMargin() {
         Options options = new Options();
-        ((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin = 20;
+        ((ViewGroup.MarginLayoutParams) topBar.getLayoutParams()).topMargin = 20;
         uut.applyChildOptions(options, parent, child);
-        assertThat(((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin).isEqualTo(20);
+        assertThat(((ViewGroup.MarginLayoutParams) topBar.getLayoutParams()).topMargin).isEqualTo(20);
     }
 
     @Test
     public void applyChildOptions_shouldChangeTopMargin() {
         Options options = new Options();
-        ((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin = 20;
+        ((ViewGroup.MarginLayoutParams) topBar.getLayoutParams()).topMargin = 20;
         options.topBar.topMargin = new Number(10);
         uut.applyChildOptions(options, parent, child);
-        assertThat(((ViewGroup.MarginLayoutParams)topBar.getLayoutParams()).topMargin).isEqualTo(10);
+        assertThat(((ViewGroup.MarginLayoutParams) topBar.getLayoutParams()).topMargin).isEqualTo(10);
     }
 
     private void assertTopBarOptions(Options options, int t) {

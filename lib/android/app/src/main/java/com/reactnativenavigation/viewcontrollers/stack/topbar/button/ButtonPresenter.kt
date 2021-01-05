@@ -1,14 +1,12 @@
 package com.reactnativenavigation.viewcontrollers.stack.topbar.button
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.text.SpannableString
 import android.text.Spanned
-import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
@@ -18,6 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
+import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.utils.ArrayUtils
 import com.reactnativenavigation.utils.ImageLoader
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter
@@ -49,9 +48,13 @@ open class ButtonPresenter(private val context: Context, private val button: But
 
         applyOptionsDirectlyOnView(toolbar, menuItem) {
             applyTestId(it)
-            applyTextColor(it)
+            applyTextColor(it, button.color, button.disabledColor)
             applyAllCaps(it)
         }
+    }
+
+    fun applyColor(menuItem: MenuItem?, color: Colour, disabledColor: Colour) {
+        menuItem?.actionView?.let { applyTextColor(it, color, disabledColor) }
     }
 
     private fun applyAccessibilityLabel(menuItem: MenuItem) {
@@ -93,12 +96,12 @@ open class ButtonPresenter(private val context: Context, private val button: But
         if (button.testId.hasValue()) view.tag = button.testId.get()
     }
 
-    private fun applyTextColor(view: View) {
+    private fun applyTextColor(view: View, color: Colour, disabledColor: Colour) {
         if (view is TextView) {
             if (button.enabled.isTrueOrUndefined) {
-                if (button.color.hasValue()) view.setTextColor(button.color.get())
+                if (color.hasValue()) view.setTextColor(color.get())
             } else {
-                view.setTextColor(button.disabledColor.get(DISABLED_COLOR))
+                view.setTextColor(disabledColor.get(DISABLED_COLOR))
             }
         }
     }
@@ -167,4 +170,6 @@ open class ButtonPresenter(private val context: Context, private val button: But
             }
         }
     }
+
+
 }
