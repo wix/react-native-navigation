@@ -377,9 +377,11 @@ public class StackPresenter {
         mergeLeftButton(options, optionsToMerge.buttons, child);
         //update actual colors
         if (optionsToMerge.rightButtonColor.hasValue())
-            forEach(componentRightButtons.get(child).values(), (btnController) -> btnController.applyColor(optionsToMerge.rightButtonColor, optionsToMerge.rightButtonDisabledColor));
+            forEach(componentRightButtons.get(child).values(), (btnController) -> btnController.applyColor(topBarController.getView().getTitleBar(),optionsToMerge.rightButtonColor,
+                    optionsToMerge.rightButtonDisabledColor));
         if (optionsToMerge.leftButtonColor.hasValue())
-            forEach(componentLeftButtons.get(child).values(), (btnController) -> btnController.applyColor(optionsToMerge.leftButtonColor, optionsToMerge.leftButtonDisabledColor));
+            forEach(componentLeftButtons.get(child).values(), (btnController) -> btnController.applyColor(topBarController.getView().getLeftButtonsBar(),optionsToMerge.leftButtonColor,
+                    optionsToMerge.leftButtonDisabledColor));
         mergeBackButton(optionsToMerge.buttons);
     }
 

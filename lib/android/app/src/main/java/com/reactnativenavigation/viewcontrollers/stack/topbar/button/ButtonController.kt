@@ -17,10 +17,10 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreat
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactButtonView
 
 open class ButtonController(activity: Activity,
-                       private val presenter: ButtonPresenter,
-                       val button: ButtonOptions,
-                       private val viewCreator: TitleBarButtonCreator,
-                       private val onPressListener: OnClickListener) : ViewController<TitleBarReactButtonView>(activity, button.id, YellowBoxDelegate(activity), Options(), ViewControllerOverlay(activity)), MenuItem.OnMenuItemClickListener {
+                            private val presenter: ButtonPresenter,
+                            val button: ButtonOptions,
+                            private val viewCreator: TitleBarButtonCreator,
+                            private val onPressListener: OnClickListener) : ViewController<TitleBarReactButtonView>(activity, button.id, YellowBoxDelegate(activity), Options(), ViewControllerOverlay(activity)), MenuItem.OnMenuItemClickListener {
 
     private var menuItem: MenuItem? = null
 
@@ -76,7 +76,7 @@ open class ButtonController(activity: Activity,
         }
     }
 
-    open fun applyColor(color: Colour, disabledColour: Colour) = presenter.applyColor(menuItem, color, disabledColour)
+    open fun applyColor(toolbar: Toolbar, color: Colour, disabledColour: Colour) = this.menuItem?.let { presenter.applyColor(toolbar, it, color, disabledColour) }
 
     fun addToMenu(toolbar: TitleBar, order: Int) {
         if (button.component.hasValue() && toolbar.containsButton(menuItem, order)) return

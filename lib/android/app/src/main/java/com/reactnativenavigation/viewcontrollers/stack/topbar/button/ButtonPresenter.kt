@@ -53,8 +53,10 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
     }
 
-    fun applyColor(menuItem: MenuItem?, color: Colour, disabledColor: Colour) {
-        menuItem?.actionView?.let { applyTextColor(it, color, disabledColor) }
+    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: Colour, disabledColor: Colour) {
+        applyOptionsDirectlyOnView(toolbar, menuItem) {
+            applyTextColor(it, color, disabledColor)
+        }
     }
 
     private fun applyAccessibilityLabel(menuItem: MenuItem) {

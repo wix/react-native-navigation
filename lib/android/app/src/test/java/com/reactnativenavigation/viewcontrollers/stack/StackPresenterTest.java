@@ -670,8 +670,8 @@ public class StackPresenterTest extends BaseTest {
         }));
         uut.setComponentsButtonController(child.getView(), rightController, leftController);
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
-        verify(rightController, times(2)).applyColor(mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
-        verify(leftController, times(1)).applyColor(mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
+        verify(rightController, times(2)).applyColor(any(Toolbar.class), mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
+        verify(leftController, times(1)).applyColor(any(Toolbar.class), mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
     }
 
     @Test
