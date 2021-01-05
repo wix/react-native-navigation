@@ -670,8 +670,8 @@ public class StackPresenterTest extends BaseTest {
         }));
         uut.setComponentsButtonController(child.getView(), rightController, leftController);
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
-        verify(rightController, times(2)).applyColor(any(Toolbar.class), mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
-        verify(leftController, times(1)).applyColor(any(Toolbar.class), mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
+        verify(rightController, times(2)).applyColor(topBar.getTitleBar(), mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
+        verify(leftController, times(1)).applyColor(topBar.getLeftButtonsBar(), mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
     }
 
     @Test
@@ -707,7 +707,7 @@ public class StackPresenterTest extends BaseTest {
         verify(topBarController).mergeLeftButtons(leftCaptor.capture(), any());
         assertThat(leftCaptor.getValue().get(0).getButton().color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get());
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
-        assertThat(leftCaptor.getValue().get(1).getButton().color.get()).isNotEqualTo(appliedOptions.topBar.leftButtonColor.get());
+        assertThat(leftCaptor.getValue().get(1).getButton().color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get());
     }
 
     @Test
