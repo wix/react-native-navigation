@@ -79,6 +79,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -633,8 +634,6 @@ public class StackPresenterTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_applyTopBarButtonsChanges() {
-        validateMockitoUsage();
-
 
         Options mergeOptions = new Options();
         Options resolvedOptions = new Options();
@@ -645,10 +644,12 @@ public class StackPresenterTest extends BaseTest {
         rightButtons.add(rightButton2);
         rightButtons.add(rightButton1);
         mergeOptions.topBar.buttons.right = rightButtons;
+
         //add right buttons
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
-        List<ButtonOptions> buttonOptions = CollectionUtils.map(uut.getComponentButtons(child.getView()), ButtonController::getButton);
+        ArrayList<ButtonOptions> buttonOptions = CollectionUtils.map(uut.getComponentButtons(child.getView()), ButtonController::getButton);
         assertThat(buttonOptions).usingRecursiveFieldByFieldElementComparator().hasSameElementsAs(rightButtons);
+        resolvedOptions.topBar.buttons.right = buttonOptions;
 
         ButtonOptions leftButton1 = new ButtonOptions();
         mergeOptions = new Options();
@@ -659,19 +660,22 @@ public class StackPresenterTest extends BaseTest {
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
         buttonOptions = CollectionUtils.map(uut.getComponentButtons(child.getView()), ButtonController::getButton);
         assertThat(buttonOptions).usingRecursiveFieldByFieldElementComparator().contains(rightButton1, rightButton2, leftButton1);
-
+        resolvedOptions.topBar.buttons.left = buttonOptions;
         mergeOptions = new Options();
         mergeOptions.topBar.rightButtonColor = new Colour(100);
         mergeOptions.topBar.leftButtonColor = new Colour(10);
 
-        ButtonController rightController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn1, iconResolver), this.componentBtn1, buttonCreator, buttonId -> {
-        }));
-        ButtonController leftController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn2, iconResolver), this.componentBtn2, buttonCreator, buttonId -> {
-        }));
-        uut.setComponentsButtonController(child.getView(), rightController, leftController);
+        //overriding colors to already added buttons
+        reset(topBarController);
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
-        verify(rightController, times(2)).applyColor(topBar.getTitleBar(), mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
-        verify(leftController, times(1)).applyColor(topBar.getLeftButtonsBar(), mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
+        ArgumentCaptor<List<ButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
+        verify(topBarController).mergeRightButtons(rightCaptor.capture(), anyList());
+        assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(mergeOptions.topBar.rightButtonColor.get());
+        assertThat(rightCaptor.getValue().get(1).getButton().color.get()).isEqualTo(mergeOptions.topBar.rightButtonColor.get());
+
+        rightCaptor = ArgumentCaptor.forClass(List.class);
+        verify(topBarController).mergeLeftButtons(rightCaptor.capture(), any());
+        assertThat(rightCaptor.getValue().get(0).getButton().color.get()).isEqualTo(mergeOptions.topBar.leftButtonColor.get());
     }
 
     @Test
