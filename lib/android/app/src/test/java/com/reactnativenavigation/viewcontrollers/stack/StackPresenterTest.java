@@ -631,23 +631,23 @@ public class StackPresenterTest extends BaseTest {
 
 
     @Test
-    public void mergeChildOptions_applyTopBarButtonsChanges() {
+    public void mergeChildOptions_applyTopBarButtonsColorsChanges() {
         Options mergeOptions = new Options();
         Options resolvedOptions = new Options();
         ButtonOptions rightButton1 = new ButtonOptions();
         ButtonOptions rightButton2 = new ButtonOptions();
         rightButton2.color = new Colour(10);
-        mergeOptions.topBar.buttons.right= new ArrayList<>();
+        mergeOptions.topBar.buttons.right = new ArrayList<>();
         mergeOptions.topBar.buttons.right.add(rightButton2);
         mergeOptions.topBar.buttons.right.add(rightButton1);
-        mergeOptions.topBar.buttons.left= new ArrayList<>();
+        mergeOptions.topBar.buttons.left = new ArrayList<>();
         mergeOptions.topBar.buttons.left.add(rightButton2);
-        //add right buttons
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
+
+        //change color of buttons only passed
         mergeOptions = new Options();
         mergeOptions.topBar.rightButtonColor = new Colour(100);
         mergeOptions.topBar.leftButtonColor = new Colour(10);
-
         ButtonController rightController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn1, iconResolver), this.componentBtn1, buttonCreator, buttonId -> {
         }));
         ButtonController leftController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn2, iconResolver), this.componentBtn2, buttonCreator, buttonId -> {
@@ -656,6 +656,17 @@ public class StackPresenterTest extends BaseTest {
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
         verify(rightController, times(2)).applyColor(topBar.getTitleBar(), mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
         verify(leftController, times(1)).applyColor(topBar.getLeftButtonsBar(), mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
+
+        //check when disabledColor only passed
+        reset(rightController, leftController);
+        mergeOptions = new Options();
+        mergeOptions.topBar.rightButtonDisabledColor = new Colour(Color.GREEN);
+        mergeOptions.topBar.leftButtonDisabledColor = new Colour(Color.CYAN);
+        uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
+
+        verify(rightController, times(2)).applyColor(topBar.getTitleBar(), mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
+        verify(leftController, times(1)).applyColor(topBar.getLeftButtonsBar(), mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
+
     }
 
     @Test
