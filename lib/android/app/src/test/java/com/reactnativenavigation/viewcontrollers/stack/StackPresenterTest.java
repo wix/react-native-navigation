@@ -78,6 +78,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -636,37 +637,68 @@ public class StackPresenterTest extends BaseTest {
         Options resolvedOptions = new Options();
         ButtonOptions rightButton1 = new ButtonOptions();
         ButtonOptions rightButton2 = new ButtonOptions();
-        rightButton2.color = new Colour(10);
+        rightButton2.color = new Colour(5);
         mergeOptions.topBar.buttons.right = new ArrayList<>();
         mergeOptions.topBar.buttons.right.add(rightButton2);
         mergeOptions.topBar.buttons.right.add(rightButton1);
         mergeOptions.topBar.buttons.left = new ArrayList<>();
         mergeOptions.topBar.buttons.left.add(rightButton2);
+        //add buttons
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
 
-        //change color of buttons only passed
+        //Merge color change for right and left buttons
         mergeOptions = new Options();
-        mergeOptions.topBar.rightButtonColor = new Colour(100);
-        mergeOptions.topBar.leftButtonColor = new Colour(10);
+        final Colour rightButtonColor = new Colour(100);
+        mergeOptions.topBar.rightButtonColor = rightButtonColor;
+        final Colour leftButtonColor = new Colour(10);
+        mergeOptions.topBar.leftButtonColor = leftButtonColor;
         ButtonController rightController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn1, iconResolver), this.componentBtn1, buttonCreator, buttonId -> {
         }));
         ButtonController leftController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn2, iconResolver), this.componentBtn2, buttonCreator, buttonId -> {
         }));
         uut.setComponentsButtonController(child.getView(), rightController, leftController);
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
-        verify(rightController, times(2)).applyColor(topBar.getTitleBar(), mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
-        verify(leftController, times(1)).applyColor(topBar.getLeftButtonsBar(), mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
 
-        //check when disabledColor only passed
+        //Check right buttons
+        ArgumentCaptor<Colour> rightColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        ArgumentCaptor<Colour> rightDisabledColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        verify(rightController, times(2)).applyColor(any(), rightColorCaptor.capture(), rightDisabledColorCaptor.capture());
+        assertThat(rightColorCaptor.getAllValues().get(0)).isEqualTo(mergeOptions.topBar.rightButtonColor);
+        assertThat(rightColorCaptor.getAllValues().get(1)).isEqualTo(mergeOptions.topBar.rightButtonColor);
+        assertThat(rightDisabledColorCaptor.getAllValues().get(0)).isEqualToComparingFieldByField(resolvedOptions.topBar.rightButtonColor);
+        assertThat(rightDisabledColorCaptor.getAllValues().get(1)).isEqualToComparingFieldByField(resolvedOptions.topBar.rightButtonColor);
+
+        //Check left buttons
+        ArgumentCaptor<Colour> leftColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        ArgumentCaptor<Colour> leftDisabledColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        verify(leftController, times(1)).applyColor(any(), leftColorCaptor.capture(), leftDisabledColorCaptor.capture());
+        assertThat(leftColorCaptor.getAllValues().get(0)).isEqualTo(mergeOptions.topBar.leftButtonColor);
+        assertThat(leftDisabledColorCaptor.getValue()).isEqualToComparingFieldByField(resolvedOptions.topBar.leftButtonDisabledColor);
+
+        //Check when disabledColor only passed
         reset(rightController, leftController);
+        resolvedOptions.topBar.rightButtonColor = rightButtonColor;
+        resolvedOptions.topBar.leftButtonColor = leftButtonColor;
         mergeOptions = new Options();
         mergeOptions.topBar.rightButtonDisabledColor = new Colour(Color.GREEN);
         mergeOptions.topBar.leftButtonDisabledColor = new Colour(Color.CYAN);
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
 
-        verify(rightController, times(2)).applyColor(topBar.getTitleBar(), mergeOptions.topBar.rightButtonColor, mergeOptions.topBar.rightButtonDisabledColor);
-        verify(leftController, times(1)).applyColor(topBar.getLeftButtonsBar(), mergeOptions.topBar.leftButtonColor, mergeOptions.topBar.leftButtonDisabledColor);
+        //Check right buttons
+        rightColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        rightDisabledColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        verify(rightController, times(2)).applyColor(any(), rightColorCaptor.capture(), rightDisabledColorCaptor.capture());
+        assertThat(rightColorCaptor.getAllValues().get(0)).isEqualToComparingFieldByFieldRecursively(rightButtonColor);
+        assertThat(rightColorCaptor.getAllValues().get(1)).isEqualToComparingFieldByFieldRecursively(rightButtonColor);
+        assertThat(rightDisabledColorCaptor.getAllValues().get(0)).isEqualToComparingFieldByField(mergeOptions.topBar.rightButtonDisabledColor);
+        assertThat(rightDisabledColorCaptor.getAllValues().get(1)).isEqualToComparingFieldByField(mergeOptions.topBar.rightButtonDisabledColor);
 
+        //Check left buttons
+        leftColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        leftDisabledColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        verify(leftController, times(1)).applyColor(any(), leftColorCaptor.capture(), leftDisabledColorCaptor.capture());
+        assertThat(leftColorCaptor.getAllValues().get(0)).isEqualToComparingFieldByField(leftButtonColor);
+        assertThat(leftDisabledColorCaptor.getValue()).isEqualToComparingFieldByField(mergeOptions.topBar.leftButtonDisabledColor);
     }
 
     @Test
