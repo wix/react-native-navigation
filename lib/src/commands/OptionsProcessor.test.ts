@@ -211,7 +211,7 @@ describe('navigation options', () => {
     uut.processOptions(options, CommandName.SetRoot);
 
     expect(options).toEqual({
-      topBar: { title: { component: { name: 'a', componentId: 'CustomComponent1' } } },
+      topBar: { title: { component: { name: 'a', componentId: 'CustomComponent2' } } },
     });
   });
 

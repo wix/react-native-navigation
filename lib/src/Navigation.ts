@@ -26,6 +26,7 @@ import { ProcessorSubscription } from './interfaces/ProcessorSubscription';
 import { LayoutProcessor } from './processors/LayoutProcessor';
 import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
 import { CommandName } from './interfaces/CommandName';
+import { OptionsCrawler } from './commands/OptionsCrawler';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
@@ -44,6 +45,7 @@ export class NavigationRoot {
   private readonly commandsObserver: CommandsObserver;
   private readonly componentEventsObserver: ComponentEventsObserver;
   private readonly componentWrapper: ComponentWrapper;
+  private readonly optionsCrawler: OptionsCrawler;
 
   constructor() {
     this.componentWrapper = new ComponentWrapper();
@@ -76,6 +78,7 @@ export class NavigationRoot {
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
+    this.optionsCrawler = new OptionsCrawler(this.store);
     this.commands = new Commands(
       this.store,
       this.nativeCommandsSender,
@@ -84,7 +87,8 @@ export class NavigationRoot {
       this.commandsObserver,
       this.uniqueIdProvider,
       optionsProcessor,
-      layoutProcessor
+      layoutProcessor,
+      this.optionsCrawler
     );
     this.eventsRegistry = new EventsRegistry(
       this.nativeEventsReceiver,
