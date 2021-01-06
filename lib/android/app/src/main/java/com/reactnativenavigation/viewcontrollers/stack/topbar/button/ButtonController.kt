@@ -76,6 +76,8 @@ open class ButtonController(activity: Activity,
         }
     }
 
+    open fun applyColor(toolbar: Toolbar, color: Colour, disabledColour: Colour) = this.menuItem?.let { presenter.applyColor(toolbar, it, color, disabledColour) }
+
     fun addToMenu(toolbar: TitleBar, order: Int) {
         if (button.component.hasValue() && toolbar.containsButton(menuItem, order)) return
         toolbar.menu.removeItem(button.intId)

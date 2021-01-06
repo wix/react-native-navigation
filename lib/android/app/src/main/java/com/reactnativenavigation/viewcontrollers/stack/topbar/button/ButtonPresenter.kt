@@ -53,6 +53,12 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
     }
 
+    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: Colour, disabledColor: Colour) {
+        applyOptionsDirectlyOnView(toolbar, menuItem) {
+            applyTextColor(it, color, disabledColor)
+        }
+    }
+
     private fun applyAccessibilityLabel(menuItem: MenuItem) {
         if (button.accessibilityLabel.hasValue()) {
             if (button.component.hasValue()) {
