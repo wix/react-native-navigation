@@ -427,8 +427,8 @@ public class StackPresenter {
         List<ButtonOptions> result = new ArrayList<>();
         for (ButtonOptions button : buttons) {
             ButtonOptions copy = button.copy();
-            copy.color = buttonColor;
-            copy.disabledColor = disabledColor;
+            if (!button.color.hasValue()) copy.color = buttonColor;
+            if (!button.disabledColor.hasValue()) copy.disabledColor = disabledColor;
             result.add(copy);
         }
         return result;
