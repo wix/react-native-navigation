@@ -16,6 +16,7 @@ import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsCrawler } from './OptionsCrawler';
+import React from 'react';
 
 describe('Commands', () => {
   let uut: Commands;
@@ -138,6 +139,29 @@ describe('Commands', () => {
       });
       expect(layoutProcessor.process).toBeCalledWith(
         { component: { name: 'com.example.MyScreen', options: {} } },
+        CommandName.SetRoot
+      );
+    });
+
+    it('pass component static options to layoutProcessor', () => {
+      when(mockedStore.getComponentClassForName('com.example.MyScreen')).thenReturn(
+        () =>
+          class extends React.Component {
+            static options(): Options {
+              return {
+                topBar: {
+                  visible: false,
+                },
+              };
+            }
+          }
+      );
+
+      uut.setRoot({
+        root: { component: { name: 'com.example.MyScreen' } },
+      });
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen', options: { topBar: { visible: false } } } },
         CommandName.SetRoot
       );
     });

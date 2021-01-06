@@ -15,6 +15,24 @@ describe('OptionsCrawler', () => {
     uut = new OptionsCrawler(instance(mockedStore));
   });
 
+  it('Components: injects options object', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static options = { popGesture: true };
+        }
+    );
+    const layout: Layout = {
+      component: {
+        id: 'testId',
+        name: 'theComponentName',
+      },
+    };
+
+    uut.crawl(layout);
+    expect(layout.component!.options).toEqual({ popGesture: true });
+  });
+
   it('Components: injects options from original component class static property', () => {
     when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
       () =>
@@ -33,6 +51,33 @@ describe('OptionsCrawler', () => {
 
     uut.crawl(layout);
     expect(layout.component!.options).toEqual({ popGesture: true });
+  });
+
+  it('ExternalComponent: does nothing as there is no React component for external component', () => {
+    const layout: Layout = {
+      externalComponent: {
+        id: 'testId',
+        name: 'theComponentName',
+      },
+    };
+
+    uut.crawl(layout);
+    expect(layout.externalComponent!.options).toEqual(undefined);
+  });
+
+  it('ExternalComponent: merge options with passed options', () => {
+    const layout: Layout = {
+      externalComponent: {
+        id: 'testId',
+        name: 'theComponentName',
+        options: {
+          popGesture: false,
+        },
+      },
+    };
+
+    uut.crawl(layout);
+    expect(layout.externalComponent!.options).toEqual({ popGesture: false });
   });
 
   it('Stack: injects options from original component class static property', () => {
@@ -59,6 +104,141 @@ describe('OptionsCrawler', () => {
 
     uut.crawl(layout);
     expect(layout.stack!.children![0].component!.options).toEqual({ popGesture: true });
+  });
+
+  it('SideMenu: injects options from original component class static property', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static options(): Options {
+            return { popGesture: true };
+          }
+        }
+    );
+    const layout: Layout = {
+      sideMenu: {
+        left: {
+          component: {
+            id: 'testId',
+            name: 'theComponentName',
+          },
+        },
+        center: {
+          component: {
+            id: 'testId',
+            name: 'theComponentName',
+          },
+        },
+        right: {
+          component: {
+            id: 'testId',
+            name: 'theComponentName',
+          },
+        },
+      },
+    };
+
+    uut.crawl(layout);
+    expect(layout.sideMenu!.center!.component!.options).toEqual({ popGesture: true });
+    expect(layout.sideMenu!.left!.component!.options).toEqual({ popGesture: true });
+    expect(layout.sideMenu!.right!.component!.options).toEqual({ popGesture: true });
+  });
+
+  it('SplitView: injects options from original component class static property', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static options(): Options {
+            return { popGesture: true };
+          }
+        }
+    );
+    const layout: Layout = {
+      splitView: {
+        master: {
+          component: {
+            id: 'testId',
+            name: 'theComponentName',
+          },
+        },
+        detail: {
+          component: {
+            id: 'testId',
+            name: 'theComponentName',
+          },
+        },
+      },
+    };
+
+    uut.crawl(layout);
+    expect(layout.splitView!.master!.component!.options).toEqual({ popGesture: true });
+    expect(layout.splitView!.detail!.component!.options).toEqual({ popGesture: true });
+  });
+
+  it('BottomTabs: injects options from original component class static property', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static options(): Options {
+            return { popGesture: true };
+          }
+        }
+    );
+    const layout: Layout = {
+      bottomTabs: {
+        children: [
+          {
+            component: {
+              id: 'testId',
+              name: 'theComponentName',
+            },
+          },
+          {
+            component: {
+              id: 'testId',
+              name: 'theComponentName',
+            },
+          },
+        ],
+      },
+    };
+
+    uut.crawl(layout);
+    expect(layout.bottomTabs!.children![0].component!.options).toEqual({ popGesture: true });
+    expect(layout.bottomTabs!.children![1].component!.options).toEqual({ popGesture: true });
+  });
+
+  it('TopTabs: injects options from original component class static property', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static options(): Options {
+            return { popGesture: true };
+          }
+        }
+    );
+    const layout: Layout = {
+      topTabs: {
+        children: [
+          {
+            component: {
+              id: 'testId',
+              name: 'theComponentName',
+            },
+          },
+          {
+            component: {
+              id: 'testId',
+              name: 'theComponentName',
+            },
+          },
+        ],
+      },
+    };
+
+    uut.crawl(layout);
+    expect(layout.topTabs!.children![0].component!.options).toEqual({ popGesture: true });
+    expect(layout.topTabs!.children![1].component!.options).toEqual({ popGesture: true });
   });
 
   it('Components: merges options from component class static property with passed options, favoring passed options', () => {

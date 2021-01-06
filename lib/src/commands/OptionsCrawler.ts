@@ -4,7 +4,6 @@ import { LayoutType } from './LayoutType';
 import { Store } from '../components/Store';
 import { Options } from '../interfaces/Options';
 import {
-  ExternalComponent,
   Layout,
   LayoutBottomTabs,
   LayoutComponent,
@@ -45,8 +44,6 @@ export class OptionsCrawler {
       return this.stack(api.stack);
     } else if (api.component) {
       return this.component(api.component);
-    } else if (api.externalComponent) {
-      return this.externalComponent(api.externalComponent);
     } else if (api.splitView) {
       return this.splitView(api.splitView);
     }
@@ -57,6 +54,7 @@ export class OptionsCrawler {
   }
 
   private sideMenu(sideMenu: LayoutSideMenu): void {
+    this.crawl(sideMenu.center);
     this.crawl(sideMenu.left);
     this.crawl(sideMenu.right);
   }
@@ -72,10 +70,6 @@ export class OptionsCrawler {
   private splitView(splitView: LayoutSplitView): void {
     splitView.detail && this.crawl(splitView.detail);
     splitView.master && this.crawl(splitView.master);
-  }
-
-  private externalComponent(component: ExternalComponent): void {
-    this.applyStaticOptions(component);
   }
 
   private component(component: LayoutComponent): void {

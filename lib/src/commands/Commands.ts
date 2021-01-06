@@ -59,7 +59,6 @@ export class Commands {
       this.layoutTreeCrawler.crawl(overlayLayout, CommandName.SetRoot);
     });
 
-    console.log({ root, modals, overlays });
     const result = this.nativeCommandsSender.setRoot(commandId, { root, modals, overlays });
     return result;
   }
