@@ -4,7 +4,7 @@ import { Store } from '../components/Store';
 import { mock, instance, when } from 'ts-mockito';
 import { Options } from '../interfaces/Options';
 import { OptionsCrawler } from './OptionsCrawler';
-import { Layout } from 'react-native-navigation/interfaces/Layout';
+import { Layout } from '../interfaces/Layout';
 
 describe('OptionsCrawler', () => {
   let uut: OptionsCrawler;

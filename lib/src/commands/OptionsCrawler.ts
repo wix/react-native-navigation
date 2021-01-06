@@ -1,6 +1,5 @@
 import merge from 'lodash/merge';
 import isFunction from 'lodash/isFunction';
-import { LayoutType } from './LayoutType';
 import { Store } from '../components/Store';
 import { Options } from '../interfaces/Options';
 import {
@@ -11,19 +10,7 @@ import {
   LayoutSplitView,
   LayoutStack,
   LayoutTopTabs,
-} from 'react-native-navigation/interfaces/Layout';
-
-export interface Data {
-  name?: string;
-  options?: any;
-  passProps?: any;
-}
-export interface LayoutNode {
-  id: string;
-  type: LayoutType;
-  data: Data;
-  children: LayoutNode[];
-}
+} from '../interfaces/Layout';
 
 type ComponentWithOptions = React.ComponentType<any> & { options(passProps: any): Options };
 
