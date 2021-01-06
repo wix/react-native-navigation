@@ -389,7 +389,7 @@ public class StackPresenter {
             //pick old color if only one of the options is merged
             Colour appliedColor = newColor.hasValue() ? newColor : oldColor;
             Colour appliedDisabledColor = newDisabledColor.hasValue() ? newDisabledColor : oldDisabledColor;
-            forEach(btnControllers, (btnController) -> btnController.applyColor(titleBar, appliedColor, newDisabledColor));
+            forEach(btnControllers, (btnController) -> btnController.applyColor(titleBar, appliedColor, appliedDisabledColor));
         }
     }
 
