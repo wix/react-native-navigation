@@ -669,8 +669,6 @@ public class StackPresenterTest extends BaseTest {
         ButtonOptions rightButton1 = new ButtonOptions();
         ButtonOptions rightButton2 = new ButtonOptions();
         ButtonOptions leftButton = new ButtonOptions();
-        ButtonOptions leftButton2 = new ButtonOptions();
-        leftButton2.color = new Colour(10);
 
         options2.topBar.buttons.right = new ArrayList<>();
         options2.topBar.buttons.right.add(rightButton1);
@@ -678,7 +676,6 @@ public class StackPresenterTest extends BaseTest {
 
         options2.topBar.buttons.left = new ArrayList<>();
         options2.topBar.buttons.left.add(leftButton);
-        options2.topBar.buttons.left.add(leftButton2);
 
         uut.mergeChildOptions(options2, appliedOptions, parent, child);
         ArgumentCaptor<List<ButtonController>> rightCaptor = ArgumentCaptor.forClass(List.class);
@@ -692,7 +689,6 @@ public class StackPresenterTest extends BaseTest {
         verify(topBarController).mergeLeftButtons(leftCaptor.capture(), any());
         assertThat(leftCaptor.getValue().get(0).getButton().color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get());
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
-        assertThat(leftCaptor.getValue().get(1).getButton().color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get());
     }
 
     @Test
