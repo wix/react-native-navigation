@@ -633,33 +633,18 @@ public class StackPresenterTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_applyTopBarButtonsChanges() {
-        validateMockitoUsage();
-
-
         Options mergeOptions = new Options();
         Options resolvedOptions = new Options();
         ButtonOptions rightButton1 = new ButtonOptions();
         ButtonOptions rightButton2 = new ButtonOptions();
         rightButton2.color = new Colour(10);
-        ArrayList<ButtonOptions> rightButtons = new ArrayList<>();
-        rightButtons.add(rightButton2);
-        rightButtons.add(rightButton1);
-        mergeOptions.topBar.buttons.right = rightButtons;
+        mergeOptions.topBar.buttons.right= new ArrayList<>();
+        mergeOptions.topBar.buttons.right.add(rightButton2);
+        mergeOptions.topBar.buttons.right.add(rightButton1);
+        mergeOptions.topBar.buttons.left= new ArrayList<>();
+        mergeOptions.topBar.buttons.left.add(rightButton2);
         //add right buttons
         uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
-        List<ButtonOptions> buttonOptions = CollectionUtils.map(uut.getComponentButtons(child.getView()), ButtonController::getButton);
-        assertThat(buttonOptions).usingRecursiveFieldByFieldElementComparator().hasSameElementsAs(rightButtons);
-
-        ButtonOptions leftButton1 = new ButtonOptions();
-        mergeOptions = new Options();
-        mergeOptions.topBar.buttons.left = new ArrayList<>();
-        mergeOptions.topBar.buttons.left.add(leftButton1);
-
-        //add left buttons
-        uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
-        buttonOptions = CollectionUtils.map(uut.getComponentButtons(child.getView()), ButtonController::getButton);
-        assertThat(buttonOptions).usingRecursiveFieldByFieldElementComparator().contains(rightButton1, rightButton2, leftButton1);
-
         mergeOptions = new Options();
         mergeOptions.topBar.rightButtonColor = new Colour(100);
         mergeOptions.topBar.leftButtonColor = new Colour(10);

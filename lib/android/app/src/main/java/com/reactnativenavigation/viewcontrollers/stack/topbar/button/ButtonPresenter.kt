@@ -55,7 +55,10 @@ open class ButtonPresenter(private val context: Context, private val button: But
 
     fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: Colour, disabledColor: Colour) {
         applyOptionsDirectlyOnView(toolbar, menuItem) {
+            button.color = color
+            button.disabledColor = disabledColor
             applyTextColor(it, color, disabledColor)
+            applyIcon(menuItem)
         }
     }
 

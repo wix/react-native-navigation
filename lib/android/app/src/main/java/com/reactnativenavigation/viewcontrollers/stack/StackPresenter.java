@@ -386,11 +386,8 @@ public class StackPresenter {
     }
 
     private void mergeRightButtons(TopBarOptions options, TopBarButtons buttons, View child) {
-        List<ButtonOptions> rightButtons = buttons.right;
-        if (options.leftButtonColor.hasValue() && options.buttons.right != null) {
-            rightButtons = mergeButtonsWithColor(buttons.right == null ? options.buttons.right : buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
-        }
-        if (rightButtons == null) return;
+        if (buttons.right == null) return;
+        List<ButtonOptions> rightButtons = mergeButtonsWithColor(buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
         List<ButtonController> toMerge = getOrCreateButtonControllers(componentRightButtons.get(child), rightButtons);
         List<ButtonController> toRemove = difference(currentRightButtons, toMerge, ButtonController::areButtonsEqual);
         forEach(toRemove, ButtonController::destroy);
@@ -404,11 +401,8 @@ public class StackPresenter {
     }
 
     private void mergeLeftButton(TopBarOptions options, TopBarButtons buttons, View child) {
-        List<ButtonOptions> leftButtons = buttons.left;
-        if (options.leftButtonColor.hasValue() && options.buttons.left != null) {
-            leftButtons = mergeButtonsWithColor(buttons.left == null ? options.buttons.left : buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
-        }
-        if (leftButtons == null) return;
+        if (buttons.left == null) return;
+        List<ButtonOptions> leftButtons = mergeButtonsWithColor(buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
         List<ButtonController> toMerge = getOrCreateButtonControllers(componentLeftButtons.get(child), leftButtons);
         List<ButtonController> toRemove = difference(currentLeftButtons, toMerge, ButtonController::areButtonsEqual);
         forEach(toRemove, ButtonController::destroy);
