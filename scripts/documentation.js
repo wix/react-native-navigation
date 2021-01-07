@@ -25,8 +25,6 @@ function _removeDocsVersion(version) {
 
 function _versionExists(version) {
   console.log(`check if version exists: ${version}`);
-  console.log('docs versions:', _readDocsVersionsJson());
-  console.log(`version exists: ${includes(_readDocsVersionsJson(), version)}`);
   return version !== '' && includes(_readDocsVersionsJson(), version);
 }
 
