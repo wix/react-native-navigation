@@ -34,7 +34,6 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.CommandListenerAdapter;
-import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.UiUtils;
@@ -50,17 +49,15 @@ import com.reactnativenavigation.views.stack.topbar.TopBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -630,75 +627,67 @@ public class StackPresenterTest extends BaseTest {
         assertThat(uut.getBackgroundComponents().size()).isOne();
     }
 
-
     @Test
-    public void mergeChildOptions_applyTopBarButtonsColorsChanges() {
+    public void mergeChildOptions_applyTopBarButtonsColor() {
         Options mergeOptions = new Options();
-        Options resolvedOptions = new Options();
-        ButtonOptions rightButton1 = new ButtonOptions();
-        ButtonOptions rightButton2 = new ButtonOptions();
-        rightButton2.color = new Colour(5);
-        mergeOptions.topBar.buttons.right = new ArrayList<>();
-        mergeOptions.topBar.buttons.right.add(rightButton2);
-        mergeOptions.topBar.buttons.right.add(rightButton1);
-        mergeOptions.topBar.buttons.left = new ArrayList<>();
-        mergeOptions.topBar.buttons.left.add(rightButton2);
+        Options initialOptions = new Options();
+        ButtonOptions rightButton = new ButtonOptions();
+        ButtonOptions leftButton = new ButtonOptions();
+        initialOptions.topBar.buttons.right = new ArrayList<>(Arrays.asList(rightButton));
+        initialOptions.topBar.buttons.left = new ArrayList<>(Arrays.asList(leftButton));
+
         //add buttons
-        uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
+        uut.applyChildOptions(initialOptions, parent, child);
 
         //Merge color change for right and left buttons
-        mergeOptions = new Options();
-        final Colour rightButtonColor = new Colour(100);
-        mergeOptions.topBar.rightButtonColor = rightButtonColor;
-        final Colour leftButtonColor = new Colour(10);
-        mergeOptions.topBar.leftButtonColor = leftButtonColor;
-        ButtonController rightController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn1, iconResolver), this.componentBtn1, buttonCreator, buttonId -> {
+        mergeOptions.topBar.rightButtonColor = new Colour(100);
+        mergeOptions.topBar.leftButtonColor = new Colour(10);
+        ButtonController rightController = spy(new ButtonController(activity, new ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, buttonId -> {
         }));
-        ButtonController leftController = spy(new ButtonController(activity, new ButtonPresenter(activity, this.componentBtn2, iconResolver), this.componentBtn2, buttonCreator, buttonId -> {
+        ButtonController leftController = spy(new ButtonController(activity, new ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, buttonId -> {
+        }));
+        
+        uut.setComponentsButtonController(child.getView(), rightController, leftController);
+        uut.mergeChildOptions(mergeOptions, initialOptions, parent, child);
+
+        ArgumentCaptor<Colour> rightColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        verify(rightController, times(1)).applyColor(any(), rightColorCaptor.capture());
+        assertThat(rightColorCaptor.getAllValues().get(0)).isEqualTo(mergeOptions.topBar.rightButtonColor);
+
+        ArgumentCaptor<Colour> leftColorCaptor = ArgumentCaptor.forClass(Colour.class);
+        verify(leftController, times(1)).applyColor(any(), leftColorCaptor.capture());
+        assertThat(leftColorCaptor.getAllValues().get(0)).isEqualTo(mergeOptions.topBar.leftButtonColor);
+    }
+
+    @Test
+    public void mergeChildOptions_applyTopBarButtonsDisabledColor() {
+        Options mergeOptions = new Options();
+        Options initialOptions = new Options();
+        ButtonOptions rightButton = new ButtonOptions();
+        ButtonOptions leftButton = new ButtonOptions();
+        initialOptions.topBar.buttons.right = new ArrayList<>(Arrays.asList(rightButton));
+        initialOptions.topBar.buttons.left = new ArrayList<>(Arrays.asList(leftButton));
+
+        //add buttons
+        uut.applyChildOptions(initialOptions, parent, child);
+
+        //Merge color change for right and left buttons
+        mergeOptions.topBar.rightButtonDisabledColor = new Colour(100);
+        mergeOptions.topBar.leftButtonDisabledColor = new Colour(10);
+        ButtonController rightController = spy(new ButtonController(activity, new ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, buttonId -> {
+        }));
+        ButtonController leftController = spy(new ButtonController(activity, new ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, buttonId -> {
         }));
         uut.setComponentsButtonController(child.getView(), rightController, leftController);
-        uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
+        uut.mergeChildOptions(mergeOptions, initialOptions, parent, child);
 
-        //Check right buttons
         ArgumentCaptor<Colour> rightColorCaptor = ArgumentCaptor.forClass(Colour.class);
-        ArgumentCaptor<Colour> rightDisabledColorCaptor = ArgumentCaptor.forClass(Colour.class);
-        verify(rightController, times(2)).applyColor(any(), rightColorCaptor.capture(), rightDisabledColorCaptor.capture());
-        assertThat(rightColorCaptor.getAllValues().get(0)).isEqualTo(mergeOptions.topBar.rightButtonColor);
-        assertThat(rightColorCaptor.getAllValues().get(1)).isEqualTo(mergeOptions.topBar.rightButtonColor);
-        assertThat(rightDisabledColorCaptor.getAllValues().get(0)).isEqualToComparingFieldByField(resolvedOptions.topBar.rightButtonColor);
-        assertThat(rightDisabledColorCaptor.getAllValues().get(1)).isEqualToComparingFieldByField(resolvedOptions.topBar.rightButtonColor);
+        verify(rightController, times(1)).applyDisabledColor(any(), rightColorCaptor.capture());
+        assertThat(rightColorCaptor.getAllValues().get(0)).isEqualTo(mergeOptions.topBar.rightButtonDisabledColor);
 
-        //Check left buttons
         ArgumentCaptor<Colour> leftColorCaptor = ArgumentCaptor.forClass(Colour.class);
-        ArgumentCaptor<Colour> leftDisabledColorCaptor = ArgumentCaptor.forClass(Colour.class);
-        verify(leftController, times(1)).applyColor(any(), leftColorCaptor.capture(), leftDisabledColorCaptor.capture());
-        assertThat(leftColorCaptor.getAllValues().get(0)).isEqualTo(mergeOptions.topBar.leftButtonColor);
-        assertThat(leftDisabledColorCaptor.getValue()).isEqualToComparingFieldByField(resolvedOptions.topBar.leftButtonDisabledColor);
-
-        //Check when disabledColor only passed
-        reset(rightController, leftController);
-        resolvedOptions.topBar.rightButtonColor = rightButtonColor;
-        resolvedOptions.topBar.leftButtonColor = leftButtonColor;
-        mergeOptions = new Options();
-        mergeOptions.topBar.rightButtonDisabledColor = new Colour(Color.GREEN);
-        mergeOptions.topBar.leftButtonDisabledColor = new Colour(Color.CYAN);
-        uut.mergeChildOptions(mergeOptions, resolvedOptions, parent, child);
-
-        //Check right buttons
-        rightColorCaptor = ArgumentCaptor.forClass(Colour.class);
-        rightDisabledColorCaptor = ArgumentCaptor.forClass(Colour.class);
-        verify(rightController, times(2)).applyColor(any(), rightColorCaptor.capture(), rightDisabledColorCaptor.capture());
-        assertThat(rightColorCaptor.getAllValues().get(0)).isEqualToComparingFieldByFieldRecursively(rightButtonColor);
-        assertThat(rightColorCaptor.getAllValues().get(1)).isEqualToComparingFieldByFieldRecursively(rightButtonColor);
-        assertThat(rightDisabledColorCaptor.getAllValues().get(0)).isEqualToComparingFieldByField(mergeOptions.topBar.rightButtonDisabledColor);
-        assertThat(rightDisabledColorCaptor.getAllValues().get(1)).isEqualToComparingFieldByField(mergeOptions.topBar.rightButtonDisabledColor);
-
-        //Check left buttons
-        leftColorCaptor = ArgumentCaptor.forClass(Colour.class);
-        leftDisabledColorCaptor = ArgumentCaptor.forClass(Colour.class);
-        verify(leftController, times(1)).applyColor(any(), leftColorCaptor.capture(), leftDisabledColorCaptor.capture());
-        assertThat(leftColorCaptor.getAllValues().get(0)).isEqualToComparingFieldByField(leftButtonColor);
-        assertThat(leftDisabledColorCaptor.getValue()).isEqualToComparingFieldByField(mergeOptions.topBar.leftButtonDisabledColor);
+        verify(leftController, times(1)).applyDisabledColor(any(), leftColorCaptor.capture());
+        assertThat(leftColorCaptor.getAllValues().get(0)).isEqualTo(mergeOptions.topBar.leftButtonDisabledColor);
     }
 
     @Test

@@ -48,17 +48,24 @@ open class ButtonPresenter(private val context: Context, private val button: But
 
         applyOptionsDirectlyOnView(toolbar, menuItem) {
             applyTestId(it)
-            applyTextColor(it, button.color, button.disabledColor)
+            applyTextColor(it)
             applyAllCaps(it)
         }
     }
 
-    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: Colour, disabledColor: Colour) {
+    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: Colour) {
+        button.color = color
+        applyIcon(menuItem)
         applyOptionsDirectlyOnView(toolbar, menuItem) {
-            button.color = color
-            button.disabledColor = disabledColor
-            applyTextColor(it, color, disabledColor)
-            applyIcon(menuItem)
+            applyTextColor(it)
+        }
+    }
+
+    fun applyDisabledColor(toolbar: Toolbar, menuItem: MenuItem, disabledColor: Colour) {
+        button.disabledColor = disabledColor
+        applyIcon(menuItem)
+        applyOptionsDirectlyOnView(toolbar, menuItem) {
+            applyTextColor(it)
         }
     }
 
@@ -101,12 +108,12 @@ open class ButtonPresenter(private val context: Context, private val button: But
         if (button.testId.hasValue()) view.tag = button.testId.get()
     }
 
-    private fun applyTextColor(view: View, color: Colour, disabledColor: Colour) {
+    private fun applyTextColor(view: View) {
         if (view is TextView) {
             if (button.enabled.isTrueOrUndefined) {
-                if (color.hasValue()) view.setTextColor(color.get())
+                if (button.color.hasValue()) view.setTextColor(button.color.get())
             } else {
-                view.setTextColor(disabledColor.get(DISABLED_COLOR))
+                view.setTextColor(button.disabledColor.get(DISABLED_COLOR))
             }
         }
     }

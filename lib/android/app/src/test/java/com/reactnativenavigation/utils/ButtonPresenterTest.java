@@ -78,9 +78,19 @@ public class ButtonPresenterTest extends BaseTest {
         MenuItem menuItem = buttonController.createAndAddButtonToTitleBar(titleBar, 0);
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
         Colour color = new Colour(Color.RED);
-        Colour disabledColor = new Colour(0);
-        uut.applyColor(titleBar, menuItem, color, disabledColor);
+        uut.applyColor(titleBar, menuItem, color);
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.RED);
+    }
+
+    @Test
+    public void applyColor_shouldChangeDisabledColor() {
+        button.enabled = new Bool(false);
+        MenuItem menuItem = buttonController.createAndAddButtonToTitleBar(titleBar, 0);
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+
+        Colour disabledColor = new Colour(Color.BLUE);
+        uut.applyDisabledColor(titleBar, menuItem, disabledColor);
+        assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.BLUE);
     }
 
     private void addButtonAndApplyOptions() {

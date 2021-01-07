@@ -36,12 +36,10 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -377,19 +375,26 @@ public class StackPresenter {
     private void mergeButtons(TopBarOptions options, TopBarOptions optionsToMerge, View child) {
         mergeRightButtons(options, optionsToMerge.buttons, child);
         mergeLeftButton(options, optionsToMerge.buttons, child);
-        applyButtonsColorChanges(componentRightButtons.get(child).values(), topBarController.getView().getTitleBar(), optionsToMerge.rightButtonColor, optionsToMerge.rightButtonDisabledColor,
-                options.rightButtonColor, options.rightButtonDisabledColor);
-        applyButtonsColorChanges(componentLeftButtons.get(child).values(), topBarController.getView().getLeftButtonsBar(), optionsToMerge.leftButtonColor, optionsToMerge.leftButtonDisabledColor,
-                options.leftButtonColor, options.leftButtonDisabledColor);
+        mergeLeftButtonsColor(child, optionsToMerge.leftButtonColor, optionsToMerge.leftButtonDisabledColor);
+        mergeRightButtonsColor(child, optionsToMerge.rightButtonColor, optionsToMerge.rightButtonDisabledColor);
         mergeBackButton(optionsToMerge.buttons);
     }
 
-    private void applyButtonsColorChanges(Collection<ButtonController> btnControllers, TitleBar titleBar, Colour newColor, Colour newDisabledColor, Colour oldColor, Colour oldDisabledColor) {
-        if (newColor.hasValue() || newDisabledColor.hasValue()) {
-            //pick old color if only one of the options is merged
-            Colour appliedColor = newColor.hasValue() ? newColor : oldColor;
-            Colour appliedDisabledColor = newDisabledColor.hasValue() ? newDisabledColor : oldDisabledColor;
-            forEach(btnControllers, (btnController) -> btnController.applyColor(titleBar, appliedColor, appliedDisabledColor));
+    private void mergeLeftButtonsColor(View child, Colour color, Colour disabledColor) {
+        if (color.hasValue() || disabledColor.hasValue()) {
+            forEach(componentLeftButtons.get(child).values(), (btnController) -> {
+                if (color.hasValue()) btnController.applyColor(topBarController.getView().getLeftButtonsBar(), color);
+                if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getLeftButtonsBar(), disabledColor);
+            });
+        }
+    }
+
+    private void mergeRightButtonsColor(View child, Colour color, Colour disabledColor) {
+        if (color.hasValue() || disabledColor.hasValue()) {
+            forEach(componentRightButtons.get(child).values(), (btnController) -> {
+                if (color.hasValue()) btnController.applyColor(topBarController.getView().getTitleBar(), color);
+                if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getTitleBar(), disabledColor);
+            });
         }
     }
 
