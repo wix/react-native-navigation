@@ -23,6 +23,8 @@ function _removeDocsVersion(version) {
 }
 
 function _versionExists(version) {
+  console.log(`check if version exists: ${version}`);
+  console.log('docs versions:', _readDocsVersionsJson());
   return version !== '', _readDocsVersionsJson().indexOf(version) > 0;
 }
 
