@@ -23,12 +23,12 @@
     [self setLargeTitleAttributes:options.largeTitle];
     [self setBorderColor:[options.borderColor withDefault:nil]];
     [self showBorder:![options.noBorder withDefault:NO]];
-    [self setScrollEdgeBorderColor:[options.scrollEdgeAppearance.borderColor withDefault:nil]];
-    [self showScrollEdgeBorder:![options.scrollEdgeAppearance.noBorder withDefault:NO]];
     [self setBackButtonOptions:options.backButton];
     if ([options.scrollEdgeAppearance.active withDefault:NO]) {
         [self updateScrollEdgeAppearance];
     }
+    [self setScrollEdgeBorderColor:[options.scrollEdgeAppearance.borderColor withDefault:nil]];
+    [self showScrollEdgeBorder:![options.scrollEdgeAppearance.noBorder withDefault:NO]];
 }
 
 - (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options {
