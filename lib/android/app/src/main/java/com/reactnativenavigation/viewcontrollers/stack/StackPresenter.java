@@ -290,7 +290,8 @@ public class StackPresenter {
             componentRightButtons.put(child.getView(), keyBy(rightButtonControllers, ButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
                 currentRightButtons = rightButtonControllers;
-                topBarController.applyRightButtons(currentRightButtons);
+                if (topBarController != null)
+                    topBarController.applyRightButtons(currentRightButtons);
             }
         } else {
             currentRightButtons = null;
@@ -301,7 +302,8 @@ public class StackPresenter {
             List<ButtonOptions> leftButtons = mergeButtonsWithColor(options.buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
             List<ButtonController> leftButtonControllers = getOrCreateButtonControllersByInstanceId(componentLeftButtons.get(child.getView()), leftButtons);
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, ButtonController::getButtonInstanceId));
-            topBarController.setLeftButtons(leftButtonControllers);
+            if (topBarController != null)
+                topBarController.setLeftButtons(leftButtonControllers);
         } else {
             topBar.clearLeftButtons();
         }
@@ -455,16 +457,24 @@ public class StackPresenter {
             topBar.setTitle(topBarOptions.title.text.get());
         }
 
-        if (resolveOptions.title.color.hasValue()) topBar.setTitleTextColor(resolveOptions.title.color.get());
-        if (resolveOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
-        if (resolveOptions.title.font.hasValue()) topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
+        if (resolveOptions.title.color.hasValue())
+            topBar.setTitleTextColor(resolveOptions.title.color.get());
+        if (resolveOptions.title.fontSize.hasValue())
+            topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
+        if (resolveOptions.title.font.hasValue())
+            topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 
-        if (topBarOptions.subtitle.text.hasValue()) topBar.setSubtitle(topBarOptions.subtitle.text.get());
-        if (resolveOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(resolveOptions.subtitle.color.get());
-        if (resolveOptions.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(resolveOptions.subtitle.fontSize.get());
-        if (resolveOptions.subtitle.font.hasValue()) topBar.setSubtitleTypeface(typefaceLoader, resolveOptions.subtitle.font);
+        if (topBarOptions.subtitle.text.hasValue())
+            topBar.setSubtitle(topBarOptions.subtitle.text.get());
+        if (resolveOptions.subtitle.color.hasValue())
+            topBar.setSubtitleColor(resolveOptions.subtitle.color.get());
+        if (resolveOptions.subtitle.fontSize.hasValue())
+            topBar.setSubtitleFontSize(resolveOptions.subtitle.fontSize.get());
+        if (resolveOptions.subtitle.font.hasValue())
+            topBar.setSubtitleTypeface(typefaceLoader, resolveOptions.subtitle.font);
 
-        if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.get());
+        if (topBarOptions.background.color.hasValue())
+            topBar.setBackgroundColor(topBarOptions.background.color.get());
 
         if (topBarOptions.background.component.hasValue()) {
             if (backgroundControllers.containsKey(component)) {

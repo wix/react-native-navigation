@@ -316,7 +316,7 @@ public class Navigator extends ParentController {
             } else {
                 from.performOnParentStack(task);
             }
-        } else {
+        } else if (listener != null) {
             listener.onError("Failed to execute stack command. Stack " + fromId + " not found.");
         }
     }
@@ -367,11 +367,11 @@ public class Navigator extends ParentController {
     }
 
     public boolean shouldSwitchToPIPonHomePress() {
-        return (getPipMode() != PIPStates.NOT_STARTED || (this.activeStack != null && this.activeStack.shouldSwitchToPIP())) && modalStack.isEmpty();
+        return (getPipMode() != PIPStates.NOT_STARTED || (this.activeStack != null && this.activeStack.shouldSwitchToPIP())) && modalStack.isEmpty() && overlayManager.isEmpty();
     }
 
     public boolean shouldSwitchToPIPonBackPress() {
-        return (this.activeStack != null && this.activeStack.shouldSwitchToPIP()) && modalStack.isEmpty();
+        return (this.activeStack != null && this.activeStack.shouldSwitchToPIP()) && modalStack.isEmpty() && overlayManager.isEmpty();
     }
 
     public void resetPIP() {

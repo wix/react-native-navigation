@@ -41,6 +41,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected Navigator navigator;
     private ILogger logger;
     private static String TAG = "NavigationActivity";
+    private boolean navigatingToAnotherActivity = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onResume() {
         super.onResume();
+        navigatingToAnotherActivity = false;
         logger.log(Log.INFO, TAG, "onResume PIPMode " + navigator.getPipMode());
         if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
             getReactGateway().onActivityResumed(this);
@@ -126,9 +128,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
         logger.log(Log.INFO, TAG, "onUserLeaveHint shouldSwitchToPIP " + navigator.shouldSwitchToPIPonHomePress() + "  PIPMode " + navigator.getPipMode());
-        if (navigator.shouldSwitchToPIPonHomePress() && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && canEnterPiPMode()) {
+        if (!navigatingToAnotherActivity && navigator.shouldSwitchToPIPonHomePress() && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && canEnterPiPMode()) {
             navigator.updatePIPState(PIPStates.NATIVE_MOUNT_START);
-            enterPictureInPictureMode(navigator.getPictureInPictureParams());
+            try {
+                enterPictureInPictureMode(navigator.getPictureInPictureParams());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -223,6 +229,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         view.setBackgroundColor(Color.WHITE);
         setContentView(view);
     }
+
+    @Override
+    public void startActivity(Intent intent) {
+        navigatingToAnotherActivity = true;
+        super.startActivity(intent);
+    }
+
 
     public void onCatalystInstanceDestroy() {
         runOnUiThread(() -> navigator.destroyViews());

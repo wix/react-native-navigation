@@ -14,8 +14,13 @@ public class Dimension {
 
     public static Dimension parse(JSONObject json) {
         Dimension dimension = new Dimension();
-        dimension.height = NumberParser.parse(json, "height");
-        dimension.width = NumberParser.parse(json, "width");
+        if (json != null) {
+            dimension.height = NumberParser.parse(json, "height");
+            dimension.width = NumberParser.parse(json, "width");
+        } else {
+            dimension.height = NumberParser.nullNumber();
+            dimension.width = NumberParser.nullNumber();
+        }
         return dimension;
     }
 

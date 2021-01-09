@@ -8,14 +8,19 @@ import com.reactnativenavigation.options.parsers.NumberParser;
 import org.json.JSONObject;
 
 public class AspectRatio {
-    public Number numerator = new Number(0);
-    public Number denominator = new Number(0);
+    public Number numerator = NumberParser.nullNumber();
+    public Number denominator = NumberParser.nullNumber();
 
 
     public static AspectRatio parse(JSONObject json) {
         AspectRatio aspectRatio = new AspectRatio();
-        aspectRatio.numerator = NumberParser.parse(json, "numerator");
-        aspectRatio.denominator = NumberParser.parse(json, "denominator");
+        if (json != null) {
+            aspectRatio.numerator = NumberParser.parse(json, "numerator");
+            aspectRatio.denominator = NumberParser.parse(json, "denominator");
+        } else {
+            aspectRatio.numerator = NumberParser.nullNumber();
+            aspectRatio.denominator = NumberParser.nullNumber();
+        }
         return aspectRatio;
     }
 

@@ -10,8 +10,13 @@ public class CustomPIPDimension {
 
     public static CustomPIPDimension parse(JSONObject json) {
         CustomPIPDimension dimension = new CustomPIPDimension();
-        dimension.compact = Dimension.parse(json.optJSONObject("compact"));
-        dimension.expanded = Dimension.parse(json.optJSONObject("expanded"));
+        if (json != null) {
+            dimension.compact = Dimension.parse(json.optJSONObject("compact"));
+            dimension.expanded = Dimension.parse(json.optJSONObject("expanded"));
+        } else {
+            dimension.compact = new Dimension();
+            dimension.expanded = new Dimension();
+        }
         return dimension;
     }
 

@@ -11,16 +11,12 @@ import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.utils.awaitLayout
-import com.reactnativenavigation.utils.awaitNextLayout
-import com.reactnativenavigation.utils.awaitPost
 import com.reactnativenavigation.utils.awaitRender
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -128,13 +124,17 @@ open class StackAnimator @JvmOverloads constructor(
             private var isCancelled = false
             override fun onAnimationCancel(animation: Animator) {
                 isCancelled = true
-                runningPushAnimations.remove(appearing.view)
+                if (!appearing.isDestroyed) {
+                    runningPushAnimations.remove(appearing.view)
+                }
                 onAnimationEnd.run()
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 if (!isCancelled) {
-                    runningPushAnimations.remove(appearing.view)
+                    if (!appearing.isDestroyed) {
+                        runningPushAnimations.remove(appearing.view)
+                    }
                     onAnimationEnd.run()
                 }
             }
@@ -148,13 +148,17 @@ open class StackAnimator @JvmOverloads constructor(
             private var isCancelled = false
             override fun onAnimationCancel(animation: Animator) {
                 isCancelled = true
-                runningPIPAnimations.remove(appearing.view)
+                if (!appearing.isDestroyed) {
+                    runningPIPAnimations.remove(appearing.view)
+                }
                 onAnimationEnd.run()
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 if (!isCancelled) {
-                    runningPIPAnimations.remove(appearing.view)
+                    if (!appearing.isDestroyed) {
+                        runningPIPAnimations.remove(appearing.view)
+                    }
                     onAnimationEnd.run()
                 }
             }
