@@ -379,15 +379,11 @@ public class BottomTabsControllerTest extends BaseTest {
         Options options = Options.EMPTY.copy();
         options.bottomTabsOptions.currentTabIndex = new Number(1);
         prepareViewsForTests(options.bottomTabsOptions);
-        for (int i = 0; i < tabs.size(); i++) {
-            verify(tabs.get(i), times(i == 1 ? 1 : 0)).onViewDidAppear();
-        }
-
-        reset(tabs.toArray());
-        uut.selectTab(0);
-        for (int i = 0; i < tabs.size(); i++) {
-            verify(tabs.get(i), times(i == 0 ? 1 : 0)).onViewDidAppear();
-        }
+        verify(tabs.get(0), times( 0)).onViewDidAppear();
+        verify(tabs.get(1), times( 1)).onViewDidAppear();
+        verify(tabs.get(2), times( 0)).onViewDidAppear();
+        verify(tabs.get(3), times( 0)).onViewDidAppear();
+        verify(tabs.get(4), times( 0)).onViewDidAppear();
     }
 
     @Test
