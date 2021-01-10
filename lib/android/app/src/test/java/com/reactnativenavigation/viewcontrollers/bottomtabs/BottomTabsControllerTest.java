@@ -12,6 +12,7 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;
+import com.reactnativenavigation.options.BottomTabsOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
@@ -43,6 +44,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import edu.emory.mathcs.backport.java.util.Collections;
 
 import static com.reactnativenavigation.TestUtils.hideBackButton;
@@ -50,6 +52,7 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -265,7 +268,7 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void applyChildOptions_resolvedOptionsAreUsed() {
         Options childOptions = new Options();
-        SimpleViewController pushedScreen = new SimpleViewController(activity , childRegistry, "child4.1", childOptions);
+        SimpleViewController pushedScreen = new SimpleViewController(activity, childRegistry, "child4.1", childOptions);
         disablePushAnimation(pushedScreen);
         child4 = spyOnStack(pushedScreen);
 
@@ -281,10 +284,10 @@ public class BottomTabsControllerTest extends BaseTest {
                 imageLoaderMock,
                 "uut",
                 initialOptions,
-                new Presenter(activity , new Options()),
+                new Presenter(activity, new Options()),
                 tabsAttacher,
                 presenter,
-                new BottomTabPresenter(activity , tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), new Options())) {
+                new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), new Options())) {
             @Override
             public Options resolveCurrentOptions() {
                 return resolvedOptions;
@@ -293,7 +296,7 @@ public class BottomTabsControllerTest extends BaseTest {
             @NonNull
             @Override
             protected BottomTabs createBottomTabs() {
-                return new BottomTabs(activity ) {
+                return new BottomTabs(activity) {
                     @Override
                     protected void createItems() {
 
@@ -372,6 +375,22 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void applyOptions_onViewDidAppearInvokedAfterInitialTabIndexSet() {
+        Options options = Options.EMPTY.copy();
+        options.bottomTabsOptions.currentTabIndex = new Number(1);
+        prepareViewsForTests(options.bottomTabsOptions);
+        for (int i = 0; i < tabs.size(); i++) {
+            verify(tabs.get(i), times(i == 1 ? 1 : 0)).onViewDidAppear();
+        }
+
+        reset(tabs.toArray());
+        uut.selectTab(0);
+        for (int i = 0; i < tabs.size(); i++) {
+            verify(tabs.get(i), times(i == 0 ? 1 : 0)).onViewDidAppear();
+        }
+    }
+
+    @Test
     public void getTopInset() {
         assertThat(child1.getTopInset()).isEqualTo(getStatusBarHeight());
         assertThat(child2.getTopInset()).isEqualTo(getStatusBarHeight());
@@ -400,6 +419,10 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     private void prepareViewsForTests() {
+        prepareViewsForTests(Options.EMPTY.copy().bottomTabsOptions);
+    }
+
+    private void prepareViewsForTests(BottomTabsOptions bottomTabsOptions) {
         perform(uut, ViewController::destroy);
         bottomTabs = spy(new BottomTabs(activity) {
             @Override
@@ -409,9 +432,11 @@ public class BottomTabsControllerTest extends BaseTest {
         });
         createChildren();
         tabs = Arrays.asList(child1, child2, child3, child4, child5);
-        presenter = spy(new BottomTabsPresenter(tabs, Options.EMPTY));
-        bottomTabPresenter = spy(new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), Options.EMPTY));
-        tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter, Options.EMPTY));
+        Options options = Options.EMPTY.copy();
+        options.bottomTabsOptions = bottomTabsOptions;
+        presenter = spy(new BottomTabsPresenter(tabs, options));
+        bottomTabPresenter = spy(new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), options));
+        tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter, options));
         uut = createBottomTabs();
 
         activity.setContentView(new FakeParentController(activity, childRegistry, uut).getView());
@@ -431,7 +456,7 @@ public class BottomTabsControllerTest extends BaseTest {
         StackController build = TestUtils.newStackController(activity)
                 .setInitialOptions(tabOptions)
                 .build();
-        StackController stack =  spy(build);
+        StackController stack = spy(build);
         disablePushAnimation(initialChild);
         stack.ensureViewIsCreated();
         stack.push(initialChild, new CommandListenerAdapter());

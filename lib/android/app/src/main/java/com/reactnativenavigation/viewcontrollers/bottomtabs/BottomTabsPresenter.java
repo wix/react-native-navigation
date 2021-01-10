@@ -178,4 +178,9 @@ public class BottomTabsPresenter {
     public int getBottomInset(Options resolvedOptions) {
         return resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind() ? 0 : bottomTabs.getHeight();
     }
+
+    public int findTabIndexByTabId(String id) {
+        int index = bottomTabFinder.findByControllerId(id);
+        return Math.max(index, 0);
+    }
 }
