@@ -375,7 +375,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void applyOptions_onViewDidAppearInvokedAfterInitialTabIndexSet() {
+    public void creatingTabs_onViewDidAppearInvokedAfterInitialTabIndexSet() {
         Options options = Options.EMPTY.copy();
         options.bottomTabsOptions.currentTabIndex = new Number(1);
         prepareViewsForTests(options.bottomTabsOptions);
