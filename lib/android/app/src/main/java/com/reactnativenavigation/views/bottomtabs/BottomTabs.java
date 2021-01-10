@@ -74,18 +74,7 @@ public class BottomTabs extends AHBottomNavigation {
             onItemCreationEnabled.add(() -> super.setCurrentItem(position, useCallback));
         }
     }
-
-    public void setCurrentItem(@IntRange(from = 0) int position, boolean useCallback, Runnable executeOnItemCreationEnabled) {
-        if (itemsCreationEnabled) {
-            super.setCurrentItem(position, useCallback);
-            executeOnItemCreationEnabled.run();
-        } else {
-            onItemCreationEnabled.add(() -> {
-                super.setCurrentItem(position, useCallback);
-                executeOnItemCreationEnabled.run();
-            });
-        }
-    }
+    
 
     @Override
     public void setTitleState(TitleState titleState) {
