@@ -96,7 +96,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onNewIntent(Intent intent) {
         logger.log(Log.INFO, TAG, "onNewIntent PIPMode " + navigator.getPipMode());
-
         if (!getReactGateway().onNewIntent(intent)) {
             super.onNewIntent(intent);
         }

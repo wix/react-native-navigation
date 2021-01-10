@@ -328,10 +328,6 @@ public class Navigator extends ParentController {
                 pipNavigator.pushPIP(activeStack.switchToPIP(null), false);
                 break;
             case NATIVE_MOUNTED:
-                pipNavigator.getView().setVisibility(View.VISIBLE);
-                rootLayout.setVisibility(View.GONE);
-                modalsLayout.setVisibility(View.GONE);
-                overlaysLayout.setVisibility(View.GONE);
                 pipNavigator.updatePIPState(newPIPState);
                 break;
             case CUSTOM_MOUNTED:
@@ -352,6 +348,10 @@ public class Navigator extends ParentController {
                 }
                 break;
             case NATIVE_MOUNT_START:
+                rootLayout.setVisibility(View.INVISIBLE);
+                modalsLayout.setVisibility(View.INVISIBLE);
+                overlaysLayout.setVisibility(View.INVISIBLE);
+                pipNavigator.getView().setVisibility(View.VISIBLE);
                 if (getPipMode() == PIPStates.NOT_STARTED && activeStack != null) {
                     pipNavigator.updatePIPState(newPIPState);
                     pipNavigator.pushPIP(activeStack.switchToPIP(null), true);
