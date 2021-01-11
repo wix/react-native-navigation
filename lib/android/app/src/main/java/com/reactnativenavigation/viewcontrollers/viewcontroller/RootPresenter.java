@@ -1,11 +1,9 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
-import android.content.Context;
-
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.hierarchy.root.RootAnimator;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
-import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
 import com.reactnativenavigation.views.BehaviourDelegate;
 
 import androidx.annotation.VisibleForTesting;
@@ -14,20 +12,20 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public class RootPresenter {
-    private StackAnimator animator;
+    private final RootAnimator animator;
     private CoordinatorLayout rootLayout;
-    private LayoutDirectionApplier layoutDirectionApplier;
+    private final LayoutDirectionApplier layoutDirectionApplier;
 
     public void setRootContainer(CoordinatorLayout rootLayout) {
         this.rootLayout = rootLayout;
     }
 
-    public RootPresenter(Context context) {
-        this(new StackAnimator(context), new LayoutDirectionApplier());
+    public RootPresenter() {
+        this(new RootAnimator(), new LayoutDirectionApplier());
     }
 
     @VisibleForTesting
-    public RootPresenter(StackAnimator animator, LayoutDirectionApplier layoutDirectionApplier) {
+    public RootPresenter(RootAnimator animator, LayoutDirectionApplier layoutDirectionApplier) {
         this.animator = animator;
         this.layoutDirectionApplier = layoutDirectionApplier;
     }
@@ -54,7 +52,7 @@ public class RootPresenter {
 
     private void animateSetRootAndReportSuccess(ViewController root, CommandListener listener, Options options) {
         if (options.animations.setRoot.hasAnimation()) {
-            animator.setRoot(root.getView(), options.animations.setRoot, () -> listener.onSuccess(root.getId()));
+            animator.setRoot(root, options.animations.setRoot, () -> listener.onSuccess(root.getId()));
         } else {
             listener.onSuccess(root.getId());
         }

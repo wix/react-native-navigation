@@ -24,13 +24,12 @@ public class BottomTabsAttacherTest extends BaseTest {
 
     private BottomTabsAttacher uut;
     private AttachMode mode;
-    private Options defaultOptions = new Options();
-    private List<ViewController> tabs;
+    private final Options defaultOptions = new Options();
 
     @Override
     public void beforeEach() {
         mode = Mockito.mock(AttachMode.class);
-        tabs = Arrays.asList(mock(ViewController.class), mock(ViewController.class));
+        List<ViewController<?>> tabs = Arrays.asList(mock(ViewController.class), mock(ViewController.class));
         uut = new BottomTabsAttacher(tabs, Mockito.mock(BottomTabsPresenter.class), defaultOptions);
         uut.attachStrategy = mode;
     }

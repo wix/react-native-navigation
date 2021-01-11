@@ -6,10 +6,11 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.utils.CollectionUtils;
-import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.Component;
 
@@ -83,6 +84,14 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @NonNull
 	public abstract Collection<? extends ViewController> getChildControllers();
+
+    @Nullable
+    protected BottomTabsController getBottomTabsController() {
+        if (this instanceof BottomTabsController) {
+            return (BottomTabsController) this;
+        }
+        return perform(getParentController(), null, ParentController::getBottomTabsController);
+    }
 
 	@Nullable
 	@Override

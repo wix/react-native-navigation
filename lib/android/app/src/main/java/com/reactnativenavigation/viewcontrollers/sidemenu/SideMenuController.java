@@ -7,10 +7,10 @@ import android.view.View;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.SideMenuRootOptions;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.sidemenu.SideMenu;
 import com.reactnativenavigation.views.sidemenu.SideMenuRoot;
@@ -18,6 +18,7 @@ import com.reactnativenavigation.views.sidemenu.SideMenuRoot;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -139,7 +140,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     @Override
-    public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+    public void onDrawerSlide(@NonNull View drawerView, @FloatRange(from = 0, to = 1) float slideOffset) {
         int gravity = getSideMenuGravity(drawerView);
         if (gravity == Gravity.LEFT) {
             dispatchSideMenuVisibilityEvents(left, prevLeftSlideOffset, slideOffset);

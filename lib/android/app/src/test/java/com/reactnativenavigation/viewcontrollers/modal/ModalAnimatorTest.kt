@@ -9,11 +9,7 @@ import com.reactnativenavigation.utils.ScreenAnimationListener
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import org.assertj.core.api.Java6Assertions.assertThat
-import org.bouncycastle.crypto.tls.MACAlgorithm.sha
 import org.junit.Test
-import org.robolectric.annotation.LooperMode
-import org.robolectric.shadows.ShadowApplication
-import org.robolectric.shadows.ShadowLooper
 
 class ModalAnimatorTest : BaseTest() {
     private lateinit var uut: ModalAnimator;

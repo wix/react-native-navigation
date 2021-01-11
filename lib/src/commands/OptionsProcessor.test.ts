@@ -2,8 +2,12 @@ import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
-import { Options, OptionsModalPresentationStyle } from '../interfaces/Options';
-import { mock, when, instance, anyNumber, verify } from 'ts-mockito';
+import {
+  Options,
+  OptionsModalPresentationStyle,
+  StackAnimationOptions,
+} from '../interfaces/Options';
+import { mock, when, instance, anyNumber, verify, anything } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Deprecations } from './Deprecations';
@@ -30,9 +34,16 @@ describe('navigation options', () => {
     when(mockedColorService.toNativeColor('blue')).thenReturn(0xff0000ff);
     const colorService = instance(mockedColorService);
     optionProcessorsRegistry = new OptionProcessorsStore();
+
+    let uuid = 0;
+    const mockedUniqueIdProvider: UniqueIdProvider = mock(UniqueIdProvider);
+    when(mockedUniqueIdProvider.generate(anything())).thenCall((prefix) => {
+      return `${prefix}${++uuid}`;
+    });
+
     uut = new OptionsProcessor(
       store,
-      new UniqueIdProvider(),
+      instance(mockedUniqueIdProvider),
       optionProcessorsRegistry,
       colorService,
       assetService,
@@ -316,6 +327,277 @@ describe('navigation options', () => {
       backgroundColor: 0xffff0000,
       tintColor: 0xff00ff00,
       placeholder: 'foo',
+    });
+  });
+
+  describe('process animations options', () => {
+    const performOnViewsInvolvedInStackAnimation = (action: (view: string) => void) =>
+      ['content', 'topBar', 'bottomTabs'].forEach(action);
+
+    describe('push', () => {
+      it('old *.push api is converted into push.*.enter', () => {
+        performOnViewsInvolvedInStackAnimation((view: string) => {
+          const options: Options = {
+            animations: {
+              push: {
+                [view]: {
+                  alpha: {
+                    from: 0,
+                    to: 1,
+                  },
+                },
+              },
+            },
+          };
+          uut.processOptions(options, CommandName.SetRoot);
+          expect(options.animations!!.push).toStrictEqual({
+            [view]: {
+              enter: {
+                alpha: {
+                  from: 0,
+                  to: 1,
+                },
+              },
+            },
+          });
+        });
+      });
+
+      it('StackAnimationOptions based push api is left as is', () => {
+        performOnViewsInvolvedInStackAnimation((view: string) => {
+          const options: Options = {
+            animations: {
+              push: {
+                [view]: {
+                  exit: {
+                    alpha: {
+                      from: 1,
+                      to: 0,
+                    },
+                  },
+                  enter: {
+                    alpha: {
+                      from: 0,
+                      to: 1,
+                    },
+                  },
+                },
+              },
+            },
+          };
+          uut.processOptions(options, CommandName.SetRoot);
+          expect(options.animations!!.push).toStrictEqual({
+            [view]: {
+              exit: {
+                alpha: {
+                  from: 1,
+                  to: 0,
+                },
+              },
+              enter: {
+                alpha: {
+                  from: 0,
+                  to: 1,
+                },
+              },
+            },
+          });
+        });
+      });
+
+      it('Options not related to views are left as is', () => {
+        performOnViewsInvolvedInStackAnimation(() => {
+          const options: Options = {
+            animations: {
+              push: {
+                enabled: false,
+                waitForRender: true,
+                sharedElementTransitions: [],
+                elementTransitions: [],
+              },
+            },
+          };
+          uut.processOptions(options, CommandName.SetRoot);
+          expect(options.animations!!.push).toStrictEqual({
+            enabled: false,
+            waitForRender: true,
+            sharedElementTransitions: [],
+            elementTransitions: [],
+          });
+        });
+      });
+    });
+
+    describe('pop', () => {
+      it('old pop.content api is converted into pop.content.exit', () => {
+        performOnViewsInvolvedInStackAnimation((view: string) => {
+          const options: Options = {
+            animations: {
+              pop: {
+                [view]: {
+                  alpha: {
+                    from: 0,
+                    to: 1,
+                  },
+                },
+              },
+            },
+          };
+          uut.processOptions(options, CommandName.SetRoot);
+          expect(options.animations!!.pop).toStrictEqual({
+            [view]: {
+              exit: {
+                alpha: {
+                  from: 0,
+                  to: 1,
+                },
+              },
+            },
+          });
+        });
+      });
+
+      it('StackAnimationOptions based pop api is left as is', () => {
+        performOnViewsInvolvedInStackAnimation((view: string) => {
+          const options: Options = {
+            animations: {
+              pop: {
+                [view]: {
+                  exit: {
+                    alpha: {
+                      from: 1,
+                      to: 0,
+                    },
+                  },
+                  enter: {
+                    alpha: {
+                      from: 0,
+                      to: 1,
+                    },
+                  },
+                },
+              },
+            },
+          };
+          uut.processOptions(options, CommandName.SetRoot);
+          expect(options.animations!!.pop).toStrictEqual({
+            [view]: {
+              exit: {
+                alpha: {
+                  from: 1,
+                  to: 0,
+                },
+              },
+              enter: {
+                alpha: {
+                  from: 0,
+                  to: 1,
+                },
+              },
+            },
+          });
+        });
+      });
+
+      it('Options not related to views are left as is', () => {
+        performOnViewsInvolvedInStackAnimation(() => {
+          const options: Options = {
+            animations: {
+              pop: {
+                enabled: false,
+                waitForRender: true,
+                sharedElementTransitions: [],
+                elementTransitions: [],
+              },
+            },
+          };
+          uut.processOptions(options, CommandName.SetRoot);
+          expect(options.animations!!.pop).toStrictEqual({
+            enabled: false,
+            waitForRender: true,
+            sharedElementTransitions: [],
+            elementTransitions: [],
+          });
+        });
+      });
+    });
+
+    describe('setStackRoot', () => {
+      it('ViewAnimationOptions based setStackRoot api is converted to StackAnimationOptions based api', () => {
+        const options: Options = {
+          animations: {
+            setStackRoot: {
+              alpha: {
+                from: 0,
+                to: 1,
+              },
+            },
+          },
+        };
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options.animations!!.setStackRoot).toStrictEqual({
+          content: {
+            enter: {
+              alpha: {
+                from: 0,
+                to: 1,
+              },
+            },
+          },
+        });
+      });
+
+      it('Disabled ViewAnimationOptions based setStackRoot api is converted to StackAnimationOptions based api', () => {
+        const options: Options = {
+          animations: {
+            setStackRoot: {
+              enabled: false,
+              waitForRender: true,
+            },
+          },
+        };
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options.animations!!.setStackRoot as StackAnimationOptions).toStrictEqual({
+          enabled: false,
+          waitForRender: true,
+          content: {
+            enter: {
+              enabled: false,
+              waitForRender: true,
+            },
+          },
+        });
+      });
+
+      it('StackAnimationOptions based setStackRoot api is left as is', () => {
+        performOnViewsInvolvedInStackAnimation((view: string) => {
+          const options: Options = {
+            animations: {
+              setStackRoot: {
+                [view]: {
+                  enter: {
+                    alpha: {
+                      from: 0,
+                      to: 1,
+                    },
+                  },
+                },
+              },
+            },
+          };
+          uut.processOptions(options, CommandName.SetRoot);
+          expect(options.animations!!.setStackRoot).toStrictEqual({
+            [view]: {
+              enter: {
+                alpha: {
+                  from: 0,
+                  to: 1,
+                },
+              },
+            },
+          });
+        });
+      });
     });
   });
 });

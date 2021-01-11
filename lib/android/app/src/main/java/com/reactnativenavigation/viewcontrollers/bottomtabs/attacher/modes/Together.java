@@ -11,7 +11,7 @@ import java.util.*;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 public class Together extends AttachMode {
-    public Together(ViewGroup parent, List<ViewController> tabs, BottomTabsPresenter presenter, Options resolved) {
+    public Together(ViewGroup parent, List<ViewController<?>> tabs, BottomTabsPresenter presenter, Options resolved) {
         super(parent, tabs, presenter, resolved);
     }
 

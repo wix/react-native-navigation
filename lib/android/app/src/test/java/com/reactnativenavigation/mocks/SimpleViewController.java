@@ -21,7 +21,7 @@ import androidx.annotation.NonNull;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class SimpleViewController extends ChildController<SimpleViewController.SimpleView> {
-    private ComponentPresenterBase presenter = new ComponentPresenterBase();
+    private final ComponentPresenterBase presenter = new ComponentPresenterBase();
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options options) {
         this(activity, childRegistry, id, new Presenter(activity, new Options()), options);

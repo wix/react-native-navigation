@@ -80,7 +80,7 @@
     "@typescript-eslint/parser": "3.3.0",
     "babel-jest": "26.1.0",
     "clang-format": "^1.4.0",
-    "detox": "18.0.0",
+    "detox": "17.14.3",
     "eslint": "7.3.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",

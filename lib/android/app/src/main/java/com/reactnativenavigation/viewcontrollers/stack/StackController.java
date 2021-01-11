@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.options.NestedAnimationsOptions;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.StackAnimationOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.Constants;
@@ -46,8 +46,8 @@ public class StackController extends ParentController<StackLayout> {
     private IdStack<ViewController> stack = new IdStack<>();
     private final StackAnimator animator;
     private final EventEmitter eventEmitter;
-    private TopBarController topBarController;
-    private BackButtonHelper backButtonHelper;
+    private final TopBarController topBarController;
+    private final BackButtonHelper backButtonHelper;
     private final StackPresenter presenter;
     private final FabPresenter fabPresenter;
 
@@ -161,9 +161,14 @@ public class StackController extends ParentController<StackLayout> {
         addChildToStack(child, resolvedOptions);
 
         if (toRemove != null) {
-            NestedAnimationsOptions animation = resolvedOptions.animations.push;
+            StackAnimationOptions animation = resolvedOptions.animations.push;
             if (animation.enabled.isTrueOrUndefined()) {
-                animator.push(child, toRemove, resolvedOptions, () -> onPushAnimationComplete(child, toRemove, listener));
+                animator.push(
+                        child,
+                        toRemove,
+                        resolvedOptions,
+                        presenter.getAdditionalPushAnimations(this, child, resolvedOptions),
+                        () -> onPushAnimationComplete(child, toRemove, listener));
             } else {
                 child.onViewDidAppear();
                 getView().removeView(toRemove.getView());
@@ -228,15 +233,20 @@ public class StackController extends ParentController<StackLayout> {
         if (toRemove != null && resolvedOptions.animations.setStackRoot.enabled.isTrueOrUndefined()) {
             if (resolvedOptions.animations.setStackRoot.waitForRender.isTrue()) {
                 child.getView().setAlpha(0);
-                child.addOnAppearedListener(() -> animator.push(
+                child.addOnAppearedListener(() -> animator.setRoot(
                         child,
                         toRemove,
                         resolvedOptions,
+                        presenter.getAdditionalSetRootAnimations(this, child, resolvedOptions),
                         () -> listenerAdapter.onSuccess(child.getId())
                     )
                 );
             } else {
-                animator.push(child, toRemove, resolvedOptions, () -> listenerAdapter.onSuccess(child.getId()));
+                animator.setRoot(child,
+                        toRemove,
+                        resolvedOptions,
+                        presenter.getAdditionalSetRootAnimations(this, child, resolvedOptions),
+                        () -> listenerAdapter.onSuccess(child.getId()));
             }
         } else {
             listenerAdapter.onSuccess(child.getId());
@@ -270,12 +280,13 @@ public class StackController extends ParentController<StackLayout> {
         if (appearingView.getParent() == null) {
             getView().addView(appearingView, 0);
         }
-        presenter.onChildWillAppear(this, appearing, disappearing);
         if (disappearingOptions.animations.pop.enabled.isTrueOrUndefined()) {
+            Options appearingOptions = resolveChildOptions(appearing).withDefaultOptions(presenter.getDefaultOptions());
             animator.pop(
                     appearing,
                     disappearing,
-                    disappearingOptions.animations.pop,
+                    disappearingOptions,
+                    presenter.getAdditionalPopAnimations(appearingOptions, disappearingOptions),
                     () -> finishPopping(appearing, disappearing, listener)
             );
         } else {
@@ -344,6 +355,10 @@ public class StackController extends ParentController<StackLayout> {
         return stack.isEmpty();
     }
 
+    public boolean isChildInTransition(ViewController child) {
+        return animator.isChildInTransition(child);
+    }
+
     @Override
     public boolean handleBack(CommandListener listener) {
         if (canPop()) {
@@ -362,7 +377,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public StackLayout createView() {
         StackLayout stackLayout = new StackLayout(getActivity(), topBarController, getId());
-        presenter.bindView(topBarController);
+        presenter.bindView(topBarController, getBottomTabsController());
         addInitialChild(stackLayout);
         return stackLayout;
     }

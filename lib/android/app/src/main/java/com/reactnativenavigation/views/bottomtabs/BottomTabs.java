@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.bottomtabs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -85,6 +86,12 @@ public class BottomTabs extends AHBottomNavigation {
     public void setBackgroundColor(int color) {
         super.setBackgroundColor(color);
         if (getDefaultBackgroundColor() != color) setDefaultBackgroundColor(color);
+    }
+
+    @Override
+    public void hideBottomNavigation(boolean withAnimation) {
+        super.hideBottomNavigation(withAnimation);
+        if (!withAnimation) setVisibility(View.GONE);
     }
 
     public void setText(int index, String text) {

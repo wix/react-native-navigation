@@ -4,23 +4,21 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.content.Context
-import android.view.View
 import androidx.annotation.RestrictTo
-import com.reactnativenavigation.options.AnimationOptions
-import com.reactnativenavigation.options.FadeAnimation
-import com.reactnativenavigation.options.NestedAnimationsOptions
+import androidx.annotation.VisibleForTesting
+import androidx.core.animation.doOnEnd
+import com.reactnativenavigation.options.FadeInAnimation
+import com.reactnativenavigation.options.FadeOutAnimation
 import com.reactnativenavigation.options.Options
+import com.reactnativenavigation.options.StackAnimationOptions
 import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.utils.awaitLayout
-import com.reactnativenavigation.utils.awaitNextLayout
-import com.reactnativenavigation.utils.awaitPost
 import com.reactnativenavigation.utils.awaitRender
+import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -28,76 +26,138 @@ open class StackAnimator @JvmOverloads constructor(
         context: Context,
         private val transitionAnimatorCreator: TransitionAnimatorCreator = TransitionAnimatorCreator()
 ) : BaseAnimator(context) {
-    private val runningPushAnimations: MutableMap<View, Animator> = HashMap()
+    @VisibleForTesting
+    val runningPushAnimations: MutableMap<ViewController<*>, AnimatorSet> = HashMap()
 
-    open fun setRoot(root: View, setRoot: AnimationOptions, onAnimationEnd: Runnable) {
-        root.visibility = View.INVISIBLE
-        val set = setRoot.getAnimation(root)
-        set.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                root.visibility = View.VISIBLE
-            }
+    @VisibleForTesting
+    val runningPopAnimations: MutableMap<ViewController<*>, AnimatorSet> = HashMap()
 
-            override fun onAnimationEnd(animation: Animator) {
-                onAnimationEnd.run()
-            }
-        })
-        set.start()
+    @VisibleForTesting
+    val runningSetRootAnimations: MutableMap<ViewController<*>, AnimatorSet> = HashMap()
+
+    fun cancelPushAnimations() = runningPushAnimations.values.forEach(Animator::cancel)
+
+    open fun isChildInTransition(child: ViewController<*>?): Boolean {
+        return runningPushAnimations.containsKey(child) ||
+                runningPopAnimations.containsKey(child) ||
+                runningSetRootAnimations.containsKey(child)
     }
 
-    fun push(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, onAnimationEnd: Runnable) {
-        val set = createPushAnimator(appearing, onAnimationEnd)
-        runningPushAnimations[appearing.view] = set
-        if (options.animations.push.sharedElements.hasValue()) {
-            pushWithElementTransition(appearing, disappearing, options, set)
+    fun setRoot(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            options: Options,
+            additionalAnimations: List<Animator>,
+            onAnimationEnd: Runnable
+    ) {
+        val set = createSetRootAnimator(appearing, onAnimationEnd)
+        runningSetRootAnimations[appearing] = set
+        val setRoot = options.animations.setStackRoot
+        if (setRoot.waitForRender.isTrue) {
+            appearing.view.alpha = 0f
+            appearing.addOnAppearedListener {
+                appearing.view.alpha = 1f
+                animateSetRoot(set, setRoot, appearing, disappearing, additionalAnimations)
+            }
         } else {
-            pushWithoutElementTransitions(appearing, options, set)
+            animateSetRoot(set, setRoot, appearing, disappearing, additionalAnimations)
         }
     }
 
-    open fun pop(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, onAnimationEnd: Runnable) {
-        if (runningPushAnimations.containsKey(disappearing.view)) {
-            runningPushAnimations[disappearing.view]!!.cancel()
+    fun push(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            resolvedOptions: Options,
+            additionalAnimations: List<Animator>,
+            onAnimationEnd: Runnable
+    ) {
+        val set = createPushAnimator(appearing, onAnimationEnd)
+        runningPushAnimations[appearing] = set
+        if (resolvedOptions.animations.push.sharedElements.hasValue()) {
+            pushWithElementTransition(appearing, disappearing, resolvedOptions, set)
+        } else {
+            pushWithoutElementTransitions(appearing, disappearing, resolvedOptions, set, additionalAnimations)
+        }
+    }
+
+    open fun pop(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            disappearingOptions: Options,
+            additionalAnimations: List<Animator>,
+            onAnimationEnd: Runnable
+    ) {
+        if (runningPushAnimations.containsKey(disappearing)) {
+            runningPushAnimations[disappearing]!!.cancel()
             onAnimationEnd.run()
         } else {
-            animatePop(appearing, disappearing, pop, onAnimationEnd)
+            animatePop(
+                    appearing,
+                    disappearing,
+                    disappearingOptions,
+                    additionalAnimations,
+                    onAnimationEnd
+            )
         }
     }
 
-    private fun animatePop(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, onAnimationEnd: Runnable) {
+    private fun animatePop(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            disappearingOptions: Options,
+            additionalAnimations: List<Animator>,
+            onAnimationEnd: Runnable
+    ) {
         GlobalScope.launch(Dispatchers.Main.immediate) {
-            val set = createPopAnimator(onAnimationEnd)
-            if (pop.sharedElements.hasValue()) {
-                popWithElementTransitions(appearing, disappearing, pop, set)
+            val set = createPopAnimator(disappearing, onAnimationEnd)
+            if (disappearingOptions.animations.pop.sharedElements.hasValue()) {
+                popWithElementTransitions(appearing, disappearing, disappearingOptions, set)
             } else {
-                popWithoutElementTransitions(pop, set, disappearing)
+                popWithoutElementTransitions(appearing, disappearing, disappearingOptions, set, additionalAnimations)
             }
         }
     }
 
-    private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, set: AnimatorSet) {
-        val fade = if (pop.content.isFadeAnimation()) pop else FadeAnimation(true)
-        val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content, disappearing, appearing)
-        set.playTogether(fade.content.getAnimation(disappearing.view), transitionAnimators)
+    private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, resolvedOptions: Options, set: AnimatorSet) {
+        val pop = resolvedOptions.animations.pop
+        val fade = if (pop.content.exit.isFadeAnimation()) pop else FadeOutAnimation()
+        val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content.exit, disappearing, appearing)
+        set.playTogether(fade.content.exit.getAnimation(disappearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
         set.start()
     }
 
-    private fun popWithoutElementTransitions(pop: NestedAnimationsOptions, set: AnimatorSet, disappearing: ViewController<*>) {
-        set.playTogether(pop.content.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+    private fun popWithoutElementTransitions(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            disappearingOptions: Options,
+            set: AnimatorSet,
+            additionalAnimations: List<Animator>
+    ) {
+        val pop = disappearingOptions.animations.pop
+        val animators = mutableListOf(pop.content.exit.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+        animators.addAll(additionalAnimations)
+        if (pop.content.enter.hasValue()) {
+            animators.add(pop.content.enter.getAnimation(appearing.view))
+        }
+
+        set.playTogether(animators.toList())
         set.start()
     }
 
-    private fun createPopAnimator(onAnimationEnd: Runnable): AnimatorSet {
-        val set = AnimatorSet()
+    private fun createPopAnimator(disappearing: ViewController<*>, onAnimationEnd: Runnable): AnimatorSet {
+        val set = createAnimatorSet()
+        runningPopAnimations[disappearing] = set
         set.addListener(object : AnimatorListenerAdapter() {
             private var cancelled = false
             override fun onAnimationCancel(animation: Animator) {
                 cancelled = true
+                runningPopAnimations.remove(disappearing)
             }
 
             override fun onAnimationEnd(animation: Animator) {
+                runningPopAnimations.remove(disappearing)
                 if (!cancelled) onAnimationEnd.run()
             }
         })
@@ -105,18 +165,18 @@ open class StackAnimator @JvmOverloads constructor(
     }
 
     private fun createPushAnimator(appearing: ViewController<*>, onAnimationEnd: Runnable): AnimatorSet {
-        val set = AnimatorSet()
+        val set = createAnimatorSet()
         set.addListener(object : AnimatorListenerAdapter() {
             private var isCancelled = false
             override fun onAnimationCancel(animation: Animator) {
                 isCancelled = true
-                runningPushAnimations.remove(appearing.view)
+                runningPushAnimations.remove(appearing)
                 onAnimationEnd.run()
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 if (!isCancelled) {
-                    runningPushAnimations.remove(appearing.view)
+                    runningPushAnimations.remove(appearing)
                     onAnimationEnd.run()
                 }
             }
@@ -124,11 +184,36 @@ open class StackAnimator @JvmOverloads constructor(
         return set
     }
 
-    private fun pushWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, set: AnimatorSet) = GlobalScope.launch(Dispatchers.Main.immediate) {
+    private fun createSetRootAnimator(appearing: ViewController<*>, onAnimationEnd: Runnable): AnimatorSet {
+        val set = createAnimatorSet()
+        set.addListener(object : AnimatorListenerAdapter() {
+            private var isCancelled = false
+            override fun onAnimationCancel(animation: Animator) {
+                isCancelled = true
+                runningSetRootAnimations.remove(appearing)
+                onAnimationEnd.run()
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                if (!isCancelled) {
+                    runningSetRootAnimations.remove(appearing)
+                    onAnimationEnd.run()
+                }
+            }
+        })
+        return set
+    }
+
+    private fun pushWithElementTransition(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            options: Options,
+            set: AnimatorSet
+    ) = GlobalScope.launch(Dispatchers.Main.immediate) {
         appearing.setWaitForRender(Bool(true))
         appearing.view.alpha = 0f
         appearing.awaitRender()
-        val fade = if (options.animations.push.content.isFadeAnimation()) options.animations.push.content else FadeAnimation().content
+        val fade = if (options.animations.push.content.enter.isFadeAnimation()) options.animations.push.content.enter else FadeInAnimation().content.enter
         val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade, disappearing, appearing)
         set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
@@ -136,29 +221,67 @@ open class StackAnimator @JvmOverloads constructor(
         set.start()
     }
 
-    private fun pushWithoutElementTransitions(appearing: ViewController<*>, options: Options, set: AnimatorSet) {
-        if (options.animations.push.waitForRender.isTrue) {
+    private fun pushWithoutElementTransitions(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            resolvedOptions: Options,
+            set: AnimatorSet,
+            additionalAnimations: List<Animator>
+    ) {
+        val push = resolvedOptions.animations.push
+        if (push.waitForRender.isTrue) {
             appearing.view.alpha = 0f
             appearing.addOnAppearedListener {
                 appearing.view.alpha = 1f
-                set.playTogether(options.animations.push.content.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
-                set.start()
+                animatePushWithoutElementTransitions(set, push, appearing, disappearing, additionalAnimations)
             }
         } else {
-            set.playTogether(options.animations.push.content.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
-            set.start()
+            animatePushWithoutElementTransitions(set, push, appearing, disappearing, additionalAnimations)
         }
     }
 
-    fun cancelPushAnimations() {
-        for (view in runningPushAnimations.keys) {
-            runningPushAnimations[view]!!.cancel()
-            runningPushAnimations.remove(view)
+    private fun animatePushWithoutElementTransitions(
+            set: AnimatorSet,
+            push: StackAnimationOptions,
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            additionalAnimations: List<Animator>
+    ) {
+        val animators = mutableListOf(push.content.enter.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
+        animators.addAll(additionalAnimations)
+        if (push.content.exit.hasValue()) {
+            animators.add(push.content.exit.getAnimation(disappearing.view))
         }
+        set.playTogether(animators.toList())
+        set.doOnEnd {
+            if (!disappearing.isDestroyed) disappearing.view.resetViewProperties()
+        }
+        set.start()
     }
+
+    private fun animateSetRoot(
+            set: AnimatorSet,
+            setRoot: StackAnimationOptions,
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            additionalAnimations: List<Animator>
+    ) {
+        val animators = mutableListOf(setRoot.content.enter.getAnimation(
+                appearing.view,
+                getDefaultSetStackRootAnimation(appearing.view)
+        ))
+        animators.addAll(additionalAnimations)
+        if (setRoot.content.exit.hasValue()) {
+            animators.add(setRoot.content.exit.getAnimation(disappearing.view))
+        }
+        set.playTogether(animators.toList())
+        set.start()
+    }
+
+    protected open fun createAnimatorSet(): AnimatorSet = AnimatorSet()
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    fun endPushAnimation(view: View?) {
+    fun endPushAnimation(view: ViewController<*>) {
         if (runningPushAnimations.containsKey(view)) {
             runningPushAnimations[view]!!.end()
         }

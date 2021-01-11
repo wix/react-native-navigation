@@ -42,7 +42,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
                 new ChildControllersRegistry(),
                 new ModalStack(this),
                 new OverlayManager(),
-                new RootPresenter(this)
+                new RootPresenter()
         );
         navigator.bindViews();
         getReactGateway().onActivityCreated(this);

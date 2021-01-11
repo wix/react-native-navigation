@@ -24,6 +24,7 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabPresenter;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsAnimator;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
@@ -89,7 +90,7 @@ public class NavigatorTest extends BaseTest {
         activityController = newActivityController(TestActivity.class);
         activity = activityController.create().get();
         modalStack = spy(new ModalStack(activity));
-        rootPresenter = spy(new RootPresenter(activity));
+        rootPresenter = spy(new RootPresenter());
         modalStack.setEventEmitter(Mockito.mock(EventEmitter.class));
         uut = new Navigator(activity, childRegistry, modalStack, overlayManager, rootPresenter);
         activity.setNavigator(uut);
@@ -186,7 +187,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void setRoot_WithWaitForRender() {
+    public void setRoot_withWaitForRender() {
         ViewController initialRoot = spy(child2);
         uut.setRoot(initialRoot, new CommandListenerAdapter(), reactInstanceManager);
 
@@ -198,6 +199,7 @@ public class NavigatorTest extends BaseTest {
         verify(secondRoot).addOnAppearedListener(any());
 
         secondRoot.getView().addView(new View(activity)); // make isRendered return true and trigger onViewAppeared
+        idleMainLooper();
         assertThat(initialRoot.isDestroyed()).isTrue();
         assertThat(secondRoot.isViewShown()).isEqualTo(true);
     }
@@ -387,8 +389,8 @@ public class NavigatorTest extends BaseTest {
     }
 
     @NonNull
-    private BottomTabsController newTabs(List<ViewController> tabs) {
-        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, new Options());
+    private BottomTabsController newTabs(List<ViewController<?>> tabs) {
+        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, new Options(), new BottomTabsAnimator());
         return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new Presenter(activity, new Options()), new BottomTabsAttacher(tabs, bottomTabsPresenter, Options.EMPTY), bottomTabsPresenter, new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), new Options())) {
             @NonNull
             @Override
@@ -520,11 +522,15 @@ public class NavigatorTest extends BaseTest {
         uut.setRoot(parentController, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
+                idleMainLooper();
+                verify(parentVisibilityListener).onViewAppeared(parentController.getView());
+
                 uut.showModal(child1, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
                         assertThat(parentController.getView().getParent()).isNull();
-                        verify(parentController, times(1)).onViewDisappear();
+                        idleMainLooper();
+                        verify(parentVisibilityListener).onViewDisappear(parentController.getView());
                     }
                 });
             }
@@ -533,21 +539,22 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void dismissModal_onViewAppearedInvokedOnRoot() {
-        disableShowModalAnimation(child1, child2, child3);
-        disableDismissModalAnimation(child1, child2);
+        disableModalAnimations(child1);
+        disablePushAnimation(child2);
 
+        parentController.push(child2, new CommandListenerAdapter());
         uut.setRoot(parentController, new CommandListenerAdapter(), reactInstanceManager);
-        parentController.push(child3, new CommandListenerAdapter());
-        uut.showModal(child1, new CommandListenerAdapter());
-        uut.showModal(child2, new CommandListenerAdapter());
+        idleMainLooper();
+        verify(parentVisibilityListener).onViewAppeared(parentController.getView());
 
-        uut.dismissModal(child2.getId(), new CommandListenerAdapter());
+        uut.showModal(child1, new CommandListenerAdapter());
+        idleMainLooper();
         assertThat(parentController.getView().getParent()).isNull();
-        verify(parentVisibilityListener, times(1)).onViewAppeared(parentController.getView());
+        verify(parentVisibilityListener).onViewDisappear(parentController.getView());
 
         uut.dismissModal(child1.getId(), new CommandListenerAdapter());
+        idleMainLooper();
         assertThat(parentController.getView().getParent()).isNotNull();
-
         verify(parentVisibilityListener, times(2)).onViewAppeared(parentController.getView());
     }
 
@@ -582,43 +589,44 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void dismissAllModals_onViewAppearedInvokedOnRoot() {
+        disableModalAnimations(child1);
         disablePushAnimation(child2);
-        disableShowModalAnimation(child1);
-        uut.setRoot(child3, new CommandListenerAdapter(), reactInstanceManager);
 
-        uut.dismissAllModals(Options.EMPTY, new CommandListenerAdapter());
-        verify(parentVisibilityListener, times(0)).onViewAppeared(parentController.getView());
-
-        uut.setRoot(parentController, new CommandListenerAdapter(), reactInstanceManager);
         parentController.push(child2, new CommandListenerAdapter());
+        uut.setRoot(parentController, new CommandListenerAdapter(), reactInstanceManager);
+        idleMainLooper();
+        verify(parentVisibilityListener).onViewAppeared(parentController.getView());
 
-        verify(parentVisibilityListener, times(1)).onViewAppeared(parentController.getView());
         uut.showModal(child1, new CommandListenerAdapter());
-        uut.dismissAllModals(Options.EMPTY, new CommandListenerAdapter());
+        idleMainLooper();
+        assertThat(parentController.getView().getParent()).isNull();
+        verify(parentVisibilityListener).onViewDisappear(parentController.getView());
 
+        uut.dismissAllModals(Options.EMPTY, new CommandListenerAdapter());
+        idleMainLooper();
+        assertThat(parentController.getView().getParent()).isNotNull();
         verify(parentVisibilityListener, times(2)).onViewAppeared(parentController.getView());
     }
 
     @Test
     public void handleBack_onViewAppearedInvokedOnRoot() {
-        disableShowModalAnimation(child1, child2, child3);
+        disableModalAnimations(child1);
+        disablePushAnimation(child2);
 
-        parentController.push(child3, new CommandListenerAdapter());
-        StackController spy = spy(parentController);
-        uut.setRoot(spy, new CommandListenerAdapter(), reactInstanceManager);
+        parentController.push(child2, new CommandListenerAdapter());
+        uut.setRoot(parentController, new CommandListenerAdapter(), reactInstanceManager);
+        idleMainLooper();
+        verify(parentVisibilityListener).onViewAppeared(parentController.getView());
+
         uut.showModal(child1, new CommandListenerAdapter());
-        uut.showModal(child2, new CommandListenerAdapter());
+        idleMainLooper();
+        assertThat(parentController.getView().getParent()).isNull();
+        verify(parentVisibilityListener).onViewDisappear(parentController.getView());
 
         uut.handleBack(new CommandListenerAdapter());
-        verify(parentVisibilityListener, times(1)).onViewAppeared(spy.getView());
-
-        uut.handleBack(new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                assertThat(spy.getView().getParent()).isNotNull();
-                verify(spy, times(2)).onViewWillAppear();
-            }
-        });
+        idleMainLooper();
+        assertThat(parentController.getView().getParent()).isNotNull();
+        verify(parentVisibilityListener, times(2)).onViewAppeared(parentController.getView());
     }
 
     @Test
