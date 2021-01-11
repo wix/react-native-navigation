@@ -107,6 +107,10 @@
     NSNumber *fontSize = [titleOptions.fontSize withDefault:nil];
     UIColor *fontColor = [titleOptions.color withDefault:nil];
 
+    if (self.navigationController.navigationBar.titleTextAttributes == NULL) {
+        self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold]};
+    }
+    
     self.navigationController.navigationBar.titleTextAttributes = [RNNFontAttributesCreator
         createFromDictionary:self.navigationController.navigationBar.titleTextAttributes
                   fontFamily:fontFamily
@@ -116,11 +120,20 @@
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
-    NSString *fontFamily = [largeTitleOptions.fontFamily withDefault:nil];
-    NSString *fontWeight = [largeTitleOptions.fontWeight withDefault:nil];
+    UIFont *largeTitleFont = nil;
+    
+    if (self.navigationController.navigationBar.largeTitleTextAttributes == NULL) {
+        UIFont *normalLargeTitle = [UIFont preferredFontForTextStyle: UIFontTextStyleLargeTitle];
+        largeTitleFont = [UIFont fontWithDescriptor:[[normalLargeTitle fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold] size:[normalLargeTitle pointSize]];
+               
+        self.navigationController.navigationBar.largeTitleTextAttributes = @{NSFontAttributeName: largeTitleFont};
+    }
+    
+    NSString *fontFamily = [largeTitleOptions.fontFamily withDefault:largeTitleFont ? [largeTitleFont fontName] : nil];
+    NSString *fontWeight = [largeTitleOptions.fontWeight withDefault:largeTitleFont ? @"bold" : nil];
     NSNumber *fontSize = [largeTitleOptions.fontSize withDefault:nil];
     UIColor *fontColor = [largeTitleOptions.color withDefault:nil];
-
+    
     self.navigationController.navigationBar.largeTitleTextAttributes = [RNNFontAttributesCreator
         createFromDictionary:self.navigationController.navigationBar.largeTitleTextAttributes
                   fontFamily:fontFamily
