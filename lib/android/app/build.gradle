@@ -1,5 +1,4 @@
 import groovy.json.JsonSlurper
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
@@ -40,16 +39,11 @@ android {
     testOptions {
         unitTests.includeAndroidResources = true
         unitTests.all { t ->
-            maxHeapSize = "4g"
             reports {
                 html.enabled true
             }
             testLogging {
-                events "PASSED", "SKIPPED", "FAILED"
-                exceptionFormat TestExceptionFormat.FULL
-                showExceptions true
-                showCauses true
-                showStackTraces true
+                events "PASSED", "SKIPPED", "FAILED", "standardOut", "standardError"
             }
             afterSuite { desc, result ->
                 if (!desc.parent) { // will match the outermost suite
@@ -189,7 +183,7 @@ dependencies {
 
     // tests
     testImplementation 'junit:junit:4.12'
-    testImplementation "org.robolectric:robolectric:4.4"
+    testImplementation "org.robolectric:robolectric:4.3-beta-1"
     testImplementation 'org.assertj:assertj-core:3.8.0'
     testImplementation 'com.squareup.assertj:assertj-android:1.1.1'
     testImplementation 'org.mockito:mockito-core:2.28.2'

@@ -190,6 +190,11 @@ export default class PushedScreen extends NavigationComponent<Props> {
             ),
           },
           options: {
+            animations: {
+              setStackRoot: {
+                enabled: false,
+              },
+            },
             topBar: {
               title: {
                 text: `Pushed ${this.getStackPosition() + 1} a`,
@@ -210,6 +215,11 @@ export default class PushedScreen extends NavigationComponent<Props> {
             ),
           },
           options: {
+            animations: {
+              setStackRoot: {
+                enabled: false,
+              },
+            },
             topBar: {
               title: {
                 text: `Pushed ${this.getStackPosition() + 1} b`,

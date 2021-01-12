@@ -16,11 +16,11 @@ import com.reactnativenavigation.options.SideMenuOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.sidemenu.SideMenu;
 
@@ -34,7 +34,6 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -120,12 +119,10 @@ public class SideMenuControllerTest extends BaseTest {
     public void onViewAppeared() {
         ViewController left = spy(this.left);
         ViewGroup leftView = spy(left.getView());
-        when(left.findController(leftView)).thenReturn(left);
         Mockito.doReturn(leftView).when(left).getView();
 
         ViewController right = spy(this.right);
         ViewGroup rightView = spy(right.getView());
-        when(right.findController(rightView)).thenReturn(right);
         Mockito.doReturn(rightView).when(right).getView();
 
         setLeftRight(left, right);
@@ -295,36 +292,38 @@ public class SideMenuControllerTest extends BaseTest {
 
     @Test
     public void leftMenuOpen_visibilityEventsAreEmitted() {
-        uut.setLeftController(left);
+        ViewController spy = spy(left);
+        uut.setLeftController(spy);
         activity.setContentView(uut.getView());
 
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
-        verify(left, never()).onViewWillAppear();
+        verify(spy, times(0)).onViewWillAppear();
 
         openLeftMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isTrue();
-        verify(left).onViewDidAppear();
+        verify(spy).onViewDidAppear();
 
         closeLeftMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
-        verify(left).onViewDisappear();
+        verify(spy).onViewDisappear();
     }
 
     @Test
     public void rightMenuOpen_visibilityEventsAreEmitted() {
-        uut.setRightController(right);
+        ViewController spy = spy(right);
+        uut.setRightController(spy);
         activity.setContentView(uut.getView());
 
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
-        verify(right, never()).onViewWillAppear();
+        verify(spy, times(0)).onViewWillAppear();
 
         openRightMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isTrue();
-        verify(right).onViewDidAppear();
+        verify(spy).onViewDidAppear();
 
         closeRightMenu();
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
-        verify(right).onViewDisappear();
+        verify(spy).onViewDisappear();
     }
 
     @Test
@@ -398,7 +397,6 @@ public class SideMenuControllerTest extends BaseTest {
         options.sideMenuRootOptions.left.visible = new Bool(true);
         options.sideMenuRootOptions.left.animate = new Bool(false);
         uut.mergeOptions(options);
-        uut.onDrawerSlide(left.getView(), 1);
     }
 
     private void openRightMenu() {
@@ -406,7 +404,6 @@ public class SideMenuControllerTest extends BaseTest {
         options.sideMenuRootOptions.right.visible = new Bool(true);
         options.sideMenuRootOptions.right.animate = new Bool(false);
         uut.mergeOptions(options);
-        uut.onDrawerSlide(right.getView(), 1);
     }
 
     private void closeLeftMenu() {
@@ -414,7 +411,6 @@ public class SideMenuControllerTest extends BaseTest {
         options.sideMenuRootOptions.left.visible = new Bool(false);
         options.sideMenuRootOptions.left.animate = new Bool(false);
         uut.mergeOptions(options);
-        uut.onDrawerSlide(left.getView(), 0);
     }
 
     private void closeRightMenu() {
@@ -422,7 +418,6 @@ public class SideMenuControllerTest extends BaseTest {
         options.sideMenuRootOptions.right.visible = new Bool(false);
         options.sideMenuRootOptions.right.animate = new Bool(false);
         uut.mergeOptions(options);
-        uut.onDrawerSlide(right.getView(), 0);
     }
 
     private Activity createActivity() {

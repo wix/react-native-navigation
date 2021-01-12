@@ -19,11 +19,9 @@ class ValueAnimationOptions {
     private var animProp: Property<View, Float>? = null
     private var animPropType: Int? = null
     private var animationValueAccessor: ((View) -> Float)? = null
-    var from: FloatParam = NullFloatParam()
-        private set
+    private var from: FloatParam = NullFloatParam()
     private var fromDelta = FloatParam(0f)
-    var to: FloatParam = NullFloatParam()
-        private set
+    private var to: FloatParam = NullFloatParam()
     private var toDelta = FloatParam(0f)
     var duration: Number = NullNumber()
     private var startDelay: Number = NullNumber()

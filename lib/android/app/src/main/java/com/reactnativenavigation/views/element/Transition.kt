@@ -1,6 +1,6 @@
 package com.reactnativenavigation.views.element
 
-import android.animation.Animator
+import android.animation.AnimatorSet
 import android.view.View
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
@@ -9,5 +9,5 @@ abstract class Transition {
     abstract val view: View
     abstract val topInset: Int
 
-    abstract fun createAnimators(): Animator
+    abstract fun createAnimators(): AnimatorSet
 }

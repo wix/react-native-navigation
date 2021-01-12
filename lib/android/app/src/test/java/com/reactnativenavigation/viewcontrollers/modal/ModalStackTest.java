@@ -227,15 +227,13 @@ public class ModalStackTest extends BaseTest {
 
     @Test
     public void dismissAllModals_bottomModalsAreDestroyed() {
-        disableModalAnimations(modal1, modal2);
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        idleMainLooper();
         uut.showModal(modal2, root, new CommandListenerAdapter());
 
         uut.dismissAllModals(root, Options.EMPTY, new CommandListenerAdapter());
 
-        verify(modal1).destroy();
-        verify(modal1).onViewDisappear();
+        verify(modal1, times(1)).destroy();
+        verify(modal1, times(1)).onViewDisappear();
         assertThat(uut.size()).isEqualTo(0);
     }
 
@@ -265,11 +263,8 @@ public class ModalStackTest extends BaseTest {
         disableShowModalAnimation(modal1, modal2);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        idleMainLooper();
         uut.showModal(modal2, root, new CommandListenerAdapter());
-        idleMainLooper();
         uut.dismissModal(modal2.getId(), root, new CommandListenerAdapter());
-        idleMainLooper();
         verify(modal1, times(2)).onViewWillAppear();
     }
 
@@ -280,14 +275,12 @@ public class ModalStackTest extends BaseTest {
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
         uut.showModal(modal2, root, new CommandListenerAdapter());
-        idleMainLooper();
         uut.showModal(modal3, root, new CommandListenerAdapter());
 
         uut.dismissModal(modal2.getId(), root, new CommandListenerAdapter());
-        idleMainLooper();
         assertThat(uut.size()).isEqualTo(2);
-        verify(modal2).onViewDisappear();
-        verify(modal2).destroy();
+        verify(modal2, times(1)).onViewDisappear();
+        verify(modal2, times(1)).destroy();
         assertThat(modal1.getView().getParent()).isNull();
     }
 
@@ -301,9 +294,9 @@ public class ModalStackTest extends BaseTest {
     public void handleBack_dismissModal() {
         disableDismissModalAnimation(modal1);
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        idleMainLooper();
         assertThat(uut.handleBack(new CommandListenerAdapter(), root)).isTrue();
-        verify(modal1).onViewDisappear();
+        verify(modal1, times(1)).onViewDisappear();
+
     }
 
     @Test

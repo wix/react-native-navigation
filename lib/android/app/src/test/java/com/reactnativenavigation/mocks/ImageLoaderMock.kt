@@ -4,11 +4,12 @@ import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.drawable.Drawable
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.reactnativenavigation.utils.ImageLoader
 import com.reactnativenavigation.utils.ImageLoader.ImagesLoadingListener
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito
+import org.mockito.invocation.InvocationOnMock
 import java.util.*
 
 object ImageLoaderMock {
@@ -24,15 +25,15 @@ object ImageLoaderMock {
 
     @JvmStatic
     fun mock(): ImageLoader {
-        val imageLoader = mock<ImageLoader>()
-        doAnswer { invocation ->
+        val imageLoader = Mockito.mock(ImageLoader::class.java)
+        Mockito.doAnswer { invocation: InvocationOnMock ->
             val urlCount = (invocation.arguments[1] as Collection<*>).size
             val drawables = Collections.nCopies(urlCount, mockDrawable)
             (invocation.arguments[2] as ImagesLoadingListener).onComplete(drawables)
             null
-        }.`when`(imageLoader).loadIcons(any(), any(), any())
+        }.`when`(imageLoader).loadIcons(any(), ArgumentMatchers.anyList(), any())
 
-        doAnswer { invocation ->
+        Mockito.doAnswer { invocation: InvocationOnMock ->
             (invocation.arguments[2] as ImagesLoadingListener).onComplete(mockDrawable)
             null
         }.`when`(imageLoader).loadIcon(any(), any(), any())

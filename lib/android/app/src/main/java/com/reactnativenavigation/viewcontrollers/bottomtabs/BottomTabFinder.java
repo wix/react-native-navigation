@@ -1,15 +1,15 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import androidx.annotation.IntRange;
+
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import java.util.List;
 
-import androidx.annotation.IntRange;
-
 public class BottomTabFinder {
-    private final List<ViewController<?>> tabs;
+    private List<ViewController> tabs;
 
-    public BottomTabFinder(List<ViewController<?>> tabs) {
+    public BottomTabFinder(List<ViewController> tabs) {
         this.tabs = tabs;
     }
 

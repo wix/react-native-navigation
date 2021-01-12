@@ -1,6 +1,5 @@
 package com.reactnativenavigation.options
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.util.Property
 import android.util.TypedValue.COMPLEX_UNIT_DIP
@@ -14,12 +13,28 @@ import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.options.parsers.BoolParser
 import com.reactnativenavigation.options.parsers.TextParser
 import com.reactnativenavigation.utils.CollectionUtils
-import com.reactnativenavigation.utils.CollectionUtils.first
 import org.json.JSONObject
 import java.util.*
 import kotlin.math.max
 
-open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) : LayoutAnimation {
+open class AnimationOptions(json: JSONObject?) : LayoutAnimation {
+    constructor() : this(null)
+
+    private fun parse(json: JSONObject?) {
+        json?.let {
+            val iter = json.keys()
+            while (iter.hasNext()) {
+                when (val key = iter.next()) {
+                    "id" -> id = TextParser.parse(json, key)
+                    "enable", "enabled" -> enabled = BoolParser.parse(json, key)
+                    "waitForRender" -> waitForRender = BoolParser.parse(json, key)
+                    "sharedElementTransitions" -> sharedElements = SharedElements.parse(json)
+                    "elementTransitions" -> elementTransitions = ElementTransitions.parse(json)
+                    else -> valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)))
+                }
+            }
+        }
+    }
 
     @JvmField var id: Text = NullText()
     @JvmField var enabled: Bool = NullBool()
@@ -29,22 +44,7 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
     private var valueOptions = HashSet<ValueAnimationOptions>()
 
     init {
-        parse(json)
-    }
-
-    private fun parse(json: JSONObject?) {
-        json ?: return
-        val iter = json.keys()
-        while (iter.hasNext()) {
-            when (val key = iter.next()) {
-                "id" -> id = TextParser.parse(json, key)
-                "enable", "enabled" -> enabled = BoolParser.parse(json, key)
-                "waitForRender" -> waitForRender = BoolParser.parse(json, key)
-                "sharedElementTransitions" -> sharedElements = SharedElements.parse(json)
-                "elementTransitions" -> elementTransitions = ElementTransitions.parse(json)
-                else -> valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)))
-            }
-        }
+        json?.let { parse(it) }
     }
 
     fun mergeWith(other: AnimationOptions) {
@@ -70,11 +70,10 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
             || waitForRender.hasValue()
             || sharedElements.hasValue()
             || elementTransitions.hasValue()
-            || valueOptions.isNotEmpty()
 
     fun getAnimation(view: View) = getAnimation(view, AnimatorSet())
 
-    fun getAnimation(view: View, defaultAnimation: Animator): Animator {
+    fun getAnimation(view: View, defaultAnimation: AnimatorSet): AnimatorSet {
         if (!hasAnimation()) return defaultAnimation
         return AnimatorSet().apply { playTogether(valueOptions.map { it.getAnimation(view) }) }
     }
@@ -91,7 +90,7 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
     fun isFadeAnimation(): Boolean = valueOptions.size == 1 && valueOptions.find(ValueAnimationOptions::isAlpha) != null
 
     fun setValueDy(animation: Property<View?, Float?>?, fromDelta: Float, toDelta: Float) {
-        first(valueOptions, { o: ValueAnimationOptions -> o.equals(animation) }) { param: ValueAnimationOptions ->
+        CollectionUtils.first(valueOptions, { o: ValueAnimationOptions -> o.equals(animation) }) { param: ValueAnimationOptions ->
             param.setFromDelta(fromDelta)
             param.setToDelta(toDelta)
         }

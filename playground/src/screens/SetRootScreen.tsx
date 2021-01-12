@@ -112,7 +112,6 @@ export default class SetRootScreen extends React.Component<NavigationComponentPr
                       options: {
                         bottomTabs: {
                           visible: false,
-                          animate: false,
                         },
                       },
                     },
@@ -152,7 +151,6 @@ export default class SetRootScreen extends React.Component<NavigationComponentPr
                       options: {
                         bottomTabs: {
                           visible: false,
-                          animate: false,
                         },
                       },
                     },
@@ -182,7 +180,6 @@ export default class SetRootScreen extends React.Component<NavigationComponentPr
                 options: {
                   bottomTabs: {
                     visible: false,
-                    animate: false,
                   },
                 },
               },

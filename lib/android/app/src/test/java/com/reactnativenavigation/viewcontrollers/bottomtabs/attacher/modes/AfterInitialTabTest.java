@@ -1,10 +1,10 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes;
 
 
-import org.junit.Test;
+import org.junit.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class AfterInitialTabTest extends AttachModeTest {
 
@@ -26,7 +26,6 @@ public class AfterInitialTabTest extends AttachModeTest {
         assertNotChildOf(parent, otherTabs());
 
         initialTab().onViewWillAppear();
-        idleMainLooper();
         assertIsChild(parent, otherTabs());
     }
 

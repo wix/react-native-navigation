@@ -6,8 +6,7 @@ import android.animation.AnimatorSet
 import android.content.Context
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.options.AnimationOptions
-import com.reactnativenavigation.options.FadeInAnimation
-import com.reactnativenavigation.options.FadeOutAnimation
+import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.utils.ScreenAnimationListener
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
@@ -82,7 +81,7 @@ open class ModalAnimator @JvmOverloads constructor(
             show: AnimationOptions,
             set: AnimatorSet
     ) {
-        val fade = if (show.isFadeAnimation()) show else FadeInAnimation().content.enter
+        val fade = if (show.isFadeAnimation()) show else FadeAnimation().content
         val transitionAnimators = transitionAnimatorCreator.create(show, fade, disappearing, appearing)
         set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
@@ -116,7 +115,7 @@ open class ModalAnimator @JvmOverloads constructor(
             dismiss: AnimationOptions,
             set: AnimatorSet
     ) {
-        val fade = if (dismiss.isFadeAnimation()) dismiss else FadeOutAnimation().content.exit
+        val fade = if (dismiss.isFadeAnimation()) dismiss else FadeAnimation(true).content
         val transitionAnimators = transitionAnimatorCreator.create(dismiss, fade, disappearing, appearing)
         set.playTogether(fade.getAnimation(disappearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
