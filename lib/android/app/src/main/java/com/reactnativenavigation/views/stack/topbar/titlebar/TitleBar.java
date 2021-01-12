@@ -86,7 +86,6 @@ public class TitleBar extends Toolbar {
         clearTitle();
         clearSubtitle();
         this.component = component;
-        runOnMeasured(component, () -> component.setX((getWidth() - component.getWidth() - getStart()) / 2f));
         addView(component);
     }
 
@@ -143,35 +142,37 @@ public class TitleBar extends Toolbar {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-
-        centerComponent();
-
-        if (changed || isTitleChanged) {
-            TextView title = findTitleTextView();
-            if (title != null) {
-                alignTextView(titleAlignment, title);
+        if (component != null) {
+            alignComponent();
+        } else {
+            if (changed || isTitleChanged) {
+                TextView title = findTitleTextView();
+                if (title != null) {
+                    alignTextView(titleAlignment, title);
+                }
+                isTitleChanged = false;
             }
-            isTitleChanged = false;
-        }
 
-        if (changed || isSubtitleChanged) {
-            TextView subtitle = findSubtitleTextView();
-            if (subtitle != null) alignTextView(subtitleAlignment, subtitle);
-            isSubtitleChanged = false;
+            if (changed || isSubtitleChanged) {
+                TextView subtitle = findSubtitleTextView();
+                if (subtitle != null) alignTextView(subtitleAlignment, subtitle);
+                isSubtitleChanged = false;
+            }
         }
     }
 
-    private void centerComponent() {
-        if (component != null) {
-            runOnMeasured(component, () -> {
-                Toolbar.LayoutParams lp = (LayoutParams) component.getLayoutParams();
-                if (lp.gravity == Gravity.CENTER) {
-                    boolean isRTL = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
-                    int direction = isRTL ? -1 : 1;
-                    component.setX((getWidth() - component.getWidth() - direction * getStart()) / 2f);
-                }
-            });
-        }
+    private void alignComponent() {
+        runOnMeasured(component, () -> {
+            Toolbar.LayoutParams lp = (LayoutParams) component.getLayoutParams();
+            if (lp.gravity == Gravity.CENTER) {
+                boolean isRTL = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+                int direction = isRTL ? -1 : 1;
+                component.setX((getWidth() - component.getWidth() - direction * getStart()) / 2f);
+            } else if (lp.gravity == Gravity.START) {
+                boolean isRTL = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+                component.setX(isRTL ? getWidth() - component.getWidth() - getStart() : 0);
+            }
+        });
     }
 
     @Override
