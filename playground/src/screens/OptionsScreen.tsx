@@ -52,7 +52,7 @@ export default class Options extends React.Component<Props> {
           onPress={this.hideTopBarInDefaultOptions}
         />
         <Button
-          label="Set React Title View"
+          label="Set React Title View x"
           testID={SET_REACT_TITLE_VIEW}
           onPress={this.setReactTitleView}
         />
@@ -159,8 +159,9 @@ export default class Options extends React.Component<Props> {
         title: {
           component: {
             name: Screens.ReactTitleView,
-            alignment: 'center',
+            alignment: 'fill',
             passProps: {
+              clickable: true,
               text: 'Press Me',
             },
           },
