@@ -52,7 +52,7 @@ export default class Options extends React.Component<Props> {
           onPress={this.hideTopBarInDefaultOptions}
         />
         <Button
-          label="Set React Title View x"
+          label="Set React Title View"
           testID={SET_REACT_TITLE_VIEW}
           onPress={this.setReactTitleView}
         />
