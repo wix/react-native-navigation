@@ -380,7 +380,7 @@ public class BottomTabsControllerTest extends BaseTest {
         Options options = Options.EMPTY.copy();
         options.bottomTabsOptions.currentTabIndex = new Number(1);
         prepareViewsForTests(options.bottomTabsOptions);
-        idleMainLooper();
+        idleMainLooper(); 
         verify(tabs.get(0), times( 0)).onViewDidAppear();
         verify(tabs.get(1), times( 1)).onViewDidAppear();
         verify(tabs.get(2), times( 0)).onViewDidAppear();
