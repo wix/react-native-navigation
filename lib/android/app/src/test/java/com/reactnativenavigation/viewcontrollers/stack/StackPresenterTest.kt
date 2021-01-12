@@ -293,36 +293,6 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
-    fun mergeLeftButtons_clearsBackButton() {
-        val toMerge = Options()
-        toMerge.topBar.buttons.left = ArrayList()
-        val leftButton = ButtonOptions()
-        leftButton.id = "id"
-        leftButton.icon = Text("")
-        toMerge.topBar.buttons.left!!.add(leftButton)
-        
-        uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child)
-        verify(topBarController).mergeLeftButtons(any(), any())
-        verify(topBar, never()).clearLeftButtons()
-        verify(topBar, times(1)).clearBackButton()
-    }
-
-    @Test
-    fun mergeRightButtons_doesntClearBackButton() {
-        val toMerge = Options()
-        toMerge.topBar.buttons.right = ArrayList()
-        val rightButton = ButtonOptions()
-        rightButton.id = "id"
-        rightButton.icon = Text("")
-        toMerge.topBar.buttons.right!!.add(rightButton)
-
-        uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child)
-        verify(topBarController).mergeRightButtons(any(), any())
-        verify(topBar, never()).clearRightButtons()
-        verify(topBar, never()).clearBackButton()
-    }
-
-    @Test
     fun mergeTopBarOptions() {
         val options = Options()
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)

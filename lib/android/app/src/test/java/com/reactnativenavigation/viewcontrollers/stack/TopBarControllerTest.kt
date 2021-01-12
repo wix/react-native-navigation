@@ -6,6 +6,7 @@ import android.content.Context
 import android.view.View
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
+import com.reactnativenavigation.options.BackButton
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Bool
@@ -21,6 +22,7 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonContr
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
+import org.json.JSONObject
 import org.junit.Test
 import java.util.*
 
@@ -28,6 +30,7 @@ class TopBarControllerTest : BaseTest() {
     private lateinit var uut: TopBarController
     private lateinit var activity: Activity
     private lateinit var leftButton: ButtonOptions
+    private lateinit var backButton: BackButton
     private lateinit var textButton1: ButtonOptions
     private lateinit var textButton2: ButtonOptions
     private lateinit var componentButton: ButtonOptions
@@ -112,6 +115,40 @@ class TopBarControllerTest : BaseTest() {
     }
 
     @Test
+    fun setLeftButtons_clearsBackButton() {
+        uut.view.setBackButton(TitleBarHelper.createButtonController(activity, backButton))
+        assertThat(uut.view.navigationIcon).isNotNull()
+        uut.applyLeftButtons(leftButton(leftButton))
+        assertThat(uut.view.navigationIcon).isNull()
+    }
+
+    @Test
+    fun setLeftButtons_emptyButtonsListClearsBackButton() {
+        uut.view.setBackButton(TitleBarHelper.createButtonController(activity, backButton))
+        assertThat(uut.view.navigationIcon).isNotNull()
+        uut.applyLeftButtons(emptyList())
+        assertThat(uut.view.navigationIcon).isNull()
+    }
+
+    @Test
+    fun mergeLeftButtons_clearsBackButton() {
+        uut.view.setBackButton(TitleBarHelper.createButtonController(activity, backButton))
+        assertThat(uut.view.navigationIcon).isNotNull()
+        uut.mergeLeftButtons(emptyList(), leftButton(leftButton))
+        assertThat(uut.view.navigationIcon).isNull()
+    }
+
+    @Test
+    fun mergeLeftButtons_emptyButtonsListClearsBackButton() {
+        uut.view.setBackButton(TitleBarHelper.createButtonController(activity, backButton))
+        assertThat(uut.view.navigationIcon).isNotNull()
+        val initialButtons = leftButton(leftButton)
+        uut.applyLeftButtons(initialButtons!!)
+        uut.mergeLeftButtons(initialButtons, emptyList())
+        assertThat(uut.view.navigationIcon).isNull()
+    }
+
+    @Test
     fun show() {
         uut.hide()
         assertGone(topBar)
@@ -186,6 +223,7 @@ class TopBarControllerTest : BaseTest() {
     private fun createButtons() {
         leftButton = ButtonOptions()
         leftButton.id = Constants.BACK_BUTTON_ID
+        backButton = BackButton.parse(activity, null)
         textButton1 = createTextButton("1")
         textButton2 = createTextButton("2")
         componentButton = ButtonOptions()
