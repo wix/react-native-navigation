@@ -420,6 +420,7 @@ public class StackPresenter {
         List<ButtonController> toRemove = difference(currentLeftButtons, toMerge, ButtonController::areButtonsEqual);
         forEach(toRemove, ButtonController::destroy);
         if (!CollectionUtils.equals(currentLeftButtons, toMerge)) {
+            topBar.clearBackButton();
             componentLeftButtons.put(child, keyBy(toMerge, ButtonController::getButtonInstanceId));
             topBarController.mergeLeftButtons(toMerge, toRemove);
             currentLeftButtons = toMerge;

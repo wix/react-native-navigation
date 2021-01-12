@@ -14,9 +14,13 @@ class LeftButtonsBar(context: Context) : TitleBar(context) {
         button.applyNavigationIcon(this)
     }
 
+    fun clearBackButton() {
+        navigationIcon = null
+    }
+
     override fun clearButtons() {
         super.clearButtons()
-        navigationIcon = null
+        clearBackButton()
     }
 
     override fun setTitle(title: CharSequence?) {

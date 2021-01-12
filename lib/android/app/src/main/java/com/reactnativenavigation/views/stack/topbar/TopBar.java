@@ -234,6 +234,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         leftButtonsBar.clearButtons();
     }
 
+    public void clearBackButton() {
+        leftButtonsBar.clearBackButton();
+    }
+
     public void clearRightButtons() {
         titleBar.clearButtons();
     }
