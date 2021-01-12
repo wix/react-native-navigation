@@ -1184,15 +1184,30 @@ export interface StackAnimationOptions {
   /**
    * Configure animations for the top bar
    */
-  topBar?: ViewAnimationOptions;
+  topBar?:
+    | ViewAnimationOptions
+    | {
+        enter?: ViewAnimationOptions;
+        exit?: ViewAnimationOptions;
+      };
   /**
    * Configure animations for the bottom tabs
    */
-  bottomTabs?: ViewAnimationOptions;
+  bottomTabs?:
+    | ViewAnimationOptions
+    | {
+        enter?: ViewAnimationOptions;
+        exit?: ViewAnimationOptions;
+      };
   /**
    * Configure animations for the content (Screen)
    */
-  content?: ViewAnimationOptions;
+  content?:
+    | ViewAnimationOptions
+    | {
+        enter?: ViewAnimationOptions;
+        exit?: ViewAnimationOptions;
+      };
   /**
    * Animations to be applied on elements which are shared between the appearing and disappearing screens
    */
@@ -1210,13 +1225,14 @@ export interface AnimationOptions {
   /**
    * Configure the setStackRoot animation
    */
-  setStackRoot?: ViewAnimationOptions;
+  setStackRoot?: ViewAnimationOptions | StackAnimationOptions;
   /**
    * Configure the setRoot animation
    */
   setRoot?: ViewAnimationOptions;
   /**
-   * Configure what animates when a screen is pushed
+   * Configure the animation of the pushed screen
+   * #### (Android specific)
    */
   push?: StackAnimationOptions;
   /**

@@ -1,20 +1,26 @@
 package com.reactnativenavigation.options
 
+import com.reactnativenavigation.options.animations.ViewAnimationOptions
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.options.params.NullBool
 import com.reactnativenavigation.options.parsers.BoolParser
 import org.json.JSONObject
 
-open class NestedAnimationsOptions : LayoutAnimation {
+open class StackAnimationOptions(json: JSONObject? = null) : LayoutAnimation {
+
     @JvmField var enabled: Bool = NullBool()
     @JvmField var waitForRender: Bool = NullBool()
-    @JvmField var content = AnimationOptions()
-    @JvmField var bottomTabs = AnimationOptions()
-    @JvmField var topBar = AnimationOptions()
+    @JvmField var content = ViewAnimationOptions()
+    @JvmField var bottomTabs = ViewAnimationOptions()
+    @JvmField var topBar = ViewAnimationOptions()
     override var sharedElements = SharedElements()
     override var elementTransitions = ElementTransitions()
 
-    fun mergeWith(other: NestedAnimationsOptions) {
+    init {
+        parse(json)
+    }
+
+    fun mergeWith(other: StackAnimationOptions) {
         topBar.mergeWith(other.topBar)
         content.mergeWith(other.content)
         bottomTabs.mergeWith(other.bottomTabs)
@@ -24,7 +30,7 @@ open class NestedAnimationsOptions : LayoutAnimation {
         if (other.waitForRender.hasValue()) waitForRender = other.waitForRender
     }
 
-    fun mergeWithDefault(defaultOptions: NestedAnimationsOptions) {
+    fun mergeWithDefault(defaultOptions: StackAnimationOptions) {
         content.mergeWithDefault(defaultOptions.content)
         bottomTabs.mergeWithDefault(defaultOptions.bottomTabs)
         topBar.mergeWithDefault(defaultOptions.topBar)
@@ -34,27 +40,22 @@ open class NestedAnimationsOptions : LayoutAnimation {
         if (!waitForRender.hasValue()) waitForRender = defaultOptions.waitForRender
     }
 
-    fun hasValue(): Boolean {
-        return topBar.hasValue() || content.hasValue() || bottomTabs.hasValue() || waitForRender.hasValue()
+    fun hasEnterValue(): Boolean {
+        return topBar.enter.hasValue() || content.enter.hasValue() || bottomTabs.enter.hasValue() || waitForRender.hasValue()
     }
 
-    fun hasElementsTransition(): Boolean {
-        return sharedElements.hasValue() || elementTransitions.hasValue()
+    fun hasExitValue(): Boolean {
+        return topBar.exit.hasValue() || content.exit.hasValue() || bottomTabs.exit.hasValue() || waitForRender.hasValue()
     }
 
-    companion object {
-        @JvmStatic
-        fun parse(json: JSONObject?): NestedAnimationsOptions {
-            val options = NestedAnimationsOptions()
-            if (json == null) return options
-            options.content = AnimationOptions(json.optJSONObject("content"))
-            options.bottomTabs = AnimationOptions(json.optJSONObject("bottomTabs"))
-            options.topBar = AnimationOptions(json.optJSONObject("topBar"))
-            options.enabled = BoolParser.parseFirst(json, "enabled", "enable")
-            options.waitForRender = BoolParser.parse(json, "waitForRender")
-            options.sharedElements = SharedElements.parse(json)
-            options.elementTransitions = ElementTransitions.parse(json)
-            return options
-        }
+    private fun parse(json: JSONObject?) {
+        json ?: return
+        content = ViewAnimationOptions(json.optJSONObject("content"))
+        bottomTabs = ViewAnimationOptions(json.optJSONObject("bottomTabs"))
+        topBar = ViewAnimationOptions(json.optJSONObject("topBar"))
+        enabled = BoolParser.parseFirst(json, "enabled", "enable")
+        waitForRender = BoolParser.parse(json, "waitForRender")
+        sharedElements = SharedElements.parse(json)
+        elementTransitions = ElementTransitions.parse(json)
     }
 }

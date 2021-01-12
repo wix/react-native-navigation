@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
+import android.os.Looper;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
+import org.robolectric.Shadows;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -27,6 +29,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -81,18 +84,19 @@ public class ModalPresenterTest extends BaseTest {
         CommandListener listener = spy(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
+                Shadows.shadowOf(Looper.getMainLooper()).idle();
                 assertThat(modal1.getView().getParent()).isEqualTo(modalsLayout);
-                verify(modal1, times(1)).onViewWillAppear();
+                verify(modal1).onViewWillAppear();
             }
         });
         uut.showModal(modal1, root, listener);
-        verify(animator, times(0)).show(
+        verify(animator, never()).show(
                 eq(modal1),
                 eq(root),
                 eq(modal1.options.animations.showModal),
                 any()
         );
-        verify(listener, times(1)).onSuccess(MODAL_ID_1);
+        verify(listener).onSuccess(MODAL_ID_1);
     }
 
     @Test
@@ -114,8 +118,9 @@ public class ModalPresenterTest extends BaseTest {
                 uut.showModal(modal2, modal1, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
+                        idleMainLooper();
                         assertThat(modal1.getView().getParent()).isNull();
-                        verify(modal1, times(1)).onViewDisappear();
+                        verify(modal1).onViewDisappear();
                     }
                 });
                 assertThat(modal1.getView().getParent()).isEqualTo(modal2.getView().getParent());
@@ -139,15 +144,16 @@ public class ModalPresenterTest extends BaseTest {
         uut.showModal(modal1, root, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                verify(animator, times(1)).show(
+                verify(animator).show(
                         eq(modal1),
                         eq(root),
-                        eq(modal1.options.animations.showModal),
+                        any(),
                         any()
                 );
                 assertThat(animator.isRunning()).isFalse();
             }
         });
+        assertThat(animator.isRunning()).isTrue();
     }
 
     @Test
@@ -169,7 +175,10 @@ public class ModalPresenterTest extends BaseTest {
     @Test
     public void showModal_onViewDidAppearIsInvokedBeforeViewDisappear() {
         disableShowModalAnimation(modal1);
+        root.onViewWillAppear();
+
         uut.showModal(modal1, root, new CommandListenerAdapter());
+        idleMainLooper();
         InOrder inOrder = inOrder(modal1, root);
         inOrder.verify(modal1).onViewDidAppear();
         inOrder.verify(root).onViewDisappear();
@@ -183,8 +192,10 @@ public class ModalPresenterTest extends BaseTest {
         uut.dismissModal(modal1, root, root, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                verify(modal1, times(1)).onViewDisappear();
-                verify(modal1, times(1)).destroy();
+                post(() -> {
+                    verify(modal1).onViewDisappear();
+                    verify(modal1).destroy();
+                });
             }
         });
 
@@ -205,14 +216,14 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void dismissModal_noAnimation() {
-        disableShowModalAnimation(modal1);
-        disableDismissModalAnimation(modal1);
+        disableModalAnimations(modal1);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
         uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
-        verify(modal1, times(1)).onViewDisappear();
-        verify(modal1, times(1)).destroy();
-        verify(animator, times(0)).dismiss(eq(root), any(), eq(modal1.options.animations.dismissModal), any());
+        verify(modal1).onViewDisappear();
+        verify(modal1).destroy();
+        verify(animator, never()).dismiss(eq(root), any(), eq(modal1.options.animations.dismissModal), any());
     }
 
     @Test
@@ -220,11 +231,17 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1, modal2);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
+        idleMainLooper();
+        assertThat(modal1.getView().getParent()).isNotNull();
         verify(modal1).onViewWillAppear();
+
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNull();
+
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
         uut.dismissModal(modal2, modal1, root, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNotNull();
+        idleMainLooper();
         verify(modal1, times(2)).onViewWillAppear();
     }
 
@@ -265,8 +282,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void dismissModal_successIsReportedBeforeViewIsDestroyed() {
-        disableShowModalAnimation(modal1);
-        disableDismissModalAnimation(modal1);
+        disableModalAnimations(modal1);
         CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
         ViewController modal = spy(modal1);
         InOrder inOrder = inOrder(listener, modal);

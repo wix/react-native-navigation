@@ -1,5 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
@@ -9,13 +10,13 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
@@ -34,16 +35,22 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
-    private BottomTabs bottomTabs;
-    private List<ViewController> tabs;
-    private EventEmitter eventEmitter;
-    private ImageLoader imageLoader;
-    private final BottomTabsAttacher tabsAttacher;
-    private BottomTabsPresenter presenter;
-    private BottomTabPresenter tabPresenter;
 
-    public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsAttacher tabsAttacher, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
-        super(activity, childRegistry, id, presenter, initialOptions);
+	private BottomTabs bottomTabs;
+	private final List<ViewController<?>> tabs;
+    private final EventEmitter eventEmitter;
+    private final ImageLoader imageLoader;
+    private final BottomTabsAttacher tabsAttacher;
+    private final BottomTabsPresenter presenter;
+    private final BottomTabPresenter tabPresenter;
+
+    public BottomTabsAnimator getAnimator() {
+        return presenter.getAnimator();
+    }
+
+
+    public BottomTabsController(Activity activity, List<ViewController<?>> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsAttacher tabsAttacher, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
+		super(activity, childRegistry, id, presenter, initialOptions);
         this.tabs = tabs;
         this.eventEmitter = eventEmitter;
         this.imageLoader = imageLoader;
@@ -68,7 +75,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         bottomTabs = createBottomTabs();
         Options resolveCurrentOptions = resolveCurrentOptions();
         tabsAttacher.init(root, resolveCurrentOptions);
-        presenter.bindView(bottomTabs, this, new BottomTabsAnimator(bottomTabs));
+        presenter.bindView(bottomTabs, this);
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
@@ -201,10 +208,11 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @NonNull
-    @Override
-    public Collection<ViewController> getChildControllers() {
-        return tabs;
-    }
+
+	@Override
+	public Collection<ViewController<?>> getChildControllers() {
+		return tabs;
+	}
 
     @Override
     public void destroy() {
@@ -224,6 +232,18 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @NonNull
     private ViewGroup getCurrentView() {
         return tabs.get(bottomTabs.getCurrentItem()).getView();
+    }
+
+    public Animator getPushAnimation(Options appearingOptions) {
+        return presenter.getPushAnimation(appearingOptions);
+    }
+
+    public Animator getSetStackRootAnimation(Options appearingOptions) {
+        return presenter.getSetStackRootAnimation(appearingOptions);
+    }
+
+    public Animator getPopAnimation(Options appearingOptions, Options disappearingOptions) {
+        return presenter.getPopAnimation(appearingOptions, disappearingOptions);
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

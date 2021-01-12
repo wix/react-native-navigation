@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -55,6 +56,7 @@ public class OverlayManagerTest extends BaseTest {
     public void show() {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.show(overlayContainer, overlay1, listener);
+        idleMainLooper();
         verify(listener).onSuccess(OVERLAY_ID_1);
         verify(overlay1).onViewDidAppear();
         assertThat(overlay1.getView().getParent()).isEqualTo(overlayContainer);
@@ -83,10 +85,12 @@ public class OverlayManagerTest extends BaseTest {
     public void dismiss_onViewReturnedToFront() {
         uut.show(overlayContainer, overlay1, new CommandListenerAdapter());
         uut.show(overlayContainer, overlay2, new CommandListenerAdapter());
-        verify(overlay1, times(0)).onViewBroughtToFront();
+        idleMainLooper();
+        verify(overlay1, never()).onViewBroughtToFront();
 
         uut.dismiss(overlayContainer, OVERLAY_ID_2, new CommandListenerAdapter());
-        verify(overlay1, times(1)).onViewBroughtToFront();
+        idleMainLooper();
+        verify(overlay1).onViewBroughtToFront();
     }
 
     @Test

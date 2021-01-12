@@ -25,15 +25,15 @@ import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 public class BottomTabPresenter {
     private final Context context;
-    private ImageLoader imageLoader;
-    private TypefaceLoader typefaceLoader;
+    private final ImageLoader imageLoader;
+    private final TypefaceLoader typefaceLoader;
     private Options defaultOptions;
     private final BottomTabFinder bottomTabFinder;
-    private LateInit<BottomTabs> bottomTabs = new LateInit<>();
-    private final List<ViewController> tabs;
+    private final LateInit<BottomTabs> bottomTabs = new LateInit<>();
+    private final List<ViewController<?>> tabs;
     private final int defaultDotIndicatorSize;
 
-    public BottomTabPresenter(Context context, List<ViewController> tabs, ImageLoader imageLoader,  TypefaceLoader typefaceLoader, Options defaultOptions) {
+    public BottomTabPresenter(Context context, List<ViewController<?>> tabs, ImageLoader imageLoader,  TypefaceLoader typefaceLoader, Options defaultOptions) {
         this.tabs = tabs;
         this.context = context;
         this.bottomTabFinder = new BottomTabFinder(tabs);

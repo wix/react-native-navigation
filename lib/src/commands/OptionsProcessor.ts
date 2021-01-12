@@ -5,12 +5,20 @@ import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 import endsWith from 'lodash/endsWith';
 import forEach from 'lodash/forEach';
+import has from 'lodash/has';
 
 import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
-import { Options, OptionsSearchBar, OptionsTopBar } from '../interfaces/Options';
+import {
+  AnimationOptions,
+  Options,
+  OptionsSearchBar,
+  OptionsTopBar,
+  StackAnimationOptions,
+  ViewAnimationOptions,
+} from '../interfaces/Options';
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
@@ -69,6 +77,7 @@ export class OptionsProcessor {
       this.processButtonsPassProps(key, value);
       this.processSearchBar(key, value, objectToProcess);
       this.processInterpolation(key, value, objectToProcess);
+      this.processAnimation(key, value, objectToProcess);
 
       onProcess(key, parentOptions);
 
@@ -178,6 +187,99 @@ export class OptionsProcessor {
           type: options[key],
         };
       }
+    }
+  }
+
+  private processAnimation(key: string, value: any, options: Record<string, any>) {
+    this.processPush(key, value, options);
+    this.processPop(key, value, options);
+    this.processSetStackRoot(key, value, options);
+  }
+
+  private processSetStackRoot(
+    key: string,
+    animation: ViewAnimationOptions | StackAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (key !== 'setStackRoot') return;
+    if (this.isNewStackAnimationApi(animation)) return;
+    this.convertDeprecatedViewAnimationApiToNewStackAnimationApi(animation, parentOptions);
+  }
+
+  private isNewStackAnimationApi(animation: ViewAnimationOptions | StackAnimationOptions) {
+    return has(animation, 'content') || has(animation, 'topBar') || has(animation, 'bottomTabs');
+  }
+
+  private convertDeprecatedViewAnimationApiToNewStackAnimationApi(
+    animation: ViewAnimationOptions | StackAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (!has(animation, 'content.enter') && !has(animation, 'content.exit')) {
+      parentOptions.setStackRoot = {
+        content: {
+          enter: animation,
+        },
+      };
+      if (has(animation, 'enabled')) {
+        parentOptions.setStackRoot!!.enabled = animation.enabled;
+      }
+      if (has(animation, 'waitForRender')) {
+        parentOptions.setStackRoot!!.waitForRender = animation.waitForRender;
+      }
+    }
+  }
+
+  private processPop(
+    key: string,
+    animation: StackAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (key !== 'pop') return;
+    if (animation.content && !has(animation, 'content.enter') && !has(animation, 'content.exit')) {
+      parentOptions.pop!!.content = {
+        exit: animation.content as ViewAnimationOptions,
+      };
+    }
+    if (animation.topBar && !has(animation, 'topBar.enter') && !has(animation, 'topBar.exit')) {
+      parentOptions.pop!!.topBar = {
+        exit: animation.topBar as ViewAnimationOptions,
+      };
+    }
+    if (
+      animation.bottomTabs &&
+      !has(animation, 'bottomTabs.enter') &&
+      !has(animation, 'bottomTabs.exit')
+    ) {
+      parentOptions.pop!!.bottomTabs = {
+        exit: animation.bottomTabs as ViewAnimationOptions,
+      };
+    }
+  }
+
+  private processPush(
+    key: string,
+    animation: StackAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (key !== 'push') return;
+    if (animation.content && !has(animation, 'content.enter') && !has(animation, 'content.exit')) {
+      parentOptions.push!!.content = {
+        enter: animation.content as ViewAnimationOptions,
+      };
+    }
+    if (animation.topBar && !has(animation, 'topBar.enter') && !has(animation, 'topBar.exit')) {
+      parentOptions.push!!.topBar = {
+        enter: animation.topBar as ViewAnimationOptions,
+      };
+    }
+    if (
+      animation.bottomTabs &&
+      !has(animation, 'bottomTabs.enter') &&
+      !has(animation, 'bottomTabs.exit')
+    ) {
+      parentOptions.push!!.bottomTabs = {
+        enter: animation.bottomTabs as ViewAnimationOptions,
+      };
     }
   }
 }
