@@ -5,6 +5,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -71,14 +72,40 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void setComponent_alignedAfterMeasure() {
+    public void setComponent_alignedStartAfterMeasure() {
         uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
 
         View component = new View(activity);
         component.layout(0, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT);
+        component.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.START));
         uut.setComponent(component);
+        uut.onLayout(true, 0, 0, 0, 0);
+        assertThat(component.getX()).isEqualTo(0);
+    }
 
-        dispatchOnGlobalLayout(component);
+    @Test
+    public void setComponent_alignedStartRTLAfterMeasure() {
+        ViewGroup parent = new FrameLayout(activity);
+        parent.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
+        when(uut.getParent()).thenReturn(parent);
+        uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
+        when(uut.getLayoutDirection()).thenReturn(View.LAYOUT_DIRECTION_RTL);
+        View component = new View(activity);
+        component.layout(0, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT);
+        component.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.START));
+        uut.setComponent(component);
+        uut.onLayout(true, 0, 0, 0, 0);
+        assertThat(component.getX()).isEqualTo(UUT_WIDTH - COMPONENT_WIDTH);
+    }
+
+    @Test
+    public void setComponent_alignedCenterAfterMeasure() {
+        uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
+        View component = new View(activity);
+        component.layout(0, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT);
+        component.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+        uut.setComponent(component);
+        uut.onLayout(true, 0, 0, 0, 0);
         assertThat(component.getX()).isEqualTo((UUT_WIDTH - COMPONENT_WIDTH) / 2f);
     }
 
@@ -91,7 +118,7 @@ public class TitleBarTest extends BaseTest {
         uut.setComponent(component);
         ((Toolbar.LayoutParams) component.getLayoutParams()).gravity = Gravity.CENTER;
 
-        uut.onLayout(true, 0, 0, 0 ,0);
+        uut.onLayout(true, 0, 0, 0, 0);
         assertThat(component.getX()).isEqualTo((UUT_WIDTH - COMPONENT_WIDTH) / 2f);
     }
 
@@ -108,7 +135,7 @@ public class TitleBarTest extends BaseTest {
         uut.setComponent(component);
         ((Toolbar.LayoutParams) component.getLayoutParams()).gravity = Gravity.CENTER;
 
-        uut.onLayout(true, 0, 0, 0 ,0);
+        uut.onLayout(true, 0, 0, 0, 0);
         component.layout(0, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT);
         dispatchOnGlobalLayout(component);
         assertThat(component.getX()).isEqualTo((UUT_WIDTH - COMPONENT_WIDTH + (PARENT_WIDTH - UUT_WIDTH)) / 2f);
