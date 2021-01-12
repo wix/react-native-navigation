@@ -9,7 +9,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
-import kotlin.math.max
 
 class BottomTabsPresenter(
         private val tabs: List<ViewController<*>>,
@@ -185,9 +184,5 @@ class BottomTabsPresenter(
                 appearingOptions.animations.setStackRoot.bottomTabs,
                 appearingOptions.bottomTabsOptions.visible
         )
-    }
-    fun findTabIndexByTabId(id: String?): Int {
-        val index = bottomTabFinder.findByControllerId(id)
-        return max(index, 0)
     }
 }
