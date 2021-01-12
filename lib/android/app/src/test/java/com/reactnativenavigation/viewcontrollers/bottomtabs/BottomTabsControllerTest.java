@@ -380,6 +380,7 @@ public class BottomTabsControllerTest extends BaseTest {
         Options options = Options.EMPTY.copy();
         options.bottomTabsOptions.currentTabIndex = new Number(1);
         prepareViewsForTests(options.bottomTabsOptions);
+        idleMainLooper();
         verify(tabs.get(0), times( 0)).onViewDidAppear();
         verify(tabs.get(1), times( 1)).onViewDidAppear();
         verify(tabs.get(2), times( 0)).onViewDidAppear();
@@ -416,7 +417,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     private void prepareViewsForTests() {
-        prepareViewsForTests(Options.EMPTY.copy().bottomTabsOptions);
+        prepareViewsForTests(initialOptions.bottomTabsOptions);
     }
 
     private void prepareViewsForTests(BottomTabsOptions bottomTabsOptions) {
@@ -429,11 +430,10 @@ public class BottomTabsControllerTest extends BaseTest {
         });
         createChildren();
         tabs = Arrays.asList(child1, child2, child3, child4, child5);
-        Options options = Options.EMPTY.copy();
-        options.bottomTabsOptions = bottomTabsOptions;
-        presenter = spy(new BottomTabsPresenter(tabs, options,new BottomTabsAnimator()));
-        bottomTabPresenter = spy(new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), options));
-        tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter, options));
+        initialOptions.bottomTabsOptions = bottomTabsOptions;
+        presenter = spy(new BottomTabsPresenter(tabs, initialOptions,new BottomTabsAnimator()));
+        bottomTabPresenter = spy(new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), initialOptions));
+        tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter, initialOptions));
         uut = createBottomTabs();
 
         activity.setContentView(new FakeParentController(activity, childRegistry, uut).getView());
@@ -468,7 +468,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 imageLoaderMock,
                 "uut",
                 initialOptions,
-                new Presenter(activity, new Options()),
+                new Presenter(activity, initialOptions),
                 tabsAttacher,
                 presenter,
                 bottomTabPresenter) {
