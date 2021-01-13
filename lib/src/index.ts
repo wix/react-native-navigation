@@ -16,3 +16,4 @@ export * from './interfaces/NavigationComponentListener';
 export * from './interfaces/NavigationFunctionComponent';
 export * from './interfaces/CommandName';
 export * from './interfaces/Processors';
+export * from './interfaces/ProcessorSubscription';
