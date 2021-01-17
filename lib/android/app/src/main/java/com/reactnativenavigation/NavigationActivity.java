@@ -78,7 +78,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         logger.log(Log.INFO, TAG, "onPostCreate PIPMode " + navigator.getPipMode());
-        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
+        if (navigator.getPipMode() == PIPStates.NOT_STARTED) {
             navigator.setContentLayout(findViewById(android.R.id.content));
         }
     }
@@ -88,7 +88,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onResume();
         navigatingToAnotherActivity = false;
         logger.log(Log.INFO, TAG, "onResume PIPMode " + navigator.getPipMode());
-        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
+        if (navigator.getPipMode() == PIPStates.NOT_STARTED) {
             getReactGateway().onActivityResumed(this);
         }
     }
@@ -105,7 +105,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected void onPause() {
         super.onPause();
         logger.log(Log.INFO, TAG, "onPause PIPMode " + navigator.getPipMode());
-        if (navigator.getPipMode() != PIPStates.NATIVE_MOUNTED && navigator.getPipMode() != PIPStates.NATIVE_MOUNT_START) {
+        if (navigator.getPipMode() == PIPStates.NOT_STARTED) {
             getReactGateway().onActivityPaused(this);
         }
     }
