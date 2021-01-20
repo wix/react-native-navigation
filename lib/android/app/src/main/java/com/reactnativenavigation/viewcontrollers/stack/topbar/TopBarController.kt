@@ -107,11 +107,13 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
     fun applyRightButtons(toAdd: List<ButtonController>) {
         view.clearRightButtons()
         toAdd.forEachIndexed { i, b -> b.addToMenu(titleBar, (toAdd.size - i) * 10) }
+        toAdd.forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, (toAdd.size - i) * 10) }
     }
 
     fun mergeRightButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
         toRemove.forEach { view.removeRightButton(it) }
         toAdd.forEachIndexed { i, b -> b.addToMenu(titleBar, (toAdd.size - i) * 10) }
+        toAdd.forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, (toAdd.size - i) * 10) }
     }
 
     open fun applyLeftButtons(toAdd: List<ButtonController>) {
@@ -120,6 +122,7 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         view.clearLeftButtons()
         forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, (toAdd.size - i) * 10) }
         leftButtonsBar.doOnPreDraw { leftButtonsBar.minimumWidth = 0 }
+        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, i * 10) }
     }
 
     open fun mergeLeftButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
@@ -128,5 +131,6 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         toRemove.forEach {view.removeLeftButton(it) }
         forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, (toAdd.size - i) * 10) }
         leftButtonsBar.doOnPreDraw { leftButtonsBar.minimumWidth = 0 }
+        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, i * 10) }
     }
 }
