@@ -289,6 +289,19 @@ describe('OptionsCrawler', () => {
     });
   });
 
+  it('Components: options default obj', () => {
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () => class extends React.Component {}
+    );
+
+    const node = {
+      component: { name: 'theComponentName', options: {}, id: 'testId' },
+      children: [],
+    };
+    uut.crawl(node);
+    expect(node.component.options).toEqual({});
+  });
+
   it('Components: should generate component id', () => {
     let componentIdInProps: String = '';
     when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
