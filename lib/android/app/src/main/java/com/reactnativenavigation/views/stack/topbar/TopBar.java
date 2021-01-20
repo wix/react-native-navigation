@@ -27,7 +27,9 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBeha
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.stack.topbar.titlebar.LeftButtonsBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.RightButtonsBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.MainToolBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
 import androidx.annotation.ColorInt;
@@ -36,37 +38,36 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.viewpager.widget.ViewPager;
 
+import org.jetbrains.annotations.NotNull;
+
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
-    private TitleBar titleBar;
-    private LeftButtonsBar leftButtonsBar;
+
     private final TopBarCollapseBehavior collapsingBehavior;
     private TopTabs topTabs;
     private FrameLayout root;
     private View border;
     private View component;
     private float elevation = -1;
+    private final MainToolBar mainToolBar;
 
     public int getRightButtonsCount() {
-        return titleBar.getButtonsCount();
-    }
-
-    public int getLeftButtonsCount() {
-        return leftButtonsBar.getButtonsCount();
+        return mainToolBar.getRightButtonsBar().getButtonsCount();
     }
 
     @Nullable
     public Drawable getNavigationIcon() {
-        return leftButtonsBar.getNavigationIcon();
+        return mainToolBar.getLeftButtonsBar().getNavigationIcon();
     }
 
     public TopBar(final Context context) {
         super(context);
         context.setTheme(R.style.TopBar);
         setId(CompatUtils.generateViewId());
+        this.mainToolBar = new MainToolBar(getContext());
         collapsingBehavior = new TopBarCollapseBehavior(this);
         topTabs = new TopTabs(getContext());
         createLayout();
@@ -75,18 +76,13 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private void createLayout() {
         setId(CompatUtils.generateViewId());
         setFitsSystemWindows(true);
-        titleBar = createTitleBar(getContext());
-        leftButtonsBar = createLeftButtonsBar(getContext());
         topTabs = createTopTabs();
         border = createBorder();
         LinearLayout content = createContentLayout();
-        LinearLayout bars = new LinearLayout(getContext()); bars.setOrientation(HORIZONTAL);
 
         root = new FrameLayout(getContext());
         root.setId(CompatUtils.generateViewId());
-        bars.addView(leftButtonsBar, WRAP_CONTENT, UiUtils.getTopBarHeight(getContext()));
-        bars.addView(titleBar, MATCH_PARENT, UiUtils.getTopBarHeight(getContext()));
-        content.addView(bars);
+        content.addView(mainToolBar, MATCH_PARENT, UiUtils.getTopBarHeight(getContext()));
         content.addView(topTabs);
         root.addView(content);
         root.addView(border);
@@ -102,7 +98,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     @NonNull
     private TopTabs createTopTabs() {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-        lp.addRule(RelativeLayout.BELOW, titleBar.getId());
+        lp.addRule(RelativeLayout.BELOW, mainToolBar.getId());
         TopTabs topTabs = new TopTabs(getContext());
         topTabs.setLayoutParams(lp);
         topTabs.setVisibility(GONE);
@@ -118,18 +114,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return border;
     }
 
-    protected TitleBar createTitleBar(Context context) {
-        TitleBar titleBar = new TitleBar(context);
-        titleBar.setId(CompatUtils.generateViewId());
-        return titleBar;
-    }
-
-    protected LeftButtonsBar createLeftButtonsBar(Context context) {
-        LeftButtonsBar leftButtonsBar = new LeftButtonsBar(context);
-        leftButtonsBar.setId(CompatUtils.generateViewId());
-        return leftButtonsBar;
-    }
-
     public void setHeight(int height) {
         int pixelHeight = UiUtils.dpToPx(getContext(), height);
         if (pixelHeight == getLayoutParams().height) return;
@@ -139,39 +123,40 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setTitleHeight(int height) {
-        titleBar.setHeight(height);
+        mainToolBar.getTitleBar().setHeight(height);
     }
 
     public void setTitleTopMargin(int topMargin) {
-        titleBar.setTopMargin(topMargin);
+        mainToolBar.getTitleBar().setTopMargin(topMargin);
     }
 
     public void setTitle(String title) {
-        titleBar.setTitle(title);
+        mainToolBar.getTitleBar().setTitle(title);
     }
 
     public String getTitle() {
-        return titleBar.getTitle();
+        return mainToolBar.getTitleBar().getTitle();
     }
 
     public void setSubtitle(String subtitle) {
-        titleBar.setSubtitle(subtitle);
+        mainToolBar.getTitleBar().setSubtitle(subtitle);
     }
 
     public void setSubtitleColor(@ColorInt int color) {
-        titleBar.setSubtitleTextColor(color);
+        mainToolBar.getTitleBar().setSubtitleColor(color);
     }
 
     public void setSubtitleTypeface(TypefaceLoader typefaceLoader, FontOptions font) {
-        titleBar.setSubtitleTypeface(typefaceLoader, font);
+        if (typefaceLoader != null)
+            mainToolBar.getTitleBar().setSubtitleTypeface(typefaceLoader, font);
     }
 
     public void setSubtitleFontSize(double size) {
-        titleBar.setSubtitleFontSize(size);
+        mainToolBar.getTitleBar().setSubtitleFontSize((float) size);
     }
 
     public void setSubtitleAlignment(Alignment alignment) {
-        titleBar.setSubtitleAlignment(alignment);
+        mainToolBar.setTitleBarAlignment(alignment);
     }
 
     public void setTestId(String testId) {
@@ -179,23 +164,24 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setTitleTextColor(@ColorInt int color) {
-        titleBar.setTitleTextColor(color);
+        mainToolBar.getTitleBar().setTitleColor(color);
     }
 
     public void setTitleFontSize(double size) {
-        titleBar.setTitleFontSize(size);
+        mainToolBar.getTitleBar().setTitleFontSize((float) size);
     }
 
     public void setTitleTypeface(TypefaceLoader typefaceLoader, FontOptions font) {
-        titleBar.setTitleTypeface(typefaceLoader, font);
+        if (typefaceLoader != null)
+            mainToolBar.getTitleBar().setTitleTypeface(typefaceLoader, font);
     }
 
     public void setTitleAlignment(Alignment alignment) {
-        titleBar.setTitleAlignment(alignment);
+        mainToolBar.setTitleBarAlignment(alignment);
     }
 
     public void setTitleComponent(View component) {
-        titleBar.setComponent(component);
+        mainToolBar.getTitleBar().setComponent(component);
     }
 
     public void setBackgroundComponent(View component) {
@@ -227,19 +213,19 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setBackButton(ButtonController backButton) {
-        leftButtonsBar.setBackButton(backButton);
+        mainToolBar.getLeftButtonsBar().setBackButton(backButton);
     }
 
     public void clearLeftButtons() {
-        leftButtonsBar.clearButtons();
+        mainToolBar.getLeftButtonsBar().clearButtons();
     }
 
     public void clearBackButton() {
-        leftButtonsBar.clearBackButton();
+        mainToolBar.getLeftButtonsBar().clearBackButton();
     }
 
     public void clearRightButtons() {
-        titleBar.clearButtons();
+        mainToolBar.getRightButtonsBar().clearButtons();
     }
 
     public void setElevation(Double elevation) {
@@ -256,12 +242,16 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         }
     }
 
+    public RightButtonsBar getRightButtonsBar() {
+        return mainToolBar.getRightButtonsBar();
+    }
+
     public TitleBar getTitleBar() {
-        return titleBar;
+        return mainToolBar.getTitleBar();
     }
 
     public LeftButtonsBar getLeftButtonsBar() {
-        return leftButtonsBar;
+        return mainToolBar.getLeftButtonsBar();
     }
 
     public void initTopTabs(ViewPager viewPager) {
@@ -304,12 +294,13 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setOverflowButtonColor(int color) {
-        titleBar.setOverflowButtonColor(color);
+        mainToolBar.getRightButtonsBar().setOverflowButtonColor(color);
+        mainToolBar.getLeftButtonsBar().setOverflowButtonColor(color);
     }
 
     public void setLayoutDirection(LayoutDirection direction) {
-        leftButtonsBar.setLayoutDirection(direction.inverse());
-        titleBar.setLayoutDirection(direction.get());
+//        mainToolBar.getLeftButtonsBar().setLayoutDirection(direction.inverse());
+        mainToolBar.setLayoutDirection(direction.get());
     }
 
     public void removeRightButton(ButtonController button) {
@@ -321,10 +312,14 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void removeRightButton(int buttonId) {
-        titleBar.removeButton(buttonId);
+        mainToolBar.getRightButtonsBar().removeButton(buttonId);
     }
 
     public void removeLeftButton(int buttonId) {
-        leftButtonsBar.removeButton(buttonId);
+        mainToolBar.getLeftButtonsBar().removeButton(buttonId);
+    }
+
+    public void alignTitleComponent(@NotNull Alignment alignment) {
+        mainToolBar.setTitleBarAlignment(alignment);
     }
 }
