@@ -13,7 +13,7 @@
 
 - (void)setTabBarTranslucent:(BOOL)translucent;
 
-- (void)applyBorder:(RNNBottomTabsOptions *)options;
+- (void)applyTabBarBorder:(RNNBottomTabsOptions *)options;
 
 - (UITabBarController *)tabBarController;
 

@@ -17,7 +17,7 @@
         [self setTabBarDefaultBackground];
 }
 
-- (void)applyBorder:(RNNBottomTabsOptions *)options {
+- (void)applyTabBarBorder:(RNNBottomTabsOptions *)options {
     if (options.borderColor.hasValue || options.borderWidth.hasValue) {
         for (UIViewController *childViewController in self.tabBarController.childViewControllers)
             childViewController.tabBarItem.standardAppearance.shadowImage = [UIImage
