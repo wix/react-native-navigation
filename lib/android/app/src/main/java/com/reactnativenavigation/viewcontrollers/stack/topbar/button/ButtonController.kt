@@ -12,6 +12,7 @@ import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsToolbar
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactButtonView
@@ -80,13 +81,13 @@ open class ButtonController(activity: Activity,
 
     open fun applyDisabledColor(toolbar: Toolbar, disabledColour: Colour) = this.menuItem?.let { presenter.applyDisabledColor(toolbar, it, disabledColour) }
 
-    fun addToMenu(toolbar: TitleBar, order: Int) {
-        if (button.component.hasValue() && toolbar.containsButton(menuItem, order)) return
-        toolbar.menu.removeItem(button.intId)
-        createAndAddButtonToTitleBar(toolbar, order).apply {
+    fun addToMenu(buttonsBar: ButtonsToolbar, order: Int) {
+        if (button.component.hasValue() && buttonsBar.containsButton(menuItem, order)) return
+        buttonsBar.menu.removeItem(button.intId)
+        createAndAddButtonToTitleBar(buttonsBar, order).apply {
             menuItem = this
             setOnMenuItemClickListener(this@ButtonController)
-            presenter.applyOptions(toolbar, this, this@ButtonController::getView)
+            presenter.applyOptions(buttonsBar, this, this@ButtonController::getView)
         }
     }
 
