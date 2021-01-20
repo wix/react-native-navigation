@@ -68,7 +68,8 @@ public class StackPresenter {
 
     private TopBar topBar;
     private TopBarController topBarController;
-    private @Nullable BottomTabsController bottomTabsController;
+    private @Nullable
+    BottomTabsController bottomTabsController;
     private final TitleBarReactViewCreator titleViewCreator;
     private ButtonController.OnClickListener onClickListener;
     private final RenderChecker renderChecker;
@@ -196,9 +197,9 @@ public class StackPresenter {
                 TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator, topBarOptions.title.component);
                 controller.setWaitForRender(topBarOptions.title.component.waitForRender);
                 titleControllers.put(component, controller);
-                controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
                 topBarController.setTitleComponent(controller);
             }
+            topBarController.alignTitleComponent(topBarOptions.title.component.alignment);
         }
 
         topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
@@ -392,8 +393,8 @@ public class StackPresenter {
     private void mergeRightButtonsColor(View child, Colour color, Colour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
             forEach(componentRightButtons.get(child).values(), (btnController) -> {
-                if (color.hasValue()) btnController.applyColor(topBarController.getView().getTitleBar(), color);
-                if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getTitleBar(), disabledColor);
+                if (color.hasValue()) btnController.applyColor(topBarController.getView().getRightButtonsBar(), color);
+                if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getRightButtonsBar(), disabledColor);
             });
         }
     }
@@ -465,12 +466,14 @@ public class StackPresenter {
             if (controller == null) {
                 controller = new TitleBarReactViewController(activity, titleViewCreator, topBarOptions.title.component);
                 perform(titleControllers.put(component, controller), ViewController::destroy);
-                controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
             }
             topBarController.setTitleComponent(controller);
+            topBarController.alignTitleComponent(topBarOptions.title.component.alignment);
         } else if (topBarOptions.title.text.hasValue()) {
             perform(titleControllers.remove(component), ViewController::destroy);
             topBar.setTitle(topBarOptions.title.text.get());
+            topBarController.alignTitleComponent(topBarOptions.title.alignment);
+
         }
 
         if (resolveOptions.title.color.hasValue()) topBar.setTitleTextColor(resolveOptions.title.color.get());
