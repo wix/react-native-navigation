@@ -78,7 +78,7 @@ export class NavigationRoot {
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
-    this.optionsCrawler = new OptionsCrawler(this.store);
+    this.optionsCrawler = new OptionsCrawler(this.store, this.uniqueIdProvider);
     this.commands = new Commands(
       this.store,
       this.nativeCommandsSender,
