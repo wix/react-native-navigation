@@ -8,6 +8,7 @@ import android.view.View
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.doOnPreDraw
 import androidx.viewpager.widget.ViewPager
+import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.utils.CollectionUtils.forEachIndexed
@@ -18,6 +19,7 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReac
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.LeftButtonsBar
+import com.reactnativenavigation.views.stack.topbar.titlebar.RightButtonsBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 
 
@@ -25,6 +27,7 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
     lateinit var view: TopBar
     private lateinit var titleBar: TitleBar
     private lateinit var leftButtonsBar: LeftButtonsBar
+    private lateinit var rightButtonsBar: RightButtonsBar
 
 
     val height: Int
@@ -35,12 +38,14 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         get() = leftButtonsBar.buttonsCount
 
     fun getRightButton(index: Int): MenuItem = titleBar.getButton(index)
+    fun getRightButton(index: Int): MenuItem = rightButtonsBar.getButton(index)
 
     fun createView(context: Context, parent: StackLayout): TopBar {
         if (!::view.isInitialized) {
             view = createTopBar(context, parent)
             titleBar = view.titleBar
             leftButtonsBar = view.leftButtonsBar
+            rightButtonsBar = view.rightButtonsBar
             animator.bindView(view)
         }
         return view
@@ -102,6 +107,10 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
 
     fun setTitleComponent(component: TitleBarReactViewController) {
         view.setTitleComponent(component.view)
+    }
+
+    fun alignTitleComponent(alignment: Alignment){
+        view.alignTitleComponent(alignment)
     }
 
     fun applyRightButtons(toAdd: List<ButtonController>) {
