@@ -6,5 +6,5 @@ export interface LayoutProcessor {
 }
 
 export interface OptionsProcessor<T> {
-  (value: T, commandName: CommandName, passProps?: any): T;
+  (value: T, commandName: CommandName, props?: any): T;
 }

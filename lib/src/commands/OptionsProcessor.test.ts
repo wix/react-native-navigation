@@ -130,7 +130,7 @@ describe('navigation options', () => {
     uut.processOptions(options, CommandName.SetRoot);
   });
 
-  it('passes passProps to registered processor', () => {
+  it('passes props to registered processor', () => {
     const options: Options = {
       topBar: {
         visible: false,
@@ -303,7 +303,7 @@ describe('navigation options', () => {
 
   it('show warning on iOS when toggling bottomTabs visibility through mergeOptions', () => {
     jest.spyOn(console, 'warn');
-    uut.processOptions({ bottomTabs: { visible: false } }, CommandName.MergeOptions, undefined);
+    uut.processOptions({ bottomTabs: { visible: false } }, CommandName.MergeOptions);
     expect(console.warn).toBeCalledWith(
       'toggling bottomTabs visibility is deprecated on iOS. For more information see https://github.com/wix/react-native-navigation/issues/6416',
       {

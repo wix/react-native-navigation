@@ -33,7 +33,7 @@ export class OptionsProcessor {
     private deprecations: Deprecations
   ) {}
 
-  public processOptions(options: Options, commandName: CommandName, passProps?: any) {
+  public processOptions(options: Options, commandName: CommandName, props?: any) {
     this.processObject(
       options,
       clone(options),
@@ -42,7 +42,7 @@ export class OptionsProcessor {
         this.deprecations.checkForDeprecatedOptions(parentOptions);
       },
       commandName,
-      passProps
+      props
     );
   }
 
@@ -62,7 +62,7 @@ export class OptionsProcessor {
     parentOptions: object,
     onProcess: (key: string, parentOptions: object) => void,
     commandName: CommandName,
-    passProps?: any,
+    props?: any,
     parentPath?: string
   ) {
     forEach(objectToProcess, (value, key) => {
@@ -73,7 +73,7 @@ export class OptionsProcessor {
         objectToProcess,
         objectPath,
         commandName,
-        passProps
+        props
       );
       this.processColor(key, value, objectToProcess);
 
@@ -97,7 +97,7 @@ export class OptionsProcessor {
           parentOptions,
           onProcess,
           commandName,
-          passProps,
+          props,
           objectPath
         );
       }
