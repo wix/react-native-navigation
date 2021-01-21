@@ -27,6 +27,7 @@ import { LayoutProcessor } from './processors/LayoutProcessor';
 import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
 import { CommandName } from './interfaces/CommandName';
 import { OptionsCrawler } from './commands/OptionsCrawler';
+import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
@@ -120,7 +121,7 @@ export class NavigationRoot {
    */
   public addOptionProcessor<T>(
     optionPath: string,
-    processor: (value: T, commandName: CommandName) => T
+    processor: OptionProcessor<T>
   ): ProcessorSubscription {
     return this.optionProcessorsStore.addProcessor(optionPath, processor);
   }
