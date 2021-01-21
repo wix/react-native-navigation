@@ -65,6 +65,7 @@ export class OptionsCrawler {
     this.applyComponentId(component);
     this.applyStaticOptions(component);
   }
+
   private applyComponentId(component: LayoutComponent): void {
     component.id = component.id || this.uniqueIdProvider.generate(LayoutType.Component);
   }

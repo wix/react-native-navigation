@@ -12,6 +12,7 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Deprecations } from './Deprecations';
 import { CommandName } from '../interfaces/CommandName';
+import { OptionsProcessor as Processor } from '../interfaces/Processors';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
@@ -127,6 +128,24 @@ describe('navigation options', () => {
     });
 
     uut.processOptions(options, CommandName.SetRoot);
+  });
+
+  it('passes passProps to registered processor', () => {
+    const options: Options = {
+      topBar: {
+        visible: false,
+      },
+    };
+    const props = {
+      prop: 'prop',
+    };
+    const processor: Processor<boolean> = (_value, _commandName, passProps) => {
+      expect(passProps).toEqual(props);
+      return _value;
+    };
+
+    optionProcessorsRegistry.addProcessor('topBar.visible', processor);
+    uut.processOptions(options, CommandName.SetRoot, props);
   });
 
   it('supports multiple registered processors', () => {
@@ -284,7 +303,7 @@ describe('navigation options', () => {
 
   it('show warning on iOS when toggling bottomTabs visibility through mergeOptions', () => {
     jest.spyOn(console, 'warn');
-    uut.processOptions({ bottomTabs: { visible: false } }, CommandName.MergeOptions);
+    uut.processOptions({ bottomTabs: { visible: false } }, CommandName.MergeOptions, undefined);
     expect(console.warn).toBeCalledWith(
       'toggling bottomTabs visibility is deprecated on iOS. For more information see https://github.com/wix/react-native-navigation/issues/6416',
       {
