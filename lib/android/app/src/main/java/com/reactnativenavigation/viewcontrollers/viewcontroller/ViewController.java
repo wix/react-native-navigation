@@ -6,6 +6,12 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.CheckResult;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
@@ -24,14 +30,7 @@ import com.reactnativenavigation.views.component.Renderable;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener,
@@ -61,8 +60,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final Activity activity;
     private final String id;
     private final YellowBoxDelegate yellowBoxDelegate;
-    @Nullable protected T view;
-    @Nullable private ParentController<? extends ViewGroup> parentController;
+    @Nullable
+    protected T view;
+    @Nullable
+    private ParentController<? extends ViewGroup> parentController;
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
@@ -269,22 +270,26 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @CallSuper
     public void destroy() {
-        if (isShown) {
-            isShown = false;
-            onViewDisappear();
-        }
-        yellowBoxDelegate.destroy();
-        if (view instanceof Destroyable) {
-            ((Destroyable) view).destroy();
-        }
-        if (view != null) {
-            view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            view.setOnHierarchyChangeListener(null);
-            if (view.getParent() instanceof ViewGroup) {
-                ((ViewManager) view.getParent()).removeView(view);
+        try {
+            if (isShown) {
+                isShown = false;
+                onViewDisappear();
             }
-            view = null;
-            isDestroyed = true;
+            yellowBoxDelegate.destroy();
+            if (view instanceof Destroyable) {
+                ((Destroyable) view).destroy();
+            }
+            if (view != null) {
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                view.setOnHierarchyChangeListener(null);
+                if (view.getParent() instanceof ViewGroup) {
+                    ((ViewManager) view.getParent()).removeView(view);
+                }
+                view = null;
+                isDestroyed = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -327,11 +332,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public abstract void sendOnNavigationButtonPressed(String buttonId);
 
-    public void sendOnPIPStateChanged(String prevState, String newState){
+    public void sendOnPIPStateChanged(String prevState, String newState) {
 
     }
 
-    public void sendOnPIPButtonPressed(String buttonId){
+    public void sendOnPIPButtonPressed(String buttonId) {
 
     }
 

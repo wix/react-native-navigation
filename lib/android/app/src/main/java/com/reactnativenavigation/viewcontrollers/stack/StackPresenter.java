@@ -293,7 +293,7 @@ public class StackPresenter {
                 if (topBarController != null)
                     topBarController.applyRightButtons(currentRightButtons);
             }
-        } else {
+        } else if (topBar != null) {
             currentRightButtons = null;
             topBar.clearRightButtons();
         }
@@ -304,15 +304,16 @@ public class StackPresenter {
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, ButtonController::getButtonInstanceId));
             if (topBarController != null)
                 topBarController.setLeftButtons(leftButtonControllers);
-        } else {
+        } else if (topBar != null) {
             topBar.clearLeftButtons();
         }
 
-        if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) {
+        if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons() && topBar != null) {
             topBar.setBackButton(createButtonController(options.buttons.back));
         }
-
-        topBar.setOverflowButtonColor(options.rightButtonColor.get(Color.BLACK));
+        if (topBar != null) {
+            topBar.setOverflowButtonColor(options.rightButtonColor.get(Color.BLACK));
+        }
     }
 
     private List<ButtonController> getOrCreateButtonControllersByInstanceId(@Nullable Map<String, ButtonController> currentButtons, @Nullable List<ButtonOptions> buttons) {
