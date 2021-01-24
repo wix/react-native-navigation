@@ -27,9 +27,9 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBeha
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.stack.topbar.titlebar.LeftButtonsBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.MainToolBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.RightButtonsBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
-import com.reactnativenavigation.views.stack.topbar.titlebar.MainToolBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
 import androidx.annotation.ColorInt;

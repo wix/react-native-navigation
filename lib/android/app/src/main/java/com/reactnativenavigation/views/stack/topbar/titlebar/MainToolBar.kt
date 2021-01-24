@@ -12,6 +12,8 @@ import com.reactnativenavigation.utils.UiUtils
 const val DEFAULT_LEFT_MARGIN = 16
 
 class MainToolBar(context: Context) : ConstraintLayout(context) {
+    val leftBarTitleBarBarrierID = CompatUtils.generateViewId()
+    val titleBarRightBarBarrierID = CompatUtils.generateViewId()
     val titleBar: TitleBar = TitleBar(context).apply {
         this.id = CompatUtils.generateViewId()
         setBackgroundColor(Color.BLUE)
@@ -29,8 +31,6 @@ class MainToolBar(context: Context) : ConstraintLayout(context) {
 
     init {
         this.setBackgroundColor(Color.YELLOW)
-        val leftBarTitleBarBarrierID = CompatUtils.generateViewId()
-        val titleBarRightBarBarrierID = CompatUtils.generateViewId()
 
         this.addView(leftButtonsBar, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         this.addView(titleBar, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
@@ -59,9 +59,7 @@ class MainToolBar(context: Context) : ConstraintLayout(context) {
         constraintSet.setMargin(titleBar.id, ConstraintSet.START, UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN))
 
         constraintSet.applyTo(this)
-
     }
-
 
 
     fun setTitleBarAlignment(alignment: Alignment) {
