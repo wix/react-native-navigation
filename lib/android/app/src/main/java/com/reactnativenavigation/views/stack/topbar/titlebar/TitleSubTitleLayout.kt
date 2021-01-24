@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.annotation.RestrictTo
 import androidx.core.widget.TextViewCompat
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.FontOptions
@@ -22,10 +23,10 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
         this.orientation = VERTICAL
         this.setVerticalGravity(Gravity.CENTER_VERTICAL)
 
-        this.addView(titleTextView, LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+        this.addView(titleTextView, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             setBackgroundColor(Color.DKGRAY)
         })
-        this.addView(subTitleTextView, LayoutParams(LayoutParams.WRAP_CONTENT, 0).apply {
+        this.addView(subTitleTextView, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             setBackgroundColor(Color.GRAY)
             weight = 1f
         })
@@ -67,4 +68,13 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
         this.subTitleTextView.text = null
     }
 
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun getTitleTxtView(): TextView {
+        return this.titleTextView
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun getSubTitleTxtView(): TextView {
+        return this.subTitleTextView
+    }
 }

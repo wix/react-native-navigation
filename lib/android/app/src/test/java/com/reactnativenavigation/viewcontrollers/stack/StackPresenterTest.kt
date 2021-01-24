@@ -38,6 +38,7 @@ import org.mockito.ArgumentCaptor
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.jvm.Throws
 
 
 class StackPresenterTest : BaseTest() {
@@ -223,7 +224,7 @@ class StackPresenterTest : BaseTest() {
 
         val captor1 = argumentCaptor<List<ButtonController>>()
         verify(topBarController).applyRightButtons(captor1.capture())
-        assertThat(topBar.titleBar.menu.size()).isEqualTo(2)
+        assertThat(topBar.rightButtonsBar.menu.size()).isEqualTo(2)
 
         val appliedButtons = captor1.firstValue
         val toMerge = Options()
@@ -232,7 +233,7 @@ class StackPresenterTest : BaseTest() {
         toMerge.topBar.buttons.right!!.add(1, componentBtn2)
         uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child)
 
-        assertThat(topBar.titleBar.menu.size()).isEqualTo(3)
+        assertThat(topBar.rightButtonsBar.menu.size()).isEqualTo(3)
         val captor2 = argumentCaptor<List<ButtonController>>()
         verify(topBarController).mergeRightButtons(captor2.capture(), any())
         val mergedButtons = captor2.firstValue
@@ -350,9 +351,9 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
         uut.mergeOptions(toMerge, parent, child)
-        val title = topBar.titleBar.findTitleTextView()
+        val title = topBar.titleBar.getTitleTxtView()
         assertThat(title).isNotNull()
-        assertThat(title!!.typeface).isEqualTo(SOME_TYPEFACE)
+        assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
         verify(topBar).setTitleTextColor(Color.RED)
     }
@@ -371,9 +372,9 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.subtitle.text = Text("New Title")
         uut.mergeOptions(toMerge, parent, child)
-        val subtitle = topBar.titleBar.findSubtitleTextView()
+        val subtitle = topBar.titleBar.getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
-        assertThat(subtitle!!.typeface).isEqualTo(SOME_TYPEFACE)
+        assertThat(subtitle.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setSubtitleFontSize(9.0)
         verify(topBar).setSubtitleColor(Color.RED)
     }
@@ -389,9 +390,9 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
-        val title = topBar.titleBar.findTitleTextView()
+        val title = topBar.titleBar.getTitleTxtView()
         assertThat(title).isNotNull()
-        assertThat(title!!.typeface).isEqualTo(SOME_TYPEFACE)
+        assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
         verify(topBar).setTitleTextColor(Color.RED)
     }
@@ -407,9 +408,9 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.subtitle.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
-        val subtitle = topBar.titleBar.findSubtitleTextView()
+        val subtitle = topBar.titleBar.getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
-        assertThat(subtitle!!.typeface).isEqualTo(SOME_TYPEFACE)
+        assertThat(subtitle.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setSubtitleFontSize(9.0)
         verify(topBar).setSubtitleColor(Color.RED)
     }

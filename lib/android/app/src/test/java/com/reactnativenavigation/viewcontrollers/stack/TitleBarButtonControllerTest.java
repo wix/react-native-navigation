@@ -11,6 +11,8 @@ import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsToolbar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.RightButtonsBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 
 import org.junit.Test;
@@ -20,12 +22,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class TitleBarButtonControllerTest extends BaseTest {
     private ButtonController uut;
-    private TitleBar titleBar;
+    private RightButtonsBar titleBar;
 
     @Override
     public void beforeEach() {
         Activity activity = newActivity();
-        titleBar = new TitleBar(activity);
+        titleBar = new RightButtonsBar(activity);
 
         ButtonOptions button = createComponentButton();
         uut = new ButtonController(
