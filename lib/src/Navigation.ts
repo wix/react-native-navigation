@@ -119,9 +119,9 @@ export class NavigationRoot {
   /**
    * Adds an option processor which allows option interpolation by optionPath.
    */
-  public addOptionProcessor<T>(
+  public addOptionProcessor<T, S = any>(
     optionPath: string,
-    processor: OptionProcessor<T>
+    processor: OptionProcessor<T, S>
   ): ProcessorSubscription {
     return this.optionProcessorsStore.addProcessor(optionPath, processor);
   }
