@@ -299,7 +299,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setLayoutDirection(LayoutDirection direction) {
-//        mainToolBar.getLeftButtonsBar().setLayoutDirection(direction.inverse());
         mainToolBar.setLayoutDirection(direction.get());
     }
 

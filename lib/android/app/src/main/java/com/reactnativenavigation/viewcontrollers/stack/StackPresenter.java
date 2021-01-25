@@ -3,12 +3,14 @@ package com.reactnativenavigation.viewcontrollers.stack;
 import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.AnimationOptions;
@@ -16,11 +18,13 @@ import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
+import com.reactnativenavigation.options.TitleOptions;
 import com.reactnativenavigation.options.TopBarButtons;
 import com.reactnativenavigation.options.TopBarOptions;
 import com.reactnativenavigation.options.TopTabOptions;
 import com.reactnativenavigation.options.TopTabsOptions;
 import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.ObjectUtils;
@@ -187,9 +191,9 @@ public class StackPresenter {
         }
 
         topBar.setTitleHeight(topBarOptions.title.height.get(UiUtils.getTopBarHeightDp(activity)));
-        topBar.setTitle(topBarOptions.title.text.get(""));
         topBar.setTitleTopMargin(topBarOptions.title.topMargin.get(0));
 
+        //check for set component
         if (topBarOptions.title.component.hasValue()) {
             if (titleControllers.containsKey(component)) {
                 topBarController.setTitleComponent(titleControllers.get(component));
@@ -200,22 +204,32 @@ public class StackPresenter {
                 topBarController.setTitleComponent(controller);
             }
             topBarController.alignTitleComponent(topBarOptions.title.component.alignment);
+        } else {
+            //check for text title
+            String titleText = topBarOptions.title.text.get("");
+            if (!TextUtils.isEmpty(titleText)) {
+                topBar.setTitle(titleText);
+                topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
+                topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
+                topBar.setTitleTypeface(typefaceLoader, topBarOptions.title.font);
+                topBar.setTitleAlignment(topBarOptions.title.alignment);
+
+            }
+
+            //check for text subtitle
+            String subTitleText = topBarOptions.subtitle.text.get("");
+            if (!TextUtils.isEmpty(subTitleText)) {
+                topBar.setSubtitle(subTitleText);
+                topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get(defaultSubtitleFontSize));
+                topBar.setSubtitleColor(topBarOptions.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
+                topBar.setSubtitleTypeface(typefaceLoader, topBarOptions.subtitle.font);
+                topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
+            }
         }
 
-        topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
-        topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
-        topBar.setTitleTypeface(typefaceLoader, topBarOptions.title.font);
-        topBar.setTitleAlignment(topBarOptions.title.alignment);
-
-        topBar.setSubtitle(topBarOptions.subtitle.text.get(""));
-        topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get(defaultSubtitleFontSize));
-        topBar.setSubtitleColor(topBarOptions.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
-        topBar.setSubtitleTypeface(typefaceLoader, topBarOptions.subtitle.font);
-        topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
 
         topBar.setBorderHeight(topBarOptions.borderHeight.get(0d));
         topBar.setBorderColor(topBarOptions.borderColor.get(DEFAULT_BORDER_COLOR));
-
         topBar.setBackgroundColor(topBarOptions.background.color.get(Color.WHITE));
 
         if (topBarOptions.background.component.hasValue()) {

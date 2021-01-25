@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
@@ -44,6 +45,7 @@ import kotlin.jvm.Throws
 class StackPresenterTest : BaseTest() {
     private lateinit var parent: StackController
     private lateinit var uut: StackPresenter
+    private lateinit var ogUut: StackPresenter
     private lateinit var child: ViewController<*>
     private lateinit var otherChild: ViewController<*>
     private lateinit var activity: Activity
@@ -72,7 +74,7 @@ class StackPresenterTest : BaseTest() {
         typefaceLoader = createTypeFaceLoader()
         iconResolver = IconResolverFake(activity)
         buttonCreator = TitleBarButtonCreatorMock()
-        uut = spy(StackPresenter(
+        ogUut = StackPresenter(
                 activity,
                 titleViewCreator,
                 TopBarBackgroundViewCreatorMock(),
@@ -81,7 +83,8 @@ class StackPresenterTest : BaseTest() {
                 typefaceLoader,
                 renderChecker,
                 Options()
-        ))
+        )
+        uut = spy(ogUut)
         createTopBarController()
         parent = TestUtils.newStackController(activity)
                 .setTopBarController(topBarController)
@@ -140,10 +143,15 @@ class StackPresenterTest : BaseTest() {
         val options = Options()
         options.topBar.title.component = component(Alignment.Center)
         uut.applyChildOptions(options, parent, child)
-        val captor = argumentCaptor<View>()
-        verify(topBar).setTitleComponent(captor.capture())
-        val lp = captor.firstValue.layoutParams as Toolbar.LayoutParams
-        assertThat(lp.gravity).isEqualTo(Gravity.CENTER)
+        var lp = topBar.titleBar.layoutParams as ConstraintLayout.LayoutParams
+        assertThat(lp.verticalBias).isEqualTo(0.5f)
+        assertThat(lp.horizontalBias).isEqualTo(0.5f)
+
+        options.topBar.title.component = component(Alignment.Fill)
+        uut.applyChildOptions(options, parent, child)
+        lp = topBar.titleBar.layoutParams as ConstraintLayout.LayoutParams
+        assertThat(lp.verticalBias).isEqualTo(0.5f)
+        assertThat(lp.horizontalBias).isEqualTo(0f)
     }
 
     @Test
@@ -581,8 +589,8 @@ class StackPresenterTest : BaseTest() {
         //Merge color change for right and left buttons
         mergeOptions.topBar.rightButtonDisabledColor = Colour(100)
         mergeOptions.topBar.leftButtonDisabledColor = Colour(10)
-        val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock {  }))
-        val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock {  }))
+        val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock { }))
+        val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock { }))
         uut.setComponentsButtonController(child.view, rightController, leftController)
         uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
 

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
@@ -15,9 +16,8 @@ import com.reactnativenavigation.utils.ViewUtils
 
 open class TitleBar constructor(context: Context) : ConstraintLayout(context) {
     private var component: View? = null
-    private val titleSubTitleBar by lazy { TitleSubTitleLayout(context) }
-    private val titleLP by lazy {
-        LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+    private val titleSubTitleBar = TitleSubTitleLayout(context).apply {
+        this.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             this.startToStart = LayoutParams.PARENT_ID
             this.endToEnd = LayoutParams.PARENT_ID
             this.topToTop = LayoutParams.PARENT_ID
@@ -25,28 +25,38 @@ open class TitleBar constructor(context: Context) : ConstraintLayout(context) {
             horizontalBias = 0f
             verticalBias = 0.5f
         }
+        this.visibility = GONE
+        this@TitleBar.addView(this)
     }
-
-    private val componentLp by lazy { LayoutParams(titleLP) }
-
+    private val componentLp = LayoutParams(titleSubTitleBar.layoutParams as LayoutParams)
 
     fun setComponent(component: View) {
+        Log.d("XCXCXC", "set component called with $component, this.component=${this.component}")
         if (this.component == component) return
         clear()
         this.component = component
         this.component?.layoutParams = componentLp
         this.addView(component)
+        Log.d("XCXCXC", "set component added $component, this.component=${this.component}")
     }
 
+    //////Switching from tab A to tab B when changing normal title bar with custom one and back with the normal
     fun setTitle(title: CharSequence?) {
-        addTitleSubtitleBarIfNeeded()
+        Log.d("XCXCXC", "set title called with $title, clearing component make title visible")
         clearComponent()
+        this.titleSubTitleBar.visibility = View.VISIBLE
         this.titleSubTitleBar.setTitle(title)
+        Log.d("XCXCXC", "set title changed to $title")
+
     }
 
     fun setSubtitle(title: CharSequence?) {
-        addTitleSubtitleBarIfNeeded()
+        Log.d("XCXCXC", "set subtitle called with $title, clearing component make title visible")
+        clearComponent()
+        this.titleSubTitleBar.visibility = View.VISIBLE
         this.titleSubTitleBar.setSubtitle(title)
+        Log.d("XCXCXC", "set subtitle changed to $title")
+
     }
 
     fun setBackgroundColor(color: Colour) = if (color.hasValue()) setBackgroundColor(color.get()) else Unit
@@ -90,30 +100,31 @@ open class TitleBar constructor(context: Context) : ConstraintLayout(context) {
     fun getTitle(): String = this.titleSubTitleBar.getTitle()
 
     fun clear() {
+        Log.d("XCXCXC", "Clear called, titles gone, component removed")
         clearTitleSubTitle()
         clearComponent()
+        Log.d("XCXCXC", "Clear Done")
+
     }
 
     private fun clearTitleSubTitle() {
+        Log.d("XCXCXC", "clearTitleSubTitle called, childCount:$childCount, component:$component,childCount > 0 && component == null = ${childCount > 0 && component == null}")
         if (childCount > 0 && component == null) {
             titleSubTitleBar.clear()
-            ViewUtils.removeFromParent(titleSubTitleBar)
+            this.titleSubTitleBar.visibility = View.GONE
         }
     }
 
     private fun clearComponent() {
+        Log.d("XCXCXC", "clearComponent called, component:$component")
         if (component != null) {
-            ViewUtils.removeFromParent(component)
+            ViewUtils.removeFromParent(this.component)
             component = null
         }
     }
 
-    private fun addTitleSubtitleBarIfNeeded() {
-        if (component != null || childCount == 0) {
-            this.titleSubTitleBar.layoutParams = titleLP;
-            addView(this.titleSubTitleBar)
-        }
-    }
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun getTitleSubtitleBarView() = this.titleSubTitleBar
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun getTitleTxtView() = this.titleSubTitleBar.getTitleTxtView()

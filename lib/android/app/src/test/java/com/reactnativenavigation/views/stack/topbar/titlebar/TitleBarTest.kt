@@ -31,11 +31,14 @@ class TitleBarTest : BaseTest() {
         uut = TitleBar(activity)
         uut.setTitle("Title")
         assertThat(uut.childCount).isEqualTo(1)
+        assertThat(uut.getTitleSubtitleBarView().visibility).isEqualTo(View.VISIBLE)
 
-        val component = View(activity).apply { id = 19 }
+        val compId = 19
+        val component = View(activity).apply { id = compId }
         uut.setComponent(component)
-        assertThat(uut.childCount).isEqualTo(1)
-        assertThat(uut.getChildAt(0)).isEqualTo(component)
+        assertThat(uut.childCount).isEqualTo(2)
+        assertThat(uut.findViewById<View?>(compId)).isEqualTo(component)
+        assertThat(uut.getTitleSubtitleBarView().visibility).isEqualTo(View.GONE)
     }
 
     @Test
@@ -71,34 +74,34 @@ class TitleBarTest : BaseTest() {
     @Test
     fun setTitle_shouldReplaceComponentIfExist() {
         uut = TitleBar(activity)
-
-        val component = View(activity).apply { id = 19 }
+        val compId = 19
+        val component = View(activity).apply { id = compId }
         uut.setComponent(component)
-        assertThat(uut.childCount).isEqualTo(1)
-        assertThat(uut.getChildAt(0)).isEqualTo(component)
+        assertThat(uut.childCount).isEqualTo(2)
+        assertThat(uut.findViewById<View?>(compId)).isEqualTo(component)
+        assertThat(uut.getTitleSubtitleBarView().visibility).isEqualTo(View.GONE)
 
         uut.setTitle("Title")
         assertThat(uut.childCount).isEqualTo(1)
-        assertThat(uut.getChildAt(0)).isNotEqualTo(component)
+        assertThat(uut.findViewById<View?>(compId)).isNull()
+        assertThat(uut.getTitleSubtitleBarView().visibility).isEqualTo(View.VISIBLE)
     }
 
     @Test
     fun setTitle_setTitleAtStartCenterHorizontal() {
         uut.setTitle("title")
-        val titleSubTitleLayout = ArgumentCaptor.forClass(TitleSubTitleLayout::class.java)
-        Mockito.verify(uut, times(1)).addView(titleSubTitleLayout.capture())
-        val passedView = titleSubTitleLayout.getValue()
+        val passedView = uut.getTitleSubtitleBarView()
+        assertThat(passedView.visibility).isEqualTo(View.VISIBLE)
         assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).horizontalBias).isEqualTo(0f)
         assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).verticalBias).isEqualTo(0.5f)
     }
 
     @Test
     fun setTitle_setTitleAtStartCenterHorizontalRTL() {
+        val passedView = uut.getTitleSubtitleBarView()
         uut.setTitle("title")
         `when`(uut.getLayoutDirection()).thenReturn(View.LAYOUT_DIRECTION_RTL)
-        val titleSubTitleLayout = ArgumentCaptor.forClass(TitleSubTitleLayout::class.java)
-        Mockito.verify(uut, times(1)).addView(titleSubTitleLayout.capture())
-        val passedView = titleSubTitleLayout.getValue()
+        assertThat(passedView.visibility).isEqualTo(View.VISIBLE)
         assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).horizontalBias).isEqualTo(0f)
         assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).verticalBias).isEqualTo(0.5f)
     }
@@ -106,9 +109,8 @@ class TitleBarTest : BaseTest() {
     @Test
     fun setSubTitle_setTitleAtStartCenterHorizontal() {
         uut.setSubtitle("Subtitle")
-        val titleSubTitleLayout = ArgumentCaptor.forClass(TitleSubTitleLayout::class.java)
-        Mockito.verify(uut, times(1)).addView(titleSubTitleLayout.capture())
-        val passedView = titleSubTitleLayout.getValue()
+        val passedView = uut.getTitleSubtitleBarView()
+        assertThat(passedView.visibility).isEqualTo(View.VISIBLE)
         assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).horizontalBias).isEqualTo(0f)
         assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).verticalBias).isEqualTo(0.5f)
     }
@@ -117,9 +119,8 @@ class TitleBarTest : BaseTest() {
     fun setSubTitle_setTitleAtStartCenterHorizontalRTL() {
         uut.setSubtitle("Subtitle")
         `when`(uut.getLayoutDirection()).thenReturn(View.LAYOUT_DIRECTION_RTL)
-        val titleSubTitleLayout = ArgumentCaptor.forClass(TitleSubTitleLayout::class.java)
-        Mockito.verify(uut, times(1)).addView(titleSubTitleLayout.capture())
-        val passedView = titleSubTitleLayout.getValue()
+        val passedView = uut.getTitleSubtitleBarView()
+        assertThat(passedView.visibility).isEqualTo(View.VISIBLE)
         assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).horizontalBias).isEqualTo(0f)
         assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).verticalBias).isEqualTo(0.5f)
     }
@@ -182,17 +183,22 @@ class TitleBarTest : BaseTest() {
     }
 
     @Test
-    fun clear_shouldRemoveTitleAndComponent() {
+    fun clear_shouldHideTitleAndRemoveComponent() {
         uut = TitleBar(activity)
         uut.setTitle("Title")
         assertThat(uut.childCount).isEqualTo(1)
+        assertThat(uut.getTitleSubtitleBarView().visibility).isEqualTo(View.VISIBLE)
         uut.clear()
-        assertThat(uut.childCount).isEqualTo(0)
+        assertThat(uut.childCount).isEqualTo(1)
+        assertThat(uut.getTitleSubtitleBarView().visibility).isEqualTo(View.GONE)
 
         uut.setComponent(View(activity))
-        assertThat(uut.childCount).isEqualTo(1)
+        assertThat(uut.getTitleSubtitleBarView().visibility).isEqualTo(View.GONE)
+        assertThat(uut.childCount).isEqualTo(2)
         uut.clear()
-        assertThat(uut.childCount).isEqualTo(0)
+        assertThat(uut.childCount).isEqualTo(1)
+        assertThat(uut.getTitleSubtitleBarView().visibility).isEqualTo(View.GONE)
+
     }
 
     companion object {
