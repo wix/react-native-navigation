@@ -32,6 +32,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleSubTitleLayout
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.json.JSONObject
 import org.junit.Test
@@ -143,13 +144,13 @@ class StackPresenterTest : BaseTest() {
         val options = Options()
         options.topBar.title.component = component(Alignment.Center)
         uut.applyChildOptions(options, parent, child)
-        var lp = topBar.titleBar.layoutParams as ConstraintLayout.LayoutParams
+        var lp = topBar.mainToolBar.getTitleComponent().layoutParams as ConstraintLayout.LayoutParams
         assertThat(lp.verticalBias).isEqualTo(0.5f)
         assertThat(lp.horizontalBias).isEqualTo(0.5f)
 
         options.topBar.title.component = component(Alignment.Fill)
         uut.applyChildOptions(options, parent, child)
-        lp = topBar.titleBar.layoutParams as ConstraintLayout.LayoutParams
+        lp = topBar.mainToolBar.getTitleComponent().layoutParams as ConstraintLayout.LayoutParams
         assertThat(lp.verticalBias).isEqualTo(0.5f)
         assertThat(lp.horizontalBias).isEqualTo(0f)
     }
@@ -359,7 +360,7 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
         uut.mergeOptions(toMerge, parent, child)
-        val title = topBar.titleBar.getTitleTxtView()
+        val title = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
@@ -380,7 +381,7 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.subtitle.text = Text("New Title")
         uut.mergeOptions(toMerge, parent, child)
-        val subtitle = topBar.titleBar.getSubTitleTxtView()
+        val subtitle = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
         assertThat(subtitle.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setSubtitleFontSize(9.0)
@@ -398,7 +399,7 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
-        val title = topBar.titleBar.getTitleTxtView()
+        val title = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
@@ -416,7 +417,7 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.subtitle.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
-        val subtitle = topBar.titleBar.getSubTitleTxtView()
+        val subtitle = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
         assertThat(subtitle.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setSubtitleFontSize(9.0)
