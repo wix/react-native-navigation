@@ -16,30 +16,33 @@ import com.reactnativenavigation.options.FontOptions
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 
 class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
+
     private val titleTextView = TextView(context).apply { TextViewCompat.setTextAppearance(this, R.style.TitleBarTitle) }
     private val subTitleTextView = TextView(context).apply { TextViewCompat.setTextAppearance(this, R.style.TitleBarSubtitle) }
 
     init {
-        this.setBackgroundColor(Color.parseColor("#FF8B61"))
         this.orientation = VERTICAL
         this.setVerticalGravity(Gravity.CENTER_VERTICAL)
-
-        this.addView(titleTextView, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-            setBackgroundColor(Color.DKGRAY)
-        })
+        this.addView(titleTextView, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply { gravity = Gravity.START or Gravity.CENTER_VERTICAL })
         this.addView(subTitleTextView, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-            setBackgroundColor(Color.GRAY)
             gravity = Gravity.START or Gravity.CENTER_VERTICAL
             weight = 1f
         })
     }
 
-    fun setSubTitleAlignment(alignment: Alignment){
-        if(alignment==Alignment.Center){
-            val layoutParams = this.subTitleTextView.layoutParams as LinearLayout.LayoutParams
-            layoutParams.gravity = Gravity.CENTER
-        }else{
-            gravity = Gravity.START or Gravity.CENTER_VERTICAL
+    fun setSubTitleAlignment(alignment: Alignment) {
+        if (alignment == Alignment.Center) {
+            (this.subTitleTextView.layoutParams as LayoutParams).gravity = Gravity.CENTER
+        } else {
+            (this.subTitleTextView.layoutParams as LayoutParams).gravity = Gravity.START or Gravity.CENTER_VERTICAL
+        }
+    }
+
+    fun setTitleAlignment(alignment: Alignment) {
+        if (alignment == Alignment.Center) {
+            (this.titleTextView.layoutParams as LayoutParams).gravity = Gravity.CENTER
+        } else {
+            (this.titleTextView.layoutParams as LayoutParams).gravity = Gravity.START or Gravity.CENTER_VERTICAL
         }
     }
 
@@ -76,7 +79,7 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
 
     fun clear() {
         this.titleTextView.text = null
-        this.subTitleTextView.text = null
+        setSubtitle(null)
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

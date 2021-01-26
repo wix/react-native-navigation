@@ -107,6 +107,8 @@ class MainToolBar(context: Context) : ConstraintLayout(context) {
 
     fun setSubTitleTextAlignment(alignment: Alignment) = this.titleSubTitleBar.setSubTitleAlignment(alignment)
 
+    fun setTitleTextAlignment(alignment: Alignment) = this.titleSubTitleBar.setTitleAlignment(alignment)
+
     fun setBackgroundColor(color: Colour) = if (color.hasValue()) setBackgroundColor(color.get()) else Unit
 
     fun setTitleFontSize(size: Float) = this.titleSubTitleBar.setTitleFontSize(size)
