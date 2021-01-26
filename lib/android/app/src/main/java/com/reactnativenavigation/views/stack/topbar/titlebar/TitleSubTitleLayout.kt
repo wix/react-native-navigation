@@ -11,6 +11,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.RestrictTo
 import androidx.core.widget.TextViewCompat
 import com.reactnativenavigation.R
+import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.FontOptions
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 
@@ -28,8 +29,18 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
         })
         this.addView(subTitleTextView, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             setBackgroundColor(Color.GRAY)
+            gravity = Gravity.START or Gravity.CENTER_VERTICAL
             weight = 1f
         })
+    }
+
+    fun setSubTitleAlignment(alignment: Alignment){
+        if(alignment==Alignment.Center){
+            val layoutParams = this.subTitleTextView.layoutParams as LinearLayout.LayoutParams
+            layoutParams.gravity = Gravity.CENTER
+        }else{
+            gravity = Gravity.START or Gravity.CENTER_VERTICAL
+        }
     }
 
     fun setTitleFontSize(size: Float) = titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size)
