@@ -207,24 +207,19 @@ public class StackPresenter {
         } else {
             //check for text title
             String titleText = topBarOptions.title.text.get("");
-            if (!TextUtils.isEmpty(titleText)) {
-                topBar.setTitle(titleText);
-                topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
-                topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
-                topBar.setTitleTypeface(typefaceLoader, topBarOptions.title.font);
-                topBar.setTitleAlignment(topBarOptions.title.alignment);
-
-            }
+            topBar.setTitle(titleText);
+            topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
+            topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
+            topBar.setTitleTypeface(typefaceLoader, topBarOptions.title.font);
+            topBar.setTitleAlignment(topBarOptions.title.alignment);
 
             //check for text subtitle
             String subTitleText = topBarOptions.subtitle.text.get("");
-            if (!TextUtils.isEmpty(subTitleText)) {
-                topBar.setSubtitle(subTitleText);
-                topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get(defaultSubtitleFontSize));
-                topBar.setSubtitleColor(topBarOptions.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
-                topBar.setSubtitleTypeface(typefaceLoader, topBarOptions.subtitle.font);
-                topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
-            }
+            topBar.setSubtitle(subTitleText);
+            topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get(defaultSubtitleFontSize));
+            topBar.setSubtitleColor(topBarOptions.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
+            topBar.setSubtitleTypeface(typefaceLoader, topBarOptions.subtitle.font);
+            topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
         }
 
 
@@ -494,7 +489,10 @@ public class StackPresenter {
         if (resolveOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
         if (resolveOptions.title.font.hasValue()) topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 
-        if (topBarOptions.subtitle.text.hasValue()) topBar.setSubtitle(topBarOptions.subtitle.text.get());
+        if (topBarOptions.subtitle.text.hasValue()){
+            topBar.setSubtitle(topBarOptions.subtitle.text.get());
+            topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
+        }
         if (resolveOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(resolveOptions.subtitle.color.get());
         if (resolveOptions.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(resolveOptions.subtitle.fontSize.get());
         if (resolveOptions.subtitle.font.hasValue()) topBar.setSubtitleTypeface(typefaceLoader, resolveOptions.subtitle.font);
