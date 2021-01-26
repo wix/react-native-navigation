@@ -3,6 +3,8 @@ package com.reactnativenavigation.views.stack.topbar.titlebar
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.text.SpannableString
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +56,13 @@ open class ButtonsToolbar internal constructor(context: Context) : Toolbar(conte
     override fun setLayoutDirection(layoutDirection: Int) {
         super.setLayoutDirection(layoutDirection)
         ObjectUtils.perform(ViewUtils.findChildByClass(this, ActionMenuView::class.java), { buttonsContainer: ActionMenuView -> buttonsContainer.layoutDirection = layoutDirection })
+    }
+
+    fun addButton(menuItem: Int, intId: Int, order: Int, styledText: SpannableString): MenuItem? {
+        return this.menu?.add(menuItem,
+                intId,
+                order,
+                styledText)
     }
 
     fun setHeight(height: Int) {
