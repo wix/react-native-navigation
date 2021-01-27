@@ -77,10 +77,8 @@ public class ButtonPresenterTest extends BaseTest {
 
     @Test
     public void applyColor_shouldChangeColor() {
-        MenuItem menuItem = titleBar.addButton(Menu.NONE,
-                1,
-                0,
-                SpannableString.valueOf("text"));
+        MenuItem menuItem = addMenuButton();
+
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
         Colour color = new Colour(Color.RED);
         uut.applyColor(titleBar, menuItem, color);
@@ -90,23 +88,23 @@ public class ButtonPresenterTest extends BaseTest {
     @Test
     public void applyColor_shouldChangeDisabledColor() {
         button.enabled = new Bool(false);
-        MenuItem menuItem = titleBar.addButton(Menu.NONE,
-                1,
-                0,
-                SpannableString.valueOf("text"));
+        MenuItem menuItem = addMenuButton();
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
-
         Colour disabledColor = new Colour(Color.BLUE);
         uut.applyDisabledColor(titleBar, menuItem, disabledColor);
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.BLUE);
     }
 
     private void addButtonAndApplyOptions() {
-        MenuItem menuItem = titleBar.addButton(Menu.NONE,
+        MenuItem menuItem = addMenuButton();
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+    }
+
+    private MenuItem addMenuButton() {
+        return titleBar.addButton(Menu.NONE,
                 1,
                 0,
-                SpannableString.valueOf("text"));
-        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+                SpannableString.valueOf(button.text.get("text")));
     }
 
     @Test
