@@ -69,7 +69,6 @@ class MainToolBar(context: Context) : ConstraintLayout(context) {
         clear()
         this.component = component
         this.component?.layoutParams = titleBarContentLayoutParams
-        this.component?.setBackgroundColor(Color.CYAN)
         if (component.id == View.NO_ID) {
             component.id = CompatUtils.generateViewId()
         }
@@ -158,7 +157,7 @@ class MainToolBar(context: Context) : ConstraintLayout(context) {
         clearComponent()
     }
 
-    private fun clearComponent() = this.component?.let { ViewUtils.removeFromParent(it) }
+    private fun clearComponent() = this.component?.let { ViewUtils.removeFromParent(it); this.component = null }
 
     @RestrictTo(RestrictTo.Scope.TESTS, RestrictTo.Scope.LIBRARY)
     fun getTitleComponent() = this.component ?: this.titleSubTitleBar

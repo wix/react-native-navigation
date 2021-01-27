@@ -92,6 +92,21 @@ class MainToolbarTest : BaseTest() {
     }
 
     @Test
+    fun setComponent_shouldChangeDifferentComponents(){
+        val component = View(activity).apply { id = 19 }
+        val component2 = View(activity).apply { id = 29 }
+        uut.setComponent(component)
+        assertThat(uut.childCount).isEqualTo(4)
+
+        assertThat(uut.findViewById<View?>(component.id)).isEqualTo(component)
+
+        uut.setComponent(component2)
+        assertThat(uut.childCount).isEqualTo(4)
+        assertThat(uut.findViewById<View?>(component.id)).isNull()
+        assertThat(uut.findViewById<View?>(component2.id)).isEqualTo(component2)
+
+    }
+    @Test
     fun setComponent_shouldReplaceTitleViewIfExist() {
         uut.setTitle("Title")
         assertThat(uut.childCount).isEqualTo(3)
@@ -125,6 +140,12 @@ class MainToolbarTest : BaseTest() {
         uut.setComponent(component)
         uut.setComponent(component)
         Mockito.verify(uut, times(1)).addView(component)
+    }
+
+    @Test
+    fun setTitle_shouldChangeTheTitle(){
+        uut.setTitle("Title")
+        assertThat(uut.getTitle()).isEqualTo("Title")
     }
 
     @Test
@@ -167,16 +188,6 @@ class MainToolbarTest : BaseTest() {
         assertThat(passedView.getSubTitleTxtView().text).isEqualTo("Subtitle")
         assertThat((passedView.getSubTitleTxtView().layoutParams as LinearLayout.LayoutParams).gravity).isEqualTo(Gravity.START or Gravity.CENTER_VERTICAL)
     }
-//
-//    @Test
-//    fun setSubTitle_setTitleAtStartCenterHorizontalRTL() {
-//        uut.setSubtitle("Subtitle")
-//        `when`(uut.getLayoutDirection()).thenReturn(View.LAYOUT_DIRECTION_RTL)
-//        val passedView = uut.getTitleSubtitleBarView()
-//        assertThat(passedView.visibility).isEqualTo(View.VISIBLE)
-//        assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).horizontalBias).isEqualTo(0f)
-//        assertThat((passedView.layoutParams as ConstraintLayout.LayoutParams).verticalBias).isEqualTo(0.5f)
-//    }
 
     @Test
     fun setBackgroundColor_changesTitleBarBgColor() {
