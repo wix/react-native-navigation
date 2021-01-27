@@ -141,6 +141,7 @@ export default class ButtonOptions extends NavigationComponent {
     const currentCount = this.rightButtons.length;
     this.rightButtons.push({
       id: `rightButton${currentCount}`,
+      testID: `rightButton${currentCount}`,
       text: `R${currentCount}`,
       showAsAction: 'ifRoom',
       color: Colors.primary,
