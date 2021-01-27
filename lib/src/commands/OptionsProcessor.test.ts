@@ -12,6 +12,7 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Deprecations } from './Deprecations';
 import { CommandName } from '../interfaces/CommandName';
+import { OptionsProcessor as Processor } from '../interfaces/Processors';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
@@ -127,6 +128,24 @@ describe('navigation options', () => {
     });
 
     uut.processOptions(options, CommandName.SetRoot);
+  });
+
+  it('passes props to registered processor', () => {
+    const options: Options = {
+      topBar: {
+        visible: false,
+      },
+    };
+    const props = {
+      prop: 'prop',
+    };
+    const processor: Processor<boolean> = (_value, _commandName, passProps) => {
+      expect(passProps).toEqual(props);
+      return _value;
+    };
+
+    optionProcessorsRegistry.addProcessor('topBar.visible', processor);
+    uut.processOptions(options, CommandName.SetRoot, props);
   });
 
   it('supports multiple registered processors', () => {

@@ -1,18 +1,23 @@
 import * as React from 'react';
 
 import { Store } from '../components/Store';
-import { mock, instance, when } from 'ts-mockito';
+import { mock, instance, when, anything } from 'ts-mockito';
 import { Options } from '../interfaces/Options';
 import { OptionsCrawler } from './OptionsCrawler';
 import { Layout } from '../interfaces/Layout';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 describe('OptionsCrawler', () => {
   let uut: OptionsCrawler;
   let mockedStore: Store;
+  let mockedUniqueIdProvider: UniqueIdProvider;
 
   beforeEach(() => {
     mockedStore = mock(Store);
-    uut = new OptionsCrawler(instance(mockedStore));
+    mockedUniqueIdProvider = mock(UniqueIdProvider);
+    when(mockedUniqueIdProvider.generate(anything())).thenCall((prefix) => `${prefix}+UNIQUE_ID`);
+    const uniqueIdProvider = instance(mockedUniqueIdProvider);
+    uut = new OptionsCrawler(instance(mockedStore), uniqueIdProvider);
   });
 
   it('Components: injects options object', () => {
@@ -295,6 +300,25 @@ describe('OptionsCrawler', () => {
     };
     uut.crawl(node);
     expect(node.component.options).toEqual({});
+  });
+
+  it('Components: should generate component id', () => {
+    let componentIdInProps: String = '';
+    when(mockedStore.getComponentClassForName('theComponentName')).thenReturn(
+      () =>
+        class extends React.Component {
+          static options(props: any) {
+            componentIdInProps = props.componentId;
+          }
+        }
+    );
+
+    const node = {
+      component: { name: 'theComponentName', options: {}, id: undefined },
+      children: [],
+    };
+    uut.crawl(node);
+    expect(componentIdInProps).toEqual('Component+UNIQUE_ID');
   });
 
   it('componentId is included in props passed to options generator', () => {
