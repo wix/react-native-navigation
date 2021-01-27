@@ -63,7 +63,7 @@ export default class ButtonOptions extends NavigationComponent {
           },
           {
             id: 'Three',
-            text: 'Three',
+            text: 'B3',
             testID: BUTTON_THREE,
             color: Colors.primary,
           },
