@@ -127,6 +127,8 @@ public class ButtonOptions {
         return icon.hasValue();
     }
 
+    public boolean isBackButton() { return false; }
+
     public int getIntId() {
         return IdFactory.Companion.get(component.componentId.get(id));
     }

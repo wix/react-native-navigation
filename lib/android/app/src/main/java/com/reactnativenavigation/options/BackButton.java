@@ -76,4 +76,9 @@ public class BackButton extends ButtonOptions {
         visible = new Bool(false);
         hasValue = true;
     }
+
+    @Override
+    public boolean isBackButton() {
+        return true;
+    }
 }
