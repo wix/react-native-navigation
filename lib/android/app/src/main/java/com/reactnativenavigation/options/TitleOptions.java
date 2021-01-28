@@ -49,7 +49,7 @@ public class TitleOptions {
     void mergeWith(final TitleOptions other) {
         if (other.text.hasValue()) {
             text = other.text;
-            this.component = new ComponentOptions();
+            this.component.reset();
         } else {
             //there is a component but no text, clear text, breaks coexistence
             if (other.component.hasValue())

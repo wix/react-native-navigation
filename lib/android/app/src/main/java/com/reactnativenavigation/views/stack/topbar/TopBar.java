@@ -25,6 +25,8 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.LayoutDirection;
+import com.reactnativenavigation.options.SubtitleOptions;
+import com.reactnativenavigation.options.TitleOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
@@ -320,7 +322,29 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    public MainToolBar getMainToolBar(){
+    public MainToolBar getMainToolBar() {
         return mainToolBar;
+    }
+
+    public void applyTitleOptions(TitleOptions titleOptions, TypefaceLoader typefaceLoader) {
+        final double DEFAULT_TITLE_FONT_SIZE = 18;
+        final int DEFAULT_TITLE_COLOR = Color.BLACK;
+
+        this.setTitle(titleOptions.text.get(""));
+        this.setTitleFontSize(titleOptions.fontSize.get(DEFAULT_TITLE_FONT_SIZE));
+        this.setTitleTextColor(titleOptions.color.get(DEFAULT_TITLE_COLOR));
+        this.setTitleTypeface(typefaceLoader, titleOptions.font);
+        this.setTitleAlignment(titleOptions.alignment);
+    }
+
+    public void applySubtitleOptions(SubtitleOptions subtitle, TypefaceLoader typefaceLoader) {
+        final double DEFAULT_SUBTITLE_FONT_SIZE = 14;
+        final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
+
+        this.setSubtitle(subtitle.text.get(""));
+        this.setSubtitleFontSize(subtitle.fontSize.get(DEFAULT_SUBTITLE_FONT_SIZE));
+        this.setSubtitleColor(subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
+        this.setSubtitleTypeface(typefaceLoader, subtitle.font);
+        this.setSubtitleAlignment(subtitle.alignment);
     }
 }

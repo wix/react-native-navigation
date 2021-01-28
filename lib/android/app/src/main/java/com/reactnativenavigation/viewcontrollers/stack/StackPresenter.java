@@ -62,12 +62,8 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.ObjectUtils.take;
 
 public class StackPresenter {
-    private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
-    private static final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
     private static final double DEFAULT_ELEVATION = 4d;
-    private final double defaultTitleFontSize;
-    private final double defaultSubtitleFontSize;
     private final Activity activity;
 
     private TopBar topBar;
@@ -106,8 +102,6 @@ public class StackPresenter {
         this.typefaceLoader = typefaceLoader;
         this.renderChecker = renderChecker;
         this.defaultOptions = defaultOptions;
-        defaultTitleFontSize = 18;
-        defaultSubtitleFontSize = 14;
     }
 
     public void setDefaultOptions(Options defaultOptions) {
@@ -193,7 +187,6 @@ public class StackPresenter {
         topBar.setTitleHeight(topBarOptions.title.height.get(UiUtils.getTopBarHeightDp(activity)));
         topBar.setTitleTopMargin(topBarOptions.title.topMargin.get(0));
 
-        //check for set component
         if (topBarOptions.title.component.hasValue()) {
             if (titleControllers.containsKey(component)) {
                 topBarController.setTitleComponent(titleControllers.get(component));
@@ -205,21 +198,8 @@ public class StackPresenter {
             }
             topBarController.alignTitleComponent(topBarOptions.title.component.alignment);
         } else {
-            //check for text title
-            String titleText = topBarOptions.title.text.get("");
-            topBar.setTitle(titleText);
-            topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
-            topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
-            topBar.setTitleTypeface(typefaceLoader, topBarOptions.title.font);
-            topBar.setTitleAlignment(topBarOptions.title.alignment);
-
-            //check for text subtitle
-            String subTitleText = topBarOptions.subtitle.text.get("");
-            topBar.setSubtitle(subTitleText);
-            topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get(defaultSubtitleFontSize));
-            topBar.setSubtitleColor(topBarOptions.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
-            topBar.setSubtitleTypeface(typefaceLoader, topBarOptions.subtitle.font);
-            topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
+            topBar.applyTitleOptions(topBarOptions.title,typefaceLoader);
+            topBar.applySubtitleOptions(topBarOptions.subtitle, typefaceLoader);
         }
 
 
