@@ -13,8 +13,8 @@ public class SideMenuOptions {
     public Bool visible = new NullBool();
     public Bool animate = new NullBool();
     public Bool enabled = new NullBool();
-    public Number height = new NullNumber();
-    public Number width = new NullNumber();
+    public Number height = NullNumber.INSTANCE;
+    public Number width = NullNumber.INSTANCE;
 
     public static SideMenuOptions parse(JSONObject json) {
         SideMenuOptions options = new SideMenuOptions();

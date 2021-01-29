@@ -133,30 +133,30 @@ public class StackPresenter {
     }
 
     public void mergeOptions(Options options, StackController stack, ViewController currentChild) {
-        TopBarOptions resolvedTopBarOptions = options.topBar.copy().mergeWithDefault(stack.resolveChildOptions(currentChild).topBar).mergeWithDefault(defaultOptions.topBar);
-        mergeOrientation(options.layout.orientation);
+        TopBarOptions resolvedTopBarOptions = options.getTopBar().copy().mergeWithDefault(stack.resolveChildOptions(currentChild).getTopBar()).mergeWithDefault(defaultOptions.getTopBar());
+        mergeOrientation(options.getLayout().orientation);
         //        mergeButtons(topBar, withDefault.topBar.buttons, child);
         mergeTopBarOptions(resolvedTopBarOptions, options, stack, currentChild);
-        mergeTopTabsOptions(options.topTabs);
-        mergeTopTabOptions(options.topTabOptions);
+        mergeTopTabsOptions(options.getTopTabs());
+        mergeTopTabOptions(options.getTopTabOptions());
     }
 
     public void applyInitialChildLayoutOptions(Options options) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        applyTopBarVisibility(withDefault.topBar);
+        applyTopBarVisibility(withDefault.getTopBar());
     }
 
     public void applyChildOptions(Options options, StackController stack, ViewController child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        applyOrientation(withDefault.layout.orientation);
-        applyButtons(withDefault.topBar, child);
+        applyOrientation(withDefault.getLayout().orientation);
+        applyButtons(withDefault.getTopBar(), child);
         applyTopBarOptions(withDefault, stack, child);
-        applyTopTabsOptions(withDefault.topTabs);
-        applyTopTabOptions(withDefault.topTabOptions);
+        applyTopTabsOptions(withDefault.getTopTabs());
+        applyTopTabOptions(withDefault.getTopTabOptions());
     }
 
     public void applyOrientation(OrientationOptions options) {
-        OrientationOptions withDefaultOptions = options.copy().mergeWithDefault(defaultOptions.layout.orientation);
+        OrientationOptions withDefaultOptions = options.copy().mergeWithDefault(defaultOptions.getLayout().orientation);
         ((Activity) topBar.getContext()).setRequestedOrientation(withDefaultOptions.getValue());
     }
 
@@ -175,10 +175,10 @@ public class StackPresenter {
 
     private void applyTopBarOptions(Options options, StackController stack, ViewController child) {
         final View component = child.getView();
-        TopBarOptions topBarOptions = options.topBar;
+        TopBarOptions topBarOptions = options.getTopBar();
 
         topBar.setTestId(topBarOptions.testId.get(""));
-        topBar.setLayoutDirection(options.layout.direction);
+        topBar.setLayoutDirection(options.getLayout().direction);
         topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
@@ -360,12 +360,12 @@ public class StackPresenter {
     }
 
     public void mergeChildOptions(Options toMerge, Options resolvedOptions, StackController stack, ViewController child) {
-        TopBarOptions topBar = toMerge.copy().topBar.mergeWithDefault(resolvedOptions.topBar).mergeWithDefault(defaultOptions.topBar);
-        mergeOrientation(toMerge.layout.orientation);
-        mergeButtons(topBar, toMerge.topBar, child.getView());
+        TopBarOptions topBar = toMerge.copy().getTopBar().mergeWithDefault(resolvedOptions.getTopBar()).mergeWithDefault(defaultOptions.getTopBar());
+        mergeOrientation(toMerge.getLayout().orientation);
+        mergeButtons(topBar, toMerge.getTopBar(), child.getView());
         mergeTopBarOptions(topBar, toMerge, stack, child);
-        mergeTopTabsOptions(toMerge.topTabs);
-        mergeTopTabOptions(toMerge.topTabOptions);
+        mergeTopTabsOptions(toMerge.getTopTabs());
+        mergeTopTabOptions(toMerge.getTopTabOptions());
     }
 
     private void mergeOrientation(OrientationOptions orientationOptions) {
@@ -448,9 +448,9 @@ public class StackPresenter {
     }
 
     private void mergeTopBarOptions(TopBarOptions resolveOptions, Options options, StackController stack, ViewController child) {
-        TopBarOptions topBarOptions = options.topBar;
+        TopBarOptions topBarOptions = options.getTopBar();
         final View component = child.getView();
-        if (options.layout.direction.hasValue()) topBar.setLayoutDirection(options.layout.direction);
+        if (options.getLayout().direction.hasValue()) topBar.setLayoutDirection(options.getLayout().direction);
         if (topBarOptions.height.hasValue()) topBar.setHeight(topBarOptions.height.get());
         if (topBarOptions.elevation.hasValue()) topBar.setElevation(topBarOptions.elevation.get());
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
@@ -593,17 +593,17 @@ public class StackPresenter {
 
     private int getTopBarTranslationAnimationDelta(StackController stack, ViewController child) {
         Options options = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
-        return options.statusBar.hasTransparency() ? getTopBarTopMargin(stack, child) : 0;
+        return options.getStatusBar().hasTransparency() ? getTopBarTopMargin(stack, child) : 0;
     }
 
     private int getTopBarTopMargin(StackController stack, ViewController child) {
         Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
-        int topMargin = UiUtils.dpToPx(activity, withDefault.topBar.topMargin.get(0));
-        int statusBarInset = withDefault.statusBar.visible.isTrueOrUndefined() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0;
+        int topMargin = UiUtils.dpToPx(activity, withDefault.getTopBar().topMargin.get(0));
+        int statusBarInset = withDefault.getStatusBar().visible.isTrueOrUndefined() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0;
         return topMargin + statusBarInset;
     }
 
     public int getTopInset(Options resolvedOptions) {
-        return resolvedOptions.withDefaultOptions(defaultOptions).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
+        return resolvedOptions.withDefaultOptions(defaultOptions).getTopBar().isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
     }
 }

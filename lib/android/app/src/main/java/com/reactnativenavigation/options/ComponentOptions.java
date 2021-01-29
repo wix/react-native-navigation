@@ -31,8 +31,8 @@ public class ComponentOptions {
     public Text componentId = new NullText();
     public Alignment alignment = Alignment.Default;
     public Bool waitForRender = new NullBool();
-    public Number width = new NullNumber();
-    public Number height = new NullNumber();
+    public Number width = NullNumber.INSTANCE;
+    public Number height = NullNumber.INSTANCE;
 
     void mergeWith(ComponentOptions other) {
         if (other.componentId.hasValue()) componentId = other.componentId;

@@ -96,8 +96,8 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     @Override
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
-        presenter.mergeOptions(options.sideMenuRootOptions);
-        mergeLockMode(this.initialOptions, options.sideMenuRootOptions);
+        presenter.mergeOptions(options.getSideMenuRootOptions());
+        mergeLockMode(this.initialOptions, options.getSideMenuRootOptions());
         performOnParentController(parent -> parent.mergeChildOptions(options, child));
     }
 
@@ -111,7 +111,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     @Override
     public void mergeOptions(Options options) {
         super.mergeOptions(options);
-        presenter.mergeOptions(options.sideMenuRootOptions);
+        presenter.mergeOptions(options.getSideMenuRootOptions());
     }
 
     @Override
@@ -199,9 +199,9 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     private Options getOptionsWithVisibility(boolean isLeft, boolean visible) {
         Options options = new Options();
         if (isLeft) {
-            options.sideMenuRootOptions.left.visible = new Bool(visible);
+            options.getSideMenuRootOptions().left.visible = new Bool(visible);
         } else {
-            options.sideMenuRootOptions.right.visible = new Bool(visible);
+            options.getSideMenuRootOptions().right.visible = new Bool(visible);
         }
         return options;
     }
@@ -217,8 +217,8 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     private void mergeLockMode(Options out, SideMenuRootOptions sideMenu) {
-        perform(sideMenu.left.enabled.get(null), enabled -> out.sideMenuRootOptions.left.enabled = new Bool(enabled));
-        perform(sideMenu.right.enabled.get(null), enabled -> out.sideMenuRootOptions.right.enabled = new Bool(enabled));
+        perform(sideMenu.left.enabled.get(null), enabled -> out.getSideMenuRootOptions().left.enabled = new Bool(enabled));
+        perform(sideMenu.right.enabled.get(null), enabled -> out.getSideMenuRootOptions().right.enabled = new Bool(enabled));
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

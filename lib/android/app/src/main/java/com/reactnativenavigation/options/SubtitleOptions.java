@@ -33,8 +33,8 @@ public class SubtitleOptions {
     }
 
     public Text text = new NullText();
-    public Colour color = new NullColor();
-    public Fraction fontSize = new NullFraction();
+    public Colour color = NullColor.INSTANCE;
+    public Fraction fontSize = NullFraction.INSTANCE;;
     public FontOptions font = new FontOptions();
     public Alignment alignment = Alignment.Default;
 

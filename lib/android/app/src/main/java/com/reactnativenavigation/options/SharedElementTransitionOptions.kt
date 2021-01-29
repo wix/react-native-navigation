@@ -12,8 +12,8 @@ import org.json.JSONObject
 class SharedElementTransitionOptions {
     var fromId: Text = NullText()
     var toId: Text = NullText()
-    var duration: Number = NullNumber()
-    var startDelay: Number = NullNumber()
+    var duration: Number = NullNumber
+    var startDelay: Number = NullNumber
     var interpolator: TimeInterpolator = LinearInterpolator()
 
     fun getDuration() = duration[0].toLong()

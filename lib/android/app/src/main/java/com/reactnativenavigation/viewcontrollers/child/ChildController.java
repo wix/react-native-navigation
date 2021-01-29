@@ -71,7 +71,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
 
     @Override
     public void mergeOptions(Options options) {
-        if (options == Options.EMPTY) return;
+        if (options == Options.Companion.getEMPTY()) return;
         if (isViewShown()) presenter.mergeOptions(getView(), options);
         super.mergeOptions(options);
         performOnParentController(parentController -> parentController.mergeChildOptions(options, this));

@@ -22,7 +22,7 @@ public class NavigationBarOptions {
         return result;
     }
 
-    public Colour backgroundColor = new NullColor();
+    public Colour backgroundColor = NullColor.INSTANCE;
     public Bool isVisible = new NullBool();
 
     public void mergeWith(NavigationBarOptions other) {

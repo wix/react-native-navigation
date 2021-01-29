@@ -27,6 +27,6 @@ public class ColorParser {
                 return new Colour(processedColor);
             }
         }
-        return new NullColor();
+        return NullColor.INSTANCE;
     }
 }

@@ -13,6 +13,6 @@ public class ColorParser {
         if (json.has(color)) {
             return json.opt(color) instanceof Integer ? new Colour(json.optInt(color)) : new DontApplyColour();
         }
-        return new NullColor();
+        return NullColor.INSTANCE;
     }
 }

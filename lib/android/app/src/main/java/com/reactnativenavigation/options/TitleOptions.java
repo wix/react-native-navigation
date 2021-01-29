@@ -38,13 +38,13 @@ public class TitleOptions {
     }
 
     public Text text = new NullText();
-    public Colour color = new NullColor();
-    public Fraction fontSize = new NullFraction();
+    public Colour color = NullColor.INSTANCE;
+    public Fraction fontSize = NullFraction.INSTANCE;;
     public Alignment alignment = Alignment.Default;
     public FontOptions font = new FontOptions();
     public ComponentOptions component = new ComponentOptions();
-    public Number height = new NullNumber();
-    public Number topMargin = new NullNumber();
+    public Number height = NullNumber.INSTANCE;
+    public Number topMargin = NullNumber.INSTANCE;
 
     void mergeWith(final TitleOptions other) {
         if (other.text.hasValue()) text = other.text;

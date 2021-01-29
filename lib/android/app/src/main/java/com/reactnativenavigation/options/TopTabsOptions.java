@@ -19,11 +19,11 @@ import org.json.JSONObject;
 
 public class TopTabsOptions {
 
-    @NonNull public Colour selectedTabColor = new NullColor();
-    @NonNull public Colour unselectedTabColor = new NullColor();
-    @NonNull public Number fontSize = new NullNumber();
+    @NonNull public Colour selectedTabColor = NullColor.INSTANCE;
+    @NonNull public Colour unselectedTabColor = NullColor.INSTANCE;
+    @NonNull public Number fontSize = NullNumber.INSTANCE;
     @NonNull public Bool visible = new NullBool();
-    @NonNull public Number height = new NullNumber();
+    @NonNull public Number height = NullNumber.INSTANCE;
 
     public static TopTabsOptions parse(Context context, @Nullable JSONObject json) {
         TopTabsOptions result = new TopTabsOptions();

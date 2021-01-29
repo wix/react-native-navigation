@@ -48,11 +48,11 @@ public class FabOptions {
     }
 
     public Text id = new NullText();
-    public Colour backgroundColor = new NullColor();
-    public Colour clickColor = new NullColor();
-    public Colour rippleColor = new NullColor();
+    public Colour backgroundColor =  NullColor.INSTANCE;
+    public Colour clickColor = NullColor.INSTANCE;
+    public Colour rippleColor = NullColor.INSTANCE;
     public Text icon = new NullText();
-    public Colour iconColor = new NullColor();
+    public Colour iconColor = NullColor.INSTANCE;
     public Bool visible = new NullBool();
     public ArrayList<FabOptions> actionsArray = new ArrayList<>();
     public Text alignHorizontally = new NullText();

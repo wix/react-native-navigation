@@ -49,21 +49,21 @@ public class BottomTabOptions {
     }
 
     public Text text = new NullText();
-    public Colour textColor = new NullColor();
-    public Colour selectedTextColor = new NullColor();
+    public Colour textColor = NullColor.INSTANCE;
+    public Colour selectedTextColor = NullColor.INSTANCE;
     public Text icon = new NullText();
-    public Number iconWidth = new NullNumber();
-    public Number iconHeight = new NullNumber();
+    public Number iconWidth = NullNumber.INSTANCE;
+    public Number iconHeight = NullNumber.INSTANCE;
     public Text selectedIcon = new NullText();
-    public Colour iconColor = new NullColor();
-    public Colour selectedIconColor = new NullColor();
+    public Colour iconColor = NullColor.INSTANCE;
+    public Colour selectedIconColor = NullColor.INSTANCE;
     public Text testId = new NullText();
     public Text badge = new NullText();
-    public Colour badgeColor = new NullColor();
+    public Colour badgeColor = NullColor.INSTANCE;
     public Bool animateBadge = new NullBool();
     public DotIndicatorOptions dotIndicator = new DotIndicatorOptions();
-    public Number fontSize = new NullNumber();
-    public Number selectedFontSize = new NullNumber();
+    public Number fontSize = NullNumber.INSTANCE;
+    public Number selectedFontSize = NullNumber.INSTANCE;
     public Bool selectTabOnPress = new NullBool();
     public FontOptions font = new FontOptions();
 
