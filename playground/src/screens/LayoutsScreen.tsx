@@ -70,6 +70,11 @@ export default class LayoutsScreen extends NavigationComponent {
         ],
         options: {
           bottomTabs: {
+            shadow: {
+              color: 'red',
+              radius: 30,
+              opacity: 1,
+            },
             testID: BOTTOM_TABS,
           },
         },
