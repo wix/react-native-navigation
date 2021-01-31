@@ -776,6 +776,11 @@ export interface OptionsBottomTabs {
    */
   testID?: string;
   /**
+   * Overrides the text that's read by the screen reader when the user interacts with the element
+   * #### (iOS specific)
+   */
+  accessibilityLabel?: string;
+  /**
    * Draw screen component under the tab bar
    */
   drawBehind?: boolean;

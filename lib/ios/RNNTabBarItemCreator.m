@@ -22,6 +22,7 @@
     tabItem.title = [bottomTabOptions.text withDefault:nil];
     tabItem.tag = bottomTabOptions.tag;
     tabItem.accessibilityIdentifier = [bottomTabOptions.testID withDefault:nil];
+    tabItem.accessibilityLabel = [bottomTabOptions.accessibilityLabel withDefault:nil];
 
     NSDictionary *iconInsets = [bottomTabOptions.iconInsets withDefault:nil];
     if (iconInsets && ![iconInsets isKindOfClass:[NSNull class]]) {
