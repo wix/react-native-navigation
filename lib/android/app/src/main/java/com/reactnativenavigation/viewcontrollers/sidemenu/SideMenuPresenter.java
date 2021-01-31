@@ -43,7 +43,7 @@ public class SideMenuPresenter {
     }
 
     public void applyOptions(Options options) {
-        applyLockMode(options.getSideMenuRootOptions());
+        applyLockMode(options.sideMenuRootOptions);
     }
 
     public void mergeOptions(SideMenuRootOptions options) {
@@ -52,11 +52,10 @@ public class SideMenuPresenter {
     }
 
     public void applyChildOptions(Options options) {
-        SideMenuRootOptions sideMenuRootOptions = options.getSideMenuRootOptions();
-        applyLockMode(sideMenuRootOptions);
-        mergeVisibility(sideMenuRootOptions);
-        applyLeftWidth(sideMenuRootOptions);
-        applyRightWidth(sideMenuRootOptions);
+        applyLockMode(options.sideMenuRootOptions);
+        mergeVisibility(options.sideMenuRootOptions);
+        applyLeftWidth(options.sideMenuRootOptions);
+        applyRightWidth(options.sideMenuRootOptions);
     }
 
     private void applyLockMode(SideMenuRootOptions options) {

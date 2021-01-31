@@ -36,7 +36,6 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

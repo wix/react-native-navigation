@@ -102,7 +102,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void mergeOptions(Options options) {
-        if (options == Options.Companion.getEMPTY()) return;
+        if (options == Options.EMPTY) return;
         if (isViewShown()) presenter.mergeOptions(getView(), options);
         super.mergeOptions(options);
     }
@@ -114,7 +114,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public int getTopInset() {
-        int statusBarInset = resolveCurrentOptions(presenter.defaultOptions).getStatusBar().isHiddenOrDrawBehind() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
+        int statusBarInset = resolveCurrentOptions(presenter.defaultOptions).statusBar.isHiddenOrDrawBehind() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 
@@ -136,7 +136,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void destroy() {
-        final boolean blurOnUnmount = options != null && options.getModal().blurOnUnmount.isTrue();
+        final boolean blurOnUnmount = options != null && options.modal.blurOnUnmount.isTrue();
         if (blurOnUnmount) {
             blurActivityFocus();
         }

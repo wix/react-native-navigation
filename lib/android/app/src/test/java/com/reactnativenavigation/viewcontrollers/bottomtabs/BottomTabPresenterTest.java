@@ -14,7 +14,6 @@ import com.reactnativenavigation.options.params.DontApplyColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -31,7 +30,6 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class BottomTabPresenterTest extends BaseTest {
     private Options tab1Options = createTab1Options();

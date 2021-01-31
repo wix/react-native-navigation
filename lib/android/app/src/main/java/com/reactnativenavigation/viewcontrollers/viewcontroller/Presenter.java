@@ -36,16 +36,16 @@ public class Presenter {
     }
 
     public void mergeOptions(View view, Options options) {
-        mergeStatusBarOptions(view, options.getStatusBar());
-        mergeNavigationBarOptions(options.getNavigationBar());
+        mergeStatusBarOptions(view, options.statusBar);
+        mergeNavigationBarOptions(options.navigationBar);
     }
 
     public void applyOptions(ViewController view, Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        applyOrientation(withDefaultOptions.getLayout().orientation);
+        applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
         applyStatusBarOptions(withDefaultOptions);
-        applyNavigationBarOptions(withDefaultOptions.getNavigationBar());
+        applyNavigationBarOptions(withDefaultOptions.navigationBar);
     }
 
     public void onViewBroughtToFront(Options options) {
@@ -63,17 +63,17 @@ public class Presenter {
     }
 
     private void applyTopMargin(View view, Options options) {
-        if (view.getLayoutParams() instanceof MarginLayoutParams && options.getLayout().topMargin.hasValue()) {
-            ((MarginLayoutParams) view.getLayoutParams()).topMargin = options.getLayout().topMargin.get(0);
+        if (view.getLayoutParams() instanceof MarginLayoutParams && options.layout.topMargin.hasValue()) {
+            ((MarginLayoutParams) view.getLayoutParams()).topMargin = options.layout.topMargin.get(0);
         }
     }
 
     private void applyBackgroundColor(ViewController view, Options options) {
-        if (options.getLayout().backgroundColor.hasValue()) {
+        if (options.layout.backgroundColor.hasValue()) {
             if (view instanceof Navigator) return;
 
-            LayerDrawable ld = new LayerDrawable(new Drawable[]{new ColorDrawable(options.getLayout().backgroundColor.get())});
-            int top = view.resolveCurrentOptions().getStatusBar().drawBehind.isTrue() ? 0 : StatusBarUtils.getStatusBarHeight(view.getActivity());
+            LayerDrawable ld = new LayerDrawable(new Drawable[]{new ColorDrawable(options.layout.backgroundColor.get())});
+            int top = view.resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : StatusBarUtils.getStatusBarHeight(view.getActivity());
             if (!(view instanceof ParentController)) {
                 MarginLayoutParams lp = (MarginLayoutParams) view.getView().getLayoutParams();
                 if (lp.topMargin != 0) top = 0;
@@ -84,7 +84,7 @@ public class Presenter {
     }
 
     private void applyStatusBarOptions(Options options) {
-        StatusBarOptions statusBar = options.copy().withDefaultOptions(defaultOptions).getStatusBar();
+        StatusBarOptions statusBar = options.copy().withDefaultOptions(defaultOptions).statusBar;
         setStatusBarBackgroundColor(statusBar);
         setTextColorScheme(statusBar.textColorScheme);
         setTranslucent(statusBar);

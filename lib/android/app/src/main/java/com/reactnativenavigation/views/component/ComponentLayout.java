@@ -58,7 +58,7 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
 	}
 
     public void applyOptions(Options options) {
-        touchDelegate.setInterceptTouchOutside(options.getOverlayOptions().interceptTouchOutside);
+        touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside);
     }
 
     public void setInterceptTouchOutside(Bool interceptTouchOutside) {
