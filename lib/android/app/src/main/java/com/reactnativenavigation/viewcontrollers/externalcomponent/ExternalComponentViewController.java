@@ -71,7 +71,7 @@ public class ExternalComponentViewController extends ChildController<ExternalCom
 
     @Override
     public int getTopInset() {
-        int statusBarInset = resolveCurrentOptions().getStatusBar().drawBehind.isTrue() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
+        int statusBarInset = resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 

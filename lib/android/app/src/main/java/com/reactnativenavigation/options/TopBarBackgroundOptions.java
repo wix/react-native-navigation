@@ -28,7 +28,7 @@ public class TopBarBackgroundOptions {
         return options;
     }
 
-    public Colour color = NullColor.INSTANCE;
+    public Colour color = new NullColor();
     public ComponentOptions component = new ComponentOptions();
     public Bool waitForRender = new NullBool();
 

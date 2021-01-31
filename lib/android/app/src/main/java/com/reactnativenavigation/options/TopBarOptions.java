@@ -63,17 +63,17 @@ public class TopBarOptions {
     public Bool animate = new NullBool();
     public Bool hideOnScroll = new NullBool();
     public Bool drawBehind = new NullBool();
-    public Number height = NullNumber.INSTANCE;
-    public Fraction elevation = NullFraction.INSTANCE;;
-    public Number topMargin = NullNumber.INSTANCE;
-    public Fraction borderHeight = NullFraction.INSTANCE;;
-    public Colour borderColor = NullColor.INSTANCE;
+    public Number height = new NullNumber();
+    public Fraction elevation = new NullFraction();
+    public Number topMargin = new NullNumber();
+    public Fraction borderHeight = new NullFraction();
+    public Colour borderColor = new NullColor();
 
     // Deprecated
-    public Colour rightButtonColor = NullColor.INSTANCE;
-    public Colour leftButtonColor = NullColor.INSTANCE;
-    public Colour rightButtonDisabledColor = NullColor.INSTANCE;
-    public Colour leftButtonDisabledColor = NullColor.INSTANCE;
+    public Colour rightButtonColor = new NullColor();
+    public Colour leftButtonColor = new NullColor();
+    public Colour rightButtonDisabledColor = new NullColor();
+    public Colour leftButtonDisabledColor = new NullColor();
 
     public TopBarOptions copy() {
         TopBarOptions result = new TopBarOptions();

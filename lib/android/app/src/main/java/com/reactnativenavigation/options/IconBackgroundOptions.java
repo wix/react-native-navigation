@@ -14,8 +14,8 @@ import com.reactnativenavigation.options.parsers.DensityPixelParser;
 import org.json.JSONObject;
 
 public class IconBackgroundOptions {
-    public Colour color = NullColor.INSTANCE;
-    public Colour disabledColor = NullColor.INSTANCE;
+    public Colour color = new NullColor();
+    public Colour disabledColor = new NullColor();
     public DensityPixel width = new NullDensityPixel();
     public DensityPixel height = new NullDensityPixel();
     public DensityPixel cornerRadius = new NullDensityPixel();

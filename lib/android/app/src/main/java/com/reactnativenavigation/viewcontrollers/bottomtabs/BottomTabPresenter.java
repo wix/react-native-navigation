@@ -54,7 +54,7 @@ public class BottomTabPresenter {
     public void applyOptions() {
         bottomTabs.perform(bottomTabs -> {
             for (int i = 0; i < tabs.size(); i++) {
-                BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).getBottomTabOptions();
+                BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
                 bottomTabs.setIconWidth(i, tab.iconWidth.get(null));
                 bottomTabs.setIconHeight(i, tab.iconHeight.get(null));
                 bottomTabs.setTitleTypeface(i, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));
@@ -82,7 +82,7 @@ public class BottomTabPresenter {
         bottomTabs.perform(bottomTabs -> {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
-                BottomTabOptions tab = options.getBottomTabOptions();
+                BottomTabOptions tab = options.bottomTabOptions;
                 if (tab.iconWidth.hasValue()) bottomTabs.setIconWidth(index, tab.iconWidth.get(null));
                 if (tab.iconHeight.hasValue()) bottomTabs.setIconHeight(index, tab.iconHeight.get(null));
                 if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));

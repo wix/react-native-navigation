@@ -25,9 +25,9 @@ public class LayoutOptions {
         return result;
     }
 
-    public Colour backgroundColor = NullColor.INSTANCE;
-    public Colour componentBackgroundColor = NullColor.INSTANCE;
-    public Number topMargin = NullNumber.INSTANCE;
+    public Colour backgroundColor = new NullColor();
+    public Colour componentBackgroundColor = new NullColor();
+    public Number topMargin = new NullNumber();
     public OrientationOptions orientation = new OrientationOptions();
     public LayoutDirection direction = LayoutDirection.DEFAULT;
 

@@ -25,8 +25,8 @@ class ValueAnimationOptions {
     var to: FloatParam = NullFloatParam()
         private set
     private var toDelta = FloatParam(0f)
-    var duration: Number = NullNumber
-    private var startDelay: Number = NullNumber
+    var duration: Number = NullNumber()
+    private var startDelay: Number = NullNumber()
     private var interpolator: TimeInterpolator = LinearInterpolator()
 
     fun setFromDelta(fromDelta: Float) {

@@ -29,8 +29,8 @@ public class DotIndicatorOptions {
         return options;
     }
 
-    public Colour color = NullColor.INSTANCE;
-    public Number size = NullNumber.INSTANCE;
+    public Colour color = new NullColor();
+    public Number size = new NullNumber();
     public Bool visible = new NullBool();
     public Bool animate = new NullBool();
 

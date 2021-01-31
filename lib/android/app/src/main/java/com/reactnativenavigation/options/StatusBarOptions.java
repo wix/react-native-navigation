@@ -53,7 +53,7 @@ public class StatusBarOptions {
         return result;
     }
 
-    public Colour backgroundColor = NullColor.INSTANCE;
+    public Colour backgroundColor = new NullColor();
     public TextColorScheme textColorScheme = TextColorScheme.None;
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();

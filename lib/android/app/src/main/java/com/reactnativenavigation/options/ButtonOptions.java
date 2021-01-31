@@ -38,10 +38,10 @@ public class ButtonOptions {
     public Bool allCaps = new NullBool();
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
-    public Number showAsAction = NullNumber.INSTANCE;
-    public Colour color = NullColor.INSTANCE;
-    public Colour disabledColor = NullColor.INSTANCE;
-    public Fraction fontSize = NullFraction.INSTANCE;;
+    public Number showAsAction = new NullNumber();
+    public Colour color = new NullColor();
+    public Colour disabledColor = new NullColor();
+    public Fraction fontSize = new NullFraction();
     public FontOptions font = new FontOptions();
     public Text icon = new NullText();
     public Text testId = new NullText();

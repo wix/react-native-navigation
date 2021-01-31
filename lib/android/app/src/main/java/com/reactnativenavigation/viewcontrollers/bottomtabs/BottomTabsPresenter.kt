@@ -86,12 +86,6 @@ class BottomTabsPresenter(
         if (bottomTabsOptions.hideOnScroll.hasValue()) {
             bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll.get()
         }
-        if(bottomTabsOptions.borderColor.hasValue()){
-            bottomTabs.setBorderColor(bottomTabsOptions.borderColor.get())
-        }
-        if(bottomTabsOptions.borderWidth.hasValue()){
-            bottomTabs.setBorderWidth(bottomTabsOptions.borderWidth.get())
-        }
         if (view.isViewShown) {
             if (bottomTabsOptions.visible.isTrue) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined) {
@@ -156,12 +150,6 @@ class BottomTabsPresenter(
         }
         if (bottomTabsOptions.elevation.hasValue()) {
             bottomTabs.setUseElevation(true, bottomTabsOptions.elevation.get().toFloat())
-        }
-        if(bottomTabsOptions.borderColor.hasValue()){
-            bottomTabs.setBorderColor(bottomTabsOptions.borderColor.get())
-        }
-        if(bottomTabsOptions.borderWidth.hasValue()){
-            bottomTabs.setBorderWidth(bottomTabsOptions.borderWidth.get())
         }
         bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll[false]
     }
