@@ -1,11 +1,13 @@
 package com.reactnativenavigation.viewcontrollers.stack.topbar
 
 import android.animation.Animator
+import android.animation.AnimatorSet
 import android.content.Context
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.VisibleForTesting
+import androidx.core.view.doOnPreDraw
 import androidx.viewpager.widget.ViewPager
-import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.utils.CollectionUtils.forEachIndexed
@@ -16,13 +18,13 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReac
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.LeftButtonsBar
-import com.reactnativenavigation.views.stack.topbar.titlebar.RightButtonsBar
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 
 
 open class TopBarController(private val animator: TopBarAnimator = TopBarAnimator()) {
     lateinit var view: TopBar
+    private lateinit var titleBar: TitleBar
     private lateinit var leftButtonsBar: LeftButtonsBar
-    private lateinit var rightButtonsBar: RightButtonsBar
 
 
     val height: Int
@@ -32,13 +34,13 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
     val leftButtonsCount: Int
         get() = leftButtonsBar.buttonsCount
 
-    fun getRightButton(index: Int): MenuItem = rightButtonsBar.getButton(index)
+    fun getRightButton(index: Int): MenuItem = titleBar.getButton(index)
 
     fun createView(context: Context, parent: StackLayout): TopBar {
         if (!::view.isInitialized) {
             view = createTopBar(context, parent)
+            titleBar = view.titleBar
             leftButtonsBar = view.leftButtonsBar
-            rightButtonsBar = view.rightButtonsBar
             animator.bindView(view)
         }
         return view
@@ -102,29 +104,29 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         view.setTitleComponent(component.view)
     }
 
-    fun alignTitleComponent(alignment: Alignment) {
-        view.alignTitleComponent(alignment)
-    }
-
     fun applyRightButtons(toAdd: List<ButtonController>) {
         view.clearRightButtons()
-        toAdd.forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, i* 10) }
+        toAdd.forEachIndexed { i, b -> b.addToMenu(titleBar, (toAdd.size - i) * 10) }
     }
 
     fun mergeRightButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
         toRemove.forEach { view.removeRightButton(it) }
-        toAdd.forEachIndexed { i, b -> b.addToMenu(rightButtonsBar,  i*10) }
+        toAdd.forEachIndexed { i, b -> b.addToMenu(titleBar, (toAdd.size - i) * 10) }
     }
 
     open fun applyLeftButtons(toAdd: List<ButtonController>) {
+        leftButtonsBar.minimumWidth = leftButtonsBar.width
         view.clearBackButton()
         view.clearLeftButtons()
-        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, i * 10) }
+        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, (toAdd.size - i) * 10) }
+        leftButtonsBar.doOnPreDraw { leftButtonsBar.minimumWidth = 0 }
     }
 
     open fun mergeLeftButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
+        leftButtonsBar.minimumWidth = leftButtonsBar.width
         view.clearBackButton();
-        toRemove.forEach { view.removeLeftButton(it) }
-        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, i * 10) }
+        toRemove.forEach {view.removeLeftButton(it) }
+        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, (toAdd.size - i) * 10) }
+        leftButtonsBar.doOnPreDraw { leftButtonsBar.minimumWidth = 0 }
     }
 }

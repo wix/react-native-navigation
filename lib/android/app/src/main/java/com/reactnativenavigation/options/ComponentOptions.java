@@ -58,19 +58,10 @@ public class ComponentOptions {
 
     public boolean equals(ComponentOptions other) {
         return name.equals(other.name) &&
-                componentId.equals(other.componentId) &&
-                alignment.equals(other.alignment) &&
-                waitForRender.equals(other.waitForRender) &&
-                width.equals(other.width) &&
-                height.equals(other.height);
-    }
-
-    public void reset() {
-        name = new NullText();
-        componentId = new NullText();
-        alignment = Alignment.Default;
-        waitForRender = new NullBool();
-        width = new NullNumber();
-        height = new NullNumber();
+               componentId.equals(other.componentId) &&
+               alignment.equals(other.alignment) &&
+               waitForRender.equals(other.waitForRender) &&
+               width.equals(other.width) &&
+               height.equals(other.height);
     }
 }

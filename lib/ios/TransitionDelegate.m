@@ -113,8 +113,4 @@
     return self;
 }
 
-- (void)animationEnded:(BOOL)transitionCompleted {
-    _transitionContext = nil;
-}
-
 @end

@@ -11,13 +11,11 @@ import {
   LayoutStack,
   LayoutTopTabs,
 } from '../interfaces/Layout';
-import { UniqueIdProvider } from 'react-native-navigation/adapters/UniqueIdProvider';
-import { LayoutType } from './LayoutType';
 
 type ComponentWithOptions = React.ComponentType<any> & { options(passProps: any): Options };
 
 export class OptionsCrawler {
-  constructor(public readonly store: Store, public readonly uniqueIdProvider: UniqueIdProvider) {
+  constructor(public readonly store: Store) {
     this.crawl = this.crawl.bind(this);
   }
 
@@ -62,12 +60,7 @@ export class OptionsCrawler {
   }
 
   private component(component: LayoutComponent): void {
-    this.applyComponentId(component);
     this.applyStaticOptions(component);
-  }
-
-  private applyComponentId(component: LayoutComponent): void {
-    component.id = component.id || this.uniqueIdProvider.generate(LayoutType.Component);
   }
 
   private isComponentWithOptions(component: any): component is ComponentWithOptions {

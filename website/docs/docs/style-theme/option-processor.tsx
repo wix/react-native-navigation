@@ -7,7 +7,7 @@ import {
 
 Navigation.addOptionProcessor<OptionsTopBar>(
   'topBar',
-  (topBar: OptionsTopBar, commandName: CommandName, _props: any): OptionsTopBar => {
+  (topBar: OptionsTopBar, commandName: CommandName): OptionsTopBar => {
     if (commandName === CommandName.ShowModal) {
       if (!topBar.leftButtons) {
         topBar.leftButtons = [

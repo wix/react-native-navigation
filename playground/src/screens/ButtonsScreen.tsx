@@ -20,7 +20,6 @@ const {
   SHOW_LIFECYCLE_BTN,
   RESET_BUTTONS,
   CHANGE_BUTTON_PROPS,
-  CHANGE_LEFT_RIGHT_COLORS,
 } = testIDs;
 
 export default class ButtonOptions extends NavigationComponent {
@@ -48,6 +47,7 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'ONE',
             testID: BUTTON_ONE,
             text: 'One',
+            color: Colors.primary,
           },
           {
             id: 'ROUND',
@@ -60,12 +60,6 @@ export default class ButtonOptions extends NavigationComponent {
                 timesCreated: 1,
               },
             },
-          },
-          {
-            id: 'Three',
-            text: 'B3',
-            testID: BUTTON_THREE,
-            color: Colors.primary,
           },
         ],
         leftButtons: [
@@ -80,6 +74,7 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'TextualLeft',
             testID: TEXTUAL_LEFT_BUTTON,
             text: 'Cancel',
+            color: Colors.primary,
           },
         ],
       },
@@ -101,16 +96,11 @@ export default class ButtonOptions extends NavigationComponent {
           testID={CHANGE_BUTTON_PROPS}
           onPress={this.changeButtonProps}
         />
-        <Button testID={ADD_BUTTON} label="Add End (Right) button" onPress={this.addRightButton} />
+        <Button testID={ADD_BUTTON} label="Add button" onPress={this.addButton} />
         <Button
           testID={ADD_COMPONENT_BUTTON}
-          label="Add Start (Left) component button"
+          label="Add component button"
           onPress={this.addComponentButtons}
-        />
-        <Button
-          testID={CHANGE_LEFT_RIGHT_COLORS}
-          label="Set leftButtons default Color"
-          onPress={this.changeButtonsColor}
         />
       </Root>
     );
@@ -135,24 +125,37 @@ export default class ButtonOptions extends NavigationComponent {
       },
     });
   };
-  rightButtons: OptionsTopBarButton[] = ButtonOptions.options().topBar?.rightButtons || [];
 
-  addRightButton = () => {
-    const currentCount = this.rightButtons.length;
-    this.rightButtons.push({
-      id: `rightButton${currentCount}`,
-      testID: `rightButton${currentCount}`,
-      text: `R${currentCount}`,
-      showAsAction: 'ifRoom',
-      color: Colors.primary,
-      enabled: currentCount % 2 === 0,
-    });
+  addButton = () =>
     Navigation.mergeOptions(this, {
       topBar: {
-        rightButtons: this.rightButtons,
+        rightButtons: [
+          {
+            id: 'ONE',
+            testID: BUTTON_ONE,
+            text: 'One',
+            color: Colors.primary,
+          },
+          {
+            id: 'ROUND',
+            testID: ROUND_BUTTON,
+            component: {
+              id: 'ROUND_COMPONENT',
+              name: Screens.RoundButton,
+              passProps: {
+                title: 'Two',
+              },
+            },
+          },
+          {
+            id: 'Three',
+            text: 'Three',
+            testID: BUTTON_THREE,
+            color: Colors.primary,
+          },
+        ],
       },
     });
-  };
 
   push = () => Navigation.push(this, Screens.Pushed);
 
@@ -174,27 +177,13 @@ export default class ButtonOptions extends NavigationComponent {
       },
     });
 
-  resetButtons = () => {
-    this.rightButtons = [];
-    this.leftButtons = [];
+  resetButtons = () =>
     Navigation.mergeOptions(this, {
       topBar: {
         rightButtons: [],
         leftButtons: [],
       },
     });
-  };
-
-  changeButtonsColor = () => {
-    Navigation.mergeOptions(this, {
-      topBar: {
-        leftButtonColor: 'red',
-        rightButtonColor: 'pink',
-        leftButtonDisabledColor: 'gray',
-        rightButtonDisabledColor: 'black',
-      },
-    });
-  };
 
   changeButtonProps = () => {
     Navigation.updateProps('ROUND_COMPONENT', {

@@ -53,9 +53,8 @@ describe('Buttons', () => {
   });
 
   it('resizes title component when a button is added with mergeOptions', async () => {
-    await elementById(TestIDs.RESET_BUTTONS).tap();
     await elementById(TestIDs.ADD_BUTTON).tap();
-    await elementById('rightButton0').tap();
+    await elementById(TestIDs.BUTTON_THREE).tap();
   });
 
   it('Button component is not recreated if it has a predefined componentId', async () => {

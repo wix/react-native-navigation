@@ -16,7 +16,7 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.stack.topbar.titlebar.RightButtonsBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 
 import org.junit.Test;
 
@@ -95,8 +95,8 @@ public class TopBarButtonControllerTest extends BaseTest {
         verify(optionsPresenter, times(0)).tint(any(), anyInt());
     }
 
-    private RightButtonsBar getTitleBar() {
-        return stackController.getTopBar().getRightButtonsBar();
+    private TitleBar getTitleBar() {
+        return stackController.getTopBar().getTitleBar();
     }
 
     private void setIconButton(boolean enabled) {

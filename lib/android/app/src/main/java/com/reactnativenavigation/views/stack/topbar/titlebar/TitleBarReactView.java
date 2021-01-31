@@ -3,13 +3,11 @@ package com.reactnativenavigation.views.stack.topbar.titlebar;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.Gravity;
-import android.widget.FrameLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.react.ReactView;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 @SuppressLint("ViewConstructor")
 public class TitleBarReactView extends ReactView {
@@ -33,6 +31,6 @@ public class TitleBarReactView extends ReactView {
     }
 
     private boolean isCenter() {
-        return ((ConstraintLayout.LayoutParams) getLayoutParams()).horizontalBias == 0.5f;
+        return ((Toolbar.LayoutParams) getLayoutParams()).gravity == Gravity.CENTER;
     }
 }

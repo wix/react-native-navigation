@@ -16,7 +16,6 @@ import java.io.IOException
 import java.io.InputStream
 import java.net.URL
 import java.util.*
-import kotlin.jvm.Throws
 
 open class ImageLoader {
     interface ImagesLoadingListener {
@@ -73,7 +72,7 @@ open class ImageLoader {
             }
         }
         if (drawable == null) throw RuntimeException("Could not load image $source")
-        return drawable.mutate()
+        return drawable
     }
 
     @Throws(IOException::class)

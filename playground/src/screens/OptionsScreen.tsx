@@ -86,7 +86,6 @@ export default class Options extends React.Component<Props> {
     Navigation.mergeOptions(this, {
       topBar: {
         title: {
-          alignment: 'center',
           text: 'Title Changed',
         },
       },
