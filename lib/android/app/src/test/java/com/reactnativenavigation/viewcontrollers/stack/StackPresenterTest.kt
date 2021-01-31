@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
@@ -31,6 +32,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleSubTitleLayout
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.json.JSONObject
 import org.junit.Test
@@ -38,11 +40,13 @@ import org.mockito.ArgumentCaptor
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.jvm.Throws
 
 
 class StackPresenterTest : BaseTest() {
     private lateinit var parent: StackController
     private lateinit var uut: StackPresenter
+    private lateinit var ogUut: StackPresenter
     private lateinit var child: ViewController<*>
     private lateinit var otherChild: ViewController<*>
     private lateinit var activity: Activity
@@ -71,7 +75,7 @@ class StackPresenterTest : BaseTest() {
         typefaceLoader = createTypeFaceLoader()
         iconResolver = IconResolverFake(activity)
         buttonCreator = TitleBarButtonCreatorMock()
-        uut = spy(StackPresenter(
+        ogUut = StackPresenter(
                 activity,
                 titleViewCreator,
                 TopBarBackgroundViewCreatorMock(),
@@ -80,7 +84,8 @@ class StackPresenterTest : BaseTest() {
                 typefaceLoader,
                 renderChecker,
                 Options()
-        ))
+        )
+        uut = spy(ogUut)
         createTopBarController()
         parent = TestUtils.newStackController(activity)
                 .setTopBarController(topBarController)
@@ -139,10 +144,15 @@ class StackPresenterTest : BaseTest() {
         val options = Options()
         options.topBar.title.component = component(Alignment.Center)
         uut.applyChildOptions(options, parent, child)
-        val captor = argumentCaptor<View>()
-        verify(topBar).setTitleComponent(captor.capture())
-        val lp = captor.firstValue.layoutParams as Toolbar.LayoutParams
-        assertThat(lp.gravity).isEqualTo(Gravity.CENTER)
+        var lp = topBar.mainToolBar.getTitleComponent().layoutParams as ConstraintLayout.LayoutParams
+        assertThat(lp.verticalBias).isEqualTo(0.5f)
+        assertThat(lp.horizontalBias).isEqualTo(0.5f)
+
+        options.topBar.title.component = component(Alignment.Fill)
+        uut.applyChildOptions(options, parent, child)
+        lp = topBar.mainToolBar.getTitleComponent().layoutParams as ConstraintLayout.LayoutParams
+        assertThat(lp.verticalBias).isEqualTo(0.5f)
+        assertThat(lp.horizontalBias).isEqualTo(0f)
     }
 
     @Test
@@ -223,7 +233,7 @@ class StackPresenterTest : BaseTest() {
 
         val captor1 = argumentCaptor<List<ButtonController>>()
         verify(topBarController).applyRightButtons(captor1.capture())
-        assertThat(topBar.titleBar.menu.size()).isEqualTo(2)
+        assertThat(topBar.rightButtonsBar.menu.size()).isEqualTo(2)
 
         val appliedButtons = captor1.firstValue
         val toMerge = Options()
@@ -232,7 +242,7 @@ class StackPresenterTest : BaseTest() {
         toMerge.topBar.buttons.right!!.add(1, componentBtn2)
         uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child)
 
-        assertThat(topBar.titleBar.menu.size()).isEqualTo(3)
+        assertThat(topBar.rightButtonsBar.menu.size()).isEqualTo(3)
         val captor2 = argumentCaptor<List<ButtonController>>()
         verify(topBarController).mergeRightButtons(captor2.capture(), any())
         val mergedButtons = captor2.firstValue
@@ -350,9 +360,9 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
         uut.mergeOptions(toMerge, parent, child)
-        val title = topBar.titleBar.findTitleTextView()
+        val title = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
-        assertThat(title!!.typeface).isEqualTo(SOME_TYPEFACE)
+        assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
         verify(topBar).setTitleTextColor(Color.RED)
     }
@@ -371,9 +381,9 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.subtitle.text = Text("New Title")
         uut.mergeOptions(toMerge, parent, child)
-        val subtitle = topBar.titleBar.findSubtitleTextView()
+        val subtitle = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
-        assertThat(subtitle!!.typeface).isEqualTo(SOME_TYPEFACE)
+        assertThat(subtitle.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setSubtitleFontSize(9.0)
         verify(topBar).setSubtitleColor(Color.RED)
     }
@@ -389,9 +399,9 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
-        val title = topBar.titleBar.findTitleTextView()
+        val title = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
-        assertThat(title!!.typeface).isEqualTo(SOME_TYPEFACE)
+        assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
         verify(topBar).setTitleTextColor(Color.RED)
     }
@@ -407,9 +417,9 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.subtitle.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
-        val subtitle = topBar.titleBar.findSubtitleTextView()
+        val subtitle = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
-        assertThat(subtitle!!.typeface).isEqualTo(SOME_TYPEFACE)
+        assertThat(subtitle.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setSubtitleFontSize(9.0)
         verify(topBar).setSubtitleColor(Color.RED)
     }
@@ -580,8 +590,8 @@ class StackPresenterTest : BaseTest() {
         //Merge color change for right and left buttons
         mergeOptions.topBar.rightButtonDisabledColor = Colour(100)
         mergeOptions.topBar.leftButtonDisabledColor = Colour(10)
-        val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock {  }))
-        val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock {  }))
+        val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock { }))
+        val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock { }))
         uut.setComponentsButtonController(child.view, rightController, leftController)
         uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
 

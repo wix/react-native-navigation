@@ -27,6 +27,7 @@ import { LayoutProcessor } from './processors/LayoutProcessor';
 import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
 import { CommandName } from './interfaces/CommandName';
 import { OptionsCrawler } from './commands/OptionsCrawler';
+import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
@@ -78,7 +79,7 @@ export class NavigationRoot {
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
-    this.optionsCrawler = new OptionsCrawler(this.store);
+    this.optionsCrawler = new OptionsCrawler(this.store, this.uniqueIdProvider);
     this.commands = new Commands(
       this.store,
       this.nativeCommandsSender,
@@ -118,9 +119,9 @@ export class NavigationRoot {
   /**
    * Adds an option processor which allows option interpolation by optionPath.
    */
-  public addOptionProcessor<T>(
+  public addOptionProcessor<T, S = any>(
     optionPath: string,
-    processor: (value: T, commandName: CommandName) => T
+    processor: OptionProcessor<T, S>
   ): ProcessorSubscription {
     return this.optionProcessorsStore.addProcessor(optionPath, processor);
   }

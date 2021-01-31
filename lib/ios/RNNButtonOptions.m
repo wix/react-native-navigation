@@ -21,6 +21,7 @@
     self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
     self.iconBackground = [[RNNIconBackgroundOptions alloc] initWithDict:dict[@"iconBackground"]
                                                                  enabled:self.enabled];
+    self.systemItem = [TextParser parse:dict key:@"systemItem"];
 
     return self;
 }
@@ -42,6 +43,7 @@
     newOptions.enabled = self.enabled.copy;
     newOptions.selectTabOnPress = self.selectTabOnPress.copy;
     newOptions.iconBackground = self.iconBackground.copy;
+    newOptions.systemItem = self.systemItem.copy;
     return newOptions;
 }
 
@@ -75,6 +77,8 @@
     }
     if (options.selectTabOnPress.hasValue)
         self.selectTabOnPress = options.selectTabOnPress;
+    if (options.systemItem.hasValue)
+        self.systemItem = options.systemItem;
 }
 
 - (BOOL)shouldCreateCustomView {

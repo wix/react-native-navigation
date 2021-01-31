@@ -33,7 +33,7 @@ export class OptionsProcessor {
     private deprecations: Deprecations
   ) {}
 
-  public processOptions(options: Options, commandName: CommandName) {
+  public processOptions(options: Options, commandName: CommandName, props?: any) {
     this.processObject(
       options,
       clone(options),
@@ -41,7 +41,8 @@ export class OptionsProcessor {
         this.deprecations.onProcessOptions(key, parentOptions, commandName);
         this.deprecations.checkForDeprecatedOptions(parentOptions);
       },
-      commandName
+      commandName,
+      props
     );
   }
 
@@ -61,11 +62,19 @@ export class OptionsProcessor {
     parentOptions: object,
     onProcess: (key: string, parentOptions: object) => void,
     commandName: CommandName,
+    props?: any,
     parentPath?: string
   ) {
     forEach(objectToProcess, (value, key) => {
       const objectPath = this.resolveObjectPath(key, parentPath);
-      this.processWithRegisteredProcessor(key, value, objectToProcess, objectPath, commandName);
+      this.processWithRegisteredProcessor(
+        key,
+        value,
+        objectToProcess,
+        objectPath,
+        commandName,
+        props
+      );
       this.processColor(key, value, objectToProcess);
 
       if (!value) {
@@ -83,7 +92,14 @@ export class OptionsProcessor {
 
       const processedValue = objectToProcess[key];
       if (!isEqual(key, 'passProps') && (isObject(processedValue) || isArray(processedValue))) {
-        this.processObject(processedValue, parentOptions, onProcess, commandName, objectPath);
+        this.processObject(
+          processedValue,
+          parentOptions,
+          onProcess,
+          commandName,
+          props,
+          objectPath
+        );
       }
     });
   }
@@ -105,12 +121,13 @@ export class OptionsProcessor {
     value: string,
     options: Record<string, any>,
     path: string,
-    commandName: CommandName
+    commandName: CommandName,
+    passProps: any
   ) {
     const registeredProcessors = this.optionProcessorsRegistry.getProcessors(path);
     if (registeredProcessors) {
       registeredProcessors.forEach((processor) => {
-        options[key] = processor(value, commandName);
+        options[key] = processor(value, commandName, passProps);
       });
     }
   }

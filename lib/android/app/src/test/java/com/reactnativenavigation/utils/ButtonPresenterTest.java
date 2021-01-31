@@ -2,8 +2,12 @@ package com.reactnativenavigation.utils;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.text.SpannableString;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.ActionMenuView;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.fakes.IconResolverFake;
@@ -14,14 +18,12 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsToolbar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 
 import org.junit.Test;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
-
-import androidx.appcompat.widget.ActionMenuView;
 
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -31,7 +33,7 @@ import static org.mockito.Mockito.mock;
 public class ButtonPresenterTest extends BaseTest {
     private static final String BTN_TEXT = "button1";
 
-    private TitleBar titleBar;
+    private ButtonsToolbar titleBar;
     private ButtonPresenter uut;
     private ButtonController buttonController;
     private ButtonOptions button;
@@ -39,7 +41,7 @@ public class ButtonPresenterTest extends BaseTest {
     @Override
     public void beforeEach() {
         Activity activity = newActivity();
-        titleBar = new TitleBar(activity);
+        titleBar = new ButtonsToolbar(activity);
         activity.setContentView(titleBar);
         button = createButton();
 
@@ -75,7 +77,8 @@ public class ButtonPresenterTest extends BaseTest {
 
     @Test
     public void applyColor_shouldChangeColor() {
-        MenuItem menuItem = buttonController.createAndAddButtonToTitleBar(titleBar, 0);
+        MenuItem menuItem = addMenuButton();
+
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
         Colour color = new Colour(Color.RED);
         uut.applyColor(titleBar, menuItem, color);
@@ -85,17 +88,23 @@ public class ButtonPresenterTest extends BaseTest {
     @Test
     public void applyColor_shouldChangeDisabledColor() {
         button.enabled = new Bool(false);
-        MenuItem menuItem = buttonController.createAndAddButtonToTitleBar(titleBar, 0);
+        MenuItem menuItem = addMenuButton();
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
-
         Colour disabledColor = new Colour(Color.BLUE);
         uut.applyDisabledColor(titleBar, menuItem, disabledColor);
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.BLUE);
     }
 
     private void addButtonAndApplyOptions() {
-        MenuItem menuItem = buttonController.createAndAddButtonToTitleBar(titleBar, 0);
+        MenuItem menuItem = addMenuButton();
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
+    }
+
+    private MenuItem addMenuButton() {
+        return titleBar.addButton(Menu.NONE,
+                1,
+                0,
+                SpannableString.valueOf(button.text.get("text")));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.playground;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.reactnativenavigation.NavigationActivity;

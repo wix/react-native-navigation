@@ -3,12 +3,14 @@ package com.reactnativenavigation.viewcontrollers.stack;
 import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.AnimationOptions;
@@ -16,11 +18,13 @@ import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
+import com.reactnativenavigation.options.TitleOptions;
 import com.reactnativenavigation.options.TopBarButtons;
 import com.reactnativenavigation.options.TopBarOptions;
 import com.reactnativenavigation.options.TopTabOptions;
 import com.reactnativenavigation.options.TopTabsOptions;
 import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.ObjectUtils;
@@ -58,17 +62,14 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.ObjectUtils.take;
 
 public class StackPresenter {
-    private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
-    private static final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
     private static final double DEFAULT_ELEVATION = 4d;
-    private final double defaultTitleFontSize;
-    private final double defaultSubtitleFontSize;
     private final Activity activity;
 
     private TopBar topBar;
     private TopBarController topBarController;
-    private @Nullable BottomTabsController bottomTabsController;
+    private @Nullable
+    BottomTabsController bottomTabsController;
     private final TitleBarReactViewCreator titleViewCreator;
     private ButtonController.OnClickListener onClickListener;
     private final RenderChecker renderChecker;
@@ -101,8 +102,6 @@ public class StackPresenter {
         this.typefaceLoader = typefaceLoader;
         this.renderChecker = renderChecker;
         this.defaultOptions = defaultOptions;
-        defaultTitleFontSize = 18;
-        defaultSubtitleFontSize = 14;
     }
 
     public void setDefaultOptions(Options defaultOptions) {
@@ -186,7 +185,6 @@ public class StackPresenter {
         }
 
         topBar.setTitleHeight(topBarOptions.title.height.get(UiUtils.getTopBarHeightDp(activity)));
-        topBar.setTitle(topBarOptions.title.text.get(""));
         topBar.setTitleTopMargin(topBarOptions.title.topMargin.get(0));
 
         if (topBarOptions.title.component.hasValue()) {
@@ -196,25 +194,17 @@ public class StackPresenter {
                 TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator, topBarOptions.title.component);
                 controller.setWaitForRender(topBarOptions.title.component.waitForRender);
                 titleControllers.put(component, controller);
-                controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
                 topBarController.setTitleComponent(controller);
             }
+            topBarController.alignTitleComponent(topBarOptions.title.component.alignment);
+        } else {
+            topBar.applyTitleOptions(topBarOptions.title,typefaceLoader);
+            topBar.applySubtitleOptions(topBarOptions.subtitle, typefaceLoader);
         }
 
-        topBar.setTitleFontSize(topBarOptions.title.fontSize.get(defaultTitleFontSize));
-        topBar.setTitleTextColor(topBarOptions.title.color.get(DEFAULT_TITLE_COLOR));
-        topBar.setTitleTypeface(typefaceLoader, topBarOptions.title.font);
-        topBar.setTitleAlignment(topBarOptions.title.alignment);
-
-        topBar.setSubtitle(topBarOptions.subtitle.text.get(""));
-        topBar.setSubtitleFontSize(topBarOptions.subtitle.fontSize.get(defaultSubtitleFontSize));
-        topBar.setSubtitleColor(topBarOptions.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
-        topBar.setSubtitleTypeface(typefaceLoader, topBarOptions.subtitle.font);
-        topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
 
         topBar.setBorderHeight(topBarOptions.borderHeight.get(0d));
         topBar.setBorderColor(topBarOptions.borderColor.get(DEFAULT_BORDER_COLOR));
-
         topBar.setBackgroundColor(topBarOptions.background.color.get(Color.WHITE));
 
         if (topBarOptions.background.component.hasValue()) {
@@ -392,8 +382,8 @@ public class StackPresenter {
     private void mergeRightButtonsColor(View child, Colour color, Colour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
             forEach(componentRightButtons.get(child).values(), (btnController) -> {
-                if (color.hasValue()) btnController.applyColor(topBarController.getView().getTitleBar(), color);
-                if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getTitleBar(), disabledColor);
+                if (color.hasValue()) btnController.applyColor(topBarController.getView().getRightButtonsBar(), color);
+                if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getRightButtonsBar(), disabledColor);
             });
         }
     }
@@ -465,19 +455,24 @@ public class StackPresenter {
             if (controller == null) {
                 controller = new TitleBarReactViewController(activity, titleViewCreator, topBarOptions.title.component);
                 perform(titleControllers.put(component, controller), ViewController::destroy);
-                controller.getView().setLayoutParams(getComponentLayoutParams(topBarOptions.title.component));
             }
             topBarController.setTitleComponent(controller);
+            topBarController.alignTitleComponent(topBarOptions.title.component.alignment);
         } else if (topBarOptions.title.text.hasValue()) {
             perform(titleControllers.remove(component), ViewController::destroy);
             topBar.setTitle(topBarOptions.title.text.get());
+            topBarController.alignTitleComponent(topBarOptions.title.alignment);
+
         }
 
         if (resolveOptions.title.color.hasValue()) topBar.setTitleTextColor(resolveOptions.title.color.get());
         if (resolveOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
         if (resolveOptions.title.font.hasValue()) topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 
-        if (topBarOptions.subtitle.text.hasValue()) topBar.setSubtitle(topBarOptions.subtitle.text.get());
+        if (topBarOptions.subtitle.text.hasValue()){
+            topBar.setSubtitle(topBarOptions.subtitle.text.get());
+            topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
+        }
         if (resolveOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(resolveOptions.subtitle.color.get());
         if (resolveOptions.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(resolveOptions.subtitle.fontSize.get());
         if (resolveOptions.subtitle.font.hasValue()) topBar.setSubtitleTypeface(typefaceLoader, resolveOptions.subtitle.font);
