@@ -131,4 +131,10 @@ open class BottomTabs(context: Context?) : AHBottomNavigation(context) {
         return w != 0 && h != 0 && (w != oldw || h != oldh) && itemsCount > 0
     }
 
+
+    companion object {
+
+    }
+
+
 }

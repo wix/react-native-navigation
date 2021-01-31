@@ -44,19 +44,19 @@ public class ModalPresenter {
         }
 
         Options options = toAdd.resolveCurrentOptions(defaultOptions);
-        toAdd.setWaitForRender(options.animations.showModal.shouldWaitForRender());
+        toAdd.setWaitForRender(options.getAnimations().showModal.shouldWaitForRender());
         modalsLayout.setVisibility(View.VISIBLE);
         modalsLayout.addView(toAdd.getView(), matchParentLP());
 
-        if (options.animations.showModal.enabled.isTrueOrUndefined()) {
+        if (options.getAnimations().showModal.enabled.isTrueOrUndefined()) {
             toAdd.getView().setAlpha(0);
-            if (options.animations.showModal.shouldWaitForRender().isTrue()) {
+            if (options.getAnimations().showModal.shouldWaitForRender().isTrue()) {
                 toAdd.addOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
             } else {
                 animateShow(toAdd, toRemove, listener, options);
             }
         } else {
-            if (options.animations.showModal.waitForRender.isTrue()) {
+            if (options.getAnimations().showModal.waitForRender.isTrue()) {
                 toAdd.addOnAppearedListener(() -> onShowModalEnd(toAdd, toRemove, listener));
             } else {
                 onShowModalEnd(toAdd, toRemove, listener);
@@ -65,7 +65,7 @@ public class ModalPresenter {
     }
 
     private void animateShow(ViewController toAdd, ViewController toRemove, CommandListener listener, Options options) {
-        animator.show(toAdd, toRemove, options.animations.showModal, new ScreenAnimationListener() {
+        animator.show(toAdd, toRemove, options.getAnimations().showModal, new ScreenAnimationListener() {
             @Override
             public void onStart() {
                 toAdd.getView().setAlpha(1);
@@ -85,7 +85,7 @@ public class ModalPresenter {
 
     private void onShowModalEnd(ViewController toAdd, @Nullable ViewController toRemove, CommandListener listener) {
         toAdd.onViewDidAppear();
-        if (toRemove != null && toAdd.resolveCurrentOptions(defaultOptions).modal.presentationStyle != ModalPresentationStyle.OverCurrentContext) {
+        if (toRemove != null && toAdd.resolveCurrentOptions(defaultOptions).getModal().presentationStyle != ModalPresentationStyle.OverCurrentContext) {
             toRemove.detachView();
         }
         listener.onSuccess(toAdd.getId());
@@ -101,8 +101,8 @@ public class ModalPresenter {
             toAdd.onViewDidAppear();
         }
         Options options = toDismiss.resolveCurrentOptions(defaultOptions);
-        if (options.animations.dismissModal.enabled.isTrueOrUndefined()) {
-            animator.dismiss(toAdd, toDismiss, options.animations.dismissModal, new ScreenAnimationListener() {
+        if (options.getAnimations().dismissModal.enabled.isTrueOrUndefined()) {
+            animator.dismiss(toAdd, toDismiss, options.getAnimations().dismissModal, new ScreenAnimationListener() {
                 @Override
                 public void onEnd() {
                     onDismissEnd(toDismiss, listener);

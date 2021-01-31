@@ -44,12 +44,12 @@ public class SideMenuRoot extends CoordinatorLayout {
 
     @SuppressLint("RtlHardcoded")
     public void setLeft(ViewController left, Options options) {
-        sideMenu.addView(left.getView(), createLayoutParams(options.sideMenuRootOptions.left, Gravity.LEFT));
+        sideMenu.addView(left.getView(), createLayoutParams(options.getSideMenuRootOptions().left, Gravity.LEFT));
     }
 
     @SuppressLint("RtlHardcoded")
     public void setRight(ViewController right, Options options) {
-        sideMenu.addView(right.getView(), createLayoutParams(options.sideMenuRootOptions.right, Gravity.RIGHT));
+        sideMenu.addView(right.getView(), createLayoutParams(options.getSideMenuRootOptions().right, Gravity.RIGHT));
     }
 
     public boolean isSideMenu(View view) {

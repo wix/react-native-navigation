@@ -5,10 +5,13 @@ import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
+import com.reactnativenavigation.options.BottomTabsOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -18,6 +21,7 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
@@ -90,10 +94,11 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     private void setInitialTab(Options resolveCurrentOptions) {
         int initialTabIndex = 0;
-        if (resolveCurrentOptions.bottomTabsOptions.currentTabId.hasValue())
-            initialTabIndex = presenter.findTabIndexByTabId(resolveCurrentOptions.bottomTabsOptions.currentTabId.get());
-        else if (resolveCurrentOptions.bottomTabsOptions.currentTabIndex.hasValue()) {
-            initialTabIndex = resolveCurrentOptions.bottomTabsOptions.currentTabIndex.get();
+        BottomTabsOptions bottomTabsOptions = resolveCurrentOptions.getBottomTabsOptions();
+        if (bottomTabsOptions.getCurrentTabId().hasValue())
+            initialTabIndex = presenter.findTabIndexByTabId(bottomTabsOptions.getCurrentTabId().get());
+        else if (bottomTabsOptions.getCurrentTabIndex().hasValue()) {
+            initialTabIndex = bottomTabsOptions.getCurrentTabIndex().get();
         }
         bottomTabs.setCurrentItem(initialTabIndex, false);
     }
@@ -105,8 +110,8 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         presenter.applyOptions(options);
         tabPresenter.applyOptions();
         bottomTabs.enableItemsCreation();
-        this.options.bottomTabsOptions.clearOneTimeOptions();
-        this.initialOptions.bottomTabsOptions.clearOneTimeOptions();
+        this.options.getBottomTabsOptions().clearOneTimeOptions();
+        this.initialOptions.getBottomTabsOptions().clearOneTimeOptions();
     }
 
     @Override
@@ -114,8 +119,8 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         presenter.mergeOptions(options, this);
         tabPresenter.mergeOptions(options);
         super.mergeOptions(options);
-        this.options.bottomTabsOptions.clearOneTimeOptions();
-        this.initialOptions.bottomTabsOptions.clearOneTimeOptions();
+        this.options.getBottomTabsOptions().clearOneTimeOptions();
+        this.initialOptions.getBottomTabsOptions().clearOneTimeOptions();
     }
 
     @Override
@@ -156,7 +161,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
-        BottomTabOptions options = tabs.get(index).resolveCurrentOptions().bottomTabOptions;
+        BottomTabOptions options = tabs.get(index).resolveCurrentOptions().getBottomTabOptions();
 
         eventEmitter.emitBottomTabPressed(index);
 
@@ -171,7 +176,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     private List<AHBottomNavigationItem> createTabs() {
         if (tabs.size() > 5) throw new RuntimeException("Too many tabs!");
         return map(tabs, tab -> {
-            BottomTabOptions options = tab.resolveCurrentOptions().bottomTabOptions;
+            BottomTabOptions options = tab.resolveCurrentOptions().getBottomTabOptions();
             return new AHBottomNavigationItem(
                     options.text.get(""),
                     imageLoader.loadIcon(getActivity(), options.icon.get(null)),

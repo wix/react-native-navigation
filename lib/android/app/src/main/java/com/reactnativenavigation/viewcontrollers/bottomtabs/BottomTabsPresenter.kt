@@ -90,7 +90,6 @@ class BottomTabsPresenter(
         if (bottomTabsOptions.hideOnScroll.hasValue()) {
             bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll.get()
         }
-
         if (bottomTabsOptions.borderColor.hasValue()) {
             bottomTabsContainer.setTopOutlineColor(bottomTabsOptions.borderColor.get())
         }
@@ -100,7 +99,6 @@ class BottomTabsPresenter(
         if(bottomTabsOptions.shadowOptions.hasValue()){
             bottomTabsContainer.setShadowOptions(bottomTabsOptions.shadowOptions)
         }
-
         if (view.isViewShown) {
             if (bottomTabsOptions.visible.isTrue) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined) {
@@ -175,7 +173,6 @@ class BottomTabsPresenter(
         if(bottomTabsOptions.shadowOptions.hasValue()){
             bottomTabsContainer.setShadowOptions(bottomTabsOptions.shadowOptions)
         }
-
         bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll[false]
     }
 

@@ -14,6 +14,7 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class BottomTabPresenter {
     public void applyOptions() {
         bottomTabs.perform(bottomTabs -> {
             for (int i = 0; i < tabs.size(); i++) {
-                BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
+                BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).getBottomTabOptions();
                 bottomTabs.setIconWidth(i, tab.iconWidth.get(null));
                 bottomTabs.setIconHeight(i, tab.iconHeight.get(null));
                 bottomTabs.setTitleTypeface(i, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));
@@ -81,7 +82,7 @@ public class BottomTabPresenter {
         bottomTabs.perform(bottomTabs -> {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
-                BottomTabOptions tab = options.bottomTabOptions;
+                BottomTabOptions tab = options.getBottomTabOptions();
                 if (tab.iconWidth.hasValue()) bottomTabs.setIconWidth(index, tab.iconWidth.get(null));
                 if (tab.iconHeight.hasValue()) bottomTabs.setIconHeight(index, tab.iconHeight.get(null));
                 if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));

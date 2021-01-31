@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.options.BottomTabsOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
@@ -23,7 +24,7 @@ public abstract class AttachMode {
     final ViewController initialTab;
 
     public static AttachMode get(ViewGroup parent, List<ViewController<?>> tabs, BottomTabsPresenter presenter, Options resolved) {
-        switch (resolved.bottomTabsOptions.tabsAttachMode) {
+        switch (resolved.getBottomTabsOptions().getTabsAttachMode()) {
             case AFTER_INITIAL_TAB:
                 return new AfterInitialTab(parent, tabs, presenter, resolved);
             case ON_SWITCH_TO_TAB:
@@ -42,11 +43,12 @@ public abstract class AttachMode {
         this.bottomTabFinder = new BottomTabFinder(tabs);
 
         int tabIndex = -1;
-        if (resolved.bottomTabsOptions.currentTabId.hasValue()) {
-            tabIndex = this.bottomTabFinder.findByControllerId(resolved.bottomTabsOptions.currentTabId.get());
+        BottomTabsOptions bottomTabsOptions = resolved.getBottomTabsOptions();
+        if (bottomTabsOptions.getCurrentTabId().hasValue()) {
+            tabIndex = this.bottomTabFinder.findByControllerId(bottomTabsOptions.getCurrentTabId().get());
         }
         if (tabIndex < 0) {
-            tabIndex = resolved.bottomTabsOptions.currentTabIndex.get(0);
+            tabIndex = bottomTabsOptions.getCurrentTabIndex().get(0);
         }
         initialTab = tabs.get(tabIndex);
     }
