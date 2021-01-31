@@ -80,10 +80,10 @@ class TopBarControllerTest : BaseTest() {
     }
 
     @Test
-    fun applyRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
+    fun applyRightButtons_buttonsAreAddedInNormalOrderToMatchOrderOnIOs() {
         uut.applyLeftButtons(leftButton(leftButton))
         uut.applyRightButtons(rightButtons(textButton1, componentButton)!!)
-        assertThat(uut.getRightButton(1).title.toString()).isEqualTo(textButton1.text.get())
+        assertThat(uut.getRightButton(0).title.toString()).isEqualTo(textButton1.text.get())
     }
 
     @Test
