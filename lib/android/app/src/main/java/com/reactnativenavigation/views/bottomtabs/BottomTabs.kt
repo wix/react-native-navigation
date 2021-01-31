@@ -2,8 +2,6 @@ package com.reactnativenavigation.views.bottomtabs
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -16,11 +14,12 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.IntRange
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.LayoutDirection
 import com.reactnativenavigation.utils.CollectionUtils
-import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.utils.ViewUtils
 import java.util.*
 
@@ -34,12 +33,12 @@ open class BottomTabs(context: Context?) : AHBottomNavigation(context) {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
             gravity = Gravity.TOP
         }
-        setBackgroundColor(Color.BLUE)
+        visibility = View.GONE
     }
 
     init {
         id = R.id.bottomTabs
-        this.addView(borderView, 0)
+        addView(borderView,0)
     }
 
     fun disableItemsCreation() {
@@ -60,7 +59,7 @@ open class BottomTabs(context: Context?) : AHBottomNavigation(context) {
         if (hasItemsAndIsMeasured(w, h, oldw, oldh)) createItems()
     }
 
-    public override fun createItems() {
+    override fun createItems() {
         if (itemsCreationEnabled) {
             superCreateItems()
         } else {
@@ -131,9 +130,67 @@ open class BottomTabs(context: Context?) : AHBottomNavigation(context) {
         return w != 0 && h != 0 && (w != oldw || h != oldh) && itemsCount > 0
     }
 
+    fun setBorderColor(@ColorInt color: Int) {
+        this.borderView.setBackgroundColor(color)
+    }
+    fun setBorderWidth(width: Int) {
+        if(width<=0){
+            this.borderView.visibility = View.GONE
+        }else{
+            this.borderView.updateLayoutParams<LayoutParams> {
+                topMargin = -height
+            }
+        }
+    }
 
     companion object {
-
+        fun generateBackgroundWithShadow(view: View, @ColorInt backgroundColor: Int,
+                                         cornerRadius: Float,
+                                         shadowColor: Int,
+                                         elevation: Int,
+                                         shadowGravity: Int): Drawable {
+            val outerRadius = floatArrayOf(cornerRadius, cornerRadius, cornerRadius,
+                    cornerRadius, cornerRadius, cornerRadius, cornerRadius,
+                    cornerRadius)
+            val backgroundPaint = Paint()
+            backgroundPaint.style = Paint.Style.FILL
+            backgroundPaint.setShadowLayer(cornerRadius, 0f, 0f, 0)
+            val shapeDrawablePadding = Rect()
+            shapeDrawablePadding.left = elevation
+            shapeDrawablePadding.right = elevation
+            val DY: Int
+            when (shadowGravity) {
+                Gravity.CENTER -> {
+                    shapeDrawablePadding.top = elevation
+                    shapeDrawablePadding.bottom = elevation
+                    DY = 0
+                }
+                Gravity.TOP -> {
+                    shapeDrawablePadding.top = elevation * 2
+                    shapeDrawablePadding.bottom = elevation
+                    DY = -1 * elevation / 3
+                }
+                Gravity.BOTTOM -> {
+                    shapeDrawablePadding.top = elevation
+                    shapeDrawablePadding.bottom = elevation * 2
+                    DY = elevation / 3
+                }
+                else -> {
+                    shapeDrawablePadding.top = elevation
+                    shapeDrawablePadding.bottom = elevation * 2
+                    DY = elevation / 3
+                }
+            }
+            val shapeDrawable = ShapeDrawable()
+            shapeDrawable.setPadding(shapeDrawablePadding)
+            shapeDrawable.paint.color = backgroundColor
+            shapeDrawable.paint.setShadowLayer(cornerRadius / 3, 0f, DY.toFloat(), shadowColor)
+            view.setLayerType(View.LAYER_TYPE_SOFTWARE, shapeDrawable.paint)
+            shapeDrawable.shape = RoundRectShape(outerRadius, null, null)
+            val drawable = LayerDrawable(arrayOf<Drawable>(shapeDrawable))
+            drawable.setLayerInset(0, elevation, elevation * 2, elevation, elevation * 2)
+            return drawable
+        }
     }
 
 

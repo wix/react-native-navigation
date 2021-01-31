@@ -16,6 +16,6 @@ public class BottomTabsBehaviour extends BehaviourDelegate {
 
     @Override
     public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull ViewGroup child, @NonNull View dependency) {
-        return dependency instanceof BottomTabsContainer;
+        return dependency instanceof BottomTabs;
     }
 }

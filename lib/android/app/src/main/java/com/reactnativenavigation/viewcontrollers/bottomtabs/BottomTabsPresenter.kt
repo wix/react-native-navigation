@@ -7,10 +7,8 @@ import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
-import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import kotlin.math.max
 
 class BottomTabsPresenter(
@@ -19,7 +17,6 @@ class BottomTabsPresenter(
         val animator: BottomTabsAnimator
 ) {
     private val bottomTabFinder: BottomTabFinder = BottomTabFinder(tabs)
-    private lateinit var bottomTabsContainer: BottomTabsContainer
     private lateinit var bottomTabs: BottomTabs
     private lateinit var tabSelector: TabSelector
     private val defaultTitleState: TitleState
@@ -34,9 +31,8 @@ class BottomTabsPresenter(
         this.defaultOptions = defaultOptions
     }
 
-    fun bindView(bottomTabsContainer: BottomTabsContainer, tabSelector: TabSelector) {
-        this.bottomTabsContainer = bottomTabsContainer
-        this.bottomTabs = bottomTabsContainer.bottomTabs
+    fun bindView(bottomTabs: BottomTabs, tabSelector: TabSelector) {
+        this.bottomTabs = bottomTabs
         this.tabSelector = tabSelector
         animator.bindView(bottomTabs)
     }
@@ -90,14 +86,11 @@ class BottomTabsPresenter(
         if (bottomTabsOptions.hideOnScroll.hasValue()) {
             bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll.get()
         }
-        if (bottomTabsOptions.borderColor.hasValue()) {
-            bottomTabsContainer.setTopOutlineColor(bottomTabsOptions.borderColor.get())
+        if(bottomTabsOptions.borderColor.hasValue()){
+            bottomTabs.setBorderColor(bottomTabsOptions.borderColor.get())
         }
-        if (bottomTabsOptions.borderWidth.hasValue()) {
-            bottomTabsContainer.setTopOutlineWidth(UiUtils.dpToPx(bottomTabsContainer.context, bottomTabsOptions.borderWidth.get()))
-        }
-        if(bottomTabsOptions.shadowOptions.hasValue()){
-            bottomTabsContainer.setShadowOptions(bottomTabsOptions.shadowOptions)
+        if(bottomTabsOptions.borderWidth.hasValue()){
+            bottomTabs.setBorderWidth(bottomTabsOptions.borderWidth.get())
         }
         if (view.isViewShown) {
             if (bottomTabsOptions.visible.isTrue) {
@@ -164,14 +157,11 @@ class BottomTabsPresenter(
         if (bottomTabsOptions.elevation.hasValue()) {
             bottomTabs.setUseElevation(true, bottomTabsOptions.elevation.get().toFloat())
         }
-        if (bottomTabsOptions.borderColor.hasValue()) {
-            bottomTabsContainer.setTopOutlineColor(bottomTabsOptions.borderColor.get())
+        if(bottomTabsOptions.borderColor.hasValue()){
+            bottomTabs.setBorderColor(bottomTabsOptions.borderColor.get())
         }
-        if (bottomTabsOptions.borderWidth.hasValue()) {
-            bottomTabsContainer.setTopOutlineWidth(UiUtils.dpToPx(bottomTabsContainer.context, bottomTabsOptions.borderWidth.get()))
-        }
-        if(bottomTabsOptions.shadowOptions.hasValue()){
-            bottomTabsContainer.setShadowOptions(bottomTabsOptions.shadowOptions)
+        if(bottomTabsOptions.borderWidth.hasValue()){
+            bottomTabs.setBorderWidth(bottomTabsOptions.borderWidth.get())
         }
         bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll[false]
     }
@@ -182,7 +172,7 @@ class BottomTabsPresenter(
     }
 
     fun getBottomInset(resolvedOptions: Options): Int {
-        return if (resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind) 0 else bottomTabsContainer.height
+        return if (resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind) 0 else bottomTabs.height
     }
 
     fun getPushAnimation(appearingOptions: Options): Animator? {
@@ -208,7 +198,6 @@ class BottomTabsPresenter(
                 appearingOptions.bottomTabsOptions.visible
         )
     }
-
     fun findTabIndexByTabId(id: String?): Int {
         val index = bottomTabFinder.findByControllerId(id)
         return max(index, 0)
