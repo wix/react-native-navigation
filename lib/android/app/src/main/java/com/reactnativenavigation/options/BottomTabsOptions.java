@@ -40,9 +40,11 @@ public class BottomTabsOptions {
         options.testId = TextParser.parse(json, "testID");
         options.titleDisplayMode = TitleDisplayMode.fromString(json.optString("titleDisplayMode"));
         options.tabsAttachMode = TabsAttachMode.fromString(json.optString("tabsAttachMode"));
-
-		return options;
-	}
+        options.borderColor = ColorParser.parse(context, json, "borderColor");
+        options.borderWidth = NumberParser.parse(json, "borderWidth");
+        options.shadowOptions = ShadowOptionsKt.parseShadowOptions(context, json.optJSONObject("shadow"));
+        return options;
+    }
 
     public Colour backgroundColor = new NullColor();
     public Bool hideOnScroll = new NullBool();
@@ -72,6 +74,9 @@ public class BottomTabsOptions {
         if (other.testId.hasValue()) testId = other.testId;
         if (other.titleDisplayMode.hasValue()) titleDisplayMode = other.titleDisplayMode;
         if (other.tabsAttachMode.hasValue()) tabsAttachMode = other.tabsAttachMode;
+        if (other.borderColor.hasValue()) borderColor = other.borderColor;
+        if (other.borderWidth.hasValue()) borderWidth = other.borderWidth;
+        if (other.shadowOptions.hasValue()) shadowOptions = shadowOptions.copy().mergeWith(other.shadowOptions);
     }
 
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
@@ -87,6 +92,9 @@ public class BottomTabsOptions {
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
         if (!titleDisplayMode.hasValue()) titleDisplayMode = defaultOptions.titleDisplayMode;
         if (!tabsAttachMode.hasValue()) tabsAttachMode = defaultOptions.tabsAttachMode;
+        if (!borderColor.hasValue()) borderColor = defaultOptions.borderColor;
+        if (!borderWidth.hasValue()) borderWidth = defaultOptions.borderWidth;
+        if (!shadowOptions.hasValue()) shadowOptions = shadowOptions.copy().mergeWithDefaults(defaultOptions.shadowOptions);
     }
 
     public boolean isHiddenOrDrawBehind() {
