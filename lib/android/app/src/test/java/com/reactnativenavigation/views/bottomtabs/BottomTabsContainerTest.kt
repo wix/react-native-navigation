@@ -19,7 +19,7 @@ class BottomTabsContainerTest : BaseTest() {
     override fun beforeEach() {
         this.bottomTabs = mock()
         this.activity = newActivity()
-        uut = spy(BottomTabsContainer(activity))
+        uut = spy(BottomTabsContainer(activity,bottomTabs))
     }
 
     @Test

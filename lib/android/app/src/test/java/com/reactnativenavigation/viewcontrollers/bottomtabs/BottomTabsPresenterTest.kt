@@ -33,7 +33,6 @@ class BottomTabsPresenterTest : BaseTest() {
         bottomTabsContainer = mock()
         bottomTabs = mock()
         whenever(bottomTabsContainer.bottomTabs).thenReturn(bottomTabs)
-        bottomTabsContainer.bottomTabs = bottomTabs
         animator = spy(BottomTabsAnimator(bottomTabs))
         uut = BottomTabsPresenter(tabs, Options(), animator)
         tabSelector = mock()

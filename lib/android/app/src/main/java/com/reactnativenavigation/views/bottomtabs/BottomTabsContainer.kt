@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views.bottomtabs
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.view.View
@@ -17,13 +18,9 @@ internal const val SHADOW_HEIGHT_DP = 4
 internal const val DEFAULT_TOP_OUTLINE_SIZE_PX = 1
 internal const val DEFAULT_TOP_OUTLINE_COLOR = Color.DKGRAY
 
-class BottomTabsContainer(context: Context) : LinearLayout(context) {
-    var bottomTabs = BottomTabs(context)
-        @RestrictTo(RestrictTo.Scope.TESTS) set(value) {
-            this.removeView(field)
-            addView(value, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
-            field = value
-        }
+@SuppressLint("ViewConstructor")
+class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : LinearLayout(context) {
+
     open var topOutLineView = TopOutlineView(context)
         @RestrictTo(RestrictTo.Scope.TESTS, RestrictTo.Scope.SUBCLASSES) get
         @RestrictTo(RestrictTo.Scope.TESTS) set(value) {
