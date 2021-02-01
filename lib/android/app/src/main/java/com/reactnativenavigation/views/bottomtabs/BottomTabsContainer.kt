@@ -59,9 +59,7 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         }
 
     fun setTopOutlineWidth(width: Int) {
-        this.topOutLineView.layoutParams = (this.topOutLineView.layoutParams as LinearLayout.LayoutParams).apply {
-            height = width
-        }
+        this.topOutLineView.layoutParams = (this.topOutLineView.layoutParams as LinearLayout.LayoutParams).apply {height = width}
     }
 
     fun setTopOutLineColor(color: Int) {
