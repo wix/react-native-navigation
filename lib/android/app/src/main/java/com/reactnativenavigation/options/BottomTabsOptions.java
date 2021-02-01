@@ -59,9 +59,9 @@ public class BottomTabsOptions {
     public Text testId = new NullText();
     public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
     public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
-    private Colour borderColor = new NullColor();
-    private Number borderWidth = new NullNumber();
-    private ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
+    public Colour borderColor = new NullColor();
+    public Number borderWidth = new NullNumber();
+    public ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
     
     void mergeWith(final BottomTabsOptions other) {
         if (other.currentTabId.hasValue()) currentTabId = other.currentTabId;
