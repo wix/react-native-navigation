@@ -66,8 +66,10 @@ class BottomTabsContainer(context: Context) : LinearLayout(context) {
     }
 
     fun clearShadow() {
-        this.shadowRectView.reset()
-        this.shadowRectView.visibility = View.GONE
+        if (shadowRectView.visibility != View.GONE) {
+            this.shadowRectView.reset()
+            this.shadowRectView.visibility = View.GONE
+        }
     }
 
     fun showTopLine() {
@@ -143,7 +145,6 @@ private class ShadowRectView(context: Context) : View(context) {
         mainRect.bottom = this.height.toFloat()
         path.addRoundRect(mainRect, corners, Path.Direction.CW)
     }
-
 
 
     fun setOpacity(opacity: Float) {
