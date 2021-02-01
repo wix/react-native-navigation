@@ -14,6 +14,7 @@ import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import com.reactnativenavigation.views.bottomtabs.DEFAULT_TOP_OUTLINE_COLOR
 import com.reactnativenavigation.views.bottomtabs.DEFAULT_TOP_OUTLINE_SIZE_PX
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 class BottomTabsPresenter(
         private val tabs: List<ViewController<*>>,
@@ -98,7 +99,7 @@ class BottomTabsPresenter(
             bottomTabsContainer.showTopLine()
         }
         if (bottomTabsOptions.borderWidth.hasValue()) {
-            bottomTabsContainer.setTopOutlineWidth(bottomTabsOptions.borderWidth.get())
+            bottomTabsContainer.setTopOutlineWidth(bottomTabsOptions.borderWidth.get().roundToInt())
             bottomTabsContainer.showTopLine()
         }
         if (bottomTabsOptions.shadowOptions.hasValue()) {
@@ -186,7 +187,7 @@ class BottomTabsPresenter(
                 bottomTabsContainer.showTopLine()
             }
             bottomTabsOptions.borderWidth.hasValue() -> {
-                bottomTabsContainer.setTopOutlineWidth(bottomTabsOptions.borderWidth.get())
+                bottomTabsContainer.setTopOutlineWidth(bottomTabsOptions.borderWidth.get().roundToInt())
                 bottomTabsContainer.showTopLine()
             }
             else -> {

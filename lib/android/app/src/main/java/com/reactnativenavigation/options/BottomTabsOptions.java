@@ -41,7 +41,7 @@ public class BottomTabsOptions {
         options.titleDisplayMode = TitleDisplayMode.fromString(json.optString("titleDisplayMode"));
         options.tabsAttachMode = TabsAttachMode.fromString(json.optString("tabsAttachMode"));
         options.borderColor = ColorParser.parse(context, json, "borderColor");
-        options.borderWidth = NumberParser.parse(json, "borderWidth");
+        options.borderWidth = FractionParser.parse(json, "borderWidth");
         options.shadowOptions = ShadowOptionsKt.parseShadowOptions(context, json.optJSONObject("shadow"));
         return options;
     }
@@ -60,7 +60,7 @@ public class BottomTabsOptions {
     public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
     public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
     public Colour borderColor = new NullColor();
-    public Number borderWidth = new NullNumber();
+    public Fraction borderWidth = new NullFraction();
     public ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
     
     void mergeWith(final BottomTabsOptions other) {
