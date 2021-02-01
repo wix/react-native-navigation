@@ -7,12 +7,9 @@ import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
-import com.reactnativenavigation.views.bottomtabs.DEFAULT_TOP_OUTLINE_COLOR
-import com.reactnativenavigation.views.bottomtabs.DEFAULT_TOP_OUTLINE_SIZE_PX
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -119,7 +116,7 @@ class BottomTabsPresenter(
                 } else {
                     bottomTabs.restoreBottomNavigation(false)
                 }
-                bottomTabsContainer.revealTopLineAndShadow()
+                bottomTabsContainer.revealTopOutline()
             }
             if (bottomTabsOptions.visible.isFalse) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined) {
@@ -127,7 +124,7 @@ class BottomTabsPresenter(
                 } else {
                     bottomTabs.hideBottomNavigation(false)
                 }
-                bottomTabsContainer.hideTopLineAndShadow()
+                bottomTabsContainer.hideTopOutLine()
 
             }
         }

@@ -88,11 +88,11 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         this.topOutLineView.visibility = View.GONE
     }
 
-    fun revealTopLineAndShadow() {
+    fun revealTopOutline() {
         topOutLineView.alpha = 1f
     }
 
-    fun hideTopLineAndShadow() {
+    fun hideTopOutLine() {
         topOutLineView.alpha = 0f
     }
 }
