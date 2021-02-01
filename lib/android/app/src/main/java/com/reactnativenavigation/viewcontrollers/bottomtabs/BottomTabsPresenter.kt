@@ -103,9 +103,9 @@ class BottomTabsPresenter(
         }
         if (bottomTabsOptions.shadowOptions.hasValue()) {
             if (bottomTabsOptions.shadowOptions.color.hasValue())
-                bottomTabsContainer.setShadowColor(bottomTabsOptions.shadowOptions.color.get())
+                bottomTabsContainer.shadowColor = bottomTabsOptions.shadowOptions.color.get()
             if (bottomTabsOptions.shadowOptions.radius.hasValue())
-                bottomTabsContainer.setShadowRadius(bottomTabsOptions.shadowOptions.radius.get().toFloat())
+                bottomTabsContainer.shadowRadius = bottomTabsOptions.shadowOptions.radius.get().toFloat()
             if (bottomTabsOptions.shadowOptions.opacity.hasValue())
                 bottomTabsContainer.setShadowOpacity(bottomTabsOptions.shadowOptions.opacity.get().toFloat())
             bottomTabsContainer.showShadow()
@@ -196,9 +196,9 @@ class BottomTabsPresenter(
 
         if (bottomTabsOptions.shadowOptions.hasValue()) {
             if (bottomTabsOptions.shadowOptions.color.hasValue())
-                bottomTabsContainer.setShadowColor(bottomTabsOptions.shadowOptions.color.get())
+                bottomTabsContainer.shadowColor = bottomTabsOptions.shadowOptions.color.get()
             if (bottomTabsOptions.shadowOptions.radius.hasValue())
-                bottomTabsContainer.setShadowRadius(bottomTabsOptions.shadowOptions.radius.get().toFloat())
+                bottomTabsContainer.shadowRadius = bottomTabsOptions.shadowOptions.radius.get().toFloat()
             if (bottomTabsOptions.shadowOptions.opacity.hasValue())
                 bottomTabsContainer.setShadowOpacity(bottomTabsOptions.shadowOptions.opacity.get().toFloat())
             bottomTabsContainer.showShadow()

@@ -75,7 +75,7 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
         borderWidth: 1,
         shadow: {
           color: '#65C888',
-          radius: 5,
+          radius: 20,
           opacity: 0.8,
         },
       },
