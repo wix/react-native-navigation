@@ -59,10 +59,13 @@ public class BottomTabsOptions {
     public Text testId = new NullText();
     public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
     public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
-
-	void mergeWith(final BottomTabsOptions other) {
-		if (other.currentTabId.hasValue()) currentTabId = other.currentTabId;
-		if (other.currentTabIndex.hasValue()) currentTabIndex = other.currentTabIndex;
+    private Colour borderColor = new NullColor();
+    private Number borderWidth = new NullNumber();
+    private ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
+    
+    void mergeWith(final BottomTabsOptions other) {
+        if (other.currentTabId.hasValue()) currentTabId = other.currentTabId;
+        if (other.currentTabIndex.hasValue()) currentTabIndex = other.currentTabIndex;
         if (other.hideOnScroll.hasValue()) hideOnScroll = other.hideOnScroll;
 		if (other.visible.hasValue()) visible = other.visible;
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
