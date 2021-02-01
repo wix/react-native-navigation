@@ -255,4 +255,12 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @RestrictTo(RestrictTo.Scope.TESTS)
     public BottomTabsContainer getBottomTabsContainer() { return bottomTabsContainer; }
 
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public void setBottomTabsContainer(BottomTabsContainer bottomTabsContainer) {
+        this.bottomTabsContainer = bottomTabsContainer;
+    }
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public void setBottomTabs(BottomTabs bottomTabs) {
+        this.bottomTabs = bottomTabs;
+    }
 }

@@ -119,6 +119,7 @@ public class NavigatorTest extends BaseTest {
 
         activityController.visible();
         activityController.postCreate(Bundle.EMPTY);
+        idleMainLooper();
     }
 
     @Test
