@@ -19,6 +19,7 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
 import java.util.Collection;
@@ -27,6 +28,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -35,7 +37,7 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
-
+    private BottomTabsContainer bottomTabsContainer;
 	private BottomTabs bottomTabs;
 	private final List<ViewController<?>> tabs;
     private final EventEmitter eventEmitter;
@@ -71,20 +73,19 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @Override
     public BottomTabsLayout createView() {
         BottomTabsLayout root = new BottomTabsLayout(getActivity());
-
-        bottomTabs = createBottomTabs();
+        this.bottomTabsContainer = new BottomTabsContainer(getActivity());
+        this.bottomTabs = bottomTabsContainer.getBottomTabs();
         Options resolveCurrentOptions = resolveCurrentOptions();
         tabsAttacher.init(root, resolveCurrentOptions);
-        presenter.bindView(bottomTabs, this);
+        presenter.bindView(bottomTabsContainer, this);
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
-        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-        lp.gravity = Gravity.BOTTOM;
-        root.addView(bottomTabs, lp);
-
+        root.addBottomTabsContainer(bottomTabsContainer);
         bottomTabs.addItems(createTabs());
         setInitialTab(resolveCurrentOptions);
         tabsAttacher.attach();
+
+
         return root;
     }
 
@@ -250,4 +251,8 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     public BottomTabs getBottomTabs() {
         return bottomTabs;
     }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public BottomTabsContainer getBottomTabsContainer() { return bottomTabsContainer; }
+
 }
