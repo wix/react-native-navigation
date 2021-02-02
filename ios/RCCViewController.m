@@ -24,6 +24,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 @property (nonatomic) BOOL _statusBarHideWithNavBar;
 @property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL _statusBarTextColorSchemeLight;
+@property (nonatomic) BOOL _statusBarTextColorSchemeDark;
 @property (nonatomic, strong) NSDictionary *originalNavBarImages;
 @property (nonatomic, strong) UIImageView *navBarHairlineImageView;
 @property (nonatomic, weak) id <UIGestureRecognizerDelegate> originalInteractivePopGestureDelegate;
@@ -430,19 +431,35 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         }
         
         self._statusBarTextColorSchemeLight = true;
+        self._statusBarTextColorSchemeDark = false;
         if (!viewControllerBasedStatusBarAppearance) {
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         }
         
         [viewController setNeedsStatusBarAppearanceUpdate];
-        
+
+    } else if (finalColorScheme && [finalColorScheme isEqualToString:@"dark"]) {
+
+        if (!statusBarTextColorSchemeSingleScreen) {
+            viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+        }
+
+        self._statusBarTextColorSchemeDark = true;
+        self._statusBarTextColorSchemeLight = false;
+        if (!viewControllerBasedStatusBarAppearance) {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDarkContent];
+        }
+
+        [viewController setNeedsStatusBarAppearanceUpdate];
+
     } else {
         if (!statusBarTextColorSchemeSingleScreen) {
             viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
         }
         
         self._statusBarTextColorSchemeLight = false;
-        
+        self._statusBarTextColorSchemeDark = false;
+
         if (!viewControllerBasedStatusBarAppearance) {
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
         }
@@ -760,6 +777,8 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 - (UIStatusBarStyle)preferredStatusBarStyle {
     if (self._statusBarTextColorSchemeLight){
         return UIStatusBarStyleLightContent;
+    } else if (self._statusBarTextColorSchemeDark){
+        return UIStatusBarStyleDarkContent;
     } else {
         return UIStatusBarStyleDefault;
     }
