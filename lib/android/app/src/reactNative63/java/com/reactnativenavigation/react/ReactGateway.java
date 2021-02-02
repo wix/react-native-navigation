@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.ReactNativeHost;
 import com.reactnativenavigation.NavigationActivity;
-
-import androidx.annotation.NonNull;
 
 public class ReactGateway {
 

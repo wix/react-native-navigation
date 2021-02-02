@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.text.SpannableString
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup

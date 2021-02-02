@@ -58,7 +58,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
                 .withDefaultOptions(initialOptions);
     }
 
-    public Options resolveChildOptions(ViewController child) {
+    public Options resolveChildOptions(ViewController<?> child) {
 	    if (child == this) return resolveCurrentOptions();
         return child
                 .resolveCurrentOptions()
@@ -72,18 +72,18 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return resolveCurrentOptions().withDefaultOptions(defaultOptions);
     }
 
-    public boolean isCurrentChild(ViewController child) {
+    public boolean isCurrentChild(ViewController<?> child) {
         return getCurrentChild() == child;
     }
 
-    public abstract ViewController getCurrentChild();
+    public abstract ViewController<?> getCurrentChild();
 
 	@NonNull
 	@Override
     public abstract T createView();
 
     @NonNull
-	public abstract Collection<? extends ViewController> getChildControllers();
+	public abstract Collection<? extends ViewController<?>> getChildControllers();
 
     @Nullable
     protected BottomTabsController getBottomTabsController() {
@@ -95,12 +95,12 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
 	@Nullable
 	@Override
-	public ViewController findController(final String id) {
-		ViewController fromSuper = super.findController(id);
+	public ViewController<?> findController(final String id) {
+		ViewController<?> fromSuper = super.findController(id);
 		if (fromSuper != null) return fromSuper;
 
-		for (ViewController child : getChildControllers()) {
-			ViewController fromChild = child.findController(id);
+		for (ViewController<?> child : getChildControllers()) {
+			ViewController<?> fromChild = child.findController(id);
 			if (fromChild != null) return fromChild;
 		}
 
@@ -109,12 +109,12 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @Nullable
     @Override
-    public ViewController findController(View child) {
-        ViewController fromSuper = super.findController(child);
+    public ViewController<?> findController(View child) {
+        ViewController<?> fromSuper = super.findController(child);
         if (fromSuper != null) return fromSuper;
 
-        for (ViewController childController : getChildControllers()) {
-            ViewController fromChild = childController.findController(child);
+        for (ViewController<?> childController : getChildControllers()) {
+            ViewController<?> fromChild = childController.findController(child);
             if (fromChild != null) return fromChild;
         }
 
@@ -126,19 +126,19 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         if (super.containsComponent(component)) {
             return true;
         }
-        for (ViewController child : getChildControllers()) {
+        for (ViewController<?> child : getChildControllers()) {
             if (child.containsComponent(component)) return true;
         }
         return false;
     }
 
     @CallSuper
-    public void applyChildOptions(Options options, ViewController child) {
+    public void applyChildOptions(Options options, ViewController<?> child) {
         this.options = initialOptions.mergeWith(options);
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, ViewController child) {
+    public void mergeChildOptions(Options options, ViewController<?> child) {
     }
 
 	@Override
@@ -167,7 +167,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return getCurrentChild() != null && getCurrentChild().isRendered();
     }
 
-    public void onChildDestroyed(ViewController child) {
+    public void onChildDestroyed(ViewController<?> child) {
 
     }
 
@@ -176,7 +176,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 	    forEach(getChildControllers(), ViewController::applyTopInset);
     }
 
-    public int getTopInset(ViewController child) {
+    public int getTopInset(ViewController<?> child) {
         return perform(getParentController(), 0, p -> p.getTopInset(child));
     }
 
@@ -185,7 +185,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         forEach(getChildControllers(), ViewController::applyBottomInset);
     }
 
-    public int getBottomInset(ViewController child) {
+    public int getBottomInset(ViewController<?> child) {
         return perform(getParentController(), 0, p -> p.getBottomInset(child));
     }
 

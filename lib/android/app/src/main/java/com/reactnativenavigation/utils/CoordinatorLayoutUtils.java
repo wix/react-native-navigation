@@ -1,6 +1,7 @@
 package com.reactnativenavigation.utils;
 
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.R;
 
@@ -13,7 +14,7 @@ public class CoordinatorLayoutUtils {
         return new CoordinatorLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
     }
 
-    public static CoordinatorLayout.LayoutParams matchParentWithBehaviour(CoordinatorLayout.Behavior behavior) {
+    public static CoordinatorLayout.LayoutParams matchParentWithBehaviour(CoordinatorLayout.Behavior<ViewGroup> behavior) {
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         lp.setBehavior(behavior);
         return lp;

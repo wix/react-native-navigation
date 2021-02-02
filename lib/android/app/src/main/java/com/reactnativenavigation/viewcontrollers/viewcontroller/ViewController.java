@@ -165,20 +165,16 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (view != null) task.run(view);
     }
 
-    public void performOnParentController(Func1<ParentController> task) {
+    public void performOnParentController(Func1<ParentController<?>> task) {
         if (parentController != null) task.run(parentController);
     }
 
     @Nullable
-    public ParentController getParentController() {
+    public ParentController<?> getParentController() {
         return parentController;
     }
 
-    public ParentController requireParentController() {
-        return parentController;
-    }
-
-    public void setParentController(ParentController parentController) {
+    public void setParentController(@Nullable ParentController<?> parentController) {
         this.parentController = parentController;
     }
 
@@ -221,12 +217,12 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     @Nullable
-    public ViewController findController(String id) {
+    public ViewController<?> findController(String id) {
         return isSameId(id) ? this : null;
     }
 
     @Nullable
-    public ViewController findController(View child) {
+    public ViewController<?> findController(View child) {
         return view == child ? this : null;
     }
 
@@ -343,7 +339,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     }
 
-    public void applyOnController(ViewController controller, Func1<ViewController> task) {
+    public void applyOnController(ViewController<?> controller, Func1<ViewController<?>> task) {
         if (controller != null) task.run(controller);
     }
 

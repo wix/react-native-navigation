@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.graphics.Rect
 import android.view.View
-import android.widget.ImageView
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
@@ -25,7 +24,7 @@ class ReactImageBoundsAnimator(from: View, to: View) : PropertyAnimatorCreator<R
         startDrawingRect.bottom = (startDrawingRect.bottom * inheritedScaleY).roundToInt()
 
         return ObjectAnimator.ofObject(
-                BoundsEvaluator() {
+                BoundsEvaluator {
                     with(to as ReactImageView) {
                         drawable.bounds = it
                         drawable.current.bounds = it

@@ -71,7 +71,7 @@ public class LayoutFactory {
         typefaceManager = new TypefaceLoader(activity);
     }
 
-	public ViewController create(final LayoutNode node) {
+	public ViewController<?> create(final LayoutNode node) {
 		final ReactContext context = reactInstanceManager.getCurrentReactContext();
 		switch (node.type) {
 			case Component:
@@ -97,7 +97,7 @@ public class LayoutFactory {
 		}
 	}
 
-    private ViewController createSideMenuRoot(ReactContext context, LayoutNode node) {
+    private ViewController<?> createSideMenuRoot(ReactContext context, LayoutNode node) {
 		SideMenuController sideMenuController = new SideMenuController(activity,
                 childRegistry,
                 node.id,
@@ -105,7 +105,7 @@ public class LayoutFactory {
                 new SideMenuPresenter(),
                 new Presenter(activity, defaultOptions)
         );
-		ViewController childControllerCenter = null, childControllerLeft = null, childControllerRight = null;
+		ViewController<?> childControllerCenter = null, childControllerLeft = null, childControllerRight = null;
 
 		for (LayoutNode child : node.children) {
 			switch (child.type) {
@@ -141,19 +141,19 @@ public class LayoutFactory {
 		return sideMenuController;
 	}
 
-	private ViewController createSideMenuContent(LayoutNode node) {
+	private ViewController<?> createSideMenuContent(LayoutNode node) {
 		return create(node.children.get(0));
 	}
 
-	private ViewController createSideMenuLeft(LayoutNode node) {
+	private ViewController<?> createSideMenuLeft(LayoutNode node) {
 		return create(node.children.get(0));
 	}
 
-	private ViewController createSideMenuRight(LayoutNode node) {
+	private ViewController<?> createSideMenuRight(LayoutNode node) {
 		return create(node.children.get(0));
 	}
 
-	private ViewController createComponent(ReactContext context, LayoutNode node) {
+	private ViewController<?> createComponent(ReactContext context, LayoutNode node) {
 		String id = node.id;
 		String name = node.data.optString("name");
         return new ComponentViewController(activity,
@@ -167,7 +167,7 @@ public class LayoutFactory {
         );
 	}
 
-    private ViewController createExternalComponent(ReactContext context, LayoutNode node) {
+    private ViewController<?> createExternalComponent(ReactContext context, LayoutNode node) {
         final ExternalComponent externalComponent = ExternalComponent.parse(node.data);
         return new ExternalComponentViewController(activity,
                 childRegistry,
@@ -182,7 +182,7 @@ public class LayoutFactory {
         );
     }
 
-	private ViewController createStack(ReactContext context, LayoutNode node) {
+	private ViewController<?> createStack(ReactContext context, LayoutNode node) {
         return new StackControllerBuilder(activity, eventEmitter)
                 .setChildren(createChildren(node.children))
                 .setChildRegistry(childRegistry)
@@ -202,16 +202,16 @@ public class LayoutFactory {
                 .build();
 	}
 
-    private List<ViewController> createChildren(List<LayoutNode> children) {
-        List<ViewController> result = new ArrayList<>();
+    private List<ViewController<?>> createChildren(List<LayoutNode> children) {
+        List<ViewController<?>> result = new ArrayList<>();
         for (LayoutNode child : children) {
             result.add(create(child));
         }
         return result;
     }
 
-    private ViewController createBottomTabs(ReactContext context, LayoutNode node) {
-        List<ViewController<?>> tabs = map(node.children, this::create);
+    private ViewController<?> createBottomTabs(ReactContext context, LayoutNode node) {
+        ArrayList<ViewController<?>> tabs = map(node.children, this::create);
         BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions, new BottomTabsAnimator());
         return new BottomTabsController(activity,
                 tabs,
@@ -226,10 +226,10 @@ public class LayoutFactory {
                 new BottomTabPresenter(activity, tabs, new ImageLoader(), new TypefaceLoader(activity), defaultOptions));
 	}
 
-    private ViewController createTopTabs(ReactContext context, LayoutNode node) {
-        final List<ViewController> tabs = new ArrayList<>();
+    private ViewController<?> createTopTabs(ReactContext context, LayoutNode node) {
+        final List<ViewController<?>> tabs = new ArrayList<>();
         for (int i = 0; i < node.children.size(); i++) {
-            ViewController tabController = create(node.children.get(i));
+            ViewController<?> tabController = create(node.children.get(i));
             Options options = parse(context, typefaceManager, node.children.get(i).getOptions());
             options.setTopTabIndex(i);
             tabs.add(tabController);

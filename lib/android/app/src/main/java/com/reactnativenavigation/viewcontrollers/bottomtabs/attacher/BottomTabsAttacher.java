@@ -36,7 +36,7 @@ public class BottomTabsAttacher {
         attachStrategy.destroy();
     }
 
-    public void onTabSelected(ViewController tab) {
+    public void onTabSelected(ViewController<?> tab) {
         attachStrategy.onTabSelected(tab);
     }
 }

@@ -3,7 +3,7 @@ package com.reactnativenavigation.utils
 import android.util.Log
 import com.reactnativenavigation.BuildConfig
 
-const val MAIN_LIB_TAG = "RNN";
+const val MAIN_LIB_TAG = "RNN"
 fun logd(msg: String?, tag: String = MAIN_LIB_TAG) {
     if (!BuildConfig.DEBUG) {
         if (msg != null)

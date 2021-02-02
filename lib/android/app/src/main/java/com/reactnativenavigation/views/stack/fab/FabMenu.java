@@ -12,7 +12,7 @@ import java.util.HashSet;
 
 public class FabMenu extends FloatingActionMenu implements FabAnimator {
 
-    private String id = "";
+    private String id;
     private HashSet<Fab> actions = new HashSet<>();
 
     private FabCollapseBehaviour collapseBehaviour;

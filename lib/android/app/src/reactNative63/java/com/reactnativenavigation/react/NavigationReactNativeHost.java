@@ -1,5 +1,8 @@
 package com.reactnativenavigation.react;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactInstanceManagerBuilder;
@@ -8,10 +11,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.react.DevBundleDownloadListenerAdapter;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public abstract class NavigationReactNativeHost extends ReactNativeHost implements BundleDownloadListenerProvider {
 

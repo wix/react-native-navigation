@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.RestrictTo
@@ -89,7 +88,7 @@ class MainToolBar(context: Context) : ConstraintLayout(context) {
 
     fun setTitleBarAlignment(alignment: Alignment) {
         val constraintSet = ConstraintSet().also { it.clone(this) }
-        val bias = if (alignment == Alignment.Center) 0.5f else 0f;
+        val bias = if (alignment == Alignment.Center) 0.5f else 0f
         val margin = if (alignment == Alignment.Center) 0 else UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN)
         val startToEndId = if (alignment == Alignment.Center) ConstraintSet.PARENT_ID else leftButtonsBar.id
         val startEndSide = if (alignment == Alignment.Center) ConstraintSet.START else ConstraintSet.END

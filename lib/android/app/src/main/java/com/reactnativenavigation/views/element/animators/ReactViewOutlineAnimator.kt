@@ -52,7 +52,7 @@ class ReactViewOutlineAnimator(from: View, to: View) : PropertyAnimatorCreator<R
         setOutlineProvider(outlineProvider)
 
         return ObjectAnimator.ofObject(
-                OutlineEvaluator() { outlineProvider.update(it) },
+                OutlineEvaluator { outlineProvider.update(it) },
                 fromOutline,
                 toOutline
         ).apply {

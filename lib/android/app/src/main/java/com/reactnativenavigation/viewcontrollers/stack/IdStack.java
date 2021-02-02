@@ -14,7 +14,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 public class IdStack<E> implements Iterable<String> {
 
-	private final ArrayList<String> deque = new ArrayList();
+	private final ArrayList<String> deque = new ArrayList<>();
 	private final Map<String, E> map = new HashMap<>();
 
 	public void push(String id, E item) {

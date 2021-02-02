@@ -33,7 +33,7 @@ public class ReflectionUtils {
 		return null;
 	}
 
-	private static Field getField(Class clazz, String name) {
+	private static Field getField(Class<?> clazz, String name) {
 		try {
 			return clazz.getDeclaredField(name);
 		} catch (NoSuchFieldException nsfe) {

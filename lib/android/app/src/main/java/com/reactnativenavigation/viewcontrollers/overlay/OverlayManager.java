@@ -13,9 +13,9 @@ import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public class OverlayManager {
-    private final HashMap<String, ViewController> overlayRegistry = new HashMap<>();
+    private final HashMap<String, ViewController<?>> overlayRegistry = new HashMap<>();
 
-    public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
+    public void show(ViewGroup overlaysContainer, ViewController<?> overlay, CommandListener listener) {
         overlaysContainer.setVisibility(View.VISIBLE);
         overlayRegistry.put(overlay.getId(), overlay);
         overlay.addOnAppearedListener(() -> {
@@ -26,7 +26,7 @@ public class OverlayManager {
     }
 
     public void dismiss(ViewGroup overlaysContainer, String componentId, CommandListener listener) {
-        ViewController overlay = overlayRegistry.get(componentId);
+        ViewController<?> overlay = overlayRegistry.get(componentId);
         if (overlay == null) {
             listener.onError("Could not dismiss Overlay. Overlay with id " + componentId + " was not found.");
         } else {
@@ -48,11 +48,11 @@ public class OverlayManager {
         return overlayRegistry.size();
     }
 
-    public ViewController findControllerById(String id) {
+    public ViewController<?> findControllerById(String id) {
         return overlayRegistry.get(id);
     }
 
-    private void destroyOverlay(ViewGroup overlaysContainer, ViewController overlay) {
+    private void destroyOverlay(ViewGroup overlaysContainer, ViewController<?> overlay) {
         overlay.destroy();
         overlayRegistry.remove(overlay.getId());
         if (isEmpty()) overlaysContainer.setVisibility(View.GONE);

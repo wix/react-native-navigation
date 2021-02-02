@@ -78,7 +78,7 @@ public class BottomTabPresenter {
         });
     }
 
-    public void mergeChildOptions(Options options, ViewController child) {
+    public void mergeChildOptions(Options options, ViewController<?> child) {
         bottomTabs.perform(bottomTabs -> {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
@@ -153,7 +153,7 @@ public class BottomTabPresenter {
         return tab.dotIndicator.visible.hasValue() && !tab.badge.hasValue();
     }
 
-    private boolean canMerge(Param p) {
+    private boolean canMerge(Param<?> p) {
         return p.hasValue() && p.canApplyValue();
     }
 }

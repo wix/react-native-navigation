@@ -30,13 +30,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-public class Navigator extends ParentController {
+public class Navigator extends ParentController<ViewGroup> {
 
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
     private final RootPresenter rootPresenter;
-    private ViewController root;
-    private ViewController previousRoot;
+    private ViewController<?> root;
+    private ViewController<?> previousRoot;
     private final CoordinatorLayout rootLayout;
     private final CoordinatorLayout modalsLayout;
     private final CoordinatorLayout overlaysLayout;
@@ -93,7 +93,7 @@ public class Navigator extends ParentController {
 
     @NonNull
     @Override
-    public Collection<ViewController> getChildControllers() {
+    public Collection<ViewController<?>> getChildControllers() {
         return root == null ? Collections.emptyList() : Collections.singletonList(root);
     }
 
@@ -105,7 +105,7 @@ public class Navigator extends ParentController {
     }
 
     @Override
-    public ViewController getCurrentChild() {
+    public ViewController<?> getCurrentChild() {
         return root;
     }
 
@@ -136,7 +136,7 @@ public class Navigator extends ParentController {
 
     }
 
-    public void setRoot(final ViewController viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
+    public void setRoot(final ViewController<?> viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
         previousRoot = root;
         modalStack.destroy();
         final boolean removeSplashView = isRootNotCreated();
@@ -155,17 +155,17 @@ public class Navigator extends ParentController {
     }
 
     public void mergeOptions(final String componentId, Options options) {
-        ViewController target = findController(componentId);
+        ViewController<?> target = findController(componentId);
         if (target != null) {
             target.mergeOptions(options);
         }
     }
 
-    public void push(final String id, final ViewController viewController, CommandListener listener) {
+    public void push(final String id, final ViewController<?> viewController, CommandListener listener) {
         applyOnStack(id, listener, stack -> stack.push(viewController, listener));
     }
 
-    public void setStackRoot(String id, List<ViewController> children, CommandListener listener) {
+    public void setStackRoot(String id, List<ViewController<?>> children, CommandListener listener) {
         applyOnStack(id, listener, stack -> stack.setRoot(children, listener));
     }
 
@@ -186,7 +186,7 @@ public class Navigator extends ParentController {
         }
     }
 
-    public void showModal(final ViewController viewController, CommandListener listener) {
+    public void showModal(final ViewController<?> viewController, CommandListener listener) {
         modalStack.showModal(viewController, root, listener);
     }
 
@@ -202,7 +202,7 @@ public class Navigator extends ParentController {
         modalStack.dismissAllModals(root, mergeOptions, listener);
     }
 
-    public void showOverlay(ViewController overlay, CommandListener listener) {
+    public void showOverlay(ViewController<?> overlay, CommandListener listener) {
         overlayManager.show(overlaysLayout, overlay, listener);
     }
 
@@ -216,8 +216,8 @@ public class Navigator extends ParentController {
 
     @Nullable
     @Override
-    public ViewController findController(String id) {
-        ViewController controllerById = super.findController(id);
+    public ViewController<?> findController(String id) {
+        ViewController<?> controllerById = super.findController(id);
         if (controllerById == null) {
             controllerById = modalStack.findControllerById(id);
         }

@@ -27,7 +27,7 @@ class FastImageBoundsAnimator(from: View, to: View) : PropertyAnimatorCreator<Im
         startDrawingRect.bottom = (startDrawingRect.bottom * inheritedScaleY).roundToInt()
 
         return ObjectAnimator.ofObject(
-                BoundsEvaluator() {
+                BoundsEvaluator {
                     to.clipBounds = it
                     to.invalidate()
                 },

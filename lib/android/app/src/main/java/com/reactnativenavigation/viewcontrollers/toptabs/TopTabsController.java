@@ -21,14 +21,14 @@ import androidx.annotation.NonNull;
 
 public class TopTabsController extends ParentController<TopTabsViewPager> {
 
-    private List<ViewController> tabs;
+    private List<ViewController<?>> tabs;
     private TopTabsLayoutCreator viewCreator;
 
-    public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options, Presenter presenter) {
+    public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController<?>> tabs, TopTabsLayoutCreator viewCreator, Options options, Presenter presenter) {
         super(activity, childRegistry, id, presenter, options);
         this.viewCreator = viewCreator;
         this.tabs = tabs;
-        for (ViewController tab : tabs) {
+        for (ViewController<?> tab : tabs) {
             tab.setParentController(this);
             tab.setViewVisibilityListener(new ViewVisibilityListenerAdapter() {
                 @Override
@@ -40,7 +40,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     }
 
     @Override
-    public ViewController getCurrentChild() {
+    public ViewController<?> getCurrentChild() {
         return tabs.get(getView().getCurrentItem());
     }
 
@@ -53,7 +53,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
 
     @NonNull
     @Override
-    public Collection<? extends ViewController> getChildControllers() {
+    public Collection<? extends ViewController<?>> getChildControllers() {
         return tabs;
     }
 
@@ -88,13 +88,13 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     }
 
     @Override
-    public void applyChildOptions(Options options, ViewController child) {
+    public void applyChildOptions(Options options, ViewController<?> child) {
         super.applyChildOptions(options, child);
         performOnParentController(parentController -> parentController.applyChildOptions(this.options.copy(), child));
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, ViewController child) {
+    public void mergeChildOptions(Options options, ViewController<?> child) {
         super.mergeChildOptions(options, child);
         performOnParentController(parentController -> parentController.applyChildOptions(options.copy(), child));
     }
@@ -104,7 +104,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
         getCurrentChild().onViewDidAppear();
     }
 
-    private void performOnCurrentTab(Func1<ViewController> task) {
+    private void performOnCurrentTab(Func1<ViewController<?>> task) {
         task.run(tabs.get(getView().getCurrentItem()));
     }
 }

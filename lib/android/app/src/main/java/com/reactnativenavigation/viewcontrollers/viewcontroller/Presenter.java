@@ -40,7 +40,7 @@ public class Presenter {
         mergeNavigationBarOptions(options.navigationBar);
     }
 
-    public void applyOptions(ViewController view, Options options) {
+    public void applyOptions(ViewController<?> view, Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
@@ -57,7 +57,7 @@ public class Presenter {
         activity.setRequestedOrientation(options.getValue());
     }
 
-    private void applyViewOptions(ViewController view, Options options) {
+    private void applyViewOptions(ViewController<?> view, Options options) {
         applyBackgroundColor(view, options);
         applyTopMargin(view.getView(), options);
     }
@@ -68,7 +68,7 @@ public class Presenter {
         }
     }
 
-    private void applyBackgroundColor(ViewController view, Options options) {
+    private void applyBackgroundColor(ViewController<?> view, Options options) {
         if (options.layout.backgroundColor.hasValue()) {
             if (view instanceof Navigator) return;
 

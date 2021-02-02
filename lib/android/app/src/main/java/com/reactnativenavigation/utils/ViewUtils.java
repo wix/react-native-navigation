@@ -21,12 +21,14 @@ public class ViewUtils {
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
             if (clazz.isAssignableFrom(view.getClass())) {
+                //noinspection unchecked
                 return (T) view;
             }
 
             if (view instanceof ViewGroup) {
                 view = findChildByClass((ViewGroup) view, clazz);
                 if (view != null && clazz.isAssignableFrom(view.getClass())) {
+                    //noinspection unchecked
                     return (T) view;
                 }
             }
@@ -34,18 +36,20 @@ public class ViewUtils {
         return null;
     }
 
-    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class clazz) {
+    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class<T> clazz) {
         return findChildrenByClassRecursive(root, clazz, child -> true);
     }
 
-    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class clazz, Matcher<T> matcher) {
+    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class<T> clazz, Matcher<T> matcher) {
         ArrayList<T> ret = new ArrayList<>();
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
             if (view instanceof ViewGroup) {
                 ret.addAll(findChildrenByClassRecursive((ViewGroup) view, clazz, matcher));
             }
+            //noinspection unchecked
             if (clazz.isAssignableFrom(view.getClass()) && matcher.match((T) view)) {
+                //noinspection unchecked
                 ret.add((T) view);
             }
         }
@@ -56,11 +60,13 @@ public class ViewUtils {
         return findChildrenByClass(root, clazz, child -> true);
     }
 
-    public static <T> List<T> findChildrenByClass(ViewGroup root, Class clazz, Matcher<T> matcher) {
+    public static <T> List<T> findChildrenByClass(ViewGroup root, Class<T> clazz, Matcher<T> matcher) {
         List<T> ret = new ArrayList<>();
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);
+            //noinspection unchecked
             if (clazz.isAssignableFrom(child.getClass()) && matcher.match((T) child)) {
+                //noinspection unchecked
                 ret.add((T) child);
             }
         }

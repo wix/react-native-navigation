@@ -123,7 +123,7 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
     }
 
     open fun mergeLeftButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
-        view.clearBackButton();
+        view.clearBackButton()
         toRemove.forEach { view.removeLeftButton(it) }
         forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, i * 10) }
     }

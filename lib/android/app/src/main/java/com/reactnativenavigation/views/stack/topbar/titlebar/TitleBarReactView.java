@@ -2,13 +2,10 @@ package com.reactnativenavigation.views.stack.topbar.titlebar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.view.Gravity;
-import android.widget.FrameLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.react.ReactView;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 @SuppressLint("ViewConstructor")

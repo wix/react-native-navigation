@@ -30,7 +30,7 @@ public class RootPresenter {
         this.layoutDirectionApplier = layoutDirectionApplier;
     }
 
-    public void setRoot(ViewController root, Options defaultOptions, CommandListener listener, ReactInstanceManager reactInstanceManager) {
+    public void setRoot(ViewController<?> root, Options defaultOptions, CommandListener listener, ReactInstanceManager reactInstanceManager) {
         layoutDirectionApplier.apply(root, defaultOptions, reactInstanceManager);
         rootLayout.addView(root.getView(), matchParentWithBehaviour(new BehaviourDelegate(root)));
         Options options = root.resolveCurrentOptions(defaultOptions);
@@ -50,7 +50,7 @@ public class RootPresenter {
         }
     }
 
-    private void animateSetRootAndReportSuccess(ViewController root, CommandListener listener, Options options) {
+    private void animateSetRootAndReportSuccess(ViewController<?> root, CommandListener listener, Options options) {
         if (options.animations.setRoot.hasAnimation()) {
             animator.setRoot(root, options.animations.setRoot, () -> listener.onSuccess(root.getId()));
         } else {

@@ -93,7 +93,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void setRoot(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree).optJSONObject("root"));
         handle(() -> {
-            final ViewController viewController = layoutFactory.create(layoutTree);
+            final ViewController<?> viewController = layoutFactory.create(layoutTree);
             navigator().setRoot(viewController, new NativeCommandListener("setRoot", commandId, promise, eventEmitter, now), reactInstanceManager);
         });
     }
@@ -116,7 +116,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void push(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
         handle(() -> {
-            final ViewController viewController = layoutFactory.create(layoutTree);
+            final ViewController<?> viewController = layoutFactory.create(layoutTree);
             navigator().push(onComponentId, viewController, new NativeCommandListener("push", commandId, promise, eventEmitter, now));
         });
     }
@@ -124,7 +124,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setStackRoot(String commandId, String onComponentId, ReadableArray children, Promise promise) {
         handle(() -> {
-            ArrayList<ViewController> _children = new ArrayList<>();
+            ArrayList<ViewController<?>> _children = new ArrayList<>();
             for (int i = 0; i < children.size(); i++) {
                 final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(children.getMap(i)));
                 _children.add(layoutFactory.create(layoutTree));
@@ -152,7 +152,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void showModal(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
         handle(() -> {
-            final ViewController viewController = layoutFactory.create(layoutTree);
+            final ViewController<?> viewController = layoutFactory.create(layoutTree);
             navigator().showModal(viewController, new NativeCommandListener("showModal", commandId, promise, eventEmitter, now));
         });
     }
@@ -174,7 +174,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void showOverlay(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
         handle(() -> {
-            final ViewController viewController = layoutFactory.create(layoutTree);
+            final ViewController<?> viewController = layoutFactory.create(layoutTree);
             navigator().showOverlay(viewController, new NativeCommandListener("showOverlay", commandId, promise, eventEmitter, now));
         });
     }

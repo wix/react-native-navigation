@@ -21,7 +21,7 @@ import androidx.annotation.NonNull;
 
 public class Fab extends FloatingActionButton implements FabAnimator {
 
-    private String id = "";
+    private String id;
     private FabCollapseBehaviour collapseBehaviour;
 
     public Fab(Context context, String id) {

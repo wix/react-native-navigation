@@ -56,7 +56,6 @@ public abstract class NavigationApplication extends Application implements React
      * @param name Unique name used to register the native view
      * @param creator Used to create the view at runtime
      */
-    @SuppressWarnings("unused")
     public void registerExternalComponent(String name, ExternalComponentCreator creator) {
         if (externalComponents.containsKey(name)) {
             throw new RuntimeException("A component has already been registered with this name: " + name);

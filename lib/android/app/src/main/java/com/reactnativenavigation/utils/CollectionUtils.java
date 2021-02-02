@@ -35,7 +35,7 @@ public class CollectionUtils {
         boolean compare(T a, T b);
     }
 
-    public static boolean isNullOrEmpty(Collection collection) {
+    public static <T> boolean isNullOrEmpty(Collection<T> collection) {
         return collection == null || collection.isEmpty();
     }
 
@@ -207,17 +207,17 @@ public class CollectionUtils {
         return reduce(zip(a, b), true, (p, currentValue) -> currentValue && Objects.equals(p.first, p.second));
     }
 
-    public static int size(@Nullable Collection items) {
+    public static <T> int size(@Nullable Collection<T> items) {
         return items == null ? 0 : items.size();
     }
 
     public static <T> Collection<Pair<T, T>> zip(@Nullable Collection<T> a, @Nullable Collection<T> b) {
         if (a == null || b == null) return new ArrayList<>();
-        Iterator iter1 = a.iterator();
-        Iterator iter2 = b.iterator();
+        Iterator<T> iter1 = a.iterator();
+        Iterator<T> iter2 = b.iterator();
         ArrayList<Pair<T,T>> result = new ArrayList<>();
         while (iter1.hasNext() && iter2.hasNext()) {
-            result.add(new Pair(iter1.next(), iter2.next()));
+            result.add(new Pair<>(iter1.next(), iter2.next()));
         }
         return result;
     }

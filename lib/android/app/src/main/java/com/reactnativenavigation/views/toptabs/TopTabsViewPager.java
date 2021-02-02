@@ -21,9 +21,9 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 public class TopTabsViewPager extends ViewPager implements Component, ButtonController.OnClickListener {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
-    private List<ViewController> tabs;
+    private List<ViewController<?>> tabs;
 
-    public TopTabsViewPager(Context context, List<ViewController> tabs, TopTabsAdapter adapter) {
+    public TopTabsViewPager(Context context, List<ViewController<?>> tabs, TopTabsAdapter adapter) {
         super(context);
         this.tabs = tabs;
         initTabs(adapter);
@@ -31,7 +31,7 @@ public class TopTabsViewPager extends ViewPager implements Component, ButtonCont
 
     private void initTabs(TopTabsAdapter adapter) {
         setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
-        for (ViewController tab : tabs) {
+        for (ViewController<?> tab : tabs) {
             addView(tab.getView(), new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         }
         setAdapter(adapter);
@@ -44,7 +44,7 @@ public class TopTabsViewPager extends ViewPager implements Component, ButtonCont
     }
 
     private boolean areAllTabsRendered() {
-        for (ViewController tab : tabs) {
+        for (ViewController<?> tab : tabs) {
             if (!tab.isRendered()) return false;
         }
         return true;
@@ -60,13 +60,13 @@ public class TopTabsViewPager extends ViewPager implements Component, ButtonCont
     }
 
     public void destroy() {
-        for (ViewController tab : tabs) {
+        for (ViewController<?> tab : tabs) {
             tab.destroy();
         }
     }
 
     public boolean isCurrentView(View view) {
-        for (ViewController tab : tabs) {
+        for (ViewController<?> tab : tabs) {
             if (tab.getView() == view) {
                 return true;
             }

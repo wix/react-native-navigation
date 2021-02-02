@@ -38,17 +38,17 @@ public class SideMenuRoot extends CoordinatorLayout {
         return sideMenu.isDrawerOpen(gravity);
     }
 
-    public void setCenter(ViewController center) {
+    public void setCenter(ViewController<?> center) {
         sideMenu.addView(center.getView());
     }
 
     @SuppressLint("RtlHardcoded")
-    public void setLeft(ViewController left, Options options) {
+    public void setLeft(ViewController<?> left, Options options) {
         sideMenu.addView(left.getView(), createLayoutParams(options.sideMenuRootOptions.left, Gravity.LEFT));
     }
 
     @SuppressLint("RtlHardcoded")
-    public void setRight(ViewController right, Options options) {
+    public void setRight(ViewController<?> right, Options options) {
         sideMenu.addView(right.getView(), createLayoutParams(options.sideMenuRootOptions.right, Gravity.RIGHT));
     }
 

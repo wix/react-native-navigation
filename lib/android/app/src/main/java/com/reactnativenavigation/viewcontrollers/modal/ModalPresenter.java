@@ -37,7 +37,7 @@ public class ModalPresenter {
         this.defaultOptions = defaultOptions;
     }
 
-    void showModal(ViewController toAdd, ViewController toRemove, CommandListener listener) {
+    void showModal(ViewController<?> toAdd, ViewController<?> toRemove, CommandListener listener) {
         if (modalsLayout == null) {
             listener.onError("Can not show modal before activity is created");
             return;
@@ -64,7 +64,7 @@ public class ModalPresenter {
         }
     }
 
-    private void animateShow(ViewController toAdd, ViewController toRemove, CommandListener listener, Options options) {
+    private void animateShow(ViewController<?> toAdd, ViewController<?> toRemove, CommandListener listener, Options options) {
         animator.show(toAdd, toRemove, options.animations.showModal, new ScreenAnimationListener() {
             @Override
             public void onStart() {
@@ -83,7 +83,7 @@ public class ModalPresenter {
         });
     }
 
-    private void onShowModalEnd(ViewController toAdd, @Nullable ViewController toRemove, CommandListener listener) {
+    private void onShowModalEnd(ViewController<?> toAdd, @Nullable ViewController<?> toRemove, CommandListener listener) {
         toAdd.onViewDidAppear();
         if (toRemove != null && toAdd.resolveCurrentOptions(defaultOptions).modal.presentationStyle != ModalPresentationStyle.OverCurrentContext) {
             toRemove.detachView();
@@ -91,7 +91,7 @@ public class ModalPresenter {
         listener.onSuccess(toAdd.getId());
     }
 
-    void dismissModal(ViewController toDismiss, @Nullable ViewController toAdd, ViewController root, CommandListener listener) {
+    void dismissModal(ViewController<?> toDismiss, @Nullable ViewController<?> toAdd, ViewController<?> root, CommandListener listener) {
         if (modalsLayout == null) {
             listener.onError("Can not dismiss modal before activity is created");
             return;
@@ -113,7 +113,7 @@ public class ModalPresenter {
         }
     }
 
-    private void onDismissEnd(ViewController toDismiss, CommandListener listener) {
+    private void onDismissEnd(ViewController<?> toDismiss, CommandListener listener) {
         listener.onSuccess(toDismiss.getId());
         toDismiss.destroy();
         if (isEmpty()) modalsLayout.setVisibility(View.GONE);

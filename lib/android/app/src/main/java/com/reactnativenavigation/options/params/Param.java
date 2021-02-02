@@ -39,7 +39,7 @@ public abstract class Param<T> {
         return true;
     }
 
-    public boolean equals(Param other) {
+    public boolean equals(Param<T> other) {
         return value == other.value || equalsNotNull(value, other.value);
     }
 }

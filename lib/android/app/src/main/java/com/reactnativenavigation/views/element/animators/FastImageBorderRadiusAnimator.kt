@@ -41,7 +41,7 @@ class FastImageBorderRadiusAnimator(from: View, to: View) : PropertyAnimatorCrea
     }
 
     private fun getBorderRadius(child: View): Float {
-        val parent = ViewTags.get<ViewGroup>(child, R.id.original_parent, child.parent as ViewGroup)
+        val parent = ViewTags.get(child, R.id.original_parent, child.parent as ViewGroup)
         val parentIsUsedOnlyToDrawBorderRadiusOverImage = parent.childCount <= 1 || parent.children.contains(child)
         val background = parent.background as? ReactViewBackgroundDrawable
         return if (parentIsUsedOnlyToDrawBorderRadiusOverImage && background?.hasRoundedBorders() == true)
