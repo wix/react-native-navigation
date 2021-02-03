@@ -43,7 +43,12 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
             addRule(ALIGN_PARENT_START)
             addRule(CENTER_VERTICAL)
         })
-        this.addView(titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+        this.addView(titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+            addRule(END_OF, leftButtonsBar.id)
+            addRule(START_OF, rightButtonsBar.id)
+            addRule(CENTER_VERTICAL)
+            marginStart = UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN)
+        })
         this.addView(centerFrameLayout, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         this.addView(rightButtonsBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             addRule(ALIGN_PARENT_END)
@@ -97,7 +102,6 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
                 marginStart = 0
                 addRule(CENTER_IN_PARENT, TRUE)
             }
-
         }
 
     }

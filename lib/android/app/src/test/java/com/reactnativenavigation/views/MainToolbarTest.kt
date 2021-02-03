@@ -6,10 +6,10 @@ import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.marginTop
-import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.Alignment
@@ -39,85 +39,113 @@ class MainToolbarTest : BaseTest() {
     }
 
     @Test
-    fun `init- should Have Left Bar At Start, Dynamic Content Size, limited by half of the topBar`() {
-        val layoutParams = uut.leftButtonsBar.layoutParams as ConstraintLayout.LayoutParams
-        Assertions.assertThat(layoutParams.topToTop).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.bottomToBottom).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.startToStart).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.width).isEqualTo(ConstraintSet.WRAP_CONTENT)
-        Assertions.assertThat(layoutParams.height).isEqualTo(ConstraintSet.WRAP_CONTENT)
-        Assertions.assertThat(layoutParams.matchConstraintMaxWidth).isEqualTo((UiUtils.getWindowWidth(activity) / 2f).roundToInt())
+    fun `init- should Have Left Bar At Start`() {
+        val layoutParams = uut.leftButtonsBar.layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.ALIGN_PARENT_LEFT]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
     }
 
-    @Test
-    fun `init- should Have Right Bar At End, Dynamic Content Size, limited by half of the topBar`() {
-        val layoutParams = uut.rightButtonsBar.layoutParams as ConstraintLayout.LayoutParams
-        Assertions.assertThat(layoutParams.topToTop).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.bottomToBottom).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.endToEnd).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.width).isEqualTo(ConstraintSet.WRAP_CONTENT)
-        Assertions.assertThat(layoutParams.height).isEqualTo(ConstraintSet.WRAP_CONTENT)
-        Assertions.assertThat(layoutParams.matchConstraintMaxWidth).isEqualTo((UiUtils.getWindowWidth(activity) / 2f).roundToInt())
-    }
 
     @Test
-    fun `init- should Have Title subtitle Bar next to left buttons bar, before right buttons, Dynamic Content Size, default margin`() {
-        val layoutParams = uut.getTitleComponent().layoutParams as ConstraintLayout.LayoutParams
-        Assertions.assertThat(layoutParams.topToTop).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.bottomToBottom).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.startToEnd).isEqualTo(uut.leftButtonsBar.id)
-        Assertions.assertThat(layoutParams.endToStart).isEqualTo(uut.rightButtonsBar.id)
-        Assertions.assertThat(layoutParams.bottomToBottom).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.width).isEqualTo(ConstraintSet.WRAP_CONTENT)
-        Assertions.assertThat(layoutParams.height).isEqualTo(ConstraintSet.WRAP_CONTENT)
-        Assertions.assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
-        Assertions.assertThat(layoutParams.horizontalBias).isEqualTo(0f)
+    fun `init- should Have Right Bar At End`() {
+        val layoutParams = uut.rightButtonsBar.layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.ALIGN_PARENT_RIGHT]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
     }
 
     @Test
     fun `should change alignment of the title bar, start with margin, center no margin`() {
         uut.setTitleBarAlignment(Alignment.Center)
-        var layoutParams = uut.getTitleComponent().layoutParams as ConstraintLayout.LayoutParams
-        Assertions.assertThat(layoutParams.horizontalBias).isEqualTo(0.5f)
-        Assertions.assertThat(layoutParams.marginStart).isEqualTo(0)
-        Assertions.assertThat(layoutParams.startToStart).isEqualTo(ConstraintSet.PARENT_ID)
-        Assertions.assertThat(layoutParams.endToEnd).isEqualTo(ConstraintSet.PARENT_ID)
+        var layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isNotEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isNotEqualTo(uut.rightButtonsBar.id)
+        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isNotEqualTo(uut.leftButtonsBar.id)
+        assertThat(layoutParams.marginStart).isNotEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+
 
         uut.setTitleBarAlignment(Alignment.Fill)
-        layoutParams = uut.getTitleComponent().layoutParams as ConstraintLayout.LayoutParams
-        Assertions.assertThat(layoutParams.horizontalBias).isEqualTo(0f)
-        Assertions.assertThat(layoutParams.startToEnd).isEqualTo(uut.leftButtonsBar.id)
-        Assertions.assertThat(layoutParams.endToStart).isEqualTo(uut.rightButtonsBar.id)
-        Assertions.assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
+        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
+
     }
 
     @Test
-    fun setComponent_shouldChangeDifferentComponents(){
+    fun `RTL - should change alignment of the title bar to be right, right with margin, center no margin`() {
+        uut.setTitleBarAlignment(Alignment.Center)
+        var layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isNotEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isNotEqualTo(uut.rightButtonsBar.id)
+        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isNotEqualTo(uut.leftButtonsBar.id)
+        assertThat(layoutParams.marginStart).isNotEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+
+
+        uut.setTitleBarAlignment(Alignment.Fill)
+        layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
+        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
+
+    }
+
+    @Test
+    fun setComponent_shouldChangeDifferentComponents() {
         val component = View(activity).apply { id = 19 }
         val component2 = View(activity).apply { id = 29 }
         uut.setComponent(component)
-        assertThat(uut.childCount).isEqualTo(4)
 
+        var layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
+        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
+
+        uut.setComponent(component2, Alignment.Fill)
+        layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
+        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
+        assertThat(uut.findViewById<View?>(component.id)).isNull()
+        assertThat(uut.findViewById<View?>(component2.id)).isEqualTo(component2)
+
+        uut.setComponent(component, Alignment.Center)
+        val flayoutParams = uut.getTitleComponent().layoutParams as FrameLayout.LayoutParams
+        assertThat(flayoutParams.gravity).isEqualTo(Gravity.CENTER)
+    }
+
+    @Test
+    fun setComponent_shouldAlignDefaultorPassedAligment() {
+        val component = View(activity).apply { id = 19 }
+        val component2 = View(activity).apply { id = 29 }
+        uut.setComponent(component)
         assertThat(uut.findViewById<View?>(component.id)).isEqualTo(component)
 
         uut.setComponent(component2)
-        assertThat(uut.childCount).isEqualTo(4)
         assertThat(uut.findViewById<View?>(component.id)).isNull()
         assertThat(uut.findViewById<View?>(component2.id)).isEqualTo(component2)
 
     }
+
     @Test
     fun setComponent_shouldReplaceTitleViewIfExist() {
         uut.setTitle("Title")
-        assertThat(uut.childCount).isEqualTo(3)
         assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.VISIBLE)
 
         val compId = 19
         val component = View(activity).apply { id = compId }
         uut.setComponent(component)
-        assertThat(uut.childCount).isEqualTo(4)
-        assertThat(uut.findViewById<View?>(compId)).isEqualTo(component)
-        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.GONE)
+        assertThat(uut.findViewById<View?>(component.id)).isEqualTo(component)
+        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.INVISIBLE)
     }
 
     @Test
@@ -125,25 +153,26 @@ class MainToolbarTest : BaseTest() {
         uut = Mockito.spy(uut)
         val component = View(activity)
         uut.setComponent(component)
-        Mockito.verify(uut).addView(component)
-        val layoutParams = component.layoutParams as ConstraintLayout.LayoutParams
-        assertThat(layoutParams.verticalBias).isEqualTo(0.5f)
-        assertThat(layoutParams.horizontalBias).isEqualTo(0f)
-        assertThat(layoutParams.startToEnd).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.endToStart).isEqualTo(uut.rightButtonsBar.id)
+        val layoutParams = component.layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
+        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
     }
 
     @Test
     fun setComponent_doesNothingIfComponentIsAlreadyAdded() {
-        uut = Mockito.spy(uut)
         val component = View(activity)
         uut.setComponent(component)
+        val firstCompId = component.id
+        assertThat(uut.findViewById<View?>(firstCompId)).isNotNull()
         uut.setComponent(component)
-        Mockito.verify(uut, times(1)).addView(component)
+        assertThat(uut.findViewById<View?>(component.id)).isNotNull()
+        assertThat(firstCompId).isEqualTo(component.id)
     }
 
     @Test
-    fun setTitle_shouldChangeTheTitle(){
+    fun setTitle_shouldChangeTheTitle() {
         uut.setTitle("Title")
         assertThat(uut.getTitle()).isEqualTo("Title")
     }
@@ -153,13 +182,12 @@ class MainToolbarTest : BaseTest() {
         val compId = 19
         val component = View(activity).apply { id = compId }
         uut.setComponent(component)
-        assertThat(uut.childCount).isEqualTo(4)
-        assertThat(uut.findViewById<View?>(compId)).isEqualTo(component)
-        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.GONE)
+        val id = component.id
+        assertThat(uut.findViewById<View?>(id)).isEqualTo(component)
+        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.INVISIBLE)
 
         uut.setTitle("Title")
-        assertThat(uut.childCount).isEqualTo(3)
-        assertThat(uut.findViewById<View?>(compId)).isNull()
+        assertThat(uut.findViewById<View?>(id)).isNull()
         assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.VISIBLE)
     }
 
@@ -170,11 +198,28 @@ class MainToolbarTest : BaseTest() {
         val passedView = uut.getTitleSubtitleBar()
         assertThat(passedView.visibility).isEqualTo(View.VISIBLE)
 
-        val layoutParams = passedView.layoutParams as ConstraintLayout.LayoutParams
-        assertThat(layoutParams.horizontalBias).isEqualTo(0f)
-        assertThat(layoutParams.verticalBias).isEqualTo(0.5f)
-        assertThat(layoutParams.startToEnd).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.endToStart).isEqualTo(uut.rightButtonsBar.id)
+        val layoutParams = passedView.layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
+        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+
+        assertThat(passedView.getTitleTxtView().text).isEqualTo("title")
+    }
+
+    @Test
+    fun setTitle_setTitleAtStartCenterHorizontalRTL() {
+        uut.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        uut.setTitle("title")
+
+        val passedView = uut.getTitleSubtitleBar()
+        assertThat(passedView.visibility).isEqualTo(View.VISIBLE)
+
+        val layoutParams = passedView.layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
+        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
 
         assertThat(passedView.getTitleTxtView().text).isEqualTo("title")
     }
@@ -250,19 +295,15 @@ class MainToolbarTest : BaseTest() {
     @Test
     fun clear_shouldHideTitleAndRemoveComponent() {
         uut.setTitle("Title")
-        assertThat(uut.childCount).isEqualTo(3)
         assertThat(getTitleSubtitleView().visibility).isEqualTo(View.VISIBLE)
         uut.clear()
-        assertThat(uut.childCount).isEqualTo(3)
-        assertThat(getTitleSubtitleView().visibility).isEqualTo(View.GONE)
+        assertThat(getTitleSubtitleView().visibility).isEqualTo(View.INVISIBLE)
 
         uut.setComponent(View(activity))
         assertThat(uut.getComponent()?.visibility).isEqualTo(View.VISIBLE)
-        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.GONE)
-        assertThat(uut.childCount).isEqualTo(4)
+        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.INVISIBLE)
         uut.clear()
-        assertThat(uut.childCount).isEqualTo(3)
-        assertThat(getTitleSubtitleView().visibility).isEqualTo(View.GONE)
+        assertThat(getTitleSubtitleView().visibility).isEqualTo(View.INVISIBLE)
 
     }
 
