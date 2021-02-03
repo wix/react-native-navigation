@@ -183,8 +183,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         mainToolBar.setTitleTextAlignment(alignment);
     }
 
+    public void setTitleComponent(View component, Alignment alignment) {
+        mainToolBar.setComponent(component, alignment);
+    }
+
     public void setTitleComponent(View component) {
-        mainToolBar.setComponent(component);
+        this.setTitleComponent(component, Alignment.Default);
     }
 
     public void setBackgroundComponent(View component) {

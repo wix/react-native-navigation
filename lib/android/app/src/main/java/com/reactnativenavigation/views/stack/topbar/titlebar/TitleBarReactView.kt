@@ -2,7 +2,7 @@ package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.widget.RelativeLayout
+import android.view.View
 import com.facebook.react.ReactInstanceManager
 import com.reactnativenavigation.react.ReactView
 
@@ -20,5 +20,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
     }
 
     private val isCenter: Boolean
-        get() = (layoutParams as RelativeLayout.LayoutParams).rules.contains(RelativeLayout.CENTER_IN_PARENT)
+        get() = true
+//        get() = (layoutParams as RelativeLayout.LayoutParams).rules.contains(RelativeLayout.CENTER_IN_PARENT)
 }
+

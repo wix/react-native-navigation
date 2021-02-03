@@ -2,7 +2,9 @@ package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.content.Context
 import android.graphics.Color
+import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.RestrictTo
@@ -17,6 +19,7 @@ import com.reactnativenavigation.utils.CompatUtils
 import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.logd
+import kotlin.math.log
 import kotlin.math.roundToInt
 
 const val DEFAULT_LEFT_MARGIN = 16
@@ -26,15 +29,20 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
     private var component: View? = null
     private val componentViewId = CompatUtils.generateViewId() // keeping componentIds stable for constraint layout to perform well
     private var componentViewIdBackup = View.NO_ID
+    private val centerFrameLayout = FrameLayout(context).apply {
+        id = CompatUtils.generateViewId()
+    }
 
     private val titleSubTitleBar = TitleSubTitleLayout(context).apply {
         id = CompatUtils.generateViewId()
+        minimumWidth = 2
     }
 
     val leftButtonsBar = LeftButtonsBar(context).apply {
         this.id = CompatUtils.generateViewId()
     }
-    val rightButtonsBar: RightButtonsBar = RightButtonsBar(context).apply { this.id = CompatUtils.generateViewId()
+    val rightButtonsBar: RightButtonsBar = RightButtonsBar(context).apply {
+        this.id = CompatUtils.generateViewId()
     }
 
     init {
@@ -43,6 +51,7 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
             addRule(CENTER_VERTICAL)
         })
         this.addView(titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+        this.addView(centerFrameLayout, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         this.addView(rightButtonsBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             addRule(ALIGN_PARENT_END)
             addRule(CENTER_VERTICAL)
@@ -50,27 +59,38 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
     }
 
 
-    fun setComponent(component: View) {
+    fun setComponent(component: View, alignment: Alignment = Alignment.Default) {
         if (this.component == component) return
-        val componentLp = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-            addRule(ALIGN_START, titleSubTitleBar.id)
-            addRule(ALIGN_END, titleSubTitleBar.id)
-            addRule(CENTER_VERTICAL)
-        }
+
         clear()
         this.component = component
         this.componentViewIdBackup = this.component?.id ?: View.NO_ID
         this.component?.id = componentViewId
-        this.addView(this.component, componentLp)
+        if (alignment == Alignment.Center) {
+            this.centerFrameLayout.addView(this.component, FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT).apply {
+                this.gravity = Gravity.CENTER
+            })
+        } else {
+            this.addView(this.component, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+                addRule(END_OF, leftButtonsBar.id)
+                addRule(START_OF, rightButtonsBar.id)
+                addRule(CENTER_VERTICAL)
+                gravity = Gravity.NO_GRAVITY
+            })
+        }
     }
 
     fun setTitle(title: CharSequence?) {
         clearComponent()
+        this.titleSubTitleBar.visibility = View.VISIBLE
+
         this.titleSubTitleBar.setTitle(title)
     }
 
     fun setSubtitle(title: CharSequence?) {
         clearComponent()
+        this.titleSubTitleBar.visibility = View.VISIBLE
+
         this.titleSubTitleBar.setSubtitle(title)
     }
 
@@ -83,21 +103,19 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
                 addRule(END_OF, leftButtonsBar.id)
                 addRule(START_OF, rightButtonsBar.id)
                 addRule(CENTER_VERTICAL)
+                gravity = Gravity.NO_GRAVITY
             } else {
-                addRule(CENTER_IN_PARENT)
+                addRule(CENTER_IN_PARENT, TRUE)
+                gravity = Gravity.CENTER
+
             }
             marginStart = margin
             marginEnd = margin
         }
-        this.component?.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-            if (alignment != Alignment.Center) {
-                addRule(ALIGN_START, titleSubTitleBar.id)
-                addRule(ALIGN_END, titleSubTitleBar.id)
-                addRule(CENTER_VERTICAL)
-            } else {
-                addRule(CENTER_IN_PARENT)
-            }
-        }
+
+//        if (centerFrameLayout.childCount > 0 && alignment != Alignment.Center) {
+//            clearComponent()
+//        }
     }
 
     override fun setLayoutDirection(layoutDirection: Int) {
@@ -154,7 +172,8 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
     fun clear() {
         //clearing title and sub title
         if (this.childCount > 0 && this.component == null) {
-            this.titleSubTitleBar.clear()
+//            this.titleSubTitleBar.clear()
+            this.titleSubTitleBar.visibility = View.INVISIBLE
         }
         clearComponent()
     }

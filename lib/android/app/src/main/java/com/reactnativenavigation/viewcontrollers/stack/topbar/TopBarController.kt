@@ -99,7 +99,7 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
     }
 
     fun setTitleComponent(component: TitleBarReactViewController) {
-        view.setTitleComponent(component.view)
+        view.setTitleComponent(component.view, component.component?.alignment ?: Alignment.Default)
     }
 
     fun alignTitleComponent(alignment: Alignment) {
@@ -108,12 +108,12 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
 
     fun applyRightButtons(toAdd: List<ButtonController>) {
         view.clearRightButtons()
-        toAdd.forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, i* 10) }
+        toAdd.forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, i * 10) }
     }
 
     fun mergeRightButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
         toRemove.forEach { view.removeRightButton(it) }
-        toAdd.forEachIndexed { i, b -> b.addToMenu(rightButtonsBar,  i*10) }
+        toAdd.forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, i * 10) }
     }
 
     open fun applyLeftButtons(toAdd: List<ButtonController>) {

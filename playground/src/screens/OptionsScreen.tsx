@@ -157,10 +157,27 @@ export default class Options extends React.Component<Props> {
   setReactTitleView = () =>
     Navigation.mergeOptions(this, {
       topBar: {
+        rightButtons: [
+          {
+            id: 'ONE',
+            text: 'One',
+          },
+          {
+            id: 'ROUND',
+            component: {
+              id: 'ROUND_COMPONENT',
+              name: Screens.RoundButton,
+              passProps: {
+                title: 'Two',
+                timesCreated: 1,
+              },
+            },
+          },
+        ],
         title: {
           component: {
             name: Screens.ReactTitleView,
-            alignment: 'fill',
+            alignment: 'center',
             passProps: {
               clickable: true,
               text: 'Press Me',
