@@ -174,10 +174,11 @@ export default class Options extends React.Component<Props> {
             },
           },
         ],
+        leftButtons: [],
         title: {
           component: {
             name: Screens.ReactTitleView,
-            alignment: 'center',
+            alignment: 'fill',
             passProps: {
               clickable: true,
               text: 'Press Me',

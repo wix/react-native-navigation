@@ -1,33 +1,27 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.content.Context
-import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.RestrictTo
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.FontOptions
-import com.reactnativenavigation.options.LayoutDirection
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.utils.CompatUtils
 import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.logd
-import kotlin.math.log
-import kotlin.math.roundToInt
 
 const val DEFAULT_LEFT_MARGIN = 16
 
 class MainToolBar(context: Context) : RelativeLayout(context) {
 
     private var component: View? = null
-    private val componentViewId = CompatUtils.generateViewId() // keeping componentIds stable for constraint layout to perform well
+    private val componentViewId = CompatUtils.generateViewId()
     private var componentViewIdBackup = View.NO_ID
     private val centerFrameLayout = FrameLayout(context).apply {
         id = CompatUtils.generateViewId()
@@ -35,7 +29,6 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
 
     private val titleSubTitleBar = TitleSubTitleLayout(context).apply {
         id = CompatUtils.generateViewId()
-        minimumWidth = 2
     }
 
     val leftButtonsBar = LeftButtonsBar(context).apply {
@@ -60,8 +53,8 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
 
 
     fun setComponent(component: View, alignment: Alignment = Alignment.Default) {
+        logd("setComponent with this.component:$${this.component?.id ?: -999}, newComponent:${component.id}, alignment:${alignment}")
         if (this.component == component) return
-
         clear()
         this.component = component
         this.componentViewIdBackup = this.component?.id ?: View.NO_ID
@@ -75,7 +68,7 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
                 addRule(END_OF, leftButtonsBar.id)
                 addRule(START_OF, rightButtonsBar.id)
                 addRule(CENTER_VERTICAL)
-                gravity = Gravity.NO_GRAVITY
+                marginStart = UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN)
             })
         }
     }
@@ -83,39 +76,30 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
     fun setTitle(title: CharSequence?) {
         clearComponent()
         this.titleSubTitleBar.visibility = View.VISIBLE
-
         this.titleSubTitleBar.setTitle(title)
     }
 
     fun setSubtitle(title: CharSequence?) {
         clearComponent()
         this.titleSubTitleBar.visibility = View.VISIBLE
-
         this.titleSubTitleBar.setSubtitle(title)
     }
 
     fun setTitleBarAlignment(alignment: Alignment) {
         logd("setTitleBarAlignment $alignment on ${if (this.component == null) "titleSubTitle" else "component"} $id")
-        val margin = if (alignment == Alignment.Center) 0 else UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN)
-
         this.titleSubTitleBar.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             if (alignment != Alignment.Center) {
                 addRule(END_OF, leftButtonsBar.id)
                 addRule(START_OF, rightButtonsBar.id)
                 addRule(CENTER_VERTICAL)
-                gravity = Gravity.NO_GRAVITY
+                marginStart = UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN)
             } else {
+                marginStart = 0
                 addRule(CENTER_IN_PARENT, TRUE)
-                gravity = Gravity.CENTER
-
             }
-            marginStart = margin
-            marginEnd = margin
+
         }
 
-//        if (centerFrameLayout.childCount > 0 && alignment != Alignment.Center) {
-//            clearComponent()
-//        }
     }
 
     override fun setLayoutDirection(layoutDirection: Int) {
