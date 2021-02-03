@@ -158,9 +158,7 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
     }
 
     fun clear() {
-        //clearing title and sub title
         if (this.childCount > 0 && this.component == null) {
-//            this.titleSubTitleBar.clear()
             this.titleSubTitleBar.visibility = View.INVISIBLE
         }
         clearComponent()
