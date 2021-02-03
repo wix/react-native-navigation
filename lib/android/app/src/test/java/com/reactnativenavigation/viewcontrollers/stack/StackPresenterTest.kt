@@ -329,8 +329,6 @@ class StackPresenterTest : BaseTest() {
         assertTopBarOptions(options, 0)
         val title = TitleOptions()
         title.text = Text("abc")
-//        title.component.name = Text("someComponent")
-//        title.component.componentId = Text("compId")
         title.color = Colour(0)
         title.fontSize = Fraction(1.0)
         title.font = FontOptions()
