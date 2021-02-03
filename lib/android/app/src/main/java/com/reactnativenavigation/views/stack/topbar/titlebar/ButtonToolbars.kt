@@ -54,8 +54,8 @@ open class ButtonsToolbar internal constructor(context: Context) : Toolbar(conte
     }
 
     override fun setLayoutDirection(layoutDirection: Int) {
-        super.setLayoutDirection(layoutDirection)
         ObjectUtils.perform(ViewUtils.findChildByClass(this, ActionMenuView::class.java), { buttonsContainer: ActionMenuView -> buttonsContainer.layoutDirection = layoutDirection })
+        super.setLayoutDirection(layoutDirection)
     }
 
     fun addButton(menuItem: Int, intId: Int, order: Int, styledText: SpannableString): MenuItem? {
