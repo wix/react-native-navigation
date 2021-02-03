@@ -200,6 +200,7 @@ public class StackPresenter {
         } else {
             topBar.applyTitleOptions(topBarOptions.title,typefaceLoader);
             topBar.applySubtitleOptions(topBarOptions.subtitle, typefaceLoader);
+            topBarController.alignTitleComponent(topBarOptions.title.alignment);
         }
 
 
