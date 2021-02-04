@@ -13,7 +13,9 @@ const {
   ROUND_BUTTON,
   BUTTON_ONE,
   BUTTON_THREE,
-  ADD_BUTTON,
+  SET_RIGHT_BUTTONS,
+  ADD_BUTTON_RIGHT,
+  ADD_BUTTON_ROUND,
   ADD_COMPONENT_BUTTON,
   LEFT_BUTTON,
   TEXTUAL_LEFT_BUTTON,
@@ -61,12 +63,6 @@ export default class ButtonOptions extends NavigationComponent {
               },
             },
           },
-          {
-            id: 'Three',
-            text: 'B3',
-            testID: BUTTON_THREE,
-            color: Colors.primary,
-          },
         ],
         leftButtons: [
           {
@@ -101,7 +97,21 @@ export default class ButtonOptions extends NavigationComponent {
           testID={CHANGE_BUTTON_PROPS}
           onPress={this.changeButtonProps}
         />
-        <Button testID={ADD_BUTTON} label="Add End (Right) button" onPress={this.addRightButton} />
+        <Button
+          testID={ADD_BUTTON_RIGHT}
+          label="Add End (Right) button"
+          onPress={this.addRightButton}
+        />
+        <Button
+          testID={SET_RIGHT_BUTTONS}
+          label="Set Right buttons"
+          onPress={this.setRightButtons}
+        />
+        <Button
+          testID={ADD_BUTTON_ROUND}
+          label="Add End (Right) Round button"
+          onPress={this.addRoundButton}
+        />
         <Button
           testID={ADD_COMPONENT_BUTTON}
           label="Add Start (Left) component button"
@@ -115,6 +125,37 @@ export default class ButtonOptions extends NavigationComponent {
       </Root>
     );
   }
+
+  setRightButtons = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        rightButtons: [
+          {
+            id: 'ONE',
+            testID: BUTTON_ONE,
+            text: 'One',
+            color: Colors.primary,
+          },
+          {
+            id: 'ROUND',
+            testID: ROUND_BUTTON,
+            component: {
+              id: 'ROUND_COMPONENT',
+              name: Screens.RoundButton,
+              passProps: {
+                title: 'Two',
+              },
+            },
+          },
+          {
+            id: 'Three',
+            text: 'Three',
+            testID: BUTTON_THREE,
+            color: Colors.primary,
+          },
+        ],
+      },
+    });
 
   leftButtons: OptionsTopBarButton[] = [];
   addComponentButtons = () => {
@@ -154,6 +195,26 @@ export default class ButtonOptions extends NavigationComponent {
     });
   };
 
+  addRoundButton = () => {
+    this.rightButtons = [];
+    this.rightButtons.push({
+      id: `ROUND`,
+      testID: ROUND_BUTTON,
+      component: {
+        name: Screens.RoundButton,
+        passProps: {
+          title: 'Two',
+          timesCreated: 1,
+        },
+      },
+    });
+    Navigation.mergeOptions(this, {
+      topBar: {
+        rightButtons: this.rightButtons,
+      },
+    });
+  };
+
   push = () => Navigation.push(this, Screens.Pushed);
 
   showLifecycleButton = () =>
@@ -167,6 +228,7 @@ export default class ButtonOptions extends NavigationComponent {
               name: Screens.LifecycleButton,
               passProps: {
                 title: 'Two',
+                timesCreated: 1,
               },
             },
           },
