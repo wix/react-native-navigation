@@ -8,7 +8,6 @@ const viewControllerBasedStatusBar = /<key>UIViewControllerBasedStatusBarAppeara
 class plistLinker {
   constructor() {
     this.plistPath = path.plist;
-    console.log(this.plistPath)
   }
 
   link() {
