@@ -12,7 +12,7 @@ import com.reactnativenavigation.utils.ImageLoader.ImagesLoadingListener
 import java.util.*
 
 object ImageLoaderMock {
-    private val mockDrawable: Drawable = object : Drawable() {
+     val mockDrawable: Drawable = object : Drawable() {
         override fun draw(canvas: Canvas) {}
         override fun setAlpha(alpha: Int) {}
         override fun setColorFilter(colorFilter: ColorFilter?) {}
@@ -34,6 +34,25 @@ object ImageLoaderMock {
 
         doAnswer { invocation ->
             (invocation.arguments[2] as ImagesLoadingListener).onComplete(mockDrawable)
+            null
+        }.`when`(imageLoader).loadIcon(any(), any(), any())
+
+        whenever(imageLoader.getBackButtonIcon(any())).thenReturn(backIcon)
+        return imageLoader
+    }
+
+    @JvmStatic
+    fun mock(returnDrawable:Drawable): ImageLoader {
+        val imageLoader = mock<ImageLoader>()
+        doAnswer { invocation ->
+            val urlCount = (invocation.arguments[1] as Collection<*>).size
+            val drawables = Collections.nCopies(urlCount, returnDrawable)
+            (invocation.arguments[2] as ImagesLoadingListener).onComplete(drawables)
+            null
+        }.`when`(imageLoader).loadIcons(any(), any(), any())
+
+        doAnswer { invocation ->
+            (invocation.arguments[2] as ImagesLoadingListener).onComplete(returnDrawable)
             null
         }.`when`(imageLoader).loadIcon(any(), any(), any())
 

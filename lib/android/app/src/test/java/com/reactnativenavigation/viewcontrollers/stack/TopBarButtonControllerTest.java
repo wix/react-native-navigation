@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.fakes.IconResolverFake;
+import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.ButtonOptions;
@@ -47,7 +48,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         stackController.getTopBar().layout(0, 0, 1080, 200);
         getTitleBar().layout(0, 0, 1080, 200);
 
-        optionsPresenter = spy(new ButtonPresenter(activity, button, new IconResolverFake(activity)));
+        optionsPresenter = spy(new ButtonPresenter(activity, button, new IconResolverFake(activity, ImageLoaderMock.mock())));
         uut = new ButtonController(activity, optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
 
         stackController.ensureViewIsCreated();

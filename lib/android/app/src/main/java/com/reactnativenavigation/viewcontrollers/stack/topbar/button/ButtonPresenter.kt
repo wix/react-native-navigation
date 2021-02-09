@@ -94,7 +94,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
             loadIcon(object : ImageLoadingListenerAdapter() {
                 override fun onComplete(drawable: Drawable) {
                     setIconColor(drawable)
-                    menuItem.icon = if (button.iconBackground.hasValue()) IconBackgroundDrawable(context, drawable, button.iconBackground, getIconColor(), getBackgroundColor()) else drawable
+                    menuItem.icon = if (button.iconBackground.hasValue()) IconBackgroundDrawable(drawable, button.iconBackground, getIconColor(), getBackgroundColor()) else drawable
                 }
             })
         }
@@ -167,10 +167,28 @@ open class ButtonPresenter(private val context: Context, private val button: But
     }
 
     private fun getBackgroundColor(): Int {
-        return if (button.enabled.isTrueOrUndefined || !button.iconBackground.disabledColor.hasValue()) {
-            button.color.get()
+        if (button.enabled.isTrueOrUndefined) {
+            val hasIconAndIconBG = button.hasIcon()
+                    && button.iconBackground.hasValue()
+                    && button.iconBackground.color.hasValue()
+            return if (button.color.hasValue() && !hasIconAndIconBG) {
+                button.color.get()
+            } else if (hasIconAndIconBG) {
+                button.iconBackground.color.get()
+            } else {
+                Color.TRANSPARENT
+            }
         } else {
-            button.iconBackground.disabledColor[null]
+            val hasIconAndIconDisabledBG = button.hasIcon()
+                    && button.iconBackground.hasValue()
+                    && button.iconBackground.disabledColor.hasValue()
+            return if (button.disabledColor.hasValue() && !hasIconAndIconDisabledBG) {
+                button.disabledColor.get()
+            } else if (hasIconAndIconDisabledBG) {
+                button.iconBackground.disabledColor.get()
+            } else {
+                Color.TRANSPARENT
+            }
         }
     }
 

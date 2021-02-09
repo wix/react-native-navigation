@@ -11,6 +11,7 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
 public class IconResolver {
 
@@ -40,5 +41,10 @@ public class IconResolver {
         } else {
             Log.w("RNN", "Left button needs to have an icon");
         }
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public ImageLoader getImageLoader() {
+        return imageLoader;
     }
 }
