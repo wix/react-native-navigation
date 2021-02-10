@@ -45,7 +45,6 @@ public class ButtonPresenterTest extends BaseTest {
     private ButtonPresenter uut;
     private ButtonController buttonController;
     private ButtonOptions button;
-    private IconResolverFake iconResolver;
     private Activity activity;
 
     @Override
@@ -61,7 +60,7 @@ public class ButtonPresenterTest extends BaseTest {
     }
 
     private void initUUt(ImageLoader imageLoaderMock) {
-        iconResolver = new IconResolverFake(activity, imageLoaderMock);
+        IconResolverFake iconResolver = new IconResolverFake(activity, imageLoaderMock);
         uut = new ButtonPresenter(activity, button, iconResolver);
         buttonController = new ButtonController(
                 activity,
