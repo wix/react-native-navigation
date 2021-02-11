@@ -35,6 +35,7 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         }
 
     init {
+        this.isShadowed = false
         this.id = View.generateViewId()
         shadowAngle = DEFAULT_SHADOW_ANGLE
         shadowDistance = DEFAULT_SHADOW_DISTANCE
