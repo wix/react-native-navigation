@@ -5,7 +5,6 @@ import android.graphics.*
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.view.View
 import android.widget.FrameLayout
-import com.reactnativenavigation.utils.logd
 import kotlin.math.cos
 import kotlin.math.sin
 
