@@ -106,7 +106,6 @@ open class ShadowLayout constructor(context: Context) : FrameLayout(context) {
     }
 
     override fun dispatchDraw(canvas: Canvas) {
-        logd("Shadow $isShadowed","ShadowXX")
         if (isShadowed) {
             if (invalidateShadow) {
                 if (bounds.width() != 0 && bounds.height() != 0) {
