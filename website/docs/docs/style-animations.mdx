@@ -238,7 +238,7 @@ The `interpolation` property is an object which consists of a `type` property, a
 * `'spring'`: Acts like an actual spring. Depending on the configuration, this interpolation can overshoot the destination multiple times, or be very stiff and smoothly ease towards the destination.
   - `mass`: The mass defines how "heavy" the object is. _Default: `3`_
   - `damping`: The damping property specifies how much the moving object is being slowed down. Higher values can lead to overdamping, lower values to underdamping. _Default: `500`_
-  - `stiffness`: The stiffness property defines how stiff the animated object is. _Default: `1000`_
+  - `stiffness`: The stiffness property defines how stiff the animated object is. _Default: `200`_
 
 :::caution
 Since a Spring interpolation is not a time based animation, you have to manually tweak the configuration to match the duration of the animation, otherwise the remaining time of the Spring interpolation will get skipped.
