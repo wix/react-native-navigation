@@ -1,11 +1,11 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementByLabel, elementById } = Utils;
+const {elementByLabel, elementById} = Utils;
 
 describe('static lifecycle events', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.SHOW_STATIC_EVENTS_SCREEN).tap();
     await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
@@ -74,6 +74,7 @@ describe('static lifecycle events', () => {
 
     await expect(elementByLabel('setRoot complete - previous root is unmounted')).toBeVisible();
   });
+
   it('top bar custom button didAppear after pop, on a root screen', async () => {
     await elementById(TestIDs.SHOW_RIGHT_BUTTON).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
@@ -82,5 +83,26 @@ describe('static lifecycle events', () => {
     await expect(
       elementByLabel('componentDidAppear | CustomRoundedButton | TopBarButton')
     ).toBeVisible();
+  })
+
+  it('disabled back button dispatch event and prevents pop', async () => {
+    await elementById(TestIDs.PUSH_DISABLED_BACK_BTN).tap();
+    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+    await elementById(TestIDs.BACK_BUTTON).tap();
+    await expect(
+      elementByLabel('navigationButtonPressed | RNN.back')
+    ).toBeVisible();
+    await expect(
+      elementByLabel('Pushed Screen')
+    ).toBeVisible();
+  })
+
+  it('enabled back button does not dispatch event', async () => {
+    await elementById(TestIDs.PUSH_BTN).tap();
+    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+    await elementById(TestIDs.BACK_BUTTON).tap();
+    await expect(
+      elementByLabel('navigationButtonPressed | RNN.back')
+    ).toBeNotVisible();
   })
 });
