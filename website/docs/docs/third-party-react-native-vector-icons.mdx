@@ -1,0 +1,41 @@
+---
+id: third-party-react-native-vector-icons
+title: react-native-vector-icons
+sidebar_label: react-native-vector-icons
+---
+
+react-native-vector-icons is a very popular library for using SVG icons in react-native, which keeps large static images
+out of your app while providing crisp icons. Using this library with React Native Navigation is not difficult, but does take
+a few extra steps..
+
+## Using SVG icons in BottomTabs or TopBarButtons
+
+In the example below we will detail a simple app that pre-loads several icons from react-native-vector-icons to be used in our navigation. The example assumes
+you have worked through the [installation](https://github.com/oblador/react-native-vector-icons#installation) and optional steps to support [custom fonts](https://github.com/oblador/react-native-vector-icons#custom-fonts)
+according to the react-native-vector-icons project.
+
+### Step 1 - Choose icons and load image source.
+
+The core issue here is that React Native Navigation wants 'images' for its icons while react-native-vector-icon typically works as a component. However,
+there is a way around this, by using the `getImageSourceSync` method exposed by react-native-vector-icons.
+
+You can use this directly when specifying an `icon` in an react-native-navigation option, or you can group them all together into a central object like so:
+
+```tsx file=./third-party-react-native-vector-icons/NavIcons.tsx
+```
+
+### Step 2 - Launching the app.
+
+We now launch our app in the usual fashion.
+
+```tsx file=./third-party-react-native-vector-icons/index.ts
+```
+
+### Step 3 - Using NavIcons in components.
+
+One of the nice features of React Native Navigation is that it is possible to specify the navigation 'options' on each individual component. This still works with NavIcons
+framework we have setup:
+
+
+```tsx file=./third-party-react-native-vector-icons/ExampleComponent.tsx
+```

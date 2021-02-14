@@ -47,7 +47,14 @@ public class TitleOptions {
     public Number topMargin = new NullNumber();
 
     void mergeWith(final TitleOptions other) {
-        if (other.text.hasValue()) text = other.text;
+        if (other.text.hasValue()) {
+            text = other.text;
+            this.component.reset();
+        } else {
+            //there is a component but no text, clear text, breaks coexistence
+            if (other.component.hasValue())
+                this.text = other.text;
+        }
         if (other.color.hasValue()) color = other.color;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         font.mergeWith(other.font);

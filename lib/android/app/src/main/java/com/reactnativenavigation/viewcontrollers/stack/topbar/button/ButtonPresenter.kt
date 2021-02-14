@@ -18,10 +18,9 @@ import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.utils.ArrayUtils
-import com.reactnativenavigation.utils.ImageLoader
-import com.reactnativenavigation.utils.ImageLoadingListenerAdapter
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.views.stack.topbar.titlebar.IconBackgroundDrawable
+import kotlin.math.max
 
 open class ButtonPresenter(private val context: Context, private val button: ButtonOptions, private val iconResolver: IconResolver) {
     companion object {
@@ -89,14 +88,29 @@ open class ButtonPresenter(private val context: Context, private val button: But
         menuItem.isEnabled = button.enabled.isTrueOrUndefined
     }
 
+    private fun applyIconBackgroundDrawable(srcDrawable: Drawable): Drawable? {
+        return if (button.iconBackground.hasValue()) {
+            val width = button.iconBackground.width.get(srcDrawable.intrinsicWidth).let { max(it, srcDrawable.intrinsicWidth) }
+            val height = button.iconBackground.height.get(srcDrawable.intrinsicHeight).let { max(it, srcDrawable.intrinsicHeight) }
+            val cornerRadius = button.iconBackground.cornerRadius
+            val backgroundColor = if (button.enabled.isTrueOrUndefined) {
+                button.iconBackground.color.get(null)
+            } else {
+                button.iconBackground.disabledColor.get(null)
+            }
+            IconBackgroundDrawable(srcDrawable, cornerRadius, width, height, getIconColor(), backgroundColor)
+        } else
+            srcDrawable
+    }
+
     private fun applyIcon(menuItem: MenuItem) {
         if (button.hasIcon()) {
-            loadIcon(object : ImageLoadingListenerAdapter() {
-                override fun onComplete(drawable: Drawable) {
+            iconResolver.resolve(button) { drawable: Drawable? ->
+                drawable?.let {
                     setIconColor(drawable)
-                    menuItem.icon = if (button.iconBackground.hasValue()) IconBackgroundDrawable(context, drawable, button.iconBackground, getIconColor(), getBackgroundColor()) else drawable
+                    menuItem.icon = applyIconBackgroundDrawable(drawable)
                 }
-            })
+            }
         }
     }
 
@@ -137,9 +151,6 @@ open class ButtonPresenter(private val context: Context, private val button: But
 
     private fun isIconButtonView(view: TextView, menuItem: MenuItem) = button.icon.hasValue() && ArrayUtils.contains(view.compoundDrawables, menuItem.icon)
     private fun isTextualButtonView(view: TextView) = button.text.hasValue() && button.text.get() == view.text.toString()
-    private fun loadIcon(callback: ImageLoader.ImagesLoadingListener) {
-        iconResolver.resolve(button) { drawable: Drawable? -> callback.onComplete(drawable!!) }
-    }
 
     fun applyNavigationIcon(toolbar: Toolbar, onPress: (ButtonOptions) -> Unit) {
         iconResolver.resolve(button) { icon: Drawable ->
@@ -164,14 +175,6 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
 
         return null
-    }
-
-    private fun getBackgroundColor(): Int {
-        return if (button.enabled.isTrueOrUndefined || !button.iconBackground.disabledColor.hasValue()) {
-            button.color.get()
-        } else {
-            button.iconBackground.disabledColor[null]
-        }
     }
 
     private fun setLeftButtonTestId(toolbar: Toolbar) {

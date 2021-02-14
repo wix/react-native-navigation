@@ -781,6 +781,11 @@ export interface OptionsBottomTabs {
    */
   testID?: string;
   /**
+   * Overrides the text that's read by the screen reader when the user interacts with the element
+   * #### (iOS specific)
+   */
+  accessibilityLabel?: string;
+  /**
    * Draw screen component under the tab bar
    */
   drawBehind?: boolean;
@@ -826,6 +831,33 @@ export interface OptionsBottomTabs {
    * #### (Android specific)
    */
   hideOnScroll?: boolean;
+  /**
+   * Control the top border color of the Bottom tabs bar
+   */
+  borderColor?: Color;
+  /**
+   * Control the top border width of the Bottom tabs bar
+   */
+  borderWidth?: number;
+  /**
+   * Control the shadow of the Bottom tabs bar
+   */
+  shadow?: ShadowOptions;
+}
+
+export interface ShadowOptions {
+  /**
+   * The opacity of the shadow
+   */
+  opacity?: number;
+  /**
+   * The color of the shadow
+   */
+  color?: Color;
+  /**
+   * The blur radius used to create the shadow
+   */
+  radius?: number;
 }
 
 export interface DotIndicatorOptions {

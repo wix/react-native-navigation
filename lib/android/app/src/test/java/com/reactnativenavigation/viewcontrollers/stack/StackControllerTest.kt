@@ -39,6 +39,7 @@ import org.robolectric.Robolectric
 import org.robolectric.annotation.LooperMode
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
+import kotlin.jvm.Throws
 
 class StackControllerTest : BaseTest() {
     private lateinit var activity: Activity
@@ -315,7 +316,7 @@ class StackControllerTest : BaseTest() {
                 assertThat(uut.currentChild).isEqualTo(child4)
                 uut.pop(Options.EMPTY, CommandListenerAdapter())
                 ShadowLooper.idleMainLooper()
-                assertThat(uut.topBar.titleBar.navigationIcon).isNull()
+                assertThat(uut.topBar.leftButtonsBar.navigationIcon).isNull()
                 assertThat(uut.currentChild).isEqualTo(child3)
             }
         })

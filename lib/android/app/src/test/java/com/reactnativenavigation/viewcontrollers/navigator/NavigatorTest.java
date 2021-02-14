@@ -37,7 +37,9 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -119,6 +121,7 @@ public class NavigatorTest extends BaseTest {
 
         activityController.visible();
         activityController.postCreate(Bundle.EMPTY);
+        idleMainLooper();
     }
 
     @Test
@@ -397,7 +400,7 @@ public class NavigatorTest extends BaseTest {
             protected BottomTabs createBottomTabs() {
                 return new BottomTabs(activity) {
                     @Override
-                    public void superCreateItems() {
+                    protected void createItems() {
 
                     }
                 };

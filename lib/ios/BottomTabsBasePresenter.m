@@ -1,5 +1,6 @@
 #import "BottomTabsBasePresenter.h"
 #import "RNNBottomTabsController.h"
+#import "UIImage+utils.h"
 
 @implementation BottomTabsBasePresenter
 
@@ -30,12 +31,15 @@
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow withDefault:NO]];
     [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:[withDefault.bottomTabs.barStyle
                                                           withDefault:@"default"]]];
+    [self applyTabBarBorder:withDefault.bottomTabs];
+    [self applyTabBarShadow:withDefault.bottomTabs.shadow];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
      resolvedOptions:(RNNNavigationOptions *)currentOptions {
     [super mergeOptions:mergeOptions resolvedOptions:currentOptions];
     RNNBottomTabsController *bottomTabs = self.tabBarController;
+    RNNNavigationOptions *withDefault = [mergeOptions withDefault:[self defaultOptions]];
 
     if (mergeOptions.bottomTabs.currentTabIndex.hasValue) {
         [bottomTabs setCurrentTabIndex:mergeOptions.bottomTabs.currentTabIndex.get];
@@ -79,6 +83,15 @@
     if (mergeOptions.layout.backgroundColor.hasValue) {
         [bottomTabs.view setBackgroundColor:mergeOptions.layout.backgroundColor.get];
     }
+
+    if (mergeOptions.bottomTabs.borderColor.hasValue ||
+        mergeOptions.bottomTabs.borderWidth.hasValue) {
+        [self applyTabBarBorder:withDefault.bottomTabs];
+    }
+
+    if (mergeOptions.bottomTabs.shadow.hasValue) {
+        [self applyTabBarShadow:withDefault.bottomTabs.shadow];
+    }
 }
 
 - (RNNBottomTabsController *)tabBarController {
@@ -87,6 +100,25 @@
 
 - (UITabBar *)tabBar {
     return self.tabBarController.tabBar;
+}
+
+- (void)applyTabBarBorder:(RNNBottomTabsOptions *)options {
+    if (options.borderColor.hasValue || options.borderWidth.hasValue) {
+        self.tabBar.backgroundImage = UIImage.new;
+        self.tabBar.shadowImage = [UIImage
+            imageWithSize:CGSizeMake(1, [[options.borderWidth withDefault:@(1)] floatValue])
+                    color:[options.borderColor withDefault:UIColor.blackColor]];
+    }
+}
+
+- (void)applyTabBarShadow:(RNNShadowOptions *)options {
+    self.tabBar.layer.shadowRadius =
+        [options.radius withDefault:@(self.tabBar.layer.shadowRadius)].floatValue;
+    self.tabBar.layer.shadowColor =
+        [options.color withDefault:[UIColor colorWithCGColor:self.tabBar.layer.shadowColor]]
+            .CGColor;
+    self.tabBar.layer.shadowOpacity =
+        [options.opacity withDefault:@(self.tabBar.layer.shadowOpacity)].floatValue;
 }
 
 - (void)applyBackgroundColor:(UIColor *)backgroundColor translucent:(BOOL)translucent {

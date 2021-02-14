@@ -13,6 +13,7 @@
     self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
     self.fontWeight = [TextParser parse:dict key:@"fontWeight"];
     self.testID = [TextParser parse:dict key:@"testID"];
+    self.accessibilityLabel = [TextParser parse:dict key:@"accessibilityLabel"];
     self.badgeColor = [ColorParser parse:dict key:@"badgeColor"];
 
     self.dotIndicator = [DotIndicatorParser parse:dict];
@@ -45,6 +46,8 @@
         self.fontWeight = options.fontWeight;
     if (options.testID.hasValue)
         self.testID = options.testID;
+    if (options.accessibilityLabel.hasValue)
+        self.accessibilityLabel = options.accessibilityLabel;
     if (options.badgeColor.hasValue)
         self.badgeColor = options.badgeColor;
     if (options.icon.hasValue)

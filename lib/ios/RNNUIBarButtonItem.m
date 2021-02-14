@@ -2,7 +2,7 @@
 #import "RCTConvert+UIBarButtonSystemItem.h"
 #import "RNNFontAttributesCreator.h"
 #import "UIImage+insets.h"
-#import "UIImage+tint.h"
+#import "UIImage+utils.h"
 
 @interface RNNUIBarButtonItem ()
 

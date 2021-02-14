@@ -1,14 +1,20 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
-import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import androidx.annotation.RestrictTo
 import androidx.core.graphics.drawable.toBitmap
-import com.reactnativenavigation.options.IconBackgroundOptions
-import kotlin.math.max
+import com.reactnativenavigation.options.params.DensityPixel
 
 
-class IconBackgroundDrawable(private val context: Context, private val wrapped: Drawable, private val iconBackground: IconBackgroundOptions, private val iconColor: Int?, private val backgroundColor: Int) : Drawable() {
+class IconBackgroundDrawable(
+        private val wrapped: Drawable,
+        private val cornerRadius: DensityPixel,
+        private val backgroundWidth: Int,
+        private val backgroundHeight: Int,
+        private val iconColor: Int?,
+        val backgroundColor: Int?
+) : Drawable() {
     private val path: Path = Path()
     private val bitmapPaint = Paint().apply {
         isAntiAlias = true
@@ -18,14 +24,13 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     private val backgroundPaint = Paint().apply {
         isAntiAlias = true
         isFilterBitmap = true
-        color = backgroundColor
+        backgroundColor?.let {
+            color = it
+        }
     }
 
-    private val cornerRadius = iconBackground.cornerRadius.get(0)
     private val bitmapWidth = wrapped.intrinsicWidth
     private val bitmapHeight = wrapped.intrinsicHeight
-    private val backgroundWidth =  iconBackground.width.get(bitmapWidth).let { max(it, bitmapWidth) }
-    private val backgroundHeight =  iconBackground.height.get(bitmapHeight).let { max(it, bitmapHeight) }
     private var backgroundRect = Rect()
     private var bitmapRect = Rect();
 
@@ -36,11 +41,13 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     }
 
     private fun drawBackgroundColor(canvas: Canvas) {
-        canvas.drawRect(backgroundRect, backgroundPaint)
+        backgroundColor?.let {
+            canvas.drawRect(backgroundRect, backgroundPaint)
+        }
     }
 
     private fun drawPath(canvas: Canvas) {
-        if (iconBackground.cornerRadius.hasValue()) {
+        if (cornerRadius.hasValue()) {
             canvas.clipPath(path)
         }
     }
@@ -67,10 +74,10 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
                     (bounds.height() - backgroundHeight) / 2,
                     bounds.width() - (bounds.width() - backgroundWidth) / 2,
                     bounds.height() - (bounds.height() - backgroundHeight) / 2)
-            bitmapRect = Rect((bounds.width()-bitmapWidth) / 2,
-                    (bounds.height()-bitmapHeight) / 2,
-                    bounds.width() - (bounds.width()-bitmapWidth) / 2,
-                    bounds.height() - (bounds.height()-bitmapHeight) / 2)
+            bitmapRect = Rect((bounds.width() - bitmapWidth) / 2,
+                    (bounds.height() - bitmapHeight) / 2,
+                    bounds.width() - (bounds.width() - bitmapWidth) / 2,
+                    bounds.height() - (bounds.height() - bitmapHeight) / 2)
         }
         super.onBoundsChange(bounds)
     }
@@ -88,9 +95,13 @@ class IconBackgroundDrawable(private val context: Context, private val wrapped: 
     }
 
     private fun updatePath(r: RectF) {
-        if (iconBackground.cornerRadius.hasValue()) {
+        if (cornerRadius.hasValue()) {
             path.reset()
-            path.addRoundRect(r, cornerRadius.toFloat(), cornerRadius.toFloat(), Path.Direction.CW)
+            val radius = cornerRadius.get(0).toFloat()
+            path.addRoundRect(r, radius, radius, Path.Direction.CW)
         }
     }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun getWrappedDrawable(): Drawable = this.wrapped
 }
