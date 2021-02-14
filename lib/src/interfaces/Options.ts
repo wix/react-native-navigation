@@ -327,7 +327,6 @@ export interface OptionsTopBarBackButton {
   accessibilityLabel?: string;
   /**
    * Button id for reference press event
-   * #### (Android specific)
    */
   id?: string;
   /**
@@ -387,6 +386,12 @@ export interface OptionsTopBarBackButton {
    * #### (iOS specific)
    */
   displayMode?: 'default' | 'generic' | 'minimal';
+  /**
+   * Enables iOS 14 back button menu display
+   * #### (iOS specific)
+   * @default true
+   */
+  popScreenOnPress?: boolean;
 }
 
 export interface OptionsTopBarScrollEdgeAppearanceBackground {

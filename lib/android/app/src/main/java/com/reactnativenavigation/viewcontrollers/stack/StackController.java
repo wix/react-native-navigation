@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.options.BackButton;
+import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.StackAnimationOptions;
 import com.reactnativenavigation.react.CommandListener;
@@ -398,12 +400,11 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-    private void onNavigationButtonPressed(String buttonId) {
-        if (Constants.BACK_BUTTON_ID.equals(buttonId)) {
+    private void onNavigationButtonPressed(ButtonOptions button) {
+        if (button.shouldPopOnPress())
             pop(Options.EMPTY, new CommandListenerAdapter());
-        } else {
-            sendOnNavigationButtonPressed(buttonId);
-        }
+        else
+            sendOnNavigationButtonPressed(button.id);
     }
 
     @Override

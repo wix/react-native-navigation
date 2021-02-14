@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
@@ -86,8 +87,8 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     }
 
     @Override
-    public void onPress(String buttonId) {
-        reactView.sendOnNavigationButtonPressed(buttonId);
+    public void onPress(ButtonOptions button) {
+        reactView.sendOnNavigationButtonPressed(button.id);
     }
 
     @Override

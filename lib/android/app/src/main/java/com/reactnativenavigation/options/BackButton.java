@@ -27,6 +27,7 @@ public class BackButton extends ButtonOptions {
         result.color = ColorParser.parse(context, json, "color");
         result.disabledColor = ColorParser.parse(context, json, "disabledColor");
         result.testId = TextParser.parse(json, "testID");
+        result.popScreenOnPress = BoolParser.parse(json, "popScreenOnPress");
 
         return result;
     }
@@ -53,6 +54,7 @@ public class BackButton extends ButtonOptions {
         if (other.disableIconTint.hasValue()) disableIconTint = other.disableIconTint;
         if (other.enabled.hasValue()) enabled = other.enabled;
         if (other.testId.hasValue()) testId = other.testId;
+        if (other.popScreenOnPress.hasValue()) popScreenOnPress = other.popScreenOnPress;
     }
 
     void mergeWithDefault(final BackButton defaultOptions) {
@@ -65,6 +67,7 @@ public class BackButton extends ButtonOptions {
         if (!disableIconTint.hasValue()) disableIconTint = defaultOptions.disableIconTint;
         if (!enabled.hasValue()) enabled = defaultOptions.enabled;
         if (!testId.hasValue()) testId = defaultOptions.testId;
+        if (!popScreenOnPress.hasValue()) popScreenOnPress = defaultOptions.popScreenOnPress;
     }
 
     public void setVisible() {
