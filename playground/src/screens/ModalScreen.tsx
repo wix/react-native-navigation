@@ -63,11 +63,13 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
         footer={`Modal Stack Position: ${this.getModalPosition()}`}
       >
         <Button label="Show Modal" testID={MODAL_BTN} onPress={this.showModal} />
-        <Button
-          label="Show Disabled Hardware Back Modal"
-          testID={MODAL_DISABLED_BACK_BTN}
-          onPress={this.showDisabledHardwareBackModal}
-        />
+        {!this.props.previousModalIds && (
+          <Button
+            label="Show Disabled Hardware Back Modal"
+            testID={MODAL_DISABLED_BACK_BTN}
+            onPress={this.showDisabledHardwareBackModal}
+          />
+        )}
         <Button label="Dismiss Modal" testID={DISMISS_MODAL_BTN} onPress={this.dismissModal} />
         <Button
           label="Dismiss Unknown Modal"
