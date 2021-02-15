@@ -55,6 +55,7 @@ module.exports = {
           'api/options-subtitle',
           'api/options-background',
           'api/options-backButton',
+          'api/options-hardwareBackButton',
           'api/options-button',
           'api/options-iconInsets',
           'api/options-iconBackground',
