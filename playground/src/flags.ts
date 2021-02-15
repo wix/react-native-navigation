@@ -1,6 +1,6 @@
 const flags = {
   showTextInputToTestKeyboardInteraction: false,
-  useCustomAnimations: false,
+  useCustomAnimations: true,
   useSlowOpenScreenAnimations: false,
   useSlideAnimation: false,
   randomizeComponentBackgroundColor: false,

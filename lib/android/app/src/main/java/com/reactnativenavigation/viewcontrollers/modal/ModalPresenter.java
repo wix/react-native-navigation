@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.modal;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.options.ModalAnimationOptions;
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
@@ -44,24 +45,24 @@ public class ModalPresenter {
         }
 
         Options options = toAdd.resolveCurrentOptions(defaultOptions);
-        toAdd.setWaitForRender(options.animations.showModal.shouldWaitForRender());
+        ModalAnimationOptions showModal = options.animations.showModal;
+        toAdd.setWaitForRender(showModal.getEnter().shouldWaitForRender());
         modalsLayout.setVisibility(View.VISIBLE);
         modalsLayout.addView(toAdd.getView(), matchParentLP());
 
-        if (options.animations.showModal.enabled.isTrueOrUndefined()) {
-            toAdd.getView().setAlpha(0);
-            if (options.animations.showModal.shouldWaitForRender().isTrue()) {
-                toAdd.addOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
-            } else {
-                animateShow(toAdd, toRemove, listener, options);
-            }
-        } else {
-            if (options.animations.showModal.waitForRender.isTrue()) {
-                toAdd.addOnAppearedListener(() -> onShowModalEnd(toAdd, toRemove, listener));
+        if(showModal.hasValue()){
+            if (showModal.getEnter().hasValue()) {
+                toAdd.getView().setAlpha(0);
+                if (showModal.getEnter().shouldWaitForRender().isTrue()) {
+                    toAdd.addOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
+                } else {
+                    animateShow(toAdd, toRemove, listener, options);
+                }
             } else {
                 onShowModalEnd(toAdd, toRemove, listener);
             }
         }
+
     }
 
     private void animateShow(ViewController toAdd, ViewController toRemove, CommandListener listener, Options options) {
@@ -101,7 +102,7 @@ public class ModalPresenter {
             toAdd.onViewDidAppear();
         }
         Options options = toDismiss.resolveCurrentOptions(defaultOptions);
-        if (options.animations.dismissModal.enabled.isTrueOrUndefined()) {
+        if (options.animations.dismissModal.getExit().hasValue()) {
             animator.dismiss(toAdd, toDismiss, options.animations.dismissModal, new ScreenAnimationListener() {
                 @Override
                 public void onEnd() {

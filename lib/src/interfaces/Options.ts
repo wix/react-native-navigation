@@ -1189,7 +1189,15 @@ export interface ViewAnimationOptions extends ScreenAnimationOptions {
   id?: string;
 }
 
-export interface ModalAnimationOptions extends ViewAnimationOptions {
+export interface ModalAnimationOptions {
+  /**
+   * Animate opening modal
+   */
+  enter?: ViewAnimationOptions;
+  /**
+   * Animate closing modal
+   */
+  exit?: ViewAnimationOptions;
   /**
    * Animations to be applied on elements which are shared between the appearing and disappearing screens
    */
