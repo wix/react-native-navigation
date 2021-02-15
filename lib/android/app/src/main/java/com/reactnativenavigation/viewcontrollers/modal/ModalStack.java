@@ -119,7 +119,9 @@ public class ModalStack {
         if (peek().handleBack(listener)) {
             return true;
         }
-        return dismissModal(peek().getId(), root, listener);
+
+        if (presenter.shouldDismissModal(peek())) return dismissModal(peek().getId(), root, listener);
+        else return true;
     }
 
     ViewController peek() {

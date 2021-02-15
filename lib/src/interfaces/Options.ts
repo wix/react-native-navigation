@@ -387,11 +387,19 @@ export interface OptionsTopBarBackButton {
    */
   displayMode?: 'default' | 'generic' | 'minimal';
   /**
-   * Enables iOS 14 back button menu display
-   * #### (iOS specific)
+   * Controls whether the default back button should pop screen or not
    * @default true
    */
   popScreenOnPress?: boolean;
+}
+
+export interface HardwareBackButtonOptions {
+  /**
+   * Controls whether the hardware back button should dismiss modal or not
+   * #### (Android specific)
+   * @default true
+   */
+  dismissModalOnPress?: boolean;
 }
 
 export interface OptionsTopBarScrollEdgeAppearanceBackground {
@@ -610,6 +618,10 @@ export interface OptionsTopBar {
    */
   backButton?: OptionsTopBarBackButton;
   /**
+   * Android Hardware Back button configuration
+   */
+  hardwareBackButton?: HardwareBackButtonOptions;
+  /**
    * List of buttons to the left
    */
   leftButtons?: OptionsTopBarButton[];
@@ -757,7 +769,7 @@ export interface OptionsBottomTabs {
    */
   animate?: boolean;
   /**
-   * Controls wether tab selection is animated or not
+   * Controls whether tab selection is animated or not
    * #### (android specific)
    * @default true
    */
@@ -1027,7 +1039,7 @@ export interface OverlayOptions {
    */
   interceptTouchOutside?: boolean;
   /**
-   * Control wether this Overlay should handle Keyboard events.
+   * Control whether this Overlay should handle Keyboard events.
    * Set this to true if your Overlay contains a TextInput.
    */
   handleKeyboardEvents?: boolean;
@@ -1035,7 +1047,7 @@ export interface OverlayOptions {
 
 export interface ModalOptions {
   /**
-   * Control wether this modal should be dismiss using swipe gesture when the modalPresentationStyle = 'pageSheet'
+   * Control whether this modal should be dismiss using swipe gesture when the modalPresentationStyle = 'pageSheet'
    * #### (iOS specific)
    */
   swipeToDismiss?: boolean;

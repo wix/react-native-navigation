@@ -2,11 +2,11 @@ import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 import Android from './AndroidUtils';
 
-const { elementByLabel, elementById, sleep } = Utils;
+const {elementByLabel, elementById, sleep} = Utils;
 
 describe('modal', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
   });
@@ -109,6 +109,14 @@ describe('modal', () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     Android.pressBack();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
+  });
+
+  it(':android: disabled hardware back should not dismiss modal', async () => {
+    await expect(elementByLabel('Modal')).toBeVisible();
+    await elementById(TestIDs.MODAL_DISABLED_BACK_BTN).tap();
+    await expect(elementByLabel('Modal')).toBeNotVisible();
+    Android.pressBack();
+    await expect(elementByLabel('Modal')).toBeNotVisible();
   });
 
   it('present modal multiple times', async () => {

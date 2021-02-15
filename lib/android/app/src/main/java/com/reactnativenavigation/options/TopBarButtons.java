@@ -22,6 +22,7 @@ public class TopBarButtons {
         result.right = parseButtons(context, json, "rightButtons");
         result.left = parseButtons(context, json, "leftButtons");
         result.back = BackButton.parse(context, json.optJSONObject("backButton"));
+        result.hardwareBack = HardwareBackButtonOptions.parseJson(json.optJSONObject("hardwareBackButton"));
 
         return result;
     }
@@ -32,6 +33,7 @@ public class TopBarButtons {
     }
 
     public BackButton back = new BackButton();
+    public HardwareBackButtonOptions hardwareBack = new HardwareBackButtonOptions();
     @Nullable public ArrayList<ButtonOptions> left;
     @Nullable public ArrayList<ButtonOptions> right;
 
@@ -48,6 +50,7 @@ public class TopBarButtons {
         if (other.left != null) left = mergeLeftButton(other.left);
         if (other.right != null) right = map(other.right, ButtonOptions::copy);
         back.mergeWith(other.back);
+        hardwareBack.mergeWith(other.hardwareBack);
     }
 
     private ArrayList<ButtonOptions> mergeLeftButton(ArrayList<ButtonOptions> other) {
@@ -77,6 +80,7 @@ public class TopBarButtons {
             }
         }
         back.mergeWithDefault(defaultOptions.back);
+        hardwareBack.mergeWithDefault(defaultOptions.hardwareBack);
     }
 
     public boolean hasLeftButtons() {
