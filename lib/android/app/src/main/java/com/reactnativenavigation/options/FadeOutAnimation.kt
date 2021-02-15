@@ -10,11 +10,13 @@ class FadeOutAnimation : StackAnimationOptions() {
             alpha.put("from", 0)
             alpha.put("to", 1)
             alpha.put("duration", 300)
-            val content = JSONObject()
-            content.put("alpha", alpha)
+            val enter = JSONObject()
+            enter.put("alpha", alpha)
             val animation = JSONObject()
-            animation.put("content", content)
-            mergeWith(StackAnimationOptions(animation))
+            animation.put("enter", enter)
+            val content = JSONObject()
+            content.put("content", animation)
+            mergeWith(StackAnimationOptions(content))
         } catch (e: JSONException) {
             e.printStackTrace()
         }
