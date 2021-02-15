@@ -35,7 +35,7 @@ type FontWeight =
   | FontWeightIOS;
 export type LayoutOrientation = 'portrait' | 'landscape';
 type AndroidDensityNumber = number;
-type SystemItemIcon =
+export type SystemItemIcon =
   | 'done'
   | 'cancel'
   | 'edit'
@@ -59,7 +59,7 @@ type SystemItemIcon =
   | 'fastForward'
   | 'undo'
   | 'redo';
-type Interpolation =
+export type Interpolation =
   | { type: 'accelerate'; factor?: number }
   | { type: 'decelerate'; factor?: number }
   | { type: 'decelerateAccelerate' }
