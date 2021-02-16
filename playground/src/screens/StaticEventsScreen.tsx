@@ -9,6 +9,7 @@ import testIDs from '../testIDs';
 const {
   PUSH_BTN,
   PUSH_DISABLED_BACK_BTN,
+  PUSH_DISABLED_HARDWARE_BACK_BTN,
   POP_BTN,
   STATIC_EVENTS_OVERLAY_BTN,
   MODAL_BTN,
@@ -31,6 +32,11 @@ export default class StaticEventsScreen extends React.Component<NavigationCompon
           label="Push disabled back button"
           testID={PUSH_DISABLED_BACK_BTN}
           onPress={this.pushDisabledBackButton}
+        />
+        <Button
+          label="Push disabled hardware back button"
+          testID={PUSH_DISABLED_HARDWARE_BACK_BTN}
+          onPress={this.pushDisabledHardwareBackButton}
         />
         <Button label="Pop" testID={POP_BTN} onPress={this.pop} />
         <Button label="Show Modal" testID={MODAL_BTN} onPress={this.showModal} />
@@ -84,8 +90,14 @@ export default class StaticEventsScreen extends React.Component<NavigationCompon
     Navigation.push(this, Screens.Pushed, {
       topBar: {
         backButton: {
-          popScreenOnPress: false,
+          popStackOnPress: false,
         },
+      },
+    });
+  pushDisabledHardwareBackButton = () =>
+    Navigation.push(this, Screens.Pushed, {
+      hardwareBackButton: {
+        popStackOnPress: false,
       },
     });
   pop = () => Navigation.pop(this);

@@ -14,7 +14,7 @@
 @property(nonatomic, strong) Bool *enableMenu;
 @property(nonatomic, strong) Text *displayMode;
 @property(nonatomic, strong) Text *identifier;
-@property(nonatomic, strong) Bool *popScreenOnPress;
+@property(nonatomic, strong) Bool *popStackOnPress;
 
 - (BOOL)hasValue;
 

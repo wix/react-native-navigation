@@ -38,7 +38,7 @@ public class ButtonOptions {
     public Bool allCaps = new NullBool();
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
-    public Bool popScreenOnPress = new NullBool();
+    public Bool popStackOnPress = new NullBool();
     public Number showAsAction = new NullNumber();
     public Colour color = new NullColor();
     public Colour disabledColor = new NullColor();
@@ -64,7 +64,7 @@ public class ButtonOptions {
                icon.equals(other.icon) &&
                testId.equals(other.testId) &&
                component.equals(other.component) &&
-                popScreenOnPress.equals(other.popScreenOnPress);
+                popStackOnPress.equals(other.popStackOnPress);
     }
 
     private static ButtonOptions parseJson(Context context, JSONObject json) {
@@ -75,7 +75,7 @@ public class ButtonOptions {
         button.allCaps = BoolParser.parse(json, "allCaps");
         button.enabled = BoolParser.parse(json, "enabled");
         button.disableIconTint = BoolParser.parse(json, "disableIconTint");
-        button.popScreenOnPress = BoolParser.parse(json, "popScreenOnPress");
+        button.popStackOnPress = BoolParser.parse(json, "popStackOnPress");
         button.showAsAction = parseShowAsAction(json);
         button.color = ColorParser.parse(context, json, "color");
         button.disabledColor = ColorParser.parse(context, json, "disabledColor");
@@ -133,7 +133,7 @@ public class ButtonOptions {
     public boolean isBackButton() { return false; }
 
     public boolean shouldPopOnPress() {
-        return isBackButton() && popScreenOnPress.get(true);
+        return isBackButton() && popStackOnPress.get(true);
     }
 
     public int getIntId() {
@@ -176,7 +176,7 @@ public class ButtonOptions {
         if (other.id != null) id = other.id;
         if (other.instanceId != null) instanceId = other.instanceId;
         if (other.iconBackground.hasValue()) iconBackground = other.iconBackground;
-        if (other.popScreenOnPress.hasValue()) popScreenOnPress = other.popScreenOnPress;
+        if (other.popStackOnPress.hasValue()) popStackOnPress = other.popStackOnPress;
     }
 
     public void mergeWithDefault(ButtonOptions defaultOptions) {
@@ -194,6 +194,6 @@ public class ButtonOptions {
         if (!showAsAction.hasValue()) showAsAction = defaultOptions.showAsAction;
         if (!icon.hasValue()) icon = defaultOptions.icon;
         if (!iconBackground.hasValue()) iconBackground = defaultOptions.iconBackground;
-        if (!popScreenOnPress.hasValue()) popScreenOnPress = defaultOptions.popScreenOnPress;
+        if (!popStackOnPress.hasValue()) popStackOnPress = defaultOptions.popStackOnPress;
     }
 }

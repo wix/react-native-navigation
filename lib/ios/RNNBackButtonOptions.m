@@ -17,7 +17,7 @@
     self.fontSize = [NumberParser parse:dict key:@"fontSize"];
     self.enableMenu = [BoolParser parse:dict key:@"enableMenu"];
     self.displayMode = [TextParser parse:dict key:@"displayMode"];
-    self.popScreenOnPress = [BoolParser parse:dict key:@"popScreenOnPress"];
+    self.popStackOnPress = [BoolParser parse:dict key:@"popStackOnPress"];
 
     return self;
 }
@@ -45,8 +45,8 @@
         self.fontSize = options.fontSize;
     if (options.enableMenu.hasValue)
         self.enableMenu = options.enableMenu;
-    if (options.popScreenOnPress.hasValue)
-        self.popScreenOnPress = options.popScreenOnPress;
+    if (options.popStackOnPress.hasValue)
+        self.popStackOnPress = options.popStackOnPress;
 }
 
 - (BOOL)hasValue {

@@ -99,7 +99,7 @@ export default class StackScreen extends React.Component<NavigationComponentProp
               visible: true,
               color: 'black',
               testID: CUSTOM_BACK_BTN,
-              popScreenOnPress: false,
+              popStackOnPress: false,
             },
           },
         },

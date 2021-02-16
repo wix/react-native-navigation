@@ -390,7 +390,7 @@ export interface OptionsTopBarBackButton {
    * Controls whether the default back button should pop screen or not
    * @default true
    */
-  popScreenOnPress?: boolean;
+  popStackOnPress?: boolean;
 }
 
 export interface HardwareBackButtonOptions {
@@ -400,6 +400,12 @@ export interface HardwareBackButtonOptions {
    * @default true
    */
   dismissModalOnPress?: boolean;
+  /**
+   * Controls whether the hardware back button should pop stack or not
+   * #### (Android specific)
+   * @default true
+   */
+  popStackOnPress?: boolean;
 }
 
 export interface OptionsTopBarScrollEdgeAppearanceBackground {
@@ -617,10 +623,6 @@ export interface OptionsTopBar {
    * Back button configuration
    */
   backButton?: OptionsTopBarBackButton;
-  /**
-   * Android Hardware Back button configuration
-   */
-  hardwareBackButton?: HardwareBackButtonOptions;
   /**
    * List of buttons to the left
    */
@@ -1419,6 +1421,11 @@ setRoot: {
    * Configure Android's NavigationBar
    */
   navigationBar?: NavigationBarOptions;
+
+  /**
+   * Android Hardware Back button configuration
+   */
+  hardwareBackButton?: HardwareBackButtonOptions;
 
   /**
    * Preview configuration for Peek and Pop

@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import static com.reactnativenavigation.react.Constants.HARDWARE_BACK_BUTTON_ID;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ModalStack {
@@ -121,7 +122,10 @@ public class ModalStack {
         }
 
         if (presenter.shouldDismissModal(peek())) return dismissModal(peek().getId(), root, listener);
-        else return true;
+        else {
+            peek().sendOnNavigationButtonPressed(HARDWARE_BACK_BUTTON_ID);
+            return true;
+        }
     }
 
     ViewController peek() {

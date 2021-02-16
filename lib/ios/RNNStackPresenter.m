@@ -51,7 +51,7 @@
 
 - (BOOL)shouldPopItem:(UINavigationItem *)item options:(RNNNavigationOptions *)options {
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
-    return [withDefault.topBar.backButton.popScreenOnPress withDefault:YES];
+    return [withDefault.topBar.backButton.popStackOnPress withDefault:YES];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {

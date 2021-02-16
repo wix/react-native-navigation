@@ -114,7 +114,7 @@ public class ModalPresenter {
     }
 
     boolean shouldDismissModal(ViewController toDismiss) {
-        return toDismiss.resolveCurrentOptions(defaultOptions).topBar.buttons.hardwareBack.dismissModalOnPress.get(true);
+        return toDismiss.resolveCurrentOptions(defaultOptions).hardwareBack.dismissModalOnPress.get(true);
     }
 
     private void onDismissEnd(ViewController toDismiss, CommandListener listener) {

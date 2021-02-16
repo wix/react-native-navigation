@@ -32,6 +32,7 @@ public class Options {
         result.navigationBar = NavigationBarOptions.parse(context, json.optJSONObject("navigationBar"));
         result.statusBar = StatusBarOptions.parse(context, json.optJSONObject("statusBar"));
         result.layout = LayoutOptions.parse(context, json.optJSONObject("layout"));
+        result.hardwareBack = new HardwareBackButtonOptions(json.optJSONObject("hardwareBackButton"));
 
         return result;
     }
@@ -49,6 +50,7 @@ public class Options {
     @NonNull public NavigationBarOptions navigationBar = new NavigationBarOptions();
     @NonNull public StatusBarOptions statusBar = new StatusBarOptions();
     @NonNull public LayoutOptions layout = new LayoutOptions();
+    @NonNull public HardwareBackButtonOptions hardwareBack = new HardwareBackButtonOptions();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -70,6 +72,7 @@ public class Options {
         result.navigationBar.mergeWith(navigationBar);
         result.statusBar.mergeWith(statusBar);
         result.layout.mergeWith(layout);
+        result.hardwareBack.mergeWith(hardwareBack);
         return result;
     }
 
@@ -88,6 +91,7 @@ public class Options {
         result.navigationBar.mergeWith(other.navigationBar);
         result.statusBar.mergeWith(other.statusBar);
         result.layout.mergeWith(other.layout);
+        result.hardwareBack.mergeWith(other.hardwareBack);
         return result;
     }
 
@@ -104,6 +108,7 @@ public class Options {
         navigationBar.mergeWithDefault(defaultOptions.navigationBar);
         statusBar.mergeWithDefault(defaultOptions.statusBar);
         layout.mergeWithDefault(defaultOptions.layout);
+        hardwareBack.mergeWithDefault(defaultOptions.hardwareBack);
         return this;
     }
 
