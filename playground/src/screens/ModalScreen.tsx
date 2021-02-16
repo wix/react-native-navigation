@@ -135,9 +135,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
       component: {
         name: Screens.Modal,
         options: {
-          topBar: {
-            hardwareBackButton: { dismissModalOnPress: false },
-          },
+          hardwareBackButton: { dismissModalOnPress: false },
         },
       },
     });
