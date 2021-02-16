@@ -111,13 +111,6 @@ describe('modal', () => {
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 
-  it(':android: disabled hardware back should not dismiss modal', async () => {
-    await expect(elementByLabel('Modal')).toBeVisible();
-    await elementById(TestIDs.MODAL_DISABLED_BACK_BTN).tap();
-    await expect(elementByLabel('Modal')).toBeNotVisible();
-    Android.pressBack();
-    await expect(elementByLabel('Modal')).toBeNotVisible();
-  });
 
   it('present modal multiple times', async () => {
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();

@@ -85,49 +85,4 @@ describe('static lifecycle events', () => {
       elementByLabel('componentDidAppear | CustomRoundedButton | TopBarButton')
     ).toBeVisible();
   })
-
-  it('disabled back button dispatch event and prevents pop', async () => {
-    await elementById(TestIDs.PUSH_DISABLED_BACK_BTN).tap();
-    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
-    await elementById(TestIDs.BACK_BUTTON).tap();
-    await expect(
-      elementByLabel('navigationButtonPressed | RNN.back')
-    ).toBeVisible();
-    await expect(
-      elementByLabel('Pushed Screen')
-    ).toBeVisible();
-  })
-
-  it('enabled back button does not dispatch event', async () => {
-    await elementById(TestIDs.PUSH_BTN).tap();
-    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
-    await elementById(TestIDs.BACK_BUTTON).tap();
-    await expect(
-      elementByLabel('navigationButtonPressed | RNN.back')
-    ).toBeNotVisible();
-  })
-
-  it(':android: disabled hardware back button dispatch event and prevents pop', async () => {
-    await elementById(TestIDs.PUSH_DISABLED_HARDWARE_BACK_BTN).tap();
-    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
-    Android.pressBack();
-    await expect(
-      elementByLabel('navigationButtonPressed | RNN.hardwareBackButton')
-    ).toBeVisible();
-    await expect(
-      elementByLabel('Pushed Screen')
-    ).toBeVisible();
-  })
-
-  it(':android: enabled hardware button does not dispatch event and pop', async () => {
-    await elementById(TestIDs.PUSH_BTN).tap();
-    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
-    Android.pressBack();
-    await expect(
-      elementByLabel('navigationButtonPressed | RNN.hardwareBackButton')
-    ).toBeNotVisible();
-    await expect(
-      elementByLabel('Pushed Screen')
-    ).toBeNotVisible();
-  })
 });

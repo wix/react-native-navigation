@@ -25,6 +25,7 @@ const Screens = {
   StackCommands: 'StackCommands',
   Options: 'Options',
   Pushed: 'Pushed',
+  BackButton: 'BackButton',
   SharedElement: 'SharedElement',
   Stack: 'Stack',
   SetRoot: 'SetRoot',

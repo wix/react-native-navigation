@@ -133,7 +133,7 @@ public class ButtonOptions {
     public boolean isBackButton() { return false; }
 
     public boolean shouldPopOnPress() {
-        return isBackButton() && popStackOnPress.get(true);
+        return popStackOnPress.get(true);
     }
 
     public int getIntId() {

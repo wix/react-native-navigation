@@ -541,7 +541,7 @@ public class StackPresenter {
         return new Toolbar.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, component.alignment == Alignment.Center ? Gravity.CENTER : Gravity.START);
     }
 
-    public boolean hardwareBackButtonShouldPop(ViewController viewController) {
+    public boolean shouldPopOnHardwareButtonPress(ViewController viewController) {
         return viewController.resolveCurrentOptions().hardwareBack.popStackOnPress.get(true);
     }
 

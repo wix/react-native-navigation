@@ -363,7 +363,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public boolean handleBack(CommandListener listener) {
         if (canPop()) {
-            if (presenter.hardwareBackButtonShouldPop(peek())) {
+            if (presenter.shouldPopOnHardwareButtonPress(peek())) {
                 pop(Options.EMPTY, listener);
             } else {
                 sendOnNavigationButtonPressed(HARDWARE_BACK_BUTTON_ID);
@@ -404,7 +404,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void onNavigationButtonPressed(ButtonOptions button) {
-        if (button.shouldPopOnPress())
+        if (button.isBackButton() && button.shouldPopOnPress())
             pop(Options.EMPTY, new CommandListenerAdapter());
         else
             sendOnNavigationButtonPressed(button.id);

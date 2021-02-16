@@ -17,6 +17,7 @@ const {
   SET_ROOT_BTN,
   PAGE_SHEET_MODAL_BTN,
   NAVIGATION_SCREEN,
+  BACK_BUTTON_SCREEN_BTN,
 } = testIDs;
 
 interface Props extends NavigationComponentProps {}
@@ -71,6 +72,11 @@ export default class NavigationScreen extends React.Component<Props> {
             label="Preview"
           />
         )}
+        <Button
+          label="Back Button"
+          testID={BACK_BUTTON_SCREEN_BTN}
+          onPress={this.pushBackButtonScreen}
+        />
       </Root>
     );
   }
@@ -85,6 +91,7 @@ export default class NavigationScreen extends React.Component<Props> {
         swipeToDismiss: false,
       },
     });
+  pushBackButtonScreen = () => Navigation.push(this, Screens.BackButton);
   showOverlay = () => Navigation.showModal(Screens.Overlay);
   externalComponent = () => Navigation.showModal(Screens.ExternalComponent);
   pushStaticEventsScreen = () => Navigation.showModal(Screens.EventsScreen);
