@@ -387,7 +387,7 @@ export interface OptionsTopBarBackButton {
    */
   displayMode?: 'default' | 'generic' | 'minimal';
   /**
-   * Controls whether the default back button should pop screen or not
+   * Controls whether the default back button should pop the Stack or not
    * @default true
    */
   popStackOnPress?: boolean;
@@ -401,7 +401,7 @@ export interface HardwareBackButtonOptions {
    */
   dismissModalOnPress?: boolean;
   /**
-   * Controls whether the hardware back button should pop stack or not
+   * Controls whether the hardware back button should pop the Stack or not
    * #### (Android specific)
    * @default true
    */
