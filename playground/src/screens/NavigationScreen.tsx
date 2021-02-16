@@ -61,6 +61,11 @@ export default class NavigationScreen extends React.Component<Props> {
           onPress={this.pushStaticEventsScreen}
         />
         <Button label="Orientation" testID={SHOW_ORIENTATION_SCREEN} onPress={this.orientation} />
+        <Button
+          label="Back Button"
+          testID={BACK_BUTTON_SCREEN_BTN}
+          onPress={this.pushBackButtonScreen}
+        />
         <Button label="React Context API" onPress={this.pushContextScreen} />
         <Button label="Shared Element (Cocktails)" onPress={this.sharedElement} />
         <Button label="Shared Element (Car Dealer)" onPress={this.sharedElementAlt} />
@@ -72,11 +77,6 @@ export default class NavigationScreen extends React.Component<Props> {
             label="Preview"
           />
         )}
-        <Button
-          label="Back Button"
-          testID={BACK_BUTTON_SCREEN_BTN}
-          onPress={this.pushBackButtonScreen}
-        />
       </Root>
     );
   }
