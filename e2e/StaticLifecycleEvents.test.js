@@ -130,13 +130,4 @@ describe('static lifecycle events', () => {
       elementByLabel('Pushed Screen')
     ).toBeNotVisible();
   })
-
-  // it(':android: enabled hardware button does not dispatch event', async () => {
-  //   await elementById(TestIDs.PUSH_BTN).tap();
-  //   await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
-  //   await elementById(TestIDs.BACK_BUTTON).tap();
-  //   await expect(
-  //     elementByLabel('navigationButtonPressed | RNN.back')
-  //   ).toBeNotVisible();
-  // })
 });
