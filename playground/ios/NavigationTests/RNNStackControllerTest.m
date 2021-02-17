@@ -191,15 +191,6 @@
         self.uut.childViewControllers.lastObject.navigationItem.standardAppearance.backgroundColor);
 }
 
-- (void)testPopViewControllerSetDefaultTopBarBackgroundForPoppingViewController {
-    _options.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
-    [_vc1 setDefaultOptions:_options];
-
-    [self.uut popViewControllerAnimated:NO];
-    XCTAssertEqual(_vc1.resolveOptions.topBar.background.color.get,
-                   self.uut.navigationBar.barTintColor);
-}
-
 - (void)testPopViewControllerShouldInvokeApplyOptionsBeforePoppingForDestinationViewController {
     RNNStackController *uut = [RNNStackController new];
     [uut setViewControllers:@[ _vc1, _vc2 ]];

@@ -89,11 +89,9 @@
         @"bottomTab" : @{@"selectedIconColor" : @(0xff0000ff)}
     }];
 
-    [self measureBlock:^{
-      RNNNavigationOptions *merged = [options mergeOptions:mergeOptions];
-      XCTAssertTrue([merged.topBar.subtitle.text.get isEqualToString:@"hey"]);
-      XCTAssertTrue([merged.topBar.title.text.get isEqualToString:@"hello"]);
-    }];
+    RNNNavigationOptions *merged = [options mergeOptions:mergeOptions];
+    XCTAssertTrue([merged.topBar.subtitle.text.get isEqualToString:@"hey"]);
+    XCTAssertTrue([merged.topBar.title.text.get isEqualToString:@"hello"]);
 }
 
 @end
