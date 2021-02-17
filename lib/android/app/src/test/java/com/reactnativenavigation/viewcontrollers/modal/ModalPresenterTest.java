@@ -7,6 +7,8 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.ModalAnimationOptions;
+import com.reactnativenavigation.options.ModalAnimationOptionsKt;
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
@@ -103,7 +105,7 @@ public class ModalPresenterTest extends BaseTest {
     public void showModal_resolvesDefaultOptions() throws JSONException {
         Options defaultOptions = new Options();
         JSONObject disabledShowModalAnimation = new JSONObject().put("enabled", false);
-        defaultOptions.animations.showModal = new AnimationOptions(disabledShowModalAnimation);
+        defaultOptions.animations.showModal = ModalAnimationOptionsKt.parseModalAnimationOptions(disabledShowModalAnimation);
 
         uut.setDefaultOptions(defaultOptions);
         uut.showModal(modal1, root, new CommandListenerAdapter());
@@ -158,7 +160,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void showModal_waitForRender() {
-        modal1.options.animations.showModal.waitForRender = new Bool(true);
+        modal1.options.animations.showModal.setWaitForRender(new Bool(true));
         uut.showModal(modal1, root, new CommandListenerAdapter());
         verify(modal1).addOnAppearedListener(any());
         verifyZeroInteractions(animator);

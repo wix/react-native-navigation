@@ -1,5 +1,7 @@
 package com.reactnativenavigation.options
 
+import androidx.annotation.RestrictTo
+import com.reactnativenavigation.options.params.Bool
 import org.json.JSONObject
 
 fun parseModalAnimationOptions(jsonObject: JSONObject?): ModalAnimationOptions {
@@ -42,5 +44,16 @@ open class ModalAnimationOptions(
     }
 
     open fun hasElementTransitions() = sharedElements.hasValue() or elementTransitions.hasValue()
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun setWaitForRender(waitForRender:Bool){
+        this.enter.waitForRender = waitForRender
+        this.exit.waitForRender = waitForRender
+    }
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun toggle(enabled:Bool){
+        this.enter.enabled = enabled
+        this.exit.enabled = enabled
+    }
 }
 

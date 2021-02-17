@@ -4,6 +4,7 @@ import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.AnimationOptions
+import com.reactnativenavigation.options.ModalAnimationOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.utils.ScreenAnimationListener
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
@@ -26,18 +27,18 @@ class ModalAnimatorTest : BaseTest() {
 
     @Test
     fun show_isRunning() {
-        uut.show(modal1, root, AnimationOptions(), object : ScreenAnimationListener() {})
+        uut.show(modal1, root, ModalAnimationOptions(), object : ScreenAnimationListener() {})
         assertThat(uut.isRunning).isTrue()
     }
 
     @Test
     fun dismiss_dismissModalDuringShowAnimation() {
         val showListener = spy<ScreenAnimationListener>()
-        uut.show(modal1, root, AnimationOptions(), showListener)
+        uut.show(modal1, root, ModalAnimationOptions(), showListener)
 
         verify(showListener).onStart()
         val dismissListener = spy<ScreenAnimationListener>()
-        uut.dismiss(root, modal1, AnimationOptions(), dismissListener)
+        uut.dismiss(root, modal1, ModalAnimationOptions(), dismissListener)
 
         verify(showListener).onCancel()
         verify(showListener, never()).onEnd()
