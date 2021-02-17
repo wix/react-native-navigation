@@ -4,12 +4,11 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.content.Context
-import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
-import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.FadeInAnimation
 import com.reactnativenavigation.options.FadeOutAnimation
 import com.reactnativenavigation.options.ModalAnimationOptions
 import com.reactnativenavigation.utils.ScreenAnimationListener
+import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import kotlinx.coroutines.Dispatchers
