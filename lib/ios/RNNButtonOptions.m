@@ -93,6 +93,14 @@
     return withDefault;
 }
 
+- (RNNButtonOptions *)withDefaultColor:(Color *)color disabledColor:(Color *)disabledColor {
+    if (!self.color.hasValue)
+        self.color = color;
+    if (!self.disabledColor.hasValue)
+        self.disabledColor = disabledColor;
+    return self;
+}
+
 - (Color *)color {
     if (![_enabled withDefault:YES] && _disabledColor.hasValue)
         return _disabledColor;

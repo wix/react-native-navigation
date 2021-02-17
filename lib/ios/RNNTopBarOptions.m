@@ -33,24 +33,6 @@
     self.scrollEdgeAppearance =
         [[RNNScrollEdgeAppearanceOptions alloc] initWithDict:dict[@"scrollEdgeAppearance"]];
     self.backButton = [[RNNBackButtonOptions alloc] initWithDict:dict[@"backButton"]];
-    self.leftButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"leftButtonStyle"]];
-    self.rightButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"rightButtonStyle"]];
-
-    if (self.leftButtonColor.hasValue) {
-        self.leftButtonStyle.color = self.leftButtonColor;
-    }
-
-    if (self.rightButtonColor.hasValue) {
-        self.rightButtonStyle.color = self.rightButtonColor;
-    }
-
-    if (self.leftButtonDisabledColor.hasValue) {
-        self.leftButtonStyle.disabledColor = self.rightButtonDisabledColor;
-    }
-
-    if (self.rightButtonDisabledColor.hasValue) {
-        self.rightButtonStyle.disabledColor = self.rightButtonDisabledColor;
-    }
 
     self.leftButtons = [RNNButtonsParser parse:dict[@"leftButtons"]];
     self.rightButtons = [RNNButtonsParser parse:dict[@"rightButtons"]];
@@ -66,8 +48,6 @@
     [self.background mergeOptions:options.background];
     [self.scrollEdgeAppearance mergeOptions:options.scrollEdgeAppearance];
     [self.backButton mergeOptions:options.backButton];
-    [self.leftButtonStyle mergeOptions:options.leftButtonStyle];
-    [self.rightButtonStyle mergeOptions:options.rightButtonStyle];
 
     if (options.visible.hasValue)
         self.visible = options.visible;

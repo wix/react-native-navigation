@@ -26,8 +26,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (UINavigationController *)stack;
 
-- (RNNNavigationOptions *)resolveParentOptions;
-
 - (RNNNavigationOptions *)resolveOptions;
 
 - (RNNNavigationOptions *)resolveOptionsWithDefault;

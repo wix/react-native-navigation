@@ -83,17 +83,16 @@
 
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
 
-    RNNNavigationOptions *resolvedOptions =
-        [[viewController resolveParentOptions] withDefault:self.defaultOptions];
-
-    if (resolvedOptions.topBar.leftButtons) {
-        [_buttonsPresenter applyLeftButtons:resolvedOptions.topBar.leftButtons
-                         defaultButtonStyle:resolvedOptions.topBar.leftButtonStyle];
+    if (withDefault.topBar.leftButtons) {
+        [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
+                               defaultColor:withDefault.topBar.leftButtonColor
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
     }
 
-    if (resolvedOptions.topBar.rightButtons) {
-        [_buttonsPresenter applyRightButtons:resolvedOptions.topBar.rightButtons
-                          defaultButtonStyle:resolvedOptions.topBar.rightButtonStyle];
+    if (withDefault.topBar.rightButtons) {
+        [_buttonsPresenter applyRightButtons:withDefault.topBar.rightButtons
+                                defaultColor:withDefault.topBar.rightButtonColor
+                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
     }
 }
 
@@ -188,12 +187,14 @@
 
     if (mergeOptions.topBar.leftButtons) {
         [_buttonsPresenter applyLeftButtons:mergeOptions.topBar.leftButtons
-                         defaultButtonStyle:withDefault.topBar.leftButtonStyle];
+                               defaultColor:withDefault.topBar.leftButtonColor
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
     }
 
     if (mergeOptions.topBar.rightButtons) {
         [_buttonsPresenter applyRightButtons:mergeOptions.topBar.rightButtons
-                          defaultButtonStyle:withDefault.topBar.rightButtonStyle];
+                                defaultColor:withDefault.topBar.rightButtonColor
+                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
     }
 
     if (mergeOptions.topBar.leftButtonColor.hasValue) {

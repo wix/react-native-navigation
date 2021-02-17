@@ -24,6 +24,8 @@
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions;
 
+- (RNNButtonOptions *)withDefaultColor:(Color *)color disabledColor:(Color *)disabledColor;
+
 - (BOOL)shouldCreateCustomView;
 
 @end

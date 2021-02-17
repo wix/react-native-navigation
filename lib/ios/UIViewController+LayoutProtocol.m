@@ -37,11 +37,6 @@
     [self.parentViewController mergeChildOptions:options child:child];
 }
 
-- (RNNNavigationOptions *)resolveParentOptions {
-    return (RNNNavigationOptions *)[self.options.copy
-        withDefault:self.parentViewController.resolveParentOptions];
-}
-
 - (RNNNavigationOptions *)resolveOptions {
     return (RNNNavigationOptions *)[self.options.copy
         mergeOptions:self.getCurrentChild.resolveOptions];
