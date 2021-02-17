@@ -1,5 +1,7 @@
 package com.reactnativenavigation.options
 
+import com.reactnativenavigation.options.params.Bool
+import com.reactnativenavigation.options.params.NullBool
 import org.json.JSONObject
 
 fun parseModalAnimationOptions(jsonObject: JSONObject?): ModalAnimationOptions {
@@ -17,21 +19,14 @@ fun parseModalAnimationOptions(jsonObject: JSONObject?): ModalAnimationOptions {
             modalAnimationOptions.elementTransitions = ElementTransitions.parse(json)
         }
         modalAnimationOptions
-    } ?: DefaultModalAnimationOptions
-}
-
-object DefaultModalAnimationOptions : ModalAnimationOptions() {
-    override fun hasValue() = false
-    override fun mergeWith(other: ModalAnimationOptions) {}
-    override fun mergeWithDefault(other: ModalAnimationOptions) {}
-    override fun hasElementTransitions() = false
+    } ?: ModalAnimationOptions()
 }
 
 open class ModalAnimationOptions(
         val enter: AnimationOptions = AnimationOptions(),
         val exit: AnimationOptions = AnimationOptions(),
         override var sharedElements: SharedElements = SharedElements(),
-        override var elementTransitions: ElementTransitions = ElementTransitions()
+        override var elementTransitions: ElementTransitions = ElementTransitions(),
 ) : LayoutAnimation {
     open fun hasValue() = enter.hasValue() || exit.hasValue() || sharedElements.hasValue() || elementTransitions.hasValue()
     open fun mergeWith(other: ModalAnimationOptions) {
