@@ -14,7 +14,7 @@ import { Deprecations } from './Deprecations';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsProcessor as Processor } from '../interfaces/Processors';
 
-describe.only('navigation options', () => {
+describe('navigation options', () => {
   let uut: OptionsProcessor;
   let optionProcessorsRegistry: OptionProcessorsStore;
   const mockedStore = mock(Store) as Store;
@@ -164,7 +164,7 @@ describe.only('navigation options', () => {
       });
     });
 
-    describe.only('Dismiss modal', () => {
+    describe('Dismiss modal', () => {
       it('processes old options into new options,backwards compatibility ', () => {
         const options: Options = {
           animations: {
