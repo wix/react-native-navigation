@@ -67,32 +67,32 @@ public class ModalPresenter {
         }
     }
 
-        private void animateShow(ViewController toAdd, ViewController toRemove, CommandListener listener, Options options){
-            animator.show(toAdd, toRemove, options.animations.showModal, new ScreenAnimationListener() {
-                @Override
-                public void onStart() {
-                    toAdd.getView().setAlpha(1);
-                }
-
-                @Override
-                public void onEnd() {
-                    onShowModalEnd(toAdd, toRemove, listener);
-                }
-
-                @Override
-                public void onCancel() {
-                    listener.onSuccess(toAdd.getId());
-                }
-            });
-        }
-
-        private void onShowModalEnd (ViewController toAdd, @Nullable ViewController toRemove, CommandListener listener){
-            toAdd.onViewDidAppear();
-            if (toRemove != null && toAdd.resolveCurrentOptions(defaultOptions).modal.presentationStyle != ModalPresentationStyle.OverCurrentContext) {
-                toRemove.detachView();
+    private void animateShow(ViewController toAdd, ViewController toRemove, CommandListener listener, Options options) {
+        animator.show(toAdd, toRemove, options.animations.showModal, new ScreenAnimationListener() {
+            @Override
+            public void onStart() {
+                toAdd.getView().setAlpha(1);
             }
-            listener.onSuccess(toAdd.getId());
+
+            @Override
+            public void onEnd() {
+                onShowModalEnd(toAdd, toRemove, listener);
+            }
+
+            @Override
+            public void onCancel() {
+                listener.onSuccess(toAdd.getId());
+            }
+        });
+    }
+
+    private void onShowModalEnd(ViewController toAdd, @Nullable ViewController toRemove, CommandListener listener) {
+        toAdd.onViewDidAppear();
+        if (toRemove != null && toAdd.resolveCurrentOptions(defaultOptions).modal.presentationStyle != ModalPresentationStyle.OverCurrentContext) {
+            toRemove.detachView();
         }
+        listener.onSuccess(toAdd.getId());
+    }
 
     void dismissModal(ViewController toDismiss, @Nullable ViewController toAdd, ViewController root, CommandListener listener) {
         if (modalsLayout == null) {
@@ -116,13 +116,13 @@ public class ModalPresenter {
         }
     }
 
-        private void onDismissEnd (ViewController toDismiss, CommandListener listener){
-            listener.onSuccess(toDismiss.getId());
-            toDismiss.destroy();
-            if (isEmpty()) modalsLayout.setVisibility(View.GONE);
-        }
-
-        private boolean isEmpty () {
-            return modalsLayout.getChildCount() == 0;
-        }
+    private void onDismissEnd(ViewController toDismiss, CommandListener listener) {
+        listener.onSuccess(toDismiss.getId());
+        toDismiss.destroy();
+        if (isEmpty()) modalsLayout.setVisibility(View.GONE);
     }
+
+    private boolean isEmpty() {
+        return modalsLayout.getChildCount() == 0;
+    }
+}
