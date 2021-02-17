@@ -82,6 +82,19 @@
     }
 
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
+
+    RNNNavigationOptions *resolvedOptions =
+        [[viewController resolveParentOptions] withDefault:self.defaultOptions];
+
+    if (resolvedOptions.topBar.leftButtons) {
+        [_buttonsPresenter applyLeftButtons:resolvedOptions.topBar.leftButtons
+                         defaultButtonStyle:resolvedOptions.topBar.leftButtonStyle];
+    }
+
+    if (resolvedOptions.topBar.rightButtons) {
+        [_buttonsPresenter applyRightButtons:resolvedOptions.topBar.rightButtons
+                          defaultButtonStyle:resolvedOptions.topBar.rightButtonStyle];
+    }
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
@@ -96,16 +109,6 @@
         setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible withDefault:NO]];
     [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
     [viewController setDrawBehindBottomTabs:[withDefault.bottomTabs shouldDrawBehind]];
-
-    if (withDefault.topBar.leftButtons) {
-        [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
-                         defaultButtonStyle:withDefault.topBar.leftButtonStyle];
-    }
-
-    if (withDefault.topBar.rightButtons) {
-        [_buttonsPresenter applyRightButtons:withDefault.topBar.rightButtons
-                          defaultButtonStyle:withDefault.topBar.rightButtonStyle];
-    }
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
