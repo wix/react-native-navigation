@@ -26,4 +26,6 @@
 
 - (BOOL)shouldCreateCustomView;
 
+- (BOOL)isEnabled;
+
 @end

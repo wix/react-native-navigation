@@ -1,4 +1,5 @@
 #import "RNNButtonOptions.h"
+#import "RNNIconCreator.h"
 #import "RNNReactComponentRegistry.h"
 #import <Foundation/Foundation.h>
 #import <React/RCTRootView.h>
@@ -11,6 +12,7 @@ typedef void (^RNNButtonPressCallback)(NSString *buttonId);
 @property(nonatomic, strong) NSString *buttonId;
 
 - (instancetype)initCustomIcon:(RNNButtonOptions *)buttonOptions
+                   iconCreator:(RNNIconCreator *)iconCreator
                        onPress:(RNNButtonPressCallback)onPress;
 - (instancetype)initWithIcon:(RNNButtonOptions *)buttonOptions
                      onPress:(RNNButtonPressCallback)onPress;

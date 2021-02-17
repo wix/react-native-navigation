@@ -6,4 +6,6 @@
 
 + (UIImage *)imageWithSize:(CGSize)size color:(UIColor *)color;
 
+- (UIImage *)imageWithInsets:(UIEdgeInsets)insets;
+
 @end

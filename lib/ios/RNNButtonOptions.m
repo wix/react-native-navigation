@@ -85,19 +85,16 @@
     return self.icon.hasValue && (self.iconBackground.hasValue || self.iconInsets.hasValue);
 }
 
+- (BOOL)isEnabled {
+    return [self.enabled withDefault:YES];
+}
+
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions {
     if (!defaultOptions)
         return self;
     RNNButtonOptions *withDefault = defaultOptions.copy;
     [withDefault mergeOptions:self];
     return withDefault;
-}
-
-- (Color *)color {
-    if (![_enabled withDefault:YES] && _disabledColor.hasValue)
-        return _disabledColor;
-    else
-        return _color;
 }
 
 @end
