@@ -43,7 +43,7 @@ open class ModalAnimationOptions(
         if (!this.elementTransitions.hasValue()) this.elementTransitions.mergeWithDefault(other.elementTransitions)
     }
 
-    open fun hasElementTransitions() = sharedElements.hasValue() or elementTransitions.hasValue()
+    open fun hasElementTransitions() = sharedElements.hasValue() || elementTransitions.hasValue()
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun setWaitForRender(waitForRender:Bool){
