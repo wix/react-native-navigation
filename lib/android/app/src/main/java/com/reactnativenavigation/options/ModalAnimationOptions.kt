@@ -1,7 +1,5 @@
 package com.reactnativenavigation.options
 
-import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.options.params.NullBool
 import org.json.JSONObject
 
 fun parseModalAnimationOptions(jsonObject: JSONObject?): ModalAnimationOptions {
