@@ -52,7 +52,7 @@ describe('navigation options', () => {
     );
   });
   describe('Modal Animation Options', () => {
-    describe('Show modal', () => {
+    describe('Show Modal', () => {
       it('processes old options into new options,backwards compatibility ', () => {
         const options: Options = {
           animations: {
@@ -164,7 +164,7 @@ describe('navigation options', () => {
       });
     });
 
-    describe('Dismiss modal', () => {
+    describe('Dismiss Modal', () => {
       it('processes old options into new options,backwards compatibility ', () => {
         const options: Options = {
           animations: {
