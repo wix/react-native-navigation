@@ -7,8 +7,8 @@ import org.json.JSONObject
 fun parseModalAnimationOptions(jsonObject: JSONObject?): ModalAnimationOptions {
     return jsonObject?.let {
         val modalAnimationOptions = ModalAnimationOptions(
-                enter = AnimationOptions(jsonObject.optJSONObject("enter")),
-                exit = AnimationOptions(jsonObject.optJSONObject("exit")),
+                AnimationOptions(jsonObject.optJSONObject("enter")),
+                AnimationOptions(jsonObject.optJSONObject("exit")),
         )
         if (jsonObject.has("sharedElementTransitions")) {
             val json = jsonObject.getJSONObject("sharedElementTransitions")
@@ -46,12 +46,13 @@ open class ModalAnimationOptions(
     open fun hasElementTransitions() = sharedElements.hasValue() || elementTransitions.hasValue()
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    fun setWaitForRender(waitForRender:Bool){
+    fun setWaitForRender(waitForRender: Bool) {
         this.enter.waitForRender = waitForRender
         this.exit.waitForRender = waitForRender
     }
+
     @RestrictTo(RestrictTo.Scope.TESTS)
-    fun toggle(enabled:Bool){
+    fun toggle(enabled: Bool) {
         this.enter.enabled = enabled
         this.exit.enabled = enabled
     }
