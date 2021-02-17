@@ -8,7 +8,7 @@ fun parseModalAnimationOptions(jsonObject: JSONObject?): ModalAnimationOptions {
     return jsonObject?.let {
         val modalAnimationOptions = ModalAnimationOptions(
                 AnimationOptions(jsonObject.optJSONObject("enter")),
-                AnimationOptions(jsonObject.optJSONObject("exit")),
+                AnimationOptions(jsonObject.optJSONObject("exit"))
         )
         if (jsonObject.has("sharedElementTransitions")) {
             val json = jsonObject.getJSONObject("sharedElementTransitions")
@@ -26,7 +26,7 @@ open class ModalAnimationOptions(
         val enter: AnimationOptions = AnimationOptions(),
         val exit: AnimationOptions = AnimationOptions(),
         override var sharedElements: SharedElements = SharedElements(),
-        override var elementTransitions: ElementTransitions = ElementTransitions(),
+        override var elementTransitions: ElementTransitions = ElementTransitions()
 ) : LayoutAnimation {
     open fun hasValue() = enter.hasValue() || exit.hasValue() || sharedElements.hasValue() || elementTransitions.hasValue()
     open fun mergeWith(other: ModalAnimationOptions) {
