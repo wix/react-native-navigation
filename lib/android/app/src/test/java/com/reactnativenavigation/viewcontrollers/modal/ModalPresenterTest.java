@@ -48,6 +48,41 @@ public class ModalPresenterTest extends BaseTest {
     private ViewController root;
     private CoordinatorLayout modalsLayout;
 
+    private JSONObject newBasicAnimation() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("from", 0.0);
+            jsonObject.put("to", 1.0);
+            jsonObject.put("duration", 100);
+            JSONObject inter = new JSONObject();
+            inter.put("type", "decelerate");
+            jsonObject.put("interpolation", inter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    private JSONObject createModalAnimationOptions(Boolean enabled) {
+        JSONObject enter = new JSONObject();
+        JSONObject exit = new JSONObject();
+        JSONObject json = new JSONObject();
+
+        try {
+            enter.put("enabled", enabled);
+            enter.put("translationY", newBasicAnimation());
+
+            exit.put("enabled", enabled);
+            exit.put("translationY", newBasicAnimation());
+
+            json.put("enter", enter);
+            json.put("exit", exit);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
     @Override
     public void beforeEach() {
         Activity activity = newActivity();
@@ -104,7 +139,7 @@ public class ModalPresenterTest extends BaseTest {
     @Test
     public void showModal_resolvesDefaultOptions() throws JSONException {
         Options defaultOptions = new Options();
-        JSONObject disabledShowModalAnimation = new JSONObject().put("enabled", false);
+        JSONObject disabledShowModalAnimation = createModalAnimationOptions(false);
         defaultOptions.animations.showModal = ModalAnimationOptionsKt.parseModalAnimationOptions(disabledShowModalAnimation);
 
         uut.setDefaultOptions(defaultOptions);
@@ -311,4 +346,6 @@ public class ModalPresenterTest extends BaseTest {
         uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
         assertGone(modalsLayout);
     }
+
+
 }
