@@ -1189,6 +1189,17 @@ export interface ViewAnimationOptions extends ScreenAnimationOptions {
   id?: string;
 }
 
+export interface OldModalAnimationOptions extends ViewAnimationOptions {
+  /**
+   * Animations to be applied on elements which are shared between the appearing and disappearing screens
+   */
+  sharedElementTransitions?: SharedElementTransition[];
+  /**
+   * Animations to be applied on views in the appearing or disappearing screens
+   */
+  elementTransitions?: ElementTransition[];
+}
+
 export interface ModalAnimationOptions {
   /**
    * Animate opening modal
@@ -1282,11 +1293,11 @@ export interface AnimationOptions {
   /**
    * Configure what animates when modal is shown
    */
-  showModal?: ModalAnimationOptions;
+  showModal?: OldModalAnimationOptions | ModalAnimationOptions;
   /**
    * Configure what animates when modal is dismissed
    */
-  dismissModal?: ModalAnimationOptions;
+  dismissModal?: OldModalAnimationOptions | ModalAnimationOptions;
 }
 
 /**
