@@ -69,7 +69,7 @@ open class ModalAnimator @JvmOverloads constructor(
                     } else getDefaultPopAnimation(disappearing.view)
                     appearingAnimation?.let {
                         set.playTogether(appearingAnimation, disappearingAnimation)
-                    } ?: set.playTogether(appearingAnimation)
+                    } ?: set.playTogether(disappearingAnimation)
                 }
                 set.start()
             }
