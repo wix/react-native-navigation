@@ -6,9 +6,9 @@ sidebar_label: Basic navigation
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-Generally, any mobile app consists of various destinations which display some content to the user. And in the vast majority of cases using an app means navigating between these destinations. React Native Navigation provides ways for you to layout your content on the user's screen in a logical and performant manner.
+Generally, any mobile app consists of various destinations which display some content to the user. And in vast majority of cases using an app means navigating between these destinations. React-native-navigation provides ways for you to layout your content on user screen in a logical and performant manner.
 
-React Native Navigation's stack layout lets you push screens and also navigate back to previous screens. Screens pushed into the stack hide the previous screen in the stack, making the user focus on a single screen at a time. Let's look at a stack layout that provides basic navigation for an app.
+React Native Navigation's stack layout lets you push screens, and also navigate back to previous screens. Screens pushed into the stack hide the previous screen in the stack, making the user focus on a single screen at a time. Let's look at a stack layout that provides basic navigation for an app.
 
 ## Creating a stack
 
@@ -25,7 +25,6 @@ const HomeScreen = (props) => {
     </View>
   );
 };
-
 Navigation.registerComponent('Home', () => HomeScreen);
 
 Navigation.events().registerAppLaunchedListener(async () => {
@@ -60,9 +59,9 @@ Running this code will render a screen with an empty TopBar and your HomeScreen 
 
 ## Specifying options
 
-You can specify options of each layout (Stack, component pushed into a stack, etc.) to configure various parameters like the TopBar title or color. Let's spice things up by changing the TopBar color and while we're at it, also move the title to the TopBar.
+You can specify options of each layout (Stack, component pushed into a stack, etc.) to configure various parameters like the TopBar title or color. Lets spice things up by changing the TopBar color and while we're at it, also move the title to the TopBar.
 
-Let's change the Home screen declaration to the following and reload the app to see the changes.
+Lets change the Home screen declaration to the following and reload the app to see the changes.
 ```jsx
 const HomeScreen = (props) => {
   return (
@@ -71,7 +70,6 @@ const HomeScreen = (props) => {
     </View>
   );
 };
-
 HomeScreen.options = {
   topBar: {
     title: {
@@ -104,7 +102,7 @@ Each React component registered with `Navigation.registerComponent` is assigned 
 Navigation.push(props.componentId, {
   component: {
     name: 'Settings', // Push the screen registered with the 'Settings' key
-    options: { // Options object to configure the screen (not required)
+    options: { // Optional options object to configure the screen
       topBar: {
         title: {
           text: 'Settings' // Set the TopBar title of the new Screen
@@ -115,7 +113,7 @@ Navigation.push(props.componentId, {
 });
 ```
 
-Let's change our code to the following snippet below and reload the app. Now our Home should contain a button which when pressed, pushes a new screen into the stack. We've successfully navigated to a new screen! 👏
+Lets change our code to the following snippet below and reload the app. Now our Home should contain a button which when pressed, pushes a new screen into the stack. We've successfully navigated to a new screen! 👏
 
 ```jsx
 // In index.js of a new project
@@ -146,7 +144,6 @@ const HomeScreen = (props) => {
     </View>
   );
 };
-
 HomeScreen.options = {
   topBar: {
     title: {
@@ -255,7 +252,6 @@ const HomeScreen = (props) => {
     </View>
   );
 };
-
 HomeScreen.options = {
   topBar: {
     title: {
@@ -276,6 +272,7 @@ const SettingsScreen = () => {
 Navigation.registerComponent('Home', () => HomeScreen);
 Navigation.registerComponent('Settings', () => SettingsScreen);
 
+
 Navigation.setDefaultOptions({
   statusBar: {
     backgroundColor: '#4d089a'
@@ -292,7 +289,6 @@ Navigation.setDefaultOptions({
     }
   }
 });
-
 Navigation.events().registerAppLaunchedListener(async () => {
   Navigation.setRoot({
     root: {
@@ -319,7 +315,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-Let's run our code again - now our design is consistent across both screens.
+Lets run our code again - now our design is consistent across both screens.
 
 <img width="40%" src={useBaseUrl('img/stack3.gif')} />
 
@@ -334,4 +330,4 @@ We've also learned a few methods of applying styles to our screens and layouts w
 * Components registered with `Navigation.registerComponent()` are injected with a `componentId` which is used when navigating.
 * Themes are applied via the `Navigation.setDefaultOptions()` command.
 
-In the next section we'll explore a more advance navigation pattern using BottomTabs layout and also see how, and why, multiple roots are set.
+In the next section we'll explore a more advance navigation patterns using BottomTabs layout and also see how, and why, multiple roots are set.
