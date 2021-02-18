@@ -631,6 +631,8 @@ class StackPresenterTest : BaseTest() {
 
 
         //add buttons
+        initialOptions.topBar.buttons.right = ArrayList()
+        initialOptions.topBar.buttons.left = ArrayList()
         uut.applyChildOptions(initialOptions, parent, child)
 
         //Merge color change for right and left buttons with clear buttons
