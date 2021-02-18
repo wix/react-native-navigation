@@ -3,6 +3,7 @@ const exec = require('shell-utils').exec;
 
 const android = includes(process.argv, '--android');
 const release = includes(process.argv, '--release');
+const testIOS12 = includes(process.argv, '--ios12');
 
 function run() {
   if (android) {
@@ -25,8 +26,7 @@ function runAndroidUnitTests() {
 function runIosUnitTests() {
   exec.execSync('npm run build');
   exec.execSync('npm run pod-install');
-  testTarget('playground', 'iPhone 11');
-  testTarget('playgroundIOS12', 'iPhone X', '12.2');
+  testIOS12 ? testTarget('playgroundIOS12', 'iPhone X', '12.2') : testTarget('playground', 'iPhone 11');
 }
 
 function testTarget(scheme, device, OS = 'latest') {
