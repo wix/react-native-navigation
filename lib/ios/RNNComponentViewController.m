@@ -48,6 +48,17 @@
     [self.view stopMomentumScrollViews];
 }
 
+- (RNNNavigationOptions *)resolveOptions {
+    RNNNavigationOptions *resolvedOptions = self.options.copy;
+    UIViewController *parentViewController = self.parentViewController;
+    while (parentViewController) {
+        resolvedOptions = [resolvedOptions withDefault:parentViewController.options];
+        parentViewController = parentViewController.parentViewController;
+    }
+
+    return resolvedOptions;
+}
+
 - (void)loadView {
     [self renderReactViewIfNeeded];
 }

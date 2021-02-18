@@ -26,13 +26,23 @@
 }
 
 - (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
-      defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle {
-    [self setButtons:leftButtons side:@"left" animated:NO defaultStyle:defaultButtonStyle];
+            defaultColor:(Color *)defaultColor
+    defaultDisabledColor:(Color *)defaultDisabledColor {
+    [self setButtons:leftButtons
+                        side:@"left"
+                    animated:NO
+                defaultColor:defaultColor
+        defaultDisabledColor:defaultDisabledColor];
 }
 
 - (void)applyRightButtons:(NSArray<RNNButtonOptions *> *)rightButtons
-       defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle {
-    [self setButtons:rightButtons side:@"right" animated:NO defaultStyle:defaultButtonStyle];
+             defaultColor:(Color *)defaultColor
+     defaultDisabledColor:(Color *)defaultDisabledColor {
+    [self setButtons:rightButtons
+                        side:@"right"
+                    animated:NO
+                defaultColor:defaultColor
+        defaultDisabledColor:defaultDisabledColor];
 }
 
 - (void)applyLeftButtonsColor:(UIColor *)color {
@@ -48,13 +58,15 @@
 }
 
 - (void)setButtons:(NSArray<RNNButtonOptions *> *)buttons
-              side:(NSString *)side
-          animated:(BOOL)animated
-      defaultStyle:(RNNButtonOptions *)defaultStyle {
+                    side:(NSString *)side
+                animated:(BOOL)animated
+            defaultColor:(Color *)defaultColor
+    defaultDisabledColor:(Color *)defaultDisabledColor {
     NSMutableArray *barButtonItems = [NSMutableArray new];
     for (RNNButtonOptions *button in buttons) {
         RNNUIBarButtonItem *barButtonItem = [_buttonBuilder
-                        build:[button withDefault:defaultStyle]
+                        build:[button withDefaultColor:defaultColor
+                                         disabledColor:defaultDisabledColor]
             parentComponentId:_viewController.layoutInfo.componentId
                       onPress:^(NSString *buttonId) {
                         [self.eventEmitter

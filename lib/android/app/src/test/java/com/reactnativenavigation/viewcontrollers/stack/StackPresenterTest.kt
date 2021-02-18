@@ -623,6 +623,39 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
+    fun mergeChildOptions_ignoreColorWhenClearingButtons() {
+        val mergeOptions = Options()
+        val initialOptions = Options()
+        val rightButton = ButtonOptions()
+        val leftButton = ButtonOptions()
+
+
+        //add buttons
+        initialOptions.topBar.buttons.right = ArrayList()
+        initialOptions.topBar.buttons.left = ArrayList()
+        uut.applyChildOptions(initialOptions, parent, child)
+
+        //Merge color change for right and left buttons with clear buttons
+        mergeOptions.topBar.buttons.right = ArrayList()
+        mergeOptions.topBar.buttons.left = ArrayList()
+        mergeOptions.topBar.rightButtonColor = Colour(100)
+        mergeOptions.topBar.leftButtonColor = Colour(100)
+        mergeOptions.topBar.rightButtonDisabledColor = Colour(100)
+        mergeOptions.topBar.leftButtonDisabledColor = Colour(10)
+        val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock { }))
+        val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock { }))
+        uut.setComponentsButtonController(child.view, rightController, leftController)
+        uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
+
+        verify(rightController, never()).applyColor(any(), any());
+        verify(leftController, never()).applyColor(any(), any());
+        verify(leftController, never()).applyDisabledColor(any(), any());
+        verify(leftController, never()).applyDisabledColor(any(), any())
+
+    }
+
+
+    @Test
     fun mergeChildOptions_buttonColorIsResolvedFromAppliedOptions() {
         val appliedOptions = Options()
         appliedOptions.topBar.rightButtonColor = Colour(10)
