@@ -7,8 +7,8 @@ class AnimationsOptions {
     @JvmField var pop = StackAnimationOptions()
     @JvmField var setStackRoot = StackAnimationOptions()
     @JvmField var setRoot = AnimationOptions()
-    @JvmField var showModal=ModalAnimationOptions()
-    @JvmField var dismissModal=ModalAnimationOptions()
+    @JvmField var showModal = ModalAnimationOptions()
+    @JvmField var dismissModal = ModalAnimationOptions()
 
     fun mergeWith(other: AnimationsOptions) {
         push.mergeWith(other.push)
