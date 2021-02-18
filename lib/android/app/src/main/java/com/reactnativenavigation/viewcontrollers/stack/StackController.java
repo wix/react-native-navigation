@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.StackAnimationOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
-import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -36,6 +36,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import static com.reactnativenavigation.react.Constants.HARDWARE_BACK_BUTTON_ID;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.updateBottomMargin;
@@ -362,7 +363,11 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public boolean handleBack(CommandListener listener) {
         if (canPop()) {
-            pop(Options.EMPTY, listener);
+            if (presenter.shouldPopOnHardwareButtonPress(peek())) {
+                pop(Options.EMPTY, listener);
+            } else {
+                sendOnNavigationButtonPressed(HARDWARE_BACK_BUTTON_ID);
+            }
             return true;
         }
         return false;
@@ -398,12 +403,11 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-    private void onNavigationButtonPressed(String buttonId) {
-        if (Constants.BACK_BUTTON_ID.equals(buttonId)) {
+    private void onNavigationButtonPressed(ButtonOptions button) {
+        if (button.isBackButton() && button.shouldPopOnPress())
             pop(Options.EMPTY, new CommandListenerAdapter());
-        } else {
-            sendOnNavigationButtonPressed(buttonId);
-        }
+        else
+            sendOnNavigationButtonPressed(button.id);
     }
 
     @Override

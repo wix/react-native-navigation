@@ -82,6 +82,18 @@
     }
 
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
+
+    if (withDefault.topBar.leftButtons) {
+        [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
+                               defaultColor:withDefault.topBar.leftButtonColor
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
+    }
+
+    if (withDefault.topBar.rightButtons) {
+        [_buttonsPresenter applyRightButtons:withDefault.topBar.rightButtons
+                                defaultColor:withDefault.topBar.rightButtonColor
+                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
+    }
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
@@ -96,16 +108,6 @@
         setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible withDefault:NO]];
     [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
     [viewController setDrawBehindBottomTabs:[withDefault.bottomTabs shouldDrawBehind]];
-
-    if (withDefault.topBar.leftButtons) {
-        [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
-                         defaultButtonStyle:withDefault.topBar.leftButtonStyle];
-    }
-
-    if (withDefault.topBar.rightButtons) {
-        [_buttonsPresenter applyRightButtons:withDefault.topBar.rightButtons
-                          defaultButtonStyle:withDefault.topBar.rightButtonStyle];
-    }
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
@@ -185,12 +187,14 @@
 
     if (mergeOptions.topBar.leftButtons) {
         [_buttonsPresenter applyLeftButtons:mergeOptions.topBar.leftButtons
-                         defaultButtonStyle:withDefault.topBar.leftButtonStyle];
+                               defaultColor:withDefault.topBar.leftButtonColor
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
     }
 
     if (mergeOptions.topBar.rightButtons) {
         [_buttonsPresenter applyRightButtons:mergeOptions.topBar.rightButtons
-                          defaultButtonStyle:withDefault.topBar.rightButtonStyle];
+                                defaultColor:withDefault.topBar.rightButtonColor
+                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
     }
 
     if (mergeOptions.topBar.leftButtonColor.hasValue) {

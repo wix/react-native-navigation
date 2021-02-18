@@ -1,11 +1,12 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
+import Android from './AndroidUtils';
 
-const { elementByLabel, elementById } = Utils;
+const {elementByLabel, elementById} = Utils;
 
 describe('static lifecycle events', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.SHOW_STATIC_EVENTS_SCREEN).tap();
     await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
@@ -74,6 +75,7 @@ describe('static lifecycle events', () => {
 
     await expect(elementByLabel('setRoot complete - previous root is unmounted')).toBeVisible();
   });
+
   it('top bar custom button didAppear after pop, on a root screen', async () => {
     await elementById(TestIDs.SHOW_RIGHT_BUTTON).tap();
     await elementById(TestIDs.PUSH_BTN).tap();

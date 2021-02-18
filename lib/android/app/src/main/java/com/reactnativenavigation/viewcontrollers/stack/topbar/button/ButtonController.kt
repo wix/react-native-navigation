@@ -25,7 +25,7 @@ open class ButtonController(activity: Activity,
     private var menuItem: MenuItem? = null
 
     interface OnClickListener {
-        fun onPress(buttonId: String?)
+        fun onPress(button: ButtonOptions)
     }
 
     val buttonInstanceId: String
@@ -61,7 +61,7 @@ open class ButtonController(activity: Activity,
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
-        onPressListener.onPress(button.id)
+        onPressListener.onPress(button)
         return true
     }
 

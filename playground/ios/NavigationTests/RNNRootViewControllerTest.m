@@ -512,6 +512,7 @@
                                                                    presenter:nil
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
+    [self.uut viewWillAppear:NO];
 
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)nav.topViewController.navigationItem.rightBarButtonItems[0];
@@ -543,6 +544,8 @@
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
 
+    [self.uut viewWillAppear:NO];
+
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)[nav.topViewController.navigationItem.rightBarButtonItems
             objectAtIndex:0];
@@ -568,6 +571,8 @@
                                                                    presenter:nil
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
+
+    [self.uut viewWillAppear:NO];
 
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)[nav.topViewController.navigationItem.leftBarButtonItems
@@ -601,6 +606,8 @@
                                                                    presenter:nil
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
+
+    [self.uut viewWillAppear:NO];
 
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)[nav.topViewController.navigationItem.leftBarButtonItems
@@ -700,6 +707,19 @@
     [(id)self.uut.presenter verify];
 }
 
+- (void)testResolveOptions_shouldContainParentOptions {
+    RNNStackController *stack = [self createNavigationController];
+    stack.options.topBar.visible = [Bool withValue:NO];
+    XCTAssertFalse([self.uut resolveOptions].topBar.visible.get);
+}
+
+- (void)testResolveOptions_shouldNotOverrideChildOptions {
+    RNNStackController *stack = [self createNavigationController];
+    stack.options.topBar.visible = [Bool withValue:NO];
+    self.uut.options.topBar.visible = [Bool withValue:YES];
+    XCTAssertTrue([self.uut resolveOptions].topBar.visible.get);
+}
+
 - (void)testOverrideOptions {
     RNNNavigationOptions *newOptions = [RNNNavigationOptions emptyOptions];
     newOptions.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
@@ -707,8 +727,6 @@
     [self.uut mergeOptions:newOptions];
     XCTAssertEqual([UIColor redColor], self.uut.options.topBar.background.color.get);
 }
-
-#pragma mark BottomTabs
 
 - (RNNStackController *)createNavigationController {
     RNNStackController *nav =

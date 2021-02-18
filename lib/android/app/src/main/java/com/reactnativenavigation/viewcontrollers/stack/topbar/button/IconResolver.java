@@ -36,7 +36,7 @@ public class IconResolver {
                     throw new RuntimeException(error);
                 }
             });
-        } else if (Constants.BACK_BUTTON_ID.equals(button.id)) {
+        } else if (button.isBackButton()) {
             onSuccess.run(imageLoader.getBackButtonIcon(context));
         } else {
             Log.w("RNN", "Left button needs to have an icon");

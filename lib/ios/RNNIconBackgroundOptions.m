@@ -36,13 +36,6 @@
     return self.color.hasValue;
 }
 
-- (Color *)color {
-    if (![_enabled withDefault:YES] && _disabledColor.hasValue)
-        return _disabledColor;
-    else
-        return _color;
-}
-
 - (RNNIconBackgroundOptions *)copyWithZone:(NSZone *)zone {
     RNNIconBackgroundOptions *newOptions = RNNIconBackgroundOptions.new;
     newOptions.color = self.color.copy;

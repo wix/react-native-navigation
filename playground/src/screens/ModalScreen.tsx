@@ -20,6 +20,7 @@ const {
   PUSH_BTN,
   MODAL_SCREEN_HEADER,
   MODAL_BTN,
+  MODAL_DISABLED_BACK_BTN,
   DISMISS_MODAL_BTN,
   DISMISS_UNKNOWN_MODAL_BTN,
   MODAL_LIFECYCLE_BTN,
@@ -71,6 +72,13 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
         )}
         {flags.useCustomAnimations && (
           <Button label="New! Show Modal Push Anim" onPress={this.showModalWithTransitionPush} />
+        )}
+        {!this.props.previousModalIds && (
+          <Button
+            label="Show Disabled Hardware Back Modal"
+            testID={MODAL_DISABLED_BACK_BTN}
+            onPress={this.showDisabledHardwareBackModal}
+          />
         )}
         <Button label="Dismiss Modal" testID={DISMISS_MODAL_BTN} onPress={this.dismissModal} />
         <Button
@@ -210,6 +218,17 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
         passProps: {
           modalPosition: this.getModalPosition() + 1,
           previousModalIds: concat([], this.props.previousModalIds || [], this.props.componentId),
+        },
+      },
+    });
+  };
+
+  showDisabledHardwareBackModal = () => {
+    Navigation.showModal({
+      component: {
+        name: Screens.Modal,
+        options: {
+          hardwareBackButton: { dismissModalOnPress: false },
         },
       },
     });

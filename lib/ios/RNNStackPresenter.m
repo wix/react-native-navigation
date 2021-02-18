@@ -49,6 +49,11 @@
     return (RNNStackController *)self.boundViewController;
 }
 
+- (BOOL)shouldPopItem:(UINavigationItem *)item options:(RNNNavigationOptions *)options {
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+    return [withDefault.topBar.backButton.popStackOnPress withDefault:YES];
+}
+
 - (void)applyOptions:(RNNNavigationOptions *)options {
     [super applyOptions:options];
     RNNStackController *stack = self.stackController;

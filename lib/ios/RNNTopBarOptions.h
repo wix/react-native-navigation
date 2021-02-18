@@ -38,8 +38,6 @@
 @property(nonatomic, strong) RNNBackgroundOptions *background;
 @property(nonatomic, strong) RNNScrollEdgeAppearanceOptions *scrollEdgeAppearance;
 @property(nonatomic, strong) RNNBackButtonOptions *backButton;
-@property(nonatomic, strong) RNNButtonOptions *leftButtonStyle;
-@property(nonatomic, strong) RNNButtonOptions *rightButtonStyle;
 
 - (BOOL)shouldDrawBehind;
 

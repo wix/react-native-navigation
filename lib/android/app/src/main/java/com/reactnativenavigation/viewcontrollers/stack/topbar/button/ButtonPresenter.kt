@@ -152,10 +152,10 @@ open class ButtonPresenter(private val context: Context, private val button: But
     private fun isIconButtonView(view: TextView, menuItem: MenuItem) = button.icon.hasValue() && ArrayUtils.contains(view.compoundDrawables, menuItem.icon)
     private fun isTextualButtonView(view: TextView) = button.text.hasValue() && button.text.get() == view.text.toString()
 
-    fun applyNavigationIcon(toolbar: Toolbar, onPress: (String) -> Unit) {
+    fun applyNavigationIcon(toolbar: Toolbar, onPress: (ButtonOptions) -> Unit) {
         iconResolver.resolve(button) { icon: Drawable ->
             setIconColor(icon)
-            toolbar.setNavigationOnClickListener { onPress(button.id) }
+            toolbar.setNavigationOnClickListener { onPress(button) }
             toolbar.navigationIcon = icon
             setLeftButtonTestId(toolbar)
             if (button.accessibilityLabel.hasValue()) toolbar.navigationContentDescription = button.accessibilityLabel.get()
