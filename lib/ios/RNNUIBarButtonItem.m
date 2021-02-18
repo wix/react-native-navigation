@@ -112,7 +112,7 @@
     self.accessibilityLabel = [buttonOptions.accessibilityLabel withDefault:nil];
     self.enabled = [buttonOptions.enabled withDefault:YES];
     self.accessibilityIdentifier = [buttonOptions.testID withDefault:nil];
-    [self applyColor:[buttonOptions.color withDefault:nil]];
+    [self applyColor:[buttonOptions resolveColor]];
     [self applyTitleTextAttributes:buttonOptions];
     [self applyDisabledTitleTextAttributes:buttonOptions];
 }

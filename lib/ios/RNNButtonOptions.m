@@ -89,6 +89,13 @@
     return [self.enabled withDefault:YES];
 }
 
+- (UIColor *)resolveColor {
+    if (![_enabled withDefault:YES] && _disabledColor.hasValue)
+        return _disabledColor.get;
+    else
+        return [_color withDefault:nil];
+}
+
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions {
     if (!defaultOptions)
         return self;
