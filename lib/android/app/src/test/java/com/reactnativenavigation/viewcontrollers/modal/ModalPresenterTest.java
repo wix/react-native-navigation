@@ -7,6 +7,9 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.ModalAnimationOptions;
+import com.reactnativenavigation.options.ModalAnimationOptionsKt;
+import com.reactnativenavigation.options.ModalAnimationOptionsTestKt;
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
@@ -45,6 +48,7 @@ public class ModalPresenterTest extends BaseTest {
     private ModalAnimator animator;
     private ViewController root;
     private CoordinatorLayout modalsLayout;
+
 
     @Override
     public void beforeEach() {
@@ -102,9 +106,8 @@ public class ModalPresenterTest extends BaseTest {
     @Test
     public void showModal_resolvesDefaultOptions() throws JSONException {
         Options defaultOptions = new Options();
-        JSONObject disabledShowModalAnimation = new JSONObject().put("enabled", false);
-        defaultOptions.animations.showModal = new AnimationOptions(disabledShowModalAnimation);
-
+        JSONObject disabledShowModalAnimation = ModalAnimationOptionsTestKt.newModalAnimationJson(false);
+        defaultOptions.animations.showModal = ModalAnimationOptionsKt.parseModalAnimationOptions(disabledShowModalAnimation);
         uut.setDefaultOptions(defaultOptions);
         uut.showModal(modal1, root, new CommandListenerAdapter());
         verifyZeroInteractions(animator);
@@ -158,7 +161,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void showModal_waitForRender() {
-        modal1.options.animations.showModal.waitForRender = new Bool(true);
+        modal1.options.animations.showModal.setWaitForRender(new Bool(true));
         uut.showModal(modal1, root, new CommandListenerAdapter());
         verify(modal1).addOnAppearedListener(any());
         verifyZeroInteractions(animator);
@@ -309,4 +312,6 @@ public class ModalPresenterTest extends BaseTest {
         uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
         assertGone(modalsLayout);
     }
+
+
 }

@@ -13,6 +13,8 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import {
   AnimationOptions,
+  ModalAnimationOptions,
+  OldModalAnimationOptions,
   Options,
   OptionsSearchBar,
   OptionsTopBar,
@@ -211,6 +213,8 @@ export class OptionsProcessor {
     this.processPush(key, value, options);
     this.processPop(key, value, options);
     this.processSetStackRoot(key, value, options);
+    this.processShowModal(key, value, options);
+    this.processDismissModal(key, value, options);
   }
 
   private processSetStackRoot(
@@ -269,6 +273,46 @@ export class OptionsProcessor {
     ) {
       parentOptions.pop!!.bottomTabs = {
         exit: animation.bottomTabs as ViewAnimationOptions,
+      };
+    }
+  }
+
+  private processShowModal(
+    key: string,
+    animation: OldModalAnimationOptions | ModalAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (key !== 'showModal') return;
+    if (!('enter' in animation)) {
+      const elementTransitions = animation.elementTransitions;
+      const sharedElementTransitions = animation.sharedElementTransitions;
+      const enter = { ...(animation as OldModalAnimationOptions) };
+      delete enter.sharedElementTransitions;
+      delete enter.elementTransitions;
+      parentOptions.showModal = {
+        enter,
+        sharedElementTransitions,
+        elementTransitions,
+      };
+    }
+  }
+
+  private processDismissModal(
+    key: string,
+    animation: OldModalAnimationOptions | ModalAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (key !== 'dismissModal') return;
+    if (!('exit' in animation)) {
+      const elementTransitions = animation.elementTransitions;
+      const sharedElementTransitions = animation.sharedElementTransitions;
+      const exit = { ...(animation as OldModalAnimationOptions) };
+      delete exit.sharedElementTransitions;
+      delete exit.elementTransitions;
+      parentOptions.dismissModal = {
+        exit,
+        sharedElementTransitions,
+        elementTransitions,
       };
     }
   }
