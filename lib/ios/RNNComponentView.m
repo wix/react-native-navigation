@@ -27,6 +27,7 @@
         for (UIView *view in self.subviews.firstObject.subviews.firstObject.subviews) {
             if ([view.accessibilityLabel isEqualToString:@"! Yellow Box"]) {
                 view.layer.opacity = 0;
+                view.layer.zPosition = -100;
             }
         }
     }
@@ -39,6 +40,7 @@
     if ([keyPath isEqualToString:@"sublayers"]) {
         if (((CALayer *)object).sublayers.count > 1) {
             ((CALayer *)object).sublayers.lastObject.opacity = 0;
+            ((CALayer *)object).sublayers.lastObject.zPosition = -100;
         }
     }
 }
