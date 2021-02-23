@@ -7,8 +7,8 @@ class AnimationsOptions {
     @JvmField var pop = StackAnimationOptions()
     @JvmField var setStackRoot = StackAnimationOptions()
     @JvmField var setRoot = AnimationOptions()
-    @JvmField var showModal = AnimationOptions()
-    @JvmField var dismissModal = AnimationOptions()
+    @JvmField var showModal = ModalAnimationOptions()
+    @JvmField var dismissModal = ModalAnimationOptions()
 
     fun mergeWith(other: AnimationsOptions) {
         push.mergeWith(other.push)
@@ -37,8 +37,14 @@ class AnimationsOptions {
             options.pop = StackAnimationOptions(json.optJSONObject("pop"))
             options.setStackRoot = StackAnimationOptions(json.optJSONObject("setStackRoot"))
             options.setRoot = AnimationOptions(json.optJSONObject("setRoot"))
-            options.showModal = AnimationOptions(json.optJSONObject("showModal"))
-            options.dismissModal = AnimationOptions(json.optJSONObject("dismissModal"))
+            val showModalJson = json.optJSONObject("showModal")
+            showModalJson?.let {
+                options.showModal = parseModalAnimationOptions(it)
+            }
+            val dismissModalJson = json.optJSONObject("dismissModal")
+            dismissModalJson?.let {
+                options.dismissModal = parseModalAnimationOptions(it)
+            }
             return options
         }
     }

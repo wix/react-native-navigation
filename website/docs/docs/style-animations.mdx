@@ -89,6 +89,7 @@ options: {
 ### Modal animations
 
 Modal animations are declared similarly to stack animations, only this time we animate the entire view and not only part of the UI (content).
+The appearing modal can play custom enter animation and exit for the disappearing screen when showing/dismissing modal.
 
 <Tabs
   defaultValue="show"
@@ -101,6 +102,7 @@ Modal animations are declared similarly to stack animations, only this time we a
 
 The following example demonstrates how to show a modal with a fade-in animation.
 
+:::warning Deprecation warning
 ```js
 options: {
   animations: {
@@ -114,12 +116,41 @@ options: {
   }
 }
 ```
+Consider using enter, exit animations instead.
+:::
+```js
+options: {
+  animations: {
+    showModal: {
+    enter :{
+      enabled:true,
+      alpha: {
+            from: 0,
+            to: 1,
+            duration: 300
+       }
+    },
+    exit :{
+      enabled:true,
+      alpha: {
+                from: 1,
+                to: 0,
+                duration: 300
+           }
+        }
+    }
+  }
+}
+```
+
 
 </TabItem>
 <TabItem value="dismiss">
 
 The following example demonstrates how to dismiss a modal with a fade-out animation.
 
+:::warning Deprecation warning
+Consider using enter, exit animations instead.
 ```js
 options: {
   animations: {
@@ -133,7 +164,32 @@ options: {
   }
 }
 ```
+:::
 
+```js
+options: {
+  animations: {
+    dismissModal: {
+     exit:{
+     enabled:true
+      alpha: {
+             from: 1,
+             to: 0,
+             duration: 300
+         }
+      },
+      enter:{
+       enabled:false
+       alpha: {
+            from: 0,
+            to: 1,
+            duration: 300
+         }
+      }
+    }
+  }
+}
+```
 </TabItem>
 </Tabs>
 

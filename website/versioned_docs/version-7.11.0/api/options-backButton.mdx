@@ -42,8 +42,8 @@ Change the back button color. This will change the text color as well.
 
 Change the default back button icon.
 
-| Type   | Required | Platform |
-| ------ | -------- | -------- |
+| Type                                       | Required | Platform |
+| ------------------------------------------ | -------- | -------- |
 | [ImageResource](options-imageResource.mdx) | No       | Both     |
 
 ### `showTitle`
@@ -60,8 +60,8 @@ Set display mode of the back button. Currently works for iOS 14+ only.
 See: [UINavigationItem.BackButtonDisplayMode
 ](https://developer.apple.com/documentation/uikit/uinavigationitem/backbuttondisplaymode)
 
-| Type   | Required | Platform |
-| ------ | -------- | -------- |
+| Type                                  | Required | Platform |
+| ------------------------------------- | -------- | -------- |
 | enum('default', 'generic', 'minimal') | No       | iOS      |
 
 ### `title`
@@ -95,3 +95,11 @@ Enables iOS 14 back button menu display.
 | Type    | Required | Platform | Default |
 | ------- | -------- | -------- | ------- |
 | boolean | No       | iOS      | true    |
+
+### `popStackOnPress`
+
+Controls whether the default back button should pop screen or not.
+
+| Type    | Required | Default |
+| ------- | -------- | ------- |
+| boolean | No       | true    |

@@ -100,28 +100,44 @@ const slideAnimations: AnimationOptions = {
   },
 };
 
+const modalEnterAnimations: ViewAnimationOptions = {
+  translationY: {
+    from: height,
+    to: 0,
+    duration: 3000,
+    interpolation: { type: 'decelerate' },
+  },
+  alpha: {
+    from: 0.65,
+    to: 1,
+    duration: 3000 * 0.7,
+    interpolation: { type: 'decelerate' },
+  },
+};
+
+const modalExitAnimations: ViewAnimationOptions = {
+  translationY: {
+    from: 0,
+    to: height,
+    duration: 3000,
+    interpolation: { type: 'decelerate' },
+  },
+  alpha: {
+    from: 1,
+    to: 0.65,
+    duration: 3000 * 0.3,
+    interpolation: { type: 'decelerate' },
+  },
+};
+
 const customAnimations: AnimationOptions = {
   showModal: {
-    waitForRender: true,
-    translationY: {
-      from: height,
-      to: 0,
-      duration: SCREEN_ANIMATION_DURATION,
-      interpolation: { type: 'decelerate' },
-    },
-    alpha: {
-      from: 0.65,
-      to: 1,
-      duration: SCREEN_ANIMATION_DURATION * 0.7,
-      interpolation: { type: 'decelerate' },
-    },
+    enter: modalEnterAnimations,
+    exit: modalExitAnimations,
   },
   dismissModal: {
-    translationY: {
-      from: 0,
-      to: height,
-      duration: SCREEN_ANIMATION_DURATION * 0.9,
-    },
+    enter: modalEnterAnimations,
+    exit: modalExitAnimations,
   },
   push: {
     waitForRender: true,
