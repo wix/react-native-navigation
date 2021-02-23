@@ -12,8 +12,8 @@
 }
 
 - (BottomTabsBaseAttacher *)fromOptions:(RNNNavigationOptions *)options {
-    AttachMode attachMode = [[options withDefault:_defaultOptions].bottomTabs.tabsAttachMode
-        getWithDefaultValue:@"together"];
+    AttachMode attachMode =
+        [[options withDefault:_defaultOptions].bottomTabs.tabsAttachMode withDefault:@"together"];
     switch (attachMode) {
     case BottomTabsAttachModeAfterInitialTab: {
         return [BottomTabsAfterInitialTabAttacher new];

@@ -125,6 +125,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void appliesTopBackBackgroundColor() {
         uut.options.topBar.background.color = new Colour(Color.RED);
         stack.push(uut, new CommandListenerAdapter());
+        idleMainLooper();
         assertThat(((ColorDrawable) stack.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
     }
 

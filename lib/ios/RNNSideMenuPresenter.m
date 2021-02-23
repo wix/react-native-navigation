@@ -13,24 +13,22 @@
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
     [self.sideMenuController side:MMDrawerSideLeft
-                          enabled:[withDefault.sideMenu.left.enabled getWithDefaultValue:YES]];
+                          enabled:[withDefault.sideMenu.left.enabled withDefault:YES]];
     [self.sideMenuController side:MMDrawerSideRight
-                          enabled:[withDefault.sideMenu.right.enabled getWithDefaultValue:YES]];
+                          enabled:[withDefault.sideMenu.right.enabled withDefault:YES]];
 
     [self.sideMenuController
-        setShouldStretchLeftDrawer:[withDefault.sideMenu.left.shouldStretchDrawer
-                                       getWithDefaultValue:YES]];
+        setShouldStretchLeftDrawer:[withDefault.sideMenu.left.shouldStretchDrawer withDefault:YES]];
     [self.sideMenuController
         setShouldStretchRightDrawer:[withDefault.sideMenu.right.shouldStretchDrawer
-                                        getWithDefaultValue:YES]];
-
-    [self.sideMenuController setAnimationVelocityLeft:[withDefault.sideMenu.left.animationVelocity
-                                                          getWithDefaultValue:840.0f]];
-    [self.sideMenuController setAnimationVelocityRight:[withDefault.sideMenu.right.animationVelocity
-                                                           getWithDefaultValue:840.0f]];
+                                        withDefault:YES]];
 
     [self.sideMenuController
-        setAnimationType:[withDefault.sideMenu.animationType getWithDefaultValue:nil]];
+        setAnimationVelocityLeft:[withDefault.sideMenu.left.animationVelocity withDefault:840.0f]];
+    [self.sideMenuController setAnimationVelocityRight:[withDefault.sideMenu.right.animationVelocity
+                                                           withDefault:840.0f]];
+
+    [self.sideMenuController setAnimationType:[withDefault.sideMenu.animationType withDefault:nil]];
 
     if (withDefault.sideMenu.left.width.hasValue) {
         [self.sideMenuController side:MMDrawerSideLeft width:withDefault.sideMenu.left.width.get];
@@ -53,7 +51,7 @@
     }
 
     [self.sideMenuController.view
-        setBackgroundColor:[withDefault.layout.backgroundColor getWithDefaultValue:nil]];
+        setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
@@ -71,8 +69,7 @@
     [self.sideMenuController
         setOpenDrawerGestureModeMask:
             [[withDefault.sideMenu.openGestureMode
-                getWithDefaultValue:@(MMOpenDrawerGestureModeBezelPanningCenterView)]
-                integerValue]];
+                withDefault:@(MMOpenDrawerGestureModeBezelPanningCenterView)] integerValue]];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options

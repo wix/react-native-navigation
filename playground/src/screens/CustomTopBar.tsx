@@ -25,13 +25,10 @@ export default class CustomTopBar extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    alignSelf: 'baseline',
   },
   text: {
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
     color: 'black',
     fontSize: 16,
   },

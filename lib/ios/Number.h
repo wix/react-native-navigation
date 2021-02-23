@@ -6,6 +6,6 @@
 
 - (NSNumber *)get;
 
-- (NSNumber *)getWithDefaultValue:(NSNumber *)defaultValue;
+- (NSNumber *)withDefault:(NSNumber *)defaultValue;
 
 @end

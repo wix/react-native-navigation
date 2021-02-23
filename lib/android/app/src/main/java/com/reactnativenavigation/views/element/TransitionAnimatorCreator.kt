@@ -85,8 +85,8 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
                 }
     }
 
-    private fun createElementTransitionAnimators(transitions: List<ElementTransition>): List<AnimatorSet> {
-        val animators: MutableList<AnimatorSet> = ArrayList()
+    private fun createElementTransitionAnimators(transitions: List<ElementTransition>): List<Animator> {
+        val animators: MutableList<Animator> = ArrayList()
         for (transition in transitions) {
             animators.add(transition.createAnimators())
         }

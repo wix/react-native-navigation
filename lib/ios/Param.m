@@ -19,6 +19,12 @@
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    Param *param = [[self.class alloc] initWithValue:self.value];
+    param.consumed = self.consumed;
+    return param;
+}
+
 - (id)get {
     if (!self.value) {
         @throw [NSException exceptionWithName:@"Param get"
@@ -28,7 +34,7 @@
     return self.value;
 }
 
-- (id)getWithDefaultValue:(id)defaultValue {
+- (id)withDefault:(id)defaultValue {
     if (self.value) {
         return self.value;
     } else if (defaultValue) {

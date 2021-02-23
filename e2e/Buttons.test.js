@@ -53,22 +53,23 @@ describe('Buttons', () => {
   });
 
   it('resizes title component when a button is added with mergeOptions', async () => {
-    await elementById(TestIDs.ADD_BUTTON).tap();
-    await elementById(TestIDs.BUTTON_THREE).tap();
+    await elementById(TestIDs.RESET_BUTTONS).tap();
+    await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
+      await elementById(TestIDs.BUTTON_THREE).tap();
   });
 
   it('Button component is not recreated if it has a predefined componentId', async () => {
-    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
     await elementById(TestIDs.OK_BUTTON).tap();
 
-    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
     await elementById(TestIDs.OK_BUTTON).tap();
 
-    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
   });

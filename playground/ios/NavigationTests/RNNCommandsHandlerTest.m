@@ -187,15 +187,9 @@
     RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
     initialOptions.topBar.title.text = [[Text alloc] initWithValue:@"the title"];
 
-    RNNComponentPresenter *presenter =
-        [[RNNComponentPresenter alloc] initWithComponentRegistry:nil defaultOptions:nil];
     RNNComponentViewController *vc =
-        [[RNNComponentViewController alloc] initWithLayoutInfo:nil
-                                               rootViewCreator:[[RNNTestRootViewCreator alloc] init]
-                                                  eventEmitter:nil
-                                                     presenter:presenter
-                                                       options:initialOptions
-                                                defaultOptions:nil];
+        [RNNComponentViewController createWithComponentId:@"componentId"
+                                           initialOptions:initialOptions];
 
     __unused RNNStackController *nav = [[RNNStackController alloc] initWithRootViewController:vc];
     [vc viewWillAppear:false];

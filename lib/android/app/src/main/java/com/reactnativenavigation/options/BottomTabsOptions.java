@@ -35,19 +35,23 @@ public class BottomTabsOptions {
         options.drawBehind = BoolParser.parse(json, "drawBehind");
         options.preferLargeIcons = BoolParser.parse(json, "preferLargeIcons");
 		options.animate = BoolParser.parse(json,"animate");
+        options.animateTabSelection = BoolParser.parse(json, "animateTabSelection");
         options.elevation = FractionParser.parse(json, "elevation");
         options.testId = TextParser.parse(json, "testID");
         options.titleDisplayMode = TitleDisplayMode.fromString(json.optString("titleDisplayMode"));
         options.tabsAttachMode = TabsAttachMode.fromString(json.optString("tabsAttachMode"));
-
-		return options;
-	}
+        options.borderColor = ColorParser.parse(context, json, "borderColor");
+        options.borderWidth = FractionParser.parse(json, "borderWidth");
+        options.shadowOptions = ShadowOptionsKt.parseShadowOptions(context, json.optJSONObject("shadow"));
+        return options;
+    }
 
     public Colour backgroundColor = new NullColor();
     public Bool hideOnScroll = new NullBool();
 	public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
 	public Bool animate = new NullBool();
+    public Bool animateTabSelection = new NullBool();
     public Bool preferLargeIcons = new NullBool();
 	public Number currentTabIndex = new NullNumber();
 	public Fraction elevation = new NullFraction();
@@ -55,20 +59,27 @@ public class BottomTabsOptions {
     public Text testId = new NullText();
     public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
     public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
-
-	void mergeWith(final BottomTabsOptions other) {
-		if (other.currentTabId.hasValue()) currentTabId = other.currentTabId;
-		if (other.currentTabIndex.hasValue()) currentTabIndex = other.currentTabIndex;
+    public Colour borderColor = new NullColor();
+    public Fraction borderWidth = new NullFraction();
+    public ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
+    
+    void mergeWith(final BottomTabsOptions other) {
+        if (other.currentTabId.hasValue()) currentTabId = other.currentTabId;
+        if (other.currentTabIndex.hasValue()) currentTabIndex = other.currentTabIndex;
         if (other.hideOnScroll.hasValue()) hideOnScroll = other.hideOnScroll;
 		if (other.visible.hasValue()) visible = other.visible;
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
 		if (other.animate.hasValue()) animate = other.animate;
+        if (other.animateTabSelection.hasValue()) animateTabSelection = other.animateTabSelection;
         if (other.preferLargeIcons.hasValue()) preferLargeIcons = other.preferLargeIcons;
         if (other.elevation.hasValue()) elevation = other.elevation;
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
         if (other.testId.hasValue()) testId = other.testId;
         if (other.titleDisplayMode.hasValue()) titleDisplayMode = other.titleDisplayMode;
         if (other.tabsAttachMode.hasValue()) tabsAttachMode = other.tabsAttachMode;
+        if (other.borderColor.hasValue()) borderColor = other.borderColor;
+        if (other.borderWidth.hasValue()) borderWidth = other.borderWidth;
+        if (other.shadowOptions.hasValue()) shadowOptions = shadowOptions.copy().mergeWith(other.shadowOptions);
     }
 
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
@@ -78,11 +89,15 @@ public class BottomTabsOptions {
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;
         if (!animate.hasValue()) animate = defaultOptions.animate;
+        if (!animateTabSelection.hasValue()) animateTabSelection = defaultOptions.animateTabSelection;
         if (!preferLargeIcons.hasValue()) preferLargeIcons = defaultOptions.preferLargeIcons;
         if (!elevation.hasValue()) elevation = defaultOptions.elevation;
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
         if (!titleDisplayMode.hasValue()) titleDisplayMode = defaultOptions.titleDisplayMode;
         if (!tabsAttachMode.hasValue()) tabsAttachMode = defaultOptions.tabsAttachMode;
+        if (!borderColor.hasValue()) borderColor = defaultOptions.borderColor;
+        if (!borderWidth.hasValue()) borderWidth = defaultOptions.borderWidth;
+        if (!shadowOptions.hasValue()) shadowOptions = shadowOptions.copy().mergeWithDefaults(defaultOptions.shadowOptions);
     }
 
     public boolean isHiddenOrDrawBehind() {

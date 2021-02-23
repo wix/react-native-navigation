@@ -122,4 +122,61 @@
         isEqual:tabBarBackgroundColor]);
 }
 
+- (void)testApplyOptions_applyTabBarShadowDefaultValues {
+    UITabBar *tabBar = ((UITabBarController *)self.boundViewController).tabBar;
+    CGFloat defaultOpacity = tabBar.layer.shadowOpacity;
+    CGColorRef defaultColor = tabBar.layer.shadowColor;
+    CGFloat defaultRadius = tabBar.layer.shadowRadius;
+
+    [self.uut applyOptions:self.options];
+    XCTAssertTrue(tabBar.layer.shadowRadius == defaultRadius);
+    XCTAssertTrue(tabBar.layer.shadowOpacity == defaultOpacity);
+    XCTAssertTrue(tabBar.layer.shadowColor == defaultColor);
+}
+
+- (void)testApplyOptions_applyTabBarShadowRadius {
+    self.options.bottomTabs.shadow.radius = [Number withValue:@(10.0)];
+    [self.uut applyOptions:self.options];
+    XCTAssertTrue(((UITabBarController *)self.boundViewController).tabBar.layer.shadowRadius ==
+                  10.0);
+}
+
+- (void)testApplyOptions_applyTabBarShadowColor {
+    self.options.bottomTabs.shadow.color = [Color withValue:UIColor.redColor];
+    [self.uut applyOptions:self.options];
+    XCTAssertTrue(((UITabBarController *)self.boundViewController).tabBar.layer.shadowColor ==
+                  UIColor.redColor.CGColor);
+}
+
+- (void)testApplyOptions_applyTabBarShadowOpacity {
+    self.options.bottomTabs.shadow.opacity = [Number withValue:@(0.5)];
+    [self.uut applyOptions:self.options];
+    XCTAssertTrue(((UITabBarController *)self.boundViewController).tabBar.layer.shadowOpacity ==
+                  0.5);
+}
+
+- (void)testMergeOptions_applyTabBarShadowRadius {
+    RNNNavigationOptions *mergeOptions = RNNNavigationOptions.emptyOptions;
+    mergeOptions.bottomTabs.shadow.radius = [Number withValue:@(10.0)];
+    [self.uut mergeOptions:mergeOptions resolvedOptions:nil];
+    XCTAssertTrue(((UITabBarController *)self.boundViewController).tabBar.layer.shadowRadius ==
+                  10.0);
+}
+
+- (void)testMergeOptions_applyTabBarShadowColor {
+    RNNNavigationOptions *mergeOptions = RNNNavigationOptions.emptyOptions;
+    mergeOptions.bottomTabs.shadow.color = [Color withValue:UIColor.redColor];
+    [self.uut mergeOptions:mergeOptions resolvedOptions:nil];
+    XCTAssertTrue(((UITabBarController *)self.boundViewController).tabBar.layer.shadowColor ==
+                  UIColor.redColor.CGColor);
+}
+
+- (void)testMergeOptions_applyTabBarShadowOpacity {
+    RNNNavigationOptions *mergeOptions = RNNNavigationOptions.emptyOptions;
+    mergeOptions.bottomTabs.shadow.opacity = [Number withValue:@(0.5)];
+    [self.uut mergeOptions:mergeOptions resolvedOptions:nil];
+    XCTAssertTrue(((UITabBarController *)self.boundViewController).tabBar.layer.shadowOpacity ==
+                  0.5);
+}
+
 @end

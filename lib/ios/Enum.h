@@ -5,7 +5,7 @@
 
 - (int)get;
 
-- (int)getWithDefaultValue:(int)defaultValue;
+- (int)withDefault:(int)defaultValue;
 
 - (int)convertString:(NSString *)string;
 

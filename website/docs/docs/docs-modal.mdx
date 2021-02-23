@@ -120,8 +120,18 @@ when the button is pressed.
 
 ### Android
 
-On Android, modals can be dismissed with the hardware back button. You can handle the back press your self by
-adding a [BackHandler](https://facebook.github.io/react-native/docs/backhandler)
+On Android, modals can be dismissed with the hardware back button. You can handle the back press yourself by
+disabling the hardware back button `dismissModalOnPress` option:
+
+```js
+{
+  hardwareBackButton: {
+    dismissModalOnPress: false;
+  }
+}
+```
+
+As a result, pressing the hardware back button will not dismiss the modal and will dispatch [`navigationButtonPress`](https://wix.github.io/react-native-navigation/api/events#navigationbuttonpressed-event) event with the default hardware back button id `RNN.hardwareBackButton`.
 
 ### iOS
 

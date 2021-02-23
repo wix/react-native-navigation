@@ -53,6 +53,7 @@ export default class PushedScreen extends NavigationComponent<Props> {
         ],
         backButton: {
           testID: BACK_BUTTON,
+          enableMenu: false,
         },
       },
     };
@@ -189,11 +190,6 @@ export default class PushedScreen extends NavigationComponent<Props> {
             ),
           },
           options: {
-            animations: {
-              setStackRoot: {
-                enabled: false,
-              },
-            },
             topBar: {
               title: {
                 text: `Pushed ${this.getStackPosition() + 1} a`,
@@ -214,11 +210,6 @@ export default class PushedScreen extends NavigationComponent<Props> {
             ),
           },
           options: {
-            animations: {
-              setStackRoot: {
-                enabled: false,
-              },
-            },
             topBar: {
               title: {
                 text: `Pushed ${this.getStackPosition() + 1} b`,

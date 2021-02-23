@@ -14,7 +14,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 public class AfterInitialTab extends AttachMode {
     private final Runnable attachOtherTabs;
 
-    public AfterInitialTab(ViewGroup parent, List<ViewController> tabs, BottomTabsPresenter presenter, Options resolved) {
+    public AfterInitialTab(ViewGroup parent, List<ViewController<?>> tabs, BottomTabsPresenter presenter, Options resolved) {
         super(parent, tabs, presenter, resolved);
         attachOtherTabs = () -> forEach(otherTabs(), this::attach);
     }
@@ -30,7 +30,7 @@ public class AfterInitialTab extends AttachMode {
         initialTab.removeOnAppearedListener(attachOtherTabs);
     }
 
-    private List<ViewController> otherTabs() {
+    private List<ViewController<?>> otherTabs() {
         return filter(tabs, t -> t != initialTab);
     }
 }

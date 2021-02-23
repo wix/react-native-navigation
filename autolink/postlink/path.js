@@ -1,5 +1,5 @@
 var glob = require('glob');
-var ignoreFolders = { ignore: ['node_modules/**', '**/build/**'] };
+var ignoreFolders = {ignore: ['node_modules/**', '**/build/**', '**/Build/**', '**/DerivedData/**', '**/*-tvOS*/**']};
 
 var manifestPath = glob.sync('**/AndroidManifest.xml', ignoreFolders)[0];
 
@@ -11,3 +11,4 @@ exports.rootGradle = mainApplicationJava.replace(/android\/app\/.*\.java/, 'andr
 
 exports.appDelegate = glob.sync('**/AppDelegate.m', ignoreFolders)[0];
 exports.podFile = glob.sync('**/Podfile', ignoreFolders)[0];
+exports.plist = glob.sync('**/info.plist', ignoreFolders)[0];

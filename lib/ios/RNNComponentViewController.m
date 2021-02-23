@@ -1,5 +1,4 @@
 #import "RNNComponentViewController.h"
-#import "UIView+Utils.h"
 
 @implementation RNNComponentViewController {
     NSArray *_reactViewConstraints;
@@ -49,6 +48,17 @@
     // Fix's momentum scroll bug
     // https://github.com/wix/react-native-navigation/issues/4325
     [self.view stopMomentumScrollViews];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+    RNNNavigationOptions *resolvedOptions = self.options.copy;
+    UIViewController *parentViewController = self.parentViewController;
+    while (parentViewController) {
+        resolvedOptions = [resolvedOptions withDefault:parentViewController.options];
+        parentViewController = parentViewController.parentViewController;
+    }
+
+    return resolvedOptions;
 }
 
 - (void)loadView {
@@ -207,11 +217,6 @@
         }
     }
     return actions;
-}
-
-- (void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem {
-    [self.eventEmitter sendOnNavigationButtonPressed:self.layoutInfo.componentId
-                                            buttonId:barButtonItem.buttonId];
 }
 
 #pragma mark - UIViewController overrides

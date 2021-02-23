@@ -3,6 +3,7 @@ const flags = {
   useCustomAnimations: false,
   useSlowOpenScreenAnimations: false,
   useSlideAnimation: false,
+  randomizeComponentBackgroundColor: false,
 };
 
 export default flags;

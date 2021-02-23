@@ -118,7 +118,10 @@ public class UiUtils {
 
     public static float dpToPx(Context context, float dp) {
         Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
+        return dpToPx(resources.getDisplayMetrics(), dp);
+    }
+
+    public static float dpToPx(DisplayMetrics metrics, float dp) {
         return dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 

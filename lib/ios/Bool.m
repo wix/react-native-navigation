@@ -25,7 +25,7 @@
     return self.value;
 }
 
-- (BOOL)getWithDefaultValue:(BOOL)defaultValue {
+- (BOOL)withDefault:(BOOL)defaultValue {
     if (self.value) {
         return [self.value boolValue];
     } else {

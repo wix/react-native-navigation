@@ -12,8 +12,8 @@
     return self.value;
 }
 
-- (UIImage *)getWithDefaultValue:(UIImage *)defaultValue {
-    return [super getWithDefaultValue:defaultValue];
+- (UIImage *)withDefault:(UIImage *)defaultValue {
+    return [super withDefault:defaultValue];
 }
 
 @end

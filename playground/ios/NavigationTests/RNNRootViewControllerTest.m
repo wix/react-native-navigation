@@ -1,5 +1,6 @@
 #import "RNNBottomTabsController+Helpers.h"
 #import "RNNBottomTabsController.h"
+#import "RNNComponentViewController+Utils.h"
 #import "RNNNavigationOptions.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNStackController.h"
@@ -69,7 +70,8 @@
 
     self.presenter = [OCMockObject
         partialMockForObject:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil
-                                                                       defaultOptions:nil]];
+                                                                       defaultOptions:nil
+                                                                     buttonsPresenter:nil]];
     self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo
                                                       rootViewCreator:self.creator
                                                          eventEmitter:self.eventEmitter
@@ -498,13 +500,11 @@
 }
 
 - (void)testRightButtonsWithTitle_withoutStyle {
-    self.options.topBar.rightButtons = @[ @{@"id" : @"testId", @"text" : @"test"} ];
-    self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
-                                                      rootViewCreator:nil
-                                                         eventEmitter:nil
-                                                            presenter:[RNNComponentPresenter new]
-                                                              options:self.options
-                                                       defaultOptions:nil];
+    RNNButtonOptions *buttonOptions =
+        [[RNNButtonOptions alloc] initWithDict:@{@"id" : @"testId", @"text" : @"test"}];
+    self.options.topBar.rightButtons = @[ buttonOptions ];
+    self.uut = [RNNComponentViewController createWithComponentId:@"componentId"
+                                                  initialOptions:self.options];
     RNNStackController *nav = [[RNNStackController alloc] initWithLayoutInfo:nil
                                                                      creator:_creator
                                                                      options:nil
@@ -512,6 +512,7 @@
                                                                    presenter:nil
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
+    [self.uut viewWillAppear:NO];
 
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)nav.topViewController.navigationItem.rightBarButtonItems[0];
@@ -524,21 +525,17 @@
 
 - (void)testRightButtonsWithTitle_withStyle {
     NSNumber *inputColor = @(0xFFFF0000);
-
-    self.options.topBar.rightButtons = @[ @{
+    RNNButtonOptions *buttonOptions = [[RNNButtonOptions alloc] initWithDict:@{
         @"id" : @"testId",
         @"text" : @"test",
         @"enabled" : @false,
         @"buttonColor" : inputColor,
         @"buttonFontSize" : @22,
         @"buttonFontWeight" : @"800"
-    } ];
-    self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
-                                                      rootViewCreator:nil
-                                                         eventEmitter:nil
-                                                            presenter:[RNNComponentPresenter new]
-                                                              options:self.options
-                                                       defaultOptions:nil];
+    }];
+    self.options.topBar.rightButtons = @[ buttonOptions ];
+    self.uut = [RNNComponentViewController createWithComponentId:@"componentId"
+                                                  initialOptions:self.options];
     RNNStackController *nav = [[RNNStackController alloc] initWithLayoutInfo:nil
                                                                      creator:_creator
                                                                      options:nil
@@ -546,6 +543,8 @@
                                                                    presenter:nil
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
+
+    [self.uut viewWillAppear:NO];
 
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)[nav.topViewController.navigationItem.rightBarButtonItems
@@ -560,13 +559,11 @@
 }
 
 - (void)testLeftButtonsWithTitle_withoutStyle {
-    self.options.topBar.leftButtons = @[ @{@"id" : @"testId", @"text" : @"test"} ];
-    self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
-                                                      rootViewCreator:nil
-                                                         eventEmitter:nil
-                                                            presenter:[RNNComponentPresenter new]
-                                                              options:self.options
-                                                       defaultOptions:nil];
+    RNNButtonOptions *buttonOptions =
+        [[RNNButtonOptions alloc] initWithDict:@{@"id" : @"testId", @"text" : @"test"}];
+    self.options.topBar.leftButtons = @[ buttonOptions ];
+    self.uut = [RNNComponentViewController createWithComponentId:@"componentId"
+                                                  initialOptions:self.options];
     RNNStackController *nav = [[RNNStackController alloc] initWithLayoutInfo:nil
                                                                      creator:_creator
                                                                      options:nil
@@ -574,6 +571,8 @@
                                                                    presenter:nil
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
+
+    [self.uut viewWillAppear:NO];
 
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)[nav.topViewController.navigationItem.leftBarButtonItems
@@ -588,20 +587,18 @@
 - (void)testLeftButtonsWithTitle_withStyle {
     NSNumber *inputColor = @(0xFFFF0000);
 
-    self.options.topBar.leftButtons = @[ @{
+    RNNButtonOptions *buttonOptions = [[RNNButtonOptions alloc] initWithDict:@{
         @"id" : @"testId",
         @"text" : @"test",
         @"enabled" : @false,
         @"buttonColor" : inputColor,
         @"buttonFontSize" : @22,
         @"buttonFontWeight" : @"800"
-    } ];
-    self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
-                                                      rootViewCreator:nil
-                                                         eventEmitter:nil
-                                                            presenter:[RNNComponentPresenter new]
-                                                              options:self.options
-                                                       defaultOptions:nil];
+    }];
+
+    self.options.topBar.leftButtons = @[ buttonOptions ];
+    self.uut = [RNNComponentViewController createWithComponentId:@"componentId"
+                                                  initialOptions:self.options];
     RNNStackController *nav = [[RNNStackController alloc] initWithLayoutInfo:nil
                                                                      creator:_creator
                                                                      options:nil
@@ -609,6 +606,8 @@
                                                                    presenter:nil
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
+
+    [self.uut viewWillAppear:NO];
 
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)[nav.topViewController.navigationItem.leftBarButtonItems
@@ -708,6 +707,19 @@
     [(id)self.uut.presenter verify];
 }
 
+- (void)testResolveOptions_shouldContainParentOptions {
+    RNNStackController *stack = [self createNavigationController];
+    stack.options.topBar.visible = [Bool withValue:NO];
+    XCTAssertFalse([self.uut resolveOptions].topBar.visible.get);
+}
+
+- (void)testResolveOptions_shouldNotOverrideChildOptions {
+    RNNStackController *stack = [self createNavigationController];
+    stack.options.topBar.visible = [Bool withValue:NO];
+    self.uut.options.topBar.visible = [Bool withValue:YES];
+    XCTAssertTrue([self.uut resolveOptions].topBar.visible.get);
+}
+
 - (void)testOverrideOptions {
     RNNNavigationOptions *newOptions = [RNNNavigationOptions emptyOptions];
     newOptions.topBar.background.color = [[Color alloc] initWithValue:[UIColor redColor]];
@@ -733,8 +745,6 @@
     [self.uut viewDidDisappear:true];
     [(id)self.presenter verify];
 }
-
-#pragma mark BottomTabs
 
 - (RNNStackController *)createNavigationController {
     RNNStackController *nav =

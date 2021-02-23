@@ -171,7 +171,7 @@
     NSUInteger _index = [tabBarController.viewControllers indexOfObject:viewController];
     [self.eventEmitter sendBottomTabPressed:@(_index)];
 
-    if ([[viewController resolveOptions].bottomTab.selectTabOnPress getWithDefaultValue:YES]) {
+    if ([[viewController resolveOptions].bottomTab.selectTabOnPress withDefault:YES]) {
         return YES;
     }
 

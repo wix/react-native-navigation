@@ -90,7 +90,7 @@ export interface LayoutSideMenu {
   /**
    * Set the left side bar
    */
-  left?: LayoutStackChildren;
+  left?: Layout;
   /**
    * Set the center view
    */
@@ -98,7 +98,7 @@ export interface LayoutSideMenu {
   /**
    * Set the right side bar
    */
-  right?: LayoutStackChildren;
+  right?: Layout;
   /**
    * Set the bottom tabs options
    */

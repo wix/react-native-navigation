@@ -1,14 +1,8 @@
 #import "RNNTopBarOptions.h"
+#import "RNNButtonsParser.h"
 #import "RNNCustomTitleView.h"
-#import "RNNNavigationButtons.h"
 #import "UINavigationController+RNNOptions.h"
 #import "UIViewController+RNNOptions.h"
-
-@interface RNNTopBarOptions ()
-
-@property(nonatomic, strong) RNNNavigationButtons *navigationButtons;
-
-@end
 
 @implementation RNNTopBarOptions
 
@@ -39,27 +33,9 @@
     self.scrollEdgeAppearance =
         [[RNNScrollEdgeAppearanceOptions alloc] initWithDict:dict[@"scrollEdgeAppearance"]];
     self.backButton = [[RNNBackButtonOptions alloc] initWithDict:dict[@"backButton"]];
-    self.leftButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"leftButtonStyle"]];
-    self.rightButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"rightButtonStyle"]];
 
-    if (self.leftButtonColor.hasValue) {
-        self.leftButtonStyle.color = self.leftButtonColor;
-    }
-
-    if (self.rightButtonColor.hasValue) {
-        self.rightButtonStyle.color = self.rightButtonColor;
-    }
-
-    if (self.leftButtonDisabledColor.hasValue) {
-        self.leftButtonStyle.disabledColor = self.rightButtonDisabledColor;
-    }
-
-    if (self.rightButtonDisabledColor.hasValue) {
-        self.rightButtonStyle.disabledColor = self.rightButtonDisabledColor;
-    }
-
-    self.leftButtons = dict[@"leftButtons"];
-    self.rightButtons = dict[@"rightButtons"];
+    self.leftButtons = [RNNButtonsParser parse:dict[@"leftButtons"]];
+    self.rightButtons = [RNNButtonsParser parse:dict[@"rightButtons"]];
 
     return self;
 }
@@ -72,8 +48,6 @@
     [self.background mergeOptions:options.background];
     [self.scrollEdgeAppearance mergeOptions:options.scrollEdgeAppearance];
     [self.backButton mergeOptions:options.backButton];
-    [self.leftButtonStyle mergeOptions:options.leftButtonStyle];
-    [self.rightButtonStyle mergeOptions:options.rightButtonStyle];
 
     if (options.visible.hasValue)
         self.visible = options.visible;
@@ -116,10 +90,8 @@
 }
 
 - (BOOL)shouldDrawBehind {
-    return [self.drawBehind getWithDefaultValue:NO] ||
-           [self.background.translucent getWithDefaultValue:NO] ||
-           ![self.visible getWithDefaultValue:YES] ||
-           [self.largeTitle.visible getWithDefaultValue:NO];
+    return [self.drawBehind withDefault:NO] || [self.background.translucent withDefault:NO] ||
+           ![self.visible withDefault:YES] || [self.largeTitle.visible withDefault:NO];
 }
 
 @end

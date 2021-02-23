@@ -11,6 +11,7 @@ const packageJsonPath = `${process.cwd()}/package.json`;
 const isRelease = process.env.RELEASE_BUILD === 'true';
 
 const BUILD_DOCUMENTATION_VERSION = process.env.BUILD_DOCUMENTATION_VERSION;
+const REMOVE_DOCUMENTATION_VERSION = process.env.REMOVE_DOCUMENTATION_VERSION;
 
 const BRANCH = process.env.BRANCH;
 let VERSION_TAG = process.env.NPM_TAG;
@@ -108,7 +109,7 @@ function tagAndPublish(newVersion) {
   console.log(`trying to publish ${newVersion}...`);
   exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
   exec.execSync(`npm publish --tag ${VERSION_TAG}`);
-  if (BUILD_DOCUMENTATION_VERSION && BUILD_DOCUMENTATION_VERSION !== '') documentation.release(BUILD_DOCUMENTATION_VERSION);
+  if (BUILD_DOCUMENTATION_VERSION && BUILD_DOCUMENTATION_VERSION !== '') documentation.release(BUILD_DOCUMENTATION_VERSION, REMOVE_DOCUMENTATION_VERSION);
   if (isRelease) {
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);

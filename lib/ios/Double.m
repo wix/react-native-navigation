@@ -16,7 +16,7 @@
     return [[super get] doubleValue];
 }
 
-- (double)getWithDefaultValue:(double)defaultValue {
+- (double)withDefault:(double)defaultValue {
     if (self.value) {
         return [self.value doubleValue];
     } else if (defaultValue) {

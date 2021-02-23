@@ -17,6 +17,16 @@ import androidx.core.util.Pair;
 
 @SuppressWarnings("WeakerAccess")
 public class CollectionUtils {
+
+    @SafeVarargs
+    public static <T> List<T> asList(T... args) {
+        ArrayList<T> res = new ArrayList<>();
+        forEach(args, a -> {
+            if (a != null) res.add(a);
+        });
+        return res;
+    }
+
     public interface Apply<T> {
         void on(T t);
     }

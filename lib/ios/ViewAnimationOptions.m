@@ -17,6 +17,7 @@
 }
 
 - (void)mergeOptions:(ViewAnimationOptions *)options {
+    [super mergeOptions:options];
     if (options.sharedElementTransitions)
         self.sharedElementTransitions = options.sharedElementTransitions;
     if (options.elementTransitions)
@@ -28,7 +29,7 @@
 }
 
 - (BOOL)shouldWaitForRender {
-    return [self.waitForRender getWithDefaultValue:NO] || self.hasAnimation;
+    return [self.waitForRender withDefault:NO] || self.hasAnimation;
 }
 
 - (NSTimeInterval)maxDuration {

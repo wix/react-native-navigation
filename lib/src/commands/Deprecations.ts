@@ -63,7 +63,7 @@ export class Deprecations {
   public onProcessOptions(key: string, parentOptions: Record<string, any>, commandName: string) {
     if (
       key === 'bottomTabs' &&
-      parentOptions[key].visible !== undefined &&
+      parentOptions[key]?.visible !== undefined &&
       Platform.OS === 'ios' &&
       commandName === 'mergeOptions'
     ) {

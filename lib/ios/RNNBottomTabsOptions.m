@@ -23,6 +23,9 @@
     self.tabsAttachMode = (BottomTabsAttachMode *)[EnumParser parse:dict
                                                                 key:@"tabsAttachMode"
                                                             ofClass:BottomTabsAttachMode.class];
+    self.borderColor = [ColorParser parse:dict key:@"borderColor"];
+    self.borderWidth = [NumberParser parse:dict key:@"borderWidth"];
+    self.shadow = [[RNNShadowOptions alloc] initWithDict:dict[@"shadow"]];
 
     return self;
 }
@@ -60,11 +63,17 @@
         self.titleDisplayMode = options.titleDisplayMode;
     if (options.tabsAttachMode.hasValue)
         self.tabsAttachMode = options.tabsAttachMode;
+    if (options.borderColor.hasValue)
+        self.borderColor = options.borderColor;
+    if (options.borderWidth.hasValue)
+        self.borderWidth = options.borderWidth;
+
+    [self.shadow mergeOptions:options.shadow];
 }
 
 - (BOOL)shouldDrawBehind {
-    return [self.drawBehind getWithDefaultValue:NO] || [self.translucent getWithDefaultValue:NO] ||
-           ![self.visible getWithDefaultValue:YES];
+    return [self.drawBehind withDefault:NO] || [self.translucent withDefault:NO] ||
+           ![self.visible withDefault:YES];
 }
 
 @end

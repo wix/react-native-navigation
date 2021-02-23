@@ -29,7 +29,8 @@ describe('Documentation script', () => {
     ]))
 
     const version = '2.0.0';
-    documentation.release(version);
+    const removeVersion = '2.0.0';
+    documentation.release(version, removeVersion);
 
     expect(exec.execSync).toHaveBeenCalledTimes(5);
     expect(exec.execSync).toHaveBeenCalledWith(`rm -rf ${docsPath()}/versioned_docs/version-${version}`);

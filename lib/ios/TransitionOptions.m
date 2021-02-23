@@ -42,32 +42,32 @@
 
 - (NSTimeInterval)maxDuration {
     double maxDuration = 0;
-    if ([_x.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_x.duration getWithDefaultValue:0];
+    if ([_x.duration withDefault:0] > maxDuration) {
+        maxDuration = [_x.duration withDefault:0];
     }
 
-    if ([_y.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_y.duration getWithDefaultValue:0];
+    if ([_y.duration withDefault:0] > maxDuration) {
+        maxDuration = [_y.duration withDefault:0];
     }
 
-    if ([_translationX.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_translationX.duration getWithDefaultValue:0];
+    if ([_translationX.duration withDefault:0] > maxDuration) {
+        maxDuration = [_translationX.duration withDefault:0];
     }
 
-    if ([_translationY.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_translationY.duration getWithDefaultValue:0];
+    if ([_translationY.duration withDefault:0] > maxDuration) {
+        maxDuration = [_translationY.duration withDefault:0];
     }
 
-    if ([_rotationX.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_rotationX.duration getWithDefaultValue:0];
+    if ([_rotationX.duration withDefault:0] > maxDuration) {
+        maxDuration = [_rotationX.duration withDefault:0];
     }
 
-    if ([_rotationY.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_rotationY.duration getWithDefaultValue:0];
+    if ([_rotationY.duration withDefault:0] > maxDuration) {
+        maxDuration = [_rotationY.duration withDefault:0];
     }
 
-    if ([_alpha.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_alpha.duration getWithDefaultValue:0];
+    if ([_alpha.duration withDefault:0] > maxDuration) {
+        maxDuration = [_alpha.duration withDefault:0];
     }
 
     return maxDuration;

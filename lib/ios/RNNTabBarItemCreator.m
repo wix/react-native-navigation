@@ -1,6 +1,6 @@
 #import "RNNTabBarItemCreator.h"
 #import "RNNFontAttributesCreator.h"
-#import "UIImage+tint.h"
+#import "UIImage+utils.h"
 
 @implementation RNNTabBarItemCreator
 
@@ -11,19 +11,20 @@
 + (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions
                          mergeItem:(UITabBarItem *)mergeItem {
     UITabBarItem *tabItem = [self createTabBarItem:mergeItem];
-    UIImage *icon = [bottomTabOptions.icon getWithDefaultValue:nil];
-    UIImage *selectedIcon = [bottomTabOptions.selectedIcon getWithDefaultValue:icon];
-    UIColor *iconColor = [bottomTabOptions.iconColor getWithDefaultValue:nil];
-    UIColor *selectedIconColor = [bottomTabOptions.selectedIconColor getWithDefaultValue:iconColor];
+    UIImage *icon = [bottomTabOptions.icon withDefault:nil];
+    UIImage *selectedIcon = [bottomTabOptions.selectedIcon withDefault:icon];
+    UIColor *iconColor = [bottomTabOptions.iconColor withDefault:nil];
+    UIColor *selectedIconColor = [bottomTabOptions.selectedIconColor withDefault:iconColor];
 
     tabItem.image = [self getIconImage:icon withTint:iconColor];
     tabItem.selectedImage = [self getSelectedIconImage:selectedIcon
                                      selectedIconColor:selectedIconColor];
-    tabItem.title = [bottomTabOptions.text getWithDefaultValue:nil];
+    tabItem.title = [bottomTabOptions.text withDefault:nil];
     tabItem.tag = bottomTabOptions.tag;
-    tabItem.accessibilityIdentifier = [bottomTabOptions.testID getWithDefaultValue:nil];
+    tabItem.accessibilityIdentifier = [bottomTabOptions.testID withDefault:nil];
+    tabItem.accessibilityLabel = [bottomTabOptions.accessibilityLabel withDefault:nil];
 
-    NSDictionary *iconInsets = [bottomTabOptions.iconInsets getWithDefaultValue:nil];
+    NSDictionary *iconInsets = [bottomTabOptions.iconInsets withDefault:nil];
     if (iconInsets && ![iconInsets isKindOfClass:[NSNull class]]) {
         id topInset = iconInsets[@"top"];
         id leftInset = iconInsets[@"left"];
@@ -72,30 +73,27 @@
 
 + (void)appendTitleAttributes:(UITabBarItem *)tabItem
              bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
-    UIColor *textColor = [bottomTabOptions.textColor getWithDefaultValue:nil];
-    UIColor *selectedTextColor = [bottomTabOptions.selectedTextColor getWithDefaultValue:nil];
-    NSString *fontFamily = [bottomTabOptions.fontFamily getWithDefaultValue:nil];
-    NSNumber *fontSize = [bottomTabOptions.fontSize getWithDefaultValue:nil];
-    NSString *fontWeight = [bottomTabOptions.fontWeight getWithDefaultValue:nil];
+    UIColor *textColor = [bottomTabOptions.textColor withDefault:[UIColor blackColor]];
+    UIColor *selectedTextColor =
+        [bottomTabOptions.selectedTextColor withDefault:[UIColor blackColor]];
+    NSString *fontFamily = [bottomTabOptions.fontFamily withDefault:nil];
+    NSNumber *fontSize = [bottomTabOptions.fontSize withDefault:@(10)];
+    NSString *fontWeight = [bottomTabOptions.fontWeight withDefault:nil];
 
     NSDictionary *selectedAttributes = [RNNFontAttributesCreator
         createFromDictionary:[tabItem titleTextAttributesForState:UIControlStateSelected]
                   fontFamily:fontFamily
                     fontSize:fontSize
-             defaultFontSize:@(10)
                   fontWeight:fontWeight
-                       color:selectedTextColor
-                defaultColor:[UIColor blackColor]];
+                       color:selectedTextColor];
     [self setSelectedTitleAttributes:tabItem selectedTitleAttributes:selectedAttributes];
 
     NSDictionary *normalAttributes = [RNNFontAttributesCreator
         createFromDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]
                   fontFamily:fontFamily
                     fontSize:fontSize
-             defaultFontSize:@(10)
                   fontWeight:fontWeight
-                       color:textColor
-                defaultColor:[UIColor blackColor]];
+                       color:textColor];
     [self setTitleAttributes:tabItem titleAttributes:normalAttributes];
 }
 
