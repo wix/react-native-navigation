@@ -28,7 +28,7 @@
 
 - (void)componentWillAppear {
     [_topBarTitlePresenter componentWillAppear];
-    [_navigationButtons componentWillAppear];
+    [_buttonsPresenter componentWillAppear];
 }
 
 - (void)componentDidAppear {
