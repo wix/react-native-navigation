@@ -176,9 +176,15 @@ public class StackPresenter {
         final View component = child.getView();
         TopBarOptions topBarOptions = options.topBar;
 
+        Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
+        int statusBarOffset = withDefault.statusBar.visible.isTrueOrUndefined() && withDefault.statusBar.drawBehind.isTrue() ? StatusBarUtils.getStatusBarHeightDp(activity) : 0;
+
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
-        topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+        topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + statusBarOffset);
+        if(withDefault.statusBar.visible.isTrueOrUndefined() && withDefault.statusBar.drawBehind.isTrue()){
+            topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
+        }
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get(0));
@@ -605,7 +611,7 @@ public class StackPresenter {
     private int getTopBarTopMargin(StackController stack, ViewController child) {
         Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
         int topMargin = UiUtils.dpToPx(activity, withDefault.topBar.topMargin.get(0));
-        int statusBarInset = withDefault.statusBar.visible.isTrueOrUndefined() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0;
+        int statusBarInset = withDefault.statusBar.visible.isTrueOrUndefined() && !withDefault.statusBar.drawBehind.isTrue() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0;
         return topMargin + statusBarInset;
     }
 
