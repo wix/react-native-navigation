@@ -181,9 +181,11 @@ public class StackPresenter {
 
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
-        topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + statusBarOffset);
         if(withDefault.statusBar.visible.isTrueOrUndefined() && withDefault.statusBar.drawBehind.isTrue()){
             topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
+            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
+        } else {
+            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
         }
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
