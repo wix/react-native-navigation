@@ -25,8 +25,8 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     private final OverlayTouchDelegate touchDelegate;
 
     public ComponentLayout(Context context, ReactView reactView) {
-		super(context);
-		this.reactView = reactView;
+        super(context);
+        this.reactView = reactView;
         addView(reactView.asView(), matchParentLP());
         touchDelegate = new OverlayTouchDelegate(this, reactView);
     }
@@ -50,16 +50,18 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
         reactView.start();
     }
 
-    public void sendComponentWillStart(){
-        reactView.sendComponentWillStart(ComponentType.Component);
+    public void sendComponentWillStart() {
+        post(() -> reactView.sendComponentWillStart(ComponentType.Component));
     }
-	public void sendComponentStart() {
-		reactView.sendComponentStart(ComponentType.Component);
-	}
 
-	public void sendComponentStop() {
-		reactView.sendComponentStop(ComponentType.Component);
-	}
+    public void sendComponentStart() {
+        post(() -> reactView.sendComponentStart(ComponentType.Component));
+
+    }
+
+    public void sendComponentStop() {
+        reactView.sendComponentStop(ComponentType.Component);
+    }
 
     public void applyOptions(Options options) {
         touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside);

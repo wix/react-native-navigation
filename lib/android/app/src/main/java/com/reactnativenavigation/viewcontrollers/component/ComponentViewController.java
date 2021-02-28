@@ -64,14 +64,9 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    public void onViewWillAppear() {
+    public void onViewDidAppear() {
         if (view != null)
             view.sendComponentWillStart();
-        super.onViewWillAppear();
-    }
-
-    @Override
-    public void onViewDidAppear() {
         super.onViewDidAppear();
         if (view != null && lastVisibilityState == VisibilityState.Disappear) view.sendComponentStart();
         lastVisibilityState = VisibilityState.Appear;

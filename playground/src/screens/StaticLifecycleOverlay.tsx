@@ -220,6 +220,7 @@ const styles = StyleSheet.create<Style>({
   },
   events: {
     flexDirection: 'column',
+    alignItems: 'center',
     marginHorizontal: 2,
   },
   h1: {
