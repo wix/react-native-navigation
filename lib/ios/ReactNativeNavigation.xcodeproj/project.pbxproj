@@ -178,6 +178,8 @@
 		504189582506144D004A6BC7 /* RNNSetRootAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 504189562506144D004A6BC7 /* RNNSetRootAnimator.m */; };
 		5041DC3E2417BBBA0033312F /* BottomTabsBasePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5041DC3C2417BBBA0033312F /* BottomTabsBasePresenter.h */; };
 		5041DC3F2417BBBA0033312F /* BottomTabsBasePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041DC3D2417BBBA0033312F /* BottomTabsBasePresenter.m */; };
+		5042FC9725EBABED0087F562 /* RNNNavigationBarDelegateHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 5042FC9525EBABED0087F562 /* RNNNavigationBarDelegateHandler.h */; };
+		5042FC9825EBABED0087F562 /* RNNNavigationBarDelegateHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5042FC9625EBABED0087F562 /* RNNNavigationBarDelegateHandler.m */; };
 		50451D052042DAEB00695F00 /* RNNPushAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 50451D032042DAEB00695F00 /* RNNPushAnimation.h */; };
 		50451D062042DAEB00695F00 /* RNNPushAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 50451D042042DAEB00695F00 /* RNNPushAnimation.m */; };
 		50451D092042E20600695F00 /* RNNAnimationsOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50451D072042E20600695F00 /* RNNAnimationsOptions.h */; };
@@ -700,6 +702,8 @@
 		504189562506144D004A6BC7 /* RNNSetRootAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSetRootAnimator.m; sourceTree = "<group>"; };
 		5041DC3C2417BBBA0033312F /* BottomTabsBasePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsBasePresenter.h; sourceTree = "<group>"; };
 		5041DC3D2417BBBA0033312F /* BottomTabsBasePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsBasePresenter.m; sourceTree = "<group>"; };
+		5042FC9525EBABED0087F562 /* RNNNavigationBarDelegateHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNNavigationBarDelegateHandler.h; sourceTree = "<group>"; };
+		5042FC9625EBABED0087F562 /* RNNNavigationBarDelegateHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationBarDelegateHandler.m; sourceTree = "<group>"; };
 		50451D032042DAEB00695F00 /* RNNPushAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNPushAnimation.h; sourceTree = "<group>"; };
 		50451D042042DAEB00695F00 /* RNNPushAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNPushAnimation.m; sourceTree = "<group>"; };
 		50451D072042E20600695F00 /* RNNAnimationsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNAnimationsOptions.h; sourceTree = "<group>"; };
@@ -1543,6 +1547,8 @@
 				50BAFE482399403200798674 /* Child View Controllers */,
 				50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */,
 				50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */,
+				5042FC9525EBABED0087F562 /* RNNNavigationBarDelegateHandler.h */,
+				5042FC9625EBABED0087F562 /* RNNNavigationBarDelegateHandler.m */,
 				503A8FEB25DD397400BB6A74 /* RNNIconCreator.h */,
 				503A8FEC25DD397400BB6A74 /* RNNIconCreator.m */,
 				503A90BB25DD550600BB6A74 /* RNNIconDrawer.h */,
@@ -1873,6 +1879,7 @@
 				50495939216E5750006D2B81 /* Bool.h in Headers */,
 				50C085EB259143F200B0502C /* RNNButtonsParser.h in Headers */,
 				7B1126A31E2D2B6C00F9B03B /* RNNSplashScreen.h in Headers */,
+				5042FC9725EBABED0087F562 /* RNNNavigationBarDelegateHandler.h in Headers */,
 				5038A3D2216E364C009280BC /* Text.h in Headers */,
 				261F0E641E6EC94900989DE2 /* RNNModalManager.h in Headers */,
 				50344D2823A03DB4004B6A7C /* BottomTabsAttachMode.h in Headers */,
@@ -2197,6 +2204,7 @@
 				503A8A1A23BCB2ED0094D1C4 /* RNNReactButtonView.m in Sources */,
 				50570BEB2063E09B006A1B5C /* RNNTitleViewHelper.m in Sources */,
 				263905E71E4CAC950023D7D3 /* RNNSideMenuChildVC.m in Sources */,
+				5042FC9825EBABED0087F562 /* RNNNavigationBarDelegateHandler.m in Sources */,
 				5082CC3423CDC3B800FD2B6A /* HorizontalTranslationTransition.m in Sources */,
 				50495957216F6B3D006D2B81 /* DictionaryParser.m in Sources */,
 				503A8A0223BB7B810094D1C4 /* ElementAnimator.m in Sources */,

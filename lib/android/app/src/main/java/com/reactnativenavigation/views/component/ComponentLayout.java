@@ -50,6 +50,9 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
         reactView.start();
     }
 
+    public void sendComponentWillStart(){
+        reactView.sendComponentWillStart(ComponentType.Component);
+    }
 	public void sendComponentStart() {
 		reactView.sendComponentStart(ComponentType.Component);
 	}

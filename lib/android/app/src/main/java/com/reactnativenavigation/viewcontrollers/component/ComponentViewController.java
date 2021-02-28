@@ -23,7 +23,9 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private final ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
-    private enum VisibilityState { Appear, Disappear }
+
+    private enum VisibilityState {Appear, Disappear}
+
     private VisibilityState lastVisibilityState = VisibilityState.Disappear;
 
     public ComponentViewController(final Activity activity,
@@ -59,6 +61,13 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public ScrollEventListener getScrollEventListener() {
         return perform(view, null, ComponentLayout::getScrollEventListener);
+    }
+
+    @Override
+    public void onViewWillAppear() {
+        if (view != null)
+            view.sendComponentWillStart();
+        super.onViewWillAppear();
     }
 
     @Override
