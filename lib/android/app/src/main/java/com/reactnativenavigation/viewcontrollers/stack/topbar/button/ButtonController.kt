@@ -5,8 +5,8 @@ import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
-import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.ButtonOptions
+import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
@@ -36,12 +36,13 @@ open class ButtonController(activity: Activity,
 
     @SuppressLint("MissingSuperCall")
     override fun onViewWillAppear() {
-        getView()!!.sendComponentStart(ComponentType.Button)
+        getView()?.sendComponentWillStart(ComponentType.Button)
+        getView()?.sendComponentStart(ComponentType.Button)
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onViewDisappear() {
-        getView()!!.sendComponentStop(ComponentType.Button)
+        getView()?.sendComponentStop(ComponentType.Button)
     }
 
     override fun isRendered(): Boolean {
