@@ -21,6 +21,7 @@ import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParent
 @SuppressLint("ViewConstructor")
 public class ComponentLayout extends CoordinatorLayout implements ReactComponent, ButtonController.OnClickListener {
 
+    private boolean willAppearSent = false;
     private ReactView reactView;
     private final OverlayTouchDelegate touchDelegate;
 
@@ -51,15 +52,17 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     }
 
     public void sendComponentWillStart() {
-        post(() -> reactView.sendComponentWillStart(ComponentType.Component));
+        if (!willAppearSent)
+            reactView.sendComponentWillStart(ComponentType.Component);
+        willAppearSent = true;
     }
 
     public void sendComponentStart() {
-        post(() -> reactView.sendComponentStart(ComponentType.Component));
-
+        reactView.sendComponentStart(ComponentType.Component);
     }
 
     public void sendComponentStop() {
+        willAppearSent = false;
         reactView.sendComponentStop(ComponentType.Component);
     }
 
