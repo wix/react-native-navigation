@@ -1,11 +1,10 @@
 package com.reactnativenavigation.viewcontrollers.modal
 
-import android.view.ViewGroup
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.AnimationOptions
-import com.reactnativenavigation.options.ModalAnimationOptions
+import com.reactnativenavigation.options.TransitionAnimationOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.newAnimationOptionsJson
 import com.reactnativenavigation.utils.ScreenAnimationListener
@@ -42,7 +41,7 @@ class ModalAnimatorTest : BaseTest() {
 
     @Test
     fun show_isRunning() {
-        uut.show(modal1, root, ModalAnimationOptions(), object : ScreenAnimationListener() {})
+        uut.show(modal1, root, TransitionAnimationOptions(), object : ScreenAnimationListener() {})
         assertThat(uut.isRunning).isTrue()
     }
 
@@ -50,7 +49,7 @@ class ModalAnimatorTest : BaseTest() {
     fun `show - play enter animation on appearing if hasValue`() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions())
-        val animationOptions = ModalAnimationOptions(enter = enter, exit = exit)
+        val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
         val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.show(modal1, root, animationOptions, screenAnimationListener)
 
@@ -62,7 +61,7 @@ class ModalAnimatorTest : BaseTest() {
     fun `show - play default animation on appearing modal if enter does not hasValue`() {
         val enter = spy(AnimationOptions())
         val exit = spy(AnimationOptions())
-        val animationOptions = ModalAnimationOptions(enter = enter, exit = exit)
+        val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
         val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.show(modal1, root, animationOptions, screenAnimationListener)
 
@@ -75,7 +74,7 @@ class ModalAnimatorTest : BaseTest() {
     fun `show - play enter animation on appearing modal, exit on disappearing one`() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions(newAnimationOptionsJson(true)))
-        val animationOptions = ModalAnimationOptions(enter = enter, exit = exit)
+        val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
         val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.show(modal1, root, animationOptions, screenAnimationListener)
 
@@ -87,7 +86,7 @@ class ModalAnimatorTest : BaseTest() {
     fun `show - should not play exit on null disappearing one`() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions(newAnimationOptionsJson(true)))
-        val animationOptions = ModalAnimationOptions(enter = enter, exit = exit)
+        val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
         val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.show(modal1, null, animationOptions, screenAnimationListener)
 
@@ -99,7 +98,7 @@ class ModalAnimatorTest : BaseTest() {
     fun `dismiss - play default animation on disappearing modal if exit does not hasValue`() {
         val enter = spy(AnimationOptions())
         val exit = spy(AnimationOptions())
-        val animationOptions = ModalAnimationOptions(enter = enter, exit = exit)
+        val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
         val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.dismiss(root, modal1, animationOptions, screenAnimationListener)
 
@@ -112,7 +111,7 @@ class ModalAnimatorTest : BaseTest() {
     fun `dismiss - play exit animation on disappearing modal, enter on appearing one`() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions(newAnimationOptionsJson(true)))
-        val animationOptions = ModalAnimationOptions(enter = enter, exit = exit)
+        val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
         val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.dismiss(root, modal1, animationOptions, screenAnimationListener)
 
@@ -124,7 +123,7 @@ class ModalAnimatorTest : BaseTest() {
     fun `dismiss - should not play enter on null appearing one`() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions(newAnimationOptionsJson(true)))
-        val animationOptions = ModalAnimationOptions(enter = enter, exit = exit)
+        val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
         val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.dismiss(null, root, animationOptions, screenAnimationListener)
 
@@ -136,11 +135,11 @@ class ModalAnimatorTest : BaseTest() {
     @Test
     fun dismiss_dismissModalDuringShowAnimation() {
         val showListener = spy<ScreenAnimationListener>()
-        uut.show(modal1, root, ModalAnimationOptions(), showListener)
+        uut.show(modal1, root, TransitionAnimationOptions(), showListener)
 
         verify(showListener).onStart()
         val dismissListener = spy<ScreenAnimationListener>()
-        uut.dismiss(root, modal1, ModalAnimationOptions(), dismissListener)
+        uut.dismiss(root, modal1, TransitionAnimationOptions(), dismissListener)
 
         verify(showListener).onCancel()
         verify(showListener, never()).onEnd()

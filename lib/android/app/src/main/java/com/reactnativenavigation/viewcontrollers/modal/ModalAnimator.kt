@@ -6,7 +6,7 @@ import android.animation.AnimatorSet
 import android.content.Context
 import com.reactnativenavigation.options.FadeInAnimation
 import com.reactnativenavigation.options.FadeOutAnimation
-import com.reactnativenavigation.options.ModalAnimationOptions
+import com.reactnativenavigation.options.TransitionAnimationOptions
 import com.reactnativenavigation.utils.ScreenAnimationListener
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
@@ -28,7 +28,7 @@ open class ModalAnimator @JvmOverloads constructor(
     open fun show(
             appearing: ViewController<*>,
             disappearing: ViewController<*>?,
-            animationOptions: ModalAnimationOptions,
+            animationOptions: TransitionAnimationOptions,
             listener: ScreenAnimationListener
     ) {
         GlobalScope.launch(Dispatchers.Main.immediate) {
@@ -50,7 +50,7 @@ open class ModalAnimator @JvmOverloads constructor(
         }
     }
 
-    open fun dismiss(appearing: ViewController<*>?, disappearing: ViewController<*>, animationOptions: ModalAnimationOptions, listener: ScreenAnimationListener) {
+    open fun dismiss(appearing: ViewController<*>?, disappearing: ViewController<*>, animationOptions: TransitionAnimationOptions, listener: ScreenAnimationListener) {
         GlobalScope.launch(Dispatchers.Main.immediate) {
             if (runningAnimators.containsKey(disappearing)) {
                 runningAnimators[disappearing]?.cancel()
@@ -100,7 +100,7 @@ open class ModalAnimator @JvmOverloads constructor(
     private suspend fun setupShowModalWithSharedElementTransition(
             disappearing: ViewController<*>,
             appearing: ViewController<*>,
-            show: ModalAnimationOptions,
+            show: TransitionAnimationOptions,
             set: AnimatorSet
     ) {
         val fade = if (show.enter.isFadeAnimation()) show.enter else FadeInAnimation().content.enter
@@ -134,7 +134,7 @@ open class ModalAnimator @JvmOverloads constructor(
     private suspend fun setupDismissAnimationWithSharedElementTransition(
             disappearing: ViewController<*>,
             appearing: ViewController<*>,
-            animationOptions: ModalAnimationOptions,
+            animationOptions: TransitionAnimationOptions,
             set: AnimatorSet
     ) {
         val fade = if (animationOptions.exit.isFadeAnimation()) animationOptions.exit else FadeOutAnimation().content.exit

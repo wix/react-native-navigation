@@ -8,6 +8,7 @@ import com.reactnativenavigation.TestActivity;
 import com.reactnativenavigation.hierarchy.root.RootAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.TransitionAnimationOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.react.CommandListenerAdapter;
@@ -81,6 +82,18 @@ public class RootPresenterTest extends BaseTest {
         verify(listener).onSuccess(root.getId());
     }
 
+    @Test
+    public void setRoot_playEnterAnimOnlyWhenNoDisappearingView(){
+        Options animatedSetRoot = new Options();
+
+        ViewController spy = spy(root);
+        when(spy.resolveCurrentOptions(defaultOptions)).thenReturn(animatedSetRoot);
+        CommandListenerAdapter listener = spy(new CommandListenerAdapter());
+
+        uut.setRoot(spy, null, defaultOptions, listener, reactInstanceManager);
+        verify(animator).setRoot(eq(spy), eq(animatedSetRoot.animations.setRoot), any());
+        verify(listener).onSuccess(spy.getId());
+    }
     @Test
     public void setRoot_animates() {
         Options animatedSetRoot = new Options();

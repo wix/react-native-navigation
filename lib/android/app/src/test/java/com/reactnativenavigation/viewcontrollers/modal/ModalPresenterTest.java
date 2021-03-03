@@ -6,10 +6,8 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.options.AnimationOptions;
-import com.reactnativenavigation.options.ModalAnimationOptions;
-import com.reactnativenavigation.options.ModalAnimationOptionsKt;
-import com.reactnativenavigation.options.ModalAnimationOptionsTestKt;
+import com.reactnativenavigation.options.TransitionAnimationOptionsKt;
+import com.reactnativenavigation.options.TransitionAnimationOptionsTestKt;
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
@@ -106,8 +104,8 @@ public class ModalPresenterTest extends BaseTest {
     @Test
     public void showModal_resolvesDefaultOptions() throws JSONException {
         Options defaultOptions = new Options();
-        JSONObject disabledShowModalAnimation = ModalAnimationOptionsTestKt.newModalAnimationJson(false);
-        defaultOptions.animations.showModal = ModalAnimationOptionsKt.parseModalAnimationOptions(disabledShowModalAnimation);
+        JSONObject disabledShowModalAnimation = TransitionAnimationOptionsTestKt.newModalAnimationJson(false);
+        defaultOptions.animations.showModal = TransitionAnimationOptionsKt.parseTransitionAnimationOptions(disabledShowModalAnimation);
         uut.setDefaultOptions(defaultOptions);
         uut.showModal(modal1, root, new CommandListenerAdapter());
         verifyZeroInteractions(animator);

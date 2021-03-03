@@ -4,28 +4,27 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.reactnativenavigation.BaseTest
 import org.assertj.core.api.Assertions.assertThat
-import org.json.JSONException
 import org.json.JSONObject
 import org.junit.Test
 
 
-class ModalAnimationOptionsTest : BaseTest() {
-    lateinit var uut: ModalAnimationOptions
+class TransitionAnimationOptionsTest : BaseTest() {
+    lateinit var uut: TransitionAnimationOptions
 
     @Test
     fun `parse - empty for invalid payload`() {
-        uut = parseModalAnimationOptions(JSONObject())
+        uut = parseTransitionAnimationOptions(JSONObject())
         assertThat(uut.hasValue()).isFalse()
         assertThat(uut.enter.hasValue()).isFalse()
         assertThat(uut.exit.hasValue()).isFalse()
 
-        uut = parseModalAnimationOptions(JSONObject().apply { put("some", "value") })
+        uut = parseTransitionAnimationOptions(JSONObject().apply { put("some", "value") })
         assertThat(uut.hasValue()).isFalse()
     }
 
     @Test
     fun `parse - should parse enabled animation options from valid payload`() {
-        uut = parseModalAnimationOptions(newModalAnimationJson(true))
+        uut = parseTransitionAnimationOptions(newModalAnimationJson(true))
         assertThat(uut.hasValue()).isTrue()
         assertThat(uut.enter.hasValue()).isTrue()
         assertThat(uut.exit.hasValue()).isTrue()
@@ -35,7 +34,7 @@ class ModalAnimationOptionsTest : BaseTest() {
 
     @Test
     fun `parse - should parse disabled animation options from valid payload`() {
-        uut = parseModalAnimationOptions(newModalAnimationJson(false))
+        uut = parseTransitionAnimationOptions(newModalAnimationJson(false))
         assertThat(uut.hasValue()).isTrue()
         assertThat(uut.enter.hasValue()).isTrue()
         assertThat(uut.exit.hasValue()).isTrue()
@@ -45,24 +44,24 @@ class ModalAnimationOptionsTest : BaseTest() {
 
     @Test
     fun `hasValue should return true if one of enter, exit, sharedElements, elementTransitions has value `() {
-        uut = ModalAnimationOptions()
+        uut = TransitionAnimationOptions()
         assertThat(uut.hasValue()).isFalse()
 
-        uut = ModalAnimationOptions(enter = AnimationOptions(newAnimationOptionsJson(false)))
+        uut = TransitionAnimationOptions(enter = AnimationOptions(newAnimationOptionsJson(false)))
         assertThat(uut.hasValue()).isTrue()
 
-        uut = ModalAnimationOptions(exit = AnimationOptions(newAnimationOptionsJson(false)))
+        uut = TransitionAnimationOptions(exit = AnimationOptions(newAnimationOptionsJson(false)))
         assertThat(uut.hasValue()).isTrue()
 
 
         val mockSharedElements: SharedElements = mock { }
         whenever(mockSharedElements.hasValue()).thenReturn(true)
-        uut = ModalAnimationOptions(sharedElements = mockSharedElements)
+        uut = TransitionAnimationOptions(sharedElements = mockSharedElements)
         assertThat(uut.hasValue()).isTrue()
 
         val mockElementsTransitions: ElementTransitions = mock { }
         whenever(mockElementsTransitions.hasValue()).thenReturn(true)
-        uut = ModalAnimationOptions(elementTransitions = mockElementsTransitions)
+        uut = TransitionAnimationOptions(elementTransitions = mockElementsTransitions)
         assertThat(uut.hasValue()).isTrue()
 
     }
@@ -70,17 +69,17 @@ class ModalAnimationOptionsTest : BaseTest() {
 
     @Test
     fun `hasElementTransition should return true if one of shared elements, element Transitions has value`() {
-        uut = ModalAnimationOptions()
+        uut = TransitionAnimationOptions()
         assertThat(uut.hasElementTransitions()).isFalse()
 
         val mockSharedElements: SharedElements = mock { }
         whenever(mockSharedElements.hasValue()).thenReturn(true)
-        uut = ModalAnimationOptions(sharedElements = mockSharedElements)
+        uut = TransitionAnimationOptions(sharedElements = mockSharedElements)
         assertThat(uut.hasElementTransitions()).isTrue()
 
         val mockElementsTransitions: ElementTransitions = mock { }
         whenever(mockElementsTransitions.hasValue()).thenReturn(true)
-        uut = ModalAnimationOptions(elementTransitions = mockElementsTransitions)
+        uut = TransitionAnimationOptions(elementTransitions = mockElementsTransitions)
         assertThat(uut.hasElementTransitions()).isTrue()
 
     }

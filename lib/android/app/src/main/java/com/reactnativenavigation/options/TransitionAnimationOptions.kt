@@ -4,9 +4,9 @@ import androidx.annotation.RestrictTo
 import com.reactnativenavigation.options.params.Bool
 import org.json.JSONObject
 
-fun parseModalAnimationOptions(jsonObject: JSONObject?): ModalAnimationOptions {
+fun parseTransitionAnimationOptions(jsonObject: JSONObject?): TransitionAnimationOptions {
     return jsonObject?.let {
-        val modalAnimationOptions = ModalAnimationOptions(
+        val modalAnimationOptions = TransitionAnimationOptions(
                 AnimationOptions(jsonObject.optJSONObject("enter")),
                 AnimationOptions(jsonObject.optJSONObject("exit"))
         )
@@ -19,24 +19,24 @@ fun parseModalAnimationOptions(jsonObject: JSONObject?): ModalAnimationOptions {
             modalAnimationOptions.elementTransitions = ElementTransitions.parse(json)
         }
         modalAnimationOptions
-    } ?: ModalAnimationOptions()
+    } ?: TransitionAnimationOptions()
 }
 
-open class ModalAnimationOptions(
+open class TransitionAnimationOptions(
         val enter: AnimationOptions = AnimationOptions(),
         val exit: AnimationOptions = AnimationOptions(),
         override var sharedElements: SharedElements = SharedElements(),
         override var elementTransitions: ElementTransitions = ElementTransitions()
 ) : LayoutAnimation {
     open fun hasValue() = enter.hasValue() || exit.hasValue() || sharedElements.hasValue() || elementTransitions.hasValue()
-    open fun mergeWith(other: ModalAnimationOptions) {
+    open fun mergeWith(other: TransitionAnimationOptions) {
         this.enter.mergeWith(other.enter)
         this.exit.mergeWith(other.exit)
         this.sharedElements.mergeWith(other.sharedElements)
         this.elementTransitions.mergeWith(other.elementTransitions)
     }
 
-    open fun mergeWithDefault(other: ModalAnimationOptions) {
+    open fun mergeWithDefault(other: TransitionAnimationOptions) {
         if (!this.enter.hasValue()) this.enter.mergeWithDefault(other.enter)
         if (!this.exit.hasValue()) this.exit.mergeWithDefault(other.exit)
         if (!this.sharedElements.hasValue()) this.sharedElements.mergeWithDefault(other.sharedElements)

@@ -4,7 +4,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.AnimationOptions;
-import com.reactnativenavigation.options.ModalAnimationOptions;
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
