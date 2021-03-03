@@ -6,7 +6,7 @@ class AnimationsOptions {
     @JvmField var push = StackAnimationOptions()
     @JvmField var pop = StackAnimationOptions()
     @JvmField var setStackRoot = StackAnimationOptions()
-    @JvmField var setRoot = AnimationOptions()
+    @JvmField var setRoot = TransitionAnimationOptions()
     @JvmField var showModal = TransitionAnimationOptions()
     @JvmField var dismissModal = TransitionAnimationOptions()
 
@@ -36,11 +36,17 @@ class AnimationsOptions {
             options.push = StackAnimationOptions(json.optJSONObject("push"))
             options.pop = StackAnimationOptions(json.optJSONObject("pop"))
             options.setStackRoot = StackAnimationOptions(json.optJSONObject("setStackRoot"))
-            options.setRoot = AnimationOptions(json.optJSONObject("setRoot"))
+
+            val rootAnimJson = json.optJSONObject("setRoot")
+            rootAnimJson?.let {
+                options.setRoot = parseTransitionAnimationOptions(it)
+            }
+
             val showModalJson = json.optJSONObject("showModal")
             showModalJson?.let {
                 options.showModal = parseTransitionAnimationOptions(it)
             }
+
             val dismissModalJson = json.optJSONObject("dismissModal")
             dismissModalJson?.let {
                 options.dismissModal = parseTransitionAnimationOptions(it)
