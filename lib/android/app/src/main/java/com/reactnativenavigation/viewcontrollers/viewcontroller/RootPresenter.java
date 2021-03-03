@@ -34,8 +34,8 @@ public class RootPresenter {
         layoutDirectionApplier.apply(appearingRoot, defaultOptions, reactInstanceManager);
         rootLayout.addView(appearingRoot.getView(), matchParentWithBehaviour(new BehaviourDelegate(appearingRoot)));
         Options options = appearingRoot.resolveCurrentOptions(defaultOptions);
-        appearingRoot.setWaitForRender(options.animations.setRoot.waitForRender);
-        if (options.animations.setRoot.waitForRender.isTrue()) {
+        appearingRoot.setWaitForRender(options.animations.setRoot.getEnter().waitForRender);
+        if (options.animations.setRoot.getEnter().waitForRender.isTrue()) {
             appearingRoot.getView().setAlpha(0);
             appearingRoot.addOnAppearedListener(() -> {
                 if (appearingRoot.isDestroyed()) {
@@ -51,7 +51,7 @@ public class RootPresenter {
     }
 
     private void animateSetRootAndReportSuccess(ViewController root, CommandListener listener, Options options) {
-        if (options.animations.setRoot.hasAnimation()) {
+        if (options.animations.setRoot.getEnter().hasAnimation()) {
             animator.setRoot(root, options.animations.setRoot, () -> listener.onSuccess(root.getId()));
         } else {
             listener.onSuccess(root.getId());
