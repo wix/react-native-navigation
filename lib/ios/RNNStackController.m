@@ -1,13 +1,11 @@
 #import "RNNStackController.h"
 #import "RNNComponentViewController.h"
-#import "RNNNavigationBarDelegateHandler.h"
 #import "StackControllerDelegate.h"
 #import "UIViewController+Utils.h"
 
 @implementation RNNStackController {
     UIViewController *_presentedViewController;
     StackControllerDelegate *_stackDelegate;
-    RNNNavigationBarDelegateHandler *_navigationBarDelegateHandler;
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
@@ -27,7 +25,6 @@
     _stackDelegate = [[StackControllerDelegate alloc] initWithEventEmitter:self.eventEmitter];
     self.delegate = _stackDelegate;
     self.navigationBar.prefersLargeTitles = YES;
-    _navigationBarDelegateHandler = RNNNavigationBarDelegateHandler.new;
     return self;
 }
 
@@ -44,7 +41,6 @@
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
-    [_navigationBarDelegateHandler popViewControllerAnimated:animated];
     [self prepareForPop];
     return [super popViewControllerAnimated:animated];
 }
@@ -58,11 +54,7 @@
                                               withDefault:@"RNN.back"]];
     }
 
-    return [_navigationBarDelegateHandler navigationController:self shouldPopItem:shouldPopItem];
-}
-
-- (void)navigationBar:(UINavigationBar *)navigationBar didPopItem:(UINavigationItem *)item {
-    [_navigationBarDelegateHandler navigationBar:navigationBar didPopItem:item];
+    return [_stackDelegate navigationController:self shouldPopItem:shouldPopItem];
 }
 
 - (void)prepareForPop {

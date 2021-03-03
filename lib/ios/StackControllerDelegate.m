@@ -6,6 +6,7 @@
 @implementation StackControllerDelegate {
     RNNEventEmitter *_eventEmitter;
     UIViewController *_presentedViewController;
+    BOOL _isPopping;
 }
 
 - (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter {
@@ -15,14 +16,41 @@
 }
 
 - (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated {
+    if (_presentedViewController &&
+        ![navigationController.viewControllers containsObject:_presentedViewController]) {
+        _isPopping = YES;
+    }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController
        didShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated {
     if (_presentedViewController &&
         ![navigationController.viewControllers containsObject:_presentedViewController]) {
         [_presentedViewController screenPopped];
+        _isPopping = NO;
     }
 
     _presentedViewController = viewController;
+}
+
+- (BOOL)navigationController:(UINavigationController *)navigationController
+               shouldPopItem:(BOOL)shouldPopItem {
+    if (@available(iOS 13.0, *)) {
+        return shouldPopItem;
+    } else {
+        if (_isPopping) {
+            return YES;
+        } else if (shouldPopItem) {
+            [navigationController popViewControllerAnimated:YES];
+            _isPopping = NO;
+            return YES;
+        } else {
+            return NO;
+        }
+    }
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)

@@ -6,4 +6,7 @@
 
 - (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter;
 
+- (BOOL)navigationController:(UINavigationController *)navigationController
+               shouldPopItem:(BOOL)shouldPopItem;
+
 @end
