@@ -42,17 +42,17 @@ public class RootPresenter {
                     listener.onError("Could not set root - Waited for the view to become visible but it was destroyed");
                 } else {
                     appearingRoot.getView().setAlpha(1);
-                    animateSetRootAndReportSuccess(appearingRoot, listener, options);
+                    animateSetRootAndReportSuccess(appearingRoot, disappearingRoot, listener, options);
                 }
             });
         } else {
-            animateSetRootAndReportSuccess(appearingRoot, listener, options);
+            animateSetRootAndReportSuccess(appearingRoot, disappearingRoot, listener, options);
         }
     }
 
-    private void animateSetRootAndReportSuccess(ViewController root, CommandListener listener, Options options) {
+    private void animateSetRootAndReportSuccess(ViewController root, ViewController disappearingRoot, CommandListener listener, Options options) {
         if (options.animations.setRoot.getEnter().hasAnimation()) {
-            animator.setRoot(root, options.animations.setRoot, () -> listener.onSuccess(root.getId()));
+            animator.setRoot(root, disappearingRoot, options.animations.setRoot, () -> listener.onSuccess(root.getId()));
         } else {
             listener.onSuccess(root.getId());
         }

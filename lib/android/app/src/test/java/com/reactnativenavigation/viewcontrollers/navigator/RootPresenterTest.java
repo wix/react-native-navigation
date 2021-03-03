@@ -21,6 +21,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -88,6 +89,7 @@ public class RootPresenterTest extends BaseTest {
     public void setRoot_playEnterAnimOnlyWhenNoDisappearingView() {
         Options animatedSetRoot = new Options();
         AnimationOptions enter = spy(new AnimationOptions());
+        when(enter.hasValue()).thenReturn(true);
         AnimationOptions exit = spy(new AnimationOptions());
         animatedSetRoot.animations.setRoot = createEnterExitTransitionAnim(enter, exit);
         ViewController spy = spy(root);
@@ -95,7 +97,7 @@ public class RootPresenterTest extends BaseTest {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
 
         uut.setRoot(spy, null, defaultOptions, listener, reactInstanceManager);
-        verify(animator).setRoot(eq(spy), eq(animatedSetRoot.animations.setRoot), any());
+        verify(animator).setRoot(eq(spy), null, eq(animatedSetRoot.animations.setRoot), any());
         verify(listener).onSuccess(spy.getId());
     }
 
@@ -114,7 +116,7 @@ public class RootPresenterTest extends BaseTest {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
 
         uut.setRoot(spy, null, defaultOptions, listener, reactInstanceManager);
-        verify(animator).setRoot(eq(spy), eq(animatedSetRoot.animations.setRoot), any());
+        verify(animator).setRoot(eq(spy), eq(null), eq(animatedSetRoot.animations.setRoot), any());
         verify(listener).onSuccess(spy.getId());
     }
 
@@ -158,9 +160,10 @@ public class RootPresenterTest extends BaseTest {
     private RootAnimator createAnimator() {
         return new RootAnimator() {
             @Override
-            public void setRoot(@NotNull ViewController<?> root, @NotNull TransitionAnimationOptions setRoot, @NotNull Runnable onAnimationEnd) {
+            public void setRoot(@NotNull ViewController<?> appearing, @Nullable ViewController<?> disappearing, @NotNull TransitionAnimationOptions setRoot, @NotNull Runnable onAnimationEnd) {
                 onAnimationEnd.run();
             }
+
         };
     }
 

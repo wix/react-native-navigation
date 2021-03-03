@@ -2,17 +2,22 @@ package com.reactnativenavigation.hierarchy.root
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
 import android.view.View
 import com.reactnativenavigation.options.TransitionAnimationOptions
+import com.reactnativenavigation.utils.ScreenAnimationListener
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
+import java.util.*
 
 open class RootAnimator {
-    open fun setRoot(root: ViewController<*>, setRoot: TransitionAnimationOptions, onAnimationEnd: Runnable) {
-        root.view.visibility = View.INVISIBLE
-        val set = setRoot.enter.getAnimation(root.view)
+    private val runningAnimators: MutableMap<ViewController<*>, Animator?> = HashMap()
+
+    open fun setRoot(appearing: ViewController<*>, disappearing: ViewController<*>?, setRoot: TransitionAnimationOptions, onAnimationEnd: Runnable) {
+        appearing.view.visibility = View.INVISIBLE
+        val set = setRoot.enter.getAnimation(appearing.view)
         set.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator) {
-                root.view.visibility = View.VISIBLE
+                appearing.view.visibility = View.VISIBLE
             }
 
             override fun onAnimationEnd(animation: Animator) {
