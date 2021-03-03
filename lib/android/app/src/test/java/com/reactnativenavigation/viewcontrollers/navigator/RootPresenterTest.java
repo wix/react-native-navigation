@@ -8,6 +8,8 @@ import com.reactnativenavigation.TestActivity;
 import com.reactnativenavigation.hierarchy.root.RootAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.ElementTransitions;
+import com.reactnativenavigation.options.SharedElements;
 import com.reactnativenavigation.options.TransitionAnimationOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
@@ -83,9 +85,11 @@ public class RootPresenterTest extends BaseTest {
     }
 
     @Test
-    public void setRoot_playEnterAnimOnlyWhenNoDisappearingView(){
+    public void setRoot_playEnterAnimOnlyWhenNoDisappearingView() {
         Options animatedSetRoot = new Options();
-
+        AnimationOptions enter = spy(new AnimationOptions());
+        AnimationOptions exit = spy(new AnimationOptions());
+        animatedSetRoot.animations.setRoot = createEnterExitTransitionAnim(enter, exit);
         ViewController spy = spy(root);
         when(spy.resolveCurrentOptions(defaultOptions)).thenReturn(animatedSetRoot);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
@@ -94,15 +98,16 @@ public class RootPresenterTest extends BaseTest {
         verify(animator).setRoot(eq(spy), eq(animatedSetRoot.animations.setRoot), any());
         verify(listener).onSuccess(spy.getId());
     }
+
     @Test
     public void setRoot_animates() {
         Options animatedSetRoot = new Options();
-        animatedSetRoot.animations.setRoot = new AnimationOptions() {
+        animatedSetRoot.animations.setRoot = createEnterTransitionAnim(new AnimationOptions() {
             @Override
             public boolean hasAnimation() {
                 return true;
             }
-        };
+        });
 
         ViewController spy = spy(root);
         when(spy.resolveCurrentOptions(defaultOptions)).thenReturn(animatedSetRoot);
@@ -115,7 +120,7 @@ public class RootPresenterTest extends BaseTest {
 
     @Test
     public void setRoot_waitForRenderIsSet() {
-        root.options.animations.setRoot.waitForRender = new Bool(true);
+        root.options.animations.setRoot.getEnter().waitForRender = new Bool(true);
         ViewController spy = spy(root);
 
         uut.setRoot(spy, null, defaultOptions, new CommandListenerAdapter(), reactInstanceManager);
@@ -127,7 +132,7 @@ public class RootPresenterTest extends BaseTest {
 
     @Test
     public void setRoot_waitForRender() {
-        root.options.animations.setRoot.waitForRender = new Bool(true);
+        root.options.animations.setRoot.getEnter().waitForRender = new Bool(true);
 
         ViewController spy = spy(root);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
@@ -153,9 +158,22 @@ public class RootPresenterTest extends BaseTest {
     private RootAnimator createAnimator() {
         return new RootAnimator() {
             @Override
-            public void setRoot(@NotNull ViewController<?> root, @NotNull AnimationOptions setRoot, @NotNull Runnable onAnimationEnd) {
+            public void setRoot(@NotNull ViewController<?> root, @NotNull TransitionAnimationOptions setRoot, @NotNull Runnable onAnimationEnd) {
                 onAnimationEnd.run();
             }
         };
+    }
+
+
+    private TransitionAnimationOptions createEnterExitTransitionAnim(AnimationOptions enter, AnimationOptions exit) {
+        return new TransitionAnimationOptions(enter, exit, new SharedElements(), new ElementTransitions());
+    }
+
+    private TransitionAnimationOptions createEnterTransitionAnim(AnimationOptions enter) {
+        return createEnterExitTransitionAnim(enter, new AnimationOptions());
+    }
+
+    private TransitionAnimationOptions createExitTransitionAnim(AnimationOptions exit) {
+        return createEnterExitTransitionAnim(new AnimationOptions(), exit);
     }
 }
