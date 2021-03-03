@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestActivity;
 import com.reactnativenavigation.hierarchy.root.RootAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.AnimationOptions;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.robolectric.android.controller.ActivityController;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -40,11 +42,14 @@ public class RootPresenterTest extends BaseTest {
     private LayoutDirectionApplier layoutDirectionApplier;
     private Options defaultOptions;
     private ReactInstanceManager reactInstanceManager;
+    private Activity activity;
+    private ActivityController<TestActivity> activityController;
 
     @Override
     public void beforeEach() {
+        activityController = newActivityController(TestActivity.class);
+        activity = activityController.create().get();
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
-        Activity activity = newActivity();
         rootContainer = new CoordinatorLayout(activity);
         root = new SimpleViewController(activity, new ChildControllersRegistry(), "child1", new Options());
         animator = spy(createAnimator());
@@ -56,7 +61,7 @@ public class RootPresenterTest extends BaseTest {
 
     @Test
     public void setRoot_viewIsAddedToContainer() {
-        uut.setRoot(root, defaultOptions, new CommandListenerAdapter(), reactInstanceManager);
+        uut.setRoot(root, null, defaultOptions, new CommandListenerAdapter(), reactInstanceManager);
         assertThat(root.getView().getParent()).isEqualTo(rootContainer);
         assertThat(((CoordinatorLayout.LayoutParams) root.getView().getLayoutParams()).getBehavior()).isInstanceOf(BehaviourDelegate.class);
     }
@@ -64,14 +69,14 @@ public class RootPresenterTest extends BaseTest {
     @Test
     public void setRoot_reportsOnSuccess() {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
-        uut.setRoot(root, defaultOptions, listener, reactInstanceManager);
+        uut.setRoot(root, null, defaultOptions, listener, reactInstanceManager);
         verify(listener).onSuccess(root.getId());
     }
 
     @Test
     public void setRoot_doesNotAnimateByDefault() {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
-        uut.setRoot(root, defaultOptions, listener, reactInstanceManager);
+        uut.setRoot(root, null, defaultOptions, listener, reactInstanceManager);
         verifyZeroInteractions(animator);
         verify(listener).onSuccess(root.getId());
     }
@@ -90,7 +95,7 @@ public class RootPresenterTest extends BaseTest {
         when(spy.resolveCurrentOptions(defaultOptions)).thenReturn(animatedSetRoot);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
 
-        uut.setRoot(spy, defaultOptions, listener, reactInstanceManager);
+        uut.setRoot(spy, null, defaultOptions, listener, reactInstanceManager);
         verify(animator).setRoot(eq(spy), eq(animatedSetRoot.animations.setRoot), any());
         verify(listener).onSuccess(spy.getId());
     }
@@ -100,7 +105,7 @@ public class RootPresenterTest extends BaseTest {
         root.options.animations.setRoot.waitForRender = new Bool(true);
         ViewController spy = spy(root);
 
-        uut.setRoot(spy, defaultOptions, new CommandListenerAdapter(), reactInstanceManager);
+        uut.setRoot(spy, null, defaultOptions, new CommandListenerAdapter(), reactInstanceManager);
 
         ArgumentCaptor<Bool> captor = ArgumentCaptor.forClass(Bool.class);
         verify(spy).setWaitForRender(captor.capture());
@@ -113,7 +118,7 @@ public class RootPresenterTest extends BaseTest {
 
         ViewController spy = spy(root);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
-        uut.setRoot(spy, defaultOptions, listener, reactInstanceManager);
+        uut.setRoot(spy, null, defaultOptions, listener, reactInstanceManager);
         verify(spy).addOnAppearedListener(any());
         assertThat(spy.getView().getAlpha()).isZero();
         verifyZeroInteractions(listener);
@@ -127,7 +132,7 @@ public class RootPresenterTest extends BaseTest {
     @Test
     public void setRoot_appliesLayoutDirection() {
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
-        uut.setRoot(root, defaultOptions, listener, reactInstanceManager);
+        uut.setRoot(root, null, defaultOptions, listener, reactInstanceManager);
         verify(layoutDirectionApplier).apply(root, defaultOptions, reactInstanceManager);
     }
 

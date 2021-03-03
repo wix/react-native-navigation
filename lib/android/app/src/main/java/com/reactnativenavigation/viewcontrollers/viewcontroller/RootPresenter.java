@@ -30,23 +30,23 @@ public class RootPresenter {
         this.layoutDirectionApplier = layoutDirectionApplier;
     }
 
-    public void setRoot(ViewController root, Options defaultOptions, CommandListener listener, ReactInstanceManager reactInstanceManager) {
-        layoutDirectionApplier.apply(root, defaultOptions, reactInstanceManager);
-        rootLayout.addView(root.getView(), matchParentWithBehaviour(new BehaviourDelegate(root)));
-        Options options = root.resolveCurrentOptions(defaultOptions);
-        root.setWaitForRender(options.animations.setRoot.waitForRender);
+    public void setRoot(ViewController appearingRoot, ViewController<?> disappearingRoot, Options defaultOptions, CommandListener listener, ReactInstanceManager reactInstanceManager) {
+        layoutDirectionApplier.apply(appearingRoot, defaultOptions, reactInstanceManager);
+        rootLayout.addView(appearingRoot.getView(), matchParentWithBehaviour(new BehaviourDelegate(appearingRoot)));
+        Options options = appearingRoot.resolveCurrentOptions(defaultOptions);
+        appearingRoot.setWaitForRender(options.animations.setRoot.waitForRender);
         if (options.animations.setRoot.waitForRender.isTrue()) {
-            root.getView().setAlpha(0);
-            root.addOnAppearedListener(() -> {
-                if (root.isDestroyed()) {
+            appearingRoot.getView().setAlpha(0);
+            appearingRoot.addOnAppearedListener(() -> {
+                if (appearingRoot.isDestroyed()) {
                     listener.onError("Could not set root - Waited for the view to become visible but it was destroyed");
                 } else {
-                    root.getView().setAlpha(1);
-                    animateSetRootAndReportSuccess(root, listener, options);
+                    appearingRoot.getView().setAlpha(1);
+                    animateSetRootAndReportSuccess(appearingRoot, listener, options);
                 }
             });
         } else {
-            animateSetRootAndReportSuccess(root, listener, options);
+            animateSetRootAndReportSuccess(appearingRoot, listener, options);
         }
     }
 

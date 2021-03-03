@@ -162,9 +162,11 @@ public class NavigatorTest extends BaseTest {
         CommandListenerAdapter listener = new CommandListenerAdapter();
         uut.setRoot(child1, listener, reactInstanceManager);
         ArgumentCaptor<CommandListenerAdapter> captor = ArgumentCaptor.forClass(CommandListenerAdapter.class);
-        verify(rootPresenter).setRoot(eq(child1), eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
+        verify(rootPresenter).setRoot(eq(child1), eq(null),eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
         assertThat(captor.getValue().getListener()).isEqualTo(listener);
     }
+
+
 
     @Test
     public void setRoot_clearsSplashLayout() {
@@ -244,8 +246,10 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void push_OnCorrectStackByFindingChildId() {
-        StackController stack1 = newStack(); stack1.ensureViewIsCreated();
-        StackController stack2 = newStack(); stack2.ensureViewIsCreated();
+        StackController stack1 = newStack();
+        stack1.ensureViewIsCreated();
+        StackController stack2 = newStack();
+        stack2.ensureViewIsCreated();
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
         BottomTabsController bottomTabsController = newTabs(Arrays.asList(stack1, stack2));
@@ -298,7 +302,8 @@ public class NavigatorTest extends BaseTest {
     public void pop_byStackId() {
         disablePushAnimation(child1, child2);
         disablePopAnimation(child2, child1);
-        StackController stack = newStack(child1, child2); stack.ensureViewIsCreated();
+        StackController stack = newStack(child1, child2);
+        stack.ensureViewIsCreated();
         uut.setRoot(stack, new CommandListenerAdapter(), reactInstanceManager);
 
         uut.pop(stack.getId(), Options.EMPTY, new CommandListenerAdapter());
