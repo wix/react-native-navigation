@@ -22,6 +22,29 @@ But you can use the following method to unsubscribe manually:
 appLaunchedListener.remove();
 ```
 
+## componentWillAppear
+
+Called each time before this component being fully shown in the screen. 
+
+```js
+class MyComponent extends Component {
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  componentWillAppear() {
+    //fancy stuff
+  }
+}
+```
+
 ## componentDidAppear
 
 Called each time this component appears on the screen (attached to the view hierarchy).
