@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.hierarchy.root.RootAnimator;
+import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.views.BehaviourDelegate;
@@ -34,8 +35,9 @@ public class RootPresenter {
         layoutDirectionApplier.apply(appearingRoot, defaultOptions, reactInstanceManager);
         rootLayout.addView(appearingRoot.getView(), matchParentWithBehaviour(new BehaviourDelegate(appearingRoot)));
         Options options = appearingRoot.resolveCurrentOptions(defaultOptions);
-        appearingRoot.setWaitForRender(options.animations.setRoot.getEnter().waitForRender);
-        if (options.animations.setRoot.getEnter().waitForRender.isTrue()) {
+        AnimationOptions enter = options.animations.setRoot.getEnter();
+        appearingRoot.setWaitForRender(enter.waitForRender);
+        if (enter.waitForRender.isTrue()) {
             appearingRoot.getView().setAlpha(0);
             appearingRoot.addOnAppearedListener(() -> {
                 if (appearingRoot.isDestroyed()) {
@@ -51,7 +53,10 @@ public class RootPresenter {
     }
 
     private void animateSetRootAndReportSuccess(ViewController root, ViewController disappearingRoot, CommandListener listener, Options options) {
-        if (options.animations.setRoot.getEnter().hasAnimation()) {
+        AnimationOptions exit = options.animations.setRoot.getExit();
+        AnimationOptions enter = options.animations.setRoot.getEnter();
+        if ((enter.hasValue() && enter.enabled.isTrueOrUndefined())
+                || (disappearingRoot != null && exit.hasValue() && exit.enabled.isTrueOrUndefined())) {
             animator.setRoot(root, disappearingRoot, options.animations.setRoot, () -> listener.onSuccess(root.getId()));
         } else {
             listener.onSuccess(root.getId());
