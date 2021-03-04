@@ -9,11 +9,11 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
 open class RootAnimator {
 
-    open fun setRoot(appearing: ViewController<*>, disappearing: ViewController<*>?, setRoot: TransitionAnimationOptions, onAnimationEnd: Runnable) {
+    open fun setRoot(appearing: ViewController<*>, disappearing: ViewController<*>?, setRoot: TransitionAnimationOptions, onAnimationEnd: ()->Unit) {
         appearing.view.visibility = View.VISIBLE
 
         if (!setRoot.hasValue() || (!setRoot.enter.hasAnimation() && !setRoot.exit.hasAnimation())) {
-            onAnimationEnd.run()
+            onAnimationEnd()
             return
         }
 
@@ -28,13 +28,13 @@ open class RootAnimator {
 
         when {
             appearingAnimation != null && disappearingAnimation != null -> animationSet.playTogether(appearingAnimation, disappearingAnimation)
-            appearingAnimation != null -> animationSet.playTogether(appearingAnimation)
-            disappearingAnimation != null -> animationSet.playTogether(disappearingAnimation)
+            appearingAnimation != null -> animationSet.play(appearingAnimation)
+            disappearingAnimation != null -> animationSet.play(disappearingAnimation)
         }
         animationSet.start()
     }
 
-    private fun createAnimator(onAnimationEnd: Runnable): AnimatorSet {
+    private fun createAnimator(onAnimationEnd: () -> Unit): AnimatorSet {
         val set = AnimatorSet()
         set.addListener(object : AnimatorListenerAdapter() {
             private var isCancelled = false
@@ -43,11 +43,11 @@ open class RootAnimator {
 
             override fun onAnimationCancel(animation: Animator) {
                 isCancelled = true
-                onAnimationEnd.run()
+                onAnimationEnd()
             }
 
             override fun onAnimationEnd(animation: Animator) {
-                if (!isCancelled) onAnimationEnd.run()
+                if (!isCancelled) onAnimationEnd()
             }
         })
         return set

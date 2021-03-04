@@ -10,6 +10,9 @@ import com.reactnativenavigation.views.BehaviourDelegate;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public class RootPresenter {
@@ -59,12 +62,15 @@ public class RootPresenter {
     {
         AnimationOptions exit = options.animations.setRoot.getExit();
         AnimationOptions enter = options.animations.setRoot.getEnter();
-        if ((enter.enabled.isTrueOrUndefined())
-                || (disappearingRoot != null && exit.enabled.isTrueOrUndefined())) {
+        if ((enter.enabled.isTrueOrUndefined() && enter.hasAnimation())
+                || (disappearingRoot != null && exit.enabled.isTrueOrUndefined()&& exit.hasAnimation())) {
             animator.setRoot(root,
                     disappearingRoot,
                     options.animations.setRoot,
-                    () -> listener.onSuccess(root.getId()));
+                    () -> {
+                        listener.onSuccess(root.getId());
+                        return Unit.INSTANCE;
+                    });
         } else {
             listener.onSuccess(root.getId());
         }

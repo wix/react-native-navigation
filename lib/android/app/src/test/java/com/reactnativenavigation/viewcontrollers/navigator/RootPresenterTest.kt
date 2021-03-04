@@ -188,8 +188,8 @@ class RootPresenterTest : BaseTest() {
         Mockito.`when`(spy.resolveCurrentOptions(defaultOptions)).thenReturn(animatedSetRoot)
         val listener = Mockito.spy(CommandListenerAdapter())
         uut.setRoot(spy, null, defaultOptions, listener, reactInstanceManager)
-        Mockito.verify(animator).setRoot(eq(spy), eq(null), eq(animatedSetRoot.animations.setRoot), any())
         Mockito.verify(listener).onSuccess(spy.id)
+        Mockito.verify(animator).setRoot(eq(spy), eq(null), eq(animatedSetRoot.animations.setRoot), any())
     }
 
     @Test
@@ -226,9 +226,8 @@ class RootPresenterTest : BaseTest() {
 
     private fun createAnimator(): RootAnimator {
         return object : RootAnimator() {
-            override fun setRoot(appearing: ViewController<*>, disappearing: ViewController<*>?, setRoot: TransitionAnimationOptions, onAnimationEnd: Runnable) {
+            override fun setRoot(appearing: ViewController<*>, disappearing: ViewController<*>?, setRoot: TransitionAnimationOptions, onAnimationEnd: () -> Unit) {
                 super.setRoot(appearing, disappearing, setRoot, onAnimationEnd)
-                onAnimationEnd.run()
             }
         }
     }
