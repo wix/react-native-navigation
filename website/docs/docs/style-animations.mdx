@@ -29,6 +29,32 @@ The following properties can be animated with our animation framework:
 
 ## Layout animations
 
+### Root animations
+
+Animating switches between roots, using enter/exit animation you can control how each root is animated towards entering or exiting the screen.
+
+This can be acheived by modifying the default options (`setDefaultOptions` for example) to be like:
+
+```js
+options:{
+  animations: {
+        push:{...},
+        setRoot: {
+          enter: {
+            waitForRender: true,
+            enabled: false,
+            translationY: {
+              from: 0,
+              to: 1,
+              duration: 3,
+            },
+          },
+          exit:{...}
+        },
+      },
+    };
+```
+
 ### Stack animations
 
 When animating screens in and out of a stack, there are three elements you can work with:
@@ -103,6 +129,7 @@ The appearing modal can play custom enter animation and exit for the disappearin
 The following example demonstrates how to show a modal with a fade-in animation.
 
 :::warning Deprecation warning
+Consider using enter, exit animations instead.
 ```js
 options: {
   animations: {
@@ -116,7 +143,6 @@ options: {
   }
 }
 ```
-Consider using enter, exit animations instead.
 :::
 ```js
 options: {
