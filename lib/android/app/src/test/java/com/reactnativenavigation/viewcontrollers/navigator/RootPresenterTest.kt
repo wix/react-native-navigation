@@ -127,13 +127,62 @@ class RootPresenterTest : BaseTest() {
     }
 
     @Test
+    fun setRoot_playExitAnimOnlyWhenNoEnterAnimation() {
+        setupWithAnimator(RootAnimator())
+        val animatedSetRoot = Options()
+        val enter = Mockito.spy(AnimationOptions())
+        val exit = Mockito.spy(AnimationOptions())
+
+        Mockito.`when`(enter.hasValue()).thenReturn(false)
+        Mockito.`when`(enter.hasAnimation()).thenReturn(false)
+
+        Mockito.`when`(exit.hasValue()).thenReturn(true)
+        Mockito.`when`(exit.hasAnimation()).thenReturn(true)
+
+        animatedSetRoot.animations.setRoot = createEnterExitTransitionAnim(enter, exit)
+        val spy = Mockito.spy(root)
+        val spy2 = Mockito.spy(root2)
+        Mockito.`when`(spy.resolveCurrentOptions(defaultOptions)).thenReturn(animatedSetRoot)
+        val listener = Mockito.spy(CommandListenerAdapter())
+        uut.setRoot(spy, spy2, defaultOptions, listener, reactInstanceManager)
+        Mockito.verify(enter, never()).getAnimation(spy.view)
+        Mockito.verify(exit).getAnimation(spy2.view)
+    }
+
+
+    @Test
+    fun setRoot_playEnterExitAnimOnBothViews() {
+        setupWithAnimator(RootAnimator())
+        val animatedSetRoot = Options()
+        val enter = Mockito.spy(AnimationOptions())
+        val exit = Mockito.spy(AnimationOptions())
+
+        Mockito.`when`(enter.hasValue()).thenReturn(true)
+        Mockito.`when`(enter.hasAnimation()).thenReturn(true)
+
+        Mockito.`when`(exit.hasValue()).thenReturn(true)
+        Mockito.`when`(exit.hasAnimation()).thenReturn(true)
+
+        animatedSetRoot.animations.setRoot = createEnterExitTransitionAnim(enter, exit)
+        val spy = Mockito.spy(root)
+        val spy2 = Mockito.spy(root2)
+        Mockito.`when`(spy.resolveCurrentOptions(defaultOptions)).thenReturn(animatedSetRoot)
+        val listener = Mockito.spy(CommandListenerAdapter())
+        uut.setRoot(spy, spy2, defaultOptions, listener, reactInstanceManager)
+
+        Mockito.verify(enter).getAnimation(spy.view)
+        Mockito.verify(exit).getAnimation(spy2.view)
+    }
+
+
+
+    @Test
     fun setRoot_animates() {
         val animatedSetRoot = Options()
-        val enter: AnimationOptions = Mockito.spy(object : AnimationOptions() {
-            override fun hasAnimation(): Boolean {
-                return true
-            }
-        })
+        val enter = Mockito.spy(AnimationOptions())
+        Mockito.`when`(enter.hasValue()).thenReturn(true)
+        Mockito.`when`(enter.hasAnimation()).thenReturn(true)
+
         animatedSetRoot.animations.setRoot = createEnterTransitionAnim(enter)
         val spy = Mockito.spy(root)
         Mockito.`when`(spy.resolveCurrentOptions(defaultOptions)).thenReturn(animatedSetRoot)
@@ -178,6 +227,7 @@ class RootPresenterTest : BaseTest() {
     private fun createAnimator(): RootAnimator {
         return object : RootAnimator() {
             override fun setRoot(appearing: ViewController<*>, disappearing: ViewController<*>?, setRoot: TransitionAnimationOptions, onAnimationEnd: Runnable) {
+                super.setRoot(appearing, disappearing, setRoot, onAnimationEnd)
                 onAnimationEnd.run()
             }
         }
