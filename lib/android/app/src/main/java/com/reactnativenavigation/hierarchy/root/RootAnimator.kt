@@ -6,23 +6,18 @@ import android.animation.AnimatorSet
 import android.view.View
 import com.reactnativenavigation.options.TransitionAnimationOptions
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import java.util.*
 
 open class RootAnimator {
-    private val runningAnimators: MutableMap<ViewController<*>, Animator?> = HashMap()
 
     open fun setRoot(appearing: ViewController<*>, disappearing: ViewController<*>?, setRoot: TransitionAnimationOptions, onAnimationEnd: Runnable) {
+        appearing.view.visibility = View.VISIBLE
+
         if (!setRoot.hasValue() || (!setRoot.enter.hasAnimation() && !setRoot.exit.hasAnimation())) {
-            appearing.view.visibility = View.VISIBLE
             onAnimationEnd.run()
             return
         }
-        appearing.view.visibility = View.INVISIBLE
 
-        val animationSet = createAnimator(appearing, Runnable {
-            appearing.view.visibility = View.VISIBLE
-            onAnimationEnd.run()
-        })
+        val animationSet = createAnimator(onAnimationEnd)
 
         val appearingAnimation = if (setRoot.enter.hasAnimation()) {
             setRoot.enter.getAnimation(appearing.view)
@@ -33,17 +28,17 @@ open class RootAnimator {
 
         when {
             appearingAnimation != null && disappearingAnimation != null -> animationSet.playTogether(appearingAnimation, disappearingAnimation)
-            appearingAnimation != null -> animationSet.play(appearingAnimation)
-            disappearingAnimation != null -> animationSet.play(disappearingAnimation)
+            appearingAnimation != null -> animationSet.playTogether(appearingAnimation)
+            disappearingAnimation != null -> animationSet.playTogether(disappearingAnimation)
         }
+        animationSet.start()
     }
 
-    private fun createAnimator(appearing: ViewController<*>, onAnimationEnd: Runnable): AnimatorSet {
+    private fun createAnimator(onAnimationEnd: Runnable): AnimatorSet {
         val set = AnimatorSet()
         set.addListener(object : AnimatorListenerAdapter() {
             private var isCancelled = false
             override fun onAnimationStart(animation: Animator) {
-                runningAnimators[appearing] = animation
             }
 
             override fun onAnimationCancel(animation: Animator) {
@@ -52,7 +47,6 @@ open class RootAnimator {
             }
 
             override fun onAnimationEnd(animation: Animator) {
-                runningAnimators.remove(appearing)
                 if (!isCancelled) onAnimationEnd.run()
             }
         })
