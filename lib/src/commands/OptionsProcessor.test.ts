@@ -51,6 +51,39 @@ describe('navigation options', () => {
       new Deprecations()
     );
   });
+
+  it('processes old setRoot animation value to new enter exit format', () => {
+    const options: Options = {
+      animations: {
+        setRoot: {
+          enabled: false,
+          translationY: {
+            from: 0,
+            to: 1,
+            duration: 3,
+          },
+        },
+      },
+    };
+
+    const expectedOptions: Options = {
+      animations: {
+        setRoot: {
+          enter: {
+            enabled: false,
+            translationY: {
+              from: 0,
+              to: 1,
+              duration: 3,
+            },
+          },
+        },
+      },
+    };
+
+    uut.processOptions(options, CommandName.SetRoot);
+    expect(options).toEqual(expectedOptions);
+  });
   describe('Modal Animation Options', () => {
     describe('Show Modal', () => {
       it('processes old options into new options,backwards compatibility ', () => {

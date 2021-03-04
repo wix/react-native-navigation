@@ -13,6 +13,7 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import {
   AnimationOptions,
+  EnterExitAnimationOptions,
   ModalAnimationOptions,
   OldModalAnimationOptions,
   Options,
@@ -82,7 +83,6 @@ export class OptionsProcessor {
       if (!value) {
         return;
       }
-
       this.processComponent(key, value, objectToProcess);
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
@@ -210,6 +210,7 @@ export class OptionsProcessor {
   }
 
   private processAnimation(key: string, value: any, options: Record<string, any>) {
+    this.processSetRootAnimation(key, value, options);
     this.processPush(key, value, options);
     this.processPop(key, value, options);
     this.processSetStackRoot(key, value, options);
@@ -274,6 +275,19 @@ export class OptionsProcessor {
       parentOptions.pop!!.bottomTabs = {
         exit: animation.bottomTabs as ViewAnimationOptions,
       };
+    }
+  }
+
+  private processSetRootAnimation(
+    key: string,
+    animation: ViewAnimationOptions | EnterExitAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (key !== 'setRoot') return;
+    if (!('enter' in animation)) {
+      parentOptions.setRoot = {
+        enter: animation,
+      } as EnterExitAnimationOptions;
     }
   }
 
