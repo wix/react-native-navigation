@@ -52,12 +52,19 @@ public class RootPresenter {
         }
     }
 
-    private void animateSetRootAndReportSuccess(ViewController root, ViewController disappearingRoot, CommandListener listener, Options options) {
+    private void animateSetRootAndReportSuccess(ViewController root,
+                                                ViewController disappearingRoot,
+                                                CommandListener listener,
+                                                Options options)
+    {
         AnimationOptions exit = options.animations.setRoot.getExit();
         AnimationOptions enter = options.animations.setRoot.getEnter();
-        if ((enter.hasValue() && enter.enabled.isTrueOrUndefined())
-                || (disappearingRoot != null && exit.hasValue() && exit.enabled.isTrueOrUndefined())) {
-            animator.setRoot(root, disappearingRoot, options.animations.setRoot, () -> listener.onSuccess(root.getId()));
+        if ((enter.enabled.isTrueOrUndefined())
+                || (disappearingRoot != null && exit.enabled.isTrueOrUndefined())) {
+            animator.setRoot(root,
+                    disappearingRoot,
+                    options.animations.setRoot,
+                    () -> listener.onSuccess(root.getId()));
         } else {
             listener.onSuccess(root.getId());
         }
