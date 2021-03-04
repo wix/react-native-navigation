@@ -1208,6 +1208,17 @@ export interface ViewAnimationOptions extends ScreenAnimationOptions {
   id?: string;
 }
 
+export interface EnterExitAnimationOptions {
+  /**
+   * Animate opening component
+   */
+  enter?: ViewAnimationOptions;
+  /**
+   * Animate closing component
+   */
+  exit?: ViewAnimationOptions;
+}
+
 export interface OldModalAnimationOptions extends ViewAnimationOptions {
   /**
    * Animations to be applied on elements which are shared between the appearing and disappearing screens
@@ -1299,7 +1310,7 @@ export interface AnimationOptions {
   /**
    * Configure the setRoot animation
    */
-  setRoot?: ViewAnimationOptions;
+  setRoot?: ViewAnimationOptions | EnterExitAnimationOptions;
   /**
    * Configure the animation of the pushed screen
    * #### (Android specific)
