@@ -4,19 +4,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.viewcontrollers.component.ComponentPresenterBase;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.component.ComponentPresenterBase;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.component.ReactComponent;
 
 import org.mockito.Mockito;
-
-import androidx.annotation.NonNull;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
