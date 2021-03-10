@@ -21,8 +21,6 @@ const val DEFAULT_LEFT_MARGIN = 16
 class MainToolBar(context: Context) : RelativeLayout(context) {
 
     private var component: View? = null
-    private val componentViewId = CompatUtils.generateViewId()
-    private var componentViewIdBackup = View.NO_ID
     private val centerFrameLayout = FrameLayout(context).apply {
         id = CompatUtils.generateViewId()
     }
@@ -62,8 +60,6 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
         if (this.component == component) return
         clear()
         this.component = component
-        this.componentViewIdBackup = this.component?.id ?: View.NO_ID
-        this.component?.id = componentViewId
         if (alignment == Alignment.Center) {
             this.centerFrameLayout.addView(this.component, FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT).apply {
                 this.gravity = Gravity.CENTER
@@ -165,7 +161,7 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
     }
 
 
-    private fun clearComponent() = this.component?.let { it.id = View.NO_ID; ViewUtils.removeFromParent(it); this.component = null; }
+    private fun clearComponent() = this.component?.let { ViewUtils.removeFromParent(it); this.component = null; }
 
     @RestrictTo(RestrictTo.Scope.TESTS, RestrictTo.Scope.LIBRARY)
     fun getTitleComponent() = this.component ?: this.titleSubTitleBar
