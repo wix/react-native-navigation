@@ -134,6 +134,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
         uut.switchToTab(1);
         verify(initialTab, times(1)).sendComponentStop(ComponentType.Component);
+        verify(selectedTab, times(1)).sendComponentWillStart(ComponentType.Component);
         verify(selectedTab, times(1)).sendComponentStart(ComponentType.Component);
         verify(selectedTab, times(0)).sendComponentStop(ComponentType.Component);
     }
@@ -147,6 +148,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.switchToTab(0);
 
         verify(getActualTabView(0), times(1)).sendComponentStop(ComponentType.Component);
+        verify(getActualTabView(0), times(2)).sendComponentWillStart(ComponentType.Component);
         verify(getActualTabView(0), times(2)).sendComponentStart(ComponentType.Component);
         verify(getActualTabView(1), times(1)).sendComponentStart(ComponentType.Component);
         verify(getActualTabView(1), times(1)).sendComponentStop(ComponentType.Component);

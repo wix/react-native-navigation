@@ -26,6 +26,11 @@
     [_buttonsPresenter bindViewController:viewController];
 }
 
+- (void)componentWillAppear {
+    [_topBarTitlePresenter componentWillAppear];
+    [_buttonsPresenter componentWillAppear];
+}
+
 - (void)componentDidAppear {
     [_topBarTitlePresenter componentDidAppear];
     [_buttonsPresenter componentDidAppear];

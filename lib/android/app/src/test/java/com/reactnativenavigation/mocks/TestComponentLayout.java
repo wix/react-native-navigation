@@ -36,6 +36,11 @@ public class TestComponentLayout extends ComponentLayout implements ButtonContro
     }
 
     @Override
+    public void sendComponentWillStart() {
+        reactView.sendComponentStart(ComponentType.Component);
+    }
+
+    @Override
     public void sendComponentStart() {
         reactView.sendComponentStart(ComponentType.Component);
     }

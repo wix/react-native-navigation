@@ -26,6 +26,7 @@ typedef void (^RNNButtonPressCallback)(NSString *buttonId);
 
 - (void)applyColor:(UIColor *)color;
 
+- (void)notifyWillAppear;
 - (void)notifyDidAppear;
 - (void)notifyDidDisappear;
 

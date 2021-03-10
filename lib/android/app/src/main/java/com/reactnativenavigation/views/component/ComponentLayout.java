@@ -21,12 +21,13 @@ import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParent
 @SuppressLint("ViewConstructor")
 public class ComponentLayout extends CoordinatorLayout implements ReactComponent, ButtonController.OnClickListener {
 
+    private boolean willAppearSent = false;
     private ReactView reactView;
     private final OverlayTouchDelegate touchDelegate;
 
     public ComponentLayout(Context context, ReactView reactView) {
-		super(context);
-		this.reactView = reactView;
+        super(context);
+        this.reactView = reactView;
         addView(reactView.asView(), matchParentLP());
         touchDelegate = new OverlayTouchDelegate(this, reactView);
     }
@@ -50,13 +51,20 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
         reactView.start();
     }
 
-	public void sendComponentStart() {
-		reactView.sendComponentStart(ComponentType.Component);
-	}
+    public void sendComponentWillStart() {
+        if (!willAppearSent)
+            reactView.sendComponentWillStart(ComponentType.Component);
+        willAppearSent = true;
+    }
 
-	public void sendComponentStop() {
-		reactView.sendComponentStop(ComponentType.Component);
-	}
+    public void sendComponentStart() {
+        reactView.sendComponentStart(ComponentType.Component);
+    }
+
+    public void sendComponentStop() {
+        willAppearSent = false;
+        reactView.sendComponentStop(ComponentType.Component);
+    }
 
     public void applyOptions(Options options) {
         touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside);

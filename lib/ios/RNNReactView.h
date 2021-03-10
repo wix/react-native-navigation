@@ -22,6 +22,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (NSString *)componentType;
 
+- (void)componentWillAppear;
+
 - (void)componentDidAppear;
 
 - (void)componentDidDisappear;

@@ -22,6 +22,8 @@
 
 - (void)applyRightButtonsColor:(UIColor *)color;
 
+- (void)componentWillAppear;
+
 - (void)componentDidAppear;
 
 - (void)componentDidDisappear;

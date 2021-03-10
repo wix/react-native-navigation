@@ -46,7 +46,7 @@
 @property(nonatomic, strong) id<RNNComponentViewCreator> creator;
 @property(nonatomic, strong) NSString *pageName;
 @property(nonatomic, strong) NSString *componentId;
-@property(nonatomic, strong) id emitter;
+@property(nonatomic, strong) id eventEmitter;
 @property(nonatomic, strong) RNNNavigationOptions *options;
 @property(nonatomic, strong) RNNLayoutInfo *layoutInfo;
 @property(nonatomic, strong) RNNComponentViewController *uut;
@@ -61,7 +61,7 @@
     self.creator = [[RNNTestRootViewCreator alloc] init];
     self.pageName = @"somename";
     self.componentId = @"cntId";
-    self.emitter = nil;
+    self.eventEmitter = [OCMockObject mockForClass:RNNEventEmitter.class];
     self.options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
     RNNLayoutInfo *layoutInfo = [RNNLayoutInfo new];
@@ -74,7 +74,7 @@
                                                                      buttonsPresenter:nil]];
     self.uut = [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo
                                                       rootViewCreator:self.creator
-                                                         eventEmitter:self.emitter
+                                                         eventEmitter:self.eventEmitter
                                                             presenter:self.presenter
                                                               options:self.options
                                                        defaultOptions:nil];
@@ -144,7 +144,7 @@
     options.topBar.title.text = [[Text alloc] initWithValue:title];
     UIViewController *uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                                    rootViewCreator:self.creator
-                                                                      eventEmitter:self.emitter
+                                                                      eventEmitter:self.eventEmitter
                                                                          presenter:self.presenter
                                                                            options:options
                                                                     defaultOptions:nil];
@@ -235,7 +235,7 @@
     RNNNavigationOptions *options = RNNNavigationOptions.emptyOptions;
     UIViewController *uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                                    rootViewCreator:self.creator
-                                                                      eventEmitter:self.emitter
+                                                                      eventEmitter:self.eventEmitter
                                                                          presenter:self.presenter
                                                                            options:options
                                                                     defaultOptions:nil];
@@ -249,7 +249,7 @@
     options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(1)];
     UIViewController *uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                                    rootViewCreator:self.creator
-                                                                      eventEmitter:self.emitter
+                                                                      eventEmitter:self.eventEmitter
                                                                          presenter:self.presenter
                                                                            options:options
                                                                     defaultOptions:nil];
@@ -263,7 +263,7 @@
     options.topBar.largeTitle.visible = [[Bool alloc] initWithValue:@(0)];
     UIViewController *uut = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                                    rootViewCreator:self.creator
-                                                                      eventEmitter:self.emitter
+                                                                      eventEmitter:self.eventEmitter
                                                                          presenter:self.presenter
                                                                            options:options
                                                                     defaultOptions:nil];
@@ -726,6 +726,24 @@
 
     [self.uut mergeOptions:newOptions];
     XCTAssertEqual([UIColor redColor], self.uut.options.topBar.background.color.get);
+}
+
+- (void)testViewWillAppearShouldNotifyPresenter {
+    [[(id)self.presenter expect] componentWillAppear];
+    [self.uut viewWillAppear:true];
+    [(id)self.presenter verify];
+}
+
+- (void)testViewDidAppearShouldNotifyPresenter {
+    [[(id)self.presenter expect] componentDidAppear];
+    [self.uut viewDidAppear:true];
+    [(id)self.presenter verify];
+}
+
+- (void)testViewDidDisappearShouldNotifyPresenter {
+    [[(id)self.presenter expect] componentDidDisappear];
+    [self.uut viewDidDisappear:true];
+    [(id)self.presenter verify];
 }
 
 - (RNNStackController *)createNavigationController {

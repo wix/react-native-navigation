@@ -25,6 +25,9 @@
     return ComponentTypeScreen;
 }
 
+- (void)componentWillAppear {
+}
+
 - (void)componentDidAppear {
 }
 

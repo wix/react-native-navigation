@@ -25,6 +25,11 @@ public class TestReactView extends ReactView implements IReactView {
     }
 
     @Override
+    public void sendComponentWillStart(ComponentType type) {
+
+    }
+
+    @Override
     public void sendComponentStart(ComponentType type) {
 
     }

@@ -44,6 +44,14 @@
         }
     }
 }
+
+- (void)dealloc {
+    if (_observeLayerChange) {
+        [self.subviews.firstObject.subviews.firstObject.layer removeObserver:self
+                                                                  forKeyPath:@"sublayers"];
+    }
+}
+
 #endif
 
 @end

@@ -9,9 +9,7 @@ sidebar_label: Events
 Called once the app is launched. Used to set the initial layout of the Application - after that the app is ready for user interaction.
 
 ```js
-const appLaunchedListener = Navigation.events().registerAppLaunchedListener(
-  () => {}
-);
+const appLaunchedListener = Navigation.events().registerAppLaunchedListener(() => {});
 ```
 
 RNN automatically unsubscribes components when they unmount, therefore unsubscribing isn't actually mandatory if you subscribed in `componentDidMount`.
@@ -170,8 +168,8 @@ const modalAttemptedToDismissListener = Navigation.events().registerModalAttempt
 modalAttemptedToDismissListener.remove();
 ```
 
-|    Parameter    | Description                      |
-| :-------------: | :------------------------------- |
+|    Parameter    | Description                                     |
+| :-------------: | :---------------------------------------------- |
 | **componentId** | Id of the modal a user is attempting to dismiss |
 
 ## registerScreenPoppedListener
@@ -188,9 +186,9 @@ const screenPoppedListener = Navigation.events().registerScreenPoppedListener(({
 screenPoppedListener.remove();
 ```
 
-|      Parameter      | Description                          |
-| :-----------------: | :----------------------------------- |
-|   **componentId**   | Id of the screen which was popped    |
+|    Parameter    | Description                       |
+| :-------------: | :-------------------------------- |
+| **componentId** | Id of the screen which was popped |
 
 ## registerBottomTabSelectedListener
 
@@ -221,7 +219,7 @@ bottomTabEventListener.remove();
 ```
 
 |       Parameter        | Description                          |
-| :--------------------: | :------------------------------------|
+| :--------------------: | :----------------------------------- |
 |  **selectedTabIndex**  | Index of the newly selected tab      |
 | **unselectedTabIndex** | Index of the previously selected tab |
 
