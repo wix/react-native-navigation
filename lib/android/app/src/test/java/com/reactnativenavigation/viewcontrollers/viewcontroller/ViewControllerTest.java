@@ -7,6 +7,8 @@ import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
@@ -27,8 +29,6 @@ import org.mockito.Mockito;
 import org.robolectric.Shadows;
 
 import java.lang.reflect.Field;
-
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -276,6 +276,17 @@ public class ViewControllerTest extends BaseTest {
 
         uut.destroy();
         assertThat(parent.getChildCount()).withFailMessage("expected not to have children").isZero();
+    }
+
+    @Test
+    public void onDestroy_shouldKeepViewIdsStable() {
+        LinearLayout parent = new LinearLayout(activity);
+        ViewGroup view = uut.getView();
+        view.setId(10);
+        parent.addView(view);
+
+        uut.destroy();
+        assertThat(view.getId()).isEqualTo(10);
     }
 
     @Test
