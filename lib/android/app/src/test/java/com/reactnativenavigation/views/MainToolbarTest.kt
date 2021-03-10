@@ -7,8 +7,6 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.marginTop
 import com.nhaarman.mockitokotlin2.verify
 import com.reactnativenavigation.BaseTest
@@ -24,7 +22,6 @@ import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.times
-import kotlin.math.roundToInt
 
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
@@ -38,6 +35,29 @@ class MainToolbarTest : BaseTest() {
         uut = MainToolBar(activity)
     }
 
+    @Test
+    fun `should maintain stable ids for guest component`(){
+        val component = View(activity).apply { id = 19 }
+        val component2 = View(activity).apply { id = 29 }
+        uut.setComponent(component)
+        assertThat(component.id).isEqualTo(19)
+
+        uut.setComponent(component2)
+        assertThat(component.id).isEqualTo(19)
+        assertThat(component2.id).isEqualTo(29)
+
+        uut.clear()
+        assertThat(component.id).isEqualTo(19)
+        assertThat(component2.id).isEqualTo(29)
+
+        uut.setComponent(component2)
+        assertThat(component.id).isEqualTo(19)
+        assertThat(component2.id).isEqualTo(29)
+
+        uut.setTitle("title")
+        assertThat(component.id).isEqualTo(19)
+        assertThat(component2.id).isEqualTo(29)
+    }
     @Test
     fun `init- should Have Left Bar At Start`() {
         val layoutParams = uut.leftButtonsBar.layoutParams as RelativeLayout.LayoutParams
@@ -160,10 +180,13 @@ class MainToolbarTest : BaseTest() {
         assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
     }
 
+
     @Test
     fun setComponent_doesNothingIfComponentIsAlreadyAdded() {
         val component = View(activity)
+        component.id = 19
         uut.setComponent(component)
+        idleMainLooper()
         val firstCompId = component.id
         assertThat(uut.findViewById<View?>(firstCompId)).isNotNull()
         uut.setComponent(component)
