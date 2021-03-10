@@ -658,8 +658,8 @@ public class NavigatorTest extends BaseTest {
         spy.push(child1, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());
         activityController.destroy();
-        assertThat(child1.getViewId()).isEqualTo(10);
-        assertThat(child2.getViewId()).isEqualTo(11);
+        assertThat(child1.getViewIdTracker()).isEqualTo(10);
+        assertThat(child2.getViewIdTracker()).isEqualTo(11);
         verify(spy, times(1)).destroy();
     }
 
