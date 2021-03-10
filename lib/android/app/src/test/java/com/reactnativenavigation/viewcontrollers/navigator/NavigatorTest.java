@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestActivity;
@@ -37,9 +39,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
-import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -49,8 +49,6 @@ import org.robolectric.annotation.Config;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -244,8 +242,10 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void push_OnCorrectStackByFindingChildId() {
-        StackController stack1 = newStack(); stack1.ensureViewIsCreated();
-        StackController stack2 = newStack(); stack2.ensureViewIsCreated();
+        StackController stack1 = newStack();
+        stack1.ensureViewIsCreated();
+        StackController stack2 = newStack();
+        stack2.ensureViewIsCreated();
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
         BottomTabsController bottomTabsController = newTabs(Arrays.asList(stack1, stack2));
@@ -298,7 +298,8 @@ public class NavigatorTest extends BaseTest {
     public void pop_byStackId() {
         disablePushAnimation(child1, child2);
         disablePopAnimation(child2, child1);
-        StackController stack = newStack(child1, child2); stack.ensureViewIsCreated();
+        StackController stack = newStack(child1, child2);
+        stack.ensureViewIsCreated();
         uut.setRoot(stack, new CommandListenerAdapter(), reactInstanceManager);
 
         uut.pop(stack.getId(), Options.EMPTY, new CommandListenerAdapter());
@@ -640,6 +641,26 @@ public class NavigatorTest extends BaseTest {
 
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
+    }
+
+    @Test
+    public void destroy_shouldNotChangeViewIds() {
+        disablePushAnimation(child1);
+        disableShowModalAnimation(child1, child2, child3);
+
+        StackController spy = spy(parentController);
+        SimpleViewController.SimpleView view = child1.getView();
+        ViewGroup view1 = child2.getView();
+        view.setId(10);
+        view1.setId(11);
+        spy.options.animations.setRoot.enabled = new Bool(false);
+        uut.setRoot(spy, new CommandListenerAdapter(), reactInstanceManager);
+        spy.push(child1, new CommandListenerAdapter());
+        uut.showModal(child2, new CommandListenerAdapter());
+        activityController.destroy();
+        assertThat(child1.getViewId()).isEqualTo(10);
+        assertThat(child2.getViewId()).isEqualTo(11);
+        verify(spy, times(1)).destroy();
     }
 
     @Test
