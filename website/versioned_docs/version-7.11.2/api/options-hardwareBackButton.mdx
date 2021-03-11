@@ -8,9 +8,7 @@ Controls Android hardware back button.
 
 ```js
 const options = {
-  topBar: {
-    hardwareBackButton: {},
-  },
+  hardwareBackButton: {},
 };
 ```
 
@@ -18,6 +16,14 @@ const options = {
 
 Controls whether the hardware back button should dismiss modal or not.
 
-| Type    | Required | Default |
-| ------- | -------- | ------- |
-| boolean | No       | true    |
+| Type    | Required | Default | Platform |
+| ------- | -------- | ------- | -------- |
+| boolean | No       | true    | Android  |
+
+### `popStackOnPress`
+
+Controls whether the hardware back button should pop stacks or not.
+
+| Type    | Required | Default | Platform |
+| ------- | -------- | ------- | -------- |
+| boolean | No       | true    | Android  |
