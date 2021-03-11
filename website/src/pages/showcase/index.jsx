@@ -9,7 +9,7 @@ import apps from '../../data/apps';
 
 const TITLE = 'Showcase';
 const DESCRIPTION = 'See the awesome websites people are building with Docusaurus';
-const EDIT_URL = 'https://github.com/facebook/docusaurus/edit/master/website/src/data/users.js';
+const EDIT_URL = 'https://forms.gle/pyP8w73hNUhoReQ3A';
 
 function Showcase() {
   return (
@@ -20,7 +20,7 @@ function Showcase() {
           <p>{DESCRIPTION}</p>
           <p>
             <a className={'button button--primary'} href={EDIT_URL} target={'_blank'}>
-              Add your site!
+              Add your app!
             </a>
           </p>
         </div>
