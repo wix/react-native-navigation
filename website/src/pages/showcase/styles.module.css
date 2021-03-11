@@ -1,28 +1,41 @@
-.showcaseUser {
-  height: 100%;
+.appIcon {
+  background-size: contain;
 }
 
-/* :global(.card__image) {
-  max-height: 175px;
-  overflow: hidden;
+.parent {
+  display: flex;
+  justify-content: center;
 }
 
-:global(.card__body) {
-  background-color: rgba(255, 255, 255, 0.2);
-} */
-
-:global(.card__container) {
-  position: relative;
+.root {
+  display: flex;
+  width: 80%;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
 }
 
-:global(.card__body) {
-  background-color: rgba(255, 255, 255, 0.4);
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+.cardContainer {
+  padding: 10;
+  display: flex;
+  margin: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
 }
 
-:global(.avatar__intro) {
-  margin-left: 20px;
+.cardContainer:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.content {
+  flex-direction: column;
+  width: 300px;
+  padding-left: 16px;
+}
+
+.appName {
+}
+
+.appSubtitle {
 }
