@@ -1,0 +1,28 @@
+.showcaseUser {
+  height: 100%;
+}
+
+/* :global(.card__image) {
+  max-height: 175px;
+  overflow: hidden;
+}
+
+:global(.card__body) {
+  background-color: rgba(255, 255, 255, 0.2);
+} */
+
+:global(.card__container) {
+  position: relative;
+}
+
+:global(.card__body) {
+  background-color: rgba(255, 255, 255, 0.4);
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+:global(.avatar__intro) {
+  margin-left: 20px;
+}
