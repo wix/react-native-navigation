@@ -5,7 +5,7 @@ interface Props {
   name: string;
 }
 
-const MyFunctionalComponent: NavigationFunctionComponent<Props> = ({ componentId, name }) => {
+const MyFunctionalComponent: NavigationFunctionComponent<Props> = () => {
   return <View />;
 };
 

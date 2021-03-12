@@ -8,7 +8,7 @@ function isScreenProps(obj: unknown): obj is ScreenProps {
   return typeof obj === 'object' && obj !== null && typeof (obj as ScreenProps).theme === 'string';
 }
 
-Navigation.addLayoutProcessor((layout: Layout, commandName: string) => {
+Navigation.addLayoutProcessor((layout: Layout) => {
   layout.stack?.children?.forEach((child) => {
     if (!child.component) {
       return;

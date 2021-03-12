@@ -1,7 +1,5 @@
 const remarkCodeImport = require('remark-code-import');
 
-const versions = require('./versions.json');
-
 module.exports = {
   title: 'React Native Navigation',
   tagline: '',

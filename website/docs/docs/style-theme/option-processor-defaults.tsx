@@ -1,8 +1,8 @@
-import { CommandName, Navigation, OptionsTopBarButton } from 'react-native-navigation';
+import { Navigation, OptionsTopBarButton } from 'react-native-navigation';
 
 Navigation.addOptionProcessor<OptionsTopBarButton>(
   'topBar.rightButtons',
-  (button: OptionsTopBarButton, commandName: CommandName): OptionsTopBarButton => {
+  (button: OptionsTopBarButton): OptionsTopBarButton => {
     button.fontFamily = 'helvetica';
     button.color = 'red';
     return button;
