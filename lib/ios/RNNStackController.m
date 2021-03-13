@@ -45,6 +45,18 @@
     return [super popViewControllerAnimated:animated];
 }
 
+- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
+    BOOL shouldPopItem = [self.presenter shouldPopItem:item options:self.getCurrentChild.options];
+    if (!shouldPopItem) {
+        [self.eventEmitter
+            sendOnNavigationButtonPressed:self.getCurrentChild.layoutInfo.componentId
+                                 buttonId:[self.getCurrentChild.options.topBar.backButton.identifier
+                                              withDefault:@"RNN.back"]];
+    }
+
+    return [_stackDelegate navigationController:self shouldPopItem:shouldPopItem];
+}
+
 - (void)prepareForPop {
     if (self.viewControllers.count > 1) {
         UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];

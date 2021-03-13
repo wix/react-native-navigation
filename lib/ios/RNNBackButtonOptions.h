@@ -13,6 +13,8 @@
 @property(nonatomic, strong) Bool *visible;
 @property(nonatomic, strong) Bool *enableMenu;
 @property(nonatomic, strong) Text *displayMode;
+@property(nonatomic, strong) Text *identifier;
+@property(nonatomic, strong) Bool *popStackOnPress;
 
 - (BOOL)hasValue;
 

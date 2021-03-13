@@ -65,12 +65,14 @@ public class Navigator extends ParentController {
     public void setContentLayout(ViewGroup contentLayout) {
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
-        modalsLayout.setVisibility(View.GONE); contentLayout.addView(modalsLayout);
-        overlaysLayout.setVisibility(View.GONE); contentLayout.addView(overlaysLayout);
+        modalsLayout.setVisibility(View.GONE);
+        contentLayout.addView(modalsLayout);
+        overlaysLayout.setVisibility(View.GONE);
+        contentLayout.addView(overlaysLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
-        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
+        super(activity, childRegistry, "navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
@@ -136,14 +138,15 @@ public class Navigator extends ParentController {
 
     }
 
-    public void setRoot(final ViewController viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
+    public void setRoot(final ViewController<?> appearing, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
         previousRoot = root;
         modalStack.destroy();
         final boolean removeSplashView = isRootNotCreated();
         if (isRootNotCreated()) getView();
-        root = viewController;
+        final ViewController<?> disappearing = previousRoot;
+        root = appearing;
         root.setOverlay(new RootOverlay(getActivity(), contentLayout));
-        rootPresenter.setRoot(root, defaultOptions, new CommandListenerAdapter(commandListener) {
+        rootPresenter.setRoot(appearing, disappearing, defaultOptions, new CommandListenerAdapter(commandListener) {
             @Override
             public void onSuccess(String childId) {
                 root.onViewDidAppear();

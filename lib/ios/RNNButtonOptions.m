@@ -21,6 +21,7 @@
     self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
     self.iconBackground = [[RNNIconBackgroundOptions alloc] initWithDict:dict[@"iconBackground"]
                                                                  enabled:self.enabled];
+    self.systemItem = [TextParser parse:dict key:@"systemItem"];
 
     return self;
 }
@@ -42,6 +43,7 @@
     newOptions.enabled = self.enabled.copy;
     newOptions.selectTabOnPress = self.selectTabOnPress.copy;
     newOptions.iconBackground = self.iconBackground.copy;
+    newOptions.systemItem = self.systemItem.copy;
     return newOptions;
 }
 
@@ -75,10 +77,23 @@
     }
     if (options.selectTabOnPress.hasValue)
         self.selectTabOnPress = options.selectTabOnPress;
+    if (options.systemItem.hasValue)
+        self.systemItem = options.systemItem;
 }
 
 - (BOOL)shouldCreateCustomView {
     return self.icon.hasValue && (self.iconBackground.hasValue || self.iconInsets.hasValue);
+}
+
+- (BOOL)isEnabled {
+    return [self.enabled withDefault:YES];
+}
+
+- (UIColor *)resolveColor {
+    if (![_enabled withDefault:YES] && _disabledColor.hasValue)
+        return _disabledColor.get;
+    else
+        return [_color withDefault:nil];
 }
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions {
@@ -89,11 +104,12 @@
     return withDefault;
 }
 
-- (Color *)color {
-    if (![_enabled withDefault:YES] && _disabledColor.hasValue)
-        return _disabledColor;
-    else
-        return _color;
+- (RNNButtonOptions *)withDefaultColor:(Color *)color disabledColor:(Color *)disabledColor {
+    if (!self.color.hasValue)
+        self.color = color;
+    if (!self.disabledColor.hasValue)
+        self.disabledColor = disabledColor;
+    return self;
 }
 
 @end

@@ -32,8 +32,10 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -47,6 +49,7 @@ import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 
+import static com.nhaarman.mockitokotlin2.OngoingStubbingKt.whenever;
 import static com.reactnativenavigation.TestUtils.hideBackButton;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -61,6 +64,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     private Activity activity;
     private BottomTabs bottomTabs;
+    private BottomTabsContainer bottomTabsContainer;
     private BottomTabsController uut;
     private final Options initialOptions = new Options();
     private ViewController child1;
@@ -89,9 +93,10 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void createView_checkProperStructure() {
+        idleMainLooper();
         assertThat(uut.getView()).isInstanceOf(CoordinatorLayout.class);
-        assertThat(uut.getView().getChildAt(0)).isInstanceOf(BottomTabs.class);
-        assertThat(((CoordinatorLayout.LayoutParams) uut.getBottomTabs().getLayoutParams()).gravity).isEqualTo(Gravity.BOTTOM);
+        assertThat(uut.getView().getChildAt(uut.getView().getChildCount() - 1)).isInstanceOf(BottomTabsContainer.class);
+        assertThat(((CoordinatorLayout.LayoutParams) uut.getBottomTabsContainer().getLayoutParams()).gravity).isEqualTo(Gravity.BOTTOM);
     }
 
     @Test
@@ -107,7 +112,7 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(tabOptions.bottomTabsOptions.titleDisplayMode.hasValue()).isFalse();
         prepareViewsForTests();
         presenter.applyOptions(Options.EMPTY);
-        assertThat(bottomTabs.getTitleState()).isEqualTo(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+        assertThat(bottomTabsContainer.getBottomTabs().getTitleState()).isEqualTo(AHBottomNavigation.TitleState.ALWAYS_SHOW);
     }
 
     @Test(expected = RuntimeException.class)
@@ -137,8 +142,8 @@ public class BottomTabsControllerTest extends BaseTest {
     public void setTabs_firstChildIsVisibleOtherAreGone() {
         uut.onViewWillAppear();
         for (int i = 0; i < uut.getChildControllers().size(); i++) {
-            assertThat(uut.getView().getChildAt(i + 1)).isEqualTo(tabs.get(i).getView());
-            assertThat(uut.getView().getChildAt(i + 1).getVisibility()).isEqualTo(i == 0 ? View.VISIBLE : View.INVISIBLE);
+            assertThat(uut.getView().getChildAt(i)).isEqualTo(tabs.get(i).getView());
+            assertThat(uut.getView().getChildAt(i).getVisibility()).isEqualTo(i == 0 ? View.VISIBLE : View.INVISIBLE);
         }
     }
 
@@ -194,7 +199,7 @@ public class BottomTabsControllerTest extends BaseTest {
     public void applyOptions_bottomTabsCreateViewOnlyOnce() {
         idleMainLooper();
         verify(presenter).applyOptions(any());
-        verify(bottomTabs, times(2)).superCreateItems(); // first time when view is created, second time when options are applied
+        verify(bottomTabsContainer.getBottomTabs(), times(2)).superCreateItems(); // first time when view is created, second time when options are applied
     }
 
     @Test
@@ -380,12 +385,12 @@ public class BottomTabsControllerTest extends BaseTest {
         Options options = Options.EMPTY.copy();
         options.bottomTabsOptions.currentTabIndex = new Number(1);
         prepareViewsForTests(options.bottomTabsOptions);
-        idleMainLooper(); 
-        verify(tabs.get(0), times( 0)).onViewDidAppear();
-        verify(tabs.get(1), times( 1)).onViewDidAppear();
-        verify(tabs.get(2), times( 0)).onViewDidAppear();
-        verify(tabs.get(3), times( 0)).onViewDidAppear();
-        verify(tabs.get(4), times( 0)).onViewDidAppear();
+        idleMainLooper();
+        verify(tabs.get(0), times(0)).onViewDidAppear();
+        verify(tabs.get(1), times(1)).onViewDidAppear();
+        verify(tabs.get(2), times(0)).onViewDidAppear();
+        verify(tabs.get(3), times(0)).onViewDidAppear();
+        verify(tabs.get(4), times(0)).onViewDidAppear();
     }
 
     @Test
@@ -428,14 +433,15 @@ public class BottomTabsControllerTest extends BaseTest {
 
             }
         });
+        bottomTabsContainer = spy(new BottomTabsContainer(activity, bottomTabs));
+
         createChildren();
         tabs = Arrays.asList(child1, child2, child3, child4, child5);
         initialOptions.bottomTabsOptions = bottomTabsOptions;
-        presenter = spy(new BottomTabsPresenter(tabs, initialOptions,new BottomTabsAnimator()));
+        presenter = spy(new BottomTabsPresenter(tabs, initialOptions, new BottomTabsAnimator()));
         bottomTabPresenter = spy(new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), initialOptions));
         tabsAttacher = spy(new BottomTabsAttacher(tabs, presenter, initialOptions));
         uut = createBottomTabs();
-
         activity.setContentView(new FakeParentController(activity, childRegistry, uut).getView());
     }
 
@@ -484,6 +490,12 @@ public class BottomTabsControllerTest extends BaseTest {
                 BottomTabsLayout view = super.createView();
                 bottomTabs.getLayoutParams().height = 100;
                 return view;
+            }
+
+            @NonNull
+            @Override
+            protected BottomTabsContainer createBottomTabsContainer() {
+                return bottomTabsContainer;
             }
 
             @NonNull

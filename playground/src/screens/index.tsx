@@ -78,6 +78,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Overlay, () => require('./OverlayScreen').default);
   Navigation.registerComponent(Screens.OverlayAlert, () => require('./OverlayAlert').default);
   Navigation.registerComponent(Screens.Pushed, () => require('./PushedScreen').default);
+  Navigation.registerComponent(Screens.BackButton, () => require('./BackButtonScreen').default);
   Navigation.registerComponent(
     Screens.ScrollViewOverlay,
     () => require('./ScrollViewOverlay').default

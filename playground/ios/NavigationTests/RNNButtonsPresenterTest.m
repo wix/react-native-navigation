@@ -21,21 +21,25 @@
 
 - (void)testApplyButtons_shouldNotAddEmptyButton {
     [_uut applyLeftButtons:@[ [self buttonWithDict:@{@"id" : @"buttonId"}] ]
-        defaultButtonStyle:nil];
+                defaultColor:nil
+        defaultDisabledColor:nil];
     XCTAssertTrue(_viewController.navigationItem.leftBarButtonItems.count == 0);
 
     [_uut applyRightButtons:@[ [self buttonWithDict:@{@"id" : @"buttonId"}] ]
-         defaultButtonStyle:nil];
+                defaultColor:nil
+        defaultDisabledColor:nil];
     XCTAssertTrue(_viewController.navigationItem.rightBarButtonItems.count == 0);
 }
 
 - (void)testApplyButtons_shouldAddButtonWithTitle {
     [_uut applyLeftButtons:@[ [self buttonWithDict:@{@"id" : @"buttonId", @"text" : @"title"}] ]
-        defaultButtonStyle:nil];
+                defaultColor:nil
+        defaultDisabledColor:nil];
     XCTAssertTrue(_viewController.navigationItem.leftBarButtonItems.count == 1);
 
     [_uut applyRightButtons:@[ [self buttonWithDict:@{@"id" : @"buttonId", @"text" : @"title"}] ]
-         defaultButtonStyle:nil];
+                defaultColor:nil
+        defaultDisabledColor:nil];
     XCTAssertTrue(_viewController.navigationItem.rightBarButtonItems.count == 1);
 }
 
@@ -43,14 +47,14 @@
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
     button.icon = [Image withValue:UIImage.new];
     button.iconBackground.color = [Color withValue:UIColor.blackColor];
-    [_uut applyLeftButtons:@[ button ] defaultButtonStyle:nil];
+    [_uut applyLeftButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil];
     XCTAssertNotNil([_viewController.navigationItem.leftBarButtonItems.lastObject customView]);
 }
 
 - (void)testApplyLeftButtonColor_shouldApplyTintColor {
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
     button.icon = [Image withValue:UIImage.new];
-    [_uut applyLeftButtons:@[ button ] defaultButtonStyle:nil];
+    [_uut applyLeftButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil];
     [_uut applyLeftButtonsColor:UIColor.redColor];
     XCTAssertEqual(_viewController.navigationItem.leftBarButtonItems.firstObject.tintColor,
                    UIColor.redColor);
@@ -58,7 +62,7 @@
 
 - (void)testApplyLeftButtonColor_shouldApplyTextAttributesColor {
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId", @"text" : @"title"}];
-    [_uut applyLeftButtons:@[ button ] defaultButtonStyle:nil];
+    [_uut applyLeftButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil];
     [_uut applyLeftButtonsColor:UIColor.redColor];
     XCTAssertEqual([[_viewController.navigationItem.leftBarButtonItems.firstObject
                        titleTextAttributesForState:UIControlStateNormal]
@@ -73,7 +77,7 @@
 - (void)testApplyRightButtonColor_shouldApplyTintColor {
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
     button.icon = [Image withValue:UIImage.new];
-    [_uut applyRightButtons:@[ button ] defaultButtonStyle:nil];
+    [_uut applyRightButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil];
     [_uut applyRightButtonsColor:UIColor.redColor];
     XCTAssertEqual(_viewController.navigationItem.rightBarButtonItems.firstObject.tintColor,
                    UIColor.redColor);
@@ -81,7 +85,7 @@
 
 - (void)testApplyRightButtonColor_shouldApplyTextAttributesColor {
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId", @"text" : @"title"}];
-    [_uut applyRightButtons:@[ button ] defaultButtonStyle:nil];
+    [_uut applyRightButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil];
     [_uut applyRightButtonsColor:UIColor.redColor];
     XCTAssertEqual([[_viewController.navigationItem.rightBarButtonItems.firstObject
                        titleTextAttributesForState:UIControlStateNormal]

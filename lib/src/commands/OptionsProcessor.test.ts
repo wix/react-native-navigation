@@ -12,6 +12,7 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Deprecations } from './Deprecations';
 import { CommandName } from '../interfaces/CommandName';
+import { OptionsProcessor as Processor } from '../interfaces/Processors';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
@@ -51,19 +52,275 @@ describe('navigation options', () => {
     );
   });
 
+  it('processes old setRoot animation value to new enter exit format', () => {
+    const options: Options = {
+      animations: {
+        setRoot: {
+          enabled: false,
+          translationY: {
+            from: 0,
+            to: 1,
+            duration: 3,
+          },
+        },
+      },
+    };
+
+    const expectedOptions: Options = {
+      animations: {
+        setRoot: {
+          enter: {
+            enabled: false,
+            translationY: {
+              from: 0,
+              to: 1,
+              duration: 3,
+            },
+          },
+        },
+      },
+    };
+
+    uut.processOptions(options, CommandName.SetRoot);
+    expect(options).toEqual(expectedOptions);
+  });
+  describe('Modal Animation Options', () => {
+    describe('Show Modal', () => {
+      it('processes old options into new options,backwards compatibility ', () => {
+        const options: Options = {
+          animations: {
+            showModal: {
+              enabled: false,
+              translationY: {
+                from: 0,
+                to: 1,
+                duration: 3,
+              },
+            },
+            dismissModal: {
+              enabled: true,
+              translationY: {
+                from: 0,
+                to: 1,
+                duration: 3,
+              },
+            },
+          },
+        };
+
+        const expected: Options = {
+          animations: {
+            showModal: {
+              enter: {
+                enabled: false,
+                translationY: {
+                  from: 0,
+                  to: 1,
+                  duration: 3,
+                },
+              },
+            },
+            dismissModal: {
+              exit: {
+                enabled: true,
+                translationY: {
+                  from: 0,
+                  to: 1,
+                  duration: 3,
+                },
+              },
+            },
+          },
+        };
+        uut.processOptions(options, CommandName.ShowModal);
+        expect(options).toEqual(expected);
+      });
+
+      it('processes old enabled options into new options,backwards compatibility ', () => {
+        const options: Options = {
+          animations: {
+            showModal: {
+              enabled: false,
+            },
+            dismissModal: {
+              enabled: true,
+            },
+          },
+        };
+
+        const expected: Options = {
+          animations: {
+            showModal: {
+              enter: {
+                enabled: false,
+              },
+            },
+            dismissModal: {
+              exit: {
+                enabled: true,
+              },
+            },
+          },
+        };
+        uut.processOptions(options, CommandName.ShowModal);
+        expect(options).toEqual(expected);
+      });
+
+      it('should not process new options', () => {
+        const options: Options = {
+          animations: {
+            showModal: {
+              enter: {
+                enabled: false,
+                translationY: {
+                  from: 0,
+                  to: 1,
+                  duration: 3,
+                },
+              },
+            },
+            dismissModal: {
+              exit: {
+                enabled: true,
+                translationY: {
+                  from: 0,
+                  to: 1,
+                  duration: 3,
+                },
+              },
+            },
+          },
+        };
+        const expected: Options = { ...options };
+        uut.processOptions(options, CommandName.ShowModal);
+        expect(options).toEqual(expected);
+      });
+    });
+
+    describe('Dismiss Modal', () => {
+      it('processes old options into new options,backwards compatibility ', () => {
+        const options: Options = {
+          animations: {
+            showModal: {
+              enabled: false,
+              translationY: {
+                from: 0,
+                to: 1,
+                duration: 3,
+              },
+            },
+            dismissModal: {
+              enabled: true,
+              translationY: {
+                from: 0,
+                to: 1,
+                duration: 3,
+              },
+            },
+          },
+        };
+
+        const expected: Options = {
+          animations: {
+            showModal: {
+              enter: {
+                enabled: false,
+                translationY: {
+                  from: 0,
+                  to: 1,
+                  duration: 3,
+                },
+              },
+            },
+            dismissModal: {
+              exit: {
+                enabled: true,
+                translationY: {
+                  from: 0,
+                  to: 1,
+                  duration: 3,
+                },
+              },
+            },
+          },
+        };
+        uut.processOptions(options, CommandName.DismissModal);
+        expect(options).toEqual(expected);
+      });
+
+      it('processes old enabled options into new options,backwards compatibility ', () => {
+        const options: Options = {
+          animations: {
+            showModal: {
+              enabled: false,
+            },
+            dismissModal: {
+              enabled: true,
+            },
+          },
+        };
+
+        const expected: Options = {
+          animations: {
+            showModal: {
+              enter: {
+                enabled: false,
+              },
+            },
+            dismissModal: {
+              exit: {
+                enabled: true,
+              },
+            },
+          },
+        };
+        uut.processOptions(options, CommandName.DismissModal);
+        expect(options).toEqual(expected);
+      });
+
+      it('should not process new options', () => {
+        const options: Options = {
+          animations: {
+            showModal: {
+              enter: {
+                enabled: false,
+                translationY: {
+                  from: 0,
+                  to: 1,
+                  duration: 3,
+                },
+              },
+            },
+            dismissModal: {
+              exit: {
+                enabled: true,
+                translationY: {
+                  from: 0,
+                  to: 1,
+                  duration: 3,
+                },
+              },
+            },
+          },
+        };
+        const expected: Options = { ...options };
+        uut.processOptions(options, CommandName.DismissModal);
+        expect(options).toEqual(expected);
+      });
+    });
+  });
+
   it('keeps original values if values were not processed', () => {
     const options: Options = {
       blurOnUnmount: false,
       popGesture: false,
       modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
-      animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
     };
     uut.processOptions(options, CommandName.SetRoot);
     expect(options).toEqual({
       blurOnUnmount: false,
       popGesture: false,
       modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
-      animations: { dismissModal: { alpha: { from: 0, to: 1 } } },
     });
   });
 
@@ -127,6 +384,24 @@ describe('navigation options', () => {
     });
 
     uut.processOptions(options, CommandName.SetRoot);
+  });
+
+  it('passes props to registered processor', () => {
+    const options: Options = {
+      topBar: {
+        visible: false,
+      },
+    };
+    const props = {
+      prop: 'prop',
+    };
+    const processor: Processor<boolean> = (_value, _commandName, passProps) => {
+      expect(passProps).toEqual(props);
+      return _value;
+    };
+
+    optionProcessorsRegistry.addProcessor('topBar.visible', processor);
+    uut.processOptions(options, CommandName.SetRoot, props);
   });
 
   it('supports multiple registered processors', () => {

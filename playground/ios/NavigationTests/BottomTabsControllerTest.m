@@ -299,4 +299,30 @@
     [dotIndicator verify];
 }
 
+- (void)testShouldSelectViewController_returnTrueForMoreTab {
+    XCTAssertTrue([self.uut tabBarController:self.uut
+                  shouldSelectViewController:UIViewController.new]);
+}
+
+- (void)testShouldSelectViewController_returnTrueByDefault {
+    [self.uut viewWillAppear:NO];
+    XCTAssertTrue([self.uut tabBarController:self.uut
+                  shouldSelectViewController:self.uut.childViewControllers[0]]);
+}
+
+- (void)testShouldSelectViewController_selectTabOnPressFalse {
+    [self.uut viewWillAppear:NO];
+    self.uut.childViewControllers[0].options.bottomTab.selectTabOnPress = [Bool withValue:NO];
+    XCTAssertFalse([self.uut tabBarController:self.uut
+                   shouldSelectViewController:self.uut.childViewControllers[0]]);
+}
+
+- (void)testShouldSelectViewController_emitEvent {
+    [self.uut viewWillAppear:NO];
+    [[self.mockEventEmitter expect] sendBottomTabPressed:@(0)];
+    [self.uut tabBarController:self.uut
+        shouldSelectViewController:self.uut.childViewControllers[0]];
+    [self.mockEventEmitter verify];
+}
+
 @end

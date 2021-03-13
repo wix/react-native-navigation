@@ -26,13 +26,23 @@
 }
 
 - (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
-      defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle {
-    [self setButtons:leftButtons side:@"left" animated:NO defaultStyle:defaultButtonStyle];
+            defaultColor:(Color *)defaultColor
+    defaultDisabledColor:(Color *)defaultDisabledColor {
+    [self setButtons:leftButtons
+                        side:@"left"
+                    animated:NO
+                defaultColor:defaultColor
+        defaultDisabledColor:defaultDisabledColor];
 }
 
 - (void)applyRightButtons:(NSArray<RNNButtonOptions *> *)rightButtons
-       defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle {
-    [self setButtons:rightButtons side:@"right" animated:NO defaultStyle:defaultButtonStyle];
+             defaultColor:(Color *)defaultColor
+     defaultDisabledColor:(Color *)defaultDisabledColor {
+    [self setButtons:rightButtons
+                        side:@"right"
+                    animated:NO
+                defaultColor:defaultColor
+        defaultDisabledColor:defaultDisabledColor];
 }
 
 - (void)applyLeftButtonsColor:(UIColor *)color {
@@ -48,13 +58,15 @@
 }
 
 - (void)setButtons:(NSArray<RNNButtonOptions *> *)buttons
-              side:(NSString *)side
-          animated:(BOOL)animated
-      defaultStyle:(RNNButtonOptions *)defaultStyle {
+                    side:(NSString *)side
+                animated:(BOOL)animated
+            defaultColor:(Color *)defaultColor
+    defaultDisabledColor:(Color *)defaultDisabledColor {
     NSMutableArray *barButtonItems = [NSMutableArray new];
     for (RNNButtonOptions *button in buttons) {
         RNNUIBarButtonItem *barButtonItem = [_buttonBuilder
-                        build:[button withDefault:defaultStyle]
+                        build:[button withDefaultColor:defaultColor
+                                         disabledColor:defaultDisabledColor]
             parentComponentId:_viewController.layoutInfo.componentId
                       onPress:^(NSString *buttonId) {
                         [self.eventEmitter
@@ -66,19 +78,17 @@
     }
 
     if ([side isEqualToString:@"left"]) {
-        [self clearPreviousButtonViews:barButtonItems
-                            oldButtons:self.viewController.navigationItem.leftBarButtonItems];
+        [self replaceCurrentButtons:self.viewController.navigationItem.leftBarButtonItems
+                        withButtons:barButtonItems];
         [self.viewController.navigationItem setLeftBarButtonItems:barButtonItems animated:animated];
     }
 
     if ([side isEqualToString:@"right"]) {
-        [self clearPreviousButtonViews:barButtonItems
-                            oldButtons:self.viewController.navigationItem.rightBarButtonItems];
+        [self replaceCurrentButtons:self.viewController.navigationItem.rightBarButtonItems
+                        withButtons:barButtonItems];
         [self.viewController.navigationItem setRightBarButtonItems:barButtonItems
                                                           animated:animated];
     }
-
-    [self notifyButtonsDidAppear:barButtonItems];
 }
 
 - (NSArray *)currentButtons {
@@ -86,6 +96,14 @@
     [currentButtons addObjectsFromArray:self.viewController.navigationItem.leftBarButtonItems];
     [currentButtons addObjectsFromArray:self.viewController.navigationItem.rightBarButtonItems];
     return currentButtons;
+}
+
+- (void)componentWillAppear {
+    for (UIBarButtonItem *barButtonItem in [self currentButtons]) {
+        if ([self isRNNUIBarButton:barButtonItem]) {
+            [(RNNUIBarButtonItem *)barButtonItem notifyWillAppear];
+        }
+    }
 }
 
 - (void)componentDidAppear {
@@ -104,28 +122,29 @@
     }
 }
 
-- (void)notifyButtonsDidAppear:(NSArray *)barButtonItems {
-    for (UIBarButtonItem *barButtonItem in barButtonItems) {
-        if ([self isRNNUIBarButton:barButtonItem]) {
-            [(RNNUIBarButtonItem *)barButtonItem notifyDidAppear];
-        }
-    }
-}
-
 - (BOOL)isRNNUIBarButton:(UIBarButtonItem *)barButtonItem {
     return [barButtonItem isKindOfClass:[RNNUIBarButtonItem class]];
 }
 
-- (void)clearPreviousButtonViews:(NSArray<UIBarButtonItem *> *)newButtons
-                      oldButtons:(NSArray<UIBarButtonItem *> *)oldButtons {
+- (void)replaceCurrentButtons:(NSArray<UIBarButtonItem *> *)oldButtons
+                  withButtons:(NSArray<UIBarButtonItem *> *)newButtons {
     NSArray<UIBarButtonItem *> *removedButtons = [oldButtons difference:newButtons
                                                        withPropertyName:@"customView"];
+    NSArray<UIBarButtonItem *> *addedButtons = [newButtons difference:oldButtons
+                                                     withPropertyName:@"customView"];
 
     for (UIBarButtonItem *buttonItem in removedButtons) {
         RNNReactView *reactView = buttonItem.customView;
         if ([reactView isKindOfClass:[RNNReactView class]]) {
             [reactView componentDidDisappear];
             [_componentRegistry removeChildComponent:reactView.componentId];
+        }
+    }
+
+    for (RNNUIBarButtonItem *barButtonItem in addedButtons) {
+        if ([self isRNNUIBarButton:barButtonItem]) {
+            [(RNNUIBarButtonItem *)barButtonItem notifyWillAppear];
+            [(RNNUIBarButtonItem *)barButtonItem notifyDidAppear];
         }
     }
 }

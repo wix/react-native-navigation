@@ -13,6 +13,9 @@ import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import {
   AnimationOptions,
+  EnterExitAnimationOptions,
+  ModalAnimationOptions,
+  OldModalAnimationOptions,
   Options,
   OptionsSearchBar,
   OptionsTopBar,
@@ -33,7 +36,7 @@ export class OptionsProcessor {
     private deprecations: Deprecations
   ) {}
 
-  public processOptions(options: Options, commandName: CommandName) {
+  public processOptions(options: Options, commandName: CommandName, props?: any) {
     this.processObject(
       options,
       clone(options),
@@ -41,7 +44,8 @@ export class OptionsProcessor {
         this.deprecations.onProcessOptions(key, parentOptions, commandName);
         this.deprecations.checkForDeprecatedOptions(parentOptions);
       },
-      commandName
+      commandName,
+      props
     );
   }
 
@@ -61,17 +65,24 @@ export class OptionsProcessor {
     parentOptions: object,
     onProcess: (key: string, parentOptions: object) => void,
     commandName: CommandName,
+    props?: any,
     parentPath?: string
   ) {
     forEach(objectToProcess, (value, key) => {
       const objectPath = this.resolveObjectPath(key, parentPath);
-      this.processWithRegisteredProcessor(key, value, objectToProcess, objectPath, commandName);
+      this.processWithRegisteredProcessor(
+        key,
+        value,
+        objectToProcess,
+        objectPath,
+        commandName,
+        props
+      );
       this.processColor(key, value, objectToProcess);
 
       if (!value) {
         return;
       }
-
       this.processComponent(key, value, objectToProcess);
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
@@ -83,7 +94,14 @@ export class OptionsProcessor {
 
       const processedValue = objectToProcess[key];
       if (!isEqual(key, 'passProps') && (isObject(processedValue) || isArray(processedValue))) {
-        this.processObject(processedValue, parentOptions, onProcess, commandName, objectPath);
+        this.processObject(
+          processedValue,
+          parentOptions,
+          onProcess,
+          commandName,
+          props,
+          objectPath
+        );
       }
     });
   }
@@ -105,12 +123,13 @@ export class OptionsProcessor {
     value: string,
     options: Record<string, any>,
     path: string,
-    commandName: CommandName
+    commandName: CommandName,
+    passProps: any
   ) {
     const registeredProcessors = this.optionProcessorsRegistry.getProcessors(path);
     if (registeredProcessors) {
       registeredProcessors.forEach((processor) => {
-        options[key] = processor(value, commandName);
+        options[key] = processor(value, commandName, passProps);
       });
     }
   }
@@ -191,9 +210,12 @@ export class OptionsProcessor {
   }
 
   private processAnimation(key: string, value: any, options: Record<string, any>) {
+    this.processSetRootAnimation(key, value, options);
     this.processPush(key, value, options);
     this.processPop(key, value, options);
     this.processSetStackRoot(key, value, options);
+    this.processShowModal(key, value, options);
+    this.processDismissModal(key, value, options);
   }
 
   private processSetStackRoot(
@@ -252,6 +274,59 @@ export class OptionsProcessor {
     ) {
       parentOptions.pop!!.bottomTabs = {
         exit: animation.bottomTabs as ViewAnimationOptions,
+      };
+    }
+  }
+
+  private processSetRootAnimation(
+    key: string,
+    animation: ViewAnimationOptions | EnterExitAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (key !== 'setRoot') return;
+    if (!('enter' in animation)) {
+      parentOptions.setRoot = {
+        enter: animation,
+      } as EnterExitAnimationOptions;
+    }
+  }
+
+  private processShowModal(
+    key: string,
+    animation: OldModalAnimationOptions | ModalAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (key !== 'showModal') return;
+    if (!('enter' in animation)) {
+      const elementTransitions = animation.elementTransitions;
+      const sharedElementTransitions = animation.sharedElementTransitions;
+      const enter = { ...(animation as OldModalAnimationOptions) };
+      delete enter.sharedElementTransitions;
+      delete enter.elementTransitions;
+      parentOptions.showModal = {
+        enter,
+        sharedElementTransitions,
+        elementTransitions,
+      };
+    }
+  }
+
+  private processDismissModal(
+    key: string,
+    animation: OldModalAnimationOptions | ModalAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
+    if (key !== 'dismissModal') return;
+    if (!('exit' in animation)) {
+      const elementTransitions = animation.elementTransitions;
+      const sharedElementTransitions = animation.sharedElementTransitions;
+      const exit = { ...(animation as OldModalAnimationOptions) };
+      delete exit.sharedElementTransitions;
+      delete exit.elementTransitions;
+      parentOptions.dismissModal = {
+        exit,
+        sharedElementTransitions,
+        elementTransitions,
       };
     }
   }

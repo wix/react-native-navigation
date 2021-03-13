@@ -484,6 +484,8 @@
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
 
+    [self.uut viewWillAppear:NO];
+
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)nav.topViewController.navigationItem.rightBarButtonItems[0];
     NSString *expectedButtonId = @"testId";
@@ -514,6 +516,8 @@
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
 
+    [self.uut viewWillAppear:NO];
+
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)[nav.topViewController.navigationItem.rightBarButtonItems
             objectAtIndex:0];
@@ -539,6 +543,8 @@
                                                                    presenter:nil
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
+
+    [self.uut viewWillAppear:NO];
 
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)[nav.topViewController.navigationItem.leftBarButtonItems
@@ -572,6 +578,8 @@
                                                                    presenter:nil
                                                                 eventEmitter:nil
                                                         childViewControllers:@[ self.uut ]];
+
+    [self.uut viewWillAppear:NO];
 
     RNNUIBarButtonItem *button =
         (RNNUIBarButtonItem *)[nav.topViewController.navigationItem.leftBarButtonItems

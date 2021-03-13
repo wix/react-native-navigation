@@ -6,6 +6,13 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.CheckResult;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
@@ -24,13 +31,7 @@ import com.reactnativenavigation.views.component.Renderable;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener,
@@ -59,6 +60,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     private final Activity activity;
     private final String id;
+    private int viewIdTracker = View.NO_ID;
     private final YellowBoxDelegate yellowBoxDelegate;
     @Nullable protected T view;
     @Nullable private ParentController<? extends ViewGroup> parentController;
@@ -196,6 +198,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 throw new RuntimeException("Tried to create view after it has already been destroyed");
             }
             view = createView();
+            viewIdTracker = view.getId();
             view.setOnHierarchyChangeListener(this);
             view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         }
@@ -280,6 +283,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             if (view.getParent() instanceof ViewGroup) {
                 ((ViewManager) view.getParent()).removeView(view);
             }
+            this.viewIdTracker = view.getId();
             view = null;
             isDestroyed = true;
         }
@@ -373,5 +377,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public int getBottomInset() {
         return perform(parentController, 0, p -> p.getBottomInset(this));
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    final public int getViewIdTracker(){
+        return viewIdTracker;
     }
 }

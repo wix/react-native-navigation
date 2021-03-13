@@ -2,7 +2,7 @@
 #import "RNNFontAttributesCreator.h"
 #import "RNNUIBarBackButtonItem.h"
 #import "UIColor+RNNUtils.h"
-#import "UIImage+tint.h"
+#import "UIImage+utils.h"
 #import "UINavigationController+RNNOptions.h"
 #import "UIViewController+LayoutProtocol.h"
 

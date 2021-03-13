@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.modal;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
@@ -44,19 +45,20 @@ public class ModalPresenter {
         }
 
         Options options = toAdd.resolveCurrentOptions(defaultOptions);
-        toAdd.setWaitForRender(options.animations.showModal.shouldWaitForRender());
+        AnimationOptions enterAnimationOptions = options.animations.showModal.getEnter();
+        toAdd.setWaitForRender(enterAnimationOptions.waitForRender);
         modalsLayout.setVisibility(View.VISIBLE);
         modalsLayout.addView(toAdd.getView(), matchParentLP());
 
-        if (options.animations.showModal.enabled.isTrueOrUndefined()) {
+        if (enterAnimationOptions.enabled.isTrueOrUndefined()) {
             toAdd.getView().setAlpha(0);
-            if (options.animations.showModal.shouldWaitForRender().isTrue()) {
+            if (enterAnimationOptions.shouldWaitForRender().isTrue()) {
                 toAdd.addOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
             } else {
                 animateShow(toAdd, toRemove, listener, options);
             }
         } else {
-            if (options.animations.showModal.waitForRender.isTrue()) {
+            if (enterAnimationOptions.waitForRender.isTrue()) {
                 toAdd.addOnAppearedListener(() -> onShowModalEnd(toAdd, toRemove, listener));
             } else {
                 onShowModalEnd(toAdd, toRemove, listener);
@@ -101,7 +103,7 @@ public class ModalPresenter {
             toAdd.onViewDidAppear();
         }
         Options options = toDismiss.resolveCurrentOptions(defaultOptions);
-        if (options.animations.dismissModal.enabled.isTrueOrUndefined()) {
+        if (options.animations.dismissModal.getExit().enabled.isTrueOrUndefined()) {
             animator.dismiss(toAdd, toDismiss, options.animations.dismissModal, new ScreenAnimationListener() {
                 @Override
                 public void onEnd() {
@@ -111,6 +113,10 @@ public class ModalPresenter {
         } else {
             onDismissEnd(toDismiss, listener);
         }
+    }
+
+    boolean shouldDismissModal(ViewController toDismiss) {
+        return toDismiss.resolveCurrentOptions(defaultOptions).hardwareBack.dismissModalOnPress.get(true);
     }
 
     private void onDismissEnd(ViewController toDismiss, CommandListener listener) {

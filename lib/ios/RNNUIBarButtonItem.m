@@ -1,8 +1,7 @@
 #import "RNNUIBarButtonItem.h"
 #import "RCTConvert+UIBarButtonSystemItem.h"
 #import "RNNFontAttributesCreator.h"
-#import "UIImage+insets.h"
-#import "UIImage+tint.h"
+#import "UIImage+utils.h"
 
 @interface RNNUIBarButtonItem ()
 
@@ -34,28 +33,17 @@
 }
 
 - (instancetype)initCustomIcon:(RNNButtonOptions *)buttonOptions
+                   iconCreator:(RNNIconCreator *)iconCreator
                        onPress:(RNNButtonPressCallback)onPress {
-    UIImage *iconImage = buttonOptions.icon.get;
-    UIColor *tintColor = [buttonOptions.color withDefault:nil];
-    CGFloat cornerRadius = [buttonOptions.iconBackground.cornerRadius withDefault:@(0)].floatValue;
-
-    UIButton *button = [[UIButton alloc]
-        initWithFrame:CGRectMake(
-                          0, 0,
-                          [buttonOptions.iconBackground.width withDefault:@(iconImage.size.width)]
-                              .floatValue,
-                          [buttonOptions.iconBackground.height withDefault:@(iconImage.size.width)]
-                              .floatValue)];
+    UIImage *icon = [iconCreator create:buttonOptions];
+    UIButton *button =
+        [[UIButton alloc] initWithFrame:CGRectMake(0, 0, icon.size.width, icon.size.height)];
 
     [button addTarget:self
                   action:@selector(onButtonPressed:)
         forControlEvents:UIControlEventTouchUpInside];
-    [button setImage:[(tintColor ? [iconImage withTintColor:tintColor]
-                                 : iconImage) imageWithInsets:buttonOptions.iconInsets.UIEdgeInsets]
-            forState:UIControlStateNormal];
-    button.backgroundColor = [buttonOptions.iconBackground.color withDefault:nil];
-    button.layer.cornerRadius = cornerRadius;
-    button.clipsToBounds = !!cornerRadius;
+    [button setImage:icon
+            forState:buttonOptions.isEnabled ? UIControlStateNormal : UIControlStateDisabled];
 
     self = [super initWithCustomView:button];
     [self applyOptions:buttonOptions];
@@ -124,7 +112,7 @@
     self.accessibilityLabel = [buttonOptions.accessibilityLabel withDefault:nil];
     self.enabled = [buttonOptions.enabled withDefault:YES];
     self.accessibilityIdentifier = [buttonOptions.testID withDefault:nil];
-    [self applyColor:[buttonOptions.color withDefault:nil]];
+    [self applyColor:[buttonOptions resolveColor]];
     [self applyTitleTextAttributes:buttonOptions];
     [self applyDisabledTitleTextAttributes:buttonOptions];
 }
@@ -161,6 +149,12 @@
                                                     color:[button.disabledColor withDefault:nil]]];
 
     [self setTitleTextAttributes:disabledTextAttributes forState:UIControlStateDisabled];
+}
+
+- (void)notifyWillAppear {
+    if ([self.customView isKindOfClass:[RNNReactView class]]) {
+        [((RNNReactView *)self.customView) componentWillAppear];
+    }
 }
 
 - (void)notifyDidAppear {

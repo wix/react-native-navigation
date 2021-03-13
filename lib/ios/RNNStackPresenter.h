@@ -9,4 +9,6 @@
 
 - (void)applyOptionsBeforePopping:(RNNNavigationOptions *)options;
 
+- (BOOL)shouldPopItem:(UINavigationItem *)item options:(RNNNavigationOptions *)options;
+
 @end

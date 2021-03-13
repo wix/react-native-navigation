@@ -5,6 +5,6 @@ export interface LayoutProcessor {
   (layout: Layout<{}>, commandName: CommandName): Layout<{}>;
 }
 
-export interface OptionsProcessor<T> {
-  (value: T, commandName: CommandName): T;
+export interface OptionsProcessor<T, S = any> {
+  (value: T, commandName: CommandName, props?: S): T;
 }

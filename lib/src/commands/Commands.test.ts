@@ -50,7 +50,7 @@ describe('Commands', () => {
       uniqueIdProvider,
       optionsProcessor,
       layoutProcessor,
-      new OptionsCrawler(instance(mockedStore))
+      new OptionsCrawler(instance(mockedStore), uniqueIdProvider)
     );
   });
 
@@ -138,7 +138,7 @@ describe('Commands', () => {
         root: { component: { name: 'com.example.MyScreen' } },
       });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen', options: {} } },
+        { component: { name: 'com.example.MyScreen', options: {}, id: 'Component+UNIQUE_ID' } },
         CommandName.SetRoot
       );
     });
@@ -161,7 +161,13 @@ describe('Commands', () => {
         root: { component: { name: 'com.example.MyScreen' } },
       });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen', options: { topBar: { visible: false } } } },
+        {
+          component: {
+            id: 'Component+UNIQUE_ID',
+            name: 'com.example.MyScreen',
+            options: { topBar: { visible: false } },
+          },
+        },
         CommandName.SetRoot
       );
     });
@@ -234,7 +240,7 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.showModal({ component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen', options: {} } },
+        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
         CommandName.ShowModal
       );
     });
@@ -319,7 +325,7 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen', options: {} } },
+        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
         CommandName.Push
       );
     });
@@ -416,7 +422,7 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.setStackRoot('theComponentId', [{ component: { name: 'com.example.MyScreen' } }]);
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen', options: {} } },
+        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
         CommandName.SetStackRoot
       );
     });
@@ -462,7 +468,7 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen', options: {} } },
+        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
         CommandName.ShowOverlay
       );
     });
@@ -495,7 +501,6 @@ describe('Commands', () => {
     let cb: any;
     let mockedLayoutTreeParser: LayoutTreeParser;
     let mockedLayoutTreeCrawler: LayoutTreeCrawler;
-    let anotherMockedUniqueIdProvider: UniqueIdProvider;
 
     beforeEach(() => {
       cb = jest.fn();
@@ -503,10 +508,6 @@ describe('Commands', () => {
       mockedLayoutTreeCrawler = mock(LayoutTreeCrawler);
       commandsObserver.register(cb);
       const mockedOptionsProcessor = mock(OptionsProcessor) as OptionsProcessor;
-      anotherMockedUniqueIdProvider = mock(UniqueIdProvider);
-      when(anotherMockedUniqueIdProvider.generate(anything())).thenCall(
-        (prefix) => `${prefix}+UNIQUE_ID`
-      );
 
       uut = new Commands(
         mockedStore,
@@ -514,10 +515,10 @@ describe('Commands', () => {
         instance(mockedLayoutTreeParser),
         instance(mockedLayoutTreeCrawler),
         commandsObserver,
-        instance(anotherMockedUniqueIdProvider),
+        instance(mockedUniqueIdProvider),
         instance(mockedOptionsProcessor),
         new LayoutProcessor(new LayoutProcessorsStore()),
-        new OptionsCrawler(instance(mockedStore))
+        new OptionsCrawler(instance(mockedStore), mockedUniqueIdProvider)
       );
     });
 

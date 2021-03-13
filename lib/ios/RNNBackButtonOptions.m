@@ -5,6 +5,7 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
+    self.identifier = [TextParser parse:dict key:@"identifier"];
     self.icon = [ImageParser parse:dict key:@"icon"];
     self.title = [TextParser parse:dict key:@"title"];
     self.transition = [TextParser parse:dict key:@"transition"];
@@ -16,11 +17,14 @@
     self.fontSize = [NumberParser parse:dict key:@"fontSize"];
     self.enableMenu = [BoolParser parse:dict key:@"enableMenu"];
     self.displayMode = [TextParser parse:dict key:@"displayMode"];
+    self.popStackOnPress = [BoolParser parse:dict key:@"popStackOnPress"];
 
     return self;
 }
 
 - (void)mergeOptions:(RNNBackButtonOptions *)options {
+    if (options.identifier.hasValue)
+        self.identifier = options.identifier;
     if (options.icon.hasValue)
         self.icon = options.icon;
     if (options.title.hasValue)
@@ -41,6 +45,8 @@
         self.fontSize = options.fontSize;
     if (options.enableMenu.hasValue)
         self.enableMenu = options.enableMenu;
+    if (options.popStackOnPress.hasValue)
+        self.popStackOnPress = options.popStackOnPress;
 }
 
 - (BOOL)hasValue {

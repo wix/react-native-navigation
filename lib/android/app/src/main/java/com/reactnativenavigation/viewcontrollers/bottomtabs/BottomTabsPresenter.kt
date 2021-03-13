@@ -9,7 +9,9 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
+import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 class BottomTabsPresenter(
         private val tabs: List<ViewController<*>>,
@@ -17,6 +19,7 @@ class BottomTabsPresenter(
         val animator: BottomTabsAnimator
 ) {
     private val bottomTabFinder: BottomTabFinder = BottomTabFinder(tabs)
+    private lateinit var bottomTabsContainer: BottomTabsContainer
     private lateinit var bottomTabs: BottomTabs
     private lateinit var tabSelector: TabSelector
     private val defaultTitleState: TitleState
@@ -31,10 +34,11 @@ class BottomTabsPresenter(
         this.defaultOptions = defaultOptions
     }
 
-    fun bindView(bottomTabs: BottomTabs, tabSelector: TabSelector) {
-        this.bottomTabs = bottomTabs
+    fun bindView(bottomTabsContainer: BottomTabsContainer, tabSelector: TabSelector) {
+        this.bottomTabsContainer = bottomTabsContainer
+        this.bottomTabs = bottomTabsContainer.bottomTabs
         this.tabSelector = tabSelector
-        animator.bindView(bottomTabs)
+        animator.bindView(this.bottomTabs)
     }
 
     fun mergeOptions(options: Options, view: ViewController<*>) {
@@ -86,6 +90,25 @@ class BottomTabsPresenter(
         if (bottomTabsOptions.hideOnScroll.hasValue()) {
             bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll.get()
         }
+
+        if (bottomTabsOptions.borderColor.hasValue()) {
+            bottomTabsContainer.setTopOutLineColor(bottomTabsOptions.borderColor.get())
+            bottomTabsContainer.showTopLine()
+        }
+        if (bottomTabsOptions.borderWidth.hasValue()) {
+            bottomTabsContainer.setTopOutlineWidth(bottomTabsOptions.borderWidth.get().roundToInt())
+            bottomTabsContainer.showTopLine()
+        }
+        if (bottomTabsOptions.shadowOptions.hasValue()) {
+            if (bottomTabsOptions.shadowOptions.color.hasValue())
+                bottomTabsContainer.shadowColor = bottomTabsOptions.shadowOptions.color.get()
+            if (bottomTabsOptions.shadowOptions.radius.hasValue())
+                bottomTabsContainer.shadowRadius = bottomTabsOptions.shadowOptions.radius.get().toFloat()
+            if (bottomTabsOptions.shadowOptions.opacity.hasValue())
+                bottomTabsContainer.setShadowOpacity(bottomTabsOptions.shadowOptions.opacity.get().toFloat())
+            bottomTabsContainer.showShadow()
+        }
+
         if (view.isViewShown) {
             if (bottomTabsOptions.visible.isTrue) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined) {
@@ -93,6 +116,7 @@ class BottomTabsPresenter(
                 } else {
                     bottomTabs.restoreBottomNavigation(false)
                 }
+                bottomTabsContainer.revealTopOutline()
             }
             if (bottomTabsOptions.visible.isFalse) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined) {
@@ -100,6 +124,8 @@ class BottomTabsPresenter(
                 } else {
                     bottomTabs.hideBottomNavigation(false)
                 }
+                bottomTabsContainer.hideTopOutLine()
+
             }
         }
     }
@@ -151,12 +177,38 @@ class BottomTabsPresenter(
         if (bottomTabsOptions.elevation.hasValue()) {
             bottomTabs.setUseElevation(true, bottomTabsOptions.elevation.get().toFloat())
         }
+
+        when {
+            bottomTabsOptions.borderColor.hasValue() -> {
+                bottomTabsContainer.setTopOutLineColor(bottomTabsOptions.borderColor.get())
+                bottomTabsContainer.showTopLine()
+            }
+            bottomTabsOptions.borderWidth.hasValue() -> {
+                bottomTabsContainer.setTopOutlineWidth(bottomTabsOptions.borderWidth.get().roundToInt())
+                bottomTabsContainer.showTopLine()
+            }
+            else -> {
+                bottomTabsContainer.clearTopOutline()
+            }
+        }
+
+        if (bottomTabsOptions.shadowOptions.hasValue()) {
+            if (bottomTabsOptions.shadowOptions.color.hasValue())
+                bottomTabsContainer.shadowColor = bottomTabsOptions.shadowOptions.color.get()
+            if (bottomTabsOptions.shadowOptions.radius.hasValue())
+                bottomTabsContainer.shadowRadius = bottomTabsOptions.shadowOptions.radius.get().toFloat()
+            if (bottomTabsOptions.shadowOptions.opacity.hasValue())
+                bottomTabsContainer.setShadowOpacity(bottomTabsOptions.shadowOptions.opacity.get().toFloat())
+            bottomTabsContainer.showShadow()
+        } else {
+            bottomTabsContainer.clearShadow()
+        }
         bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll[false]
     }
 
     fun applyBottomInset(bottomInset: Int) {
-        (bottomTabs.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(bottom = bottomInset)
-        bottomTabs.requestLayout()
+        (bottomTabsContainer.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(bottom = bottomInset)
+        bottomTabsContainer.requestLayout()
     }
 
     fun getBottomInset(resolvedOptions: Options): Int {

@@ -36,6 +36,11 @@
         boundViewController.interactivePopGestureRecognizer.delegate;
 }
 
+- (void)componentWillAppear {
+    [_topBarBackgroundReactView componentWillAppear];
+    [_topBarPresenter componentWillAppear];
+}
+
 - (void)componentDidAppear {
     [_topBarBackgroundReactView componentDidAppear];
     [_topBarPresenter componentDidAppear];
@@ -47,6 +52,11 @@
 
 - (RNNStackController *)stackController {
     return (RNNStackController *)self.boundViewController;
+}
+
+- (BOOL)shouldPopItem:(UINavigationItem *)item options:(RNNNavigationOptions *)options {
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+    return [withDefault.topBar.backButton.popStackOnPress withDefault:YES];
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {

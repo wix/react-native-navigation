@@ -5,14 +5,14 @@ import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
-import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.ButtonOptions
+import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsToolbar
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactButtonView
 
@@ -25,7 +25,7 @@ open class ButtonController(activity: Activity,
     private var menuItem: MenuItem? = null
 
     interface OnClickListener {
-        fun onPress(buttonId: String?)
+        fun onPress(button: ButtonOptions)
     }
 
     val buttonInstanceId: String
@@ -36,12 +36,13 @@ open class ButtonController(activity: Activity,
 
     @SuppressLint("MissingSuperCall")
     override fun onViewWillAppear() {
-        getView()!!.sendComponentStart(ComponentType.Button)
+        getView()?.sendComponentWillStart(ComponentType.Button)
+        getView()?.sendComponentStart(ComponentType.Button)
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onViewDisappear() {
-        getView()!!.sendComponentStop(ComponentType.Button)
+        getView()?.sendComponentStop(ComponentType.Button)
     }
 
     override fun isRendered(): Boolean {
@@ -61,7 +62,7 @@ open class ButtonController(activity: Activity,
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
-        onPressListener.onPress(button.id)
+        onPressListener.onPress(button)
         return true
     }
 
@@ -80,20 +81,15 @@ open class ButtonController(activity: Activity,
 
     open fun applyDisabledColor(toolbar: Toolbar, disabledColour: Colour) = this.menuItem?.let { presenter.applyDisabledColor(toolbar, it, disabledColour) }
 
-    fun addToMenu(toolbar: TitleBar, order: Int) {
-        if (button.component.hasValue() && toolbar.containsButton(menuItem, order)) return
-        toolbar.menu.removeItem(button.intId)
-        createAndAddButtonToTitleBar(toolbar, order).apply {
-            menuItem = this
-            setOnMenuItemClickListener(this@ButtonController)
-            presenter.applyOptions(toolbar, this, this@ButtonController::getView)
+    fun addToMenu(buttonsBar: ButtonsToolbar, order: Int) {
+        if (button.component.hasValue() && buttonsBar.containsButton(menuItem, order)) return
+        buttonsBar.menu.removeItem(button.intId)
+        menuItem = buttonsBar.addButton(Menu.NONE,
+                button.intId,
+                order,
+                presenter.styledText)?.also { menuItem ->
+            menuItem.setOnMenuItemClickListener(this@ButtonController)
+            presenter.applyOptions(buttonsBar, menuItem, this@ButtonController::getView)
         }
     }
-
-    fun createAndAddButtonToTitleBar(titleBar: Toolbar, order: Int): MenuItem = titleBar.menu.add(
-            Menu.NONE,
-            button.intId,
-            order,
-            presenter.styledText
-    )
 }

@@ -75,6 +75,18 @@ export class Deprecations {
     if (key === 'interpolation' && typeof parentOptions[key] === 'string') {
       this.deprecateInterpolationOptions(parentOptions);
     }
+
+    if (key === 'showModal' || key === 'dismissModal') {
+      if (
+        typeof parentOptions[key] === 'object' &&
+        !('enter' in parentOptions[key]) &&
+        !('exit' in parentOptions[key])
+      )
+        console.warn(
+          `${key} without enter/exit is deprecated, and will be changed  in the next major version. For more information see https://wix.github.io/react-native-navigation/docs/style-animations#modal-animations`,
+          parentOptions
+        );
+    }
   }
 
   public onProcessDefaultOptions(_key: string, _parentOptions: Record<string, any>) {}

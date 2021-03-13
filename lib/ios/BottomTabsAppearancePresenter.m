@@ -1,5 +1,6 @@
 #import "BottomTabsAppearancePresenter.h"
 #import "UIColor+RNNUtils.h"
+#import "UIImage+Utils.h"
 
 @implementation BottomTabsAppearancePresenter
 
@@ -14,6 +15,15 @@
         [self setTabBarBackgroundColor:backgroundColor];
     else
         [self setTabBarDefaultBackground];
+}
+
+- (void)applyTabBarBorder:(RNNBottomTabsOptions *)options {
+    if (options.borderColor.hasValue || options.borderWidth.hasValue) {
+        for (UIViewController *childViewController in self.tabBarController.childViewControllers)
+            childViewController.tabBarItem.standardAppearance.shadowImage = [UIImage
+                imageWithSize:CGSizeMake(1.0, [[options.borderWidth withDefault:@(0.1)] floatValue])
+                        color:[options.borderColor withDefault:UIColor.blackColor]];
+    }
 }
 
 - (void)setTabBarBackgroundColor:(UIColor *)backgroundColor {

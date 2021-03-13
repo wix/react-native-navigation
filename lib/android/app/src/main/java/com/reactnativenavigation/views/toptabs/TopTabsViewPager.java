@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
@@ -55,8 +56,8 @@ public class TopTabsViewPager extends ViewPager implements Component, ButtonCont
     }
 
     @Override
-    public void onPress(String buttonId) {
-        ((IReactView) tabs.get(getCurrentItem()).getView()).sendOnNavigationButtonPressed(buttonId);
+    public void onPress(ButtonOptions button) {
+        ((IReactView) tabs.get(getCurrentItem()).getView()).sendOnNavigationButtonPressed(button.id);
     }
 
     public void destroy() {

@@ -29,6 +29,33 @@ The following properties can be animated with our animation framework:
 
 ## Layout animations
 
+### Root animations
+
+Animating switches between roots, using the enter/exit animations that grants control on how each root is animated when entering or exiting the screen.
+
+This can be acheived by modifying the default options (`setDefaultOptions` for example) to be like:
+
+```js
+options:{
+  animations: {
+        push:{...},
+        setRoot: {
+          enter: {
+            waitForRender: true,
+            enabled: false,
+            translationY: {
+              from: 0,
+              to: 1,
+              duration: 3,
+            },
+          },
+          exit:{...}
+        },
+      },
+    };
+```
+In Playground, you can try it by setting `useCustomAnimations` in `flags.ts` file.
+
 ### Stack animations
 
 When animating screens in and out of a stack, there are three elements you can work with:
@@ -89,6 +116,7 @@ options: {
 ### Modal animations
 
 Modal animations are declared similarly to stack animations, only this time we animate the entire view and not only part of the UI (content).
+The appearing modal can play custom enter animation and exit for the disappearing screen when showing/dismissing modal.
 
 <Tabs
   defaultValue="show"
@@ -101,6 +129,8 @@ Modal animations are declared similarly to stack animations, only this time we a
 
 The following example demonstrates how to show a modal with a fade-in animation.
 
+:::warning Deprecation warning
+Consider using enter, exit animations instead.
 ```js
 options: {
   animations: {
@@ -114,12 +144,40 @@ options: {
   }
 }
 ```
+:::
+```js
+options: {
+  animations: {
+    showModal: {
+    enter :{
+      enabled:true,
+      alpha: {
+            from: 0,
+            to: 1,
+            duration: 300
+       }
+    },
+    exit :{
+      enabled:true,
+      alpha: {
+                from: 1,
+                to: 0,
+                duration: 300
+           }
+        }
+    }
+  }
+}
+```
+
 
 </TabItem>
 <TabItem value="dismiss">
 
 The following example demonstrates how to dismiss a modal with a fade-out animation.
 
+:::warning Deprecation warning
+Consider using enter, exit animations instead.
 ```js
 options: {
   animations: {
@@ -133,7 +191,32 @@ options: {
   }
 }
 ```
+:::
 
+```js
+options: {
+  animations: {
+    dismissModal: {
+     exit:{
+     enabled:true
+      alpha: {
+             from: 1,
+             to: 0,
+             duration: 300
+         }
+      },
+      enter:{
+       enabled:false
+       alpha: {
+            from: 0,
+            to: 1,
+            duration: 300
+         }
+      }
+    }
+  }
+}
+```
 </TabItem>
 </Tabs>
 
@@ -238,7 +321,7 @@ The `interpolation` property is an object which consists of a `type` property, a
 * `'spring'`: Acts like an actual spring. Depending on the configuration, this interpolation can overshoot the destination multiple times, or be very stiff and smoothly ease towards the destination.
   - `mass`: The mass defines how "heavy" the object is. _Default: `3`_
   - `damping`: The damping property specifies how much the moving object is being slowed down. Higher values can lead to overdamping, lower values to underdamping. _Default: `500`_
-  - `stiffness`: The stiffness property defines how stiff the animated object is. _Default: `1000`_
+  - `stiffness`: The stiffness property defines how stiff the animated object is. _Default: `200`_
 
 :::caution
 Since a Spring interpolation is not a time based animation, you have to manually tweak the configuration to match the duration of the animation, otherwise the remaining time of the Spring interpolation will get skipped.

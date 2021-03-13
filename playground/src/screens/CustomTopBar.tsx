@@ -26,7 +26,6 @@ export default class CustomTopBar extends React.Component<Props> {
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'baseline',
-    padding: 8,
   },
   text: {
     alignSelf: 'flex-start',

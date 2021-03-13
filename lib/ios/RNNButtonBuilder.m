@@ -3,11 +3,13 @@
 
 @implementation RNNButtonBuilder {
     RNNReactComponentRegistry *_componentRegistry;
+    RNNIconCreator *_iconCreator;
 }
 
 - (instancetype)initWithComponentRegistry:(id)componentRegistry {
     self = [super init];
     _componentRegistry = componentRegistry;
+    _iconCreator = [[RNNIconCreator alloc] initWithIconDrawer:RNNIconDrawer.new];
     return self;
 }
 
@@ -26,7 +28,9 @@
                                                 buttonOptions:button
                                                       onPress:onPress];
     } else if (button.shouldCreateCustomView) {
-        return [[RNNUIBarButtonItem alloc] initCustomIcon:button onPress:onPress];
+        return [[RNNUIBarButtonItem alloc] initCustomIcon:button
+                                              iconCreator:_iconCreator
+                                                  onPress:onPress];
     } else if (button.icon.hasValue) {
         return [[RNNUIBarButtonItem alloc] initWithIcon:button onPress:onPress];
     } else if (button.text.hasValue) {

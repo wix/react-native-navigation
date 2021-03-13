@@ -74,6 +74,14 @@ export default class StaticLifecycleOverlay extends React.Component<
     };
 
     this.listeners.push(
+      Navigation.events().registerComponentWillAppearListener((event) => {
+        this.setState({
+          events: [...this.state.events, { ...event, event: 'componentWillAppear' }],
+        });
+      })
+    );
+
+    this.listeners.push(
       Navigation.events().registerComponentDidAppearListener((event) => {
         this.setState({
           events: [...this.state.events, { ...event, event: 'componentDidAppear' }],
@@ -212,6 +220,7 @@ const styles = StyleSheet.create<Style>({
   },
   events: {
     flexDirection: 'column',
+    alignItems: 'center',
     marginHorizontal: 2,
   },
   h1: {

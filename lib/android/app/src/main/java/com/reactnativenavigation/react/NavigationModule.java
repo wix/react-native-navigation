@@ -77,7 +77,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void getLaunchArgs(String commandId, Promise promise) {
         promise.resolve(LaunchArgsParser.parse(activity()));
     }
-    
+
     @ReactMethod
     public void getNavigationConstants(Promise promise) {
         ReactApplicationContext ctx = getReactApplicationContext();
@@ -196,7 +196,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private Options parse(@Nullable ReadableMap mergeOptions) {
         ReactApplicationContext ctx = getReactApplicationContext();
         return mergeOptions ==
-               null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
+                null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
     }
 
     protected void handle(Runnable task) {

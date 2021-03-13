@@ -24,6 +24,12 @@
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions;
 
+- (UIColor *)resolveColor;
+
+- (RNNButtonOptions *)withDefaultColor:(Color *)color disabledColor:(Color *)disabledColor;
+
 - (BOOL)shouldCreateCustomView;
+
+- (BOOL)isEnabled;
 
 @end

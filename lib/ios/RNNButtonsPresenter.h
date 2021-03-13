@@ -11,14 +11,18 @@
                              eventEmitter:(RNNEventEmitter *)eventEmitter;
 
 - (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
-      defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle;
+            defaultColor:(Color *)defaultColor
+    defaultDisabledColor:(Color *)defaultDisabledColor;
 
 - (void)applyRightButtons:(NSArray<RNNButtonOptions *> *)rightButtons
-       defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle;
+             defaultColor:(Color *)defaultColor
+     defaultDisabledColor:(Color *)defaultDisabledColor;
 
 - (void)applyLeftButtonsColor:(UIColor *)color;
 
 - (void)applyRightButtonsColor:(UIColor *)color;
+
+- (void)componentWillAppear;
 
 - (void)componentDidAppear;
 
