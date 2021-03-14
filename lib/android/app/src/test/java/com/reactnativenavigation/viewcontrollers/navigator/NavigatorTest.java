@@ -655,7 +655,7 @@ public class NavigatorTest extends BaseTest {
         ViewGroup view1 = child2.getView();
         view.setId(10);
         view1.setId(11);
-        spy.options.animations.setRoot.enabled = new Bool(false);
+        spy.options.animations.setRoot.getEnter().enabled = new Bool(false);
         uut.setRoot(spy, new CommandListenerAdapter(), reactInstanceManager);
         spy.push(child1, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());
