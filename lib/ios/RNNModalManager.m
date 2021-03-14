@@ -66,7 +66,6 @@
                                bridge:_bridge];
 
         viewController.transitioningDelegate = _showModalTransitionDelegate;
-        viewController.modalPresentationStyle = UIModalPresentationCustom;
     }
 
     [topVC presentViewController:viewController
@@ -91,6 +90,19 @@
 - (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^__nullable)(void))completion {
     UIViewController *root = [self rootViewController];
     if (root.presentedViewController) {
+        ViewAnimationOptions *dismissModalOptions =
+            root.presentedViewController.resolveOptionsWithDefault.animations.dismissModal;
+        if (dismissModalOptions.hasAnimation) {
+            _dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
+                initWithContentTransition:dismissModalOptions
+                       elementTransitions:dismissModalOptions.elementTransitions
+                 sharedElementTransitions:dismissModalOptions.sharedElementTransitions
+                                 duration:dismissModalOptions.maxDuration
+                                   bridge:_bridge];
+
+            root.presentedViewController.transitioningDelegate = _dismissModalTransitionDelegate;
+        }
+
         [root dismissViewControllerAnimated:animated completion:completion];
         [_eventHandler dismissedMultipleModals:_presentedModals];
         [_pendingModalIdsToDismiss removeAllObjects];
@@ -136,7 +148,6 @@
                              duration:viewAnimationOptions.maxDuration
                                bridge:_bridge];
 
-        modalToDismiss.modalPresentationStyle = UIModalPresentationCustom;
         [self topViewControllerParent:modalToDismiss].transitioningDelegate =
             _dismissModalTransitionDelegate;
     }
