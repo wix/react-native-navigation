@@ -6,11 +6,10 @@
 + (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC
                                 toVC:(UIViewController *)toVC
                        containerView:(UIView *)containerView
-                   contentTransition:(TransitionOptions *)contentTransitionOptions
+                   contentTransition:(RNNEnterExitAnimation *)contentTransitionOptions
                   elementTransitions:
                       (NSArray<ElementTransitionOptions *> *)elementTransitionsOptions
             sharedElementTransitions:
-                (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitionsOptions
-                            reversed:(BOOL)reversed;
+                (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitionsOptions;
 
 @end

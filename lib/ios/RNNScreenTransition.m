@@ -7,7 +7,7 @@
     self = [super initWithDict:dict];
 
     self.topBar = [[ElementTransitionOptions alloc] initWithDict:dict[@"topBar"]];
-    self.content = [[ElementTransitionOptions alloc] initWithDict:dict[@"content"][@"enter"]];
+    self.content = [[RNNEnterExitAnimation alloc] initWithDict:dict[@"content"]];
     self.bottomTabs = [[ElementTransitionOptions alloc] initWithDict:dict[@"bottomTabs"]];
     self.enable = [BoolParser parse:dict key:@"enabled"];
     self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];

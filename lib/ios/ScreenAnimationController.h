@@ -4,11 +4,11 @@
 #import <React/RCTUIManagerObserverCoordinator.h>
 #import <React/RCTUIManagerUtils.h>
 
-@interface TransitionDelegate
+@interface ScreenAnimationController
     : NSObject <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning,
                 RCTUIManagerObserver>
 
-- (instancetype)initWithContentTransition:(TransitionOptions *)contentTransition
+- (instancetype)initWithContentTransition:(RNNEnterExitAnimation *)contentTransition
                        elementTransitions:(NSArray<ElementTransitionOptions *> *)elementTransitions
                  sharedElementTransitions:
                      (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitions
@@ -19,7 +19,7 @@
                                 toVC:(UIViewController *)toVC
                        containerView:(UIView *)containerView;
 
-@property(nonatomic, strong) TransitionOptions *content;
+@property(nonatomic, strong) RNNEnterExitAnimation *content;
 @property(nonatomic, strong) NSArray<ElementTransitionOptions *> *elementTransitions;
 @property(nonatomic, strong) NSArray<SharedElementTransitionOptions *> *sharedElementTransitions;
 

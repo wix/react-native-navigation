@@ -1,14 +1,14 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "RNNConvert.h"
-#import "ReversedTransitionDelegate.h"
-#import "TransitionDelegate.h"
+#import "ScreenAnimationController.h"
+#import "ScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "ViewAnimationOptions.h"
 
 @interface RNNModalManager ()
-@property(nonatomic, strong) TransitionDelegate *showModalTransitionDelegate;
-@property(nonatomic, strong) TransitionDelegate *dismissModalTransitionDelegate;
+@property(nonatomic, strong) ScreenAnimationController *showModalTransitionDelegate;
+@property(nonatomic, strong) ScreenAnimationController *dismissModalTransitionDelegate;
 @end
 
 @implementation RNNModalManager {
@@ -58,7 +58,7 @@
     if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             viewController.resolveOptionsWithDefault.animations.showModal;
-        _showModalTransitionDelegate = [[TransitionDelegate alloc]
+        _showModalTransitionDelegate = [[ScreenAnimationController alloc]
             initWithContentTransition:viewAnimationOptions
                    elementTransitions:viewAnimationOptions.elementTransitions
              sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
@@ -129,7 +129,7 @@
     if (optionsWithDefault.animations.dismissModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
-        _dismissModalTransitionDelegate = [[ReversedTransitionDelegate alloc]
+        _dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
             initWithContentTransition:viewAnimationOptions
                    elementTransitions:viewAnimationOptions.elementTransitions
              sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
