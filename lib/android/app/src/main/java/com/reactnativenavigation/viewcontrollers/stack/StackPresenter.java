@@ -476,9 +476,9 @@ public class StackPresenter {
         if (resolveOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
         if (resolveOptions.title.font.hasValue()) topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 
-        if (topBarOptions.subtitle.text.hasValue()) {
-            topBar.setSubtitle(topBarOptions.subtitle.text.get());
-            topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
+        if (resolveOptions.subtitle.text.hasValue()) {
+            topBar.setSubtitle(resolveOptions.subtitle.text.get());
+            topBar.setSubtitleAlignment(resolveOptions.subtitle.alignment);
         }
         if (resolveOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(resolveOptions.subtitle.color.get());
         if (resolveOptions.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(resolveOptions.subtitle.fontSize.get());
