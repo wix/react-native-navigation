@@ -386,6 +386,43 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
+    fun mergeOptions_shouldAlignTitleSubtitleAsOneOfThemChanges() {
+        fun String.asText() = Text(this)
+
+        val defaultOptions = Options()
+        defaultOptions.topBar = TopBarOptions().apply {
+            title = TitleOptions().apply {
+                alignment = Alignment.Center
+            }
+            subtitle = SubtitleOptions().apply {
+                alignment = Alignment.Center
+            }
+        }
+        uut.defaultOptions = defaultOptions
+        uut.applyChildOptions(defaultOptions, parent, child)
+
+        val titleSubtitleBar = topBar.mainToolBar.getTitleSubtitleBar()
+        val layoutParams = titleSubtitleBar.layoutParams as RelativeLayout.LayoutParams
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.marginStart).isEqualTo(0)
+        // do merge
+        val mergeOptions = Options().apply {
+            defaultOptions.topBar = TopBarOptions().apply {
+                title = TitleOptions().apply {
+                    text = "title".asText()
+                }
+                subtitle = SubtitleOptions().apply {
+                    text = "subtitle".asText()
+                }
+            }
+        }
+
+        uut.mergeOptions(mergeOptions, parent, child)
+        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isEqualTo(RelativeLayout.TRUE)
+        assertThat(layoutParams.marginStart).isEqualTo(0)
+    }
+
+    @Test
     fun mergeOptions_resolvedSubtitleFontOptionsAreApplied() {
         val childOptions = Options()
         childOptions.topBar.subtitle.font.fontFamily = Text(SOME_FONT_FAMILY)
