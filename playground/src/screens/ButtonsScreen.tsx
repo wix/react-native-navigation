@@ -11,6 +11,7 @@ import testIDs from '../testIDs';
 const {
   PUSH_BTN,
   TOGGLE_BACK,
+  BACK_BUTTON,
   TOP_BAR,
   ROUND_BUTTON,
   BUTTON_ONE,
@@ -141,7 +142,8 @@ export default class ButtonOptions extends NavigationComponent {
     Navigation.mergeOptions(this.props.componentId,{
       topBar:{
         backButton:{
-              visible:this.backButtonVisibile
+          testID:BACK_BUTTON,
+          visible:this.backButtonVisibile
         }
       }
     })
