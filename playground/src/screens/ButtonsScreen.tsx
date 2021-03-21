@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { NavigationComponent, Options, OptionsTopBarButton } from 'react-native-navigation';
 import Root from '../components/Root';
@@ -9,6 +10,7 @@ import testIDs from '../testIDs';
 
 const {
   PUSH_BTN,
+  TOGGLE_BACK,
   TOP_BAR,
   ROUND_BUTTON,
   BUTTON_ONE,
@@ -26,6 +28,9 @@ const {
 } = testIDs;
 
 export default class ButtonOptions extends NavigationComponent {
+
+  backButtonVisibile = false
+
   static options(): Options {
     return {
       fab: {
@@ -122,8 +127,24 @@ export default class ButtonOptions extends NavigationComponent {
           label="Set leftButtons default Color"
           onPress={this.changeButtonsColor}
         />
+        <Button
+          label="Toggle back"
+          testID={TOGGLE_BACK}
+          onPress={this.toggleBack}
+        />
       </Root>
     );
+  }
+
+  toggleBack= ()=> {
+    this.backButtonVisibile = !this.backButtonVisibile;
+    Navigation.mergeOptions(this.props.componentId,{
+      topBar:{
+        backButton:{
+              visible:this.backButtonVisibile
+        }
+      }
+    })
   }
 
   setRightButtons = () =>
