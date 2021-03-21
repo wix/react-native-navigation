@@ -1,6 +1,5 @@
 package com.reactnativenavigation.options
 
-import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
@@ -28,16 +27,12 @@ class SharedElements {
         @JvmStatic
         fun parse(json: JSONObject): SharedElements {
             val result = SharedElements()
-            return try {
-                val sharedElements = json.getJSONArray("sharedElementTransitions")
-                if (sharedElements == null || sharedElements.length() == 0) return result
-                for (i in 0 until sharedElements.length()) {
-                    result.add(SharedElementTransitionOptions.parse(sharedElements.getJSONObject(i)))
-                }
-                result
-            } catch (e: JSONException) {
-                result
+            val sharedElementsJSONArray = json.optJSONArray("sharedElementTransitions")
+            if (sharedElementsJSONArray == null || sharedElementsJSONArray.length() == 0) return result
+            for (i in 0 until sharedElementsJSONArray.length()) {
+                result.add(SharedElementTransitionOptions.parse(sharedElementsJSONArray.getJSONObject(i)))
             }
+            return result
         }
     }
 }
