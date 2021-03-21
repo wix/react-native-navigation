@@ -10,7 +10,7 @@ describe('Buttons', () => {
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
 
-  it('should not effect left buttons when hiding back button',async ()=>{
+  it(':android: should not effect left buttons when hiding back button',async ()=>{
     await elementById(TestIDs.TOGGLE_BACK).tap();
     await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
     await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
