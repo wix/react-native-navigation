@@ -3,14 +3,14 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementById, elementByLabel } = Utils;
 
-describe.only('Buttons', () => {
+describe('Buttons', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
 
-  it.only('should not effect left buttons when hiding back button',async ()=>{
+  it('should not effect left buttons when hiding back button',async ()=>{
     await elementById(TestIDs.TOGGLE_BACK).tap();
     await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
     await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
