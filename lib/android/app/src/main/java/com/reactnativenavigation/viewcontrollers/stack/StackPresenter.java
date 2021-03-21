@@ -426,7 +426,7 @@ public class StackPresenter {
     private void mergeBackButton(TopBarButtons buttons) {
         if (buttons.back.hasValue() && isNullOrEmpty(buttons.left)) {
             if (buttons.back.visible.isFalse()) {
-                topBar.clearLeftButtons();
+                topBar.clearBackButton();
             } else {
                 topBar.setBackButton(createButtonController(buttons.back));
             }
