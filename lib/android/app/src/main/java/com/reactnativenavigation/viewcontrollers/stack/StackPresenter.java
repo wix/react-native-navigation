@@ -427,9 +427,8 @@ public class StackPresenter {
         if (buttons.back.hasValue() && isNullOrEmpty(buttons.left)) {
             if (buttons.back.visible.isFalse()) {
                 topBar.clearLeftButtons();
-            } else {
-                if (stack.size() > 1)
-                    topBar.setBackButton(createButtonController(buttons.back));
+            } else if (stack.size() > 1) {
+                topBar.setBackButton(createButtonController(buttons.back));
             }
         }
     }
