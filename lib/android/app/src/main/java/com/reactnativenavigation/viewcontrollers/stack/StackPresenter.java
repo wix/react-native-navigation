@@ -353,7 +353,7 @@ public class StackPresenter {
     public void mergeChildOptions(Options toMerge, Options resolvedOptions, StackController stack, ViewController child) {
         TopBarOptions topBar = toMerge.copy().topBar.mergeWithDefault(resolvedOptions.topBar).mergeWithDefault(defaultOptions.topBar);
         mergeOrientation(toMerge.layout.orientation);
-        mergeButtons(topBar, toMerge.topBar, child.getView());
+        mergeButtons(topBar, toMerge.topBar, child.getView(), stack);
         mergeTopBarOptions(topBar, toMerge, stack, child);
         mergeTopTabsOptions(toMerge.topTabs);
         mergeTopTabOptions(toMerge.topTabOptions);
@@ -363,12 +363,12 @@ public class StackPresenter {
         if (orientationOptions.hasValue()) applyOrientation(orientationOptions);
     }
 
-    private void mergeButtons(TopBarOptions options, TopBarOptions optionsToMerge, View child) {
+    private void mergeButtons(TopBarOptions options, TopBarOptions optionsToMerge, View child, StackController stack) {
         mergeRightButtons(options, optionsToMerge.buttons, child);
         mergeLeftButton(options, optionsToMerge.buttons, child);
         mergeLeftButtonsColor(child, optionsToMerge.leftButtonColor, optionsToMerge.leftButtonDisabledColor);
         mergeRightButtonsColor(child, optionsToMerge.rightButtonColor, optionsToMerge.rightButtonDisabledColor);
-        mergeBackButton(optionsToMerge.buttons);
+        mergeBackButton(optionsToMerge.buttons, stack);
     }
 
     private void mergeLeftButtonsColor(View child, Colour color, Colour disabledColor) {
@@ -423,11 +423,11 @@ public class StackPresenter {
         }
     }
 
-    private void mergeBackButton(TopBarButtons buttons) {
+    private void mergeBackButton(TopBarButtons buttons, StackController stack) {
         if (buttons.back.hasValue() && isNullOrEmpty(buttons.left)) {
             if (buttons.back.visible.isFalse()) {
                 topBar.clearLeftButtons();
-            } else {
+            } else if (stack.size() > 1) {
                 topBar.setBackButton(createButtonController(buttons.back));
             }
         }
