@@ -1,5 +1,7 @@
 .appIcon {
   background-size: contain;
+  height: 200px;
+  width: 200px;
 }
 
 .parent {
@@ -19,6 +21,7 @@
   padding: 10;
   display: flex;
   margin: 8px;
+  /* height: 200px; */
   padding: 16px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -29,6 +32,7 @@
 }
 
 .content {
+  display: flex;
   flex-direction: column;
   width: 300px;
   padding-left: 16px;
@@ -37,5 +41,17 @@
 .appName {
 }
 
-.appSubtitle {
+.cardFooter {
+  flex: 1;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.appDescription {
+  word-break: break-word;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }

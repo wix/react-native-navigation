@@ -34,8 +34,8 @@ function Showcase() {
                   </div>
                   <div className={styles.content}>
                     <h4 className={styles.appName}>{app.title}</h4>
-                    <small className={styles.appSubtitle}>{app.description}</small>
-                    <div className="card__footer">
+                    <p className={styles.appDescription}>{app.description}</p>
+                    <div className={styles.cardFooter}>
                       <div className="button-group button-group--block">
                         {app.appStore && (
                           <a
