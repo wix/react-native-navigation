@@ -216,6 +216,16 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
+    fun `mergeButtons - modify BackButton should not have effect on stack with with one child`() {
+        val options = Options()
+        options.topBar.buttons.back = BackButton.parse(activity, JSONObject().apply {
+            put("color", Color.RED)
+        })
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+        verify(topBar, times(0)).setBackButton(any())
+    }
+
+    @Test
     fun mergeButtons_previousRightButtonsAreDestroyed() {
         val options = Options()
         options.topBar.buttons.right = ArrayList(listOf(componentBtn1))
