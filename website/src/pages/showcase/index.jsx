@@ -60,38 +60,6 @@ function Showcase() {
                       </div>
                     </div>
                   </div>
-                  {/* <div className={'card__body'}>
-                    <div className="avatar">
-                      <div className="avatar__intro">
-                        <h4 className="avatar__name">{app.title}</h4>
-                        <small className="avatar__subtitle">{app.description}</small>
-                      </div>
-                    </div>
-                    <div className="card__footer">
-                      <div className="button-group button-group--block">
-                        {app.appStore && (
-                          <a
-                            className="button button--small button--secondary button--block"
-                            href={app.appStore}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                          >
-                            App Store
-                          </a>
-                        )}
-                        {app.playStore && (
-                          <a
-                            className="button button--small button--secondary button--block"
-                            href={app.playStore}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                          >
-                            Play Store
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div> */}
                 </div>
               );
             })}
