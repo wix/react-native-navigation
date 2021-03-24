@@ -297,6 +297,26 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
+    fun mergeChildOptions_backButtonShouldNotAffectLeftButtons() {
+        val options = Options()
+        options.topBar.buttons.right = ArrayList(listOf(textBtn1))
+        options.topBar.buttons.back = BackButton.parse(activity, JSONObject())
+        options.topBar.buttons.back.setVisible()
+        options.topBar.buttons.left = ArrayList(listOf(textBtn2))
+        uut.applyChildOptions(options, parent, child)
+        ShadowLooper.idleMainLooper()
+        verify(topBar, times(1)).clearLeftButtons()
+        verify(topBar, times(1)).clearBackButton()
+
+        val backButtonHidden = Options()
+        backButtonHidden.topBar.buttons.back.setHidden()
+        uut.mergeChildOptions(backButtonHidden, options, parent, child)
+        ShadowLooper.idleMainLooper()
+        verify(topBar, times(1)).clearLeftButtons()
+        verify(topBar, times(2)).clearBackButton()
+    }
+
+    @Test
     fun mergeButtons_backButtonIsRemovedIfVisibleFalse() {
         val pushedChild = spy<ViewController<*>>(SimpleViewController(activity, childRegistry, "child2", Options()))
         disablePushAnimation(child, pushedChild)
