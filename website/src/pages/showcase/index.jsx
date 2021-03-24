@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 import apps from '../../data/apps';
 
 const TITLE = 'Showcase';
-const DESCRIPTION = 'See the awesome websites people are building with Docusaurus';
+const DESCRIPTION = 'See the awesome apps people are building with React Native Navigation';
 const EDIT_URL = 'https://forms.gle/pyP8w73hNUhoReQ3A';
 
 function Showcase() {
