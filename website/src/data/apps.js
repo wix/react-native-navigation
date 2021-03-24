@@ -8,7 +8,7 @@ const apps = [
     appStore: 'https://apps.apple.com/us/app/wix-website-app-builder/id1099748482',
   },
   {
-    title: 'Feastr',
+    title: 'feastr',
     description: 'Weight loss meal plan.',
     image: require('./showcase/feastr.png'),
     playStore: 'https://play.google.com/store/apps/details?id=de.feastr.plan',
