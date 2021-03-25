@@ -10,7 +10,6 @@
 
 .root {
   display: flex;
-  width: 80%;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
@@ -19,7 +18,7 @@
 .cardContainer {
   padding: 10;
   display: flex;
-  margin: 8px;
+  margin: 10px;
   /* height: 200px; */
   padding: 16px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -33,7 +32,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 260px;
   padding-left: 16px;
 }
 
