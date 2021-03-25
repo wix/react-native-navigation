@@ -1,0 +1,105 @@
+---
+id: options-backButton
+title: Back Button Options
+sidebar_label: Back Button
+---
+
+Controls the back button styling.
+
+```js
+const options = {
+  topBar: {
+    backButton: {},
+  },
+};
+```
+
+### `accessibilityLabel`
+
+Overrides the text that's read by the screen reader when the user interacts with the back button.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Android  |
+
+### `id`
+
+Button id for reference press event.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Android  |
+
+### `color`
+
+Change the back button color. This will change the text color as well.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Both     |
+
+### `icon`
+
+Change the default back button icon.
+
+| Type                                       | Required | Platform |
+| ------------------------------------------ | -------- | -------- |
+| [ImageResource](options-imageResource.mdx) | No       | Both     |
+
+### `showTitle`
+
+Show or hide the text displayed next to the back button.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | iOS      |
+
+### `displayMode`
+
+Set display mode of the back button. Currently works for iOS 14+ only.
+See: [UINavigationItem.BackButtonDisplayMode
+](https://developer.apple.com/documentation/uikit/uinavigationitem/backbuttondisplaymode)
+
+| Type                                  | Required | Platform |
+| ------------------------------------- | -------- | -------- |
+| enum('default', 'generic', 'minimal') | No       | iOS      |
+
+### `title`
+
+Change the text displayed next to the title. Usually the back button shows the title of the previous screen.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | iOS      |
+
+### `visible`
+
+Hide or show the back button.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+### `testID`
+
+Used to interact with the back button in e2e tests.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+### `enableMenu`
+
+Enables iOS 14 back button menu display.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | iOS      | true    |
+
+### `popStackOnPress`
+
+Controls whether the default back button should pop screen or not.
+
+| Type    | Required | Default |
+| ------- | -------- | ------- |
+| boolean | No       | true    |

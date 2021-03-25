@@ -17,7 +17,6 @@
     "@docusaurus/plugin-pwa": "2.0.0-alpha.71",
     "@docusaurus/preset-classic": "2.0.0-alpha.71",
     "@docusaurus/theme-live-codeblock": "2.0.0-alpha.71",
-    "@docusaurus/plugin-ideal-image": "2.0.0-alpha.71",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "remark-code-import": "^0.2.0"
