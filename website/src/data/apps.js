@@ -22,6 +22,14 @@ const apps = [
     appStore: 'https://apps.apple.com/au/app/amber-bitcoin-made-easy/id1410639317',
   },
   {
+    title: 'Klarna',
+    description:
+      'Try before you buy and make hassle-free returns, without taking money out of your pocket in the meantime.',
+    image: require('./showcase/klarna.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.myklarnamobile',
+    appStore: 'https://apps.apple.com/app/klarna-smoooth-shopping/id1115120118',
+  },
+  {
     title: 'Delta',
     description: 'Investment Portfolio Tracker',
     image: require('./showcase/delta.png'),
@@ -76,6 +84,15 @@ const apps = [
     image: require('./showcase/deevent.png'),
     playStore: 'https://play.google.com/store/apps/details?id=app.deevent',
     appStore: 'https://apps.apple.com/us/app/deevent/id1519499216',
+  },
+  {
+    title: 'Cinepicks',
+    description:
+      'Browse a huge list of movies and see which ones are available on popular streaming services.',
+    image: require('./showcase/cinepicks.png'),
+    playStore:
+      'https://play.google.com/store/apps/details?id=co.uk.jaygould.cinepicks&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1',
+    appStore: 'https://apps.apple.com/gb/app/cinepicks-find-swipe-films/id1534621509',
   },
   {
     title: 'StretchMinder',
