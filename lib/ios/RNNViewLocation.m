@@ -54,15 +54,7 @@
 }
 
 - (CATransform3D)getTransform:(UIView *)view {
-    if (view) {
-        if (!CATransform3DEqualToTransform(view.layer.transform, CATransform3DIdentity)) {
-            return view.layer.transform;
-        } else {
-            return [self getTransform:view.superview];
-        }
-    }
-
-    return CATransform3DIdentity;
+    return view.layer.transform;
 }
 
 - (CGPoint)convertViewCenter:(UIView *)view {
