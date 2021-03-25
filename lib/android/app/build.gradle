@@ -27,6 +27,11 @@ android {
         targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
         versionCode 1
         versionName "1.0"
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+            }
+        }
     }
     buildTypes {
         release {
@@ -39,7 +44,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
     testOptions {
         unitTests.includeAndroidResources = true
         unitTests.all { t ->

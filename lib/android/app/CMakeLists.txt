@@ -1,6 +1,7 @@
 
 cmake_minimum_required(VERSION 3.4.1)
-execute_process (COMMAND ln "-s" "src" "../../../node_modules/react-native/third-party/double-conversion-1.1.6/double-conversion")
+add_compile_options(-std=c++11)
+
 
 include_directories(
         ../../../node_modules/react-native/React
@@ -25,16 +26,8 @@ add_library( # Specifies the name of the library.
              ../../../node_modules/react-native/ReactCommon/jsi/jsi/jsi.cpp
              src/main/cpp/demo/jsi_demo.cpp )
 
-find_library( # Sets the name of the path variable.
-        log-lib
 
-        # Specifies the name of the NDK library that
-        # you want CMake to locate.
-        log)
-
-target_link_libraries( # Specifies the target library.
+target_link_libraries(
         jsi_demo
         android
-        # Links the target library to the log library
-        # included in the NDK.
-        ${log-lib})
+        log)
