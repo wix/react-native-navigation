@@ -72,7 +72,7 @@ const apps = [
   {
     title: 'Deevent',
     description:
-      'Deevent is a Swiss application highlighting the best attractions, places, museums and monuments in the biggest cities!',
+      'Highlight the best attractions, places, museums and monuments in the biggest cities!',
     image: require('./showcase/deevent.png'),
     playStore: 'https://play.google.com/store/apps/details?id=app.deevent',
     appStore: 'https://apps.apple.com/us/app/deevent/id1519499216',
@@ -86,7 +86,7 @@ const apps = [
   {
     title: 'Obitrain',
     description:
-      'Obitrain is a platform where you can create your own exercises and training sessions, track your progress and share it with your community.',
+      'Create your own exercises and training sessions, track your progress and share it with your community.',
     image: require('./showcase/obitrain.png'),
     playStore: 'https://play.google.com/store/apps/details?id=com.obitrain.obiapp',
   },
