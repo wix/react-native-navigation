@@ -12,7 +12,6 @@ import java.util.*
 open class YellowBoxDelegate(private val context: Context, private val yellowBoxHelper: YellowBoxHelper = YellowBoxHelper()) {
     constructor(context: Context) : this(context, YellowBoxHelper())
 
-    @get:RestrictTo(RestrictTo.Scope.TESTS)
     var parent: ViewGroup? = null
         private set
     @get:RestrictTo(RestrictTo.Scope.TESTS)
