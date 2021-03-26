@@ -108,7 +108,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public boolean onKeyUp(final int keyCode, final KeyEvent event) {
-        return getReactGateway().onKeyUp(keyCode) || super.onKeyUp(keyCode, event);
+        return getReactGateway().onKeyUp(this, keyCode) || super.onKeyUp(keyCode, event);
     }
 
     public ReactGateway getReactGateway() {
