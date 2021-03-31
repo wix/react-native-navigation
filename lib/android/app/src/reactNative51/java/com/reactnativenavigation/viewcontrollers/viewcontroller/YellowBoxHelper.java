@@ -17,11 +17,11 @@ public class YellowBoxHelper {
         return parent instanceof ViewGroup &&
                child instanceof ViewGroup &&
                ((ViewGroup) parent).getChildCount() > 1 &&
-               !findChildrenByClassRecursive((ViewGroup) child, View.class, YellowBackgroundMather()).isEmpty();
+               !findChildrenByClassRecursive((ViewGroup) child, View.class, YellowBackgroundMatcher()).isEmpty();
     }
 
     @NonNull
-    private static ViewUtils.Matcher<View> YellowBackgroundMather() {
+    private static ViewUtils.Matcher<View> YellowBackgroundMatcher() {
         return child1 -> child1.getBackground() instanceof ReactViewBackgroundDrawable && ((ReactViewBackgroundDrawable) child1.getBackground()).getColor() == YELLOW_BOX_COLOR;
     }
 }
