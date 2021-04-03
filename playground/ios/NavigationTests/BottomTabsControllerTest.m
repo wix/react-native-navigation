@@ -169,22 +169,22 @@
 }
 
 - (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleTrue {
-    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(1)];
+    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:YES];
     XCTAssertFalse(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPreferredStatusHidden_shouldResolveChildStatusBarVisibleFalse {
-    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:@(0)];
+    self.uut.getCurrentChild.options.statusBar.visible = [Bool withValue:NO];
     XCTAssertTrue(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPreferredStatusHidden_shouldHideStatusBar {
-    self.uut.options.statusBar.visible = [Bool withValue:@(1)];
+    self.uut.options.statusBar.visible = [Bool withValue:YES];
     XCTAssertFalse(self.uut.prefersStatusBarHidden);
 }
 
 - (void)testPreferredStatusHidden_shouldShowStatusBar {
-    self.uut.options.statusBar.visible = [Bool withValue:@(0)];
+    self.uut.options.statusBar.visible = [Bool withValue:NO];
     XCTAssertTrue(self.uut.prefersStatusBarHidden);
 }
 
@@ -218,7 +218,7 @@
 }
 
 - (void)testSetSelectedIndex_ShouldSetSelectedIndexWithCurrentTabIndex {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.bottomTabs.currentTabIndex = [[IntNumber alloc] initWithValue:@(1)];
 
     RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
@@ -236,7 +236,7 @@
 }
 
 - (void)testDidSelectViewController_emitEventOnTabPress {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                                             rootViewCreator:nil
                                                                                eventEmitter:nil
@@ -255,7 +255,7 @@
 }
 
 - (void)testTabLongPress_ShouldEmitEvent {
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     RNNComponentViewController *vc = [[RNNComponentViewController alloc] initWithLayoutInfo:nil
                                                                             rootViewCreator:nil
                                                                                eventEmitter:nil
@@ -297,6 +297,32 @@
     [[dotIndicator expect] bottomTabsDidLayoutSubviews:uut];
     [uut viewDidLayoutSubviews];
     [dotIndicator verify];
+}
+
+- (void)testShouldSelectViewController_returnTrueForMoreTab {
+    XCTAssertTrue([self.uut tabBarController:self.uut
+                  shouldSelectViewController:UIViewController.new]);
+}
+
+- (void)testShouldSelectViewController_returnTrueByDefault {
+    [self.uut viewWillAppear:NO];
+    XCTAssertTrue([self.uut tabBarController:self.uut
+                  shouldSelectViewController:self.uut.childViewControllers[0]]);
+}
+
+- (void)testShouldSelectViewController_selectTabOnPressFalse {
+    [self.uut viewWillAppear:NO];
+    self.uut.childViewControllers[0].options.bottomTab.selectTabOnPress = [Bool withValue:NO];
+    XCTAssertFalse([self.uut tabBarController:self.uut
+                   shouldSelectViewController:self.uut.childViewControllers[0]]);
+}
+
+- (void)testShouldSelectViewController_emitEvent {
+    [self.uut viewWillAppear:NO];
+    [[self.mockEventEmitter expect] sendBottomTabPressed:@(0)];
+    [self.uut tabBarController:self.uut
+        shouldSelectViewController:self.uut.childViewControllers[0]];
+    [self.mockEventEmitter verify];
 }
 
 @end

@@ -9,19 +9,13 @@
 #import "VerticalTranslationTransition.h"
 
 @implementation ElementAnimator {
-    UIViewController *_toVC;
-    UIViewController *_fromVC;
     UIView *_containerView;
 }
 
-- (instancetype)initWithTransitionOptions:(ElementTransitionOptions *)transitionOptions
+- (instancetype)initWithTransitionOptions:(TransitionOptions *)transitionOptions
                                      view:(UIView *)view
-                                   fromVC:(UIViewController *)fromVC
-                                     toVC:(UIViewController *)toVC
                             containerView:(UIView *)containerView {
     self = [super init];
-    _fromVC = fromVC;
-    _toVC = toVC;
     _containerView = containerView;
     self.view = view;
     self.animations = [self createAnimations:transitionOptions];
@@ -29,7 +23,7 @@
 }
 
 - (NSMutableArray<id<DisplayLinkAnimation>> *)createAnimations:
-    (ElementTransitionOptions *)transitionOptions {
+    (TransitionOptions *)transitionOptions {
     NSMutableArray *animations = [NSMutableArray new];
     if (transitionOptions.alpha.hasAnimation) {
         [animations

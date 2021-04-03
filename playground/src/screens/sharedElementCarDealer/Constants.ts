@@ -103,3 +103,38 @@ export function buildStorySharedElementAnimations(car: CarItem): AnimationOption
     },
   };
 }
+
+export function buildFullScreenSharedElementAnimations(car: CarItem): AnimationOptions {
+  return {
+    showModal: {
+      alpha: {
+        from: 0,
+        to: 1,
+        duration: SET_DURATION,
+      },
+      sharedElementTransitions: [
+        {
+          fromId: `image${car.id}Dest`,
+          toId: `image${car.id}Full`,
+          duration: SET_DURATION,
+          interpolation: { type: 'spring', ...SPRING_CONFIG },
+        },
+      ],
+    },
+    dismissModal: {
+      alpha: {
+        from: 1,
+        to: 0,
+        duration: SET_DURATION,
+      },
+      sharedElementTransitions: [
+        {
+          fromId: `image${car.id}Full`,
+          toId: `image${car.id}Dest`,
+          duration: SET_DURATION,
+          interpolation: { type: 'spring', ...SPRING_CONFIG },
+        },
+      ],
+    },
+  };
+}

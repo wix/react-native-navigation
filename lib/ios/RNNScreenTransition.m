@@ -4,10 +4,10 @@
 @implementation RNNScreenTransition
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
-    self = [super init];
+    self = [super initWithDict:dict];
 
     self.topBar = [[ElementTransitionOptions alloc] initWithDict:dict[@"topBar"]];
-    self.content = [[ElementTransitionOptions alloc] initWithDict:dict[@"content"]];
+    self.content = [[RNNEnterExitAnimation alloc] initWithDict:dict[@"content"]];
     self.bottomTabs = [[ElementTransitionOptions alloc] initWithDict:dict[@"bottomTabs"]];
     self.enable = [BoolParser parse:dict key:@"enabled"];
     self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
@@ -22,13 +22,30 @@
     return self;
 }
 
+- (void)mergeOptions:(RNNScreenTransition *)options {
+    [self.topBar mergeOptions:options.topBar];
+    [self.content mergeOptions:options.content];
+    [self.bottomTabs mergeOptions:options.bottomTabs];
+
+    if (options.enable.hasValue)
+        self.enable = options.enable;
+    if (options.waitForRender.hasValue)
+        self.waitForRender = options.waitForRender;
+    if (options.duration.hasValue)
+        self.duration = options.duration;
+    if (options.sharedElementTransitions)
+        self.sharedElementTransitions = options.sharedElementTransitions;
+    if (options.elementTransitions)
+        self.elementTransitions = options.elementTransitions;
+}
+
 - (BOOL)hasCustomAnimation {
     return (self.topBar.hasAnimation || self.content.hasAnimation || self.bottomTabs.hasAnimation ||
             self.sharedElementTransitions || self.elementTransitions);
 }
 
 - (BOOL)shouldWaitForRender {
-    return [self.waitForRender getWithDefaultValue:NO] || self.hasCustomAnimation;
+    return [self.waitForRender withDefault:NO] || self.hasCustomAnimation;
 }
 
 - (NSTimeInterval)maxDuration {

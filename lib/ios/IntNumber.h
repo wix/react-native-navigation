@@ -4,6 +4,6 @@
 
 - (NSUInteger)get;
 
-- (NSUInteger)getWithDefaultValue:(NSUInteger)defaultValue;
+- (NSUInteger)withDefault:(NSUInteger)defaultValue;
 
 @end

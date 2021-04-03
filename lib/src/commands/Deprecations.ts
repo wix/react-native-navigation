@@ -63,7 +63,7 @@ export class Deprecations {
   public onProcessOptions(key: string, parentOptions: Record<string, any>, commandName: string) {
     if (
       key === 'bottomTabs' &&
-      parentOptions[key].visible !== undefined &&
+      parentOptions[key]?.visible !== undefined &&
       Platform.OS === 'ios' &&
       commandName === 'mergeOptions'
     ) {
@@ -74,6 +74,18 @@ export class Deprecations {
     }
     if (key === 'interpolation' && typeof parentOptions[key] === 'string') {
       this.deprecateInterpolationOptions(parentOptions);
+    }
+
+    if (key === 'showModal' || key === 'dismissModal') {
+      if (
+        typeof parentOptions[key] === 'object' &&
+        !('enter' in parentOptions[key]) &&
+        !('exit' in parentOptions[key])
+      )
+        console.warn(
+          `${key} without enter/exit is deprecated, and will be changed  in the next major version. For more information see https://wix.github.io/react-native-navigation/docs/style-animations#modal-animations`,
+          parentOptions
+        );
     }
   }
 

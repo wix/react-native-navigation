@@ -7,10 +7,10 @@ import android.view.View;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.SideMenuRootOptions;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.sidemenu.SideMenu;
 import com.reactnativenavigation.views.sidemenu.SideMenuRoot;
@@ -18,6 +18,7 @@ import com.reactnativenavigation.views.sidemenu.SideMenuRoot;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -28,15 +29,15 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class SideMenuController extends ParentController<SideMenuRoot> implements DrawerLayout.DrawerListener {
 
-	private ViewController center;
-	private ViewController left;
-	private ViewController right;
+    private ViewController center;
+    private ViewController left;
+    private ViewController right;
     private SideMenuPresenter presenter;
     private float prevLeftSlideOffset = 0;
     private float prevRightSlideOffset = 0;
 
     public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions, SideMenuPresenter sideMenuOptionsPresenter, Presenter presenter) {
-		super(activity, childRegistry, id, presenter, initialOptions);
+        super(activity, childRegistry, id, presenter, initialOptions);
         this.presenter = sideMenuOptionsPresenter;
     }
 
@@ -53,7 +54,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     @NonNull
-	@Override
+    @Override
     public SideMenuRoot createView() {
         SideMenu sideMenu = new SideMenu(getActivity());
         presenter.bindView(sideMenu);
@@ -62,7 +63,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         SideMenuRoot root = new SideMenuRoot(getActivity());
         root.addSideMenu(sideMenu, this);
         return root;
-	}
+    }
 
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
@@ -70,14 +71,14 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     @NonNull
-	@Override
-	public Collection<ViewController> getChildControllers() {
-		ArrayList<ViewController> children = new ArrayList<>();
-		if (center != null) children.add(center);
-		if (left != null) children.add(left);
-		if (right != null) children.add(right);
-		return children;
-	}
+    @Override
+    public Collection<ViewController> getChildControllers() {
+        ArrayList<ViewController> children = new ArrayList<>();
+        if (center != null) children.add(center);
+        if (left != null) children.add(left);
+        if (right != null) children.add(right);
+        return children;
+    }
 
     @Override
     public void applyOptions(Options options) {
@@ -139,7 +140,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     @Override
-    public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+    public void onDrawerSlide(@NonNull View drawerView, @FloatRange(from = 0, to = 1) float slideOffset) {
         int gravity = getSideMenuGravity(drawerView);
         if (gravity == Gravity.LEFT) {
             dispatchSideMenuVisibilityEvents(left, prevLeftSlideOffset, slideOffset);
@@ -167,21 +168,23 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     public void setCenterController(ViewController centerController) {
-		center = centerController;
+        center = centerController;
         getView().setCenter(center);
-	}
+    }
 
     public void setLeftController(ViewController controller) {
         left = controller;
         getView().setLeft(left, options);
+        presenter.bindLeft(left);
     }
 
     public void setRightController(ViewController controller) {
         right = controller;
         getView().setRight(right, options);
+        presenter.bindRight(right);
     }
 
-    private ViewController getMatchingView (View drawerView) {
+    private ViewController getMatchingView(View drawerView) {
         return this.isLeftMenu(drawerView) ? left : right;
     }
 
@@ -193,7 +196,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         return ((LayoutParams) drawerView.getLayoutParams()).gravity;
     }
 
-    private Options getOptionsWithVisibility(boolean isLeft, boolean visible ) {
+    private Options getOptionsWithVisibility(boolean isLeft, boolean visible) {
         Options options = new Options();
         if (isLeft) {
             options.sideMenuRootOptions.left.visible = new Bool(visible);

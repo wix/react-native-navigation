@@ -2,11 +2,11 @@ import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 import Android from './AndroidUtils';
 
-const { elementByLabel, elementById, sleep } = Utils;
+const {elementByLabel, elementById, sleep} = Utils;
 
 describe('modal', () => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
   });
@@ -110,6 +110,7 @@ describe('modal', () => {
     Android.pressBack();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
+
 
   it('present modal multiple times', async () => {
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();

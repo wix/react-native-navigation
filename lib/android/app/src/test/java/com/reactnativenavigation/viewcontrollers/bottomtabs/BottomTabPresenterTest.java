@@ -38,7 +38,7 @@ public class BottomTabPresenterTest extends BaseTest {
     private Options tab2Options = createTab2Options();
     private BottomTabPresenter uut;
     private BottomTabs bottomTabs;
-    private List<ViewController> tabs;
+    private List<ViewController<?>> tabs;
     private ViewController child1;
     private ViewController child2;
     private ViewController child3;

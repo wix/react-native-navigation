@@ -6,6 +6,7 @@ typedef void (^CompletionBlock)(void);
 @interface DisplayLinkAnimator : NSObject
 
 @property(nonatomic, copy) CompletionBlock completion;
+@property(nonatomic, copy) CompletionBlock onStart;
 
 - (instancetype)initWithDisplayLinkAnimators:
                     (NSArray<id<DisplayLinkAnimatorDelegate>> *)displayLinkAnimators

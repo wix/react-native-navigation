@@ -145,7 +145,7 @@ class AppDelegateLinker {
 
     const toRemove = [
       /RCTRootView\s+\*rootView((.|\r|\s)*?)];\s+/,
-      /rootView.backgroundColor((.|\r)*)];\s+/,
+      /if \(@available\(iOS 13\.0, \*\)\)\s{\s+ rootView.backgroundColor((.|\r)*)];\s+}\s+else {[^}]*}/,
       /self.window((.|\r)*)];\s+/,
       /UIViewController\s\*rootViewController((.|\r)*)];\s+/,
       /rootViewController\.view\s+=\s+rootView;\s+/,

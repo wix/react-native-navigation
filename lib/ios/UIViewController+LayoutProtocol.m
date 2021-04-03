@@ -27,7 +27,7 @@
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-    [self.options overrideOptions:options];
+    [self.options mergeOptions:options];
     [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];
     [self.parentViewController mergeChildOptions:options child:self];
 }
@@ -38,17 +38,13 @@
 }
 
 - (RNNNavigationOptions *)resolveOptions {
-    return (RNNNavigationOptions *)[self.options
-        mergeInOptions:self.getCurrentChild.resolveOptions.copy];
+    return (RNNNavigationOptions *)[self.options.copy
+        mergeOptions:self.getCurrentChild.resolveOptions];
 }
 
 - (RNNNavigationOptions *)resolveOptionsWithDefault {
-    return [(RNNNavigationOptions *)[self.options
-        mergeInOptions:self.getCurrentChild.resolveOptions.copy] withDefault:self.defaultOptions];
-}
-
-- (void)overrideOptions:(RNNNavigationOptions *)options {
-    [self.options overrideOptions:options];
+    return [(RNNNavigationOptions *)[self.options.copy
+        mergeOptions:self.getCurrentChild.resolveOptions] withDefault:self.defaultOptions];
 }
 
 - (UINavigationController *)stack {
@@ -114,6 +110,16 @@
 - (void)destroyReactView {
 }
 
+- (void)prepareForTransition {
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
+    if (self.navigationController) {
+        [self.navigationController.navigationBar setNeedsLayout];
+    } else if ([self isKindOfClass:UINavigationController.class]) {
+        [((UINavigationController *)self).navigationBar setNeedsLayout];
+    }
+}
+
 - (UIViewController *)presentedComponentViewController {
     UIViewController *currentChild = self.getCurrentChild;
     return currentChild ? currentChild.presentedComponentViewController : self;
@@ -169,6 +175,11 @@
 
 - (void)onChildAddToParent:(UIViewController *)child options:(RNNNavigationOptions *)options {
     [self.parentViewController onChildAddToParent:child options:options];
+}
+
+- (void)componentWillAppear {
+    [self.presenter componentWillAppear];
+    [self.parentViewController componentWillAppear];
 }
 
 - (void)componentDidAppear {

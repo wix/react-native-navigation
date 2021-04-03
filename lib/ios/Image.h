@@ -5,6 +5,6 @@
 
 - (UIImage *)get;
 
-- (UIImage *)getWithDefaultValue:(UIImage *)defaultValue;
+- (UIImage *)withDefault:(UIImage *)defaultValue;
 
 @end

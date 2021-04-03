@@ -1,6 +1,5 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes;
 
-import androidx.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,16 +11,18 @@ import com.reactnativenavigation.views.bottomtabs.BottomTabsBehaviour;
 
 import java.util.List;
 
+import androidx.annotation.VisibleForTesting;
+
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public abstract class AttachMode {
     protected final ViewGroup parent;
     protected final BottomTabsPresenter presenter;
-    protected final List<ViewController> tabs;
     protected final BottomTabFinder bottomTabFinder;
+    protected final List<ViewController<?>> tabs;
     final ViewController initialTab;
 
-    public static AttachMode get(ViewGroup parent, List<ViewController> tabs, BottomTabsPresenter presenter, Options resolved) {
+    public static AttachMode get(ViewGroup parent, List<ViewController<?>> tabs, BottomTabsPresenter presenter, Options resolved) {
         switch (resolved.bottomTabsOptions.tabsAttachMode) {
             case AFTER_INITIAL_TAB:
                 return new AfterInitialTab(parent, tabs, presenter, resolved);
@@ -34,7 +35,7 @@ public abstract class AttachMode {
         }
     }
 
-    AttachMode(ViewGroup parent, List<ViewController> tabs, BottomTabsPresenter presenter, Options resolved) {
+    AttachMode(ViewGroup parent, List<ViewController<?>> tabs, BottomTabsPresenter presenter, Options resolved) {
         this.parent = parent;
         this.tabs = tabs;
         this.presenter = presenter;

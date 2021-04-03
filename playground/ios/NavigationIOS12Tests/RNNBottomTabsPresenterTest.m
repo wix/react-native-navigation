@@ -19,11 +19,11 @@
     self.uut = [OCMockObject partialMockForObject:[RNNBottomTabsPresenter new]];
     self.boundViewController = [OCMockObject partialMockForObject:[RNNBottomTabsController new]];
     [self.uut bindViewController:self.boundViewController];
-    self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+    self.options = [RNNNavigationOptions emptyOptions];
 }
 
 - (void)testApplyOptions_shouldSetDefaultEmptyOptions {
-    RNNNavigationOptions *emptyOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *emptyOptions = [RNNNavigationOptions emptyOptions];
     [[self.boundViewController expect] setTabBarTestID:nil];
     [[(id)self.uut expect] applyBackgroundColor:nil translucent:NO];
     [[self.boundViewController expect] setTabBarHideShadow:NO];
@@ -34,7 +34,7 @@
 }
 
 - (void)testApplyOptions_shouldApplyOptions {
-    RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
     initialOptions.bottomTabs.testID = [[Text alloc] initWithValue:@"testID"];
     initialOptions.bottomTabs.backgroundColor = [[Color alloc] initWithValue:[UIColor redColor]];
     initialOptions.bottomTabs.translucent = [[Bool alloc] initWithValue:@(0)];
@@ -52,7 +52,7 @@
 }
 
 - (void)testApplyOptions_shouldRestoreHiddenTabBar {
-    RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
     initialOptions.bottomTabs.visible = [[Bool alloc] initWithValue:@(1)];
 
     [[self.boundViewController expect] setTabBarVisible:YES];
@@ -62,7 +62,7 @@
 }
 
 - (void)testApplyOptionsOnInit_alwaysShow_shouldNotCenterTabImages {
-    RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
     initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysShow"];
     [[self.boundViewController reject] centerTabItems];
     [self.uut applyOptionsOnInit:initialOptions];
@@ -70,7 +70,7 @@
 }
 
 - (void)testApplyOptions_shouldApplyOptionsOnInit_alwaysHide_shouldCenterTabImages {
-    RNNNavigationOptions *initialOptions = [[RNNNavigationOptions alloc] initEmptyOptions];
+    RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
     initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysHide"];
     [[self.boundViewController expect] centerTabItems];
     [self.uut applyOptionsOnInit:initialOptions];

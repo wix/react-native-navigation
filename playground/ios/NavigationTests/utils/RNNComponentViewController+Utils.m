@@ -7,14 +7,21 @@
                                        initialOptions:(RNNNavigationOptions *)initialOptions {
     RNNLayoutInfo *layoutInfo = [[RNNLayoutInfo alloc] init];
     layoutInfo.componentId = componentId;
-    return [[RNNComponentViewController alloc]
+    RNNButtonsPresenter *buttonsPresenter =
+        [[RNNButtonsPresenter alloc] initWithComponentRegistry:nil eventEmitter:nil];
+
+    RNNComponentViewController *component = [[RNNComponentViewController alloc]
         initWithLayoutInfo:layoutInfo
            rootViewCreator:[[RNNTestRootViewCreator alloc] init]
               eventEmitter:nil
-                 presenter:[[RNNComponentPresenter alloc] initWithComponentRegistry:nil
-                                                                     defaultOptions:nil]
+                 presenter:[[RNNComponentPresenter alloc]
+                               initWithComponentRegistry:nil
+                                          defaultOptions:nil
+                                        buttonsPresenter:buttonsPresenter]
                    options:initialOptions
             defaultOptions:nil];
+    [buttonsPresenter bindViewController:component];
+    return component;
 }
 
 + (RNNComponentViewController *)createWithComponentId:(NSString *)componentId {

@@ -7,7 +7,7 @@
 @implementation RNNSharedElementAnimationOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
-    self = [super init];
+    self = [super initWithDict:dict];
 
     self.animations = dict[@"animations"];
     self.duration = dict[@"duration"];

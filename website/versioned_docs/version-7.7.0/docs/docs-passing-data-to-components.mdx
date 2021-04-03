@@ -1,0 +1,62 @@
+---
+id: passing-data-to-components
+title: Passing data to components
+sidebar_label: Passing data to components
+---
+
+## Initial props
+
+React components use [props](https://facebook.github.io/react-native/docs/props) to receive data when they are created. When displaying the [component](../api/layout-component) layout, you can pass initial props to components using the `passProps` property.
+
+In this example, we push the `UserProfile` screen and pass two initial props to it:
+
+```js
+Navigation.push(this.props.componentId, {
+  component: {
+    name: 'UserProfile',
+    id: 'PROFILE_SCREEN_ID'
+    passProps: {
+      name: 'John Doe',
+      status: 'online'
+    }
+  }
+});
+```
+
+:::tip Serialization
+passProps don't need to be serializable. You can use this mechanism to pass lambda functions or even React Components.
+:::
+
+## Handling passProps in static options
+
+Each component can have a static options property which is used to configure the style properties of elements on the screen when that component is displayed. 
+
+Static options can either be a simple object, or a function which accepts `passProps` as an argument. Sometimes when declaring components, not all style properties are known. For example, a user profile screen will usually have the user's name as the TopBar title text. Therefore the title must be configured dynamically when pushing the screen.
+
+Following the code example [above](passing-data-to-components#initial-props), lets see how to use props passed in the push command to set the TopBar title.
+
+```jsx
+class UserProfileScreen extends React.Component {
+  static options(props) {
+    return {
+      topBar: {
+        title: {
+          text: props.name
+        }
+      }
+    };
+  }
+}
+```
+
+## Updating props
+
+To update a component's props, use the [Navigation.updateProps()](../api/component#updateprops) command. Updating props triggers the component lifecycle methods related to [updating](https://reactjs.org/docs/react-component.html#updating).
+
+Notice that we're using the component `id` in order to update props of this specific instance of the component.
+
+```js
+Navigation.updateProps('PROFILE_SCREEN_ID', {
+  status: 'offline'
+});
+```

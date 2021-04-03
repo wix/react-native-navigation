@@ -3,9 +3,9 @@ var path = require('./path');
 var fs = require('fs');
 var { warnn, errorn, logn, infon, debugn } = require('./log');
 var { insertString } = require('./stringUtils');
-var DEFAULT_KOTLIN_VERSION = '1.3.61';
+var DEFAULT_KOTLIN_VERSION = '1.4.31';
 // This should be the minSdkVersion required for RNN.
-var DEFAULT_MIN_SDK_VERSION = 19;
+var DEFAULT_MIN_SDK_VERSION = 21;
 
 class GradleLinker {
   constructor() {

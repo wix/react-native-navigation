@@ -2,48 +2,66 @@ package com.reactnativenavigation.utils;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.ActionMenuView;
+
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.fakes.IconResolverFake;
+import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.options.ButtonOptions;
+import com.reactnativenavigation.options.IconBackgroundOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsToolbar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.IconBackgroundDrawable;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 
 import org.junit.Test;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
 
-import androidx.appcompat.widget.ActionMenuView;
-
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 @LooperMode(LooperMode.Mode.PAUSED)
 public class ButtonPresenterTest extends BaseTest {
     private static final String BTN_TEXT = "button1";
 
-    private TitleBar titleBar;
+    private ButtonsToolbar titleBar;
     private ButtonPresenter uut;
     private ButtonController buttonController;
     private ButtonOptions button;
+    private Activity activity;
 
     @Override
     public void beforeEach() {
-        Activity activity = newActivity();
-        titleBar = new TitleBar(activity);
+        activity = newActivity();
+        titleBar = new ButtonsToolbar(activity);
         activity.setContentView(titleBar);
         button = createButton();
+        ImageLoader imageLoaderMock;
 
-        uut = new ButtonPresenter(activity, button, new IconResolverFake(activity));
+        imageLoaderMock = ImageLoaderMock.mock();
+        initUUt(imageLoaderMock);
+    }
+
+    private void initUUt(ImageLoader imageLoaderMock) {
+        IconResolverFake iconResolver = new IconResolverFake(activity, imageLoaderMock);
+        uut = new ButtonPresenter(activity, button, iconResolver);
         buttonController = new ButtonController(
                 activity,
                 uut,
@@ -73,9 +91,111 @@ public class ButtonPresenterTest extends BaseTest {
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(ButtonPresenter.DISABLED_COLOR);
     }
 
-    private void addButtonAndApplyOptions() {
-        MenuItem menuItem = buttonController.createAndAddButtonToTitleBar(titleBar, 0);
+    @Test
+    public void applyColor_shouldChangeColor() {
+        MenuItem menuItem = addMenuButton();
+
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
+        Colour color = new Colour(Color.RED);
+        uut.applyColor(titleBar, menuItem, color);
+        assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.RED);
+    }
+
+    @Test
+    public void applyOptions_shouldChangeIconColorTint() {
+        IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
+        initUUt(ImageLoaderMock.mock(mockD));
+        button.enabled = new Bool(true);
+        button.icon = new Text("icon");
+        button.color = new Colour(Color.RED);
+        MenuItem menuItem = spy(addMenuButton());
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+
+        Drawable icon = menuItem.getIcon();
+        assertThat(icon).isNotNull();
+        verify(icon).setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN));
+    }
+
+    @Test
+    public void applyOptions_shouldChangeIconDisabledColorTint() {
+        IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
+        initUUt(ImageLoaderMock.mock(mockD));
+        button.enabled = new Bool(false);
+        button.icon = new Text("icon");
+        button.color = new Colour(Color.RED);
+        button.disabledColor = new Colour(Color.YELLOW);
+        MenuItem menuItem = spy(addMenuButton());
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+
+        Drawable icon = menuItem.getIcon();
+        assertThat(icon).isNotNull();
+        verify(icon).setColorFilter(new PorterDuffColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN));
+    }
+
+    @Test
+    public void applyOptions_shouldChangeIconColorBackground() {
+        IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
+        initUUt(ImageLoaderMock.mock(mockD));
+        button.enabled = new Bool(true);
+        button.icon = new Text("icon");
+        button.color = new Colour(Color.RED);
+        IconBackgroundOptions iconBackground = new IconBackgroundOptions();
+        iconBackground.color = new Colour(Color.GREEN);
+        button.iconBackground = iconBackground;
+        MenuItem menuItem = spy(addMenuButton());
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+
+        Drawable icon = menuItem.getIcon();
+        assertThat(icon).isNotNull();
+        assertThat(icon).isInstanceOf(IconBackgroundDrawable.class);
+        IconBackgroundDrawable modifed = (IconBackgroundDrawable) icon;
+        verify(modifed.getWrappedDrawable()).setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN));
+        assertThat(modifed.getBackgroundColor()).isEqualTo(Color.GREEN);
+    }
+
+    @Test
+    public void applyOptions_shouldChangeIconDisabledColorBackground() {
+        IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
+        initUUt(ImageLoaderMock.mock(mockD));
+        button.enabled = new Bool(false);
+        button.icon = new Text("icon");
+        button.color = new Colour(Color.RED);
+        button.disabledColor = new Colour(Color.YELLOW);
+        IconBackgroundOptions iconBackground = new IconBackgroundOptions();
+        iconBackground.color = new Colour(Color.GREEN);
+        iconBackground.disabledColor = new Colour(Color.CYAN);
+        button.iconBackground = iconBackground;
+        MenuItem menuItem = spy(addMenuButton());
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+
+        Drawable icon = menuItem.getIcon();
+        assertThat(icon).isNotNull();
+        assertThat(icon).isInstanceOf(IconBackgroundDrawable.class);
+        IconBackgroundDrawable modifed = (IconBackgroundDrawable) icon;
+        verify(modifed.getWrappedDrawable()).setColorFilter(new PorterDuffColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN));
+        assertThat(modifed.getBackgroundColor()).isEqualTo(Color.CYAN);
+    }
+
+    @Test
+    public void applyColor_shouldChangeDisabledColor() {
+        button.enabled = new Bool(false);
+        MenuItem menuItem = addMenuButton();
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+        Colour disabledColor = new Colour(Color.BLUE);
+        uut.applyDisabledColor(titleBar, menuItem, disabledColor);
+        assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.BLUE);
+    }
+
+    private void addButtonAndApplyOptions() {
+        MenuItem menuItem = addMenuButton();
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+    }
+
+    private MenuItem addMenuButton() {
+        return titleBar.addButton(Menu.NONE,
+                1,
+                0,
+                SpannableString.valueOf(button.text.get("text")));
     }
 
     @Test

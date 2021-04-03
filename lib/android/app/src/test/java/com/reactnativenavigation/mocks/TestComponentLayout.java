@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.ReactView;
@@ -32,6 +33,11 @@ public class TestComponentLayout extends ComponentLayout implements ButtonContro
 
     @Override
     public void destroy() {
+    }
+
+    @Override
+    public void sendComponentWillStart() {
+        reactView.sendComponentStart(ComponentType.Component);
     }
 
     @Override
@@ -65,7 +71,7 @@ public class TestComponentLayout extends ComponentLayout implements ButtonContro
     }
 
     @Override
-    public void onPress(String buttonId) {
+    public void onPress(ButtonOptions button) {
 
     }
 }

@@ -63,9 +63,24 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
           onPress={this.hideTabsOnPush}
         />
         <Button label="Push" onPress={this.push} />
+        <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
       </Root>
     );
   }
+
+  modifyBottomTabs = () => {
+    Navigation.mergeOptions(this.props.componentId, {
+      bottomTabs: {
+        borderColor: 'red',
+        borderWidth: 1,
+        shadow: {
+          color: '#65C888',
+          radius: 20,
+          opacity: 0.8,
+        },
+      },
+    });
+  };
 
   switchTabByIndex = () =>
     Navigation.mergeOptions(this, {

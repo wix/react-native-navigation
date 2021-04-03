@@ -26,6 +26,8 @@ import { ProcessorSubscription } from './interfaces/ProcessorSubscription';
 import { LayoutProcessor } from './processors/LayoutProcessor';
 import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
 import { CommandName } from './interfaces/CommandName';
+import { OptionsCrawler } from './commands/OptionsCrawler';
+import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
@@ -44,6 +46,7 @@ export class NavigationRoot {
   private readonly commandsObserver: CommandsObserver;
   private readonly componentEventsObserver: ComponentEventsObserver;
   private readonly componentWrapper: ComponentWrapper;
+  private readonly optionsCrawler: OptionsCrawler;
 
   constructor() {
     this.componentWrapper = new ComponentWrapper();
@@ -76,6 +79,7 @@ export class NavigationRoot {
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
+    this.optionsCrawler = new OptionsCrawler(this.store, this.uniqueIdProvider);
     this.commands = new Commands(
       this.store,
       this.nativeCommandsSender,
@@ -84,7 +88,8 @@ export class NavigationRoot {
       this.commandsObserver,
       this.uniqueIdProvider,
       optionsProcessor,
-      layoutProcessor
+      layoutProcessor,
+      this.optionsCrawler
     );
     this.eventsRegistry = new EventsRegistry(
       this.nativeEventsReceiver,
@@ -114,9 +119,9 @@ export class NavigationRoot {
   /**
    * Adds an option processor which allows option interpolation by optionPath.
    */
-  public addOptionProcessor<T>(
+  public addOptionProcessor<T, S = any>(
     optionPath: string,
-    processor: (value: T, commandName: CommandName) => T
+    processor: OptionProcessor<T, S>
   ): ProcessorSubscription {
     return this.optionProcessorsStore.addProcessor(optionPath, processor);
   }
@@ -259,6 +264,13 @@ export class NavigationRoot {
    */
   public dismissOverlay(componentId: string): Promise<string> {
     return this.commands.dismissOverlay(componentId);
+  }
+
+  /**
+   * dismiss all overlays
+   */
+  public dismissAllOverlays(): Promise<string> {
+    return this.commands.dismissAllOverlays();
   }
 
   /**

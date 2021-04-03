@@ -12,7 +12,7 @@
     return [[super get] unsignedIntegerValue];
 }
 
-- (NSUInteger)getWithDefaultValue:(NSUInteger)defaultValue {
+- (NSUInteger)withDefault:(NSUInteger)defaultValue {
     if (self.value) {
         return [self.value unsignedIntegerValue];
     } else if (defaultValue) {

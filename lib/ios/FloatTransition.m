@@ -4,13 +4,12 @@
 
 - (instancetype)initWithView:(UIView *)view
            transitionDetails:(TransitionDetailsOptions *)transitionDetails {
-    self =
-        [self initWithView:view
-                      from:transitionDetails.from
-                        to:transitionDetails.to
-                startDelay:[transitionDetails.startDelay getWithDefaultValue:0]
-                  duration:[transitionDetails.duration getWithDefaultValue:[self defaultDuration]]
-              interpolator:transitionDetails.interpolator];
+    self = [self initWithView:view
+                         from:transitionDetails.from
+                           to:transitionDetails.to
+                   startDelay:[transitionDetails.startDelay withDefault:0]
+                     duration:[transitionDetails.duration withDefault:[self defaultDuration]]
+                 interpolator:transitionDetails.interpolator];
     return self;
 }
 

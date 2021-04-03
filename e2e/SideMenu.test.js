@@ -52,4 +52,26 @@ describe('SideMenu', () => {
     await device.setOrientation('portrait');
     await expect(elementByLabel('left drawer height: 838')).toBeVisible();
   });
+
+  it('should set left drawer width', async () => {
+    await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+    await expect(elementByLabel('left drawer width: 250')).toBeVisible();
+  });
+
+  it('should change left drawer width', async () => {
+    await elementById(TestIDs.CHANGE_LEFT_SIDE_MENU_WIDTH_BTN).tap();
+    await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+    await expect(elementByLabel('left drawer width: 50')).toBeVisible();
+  });
+
+  it('should set right drawer width', async () => {
+    await elementById(TestIDs.OPEN_RIGHT_SIDE_MENU_BTN).tap();
+    await expect(elementByLabel('right drawer width: 250')).toBeVisible();
+  });
+
+  it('should change right drawer width', async () => {
+    await elementById(TestIDs.CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN).tap();
+    await elementById(TestIDs.OPEN_RIGHT_SIDE_MENU_BTN).tap();
+    await expect(elementByLabel('right drawer width: 50')).toBeVisible();
+  });
 });

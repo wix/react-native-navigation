@@ -169,9 +169,11 @@
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
     shouldSelectViewController:(UIViewController *)viewController {
     NSUInteger _index = [tabBarController.viewControllers indexOfObject:viewController];
+    BOOL isMoreTab = ![tabBarController.viewControllers containsObject:viewController];
+
     [self.eventEmitter sendBottomTabPressed:@(_index)];
 
-    if ([[viewController resolveOptions].bottomTab.selectTabOnPress getWithDefaultValue:YES]) {
+    if ([[viewController resolveOptions].bottomTab.selectTabOnPress withDefault:YES] || isMoreTab) {
         return YES;
     }
 

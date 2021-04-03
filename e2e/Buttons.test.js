@@ -1,15 +1,25 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const {elementById, elementByLabel, sleep} = Utils;
+const { elementById, elementByLabel } = Utils;
 
 describe('Buttons', () => {
   beforeEach(async () => {
-    await device.launchApp({newInstance: true});
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
 
+  it(':android: should not effect left buttons when hiding back button',async ()=>{
+    await elementById(TestIDs.TOGGLE_BACK).tap();
+    await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
+    await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+    await expect(elementById(TestIDs.BACK_BUTTON)).toBeVisible();
+
+    await elementById(TestIDs.TOGGLE_BACK).tap();
+    await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
+    await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+  });
   it('sets right buttons', async () => {
     await expect(elementById(TestIDs.BUTTON_ONE)).toBeVisible();
     await expect(elementById(TestIDs.ROUND_BUTTON)).toBeVisible();
@@ -53,23 +63,36 @@ describe('Buttons', () => {
   });
 
   it('resizes title component when a button is added with mergeOptions', async () => {
-    await elementById(TestIDs.ADD_BUTTON).tap();
-    await elementById(TestIDs.BUTTON_THREE).tap();
+    await elementById(TestIDs.RESET_BUTTONS).tap();
+    await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
+      await elementById(TestIDs.BUTTON_THREE).tap();
   });
 
   it('Button component is not recreated if it has a predefined componentId', async () => {
-    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
     await elementById(TestIDs.OK_BUTTON).tap();
 
-    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
     await elementById(TestIDs.OK_BUTTON).tap();
 
-    await elementById(TestIDs.ADD_BUTTON).tap();
+    await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
     await elementById(TestIDs.ROUND_BUTTON).tap();
     await expect(elementByLabel('Times created: 1')).toBeVisible();
+  });
+
+  it('Accepts textual left button', async () => {
+    await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+  });
+
+  it('Updates left button', async () => {
+    await elementById(TestIDs.ADD_COMPONENT_BUTTON).tap();
+    await expect(elementById('leftButton0')).toBeVisible();
+
+    await elementById(TestIDs.ADD_COMPONENT_BUTTON).tap();
+    await expect(elementById('leftButton1')).toBeVisible();
   });
 });

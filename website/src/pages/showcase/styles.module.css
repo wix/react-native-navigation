@@ -1,0 +1,55 @@
+.appIcon {
+  background-size: contain;
+  width: 200px;
+}
+
+.parent {
+  display: flex;
+  justify-content: center;
+}
+
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.cardContainer {
+  padding: 10;
+  display: flex;
+  margin: 10px;
+  /* height: 200px; */
+  padding: 16px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.cardContainer:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  padding-left: 16px;
+}
+
+.appName {
+}
+
+.cardFooter {
+  flex: 1;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.appDescription {
+  word-break: break-word;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}

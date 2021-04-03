@@ -3,7 +3,7 @@
 @implementation TransitionOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
-    self = [super init];
+    self = [super initWithDict:dict];
 
     self.alpha = [[TransitionDetailsOptions alloc] initWithDict:dict[@"alpha"]];
     self.x = [[TransitionDetailsOptions alloc] initWithDict:dict[@"x"]];
@@ -19,6 +19,21 @@
     return self;
 }
 
+- (void)mergeOptions:(TransitionOptions *)options {
+    [self.alpha mergeOptions:options.alpha];
+    [self.x mergeOptions:options.x];
+    [self.y mergeOptions:options.y];
+    [self.translationX mergeOptions:options.translationX];
+    [self.translationY mergeOptions:options.translationY];
+    [self.rotationX mergeOptions:options.rotationX];
+    [self.rotationY mergeOptions:options.rotationY];
+
+    if (options.enable.hasValue)
+        self.enable = options.enable;
+    if (options.waitForRender.hasValue)
+        self.waitForRender = options.waitForRender;
+}
+
 - (BOOL)hasAnimation {
     return self.x.hasAnimation || self.y.hasAnimation || self.alpha.hasAnimation ||
            self.translationX.hasAnimation || self.translationY.hasAnimation ||
@@ -27,32 +42,32 @@
 
 - (NSTimeInterval)maxDuration {
     double maxDuration = 0;
-    if ([_x.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_x.duration getWithDefaultValue:0];
+    if ([_x.duration withDefault:0] > maxDuration) {
+        maxDuration = [_x.duration withDefault:0];
     }
 
-    if ([_y.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_y.duration getWithDefaultValue:0];
+    if ([_y.duration withDefault:0] > maxDuration) {
+        maxDuration = [_y.duration withDefault:0];
     }
 
-    if ([_translationX.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_translationX.duration getWithDefaultValue:0];
+    if ([_translationX.duration withDefault:0] > maxDuration) {
+        maxDuration = [_translationX.duration withDefault:0];
     }
 
-    if ([_translationY.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_translationY.duration getWithDefaultValue:0];
+    if ([_translationY.duration withDefault:0] > maxDuration) {
+        maxDuration = [_translationY.duration withDefault:0];
     }
 
-    if ([_rotationX.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_rotationX.duration getWithDefaultValue:0];
+    if ([_rotationX.duration withDefault:0] > maxDuration) {
+        maxDuration = [_rotationX.duration withDefault:0];
     }
 
-    if ([_rotationY.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_rotationY.duration getWithDefaultValue:0];
+    if ([_rotationY.duration withDefault:0] > maxDuration) {
+        maxDuration = [_rotationY.duration withDefault:0];
     }
 
-    if ([_alpha.duration getWithDefaultValue:0] > maxDuration) {
-        maxDuration = [_alpha.duration getWithDefaultValue:0];
+    if ([_alpha.duration withDefault:0] > maxDuration) {
+        maxDuration = [_alpha.duration withDefault:0];
     }
 
     return maxDuration;

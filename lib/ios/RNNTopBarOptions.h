@@ -11,8 +11,8 @@
 
 @interface RNNTopBarOptions : RNNOptions
 
-@property(nonatomic, strong) NSArray *leftButtons;
-@property(nonatomic, strong) NSArray *rightButtons;
+@property(nonatomic, strong) NSArray<RNNButtonOptions *> *leftButtons;
+@property(nonatomic, strong) NSArray<RNNButtonOptions *> *rightButtons;
 
 @property(nonatomic, strong) Bool *visible;
 @property(nonatomic, strong) Bool *hideOnScroll;
@@ -38,8 +38,6 @@
 @property(nonatomic, strong) RNNBackgroundOptions *background;
 @property(nonatomic, strong) RNNScrollEdgeAppearanceOptions *scrollEdgeAppearance;
 @property(nonatomic, strong) RNNBackButtonOptions *backButton;
-@property(nonatomic, strong) RNNButtonOptions *leftButtonStyle;
-@property(nonatomic, strong) RNNButtonOptions *rightButtonStyle;
 
 - (BOOL)shouldDrawBehind;
 

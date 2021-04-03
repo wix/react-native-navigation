@@ -25,15 +25,15 @@ import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 public class BottomTabPresenter {
     private final Context context;
-    private ImageLoader imageLoader;
-    private TypefaceLoader typefaceLoader;
+    private final ImageLoader imageLoader;
+    private final TypefaceLoader typefaceLoader;
     private Options defaultOptions;
     private final BottomTabFinder bottomTabFinder;
-    private LateInit<BottomTabs> bottomTabs = new LateInit<>();
-    private final List<ViewController> tabs;
+    private final LateInit<BottomTabs> bottomTabs = new LateInit<>();
+    private final List<ViewController<?>> tabs;
     private final int defaultDotIndicatorSize;
 
-    public BottomTabPresenter(Context context, List<ViewController> tabs, ImageLoader imageLoader,  TypefaceLoader typefaceLoader, Options defaultOptions) {
+    public BottomTabPresenter(Context context, List<ViewController<?>> tabs, ImageLoader imageLoader,  TypefaceLoader typefaceLoader, Options defaultOptions) {
         this.tabs = tabs;
         this.context = context;
         this.bottomTabFinder = new BottomTabFinder(tabs);
@@ -55,13 +55,15 @@ public class BottomTabPresenter {
         bottomTabs.perform(bottomTabs -> {
             for (int i = 0; i < tabs.size(); i++) {
                 BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
+                bottomTabs.setIconWidth(i, tab.iconWidth.get(null));
+                bottomTabs.setIconHeight(i, tab.iconHeight.get(null));
                 bottomTabs.setTitleTypeface(i, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));
                 if (tab.selectedIconColor.canApplyValue()) bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
                 if (tab.iconColor.canApplyValue()) bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
                 bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
                 bottomTabs.setTitleInactiveColor(i, tab.textColor.get(null));
-                bottomTabs.setTitleInactiveTextSizeInSp(i, tab.fontSize.hasValue() ? Float.valueOf(tab.fontSize.get()) : null);
-                bottomTabs.setTitleActiveTextSizeInSp(i, tab.selectedFontSize.hasValue() ? Float.valueOf(tab.selectedFontSize.get()) : null);
+                if (tab.fontSize.hasValue()) bottomTabs.setTitleInactiveTextSizeInSp(i, Float.valueOf(tab.fontSize.get()));
+                if (tab.selectedFontSize.hasValue()) bottomTabs.setTitleActiveTextSizeInSp(i, Float.valueOf(tab.selectedFontSize.get()));
                 if (tab.testId.hasValue()) bottomTabs.setTag(i, tab.testId.get());
                 if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator); else applyBadge(i, tab);
             }
@@ -81,6 +83,8 @@ public class BottomTabPresenter {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
                 BottomTabOptions tab = options.bottomTabOptions;
+                if (tab.iconWidth.hasValue()) bottomTabs.setIconWidth(index, tab.iconWidth.get(null));
+                if (tab.iconHeight.hasValue()) bottomTabs.setIconHeight(index, tab.iconHeight.get(null));
                 if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));
                 if (canMerge(tab.selectedIconColor)) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
                 if (canMerge(tab.iconColor)) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());

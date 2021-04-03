@@ -16,6 +16,8 @@
 
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions;
 
+- (void)showBorder:(BOOL)showBorder;
+
 @property(nonatomic) BOOL translucent;
 @property(nonatomic) BOOL scrollEdgeTranslucent;
 @property(nonatomic, strong) UIColor *backgroundColor;

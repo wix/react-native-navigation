@@ -8,10 +8,10 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.RightButtonsBar;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -20,12 +20,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class TitleBarButtonControllerTest extends BaseTest {
     private ButtonController uut;
-    private TitleBar titleBar;
+    private RightButtonsBar titleBar;
 
     @Override
     public void beforeEach() {
         Activity activity = newActivity();
-        titleBar = new TitleBar(activity);
+        titleBar = new RightButtonsBar(activity);
 
         ButtonOptions button = createComponentButton();
         uut = new ButtonController(
@@ -40,14 +40,14 @@ public class TitleBarButtonControllerTest extends BaseTest {
     @Test
     public void addToMenu_componentButtonIsNotRecreatedIfAlreadyAddedWithSameOrder() {
         uut.addToMenu(titleBar, 0);
-        MenuItem first = titleBar.getRightButton(0);
+        MenuItem first = titleBar.getButton(0);
 
         uut.addToMenu(titleBar, 0);
-        MenuItem second = titleBar.getRightButton(0);
+        MenuItem second = titleBar.getButton(0);
         assertThat(first).isEqualTo(second);
 
         uut.addToMenu(titleBar, 1);
-        MenuItem third = titleBar.getRightButton(0);
+        MenuItem third = titleBar.getButton(0);
         assertThat(third).isNotEqualTo(second);
     }
 

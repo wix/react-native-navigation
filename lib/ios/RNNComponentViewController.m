@@ -1,5 +1,4 @@
 #import "RNNComponentViewController.h"
-#import "UIView+Utils.h"
 
 @implementation RNNComponentViewController {
     NSArray *_reactViewConstraints;
@@ -27,12 +26,10 @@
     return self;
 }
 
-- (void)overrideOptions:(RNNNavigationOptions *)options {
-    [self.options overrideOptions:options];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.reactView componentWillAppear];
+    [self componentWillAppear];
     [_presenter applyOptions:self.resolveOptions];
     [self.parentViewController onChildWillAppear];
 }
@@ -43,14 +40,28 @@
     [self componentDidAppear];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    // Fix's momentum scroll bug
+    // https://github.com/wix/react-native-navigation/issues/4325
+    [self.view stopMomentumScrollViews];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self.reactView componentDidDisappear];
     [self componentDidDisappear];
+}
 
-    // Fix's momentum scroll bug
-    // https://github.com/wix/react-native-navigation/issues/4325
-    [self.view stopMomentumScrollViews];
+- (RNNNavigationOptions *)resolveOptions {
+    RNNNavigationOptions *resolvedOptions = self.options.copy;
+    UIViewController *parentViewController = self.parentViewController;
+    while (parentViewController) {
+        resolvedOptions = [resolvedOptions withDefault:parentViewController.options];
+        parentViewController = parentViewController.parentViewController;
+    }
+
+    return resolvedOptions;
 }
 
 - (void)loadView {
@@ -209,11 +220,6 @@
         }
     }
     return actions;
-}
-
-- (void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem {
-    [self.eventEmitter sendOnNavigationButtonPressed:self.layoutInfo.componentId
-                                            buttonId:barButtonItem.buttonId];
 }
 
 #pragma mark - UIViewController overrides

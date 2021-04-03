@@ -12,6 +12,7 @@
 @property(nonatomic, strong) Text *fontFamily;
 @property(nonatomic, strong) Text *fontWeight;
 @property(nonatomic, strong) Text *testID;
+@property(nonatomic, strong) Text *accessibilityLabel;
 @property(nonatomic, strong) Image *icon;
 @property(nonatomic, strong) Image *selectedIcon;
 @property(nonatomic, strong) Color *iconColor;

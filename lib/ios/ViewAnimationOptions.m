@@ -12,8 +12,18 @@
     self.elementTransitions = [OptionsArrayParser parse:dict
                                                     key:@"elementTransitions"
                                                 ofClass:ElementTransitionOptions.class];
+    self.enable = [BoolParser parse:dict key:@"enable"];
+    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
 
     return self;
+}
+
+- (void)mergeOptions:(ViewAnimationOptions *)options {
+    [super mergeOptions:options];
+    if (options.sharedElementTransitions)
+        self.sharedElementTransitions = options.sharedElementTransitions;
+    if (options.elementTransitions)
+        self.elementTransitions = options.elementTransitions;
 }
 
 - (BOOL)hasAnimation {
@@ -21,7 +31,7 @@
 }
 
 - (BOOL)shouldWaitForRender {
-    return [self.waitForRender getWithDefaultValue:NO] || self.hasAnimation;
+    return [self.waitForRender withDefault:NO] || self.hasAnimation;
 }
 
 - (NSTimeInterval)maxDuration {
