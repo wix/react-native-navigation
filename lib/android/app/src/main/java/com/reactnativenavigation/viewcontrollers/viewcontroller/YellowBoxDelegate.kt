@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
-import androidx.core.view.doOnPreDraw
 import androidx.core.view.get
 import com.reactnativenavigation.utils.isDebug
 import java.util.*
@@ -12,7 +11,6 @@ import java.util.*
 open class YellowBoxDelegate(private val context: Context, private val yellowBoxHelper: YellowBoxHelper = YellowBoxHelper()) {
     constructor(context: Context) : this(context, YellowBoxHelper())
 
-    @get:RestrictTo(RestrictTo.Scope.TESTS)
     var parent: ViewGroup? = null
         private set
     @get:RestrictTo(RestrictTo.Scope.TESTS)
@@ -24,7 +22,7 @@ open class YellowBoxDelegate(private val context: Context, private val yellowBox
 
     open fun onChildViewAdded(parent: View, child: View?) {
         if (!context.isDebug()) return
-        child?.doOnPreDraw { if (yellowBoxHelper.isYellowBox(parent, child)) onYellowBoxAdded(parent) }
+        if (yellowBoxHelper.isYellowBox(parent, child)) onYellowBoxAdded(parent)
     }
 
     fun onYellowBoxAdded(parent: View) {
