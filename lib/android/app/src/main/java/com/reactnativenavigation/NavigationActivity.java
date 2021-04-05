@@ -156,7 +156,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (navigator.shouldSwitchToPIPonBackPress()) {
             navigator.updatePIPState(PIPStates.MOUNT_START);
         } else if (!navigator.handleBack(new CommandListenerAdapter())) {
-            super.onBackPressed();
+            try {
+                super.onBackPressed();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
