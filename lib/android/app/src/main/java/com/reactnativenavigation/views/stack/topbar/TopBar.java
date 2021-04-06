@@ -159,7 +159,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setSubtitleAlignment(Alignment alignment) {
         mainToolBar.setSubTitleTextAlignment(alignment);
-        mainToolBar.setTitleBarAlignment(alignment);
     }
 
     public void setTestId(String testId) {
@@ -221,19 +220,19 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setBackButton(ButtonController backButton) {
-        mainToolBar.getLeftButtonsBar().setBackButton(backButton);
+        mainToolBar.setBackButton(backButton);
     }
 
     public void clearLeftButtons() {
-        mainToolBar.getLeftButtonsBar().clearButtons();
+        mainToolBar.clearLeftButtons();
     }
 
     public void clearBackButton() {
-        mainToolBar.getLeftButtonsBar().clearBackButton();
+        mainToolBar.clearBackButton();
     }
 
     public void clearRightButtons() {
-        mainToolBar.getRightButtonsBar().clearButtons();
+        mainToolBar.clearRightButtons();
     }
 
     public void setElevation(Double elevation) {
@@ -315,11 +314,11 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void removeRightButton(int buttonId) {
-        mainToolBar.getRightButtonsBar().removeButton(buttonId);
+        mainToolBar.removeRightButton(buttonId);
     }
 
     public void removeLeftButton(int buttonId) {
-        mainToolBar.getLeftButtonsBar().removeButton(buttonId);
+        mainToolBar.removeLeftButton(buttonId);
     }
 
     public void alignTitleComponent(@NotNull Alignment alignment) {
@@ -351,5 +350,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         this.setSubtitleColor(subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
         this.setSubtitleTypeface(typefaceLoader, subtitle.font);
         this.setSubtitleAlignment(subtitle.alignment);
+    }
+
+    public void onButtonsChanged() {
+        this.mainToolBar.onButtonsChanged();
     }
 }

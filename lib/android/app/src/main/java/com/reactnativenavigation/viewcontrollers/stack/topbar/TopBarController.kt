@@ -109,22 +109,26 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
     fun applyRightButtons(toAdd: List<ButtonController>) {
         view.clearRightButtons()
         toAdd.reversed().forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, i * 10) }
+        view.onButtonsChanged()
     }
 
     fun mergeRightButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
         toRemove.forEach { view.removeRightButton(it) }
         toAdd.reversed().forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, i * 10) }
+        view.onButtonsChanged()
     }
 
     open fun applyLeftButtons(toAdd: List<ButtonController>) {
         view.clearBackButton()
         view.clearLeftButtons()
         forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, i * 10) }
+        view.onButtonsChanged()
     }
 
     open fun mergeLeftButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
         view.clearBackButton();
         toRemove.forEach { view.removeLeftButton(it) }
         forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, i * 10) }
+        view.onButtonsChanged()
     }
 }

@@ -92,4 +92,5 @@ open class ButtonController(activity: Activity,
             presenter.applyOptions(buttonsBar, menuItem, this@ButtonController::getView)
         }
     }
+
 }

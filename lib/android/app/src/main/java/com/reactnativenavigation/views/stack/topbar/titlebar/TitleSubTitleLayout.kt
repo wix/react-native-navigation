@@ -1,7 +1,7 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.content.Context
-import android.graphics.Color
+import android.text.TextUtils
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -17,8 +17,20 @@ import com.reactnativenavigation.options.parsers.TypefaceLoader
 
 class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
 
-    private val titleTextView = TextView(context).apply { TextViewCompat.setTextAppearance(this, R.style.TitleBarTitle) }
-    private val subTitleTextView = TextView(context).apply { TextViewCompat.setTextAppearance(this, R.style.TitleBarSubtitle) }
+     val titleTextView = TextView(context).apply {
+        TextViewCompat.setTextAppearance(this, R.style.TitleBarTitle)
+        maxLines = 1
+        ellipsize = TextUtils.TruncateAt.END
+    }
+     val subTitleTextView = TextView(context).apply {
+        TextViewCompat.setTextAppearance(this, R.style.TitleBarSubtitle)
+        maxLines = 1
+        ellipsize = TextUtils.TruncateAt.END
+    }
+    var maxWidth: Int = 0
+    set(value) {
+        field = value
+    }
 
     init {
         this.orientation = VERTICAL
@@ -29,6 +41,17 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
             weight = 1f
         })
     }
+//
+//    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+//        val measuredWidth = MeasureSpec.getSize(widthMeasureSpec)
+//        var newWidthMeasureSpec = widthMeasureSpec
+//        Log.d("TitleSubTitleLayout", "onMeasure() called with: widthMeasureSpec = ${MeasureSpec.toString(widthMeasureSpec)}, heightMeasureSpec = ${MeasureSpec.toString(heightMeasureSpec)}, maxWidth: $maxWidth")
+//        if (maxWidth > 0 && maxWidth < measuredWidth) {
+//            val measureMode = MeasureSpec.getMode(widthMeasureSpec)
+//            newWidthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, measureMode)
+//        }
+//        super.onMeasure(newWidthMeasureSpec, heightMeasureSpec)
+//    }
 
     fun setSubTitleAlignment(alignment: Alignment) {
         if (alignment == Alignment.Center) {
@@ -37,6 +60,7 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
             (this.subTitleTextView.layoutParams as LayoutParams).gravity = Gravity.START or Gravity.CENTER_VERTICAL
         }
     }
+
 
     fun setTitleAlignment(alignment: Alignment) {
         if (alignment == Alignment.Center) {
