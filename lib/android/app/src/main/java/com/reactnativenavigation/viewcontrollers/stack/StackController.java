@@ -89,7 +89,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public ViewController getCurrentChild() {
+    public ViewController<?> getCurrentChild() {
         return stack.peek();
     }
 
