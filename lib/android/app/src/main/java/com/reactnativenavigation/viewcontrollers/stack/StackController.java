@@ -63,7 +63,7 @@ public class StackController extends ParentController<StackLayout> {
         stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
         for (ViewController child : children) {
             if (stack.containsId(child.getId())) {
-                throw new IllegalArgumentException("A stack can't contain two children with the same id: "+child.getId());
+                throw new IllegalArgumentException("A stack can't contain two children with the same id: " + child.getId());
             }
             child.setParentController(this);
             stack.push(child.getId(), child);
@@ -154,7 +154,7 @@ public class StackController extends ParentController<StackLayout> {
 
     public void push(ViewController child, CommandListener listener) {
         if (findController(child.getId()) != null) {
-            listener.onError("A stack can't contain two children with the same id");
+            listener.onError("A stack can't contain two children with the same id: " + child.getId());
             return;
         }
         final ViewController toRemove = stack.peek();
