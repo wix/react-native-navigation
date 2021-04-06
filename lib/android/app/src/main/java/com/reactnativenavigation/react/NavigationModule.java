@@ -88,15 +88,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, pxToDp(ctx, UiUtils.getTopBarHeight(ctx)));
         promise.resolve(constants);
     }
-
     @ReactMethod
     public void setRoot(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree).optJSONObject("root"));
         handle(() -> {
-            NativeCommandListener commandListener = new NativeCommandListener("setRoot", commandId, promise, eventEmitter, now);
-
             final ViewController viewController = layoutFactory.create(layoutTree);
-            navigator().setRoot(viewController, commandListener, reactInstanceManager);
+            navigator().setRoot(viewController, new NativeCommandListener("setRoot", commandId, promise, eventEmitter, now), reactInstanceManager);
         });
     }
 
