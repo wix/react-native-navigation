@@ -158,6 +158,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         } else if (!navigator.handleBack(new CommandListenerAdapter())) {
             try {
                 super.onBackPressed();
+                handleExit();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -191,6 +192,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public boolean onKeyUp(final int keyCode, final KeyEvent event) {
         return getReactGateway().onKeyUp(keyCode) || super.onKeyUp(keyCode, event);
+    }
+
+    public void handleExit() {
+        logger.log(Log.INFO, TAG, "handleExit");
     }
 
     public ReactGateway getReactGateway() {
