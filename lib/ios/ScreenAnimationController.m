@@ -133,6 +133,7 @@
     fromView.layer.transform = CATransform3DIdentity;
     toView.alpha = 1.f;
     _transitionContext = nil;
+    _sharedElementAnimator = nil;
 }
 
 @end
