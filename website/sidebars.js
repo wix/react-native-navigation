@@ -13,6 +13,7 @@ module.exports = {
       'docs/screen-lifecycle',
       'docs/passing-data-to-components',
       'docs/functionalComponents',
+      'docs/customBackNavigation'
     ],
     Layouts: ['docs/stack', 'docs/bottomTabs', 'docs/sideMenu', 'docs/externalComponent'],
     Hierarchy: ['docs/root', 'docs/modal', 'docs/overlay'],
