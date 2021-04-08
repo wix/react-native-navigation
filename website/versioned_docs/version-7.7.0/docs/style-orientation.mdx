@@ -31,24 +31,6 @@ Navigation.setDefaultOptions({
 ```
 
 </TabItem>
-<TabItem value="modal">
-
-The following example demonstrates how to show a modal in landscape orientation.
-
-```js
-Navigation.showModal({
-  component: {
-    name: 'VideoPlayer'
-    options: {
-      layout: {
-        orientation: ['landscape']
-      }
-    }
-  }
-});
-```
-
-</TabItem>
 <TabItem value="root">
 
 Applying orientation in the root level will affect all screens in the root hierarchy level. It **will not** apply to modals.
@@ -65,6 +47,24 @@ Navigation.setRoot({
       children: [
         ...
       ]
+    }
+  }
+});
+```
+
+</TabItem>
+<TabItem value="modal">
+
+The following example demonstrates how to show a modal in landscape orientation.
+
+```js
+Navigation.showModal({
+  component: {
+    name: 'VideoPlayer'
+    options: {
+      layout: {
+        orientation: ['landscape']
+      }
     }
   }
 });
