@@ -44,6 +44,14 @@ const apps = [
     appStore: 'https://apps.apple.com/us/app/clubhouse/id1193784808',
   },
   {
+    title: 'Nox',
+    description:
+      'AI Powered Dream Journal',
+    image: require('./showcase/Nox.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.aspect.nox',
+    appStore: 'https://apps.apple.com/zw/app/nox-ai-powered-dream-journal/id1543257201',
+  },
+  {
     title: 'Arkham Cards',
     description: 'Create and manage deck lists for the Arkham Horror LCG card game.',
     image: require('./showcase/arkhamCards.png'),

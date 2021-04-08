@@ -3,6 +3,11 @@
 
 @interface RNNInterpolator : NSObject
 
++ (CGPoint)fromPoint:(CGPoint)from
+             toPoint:(CGPoint)to
+             precent:(CGFloat)p
+        interpolator:(id<Interpolator>)interpolator;
+
 + (UIColor *)fromColor:(UIColor *)fromColor toColor:(UIColor *)toColor precent:(CGFloat)precent;
 
 + (CGFloat)fromFloat:(CGFloat)from

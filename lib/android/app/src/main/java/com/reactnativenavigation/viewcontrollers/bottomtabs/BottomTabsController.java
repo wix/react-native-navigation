@@ -159,7 +159,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public ViewController getCurrentChild() {
+    public ViewController<?> getCurrentChild() {
         return tabs.get(bottomTabs == null ? 0 : bottomTabs.getCurrentItem());
     }
 

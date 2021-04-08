@@ -1,6 +1,7 @@
 #import "AnimatedViewFactory.h"
 #import "AnimatedImageView.h"
 #import "AnimatedTextView.h"
+#import "AnimatedUIImageView.h"
 #import "UIVIew+Utils.h"
 
 @implementation AnimatedViewFactory
@@ -13,6 +14,10 @@
         return [[AnimatedImageView alloc] initElement:element
                                             toElement:toElement
                                     transitionOptions:transitionOptions];
+    case ViewTypeUIImage:
+        return [[AnimatedUIImageView alloc] initElement:element
+                                              toElement:toElement
+                                      transitionOptions:transitionOptions];
     case ViewTypeText:
         return [[AnimatedTextView alloc] initElement:element
                                            toElement:toElement

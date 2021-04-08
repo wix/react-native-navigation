@@ -24,7 +24,6 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         maven { url 'https://www.jitpack.io' }
         google()
         maven {
@@ -35,5 +34,6 @@ allprojects {
         maven { url "$rootDir/../../node_modules/detox/Detox-android" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url "$rootDir/../../node_modules/jsc-android/dist" }
+        jcenter()
     }
 }

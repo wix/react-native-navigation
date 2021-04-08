@@ -1,18 +1,17 @@
 #import "AnimatedReactView.h"
-#import "BaseAnimator.h"
-#import "ElementAnimator.h"
-#import "SharedElementTransitionOptions.h"
+#import "DisplayLinkAnimatorDelegate.h"
 #import <Foundation/Foundation.h>
 
-@interface SharedElementAnimator : ElementAnimator
+@interface SharedElementAnimator : NSObject
 
-- (instancetype)initWithTransitionOptions:(SharedElementTransitionOptions *)transitionOptions
-                                 fromView:(UIView *)fromView
-                                   toView:(UIView *)toView
-                                   fromVC:(UIViewController *)fromVC
-                                     toVC:(UIViewController *)toVC
-                            containerView:(UIView *)containerView;
+- (instancetype)initWithTransitions:
+                    (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitions
+                             fromVC:(UIViewController *)fromVC
+                               toVC:(UIViewController *)toVC
+                      containerView:(UIView *)containerView;
 
-@property(nonatomic, strong) AnimatedReactView *view;
+- (NSArray<DisplayLinkAnimatorDelegate> *)create;
+
+- (void)animationEnded;
 
 @end
