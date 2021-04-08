@@ -17,6 +17,16 @@ import androidx.core.util.Pair;
 
 @SuppressWarnings("WeakerAccess")
 public class CollectionUtils {
+
+    @SafeVarargs
+    public static <T> List<T> asList(T... args) {
+        ArrayList<T> res = new ArrayList<>();
+        forEach(args, a -> {
+            if (a != null) res.add(a);
+        });
+        return res;
+    }
+
     public interface Apply<T> {
         void on(T t);
     }
@@ -45,9 +55,9 @@ public class CollectionUtils {
         S map(T value);
     }
 
-    public static @Nullable <T, S> List<S> map(@Nullable Collection<T> items, Mapper<T, S> map) {
+    public static @Nullable <T, S> ArrayList<S> map(@Nullable Collection<T> items, Mapper<T, S> map) {
         if (items == null) return null;
-        List<S> result = new ArrayList<>();
+        ArrayList<S> result = new ArrayList<>();
         for (T item : items) {
             result.add(map.map(item));
         }

@@ -31,14 +31,17 @@ const pop = (selfOrCompId: SelfOrCompId, mergeOptions?: Options) =>
 const showModal = (screen: string | Layout, options?: Options) =>
   Navigation.showModal(isString(screen) ? stack(component(screen, options)) : screen);
 
-const dismissModal = (selfOrCompId: SelfOrCompId) => Navigation.dismissModal(compId(selfOrCompId));
+const dismissModal = (selfOrCompId: SelfOrCompId, mergeOptions?: Options) =>
+  Navigation.dismissModal(compId(selfOrCompId), mergeOptions);
 
 const dismissAllModals = () => Navigation.dismissAllModals();
 
-const showOverlay = (name: CompIdOrLayout, options?: Options) =>
-  Navigation.showOverlay(component(name, options));
+const showOverlay = (name: CompIdOrLayout, options?: Options, passProps?: any) =>
+  Navigation.showOverlay(component(name, options, passProps));
 
 const dismissOverlay = (compId: string) => Navigation.dismissOverlay(compId);
+
+const dismissAllOverlays = () => Navigation.dismissAllOverlays();
 
 const popToRoot = (self: ComponentIdProp) => Navigation.popToRoot(self.props.componentId);
 
@@ -75,6 +78,7 @@ const CustomNavigation = {
   dismissAllModals,
   showOverlay,
   dismissOverlay,
+  dismissAllOverlays,
   events: Navigation.events.bind(Navigation),
   popTo: Navigation.popTo.bind(Navigation),
   setDefaultOptions: Navigation.setDefaultOptions.bind(Navigation),

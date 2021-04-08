@@ -4,8 +4,8 @@ const get = require('lodash/get');
 
 const initialState = {
   person: {
-    name: 'no name'
-  }
+    name: 'no name',
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,12 +29,12 @@ const selectors = {
 
   getAge(state) {
     return state.person.age;
-  }
+  },
 };
 
 const reduxStore = redux.createStore(reducer);
 
 module.exports = {
   reduxStore,
-  selectors
+  selectors,
 };

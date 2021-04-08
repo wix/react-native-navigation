@@ -1,7 +1,7 @@
 import forEach from 'lodash/forEach';
 import filter from 'lodash/filter';
 import invoke from 'lodash/invoke';
-import { mock, verify, instance, deepEqual, when, anything, anyString } from 'ts-mockito';
+import { mock, verify, instance, deepEqual, when, anything, anyString, capture } from 'ts-mockito';
 
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
@@ -15,6 +15,8 @@ import { Options } from '../interfaces/Options';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
+import { OptionsCrawler } from './OptionsCrawler';
+import React from 'react';
 
 describe('Commands', () => {
   let uut: Commands;
@@ -47,7 +49,8 @@ describe('Commands', () => {
       commandsObserver,
       uniqueIdProvider,
       optionsProcessor,
-      layoutProcessor
+      layoutProcessor,
+      new OptionsCrawler(instance(mockedStore), uniqueIdProvider)
     );
   });
 
@@ -135,9 +138,45 @@ describe('Commands', () => {
         root: { component: { name: 'com.example.MyScreen' } },
       });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { name: 'com.example.MyScreen', options: {}, id: 'Component+UNIQUE_ID' } },
         CommandName.SetRoot
       );
+    });
+
+    it('pass component static options to layoutProcessor', () => {
+      when(mockedStore.getComponentClassForName('com.example.MyScreen')).thenReturn(
+        () =>
+          class extends React.Component {
+            static options(): Options {
+              return {
+                topBar: {
+                  visible: false,
+                },
+              };
+            }
+          }
+      );
+
+      uut.setRoot({
+        root: { component: { name: 'com.example.MyScreen' } },
+      });
+      expect(layoutProcessor.process).toBeCalledWith(
+        {
+          component: {
+            id: 'Component+UNIQUE_ID',
+            name: 'com.example.MyScreen',
+            options: { topBar: { visible: false } },
+          },
+        },
+        CommandName.SetRoot
+      );
+    });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.setRoot({ root: { component: { name: 'com.example.MyScreen', passProps: { obj } } } });
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
     });
   });
 
@@ -201,9 +240,16 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.showModal({ component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
         CommandName.ShowModal
       );
+    });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.showModal({ component: { name: 'com.example.MyScreen', passProps: { obj } } });
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
     });
   });
 
@@ -279,9 +325,18 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
         CommandName.Push
       );
+    });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.push('theComponentId', {
+        component: { name: 'com.example.MyScreen', passProps: { obj } },
+      });
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
     });
   });
 
@@ -367,9 +422,18 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.setStackRoot('theComponentId', [{ component: { name: 'com.example.MyScreen' } }]);
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
         CommandName.SetStackRoot
       );
+    });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.setStackRoot('theComponentId', [
+        { component: { name: 'com.example.MyScreen', passProps: { obj } } },
+      ]);
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
     });
   });
 
@@ -404,9 +468,16 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
         CommandName.ShowOverlay
       );
+    });
+
+    it('retains passProps properties identity', () => {
+      const obj = { some: 'content' };
+      uut.showOverlay({ component: { name: 'com.example.MyScreen', passProps: { obj } } });
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[1].obj).toBe(obj);
     });
   });
 
@@ -430,7 +501,6 @@ describe('Commands', () => {
     let cb: any;
     let mockedLayoutTreeParser: LayoutTreeParser;
     let mockedLayoutTreeCrawler: LayoutTreeCrawler;
-    let anotherMockedUniqueIdProvider: UniqueIdProvider;
 
     beforeEach(() => {
       cb = jest.fn();
@@ -438,10 +508,6 @@ describe('Commands', () => {
       mockedLayoutTreeCrawler = mock(LayoutTreeCrawler);
       commandsObserver.register(cb);
       const mockedOptionsProcessor = mock(OptionsProcessor) as OptionsProcessor;
-      anotherMockedUniqueIdProvider = mock(UniqueIdProvider);
-      when(anotherMockedUniqueIdProvider.generate(anything())).thenCall(
-        (prefix) => `${prefix}+UNIQUE_ID`
-      );
 
       uut = new Commands(
         mockedStore,
@@ -449,9 +515,10 @@ describe('Commands', () => {
         instance(mockedLayoutTreeParser),
         instance(mockedLayoutTreeCrawler),
         commandsObserver,
-        instance(anotherMockedUniqueIdProvider),
+        instance(mockedUniqueIdProvider),
         instance(mockedOptionsProcessor),
-        new LayoutProcessor(new LayoutProcessorsStore())
+        new LayoutProcessor(new LayoutProcessorsStore()),
+        new OptionsCrawler(instance(mockedStore), mockedUniqueIdProvider)
       );
     });
 
@@ -478,6 +545,7 @@ describe('Commands', () => {
         setStackRoot: ['id', [{}]],
         showOverlay: [{}],
         dismissOverlay: ['id'],
+        dismissAllOverlays: [{}],
         getLaunchArgs: ['id'],
       };
       const paramsForMethodName: Record<string, object> = {
@@ -502,6 +570,7 @@ describe('Commands', () => {
         },
         showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: null },
         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
+        dismissAllOverlays: { commandId: 'dismissAllOverlays+UNIQUE_ID' },
         getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' },
       };
       forEach(getAllMethodsOfUut(), (m) => {

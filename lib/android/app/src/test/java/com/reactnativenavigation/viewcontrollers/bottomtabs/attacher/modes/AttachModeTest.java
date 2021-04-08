@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.modes;
 
 import android.app.Activity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,6 +19,8 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -32,7 +33,7 @@ public abstract class AttachModeTest extends BaseTest {
     protected ViewGroup parent;
     ViewController tab1;
     ViewController tab2;
-    List<ViewController> tabs;
+    List<ViewController<?>> tabs;
     protected Options options;
     protected BottomTabsPresenter presenter;
     protected AttachMode uut;
@@ -76,7 +77,7 @@ public abstract class AttachModeTest extends BaseTest {
         return tabs.get(INITIAL_TAB);
     }
 
-    private List<ViewController> createTabs() {
+    private List<ViewController<?>> createTabs() {
         tab1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
         tab2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
         ViewController tab3 = new SimpleViewController(activity, childRegistry, "child3", new Options());

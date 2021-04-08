@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.KeyEvent;
+import android.widget.EditText;
 
 import com.facebook.react.devsupport.interfaces.DevSupportManager;
 import com.reactnativenavigation.utils.UiUtils;
@@ -55,7 +56,7 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
 		activity.unregisterReceiver(reloadReceiver);
 	}
 
-	public boolean onKeyUp(int keyCode) {
+	public boolean onKeyUp(Activity activity, int keyCode) {
 		if (!devSupportManager.getDevSupportEnabled()) {
 			return false;
 		}
@@ -66,7 +67,7 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
 		}
 
 		if (keyCode == KeyEvent.KEYCODE_R) {
-			if (lessThan500MillisSinceLastR()) {
+			if (lessThan500MillisSinceLastR() && textViewIsNotFocused(activity)) {
 				reloadReactNative();
 				return true;
 			}
@@ -75,9 +76,13 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
 		return false;
 	}
 
-	private boolean lessThan500MillisSinceLastR() {
+    private boolean lessThan500MillisSinceLastR() {
 		return firstRTimestamp != 0 && System.currentTimeMillis() - firstRTimestamp < 1000;
 	}
+
+    private boolean textViewIsNotFocused(Activity activity) {
+        return !(activity.getCurrentFocus() instanceof EditText);
+    }
 
 	private void reloadReactNative() {
         reloadListener.onReload();

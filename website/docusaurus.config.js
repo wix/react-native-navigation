@@ -27,8 +27,23 @@ module.exports = {
           type: 'docsVersionDropdown',
           position: 'left',
         },
-        {to: 'docs/before-you-start', label: 'Docs', position: 'left', activeBaseRegex: '.*\/docs\/'},
-        {to: 'api/component', label: 'API', position: 'left', activeBaseRegex: '.*\/api\/'},
+        {
+          to: 'docs/before-you-start',
+          label: 'Docs',
+          position: 'left',
+          activeBaseRegex: '.*/docs/',
+        },
+        {
+          to: 'api/component',
+          label: 'API',
+          position: 'left',
+          activeBaseRegex: '.*/api/',
+        },
+        {
+          to: 'showcase',
+          label: 'Showcase',
+          position: 'left',
+        },
         {
           href: 'https://github.com/wix/react-native-navigation',
           label: 'GitHub',
@@ -94,6 +109,17 @@ module.exports = {
       ],
     },
   },
+  plugins: [
+    [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 70,
+        max: 1030, // max resized image's size.
+        min: 640, // min resized image's size. if original is lower, use that size.
+        steps: 2, // the max number of images generated between min and max (inclusive)
+      },
+    ],
+  ],
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -109,6 +135,6 @@ module.exports = {
           customCss: require.resolve('./src/css/custom.css'),
         },
       },
-    ]
+    ],
   ],
 };

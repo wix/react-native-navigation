@@ -4,7 +4,10 @@
 
 + (NSDictionary *)component:(NSString *)componentId options:(NSDictionary *)options;
 
-+ (NSDictionary *)parentWithID:(NSString *)componentId type:(NSString *)type options:(NSDictionary *)options children:(NSArray<NSDictionary *> *)children;
++ (NSDictionary *)parentWithID:(NSString *)componentId
+                          type:(NSString *)type
+                       options:(NSDictionary *)options
+                      children:(NSArray<NSDictionary *> *)children;
 
 + (NSDictionary *)stack:(NSDictionary *)options children:(NSArray<NSDictionary *> *)children;
 

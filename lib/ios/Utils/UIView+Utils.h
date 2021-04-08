@@ -3,6 +3,7 @@
 
 typedef NS_ENUM(NSInteger, ViewType) {
     ViewTypeImage,
+    ViewTypeUIImage,
     ViewTypeText,
     ViewTypeOther
 };

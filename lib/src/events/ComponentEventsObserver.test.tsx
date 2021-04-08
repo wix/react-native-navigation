@@ -4,11 +4,12 @@ import { ComponentEventsObserver } from './ComponentEventsObserver';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { EventSubscription } from '../interfaces/EventSubscription';
 import { Store } from '../components/Store';
-import { ComponentDidAppearEvent } from '../interfaces/ComponentEvents';
+import { ComponentDidAppearEvent, ComponentWillAppearEvent } from '../interfaces/ComponentEvents';
 
 describe('ComponentEventsObserver', () => {
   const mockEventsReceiver = new NativeEventsReceiver();
   const mockStore = new Store();
+  const willAppearFn = jest.fn();
   const didAppearFn = jest.fn();
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
@@ -38,6 +39,10 @@ describe('ComponentEventsObserver', () => {
 
     componentWillUnmount() {
       willUnmountFn();
+    }
+
+    componentWillAppear() {
+      willAppearFn();
     }
 
     componentDidAppear() {
@@ -85,6 +90,10 @@ describe('ComponentEventsObserver', () => {
 
     componentWillUnmount() {
       willUnmountFn();
+    }
+
+    componentWillAppear(event: ComponentWillAppearEvent) {
+      willAppearFn(event);
     }
 
     componentDidAppear(event: ComponentDidAppearEvent) {
@@ -262,6 +271,28 @@ describe('ComponentEventsObserver', () => {
     });
     expect(didAppearFn).toHaveBeenCalledTimes(1);
     expect(didAppearFn).toHaveBeenCalledWith(event);
+  });
+
+  it(`componentWillAppear should receive component props from store`, () => {
+    const event = {
+      componentId: 'myCompId',
+      componentType: 'Component',
+      passProps: {
+        propA: 'propA',
+      },
+      componentName: 'doesnt matter',
+    };
+    renderer.create(<BoundScreen componentId={event.componentId} />);
+    mockStore.updateProps(event.componentId, event.passProps);
+    expect(willAppearFn).not.toHaveBeenCalled();
+
+    uut.notifyComponentWillAppear({
+      componentId: 'myCompId',
+      componentName: 'doesnt matter',
+      componentType: 'Component',
+    });
+    expect(willAppearFn).toHaveBeenCalledTimes(1);
+    expect(willAppearFn).toHaveBeenCalledWith(event);
   });
 
   it(`doesnt call other componentIds`, () => {

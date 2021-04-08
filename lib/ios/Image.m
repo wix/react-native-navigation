@@ -1,19 +1,19 @@
 #import "Image.h"
 
-@interface Image()
+@interface Image ()
 
-@property (nonatomic, retain) UIImage* value;
+@property(nonatomic, retain) UIImage *value;
 
 @end
 
 @implementation Image
 
 - (UIImage *)get {
-	return self.value;
+    return self.value;
 }
 
-- (UIImage *)getWithDefaultValue:(UIImage *)defaultValue {
-	return [super getWithDefaultValue:defaultValue];
+- (UIImage *)withDefault:(UIImage *)defaultValue {
+    return [super withDefault:defaultValue];
 }
 
 @end

@@ -2,6 +2,8 @@ package com.reactnativenavigation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,11 +17,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowLooper;
 
 import java.util.Arrays;
 
+import androidx.annotation.CallSuper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -30,14 +35,18 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, application = TestApplication.class)
 public abstract class BaseTest {
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private final ShadowLooper shadowMainLooper = Shadows.shadowOf(Looper.getMainLooper());
+
     @Before
     public void beforeEach() {
         //
     }
 
     @After
+    @CallSuper
     public void afterEach() {
-        //
+        idleMainLooper();
     }
 
     public Activity newActivity() {
@@ -92,13 +101,13 @@ public abstract class BaseTest {
 
     protected void disableShowModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
-            modal.options.animations.showModal.enabled = new Bool(false);
+            modal.options.animations.showModal.toggle(new Bool(false));
         }
     }
 
     protected void disableDismissModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
-            modal.options.animations.dismissModal.enabled = new Bool(false);
+            modal.options.animations.dismissModal.toggle(new Bool(false));
         }
     }
 
@@ -128,5 +137,13 @@ public abstract class BaseTest {
 
     protected void assertGone(View view) {
         assertThat(view.getVisibility()).isEqualTo(View.GONE);
+    }
+
+    protected void post(Runnable runnable) {
+        handler.post(runnable);
+    }
+
+    protected void idleMainLooper() {
+        shadowMainLooper.idle();
     }
 }

@@ -77,7 +77,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void getLaunchArgs(String commandId, Promise promise) {
         promise.resolve(LaunchArgsParser.parse(activity()));
     }
-    
+
     @ReactMethod
     public void getNavigationConstants(Promise promise) {
         ReactApplicationContext ctx = getReactApplicationContext();
@@ -184,6 +184,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         handle(() -> navigator().dismissOverlay(componentId, new NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now)));
     }
 
+    @ReactMethod
+    public void dismissAllOverlays(String commandId, Promise promise) {
+        handle(() -> navigator().dismissAllOverlays(new NativeCommandListener("dismissAllOverlays", commandId, promise, eventEmitter, now)));
+    }
+
     private Navigator navigator() {
         return activity().getNavigator();
     }
@@ -191,7 +196,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private Options parse(@Nullable ReadableMap mergeOptions) {
         ReactApplicationContext ctx = getReactApplicationContext();
         return mergeOptions ==
-               null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
+                null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
     }
 
     protected void handle(Runnable task) {

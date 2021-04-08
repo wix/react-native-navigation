@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views.sidemenu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.TypedValue;
@@ -41,10 +42,12 @@ public class SideMenuRoot extends CoordinatorLayout {
         sideMenu.addView(center.getView());
     }
 
+    @SuppressLint("RtlHardcoded")
     public void setLeft(ViewController left, Options options) {
         sideMenu.addView(left.getView(), createLayoutParams(options.sideMenuRootOptions.left, Gravity.LEFT));
     }
 
+    @SuppressLint("RtlHardcoded")
     public void setRight(ViewController right, Options options) {
         sideMenu.addView(right.getView(), createLayoutParams(options.sideMenuRootOptions.right, Gravity.RIGHT));
     }
@@ -60,8 +63,11 @@ public class SideMenuRoot extends CoordinatorLayout {
     private int getWidth(SideMenuOptions sideMenuOptions) {
         int width = MATCH_PARENT;
         if (sideMenuOptions.width.hasValue()) {
-            width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.width.get(), Resources
-                    .getSystem().getDisplayMetrics());
+            width = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    sideMenuOptions.width.get(),
+                    Resources.getSystem().getDisplayMetrics()
+            );
         }
         return width;
     }

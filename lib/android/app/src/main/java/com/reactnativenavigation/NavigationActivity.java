@@ -42,7 +42,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
                 new ChildControllersRegistry(),
                 new ModalStack(this),
                 new OverlayManager(),
-                new RootPresenter(this)
+                new RootPresenter()
         );
         navigator.bindViews();
         getReactGateway().onActivityCreated(this);
@@ -108,7 +108,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public boolean onKeyUp(final int keyCode, final KeyEvent event) {
-        return getReactGateway().onKeyUp(keyCode) || super.onKeyUp(keyCode, event);
+        return getReactGateway().onKeyUp(this, keyCode) || super.onKeyUp(keyCode, event);
     }
 
     public ReactGateway getReactGateway() {

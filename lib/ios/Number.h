@@ -1,11 +1,11 @@
+#import "Param.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "Param.h"
 
 @interface Number : Param
 
 - (NSNumber *)get;
 
-- (NSNumber *)getWithDefaultValue:(NSNumber *)defaultValue;
+- (NSNumber *)withDefault:(NSNumber *)defaultValue;
 
 @end

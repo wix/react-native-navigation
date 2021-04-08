@@ -8,8 +8,10 @@
 
 - (NSNumber *)getValue;
 
-- (BOOL)getWithDefaultValue:(BOOL)value;
+- (BOOL)withDefault:(BOOL)value;
 
-- (bool) isFalse;
+- (bool)isFalse;
+
++ (instancetype)withValue:(BOOL)value;
 
 @end

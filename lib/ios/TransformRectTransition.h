@@ -1,13 +1,12 @@
-#import "ElementBaseTransition.h"
 #import "RectTransition.h"
-#import "RNNViewLocation.h"
 
 @interface TransformRectTransition : RectTransition
 
 - (instancetype)initWithView:(UIView *)view
-                viewLocation:(RNNViewLocation *)viewLocation
+                        from:(CATransform3D)from
+                          to:(CATransform3D)to
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
-               interpolation:(Text *)interpolation;
+                interpolator:(id<Interpolator>)interpolator;
 
 @end

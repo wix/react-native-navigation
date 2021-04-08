@@ -24,4 +24,8 @@ public class Functions {
     public interface FuncR1<T, S> {
         S run(T param);
     }
+
+    public interface FuncR2<T, S, R> {
+        R run(T param1, S param2);
+    }
 }

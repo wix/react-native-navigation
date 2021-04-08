@@ -15,16 +15,14 @@ class MyComponent extends Component {
   }
 
   renderText(txt) {
-    return (
-      <Text>{txt}</Text>
-    );
+    return <Text>{txt}</Text>;
   }
 }
 
 function mapStateToProps(state) {
   return {
     name: store.selectors.getName(state),
-    age: store.selectors.getAge(state)
+    age: store.selectors.getAge(state),
   };
 }
 

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface Param : NSObject
+@interface Param : NSObject <NSCopying>
 
 + (instancetype)withValue:(id)value;
 
@@ -8,7 +8,7 @@
 
 - (id)get;
 
-- (id)getWithDefaultValue:(id)defaultValue;
+- (id)withDefault:(id)defaultValue;
 
 - (BOOL)hasValue;
 

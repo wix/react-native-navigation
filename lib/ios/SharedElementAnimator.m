@@ -1,81 +1,83 @@
 #import "SharedElementAnimator.h"
 #import "AnimatedViewFactory.h"
-#import "RectTransition.h"
-#import "TransformRectTransition.h"
-#import "RotationTransition.h"
-#import "ColorTransition.h"
-#import "AnimatedTextView.h"
-#import "TextStorageTransition.h"
-#import "AnchorTransition.h"
-#import "CornerRadiusTransition.h"
-#import "LayerBoundsTransition.h"
+#import "BaseAnimator.h"
+#import "NSArray+utils.h"
+#import "RNNElementFinder.h"
+#import "SharedElementTransition.h"
+#import "UIViewController+LayoutProtocol.h"
 
 @implementation SharedElementAnimator {
-    SharedElementTransitionOptions* _transitionOptions;
-    UIViewController* _toVC;
-    UIViewController* _fromVC;
-    UIView* _fromView;
-    UIView* _toView;
-    UIView* _containerView;
+    NSArray<SharedElementTransitionOptions *> *_sharedElementTransitions;
+    NSArray *_transitions;
+    UIViewController *_fromVC;
+    UIViewController *_toVC;
+    UIView *_containerView;
 }
 
-- (instancetype)initWithTransitionOptions:(SharedElementTransitionOptions *)transitionOptions fromView:(UIView *)fromView toView:(UIView *)toView fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
+- (instancetype)initWithTransitions:
+                    (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitions
+                             fromVC:(UIViewController *)fromVC
+                               toVC:(UIViewController *)toVC
+                      containerView:(UIView *)containerView {
     self = [super init];
-    _transitionOptions = transitionOptions;
+    _sharedElementTransitions = sharedElementTransitions;
     _fromVC = fromVC;
     _toVC = toVC;
-    _fromView = fromView;
-    _toView = toView;
     _containerView = containerView;
-    self.view = [self createAnimatedView:transitionOptions fromView:fromView toView:toView];
-    self.animations = [self createAnimations];
+
     return self;
 }
 
-- (AnimatedReactView *)createAnimatedView:(SharedElementTransitionOptions *)transitionOptions fromView:(UIView *)fromView toView:(UIView *)toView {
-    return [AnimatedViewFactory createFromElement:fromView toElement:toView transitionOptions:transitionOptions];
+- (NSArray<DisplayLinkAnimatorDelegate> *)create {
+    NSMutableArray<DisplayLinkAnimatorDelegate> *transitions =
+        [NSMutableArray<DisplayLinkAnimatorDelegate> new];
+    for (SharedElementTransitionOptions *transitionOptions in _sharedElementTransitions) {
+        UIView *fromView =
+            [RNNElementFinder findElementForId:transitionOptions.fromId
+                                        inView:_fromVC.presentedComponentViewController.reactView];
+        UIView *toView =
+            [RNNElementFinder findElementForId:transitionOptions.toId
+                                        inView:_toVC.presentedComponentViewController.reactView];
+        if (fromView == nil || toView == nil) {
+            break;
+        }
+
+        SharedElementTransition *sharedElementAnimator =
+            [[SharedElementTransition alloc] initWithTransitionOptions:transitionOptions
+                                                              fromView:fromView
+                                                                toView:toView
+                                                         containerView:_containerView];
+        [transitions addObject:sharedElementAnimator];
+    }
+
+    NSArray<DisplayLinkAnimatorDelegate> *sortedTransitions = [self sortByZIndex:transitions];
+    [self addSharedElementViews:sortedTransitions toContainerView:_containerView];
+    _transitions = transitions;
+
+    return sortedTransitions;
 }
 
-- (NSMutableArray<id<DisplayLinkAnimation>> *)createAnimations {
-    NSMutableArray* animations = [super createAnimations:_transitionOptions];
-    CGFloat startDelay = [_transitionOptions.startDelay getWithDefaultValue:0];
-    CGFloat duration = [_transitionOptions.duration getWithDefaultValue:300];
-    Text* interpolation = [_transitionOptions.interpolation getWithDefaultValue:@"accelerateDecelerate"];
-    
-    if (!CGRectEqualToRect(self.view.location.fromFrame, self.view.location.toFrame)) {
-        [animations addObject:[[RectTransition alloc] initWithView:self.view from:self.view.location.fromFrame to:self.view.location.toFrame startDelay:startDelay duration:duration interpolation:interpolation]];
+- (void)animationEnded {
+    for (SharedElementTransition *transition in _transitions.reverseObjectEnumerator) {
+        [transition.view reset];
     }
-    
-    if (!CGRectEqualToRect(self.view.location.fromBounds, self.view.location.toBounds)) {
-        [animations addObject:[[LayerBoundsTransition alloc] initWithView:self.view from:self.view.location.fromBounds to:self.view.location.toBounds startDelay:startDelay duration:duration interpolation:interpolation]];
-    }
-    
-    if (!CATransform3DEqualToTransform(self.view.location.fromTransform, self.view.location.toTransform)) {
-        [animations addObject:[[TransformRectTransition alloc] initWithView:self.view viewLocation:self.view.location startDelay:startDelay duration:duration interpolation:interpolation]];
-    }
-    
-    if (![_fromView.backgroundColor isEqual:_toView.backgroundColor]) {
-        [animations addObject:[[ColorTransition alloc] initWithView:self.view from:_fromView.backgroundColor to:_toView.backgroundColor startDelay:startDelay duration:duration interpolation:interpolation]];
-    }
-    
-    if ([self.view isKindOfClass:AnimatedTextView.class]) {
-        [animations addObject:[[TextStorageTransition alloc] initWithView:self.view from:((AnimatedTextView *)self.view).fromTextStorage to:((AnimatedTextView *)self.view).toTextStorage startDelay:startDelay duration:duration interpolation:interpolation]];
-    }
-	
-    if (self.view.location.fromCornerRadius != self.view.location.toCornerRadius) {
-		// TODO: Use MaskedCorners to only round specific corners, e.g.: borderTopLeftRadius
-		//   self.view.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner | kCALayerMaxXMaxYCorner;
-		self.view.layer.masksToBounds = YES;
-		[animations addObject:[[CornerRadiusTransition alloc] initWithView:self.view fromFloat:self.view.location.fromCornerRadius toFloat:self.view.location.toCornerRadius startDelay:startDelay duration:duration interpolation:interpolation]];
-	}
-    
-    return animations;
 }
 
-- (void)end {
-    [super end];
-    [self.view reset];
+- (void)addSharedElementViews:(NSArray<BaseAnimator *> *)animators
+              toContainerView:(UIView *)containerView {
+    for (BaseAnimator *animator in animators) {
+        [containerView addSubview:animator.view];
+    }
 }
 
+- (NSArray<DisplayLinkAnimatorDelegate> *)sortByZIndex:
+    (NSArray<DisplayLinkAnimatorDelegate> *)animators {
+    return (NSArray<DisplayLinkAnimatorDelegate> *)[animators
+        sortedArrayUsingComparator:^NSComparisonResult(BaseAnimator *a, BaseAnimator *b) {
+          id first = [a.view valueForKey:@"reactZIndex"];
+          id second = [b.view valueForKey:@"reactZIndex"];
+          return [first compare:second];
+        }];
+}
 
 @end

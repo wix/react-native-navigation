@@ -1,3 +1,4 @@
+import cloneDeepWith from 'lodash/cloneDeepWith';
 import cloneDeep from 'lodash/cloneDeep';
 import map from 'lodash/map';
 import { CommandsObserver } from '../events/CommandsObserver';
@@ -11,6 +12,7 @@ import { OptionsProcessor } from './OptionsProcessor';
 import { Store } from '../components/Store';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { CommandName } from '../interfaces/CommandName';
+import { OptionsCrawler } from './OptionsCrawler';
 
 export class Commands {
   constructor(
@@ -21,20 +23,24 @@ export class Commands {
     private readonly commandsObserver: CommandsObserver,
     private readonly uniqueIdProvider: UniqueIdProvider,
     private readonly optionsProcessor: OptionsProcessor,
-    private readonly layoutProcessor: LayoutProcessor
+    private readonly layoutProcessor: LayoutProcessor,
+    private readonly optionsCrawler: OptionsCrawler
   ) {}
 
   public setRoot(simpleApi: LayoutRoot) {
-    const input = cloneDeep(simpleApi);
+    const input = cloneLayout(simpleApi);
+    this.optionsCrawler.crawl(input.root);
     const processedRoot = this.layoutProcessor.process(input.root, CommandName.SetRoot);
     const root = this.layoutTreeParser.parse(processedRoot);
 
     const modals = map(input.modals, (modal) => {
+      this.optionsCrawler.crawl(modal);
       const processedModal = this.layoutProcessor.process(modal, CommandName.SetRoot);
       return this.layoutTreeParser.parse(processedModal);
     });
 
     const overlays = map(input.overlays, (overlay: any) => {
+      this.optionsCrawler.crawl(overlay);
       const processedOverlay = this.layoutProcessor.process(overlay, CommandName.SetRoot);
       return this.layoutTreeParser.parse(processedOverlay);
     });
@@ -79,7 +85,8 @@ export class Commands {
   }
 
   public showModal(layout: Layout) {
-    const layoutCloned = cloneDeep(layout);
+    const layoutCloned = cloneLayout(layout);
+    this.optionsCrawler.crawl(layoutCloned);
     const layoutProcessed = this.layoutProcessor.process(layoutCloned, CommandName.ShowModal);
     const layoutNode = this.layoutTreeParser.parse(layoutProcessed);
 
@@ -110,7 +117,8 @@ export class Commands {
   }
 
   public push(componentId: string, simpleApi: Layout) {
-    const input = cloneDeep(simpleApi);
+    const input = cloneLayout(simpleApi);
+    this.optionsCrawler.crawl(input);
     const layoutProcessed = this.layoutProcessor.process(input, CommandName.Push);
     const layout = this.layoutTreeParser.parse(layoutProcessed);
 
@@ -144,7 +152,8 @@ export class Commands {
   }
 
   public setStackRoot(componentId: string, children: Layout[]) {
-    const input = map(cloneDeep(children), (simpleApi) => {
+    const input = map(cloneLayout(children), (simpleApi) => {
+      this.optionsCrawler.crawl(simpleApi);
       const layoutProcessed = this.layoutProcessor.process(simpleApi, CommandName.SetStackRoot);
       const layout = this.layoutTreeParser.parse(layoutProcessed);
       return layout;
@@ -165,7 +174,8 @@ export class Commands {
   }
 
   public showOverlay(simpleApi: Layout) {
-    const input = cloneDeep(simpleApi);
+    const input = cloneLayout(simpleApi);
+    this.optionsCrawler.crawl(input);
     const layoutProcessed = this.layoutProcessor.process(input, CommandName.ShowOverlay);
     const layout = this.layoutTreeParser.parse(layoutProcessed);
 
@@ -184,10 +194,23 @@ export class Commands {
     return result;
   }
 
+  public dismissAllOverlays() {
+    const commandId = this.uniqueIdProvider.generate(CommandName.DismissAllOverlays);
+    const result = this.nativeCommandsSender.dismissAllOverlays(commandId);
+    this.commandsObserver.notify(CommandName.DismissAllOverlays, { commandId });
+    return result;
+  }
+
   public getLaunchArgs() {
     const commandId = this.uniqueIdProvider.generate(CommandName.GetLaunchArgs);
     const result = this.nativeCommandsSender.getLaunchArgs(commandId);
     this.commandsObserver.notify(CommandName.GetLaunchArgs, { commandId });
     return result;
   }
+}
+
+function cloneLayout<L>(layout: L): L {
+  return cloneDeepWith(layout, (value, key) => {
+    if (key === 'passProps' && typeof value === 'object' && value !== null) return { ...value };
+  });
 }

@@ -14,15 +14,13 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
 #import "OCMFunctions.h"
+#import <Foundation/Foundation.h>
 
-
-@interface OCMLocation : NSObject
-{
-    id          testCase;
-    NSString    *file;
-    NSUInteger  line;
+@interface OCMLocation : NSObject {
+    id testCase;
+    NSString *file;
+    NSUInteger line;
 }
 
 + (instancetype)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;

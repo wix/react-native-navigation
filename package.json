@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "7.1.0",
+  "version": "7.13.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -79,24 +79,24 @@
     "@typescript-eslint/eslint-plugin": "3.3.0",
     "@typescript-eslint/parser": "3.3.0",
     "babel-jest": "26.1.0",
-    "detox": "17.3.1",
+    "clang-format": "^1.4.0",
+    "detox": "18.6.2",
     "eslint": "7.3.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",
-    "github-release-notes": "0.17.3",
+    "github-release-notes": "https://github.com/yogevbd/github-release-notes/tarball/e601b3dba72dcd6cba323c1286ea6dd0c0110b58",
     "husky": "4.2.5",
     "identity-obj-proxy": "3.0.0",
     "jest": "26.1.0",
     "jest-circus": "26.1.0",
     "lint-staged": "10.2.11",
-    "lodash": "^4.17.15",
     "metro-react-native-babel-preset": "0.59.0",
-    "prettier": "2.0.5",
+    "prettier": "2.1.2",
     "react": "16.13.1",
     "react-native": "0.63.2",
+    "react-native-fast-image": "8.x.x",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
-    "react-native-fast-image": "8.x.x",
     "react-native-ui-lib": "5.11.0",
     "react-redux": "5.x.x",
     "react-test-renderer": "16.13.1",
@@ -116,7 +116,8 @@
     "roots": [
       "<rootDir>/node_modules/",
       "<rootDir>/lib/dist/",
-      "<rootDir>/integration/"
+      "<rootDir>/integration/",
+      "<rootDir>/scripts/"
     ],
     "collectCoverageFrom": [
       "lib/dist/**/*.js",
@@ -144,7 +145,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": "eslint"
+    "*.{js,ts,tsx}": "eslint --fix",
+    "*.{h,m,mm}": "node ./scripts/check-clang-format"
   },
   "detox": {
     "test-runner": "jest",

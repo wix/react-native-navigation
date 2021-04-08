@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "DisplayLinkAnimation.h"
+#import <Foundation/Foundation.h>
 
 @protocol DisplayLinkAnimatorDelegate <NSObject>
 

@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "Color.h"
+#import <Foundation/Foundation.h>
 
 @interface ColorParser : NSObject
 

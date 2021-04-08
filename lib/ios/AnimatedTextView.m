@@ -1,11 +1,13 @@
 #import "AnimatedTextView.h"
 
 @implementation AnimatedTextView {
-    NSTextContainer* _fromTextContainer;
+    NSTextContainer *_fromTextContainer;
     CGSize _fromSize;
 }
 
-- (instancetype)initElement:(UIView *)element toElement:(UIView *)toElement transitionOptions:(SharedElementTransitionOptions *)transitionOptions {
+- (instancetype)initElement:(UIView *)element
+                  toElement:(UIView *)toElement
+          transitionOptions:(SharedElementTransitionOptions *)transitionOptions {
     self = [super initElement:element toElement:toElement transitionOptions:transitionOptions];
     _fromTextStorage = [element valueForKey:@"textStorage"];
     _toTextStorage = [toElement valueForKey:@"textStorage"];

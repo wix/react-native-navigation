@@ -5,10 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.TypeEvaluator
 import android.graphics.PointF
 import android.graphics.Rect
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.view.View
-import androidx.core.graphics.drawable.toBitmap
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.drawable.ScalingUtils.InterpolatingScaleType
 import com.facebook.react.views.image.ReactImageView
@@ -23,7 +20,9 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
     }
 
     override fun create(options: SharedElementTransitionOptions): Animator {
+        from as ReactImageView
         with(to as ReactImageView) {
+            to.hierarchy.fadeDuration = 0
             val parentScaleX = (from.parent as View).scaleX
             val parentScalyY = (from.parent as View).scaleY
 
@@ -37,12 +36,6 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
                     PointF(to.width / 2f, to.height / 2f)
             )
 
-            val overlay = BitmapDrawable(
-                    to.resources,
-                    to.drawable.toBitmap(width = fromBounds.width(), height = fromBounds.height())
-            )
-            createAndAddOverlayToWorkAroundImageFlickering(overlay)
-
             to.layoutParams.width = max(from.width, to.width)
             to.layoutParams.height = max(from.height, to.height)
             return ObjectAnimator.ofObject(TypeEvaluator<Float> { fraction: Float, _: Any, _: Any ->
@@ -50,20 +43,11 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
                     (hierarchy.actualImageScaleType as? InterpolatingScaleType)?.let {
                         it.value = fraction
                         to.invalidate()
-                        removeOverlayOnFirstAnimationTick(fraction, overlay)
                     }
                 }
                 null
             }, 0, 1)
         }
-    }
-
-    private fun createAndAddOverlayToWorkAroundImageFlickering(overlay: Drawable) {
-        to.overlay.add(overlay)
-    }
-
-    private fun removeOverlayOnFirstAnimationTick(fraction: Float, overlay: Drawable) {
-        if (fraction == 0f) to.overlay.remove(overlay)
     }
 
     private fun getScaleType(child: View): ScalingUtils.ScaleType? {

@@ -10,12 +10,17 @@ import Navigation from './../services/Navigation';
 import { component } from './../commons/Layouts';
 import { stack } from '../commons/Layouts';
 import Screens from './Screens';
+import flags from '../flags';
 import testIDs from '../testIDs';
+import { Dimensions } from 'react-native';
+const height = Math.round(Dimensions.get('window').height);
+const MODAL_ANIMATION_DURATION = 350;
 
 const {
   PUSH_BTN,
   MODAL_SCREEN_HEADER,
   MODAL_BTN,
+  MODAL_DISABLED_BACK_BTN,
   DISMISS_MODAL_BTN,
   DISMISS_UNKNOWN_MODAL_BTN,
   MODAL_LIFECYCLE_BTN,
@@ -32,7 +37,11 @@ interface Props {
   modalPosition?: number;
 }
 
-export default class ModalScreen extends NavigationComponent<Props> {
+interface State {
+  swipeableToDismiss: boolean;
+}
+
+export default class ModalScreen extends NavigationComponent<Props, State> {
   static options() {
     return {
       topBar: {
@@ -44,6 +53,13 @@ export default class ModalScreen extends NavigationComponent<Props> {
     };
   }
 
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      swipeableToDismiss: false,
+    };
+  }
+
   render() {
     return (
       <Root
@@ -51,6 +67,19 @@ export default class ModalScreen extends NavigationComponent<Props> {
         footer={`Modal Stack Position: ${this.getModalPosition()}`}
       >
         <Button label="Show Modal" testID={MODAL_BTN} onPress={this.showModal} />
+        {flags.useCustomAnimations && (
+          <Button label="Back.Compat. Show Modal Anim" onPress={this.showModalWithTransition} />
+        )}
+        {flags.useCustomAnimations && (
+          <Button label="New! Show Modal Push Anim" onPress={this.showModalWithTransitionPush} />
+        )}
+        {!this.props.previousModalIds && (
+          <Button
+            label="Show Disabled Hardware Back Modal"
+            testID={MODAL_DISABLED_BACK_BTN}
+            onPress={this.showDisabledHardwareBackModal}
+          />
+        )}
         <Button label="Dismiss Modal" testID={DISMISS_MODAL_BTN} onPress={this.dismissModal} />
         <Button
           label="Dismiss Unknown Modal"
@@ -91,10 +120,97 @@ export default class ModalScreen extends NavigationComponent<Props> {
         )}
         <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
         <Button label="Set Root" testID={SET_ROOT} onPress={this.setRoot} />
+        <Button
+          label={`Toggle to swipeToDismiss: ${this.state.swipeableToDismiss}`}
+          onPress={this.toggleSwipeToDismiss}
+        />
       </Root>
     );
   }
 
+  showModalWithTransition = () => {
+    Navigation.showModal({
+      component: {
+        name: Screens.Modal,
+        options: {
+          animations: {
+            showModal: {
+              translationY: {
+                from: height,
+                to: 0,
+                duration: MODAL_ANIMATION_DURATION,
+                interpolation: { type: 'decelerate' },
+              },
+            },
+            dismissModal: {
+              translationY: {
+                from: 0,
+                to: height,
+                duration: MODAL_ANIMATION_DURATION,
+                interpolation: { type: 'decelerate' },
+              },
+            },
+          },
+        },
+        passProps: {
+          modalPosition: this.getModalPosition() + 1,
+          previousModalIds: concat([], this.props.previousModalIds || [], this.props.componentId),
+        },
+      },
+    });
+  };
+
+  showModalWithTransitionPush = () => {
+    Navigation.showModal({
+      component: {
+        name: Screens.Modal,
+        options: {
+          animations: {
+            showModal: {
+              enter: {
+                translationY: {
+                  from: height,
+                  to: 0,
+                  duration: MODAL_ANIMATION_DURATION,
+                  interpolation: { type: 'decelerate' },
+                },
+              },
+              exit: {
+                translationY: {
+                  from: 0,
+                  to: -height,
+                  duration: MODAL_ANIMATION_DURATION,
+                  interpolation: { type: 'decelerate' },
+                },
+              },
+            },
+            dismissModal: {
+              enter: {
+                translationY: {
+                  from: -height,
+                  to: 0,
+                  duration: MODAL_ANIMATION_DURATION,
+                  interpolation: { type: 'decelerate' },
+                },
+              },
+              exit: {
+                translationY: {
+                  from: 0,
+                  to: height,
+                  duration: MODAL_ANIMATION_DURATION,
+                  interpolation: { type: 'decelerate' },
+                },
+              },
+            },
+          },
+        },
+        passProps: {
+          modalPosition: this.getModalPosition() + 1,
+          previousModalIds: concat([], this.props.previousModalIds || [], this.props.componentId),
+        },
+      },
+    });
+  };
   showModal = () => {
     Navigation.showModal({
       component: {
@@ -102,6 +218,17 @@ export default class ModalScreen extends NavigationComponent<Props> {
         passProps: {
           modalPosition: this.getModalPosition() + 1,
           previousModalIds: concat([], this.props.previousModalIds || [], this.props.componentId),
+        },
+      },
+    });
+  };
+
+  showDisabledHardwareBackModal = () => {
+    Navigation.showModal({
+      component: {
+        name: Screens.Modal,
+        options: {
+          hardwareBackButton: { dismissModalOnPress: false },
         },
       },
     });
@@ -137,4 +264,15 @@ export default class ModalScreen extends NavigationComponent<Props> {
   getModalPosition = () => this.props.modalPosition || 1;
 
   getPreviousModalId = () => last(this.props.previousModalIds)!;
+
+  toggleSwipeToDismiss = () => {
+    this.setState((prevState) => {
+      Navigation.mergeOptions(this.props.componentId, {
+        modal: {
+          swipeToDismiss: !prevState.swipeableToDismiss,
+        },
+      });
+      return { swipeableToDismiss: !prevState.swipeableToDismiss };
+    });
+  };
 }

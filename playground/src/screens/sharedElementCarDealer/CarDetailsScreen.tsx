@@ -1,19 +1,24 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets } from 'react-native';
-import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
+import {
+  Navigation,
+  NavigationFunctionComponent,
+  OptionsModalPresentationStyle,
+  OptionsModalTransitionStyle,
+} from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
 import FastImage from 'react-native-fast-image';
 import Reanimated, { Easing, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
-import { SET_DURATION } from './Constants';
+import { buildFullScreenSharedElementAnimations, SET_DURATION } from './Constants';
 import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
 const ReanimatedFastImage = Reanimated.createAnimatedComponent(FastImage);
 
-const HEADER_HEIGHT = 250;
+const HEADER_HEIGHT = 300;
 const INDICATOR_INSETS: Insets = { top: HEADER_HEIGHT };
 
 interface Props {
@@ -26,7 +31,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
   const onClosePressed = useCallback(() => {
     if (isClosing.current === true) return;
     isClosing.current = true;
-    Navigation.pop(componentId);
+    Navigation.dismissModal(componentId);
   }, [componentId]);
   const dismissGesture = useDismissGesture(onClosePressed);
 
@@ -58,6 +63,21 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
     [dismissGesture.cardBorderRadius, headerY]
   );
 
+  const openImage = useCallback(() => {
+    Navigation.showModal({
+      component: {
+        name: 'ImageFullScreenViewer',
+        passProps: {
+          source: car.image,
+          sharedElementId: `image${car.id}Full`,
+        },
+        options: {
+          animations: buildFullScreenSharedElementAnimations(car),
+        },
+      },
+    });
+  }, [car]);
+
   useEffect(() => {
     setTimeout(() => {
       Reanimated.timing(dismissGesture.controlsOpacity, {
@@ -86,13 +106,15 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
           <Text style={styles.buyText}>Buy</Text>
         </PressableScale>
       </Reanimated.ScrollView>
-      <ReanimatedFastImage
-        source={car.image}
-        // @ts-ignore nativeID isn't included in react-native-fast-image props.
-        nativeID={`image${car.id}Dest`}
-        style={imageStyle}
-        resizeMode="cover"
-      />
+      <ReanimatedTouchableOpacity style={imageStyle} onPress={openImage}>
+        <ReanimatedFastImage
+          source={car.image}
+          // @ts-ignore nativeID isn't included in react-native-fast-image props.
+          nativeID={`image${car.id}Dest`}
+          resizeMode="cover"
+          style={StyleSheet.absoluteFill}
+        />
+      </ReanimatedTouchableOpacity>
       <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>
       </ReanimatedTouchableOpacity>
@@ -113,6 +135,11 @@ CarDetailsScreen.options = {
     componentBackgroundColor: 'transparent',
     backgroundColor: 'transparent',
   },
+  window: {
+    backgroundColor: 'transparent',
+  },
+  modalTransitionStyle: OptionsModalTransitionStyle.coverVertical,
+  modalPresentationStyle: OptionsModalPresentationStyle.overCurrentContext,
 };
 export default CarDetailsScreen;
 

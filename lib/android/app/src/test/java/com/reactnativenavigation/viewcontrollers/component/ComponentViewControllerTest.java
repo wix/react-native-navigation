@@ -39,7 +39,10 @@ public class ComponentViewControllerTest extends BaseTest {
         uut = Mockito.spy(new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter, this.presenter) {
             @Override
             public Options resolveCurrentOptions(Options defaultOptions) {
-                return resolvedOptions;
+                // Hacky way to return the same instance of resolvedOptions without copying it.
+                return resolvedOptions
+                        .withDefaultOptions(uut.options)
+                        .withDefaultOptions(defaultOptions);
             }
         });
         uut.setParentController(parent);
@@ -165,6 +168,16 @@ public class ComponentViewControllerTest extends BaseTest {
     @Test
     public void getTopInset_drawBehind() {
         uut.options.statusBar.drawBehind = new Bool(true);
+        uut.options.topBar.drawBehind = new Bool(true);
+        Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(0);
+    }
+
+    @Test
+    public void getTopInset_drawBehind_defaultOptions() {
+        Options defaultOptions = new Options();
+        defaultOptions.statusBar.drawBehind = new Bool(true);
+        uut.setDefaultOptions(defaultOptions);
+
         uut.options.topBar.drawBehind = new Bool(true);
         Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(0);
     }

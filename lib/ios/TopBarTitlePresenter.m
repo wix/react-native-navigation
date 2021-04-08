@@ -1,11 +1,11 @@
 #import "TopBarTitlePresenter.h"
-#import "UIViewController+RNNOptions.h"
-#import "RNNTitleViewHelper.h"
 #import "RNNReactTitleView.h"
+#import "RNNTitleViewHelper.h"
+#import "UIViewController+RNNOptions.h"
 
 @implementation TopBarTitlePresenter {
-    RNNReactTitleView* _customTitleView;
-    RNNTitleViewHelper* _titleViewHelper;
+    RNNReactTitleView *_customTitleView;
+    RNNTitleViewHelper *_titleViewHelper;
 }
 
 - (void)applyOptionsOnInit:(RNNTopBarOptions *)initialOptions {
@@ -23,7 +23,8 @@
     }
 }
 
-- (void)mergeOptions:(RNNTopBarOptions *)options resolvedOptions:(RNNTopBarOptions *)resolvedOptions {
+- (void)mergeOptions:(RNNTopBarOptions *)options
+     resolvedOptions:(RNNTopBarOptions *)resolvedOptions {
     if (options.title.component.hasValue) {
         [self setCustomNavigationTitleView:resolvedOptions perform:nil];
     } else if (options.subtitle.text.hasValue) {
@@ -35,8 +36,11 @@
 }
 
 - (void)setTitleViewWithSubtitle:(RNNTopBarOptions *)options {
-    if (!_customTitleView && ![options.largeTitle.visible getWithDefaultValue:NO]) {
-        _titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.title subTitleOptions:options.subtitle viewController:self.boundViewController];
+    if (!_customTitleView && ![options.largeTitle.visible withDefault:NO]) {
+        _titleViewHelper =
+            [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.title
+                                                 subTitleOptions:options.subtitle
+                                                  viewController:self.boundViewController];
 
         if (options.title.text.hasValue) {
             [_titleViewHelper setTitleOptions:options.title];
@@ -49,26 +53,34 @@
     }
 }
 
-- (void)renderComponents:(RNNTopBarOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+- (void)renderComponents:(RNNTopBarOptions *)options
+                 perform:(RNNReactViewReadyCompletionBlock)readyBlock {
     [self setCustomNavigationTitleView:options perform:readyBlock];
 }
 
-- (void)setCustomNavigationTitleView:(RNNTopBarOptions *)options perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-    UIViewController<RNNLayoutProtocol>* viewController = self.boundViewController;
-    if (![options.title.component.waitForRender getWithDefaultValue:NO] && readyBlock) {
+- (void)setCustomNavigationTitleView:(RNNTopBarOptions *)options
+                             perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+    UIViewController<RNNLayoutProtocol> *viewController = self.boundViewController;
+    if (![options.title.component.waitForRender withDefault:NO] && readyBlock) {
         readyBlock();
         readyBlock = nil;
     }
-    
+
     if (options.title.component.name.hasValue) {
-        _customTitleView = (RNNReactTitleView *)[self.componentRegistry createComponentIfNotExists:options.title.component parentComponentId:viewController.layoutInfo.componentId componentType:RNNComponentTypeTopBarTitle reactViewReadyBlock:readyBlock];
+        _customTitleView = (RNNReactTitleView *)[self.componentRegistry
+            createComponentIfNotExists:options.title.component
+                     parentComponentId:viewController.layoutInfo.componentId
+                         componentType:RNNComponentTypeTopBarTitle
+                   reactViewReadyBlock:readyBlock];
         _customTitleView.backgroundColor = UIColor.clearColor;
-        NSString* alignment = [options.title.component.alignment getWithDefaultValue:@""];
-        [_customTitleView setAlignment:alignment inFrame:viewController.navigationController.navigationBar.frame];
+        NSString *alignment = [options.title.component.alignment withDefault:@""];
+        [_customTitleView setAlignment:alignment
+                               inFrame:viewController.navigationController.navigationBar.frame];
         [_customTitleView layoutIfNeeded];
-        
+
         viewController.navigationItem.titleView = nil;
         viewController.navigationItem.titleView = _customTitleView;
+        [_customTitleView componentWillAppear];
         [_customTitleView componentDidAppear];
     } else {
         [_customTitleView removeFromSuperview];
@@ -83,6 +95,10 @@
     [_customTitleView removeFromSuperview];
     _customTitleView = nil;
     self.boundViewController.navigationItem.titleView = nil;
+}
+
+- (void)componentWillAppear {
+    [_customTitleView componentWillAppear];
 }
 
 - (void)componentDidAppear {

@@ -1,9 +1,6 @@
-import merge from 'lodash/merge';
-import isFunction from 'lodash/isFunction';
 import { LayoutType } from './LayoutType';
 import { OptionsProcessor } from './OptionsProcessor';
 import { Store } from '../components/Store';
-import { Options } from '../interfaces/Options';
 import { CommandName } from '../interfaces/CommandName';
 
 export interface Data {
@@ -17,8 +14,6 @@ export interface LayoutNode {
   data: Data;
   children: LayoutNode[];
 }
-
-type ComponentWithOptions = React.ComponentType<any> & { options(passProps: any): Options };
 
 export class LayoutTreeCrawler {
   constructor(public readonly store: Store, private readonly optionsProcessor: OptionsProcessor) {
@@ -36,31 +31,11 @@ export class LayoutTreeCrawler {
   private handleComponent(node: LayoutNode) {
     this.assertComponentDataName(node);
     this.savePropsToStore(node);
-    this.applyStaticOptions(node);
     node.data.passProps = undefined;
   }
 
   private savePropsToStore(node: LayoutNode) {
     this.store.updateProps(node.id, node.data.passProps);
-  }
-
-  private isComponentWithOptions(component: any): component is ComponentWithOptions {
-    return (component as ComponentWithOptions).options !== undefined;
-  }
-
-  private applyStaticOptions(node: LayoutNode) {
-    node.data.options = merge({}, this.staticOptionsIfPossible(node), node.data.options);
-  }
-
-  private staticOptionsIfPossible(node: LayoutNode) {
-    const foundReactGenerator = this.store.getComponentClassForName(node.data.name!);
-    const reactComponent = foundReactGenerator ? foundReactGenerator() : undefined;
-    if (reactComponent && this.isComponentWithOptions(reactComponent)) {
-      return isFunction(reactComponent.options)
-        ? reactComponent.options({ componentId: node.id, ...node.data.passProps } || {})
-        : reactComponent.options;
-    }
-    return {};
   }
 
   private assertComponentDataName(component: LayoutNode) {

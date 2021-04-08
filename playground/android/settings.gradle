@@ -4,3 +4,5 @@ applyNativeModulesSettingsGradle(settings)
 include ':app'
 include ':react-native-navigation'
 project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../../lib/android/app/')
+//include ':AHBottomNavigation'
+//project(':AHBottomNavigation').projectDir = new File(rootProject.projectDir, '../../../ahbottomnavigation/ahbottomnavigation/')

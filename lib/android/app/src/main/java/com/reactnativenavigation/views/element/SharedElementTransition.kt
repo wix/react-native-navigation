@@ -25,7 +25,7 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
                 .map { it.create(options).apply {
                     duration = options.getDuration()
                     startDelay = options.getStartDelay()
-                    interpolator = options.getInterpolator()
+                    interpolator = options.interpolator
                 } }
         val set = AnimatorSet()
         set.playTogether(animators)
@@ -36,15 +36,15 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
         return listOf(
                 ReactImageMatrixAnimator(from, to),
                 FastImageMatrixAnimator(from, to),
-                ClipBoundsAnimator(from, to),
+                ReactImageBoundsAnimator(from, to),
+                FastImageBoundsAnimator(from, to),
                 FastImageBorderRadiusAnimator(from, to),
                 XAnimator(from, to),
                 YAnimator(from, to),
                 RotationAnimator(from, to),
                 ReactViewRotationAnimator(from, to),
-                ReactViewBorderRadiusAnimator(from, to),
-                ReactViewBoundsAnimator(from, to),
                 BackgroundColorAnimator(from, to),
+                ReactViewOutlineAnimator(from ,to),
                 TextChangeAnimator(from, to)
         )
     }

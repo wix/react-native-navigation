@@ -1,37 +1,40 @@
 #import "Bool.h"
 
-@interface Bool()
+@interface Bool ()
 
-@property (nonatomic, retain) NSNumber* value;
+@property(nonatomic, retain) NSNumber *value;
 
 @end
 
 @implementation Bool
 
++ (instancetype)withValue:(BOOL)value {
+    return [[Bool alloc] initWithBOOL:value];
+}
+
 - (instancetype)initWithBOOL:(BOOL)boolValue {
-	self = [super initWithValue:@(boolValue)];
-	return self;
+    self = [super initWithValue:@(boolValue)];
+    return self;
 }
 
 - (BOOL)get {
-	return [self.value boolValue];
+    return [self.value boolValue];
 }
 
 - (NSNumber *)getValue {
-	return self.value;
+    return self.value;
 }
 
-- (BOOL)getWithDefaultValue:(BOOL)defaultValue {
-	if (self.value) {
-		return [self.value boolValue];
-	} else {
-		return defaultValue;
-	}
+- (BOOL)withDefault:(BOOL)defaultValue {
+    if (self.value) {
+        return [self.value boolValue];
+    } else {
+        return defaultValue;
+    }
 }
 
 - (bool)isFalse {
     return self.value != nil && ![self.value boolValue];
 }
-
 
 @end

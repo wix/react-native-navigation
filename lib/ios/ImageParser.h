@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
 #import "Image.h"
+#import <Foundation/Foundation.h>
 
 @interface ImageParser : NSObject
 

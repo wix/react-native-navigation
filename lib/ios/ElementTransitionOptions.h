@@ -2,6 +2,6 @@
 
 @interface ElementTransitionOptions : TransitionOptions
 
-@property (nonatomic, strong) NSString* elementId;
+@property(nonatomic, strong) NSString *elementId;
 
 @end

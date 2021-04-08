@@ -10,8 +10,12 @@ const Screens = {
   CocktailDetailsScreen: 'CocktailDetailsScreen',
   CocktailsListScreen: 'CocktailsListScreen',
   CocktailsListMasterScreen: 'CocktailsListMasterScreen',
+  ImageGalleryListScreen: 'ImageGalleryListScreen',
+  ImageGalleryItemScreen: 'ImageGalleryItemScreen',
   CarDetailsScreen: 'CarDetailsScreen',
+  CarStoryScreen: 'CarStoryScreen',
   CarsListScreen: 'CarsListScreen',
+  ImageFullScreenViewer: 'ImageFullScreenViewer',
   ContextScreen: 'ContextScreen',
   ExternalComponent: 'ExternalComponent',
   FullScreenModal: 'FullScreenModal',
@@ -21,6 +25,7 @@ const Screens = {
   StackCommands: 'StackCommands',
   Options: 'Options',
   Pushed: 'Pushed',
+  BackButton: 'BackButton',
   SharedElement: 'SharedElement',
   Stack: 'Stack',
   SetRoot: 'SetRoot',
@@ -121,6 +126,7 @@ const Screens = {
   Orientation: 'Orientation',
   OrientationDetect: 'OrientationDetect',
   Search: 'Search',
+  SearchBar: 'SearchBar',
 };
 
 export default Screens;

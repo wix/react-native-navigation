@@ -1,3 +1,5 @@
+>⚠️ This changelog is no longer maintained. Release notes can be found [here](https://github.com/wix/react-native-navigation/releases).
+___
 # Changelog
 
 # 7.0.0
@@ -33,9 +35,18 @@ Replace it with
 [ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];
 ```
 
+> **If on upgrading you experience the error:**
+>
+>Specs satisfying the ReactNativeNavigation (from ../node_modules/react-native-navigation) dependency were found, but they required a higher minimum deployment target.
+>
+>Please update your Podfile deployment target to at least 11.0:
+>```
+>platform :ios, '11.0'
+>```
+
 ### Android
 
-No Change needed 🥳
+No Changes needed 🥳
 
 ## Breaking changes
 

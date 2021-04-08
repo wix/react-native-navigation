@@ -12,13 +12,13 @@ import java.util.List;
 import androidx.annotation.VisibleForTesting;
 
 public class BottomTabsAttacher {
-    private final List<ViewController> tabs;
+    private final List<ViewController<?>> tabs;
     private final BottomTabsPresenter presenter;
-    private Options defaultOptions;
+    private final Options defaultOptions;
     @VisibleForTesting
     public AttachMode attachStrategy;
 
-    public BottomTabsAttacher(List<ViewController> tabs, BottomTabsPresenter presenter, Options defaultOptions) {
+    public BottomTabsAttacher(List<ViewController<?>> tabs, BottomTabsPresenter presenter, Options defaultOptions) {
         this.tabs = tabs;
         this.presenter = presenter;
         this.defaultOptions = defaultOptions;

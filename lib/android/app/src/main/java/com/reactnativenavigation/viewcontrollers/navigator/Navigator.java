@@ -6,19 +6,20 @@ import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
-import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.parent.ParentController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
+import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOverlay;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -64,12 +65,14 @@ public class Navigator extends ParentController {
     public void setContentLayout(ViewGroup contentLayout) {
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
-        modalsLayout.setVisibility(View.GONE); contentLayout.addView(modalsLayout);
-        overlaysLayout.setVisibility(View.GONE); contentLayout.addView(overlaysLayout);
+        modalsLayout.setVisibility(View.GONE);
+        contentLayout.addView(modalsLayout);
+        overlaysLayout.setVisibility(View.GONE);
+        contentLayout.addView(overlaysLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
-        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
+        super(activity, childRegistry, "navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
@@ -135,13 +138,15 @@ public class Navigator extends ParentController {
 
     }
 
-    public void setRoot(final ViewController viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
+    public void setRoot(final ViewController<?> appearing, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
         previousRoot = root;
         modalStack.destroy();
         final boolean removeSplashView = isRootNotCreated();
         if (isRootNotCreated()) getView();
-        root = viewController;
-        rootPresenter.setRoot(root, defaultOptions, new CommandListenerAdapter(commandListener) {
+        final ViewController<?> disappearing = previousRoot;
+        root = appearing;
+        root.setOverlay(new RootOverlay(getActivity(), contentLayout));
+        rootPresenter.setRoot(appearing, disappearing, defaultOptions, new CommandListenerAdapter(commandListener) {
             @Override
             public void onSuccess(String childId) {
                 root.onViewDidAppear();
@@ -206,6 +211,10 @@ public class Navigator extends ParentController {
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
         overlayManager.dismiss(overlaysLayout, componentId, listener);
+    }
+
+    public void dismissAllOverlays(CommandListener listener) {
+        overlayManager.dismissAll(overlaysLayout, listener);
     }
 
     @Nullable

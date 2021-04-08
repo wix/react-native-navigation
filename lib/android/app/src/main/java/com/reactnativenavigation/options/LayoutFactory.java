@@ -4,34 +4,35 @@ import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabPresenter;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
-import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
-import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentPresenter;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.utils.RenderChecker;
-import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuPresenter;
-import com.reactnativenavigation.viewcontrollers.stack.StackPresenter;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.Assertions;
 import com.reactnativenavigation.utils.ImageLoader;
-import com.reactnativenavigation.options.parsers.TypefaceLoader;
-import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
+import com.reactnativenavigation.utils.RenderChecker;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabPresenter;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsAnimator;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
+import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
+import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentPresenter;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
 import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuController;
+import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
+import com.reactnativenavigation.viewcontrollers.stack.StackPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.ComponentViewCreator;
+import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
-import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 
 import static com.reactnativenavigation.options.Options.parse;
+import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 public class LayoutFactory {
 	private Activity activity;
@@ -209,11 +211,8 @@ public class LayoutFactory {
     }
 
     private ViewController createBottomTabs(ReactContext context, LayoutNode node) {
-        List<ViewController> tabs = new ArrayList<>();
-        for (int i = 0; i < node.children.size(); i++) {
-            tabs.add(create(node.children.get(i)));
-        }
-        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions);
+        List<ViewController<?>> tabs = map(node.children, this::create);
+        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions, new BottomTabsAnimator());
         return new BottomTabsController(activity,
                 tabs,
                 childRegistry,

@@ -10,7 +10,7 @@ import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.NoOpYellowBoxDelegate;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewControllerOverlay;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.component.Component;
 
 import androidx.annotation.CallSuper;

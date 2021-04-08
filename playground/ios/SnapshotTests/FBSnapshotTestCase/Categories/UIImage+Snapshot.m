@@ -11,8 +11,7 @@
 
 @implementation UIImage (Snapshot)
 
-+ (UIImage *)fb_imageForLayer:(CALayer *)layer
-{
++ (UIImage *)fb_imageForLayer:(CALayer *)layer {
     CGRect bounds = layer.bounds;
     NSAssert1(CGRectGetWidth(bounds), @"Zero width for layer %@", layer);
     NSAssert1(CGRectGetHeight(bounds), @"Zero height for layer %@", layer);
@@ -30,14 +29,12 @@
     return snapshot;
 }
 
-+ (UIImage *)fb_imageForViewLayer:(UIView *)view
-{
++ (UIImage *)fb_imageForViewLayer:(UIView *)view {
     [view layoutIfNeeded];
     return [self fb_imageForLayer:view.layer];
 }
 
-+ (UIImage *)fb_imageForView:(UIView *)view
-{
++ (UIImage *)fb_imageForView:(UIView *)view {
     // If the input view is already a UIWindow, then just use that. Otherwise wrap in a window.
     UIWindow *window = [view isKindOfClass:[UIWindow class]] ? (UIWindow *)view : view.window;
     BOOL removeFromSuperview = NO;
@@ -56,11 +53,13 @@
     NSAssert1(CGRectGetWidth(bounds), @"Zero width for view %@", view);
     NSAssert1(CGRectGetHeight(bounds), @"Zero height for view %@", view);
 
-    UIGraphicsImageRenderer *graphicsImageRenderer = [[UIGraphicsImageRenderer alloc] initWithSize:bounds.size];
+    UIGraphicsImageRenderer *graphicsImageRenderer =
+        [[UIGraphicsImageRenderer alloc] initWithSize:bounds.size];
 
-    UIImage *snapshot = [graphicsImageRenderer imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
-        [view drawViewHierarchyInRect:bounds afterScreenUpdates:YES];
-    }];
+    UIImage *snapshot = [graphicsImageRenderer
+        imageWithActions:^(UIGraphicsImageRendererContext *_Nonnull rendererContext) {
+          [view drawViewHierarchyInRect:bounds afterScreenUpdates:YES];
+        }];
 
     if (removeFromSuperview) {
         [view removeFromSuperview];

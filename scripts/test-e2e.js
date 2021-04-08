@@ -27,5 +27,6 @@ function run() {
   }
   exec.execSync(
     `detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel}`
-  ); //-f "ScreenStyle.test.js" --loglevel trace
+    // "Buttons.test.js" --loglevel trace`
+  );
 }
