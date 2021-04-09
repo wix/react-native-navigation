@@ -46,20 +46,27 @@
     CGFloat duration = [_transitionOptions.duration withDefault:300];
     id<Interpolator> interpolator = _transitionOptions.interpolator;
 
-    [animations addObject:[[BoundsTransition alloc] initWithView:_fromImageView
-                                                            from:_fromImageView.resolveBounds
-                                                              to:_toImageView.resolveBounds
-                                                      startDelay:startDelay
-                                                        duration:duration
-                                                    interpolator:interpolator]];
+    // assumes that from.image is equal (in bounds at least) to the to.image UIImage.
+    UIImage *fromImage = _fromImageView.image;
+    UIImage *toImage = _toImageView.image ?: fromImage;
+    if (fromImage != nil && toImage != nil) {
+        [animations
+            addObject:[[BoundsTransition alloc]
+                          initWithView:_fromImageView
+                                  from:[_fromImageView resolveBoundsWithImageSize:fromImage.size]
+                                    to:[_toImageView resolveBoundsWithImageSize:toImage.size]
+                            startDelay:startDelay
+                              duration:duration
+                          interpolator:interpolator]];
 
-    [animations addObject:[[CenterTransition alloc] initWithView:_fromImageView
-                                                            from:_fromImageView.center
-                                                              to:_toImageView.center
-                                                      startDelay:startDelay
-                                                        duration:duration
-                                                    interpolator:interpolator]];
-    _fromImageView.contentMode = UIViewContentModeScaleToFill;
+        [animations addObject:[[CenterTransition alloc] initWithView:_fromImageView
+                                                                from:_fromImageView.center
+                                                                  to:_toImageView.center
+                                                          startDelay:startDelay
+                                                            duration:duration
+                                                        interpolator:interpolator]];
+        _fromImageView.contentMode = UIViewContentModeScaleToFill;
+    }
 
     return animations;
 }
