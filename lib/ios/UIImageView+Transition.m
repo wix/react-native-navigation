@@ -2,14 +2,12 @@
 
 @implementation UIImageView (Transition)
 
-- (CGRect)resolveBounds {
+- (CGRect)resolveBoundsWithImageSize:(CGSize)imageSize {
     switch (self.contentMode) {
     case UIViewContentModeCenter:
-        return CGRectMake(0, 0, self.image.size.width, self.image.size.height);
+        return CGRectMake(0, 0, imageSize.width, imageSize.height);
         break;
     case UIViewContentModeScaleAspectFill: {
-        CGSize imageSize = CGSizeMake(self.image.size.width, self.image.size.height);
-
         CGFloat widthRatio = imageSize.width / self.superview.bounds.size.width;
         CGFloat heightRatio = imageSize.height / self.superview.bounds.size.height;
 
@@ -22,9 +20,6 @@
         return CGRectMake(0, 0, imageSize.width, imageSize.height);
     }
     case UIViewContentModeScaleAspectFit: {
-        CGSize imageSize = CGSizeMake(self.image.size.width / self.image.scale,
-                                      self.image.size.height / self.image.scale);
-
         CGFloat widthRatio = imageSize.width / self.superview.bounds.size.width;
         CGFloat heightRatio = imageSize.height / self.superview.bounds.size.height;
 
@@ -41,6 +36,11 @@
     }
 
     return self.bounds;
+}
+
+- (CGRect)resolveBounds {
+    return [self resolveBoundsWithImageSize:CGSizeMake(self.image.size.width / self.image.scale,
+                                                       self.image.size.height / self.image.scale)];
 }
 
 @end
