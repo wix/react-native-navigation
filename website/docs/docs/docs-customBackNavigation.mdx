@@ -13,12 +13,12 @@ RNN handles the back navigation for you, but there are use cases where you might
 ### Additional back navigation methods
 
 - Android devices include a _hardware back button_, located at the bottom of the device.
-- Android 11 introduced an opt-in gesture navigation system that hides the [NavigationBar](navigationBar). When enabled, the hardware back button is replaced with a back gesture performed with a horizontal swipe across the screen.
+- Android 11 introduced an opt-in gesture navigation system that hides the [NavigationBar]('../api/options-navigationBar'). When enabled, the hardware back button is replaced with a back gesture performed with a horizontal swipe across the screen.
 - The stack layout on iOS supports a back gesture by default. Like the android back gesture, it's performed by swiping across the screen.
 
 ## Handling the software back button
 
-The software back button is located in the TopBar and is responsible for popping the top most screen in the stack. It's configured in the [TopBar](../api/options-stack.mdx) options.
+The software back button is located in the TopBar and is responsible for popping the top most screen in the stack. It's configured in the [TopBar](../api/options-stack) options.
 
 To handle the software back button, we must first disable the default behavior which is to pop the top most screen:
 
