@@ -3,10 +3,7 @@ package com.reactnativenavigation.viewcontrollers.modal
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
-import com.reactnativenavigation.options.AnimationOptions
-import com.reactnativenavigation.options.TransitionAnimationOptions
-import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.options.newAnimationOptionsJson
+import com.reactnativenavigation.options.*
 import com.reactnativenavigation.utils.ScreenAnimationListener
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
@@ -43,6 +40,28 @@ class ModalAnimatorTest : BaseTest() {
     fun show_isRunning() {
         uut.show(modal1, root, TransitionAnimationOptions(), object : ScreenAnimationListener() {})
         assertThat(uut.isRunning).isTrue()
+    }
+
+    @Test
+    fun `show - should play shared transition if it has value`() {
+        val screenAnimationListener: ScreenAnimationListener = mock { }
+
+        val sharedElements = SharedElements.parse(newAnimationOptionsJson(true).apply {
+            put("sharedElementTransitions", newSharedElementAnimationOptionsJson())
+        })
+        val mockModal = spy(modal1)
+        uut.show(mockModal, root, TransitionAnimationOptions(sharedElements = sharedElements), screenAnimationListener)
+        idleMainLooper()
+        verify(mockModal).setWaitForRender(any())
+    }
+
+    @Test
+    fun `show - should not play shared transition if it does not has value`() {
+        val screenAnimationListener: ScreenAnimationListener = mock { }
+        val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
+        val mockModal = spy(modal1)
+        uut.show(mockModal, root, TransitionAnimationOptions(enter = enter), screenAnimationListener)
+        verify(mockModal, never()).setWaitForRender(any())
     }
 
     @Test
