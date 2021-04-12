@@ -1,17 +1,17 @@
+import concat from 'lodash/concat';
 import React from 'react';
 import { BackHandler, StyleSheet, View } from 'react-native';
 import {
+  NavigationButtonPressedEvent,
   NavigationComponent,
   NavigationComponentProps,
-  NavigationButtonPressedEvent,
   Options,
 } from 'react-native-navigation';
-import concat from 'lodash/concat';
-import Navigation from '../services/Navigation';
-import Root from '../components/Root';
 import Button from '../components/Button';
-import Screens from './Screens';
+import Root from '../components/Root';
+import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
+import Screens from './Screens';
 
 const {
   PUSHED_SCREEN_HEADER,
@@ -68,10 +68,38 @@ export default class PushedScreen extends NavigationComponent<Props> {
     if (buttonId === 'backPress') alert('back button clicked');
   }
 
+  onMergeLeft = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        backButton: {
+          visible: false,
+        },
+        leftButtons: [
+          {
+            id: 'star',
+            icon: require('../../img/whatshot.png'),
+            color: 'red',
+          },
+        ],
+      },
+    });
+
+  onMergeBack = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        backButton: {
+          visible: true,
+        },
+        leftButtons: [],
+      },
+    });
+
   render() {
     const stackPosition = this.getStackPosition();
     return (
       <Root componentId={this.props.componentId} footer={`Stack Position: ${stackPosition}`}>
+        <Button label="Test merge left button" testID={'mergeLeft'} onPress={this.onMergeLeft} />
+        <Button label="Test merge back" testID={'mergeBack'} onPress={this.onMergeBack} />
         <View style={styles.container}>
           <Button label="Push" testID={PUSH_BTN} onPress={this.push} marginH-5 />
           <Button label="Pop" testID={POP_BTN} onPress={this.pop} marginH-5 />
