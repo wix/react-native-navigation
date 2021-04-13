@@ -35,7 +35,7 @@ describe(':ios: SearchBar Modal', () => {
   it('searching then exiting works', async () => {
     await elementById(TestIDs.SHOW_SEARCH_BAR_BTN).tap();
     await elementByTraits(['searchField']).replaceText('foo');
-    await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
+    await elementById(TestIDs.DISMISS_MODAL_TOPBAR_BTN).tap();
     await expect(elementById(TestIDs.OPTIONS_TAB)).toBeVisible();
   });
 });

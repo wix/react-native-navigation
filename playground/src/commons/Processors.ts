@@ -11,7 +11,7 @@ import {
 import flags from '../flags';
 import testIDs from '../testIDs';
 
-const { DISMISS_MODAL_BTN } = testIDs;
+const { DISMISS_MODAL_TOPBAR_BTN } = testIDs;
 
 const colors = [
   '#fff1e6',
@@ -40,7 +40,7 @@ const addDismissModalProcessor = () => {
         if (!topBar.leftButtons) {
           topBar.leftButtons = [
             {
-              testID: DISMISS_MODAL_BTN,
+              testID: DISMISS_MODAL_TOPBAR_BTN,
               id: 'dismissModalButton',
               icon: require('../../img/x.png'),
               color: 'black',
