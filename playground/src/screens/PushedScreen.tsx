@@ -68,31 +68,10 @@ export default class PushedScreen extends NavigationComponent<Props> {
     if (buttonId === 'backPress') alert('back button clicked');
   }
 
-  onMergeLeft = () =>
-    Navigation.mergeOptions(this, {
-      topBar: {
-        backButton: {
-          visible: false,
-        },
-      },
-    });
-
-  onMergeBack = () =>
-    Navigation.mergeOptions(this, {
-      topBar: {
-        backButton: {
-          testID: BACK_BUTTON,
-          visible: true,
-        },
-      },
-    });
-
   render() {
     const stackPosition = this.getStackPosition();
     return (
       <Root componentId={this.props.componentId} footer={`Stack Position: ${stackPosition}`}>
-        <Button label="Test merge left button" testID={'mergeLeft'} onPress={this.onMergeLeft} />
-        <Button label="Test merge back" testID={'mergeBack'} onPress={this.onMergeBack} />
         <View style={styles.container}>
           <Button label="Push" testID={PUSH_BTN} onPress={this.push} marginH-5 />
           <Button label="Pop" testID={POP_BTN} onPress={this.pop} marginH-5 />
