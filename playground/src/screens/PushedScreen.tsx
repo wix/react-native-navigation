@@ -74,13 +74,6 @@ export default class PushedScreen extends NavigationComponent<Props> {
         backButton: {
           visible: false,
         },
-        leftButtons: [
-          {
-            id: 'star',
-            icon: require('../../img/whatshot.png'),
-            color: 'red',
-          },
-        ],
       },
     });
 
@@ -88,9 +81,9 @@ export default class PushedScreen extends NavigationComponent<Props> {
     Navigation.mergeOptions(this, {
       topBar: {
         backButton: {
+          testID: BACK_BUTTON,
           visible: true,
         },
-        leftButtons: [],
       },
     });
 
