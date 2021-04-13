@@ -4,23 +4,6 @@ import Utils from './Utils';
 
 const { elementByLabel, elementById } = Utils;
 
-describe.only('Back Button Issue iOS', () => {
-  beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
-    await elementById(TestIDs.OPTIONS_TAB).tap();
-  });
-
-  it('back button issue', async () => {
-    await elementById(TestIDs.PUSH_BTN).tap();
-    await elementById(TestIDs.BACK_BUTTON).tap();
-    await elementById(TestIDs.PUSH_BTN).tap();
-
-    await elementById('mergeLeft').tap();
-    await elementById('mergeBack').tap();
-    await elementById(TestIDs.BACK_BUTTON).tap();
-  });
-});
-
 describe('Back Button', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
