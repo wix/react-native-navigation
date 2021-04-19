@@ -7,8 +7,8 @@
 
     self.push = [[RNNScreenTransition alloc] initWithDict:dict[@"push"]];
     self.pop = [[RNNScreenTransition alloc] initWithDict:dict[@"pop"]];
-    self.showModal = [[ViewAnimationOptions alloc] initWithDict:dict[@"showModal"]];
-    self.dismissModal = [[ViewAnimationOptions alloc] initWithDict:dict[@"dismissModal"]];
+    self.showModal = [[ViewAnimationOptions alloc] initWithDict:dict[@"showModal"][@"enter"]];
+    self.dismissModal = [[ViewAnimationOptions alloc] initWithDict:dict[@"dismissModal"][@"exit"]];
     self.setStackRoot = [[RNNScreenTransition alloc] initWithDict:dict[@"setStackRoot"]];
     self.setRoot = [[TransitionOptions alloc] initWithDict:dict[@"setRoot"]];
 
