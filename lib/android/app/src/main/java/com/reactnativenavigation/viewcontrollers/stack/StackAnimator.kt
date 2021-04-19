@@ -7,8 +7,7 @@ import android.content.Context
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import androidx.core.animation.doOnEnd
-import com.reactnativenavigation.options.FadeInAnimation
-import com.reactnativenavigation.options.FadeOutAnimation
+import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.StackAnimationOptions
 import com.reactnativenavigation.options.params.Bool
@@ -120,7 +119,7 @@ open class StackAnimator @JvmOverloads constructor(
 
     private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, resolvedOptions: Options, set: AnimatorSet) {
         val pop = resolvedOptions.animations.pop
-        val fade = if (pop.content.exit.isFadeAnimation()) pop else FadeOutAnimation()
+        val fade = if (pop.content.exit.isFadeAnimation()) pop else FadeAnimation
         val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content.exit, disappearing, appearing)
         set.playTogether(fade.content.exit.getAnimation(disappearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
@@ -213,7 +212,7 @@ open class StackAnimator @JvmOverloads constructor(
         appearing.setWaitForRender(Bool(true))
         appearing.view.alpha = 0f
         appearing.awaitRender()
-        val fade = if (options.animations.push.content.enter.isFadeAnimation()) options.animations.push.content.enter else FadeInAnimation().content.enter
+        val fade = if (options.animations.push.content.enter.isFadeAnimation()) options.animations.push.content.enter else FadeAnimation.content.enter
         val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade, disappearing, appearing)
         set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
