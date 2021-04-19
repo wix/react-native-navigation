@@ -144,6 +144,11 @@
     RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[[resolvedOptions
         mergeOptions:mergeOptions] withDefault:[self defaultOptions]];
     [_topBarPresenter mergeOptions:mergeOptions.topBar withDefault:withDefault.topBar];
+
+    if (mergeOptions.topBar.backButton.visible.hasValue &&
+        withDefault.topBar.backButton.testID.hasValue) {
+        [stack setBackButtonTestID:withDefault.topBar.backButton.testID.get];
+    }
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options
