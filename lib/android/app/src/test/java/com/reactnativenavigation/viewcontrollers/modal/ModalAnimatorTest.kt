@@ -1,28 +1,45 @@
 package com.reactnativenavigation.viewcontrollers.modal
 
+import android.app.Activity
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.*
+import com.reactnativenavigation.options.animations.ViewAnimationOptions
 import com.reactnativenavigation.utils.ScreenAnimationListener
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
+import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Test
 
 class ModalAnimatorTest : BaseTest() {
-    private lateinit var uut: ModalAnimator;
+    private lateinit var uut: ModalAnimator
+    private lateinit var activity: Activity
     private lateinit var modal1: ViewController<*>
     private lateinit var root: ViewController<*>
     private lateinit var modal1View: SimpleViewController.SimpleView
     private lateinit var rootView: SimpleViewController.SimpleView
-
+    private lateinit var mockDefaultAnimation: StackAnimationOptions
+    private lateinit var screenAnimationListener: ScreenAnimationListener
     override fun beforeEach() {
-        val activity = newActivity()
+        val mockTransitionAnimatorCreator = spy(TransitionAnimatorCreator())
         val childRegistry = mock<ChildControllersRegistry>()
+        val enter = spy(AnimationOptions())
+        val exit = spy(AnimationOptions())
+
+        screenAnimationListener = mock { }
+        activity = newActivity()
         modal1View = SimpleViewController.SimpleView(activity)
         rootView = SimpleViewController.SimpleView(activity)
-        uut = spy(ModalAnimator(activity))
+
+        mockDefaultAnimation = StackAnimationOptions().apply {
+            val viewAnimationOptions = ViewAnimationOptions()
+            viewAnimationOptions.enter = enter
+            viewAnimationOptions.exit = exit
+            content = viewAnimationOptions
+        }
+        uut = spy(ModalAnimator(activity, defaultAnimation = mockDefaultAnimation, transitionAnimatorCreator = mockTransitionAnimatorCreator))
         modal1 = object : SimpleViewController(activity, childRegistry, "child1", Options()) {
             override fun createView(): SimpleView {
                 return modal1View
@@ -42,22 +59,45 @@ class ModalAnimatorTest : BaseTest() {
         assertThat(uut.isRunning).isTrue()
     }
 
+
+    @Test
+    fun `show shared elements - should play default fade-in`() {
+        val sharedElements = SharedElements.parse(newAnimationOptionsJson(true).apply {
+            put("sharedElementTransitions", newSharedElementAnimationOptionsJson())
+        })
+        val mockModal = spy(modal1)
+        mockModal.onViewWillAppear() // to avoid wait for render
+        uut.show(mockModal, root, TransitionAnimationOptions(sharedElements = sharedElements), screenAnimationListener)
+        verify(mockDefaultAnimation.content.enter).getAnimation(mockModal.view)
+    }
+
+    @Test
+    fun `dismiss shared elements - should play default fade-out`() {
+        val sharedElements = SharedElements.parse(newAnimationOptionsJson(true).apply {
+            put("sharedElementTransitions", newSharedElementAnimationOptionsJson())
+        })
+        val mockModal = spy(modal1)
+        mockModal.onViewWillAppear() // to avoid wait for render
+        uut.show(mockModal, root, TransitionAnimationOptions(sharedElements = sharedElements), screenAnimationListener)
+        verify(mockDefaultAnimation.content.enter).getAnimation(mockModal.view)
+
+        uut.dismiss(root, mockModal, TransitionAnimationOptions(sharedElements = sharedElements), screenAnimationListener)
+        verify(mockDefaultAnimation.content.exit).getAnimation(mockModal.view)
+    }
+
     @Test
     fun `show - should play shared transition if it has value`() {
-        val screenAnimationListener: ScreenAnimationListener = mock { }
-
         val sharedElements = SharedElements.parse(newAnimationOptionsJson(true).apply {
             put("sharedElementTransitions", newSharedElementAnimationOptionsJson())
         })
         val mockModal = spy(modal1)
         uut.show(mockModal, root, TransitionAnimationOptions(sharedElements = sharedElements), screenAnimationListener)
-        idleMainLooper()
+
         verify(mockModal).setWaitForRender(any())
     }
 
     @Test
     fun `show - should not play shared transition if it does not has value`() {
-        val screenAnimationListener: ScreenAnimationListener = mock { }
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val mockModal = spy(modal1)
         uut.show(mockModal, root, TransitionAnimationOptions(enter = enter), screenAnimationListener)
@@ -69,7 +109,6 @@ class ModalAnimatorTest : BaseTest() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions())
         val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
-        val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.show(modal1, root, animationOptions, screenAnimationListener)
 
         verify(enter).getAnimation(modal1.view)
@@ -81,7 +120,6 @@ class ModalAnimatorTest : BaseTest() {
         val enter = spy(AnimationOptions())
         val exit = spy(AnimationOptions())
         val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
-        val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.show(modal1, root, animationOptions, screenAnimationListener)
 
         verify(uut).getDefaultPushAnimation(modal1.view)
@@ -94,7 +132,6 @@ class ModalAnimatorTest : BaseTest() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
-        val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.show(modal1, root, animationOptions, screenAnimationListener)
 
         verify(enter).getAnimation(modal1.view)
@@ -106,7 +143,6 @@ class ModalAnimatorTest : BaseTest() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
-        val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.show(modal1, null, animationOptions, screenAnimationListener)
 
         verify(enter).getAnimation(modal1.view)
@@ -118,7 +154,6 @@ class ModalAnimatorTest : BaseTest() {
         val enter = spy(AnimationOptions())
         val exit = spy(AnimationOptions())
         val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
-        val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.dismiss(root, modal1, animationOptions, screenAnimationListener)
 
         verify(uut).getDefaultPopAnimation(modal1.view)
@@ -131,7 +166,6 @@ class ModalAnimatorTest : BaseTest() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
-        val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.dismiss(root, modal1, animationOptions, screenAnimationListener)
 
         verify(exit).getAnimation(modal1.view)
@@ -143,7 +177,6 @@ class ModalAnimatorTest : BaseTest() {
         val enter = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val exit = spy(AnimationOptions(newAnimationOptionsJson(true)))
         val animationOptions = TransitionAnimationOptions(enter = enter, exit = exit)
-        val screenAnimationListener: ScreenAnimationListener = mock { }
         uut.dismiss(null, root, animationOptions, screenAnimationListener)
 
         verify(enter, never()).getAnimation(any())

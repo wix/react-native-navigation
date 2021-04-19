@@ -6,6 +6,7 @@ import android.animation.AnimatorSet
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.reactnativenavigation.options.FadeAnimation
+import com.reactnativenavigation.options.StackAnimationOptions
 import com.reactnativenavigation.options.TransitionAnimationOptions
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.utils.ScreenAnimationListener
@@ -20,13 +21,15 @@ import java.util.*
 
 open class ModalAnimator @JvmOverloads constructor(
         context: Context,
-        private val transitionAnimatorCreator: TransitionAnimatorCreator = TransitionAnimatorCreator()
+        private val transitionAnimatorCreator: TransitionAnimatorCreator = TransitionAnimatorCreator(),
+        private val defaultAnimation: StackAnimationOptions = FadeAnimation
 ) : BaseAnimator(context) {
     val isRunning: Boolean
         get() = runningAnimators.isNotEmpty()
 
     @VisibleForTesting
     internal val runningAnimators: MutableMap<ViewController<*>, AnimatorSet?> = HashMap()
+
 
     open fun show(
             appearing: ViewController<*>,
@@ -48,7 +51,7 @@ open class ModalAnimator @JvmOverloads constructor(
         GlobalScope.launch(Dispatchers.Main.immediate) {
             appearing.setWaitForRender(Bool(true))
             appearing.awaitRender()
-            val appearingFade = if (animationOptions.enter.isFadeAnimation()) animationOptions.enter else FadeAnimation.content.enter
+            val appearingFade = if (animationOptions.enter.isFadeAnimation()) animationOptions.enter else defaultAnimation.content.enter
             val transitionAnimators = transitionAnimatorCreator.create(animationOptions, appearingFade, disappearing, appearing)
             set.playTogether(appearingFade.getAnimation(appearing.view), transitionAnimators)
             transitionAnimators.listeners.forEach { animatorListener: Animator.AnimatorListener -> set.addListener(animatorListener) }
@@ -148,9 +151,9 @@ open class ModalAnimator @JvmOverloads constructor(
             animationOptions: TransitionAnimationOptions,
             set: AnimatorSet
     ) {
-        val disappearFade = if (animationOptions.exit.isFadeAnimation()) animationOptions.exit else FadeAnimation.content.exit
+        val disappearFade = if (animationOptions.exit.isFadeAnimation()) animationOptions.exit else defaultAnimation.content.exit
         val transitionAnimators = transitionAnimatorCreator.create(animationOptions, disappearFade, disappearing, appearing)
-        set.playTogether( disappearFade.getAnimation(disappearing.view), transitionAnimators)
+        set.playTogether(disappearFade.getAnimation(disappearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
     }
