@@ -14,6 +14,7 @@ const {
   PUSH_DISABLED_HARDWARE_BACK_BTN,
   MODAL_DISABLED_BACK_BTN,
   TOGGLE_BACK_BUTTON_VISIBILITY,
+  BACK_BUTTON,
 } = testIDs;
 
 export default class BackButtonScreen extends React.Component<NavigationComponentProps> {
@@ -24,6 +25,9 @@ export default class BackButtonScreen extends React.Component<NavigationComponen
         testID: BACK_BUTTON_SCREEN_HEADER,
         title: {
           text: 'Back Button',
+        },
+        backButton: {
+          testID: BACK_BUTTON,
         },
       },
     };
