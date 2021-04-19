@@ -105,7 +105,6 @@ open class ModalAnimator @JvmOverloads constructor(
         set.addListener(object : AnimatorListenerAdapter() {
             private var isCancelled = false
             override fun onAnimationStart(animation: Animator) {
-
                 listener.onStart()
             }
 
