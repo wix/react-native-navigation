@@ -1,11 +1,13 @@
 #import "ScreenAnimationController.h"
 #import "DisplayLinkAnimator.h"
 #import "RNNScreenTransitionsCreator.h"
+#import "SharedElementAnimator.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation ScreenAnimationController {
     RCTBridge *_bridge;
     id<UIViewControllerContextTransitioning> _transitionContext;
+    SharedElementAnimator *_sharedElementAnimator;
     BOOL _animate;
     CGFloat _duration;
 }
@@ -46,19 +48,24 @@
 
     [transitionContext.containerView addSubview:fromView];
     [transitionContext.containerView addSubview:toViewController.view];
-    [[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey]
-        prepareForTransition];
+    [toViewController prepareForTransition];
 }
 
 - (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC
                                 toVC:(UIViewController *)toVC
                        containerView:(UIView *)containerView {
-    return [RNNScreenTransitionsCreator createTransitionsFromVC:fromVC
-                                                           toVC:toVC
-                                                  containerView:containerView
-                                              contentTransition:self.content
-                                             elementTransitions:self.elementTransitions
-                                       sharedElementTransitions:self.sharedElementTransitions];
+    NSArray *transitions =
+        [RNNScreenTransitionsCreator createTransitionsFromVC:fromVC
+                                                        toVC:toVC
+                                               containerView:containerView
+                                           contentTransition:self.content
+                                          elementTransitions:self.elementTransitions];
+    _sharedElementAnimator =
+        [[SharedElementAnimator alloc] initWithTransitions:self.sharedElementTransitions
+                                                    fromVC:fromVC
+                                                      toVC:toVC
+                                             containerView:containerView];
+    return [transitions arrayByAddingObjectsFromArray:[_sharedElementAnimator create]];
 }
 
 - (void)performAnimationOnce {
@@ -70,7 +77,6 @@
               [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
           UIViewController *toVC =
               [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-
           NSArray *transitions = [self createTransitionsFromVC:fromVC
                                                           toVC:toVC
                                                  containerView:transitionContext.containerView];
@@ -122,10 +128,12 @@
 - (void)animationEnded:(BOOL)transitionCompleted {
     UIView *toView = [_transitionContext viewForKey:UITransitionContextToViewKey];
     UIView *fromView = [_transitionContext viewForKey:UITransitionContextFromViewKey];
+    [_sharedElementAnimator animationEnded];
     toView.layer.transform = CATransform3DIdentity;
     fromView.layer.transform = CATransform3DIdentity;
     toView.alpha = 1.f;
     _transitionContext = nil;
+    _sharedElementAnimator = nil;
 }
 
 @end

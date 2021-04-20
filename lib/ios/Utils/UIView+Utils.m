@@ -17,6 +17,8 @@
         return ViewTypeImage;
     } else if ([self isKindOfClass:[RCTTextView class]]) {
         return ViewTypeText;
+    } else if ([self isKindOfClass:[UIImageView class]]) {
+        return ViewTypeUIImage;
     }
 
     return ViewTypeOther;

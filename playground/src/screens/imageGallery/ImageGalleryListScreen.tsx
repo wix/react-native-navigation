@@ -46,6 +46,22 @@ export default class ImageGalleryListScreen extends NavigationComponent {
                 },
               ],
             },
+            pop: {
+              content: {
+                alpha: {
+                  from: 1,
+                  to: 0,
+                  duration: SHORT_DURATION,
+                },
+              },
+              sharedElementTransitions: [
+                {
+                  toId: `image-${key}`,
+                  fromId: `image-${key}Dest`,
+                  duration: LONG_DURATION,
+                },
+              ],
+            },
           },
         },
       },

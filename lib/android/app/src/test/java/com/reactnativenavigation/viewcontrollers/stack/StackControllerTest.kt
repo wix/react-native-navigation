@@ -36,10 +36,9 @@ import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
 import org.robolectric.Robolectric
-import org.robolectric.annotation.LooperMode
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
-import kotlin.jvm.Throws
+import kotlin.test.fail
 
 class StackControllerTest : BaseTest() {
     private lateinit var activity: Activity
@@ -97,6 +96,16 @@ class StackControllerTest : BaseTest() {
     @Test
     fun isAViewController() {
         assertThat(uut).isInstanceOf(ViewController::class.java)
+    }
+
+    @Test
+    fun childrenMustBeUniqueById() {
+        try {
+            val uut: StackController = createStack(listOf(child1, child2, child1))
+            fail("Stack should not have duplicate ids!")
+        } catch (e: IllegalArgumentException) {
+            assertThat(e.message).contains(child1.id)
+        }
     }
 
     @Test

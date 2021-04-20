@@ -62,6 +62,9 @@ public class StackController extends ParentController<StackLayout> {
         this.fabPresenter = fabPresenter;
         stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
         for (ViewController child : children) {
+            if (stack.containsId(child.getId())) {
+                throw new IllegalArgumentException("A stack can't contain two children with the same id: " + child.getId());
+            }
             child.setParentController(this);
             stack.push(child.getId(), child);
             if (size() > 1) backButtonHelper.addToPushedChild(child);
@@ -86,7 +89,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public ViewController getCurrentChild() {
+    public ViewController<?> getCurrentChild() {
         return stack.peek();
     }
 
@@ -151,7 +154,7 @@ public class StackController extends ParentController<StackLayout> {
 
     public void push(ViewController child, CommandListener listener) {
         if (findController(child.getId()) != null) {
-            listener.onError("A stack can't contain two children with the same id");
+            listener.onError("A stack can't contain two children with the same id: " + child.getId());
             return;
         }
         final ViewController toRemove = stack.peek();
@@ -240,7 +243,7 @@ public class StackController extends ParentController<StackLayout> {
                         resolvedOptions,
                         presenter.getAdditionalSetRootAnimations(this, child, resolvedOptions),
                         () -> listenerAdapter.onSuccess(child.getId())
-                    )
+                        )
                 );
             } else {
                 animator.setRoot(child,
