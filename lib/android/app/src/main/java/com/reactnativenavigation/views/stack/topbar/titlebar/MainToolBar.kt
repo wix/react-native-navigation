@@ -7,8 +7,6 @@ import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.RestrictTo
-import androidx.core.view.doOnLayout
-import androidx.core.view.marginEnd
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.FontOptions
 import com.reactnativenavigation.options.params.Colour
@@ -17,7 +15,6 @@ import com.reactnativenavigation.utils.CompatUtils
 import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.logd
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 
 const val DEFAULT_LEFT_MARGIN = 16
 
@@ -37,7 +34,6 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
     }
     val rightButtonsBar: RightButtonsBar = RightButtonsBar(context).apply {
         this.id = CompatUtils.generateViewId()
-
     }
 
     init {
@@ -91,51 +87,19 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
     }
 
     fun setTitleBarAlignment(alignment: Alignment) {
-//        this.titleSubTitleBar.setBackgroundColor(Color.GREEN)
-        val layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-        if (alignment == Alignment.Center) {
-            layoutParams.addRule(CENTER_IN_PARENT, TRUE)
-        } else {
-            titleSubTitleBar.setPadding(0, 0, 0, 0)
-            layoutParams.apply {
+        logd("setTitleBarAlignment $alignment on ${if (this.component == null) "titleSubTitle" else "component"} $id")
+        this.titleSubTitleBar.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+            if (alignment != Alignment.Center) {
                 addRule(END_OF, leftButtonsBar.id)
                 addRule(START_OF, rightButtonsBar.id)
                 addRule(CENTER_VERTICAL)
                 marginStart = UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN)
-            }
-        }
-        this.titleSubTitleBar.layoutParams = layoutParams
-        if(alignment==Alignment.Center){
-            updateCenterTitlePadding()
-        }
-        logd("rightButtonsWidth: ${rightButtonsBar.width}, left: ${leftButtonsBar.width}", "OnMeasure-toolbar")
-    }
-
-    private fun updateCenterTitlePadding() {
-        doOnLayout {
-            if ((this.titleSubTitleBar.layoutParams as LayoutParams).rules[CENTER_IN_PARENT] != TRUE){
-                return@doOnLayout
-            }
-            val totalStartPadding = if (leftButtonsBar.width != 0) {
-                if (this.titleSubTitleBar.x <= (this.leftButtonsBar.width))
-                    leftButtonsBar.width
-                else 0
-            } else 0
-            val totalEndPadding = if (rightButtonsBar.width != 0) {
-                if (totalStartPadding == 0) {
-                    if (this.titleSubTitleBar.x + this.titleSubTitleBar.titleTextView.measuredWidth >= (this.width - this.rightButtonsBar.width))
-                        rightButtonsBar.width + marginEnd
-                    else 0
-                } else {
-                    if (totalStartPadding + this.titleSubTitleBar.titleTextView.measuredWidth >= (this.width - this.rightButtonsBar.width))
-                        rightButtonsBar.width + marginEnd
-                    else 0
-                }
             } else {
-                0
+                marginStart = 0
+                addRule(CENTER_IN_PARENT, TRUE)
             }
-            titleSubTitleBar.setPaddingRelative(totalStartPadding, 0, totalEndPadding, 0)
         }
+
     }
 
     override fun setLayoutDirection(layoutDirection: Int) {
@@ -196,21 +160,8 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
         clearComponent()
     }
 
-//    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-//        val measuredWidth = MeasureSpec.getSize(widthMeasureSpec)
-//        val marginStart = (this.titleSubTitleBar.layoutParams as RelativeLayout.LayoutParams).marginStart
-//        val maxWidth = measuredWidth - rightButtonsBar.measuredWidth - leftButtonsBar.measuredWidth -marginStart
-//        this.titleSubTitleBar.maxWidth = maxWidth
-//        logd("measured width: $measuredWidth, max width: $maxWidth, x :${this.titleSubTitleBar.translationX}", "OnMeasure-toolbar")
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-//
-//    }
 
     private fun clearComponent() = this.component?.let { ViewUtils.removeFromParent(it); this.component = null; }
-
-    fun setBackButton(button: ButtonController) {
-        this.leftButtonsBar.setBackButton(button)
-    }
 
     @RestrictTo(RestrictTo.Scope.TESTS, RestrictTo.Scope.LIBRARY)
     fun getTitleComponent() = this.component ?: this.titleSubTitleBar
@@ -221,33 +172,5 @@ class MainToolBar(context: Context) : RelativeLayout(context) {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun getTitleSubtitleBar() = this.titleSubTitleBar
-    fun clearLeftButtons() {
-        this.leftButtonsBar.clearButtons()
-        onButtonsChanged()
-    }
-
-    fun clearBackButton() {
-        this.leftButtonsBar.clearBackButton()
-        onButtonsChanged()
-    }
-
-    fun clearRightButtons() {
-        this.rightButtonsBar.clearButtons()
-        onButtonsChanged()
-    }
-
-    fun removeRightButton(buttonId: Int) {
-        this.rightButtonsBar.removeButton(buttonId)
-        onButtonsChanged()
-    }
-
-    fun removeLeftButton(buttonId: Int) {
-        this.leftButtonsBar.removeButton(buttonId)
-        onButtonsChanged()
-    }
-
-    fun onButtonsChanged() {
-        updateCenterTitlePadding()
-    }
 
 }

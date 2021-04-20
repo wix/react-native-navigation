@@ -85,12 +85,10 @@ export default class Options extends React.Component<Props> {
   changeTitle = () =>
     Navigation.mergeOptions(this, {
       topBar: {
-        rightButtons: [
-          {
-            id: 'ONE',
-            text: 'One',
-          },
-        ],
+        title: {
+          alignment: 'center',
+          text: 'Title Changed',
+        },
       },
     });
 
@@ -165,20 +163,18 @@ export default class Options extends React.Component<Props> {
             text: 'One',
           },
           {
-            id: 'TWO',
-            text: 'TWO',
+            id: 'ROUND',
+            component: {
+              id: 'ROUND_COMPONENT',
+              name: Screens.RoundButton,
+              passProps: {
+                title: 'Two',
+                timesCreated: 1,
+              },
+            },
           },
         ],
-        leftButtons: [
-          {
-            id: 'ONE2',
-            text: 'One2',
-          },
-          {
-            id: 'TWO2',
-            text: 'TWO2',
-          },
-        ],
+        leftButtons: [],
         title: {
           component: {
             name: Screens.ReactTitleView,
