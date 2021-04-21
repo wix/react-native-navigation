@@ -37,6 +37,20 @@ const apps = [
     appStore: 'https://apps.apple.com/us/app/apple-store/id1288676542',
   },
   {
+    title: 'Squarespace Scheduling',
+    description: `The Squarespace Scheduling app is your appointment-scheduling assistant that helps manage your calendar anytime, anywhere.`,
+    image: require('./showcase/acuity.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.acuityscheduling.app.android',
+    appStore: 'https://apps.apple.com/us/app/acuity-schedule-admin/id1179146771',
+  },
+  {
+    title: 'Nifty',
+    description: `Nifty helps you simplify your teams’ workflow by consolidating all phases of your project's lifecycle into one powerful and intuitive tool.`,
+    image: require('./showcase/nifty.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.niftypm',
+    appStore: 'https://apps.apple.com/us/app/nifty-manage-projects-tasks/id1366408429',
+  },
+  {
     title: 'Clubhouse',
     description: 'Clubhouse is collaborative project management without all the management.',
     image: require('./showcase/clubhouse.png'),
@@ -45,8 +59,7 @@ const apps = [
   },
   {
     title: 'Nox',
-    description:
-      'AI Powered Dream Journal',
+    description: 'AI Powered Dream Journal',
     image: require('./showcase/Nox.png'),
     playStore: 'https://play.google.com/store/apps/details?id=com.aspect.nox',
     appStore: 'https://apps.apple.com/zw/app/nox-ai-powered-dream-journal/id1543257201',
