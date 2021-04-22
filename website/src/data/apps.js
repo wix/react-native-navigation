@@ -1,11 +1,19 @@
 const apps = [
   {
-    title: 'Wix.com',
+    title: 'Spaces by Wix',
     description:
-      'Use the Wix mobile app to build & customize a website and mobile app experience for your business and community.',
-    image: require('./showcase/wix.png'),
+      'Spaces by Wix, the place to connect with your favorite online store, business, website or community',
+    image: require('./showcase/spaces.png'),
     playStore: 'https://play.google.com/store/apps/details?id=com.wix.android',
-    appStore: 'https://apps.apple.com/us/app/wix-website-app-builder/id1099748482',
+    appStore: 'https://apps.apple.com/us/app/wix/id1099748482',
+  },
+  {
+    title: 'Wix Owner',
+    description:
+      'Use the Wix Owner app to build, customize and manage a website and mobile app experience for your business and community.',
+    image: require('./showcase/owner.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.wix.admin',
+    appStore: 'https://apps.apple.com/us/app/wix-owner-websites-apps/id1545924344',
   },
   {
     title: 'feastr',
