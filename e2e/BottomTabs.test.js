@@ -10,10 +10,12 @@ describe.only('BottomTabs', () => {
     await expect(elementByLabel('First Tab')).toBeVisible();
   });
 
-  it('switch to tab by index', async () => {
+  it.only('switch to tab by index', async () => {
     await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
     await expect(elementByLabel('First Tab')).toBeNotVisible();
-    await expect(by.label('Second Tab').withAncestor(by.id(TestIDs.BOTTOM_TABS))).toBeVisible();
+    await expect(
+      element(by.label('Second Tab').withAncestor(by.id(TestIDs.BOTTOM_TABS)))
+    ).toBeVisible();
   });
 
   it('switch to tab by componentId', async () => {
