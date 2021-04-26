@@ -3,7 +3,7 @@ import Utils from './Utils';
 
 const { elementByLabel, elementById } = Utils;
 
-describe.only('BottomTabs', () => {
+describe('BottomTabs', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.BOTTOM_TABS_BTN).tap();
