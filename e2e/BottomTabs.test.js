@@ -10,7 +10,7 @@ describe.only('BottomTabs', () => {
     await expect(elementByLabel('First Tab')).toBeVisible();
   });
 
-  it.only('switch to tab by index', async () => {
+  it('switch to tab by index', async () => {
     await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
     await expect(elementByLabel('First Tab')).toBeNotVisible();
     await expect(
