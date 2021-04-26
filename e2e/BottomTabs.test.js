@@ -1,9 +1,9 @@
-import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
+import Utils from './Utils';
 
 const { elementByLabel, elementById } = Utils;
 
-describe('BottomTabs', () => {
+describe.only('BottomTabs', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.BOTTOM_TABS_BTN).tap();
@@ -13,7 +13,7 @@ describe('BottomTabs', () => {
   it('switch to tab by index', async () => {
     await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
     await expect(elementByLabel('First Tab')).toBeNotVisible();
-    await expect(elementByLabel('Second Tab')).toBeVisible();
+    await expect(by.label('Second Tab').withAncestor(by.id(TestIDs.BOTTOM_TABS))).toBeVisible();
   });
 
   it('switch to tab by componentId', async () => {
