@@ -55,35 +55,6 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
         }
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
-//        if (titleTextView.text.isNotEmpty() || subTitleTextView.text.isNotEmpty()) {
-//            val titleTextWidth = this.titleTextView.paint.measureText(this.titleTextView.text.toString())
-//            val subtitleTextWidth = this.subTitleTextView.paint.measureText(this.subTitleTextView.text.toString())
-//            val mode = MeasureSpec.getMode(widthMeasureSpec)
-//            val parentWidth = MeasureSpec.getSize(widthMeasureSpec)
-//            val parentHeight = MeasureSpec.getSize(heightMeasureSpec)
-//            val textWidth = max(titleTextWidth, subtitleTextWidth)
-//            super.onMeasure(widthMeasureSpec, heightMeasureSpec) // must call to meet layout constraints if any
-//            logd("OnMeasure: parentHeight: $parentHeight widthMeasureSpec: ${MeasureSpec.toString(widthMeasureSpec)}, heightMeasureSpec: ${MeasureSpec.toString(heightMeasureSpec)}", "TitleSubTitleLayout")
-//            if (mode == MeasureSpec.AT_MOST) {
-//                //back + overflow limit
-//                val maxAllowedWidth = parentWidth
-//                val desiredWidth = min(textWidth, maxAllowedWidth)
-//
-//                logd("OnMeasure: parentWidth: $parentWidth, titleTextWidth: $titleTextWidth, subtitleTextWidth: $subtitleTextWidth, desiredWidth: $desiredWidth, availableWidth: $maxAllowedWidth", "TitleSubTitleLayout")
-//                super.setMeasuredDimension(desiredWidth.roundToInt(), parentHeight)
-//            } else if (mode == MeasureSpec.EXACTLY) {
-//                //should check available space
-//                super.setMeasuredDimension(textWidth.roundToInt(), parentHeight)
-//            }
-//        } else {
-//            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-//        }
-
-    }
-
     fun setTitleFontSize(size: Float) = titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size)
 
     fun setSubtitleFontSize(size: Float) = subTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size)

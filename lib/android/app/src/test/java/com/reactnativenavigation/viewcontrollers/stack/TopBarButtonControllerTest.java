@@ -97,7 +97,7 @@ public class TopBarButtonControllerTest extends BaseTest {
     }
 
     private RightButtonsBar getTitleBar() {
-        return stackController.getTopBar().getRightButtonsBar();
+        return stackController.getTopBar().getRightToolbar();
     }
 
     private void setIconButton(boolean enabled) {
