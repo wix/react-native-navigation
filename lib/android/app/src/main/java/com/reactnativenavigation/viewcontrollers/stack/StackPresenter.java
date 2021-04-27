@@ -372,8 +372,8 @@ public class StackPresenter {
             Map<String, ButtonController> stringButtonControllerMap = componentLeftButtons.get(child);
             if (stringButtonControllerMap != null) {
                 forEach(stringButtonControllerMap.values(), (btnController) -> {
-                    if (color.hasValue()) btnController.applyColor(topBarController.getView().getRightToolbar(), color);
-                    if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getRightToolbar(),
+                    if (color.hasValue()) btnController.applyColor(topBarController.getView().getLeftToolbar(), color);
+                    if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getLeftToolbar(),
                             disabledColor);
                 });
             }
