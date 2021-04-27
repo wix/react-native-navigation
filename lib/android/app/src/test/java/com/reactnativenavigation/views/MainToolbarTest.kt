@@ -14,7 +14,7 @@ import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.params.NullColor
 import com.reactnativenavigation.utils.UiUtils
-import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN
+import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_DP
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleAndButtonsContainer
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleSubTitleLayout
 import org.assertj.core.api.Assertions
@@ -81,7 +81,7 @@ class MainToolbarTest : BaseTest() {
         assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isNotEqualTo(RelativeLayout.TRUE)
         assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isNotEqualTo(uut.rightButtonsBar.id)
         assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isNotEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isNotEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.marginStart).isNotEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
 
 
         uut.setTitleBarAlignment(Alignment.Fill)
@@ -89,7 +89,7 @@ class MainToolbarTest : BaseTest() {
         assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
         assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
         assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
         assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
 
     }
@@ -102,7 +102,7 @@ class MainToolbarTest : BaseTest() {
         assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isNotEqualTo(RelativeLayout.TRUE)
         assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isNotEqualTo(uut.rightButtonsBar.id)
         assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isNotEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isNotEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.marginStart).isNotEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
 
 
         uut.setTitleBarAlignment(Alignment.Fill)
@@ -110,7 +110,7 @@ class MainToolbarTest : BaseTest() {
         assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
         assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
         assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
         assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
 
     }
@@ -125,7 +125,7 @@ class MainToolbarTest : BaseTest() {
         assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
         assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
         assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
         assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
 
         uut.setComponent(component2, Alignment.Fill)
@@ -133,7 +133,7 @@ class MainToolbarTest : BaseTest() {
         assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
         assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
         assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
         assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
         assertThat(uut.findViewById<View?>(component.id)).isNull()
         assertThat(uut.findViewById<View?>(component2.id)).isEqualTo(component2)
@@ -176,7 +176,7 @@ class MainToolbarTest : BaseTest() {
         val layoutParams = component.layoutParams as RelativeLayout.LayoutParams
         assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
         assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
         assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
     }
 
@@ -225,7 +225,7 @@ class MainToolbarTest : BaseTest() {
         assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
         assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
         assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
 
         assertThat(passedView.getTitleTxtView().text).isEqualTo("title")
     }
@@ -242,7 +242,7 @@ class MainToolbarTest : BaseTest() {
         assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
         assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
         assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
 
         assertThat(passedView.getTitleTxtView().text).isEqualTo("title")
     }

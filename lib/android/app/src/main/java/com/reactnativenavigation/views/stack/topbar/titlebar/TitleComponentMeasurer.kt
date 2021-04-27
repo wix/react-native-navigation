@@ -1,9 +1,13 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
+import android.content.res.Resources
+import com.reactnativenavigation.utils.UiUtils
 import kotlin.math.max
 
+const val DEFAULT_LEFT_MARGIN_DP = 16f
+private val defaultMarginPx = UiUtils.dpToPx(Resources.getSystem().displayMetrics, DEFAULT_LEFT_MARGIN_DP).toInt()
+
 fun resolveTitleBoundsLimit(
-        defaultStartMargin: Int,
         parentWidth: Int,
         titleWidth: Int,
         leftBarWidth: Int,
@@ -27,6 +31,7 @@ fun resolveTitleBoundsLimit(
 
         return suggestedLeft to suggestedRight
     } else {
-        return leftBarWidth + defaultStartMargin to rightLimit
+        return leftBarWidth + defaultMarginPx to rightLimit
     }
 }
+

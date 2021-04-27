@@ -12,13 +12,8 @@ import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.utils.ViewUtils
 
-const val DEFAULT_LEFT_MARGIN = 16
-
 
 class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
-
-    private val defaultMargin = UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN)
-
     private var component: View? = null
 
     private var titleComponentAlignment: Alignment = Alignment.Default
@@ -138,7 +133,6 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
         val parentWidth = r - l
 
         val (titleLeft, titleRight) = resolveTitleBoundsLimit(
-                defaultMargin,
                 parentWidth,
                 titleComponent.measuredWidth,
                 leftButtonsBar.measuredWidth,
@@ -166,7 +160,6 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
         titleComponent.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
 
         val (titleLeft, titleRight) = resolveTitleBoundsLimit(
-                defaultMargin,
                 parentWidth,
                 titleComponent.measuredWidth,
                 leftButtonsBar.measuredWidth,
