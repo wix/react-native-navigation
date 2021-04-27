@@ -9,7 +9,6 @@ import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.FontOptions
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.parsers.TypefaceLoader
-import com.reactnativenavigation.utils.CompatUtils
 import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.utils.ViewUtils
 
@@ -30,16 +29,9 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
             }
         }
 
-    private val titleSubTitleBar = TitleSubTitleLayout(context).apply {
-        this.id = CompatUtils.generateViewId()
-    }
-
-    val leftButtonsBar = ButtonsBar(context).apply {
-        this.id = CompatUtils.generateViewId()
-    }
-    val rightButtonsBar = ButtonsBar(context).apply {
-        this.id = CompatUtils.generateViewId()
-    }
+    private val titleSubTitleBar = TitleSubTitleLayout(context)
+    val leftButtonsBar = ButtonsBar(context)
+    val rightButtonsBar = ButtonsBar(context)
 
     init {
         this.addView(leftButtonsBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
