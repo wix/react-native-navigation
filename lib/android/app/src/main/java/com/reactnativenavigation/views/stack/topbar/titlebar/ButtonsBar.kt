@@ -13,7 +13,7 @@ import com.reactnativenavigation.utils.ObjectUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 
-open class RNNToolbar internal constructor(context: Context) : Toolbar(context) {
+open class ButtonsBar internal constructor(context: Context) : Toolbar(context) {
     init {
         super.setContentInsetsAbsolute(0, 0)
         this.contentInsetStartWithNavigation = 0

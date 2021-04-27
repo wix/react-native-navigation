@@ -34,20 +34,20 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
         this.id = CompatUtils.generateViewId()
     }
 
-    val leftToolbar = RNNToolbar(context).apply {
+    val leftButtonsBar = ButtonsBar(context).apply {
         this.id = CompatUtils.generateViewId()
     }
-    val rightToolbar = RNNToolbar(context).apply {
+    val rightButtonsBar = ButtonsBar(context).apply {
         this.id = CompatUtils.generateViewId()
     }
 
     init {
-        this.addView(leftToolbar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+        this.addView(leftButtonsBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             addRule(ALIGN_PARENT_START)
             addRule(CENTER_VERTICAL)
         })
         this.addView(titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-        this.addView(rightToolbar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+        this.addView(rightButtonsBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             addRule(ALIGN_PARENT_END)
             addRule(CENTER_VERTICAL)
         })
@@ -79,8 +79,8 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
 
     override fun setLayoutDirection(layoutDirection: Int) {
         this.titleSubTitleBar.layoutDirection = layoutDirection
-        this.rightToolbar.layoutDirection = layoutDirection
-        this.leftToolbar.layoutDirection = layoutDirection
+        this.rightButtonsBar.layoutDirection = layoutDirection
+        this.leftButtonsBar.layoutDirection = layoutDirection
         super.setLayoutDirection(layoutDirection)
     }
 
@@ -149,8 +149,8 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
                 defaultMargin,
                 parentWidth,
                 titleComponent.measuredWidth,
-                leftToolbar.measuredWidth,
-                rightToolbar.measuredWidth,
+                leftButtonsBar.measuredWidth,
+                rightButtonsBar.measuredWidth,
                 isCenter
         )
 
@@ -169,16 +169,16 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
     private fun measureTitleComponentExact(parentWidth: Int, heightMeasureSpec: Int) {
         val titleComponent = getTitleComponent()
 
-        rightToolbar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
-        leftToolbar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
+        rightButtonsBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
+        leftButtonsBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
         titleComponent.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
 
         val (titleLeft, titleRight) = resolveTitleBoundsLimit(
                 defaultMargin,
                 parentWidth,
                 titleComponent.measuredWidth,
-                leftToolbar.measuredWidth,
-                rightToolbar.measuredWidth,
+                leftButtonsBar.measuredWidth,
+                rightButtonsBar.measuredWidth,
                 titleComponentAlignment == Alignment.Center
         )
 

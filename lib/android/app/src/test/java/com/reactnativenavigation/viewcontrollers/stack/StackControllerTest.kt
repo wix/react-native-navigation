@@ -325,7 +325,7 @@ class StackControllerTest : BaseTest() {
                 assertThat(uut.currentChild).isEqualTo(child4)
                 uut.pop(Options.EMPTY, CommandListenerAdapter())
                 ShadowLooper.idleMainLooper()
-                assertThat(uut.topBar.leftToolbar.navigationIcon).isNull()
+                assertThat(uut.topBar.leftButtonsBar.navigationIcon).isNull()
                 assertThat(uut.currentChild).isEqualTo(child3)
             }
         })

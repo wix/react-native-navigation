@@ -35,7 +35,7 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
-import com.reactnativenavigation.views.stack.topbar.titlebar.RNNToolbar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleAndButtonsContainer;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
@@ -56,12 +56,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private final TitleAndButtonsContainer titleAndButtonsContainer;
 
     public int getRightButtonsCount() {
-        return titleAndButtonsContainer.getRightToolbar().getButtonsCount();
+        return titleAndButtonsContainer.getRightButtonsBar().getButtonsCount();
     }
 
     @Nullable
     public Drawable getNavigationIcon() {
-        return titleAndButtonsContainer.getLeftToolbar().getNavigationIcon();
+        return titleAndButtonsContainer.getLeftButtonsBar().getNavigationIcon();
     }
 
     public TopBar(final Context context) {
@@ -220,19 +220,19 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setBackButton(ButtonController backButton) {
-        titleAndButtonsContainer.getLeftToolbar().setBackButton(backButton);
+        titleAndButtonsContainer.getLeftButtonsBar().setBackButton(backButton);
     }
 
     public void clearLeftButtons() {
-        titleAndButtonsContainer.getLeftToolbar().clearButtons();
+        titleAndButtonsContainer.getLeftButtonsBar().clearButtons();
     }
 
     public void clearBackButton() {
-        titleAndButtonsContainer.getLeftToolbar().clearBackButton();
+        titleAndButtonsContainer.getLeftButtonsBar().clearBackButton();
     }
 
     public void clearRightButtons() {
-        titleAndButtonsContainer.getRightToolbar().clearButtons();
+        titleAndButtonsContainer.getRightButtonsBar().clearButtons();
     }
 
     public void setElevation(Double elevation) {
@@ -249,12 +249,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         }
     }
 
-    public RNNToolbar getRightToolbar() {
-        return titleAndButtonsContainer.getRightToolbar();
+    public ButtonsBar getRightButtonsBar() {
+        return titleAndButtonsContainer.getRightButtonsBar();
     }
 
-    public RNNToolbar getLeftToolbar() {
-        return titleAndButtonsContainer.getLeftToolbar();
+    public ButtonsBar getLeftButtonsBar() {
+        return titleAndButtonsContainer.getLeftButtonsBar();
     }
 
     public void initTopTabs(ViewPager viewPager) {
@@ -297,8 +297,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setOverflowButtonColor(int color) {
-        titleAndButtonsContainer.getRightToolbar().setOverflowButtonColor(color);
-        titleAndButtonsContainer.getLeftToolbar().setOverflowButtonColor(color);
+        titleAndButtonsContainer.getRightButtonsBar().setOverflowButtonColor(color);
+        titleAndButtonsContainer.getLeftButtonsBar().setOverflowButtonColor(color);
     }
 
     public void setLayoutDirection(LayoutDirection direction) {
@@ -314,11 +314,11 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void removeRightButton(int buttonId) {
-        titleAndButtonsContainer.getRightToolbar().removeButton(buttonId);
+        titleAndButtonsContainer.getRightButtonsBar().removeButton(buttonId);
     }
 
     public void removeLeftButton(int buttonId) {
-        titleAndButtonsContainer.getLeftToolbar().removeButton(buttonId);
+        titleAndButtonsContainer.getLeftButtonsBar().removeButton(buttonId);
     }
 
     public void alignTitleComponent(@NotNull Alignment alignment) {

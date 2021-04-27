@@ -15,29 +15,29 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonContr
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
-import com.reactnativenavigation.views.stack.topbar.titlebar.RNNToolbar
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsBar
 
 
 open class TopBarController(private val animator: TopBarAnimator = TopBarAnimator()) {
     lateinit var view: TopBar
-    private lateinit var leftToolbar: RNNToolbar
-    private lateinit var rightToolbar: RNNToolbar
+    private lateinit var leftButtonsBar: ButtonsBar
+    private lateinit var rightButtonsBar: ButtonsBar
 
 
     val height: Int
         get() = view.height
     val rightButtonsCount: Int
-        get() = rightToolbar.buttonsCount
+        get() = rightButtonsBar.buttonsCount
     val leftButtonsCount: Int
-        get() = leftToolbar.buttonsCount
+        get() = leftButtonsBar.buttonsCount
 
-    fun getRightButton(index: Int): MenuItem = rightToolbar.getButton(index)
+    fun getRightButton(index: Int): MenuItem = rightButtonsBar.getButton(index)
 
     fun createView(context: Context, parent: StackLayout): TopBar {
         if (!::view.isInitialized) {
             view = createTopBar(context, parent)
-            leftToolbar = view.leftToolbar
-            rightToolbar = view.rightToolbar
+            leftButtonsBar = view.leftButtonsBar
+            rightButtonsBar = view.rightButtonsBar
             animator.bindView(view)
         }
         return view
@@ -107,23 +107,23 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
 
     fun applyRightButtons(toAdd: List<ButtonController>) {
         view.clearRightButtons()
-        toAdd.reversed().forEachIndexed { i, b -> b.addToMenu(rightToolbar, i * 10) }
+        toAdd.reversed().forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, i * 10) }
     }
 
     fun mergeRightButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
         toRemove.forEach { view.removeRightButton(it) }
-        toAdd.reversed().forEachIndexed { i, b -> b.addToMenu(rightToolbar, i * 10) }
+        toAdd.reversed().forEachIndexed { i, b -> b.addToMenu(rightButtonsBar, i * 10) }
     }
 
     open fun applyLeftButtons(toAdd: List<ButtonController>) {
         view.clearBackButton()
         view.clearLeftButtons()
-        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftToolbar, i * 10) }
+        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, i * 10) }
     }
 
     open fun mergeLeftButtons(toAdd: List<ButtonController>, toRemove: List<ButtonController>) {
         view.clearBackButton();
         toRemove.forEach { view.removeLeftButton(it) }
-        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftToolbar, i * 10) }
+        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonsBar, i * 10) }
     }
 }
