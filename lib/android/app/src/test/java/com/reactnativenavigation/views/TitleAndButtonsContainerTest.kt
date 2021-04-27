@@ -4,39 +4,54 @@ import android.app.Activity
 import android.graphics.Color
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.view.marginTop
+import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
 import com.reactnativenavigation.BaseTest
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.params.NullColor
-import com.reactnativenavigation.utils.UiUtils
-import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_DP
+import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_PX
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleAndButtonsContainer
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleSubTitleLayout
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.times
+import kotlin.math.roundToInt
 
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
 
-class MainToolbarTest : BaseTest() {
+class TitleAndButtonsContainerTest : BaseTest() {
     lateinit var uut: TitleAndButtonsContainer
     private lateinit var activity: Activity
+    private lateinit var titleViewCreator: TitleBarReactViewCreatorMock
 
     override fun beforeEach() {
+        super.beforeEach()
         activity = newActivity()
         uut = TitleAndButtonsContainer(activity)
+        titleViewCreator = object : TitleBarReactViewCreatorMock() {
+            override fun create(activity: Activity, componentId: String, componentName: String): TitleBarReactView {
+                return spy(super.create(activity, componentId, componentName))
+            }
+        }
+        activity.setContentView(FrameLayout(activity).apply {
+            addView(uut, ViewGroup.LayoutParams(UUT_WIDTH, UUT_HEIGHT))
+        })
+        idleMainLooper()
     }
 
     @Test
-    fun `should maintain stable ids for guest component`(){
+    fun `should maintain stable ids for guest component`() {
         val component = View(activity).apply { id = 19 }
         val component2 = View(activity).apply { id = 29 }
         uut.setComponent(component)
@@ -58,6 +73,7 @@ class MainToolbarTest : BaseTest() {
         assertThat(component.id).isEqualTo(19)
         assertThat(component2.id).isEqualTo(29)
     }
+
     @Test
     fun `init- should Have Left Bar At Start`() {
         val layoutParams = uut.leftButtonsBar.layoutParams as RelativeLayout.LayoutParams
@@ -74,45 +90,43 @@ class MainToolbarTest : BaseTest() {
     }
 
     @Test
-    fun `should change alignment of the title bar, start with margin, center no margin`() {
-        uut.setTitleBarAlignment(Alignment.Center)
-        var layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isNotEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isNotEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isNotEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isNotEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
+    fun `setTitle - should set default alignment of the title bar at left`() {
+        val component = uut.getTitleComponent()
+        uut.setTitle("Title")
+        idleMainLooper()
 
+        assertThat(component.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
+        assertThat(component.right).isEqualTo(DEFAULT_LEFT_MARGIN_PX + component.measuredWidth)
 
-        uut.setTitleBarAlignment(Alignment.Fill)
-        layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
 
     }
 
+    fun `setTitle - RTL - should set default alignment of the title bar at right`(){
+        val component = uut.getTitleComponent()
+        uut.setTitle("Title")
+        uut.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        idleMainLooper()
+
+        assertThat(component.right).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
+        assertThat(component.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX + component.measuredWidth)
+    }
+
     @Test
-    fun `RTL - should change alignment of the title bar to be right, right with margin, center no margin`() {
+    fun `setTitleBarAlignment - should measure and layout children when alignment changes`() {
+        val component = uut.getTitleComponent()
+        uut.setTitle("Title")
         uut.setTitleBarAlignment(Alignment.Center)
-        var layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isNotEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isNotEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isNotEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isNotEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
+        idleMainLooper()
+
+        assertThat(component.left).isEqualTo((UUT_WIDTH / 2f - component.measuredWidth / 2f).roundToInt())
+        assertThat(component.right).isEqualTo((UUT_WIDTH / 2f + component.measuredWidth / 2f).roundToInt())
 
 
         uut.setTitleBarAlignment(Alignment.Fill)
-        layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
+        idleMainLooper()
 
+        assertThat(component.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
+        assertThat(component.right).isEqualTo(DEFAULT_LEFT_MARGIN_PX + component.measuredWidth)
     }
 
     @Test
@@ -121,40 +135,15 @@ class MainToolbarTest : BaseTest() {
         val component2 = View(activity).apply { id = 29 }
         uut.setComponent(component)
 
-        var layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
+        val titleComponent = uut.getTitleComponent()
+        assertThat(titleComponent).isEqualTo(component)
 
         uut.setComponent(component2, Alignment.Fill)
-        layoutParams = uut.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
-        assertThat(uut.findViewById<View?>(component.id)).isNull()
-        assertThat(uut.findViewById<View?>(component2.id)).isEqualTo(component2)
-
-        uut.setComponent(component, Alignment.Center)
-        val flayoutParams = uut.getTitleComponent().layoutParams as FrameLayout.LayoutParams
-        assertThat(flayoutParams.gravity).isEqualTo(Gravity.CENTER)
-    }
-
-    @Test
-    fun setComponent_shouldAlignDefaultorPassedAligment() {
-        val component = View(activity).apply { id = 19 }
-        val component2 = View(activity).apply { id = 29 }
-        uut.setComponent(component)
-        assertThat(uut.findViewById<View?>(component.id)).isEqualTo(component)
-
-        uut.setComponent(component2)
         assertThat(uut.findViewById<View?>(component.id)).isNull()
         assertThat(uut.findViewById<View?>(component2.id)).isEqualTo(component2)
 
     }
+
 
     @Test
     fun setComponent_shouldReplaceTitleViewIfExist() {
@@ -173,11 +162,7 @@ class MainToolbarTest : BaseTest() {
         uut = Mockito.spy(uut)
         val component = View(activity)
         uut.setComponent(component)
-        val layoutParams = component.layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
+
     }
 
 
@@ -212,39 +197,6 @@ class MainToolbarTest : BaseTest() {
         uut.setTitle("Title")
         assertThat(uut.findViewById<View?>(id)).isNull()
         assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.VISIBLE)
-    }
-
-    @Test
-    fun setTitle_setTitleAtStartCenterHorizontal() {
-        uut.setTitle("title")
-
-        val passedView = uut.getTitleSubtitleBar()
-        assertThat(passedView.visibility).isEqualTo(View.VISIBLE)
-
-        val layoutParams = passedView.layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
-
-        assertThat(passedView.getTitleTxtView().text).isEqualTo("title")
-    }
-
-    @Test
-    fun setTitle_setTitleAtStartCenterHorizontalRTL() {
-        uut.layoutDirection = View.LAYOUT_DIRECTION_RTL
-        uut.setTitle("title")
-
-        val passedView = uut.getTitleSubtitleBar()
-        assertThat(passedView.visibility).isEqualTo(View.VISIBLE)
-
-        val layoutParams = passedView.layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.RIGHT_OF]).isEqualTo(uut.leftButtonsBar.id)
-        assertThat(layoutParams.rules[RelativeLayout.LEFT_OF]).isEqualTo(uut.rightButtonsBar.id)
-        assertThat(layoutParams.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN_DP))
-
-        assertThat(passedView.getTitleTxtView().text).isEqualTo("title")
     }
 
 
@@ -292,8 +244,6 @@ class MainToolbarTest : BaseTest() {
 
     @Test
     fun setHeight_changesTitleBarHeight() {
-        val parent = FrameLayout(activity)
-        parent.addView(uut)
         uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT)
         uut.height = UUT_HEIGHT / 2
         assertThat(uut.layoutParams.height).isEqualTo(UUT_HEIGHT / 2)
@@ -301,8 +251,6 @@ class MainToolbarTest : BaseTest() {
 
     @Test
     fun setTopMargin_changesTitleBarTopMargin() {
-        val parent = FrameLayout(activity)
-        parent.addView(uut)
         uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT)
         uut.setTopMargin(10)
         assertThat(uut.marginTop).isEqualTo(10)

@@ -131,16 +131,20 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
         val titleComponent = getTitleComponent()
         val isCenter = titleComponentAlignment == Alignment.Center
         val parentWidth = r - l
-
+        val isRTL = layoutDirection == View.LAYOUT_DIRECTION_RTL
         val (titleLeft, titleRight) = resolveTitleBoundsLimit(
                 parentWidth,
                 titleComponent.measuredWidth,
                 leftButtonsBar.measuredWidth,
                 rightButtonsBar.measuredWidth,
-                isCenter
+                isCenter,
+                isRTL
         )
-
-        titleComponent.layout(titleLeft, t, titleRight, b)
+        if (!isCenter && isRTL) {
+            titleComponent.layout(titleRight, t, titleLeft, b)
+        } else {
+            titleComponent.layout(titleLeft, t, titleRight, b)
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -164,7 +168,8 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
                 titleComponent.measuredWidth,
                 leftButtonsBar.measuredWidth,
                 rightButtonsBar.measuredWidth,
-                titleComponentAlignment == Alignment.Center
+                titleComponentAlignment == Alignment.Center,
+                layoutDirection == View.LAYOUT_DIRECTION_RTL
         )
 
         titleComponent.measure(MeasureSpec.makeMeasureSpec(titleRight - titleLeft, MeasureSpec.EXACTLY), heightMeasureSpec)

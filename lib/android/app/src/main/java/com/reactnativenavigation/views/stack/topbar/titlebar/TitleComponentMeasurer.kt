@@ -15,7 +15,8 @@ fun resolveTitleBoundsLimit(
         titleWidth: Int,
         leftBarWidth: Int,
         rightBarWidth: Int,
-        isCenter: Boolean
+        isCenter: Boolean,
+        isRTL: Boolean
 ): Pair<TitleLeft, TitleRight> {
 
     val rightLimit = parentWidth - rightBarWidth
@@ -31,7 +32,6 @@ fun resolveTitleBoundsLimit(
             suggestedLeft += overlap
             suggestedRight -= overlap
         }
-
         return suggestedLeft to suggestedRight
     } else {
         return leftBarWidth + DEFAULT_LEFT_MARGIN_PX to rightLimit

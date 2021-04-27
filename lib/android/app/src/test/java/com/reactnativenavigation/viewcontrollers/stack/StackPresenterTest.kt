@@ -141,15 +141,15 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun applyChildOptions_setTitleComponentAlignmentCenter() {
         val options = Options()
-        parent.view.layout(0,0,1000,1000)
+        parent.view.layout(0, 0, 1000, 1000)
         options.topBar.title.component = component(Alignment.Center)
         uut.applyChildOptions(options, parent, child)
         val component = topBar.titleAndButtonsContainer.getComponent()
         Assertions.assertThat(component).isEqualTo(reactTitleView)
         child.view.requestLayout()
         idleMainLooper()
-        Assertions.assertThat(component?.left).isEqualTo(parent.view.width/2 - reactTitleView.width/2)
-        Assertions.assertThat(component?.right).isEqualTo(parent.view.width/2 + reactTitleView.width/2)
+        Assertions.assertThat(component?.left).isEqualTo(parent.view.width / 2 - reactTitleView.width / 2)
+        Assertions.assertThat(component?.right).isEqualTo(parent.view.width / 2 + reactTitleView.width / 2)
     }
 
     @Test
@@ -871,7 +871,7 @@ class StackPresenterTest : BaseTest() {
         })
     }
 
-    private fun component(alignment: Alignment): ComponentOptions {
+    fun component(alignment: Alignment): ComponentOptions {
         val component = ComponentOptions()
         component.name = Text("myComp")
         component.alignment = alignment
