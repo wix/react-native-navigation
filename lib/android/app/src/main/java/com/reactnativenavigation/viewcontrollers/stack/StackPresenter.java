@@ -3,14 +3,12 @@ package com.reactnativenavigation.viewcontrollers.stack;
 import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.AnimationOptions;
@@ -18,13 +16,11 @@ import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
-import com.reactnativenavigation.options.TitleOptions;
 import com.reactnativenavigation.options.TopBarButtons;
 import com.reactnativenavigation.options.TopBarOptions;
 import com.reactnativenavigation.options.TopTabOptions;
 import com.reactnativenavigation.options.TopTabsOptions;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.ObjectUtils;
@@ -376,8 +372,9 @@ public class StackPresenter {
             Map<String, ButtonController> stringButtonControllerMap = componentLeftButtons.get(child);
             if (stringButtonControllerMap != null) {
                 forEach(stringButtonControllerMap.values(), (btnController) -> {
-                    if (color.hasValue()) btnController.applyColor(topBarController.getView().getLeftButtonsBar(), color);
-                    if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getLeftButtonsBar(), disabledColor);
+                    if (color.hasValue()) btnController.applyColor(topBarController.getView().getRightToolbar(), color);
+                    if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getRightToolbar(),
+                            disabledColor);
                 });
             }
         }
@@ -388,8 +385,8 @@ public class StackPresenter {
             Map<String, ButtonController> stringButtonControllerMap = componentRightButtons.get(child);
             if (stringButtonControllerMap != null) {
                 forEach(stringButtonControllerMap.values(), (btnController) -> {
-                    if (color.hasValue()) btnController.applyColor(topBarController.getView().getRightButtonsBar(), color);
-                    if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getRightButtonsBar(), disabledColor);
+                    if (color.hasValue()) btnController.applyColor(topBarController.getView().getRightToolbar(), color);
+                    if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getRightToolbar(), disabledColor);
                 });
             }
         }
