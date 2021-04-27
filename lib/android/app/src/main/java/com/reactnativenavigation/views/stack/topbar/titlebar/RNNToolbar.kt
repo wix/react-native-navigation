@@ -9,15 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
-import com.reactnativenavigation.R
 import com.reactnativenavigation.utils.ObjectUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 
 open class RNNToolbar internal constructor(context: Context) : Toolbar(context) {
     init {
-        super.setTitleTextAppearance(context, R.style.TitleBarTitle)
-        super.setSubtitleTextAppearance(context, R.style.TitleBarSubtitle)
         super.setContentInsetsAbsolute(0, 0)
         this.contentInsetStartWithNavigation = 0
     }
