@@ -14,12 +14,11 @@ import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.utils.ViewUtils
 
 const val DEFAULT_LEFT_MARGIN = 16
-const val SYSTEM_ACTION_BUTTON_SIZE_DP = 48
 
 
 class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
 
-    private val titleMeasurer = TitleComponentMeasurer(context)
+    private val defaultMargin = UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN)
 
     private var component: View? = null
 
@@ -32,13 +31,11 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
         }
 
     private val titleSubTitleBar = TitleSubTitleLayout(context).apply {
-        id = CompatUtils.generateViewId()
-//        setBackgroundColor(Color.GREEN)
+        this.id = CompatUtils.generateViewId()
     }
 
     val leftToolbar = RNNToolbar(context).apply {
         this.id = CompatUtils.generateViewId()
-//        setBackgroundColor(Color.RED)
     }
     val rightToolbar = RNNToolbar(context).apply {
         this.id = CompatUtils.generateViewId()
@@ -147,19 +144,17 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
         val titleComponent = getTitleComponent()
         val isCenter = titleComponentAlignment == Alignment.Center
         val parentWidth = r - l
-        val leftBarMeasuredWidth = leftToolbar.measuredWidth
-        val rightBarMeasuredWidth = rightToolbar.measuredWidth
-        titleMeasurer.setRawMeasurements(parentWidth, titleComponent.measuredWidth, leftBarMeasuredWidth,
-                rightBarMeasuredWidth, isCenter)
-        if (isCenter) {
-            val titleLeft = titleMeasurer.resolveTitleLeft()
-            val titleRight = titleMeasurer.resolveTitleRight()
-            titleComponent.layout(titleLeft, t, titleRight, b)
-        } else {
-            titleComponent.layout(leftToolbar.right, t, rightToolbar.left, b)
-        }
-        leftToolbar.layout(l, t, leftBarMeasuredWidth, b)
-        rightToolbar.layout(r - rightBarMeasuredWidth, t, r, b)
+
+        val (titleLeft, titleRight) = resolveTitleBoundsLimit(
+                defaultMargin,
+                parentWidth,
+                titleComponent.measuredWidth,
+                leftToolbar.measuredWidth,
+                rightToolbar.measuredWidth,
+                isCenter
+        )
+
+        titleComponent.layout(titleLeft, t, titleRight, b)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -178,17 +173,16 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
         leftToolbar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
         titleComponent.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
 
-        titleMeasurer.setRawMeasurements(parentWidth, titleComponent.measuredWidth, leftToolbar.measuredWidth,
-                rightToolbar.measuredWidth, titleComponentAlignment == Alignment.Center)
+        val (titleLeft, titleRight) = resolveTitleBoundsLimit(
+                defaultMargin,
+                parentWidth,
+                titleComponent.measuredWidth,
+                leftToolbar.measuredWidth,
+                rightToolbar.measuredWidth,
+                titleComponentAlignment == Alignment.Center
+        )
 
-        val titleLeft = titleMeasurer.resolveTitleLeft()
-        val titleRight = titleMeasurer.resolveTitleRight()
-        val titleMeasuredWidth = titleRight - titleLeft
-
-
-        titleComponent.measure(MeasureSpec.makeMeasureSpec(titleMeasuredWidth, MeasureSpec.EXACTLY), heightMeasureSpec)
-        leftToolbar.measure(MeasureSpec.makeMeasureSpec(titleMeasurer.leftBarWidth, MeasureSpec.EXACTLY), heightMeasureSpec)
-        rightToolbar.measure(MeasureSpec.makeMeasureSpec(titleMeasurer.rightBarWidth, MeasureSpec.EXACTLY), heightMeasureSpec)
+        titleComponent.measure(MeasureSpec.makeMeasureSpec(titleRight - titleLeft, MeasureSpec.EXACTLY), heightMeasureSpec)
     }
 
 

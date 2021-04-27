@@ -1,41 +1,32 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
-import android.content.Context
-import com.reactnativenavigation.utils.UiUtils
 import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.roundToInt
 
-internal class TitleComponentMeasurer(context: Context) {
+fun resolveTitleBoundsLimit(
+        defaultStartMargin: Int,
+        parentWidth: Int,
+        titleWidth: Int,
+        leftBarWidth: Int,
+        rightBarWidth: Int,
+        isCenter: Boolean
+): Pair<Int, Int> {
 
-    //TODO: add this to the calculation whenever no right/left bar
-    private val defaultMargin = UiUtils.dpToPx(context, DEFAULT_LEFT_MARGIN)
-    private var parentWidth: Int = 0
-    private var titleWidth: Int = 0
-    var leftBarWidth: Int = 0
-        private set
-    var rightBarWidth: Int = 0
-        private set
-    private var isCenter: Boolean = false
+    val rightLimit = parentWidth - rightBarWidth
+    if (isCenter) {
+        var suggestedLeft: Int = parentWidth / 2 - titleWidth / 2
+        var suggestedRight: Int = suggestedLeft + titleWidth
 
-    fun setRawMeasurements(parentWidth: Int, titleWidth: Int, leftBarWidth: Int, rightBarWidth: Int, isCenter: Boolean) {
-        this.parentWidth = parentWidth
-        this.titleWidth = titleWidth
-        this.leftBarWidth = min(leftBarWidth, spaceLimitPerComponent)
-        this.rightBarWidth = min(rightBarWidth, spaceLimitPerComponent)
-        this.isCenter = isCenter
+        val leftOverlap = max(leftBarWidth - suggestedLeft, 0)
+        val rightOverlap = max(suggestedRight - rightLimit, 0)
+        val overlap = max(leftOverlap, rightOverlap)
+
+        if (overlap > 0) {
+            suggestedLeft += overlap
+            suggestedRight -= overlap
+        }
+
+        return suggestedLeft to suggestedRight
+    } else {
+        return leftBarWidth + defaultStartMargin to rightLimit
     }
-
-    private val spaceLimitPerComponent: Int
-        get() = (parentWidth / 3f).roundToInt()
-
-    fun resolveTitleLeft(): Int {
-        return if (isCenter) max(parentWidth / 2 - titleWidth / 2, leftBarWidth) else leftBarWidth
-    }
-
-    fun resolveTitleRight(): Int {
-        return min(parentWidth - rightBarWidth, resolveTitleLeft() + titleWidth)
-    }
-
-
 }
