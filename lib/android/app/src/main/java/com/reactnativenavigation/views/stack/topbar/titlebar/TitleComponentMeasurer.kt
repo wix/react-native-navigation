@@ -5,7 +5,7 @@ import com.reactnativenavigation.utils.UiUtils
 import kotlin.math.max
 
 const val DEFAULT_LEFT_MARGIN_DP = 16f
-private val defaultMarginPx = UiUtils.dpToPx(Resources.getSystem().displayMetrics, DEFAULT_LEFT_MARGIN_DP).toInt()
+internal val DEFAULT_LEFT_MARGIN_PX = UiUtils.dpToPx(Resources.getSystem().displayMetrics, DEFAULT_LEFT_MARGIN_DP).toInt()
 
 typealias TitleLeft = Int
 typealias TitleRight = Int
@@ -34,7 +34,7 @@ fun resolveTitleBoundsLimit(
 
         return suggestedLeft to suggestedRight
     } else {
-        return leftBarWidth + defaultMarginPx to rightLimit
+        return leftBarWidth + DEFAULT_LEFT_MARGIN_PX to rightLimit
     }
 }
 
