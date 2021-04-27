@@ -21,6 +21,10 @@ open class ButtonsBar internal constructor(context: Context) : Toolbar(context) 
 
     override fun onViewAdded(child: View) {
         super.onViewAdded(child)
+        enableOverflowForReactButtonViews(child)
+    }
+
+    private fun enableOverflowForReactButtonViews(child: View) {
         if (child is ActionMenuView) {
             (child as ViewGroup).clipChildren = false
         }
@@ -36,16 +40,6 @@ open class ButtonsBar internal constructor(context: Context) : Toolbar(context) 
                 intId,
                 order,
                 styledText)
-    }
-
-    fun setOverflowButtonColor(color: Int) {
-        val actionMenuView = ViewUtils.findChildByClass(this, ActionMenuView::class.java)
-        if (actionMenuView != null) {
-            val overflowIcon = actionMenuView.overflowIcon
-            if (overflowIcon != null) {
-                overflowIcon.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
-            }
-        }
     }
 
     val buttonsCount: Int
@@ -74,5 +68,15 @@ open class ButtonsBar internal constructor(context: Context) : Toolbar(context) 
 
     fun clearBackButton() {
         navigationIcon = null
+    }
+
+    fun setOverflowButtonColor(color: Int) {
+        val actionMenuView = ViewUtils.findChildByClass(this, ActionMenuView::class.java)
+        if (actionMenuView != null) {
+            val overflowIcon = actionMenuView.overflowIcon
+            if (overflowIcon != null) {
+                overflowIcon.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
+            }
+        }
     }
 }
