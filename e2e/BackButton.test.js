@@ -3,11 +3,11 @@ import TestIDs from '../playground/src/testIDs';
 import Android from './AndroidUtils';
 import testIDs from '../playground/src/testIDs';
 
-const {elementByLabel, elementById} = Utils;
+const { elementByLabel, elementById } = Utils;
 
 describe('Back Button', () => {
   beforeEach(async () => {
-    await device.launchApp({newInstance: true});
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.BACK_BUTTON_SCREEN_BTN).tap();
     await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
@@ -32,6 +32,15 @@ describe('Back Button', () => {
     await expect(
       elementByLabel('navigationButtonPressed | RNN.back')
     ).toBeNotVisible();
+  })
+
+  it('toggle visibility', async () => {
+    await elementById(TestIDs.TOGGLE_BACK_BUTTON_VISIBILITY).tap();
+    await expect(elementById(TestIDs.BACK_BUTTON)).toBeNotVisible();
+    await elementById(TestIDs.TOGGLE_BACK_BUTTON_VISIBILITY).tap();
+    await elementById(TestIDs.DISMISS_BTN).tap();
+    await elementById(TestIDs.BACK_BUTTON).tap();
+    await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
   })
 
   it(':android: hardware back button prevents pop and dispatch event', async () => {
