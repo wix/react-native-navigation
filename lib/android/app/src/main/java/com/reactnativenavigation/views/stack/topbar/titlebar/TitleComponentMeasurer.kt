@@ -7,13 +7,16 @@ import kotlin.math.max
 const val DEFAULT_LEFT_MARGIN_DP = 16f
 private val defaultMarginPx = UiUtils.dpToPx(Resources.getSystem().displayMetrics, DEFAULT_LEFT_MARGIN_DP).toInt()
 
+typealias TitleLeft = Int
+typealias TitleRight = Int
+
 fun resolveTitleBoundsLimit(
         parentWidth: Int,
         titleWidth: Int,
         leftBarWidth: Int,
         rightBarWidth: Int,
         isCenter: Boolean
-): Pair<Int, Int> {
+): Pair<TitleLeft, TitleRight> {
 
     val rightLimit = parentWidth - rightBarWidth
     if (isCenter) {
