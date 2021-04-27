@@ -101,7 +101,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
 
     }
 
-    fun `setTitle - RTL - should set default alignment of the title bar at right`(){
+    fun `setTitle - RTL - should set default alignment of the title bar at right`() {
         val component = uut.getTitleComponent()
         uut.setTitle("Title")
         uut.layoutDirection = View.LAYOUT_DIRECTION_RTL
@@ -127,6 +127,17 @@ class TitleAndButtonsContainerTest : BaseTest() {
 
         assertThat(component.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
         assertThat(component.right).isEqualTo(DEFAULT_LEFT_MARGIN_PX + component.measuredWidth)
+    }
+
+    @Test
+    fun `setComponent - should set dynamic width-height and center vertically`() {
+        val component = View(activity).apply { id = 19 }
+        uut.setComponent(component)
+        idleMainLooper()
+        assertThat(component.layoutParams.width).isEqualTo(ViewGroup.LayoutParams.WRAP_CONTENT)
+        assertThat(component.layoutParams.height).isEqualTo(ViewGroup.LayoutParams.WRAP_CONTENT)
+        assertThat((component.layoutParams as RelativeLayout.LayoutParams).rules[RelativeLayout.CENTER_VERTICAL])
+                .isEqualTo(RelativeLayout.TRUE)
     }
 
     @Test

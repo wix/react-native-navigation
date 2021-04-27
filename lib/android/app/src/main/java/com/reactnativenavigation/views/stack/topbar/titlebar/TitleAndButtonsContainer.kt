@@ -44,7 +44,9 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
         if (this.component == component) return
         clear()
         this.component = component
-        this.addView(this.component, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+        this.addView(this.component, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+            addRule(CENTER_VERTICAL)
+        })
         titleComponentAlignment = alignment
     }
 
