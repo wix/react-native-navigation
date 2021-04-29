@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.stack.topbar.titlebar
 import android.content.res.Resources
 import com.reactnativenavigation.utils.UiUtils
 import kotlin.math.max
+import kotlin.math.min
 
 const val DEFAULT_LEFT_MARGIN_DP = 16f
 internal val DEFAULT_LEFT_MARGIN_PX = UiUtils.dpToPx(Resources.getSystem().displayMetrics, DEFAULT_LEFT_MARGIN_DP).toInt()
@@ -18,13 +19,17 @@ fun resolveTitleBoundsLimit(
         isCenter: Boolean,
         isRTL: Boolean
 ): Pair<TitleLeft, TitleRight> {
+    val resolvedLeftBarWidth = if (isRTL) rightBarWidth else leftBarWidth
+    val resolvedRightBarWidth = if (isRTL) leftBarWidth else rightBarWidth
+    var suggestedLeft: TitleLeft
+    var suggestedRight: TitleRight
 
-    val rightLimit = parentWidth - rightBarWidth
+    val rightLimit = parentWidth - resolvedRightBarWidth
     if (isCenter) {
-        var suggestedLeft: Int = parentWidth / 2 - titleWidth / 2
-        var suggestedRight: Int = suggestedLeft + titleWidth
+        suggestedLeft = parentWidth / 2 - titleWidth / 2
+        suggestedRight = suggestedLeft + titleWidth
 
-        val leftOverlap = max(leftBarWidth - suggestedLeft, 0)
+        val leftOverlap = max(resolvedLeftBarWidth - suggestedLeft, 0)
         val rightOverlap = max(suggestedRight - rightLimit, 0)
         val overlap = max(leftOverlap, rightOverlap)
 
@@ -32,9 +37,16 @@ fun resolveTitleBoundsLimit(
             suggestedLeft += overlap
             suggestedRight -= overlap
         }
-        return suggestedLeft to suggestedRight
     } else {
-        return leftBarWidth + DEFAULT_LEFT_MARGIN_PX to rightLimit
+        if (isRTL) {
+            suggestedLeft = resolvedLeftBarWidth - DEFAULT_LEFT_MARGIN_PX
+            suggestedRight = rightLimit - DEFAULT_LEFT_MARGIN_PX
+        } else {
+            suggestedLeft = resolvedLeftBarWidth +  DEFAULT_LEFT_MARGIN_PX
+            suggestedRight = rightLimit -  DEFAULT_LEFT_MARGIN_PX
+        }
     }
+
+    return max(0, suggestedLeft) to min(parentWidth, suggestedRight)
 }
 

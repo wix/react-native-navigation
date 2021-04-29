@@ -24,9 +24,11 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
             }
         }
 
-    private val titleSubTitleBar = TitleSubTitleLayout(context)
-    val leftButtonsBar = ButtonsBar(context)
-    val rightButtonsBar = ButtonsBar(context)
+    private var titleSubTitleBar = TitleSubTitleLayout(context)
+    var leftButtonsBar = ButtonsBar(context)
+        private set
+    var rightButtonsBar = ButtonsBar(context)
+        private set
 
     init {
         this.addView(leftButtonsBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
@@ -142,11 +144,7 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
                 isCenter,
                 isRTL
         )
-        if (!isCenter && isRTL) {
-            titleComponent.layout(titleRight, t, titleLeft, b)
-        } else {
-            titleComponent.layout(titleLeft, t, titleRight, b)
-        }
+        titleComponent.layout(titleLeft, t, titleRight, b)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -164,6 +162,7 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
         rightButtonsBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
         leftButtonsBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
         titleComponent.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), heightMeasureSpec)
+
 
         val (titleLeft, titleRight) = resolveTitleBoundsLimit(
                 parentWidth,
@@ -185,6 +184,25 @@ class TitleAndButtonsContainer(context: Context) : RelativeLayout(context) {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun getComponent() = this.component
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun setTitleSubtitleLayout(layout: TitleSubTitleLayout) {
+        this.removeView(this.titleSubTitleBar)
+        this.titleSubTitleBar = layout
+        this.addView(this.titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun setButtonsBars(left: ButtonsBar, right: ButtonsBar) {
+        val leftLp = LayoutParams(leftButtonsBar.layoutParams)
+        val rightLp = LayoutParams(rightButtonsBar.layoutParams)
+        this.removeView(leftButtonsBar)
+        this.removeView(rightButtonsBar)
+        this.addView(left, leftLp)
+        this.addView(right, rightLp)
+        this.leftButtonsBar = left
+        this.rightButtonsBar = right
+    }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun getTitleSubtitleBar() = this.titleSubTitleBar
