@@ -114,7 +114,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected void onDestroy() {
         super.onDestroy();
         logger.log(Log.INFO, TAG, "onDestroy");
-        if (navigator != null && navigator.getPipMode() != PIPStates.NATIVE_MOUNTED) {
+        if (navigator != null) {
             logger.log(Log.INFO, TAG, "onDestroy PIPMode " + navigator.getPipMode());
             navigator.destroy();
             getReactGateway().onActivityDestroyed(this);
