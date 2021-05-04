@@ -39,14 +39,34 @@ fun resolveTitleBoundsLimit(
         }
     } else {
         if (isRTL) {
-            suggestedLeft = resolvedLeftBarWidth - DEFAULT_LEFT_MARGIN_PX
             suggestedRight = rightLimit - DEFAULT_LEFT_MARGIN_PX
+            suggestedLeft = resolvedLeftBarWidth + DEFAULT_LEFT_MARGIN_PX
         } else {
-            suggestedLeft = resolvedLeftBarWidth +  DEFAULT_LEFT_MARGIN_PX
-            suggestedRight = rightLimit -  DEFAULT_LEFT_MARGIN_PX
+            suggestedLeft = resolvedLeftBarWidth + DEFAULT_LEFT_MARGIN_PX
+            suggestedRight = min(rightLimit - DEFAULT_LEFT_MARGIN_PX, suggestedLeft + titleWidth + DEFAULT_LEFT_MARGIN_PX)
         }
+        suggestedLeft = max(0, suggestedLeft)
+        suggestedRight = min(parentWidth, suggestedRight)
     }
-
-    return max(0, suggestedLeft) to min(parentWidth, suggestedRight)
+    return suggestedLeft to suggestedRight
 }
 
+fun resolveLeftToolbarBounds(parentWidth: Int,
+                             barWidth: Int,
+                             isRTL: Boolean): Pair<Int, Int> {
+    return if (isRTL) {
+        parentWidth - barWidth to parentWidth
+    } else {
+        0 to barWidth
+    }
+}
+
+fun resolveRightToolbarBounds(parentWidth: Int,
+                              barWidth: Int,
+                              isRTL: Boolean): Pair<Int, Int> {
+    return  if (isRTL) {
+         0 to barWidth
+    } else {
+        parentWidth - barWidth to parentWidth
+    }
+}

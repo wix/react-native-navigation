@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.core.view.marginTop
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
@@ -44,7 +43,9 @@ class TitleAndButtonsContainerTest : BaseTest() {
             mockUUT: Boolean = true,
             direction: Int = View.LAYOUT_DIRECTION_LTR,
             titleBarWidth: Int = 0,
+            titleBarHeight: Int = 0,
             componentWidth: Int = 0,
+            componentHeight: Int = 0,
             rightBarWidth: Int = 0,
             leftBarWidth: Int = 0,
             alignment: Alignment = Alignment.Default
@@ -61,7 +62,9 @@ class TitleAndButtonsContainerTest : BaseTest() {
         if (mockUUT)
             Mockito.doReturn(direction).`when`(uut).layoutDirection
         Mockito.doReturn(titleBarWidth).`when`(mockTitleSubtitleLayout).measuredWidth
+        Mockito.doReturn(titleBarHeight).`when`(mockTitleSubtitleLayout).measuredHeight
         Mockito.doReturn(componentWidth).`when`(mockComponent).measuredWidth
+        Mockito.doReturn(componentHeight).`when`(mockComponent).measuredHeight
         uut.setTitleBarAlignment(alignment)
         if (rightBarWidth > 0 || leftBarWidth > 0)
             uut.setButtonsBars(mockLeftBar, mockRightBar)
@@ -102,48 +105,81 @@ class TitleAndButtonsContainerTest : BaseTest() {
     }
 
     @Test
-    fun `init- should Have Left Bar At Start`() {
-        val layoutParams = uut.leftButtonsBar.layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.ALIGN_PARENT_LEFT]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
-    }
+    fun `onLayout - should set title component center vertically`() {
+        val componentHeight = (UUT_HEIGHT / 4f).roundToInt()
+        setup(componentWidth = 100, componentHeight = componentHeight)
 
-
-    @Test
-    fun `init- should Have Right Bar At End`() {
-        val layoutParams = uut.rightButtonsBar.layoutParams as RelativeLayout.LayoutParams
-        assertThat(layoutParams.rules[RelativeLayout.ALIGN_PARENT_RIGHT]).isEqualTo(RelativeLayout.TRUE)
-        assertThat(layoutParams.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
+        val component = uut.getTitleComponent()
+        assertThat(component.top).isEqualTo((UUT_HEIGHT / 2f - componentHeight / 2f).roundToInt())
+        assertThat(component.bottom).isEqualTo((UUT_HEIGHT / 2f + componentHeight / 2f).roundToInt())
     }
 
     @Test
-    fun `setTitle - should be aligned left and take all the width when no buttons`() {
-        setup(titleBarWidth = 200)
+    fun `onLayout - set title text should take all parent height`() {
+        setup(titleBarWidth = 100, titleBarHeight = UUT_HEIGHT)
+
+        val component = uut.getTitleComponent()
+
+        assertThat(component.layoutParams.height).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT)
+        assertThat(component.top).isEqualTo(0)
+        assertThat(component.bottom).isEqualTo(UUT_HEIGHT)
+    }
+
+    @Test
+    fun `onLayout - title should not overlap with toolbar and have to re-layout`() {
+        val leftBarWidth = (UUT_WIDTH / 4f).roundToInt()
+        val rightBarWidth = (UUT_WIDTH / 4f).roundToInt()
+        val titleBarWidth = 3 * (UUT_WIDTH / 4f).roundToInt()
+        setup(titleBarWidth = titleBarWidth, titleBarHeight = UUT_HEIGHT, leftBarWidth = leftBarWidth, rightBarWidth = rightBarWidth)
+
+        val component = uut.getTitleComponent()
+        assertThat(component.left).isEqualTo(leftBarWidth + DEFAULT_LEFT_MARGIN_PX)
+        assertThat(component.right).isEqualTo(UUT_WIDTH - rightBarWidth - DEFAULT_LEFT_MARGIN_PX)
+    }
+
+    @Test
+    fun `onLayout - title component should not overlap with toolbar and have to re-layout`() {
+        val leftBarWidth = (UUT_WIDTH / 4f).roundToInt()
+        val rightBarWidth = (UUT_WIDTH / 4f).roundToInt()
+        val titleBarWidth = 3 * (UUT_WIDTH / 4f).roundToInt()
+        setup(componentWidth = titleBarWidth, componentHeight = UUT_HEIGHT, leftBarWidth = leftBarWidth, rightBarWidth =
+        rightBarWidth)
+
+        val component = uut.getTitleComponent()
+        assertThat(component.left).isEqualTo(leftBarWidth + DEFAULT_LEFT_MARGIN_PX)
+        assertThat(component.right).isEqualTo(UUT_WIDTH - rightBarWidth - DEFAULT_LEFT_MARGIN_PX)
+    }
+
+    @Test
+    fun `onLayout - title should be aligned left and take needed the width + margins when no buttons`() {
+        val titleBarWidth = 200
+        setup(titleBarWidth = titleBarWidth)
 
         val component = uut.getTitleComponent()
         assertThat(component.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
-        assertThat(component.right).isEqualTo(UUT_WIDTH - DEFAULT_LEFT_MARGIN_PX)
+        assertThat(component.right).isEqualTo(titleBarWidth + 2 * DEFAULT_LEFT_MARGIN_PX)
     }
 
     @Test
-    fun `setTitle - RTL - should be aligned right and take all the width when no buttons`() {
+    fun `setTitle - RTL - should be aligned right and take available width when no buttons`() {
         setup(direction = View.LAYOUT_DIRECTION_RTL, titleBarWidth = 200)
 
         val titleComponent = uut.getTitleComponent()
         assertThat(titleComponent.right).isEqualTo(UUT_WIDTH - DEFAULT_LEFT_MARGIN_PX)
-        assertThat(titleComponent.left).isEqualTo(0)
+        assertThat(titleComponent.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
     }
 
     @Test
     fun `Title - should place title between the toolbars`() {
         val leftBarWidth = 50
         val rightBarWidth = 100
-        setup(leftBarWidth = leftBarWidth, rightBarWidth = rightBarWidth, titleBarWidth = 200)
+        val titleBarWidth = 200
+        setup(leftBarWidth = leftBarWidth, rightBarWidth = rightBarWidth, titleBarWidth = titleBarWidth)
         val titleSubTitleLayout = uut.getTitleComponent() as TitleSubTitleLayout
 
         idleMainLooper()
         assertThat(titleSubTitleLayout.left).isEqualTo(leftBarWidth + DEFAULT_LEFT_MARGIN_PX)
-        assertThat(titleSubTitleLayout.right).isEqualTo(UUT_WIDTH - rightBarWidth - DEFAULT_LEFT_MARGIN_PX)
+        assertThat(titleSubTitleLayout.right).isEqualTo(leftBarWidth + DEFAULT_LEFT_MARGIN_PX + titleBarWidth + DEFAULT_LEFT_MARGIN_PX)
     }
 
     @Test
@@ -237,18 +273,19 @@ class TitleAndButtonsContainerTest : BaseTest() {
     fun `Component - should place title between the toolbars`() {
         val leftBarWidth = 50
         val rightBarWidth = 100
-        setup(leftBarWidth = leftBarWidth, rightBarWidth = rightBarWidth, titleBarWidth = 0, componentWidth = 200)
+        val componentWidth = 200
+        setup(leftBarWidth = leftBarWidth, rightBarWidth = rightBarWidth, titleBarWidth = 0, componentWidth = componentWidth)
         val component = uut.getTitleComponent()
 
         idleMainLooper()
         assertThat(component.left).isEqualTo(leftBarWidth + DEFAULT_LEFT_MARGIN_PX)
-        assertThat(component.right).isEqualTo(UUT_WIDTH - rightBarWidth - DEFAULT_LEFT_MARGIN_PX)
+        assertThat(component.right).isEqualTo(leftBarWidth + DEFAULT_LEFT_MARGIN_PX + componentWidth + DEFAULT_LEFT_MARGIN_PX)
     }
 
     @Test
-    fun `Component - should place title between the toolbars at center`() {
+    fun `onLayout - should place title component between the toolbars at center`() {
         val componentWidth = 200
-        setup(leftBarWidth = 50, rightBarWidth = 100, titleBarWidth = 0, componentWidth = componentWidth,
+        setup(leftBarWidth = 50, rightBarWidth = 100, componentWidth = componentWidth,
                 alignment = Alignment.Center)
         val component = uut.getTitleComponent()
 
@@ -258,7 +295,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
     }
 
     @Test
-    fun `setTitleBarAlignment - should measure and layout children when alignment changes`() {
+    fun `onLayout - should measure and layout children when alignment changes`() {
         val titleBarWidth = 200
         setup(
                 titleBarWidth = titleBarWidth,
@@ -277,18 +314,16 @@ class TitleAndButtonsContainerTest : BaseTest() {
         component = uut.getTitleComponent()
         idleMainLooper()
         assertThat(component.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
-        assertThat(component.right).isEqualTo(UUT_WIDTH - DEFAULT_LEFT_MARGIN_PX)
+        assertThat(component.right).isEqualTo(titleBarWidth + 2 * DEFAULT_LEFT_MARGIN_PX)
     }
 
     @Test
-    fun `setComponent - should set dynamic width-height and center vertically`() {
+    fun `setComponent - should set dynamic width-height`() {
         val component = View(activity).apply { id = 19 }
         uut.setComponent(component)
         idleMainLooper()
         assertThat(component.layoutParams.width).isEqualTo(ViewGroup.LayoutParams.WRAP_CONTENT)
         assertThat(component.layoutParams.height).isEqualTo(ViewGroup.LayoutParams.WRAP_CONTENT)
-        assertThat((component.layoutParams as RelativeLayout.LayoutParams).rules[RelativeLayout.CENTER_VERTICAL])
-                .isEqualTo(RelativeLayout.TRUE)
     }
 
     @Test

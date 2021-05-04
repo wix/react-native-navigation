@@ -6,7 +6,4 @@ import com.facebook.react.ReactInstanceManager
 import com.reactnativenavigation.react.ReactView
 
 @SuppressLint("ViewConstructor")
-class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceManager?, componentId: String?, componentName: String?) : ReactView(context, reactInstanceManager, componentId, componentName) {
-
-}
-
+class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceManager?, componentId: String?, componentName: String?) : ReactView(context, reactInstanceManager, componentId, componentName)
