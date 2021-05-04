@@ -174,8 +174,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
     private fun makeTitleWidthMeasureSpec(parentWidth: Int, isCenter: Boolean): Int {
         return if (isCenter) {
-            MeasureSpec.makeMeasureSpec(parentWidth,
-            MeasureSpec.AT_MOST)
+            MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST)
         } else {
             MeasureSpec.makeMeasureSpec(parentWidth - rightButtonsBar.measuredWidth - leftButtonsBar.measuredWidth - 2 * DEFAULT_LEFT_MARGIN_PX, MeasureSpec.AT_MOST)
         }
