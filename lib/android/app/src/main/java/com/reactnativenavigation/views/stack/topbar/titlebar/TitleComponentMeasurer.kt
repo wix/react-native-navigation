@@ -40,7 +40,7 @@ fun resolveTitleBoundsLimit(
     } else {
         if (isRTL) {
             suggestedRight = rightLimit - DEFAULT_LEFT_MARGIN_PX
-            suggestedLeft = resolvedLeftBarWidth + DEFAULT_LEFT_MARGIN_PX
+            suggestedLeft = suggestedRight - titleWidth - DEFAULT_LEFT_MARGIN_PX
         } else {
             suggestedLeft = resolvedLeftBarWidth + DEFAULT_LEFT_MARGIN_PX
             suggestedRight = min(rightLimit - DEFAULT_LEFT_MARGIN_PX, suggestedLeft + titleWidth + DEFAULT_LEFT_MARGIN_PX)
@@ -64,9 +64,5 @@ fun resolveLeftToolbarBounds(parentWidth: Int,
 fun resolveRightToolbarBounds(parentWidth: Int,
                               barWidth: Int,
                               isRTL: Boolean): Pair<Int, Int> {
-    return  if (isRTL) {
-         0 to barWidth
-    } else {
-        parentWidth - barWidth to parentWidth
-    }
+    return resolveLeftToolbarBounds(parentWidth, barWidth, !isRTL)
 }
