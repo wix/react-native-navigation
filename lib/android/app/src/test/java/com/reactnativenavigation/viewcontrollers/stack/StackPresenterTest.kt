@@ -162,7 +162,7 @@ class StackPresenterTest : BaseTest() {
         child.view.requestLayout()
         idleMainLooper()
         Assertions.assertThat(component?.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
-        Assertions.assertThat(component?.right).isEqualTo(DEFAULT_LEFT_MARGIN_PX + reactTitleView.measuredWidth)
+        Assertions.assertThat(component?.right).isEqualTo(DEFAULT_LEFT_MARGIN_PX + reactTitleView.measuredWidth + DEFAULT_LEFT_MARGIN_PX)
     }
 
     @Test
