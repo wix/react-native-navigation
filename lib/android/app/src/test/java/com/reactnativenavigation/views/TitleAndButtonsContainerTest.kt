@@ -162,11 +162,12 @@ class TitleAndButtonsContainerTest : BaseTest() {
 
     @Test
     fun `setTitle - RTL - should be aligned right and take available width when no buttons`() {
-        setup(direction = View.LAYOUT_DIRECTION_RTL, titleBarWidth = 200)
+        val titleBarWidth = 200
+        setup(direction = View.LAYOUT_DIRECTION_RTL, titleBarWidth = titleBarWidth)
 
         val titleComponent = uut.getTitleComponent()
         assertThat(titleComponent.right).isEqualTo(UUT_WIDTH - DEFAULT_LEFT_MARGIN_PX)
-        assertThat(titleComponent.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
+        assertThat(titleComponent.left).isEqualTo(UUT_WIDTH- DEFAULT_LEFT_MARGIN_PX-titleBarWidth-DEFAULT_LEFT_MARGIN_PX )
     }
 
     @Test
