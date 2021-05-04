@@ -87,28 +87,8 @@ export default class Options extends React.Component<Props> {
       topBar: {
         title: {
           alignment: 'center',
-          text: 'Title',
+          text: 'Title Changed',
         },
-        rightButtons: [
-          {
-            id: '4',
-            text: '1',
-          },
-          {
-            id: '5',
-            text: '2',
-          },
-        ],
-        leftButtons: [
-          {
-            id: '1',
-            text: 'Cancel',
-          },
-          {
-            id: '2',
-            text: 'CanceB',
-          },
-        ],
       },
     });
 
