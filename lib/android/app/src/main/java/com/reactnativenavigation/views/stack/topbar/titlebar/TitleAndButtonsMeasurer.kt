@@ -26,8 +26,8 @@ fun resolveTitleBoundsLimit(
 
     val rightLimit = parentWidth - resolvedRightBarWidth
     if (isCenter) {
-        suggestedLeft = parentWidth / 2 - titleWidth / 2
-        suggestedRight = suggestedLeft + titleWidth
+        suggestedLeft = max(parentWidth / 2 - titleWidth / 2, 0)
+        suggestedRight = min(suggestedLeft + titleWidth, parentWidth)
 
         val leftOverlap = max(resolvedLeftBarWidth - suggestedLeft, 0)
         val rightOverlap = max(suggestedRight - rightLimit, 0)
@@ -39,15 +39,17 @@ fun resolveTitleBoundsLimit(
         }
     } else {
         if (isRTL) {
-            suggestedRight = rightLimit - DEFAULT_LEFT_MARGIN_PX
-            suggestedLeft = max(0,suggestedRight - titleWidth - DEFAULT_LEFT_MARGIN_PX)
+            suggestedRight = max(resolvedLeftBarWidth + DEFAULT_LEFT_MARGIN_PX, rightLimit - DEFAULT_LEFT_MARGIN_PX)
+            suggestedLeft = max(resolvedLeftBarWidth + DEFAULT_LEFT_MARGIN_PX, suggestedRight - titleWidth -
+                    DEFAULT_LEFT_MARGIN_PX)
         } else {
-            suggestedLeft = resolvedLeftBarWidth + DEFAULT_LEFT_MARGIN_PX
+            suggestedLeft = min(resolvedLeftBarWidth + DEFAULT_LEFT_MARGIN_PX, parentWidth - DEFAULT_LEFT_MARGIN_PX)
             suggestedRight = min(rightLimit - DEFAULT_LEFT_MARGIN_PX, suggestedLeft + titleWidth + DEFAULT_LEFT_MARGIN_PX)
         }
         suggestedLeft = max(0, suggestedLeft)
         suggestedRight = min(parentWidth, suggestedRight)
     }
+
     return suggestedLeft to suggestedRight
 }
 
@@ -55,9 +57,9 @@ fun resolveLeftToolbarBounds(parentWidth: Int,
                              barWidth: Int,
                              isRTL: Boolean): Pair<Int, Int> {
     return if (isRTL) {
-        parentWidth - barWidth to parentWidth
+        max(0, parentWidth - barWidth) to parentWidth
     } else {
-        0 to barWidth
+        0 to min(barWidth, parentWidth)
     }
 }
 
