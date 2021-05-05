@@ -56,7 +56,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private final TitleAndButtonsContainer titleAndButtonsContainer;
 
     public int getRightButtonsCount() {
-        return titleAndButtonsContainer.getRightButtonBar().getButtonsCount();
+        return titleAndButtonsContainer.getRightButtonBar().getButtonCount();
     }
 
     @Nullable

@@ -183,7 +183,7 @@ class StackControllerTest : BaseTest() {
         child2.options.topBar.buttons.left = ArrayList(setOf(TitleBarHelper.iconButton("someButton", "icon.png")))
         uut.push(child2, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
-        assertThat(topBarController.leftButtonsCount).isOne();
+        assertThat(topBarController.leftButtonCount).isOne();
         verify(topBarController.view, never()).setBackButton(any())
     }
 

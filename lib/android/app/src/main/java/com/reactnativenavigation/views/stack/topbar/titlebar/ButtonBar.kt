@@ -42,7 +42,7 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
                 styledText)
     }
 
-    val buttonsCount: Int
+    val buttonCount: Int
         get() = menu.size()
 
     open fun clearButtons() {
