@@ -3,7 +3,6 @@ package com.reactnativenavigation.viewcontrollers.stack;
 import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -51,7 +50,6 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.appcompat.widget.Toolbar;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
@@ -375,10 +373,10 @@ public class StackPresenter {
             if (stringButtonControllerMap != null) {
                 forEach(stringButtonControllerMap.values(), (btnController) -> {
                     if (color.hasValue()) {
-                        btnController.applyColor(topBarController.getView().getLeftButtonsBar(), color);
+                        btnController.applyColor(topBarController.getView().getLeftButtonBar(), color);
                     }
                     if (disabledColor.hasValue()) {
-                        btnController.applyDisabledColor(topBarController.getView().getLeftButtonsBar(), disabledColor);
+                        btnController.applyDisabledColor(topBarController.getView().getLeftButtonBar(), disabledColor);
                     }
                 });
             }
@@ -391,10 +389,10 @@ public class StackPresenter {
             if (stringButtonControllerMap != null) {
                 forEach(stringButtonControllerMap.values(), (btnController) -> {
                     if (color.hasValue()) {
-                        btnController.applyColor(topBarController.getView().getRightButtonsBar(), color);
+                        btnController.applyColor(topBarController.getView().getRightButtonBar(), color);
                     }
                     if (disabledColor.hasValue()) {
-                        btnController.applyDisabledColor(topBarController.getView().getRightButtonsBar(), disabledColor);
+                        btnController.applyDisabledColor(topBarController.getView().getRightButtonBar(), disabledColor);
                     }
                 });
             }

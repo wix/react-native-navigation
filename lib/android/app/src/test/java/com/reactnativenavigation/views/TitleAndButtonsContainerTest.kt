@@ -14,7 +14,7 @@ import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.params.NullColor
-import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsBar
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_PX
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleAndButtonsContainer
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleSubTitleLayout
@@ -31,8 +31,8 @@ private const val UUT_HEIGHT = 100
 class TitleAndButtonsContainerTest : BaseTest() {
     lateinit var uut: TitleAndButtonsContainer
     private lateinit var activity: Activity
-    private lateinit var mockLeftBar: ButtonsBar;
-    private lateinit var mockRightBar: ButtonsBar;
+    private lateinit var mockLeftBar: ButtonBar;
+    private lateinit var mockRightBar: ButtonBar;
     private lateinit var mockComponent: View;
     override fun beforeEach() {
         super.beforeEach()
@@ -53,8 +53,8 @@ class TitleAndButtonsContainerTest : BaseTest() {
         activity = newActivity()
         val originalUUT = TitleAndButtonsContainer(activity)
         uut = if (mockUUT) spy(originalUUT) else originalUUT
-        mockLeftBar = spy(ButtonsBar(activity))
-        mockRightBar = spy(ButtonsBar(activity))
+        mockLeftBar = spy(ButtonBar(activity))
+        mockRightBar = spy(ButtonBar(activity))
         mockComponent = spy(View(activity))
         val mockTitleSubtitleLayout = spy(TitleSubTitleLayout(activity))
         Mockito.doReturn(rightBarWidth).`when`(mockRightBar).measuredWidth
@@ -67,7 +67,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
         Mockito.doReturn(componentHeight).`when`(mockComponent).measuredHeight
         uut.setTitleBarAlignment(alignment)
         if (rightBarWidth > 0 || leftBarWidth > 0)
-            uut.setButtonsBars(mockLeftBar, mockRightBar)
+            uut.setButtonBars(mockLeftBar, mockRightBar)
         if (componentWidth > 0)
             uut.setComponent(mockComponent, alignment)
         uut.setTitleSubtitleLayout(mockTitleSubtitleLayout)
