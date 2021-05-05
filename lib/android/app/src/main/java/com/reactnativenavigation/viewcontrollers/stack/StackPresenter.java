@@ -322,8 +322,9 @@ public class StackPresenter {
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
-        if (topTabOptions.fontFamily != null)
+        if (topTabOptions.fontFamily != null) {
             topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+        }
     }
 
     public List<Animator> getAdditionalPushAnimations(StackController stack, ViewController appearing, Options appearingOptions) {
@@ -373,11 +374,12 @@ public class StackPresenter {
             Map<String, ButtonController> stringButtonControllerMap = componentLeftButtons.get(child);
             if (stringButtonControllerMap != null) {
                 forEach(stringButtonControllerMap.values(), (btnController) -> {
-                    if (color.hasValue())
+                    if (color.hasValue()) {
                         btnController.applyColor(topBarController.getView().getLeftButtonsBar(), color);
-                    if (disabledColor.hasValue())
-                        btnController.applyDisabledColor(topBarController.getView().getLeftButtonsBar(),
-                                disabledColor);
+                    }
+                    if (disabledColor.hasValue()) {
+                        btnController.applyDisabledColor(topBarController.getView().getLeftButtonsBar(), disabledColor);
+                    }
                 });
             }
         }
@@ -388,10 +390,12 @@ public class StackPresenter {
             Map<String, ButtonController> stringButtonControllerMap = componentRightButtons.get(child);
             if (stringButtonControllerMap != null) {
                 forEach(stringButtonControllerMap.values(), (btnController) -> {
-                    if (color.hasValue())
+                    if (color.hasValue()) {
                         btnController.applyColor(topBarController.getView().getRightButtonsBar(), color);
-                    if (disabledColor.hasValue())
+                    }
+                    if (disabledColor.hasValue()) {
                         btnController.applyDisabledColor(topBarController.getView().getRightButtonsBar(), disabledColor);
+                    }
                 });
             }
         }
@@ -485,10 +489,12 @@ public class StackPresenter {
             topBar.setSubtitleAlignment(resolveOptions.subtitle.alignment);
         }
         if (resolveOptions.subtitle.color.hasValue()) topBar.setSubtitleColor(resolveOptions.subtitle.color.get());
-        if (resolveOptions.subtitle.fontSize.hasValue())
+        if (resolveOptions.subtitle.fontSize.hasValue()) {
             topBar.setSubtitleFontSize(resolveOptions.subtitle.fontSize.get());
-        if (resolveOptions.subtitle.font.hasValue())
+        }
+        if (resolveOptions.subtitle.font.hasValue()) {
             topBar.setSubtitleTypeface(typefaceLoader, resolveOptions.subtitle.font);
+        }
 
         if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.get());
 
@@ -539,20 +545,18 @@ public class StackPresenter {
     }
 
     private void mergeTopTabsOptions(TopTabsOptions options) {
-        if (options.selectedTabColor.hasValue() && options.unselectedTabColor.hasValue())
+        if (options.selectedTabColor.hasValue() && options.unselectedTabColor.hasValue()) {
             topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
+        }
         if (options.fontSize.hasValue()) topBar.applyTopTabsFontSize(options.fontSize);
         if (options.visible.hasValue()) topBar.setTopTabsVisible(options.visible.isTrue());
         if (options.height.hasValue()) topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
     }
 
     private void mergeTopTabOptions(TopTabOptions topTabOptions) {
-        if (topTabOptions.fontFamily != null)
+        if (topTabOptions.fontFamily != null) {
             topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
-    }
-
-    private LayoutParams getComponentLayoutParams(ComponentOptions component) {
-        return new Toolbar.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, component.alignment == Alignment.Center ? Gravity.CENTER : Gravity.START);
+        }
     }
 
     public boolean shouldPopOnHardwareButtonPress(ViewController viewController) {
