@@ -204,6 +204,7 @@ class StackPresenterTest : BaseTest() {
         verify(topBarController).mergeLeftButtons(any(), any())
     }
 
+
     @Test
     fun `mergeButtons - modify BackButton should not have effect on stack with with one child`() {
         val options = Options()
@@ -381,6 +382,21 @@ class StackPresenterTest : BaseTest() {
         toMerge.topBar.title.text = Text("someText")
         uut.mergeOptions(toMerge, parent, child)
         verify(topBar, never()).setBackgroundColor(any())
+    }
+
+    @Test
+    fun mergeOptions_shouldUpdateTitleAlignmentWhenNotDefault() {
+        val defaultOptions = Options()
+        defaultOptions.topBar.title.text = Text("title")
+        uut.defaultOptions = defaultOptions
+        val toMerge = Options()
+        toMerge.topBar.title.text = Text("newTitle")
+        uut.mergeOptions(toMerge, parent, child)
+
+        val alignmentOptions = Options()
+        alignmentOptions.topBar.title.alignment = Alignment.Center
+        uut.mergeOptions(alignmentOptions, parent, child)
+        verify(topBarController).alignTitleComponent(Alignment.Center)
     }
 
     @Test
