@@ -150,7 +150,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
     }
 
     private fun truncateComponentMeasurementIfNeeded(titleRight: TitleRight, titleLeft: TitleLeft, titleComponent: View, isCenter: Boolean) {
-        if (titleRight - titleLeft != titleComponent.measuredWidth) {
+        if (component == null && titleRight - titleLeft != titleComponent.measuredWidth) {
             val margin = if (isCenter) 0 else 2 * DEFAULT_LEFT_MARGIN_PX
             titleComponent.measure(MeasureSpec.makeMeasureSpec(titleRight - titleLeft + margin, MeasureSpec.EXACTLY),
                     MeasureSpec.makeMeasureSpec(titleComponent.measuredHeight, MeasureSpec.EXACTLY))
