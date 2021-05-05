@@ -36,6 +36,7 @@ import org.assertj.core.api.Assertions
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.json.JSONObject
 import org.junit.Test
+import org.mockito.Mockito
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.collections.ArrayList
@@ -159,6 +160,7 @@ class StackPresenterTest : BaseTest() {
         uut.applyChildOptions(options, parent, child)
         val component = topBar.titleAndButtonsContainer.getComponent()
         Assertions.assertThat(component).isEqualTo(reactTitleView)
+        Mockito.doReturn(100).`when`(reactTitleView).measuredWidth
         child.view.requestLayout()
         idleMainLooper()
         Assertions.assertThat(component?.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
