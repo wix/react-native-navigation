@@ -158,7 +158,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setSubtitleAlignment(Alignment alignment) {
         titleAndButtonsContainer.setSubTitleTextAlignment(alignment);
-        titleAndButtonsContainer.setTitleBarAlignment(alignment);
     }
 
     public void setTestId(String testId) {
@@ -180,7 +179,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setTitleAlignment(Alignment alignment) {
         titleAndButtonsContainer.setTitleBarAlignment(alignment);
-        titleAndButtonsContainer.setTitleTextAlignment(alignment);
     }
 
     public void setTitleComponent(View component, Alignment alignment) {

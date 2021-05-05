@@ -287,9 +287,8 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val isRTL = false
         val center = true
         val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
-        val expectedOverlap = (parentWidth / 2 + barWidth / 2) - (parentWidth - rightButtons)
-        assertEquals(parentWidth / 2 - barWidth / 2 + expectedOverlap, left, "should take the largest overlap")
-        assertEquals(parentWidth / 2 + barWidth / 2 - expectedOverlap, right, "should take the largest overlap")
+        assertEquals(leftButtons, left)
+        assertEquals(parentWidth - rightButtons, right)
     }
 
     @Test
@@ -301,9 +300,8 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val isRTL = true
         val center = true
         val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
-        val expectedOverlap = (parentWidth / 2 + barWidth / 2) - (parentWidth - rightButtons)
-        assertEquals(parentWidth / 2 - barWidth / 2 + expectedOverlap, left, "should take the largest overlap")
-        assertEquals(parentWidth / 2 + barWidth / 2 - expectedOverlap, right, "should take the largest overlap")
+        assertEquals(rightButtons, left)
+        assertEquals(parentWidth - leftButtons, right)
     }
 
     @Test

@@ -26,17 +26,23 @@ fun resolveTitleBoundsLimit(
 
     val rightLimit = parentWidth - resolvedRightBarWidth
     if (isCenter) {
-        suggestedLeft = max(parentWidth / 2 - titleWidth / 2, 0)
-        suggestedRight = min(suggestedLeft + titleWidth, parentWidth)
+        val availableSpace = parentWidth - resolvedLeftBarWidth - resolvedRightBarWidth
+        if (titleWidth >= availableSpace) {
+            return resolvedLeftBarWidth to rightLimit
+        }else{
+            suggestedLeft = max(parentWidth / 2 - titleWidth / 2, 0)
+            suggestedRight = min(suggestedLeft + titleWidth, parentWidth)
 
-        val leftOverlap = max(resolvedLeftBarWidth - suggestedLeft, 0)
-        val rightOverlap = max(suggestedRight - rightLimit, 0)
-        val overlap = max(leftOverlap, rightOverlap)
+            val leftOverlap = max(resolvedLeftBarWidth - suggestedLeft, 0)
+            val rightOverlap = max(suggestedRight - rightLimit, 0)
+            val overlap = max(leftOverlap, rightOverlap)
 
-        if (overlap > 0) {
-            suggestedLeft += overlap
-            suggestedRight -= overlap
+            if (overlap > 0) {
+                suggestedLeft += overlap
+                suggestedRight -= overlap
+            }
         }
+
     } else {
         if (isRTL) {
             suggestedRight = max(resolvedLeftBarWidth + DEFAULT_LEFT_MARGIN_PX, rightLimit - DEFAULT_LEFT_MARGIN_PX)

@@ -144,8 +144,17 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
         leftButtonsBar.layout(leftButtonsLeft, t, leftButtonsRight, b)
         rightButtonsBar.layout(rightButtonsLeft, t, rightButtonsRight, b)
+        truncateComponentMeasurementIfNeeded(titleRight, titleLeft, titleComponent, isCenter)
         titleComponent.layout(titleLeft, (parentHeight / 2f - titleComponent.measuredHeight / 2f).roundToInt(), titleRight,
                 (parentHeight / 2f + titleComponent.measuredHeight / 2f).roundToInt())
+    }
+
+    private fun truncateComponentMeasurementIfNeeded(titleRight: TitleRight, titleLeft: TitleLeft, titleComponent: View, isCenter: Boolean) {
+        if (titleRight - titleLeft != titleComponent.measuredWidth) {
+            val margin = if (isCenter) 0 else 2 * DEFAULT_LEFT_MARGIN_PX
+            titleComponent.measure(MeasureSpec.makeMeasureSpec(titleRight - titleLeft + margin, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(titleComponent.measuredHeight, MeasureSpec.EXACTLY))
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
