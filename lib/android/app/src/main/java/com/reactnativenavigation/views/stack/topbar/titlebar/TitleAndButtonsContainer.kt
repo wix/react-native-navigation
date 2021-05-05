@@ -25,15 +25,15 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         }
 
     private var titleSubTitleBar = TitleSubTitleLayout(context)
-    var leftButtonsBar = ButtonsBar(context)
+    var leftButtonBar = ButtonBar(context)
         private set
-    var rightButtonsBar = ButtonsBar(context)
+    var rightButtonBar = ButtonBar(context)
         private set
 
     init {
-        this.addView(leftButtonsBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
+        this.addView(leftButtonBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
         this.addView(titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
-        this.addView(rightButtonsBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
+        this.addView(rightButtonBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
     }
 
     fun setComponent(component: View, alignment: Alignment = Alignment.Default) {
@@ -65,8 +65,8 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         super.setLayoutDirection(layoutDirection)
         this.component?.layoutDirection = layoutDirection
         this.titleSubTitleBar.layoutDirection = layoutDirection
-        this.rightButtonsBar.layoutDirection = layoutDirection
-        this.leftButtonsBar.layoutDirection = layoutDirection
+        this.rightButtonBar.layoutDirection = layoutDirection
+        this.leftButtonBar.layoutDirection = layoutDirection
     }
 
     fun setSubTitleTextAlignment(alignment: Alignment) = this.titleSubTitleBar.setSubTitleAlignment(alignment)
@@ -133,17 +133,17 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         val (titleLeft, titleRight) = resolveTitleBoundsLimit(
                 parentWidth,
                 titleComponent.measuredWidth,
-                leftButtonsBar.measuredWidth,
-                rightButtonsBar.measuredWidth,
+                leftButtonBar.measuredWidth,
+                rightButtonBar.measuredWidth,
                 isCenter,
                 isRTL
         )
-        val (leftButtonsLeft, leftButtonsRight) = resolveLeftToolbarBounds(parentWidth, leftButtonsBar.measuredWidth, isRTL)
-        val (rightButtonsLeft, rightButtonsRight) = resolveRightToolbarBounds(parentWidth, rightButtonsBar.measuredWidth,
+        val (leftButtonsLeft, leftButtonsRight) = resolveLeftToolbarBounds(parentWidth, leftButtonBar.measuredWidth, isRTL)
+        val (rightButtonsLeft, rightButtonsRight) = resolveRightToolbarBounds(parentWidth, rightButtonBar.measuredWidth,
                 isRTL)
 
-        leftButtonsBar.layout(leftButtonsLeft, t, leftButtonsRight, b)
-        rightButtonsBar.layout(rightButtonsLeft, t, rightButtonsRight, b)
+        leftButtonBar.layout(leftButtonsLeft, t, leftButtonsRight, b)
+        rightButtonBar.layout(rightButtonsLeft, t, rightButtonsRight, b)
         truncateComponentMeasurementIfNeeded(titleRight, titleLeft, titleComponent, isCenter)
         titleComponent.layout(titleLeft, (parentHeight / 2f - titleComponent.measuredHeight / 2f).roundToInt(), titleRight,
                 (parentHeight / 2f + titleComponent.measuredHeight / 2f).roundToInt())
@@ -172,9 +172,9 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
     private fun measureTitleComponentExact(parentWidth: Int, parentHeight: Int) {
         val titleComponent = this.getTitleComponent()
         component?.layoutDirection = View.LAYOUT_DIRECTION_LTR
-        rightButtonsBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), MeasureSpec
+        rightButtonBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), MeasureSpec
                 .makeMeasureSpec(parentHeight, MeasureSpec.EXACTLY))
-        leftButtonsBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), MeasureSpec
+        leftButtonBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), MeasureSpec
                 .makeMeasureSpec(parentHeight, MeasureSpec.EXACTLY))
 
         titleComponent.measure(makeTitleWidthMeasureSpec(parentWidth, titleComponentAlignment == Alignment.Center),
@@ -185,7 +185,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         return if (isCenter) {
             MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST)
         } else {
-            MeasureSpec.makeMeasureSpec(parentWidth - rightButtonsBar.measuredWidth - leftButtonsBar.measuredWidth - 2 * DEFAULT_LEFT_MARGIN_PX, MeasureSpec.AT_MOST)
+            MeasureSpec.makeMeasureSpec(parentWidth - rightButtonBar.measuredWidth - leftButtonBar.measuredWidth - 2 * DEFAULT_LEFT_MARGIN_PX, MeasureSpec.AT_MOST)
         }
     }
 
@@ -205,15 +205,15 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    fun setButtonsBars(left: ButtonsBar, right: ButtonsBar) {
-        val leftLp = LayoutParams(leftButtonsBar.layoutParams)
-        val rightLp = LayoutParams(rightButtonsBar.layoutParams)
-        this.removeView(leftButtonsBar)
-        this.removeView(rightButtonsBar)
+    fun setButtonBars(left: ButtonBar, right: ButtonBar) {
+        val leftLp = LayoutParams(leftButtonBar.layoutParams)
+        val rightLp = LayoutParams(rightButtonBar.layoutParams)
+        this.removeView(leftButtonBar)
+        this.removeView(rightButtonBar)
         this.addView(left, leftLp)
         this.addView(right, rightLp)
-        this.leftButtonsBar = left
-        this.rightButtonsBar = right
+        this.leftButtonBar = left
+        this.rightButtonBar = right
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
