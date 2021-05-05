@@ -26,10 +26,10 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
 
     val height: Int
         get() = view.height
-    val rightButtonsCount: Int
-        get() = rightButtonBar.buttonsCount
-    val leftButtonsCount: Int
-        get() = leftButtonBar.buttonsCount
+    val rightButtonCount: Int
+        get() = rightButtonBar.buttonCount
+    val leftButtonCount: Int
+        get() = leftButtonBar.buttonCount
 
     fun getRightButton(index: Int): MenuItem = rightButtonBar.getButton(index)
 

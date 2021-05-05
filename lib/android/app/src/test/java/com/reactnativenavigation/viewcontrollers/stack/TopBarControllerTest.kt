@@ -22,7 +22,6 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonContr
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
-import org.json.JSONObject
 import org.junit.Test
 import java.util.*
 
@@ -68,15 +67,15 @@ class TopBarControllerTest : BaseTest() {
         uut.applyRightButtons(rightButtons(componentButton, textButton1)!!)
         uut.applyLeftButtons(leftButton(leftButton))
         uut.applyRightButtons(ArrayList())
-        assertThat(uut.rightButtonsCount).isEqualTo(0)
+        assertThat(uut.rightButtonCount).isEqualTo(0)
     }
 
     @Test
     fun applyRightButtons_previousButtonsAreCleared() {
         uut.applyRightButtons(rightButtons(textButton1, componentButton)!!)
-        assertThat(uut.rightButtonsCount).isEqualTo(2)
+        assertThat(uut.rightButtonCount).isEqualTo(2)
         uut.applyRightButtons(rightButtons(textButton2)!!)
-        assertThat(uut.rightButtonsCount).isEqualTo(1)
+        assertThat(uut.rightButtonCount).isEqualTo(1)
     }
 
     @Test
@@ -108,10 +107,10 @@ class TopBarControllerTest : BaseTest() {
     fun setLeftButtons_emptyButtonsListClearsLeftButton() {
         uut.applyLeftButtons(leftButton(leftButton))
         uut.applyRightButtons(rightButtons(componentButton)!!)
-        assertThat(uut.leftButtonsCount).isNotZero();
+        assertThat(uut.leftButtonCount).isNotZero();
         uut.applyLeftButtons(emptyList())
         uut.applyRightButtons(rightButtons(textButton1)!!)
-        assertThat(uut.leftButtonsCount).isZero();
+        assertThat(uut.leftButtonCount).isZero();
     }
 
     @Test
