@@ -1,7 +1,7 @@
 package com.reactnativenavigation.utils
 
 import android.view.View
-
+fun View.isRTL() = layoutDirection == View.LAYOUT_DIRECTION_RTL
 fun View.resetViewProperties() {
     x = 0f
     y = 0f

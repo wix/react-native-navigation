@@ -81,7 +81,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
     }
 
     @Test
-    fun `should maintain stable ids for guest component`() {
+    fun `setComponent - should not change component id`() {
         val component = View(activity).apply { id = 19 }
         val component2 = View(activity).apply { id = 29 }
         uut.setComponent(component)
@@ -91,7 +91,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
         assertThat(component.id).isEqualTo(19)
         assertThat(component2.id).isEqualTo(29)
 
-        uut.clear()
+        uut.clearCurrentTitle()
         assertThat(component.id).isEqualTo(19)
         assertThat(component2.id).isEqualTo(29)
 
@@ -456,13 +456,13 @@ class TitleAndButtonsContainerTest : BaseTest() {
     fun clear_shouldHideTitleAndRemoveComponent() {
         uut.setTitle("Title")
         assertThat(getTitleSubtitleView().visibility).isEqualTo(View.VISIBLE)
-        uut.clear()
+        uut.clearCurrentTitle()
         assertThat(getTitleSubtitleView().visibility).isEqualTo(View.INVISIBLE)
 
         uut.setComponent(View(activity))
         assertThat(uut.getComponent()?.visibility).isEqualTo(View.VISIBLE)
         assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.INVISIBLE)
-        uut.clear()
+        uut.clearCurrentTitle()
         assertThat(getTitleSubtitleView().visibility).isEqualTo(View.INVISIBLE)
 
     }

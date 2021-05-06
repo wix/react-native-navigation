@@ -11,6 +11,7 @@ import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.isRTL
 import kotlin.math.roundToInt
 
 
@@ -38,7 +39,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
     fun setComponent(component: View, alignment: Alignment = Alignment.Default) {
         if (this.component == component) return
-        clear()
+        clearCurrentTitle()
         this.component = component
         this.addView(this.component, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams
                 .WRAP_CONTENT))
@@ -113,10 +114,8 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         }
     }
 
-    fun clear() {
-        if (this.childCount > 0 && this.component == null) {
-            this.titleSubTitleBar.visibility = View.INVISIBLE
-        }
+    fun clearCurrentTitle() {
+        this.titleSubTitleBar.clear()
         clearComponent()
     }
 
@@ -129,7 +128,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         val isCenter = titleComponentAlignment == Alignment.Center
         val parentWidth = r - l
         val parentHeight = b - t
-        val isRTL = layoutDirection == View.LAYOUT_DIRECTION_RTL
+        val isRTL = isRTL()
         val (titleLeft, titleRight) = resolveTitleBoundsLimit(
                 parentWidth,
                 titleComponent.measuredWidth,
