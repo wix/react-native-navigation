@@ -63,6 +63,7 @@ class StackPresenterTest : BaseTest() {
     private lateinit var iconResolver: IconResolver
     private lateinit var buttonCreator: TitleBarButtonCreatorMock
     private lateinit var reactTitleView: TitleBarReactView
+
     override fun beforeEach() {
         activity = spy(newActivity())
         val titleViewCreator: TitleBarReactViewCreatorMock = object : TitleBarReactViewCreatorMock() {
