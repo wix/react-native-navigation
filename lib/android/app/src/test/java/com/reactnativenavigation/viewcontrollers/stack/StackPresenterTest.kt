@@ -206,7 +206,6 @@ class StackPresenterTest : BaseTest() {
         verify(topBarController).mergeLeftButtons(any(), any())
     }
 
-
     @Test
     fun `mergeButtons - modify BackButton should not have effect on stack with with one child`() {
         val options = Options()
