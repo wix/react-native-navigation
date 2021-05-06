@@ -63,6 +63,7 @@ class StackPresenterTest : BaseTest() {
     private lateinit var iconResolver: IconResolver
     private lateinit var buttonCreator: TitleBarButtonCreatorMock
     private lateinit var reactTitleView: TitleBarReactView
+
     override fun beforeEach() {
         activity = spy(newActivity())
         val titleViewCreator: TitleBarReactViewCreatorMock = object : TitleBarReactViewCreatorMock() {
@@ -205,7 +206,6 @@ class StackPresenterTest : BaseTest() {
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
         verify(topBarController).mergeLeftButtons(any(), any())
     }
-
 
     @Test
     fun `mergeButtons - modify BackButton should not have effect on stack with with one child`() {
