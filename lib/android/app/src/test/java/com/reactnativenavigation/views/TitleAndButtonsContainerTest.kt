@@ -431,19 +431,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
         assertThat(getTitleSubtitleView().getSubTitleTxtView().currentTextColor).isEqualTo(Color.YELLOW)
     }
 
-    @Test
-    fun setHeight_changesTitleBarHeight() {
-        uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT)
-        uut.height = UUT_HEIGHT / 2
-        assertThat(uut.layoutParams.height).isEqualTo(UUT_HEIGHT / 2)
-    }
 
-    @Test
-    fun setTopMargin_changesTitleBarTopMargin() {
-        uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT)
-        uut.setTopMargin(10)
-        assertThat(uut.marginTop).isEqualTo(10)
-    }
 
     @Test
     fun getTitle_returnCurrentTextInTitleTextView() {

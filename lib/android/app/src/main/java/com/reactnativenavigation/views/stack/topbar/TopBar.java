@@ -123,12 +123,28 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         setLayoutParams(lp);
     }
 
+
     public void setTitleHeight(int height) {
-        titleAndButtonsContainer.setHeight(height);
+        int pixelHeight = UiUtils.dpToPx(getContext(), height);
+        ViewGroup.LayoutParams layoutParams = titleAndButtonsContainer.getLayoutParams();
+        if (pixelHeight == layoutParams.height) return;
+        layoutParams.height = pixelHeight;
+        titleAndButtonsContainer.setLayoutParams(layoutParams);
     }
 
     public void setTitleTopMargin(int topMargin) {
-        titleAndButtonsContainer.setTopMargin(topMargin);
+        int marginPx = UiUtils.dpToPx(getContext(), topMargin);
+        ViewGroup.LayoutParams layoutParams = titleAndButtonsContainer.getLayoutParams();
+        MarginLayoutParams marginLp;
+        if (layoutParams instanceof MarginLayoutParams) {
+            marginLp  = (MarginLayoutParams) layoutParams;
+        }else{
+            marginLp = new MarginLayoutParams(layoutParams);
+        }
+        if (marginLp.topMargin != topMargin) {
+            marginLp.topMargin = marginPx;
+            this.titleAndButtonsContainer.setLayoutParams(marginLp);
+        }
     }
 
     public void setTitle(String title) {

@@ -9,7 +9,6 @@ import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.FontOptions
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.parsers.TypefaceLoader
-import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.isRTL
 import kotlin.math.roundToInt
@@ -88,30 +87,6 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
     fun setTitleColor(@ColorInt color: Int) = this.titleSubTitleBar.setTitleTextColor(color)
 
     fun getTitle(): String = this.titleSubTitleBar.getTitle()
-
-    fun setHeight(height: Int) {
-        val pixelHeight = UiUtils.dpToPx(context, height)
-        if (this.layoutParams != null) {
-            if (pixelHeight == layoutParams.height) return
-            val lp = layoutParams
-            lp.height = pixelHeight
-            this@TitleAndButtonsContainer.layoutParams = lp
-        } else {
-            this.layoutParams = MarginLayoutParams(LayoutParams.WRAP_CONTENT, pixelHeight)
-        }
-    }
-
-    fun setTopMargin(topMargin: Int) {
-        val pixelTopMargin = UiUtils.dpToPx(context, topMargin)
-        if (layoutParams != null) {
-            if (layoutParams is MarginLayoutParams) {
-                val lp = layoutParams as MarginLayoutParams
-                if (lp.topMargin == pixelTopMargin) return
-                lp.topMargin = pixelTopMargin
-                this@TitleAndButtonsContainer.layoutParams = lp
-            }
-        }
-    }
 
     fun clearCurrentTitle() {
         this.titleSubTitleBar.clear()
