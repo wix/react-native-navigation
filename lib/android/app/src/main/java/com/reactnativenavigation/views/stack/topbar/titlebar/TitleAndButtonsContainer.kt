@@ -95,22 +95,24 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val titleComponent = getTitleComponent()
         val isCenter = titleComponentAlignment == Alignment.Center
-        val parentWidth = r - l
-        val parentHeight = b - t
+        val containerWidth = r - l
+        val containerHeight = b - t
         val isRTL = isRTL()
         val titleWidth = titleComponent.measuredWidth
+        val titleHeight = titleComponent.measuredHeight
         val leftBarWidth = leftButtonBar.measuredWidth
         val rightBarWidth = rightButtonBar.measuredWidth
 
-        val (titleLeft, titleRight) = resolveHorizontalTitleBoundsLimit(parentWidth, titleWidth, leftBarWidth, rightBarWidth, isCenter, isRTL)
-        val (titleTop, titleBottom) = resolveVerticalTitleBoundsLimit(parentHeight, titleWidth)
-        val (leftButtonsLeft, leftButtonsRight) = resolveLeftButtonsBounds(parentWidth, leftBarWidth, isRTL)
-        val (rightButtonsLeft, rightButtonsRight) = resolveRightButtonsBounds(parentWidth, rightButtonBar.measuredWidth, isRTL)
+        val (titleLeft, titleRight) = resolveHorizontalTitleBoundsLimit(containerWidth, titleWidth, leftBarWidth, rightBarWidth, isCenter, isRTL)
+        val (titleTop, titleBottom) = resolveVerticalTitleBoundsLimit(containerHeight, titleHeight)
+        val (leftButtonsLeft, leftButtonsRight) = resolveLeftButtonsBounds(containerWidth, leftBarWidth, isRTL)
+        val (rightButtonsLeft, rightButtonsRight) = resolveRightButtonsBounds(containerWidth, rightButtonBar.measuredWidth, isRTL)
 
         leftButtonBar.layout(leftButtonsLeft, t, leftButtonsRight, b)
         rightButtonBar.layout(rightButtonsLeft, t, rightButtonsRight, b)
-        measureTextTitleEnsureTruncatedEndIfNeeded(titleRight, titleLeft, titleComponent, isCenter)
         titleComponent.layout(titleLeft, titleTop, titleRight, titleBottom)
+
+        measureTextTitleEnsureTruncatedEndIfNeeded(titleRight, titleLeft, titleComponent, isCenter)
     }
 
     private fun measureTextTitleEnsureTruncatedEndIfNeeded(titleRight: TitleRight, titleLeft: TitleLeft, titleComponent: View, isCenter: Boolean) {
@@ -124,33 +126,28 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val mode = MeasureSpec.getMode(widthMeasureSpec)
-        val parentWidth = MeasureSpec.getSize(widthMeasureSpec)
-        val parentHeight = MeasureSpec.getSize(heightMeasureSpec)
-        if (mode == MeasureSpec.EXACTLY) {
-            measureTitleComponentExact(parentWidth, parentHeight)
-        }
-        setMeasuredDimension(parentWidth, parentHeight)
+        val containerWidth = MeasureSpec.getSize(widthMeasureSpec)
+        val containerHeight = MeasureSpec.getSize(heightMeasureSpec)
+        measureTitleComponentExact(mode, containerWidth, containerHeight)
+        setMeasuredDimension(containerWidth, containerHeight)
     }
 
 
-    private fun measureTitleComponentExact(parentWidth: Int, parentHeight: Int) {
+    private fun measureTitleComponentExact(mode: Int, containerWidth: Int, containerHeight: Int) {
+        if (mode != MeasureSpec.EXACTLY) return
         val titleComponent = this.getTitleComponent()
         component?.layoutDirection = View.LAYOUT_DIRECTION_LTR
-        rightButtonBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), MeasureSpec
-                .makeMeasureSpec(parentHeight, MeasureSpec.EXACTLY))
-        leftButtonBar.measure(MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST), MeasureSpec
-                .makeMeasureSpec(parentHeight, MeasureSpec.EXACTLY))
+        rightButtonBar.measure(MeasureSpec.makeMeasureSpec(containerWidth, MeasureSpec.AT_MOST), MeasureSpec
+                .makeMeasureSpec(containerHeight, MeasureSpec.EXACTLY))
+        leftButtonBar.measure(MeasureSpec.makeMeasureSpec(containerWidth, MeasureSpec.AT_MOST), MeasureSpec
+                .makeMeasureSpec(containerHeight, MeasureSpec.EXACTLY))
 
-        titleComponent.measure(makeTitleWidthMeasureSpec(parentWidth, titleComponentAlignment == Alignment.Center),
-                MeasureSpec.makeMeasureSpec(parentHeight, MeasureSpec.AT_MOST))
-    }
-
-    private fun makeTitleWidthMeasureSpec(parentWidth: Int, isCenter: Boolean): Int {
-        return if (isCenter) {
-            MeasureSpec.makeMeasureSpec(parentWidth, MeasureSpec.AT_MOST)
-        } else {
-            MeasureSpec.makeMeasureSpec(parentWidth - rightButtonBar.measuredWidth - leftButtonBar.measuredWidth - 2 * DEFAULT_LEFT_MARGIN_PX, MeasureSpec.AT_MOST)
-        }
+        val rightBarWidth = rightButtonBar.measuredWidth
+        val leftBarWidth = leftButtonBar.measuredWidth
+        val isCenter = titleComponentAlignment == Alignment.Center
+        val titleHeightMeasureSpec = MeasureSpec.makeMeasureSpec(containerHeight, MeasureSpec.AT_MOST)
+        val titleWidthMeasureSpec = makeTitleAtMostWidthMeasureSpec(containerWidth, rightBarWidth, leftBarWidth, isCenter)
+        titleComponent.measure(titleWidthMeasureSpec, titleHeightMeasureSpec)
     }
 
     private fun clearComponent() = this.component?.let { ViewUtils.removeFromParent(it); this.component = null; }
