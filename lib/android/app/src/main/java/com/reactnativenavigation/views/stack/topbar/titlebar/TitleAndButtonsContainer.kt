@@ -9,8 +9,8 @@ import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.FontOptions
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.parsers.TypefaceLoader
-import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.isRTL
+import com.reactnativenavigation.utils.removeFromParent
 
 
 class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
@@ -150,7 +150,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         titleComponent.measure(titleWidthMeasureSpec, titleHeightMeasureSpec)
     }
 
-    private fun clearComponent() = this.component?.let { ViewUtils.removeFromParent(it); this.component = null; }
+    private fun clearComponent() = this.component?.let { it.removeFromParent(); this.component = null; }
 
     internal fun getTitleComponent() = this.component ?: this.titleSubTitleBar
 
