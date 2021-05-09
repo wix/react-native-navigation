@@ -15,6 +15,7 @@ import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.LayoutAnimation
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.logd
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.*
 
@@ -112,6 +113,8 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
     private fun reparent(transition: Transition) {
         with(transition) {
             val loc = ViewUtils.getLocationOnScreen(view)
+            logd("Reparent id:${view.id}, locationOnScreen:${loc}","SETW")
+
             val biologicalParent = view.parent as ViewGroup
             view.setTag(R.id.original_parent, biologicalParent)
             view.setTag(R.id.original_layout_params, view.layoutParams)
@@ -127,10 +130,12 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
 
             val lp = FrameLayout.LayoutParams(view.layoutParams)
             lp.topMargin = loc.y
-            lp.leftMargin = loc.x
+            lp.leftMargin = loc.x;
             lp.width = view.width
             lp.height = view.height
+
             addToOverlay(viewController, view, lp)
+            logd("Adding to overlay at left:${view.left}, right:${view.right}","SETW")
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.logd
 
 class XAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) {
     private val dx: Int
@@ -15,7 +16,10 @@ class XAnimator(from: View, to: View) : PropertyAnimatorCreator<View>(from, to) 
     init {
         val fromXy = ViewUtils.getLocationOnScreen(from)
         val toX = (to.layoutParams as ViewGroup.MarginLayoutParams).leftMargin
-        dx = fromXy.x - toX
+        dx = if (from.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+            -(fromXy.x - toX)
+        } else fromXy.x - toX
+        logd("XAnimator: fromXy:$fromXy, toX:$toX, dx:$dx", "SETW")
     }
 
     override fun excludedViews() = listOf(ReactTextView::class.java)
