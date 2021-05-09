@@ -11,7 +11,6 @@ import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.isRTL
-import kotlin.math.roundToInt
 
 
 class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
@@ -94,35 +93,27 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        layoutChildren(l, r, t, b)
-    }
-
-    private fun layoutChildren(l: Int, r: Int, t: Int, b: Int) {
         val titleComponent = getTitleComponent()
         val isCenter = titleComponentAlignment == Alignment.Center
         val parentWidth = r - l
         val parentHeight = b - t
         val isRTL = isRTL()
-        val (titleLeft, titleRight) = resolveTitleBoundsLimit(
-                parentWidth,
-                titleComponent.measuredWidth,
-                leftButtonBar.measuredWidth,
-                rightButtonBar.measuredWidth,
-                isCenter,
-                isRTL
-        )
-        val (leftButtonsLeft, leftButtonsRight) = resolveLeftToolbarBounds(parentWidth, leftButtonBar.measuredWidth, isRTL)
-        val (rightButtonsLeft, rightButtonsRight) = resolveRightToolbarBounds(parentWidth, rightButtonBar.measuredWidth,
-                isRTL)
+        val titleWidth = titleComponent.measuredWidth
+        val leftBarWidth = leftButtonBar.measuredWidth
+        val rightBarWidth = rightButtonBar.measuredWidth
+
+        val (titleLeft, titleRight) = resolveHorizontalTitleBoundsLimit(parentWidth, titleWidth, leftBarWidth, rightBarWidth, isCenter, isRTL)
+        val (titleTop, titleBottom) = resolveVerticalTitleBoundsLimit(parentHeight, titleWidth)
+        val (leftButtonsLeft, leftButtonsRight) = resolveLeftButtonsBounds(parentWidth, leftBarWidth, isRTL)
+        val (rightButtonsLeft, rightButtonsRight) = resolveRightButtonsBounds(parentWidth, rightButtonBar.measuredWidth, isRTL)
 
         leftButtonBar.layout(leftButtonsLeft, t, leftButtonsRight, b)
         rightButtonBar.layout(rightButtonsLeft, t, rightButtonsRight, b)
-        truncateComponentMeasurementIfNeeded(titleRight, titleLeft, titleComponent, isCenter)
-        titleComponent.layout(titleLeft, (parentHeight / 2f - titleComponent.measuredHeight / 2f).roundToInt(), titleRight,
-                (parentHeight / 2f + titleComponent.measuredHeight / 2f).roundToInt())
+        measureTextTitleEnsureTruncatedEndIfNeeded(titleRight, titleLeft, titleComponent, isCenter)
+        titleComponent.layout(titleLeft, titleTop, titleRight, titleBottom)
     }
 
-    private fun truncateComponentMeasurementIfNeeded(titleRight: TitleRight, titleLeft: TitleLeft, titleComponent: View, isCenter: Boolean) {
+    private fun measureTextTitleEnsureTruncatedEndIfNeeded(titleRight: TitleRight, titleLeft: TitleLeft, titleComponent: View, isCenter: Boolean) {
         if (component == null && titleRight - titleLeft != titleComponent.measuredWidth) {
             val margin = if (isCenter) 0 else 2 * DEFAULT_LEFT_MARGIN_PX
             titleComponent.measure(MeasureSpec.makeMeasureSpec(titleRight - titleLeft + margin, MeasureSpec.EXACTLY),
@@ -164,8 +155,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
     private fun clearComponent() = this.component?.let { ViewUtils.removeFromParent(it); this.component = null; }
 
-    @RestrictTo(RestrictTo.Scope.TESTS, RestrictTo.Scope.LIBRARY)
-    fun getTitleComponent() = this.component ?: this.titleSubTitleBar
+    internal fun getTitleComponent() = this.component ?: this.titleSubTitleBar
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun getComponent() = this.component
