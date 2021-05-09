@@ -4,14 +4,24 @@ import android.content.res.Resources
 import com.reactnativenavigation.utils.UiUtils
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 const val DEFAULT_LEFT_MARGIN_DP = 16f
 internal val DEFAULT_LEFT_MARGIN_PX = UiUtils.dpToPx(Resources.getSystem().displayMetrics, DEFAULT_LEFT_MARGIN_DP).toInt()
 
 typealias TitleLeft = Int
 typealias TitleRight = Int
+typealias TitleTop = Int
+typealias TitleBottom = Int
 
-fun resolveTitleBoundsLimit(
+fun resolveVerticalTitleBoundsLimit(
+        parentHeight: Int,
+        titleHeight: Int,
+): Pair<TitleTop, TitleBottom> {
+    return (parentHeight / 2f - titleHeight / 2f).roundToInt() to (parentHeight / 2f + titleHeight / 2f).roundToInt()
+}
+
+fun resolveHorizontalTitleBoundsLimit(
         parentWidth: Int,
         titleWidth: Int,
         leftBarWidth: Int,
@@ -29,7 +39,7 @@ fun resolveTitleBoundsLimit(
         val availableSpace = parentWidth - resolvedLeftBarWidth - resolvedRightBarWidth
         if (titleWidth >= availableSpace) {
             return resolvedLeftBarWidth to rightLimit
-        }else{
+        } else {
             suggestedLeft = max(parentWidth / 2 - titleWidth / 2, 0)
             suggestedRight = min(suggestedLeft + titleWidth, parentWidth)
 
@@ -59,7 +69,7 @@ fun resolveTitleBoundsLimit(
     return suggestedLeft to suggestedRight
 }
 
-fun resolveLeftToolbarBounds(parentWidth: Int,
+fun resolveLeftButtonsBounds(parentWidth: Int,
                              barWidth: Int,
                              isRTL: Boolean): Pair<Int, Int> {
     return if (isRTL) {
@@ -69,8 +79,8 @@ fun resolveLeftToolbarBounds(parentWidth: Int,
     }
 }
 
-fun resolveRightToolbarBounds(parentWidth: Int,
+fun resolveRightButtonsBounds(parentWidth: Int,
                               barWidth: Int,
                               isRTL: Boolean): Pair<Int, Int> {
-    return resolveLeftToolbarBounds(parentWidth, barWidth, !isRTL)
+    return resolveLeftButtonsBounds(parentWidth, barWidth, !isRTL)
 }
