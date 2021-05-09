@@ -10,8 +10,7 @@ import com.reactnativenavigation.react.ReactView
 class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceManager?, componentId: String?,
                         componentName: String?) : ReactView(context, reactInstanceManager, componentId, componentName) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val spec = interceptReactRootViewMeasureSpec(widthMeasureSpec)
-        super.onMeasure(spec, heightMeasureSpec)
+        super.onMeasure(interceptReactRootViewMeasureSpec(widthMeasureSpec), heightMeasureSpec)
     }
 
     private fun interceptReactRootViewMeasureSpec(widthMeasureSpec: Int): Int {
