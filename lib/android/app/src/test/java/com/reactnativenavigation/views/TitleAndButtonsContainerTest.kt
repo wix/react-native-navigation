@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.core.view.marginTop
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
 import com.reactnativenavigation.BaseTest
@@ -345,17 +344,13 @@ class TitleAndButtonsContainerTest : BaseTest() {
 
 
     @Test
-    fun setComponent_shouldReplaceTitleViewIfExist() {
+    fun setComponent_shouldResetTextTitleWhenSettingComponent() {
         setup(mockUUT = false)
-
         uut.setTitle("Title")
-        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.VISIBLE)
-
-        val compId = 19
-        val component = View(activity).apply { id = compId }
+        assertThat(uut.getTitle()).isEqualTo("Title")
+        val component = View(activity)
         uut.setComponent(component)
-        assertThat(uut.findViewById<View?>(component.id)).isEqualTo(component)
-        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.INVISIBLE)
+        assertThat(uut.getTitle()).isNullOrEmpty()
     }
 
 
@@ -376,16 +371,14 @@ class TitleAndButtonsContainerTest : BaseTest() {
     }
 
     @Test
-    fun setTitle_shouldReplaceComponentIfExist() {
+    fun setTitle_shouldResetTitleComponentWhenSettingTextTitle() {
         setup(mockUUT = false)
-        val compId = 19
-        val component = View(activity).apply { id = compId }
+        val component = View(activity)
         uut.setComponent(component)
-        val id = component.id
-        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.INVISIBLE)
+        assertThat(uut.getTitle()).isNullOrEmpty()
 
         uut.setTitle("Title")
-        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.VISIBLE)
+        assertThat(uut.getTitle()).isEqualTo("Title")
     }
 
 
@@ -441,17 +434,18 @@ class TitleAndButtonsContainerTest : BaseTest() {
     }
 
     @Test
-    fun clear_shouldHideTitleAndRemoveComponent() {
+    fun clearCurrentTitle_shouldCleatTextAndRemoveComponent() {
         uut.setTitle("Title")
-        assertThat(getTitleSubtitleView().visibility).isEqualTo(View.VISIBLE)
+        assertThat(uut.getTitle()).isEqualTo("Title")
         uut.clearCurrentTitle()
-        assertThat(getTitleSubtitleView().visibility).isEqualTo(View.INVISIBLE)
+        assertThat(uut.getTitle()).isNullOrEmpty()
 
-        uut.setComponent(View(activity))
-        assertThat(uut.getComponent()?.visibility).isEqualTo(View.VISIBLE)
-        assertThat(uut.getTitleSubtitleBar().visibility).isEqualTo(View.INVISIBLE)
+        val component = View(activity)
+        uut.setComponent(component)
+        assertThat(uut.getTitleComponent()).isEqualTo(component)
+
         uut.clearCurrentTitle()
-        assertThat(getTitleSubtitleView().visibility).isEqualTo(View.INVISIBLE)
+        assertThat(uut.getTitleComponent()).isNotEqualTo(component)
 
     }
 
