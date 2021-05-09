@@ -65,7 +65,7 @@
     "@babel/plugin-proposal-export-namespace-from": "7.10.1",
     "@babel/types": "7.6.x",
     "@react-native-community/blur": "^3.6.0",
-    "@react-native-community/datetimepicker": "^2.5.0",
+    "@react-native-community/datetimepicker": "^3.4.7",
     "@react-native-community/eslint-config": "2.0.0",
     "@react-native-community/netinfo": "^5.9.4",
     "@types/detox": "16.4.1",
