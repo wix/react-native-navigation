@@ -55,10 +55,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private float elevation = -1;
     private final TitleAndButtonsContainer titleAndButtonsContainer;
 
-    public int getRightButtonsCount() {
-        return titleAndButtonsContainer.getRightButtonBar().getButtonCount();
-    }
-
     @Nullable
     public Drawable getNavigationIcon() {
         return titleAndButtonsContainer.getLeftButtonBar().getNavigationIcon();
@@ -83,7 +79,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
         root = new FrameLayout(getContext());
         root.setId(CompatUtils.generateViewId());
-        content.addView(titleAndButtonsContainer, MATCH_PARENT, UiUtils.getTopBarHeight(getContext()));
+        content.addView(titleAndButtonsContainer, new MarginLayoutParams(MATCH_PARENT,
+                UiUtils.getTopBarHeight(getContext())));
         content.addView(topTabs);
         root.addView(content);
         root.addView(border);
@@ -133,16 +130,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setTitleTopMargin(int topMargin) {
         int marginPx = UiUtils.dpToPx(getContext(), topMargin);
-        ViewGroup.LayoutParams layoutParams = titleAndButtonsContainer.getLayoutParams();
-        MarginLayoutParams marginLp;
-        if (layoutParams instanceof MarginLayoutParams) {
-            marginLp  = (MarginLayoutParams) layoutParams;
-        }else{
-            marginLp = new MarginLayoutParams(layoutParams);
-        }
-        if (marginLp.topMargin != topMargin) {
-            marginLp.topMargin = marginPx;
-            this.titleAndButtonsContainer.setLayoutParams(marginLp);
+        MarginLayoutParams layoutParams = (MarginLayoutParams) titleAndButtonsContainer.getLayoutParams();
+        if (layoutParams.topMargin != topMargin) {
+            layoutParams.topMargin = marginPx;
+            titleAndButtonsContainer.setLayoutParams(layoutParams);
         }
     }
 
