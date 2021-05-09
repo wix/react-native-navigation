@@ -2,9 +2,9 @@ package com.reactnativenavigation.utils
 
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_PX
-import com.reactnativenavigation.views.stack.topbar.titlebar.resolveLeftToolbarBounds
-import com.reactnativenavigation.views.stack.topbar.titlebar.resolveRightToolbarBounds
-import com.reactnativenavigation.views.stack.topbar.titlebar.resolveTitleBoundsLimit
+import com.reactnativenavigation.views.stack.topbar.titlebar.resolveLeftButtonsBounds
+import com.reactnativenavigation.views.stack.topbar.titlebar.resolveRightButtonsBounds
+import com.reactnativenavigation.views.stack.topbar.titlebar.resolveHorizontalTitleBoundsLimit
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -15,7 +15,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
     fun `left buttons should be at parent start`() {
         val barWidth = 200
         val isRTL = false
-        val (left, right) = resolveLeftToolbarBounds(parentWidth, barWidth, isRTL)
+        val (left, right) = resolveLeftButtonsBounds(parentWidth, barWidth, isRTL)
 
         assertEquals(0, left)
         assertEquals(barWidth, right)
@@ -23,9 +23,9 @@ class TitleAndButtonsMeasurer : BaseTest() {
 
     @Test
     fun `left buttons should not exceed parent width`() {
-        val barWidth = 1081
+        val barWidth = parentWidth + 1
         val isRTL = false
-        val (left, right) = resolveLeftToolbarBounds(parentWidth, barWidth, isRTL)
+        val (left, right) = resolveLeftButtonsBounds(parentWidth, barWidth, isRTL)
 
         assertEquals(0, left)
         assertEquals(parentWidth, right)
@@ -35,7 +35,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
     fun `RTL - left buttons should be at parent end`() {
         val barWidth = 200
         val isRTL = true
-        val (left, right) = resolveLeftToolbarBounds(parentWidth, barWidth, isRTL)
+        val (left, right) = resolveLeftButtonsBounds(parentWidth, barWidth, isRTL)
 
         assertEquals(parentWidth - barWidth, left)
         assertEquals(parentWidth, right)
@@ -43,9 +43,9 @@ class TitleAndButtonsMeasurer : BaseTest() {
 
     @Test
     fun `RTL - left buttons should not exceed parent left`() {
-        val barWidth = 1081
+        val barWidth = parentWidth + 1
         val isRTL = true
-        val (left, right) = resolveLeftToolbarBounds(parentWidth, barWidth, isRTL)
+        val (left, right) = resolveLeftButtonsBounds(parentWidth, barWidth, isRTL)
 
         assertEquals(0, left)
         assertEquals(parentWidth, right)
@@ -55,7 +55,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
     fun `right buttons should be at parent end`() {
         val barWidth = 200
         val isRTL = false
-        val (left, right) = resolveRightToolbarBounds(parentWidth, barWidth, isRTL)
+        val (left, right) = resolveRightButtonsBounds(parentWidth, barWidth, isRTL)
 
         assertEquals(parentWidth - barWidth, left)
         assertEquals(parentWidth, right)
@@ -63,9 +63,9 @@ class TitleAndButtonsMeasurer : BaseTest() {
 
     @Test
     fun `right buttons should not exceed parent start`() {
-        val barWidth = 1081
+        val barWidth = parentWidth + 1
         val isRTL = false
-        val (left, right) = resolveRightToolbarBounds(parentWidth, barWidth, isRTL)
+        val (left, right) = resolveRightButtonsBounds(parentWidth, barWidth, isRTL)
 
         assertEquals(0, left)
         assertEquals(parentWidth, right)
@@ -75,7 +75,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
     fun `RTL - right buttons should be at parent start`() {
         val barWidth = 200
         val isRTL = true
-        val (left, right) = resolveRightToolbarBounds(parentWidth, barWidth, isRTL)
+        val (left, right) = resolveRightButtonsBounds(parentWidth, barWidth, isRTL)
 
         assertEquals(0, left)
         assertEquals(barWidth, right)
@@ -83,9 +83,9 @@ class TitleAndButtonsMeasurer : BaseTest() {
 
     @Test
     fun `RTL - right buttons should not exceed parent end`() {
-        val barWidth = 1081
+        val barWidth = parentWidth + 1
         val isRTL = true
-        val (left, right) = resolveRightToolbarBounds(parentWidth, barWidth, isRTL)
+        val (left, right) = resolveRightButtonsBounds(parentWidth, barWidth, isRTL)
 
         assertEquals(0, left)
         assertEquals(parentWidth, right)
@@ -98,7 +98,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 0
         val isRTL = false
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(DEFAULT_LEFT_MARGIN_PX + barWidth + DEFAULT_LEFT_MARGIN_PX, right)
@@ -111,7 +111,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 0
         val isRTL = true
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(parentWidth - DEFAULT_LEFT_MARGIN_PX - barWidth - DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(parentWidth - DEFAULT_LEFT_MARGIN_PX, right)
@@ -119,12 +119,12 @@ class TitleAndButtonsMeasurer : BaseTest() {
 
     @Test
     fun `RTL - No Buttons - Aligned start - Title should not exceed boundaries`() {
-        val barWidth = 1081
+        val barWidth = parentWidth + 1
         val leftButtons = 0
         val rightButtons = 0
         val isRTL = true
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(parentWidth - DEFAULT_LEFT_MARGIN_PX, right)
@@ -132,12 +132,12 @@ class TitleAndButtonsMeasurer : BaseTest() {
 
     @Test
     fun `No Buttons - Aligned start - Title should not exceed parent boundaries`() {
-        val barWidth = 1081
+        val barWidth = parentWidth + 1
         val leftButtons = 0
         val rightButtons = 0
         val isRTL = false
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(parentWidth - DEFAULT_LEFT_MARGIN_PX, right)
@@ -146,12 +146,12 @@ class TitleAndButtonsMeasurer : BaseTest() {
 
     @Test
     fun `No Buttons - Aligned center - Title should not exceed parent boundaries`() {
-        val barWidth = 1081
+        val barWidth = parentWidth + 1
         val leftButtons = 0
         val rightButtons = 0
         val isRTL = false
         val center = true
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(0, left)
         assertEquals(parentWidth, right)
@@ -164,7 +164,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 0
         val isRTL = false
         val center = true
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(parentWidth / 2 - barWidth / 2, left)
         assertEquals(parentWidth / 2 + barWidth / 2, right)
@@ -177,7 +177,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 0
         val isRTL = true
         val center = true
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(parentWidth / 2 - barWidth / 2, left)
         assertEquals(parentWidth / 2 + barWidth / 2, right)
@@ -190,7 +190,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 0
         val isRTL = false
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(leftButtons + DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(leftButtons + DEFAULT_LEFT_MARGIN_PX + barWidth + DEFAULT_LEFT_MARGIN_PX, right)
@@ -198,12 +198,12 @@ class TitleAndButtonsMeasurer : BaseTest() {
 
     @Test
     fun `Left Buttons - Aligned start - Title should not exceed boundaries`() {
-        val barWidth = 1081
+        val barWidth = parentWidth + 1
         val leftButtons = 100
         val rightButtons = 0
         val isRTL = false
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(leftButtons + DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(parentWidth - DEFAULT_LEFT_MARGIN_PX, right)
@@ -216,7 +216,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 0
         val isRTL = true
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(parentWidth - DEFAULT_LEFT_MARGIN_PX - leftButtons - barWidth - DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(parentWidth - DEFAULT_LEFT_MARGIN_PX - leftButtons, right)
@@ -224,12 +224,12 @@ class TitleAndButtonsMeasurer : BaseTest() {
 
     @Test
     fun `RTL - Left Buttons - Aligned start - Title should not exceed boundaries`() {
-        val barWidth = 1081
+        val barWidth = parentWidth + 1
         val leftButtons = 100
         val rightButtons = 0
         val isRTL = true
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(parentWidth - leftButtons - DEFAULT_LEFT_MARGIN_PX, right)
@@ -243,7 +243,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 0
         val isRTL = false
         val center = true
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
 
         assertEquals(parentWidth / 2 - barWidth / 2, left)
         assertEquals(parentWidth / 2 + barWidth / 2, right)
@@ -257,7 +257,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 0
         val isRTL = false
         val center = true
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
         val expectedOverlap = leftButtons - (parentWidth / 2 - barWidth / 2)
         assertEquals(parentWidth / 2 - barWidth / 2 + expectedOverlap, left)
         assertEquals(parentWidth / 2 + barWidth / 2 - expectedOverlap, right)
@@ -271,7 +271,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 0
         val isRTL = true
         val center = true
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
         val expectedOverlap = leftButtons - (parentWidth / 2 - barWidth / 2)
         assertEquals(parentWidth / 2 - barWidth / 2 + expectedOverlap, left)
         assertEquals(parentWidth / 2 + barWidth / 2 - expectedOverlap, right)
@@ -286,7 +286,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 350
         val isRTL = false
         val center = true
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
         assertEquals(leftButtons, left)
         assertEquals(parentWidth - rightButtons, right)
     }
@@ -299,7 +299,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 350
         val isRTL = true
         val center = true
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
         assertEquals(rightButtons, left)
         assertEquals(parentWidth - leftButtons, right)
     }
@@ -312,7 +312,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 350
         val isRTL = false
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
         assertEquals(leftButtons + DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(parentWidth - rightButtons - DEFAULT_LEFT_MARGIN_PX, right)
     }
@@ -324,7 +324,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 350
         val isRTL = false
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
         assertEquals(leftButtons + DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(leftButtons + DEFAULT_LEFT_MARGIN_PX + barWidth + DEFAULT_LEFT_MARGIN_PX, right)
     }
@@ -337,7 +337,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 350
         val isRTL = true
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
         assertEquals(rightButtons + DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(parentWidth - leftButtons - DEFAULT_LEFT_MARGIN_PX, right)
     }
@@ -350,7 +350,7 @@ class TitleAndButtonsMeasurer : BaseTest() {
         val rightButtons = 100
         val isRTL = true
         val center = false
-        val (left, right) = resolveTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
+        val (left, right) = resolveHorizontalTitleBoundsLimit(parentWidth, barWidth, leftButtons, rightButtons, center, isRTL)
         assertEquals(parentWidth - leftButtons - DEFAULT_LEFT_MARGIN_PX - barWidth - DEFAULT_LEFT_MARGIN_PX, left)
         assertEquals(parentWidth - leftButtons - DEFAULT_LEFT_MARGIN_PX, right)
     }
