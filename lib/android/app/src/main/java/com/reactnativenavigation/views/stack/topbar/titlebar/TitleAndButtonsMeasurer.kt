@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.content.res.Resources
+import android.view.View
 import com.reactnativenavigation.utils.UiUtils
 import kotlin.math.max
 import kotlin.math.min
@@ -13,6 +14,14 @@ typealias TitleLeft = Int
 typealias TitleRight = Int
 typealias TitleTop = Int
 typealias TitleBottom = Int
+
+fun makeTitleAtMostWidthMeasureSpec(containerWidth: Int, rightBarWidth: Int, leftBarWidth: Int, isCenter: Boolean): Int {
+    return if (isCenter) {
+        View.MeasureSpec.makeMeasureSpec(containerWidth, View.MeasureSpec.AT_MOST)
+    } else {
+        View.MeasureSpec.makeMeasureSpec(containerWidth - rightBarWidth - leftBarWidth - 2 * DEFAULT_LEFT_MARGIN_PX, View.MeasureSpec.AT_MOST)
+    }
+}
 
 fun resolveVerticalTitleBoundsLimit(
         parentHeight: Int,
