@@ -195,6 +195,15 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
+    fun setRoot_activityDestroyDuringAnimationShouldNotCrash() {
+        uut.push(child1, CommandListenerAdapter())
+        uut.push(child2, CommandListenerAdapter())
+
+        uut.setRoot(listOf(child1), CommandListenerAdapter())
+        uut.push(child3, CommandListenerAdapter())
+    }
+
+    @Test
     fun push_backButtonAddedBeforeChildViewIsCreated() {
         disablePopAnimation(child1, child2)
         uut.push(child1, CommandListenerAdapter())

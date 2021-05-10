@@ -258,6 +258,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void destroyStack(IdStack stack) {
+      animator.cancelAllAnimations();
         for (String s : (Iterable<String>) stack) {
             ((ViewController) stack.get(s)).destroy();
         }

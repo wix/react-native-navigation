@@ -42,6 +42,12 @@ open class StackAnimator @JvmOverloads constructor(
                 runningSetRootAnimations.containsKey(child)
     }
 
+    fun cancelAllAnimations() {
+        runningPushAnimations.clear()
+        runningPopAnimations.clear()
+        runningSetRootAnimations.clear()
+    }
+
     fun setRoot(
             appearing: ViewController<*>,
             disappearing: ViewController<*>,
@@ -151,11 +157,13 @@ open class StackAnimator @JvmOverloads constructor(
         set.addListener(object : AnimatorListenerAdapter() {
             private var cancelled = false
             override fun onAnimationCancel(animation: Animator) {
+                if (!runningPopAnimations.contains(disappearing)) return
                 cancelled = true
                 runningPopAnimations.remove(disappearing)
             }
 
             override fun onAnimationEnd(animation: Animator) {
+                if (!runningPopAnimations.contains(disappearing)) return
                 runningPopAnimations.remove(disappearing)
                 if (!cancelled) onAnimationEnd.run()
             }
@@ -168,12 +176,14 @@ open class StackAnimator @JvmOverloads constructor(
         set.addListener(object : AnimatorListenerAdapter() {
             private var isCancelled = false
             override fun onAnimationCancel(animation: Animator) {
+                if (!runningPushAnimations.contains(appearing)) return
                 isCancelled = true
                 runningPushAnimations.remove(appearing)
                 onAnimationEnd.run()
             }
 
             override fun onAnimationEnd(animation: Animator) {
+                if (!runningPushAnimations.contains(appearing)) return
                 if (!isCancelled) {
                     runningPushAnimations.remove(appearing)
                     onAnimationEnd.run()
@@ -188,12 +198,14 @@ open class StackAnimator @JvmOverloads constructor(
         set.addListener(object : AnimatorListenerAdapter() {
             private var isCancelled = false
             override fun onAnimationCancel(animation: Animator) {
+                if (!runningSetRootAnimations.contains(appearing)) return
                 isCancelled = true
                 runningSetRootAnimations.remove(appearing)
                 onAnimationEnd.run()
             }
 
             override fun onAnimationEnd(animation: Animator) {
+                if (!runningSetRootAnimations.contains(appearing)) return
                 if (!isCancelled) {
                     runningSetRootAnimations.remove(appearing)
                     onAnimationEnd.run()
