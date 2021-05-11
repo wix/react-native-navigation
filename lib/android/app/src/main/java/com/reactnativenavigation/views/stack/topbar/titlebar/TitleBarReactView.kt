@@ -14,12 +14,11 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
     }
 
     private fun interceptReactRootViewMeasureSpec(widthMeasureSpec: Int): Int {
-        //This is a hack, ReactRootView manipulates the children by UIManageModule that is being done via
-        // UIManageModule, Will work fine if the ReactRootView has fixed dimension or MATCH_PARENT and then the
-        // measure is taking the result of the width spec, and continue safely whereas the WRAP_CONTENT will cause
-        // the measurement to be always as the parent width or 0, instead, intercepting the measured child early and
-        // set the measurement for the parent as the largest react view child.
-        // see https://github.com/wix/react-native-navigation/pull/7096
+        // This is a HACK.
+        // ReactRootView has problematic behavior when setting width to WRAP_CONTENT,
+        // It's causing infinite measurements, that hung up the UI.
+        // Intercepting largest child by width, and use its width as (parent) ReactRootView width fixed that.
+        // See for more details https://github.com/wix/react-native-navigation/pull/7096
         val measuredWidth = this.children.maxByOrNull { it.measuredWidth }?.measuredWidth ?: 0
         return if (measuredWidth > 0) MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY) else
             widthMeasureSpec
