@@ -30,29 +30,29 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         private set
 
     init {
-        this.addView(leftButtonBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
-        this.addView(titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
-        this.addView(rightButtonBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
+        addView(leftButtonBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
+        addView(titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
+        addView(rightButtonBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
     }
 
     fun setComponent(component: View, alignment: Alignment = Alignment.Default) {
         if (this.component == component) return
-        clearCurrentTitle()
+        clearTitle()
         this.component = component
-        this.addView(this.component, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+        addView(this.component, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
         titleComponentAlignment = alignment
     }
 
     fun setTitle(title: CharSequence?) {
         clearComponent()
-        this.titleSubTitleBar.visibility = View.VISIBLE
-        this.titleSubTitleBar.setTitle(title)
+        titleSubTitleBar.visibility = View.VISIBLE
+        titleSubTitleBar.setTitle(title)
     }
 
-    fun setSubtitle(title: CharSequence?) {
+    fun setSubtitle(subtitle: CharSequence?) {
         clearComponent()
-        this.titleSubTitleBar.visibility = View.VISIBLE
-        this.titleSubTitleBar.setSubtitle(title)
+        titleSubTitleBar.visibility = View.VISIBLE
+        titleSubTitleBar.setSubtitle(subtitle)
     }
 
     fun setTitleBarAlignment(alignment: Alignment) {
@@ -61,34 +61,34 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
     override fun setLayoutDirection(layoutDirection: Int) {
         super.setLayoutDirection(layoutDirection)
-        this.component?.layoutDirection = layoutDirection
-        this.titleSubTitleBar.layoutDirection = layoutDirection
-        this.rightButtonBar.layoutDirection = layoutDirection
-        this.leftButtonBar.layoutDirection = layoutDirection
+        component?.layoutDirection = layoutDirection
+        titleSubTitleBar.layoutDirection = layoutDirection
+        rightButtonBar.layoutDirection = layoutDirection
+        leftButtonBar.layoutDirection = layoutDirection
     }
 
-    fun setSubTitleTextAlignment(alignment: Alignment) = this.titleSubTitleBar.setSubTitleAlignment(alignment)
+    fun setSubTitleTextAlignment(alignment: Alignment) = titleSubTitleBar.setSubTitleAlignment(alignment)
 
-    fun setTitleTextAlignment(alignment: Alignment) = this.titleSubTitleBar.setTitleAlignment(alignment)
+    fun setTitleTextAlignment(alignment: Alignment) = titleSubTitleBar.setTitleAlignment(alignment)
 
     fun setBackgroundColor(color: Colour) = if (color.hasValue()) setBackgroundColor(color.get()) else Unit
 
-    fun setTitleFontSize(size: Float) = this.titleSubTitleBar.setTitleFontSize(size)
+    fun setTitleFontSize(size: Float) = titleSubTitleBar.setTitleFontSize(size)
 
-    fun setTitleTypeface(typefaceLoader: TypefaceLoader, font: FontOptions) = this.titleSubTitleBar.setTitleTypeface(typefaceLoader, font)
+    fun setTitleTypeface(typefaceLoader: TypefaceLoader, font: FontOptions) = titleSubTitleBar.setTitleTypeface(typefaceLoader, font)
 
-    fun setSubtitleTypeface(typefaceLoader: TypefaceLoader, font: FontOptions) = this.titleSubTitleBar.setSubtitleTypeface(typefaceLoader, font)
+    fun setSubtitleTypeface(typefaceLoader: TypefaceLoader, font: FontOptions) = titleSubTitleBar.setSubtitleTypeface(typefaceLoader, font)
 
-    fun setSubtitleFontSize(size: Float) = this.titleSubTitleBar.setSubtitleFontSize(size)
+    fun setSubtitleFontSize(size: Float) = titleSubTitleBar.setSubtitleFontSize(size)
 
-    fun setSubtitleColor(@ColorInt color: Int) = this.titleSubTitleBar.setSubtitleTextColor(color)
+    fun setSubtitleColor(@ColorInt color: Int) = titleSubTitleBar.setSubtitleTextColor(color)
 
-    fun setTitleColor(@ColorInt color: Int) = this.titleSubTitleBar.setTitleTextColor(color)
+    fun setTitleColor(@ColorInt color: Int) = titleSubTitleBar.setTitleTextColor(color)
 
-    fun getTitle(): String = this.titleSubTitleBar.getTitle()
+    fun getTitle(): String = titleSubTitleBar.getTitle()
 
-    fun clearCurrentTitle() {
-        this.titleSubTitleBar.clear()
+    fun clearTitle() {
+        titleSubTitleBar.clear()
         clearComponent()
     }
 
@@ -135,8 +135,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
     private fun measureTitleComponentExact(mode: Int, containerWidth: Int, containerHeight: Int) {
         if (mode != MeasureSpec.EXACTLY) return
-        val titleComponent = this.getTitleComponent()
-        component?.layoutDirection = View.LAYOUT_DIRECTION_LTR
+        val titleComponent = getTitleComponent()
         rightButtonBar.measure(MeasureSpec.makeMeasureSpec(containerWidth, MeasureSpec.AT_MOST), MeasureSpec
                 .makeMeasureSpec(containerHeight, MeasureSpec.EXACTLY))
         leftButtonBar.measure(MeasureSpec.makeMeasureSpec(containerWidth, MeasureSpec.AT_MOST), MeasureSpec
@@ -150,32 +149,32 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         titleComponent.measure(titleWidthMeasureSpec, titleHeightMeasureSpec)
     }
 
-    private fun clearComponent() = this.component?.let { it.removeFromParent(); this.component = null; }
+    private fun clearComponent() = component?.let { it.removeFromParent(); component = null; }
 
-    internal fun getTitleComponent() = this.component ?: this.titleSubTitleBar
+    internal fun getTitleComponent() = component ?: titleSubTitleBar
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    fun getComponent() = this.component
+    fun getComponent() = component
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun setTitleSubtitleLayout(layout: TitleSubTitleLayout) {
-        this.removeView(this.titleSubTitleBar)
-        this.titleSubTitleBar = layout
-        this.addView(this.titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
+        removeView(titleSubTitleBar)
+        titleSubTitleBar = layout
+        addView(titleSubTitleBar, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun setButtonBars(left: ButtonBar, right: ButtonBar) {
         val leftLp = LayoutParams(leftButtonBar.layoutParams)
         val rightLp = LayoutParams(rightButtonBar.layoutParams)
-        this.removeView(leftButtonBar)
-        this.removeView(rightButtonBar)
-        this.addView(left, leftLp)
-        this.addView(right, rightLp)
-        this.leftButtonBar = left
-        this.rightButtonBar = right
+        removeView(leftButtonBar)
+        removeView(rightButtonBar)
+        addView(left, leftLp)
+        addView(right, rightLp)
+        leftButtonBar = left
+        rightButtonBar = right
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    fun getTitleSubtitleBar() = this.titleSubTitleBar
+    fun getTitleSubtitleBar() = titleSubTitleBar
 }

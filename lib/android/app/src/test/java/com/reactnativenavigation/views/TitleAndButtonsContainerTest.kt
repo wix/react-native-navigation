@@ -90,7 +90,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
         assertThat(component.id).isEqualTo(19)
         assertThat(component2.id).isEqualTo(29)
 
-        uut.clearCurrentTitle()
+        uut.clearTitle()
         assertThat(component.id).isEqualTo(19)
         assertThat(component2.id).isEqualTo(29)
 
@@ -437,14 +437,14 @@ class TitleAndButtonsContainerTest : BaseTest() {
     fun clearCurrentTitle_shouldCleatTextAndRemoveComponent() {
         uut.setTitle("Title")
         assertThat(uut.getTitle()).isEqualTo("Title")
-        uut.clearCurrentTitle()
+        uut.clearTitle()
         assertThat(uut.getTitle()).isNullOrEmpty()
 
         val component = View(activity)
         uut.setComponent(component)
         assertThat(uut.getTitleComponent()).isEqualTo(component)
 
-        uut.clearCurrentTitle()
+        uut.clearTitle()
         assertThat(uut.getTitleComponent()).isNotEqualTo(component)
 
     }
