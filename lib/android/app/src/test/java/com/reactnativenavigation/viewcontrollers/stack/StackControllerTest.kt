@@ -31,7 +31,6 @@ import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.assertj.core.api.iterable.Extractor
-import org.json.JSONException
 import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
@@ -493,7 +492,6 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
-    @Throws(JSONException::class)
     fun pop_animationOptionsAreMergedCorrectlyToDisappearingChild() {
         disablePushAnimation(child1, child2)
         uut.push(child1, CommandListenerAdapter())
@@ -511,7 +509,6 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
-    @Throws(JSONException::class)
     fun pop_animationOptionsAreMergedCorrectlyToDisappearingChildWithDefaultOptions() {
         disablePushAnimation(child1, child2)
         uut.push(child1, CommandListenerAdapter())
@@ -862,7 +859,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun stackCanBePushed() {
-        ViewUtils.removeFromParent(uut.view)
+        uut.view.removeFromParent()
         val parent = createStack("someStack")
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())
@@ -872,7 +869,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun applyOptions_applyOnlyOnFirstStack() {
-        ViewUtils.removeFromParent(uut.view)
+        uut.view.removeFromParent()
         val parent = spy(createStack("someStack"))
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())
