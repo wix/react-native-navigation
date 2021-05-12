@@ -163,20 +163,6 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
-    fun applyChildOptions_setTitleComponentAlignmentRTL() {
-        val options = Options()
-        options.layout.direction = LayoutDirection.RTL
-        options.topBar.title.component = component(Alignment.Fill)
-        uut.applyChildOptions(options, parent, child)
-        val lp2 = topBar.mainToolBar.getTitleComponent().layoutParams as RelativeLayout.LayoutParams
-        Assertions.assertThat(lp2.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
-        Assertions.assertThat(lp2.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
-        Assertions.assertThat(lp2.rules[RelativeLayout.LEFT_OF]).isEqualTo(topBar.mainToolBar.rightButtonsBar.id)
-        Assertions.assertThat(lp2.rules[RelativeLayout.RIGHT_OF]).isEqualTo(topBar.mainToolBar.leftButtonsBar.id)
-        Assertions.assertThat(lp2.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
-    }
-
-    @Test
     fun onChildDestroyed_destroyTitleComponent() {
         val options = Options()
         options.topBar.title.component = component(Alignment.Default)

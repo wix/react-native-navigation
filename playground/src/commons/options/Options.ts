@@ -11,7 +11,6 @@ const setDefaultOptions = () =>
     layout: {
       componentBackgroundColor: Colors.background,
       orientation: ['portrait'],
-      direction: 'locale',
     },
     bottomTabs: {
       titleDisplayMode: 'alwaysShow',

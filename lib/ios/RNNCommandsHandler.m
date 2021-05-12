@@ -63,22 +63,16 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     [self assertReady];
     RNNAssertMainQueue();
 
-    if (_controllerFactory.defaultOptions.layout.direction.hasValue) {
-        if ([_controllerFactory.defaultOptions.layout.direction.get isEqualToString:@"rtl"]) {
-            [[RCTI18nUtil sharedInstance] allowRTL:YES];
-            [[RCTI18nUtil sharedInstance] forceRTL:YES];
-            [[UIView appearance]
-                setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
-            [[UINavigationBar appearance]
-                setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
-        } else {
-            [[RCTI18nUtil sharedInstance] allowRTL:NO];
-            [[RCTI18nUtil sharedInstance] forceRTL:NO];
-            [[UIView appearance]
-                setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
-            [[UINavigationBar appearance]
-                setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
-        }
+    if ([RCTI18nUtil sharedInstance].isRTL) {
+        [[UIView appearance]
+            setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+        [[UINavigationBar appearance]
+            setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+    } else {
+        [[UIView appearance]
+            setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+        [[UINavigationBar appearance]
+            setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
     }
 
     [_modalManager dismissAllModalsAnimated:NO

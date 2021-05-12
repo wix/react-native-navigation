@@ -8,7 +8,6 @@
     self = [super initWithDict:dict];
     self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
     self.componentBackgroundColor = [ColorParser parse:dict key:@"componentBackgroundColor"];
-    self.direction = [TextParser parse:dict key:@"direction"];
     self.orientation = dict[@"orientation"];
     self.autoHideHomeIndicator = [BoolParser parse:dict key:@"autoHideHomeIndicator"];
     return self;
@@ -19,8 +18,6 @@
         self.backgroundColor = options.backgroundColor;
     if (options.componentBackgroundColor.hasValue)
         self.componentBackgroundColor = options.componentBackgroundColor;
-    if (options.direction.hasValue)
-        self.direction = options.direction;
     if (options.orientation)
         self.orientation = options.orientation;
     if (options.autoHideHomeIndicator)

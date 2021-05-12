@@ -65,7 +65,6 @@ class BottomTabsPresenter(
 
     private fun mergeBottomTabsOptions(options: Options, view: ViewController<*>) {
         val bottomTabsOptions = options.bottomTabsOptions
-        if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction)
         if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get())
         if (bottomTabsOptions.titleDisplayMode.hasValue()) {
             bottomTabs.titleState = bottomTabsOptions.titleDisplayMode.toState()
@@ -140,7 +139,6 @@ class BottomTabsPresenter(
 
     private fun applyBottomTabsOptions(options: Options) {
         val bottomTabsOptions = options.bottomTabsOptions
-        bottomTabs.setLayoutDirection(options.layout.direction)
         bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
         bottomTabs.titleState = bottomTabsOptions.titleDisplayMode[defaultTitleState]
         bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor[Color.WHITE])

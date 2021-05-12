@@ -165,13 +165,6 @@ export interface OptionsLayout {
    * #### (Android specific)
    */
   topMargin?: number;
-
-  /**
-   * Set language direction.
-   * only works with DefaultOptions
-   */
-  direction?: 'rtl' | 'ltr' | 'locale';
-
   /**
    * Controls the application's preferred home indicator auto-hiding.
    * #### (iOS specific)
