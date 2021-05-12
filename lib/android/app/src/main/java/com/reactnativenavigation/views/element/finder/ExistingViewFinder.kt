@@ -50,11 +50,11 @@ class ExistingViewFinder : ViewFinder {
 
     private fun hasMeasuredDrawable(view: ImageView) = when (view.drawable) {
         is RootDrawable -> true
-        else -> if (view.drawable != null) checkIfFastImageIsMeasured(view) else false
+        else -> checkIfFastImageIsMeasured(view)
     }
 
     private fun checkIfFastImageIsMeasured(view: ImageView) = with(view.drawable) {
-        intrinsicWidth != -1 && intrinsicHeight != -1 && isImageScaledToFit(view)
+        this != null && intrinsicWidth != -1 && intrinsicHeight != -1 && isImageScaledToFit(view)
     }
 
     private fun Drawable.isImageScaledToFit(view: ImageView): Boolean {
