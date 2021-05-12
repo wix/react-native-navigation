@@ -116,11 +116,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         logger.log(Log.INFO, TAG, "onDestroy");
         if (navigator != null) {
             logger.log(Log.INFO, TAG, "onDestroy PIPMode " + navigator.getPipMode());
+            if (navigator.getPipMode() == PIPStates.NATIVE_MOUNTED) {
+                navigator.updatePIPState(PIPStates.UNMOUNT_START);
+            }
             navigator.destroy();
             getReactGateway().onActivityDestroyed(this);
         }
         getApplication().unregisterActivityLifecycleCallbacks(lifecycleCallback);
-
     }
 
     @Override
