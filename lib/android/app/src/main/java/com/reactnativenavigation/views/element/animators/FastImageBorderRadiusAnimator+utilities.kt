@@ -41,7 +41,7 @@ private fun getBorderRadius(v: View): Float {
 
 private fun getParent(view: View): ViewGroup? = try {
     when(view.parent) {
-        null -> null
+        null, is ReactView, is OverlayLayout -> null
         else -> ViewTags.get<ViewGroup>(view, R.id.original_parent, view.parent as ViewGroup)
     }
 // TODO: can we handle this better?: java.lang.ClassCastException: android.view.ViewRootImpl cannot be cast to android.view.ViewGroup
