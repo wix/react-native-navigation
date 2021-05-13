@@ -4,23 +4,12 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.os.Build
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.animation.doOnEnd
-import androidx.core.view.children
 import com.facebook.react.views.image.ReactImageView
-import com.facebook.react.views.view.ReactViewBackgroundDrawable
-import com.facebook.react.views.view.ReactViewGroup
-import com.reactnativenavigation.R
 import com.reactnativenavigation.options.SharedElementTransitionOptions
-import com.reactnativenavigation.react.ReactView
 import com.reactnativenavigation.utils.BorderRadiusOutlineProvider
-import com.reactnativenavigation.utils.ViewTags
-import com.reactnativenavigation.utils.borderRadius
-import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.OverlayLayout
-import java.lang.ClassCastException
-import java.lang.Exception
 
 class FastImageBorderRadiusAnimator(from: View, to: View) : PropertyAnimatorCreator<ImageView>(from, to) {
     override fun shouldAnimateProperty(fromChild: ImageView, toChild: ImageView): Boolean {
