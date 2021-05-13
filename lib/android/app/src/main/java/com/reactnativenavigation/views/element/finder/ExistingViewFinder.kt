@@ -58,8 +58,8 @@ class ExistingViewFinder : ViewFinder {
     }
 
     private fun Drawable.isImageScaledToFit(view: ImageView): Boolean {
-        val scaleX = (view.width) / intrinsicWidth.toFloat()
-        val scaleY = (view.height) / intrinsicHeight.toFloat()
+        val scaleX = view.width / intrinsicWidth.toFloat()
+        val scaleY = view.height / intrinsicHeight.toFloat()
         return min(scaleX, scaleY) >= 1f
     }
 }
