@@ -25,7 +25,11 @@ fun FastImageBorderRadiusAnimator.getInheritedBorderRadius(v: View): Float {
     val borderRadius = getBorderRadius(v)
     if (borderRadius > 0f) return borderRadius
 
-    return when(val parentView = getParent(v)) {
+    if (v is ReactView || v is OverlayLayout) {
+        return 0f
+    }
+
+    return when(val parentView = getOriginalParent(v)) {
         null -> 0f
         else -> getInheritedBorderRadius(parentView)
     }
@@ -41,12 +45,7 @@ private fun getBorderRadius(v: View): Float {
     return 0f;
 }
 
-private fun getParent(view: View): ViewGroup? = try {
-    when(view.parent) {
-        null, is ReactView, is OverlayLayout -> null
-        else -> ViewTags.get<ViewGroup>(view, R.id.original_parent, view.parent as ViewGroup)
-    }
-// TODO: can we handle this better?: java.lang.ClassCastException: android.view.ViewRootImpl cannot be cast to android.view.ViewGroup
-} catch (e: ClassCastException) {
-    null
+private fun getOriginalParent(view: View): ViewGroup? = when(view.parent) {
+    null -> null
+    else -> ViewTags.get<ViewGroup>(view, R.id.original_parent, view.parent as ViewGroup)
 }
