@@ -22,12 +22,12 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.OverlayL
  * </View>
  */
 fun FastImageBorderRadiusAnimator.getInheritedBorderRadius(v: View): Float {
-    val borderRadius = getBorderRadius(v)
-    if (borderRadius > 0f) return borderRadius
-
     if (v is ReactView || v is OverlayLayout) {
         return 0f
     }
+
+    val borderRadius = getBorderRadius(v)
+    if (borderRadius > 0f) return borderRadius
 
     return when(val parentView = getOriginalParent(v)) {
         null -> 0f
