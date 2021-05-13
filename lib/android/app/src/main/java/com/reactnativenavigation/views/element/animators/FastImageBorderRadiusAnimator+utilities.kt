@@ -2,14 +2,10 @@ package com.reactnativenavigation.views.element.animators
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
-import com.facebook.react.views.view.ReactViewBackgroundDrawable
 import com.facebook.react.views.view.ReactViewGroup
 import com.reactnativenavigation.R
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.borderRadius
-import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.OverlayLayout
-import java.lang.ClassCastException
 
 /**
  * Gets the border radius for a react-native-fast-image view that
@@ -36,28 +32,13 @@ fun FastImageBorderRadiusAnimator.getInheritedBorderRadius(v: View): Float {
 }
 
 private fun getBorderRadius(v: View): Float {
-    // gets the border radius from a react view
-    if (v is ReactViewGroup && v.borderRadius > 0f) {
+    // checking if the view has borderRadius and overflow hidden.
+    // when the overflow isn't hidden the borderRadius wouldn't apply.
+    if (v is ReactViewGroup && v.borderRadius > 0f && v.overflow == "hidden") {
         return v.borderRadius
     }
 
-    // gets the border radius for a FastImage view
-    return getBorderRadiusFastImage(v);
-}
-
-private fun getBorderRadiusFastImage(v: View): Float {
-    val parentView = getParent(v)
-
-    if (parentView == null || v is OverlayLayout) {
-        return 0f
-    }
-
-    val parentIsUsedOnlyToDrawBorderRadiusOverImage = parentView.childCount <= 1 || parentView.children.contains(v)
-    val background = parentView.background as? ReactViewBackgroundDrawable
-    if (parentIsUsedOnlyToDrawBorderRadiusOverImage && background?.hasRoundedBorders() == true) {
-        background.fullBorderRadius
-    }
-    return 0f
+    return 0f;
 }
 
 private fun getParent(view: View): ViewGroup? = try {
