@@ -27,8 +27,7 @@ class FastImageBorderRadiusAnimator(from: View, to: View) : PropertyAnimatorCrea
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
                 fromChild !is ReactImageView
                 && toChild !is ReactImageView
-                && (getInheritedBorderRadius(from) != 0f
-                || getInheritedBorderRadius(to) != 0f)
+                && (getInheritedBorderRadius(from) != 0f || getInheritedBorderRadius(to) != 0f)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
