@@ -21,9 +21,7 @@ import com.reactnativenavigation.utils.borderRadius
  */
 fun FastImageBorderRadiusAnimator.getInheritedBorderRadius(v: View): Float {
     val borderRadius = getBorderRadius(v)
-    if (borderRadius > 0f) {
-        return borderRadius
-    }
+    if (borderRadius > 0f) return borderRadius
 
     return when(val parentView = getParent(v)) {
         null -> 0f
