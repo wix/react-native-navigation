@@ -2,7 +2,6 @@ package com.reactnativenavigation.viewcontrollers.stack
 
 import android.animation.AnimatorSet
 import android.content.Context
-import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
