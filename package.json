@@ -94,7 +94,7 @@
     "prettier": "2.1.2",
     "react": "16.13.1",
     "react-native": "0.63.2",
-    "react-native-fast-image": "8.x.x",
+    "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
     "react-native-ui-lib": "5.11.0",
