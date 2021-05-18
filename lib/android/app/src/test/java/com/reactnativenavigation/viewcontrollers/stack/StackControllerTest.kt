@@ -1,13 +1,14 @@
 package com.reactnativenavigation.viewcontrollers.stack
 
 import android.animation.AnimatorSet
-import android.app.Activity
 import android.content.Context
+import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
+import com.reactnativenavigation.TestActivity
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.mocks.*
 import com.reactnativenavigation.mocks.SimpleViewController.SimpleView
@@ -36,12 +37,14 @@ import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
 import org.robolectric.Robolectric
+import org.robolectric.android.controller.ActivityController
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.test.fail
 
 class StackControllerTest : BaseTest() {
-    private lateinit var activity: Activity
+    private lateinit var activityController: ActivityController<TestActivity>
+    private lateinit var activity: TestActivity
     private lateinit var childRegistry: ChildControllersRegistry
     private lateinit var uut: StackController
     private lateinit var child1: ViewController<*>
@@ -61,7 +64,8 @@ class StackControllerTest : BaseTest() {
         super.beforeEach()
         eventEmitter = mock()
         backButtonHelper = spy(BackButtonHelper())
-        activity = newActivity()
+        activityController = newActivityController(TestActivity::class.java)
+        activity = activityController.get()
         StatusBarUtils.saveStatusBarHeight(63)
         animator = spy(StackAnimator(activity))
         childRegistry = ChildControllersRegistry()
@@ -79,6 +83,7 @@ class StackControllerTest : BaseTest() {
         createChildren()
         uut = createStack()
         activity.setContentView(uut.view)
+        activityController.visible()
     }
 
     private fun createChildren() {
@@ -195,12 +200,13 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
-    fun setRoot_activityDestroyDuringAnimationShouldNotCrash() {
+    fun setRoot_pushDuringSetRootAnimationShouldNotCrash() {
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
 
         uut.setRoot(listOf(child1), CommandListenerAdapter())
         uut.push(child3, CommandListenerAdapter())
+        assertThat(uut.currentChild).isEqualTo(child3)
     }
 
     @Test
