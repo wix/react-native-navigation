@@ -24,6 +24,7 @@ const Screens = {
   ModalCommands: 'ModalCommands',
   StackCommands: 'StackCommands',
   Options: 'Options',
+  Components: 'Components',
   Pushed: 'Pushed',
   BackButton: 'BackButton',
   SharedElement: 'SharedElement',
@@ -127,6 +128,7 @@ const Screens = {
   OrientationDetect: 'OrientationDetect',
   Search: 'Search',
   SearchBar: 'SearchBar',
+  TopBar: 'TopBar',
 };
 
 export default Screens;

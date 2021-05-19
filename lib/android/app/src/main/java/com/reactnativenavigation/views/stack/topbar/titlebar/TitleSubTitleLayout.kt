@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.content.Context
-import android.graphics.Color
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -9,16 +8,17 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.RestrictTo
-import androidx.core.widget.TextViewCompat
-import com.reactnativenavigation.R
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.FontOptions
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 
+private const val DEFAULT_TITLE_FONT_SIZE_DP = 18f
+private const val DEFAULT_SUBTITLE_FONT_SIZE_DP = 14f
+
 class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
 
-    private val titleTextView = TextView(context).apply { TextViewCompat.setTextAppearance(this, R.style.TitleBarTitle) }
-    private val subTitleTextView = TextView(context).apply { TextViewCompat.setTextAppearance(this, R.style.TitleBarSubtitle) }
+    private val titleTextView = SingleLineTextView(context, DEFAULT_TITLE_FONT_SIZE_DP)
+    private val subTitleTextView = SingleLineTextView(context, DEFAULT_SUBTITLE_FONT_SIZE_DP)
 
     init {
         this.orientation = VERTICAL
