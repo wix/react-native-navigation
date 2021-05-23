@@ -4,7 +4,7 @@ import android.animation.AnimatorSet
 import android.view.View
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import com.reactnativenavigation.views.element.animators.PropertyAnimatorCreator
+import com.reactnativenavigation.views.element.animators.*
 
 class SharedElementTransition(appearing: ViewController<*>, private val options: SharedElementTransitionOptions) : Transition() {
     val fromId: String = options.fromId.get()
@@ -34,18 +34,18 @@ class SharedElementTransition(appearing: ViewController<*>, private val options:
 
     private fun animators(): List<PropertyAnimatorCreator<*>> {
         return listOf(
-//                ReactImageMatrixAnimator(from, to),
-//                FastImageMatrixAnimator(from, to),
-//                ReactImageBoundsAnimator(from, to),
-//                FastImageBoundsAnimator(from, to),
-//                FastImageBorderRadiusAnimator(from, to),
-              //  XAnimator(from, to),
-//                YAnimator(from, to),
-//                RotationAnimator(from, to),
-//                ReactViewRotationAnimator(from, to),
-//                BackgroundColorAnimator(from, to),
-//                ReactViewOutlineAnimator(from ,to),
-//                TextChangeAnimator(from, to)
+                ReactImageMatrixAnimator(from, to),
+                FastImageMatrixAnimator(from, to),
+                ReactImageBoundsAnimator(from, to),
+                FastImageBoundsAnimator(from, to),
+                FastImageBorderRadiusAnimator(from, to),
+                XAnimator(from, to),
+                YAnimator(from, to),
+                RotationAnimator(from, to),
+                ReactViewRotationAnimator(from, to),
+                BackgroundColorAnimator(from, to),
+                ReactViewOutlineAnimator(from ,to),
+                TextChangeAnimator(from, to)
         )
     }
 }
