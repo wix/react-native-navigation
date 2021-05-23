@@ -16,6 +16,7 @@ import com.reactnativenavigation.options.LayoutAnimation
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.logd
+import com.reactnativenavigation.utils.removeFromParent
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.*
 
@@ -140,7 +141,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
     }
 
     private fun returnToOriginalParent(element: View) {
-        ViewUtils.removeFromParent(element)
+        element.removeFromParent()
         element.top = ViewTags.get(element, R.id.original_top)
         element.bottom = ViewTags.get(element, R.id.original_bottom)
         element.right = ViewTags.get(element, R.id.original_right)

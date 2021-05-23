@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.utils.ViewExtensionsKt;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 
@@ -51,7 +52,7 @@ public class TopTabs extends TabLayout {
 
     public void clear() {
         setupWithViewPager(null);
-        ViewUtils.removeFromParent(this);
+        ViewExtensionsKt.removeFromParent(this);
     }
 
     public void init(ViewPager viewPager) {
