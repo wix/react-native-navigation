@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.text.SpannableString
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -35,17 +37,24 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
         super.setLayoutDirection(layoutDirection)
     }
 
+    val buttonCount: Int
+        get() = menu.size()
+
     fun addButton(menuItem: Int, intId: Int, order: Int, styledText: SpannableString): MenuItem? {
+        TransitionManager.beginDelayedTransition(this,AutoTransition())
         return this.menu?.add(menuItem,
                 intId,
                 order,
                 styledText)
     }
 
-    val buttonCount: Int
-        get() = menu.size()
+    fun removeButton(buttonId: Int) {
+        TransitionManager.beginDelayedTransition(this,AutoTransition())
+        menu.removeItem(buttonId)
+    }
 
     open fun clearButtons() {
+        TransitionManager.beginDelayedTransition(this,AutoTransition())
         clearBackButton()
         if (menu.size() > 0) menu.clear()
     }
@@ -56,10 +65,6 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
 
     fun containsButton(menuItem: MenuItem?, order: Int): Boolean {
         return menuItem != null && menu.findItem(menuItem.itemId) != null && menuItem.order == order
-    }
-
-    fun removeButton(buttonId: Int) {
-        menu.removeItem(buttonId)
     }
 
     fun setBackButton(button: ButtonController) {
