@@ -6,7 +6,7 @@ import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
 import { CocktailItem } from '../../assets/cocktails';
 
-const MULTIPLIER = 1.2;
+const MULTIPLIER = 2;
 const POP_MULTIPLIER = 1.0;
 const LONG_DURATION = 540 * MULTIPLIER;
 const SHORT_DURATION = 210 * MULTIPLIER;
@@ -62,31 +62,31 @@ export default class CocktailsListScreen extends NavigationComponent {
                   duration: LONG_DURATION,
                   interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
-                // {
-                //   fromId: `title${item.id}`,
-                //   toId: `title${item.id}Dest`,
-                //   duration: LONG_DURATION,
-                //   interpolation: { type: 'spring', ...SPRING_CONFIG },
-                // },
-                // {
-                //   fromId: `backdrop${item.id}`,
-                //   toId: 'backdrop',
-                //   duration: LONG_DURATION,
-                //   interpolation: { type: 'spring', ...SPRING_CONFIG },
-                // },
+                {
+                  fromId: `title${item.id}`,
+                  toId: `title${item.id}Dest`,
+                  duration: LONG_DURATION,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
+                },
+                {
+                  fromId: `backdrop${item.id}`,
+                  toId: 'backdrop',
+                  duration: LONG_DURATION,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
+                },
               ],
               elementTransitions: [
-                // {
-                //   id: 'description',
-                //   alpha: {
-                //     from: 0,
-                //     duration: SHORT_DURATION,
-                //   },
-                //   translationY: {
-                //     from: 16,
-                //     duration: SHORT_DURATION,
-                //   },
-                // },
+                {
+                  id: 'description',
+                  alpha: {
+                    from: 0,
+                    duration: SHORT_DURATION,
+                  },
+                  translationY: {
+                    from: 16,
+                    duration: SHORT_DURATION,
+                  },
+                },
               ],
             },
             pop: {
@@ -104,31 +104,31 @@ export default class CocktailsListScreen extends NavigationComponent {
                   duration: LONG_DURATION * POP_MULTIPLIER,
                   interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
-                // {
-                //   fromId: `title${item.id}Dest`,
-                //   toId: `title${item.id}`,
-                //   duration: LONG_DURATION * POP_MULTIPLIER,
-                //   interpolation: { type: 'spring', ...SPRING_CONFIG },
-                // },
-                // {
-                //   fromId: 'backdrop',
-                //   toId: `backdrop${item.id}`,
-                //   duration: LONG_DURATION * POP_MULTIPLIER,
-                //   interpolation: { type: 'spring', ...SPRING_CONFIG },
-                // },
+                {
+                  fromId: `title${item.id}Dest`,
+                  toId: `title${item.id}`,
+                  duration: LONG_DURATION * POP_MULTIPLIER,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
+                },
+                {
+                  fromId: 'backdrop',
+                  toId: `backdrop${item.id}`,
+                  duration: LONG_DURATION * POP_MULTIPLIER,
+                  interpolation: { type: 'spring', ...SPRING_CONFIG },
+                },
               ],
               elementTransitions: [
-                // {
-                //   id: 'description',
-                //   alpha: {
-                //     to: 0,
-                //     duration: SHORT_DURATION,
-                //   },
-                //   translationY: {
-                //     to: 16,
-                //     duration: SHORT_DURATION,
-                //   },
-                // },
+                {
+                  id: 'description',
+                  alpha: {
+                    to: 0,
+                    duration: SHORT_DURATION,
+                  },
+                  translationY: {
+                    to: 16,
+                    duration: SHORT_DURATION,
+                  },
+                },
               ],
             },
           },
