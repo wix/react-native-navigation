@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.element
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -113,6 +114,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
     private fun reparent(transition: Transition) {
         with(transition) {
             val loc = ViewUtils.getLocationOnScreen(view)
+
             val biologicalParent = view.parent as ViewGroup
             view.setTag(R.id.original_parent, biologicalParent)
             view.setTag(R.id.original_layout_params, view.layoutParams)
@@ -129,6 +131,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             val lp = FrameLayout.LayoutParams(view.layoutParams)
             lp.topMargin = loc.y
             lp.leftMargin = loc.x
+            lp.gravity = Gravity.NO_GRAVITY
             lp.width = view.width
             lp.height = view.height
             addToOverlay(viewController, view, lp)
