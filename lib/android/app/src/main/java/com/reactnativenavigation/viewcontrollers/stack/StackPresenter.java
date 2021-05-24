@@ -282,7 +282,10 @@ public class StackPresenter {
         if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) {
             topBar.setBackButton(createButtonController(options.buttons.back));
         }
-
+        if(options.animateRightButtons.hasValue())
+            topBar.animateRightButtons(options.animateRightButtons.isTrue());
+        if(options.animateLeftButtons.hasValue())
+            topBar.animateLeftButtons(options.animateLeftButtons.isTrue());
         topBar.setOverflowButtonColor(options.rightButtonColor.get(Color.BLACK));
     }
 
@@ -460,7 +463,8 @@ public class StackPresenter {
 
         if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
-
+        if (topBarOptions.animateLeftButtons.hasValue()) topBar.animateLeftButtons(topBarOptions.animateLeftButtons.isTrue());
+        if (topBarOptions.animateRightButtons.hasValue()) topBar.animateRightButtons(topBarOptions.animateRightButtons.isTrue());
         if (topBarOptions.title.component.hasValue()) {
             TitleBarReactViewController controller = findTitleComponent(topBarOptions.title.component);
             if (controller == null) {
