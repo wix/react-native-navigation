@@ -23,6 +23,7 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.times
 import kotlin.math.roundToInt
+import kotlin.test.assertFalse
 
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
@@ -30,9 +31,9 @@ private const val UUT_HEIGHT = 100
 class TitleAndButtonsContainerTest : BaseTest() {
     lateinit var uut: TitleAndButtonsContainer
     private lateinit var activity: Activity
-    private lateinit var mockLeftBar: ButtonBar;
-    private lateinit var mockRightBar: ButtonBar;
-    private lateinit var mockComponent: View;
+    private lateinit var mockLeftBar: ButtonBar
+    private lateinit var mockRightBar: ButtonBar
+    private lateinit var mockComponent: View
     override fun beforeEach() {
         super.beforeEach()
         setup()
@@ -77,6 +78,28 @@ class TitleAndButtonsContainerTest : BaseTest() {
             addView(uut, ViewGroup.LayoutParams(UUT_WIDTH, UUT_HEIGHT))
         })
         idleMainLooper()
+    }
+
+    @Test
+    fun `animateLeftRightButtons - should be false as default`(){
+        assertFalse(mockLeftBar.shouldAnimate)
+        assertFalse(mockRightBar.shouldAnimate)
+    }
+    @Test
+    fun `animateLeftRightButtons - should change corresponding button bar`(){
+        setup(rightBarWidth = 10,leftBarWidth = 20)
+
+        uut.animateLeftButtons(true)
+        verify(mockLeftBar).shouldAnimate=true
+
+        uut.animateLeftButtons(false)
+        verify(mockLeftBar).shouldAnimate=false
+
+        uut.animateRightButtons(true)
+        verify(mockRightBar).shouldAnimate=true
+
+        uut.animateRightButtons(false)
+        verify(mockRightBar).shouldAnimate=false
     }
 
     @Test
