@@ -161,6 +161,13 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleAndButtonsContainer.setSubtitleFontSize((float) size);
     }
 
+    public void animateRightButtons(boolean animate){
+        titleAndButtonsContainer.animateRightButtons(animate);
+    }
+
+    public void animateLeftButtons(boolean animate){
+        titleAndButtonsContainer.animateLeftButtons(animate);
+    }
     public void setSubtitleAlignment(Alignment alignment) {
         titleAndButtonsContainer.setSubTitleTextAlignment(alignment);
     }

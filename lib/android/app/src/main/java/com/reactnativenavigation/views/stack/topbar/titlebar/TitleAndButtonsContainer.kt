@@ -23,6 +23,13 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
             }
         }
 
+    fun animateLeftButtons(animate:Boolean) {
+        leftButtonBar.shouldAnimate = animate
+    }
+    fun animateRightButtons(animate:Boolean) {
+        rightButtonBar.shouldAnimate = animate
+    }
+
     private var titleSubTitleBar = TitleSubTitleLayout(context)
     var leftButtonBar = ButtonBar(context)
         private set
