@@ -134,7 +134,6 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             lp.gravity = Gravity.NO_GRAVITY
             lp.width = view.width
             lp.height = view.height
-
             addToOverlay(viewController, view, lp)
         }
     }
