@@ -16,6 +16,8 @@ import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 
 open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
+    var shouldAnimate: Boolean=false
+
     init {
         super.setContentInsetsAbsolute(0, 0)
         this.contentInsetStartWithNavigation = 0
@@ -41,6 +43,7 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
         get() = menu.size()
 
     fun addButton(menuItem: Int, intId: Int, order: Int, styledText: SpannableString): MenuItem? {
+        if(shouldAnimate)
         TransitionManager.beginDelayedTransition(this,AutoTransition())
         return this.menu?.add(menuItem,
                 intId,
@@ -49,11 +52,13 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
     }
 
     fun removeButton(buttonId: Int) {
+        if(shouldAnimate)
         TransitionManager.beginDelayedTransition(this,AutoTransition())
         menu.removeItem(buttonId)
     }
 
     open fun clearButtons() {
+        if(shouldAnimate)
         TransitionManager.beginDelayedTransition(this,AutoTransition())
         clearBackButton()
         if (menu.size() > 0) menu.clear()
