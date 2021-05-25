@@ -1,7 +1,6 @@
 #import "RNNScreenTransitionsCreator.h"
 #import "DisplayLinkAnimatorDelegate.h"
 #import "ElementTransitionsCreator.h"
-#import "SharedElementAnimator.h"
 
 @implementation RNNScreenTransitionsCreator
 

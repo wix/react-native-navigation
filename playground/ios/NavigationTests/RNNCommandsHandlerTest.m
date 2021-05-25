@@ -689,7 +689,7 @@
 - (void)testShowModal_shouldShowAnimated {
     [self.uut setReadyToReceiveCommands:true];
     self.vc1.options = [RNNNavigationOptions emptyOptions];
-    self.vc1.options.animations.showModal.enable = [[Bool alloc] initWithBOOL:YES];
+    self.vc1.options.animations.showModal.enter.enable = [[Bool alloc] initWithBOOL:YES];
 
     id mockedVC = [OCMockObject partialMockForObject:self.vc1];
     OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
@@ -785,7 +785,7 @@
 
     [[self.modalManager expect]
         dismissModal:[OCMArg checkWithBlock:^BOOL(UIViewController *modalToDismiss) {
-          return modalToDismiss.options.animations.dismissModal.enable.get == NO;
+          return modalToDismiss.options.animations.dismissModal.exit.enable.get == NO;
         }]
           completion:OCMArg.any];
 
