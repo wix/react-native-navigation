@@ -50,6 +50,7 @@ open class ModalAnimator @JvmOverloads constructor(
     private fun showModalWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, animationOptions: TransitionAnimationOptions, set: AnimatorSet) {
         GlobalScope.launch(Dispatchers.Main.immediate) {
             appearing.setWaitForRender(Bool(true))
+            appearing.view.alpha = 0f
             appearing.awaitRender()
             val appearingFade = if (animationOptions.enter.isFadeAnimation()) animationOptions.enter else defaultAnimation.content.enter
             val transitionAnimators = transitionAnimatorCreator.create(animationOptions, appearingFade, disappearing, appearing)

@@ -59,6 +59,18 @@ class ModalAnimatorTest : BaseTest() {
         assertThat(uut.isRunning).isTrue()
     }
 
+    @Test
+    fun `show shared elements - should make alpha 0 before animation`() {
+        val sharedElements = SharedElements.parse(newAnimationOptionsJson(true).apply {
+            put("sharedElementTransitions", newSharedElementAnimationOptionsJson())
+        })
+        val spyView = spy(modal1View)
+        val mockModal = spy(modal1)
+        whenever(mockModal.createView()).thenReturn(spyView)
+        mockModal.onViewWillAppear() // to avoid wait for render
+        uut.show(mockModal, root, TransitionAnimationOptions(sharedElements = sharedElements), screenAnimationListener)
+        verify(spyView).alpha=0f
+    }
 
     @Test
     fun `show shared elements - should play default fade-in`() {
