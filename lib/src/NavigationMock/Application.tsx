@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { VISIBLE_SCREEN_TEST_ID } from './ComponentScreen';
-import { LayoutComponent } from './LayoutComponent';
-import { LayoutStore } from './LayoutStore';
-import { Modals } from './Modals';
-import { Overlays, VISIBLE_OVERLAY_TEST_ID } from './Overlays';
-
-const { connect } = require('remx');
+import { VISIBLE_OVERLAY_TEST_ID, VISIBLE_SCREEN_TEST_ID } from './constants';
+import { connect } from 'remx';
 
 interface ApplicationProps {
   entryPoint: () => void;
@@ -20,6 +15,10 @@ export const Application = connect()(
     }
 
     render() {
+      const { LayoutComponent } = require('./LayoutComponent');
+      const { LayoutStore } = require('./LayoutStore');
+      const { Modals } = require('./Modals');
+      const { Overlays } = require('./Overlays');
       return (
         <View testID={'Application'}>
           <LayoutComponent layoutNode={LayoutStore.getLayout()} />

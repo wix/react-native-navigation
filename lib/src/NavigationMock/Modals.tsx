@@ -4,7 +4,7 @@ import { ComponentProps } from './ComponentProps';
 import { LayoutComponent } from './LayoutComponent';
 import ParentNode from './Layouts/ParentNode';
 import { LayoutStore } from './LayoutStore';
-const { connect } = require('remx');
+import { connect } from 'remx';
 
 export const Modals = connect()(
   class extends Component<ComponentProps> {

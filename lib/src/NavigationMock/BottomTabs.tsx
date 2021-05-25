@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { LayoutComponent } from './LayoutComponent';
 import { ComponentProps } from './ComponentProps';
-const { connect } = require('remx');
+import { connect } from 'remx';
 
 export const BottomTabs = connect()(
   class extends Component<ComponentProps> {

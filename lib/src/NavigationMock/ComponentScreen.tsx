@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
 import { Navigation, OptionsTopBarButton } from 'react-native-navigation';
 import { ComponentProps } from './ComponentProps';
+import { VISIBLE_SCREEN_TEST_ID } from './constants';
 import { LayoutStore } from './LayoutStore';
 import { NavigationButton } from './NavigationButton';
+import { connect } from 'remx';
 
-const { connect } = require('remx');
-export const VISIBLE_SCREEN_TEST_ID = 'VISIBLE_SCREEN_TEST_ID';
 export const ComponentScreen = connect()(
   class extends Component<ComponentProps> {
     constructor(props: ComponentProps) {

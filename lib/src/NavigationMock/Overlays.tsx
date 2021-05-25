@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ComponentProps } from './ComponentProps';
+import { VISIBLE_OVERLAY_TEST_ID } from './constants';
 import { LayoutComponent } from './LayoutComponent';
 import ParentNode from './Layouts/ParentNode';
 import { LayoutStore } from './LayoutStore';
-const { connect } = require('remx');
+import { connect } from 'remx';
 
-export const VISIBLE_OVERLAY_TEST_ID = 'VISIBLE_OVERLAY_TEST_ID';
 export const Overlays = connect()(
   class extends Component<ComponentProps> {
     render() {

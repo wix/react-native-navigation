@@ -114,11 +114,7 @@
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
     },
-    "setupFilesAfterEnv": [
-      "<rootDir>/lib/src/NavigationMock/jest-setup.ts"
-    ],
     "roots": [
-      "<rootDir>/node_modules/",
       "<rootDir>/lib/src/",
       "<rootDir>/playground/src/",
       "<rootDir>/integration/",

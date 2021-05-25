@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { ComponentProps } from './ComponentProps';
 import { LayoutComponent } from './LayoutComponent';
 import ParentNode from './Layouts/ParentNode';
-const { connect } = require('remx');
+import { connect } from 'remx';
 
 export const Stack = connect()(
   class extends Component<ComponentProps> {
