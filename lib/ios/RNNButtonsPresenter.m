@@ -27,20 +27,22 @@
 
 - (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
             defaultColor:(Color *)defaultColor
-    defaultDisabledColor:(Color *)defaultDisabledColor {
+    defaultDisabledColor:(Color *)defaultDisabledColor
+                animated:(BOOL)animated {
     [self setButtons:leftButtons
                         side:@"left"
-                    animated:NO
+                    animated:animated
                 defaultColor:defaultColor
         defaultDisabledColor:defaultDisabledColor];
 }
 
 - (void)applyRightButtons:(NSArray<RNNButtonOptions *> *)rightButtons
              defaultColor:(Color *)defaultColor
-     defaultDisabledColor:(Color *)defaultDisabledColor {
+     defaultDisabledColor:(Color *)defaultDisabledColor
+                 animated:(BOOL)animated {
     [self setButtons:rightButtons
                         side:@"right"
-                    animated:NO
+                    animated:animated
                 defaultColor:defaultColor
         defaultDisabledColor:defaultDisabledColor];
 }

@@ -345,6 +345,30 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
+    fun mergeChildOptions_mergeAnimateLeftRightButtons(){
+        val options = Options().apply {
+            topBar.animateLeftButtons = Bool(false)
+        }
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+        verify(topBar).animateLeftButtons(false)
+        verify(topBar, never()).animateRightButtons(any())
+
+        options.apply {
+            topBar.animateRightButtons = Bool(true)
+        }
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+        verify(topBar).animateRightButtons(true)
+
+
+        options.apply {
+            topBar.animateRightButtons = Bool(false)
+            topBar.animateLeftButtons = Bool(true)
+        }
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+        verify(topBar).animateRightButtons(false)
+        verify(topBar).animateLeftButtons(true)
+    }
+    @Test
     fun mergeTopBarOptions() {
         val options = Options()
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
@@ -794,6 +818,32 @@ class StackPresenterTest : BaseTest() {
         buttons.forEach(ButtonController::ensureViewIsCreated)
         uut.applyChildOptions(options, parent, otherChild)
         buttons.forEach { assertThat(it.isDestroyed).isFalse() }
+    }
+
+    @Test
+    fun applyChildOptions_shouldNotPassAnimateLeftRightButtonBarWhenNoValue() {
+        val options = Options().apply {
+            topBar.buttons.right = ArrayList(listOf(componentBtn1))
+            topBar.buttons.left = ArrayList(listOf(componentBtn2))
+
+        }
+        uut.applyChildOptions(options, parent, child)
+        verify(topBar, never()).animateLeftButtons(any())
+        verify(topBar, never()).animateLeftButtons(any())
+    }
+
+    @Test
+    fun applyChildOptions_shouldPassAnimateLeftRightButtonBar() {
+        val options = Options().apply {
+            topBar.buttons.right = ArrayList(listOf(componentBtn1))
+            topBar.buttons.left = ArrayList(listOf(componentBtn2))
+            topBar.animateLeftButtons= Bool(false);
+            topBar.animateRightButtons= Bool(true);
+        }
+
+        uut.applyChildOptions(options, parent, child)
+        verify(topBar).animateRightButtons(true)
+        verify(topBar).animateLeftButtons(false)
     }
 
     @Test
