@@ -13,8 +13,8 @@ const options = {
     title: {},
     subtitle: {},
     backButton: {},
-    background: {}
-  }
+    background: {},
+  },
 };
 ```
 
@@ -34,45 +34,61 @@ Determines if changing the TopBar visibility will be animated or not.
 | ------- | -------- | -------- |
 | boolean | No       | Both     |
 
+### `animateLeftButtons`
+
+Determines if changing the left buttons will be animated.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | Both     | False   |
+
+### `animateRightButtons`
+
+Determines if changing the right buttons will be animated.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | Both     | False   |
+
 ### `title`
 
 Controls the top bar title.
 
-| Type                   | Required | Platform |
-| ---------------------- | -------- | -------- |
+| Type                       | Required | Platform |
+| -------------------------- | -------- | -------- |
 | [Title](options-title.mdx) | No       | Both     |
 
 ### `subtitle`
 
 Controls the top bar subtitle.
 
-| Type                         | Required | Platform |
-| ---------------------------- | -------- | -------- |
+| Type                            | Required | Platform |
+| ------------------------------- | -------- | -------- |
 | [Subitle](options-subtitle.mdx) | No       | Both     |
 
 ### `backButton`
 
 Controls the top bar back button.
 
-| Type                              | Required | Platform |
-| --------------------------------- | -------- | -------- |
+| Type                                 | Required | Platform |
+| ------------------------------------ | -------- | -------- |
 | [BackButton](options-backButton.mdx) | No       | Both     |
 
 ### `background`
 
 Controls the top bar background.
 
-| Type                              | Required | Platform |
-| --------------------------------- | -------- | -------- |
+| Type                                 | Required | Platform |
+| ------------------------------------ | -------- | -------- |
 | [Background](options-background.mdx) | No       | Both     |
 
 ### `scrollEdgeAppearance`
 
 Controls the appearance settings when the scrollable content reaches the matching edge of the navigation bar.
 
-| Type                              | Required | Platform |
-| --------------------------------- | -------- | -------- |
-| [Scroll Edge Background](options-scrollEdgeAppearance.mdx) | No       | iOS 13+     |
+| Type                                                       | Required | Platform |
+| ---------------------------------------------------------- | -------- | -------- |
+| [Scroll Edge Background](options-scrollEdgeAppearance.mdx) | No       | iOS 13+  |
 
 ### `barStyle`
 
@@ -150,7 +166,6 @@ An array of buttons to be displayed at the right-side of the TopBar. Button layo
 Android currently only supports a single left button and does not support custom left Buttons.
 :::
 
-
 | Type                           | Required | Platform |
 | ------------------------------ | -------- | -------- |
 | [[Button]](options-button.mdx) | No       | Both     |
@@ -175,8 +190,8 @@ Disables border at the bottom of the TopBar.
 
 An array of buttons to be displayed at the right side of the TopBar. Button layout is from right to left. See the [Buttons](options-button) section for more details.
 
-| Type                       | Required | Platform |
-| -------------------------- | -------- | -------- |
+| Type                           | Required | Platform |
+| ------------------------------ | -------- | -------- |
 | [[Button]](options-button.mdx) | No       | Both     |
 
 ### `rightButtonColor`
@@ -191,10 +206,9 @@ Default color for the right button.
 
 Controls the SearchBar.
 
-| Type    | Required | Platform |
-| ------- | -------- | -------- |
+| Type                                     | Required | Platform |
+| ---------------------------------------- | -------- | -------- |
 | [OptionsSearchBar](topBar-searchBar.mdx) | No       | iOS 11+  |
-
 
 :::warning Deprecation warning
 This option is currently deprecated and will be removed in a future release. Please use the [OptionsSearchBar](topBar-searchBar.mdx) option instead.
@@ -228,9 +242,9 @@ This option is currently deprecated and will be removed in a future release. Ple
 
 The background color of the UISearchBar's TextField.
 
-| Type   | Required | Platform |
-| ------ | -------- | -------- |
-| Color  | No       | iOS 13+  |
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | iOS 13+  |
 
 :::warning Deprecation warning
 This option is currently deprecated and will be removed in a future release. Please use the [OptionsSearchBar](topBar-searchBar.mdx) option instead.
@@ -240,6 +254,6 @@ This option is currently deprecated and will be removed in a future release. Ple
 
 The tint color of the UISearchBar. Affects text selection color, as well as "Cancel" button color.
 
-| Type   | Required | Platform |
-| ------ | -------- | -------- |
-| Color  | No       | iOS 13+  |
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | iOS 13+  |
