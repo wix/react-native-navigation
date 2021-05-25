@@ -1,6 +1,5 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
-import Android from './AndroidUtils';
 
 const { elementByLabel, elementById } = Utils;
 
@@ -75,7 +74,9 @@ describe('static lifecycle events', () => {
     await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
-    await expect(elementByLabel('componentWillAppear | ReactTitleView | TopBarTitle')).toBeVisible();
+    await expect(
+      elementByLabel('componentWillAppear | ReactTitleView | TopBarTitle')
+    ).toBeVisible();
     await expect(elementByLabel('componentDidAppear | ReactTitleView | TopBarTitle')).toBeVisible();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
@@ -103,5 +104,5 @@ describe('static lifecycle events', () => {
     await expect(
       elementByLabel('componentDidAppear | CustomRoundedButton | TopBarButton')
     ).toBeVisible();
-  })
+  });
 });

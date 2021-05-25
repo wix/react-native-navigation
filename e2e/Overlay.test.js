@@ -24,7 +24,7 @@ describe('Overlay', () => {
     await expect(elementByLabel('Alert displayed')).toBeVisible();
   });
 
-  it('overlay should redraw after orientation change', async () => {
+  it.e2e('overlay should redraw after orientation change', async () => {
     await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
     await device.setOrientation('landscape');
     await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
@@ -63,16 +63,16 @@ describe('Overlay Dismiss all', () => {
     await elementById(TestIDs.OVERLAY_BTN).tap();
   });
 
-  it('dismissAllOverlays should dismiss all opened overlays', async () => {
+  it.e2e('dismissAllOverlays should dismiss all opened overlays', async () => {
     await elementById(TestIDs.SHOW_FULLSCREEN_OVERLAY_BTN).tap();
     await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
     await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
     await expect(elementById(TestIDs.OVERLAY_DISMISSED_COUNT)).toHaveText('2');
   });
 
-  it('dismissAllOverlays should be able to dismiss only one overlay', async () => {
+  it.e2e('dismissAllOverlays should be able to dismiss only one overlay', async () => {
     await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
     await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
     await expect(elementById(TestIDs.OVERLAY_DISMISSED_COUNT)).toHaveText('1');
-  })
-})
+  });
+});

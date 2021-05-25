@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementById, elementByTraits } = Utils;
 
-describe(':ios: SearchBar', () => {
+describe.e2e(':ios: SearchBar', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
