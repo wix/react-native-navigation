@@ -32,8 +32,11 @@
                                                                            callback:callback];
 }
 
+// gets called when the Bridge is created, implicitly initializes the RNNBridgeManager.
 + (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
-    return [[ReactNativeNavigation sharedInstance].bridgeManager extraModulesForBridge:bridge];
+    RNNBridgeManager *bridgeManager =
+        [[ReactNativeNavigation sharedInstance] getBridgeManagerForBridge:bridge];
+    return [bridgeManager extraModulesForBridge:bridge];
 }
 
 + (RCTBridge *)getBridge {
@@ -59,13 +62,18 @@
 }
 
 - (void)bootstrapWithBridge:(RCTBridge *)bridge {
-    UIWindow *mainWindow = [self initializeKeyWindowIfNeeded];
-
-    self.bridgeManager = [[RNNBridgeManager alloc] initWithBridge:bridge mainWindow:mainWindow];
-    [RNNSplashScreen showOnWindow:mainWindow];
+    [RNNSplashScreen showOnWindow:[self mainWindow]];
 }
 
-- (UIWindow *)initializeKeyWindowIfNeeded {
+- (RNNBridgeManager *)getBridgeManagerForBridge:(RCTBridge *)bridge {
+    if (self.bridgeManager == nil) {
+        self.bridgeManager = [[RNNBridgeManager alloc] initWithBridge:bridge
+                                                           mainWindow:[self mainWindow]];
+    }
+    return self.bridgeManager;
+}
+
+- (UIWindow *)mainWindow {
     UIWindow *keyWindow = UIApplication.sharedApplication.delegate.window;
     if (!keyWindow) {
         keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
