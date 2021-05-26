@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { VISIBLE_OVERLAY_TEST_ID, VISIBLE_SCREEN_TEST_ID } from './constants';
+import {
+  DEFAULT_BACK_BUTTON_TEST_ID,
+  VISIBLE_OVERLAY_TEST_ID,
+  VISIBLE_SCREEN_TEST_ID,
+} from './constants';
 import { connect } from 'remx';
 
 interface ApplicationProps {
@@ -32,3 +36,4 @@ export const Application = connect()(
 
 Application.VISIBLE_SCREEN_TEST_ID = VISIBLE_SCREEN_TEST_ID;
 Application.VISIBLE_OVERLAY_TEST_ID = VISIBLE_OVERLAY_TEST_ID;
+Application.DEFAULT_BACK_BUTTON_TEST_ID = DEFAULT_BACK_BUTTON_TEST_ID;

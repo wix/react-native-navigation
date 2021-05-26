@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
-import { Navigation, OptionsTopBarButton } from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 import { ComponentProps } from './ComponentProps';
 import { VISIBLE_SCREEN_TEST_ID } from './constants';
 import { LayoutStore } from './LayoutStore';
-import { NavigationButton } from './NavigationButton';
 import { connect } from 'remx';
+import { TopBar } from './TopBar';
 
 export const ComponentScreen = connect()(
   class extends Component<ComponentProps> {
@@ -43,73 +43,17 @@ export const ComponentScreen = connect()(
       return <View testID={bottomTabsOptions?.testID}>{buttons}</View>;
     }
 
-    renderTopBar() {
-      if (!this.props.stack) return null;
-
-      const topBarOptions = this.props.layoutNode.resolveOptions().topBar;
-      if (topBarOptions?.visible === false) return null;
-      else {
-        const component = topBarOptions?.title?.component;
-        return (
-          <View testID={topBarOptions?.testID}>
-            <Text>{topBarOptions?.title?.text}</Text>
-            <Text>{topBarOptions?.subtitle?.text}</Text>
-            {this.renderButtons(topBarOptions?.leftButtons)}
-            {this.renderButtons(topBarOptions?.rightButtons)}
-            {component &&
-              //@ts-ignore
-              this.renderComponent(component.componentId!, component.name)}
-          </View>
-        );
-      }
-    }
-
-    renderButtons(buttons: OptionsTopBarButton[] = []) {
-      return buttons.map((button) => {
-        return (
-          <NavigationButton
-            button={button}
-            key={button.id}
-            componentId={this.props.layoutNode.nodeId}
-          />
-        );
-      });
-    }
-
-    renderBackButton() {
-      const backButtonOptions = this.props.layoutNode.resolveOptions().topBar?.backButton;
-      return (
-        <Button
-          testID={backButtonOptions?.testID}
-          title={backButtonOptions && backButtonOptions.title ? backButtonOptions.title : ''}
-          onPress={() => {
-            LayoutStore.pop(this.props.layoutNode.nodeId);
-          }}
-        />
-      );
-    }
-
-    renderComponent(id: string, name: string, testID?: string) {
-      //@ts-ignore
-      const Component = Navigation.store.getComponentClassForName(name)!();
-      //@ts-ignore
-      const props = Navigation.store.getPropsForId(id);
-      return (
-        <View key={id} testID={testID}>
-          <Component {...props} componentId={id} />
-        </View>
-      );
-    }
-
     render() {
       //@ts-ignore
       const Component = Navigation.store.getWrappedComponent(this.props.layoutNode.data.name);
       return (
         <View testID={this.isVisible() ? VISIBLE_SCREEN_TEST_ID : undefined}>
-          {this.props.backButton && this.renderBackButton()}
-          {this.renderTopBar()}
+          <TopBar
+            layoutNode={this.props.layoutNode}
+            stack={this.props.stack}
+            backButton={this.props.backButton}
+          />
           {this.renderTabBar()}
-          {this.isVisible() && <View>{/* <Overdlays /> */}</View>}
           <Component componentId={this.props.layoutNode.nodeId} />
         </View>
       );
