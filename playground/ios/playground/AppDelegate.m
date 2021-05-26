@@ -13,7 +13,6 @@
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     if (@available(iOS 13.0, *)) {
@@ -23,6 +22,7 @@
     }
     [self.window makeKeyWindow];
 
+    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
     [ReactNativeNavigation bootstrapWithBridge:bridge];
     [ReactNativeNavigation
         registerExternalComponent:@"RNNCustomComponent"
