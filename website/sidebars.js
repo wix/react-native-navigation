@@ -13,12 +13,13 @@ module.exports = {
       'docs/screen-lifecycle',
       'docs/passing-data-to-components',
       'docs/functionalComponents',
-      'docs/customBackNavigation'
+      'docs/customBackNavigation',
     ],
     Layouts: ['docs/stack', 'docs/bottomTabs', 'docs/sideMenu', 'docs/externalComponent'],
     Hierarchy: ['docs/root', 'docs/modal', 'docs/overlay'],
     Styling: [
       'docs/style-options',
+      'docs/stack-buttons',
       'docs/style-theme',
       'docs/style-statusBar',
       'docs/style-orientation',

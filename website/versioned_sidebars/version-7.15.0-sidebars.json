@@ -111,6 +111,10 @@
         },
         {
           "type": "doc",
+          "id": "version-7.15.0/docs/stack-buttons"
+        },
+        {
+          "type": "doc",
           "id": "version-7.15.0/docs/style-theme"
         },
         {
