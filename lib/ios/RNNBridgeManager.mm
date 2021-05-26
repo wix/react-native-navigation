@@ -3,10 +3,6 @@
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 
-#ifdef RN_FABRIC_ENABLED
-#import <React/RCTSurfacePresenter.h>
-#endif
-
 #import "RNNBridgeModule.h"
 #import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
