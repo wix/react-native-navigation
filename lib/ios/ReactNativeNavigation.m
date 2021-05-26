@@ -16,10 +16,15 @@
 
 #pragma mark - public API
 
++ (void)bootstrapWithBridge:(RCTBridge *)bridge {
+    [[ReactNativeNavigation sharedInstance] bootstrapWithBridge:bridge];
+}
+
 + (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate
                 launchOptions:(NSDictionary *)launchOptions {
-    [[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:bridgeDelegate
-                                                    launchOptions:launchOptions];
+    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:bridgeDelegate
+                                              launchOptions:launchOptions];
+    [[ReactNativeNavigation sharedInstance] bootstrapWithBridge:bridge];
 }
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
@@ -53,14 +58,10 @@
     return instance;
 }
 
-- (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate
-                launchOptions:(NSDictionary *)launchOptions {
+- (void)bootstrapWithBridge:(RCTBridge *)bridge {
     UIWindow *mainWindow = [self initializeKeyWindowIfNeeded];
 
-    self.bridgeManager = [[RNNBridgeManager alloc] initWithLaunchOptions:launchOptions
-                                                       andBridgeDelegate:bridgeDelegate
-                                                              mainWindow:mainWindow];
-    [self.bridgeManager initializeBridge];
+    self.bridgeManager = [[RNNBridgeManager alloc] initWithBridge:bridge mainWindow:mainWindow];
     [RNNSplashScreen showOnWindow:mainWindow];
 }
 
