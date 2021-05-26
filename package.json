@@ -121,7 +121,9 @@
       "<rootDir>/scripts/",
       "<rootDir>/e2e/"
     ],
-    "setupFilesAfterEnv": ["./jest-setup.js"],
+    "setupFilesAfterEnv": [
+      "./jest-setup.js"
+    ],
     "moduleNameMapper": {
       "react-native-navigation": "<rootDir>/lib/src",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/playground/img/layouts@2x.png"

@@ -4,24 +4,36 @@ import { events } from "../EventsStore";
 import ParentNode from "./ParentNode";
 
 export default class ComponentNode extends ParentNode {
+    componentDidMountOnce = false;
+    componentDidAppearPending = false;
+
     constructor(layout: any, parentNode?: ParentNode) {
         super(layout, 'Component', parentNode);
     }
 
-    public componentDidAppear() {
-        events.invokeComponentWillAppear({
-            componentName: this.data.name,
-            componentId: this.nodeId,
-            componentType: 'Component',
-        });
-        events.invokeComponentDidAppear({
-            componentName: this.data.name,
-            componentId: this.nodeId,
-            componentType: 'Component',
-        });
+    public componentDidMount() {
+        this.componentDidMountOnce = true
+        this.componentDidAppearPending && this.componentDidAppear();
+    }
 
-        this.buttonsDidAppear(_.concat(this.data.options.topBar?.rightButtons || [], this.data.options.topBar?.leftButtons || []));
-        this.titleChanged(undefined, this.data.options.topBar?.title)
+    public componentDidAppear() {
+        if (this.componentDidMountOnce) {
+            events.invokeComponentWillAppear({
+                componentName: this.data.name,
+                componentId: this.nodeId,
+                componentType: 'Component',
+            });
+            events.invokeComponentDidAppear({
+                componentName: this.data.name,
+                componentId: this.nodeId,
+                componentType: 'Component',
+            });
+    
+            this.buttonsDidAppear(_.concat(this.data.options.topBar?.rightButtons || [], this.data.options.topBar?.leftButtons || []));
+            this.titleChanged(undefined, this.data.options.topBar?.title)
+        } else {
+            this.componentDidAppearPending = true;
+        }
     }
 
     public componentDidDisappear() {

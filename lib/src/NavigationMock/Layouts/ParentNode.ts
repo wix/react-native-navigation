@@ -17,6 +17,10 @@ export default class ParentNode extends Node {
     );
   }
 
+  componentDidMount() {
+
+  }
+
   componentDidAppear() {
     this.getVisibleLayout().componentDidAppear();
   }

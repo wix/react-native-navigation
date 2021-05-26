@@ -13,6 +13,10 @@ export const ComponentScreen = connect()(
       super(props);
     }
 
+    componentDidMount() {
+      this.props.layoutNode.componentDidMount();
+    }
+
     isVisible(): boolean {
       return LayoutStore.isVisibleLayout(this.props.layoutNode);
     }
