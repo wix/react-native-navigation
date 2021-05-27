@@ -1,4 +1,4 @@
-// @ts-nocheck
+import _ from 'lodash';
 import { EmitterSubscription } from 'react-native';
 import {
   ComponentWillAppearEvent,
@@ -21,10 +21,11 @@ import {
 import { events } from './EventsStore';
 
 export class NativeEventsReceiver {
-  navigationButtonPressedCallback: (event: NavigationButtonPressedEvent) => void;
-
   public registerAppLaunchedListener(callback: () => void): EmitterSubscription {
     callback();
+    return {
+      remove: () => {},
+    } as EmitterSubscription;
   }
 
   public registerComponentWillAppearListener(
@@ -33,9 +34,9 @@ export class NativeEventsReceiver {
     events.componentWillAppear.push(callback);
     return {
       remove: () => {
-        callback = undefined
-      }
-    }
+        _.remove(events.componentWillAppear, (value) => value === callback);
+      },
+    } as EmitterSubscription;
   }
 
   public registerComponentDidAppearListener(
@@ -44,9 +45,9 @@ export class NativeEventsReceiver {
     events.componentDidAppear.push(callback);
     return {
       remove: () => {
-        callback = undefined;
-      }
-    }
+        _.remove(events.componentDidAppear, (value) => value === callback);
+      },
+    } as EmitterSubscription;
   }
 
   public registerComponentDidDisappearListener(
@@ -54,8 +55,10 @@ export class NativeEventsReceiver {
   ): EmitterSubscription {
     events.componentDidDisappear.push(callback);
     return {
-      remove: () => { callback = undefined }
-    }
+      remove: () => {
+        _.remove(events.componentDidDisappear, (value) => value === callback);
+      },
+    } as EmitterSubscription;
   }
 
   public registerNavigationButtonPressedListener(
@@ -64,18 +67,17 @@ export class NativeEventsReceiver {
     events.navigationButtonPressed.push(callback);
     return {
       remove: () => {
-        callback = undefined;
-      }
-    }
-    // return this.emitter.addListener('RNN.NavigationButtonPressed', callback);
+        _.remove(events.navigationButtonPressed, (value) => value === callback);
+      },
+    } as EmitterSubscription;
   }
 
   public registerBottomTabPressedListener(
-    callback: (data: BottomTabPressedEvent) => void
+    _callback: (data: BottomTabPressedEvent) => void
   ): EmitterSubscription {
     return {
-      remove: () => { }
-    }
+      remove: () => {},
+    } as EmitterSubscription;
   }
 
   public registerModalDismissedListener(
@@ -83,59 +85,73 @@ export class NativeEventsReceiver {
   ): EmitterSubscription {
     events.modalDismissed.push(callback);
     return {
-      remove: () => { callback = undefined }
-    }
+      remove: () => {
+        _.remove(events.modalDismissed, (value) => value === callback);
+      },
+    } as EmitterSubscription;
   }
 
   public registerModalAttemptedToDismissListener(
-    callback: (event: ModalAttemptedToDismissEvent) => void
+    _callback: (event: ModalAttemptedToDismissEvent) => void
   ): EmitterSubscription {
     return {
-      remove: () => { }
-    }
+      remove: () => {},
+    } as EmitterSubscription;
   }
 
   public registerSearchBarUpdatedListener(
-    callback: (event: SearchBarUpdatedEvent) => void
+    _callback: (event: SearchBarUpdatedEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.SearchBarUpdated', callback);
+    return {
+      remove: () => {},
+    } as EmitterSubscription;
   }
 
   public registerSearchBarCancelPressedListener(
-    callback: (event: SearchBarCancelPressedEvent) => void
+    _callback: (event: SearchBarCancelPressedEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.SearchBarCancelPressed', callback);
+    return {
+      remove: () => {},
+    } as EmitterSubscription;
   }
 
   public registerPreviewCompletedListener(
-    callback: (event: PreviewCompletedEvent) => void
+    _callback: (event: PreviewCompletedEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.PreviewCompleted', callback);
+    return {
+      remove: () => {},
+    } as EmitterSubscription;
   }
 
   public registerCommandCompletedListener(
-    callback: (data: CommandCompletedEvent) => void
+    _callback: (data: CommandCompletedEvent) => void
   ): EmitterSubscription {
     return {
-      remove: () => { }
-    }
+      remove: () => {},
+    } as EmitterSubscription;
   }
 
   public registerBottomTabSelectedListener(
-    callback: (data: BottomTabSelectedEvent) => void
+    _callback: (data: BottomTabSelectedEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.BottomTabSelected', callback);
+    return {
+      remove: () => {},
+    } as EmitterSubscription;
   }
 
   public registerBottomTabLongPressedListener(
-    callback: (data: BottomTabLongPressedEvent) => void
+    _callback: (data: BottomTabLongPressedEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.BottomTabLongPressed', callback);
+    return {
+      remove: () => {},
+    } as EmitterSubscription;
   }
 
   public registerScreenPoppedListener(
-    callback: (event: ScreenPoppedEvent) => void
+    _callback: (event: ScreenPoppedEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.ScreenPopped', callback);
+    return {
+      remove: () => {},
+    } as EmitterSubscription;
   }
 }
