@@ -34,11 +34,11 @@ export const TopBar = class extends Component<ComponentProps> {
   }
 
   renderButtons(buttons: OptionsTopBarButton[] = []) {
-    return buttons.map((button) => {
+    return buttons.map((button, i: number) => {
       return (
         <NavigationButton
           button={button}
-          key={button.id}
+          key={button.id || i}
           componentId={this.props.layoutNode.nodeId}
         />
       );

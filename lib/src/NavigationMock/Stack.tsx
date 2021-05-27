@@ -3,9 +3,9 @@ import { View } from 'react-native';
 import { ComponentProps } from './ComponentProps';
 import { LayoutComponent } from './LayoutComponent';
 import ParentNode from './Layouts/ParentNode';
-import { connect } from 'remx';
+import { connect } from './connect';
 
-export const Stack = connect()(
+export const Stack = connect(
   class extends Component<ComponentProps> {
     renderScreens() {
       const children = this.props.layoutNode.children;

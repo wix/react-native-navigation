@@ -5,14 +5,17 @@ import {
   VISIBLE_OVERLAY_TEST_ID,
   VISIBLE_SCREEN_TEST_ID,
 } from './constants';
-import { connect } from 'remx';
+import { connect } from './connect';
 
 interface ApplicationProps {
   entryPoint: () => void;
 }
 
-export const Application = connect()(
+export const Application = connect(
   class extends Component<ApplicationProps> {
+    static VISIBLE_SCREEN_TEST_ID = VISIBLE_SCREEN_TEST_ID;
+    static VISIBLE_OVERLAY_TEST_ID = VISIBLE_OVERLAY_TEST_ID;
+    static DEFAULT_BACK_BUTTON_TEST_ID = DEFAULT_BACK_BUTTON_TEST_ID;
     constructor(props: ApplicationProps) {
       super(props);
       props.entryPoint();
@@ -33,7 +36,3 @@ export const Application = connect()(
     }
   }
 );
-
-Application.VISIBLE_SCREEN_TEST_ID = VISIBLE_SCREEN_TEST_ID;
-Application.VISIBLE_OVERLAY_TEST_ID = VISIBLE_OVERLAY_TEST_ID;
-Application.DEFAULT_BACK_BUTTON_TEST_ID = DEFAULT_BACK_BUTTON_TEST_ID;

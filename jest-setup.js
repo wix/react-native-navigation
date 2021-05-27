@@ -1,4 +1,4 @@
-const { mockDetox, mockUILib, mockJest } = require('./lib/src/NavigationMock/Utils');
+const { mockDetox, mockUILib, mockJest } = require('./Utils');
 
 mockJest();
 

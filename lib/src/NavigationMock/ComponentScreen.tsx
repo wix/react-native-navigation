@@ -4,10 +4,10 @@ import { Navigation } from 'react-native-navigation';
 import { ComponentProps } from './ComponentProps';
 import { VISIBLE_SCREEN_TEST_ID } from './constants';
 import { LayoutStore } from './LayoutStore';
-import { connect } from 'remx';
+import { connect } from './connect';
 import { TopBar } from './TopBar';
 
-export const ComponentScreen = connect()(
+export const ComponentScreen = connect(
   class extends Component<ComponentProps> {
     constructor(props: ComponentProps) {
       super(props);

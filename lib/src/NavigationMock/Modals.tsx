@@ -4,9 +4,9 @@ import { ComponentProps } from './ComponentProps';
 import { LayoutComponent } from './LayoutComponent';
 import ParentNode from './Layouts/ParentNode';
 import { LayoutStore } from './LayoutStore';
-import { connect } from 'remx';
+import { connect } from './connect';
 
-export const Modals = connect()(
+export const Modals = connect(
   class extends Component<ComponentProps> {
     render() {
       const children = LayoutStore.getModals();
