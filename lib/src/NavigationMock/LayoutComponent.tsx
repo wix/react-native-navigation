@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { BottomTabs } from './BottomTabs';
+import { BottomTabs } from './Components/BottomTabs';
 import { ComponentProps } from './ComponentProps';
-import { ComponentScreen } from './ComponentScreen';
-import { Stack } from './Stack';
+import { ComponentScreen } from './Components/ComponentScreen';
+import { Stack } from './Components/Stack';
 
 export const LayoutComponent = class extends Component<ComponentProps> {
   render() {

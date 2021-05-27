@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
-import { Navigation, OptionsTopBarButton } from 'react-native-navigation';
-import { OptionsTopBar, OptionsTopBarBackButton } from 'react-native-navigation/interfaces/Options';
-import { DEFAULT_BACK_BUTTON_TEST_ID } from './constants';
-import ParentNode from './Layouts/ParentNode';
-import { LayoutStore } from './LayoutStore';
-import { NavigationButton } from './NavigationButton';
+import { Navigation, OptionsTopBarButton } from '../..';
+import { OptionsTopBar, OptionsTopBarBackButton } from '../../interfaces/Options';
+import { DEFAULT_BACK_BUTTON_TEST_ID } from '../constants';
+import ParentNode from '../Layouts/ParentNode';
+import { LayoutStore } from '../LayoutStore';
+import { NavigationButton } from '../NavigationButton';
 
 export interface TopBarProps {
   layoutNode: ParentNode;
