@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, RenderAPI, within } from '@testing-library/react-native';
-const { Application } = require('./lib/src/NavigationMock');
+const { Application } = require('./lib/src/Mock');
 
 const mockJest = () => {
   it.e2e = (name: string, fn: () => void) => {
