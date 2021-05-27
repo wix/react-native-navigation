@@ -1,4 +1,4 @@
-jest.mock('./../adapters/NativeCommandsSender', () => require('./mocks/NativeCommandsSender.tsx'));
-jest.mock('./../adapters/NativeEventsReceiver', () => require('./mocks/NativeEventsReceiver.ts'));
+jest.mock('./../adapters/NativeCommandsSender', () => require('./mocks/NativeCommandsSender'));
+jest.mock('./../adapters/NativeEventsReceiver', () => require('./mocks/NativeEventsReceiver'));
 
 export const Application = require('./Application').Application;
