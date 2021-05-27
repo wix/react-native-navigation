@@ -9,24 +9,11 @@ export const LayoutComponent = class extends Component<ComponentProps> {
   render() {
     switch (this.props.layoutNode.type) {
       case 'BottomTabs':
-        return <BottomTabs layoutNode={this.props.layoutNode} stack={this.props.stack} />;
+        return <BottomTabs layoutNode={this.props.layoutNode} />;
       case 'Stack':
-        return (
-          <Stack
-            layoutNode={this.props.layoutNode}
-            bottomTabs={this.props.bottomTabs}
-            stack={this.props.stack}
-          />
-        );
+        return <Stack layoutNode={this.props.layoutNode} />;
       case 'Component':
-        return (
-          <ComponentScreen
-            layoutNode={this.props.layoutNode}
-            bottomTabs={this.props.bottomTabs}
-            stack={this.props.stack}
-            backButton={this.props.backButton}
-          />
-        );
+        return <ComponentScreen layoutNode={this.props.layoutNode} />;
     }
 
     return <View />;

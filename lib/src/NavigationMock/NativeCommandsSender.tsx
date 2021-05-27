@@ -24,12 +24,10 @@ export class NativeCommandsSender {
 
   setDefaultOptions(options: object) {
     LayoutStore.setDefaultOptions(options);
-    // return this.nativeCommandsModule.setDefaultOptions(options);
   }
 
   mergeOptions(componentId: string, options: object) {
     LayoutStore.mergeOptions(componentId, options);
-    // return this.nativeCommandsModule.mergeOptions(componentId, options);
   }
 
   push(_commandId: string, onComponentId: string, layout: LayoutNode) {
@@ -105,15 +103,11 @@ export class NativeCommandsSender {
 
   dismissOverlay(_commandId: string, componentId: string) {
     LayoutStore.dismissOverlay(componentId);
-    // return this.nativeCommandsModule.dismissOverlay(commandId, componentId);
   }
 
   dismissAllOverlays(_commandId: string) {
     LayoutStore.dismissAllOverlays();
-    // return this.nativeCommandsModule.dismissAllOverlays(commandId);
   }
 
-  getLaunchArgs(_commandId: string) {
-    // return this.nativeCommandsModule.getLaunchArgs(commandId);
-  }
+  getLaunchArgs(_commandId: string) {}
 }

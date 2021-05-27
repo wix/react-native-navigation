@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import { LayoutStack } from 'react-native-navigation/interfaces/Layout';
-import { OptionsTopBarButton } from 'react-native-navigation/interfaces/Options';
+import { OptionsTopBarButton } from '../../interfaces/Options';
 import { Options } from '../../index';
 import { LayoutStore } from '../LayoutStore';
 import ComponentNode from './ComponentNode';
@@ -61,11 +60,21 @@ export default class ParentNode extends Node {
     return _.merge(_.cloneDeep(LayoutStore.getDefaultOptions()), options);
   }
 
-  public getStack(): LayoutStack | undefined {
+  public getStack(): ParentNode | undefined {
     if (this.type === 'Stack') {
-      return this as LayoutStack;
+      return this as ParentNode;
     } else if (this.parentNode) {
       return this.parentNode.getStack();
+    }
+
+    return undefined;
+  }
+
+  public getBottomTabs(): ParentNode | undefined {
+    if (this.type === 'BottomTabs') {
+      return this as ParentNode;
+    } else if (this.parentNode) {
+      return this.parentNode.getBottomTabs();
     }
 
     return undefined;

@@ -10,15 +10,7 @@ export const Stack = connect(
     renderScreens() {
       const children = this.props.layoutNode.children;
       return children.map((child: ParentNode, i: number) => {
-        return (
-          <LayoutComponent
-            key={child.nodeId}
-            layoutNode={child}
-            bottomTabs={this.props.bottomTabs}
-            stack={this.props.layoutNode}
-            backButton={i > 0}
-          />
-        );
+        return <LayoutComponent key={child.nodeId} layoutNode={child} backButton={i > 0} />;
       });
     }
 

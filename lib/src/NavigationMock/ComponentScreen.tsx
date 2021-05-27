@@ -22,18 +22,19 @@ export const ComponentScreen = connect(
     }
 
     renderTabBar() {
-      if (!this.props.bottomTabs) return null;
+      const bottomTabs = this.props.layoutNode.getBottomTabs();
+      if (!bottomTabs) return null;
 
-      const bottomTabsOptions = this.props.bottomTabs.resolveOptions().bottomTabs;
+      const bottomTabsOptions = bottomTabs.resolveOptions().bottomTabs;
       if (bottomTabsOptions?.visible === false) return null;
-      const buttons = this.props.bottomTabs!.children!.map((child, i) => {
+      const buttons = bottomTabs!.children!.map((child, i) => {
         const bottomTabOptions = child.resolveOptions().bottomTab;
         return (
           <View key={`tab-${i}`}>
             <Button
               testID={bottomTabOptions?.testID}
               title={bottomTabOptions?.text || ''}
-              onPress={() => LayoutStore.selectTabIndex(this.props.bottomTabs, i)}
+              onPress={() => LayoutStore.selectTabIndex(this.props.layoutNode.getBottomTabs(), i)}
             />
             <Text>{bottomTabOptions?.badge}</Text>
           </View>
@@ -48,12 +49,12 @@ export const ComponentScreen = connect(
       const Component = Navigation.store.getWrappedComponent(this.props.layoutNode.data.name);
       return (
         <View testID={this.isVisible() ? VISIBLE_SCREEN_TEST_ID : undefined}>
-          {this.props.stack && (
+          {this.props.layoutNode.getStack() && (
             <TopBar
               layoutNode={this.props.layoutNode}
               topBarOptions={this.props.layoutNode.resolveOptions().topBar}
               backButtonOptions={this.props.layoutNode.resolveOptions().topBar?.backButton}
-              renderBackButton={!!this.props.stack}
+              renderBackButton={!!this.props.layoutNode.getStack()}
             />
           )}
           {this.renderTabBar()}
