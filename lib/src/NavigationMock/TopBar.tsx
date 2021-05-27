@@ -11,6 +11,7 @@ export interface TopBarProps {
   layoutNode: ParentNode;
   topBarOptions?: OptionsTopBar;
   backButtonOptions?: OptionsTopBarBackButton;
+  renderBackButton: boolean;
 }
 
 export const TopBar = class extends Component<TopBarProps> {
@@ -32,7 +33,7 @@ export const TopBar = class extends Component<TopBarProps> {
           {component &&
             //@ts-ignore
             this.renderComponent(component.componentId!, component.name)}
-          {this.props.backButtonOptions && this.renderBackButton()}
+          {this.props.renderBackButton && this.renderBackButton()}
         </View>
       );
     }

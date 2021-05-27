@@ -53,6 +53,7 @@ export const ComponentScreen = connect(
               layoutNode={this.props.layoutNode}
               topBarOptions={this.props.layoutNode.resolveOptions().topBar}
               backButtonOptions={this.props.layoutNode.resolveOptions().topBar?.backButton}
+              renderBackButton={!!this.props.stack}
             />
           )}
           {this.renderTabBar()}
