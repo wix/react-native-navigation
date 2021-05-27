@@ -30,9 +30,12 @@ export default class ComponentNode extends ParentNode {
       });
 
       this.buttonsDidAppear(
-        _.concat(this.options.topBar?.rightButtons || [], this.options.topBar?.leftButtons || [])
+        _.concat(
+          this.data.options.topBar?.rightButtons || [],
+          this.data.options.topBar?.leftButtons || []
+        )
       );
-      this.titleChanged(undefined, this.options.topBar?.title);
+      this.titleChanged(undefined, this.data.options.topBar?.title);
     } else {
       this.componentDidAppearPending = true;
     }
@@ -46,9 +49,12 @@ export default class ComponentNode extends ParentNode {
     });
 
     this.buttonsDidDisappear(
-      _.concat(this.options.topBar?.rightButtons || [], this.options.topBar?.leftButtons || [])
+      _.concat(
+        this.data.options.topBar?.rightButtons || [],
+        this.data.options.topBar?.leftButtons || []
+      )
     );
-    this.titleChanged(this.options.topBar?.title);
+    this.titleChanged(this.data.options.topBar?.title);
   }
 
   titleChanged(oldTitle: any, newTitle?: any) {

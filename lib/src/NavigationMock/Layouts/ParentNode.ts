@@ -37,7 +37,7 @@ export default class ParentNode extends Node {
   }
 
   mergeOptions(options: Options) {
-    this.options = _.mergeWith(this.options, options, (objValue, srcValue, key) => {
+    this.data.options = _.mergeWith(this.data.options, options, (objValue, srcValue, key) => {
       if (_.isArray(objValue)) {
         if (key === 'rightButtons' || key === 'leftButtons') {
           this.buttonsChanged(objValue, srcValue);
@@ -56,7 +56,7 @@ export default class ParentNode extends Node {
   titleChanged(_oldComponent: any, _newComponent: any) {}
 
   resolveOptions(): Options {
-    const options = _.merge(_.cloneDeep(this.options), this.getVisibleLayout().options);
+    const options = _.merge(_.cloneDeep(this.data.options), this.getVisibleLayout().data.options);
     return _.merge(_.cloneDeep(LayoutStore.getDefaultOptions()), options);
   }
 
