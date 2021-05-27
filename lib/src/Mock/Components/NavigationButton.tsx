@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, TouchableOpacity } from 'react-native';
-import { Navigation, OptionsTopBarButton } from 'react-native-navigation';
-import { events } from './EventsStore';
+import { Navigation, OptionsTopBarButton } from '../../';
+import { events } from '../Stores/EventsStore';
 
 interface ButtonProps {
   button: OptionsTopBarButton;

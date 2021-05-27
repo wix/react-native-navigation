@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { LayoutComponent } from '../LayoutComponent';
+import { LayoutComponent } from './LayoutComponent';
 import { ComponentProps } from '../ComponentProps';
 import { connect } from '../connect';
 

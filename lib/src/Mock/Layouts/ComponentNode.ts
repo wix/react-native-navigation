@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { OptionsTopBarButton } from 'react-native-navigation/interfaces/Options';
-import { events } from '../EventsStore';
+import { events } from '../Stores/EventsStore';
 import ParentNode from './ParentNode';
 
 export default class ComponentNode extends ParentNode {

@@ -19,7 +19,7 @@
   "bin": {
     "rnn-link": "./autolink/postlink/run.js"
   },
-  "main": "lib/dist/index.ts",
+  "main": "lib/dist/index.js",
   "scripts": {
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",

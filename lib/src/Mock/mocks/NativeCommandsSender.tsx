@@ -1,9 +1,9 @@
-import { LayoutStore } from './LayoutStore';
-import LayoutNodeFactory from './Layouts/LayoutNodeFactory';
+import { LayoutStore } from '../Stores/LayoutStore';
+import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
 import { LayoutNode } from 'react-native-navigation/commands/LayoutTreeCrawler';
-import { events } from './EventsStore';
+import { events } from '../Stores/EventsStore';
 import _ from 'lodash';
-import ComponentNode from './Layouts/ComponentNode';
+import ComponentNode from '../Layouts/ComponentNode';
 
 export class NativeCommandsSender {
   constructor() {}

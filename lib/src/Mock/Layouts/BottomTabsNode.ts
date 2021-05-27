@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Options } from '../../index';
-import { LayoutStore } from '../LayoutStore';
+import { LayoutStore } from '../Stores/LayoutStore';
 import ParentNode from './ParentNode';
 
 export default class BottomTabsNode extends ParentNode {

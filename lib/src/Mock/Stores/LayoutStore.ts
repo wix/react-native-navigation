@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import BottomTabsNode from './Layouts/BottomTabsNode';
-import ParentNode from './Layouts/ParentNode';
-import LayoutNodeFactory from './Layouts/LayoutNodeFactory';
-import { Options } from 'react-native-navigation/interfaces/Options';
-import StackNode from './Layouts/StackNode';
+import BottomTabsNode from '../Layouts/BottomTabsNode';
+import ParentNode from '../Layouts/ParentNode';
+import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
+import { Options } from '../../interfaces/Options';
+import StackNode from '../Layouts/StackNode';
 
 const remx = require('remx');
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ComponentProps } from '../ComponentProps';
-import { LayoutComponent } from '../LayoutComponent';
+import { LayoutComponent } from './LayoutComponent';
 import ParentNode from '../Layouts/ParentNode';
 import { connect } from '../connect';
 

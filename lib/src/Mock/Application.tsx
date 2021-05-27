@@ -22,10 +22,10 @@ export const Application = connect(
     }
 
     render() {
-      const { LayoutComponent } = require('./LayoutComponent');
-      const { LayoutStore } = require('./LayoutStore');
-      const { Modals } = require('./Modals');
-      const { Overlays } = require('./Overlays');
+      const { LayoutComponent } = require('./Components/LayoutComponent');
+      const { LayoutStore } = require('./Stores/LayoutStore');
+      const { Modals } = require('./Components/Modals');
+      const { Overlays } = require('./Components/Overlays');
       return (
         <View testID={'Application'}>
           <LayoutComponent layoutNode={LayoutStore.getLayout()} />

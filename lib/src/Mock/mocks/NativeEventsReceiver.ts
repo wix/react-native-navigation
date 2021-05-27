@@ -11,14 +11,14 @@ import {
   ModalDismissedEvent,
   ScreenPoppedEvent,
   ModalAttemptedToDismissEvent,
-} from '../interfaces/ComponentEvents';
+} from '../../interfaces/ComponentEvents';
 import {
   CommandCompletedEvent,
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
-} from '../interfaces/Events';
-import { events } from './EventsStore';
+} from '../../interfaces/Events';
+import { events } from './../Stores/EventsStore';
 
 export class NativeEventsReceiver {
   public registerAppLaunchedListener(callback: () => void): EmitterSubscription {
