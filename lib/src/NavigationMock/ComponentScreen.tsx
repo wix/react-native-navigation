@@ -48,11 +48,13 @@ export const ComponentScreen = connect(
       const Component = Navigation.store.getWrappedComponent(this.props.layoutNode.data.name);
       return (
         <View testID={this.isVisible() ? VISIBLE_SCREEN_TEST_ID : undefined}>
-          <TopBar
-            layoutNode={this.props.layoutNode}
-            stack={this.props.stack}
-            backButton={this.props.backButton}
-          />
+          {this.props.stack && (
+            <TopBar
+              layoutNode={this.props.layoutNode}
+              topBarOptions={this.props.layoutNode.resolveOptions().topBar}
+              backButtonOptions={this.props.layoutNode.resolveOptions().topBar?.backButton}
+            />
+          )}
           {this.renderTabBar()}
           <Component componentId={this.props.layoutNode.nodeId} />
         </View>

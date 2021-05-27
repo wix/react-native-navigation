@@ -48,6 +48,7 @@ export default class ParentNode extends Node {
         this.titleChanged(objValue, srcValue);
       }
     });
+
     this.parentNode?.mergeOptions(options);
   }
 

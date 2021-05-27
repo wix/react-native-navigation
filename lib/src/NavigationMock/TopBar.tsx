@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
 import { Navigation, OptionsTopBarButton } from 'react-native-navigation';
+import { OptionsTopBar, OptionsTopBarBackButton } from 'react-native-navigation/interfaces/Options';
 import { DEFAULT_BACK_BUTTON_TEST_ID } from './constants';
-import { ComponentProps } from './ComponentProps';
+import ParentNode from './Layouts/ParentNode';
 import { LayoutStore } from './LayoutStore';
 import { NavigationButton } from './NavigationButton';
 
-export const TopBar = class extends Component<ComponentProps> {
-  constructor(props: ComponentProps) {
+export interface TopBarProps {
+  layoutNode: ParentNode;
+  topBarOptions?: OptionsTopBar;
+  backButtonOptions?: OptionsTopBarBackButton;
+}
+
+export const TopBar = class extends Component<TopBarProps> {
+  constructor(props: TopBarProps) {
     super(props);
   }
 
   render() {
-    if (!this.props.stack) return null;
-
-    const topBarOptions = this.props.layoutNode.resolveOptions().topBar;
+    const topBarOptions = this.props.topBarOptions;
     if (topBarOptions?.visible === false) return null;
     else {
       const component = topBarOptions?.title?.component;
@@ -27,7 +32,7 @@ export const TopBar = class extends Component<ComponentProps> {
           {component &&
             //@ts-ignore
             this.renderComponent(component.componentId!, component.name)}
-          {this.props.backButton && this.renderBackButton()}
+          {this.props.backButtonOptions && this.renderBackButton()}
         </View>
       );
     }
@@ -46,7 +51,7 @@ export const TopBar = class extends Component<ComponentProps> {
   }
 
   renderBackButton() {
-    const backButtonOptions = this.props.layoutNode.resolveOptions().topBar?.backButton;
+    const backButtonOptions = this.props.backButtonOptions;
     return (
       <Button
         testID={backButtonOptions?.testID || DEFAULT_BACK_BUTTON_TEST_ID}
