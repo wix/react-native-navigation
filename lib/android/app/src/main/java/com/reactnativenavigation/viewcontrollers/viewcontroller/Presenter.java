@@ -86,7 +86,7 @@ public class Presenter {
     private void applyStatusBarOptions(Options options) {
         StatusBarOptions statusBar = options.copy().withDefaultOptions(defaultOptions).statusBar;
         setStatusBarBackgroundColor(statusBar);
-        setTextColorScheme(statusBar.textColorScheme);
+        setTextColorScheme(statusBar);
         setTranslucent(statusBar);
         setStatusBarVisible(statusBar.visible);
     }
@@ -111,55 +111,59 @@ public class Presenter {
         decorView.setSystemUiVisibility(flags);
     }
 
+    private int getStatusBarBackgroundColor(StatusBarOptions statusBar) {
+        int defaultColor = statusBar.visible.isTrueOrUndefined() ? Color.BLACK : Color.TRANSPARENT;
+        return statusBar.backgroundColor.get(defaultColor);
+    }
+
     private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && statusBar.backgroundColor.canApplyValue()) {
-            int defaultColor = statusBar.visible.isTrueOrUndefined() ? Color.BLACK : Color.TRANSPARENT;
-            activity.getWindow().setStatusBarColor(statusBar.backgroundColor.get(defaultColor));
+            activity.getWindow().setStatusBarColor(getStatusBarBackgroundColor(statusBar));
         }
     }
 
-    private void setTextColorScheme(TextColorScheme scheme) {
+    private boolean isDarkTextColorScheme(StatusBarOptions statusBar) {
+        if (statusBar.textColorScheme == TextColorScheme.Dark) {
+            return true;
+        } else if (statusBar.textColorScheme == TextColorScheme.Light) {
+            return false;
+        }
+
+        int backgroundColor = getStatusBarBackgroundColor(statusBar);
+        return isColorLight(backgroundColor);
+    }
+
+    private void setTextColorScheme(StatusBarOptions statusBar) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+
         final View view = activity.getWindow().getDecorView();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        if (scheme == TextColorScheme.Dark) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-        } else {
-            clearDarkTextColorScheme(view);
-        }
-    }
 
-    private void clearDarkTextColorScheme(View view) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
         int flags = view.getSystemUiVisibility();
-        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        if (isDarkTextColorScheme(statusBar)) {
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        } else {
+            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
+        
         view.setSystemUiVisibility(flags);
     }
 
     private void mergeStatusBarOptions(View view, StatusBarOptions statusBar) {
         mergeStatusBarBackgroundColor(statusBar);
-        mergeTextColorScheme(statusBar.textColorScheme);
+        mergeTextColorScheme(statusBar);
         mergeTranslucent(statusBar);
         mergeStatusBarVisible(view, statusBar.visible, statusBar.drawBehind);
     }
 
     private void mergeStatusBarBackgroundColor(StatusBarOptions statusBar) {
-        if (statusBar.backgroundColor.hasValue() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.getWindow().setStatusBarColor(statusBar.backgroundColor.get(Color.BLACK));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && statusBar.backgroundColor.hasValue()) {
+            activity.getWindow().setStatusBarColor(getStatusBarBackgroundColor(statusBar));
         }
     }
 
-    private void mergeTextColorScheme(TextColorScheme scheme) {
-        if (!scheme.hasValue() || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        final View view = activity.getWindow().getDecorView();
-        if (scheme == TextColorScheme.Dark) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-        } else {
-            clearDarkTextColorScheme(view);
-        }
+    private void mergeTextColorScheme(StatusBarOptions statusBar) {
+        if (!statusBar.textColorScheme.hasValue()) return;
+        setTextColorScheme(statusBar);
     }
 
     private void mergeTranslucent(StatusBarOptions options) {
