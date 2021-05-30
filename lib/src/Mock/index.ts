@@ -1,1 +1,1 @@
-export const Application = require('./Application').Application;
+export const ApplicationMock = require('./Application').Application;

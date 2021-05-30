@@ -1,13 +1,20 @@
-const { mockDetox, mockUILib, mockJest } = require('./Utils');
-const { Navigation } = require('react-native-navigation');
-mockJest();
+const { mockDetox } = require('./Utils');
 
-setTimeout = (func) => {
-  func();
-};
+mockDetox(() => require('./playground/index'));
 
 beforeEach(() => {
+  const { Navigation } = require('react-native-navigation');
+  setTimeout = (func) => {
+    func();
+  };
   Navigation.mockNativeComponents();
-  mockDetox(() => require('./playground/index'));
   mockUILib();
 });
+
+const mockUILib = () => {
+  const NativeModules = require('react-native').NativeModules;
+  NativeModules.KeyboardTrackingViewTempManager = {};
+  NativeModules.StatusBarManager = {
+    getHeight: () => 40,
+  };
+};

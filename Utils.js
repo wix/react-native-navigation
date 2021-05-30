@@ -1,16 +1,17 @@
 import React from 'react';
-import { fireEvent, render, RenderAPI, within } from '@testing-library/react-native';
-const { Application } = require('./lib/src/Mock');
+import { fireEvent, render, within } from '@testing-library/react-native';
 
-const mockJest = () => {
-  it.e2e = (name: string, fn: () => void) => {
-    if (process.env.DETOX_START_TIMESTAMP) {
+const isDetox = () => !!process.env.DETOX_START_TIMESTAMP;
+
+const extendDetox = () => {
+  it.e2e = (name, fn) => {
+    if (isDetox()) {
       it(name, fn);
     }
   };
 
-  describe.e2e = (name: string, fn: () => void) => {
-    if (process.env.DETOX_START_TIMESTAMP) {
+  describe.e2e = (name, fn) => {
+    if (isDetox()) {
       describe(name, fn);
     } else {
       xdescribe(name, fn);
@@ -18,87 +19,71 @@ const mockJest = () => {
   };
 };
 
-const mockDetox = (entrypoint: () => any) => {
-  let App: RenderAPI;
+const mockDetox = (entrypoint) => {
+  extendDetox();
+  let App;
+  let { ApplicationMock } = require('./lib/src/Mock');
 
-  const origExpect = expect;
-  // @ts-ignore
-  expect = (e: any) => {
-    const match = origExpect(e);
-    // @ts-ignore
-    match.toBeNotVisible = () => {
-      return match.toBe(null);
-    };
-    // @ts-ignore
-    match.toBeVisible = () => match.toBeTruthy();
-    // @ts-ignore
-    match.toExist = match.toBeVisible;
-    return match;
-  };
-
-  // @ts-ignore
   global.device = {
     launchApp: () => {
-      App = render(<Application entryPoint={entrypoint} />);
+      ApplicationMock = require('./lib/src/Mock').ApplicationMock;
+      App = render(<ApplicationMock entryPoint={entrypoint} />);
       return App;
     },
   };
 
-  // @ts-ignore
-  global.element = (e: any) => e;
-  // @ts-ignore
+  global.element = (e) => e;
   global.by = {
-    text: (text: string) => elementByLabel(text, App),
-    id: (id: string) => {
+    text: (text) => elementByLabel(text, App),
+    id: (id) => {
       return elementById(id, App);
     },
   };
-};
 
-function elementById(id: string, App: RenderAPI) {
-  // @ts-ignore
-  let element: any = null;
-  if (within(App.getByTestId(Application.VISIBLE_SCREEN_TEST_ID)).queryByTestId(id)) {
-    element = within(App.getByTestId(Application.VISIBLE_SCREEN_TEST_ID)).getByTestId(id);
-  } else if (within(App.getByTestId(Application.VISIBLE_OVERLAY_TEST_ID)).queryByTestId(id)) {
-    element = within(App.getByTestId(Application.VISIBLE_OVERLAY_TEST_ID)).getByTestId(id);
-  }
-
-  if (element)
-    // @ts-ignore
-    element.tap = async () => {
-      // @ts-ignore
-      await fireEvent.press(element);
+  const origExpect = expect;
+  expect = (e) => {
+    const match = origExpect(e);
+    match.toBeNotVisible = () => {
+      return match.toBe(null);
     };
-
-  return element;
-}
-
-function elementByLabel(label: string, App: RenderAPI) {
-  // @ts-ignore
-  let element = null;
-  if (within(App.getByTestId(Application.VISIBLE_SCREEN_TEST_ID)).queryByText(label)) {
-    element = within(App.getByTestId(Application.VISIBLE_SCREEN_TEST_ID)).getByText(label);
-  } else if (within(App.getByTestId(Application.VISIBLE_OVERLAY_TEST_ID)).queryByText(label)) {
-    element = within(App.getByTestId(Application.VISIBLE_OVERLAY_TEST_ID)).getByText(label);
-  }
-
-  if (element)
-    // @ts-ignore
-    element.tap = async () => {
-      // @ts-ignore
-      await fireEvent.press(element);
-    };
-
-  return element;
-}
-
-const mockUILib = () => {
-  const NativeModules = require('react-native').NativeModules;
-  NativeModules.KeyboardTrackingViewTempManager = {};
-  NativeModules.StatusBarManager = {
-    getHeight: () => 40,
+    match.toBeVisible = () => match.toBeTruthy();
+    match.toExist = match.toBeVisible;
+    return match;
   };
+
+  function elementById(id, App) {
+    let element = null;
+    if (within(App.getByTestId(ApplicationMock.VISIBLE_SCREEN_TEST_ID)).queryByTestId(id)) {
+      element = within(App.getByTestId(ApplicationMock.VISIBLE_SCREEN_TEST_ID)).getByTestId(id);
+    } else if (within(App.getByTestId(ApplicationMock.VISIBLE_OVERLAY_TEST_ID)).queryByTestId(id)) {
+      element = within(App.getByTestId(ApplicationMock.VISIBLE_OVERLAY_TEST_ID)).getByTestId(id);
+    }
+
+    if (element)
+      element.tap = async () => {
+        await fireEvent.press(element);
+      };
+
+    return element;
+  }
+
+  function elementByLabel(label, App) {
+    let element = null;
+    if (within(App.getByTestId(ApplicationMock.VISIBLE_SCREEN_TEST_ID)).queryByText(label)) {
+      element = within(App.getByTestId(ApplicationMock.VISIBLE_SCREEN_TEST_ID)).getByText(label);
+    } else if (
+      within(App.getByTestId(ApplicationMock.VISIBLE_OVERLAY_TEST_ID)).queryByText(label)
+    ) {
+      element = within(App.getByTestId(ApplicationMock.VISIBLE_OVERLAY_TEST_ID)).getByText(label);
+    }
+
+    if (element)
+      element.tap = async () => {
+        await fireEvent.press(element);
+      };
+
+    return element;
+  }
 };
 
-export { mockDetox, mockUILib, mockJest };
+export { mockDetox, extendDetox };

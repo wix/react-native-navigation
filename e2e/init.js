@@ -2,6 +2,7 @@ const detox = require('detox');
 const config = require('../package.json').detox;
 const exec = require('shell-utils').exec;
 const adapter = require('detox/runners/jest/adapter');
+require('../Utils').extendDetox();
 
 jest.setTimeout(300000);
 jasmine.getEnv().addReporter(adapter);

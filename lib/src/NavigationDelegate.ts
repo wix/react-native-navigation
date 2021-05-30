@@ -13,8 +13,6 @@ import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 export class NavigationDelegate {
   private concreteNavigation: NavigationRoot;
   constructor() {
-    const { NativeCommandsSender } = require('./adapters/NativeCommandsSender');
-    const { NativeEventsReceiver } = require('./adapters/NativeEventsReceiver');
     this.concreteNavigation = this.createConcreteNavigation(
       new NativeCommandsSender(),
       new NativeEventsReceiver()
