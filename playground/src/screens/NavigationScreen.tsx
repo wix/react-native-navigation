@@ -20,7 +20,7 @@ const {
   BACK_BUTTON_SCREEN_BTN,
 } = testIDs;
 
-interface Props extends NavigationComponentProps { }
+interface Props extends NavigationComponentProps {}
 
 export default class NavigationScreen extends React.Component<Props> {
   static options() {

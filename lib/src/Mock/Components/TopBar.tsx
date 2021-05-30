@@ -65,10 +65,8 @@ export const TopBar = class extends Component<TopBarProps> {
   }
 
   renderComponent(id: string, name: string, testID?: string) {
-    //@ts-ignore
-    const Component = Navigation.store.getComponentClassForName(name)!();
-    //@ts-ignore
-    const props = Navigation.store.getPropsForId(id);
+    const Component = Navigation.mock.store.getComponentClassForName(name)!();
+    const props = Navigation.mock.store.getPropsForId(id);
     return (
       <View key={id} testID={testID}>
         <Component {...props} componentId={id} />

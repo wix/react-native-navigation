@@ -34,9 +34,8 @@ export const NavigationButton = class extends Component<ButtonProps> {
     //@ts-ignore
     const buttonComponentId = button.component!.componentId;
     //@ts-ignore
-    const Component = Navigation.store.getComponentClassForName(button.component.name)!();
-    //@ts-ignore
-    const props = Navigation.store.getPropsForId(buttonComponentId);
+    const Component = Navigation.mock.store.getComponentClassForName(button.component.name)!();
+    const props = Navigation.mock.store.getPropsForId(buttonComponentId);
     return (
       <TouchableOpacity
         onPress={() => {

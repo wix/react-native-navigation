@@ -32,15 +32,13 @@ import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
 
-  private readonly store: Store;
+  public readonly store: Store;
   private readonly optionProcessorsStore: OptionProcessorsStore;
   private readonly layoutProcessorsStore: LayoutProcessorsStore;
-  private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
   private readonly componentRegistry: ComponentRegistry;
   private readonly layoutTreeParser: LayoutTreeParser;
   private readonly layoutTreeCrawler: LayoutTreeCrawler;
-  private readonly nativeCommandsSender: NativeCommandsSender;
   private readonly commands: Commands;
   private readonly eventsRegistry: EventsRegistry;
   private readonly commandsObserver: CommandsObserver;
@@ -48,12 +46,14 @@ export class NavigationRoot {
   private readonly componentWrapper: ComponentWrapper;
   private readonly optionsCrawler: OptionsCrawler;
 
-  constructor() {
+  constructor(
+    private readonly nativeCommandsSender: NativeCommandsSender,
+    private readonly nativeEventsReceiver: NativeEventsReceiver
+  ) {
     this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
     this.optionProcessorsStore = new OptionProcessorsStore();
     this.layoutProcessorsStore = new LayoutProcessorsStore();
-    this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(
       this.nativeEventsReceiver,
@@ -77,7 +77,6 @@ export class NavigationRoot {
     );
     const layoutProcessor = new LayoutProcessor(this.layoutProcessorsStore);
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
-    this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
     this.optionsCrawler = new OptionsCrawler(this.store, this.uniqueIdProvider);
     this.commands = new Commands(

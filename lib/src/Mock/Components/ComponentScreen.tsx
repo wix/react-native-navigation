@@ -45,8 +45,7 @@ export const ComponentScreen = connect(
     }
 
     render() {
-      //@ts-ignore
-      const Component = Navigation.store.getWrappedComponent(this.props.layoutNode.data.name);
+      const Component = Navigation.mock.store.getWrappedComponent(this.props.layoutNode.data.name);
       return (
         <View testID={this.isVisible() ? VISIBLE_SCREEN_TEST_ID : undefined}>
           {this.props.layoutNode.getStack() && (

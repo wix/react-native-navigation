@@ -1,8 +1,8 @@
-import { NavigationRoot } from './Navigation';
+import { NavigationDelegate } from './NavigationDelegate';
 
-const navigationSingleton = new NavigationRoot();
+const navigationDelegate = new NavigationDelegate();
 
-export const Navigation = navigationSingleton;
+export const Navigation = navigationDelegate;
 export * from './events/EventsRegistry';
 export * from './adapters/Constants';
 export * from './interfaces/ComponentEvents';
