@@ -25,7 +25,7 @@ fun makeTitleAtMostWidthMeasureSpec(containerWidth: Int, rightBarWidth: Int, lef
 
 fun resolveVerticalTitleBoundsLimit(
         parentHeight: Int,
-        titleHeight: Int,
+        titleHeight: Int
 ): Pair<TitleTop, TitleBottom> {
     return (parentHeight / 2f - titleHeight / 2f).roundToInt() to (parentHeight / 2f + titleHeight / 2f).roundToInt()
 }

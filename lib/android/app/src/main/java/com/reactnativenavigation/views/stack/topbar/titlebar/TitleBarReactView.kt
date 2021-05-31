@@ -19,7 +19,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         // It's causing infinite measurements, that hung up the UI.
         // Intercepting largest child by width, and use its width as (parent) ReactRootView width fixed that.
         // See for more details https://github.com/wix/react-native-navigation/pull/7096
-        val measuredWidth = this.children.maxByOrNull { it.measuredWidth }?.measuredWidth ?: 0
+        val measuredWidth = this.children.maxBy { it.measuredWidth }?.measuredWidth?:0
         return if (measuredWidth > 0) MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY) else
             widthMeasureSpec
     }
