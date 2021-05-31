@@ -155,6 +155,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void invokeDefaultOnBackPressed() {
         logger.log(Log.VERBOSE, TAG, "invokeDefaultOnBackPressed  PIPMode " + navigator.getPipMode());
+        if (isDestroyed())
+            return;
         if (navigator.shouldSwitchToPIPonBackPress()) {
             navigator.updatePIPState(PIPStates.MOUNT_START);
         } else if (!navigator.handleBack(new CommandListenerAdapter())) {
