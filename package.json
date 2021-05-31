@@ -20,6 +20,7 @@
     "rnn-link": "./autolink/postlink/run.js"
   },
   "main": "lib/dist/index.js",
+  "typings": "lib/dist/index.d.ts",
   "scripts": {
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
@@ -130,12 +131,9 @@
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/playground/img/layouts@2x.png"
     },
     "collectCoverageFrom": [
-      "playground/**/*.ts",
-      "playground/**/*.tsx",
       "lib/src/**/*.ts",
       "lib/src/**/*.tsx",
       "integration/**/*.js",
-      "e2e/**/*.js",
       "!lib/dist/index.js",
       "!lib/dist/Navigation.js",
       "!lib/dist/adapters/**/*",

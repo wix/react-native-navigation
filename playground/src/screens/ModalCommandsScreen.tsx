@@ -69,10 +69,10 @@ export default class ModalScreen extends NavigationComponent<NavigationComponent
         ],
       },
     })
-      // .then(
-      //   (showModalId) =>
-      //     new Promise<string>((resolve) => setTimeout(() => resolve(showModalId), 100))
-      // )
+      .then(
+        (showModalId) =>
+          new Promise<string>((resolve) => setTimeout(() => resolve(showModalId), 100))
+      )
       .then((showModalId) => {
         this.setState({
           showModalPromiseResult: `showModal promise resolved with: ${showModalId}`,

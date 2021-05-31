@@ -21,8 +21,8 @@ function start() {
   registerScreens();
   addProcessors();
   setDefaultOptions();
-  Navigation.dismissAllModals();
   Navigation.events().registerAppLaunchedListener(async () => {
+    Navigation.dismissAllModals();
     setRoot();
   });
 }

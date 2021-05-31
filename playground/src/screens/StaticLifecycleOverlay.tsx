@@ -146,7 +146,7 @@ export default class StaticLifecycleOverlay extends React.Component<
       <View key={`${event.componentId}${idx}`}>{this.renderEvent(event)}</View>
     ));
     return (
-      <View style={styles.root} testID={'lifecycleOverlay'}>
+      <View style={styles.root}>
         <Text style={styles.h1}>{`Static Lifecycle Events Overlay`}</Text>
         <View style={styles.events}>{events}</View>
         {this.renderDismissButton()}
