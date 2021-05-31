@@ -1,4 +1,4 @@
-const { mockDetox } = require('./Utils');
+const { mockDetox } = require('detox-testing-library-rnn-adapter');
 
 mockDetox(() => require('./playground/index'));
 
