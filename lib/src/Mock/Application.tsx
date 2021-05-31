@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { View } from 'react-native';
 import { connect } from './connect';
 
@@ -7,7 +7,7 @@ interface ApplicationProps {
 }
 
 export const Application = connect(
-  class extends Component<ApplicationProps> {
+  class extends React.Component<ApplicationProps> {
     constructor(props: ApplicationProps) {
       super(props);
       props.entryPoint();
