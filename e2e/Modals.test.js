@@ -1,6 +1,6 @@
-import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 import Android from './AndroidUtils';
+import Utils from './Utils';
 
 const { elementByLabel, elementById, sleep } = Utils;
 

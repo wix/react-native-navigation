@@ -1,7 +1,6 @@
-import Utils from './Utils';
-import TestIDs from '../playground/src/testIDs';
+import { default as TestIDs, default as testIDs } from '../playground/src/testIDs';
 import Android from './AndroidUtils';
-import testIDs from '../playground/src/testIDs';
+import Utils from './Utils';
 
 const { elementByLabel, elementById } = Utils;
 

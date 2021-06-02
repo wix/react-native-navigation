@@ -154,6 +154,7 @@
 
     if (modalToDismiss == topPresentedVC ||
         [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
+        [self dismissSearchController:modalToDismiss];
         [modalToDismiss
             dismissViewControllerAnimated:[optionsWithDefault.animations.dismissModal.exit.enable
                                               withDefault:YES]
@@ -179,6 +180,12 @@
         if (completion) {
             completion();
         }
+    }
+}
+
+- (void)dismissSearchController:(UIViewController *)modalToDismiss {
+    if ([modalToDismiss.presentedViewController.class isSubclassOfClass:UISearchController.class]) {
+        [modalToDismiss.presentedViewController dismissViewControllerAnimated:NO completion:nil];
     }
 }
 

@@ -128,6 +128,7 @@ const Screens = {
   OrientationDetect: 'OrientationDetect',
   Search: 'Search',
   SearchBar: 'SearchBar',
+  SearchBarModal: 'SearchBarModal',
   TopBar: 'TopBar',
 };
 
