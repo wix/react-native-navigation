@@ -13,15 +13,21 @@ const {
   PUSH_DISABLED_BACK_BTN,
   PUSH_DISABLED_HARDWARE_BACK_BTN,
   MODAL_DISABLED_BACK_BTN,
+  TOGGLE_BACK_BUTTON_VISIBILITY,
+  BACK_BUTTON,
 } = testIDs;
 
 export default class BackButtonScreen extends React.Component<NavigationComponentProps> {
+  visible: boolean = true;
   static options(): Options {
     return {
       topBar: {
         testID: BACK_BUTTON_SCREEN_HEADER,
         title: {
           text: 'Back Button',
+        },
+        backButton: {
+          testID: BACK_BUTTON,
         },
       },
     };
@@ -45,6 +51,11 @@ export default class BackButtonScreen extends React.Component<NavigationComponen
           label="Show Overlay"
           testID={STATIC_EVENTS_OVERLAY_BTN}
           onPress={this.showEventsOverlay}
+        />
+        <Button
+          label="Toggle Visibility"
+          testID={TOGGLE_BACK_BUTTON_VISIBILITY}
+          onPress={this.toggleVisibility}
         />
         <Button label="Modal" testID={MODAL_DISABLED_BACK_BTN} onPress={this.showModal} />
       </Root>
@@ -82,4 +93,15 @@ export default class BackButtonScreen extends React.Component<NavigationComponen
         dismissModalOnPress: false,
       },
     });
+
+  toggleVisibility = () => {
+    this.visible = !this.visible;
+    Navigation.mergeOptions(this, {
+      topBar: {
+        backButton: {
+          visible: this.visible,
+        },
+      },
+    });
+  };
 }

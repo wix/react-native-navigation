@@ -156,7 +156,7 @@
         [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
         [self dismissSearchController:modalToDismiss];
         [modalToDismiss
-            dismissViewControllerAnimated:[optionsWithDefault.animations.dismissModal.enable
+            dismissViewControllerAnimated:[optionsWithDefault.animations.dismissModal.exit.enable
                                               withDefault:YES]
                                completion:^{
                                  [self->_pendingModalIdsToDismiss removeObject:modalToDismiss];
@@ -173,7 +173,7 @@
     } else {
         [modalToDismiss.view removeFromSuperview];
         modalToDismiss.view = nil;
-        modalToDismiss.getCurrentChild.resolveOptions.animations.dismissModal.enable =
+        modalToDismiss.getCurrentChild.resolveOptions.animations.dismissModal.exit.enable =
             [[Bool alloc] initWithBOOL:NO];
         [self dismissedModal:modalToDismiss];
 

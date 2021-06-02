@@ -103,7 +103,8 @@ class AppDelegateLinker {
     debugn('   Bootstrapping Navigation');
     return content.replace(
       /RCTBridge.*];/,
-      '[ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];'
+      'RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];\n' +
+      '[ReactNativeNavigation bootstrapWithBridge:bridge];'
     );
   }
 

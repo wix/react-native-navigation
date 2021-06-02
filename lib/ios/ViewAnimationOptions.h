@@ -8,7 +8,6 @@
 @property(nonatomic, strong) NSArray<ElementTransitionOptions *> *elementTransitions;
 @property(nonatomic, strong) NSArray<SharedElementTransitionOptions *> *sharedElementTransitions;
 @property(nonatomic, strong) Bool *waitForRender;
-@property(nonatomic, strong) Bool *enable;
 
 - (BOOL)shouldWaitForRender;
 - (NSTimeInterval)maxDuration;

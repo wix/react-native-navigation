@@ -183,6 +183,12 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        animator.cancelAllAnimations();
+    }
+
     private void onPushAnimationComplete(ViewController toAdd, ViewController toRemove, CommandListener listener) {
         toAdd.onViewDidAppear();
         if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
@@ -258,6 +264,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void destroyStack(IdStack stack) {
+        animator.cancelAllAnimations();
         for (String s : (Iterable<String>) stack) {
             ((ViewController) stack.get(s)).destroy();
         }

@@ -12,11 +12,13 @@
 
 - (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
             defaultColor:(Color *)defaultColor
-    defaultDisabledColor:(Color *)defaultDisabledColor;
+    defaultDisabledColor:(Color *)defaultDisabledColor
+                animated:(BOOL)animated;
 
 - (void)applyRightButtons:(NSArray<RNNButtonOptions *> *)rightButtons
              defaultColor:(Color *)defaultColor
-     defaultDisabledColor:(Color *)defaultDisabledColor;
+     defaultDisabledColor:(Color *)defaultDisabledColor
+                 animated:(BOOL)animated;
 
 - (void)applyLeftButtonsColor:(UIColor *)color;
 

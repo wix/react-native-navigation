@@ -5,11 +5,7 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props, RCTBri
 
 @interface RNNBridgeManager : NSObject
 
-- (instancetype)initWithLaunchOptions:(NSDictionary *)launchOptions
-                    andBridgeDelegate:(id<RCTBridgeDelegate>)delegate
-                           mainWindow:(UIWindow *)mainWindow;
-
-- (void)initializeBridge;
+- (instancetype)initWithBridge:(RCTBridge *)bridge mainWindow:(UIWindow *)mainWindow;
 
 - (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
 
