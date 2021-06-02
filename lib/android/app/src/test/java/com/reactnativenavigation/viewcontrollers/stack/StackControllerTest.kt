@@ -31,11 +31,11 @@ import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.assertj.core.api.iterable.Extractor
-import org.json.JSONException
 import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
 import org.robolectric.Robolectric
+import org.robolectric.android.controller.ActivityController
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.test.fail
@@ -183,7 +183,7 @@ class StackControllerTest : BaseTest() {
         child2.options.topBar.buttons.left = ArrayList(setOf(TitleBarHelper.iconButton("someButton", "icon.png")))
         uut.push(child2, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
-        assertThat(topBarController.leftButtonsCount).isOne();
+        assertThat(topBarController.leftButtonCount).isOne();
         verify(topBarController.view, never()).setBackButton(any())
     }
 
@@ -192,6 +192,16 @@ class StackControllerTest : BaseTest() {
         child1.options.topBar.buttons.left = ArrayList()
         uut.push(child1, CommandListenerAdapter())
         verify(child1, never()).mergeOptions(any())
+    }
+
+    @Test
+    fun setRoot_pushDuringSetRootAnimationShouldNotCrash() {
+        uut.push(child1, CommandListenerAdapter())
+        uut.push(child2, CommandListenerAdapter())
+
+        uut.setRoot(listOf(child1), CommandListenerAdapter())
+        uut.push(child3, CommandListenerAdapter())
+        assertThat(uut.currentChild).isEqualTo(child3)
     }
 
     @Test
@@ -325,7 +335,7 @@ class StackControllerTest : BaseTest() {
                 assertThat(uut.currentChild).isEqualTo(child4)
                 uut.pop(Options.EMPTY, CommandListenerAdapter())
                 ShadowLooper.idleMainLooper()
-                assertThat(uut.topBar.leftButtonsBar.navigationIcon).isNull()
+                assertThat(uut.topBar.leftButtonBar.navigationIcon).isNull()
                 assertThat(uut.currentChild).isEqualTo(child3)
             }
         })
@@ -493,7 +503,6 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
-    @Throws(JSONException::class)
     fun pop_animationOptionsAreMergedCorrectlyToDisappearingChild() {
         disablePushAnimation(child1, child2)
         uut.push(child1, CommandListenerAdapter())
@@ -511,7 +520,6 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
-    @Throws(JSONException::class)
     fun pop_animationOptionsAreMergedCorrectlyToDisappearingChildWithDefaultOptions() {
         disablePushAnimation(child1, child2)
         uut.push(child1, CommandListenerAdapter())
@@ -862,7 +870,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun stackCanBePushed() {
-        ViewUtils.removeFromParent(uut.view)
+        uut.view.removeFromParent()
         val parent = createStack("someStack")
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())
@@ -872,7 +880,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun applyOptions_applyOnlyOnFirstStack() {
-        ViewUtils.removeFromParent(uut.view)
+        uut.view.removeFromParent()
         val parent = spy(createStack("someStack"))
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())

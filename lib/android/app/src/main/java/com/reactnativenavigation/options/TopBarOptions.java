@@ -43,6 +43,8 @@ public class TopBarOptions {
         options.borderHeight = FractionParser.parse(json, "borderHeight");
         options.elevation = FractionParser.parse(json, "elevation");
         options.topMargin = NumberParser.parse(json, "topMargin");
+        options.animateLeftButtons = BoolParser.parse(json, "animateLeftButtons");
+        options.animateRightButtons = BoolParser.parse(json, "animateRightButtons");
         options.buttons = TopBarButtons.parse(context, json);
 
         options.rightButtonColor = ColorParser.parse(context, json, "rightButtonColor");
@@ -68,7 +70,8 @@ public class TopBarOptions {
     public Number topMargin = new NullNumber();
     public Fraction borderHeight = new NullFraction();
     public Colour borderColor = new NullColor();
-
+    public Bool animateLeftButtons = new NullBool();
+    public Bool animateRightButtons = new NullBool();
     // Deprecated
     public Colour rightButtonColor = new NullColor();
     public Colour leftButtonColor = new NullColor();
@@ -96,6 +99,8 @@ public class TopBarOptions {
         if (other.borderColor.hasValue()) borderColor = other.borderColor;
         if (other.elevation.hasValue()) elevation = other.elevation;
         if (other.topMargin.hasValue()) topMargin = other.topMargin;
+        if (other.animateLeftButtons.hasValue()) animateLeftButtons = other.animateLeftButtons;
+        if (other.animateRightButtons.hasValue()) animateRightButtons = other.animateRightButtons;
 
         if (other.rightButtonColor.hasValue()) rightButtonColor = other.rightButtonColor;
         if (other.leftButtonColor.hasValue()) leftButtonColor = other.leftButtonColor;
@@ -120,6 +125,8 @@ public class TopBarOptions {
         if (!borderColor.hasValue()) borderColor = defaultOptions.borderColor;
         if (!elevation.hasValue()) elevation = defaultOptions.elevation;
         if (!topMargin.hasValue()) topMargin = defaultOptions.topMargin;
+        if (!animateLeftButtons.hasValue()) animateLeftButtons = defaultOptions.animateLeftButtons;
+        if (!animateRightButtons.hasValue()) animateRightButtons = defaultOptions.animateRightButtons;
 
         if (!rightButtonColor.hasValue()) rightButtonColor = defaultOptions.rightButtonColor;
         if (!leftButtonColor.hasValue()) leftButtonColor = defaultOptions.leftButtonColor;

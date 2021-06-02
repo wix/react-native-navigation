@@ -13,6 +13,7 @@
 @property(nonatomic, strong) RNNNavigationOptions *options;
 @property(nonatomic, strong) UIViewController *boundViewController;
 @property(nonatomic, strong) RNNReactComponentRegistry *componentRegistry;
+@property(nonatomic, strong) id buttonsPresenter;
 
 @end
 
@@ -20,11 +21,12 @@
 
 - (void)setUp {
     [super setUp];
+    self.buttonsPresenter = [OCMockObject niceMockForClass:[RNNButtonsPresenter class]];
     self.componentRegistry = [OCMockObject partialMockForObject:[RNNReactComponentRegistry new]];
     self.uut =
         [[RNNComponentPresenter alloc] initWithComponentRegistry:self.componentRegistry
                                                   defaultOptions:[RNNNavigationOptions emptyOptions]
-                                                buttonsPresenter:nil];
+                                                buttonsPresenter:self.buttonsPresenter];
     self.boundViewController = [OCMockObject partialMockForObject:[RNNComponentViewController new]];
     [self.uut bindViewController:self.boundViewController];
     self.options = [RNNNavigationOptions emptyOptions];
@@ -60,6 +62,64 @@
 - (void)testApplyOptions_backButtonVisibleDefaultTrue {
     [self.uut applyOptions:self.options];
     XCTAssertFalse(self.boundViewController.navigationItem.hidesBackButton);
+}
+
+- (void)testApplyOptions_animateLeftButtons {
+    self.options.topBar.animateLeftButtons = [Bool withValue:NO];
+    RNNButtonOptions *button = [RNNButtonOptions new];
+    self.options.topBar.leftButtons = @[ button ];
+    [[self.buttonsPresenter expect] applyLeftButtons:self.options.topBar.leftButtons
+                                        defaultColor:OCMArg.any
+                                defaultDisabledColor:OCMArg.any
+                                            animated:YES];
+    [self.uut applyOptions:self.options];
+    [self.buttonsPresenter verify];
+}
+
+- (void)testApplyOptions_animateRightButtons {
+    self.options.topBar.animateRightButtons = [Bool withValue:YES];
+    RNNButtonOptions *button = [RNNButtonOptions new];
+    self.options.topBar.rightButtons = @[ button ];
+    [[self.buttonsPresenter expect] applyRightButtons:self.options.topBar.rightButtons
+                                         defaultColor:OCMArg.any
+                                 defaultDisabledColor:OCMArg.any
+                                             animated:YES];
+    [self.uut applyOptions:self.options];
+    [self.buttonsPresenter verify];
+}
+
+- (void)testMergeOptions_animateLeftButtons {
+    RNNNavigationOptions *mergeOptions = RNNNavigationOptions.emptyOptions;
+    mergeOptions.topBar.animateLeftButtons = [Bool withValue:YES];
+    RNNButtonOptions *button = [RNNButtonOptions new];
+    mergeOptions.topBar.leftButtons = @[ button ];
+
+    [[self.buttonsPresenter expect]
+            applyLeftButtons:[OCMArg checkWithBlock:^BOOL(NSArray *buttons) {
+              return buttons.firstObject == button;
+            }]
+                defaultColor:OCMArg.any
+        defaultDisabledColor:OCMArg.any
+                    animated:YES];
+    [self.uut mergeOptions:mergeOptions resolvedOptions:RNNNavigationOptions.emptyOptions];
+    [self.buttonsPresenter verify];
+}
+
+- (void)testMergeOptions_animateRightButtons {
+    RNNNavigationOptions *mergeOptions = RNNNavigationOptions.emptyOptions;
+    mergeOptions.topBar.animateRightButtons = [Bool withValue:YES];
+    RNNButtonOptions *button = [RNNButtonOptions new];
+    mergeOptions.topBar.rightButtons = @[ button ];
+
+    [[self.buttonsPresenter expect]
+           applyRightButtons:[OCMArg checkWithBlock:^BOOL(NSArray *buttons) {
+             return buttons.firstObject == button;
+           }]
+                defaultColor:OCMArg.any
+        defaultDisabledColor:OCMArg.any
+                    animated:YES];
+    [self.uut mergeOptions:mergeOptions resolvedOptions:RNNNavigationOptions.emptyOptions];
+    [self.buttonsPresenter verify];
 }
 
 - (void)testApplyOptions_drawBehindTabBarTrueWhenVisibleFalse {

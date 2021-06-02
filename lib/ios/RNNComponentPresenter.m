@@ -91,13 +91,15 @@
     if (withDefault.topBar.leftButtons) {
         [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
                                defaultColor:withDefault.topBar.leftButtonColor
-                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor
+                                   animated:withDefault.topBar.animateLeftButtons];
     }
 
     if (withDefault.topBar.rightButtons) {
         [_buttonsPresenter applyRightButtons:withDefault.topBar.rightButtons
                                 defaultColor:withDefault.topBar.rightButtonColor
-                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
+                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
+                                    animated:withDefault.topBar.animateRightButtons];
     }
 }
 
@@ -193,13 +195,15 @@
     if (mergeOptions.topBar.leftButtons) {
         [_buttonsPresenter applyLeftButtons:mergeOptions.topBar.leftButtons
                                defaultColor:withDefault.topBar.leftButtonColor
-                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor
+                                   animated:withDefault.topBar.animateLeftButtons];
     }
 
     if (mergeOptions.topBar.rightButtons) {
         [_buttonsPresenter applyRightButtons:mergeOptions.topBar.rightButtons
                                 defaultColor:withDefault.topBar.rightButtonColor
-                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
+                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
+                                    animated:withDefault.topBar.animateRightButtons];
     }
 
     if (mergeOptions.topBar.leftButtonColor.hasValue) {

@@ -362,7 +362,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     [newVc setReactViewReadyCallback:^{
       [self->_modalManager
            showModal:weakNewVC
-            animated:[weakNewVC.resolveOptionsWithDefault.animations.showModal.enable
+            animated:[weakNewVC.resolveOptionsWithDefault.animations.showModal.enter.enable
                          withDefault:YES]
           completion:^(NSString *componentId) {
             [self->_layoutManager removePendingViewController:weakNewVC];
@@ -409,13 +409,13 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNAssertMainQueue();
 
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-    [_modalManager dismissAllModalsAnimated:[options.animations.dismissModal.enable withDefault:YES]
-                                 completion:^{
-                                   [self->_eventEmitter
-                                       sendOnNavigationCommandCompletion:dismissAllModals
-                                                               commandId:commandId];
-                                   completion();
-                                 }];
+    [_modalManager
+        dismissAllModalsAnimated:[options.animations.dismissModal.exit.enable withDefault:YES]
+                      completion:^{
+                        [self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals
+                                                                     commandId:commandId];
+                        completion();
+                      }];
 }
 
 - (void)showOverlay:(NSDictionary *)layout

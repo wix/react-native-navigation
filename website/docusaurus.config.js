@@ -28,16 +28,16 @@ module.exports = {
           position: 'left',
         },
         {
-          to: 'docs/before-you-start',
-          label: 'Docs',
+          type: 'doc',
           position: 'left',
-          activeBaseRegex: '.*/docs/',
+          docId: 'docs/before-you-start',
+          label: 'Docs',
         },
         {
-          to: 'api/component',
-          label: 'API',
+          type: 'doc',
           position: 'left',
-          activeBaseRegex: '.*/api/',
+          docId: 'api/component',
+          label: 'API',
         },
         {
           to: 'showcase',
@@ -54,6 +54,7 @@ module.exports = {
     algolia: {
       apiKey: '6d8c985d9db80241d117497afe2a0e8c',
       indexName: 'wix_react-native-navigation',
+      contextualSearch: true
     },
     sidebarCollapsible: false,
     footer: {

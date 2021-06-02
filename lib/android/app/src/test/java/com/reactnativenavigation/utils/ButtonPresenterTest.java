@@ -23,7 +23,7 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
-import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsToolbar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.IconBackgroundDrawable;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 
@@ -41,7 +41,7 @@ import static org.mockito.Mockito.verify;
 public class ButtonPresenterTest extends BaseTest {
     private static final String BTN_TEXT = "button1";
 
-    private ButtonsToolbar titleBar;
+    private ButtonBar titleBar;
     private ButtonPresenter uut;
     private ButtonController buttonController;
     private ButtonOptions button;
@@ -50,7 +50,7 @@ public class ButtonPresenterTest extends BaseTest {
     @Override
     public void beforeEach() {
         activity = newActivity();
-        titleBar = new ButtonsToolbar(activity);
+        titleBar = new ButtonBar(activity);
         activity.setContentView(titleBar);
         button = createButton();
         ImageLoader imageLoaderMock;
