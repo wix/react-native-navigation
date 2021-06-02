@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
 import { Navigation, OptionsTopBarButton } from '../..';
 import { OptionsTopBar, OptionsTopBarBackButton } from '../../interfaces/Options';
-import { DEFAULT_BACK_BUTTON_TEST_ID } from '../constants';
 import ParentNode from '../Layouts/ParentNode';
 import { LayoutStore } from '../Stores/LayoutStore';
 import { NavigationButton } from './NavigationButton';
@@ -55,7 +54,7 @@ export const TopBar = class extends Component<TopBarProps> {
     const backButtonOptions = this.props.backButtonOptions;
     return (
       <Button
-        testID={backButtonOptions?.testID || DEFAULT_BACK_BUTTON_TEST_ID}
+        testID={backButtonOptions?.testID}
         title={backButtonOptions && backButtonOptions.title ? backButtonOptions.title : ''}
         onPress={() => {
           LayoutStore.pop(this.props.layoutNode.nodeId);

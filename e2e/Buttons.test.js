@@ -95,10 +95,4 @@ describe('Buttons', () => {
     await elementById(TestIDs.ADD_COMPONENT_BUTTON).tap();
     await expect(elementById('leftButton1')).toBeVisible();
   });
-
-  it('pop using default back button', async () => {
-    await expect(elementByLabel('Two')).toBeVisible();
-    await elementById('RNN.back').tap();
-    await expect(elementByLabel('Two')).toBeNotVisible();
-  });
 });
