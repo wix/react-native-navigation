@@ -10,7 +10,6 @@ export interface TopBarProps {
   layoutNode: ParentNode;
   topBarOptions?: OptionsTopBar;
   backButtonOptions?: OptionsTopBarBackButton;
-  renderBackButton: boolean;
 }
 
 export const TopBar = class extends Component<TopBarProps> {
@@ -32,10 +31,15 @@ export const TopBar = class extends Component<TopBarProps> {
           {component &&
             //@ts-ignore
             this.renderComponent(component.componentId!, component.name)}
-          {this.props.renderBackButton && this.renderBackButton()}
+          {this.shouldRenderBackButton(this.props.layoutNode) && this.renderBackButton()}
         </View>
       );
     }
+  }
+
+  shouldRenderBackButton(layoutNode: ParentNode) {
+    const backButtonVisible = layoutNode.resolveOptions().topBar?.backButton?.visible;
+    return layoutNode.getStack()!.children.length > 1 && backButtonVisible !== false;
   }
 
   renderButtons(buttons: OptionsTopBarButton[] = []) {
