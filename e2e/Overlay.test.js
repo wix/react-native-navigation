@@ -63,7 +63,7 @@ describe('Overlay Dismiss all', () => {
     await elementById(TestIDs.OVERLAY_BTN).tap();
   });
 
-  it.e2e('dismissAllOverlays should dismiss all opened overlays', async () => {
+  xit('dismissAllOverlays should dismiss all opened overlays', async () => {
     await elementById(TestIDs.SHOW_FULLSCREEN_OVERLAY_BTN).tap();
     await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
     await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
