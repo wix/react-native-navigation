@@ -309,11 +309,11 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 
     if (vc) {
         [vc.stack popTo:vc
-              animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
-            completion:^(NSArray *poppedViewControllers) {
-              [self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId];
-              completion();
-            }
+               animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
+             completion:^(NSArray *poppedViewControllers) {
+               [self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId];
+               completion();
+             }
               rejection:rejection];
     } else {
         [RNNErrorHandler
