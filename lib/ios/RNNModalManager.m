@@ -33,6 +33,13 @@
     return self;
 }
 
+- (BOOL)canAnimate:(UIViewController *)viewController {
+    // formSheet and pageSheet modals have a custom slide-from-bottom animation. Applying any custom
+    // animation here will break that default iOS animation.
+    return viewController.modalPresentationStyle != UIModalPresentationFormSheet &&
+           viewController.modalPresentationStyle != UIModalPresentationPageSheet;
+}
+
 - (void)showModal:(UIViewController<RNNLayoutProtocol> *)viewController
          animated:(BOOL)animated
        completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
@@ -58,8 +65,13 @@
     if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             viewController.resolveOptionsWithDefault.animations.showModal;
+        ViewAnimationOptions *contentTransition =
+            [self canAnimate:viewController]
+                ? viewAnimationOptions
+                : [[ViewAnimationOptions alloc] init]; // empty animations
+
         _showModalTransitionDelegate = [[ScreenAnimationController alloc]
-            initWithContentTransition:viewAnimationOptions
+            initWithContentTransition:contentTransition
                    elementTransitions:viewAnimationOptions.elementTransitions
              sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
                              duration:viewAnimationOptions.maxDuration
@@ -93,8 +105,12 @@
         ViewAnimationOptions *dismissModalOptions =
             root.presentedViewController.resolveOptionsWithDefault.animations.dismissModal;
         if (dismissModalOptions.hasAnimation) {
+            RNNEnterExitAnimation *contentTransition =
+                [self canAnimate:root.presentedViewController]
+                    ? dismissModalOptions
+                    : [[RNNEnterExitAnimation alloc] init]; // empty animations
             _dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
-                initWithContentTransition:dismissModalOptions
+                initWithContentTransition:contentTransition
                        elementTransitions:dismissModalOptions.elementTransitions
                  sharedElementTransitions:dismissModalOptions.sharedElementTransitions
                                  duration:dismissModalOptions.maxDuration
@@ -141,8 +157,13 @@
     if (optionsWithDefault.animations.dismissModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
+        ViewAnimationOptions *contentTransition =
+            [self canAnimate:topPresentedVC]
+                ? viewAnimationOptions
+                : [[ViewAnimationOptions alloc] init]; // empty animations
+
         _dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
-            initWithContentTransition:viewAnimationOptions
+            initWithContentTransition:contentTransition
                    elementTransitions:viewAnimationOptions.elementTransitions
              sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
                              duration:viewAnimationOptions.maxDuration

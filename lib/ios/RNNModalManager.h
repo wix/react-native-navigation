@@ -13,6 +13,7 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *_Nonnull code, NSString *_
 - (instancetype _Nonnull)initWithBridge:(RCTBridge *_Nonnull)bridge
                            eventHandler:(RNNModalManagerEventHandler *_Nonnull)eventHandler;
 
+- (BOOL)canAnimate:(UIViewController *_Nonnull)viewController;
 - (void)showModal:(UIViewController *_Nonnull)viewController
          animated:(BOOL)animated
        completion:(RNNTransitionWithComponentIdCompletionBlock _Nullable)completion;
