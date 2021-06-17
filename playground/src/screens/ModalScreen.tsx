@@ -139,7 +139,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
           presentationStyle={'overFullScreen'}
         >
           <Root>
-            <Button label="Toggle modal" onPress={this.toggleModal} />
+            <Button label="Toggle react-native modal" onPress={this.toggleModal} />
             <Button
               label="Present another modal and dismiss current modal"
               testID={SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL}
