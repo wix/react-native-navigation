@@ -189,7 +189,6 @@
                                  [self removePendingNextModalIfOnTop:nil animated:NO];
                                }];
     } else {
-        //        modalToDismiss.vie
         [modalToDismiss.view removeFromSuperview];
         modalToDismiss.view = nil;
         [self dismissedModal:modalToDismiss];
