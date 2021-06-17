@@ -177,13 +177,13 @@
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
         "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug",
         "type": "android.emulator",
-        "name": "Pixel_API_28"
+        "name": "Pixel_3A_API_29"
       },
       "android.emu.release": {
         "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
         "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
         "type": "android.emulator",
-        "name": "Pixel_API_28"
+        "name": "Pixel_3A_API_29"
       }
     }
   }
