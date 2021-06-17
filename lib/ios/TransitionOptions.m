@@ -37,8 +37,14 @@
 - (BOOL)hasAnimation {
     return self.x.hasAnimation || self.y.hasAnimation || self.alpha.hasAnimation ||
            self.translationX.hasAnimation || self.translationY.hasAnimation ||
+           self.rotationX.hasAnimation || self.rotationY.hasAnimation;
+}
+
+- (BOOL)hasValue {
+    return self.x.hasAnimation || self.y.hasAnimation || self.alpha.hasAnimation ||
+           self.translationX.hasAnimation || self.translationY.hasAnimation ||
            self.rotationX.hasAnimation || self.rotationY.hasAnimation ||
-           self.waitForRender.hasValue;
+           self.waitForRender.hasValue || self.enable.hasValue;
 }
 
 - (NSTimeInterval)maxDuration {
