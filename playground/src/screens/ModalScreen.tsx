@@ -41,6 +41,7 @@ interface Props {
 
 interface State {
   swipeableToDismiss: boolean;
+  reactNativeModalVisible: boolean;
 }
 
 export default class ModalScreen extends NavigationComponent<Props, State> {
