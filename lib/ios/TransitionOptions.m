@@ -38,7 +38,7 @@
     return self.x.hasAnimation || self.y.hasAnimation || self.alpha.hasAnimation ||
            self.translationX.hasAnimation || self.translationY.hasAnimation ||
            self.rotationX.hasAnimation || self.rotationY.hasAnimation ||
-           self.waitForRender.hasValue || self.enable.hasValue;
+           self.waitForRender.hasValue;
 }
 
 - (NSTimeInterval)maxDuration {
