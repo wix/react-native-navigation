@@ -12,6 +12,7 @@ else
 fi
 
 if [ -d "artifacts" ]; then
+  echo "Creating ${ARTIFACTS_NAME}"
   tar cvzf ${ARTIFACTS_NAME} ./artifacts/
 
   if [ $JENKINS_CI ]; then
