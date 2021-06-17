@@ -293,4 +293,11 @@ export class NavigationRoot {
   public async constants(): Promise<NavigationConstants> {
     return await Constants.get();
   }
+
+  /**
+   * Constants coming from native (synchronized call)
+   */
+  public constantsSync(): NavigationConstants {
+    return Constants.getSync();
+  }
 }

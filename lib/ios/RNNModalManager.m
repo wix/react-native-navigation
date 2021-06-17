@@ -33,6 +33,30 @@
     return self;
 }
 
+- (void)connectModalHostViewManager:(RCTModalHostViewManager *)modalHostViewManager {
+    modalHostViewManager.presentationBlock =
+        ^(UIViewController *reactViewController, UIViewController *viewController, BOOL animated,
+          dispatch_block_t completionBlock) {
+          [self showModal:viewController
+                 animated:animated
+               completion:^(NSString *_Nonnull componentId) {
+                 if (completionBlock)
+                     completionBlock();
+               }];
+        };
+
+    modalHostViewManager.dismissalBlock =
+        ^(UIViewController *reactViewController, UIViewController *viewController, BOOL animated,
+          dispatch_block_t completionBlock) {
+          [self dismissModal:viewController
+                    animated:animated
+                  completion:^{
+                    if (completionBlock)
+                        completionBlock();
+                  }];
+        };
+}
+
 - (void)showModal:(UIViewController<RNNLayoutProtocol> *)viewController
          animated:(BOOL)animated
        completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
@@ -43,13 +67,6 @@
     }
 
     UIViewController *topVC = [self topPresentedVC];
-
-    viewController.modalPresentationStyle = [RNNConvert
-        UIModalPresentationStyle:[viewController.resolveOptionsWithDefault.modalPresentationStyle
-                                     withDefault:@"default"]];
-    viewController.modalTransitionStyle = [RNNConvert
-        UIModalTransitionStyle:[viewController.resolveOptionsWithDefault.modalTransitionStyle
-                                   withDefault:@"coverVertical"]];
 
     if (viewController.presentationController) {
         viewController.presentationController.delegate = self;
@@ -80,10 +97,11 @@
 }
 
 - (void)dismissModal:(UIViewController *)viewController
+            animated:(BOOL)animated
           completion:(RNNTransitionCompletionBlock)completion {
     if (viewController) {
         [_pendingModalIdsToDismiss addObject:viewController];
-        [self removePendingNextModalIfOnTop:completion];
+        [self removePendingNextModalIfOnTop:completion animated:animated];
     }
 }
 
@@ -128,7 +146,8 @@
 
 #pragma mark - private
 
-- (void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion {
+- (void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion
+                             animated:(BOOL)animated {
     UIViewController<RNNLayoutProtocol> *modalToDismiss = [_pendingModalIdsToDismiss lastObject];
     RNNNavigationOptions *optionsWithDefault = modalToDismiss.resolveOptionsWithDefault;
 
@@ -152,12 +171,11 @@
             _dismissModalTransitionDelegate;
     }
 
-    if (modalToDismiss == topPresentedVC ||
-        [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
+    if ((modalToDismiss == topPresentedVC ||
+         [[topPresentedVC childViewControllers] containsObject:modalToDismiss])) {
         [self dismissSearchController:modalToDismiss];
         [modalToDismiss
-            dismissViewControllerAnimated:[optionsWithDefault.animations.dismissModal.exit.enable
-                                              withDefault:YES]
+            dismissViewControllerAnimated:animated
                                completion:^{
                                  [self->_pendingModalIdsToDismiss removeObject:modalToDismiss];
                                  if (modalToDismiss.view) {
@@ -168,18 +186,15 @@
                                      completion();
                                  }
 
-                                 [self removePendingNextModalIfOnTop:nil];
+                                 [self removePendingNextModalIfOnTop:nil animated:NO];
                                }];
     } else {
         [modalToDismiss.view removeFromSuperview];
         modalToDismiss.view = nil;
-        modalToDismiss.getCurrentChild.resolveOptions.animations.dismissModal.exit.enable =
-            [[Bool alloc] initWithBOOL:NO];
         [self dismissedModal:modalToDismiss];
 
-        if (completion) {
+        if (completion)
             completion();
-        }
     }
 }
 
