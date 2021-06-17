@@ -12,7 +12,7 @@ import { stack } from '../commons/Layouts';
 import Screens from './Screens';
 import flags from '../flags';
 import testIDs from '../testIDs';
-import { Dimensions } from 'react-native';
+import { Dimensions, Modal } from 'react-native';
 const height = Math.round(Dimensions.get('window').height);
 const MODAL_ANIMATION_DURATION = 350;
 
@@ -30,6 +30,8 @@ const {
   DISMISS_ALL_MODALS_BTN,
   DISMISS_FIRST_MODAL_BTN,
   SET_ROOT,
+  TOGGLE_REACT_NATIVE_MODAL,
+  SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL,
 } = testIDs;
 
 interface Props {
@@ -39,6 +41,7 @@ interface Props {
 
 interface State {
   swipeableToDismiss: boolean;
+  reactNativeModalVisible: boolean;
 }
 
 export default class ModalScreen extends NavigationComponent<Props, State> {
@@ -57,6 +60,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
     super(props);
     this.state = {
       swipeableToDismiss: false,
+      reactNativeModalVisible: false,
     };
   }
 
@@ -124,9 +128,35 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
           label={`Toggle to swipeToDismiss: ${this.state.swipeableToDismiss}`}
           onPress={this.toggleSwipeToDismiss}
         />
+        <Button
+          label="Toggle react-native modal"
+          testID={TOGGLE_REACT_NATIVE_MODAL}
+          onPress={this.toggleModal}
+        />
+
+        <Modal visible={this.state.reactNativeModalVisible} animationType={'slide'}>
+          <Root>
+            <Button label="Toggle react-native modal" onPress={this.toggleModal} />
+            <Button
+              label="Present another modal and dismiss current modal"
+              testID={SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL}
+              onPress={async () => {
+                await Navigation.showModal({
+                  component: {
+                    name: Screens.Modal,
+                  },
+                });
+                this.toggleModal();
+              }}
+            />
+          </Root>
+        </Modal>
       </Root>
     );
   }
+
+  toggleModal = () =>
+    this.setState({ reactNativeModalVisible: !this.state.reactNativeModalVisible });
 
   showModalWithTransition = () => {
     Navigation.showModal({

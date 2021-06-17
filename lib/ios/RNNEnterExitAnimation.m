@@ -12,9 +12,9 @@
 }
 
 - (void)mergeOptions:(RNNEnterExitAnimation *)options {
-    if (options.enter.hasAnimation)
+    if (options.enter.hasValue)
         self.enter = options.enter;
-    if (options.exit.hasAnimation)
+    if (options.exit.hasValue)
         self.exit = options.exit;
 }
 

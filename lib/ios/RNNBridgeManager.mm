@@ -1,8 +1,5 @@
 #import "RNNBridgeManager.h"
 
-#import <React/RCTBridge.h>
-#import <React/RCTUIManager.h>
-
 #import "RNNBridgeModule.h"
 #import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
@@ -10,6 +7,9 @@
 #import "RNNReactComponentRegistry.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNSplashScreen.h"
+#import <React/RCTBridge.h>
+#import <React/RCTModalHostViewManager.h>
+#import <React/RCTUIManager.h>
 
 @interface RNNBridgeManager ()
 
@@ -105,6 +105,8 @@
 
 - (void)onJavaScriptLoaded {
     [_commandsHandler setReadyToReceiveCommands:true];
+    [_modalManager
+        connectModalHostViewManager:[self.bridge moduleForClass:RCTModalHostViewManager.class]];
     [[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
 }
 

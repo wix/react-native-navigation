@@ -89,7 +89,7 @@
     [_modalManager showModal:_vc3 animated:NO completion:nil];
 
     [[_modalManagerEventHandler expect] dismissedModal:_vc3];
-    [_modalManager dismissModal:_vc3 completion:nil];
+    [_modalManager dismissModal:_vc3 animated:NO completion:nil];
     [_modalManagerEventHandler verify];
 }
 
@@ -99,7 +99,7 @@
     [_modalManager showModal:_vc3 animated:NO completion:nil];
 
     [[_modalManagerEventHandler expect] dismissedModal:_vc2];
-    [_modalManager dismissModal:_vc2 completion:nil];
+    [_modalManager dismissModal:_vc2 animated:NO completion:nil];
     [_modalManagerEventHandler verify];
 }
 
@@ -113,7 +113,7 @@
     [_modalManager showModal:_vc3 animated:NO completion:nil];
 
     [[_modalManagerEventHandler expect] dismissedModal:_vc2];
-    [_modalManager dismissModal:_vc2 completion:nil];
+    [_modalManager dismissModal:_vc2 animated:NO completion:nil];
     [_modalManagerEventHandler verify];
 
     [[_modalManagerEventHandler expect] dismissedMultipleModals:@[ _vc1, _vc3 ]];
@@ -123,7 +123,7 @@
 
 - (void)testDismissModal_DismissNilModalDoesntCrash {
     [[_modalManagerEventHandler reject] dismissedModal:OCMArg.any];
-    [_modalManager dismissModal:nil completion:nil];
+    [_modalManager dismissModal:nil animated:NO completion:nil];
     [_modalManagerEventHandler verify];
 }
 
@@ -168,20 +168,6 @@
     _vc1.options = [RNNNavigationOptions emptyOptions];
     [_modalManager showModal:_vc1 animated:NO completion:nil];
     XCTAssertEqual(_vc1.modalTransitionStyle, UIModalTransitionStyleCoverVertical);
-}
-
-- (void)testApplyOptionsOnInit_shouldShowModalWithPresentationStyle {
-    _vc1.options = [RNNNavigationOptions emptyOptions];
-    _vc1.options.modalPresentationStyle = [Text withValue:@"overCurrentContext"];
-    [_modalManager showModal:_vc1 animated:NO completion:nil];
-    XCTAssertEqual(_vc1.modalPresentationStyle, UIModalPresentationOverCurrentContext);
-}
-
-- (void)testApplyOptionsOnInit_shouldShowModalWithTransitionStyle {
-    _vc1.options = [RNNNavigationOptions emptyOptions];
-    _vc1.options.modalTransitionStyle = [Text withValue:@"crossDissolve"];
-    [_modalManager showModal:_vc1 animated:NO completion:nil];
-    XCTAssertEqual(_vc1.modalTransitionStyle, UIModalTransitionStyleCrossDissolve);
 }
 
 @end
