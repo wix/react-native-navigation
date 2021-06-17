@@ -307,13 +307,22 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
     [vc mergeOptions:options];
 
-    [vc.stack popTo:vc
-           animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
-         completion:^(NSArray *poppedViewControllers) {
-           [self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId];
-           completion();
-         }
-          rejection:rejection];
+    if (vc) {
+        [vc.stack popTo:vc
+               animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
+             completion:^(NSArray *poppedViewControllers) {
+               [self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId];
+               completion();
+             }
+              rejection:rejection];
+    } else {
+        [RNNErrorHandler
+                      reject:rejection
+               withErrorCode:1012
+            errorDescription:
+                [NSString stringWithFormat:@"PopTo component failed - componentId '%@' not found",
+                                           componentId]];
+    }
 }
 
 - (void)popToRoot:(NSString *)componentId
