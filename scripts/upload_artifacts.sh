@@ -11,8 +11,8 @@ else
   ARTIFACTS_NAME="artifacts_${TRAVIS_BUILD_ID}_${DATE}.tar.gz"
 fi
 
-if [ -d "detox/test/artifacts" ]; then
-  tar cvzf ${ARTIFACTS_NAME} ./detox/test/artifacts/
+if [ -d "artifacts" ]; then
+  tar cvzf ${ARTIFACTS_NAME} ./artifacts/
 
   if [ $JENKINS_CI ]; then
       echo "Jenkins has build in plugin"

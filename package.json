@@ -151,6 +151,18 @@
   "detox": {
     "test-runner": "jest",
     "specs": "",
+    "artifacts": {
+      "plugins": {
+        "log": "all",
+        "screenshot": {
+          "shouldTakeAutomaticSnapshots": true,
+          "takeWhen": {}
+        },
+        "timeline": "all",
+        "uiHierarchy": "enabled",
+        "video": "failing"
+      }
+    },
     "configurations": {
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
