@@ -11,6 +11,8 @@ else
   ARTIFACTS_NAME="artifacts_${TRAVIS_BUILD_ID}_${DATE}.tar.gz"
 fi
 
+echo ${ARTIFACTS_NAME}
+
 if [ -d "artifacts" ]; then
   echo "Creating ${ARTIFACTS_NAME}"
   tar cvzf ${ARTIFACTS_NAME} ./artifacts/
