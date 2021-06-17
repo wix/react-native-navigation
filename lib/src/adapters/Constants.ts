@@ -13,6 +13,10 @@ export class Constants {
     return new Constants(constants);
   }
 
+  static getSync(): NavigationConstants {
+    return new Constants(NativeModules.RNNBridgeModule.getNavigationConstantsSync());
+  }
+
   public readonly statusBarHeight: number;
   public readonly backButtonId: string;
   public readonly topBarHeight: number;
