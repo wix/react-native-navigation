@@ -689,7 +689,7 @@
 - (void)testShowModal_shouldShowAnimated {
     [self.uut setReadyToReceiveCommands:true];
     self.vc1.options = [RNNNavigationOptions emptyOptions];
-    self.vc1.options.animations.showModal.enable = [[Bool alloc] initWithBOOL:YES];
+    self.vc1.options.animations.showModal.enter.enable = [[Bool alloc] initWithBOOL:YES];
 
     id mockedVC = [OCMockObject partialMockForObject:self.vc1];
     OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
@@ -749,7 +749,7 @@
                                           eventEmitter:nil
                                   childViewControllers:@[ child ]];
 
-    OCMStub([self.modalManager dismissModal:OCMArg.any completion:OCMArg.invokeBlock]);
+    OCMStub([self.modalManager dismissModal:OCMArg.any animated:NO completion:OCMArg.invokeBlock]);
     OCMStub(child.isModal).andReturn(YES);
     OCMStub([self.layoutManager findComponentForId:@"child"]).andReturn(child);
 
@@ -785,13 +785,14 @@
 
     [[self.modalManager expect]
         dismissModal:[OCMArg checkWithBlock:^BOOL(UIViewController *modalToDismiss) {
-          return modalToDismiss.options.animations.dismissModal.enable.get == NO;
+          return modalToDismiss.options.animations.dismissModal.exit.enable.get == NO;
         }]
+            animated:NO
           completion:OCMArg.any];
 
     [self.uut dismissModal:@"child"
                  commandId:@"commandId"
-              mergeOptions:@{@"animations" : @{@"dismissModal" : @{@"enabled" : @(0)}}}
+              mergeOptions:@{@"animations" : @{@"dismissModal" : @{@"exit" : @{@"enabled" : @(0)}}}}
                 completion:^(NSString *_Nonnull componentId) {
                   XCTAssertTrue([componentId isEqualToString:@"stack"]);
                 }
@@ -800,6 +801,24 @@
                  }];
 
     [self.modalManager verify];
+}
+
+- (void)testShowModal_withPresentationStyle {
+    [self.uut setReadyToReceiveCommands:true];
+    OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(_vc1);
+    _vc1.options = [RNNNavigationOptions emptyOptions];
+    _vc1.options.modalPresentationStyle = [Text withValue:@"overCurrentContext"];
+    [self.uut showModal:@{} commandId:@"" completion:nil];
+    XCTAssertEqual(_vc1.modalPresentationStyle, UIModalPresentationOverCurrentContext);
+}
+
+- (void)testApplyOptionsOnInit_shouldShowModalWithTransitionStyle {
+    [self.uut setReadyToReceiveCommands:true];
+    OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(_vc1);
+    _vc1.options = [RNNNavigationOptions emptyOptions];
+    _vc1.options.modalTransitionStyle = [Text withValue:@"crossDissolve"];
+    [self.uut showModal:@{} commandId:@"" completion:nil];
+    XCTAssertEqual(_vc1.modalTransitionStyle, UIModalTransitionStyleCrossDissolve);
 }
 
 - (void)testPush_shouldResolvePromiseAndSendCommandCompletionWithPushedComponentId {

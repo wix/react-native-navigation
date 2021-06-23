@@ -17,5 +17,6 @@
 
 - (NSTimeInterval)maxDuration;
 - (BOOL)hasAnimation;
+- (BOOL)hasValue;
 
 @end

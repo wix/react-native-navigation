@@ -1,14 +1,17 @@
-import {
-  Navigation,
-  OptionsTopBar,
-  NavigationButtonPressedEvent,
-  Layout,
-  CommandName,
-  Options,
-  LayoutComponent,
-} from 'react-native-navigation';
 import { merge } from 'lodash';
+import {
+  CommandName,
+  Layout,
+  LayoutComponent,
+  Navigation,
+  NavigationButtonPressedEvent,
+  Options,
+  OptionsTopBar,
+} from 'react-native-navigation';
 import flags from '../flags';
+import testIDs from '../testIDs';
+
+const { DISMISS_MODAL_TOPBAR_BTN } = testIDs;
 
 const colors = [
   '#fff1e6',
@@ -37,6 +40,7 @@ const addDismissModalProcessor = () => {
         if (!topBar.leftButtons) {
           topBar.leftButtons = [
             {
+              testID: DISMISS_MODAL_TOPBAR_BTN,
               id: 'dismissModalButton',
               icon: require('../../img/x.png'),
               color: 'black',

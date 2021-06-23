@@ -7,8 +7,7 @@ import android.content.Context
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import androidx.core.animation.doOnEnd
-import com.reactnativenavigation.options.FadeInAnimation
-import com.reactnativenavigation.options.FadeOutAnimation
+import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.StackAnimationOptions
 import com.reactnativenavigation.options.params.Bool
@@ -41,6 +40,12 @@ open class StackAnimator @JvmOverloads constructor(
         return runningPushAnimations.containsKey(child) ||
                 runningPopAnimations.containsKey(child) ||
                 runningSetRootAnimations.containsKey(child)
+    }
+
+    fun cancelAllAnimations() {
+        runningPushAnimations.clear()
+        runningPopAnimations.clear()
+        runningSetRootAnimations.clear()
     }
 
     fun setRoot(
@@ -120,7 +125,7 @@ open class StackAnimator @JvmOverloads constructor(
 
     private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, resolvedOptions: Options, set: AnimatorSet) {
         val pop = resolvedOptions.animations.pop
-        val fade = if (pop.content.exit.isFadeAnimation()) pop else FadeOutAnimation()
+        val fade = if (pop.content.exit.isFadeAnimation()) pop else FadeAnimation
         val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content.exit, disappearing, appearing)
         set.playTogether(fade.content.exit.getAnimation(disappearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
@@ -152,11 +157,13 @@ open class StackAnimator @JvmOverloads constructor(
         set.addListener(object : AnimatorListenerAdapter() {
             private var cancelled = false
             override fun onAnimationCancel(animation: Animator) {
+                if (!runningPopAnimations.contains(disappearing)) return
                 cancelled = true
                 runningPopAnimations.remove(disappearing)
             }
 
             override fun onAnimationEnd(animation: Animator) {
+                if (!runningPopAnimations.contains(disappearing)) return
                 runningPopAnimations.remove(disappearing)
                 if (!cancelled) onAnimationEnd.run()
             }
@@ -169,12 +176,14 @@ open class StackAnimator @JvmOverloads constructor(
         set.addListener(object : AnimatorListenerAdapter() {
             private var isCancelled = false
             override fun onAnimationCancel(animation: Animator) {
+                if (!runningPushAnimations.contains(appearing)) return
                 isCancelled = true
                 runningPushAnimations.remove(appearing)
                 onAnimationEnd.run()
             }
 
             override fun onAnimationEnd(animation: Animator) {
+                if (!runningPushAnimations.contains(appearing)) return
                 if (!isCancelled) {
                     runningPushAnimations.remove(appearing)
                     onAnimationEnd.run()
@@ -189,12 +198,14 @@ open class StackAnimator @JvmOverloads constructor(
         set.addListener(object : AnimatorListenerAdapter() {
             private var isCancelled = false
             override fun onAnimationCancel(animation: Animator) {
+                if (!runningSetRootAnimations.contains(appearing)) return
                 isCancelled = true
                 runningSetRootAnimations.remove(appearing)
                 onAnimationEnd.run()
             }
 
             override fun onAnimationEnd(animation: Animator) {
+                if (!runningSetRootAnimations.contains(appearing)) return
                 if (!isCancelled) {
                     runningSetRootAnimations.remove(appearing)
                     onAnimationEnd.run()
@@ -213,7 +224,7 @@ open class StackAnimator @JvmOverloads constructor(
         appearing.setWaitForRender(Bool(true))
         appearing.view.alpha = 0f
         appearing.awaitRender()
-        val fade = if (options.animations.push.content.enter.isFadeAnimation()) options.animations.push.content.enter else FadeInAnimation().content.enter
+        val fade = if (options.animations.push.content.enter.isFadeAnimation()) options.animations.push.content.enter else FadeAnimation.content.enter
         val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade, disappearing, appearing)
         set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }

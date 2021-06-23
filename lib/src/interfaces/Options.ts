@@ -712,6 +712,16 @@ export interface OptionsTopBar {
    * #### (Android specific)
    */
   topMargin?: number;
+
+  /**
+   * Toggles animation on left buttons bar upon changes
+   */
+  animateLeftButtons?: boolean;
+
+  /**
+   * Toggles animation on right buttons bar upon changes
+   */
+  animateRightButtons?: boolean;
 }
 
 export interface SharedElementTransition {

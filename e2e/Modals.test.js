@@ -1,12 +1,12 @@
-import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 import Android from './AndroidUtils';
+import Utils from './Utils';
 
-const {elementByLabel, elementById, sleep} = Utils;
+const { elementByLabel, elementById, sleep } = Utils;
 
 describe('modal', () => {
   beforeEach(async () => {
-    await device.launchApp({newInstance: true});
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
   });
@@ -111,7 +111,6 @@ describe('modal', () => {
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 
-
   it('present modal multiple times', async () => {
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
@@ -158,5 +157,12 @@ describe('modal', () => {
     await expect(element(by.id(TestIDs.DISMISS_MODAL_PROMISE_RESULT))).toHaveText(
       'dismissModal promise resolved with: UniqueStackId'
     );
+  });
+
+  it('dismiss previous react-native modal', async () => {
+    await elementById(TestIDs.TOGGLE_REACT_NATIVE_MODAL).tap();
+    await elementById(TestIDs.SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL).tap();
+    await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
+    await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
   });
 });

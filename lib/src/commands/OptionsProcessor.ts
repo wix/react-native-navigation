@@ -25,6 +25,7 @@ import {
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
+import { Platform } from 'react-native';
 
 export class OptionsProcessor {
   constructor(
@@ -284,10 +285,12 @@ export class OptionsProcessor {
     parentOptions: AnimationOptions
   ) {
     if (key !== 'setRoot') return;
-    if (!('enter' in animation)) {
+    if (Platform.OS === 'android' && !('enter' in animation)) {
       parentOptions.setRoot = {
         enter: animation,
       } as EnterExitAnimationOptions;
+    } else if (Platform.OS === 'ios' && 'enter' in animation) {
+      parentOptions.setRoot = animation;
     }
   }
 

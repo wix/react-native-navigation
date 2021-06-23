@@ -40,6 +40,13 @@
            self.rotationX.hasAnimation || self.rotationY.hasAnimation;
 }
 
+- (BOOL)hasValue {
+    return self.x.hasAnimation || self.y.hasAnimation || self.alpha.hasAnimation ||
+           self.translationX.hasAnimation || self.translationY.hasAnimation ||
+           self.rotationX.hasAnimation || self.rotationY.hasAnimation ||
+           self.waitForRender.hasValue || self.enable.hasValue;
+}
+
 - (NSTimeInterval)maxDuration {
     double maxDuration = 0;
     if ([_x.duration withDefault:0] > maxDuration) {

@@ -100,6 +100,7 @@ function registerScreens() {
   );
   Navigation.registerComponent(Screens.Search, () => require('./SearchScreen').default);
   Navigation.registerComponent(Screens.SearchBar, () => require('./SearchBar').default);
+  Navigation.registerComponent(Screens.SearchBarModal, () => require('./SearchBarModal').default);
   Navigation.registerComponent(Screens.SetRoot, () => require('./SetRootScreen').default);
   Navigation.registerComponent(
     Screens.SideMenuCenter,

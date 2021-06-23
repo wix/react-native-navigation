@@ -7,8 +7,11 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props, RCTBri
 
 @interface ReactNativeNavigation : NSObject
 
++ (void)bootstrapWithBridge:(RCTBridge *)bridge;
+
 + (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate
-                launchOptions:(NSDictionary *)launchOptions;
+                launchOptions:(NSDictionary *)launchOptions
+    __attribute__((deprecated("Use bootstrapWithBridge: instead")));
 
 + (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge;
 

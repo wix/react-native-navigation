@@ -3,6 +3,14 @@
 
 @implementation RNNInterpolator
 
++ (CGPoint)fromPoint:(CGPoint)from
+             toPoint:(CGPoint)to
+             precent:(CGFloat)p
+        interpolator:(id<Interpolator>)interpolator {
+    return CGPointMake(RNNInterpolate(from.x, to.x, p, interpolator),
+                       RNNInterpolate(from.y, to.y, p, interpolator));
+}
+
 + (UIColor *)fromColor:(UIColor *)fromColor toColor:(UIColor *)toColor precent:(CGFloat)precent {
     return [fromColor ?: UIColor.clearColor
         interpolateToValue:toColor ?: UIColor.clearColor

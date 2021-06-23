@@ -13,6 +13,7 @@ import { AssetService } from '../adapters/AssetResolver';
 import { Deprecations } from './Deprecations';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsProcessor as Processor } from '../interfaces/Processors';
+import { Platform } from 'react-native';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
@@ -52,7 +53,8 @@ describe('navigation options', () => {
     );
   });
 
-  it('processes old setRoot animation value to new enter exit format', () => {
+  it('processes old setRoot animation value to new enter exit format on Android', () => {
+    Platform.OS = 'android';
     const options: Options = {
       animations: {
         setRoot: {
@@ -84,6 +86,7 @@ describe('navigation options', () => {
     uut.processOptions(options, CommandName.SetRoot);
     expect(options).toEqual(expectedOptions);
   });
+
   describe('Modal Animation Options', () => {
     describe('Show Modal', () => {
       it('processes old options into new options,backwards compatibility ', () => {

@@ -7,10 +7,12 @@
     CGRect _originalFrame;
     CGFloat _originalCornerRadius;
     CGRect _originalLayoutBounds;
+    CGPoint _originalCenter;
     CATransform3D _originalTransform;
     UIView *_toElement;
     UIColor *_fromColor;
     NSInteger _zIndex;
+    UIViewContentMode _originalContentMode;
     SharedElementTransitionOptions *_transitionOptions;
 }
 
@@ -45,34 +47,40 @@
 
 - (void)hijackReactElement:(UIView *)element {
     _reactView = element;
+    _originalContentMode = _reactView.contentMode;
     _originalFrame = _reactView.frame;
     _originalTransform = element.layer.transform;
-    _originalLayoutBounds = element.layer.bounds;
-    self.contentMode = element.contentMode;
-    self.frame = self.location.fromFrame;
     _originalParent = _reactView.superview;
+    _originalCenter = _reactView.center;
     _originalCornerRadius = element.layer.cornerRadius;
-    _reactView.frame = self.bounds;
+    _originalTransform = _reactView.layer.transform;
+    _originalLayoutBounds = _reactView.bounds;
     _reactView.layer.transform = CATransform3DIdentity;
     _reactView.layer.cornerRadius = self.location.fromCornerRadius;
+
     [self addSubview:_reactView];
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.reactView.bounds = self.bounds;
+    self.reactView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+}
+
 - (void)reset {
-    _reactView.frame = _originalFrame;
+    _reactView.center = _originalCenter;
     _reactView.layer.cornerRadius = _originalCornerRadius;
     _reactView.bounds = _originalLayoutBounds;
-    _reactView.layer.bounds = _originalLayoutBounds;
     _reactView.layer.transform = _originalTransform;
+    _reactView.contentMode = _originalContentMode;
     [_originalParent insertSubview:_reactView atIndex:self.location.index];
     _toElement.hidden = NO;
     _reactView.backgroundColor = _fromColor;
     [self removeFromSuperview];
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    _reactView.frame = self.bounds;
+- (NSArray<id<DisplayLinkAnimation>> *)extraAnimations {
+    return @[];
 }
 
 @end

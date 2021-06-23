@@ -1,7 +1,12 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, ViewType) { ViewTypeImage, ViewTypeText, ViewTypeOther };
+typedef NS_ENUM(NSInteger, ViewType) {
+    ViewTypeImage,
+    ViewTypeUIImage,
+    ViewTypeText,
+    ViewTypeOther
+};
 
 @interface UIView (Utils)
 
