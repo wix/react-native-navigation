@@ -42,8 +42,11 @@ const setters = remx.setters({
     }
   },
   setStackRoot(layoutId: string, layout: any) {
-    const stack = getters.getLayoutById(layoutId).getStack();
-    stack.children = layout.map((child: any) => LayoutNodeFactory.create(child, stack));
+    const currentLayout = getters.getLayoutById(layoutId);
+    if (currentLayout) {
+      const stack = currentLayout.getStack();
+      stack.children = layout.map((child: any) => LayoutNodeFactory.create(child, stack));
+    }
   },
   showOverlay(overlay: ParentNode) {
     state.overlays.push(overlay);
@@ -69,8 +72,7 @@ const setters = remx.setters({
     state.modals = [];
   },
   selectTabIndex(layout: BottomTabsNode, index: number) {
-    const l = getters.getLayoutById(layout.nodeId);
-    l.selectedIndex = index;
+    getters.getLayoutById(layout.nodeId).selectedIndex = index;
   },
   mergeOptions(componentId: string, options: Options) {
     const layout = getters.getLayoutById(componentId);
@@ -97,10 +99,10 @@ const getters = remx.getters({
     return state.overlays;
   },
   getLayoutById(layoutId: string) {
-    return (
-      findParentNode(layoutId, state.root) ||
-      findParentNode(layoutId, getters.getModalById(layoutId))
-    );
+    if (getters.getModalById(layoutId))
+      return findParentNode(layoutId, getters.getModalById(layoutId));
+
+    return findParentNode(layoutId, state.root);
   },
   getModalById(layoutId: string) {
     return _.find(state.modals, (layout) => findParentNode(layoutId, layout));

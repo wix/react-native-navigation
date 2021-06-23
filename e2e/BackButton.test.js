@@ -12,7 +12,7 @@ describe('Back Button', () => {
     await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
   });
 
-  it.e2e('prevents pop and dispatch event', async () => {
+  it('prevents pop and dispatch event', async () => {
     await elementById(TestIDs.PUSH_DISABLED_BACK_BTN).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.BACK_BUTTON).tap();
@@ -34,7 +34,7 @@ describe('Back Button', () => {
     await elementById(TestIDs.DISMISS_BTN).tap();
     await elementById(TestIDs.BACK_BUTTON).tap();
     await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
-  })
+  });
 
   it.e2e(':android: hardware back button prevents pop and dispatch event', async () => {
     await elementById(TestIDs.PUSH_DISABLED_HARDWARE_BACK_BTN).tap();

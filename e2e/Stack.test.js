@@ -62,7 +62,7 @@ describe('Stack', () => {
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
   });
 
-  it.e2e(':android: custom back button', async () => {
+  it(':android: custom back button', async () => {
     await elementById(TestIDs.PUSH_CUSTOM_BACK_BTN).tap();
     await elementById(TestIDs.CUSTOM_BACK_BTN).tap();
     await expect(elementByLabel('back button clicked')).toBeVisible();
@@ -74,7 +74,7 @@ describe('Stack', () => {
     await expect(elementByLabel('Subtitle')).toBeVisible();
   });
 
-  it.e2e('screen lifecycle', async () => {
+  it('screen lifecycle', async () => {
     await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
     await elementById(TestIDs.PUSH_TO_TEST_DID_DISAPPEAR_BTN).tap();
@@ -108,7 +108,7 @@ describe('Stack', () => {
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
   });
 
-  it.e2e('does not crash when setting the stack root to an existing component id', async () => {
+  it('does not crash when setting the stack root to an existing component id', async () => {
     await elementById(TestIDs.SET_STACK_ROOT_WITH_ID_BTN).tap();
     await elementById(TestIDs.SET_STACK_ROOT_WITH_ID_BTN).tap();
   });

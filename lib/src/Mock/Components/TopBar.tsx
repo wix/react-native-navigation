@@ -5,6 +5,9 @@ import { OptionsTopBar, OptionsTopBarBackButton } from '../../interfaces/Options
 import ParentNode from '../Layouts/ParentNode';
 import { LayoutStore } from '../Stores/LayoutStore';
 import { NavigationButton } from './NavigationButton';
+import { events } from '../Stores/EventsStore';
+
+const DEFAULT_BACK_BUTTON_ID = 'RNN.back';
 
 export interface TopBarProps {
   layoutNode: ParentNode;
@@ -61,7 +64,14 @@ export const TopBar = class extends Component<TopBarProps> {
         testID={backButtonOptions?.testID}
         title={backButtonOptions && backButtonOptions.title ? backButtonOptions.title : ''}
         onPress={() => {
-          LayoutStore.pop(this.props.layoutNode.nodeId);
+          if (backButtonOptions?.popStackOnPress === false) {
+            events.invokeNavigationButtonPressed({
+              buttonId: backButtonOptions?.id || DEFAULT_BACK_BUTTON_ID,
+              componentId: this.props.layoutNode.nodeId,
+            });
+          } else {
+            LayoutStore.pop(this.props.layoutNode.nodeId);
+          }
         }}
       />
     );

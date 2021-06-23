@@ -144,19 +144,15 @@ describe('modal', () => {
     await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
   });
 
-  it.e2e('dismissModal promise is resolved with root ViewController id', async () => {
+  it('dismissModal promise is resolved with root ViewController id', async () => {
     await elementById(TestIDs.MODAL_COMMANDS_BTN).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
 
-    await expect(element(by.id(TestIDs.SHOW_MODAL_PROMISE_RESULT))).toHaveText(
-      'showModal promise resolved with: UniqueStackId'
-    );
-    await expect(element(by.id(TestIDs.MODAL_DISMISSED_LISTENER_RESULT))).toHaveText(
-      'modalDismissed listener called with with: UniqueStackId'
-    );
-    await expect(element(by.id(TestIDs.DISMISS_MODAL_PROMISE_RESULT))).toHaveText(
-      'dismissModal promise resolved with: UniqueStackId'
-    );
+    await expect(elementByLabel('showModal promise resolved with: UniqueStackId')).toBeVisible();
+    await expect(
+      elementByLabel('modalDismissed listener called with with: UniqueStackId')
+    ).toBeVisible();
+    await expect(elementByLabel('dismissModal promise resolved with: UniqueStackId')).toBeVisible();
   });
 
   it('dismiss previous react-native modal', async () => {
