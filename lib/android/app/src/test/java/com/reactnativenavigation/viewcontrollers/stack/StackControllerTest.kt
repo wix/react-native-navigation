@@ -35,7 +35,6 @@ import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
 import org.robolectric.Robolectric
-import org.robolectric.android.controller.ActivityController
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.test.fail
@@ -387,6 +386,13 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1)
         uut.setRoot(listOf(child1), CommandListenerAdapter())
         verify(child1).onViewDidAppear()
+    }
+
+    @Test
+    fun setRoot_shouldEnsureViewIsCreated() {
+        disablePushAnimation(child1)
+        uut.setRoot(listOf(child1), CommandListenerAdapter())
+        verify(uut).ensureViewIsCreated()
     }
 
     @Test

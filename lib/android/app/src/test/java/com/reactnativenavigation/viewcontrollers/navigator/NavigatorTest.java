@@ -348,11 +348,11 @@ public class NavigatorTest extends BaseTest {
     public void setStackRoot() {
         disablePushAnimation(child1, child2, child3);
 
-        StackController stack = newStack(child1, child2);
+        StackController stack = spy(newStack(child1, child2));
         uut.setRoot(stack, new CommandListenerAdapter(), reactInstanceManager);
 
         stack.setRoot(Collections.singletonList(child3), new CommandListenerAdapter());
-
+        verify(stack).ensureViewIsCreated();
         assertThat(stack.getChildControllers()).containsOnly(child3);
     }
 
