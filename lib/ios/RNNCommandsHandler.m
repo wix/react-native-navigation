@@ -401,9 +401,11 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
         (UIViewController *)[_layoutManager findComponentForId:componentId];
 
     if (!modalToDismiss.isModal) {
-        [RNNErrorHandler reject:reject
-                  withErrorCode:1013
-               errorDescription:@"component is not a modal"];
+        [RNNErrorHandler
+                      reject:reject
+               withErrorCode:1013
+            errorDescription:[NSString stringWithFormat:@"component with id: '%@' is not a modal",
+                                                        componentId]];
         return;
     }
 
