@@ -390,9 +390,10 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun setRoot_shouldEnsureViewIsCreated() {
+        val mockUUt = spy(uut)
         disablePushAnimation(child1)
-        uut.setRoot(listOf(child1), CommandListenerAdapter())
-        verify(uut).ensureViewIsCreated()
+        mockUUt.setRoot(listOf(child1), CommandListenerAdapter())
+        verify(mockUUt).ensureViewIsCreated()
     }
 
     @Test
