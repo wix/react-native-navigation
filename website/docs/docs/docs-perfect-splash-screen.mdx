@@ -1,0 +1,95 @@
+---
+id: perfect-splash-screen
+title: Perfect Splash Screen
+sidebar_label: Perfect Splash Screen
+---
+
+## Getting Started
+
+### Setting up a Splash Screen on iOS
+
+### Setting up a Splash Screen on Android
+
+## Advanced Configuration
+
+### How do I make an Animated splash screen?
+
+The best way to make an animated splash screen is to mount a React Native component which is identical to your splash screen. Firstly, we register a page called "LaunchPage" and `setRoot` with that component when the application starts:
+
+```js
+Navigation.registerComponent('LaunchPage', () => LaunchPage);
+
+Navigation.setRoot({
+  root: {
+    stack: {
+      children: [
+        {
+          component: {
+            name: 'LaunchPage',
+            options: {
+              topBar: {
+                visible: false,
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+});
+```
+
+Now that we have a React component (which looks identical to the splash screen) appears after initializing, we can
+perform any animation in that component. Below, for example, we have a video play after the splash screen. The first
+still shot of the video, is the splash screen configured (like in the guides above):
+
+```jsx
+export const LaunchPage = () => {
+  return (
+    <View style={styles.containerStyle}>
+      <Video
+        posterResizeMode={'cover'}
+        source={require('../assets/launch.mp4')}
+        style={styles.imageStyle}
+        resizeMode={'cover'}
+        onEnd={onVideoEnd}
+      />
+    </View>
+  );
+
+  function onVideoEnd() {
+    Navigation.setRoot({
+      root: {
+        stack: {
+          children: [
+            {
+              component: {
+                name: 'MainPage',
+              },
+            },
+          ],
+        },
+      },
+    });
+  }
+};
+```
+
+Once the video/animation is done, we `setRoot` to the main entry point of your application (in our case "MainPage"). This example covers
+a video, but you could build out your parts of your splash screen with `<View/>`, `<Image />` and `<Text />` component, animate them separately,
+then transition to your application.
+
+### My splash screen has a white flash?
+
+Your splash screen may have a white flash, this is caused due to the app being finished initializing before React Native is done initializing.
+To get rid of the white flash between your splash screen and React Native initializing, set the `waitForRender` flag to `true` on your `setRoot` animation:
+
+```
+Navigation.setDefaultOptions({
+    animations: {
+        setRoot: {
+            waitForRender: true
+        }
+    }
+});
+```
