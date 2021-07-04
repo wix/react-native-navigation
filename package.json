@@ -57,7 +57,8 @@
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
-    "tslib": "1.9.3"
+    "tslib": "1.9.3",
+    "remx": "3.x.x"
   },
   "devDependencies": {
     "@babel/core": "7.10.3",
@@ -103,7 +104,6 @@
     "react-redux": "5.x.x",
     "react-test-renderer": "16.13.1",
     "redux": "3.x.x",
-    "remx": "3.x.x",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",
