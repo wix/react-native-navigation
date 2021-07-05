@@ -86,6 +86,17 @@ public class BottomTabs extends AHBottomNavigation {
         if (getDefaultBackgroundColor() != color) setDefaultBackgroundColor(color);
     }
 
+    @Override
+    public void restoreBottomNavigation(boolean withAnimation) {
+        this.setVisibility(VISIBLE);
+        super.restoreBottomNavigation(withAnimation);
+    }
+    @Override
+    public void hideBottomNavigation(boolean withAnimation) {
+        super.hideBottomNavigation(withAnimation);
+        this.setVisibility(INVISIBLE);
+    }
+
     public void setText(int index, String text) {
         AHBottomNavigationItem item = getItem(index);
         if (!item.getTitle(getContext()).equals(text)) {
