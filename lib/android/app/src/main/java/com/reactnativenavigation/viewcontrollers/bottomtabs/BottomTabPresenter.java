@@ -33,7 +33,7 @@ public class BottomTabPresenter {
     private final List<ViewController<?>> tabs;
     private final int defaultDotIndicatorSize;
 
-    public BottomTabPresenter(Context context, List<ViewController<?>> tabs, ImageLoader imageLoader,  TypefaceLoader typefaceLoader, Options defaultOptions) {
+    public BottomTabPresenter(Context context, List<ViewController<?>> tabs, ImageLoader imageLoader, TypefaceLoader typefaceLoader, Options defaultOptions) {
         this.tabs = tabs;
         this.context = context;
         this.bottomTabFinder = new BottomTabFinder(tabs);
@@ -65,7 +65,8 @@ public class BottomTabPresenter {
                 if (tab.fontSize.hasValue()) bottomTabs.setTitleInactiveTextSizeInSp(i, Float.valueOf(tab.fontSize.get()));
                 if (tab.selectedFontSize.hasValue()) bottomTabs.setTitleActiveTextSizeInSp(i, Float.valueOf(tab.selectedFontSize.get()));
                 if (tab.testId.hasValue()) bottomTabs.setTag(i, tab.testId.get());
-                if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator); else applyBadge(i, tab);
+                if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator);
+                else applyBadge(i, tab);
             }
         });
     }
@@ -104,16 +105,19 @@ public class BottomTabPresenter {
                     }
                 });
                 if (tab.testId.hasValue()) bottomTabs.setTag(index, tab.testId.get());
-                if (shouldApplyDot(tab)) mergeDotIndicator(index, tab.dotIndicator); else mergeBadge(index, tab);
+                if (shouldApplyDot(tab))
+                    mergeDotIndicator(index, tab.dotIndicator);
+                else
+                    mergeBadge(index, tab);
             }
         });
     }
 
     private void applyDotIndicator(int tabIndex, DotIndicatorOptions dotIndicator) {
-        if(dotIndicator.visible.isFalse()) return;
+        if (dotIndicator.visible.isFalse()) return;
         AHNotification.Builder builder = new AHNotification.Builder()
                 .setText("")
-                .setBackgroundColor(dotIndicator.color.get(null))
+                .setBackgroundColor(dotIndicator.color.get(0))
                 .setSize(dotIndicator.size.get(defaultDotIndicatorSize))
                 .animate(dotIndicator.animate.get(false));
         bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), tabIndex));
@@ -122,21 +126,38 @@ public class BottomTabPresenter {
     private void applyBadge(int tabIndex, BottomTabOptions tab) {
         if (bottomTabs == null) return;
         AHNotification.Builder builder = new AHNotification.Builder()
-                .setText(tab.badge.get(""))
-                .setBackgroundColor(tab.badgeColor.get(null))
+                .setText(tab.badge.getText().get(""))
+                .setBackgroundColor(tab.badge.getBackgroundColor().get(0))
+                .setTextColor(tab.badge.getTextColor().get(0))
                 .animate(tab.animateBadge.get(false));
         bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), tabIndex));
     }
 
     private void mergeBadge(int index, BottomTabOptions tab) {
         if (bottomTabs == null) return;
-        if (!tab.badge.hasValue()) return;
+
         AHNotification.Builder builder = new AHNotification.Builder();
-        if (tab.badge.hasValue()) builder.setText(tab.badge.get());
-        if (tab.badgeColor.hasValue()) builder.setBackgroundColor(tab.badgeColor.get());
-        if (tab.badgeColor.hasValue()) builder.setBackgroundColor(tab.badgeColor.get());
-        if (tab.animateBadge.hasValue()) builder.animate(tab.animateBadge.get());
-        bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), index));
+        if (tab.badge.hasValue()) {
+            BottomTabOptions oldOptions = tabs.get(index).resolveCurrentOptions(defaultOptions).bottomTabOptions;
+
+            if (tab.badge.getText().hasValue())
+                builder.setText(tab.badge.getText().get());
+            else
+                builder.setText(oldOptions.badge.getText().get(""));
+            if (tab.badge.getTextColor().hasValue())
+                builder.setTextColor(tab.badge.getTextColor().get());
+            else
+                builder.setTextColor(oldOptions.badge.getTextColor().get(0));
+
+
+            if (tab.badge.getBackgroundColor().hasValue())
+                builder.setBackgroundColor(tab.badge.getBackgroundColor().get());
+            else
+                builder.setBackgroundColor(oldOptions.badge.getBackgroundColor().get(0));
+            if (tab.animateBadge.hasValue())
+                builder.animate(tab.animateBadge.get());
+            bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), index));
+        }
     }
 
     private void mergeDotIndicator(int index, DotIndicatorOptions dotIndicator) {

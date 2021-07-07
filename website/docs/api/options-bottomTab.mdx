@@ -19,15 +19,40 @@ const options = {
 
 ## `badge`
 
-| Type   | Required | Platform |
-| ------ | -------- | -------- |
-| string | No       | Both     |
+Text Badge in the top end (right) corner of the bottomTab, see the following example
+
+| Type                  | Required | Platform |
+| --------------------- | -------- | -------- |
+| BottomTabBadgeOptions | No       | Both     |
+
+```js
+const options = {
+  bottomTab: {
+  badge: {
+          text: 'content',
+          textColor: 'green',
+          backgroundColor: 'blue',
+    },
+  },
+};
+```
+:::warning Deprecation warning
+This option as string is currently deprecated and will be removed in a future release. Please use the BottomTabBadgeOptions option instead.
+Using string will be the same as BottomTabBadgeOptions with text.
+:::
 
 ## `badgeColor`
+
+Badge backgroundColor
 
 | Type  | Required | Platform |
 | ----- | -------- | -------- |
 | color | No       | Both     |
+
+:::warning Deprecation warning
+This option is currently deprecated and will be removed in a future release. Please use the BottomTabBadgeOptions option instead.
+Using this option will be the same as BottomTabBadgeOptions with backgroundColor.
+:::
 
 ## `animateBadge`
 

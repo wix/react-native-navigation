@@ -87,6 +87,7 @@ export class OptionsProcessor {
       this.processComponent(key, value, objectToProcess);
       this.processImage(key, value, objectToProcess);
       this.processButtonsPassProps(key, value);
+      this.processBottmTabBadge(key, parentOptions);
       this.processSearchBar(key, value, objectToProcess);
       this.processInterpolation(key, value, objectToProcess);
       this.processAnimation(key, value, objectToProcess);
@@ -358,6 +359,30 @@ export class OptionsProcessor {
       parentOptions.push!!.bottomTabs = {
         enter: animation.bottomTabs as ViewAnimationOptions,
       };
+    }
+  }
+
+  private processBottmTabBadge(key: string, parentOptions: any) {
+    if (key === 'bottomTab' && parentOptions.bottomTab) {
+      if (parentOptions.bottomTab.badge) {
+        if (typeof parentOptions.bottomTab.badge === 'string') {
+          let text = parentOptions.bottomTab.badge;
+          parentOptions.bottomTab.badge = {
+            text,
+            backgroundColor: parentOptions.bottomTab.badgeColor,
+          };
+        } else {
+          if (parentOptions.bottomTab.badgeColor)
+            parentOptions.bottomTab.badge.backgroundColor = parentOptions.bottomTab.badgeColor;
+        }
+      } else {
+        if (parentOptions.bottomTab.badgeColor) {
+          parentOptions.bottomTab.badge = {
+            backgroundColor: parentOptions.bottomTab.badgeColor,
+          };
+        }
+      }
+      if (parentOptions.bottomTab.badgeColor) delete parentOptions.bottomTab.badgeColor;
     }
   }
 }

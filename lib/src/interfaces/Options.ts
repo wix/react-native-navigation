@@ -900,6 +900,11 @@ export interface ImageSystemSource {
 
 export type ImageResource = ImageSourcePropType | string | ImageSystemSource;
 
+export interface BottomTabBadgeOptions {
+  text?: string;
+  textColor?: Color;
+  backgroundColor?: Color;
+}
 export interface OptionsBottomTab {
   dotIndicator?: DotIndicatorOptions;
 
@@ -908,11 +913,13 @@ export interface OptionsBottomTab {
    */
   text?: string;
   /**
-   * Set the text in a badge that is overlayed over the component
+   * Set the badge options
    */
-  badge?: string;
+  badge?: BottomTabBadgeOptions | string;
   /**
+   * Deprecated: use badge.backgroundColor
    * Set the background color of the badge that is overlayed over the component
+   * overrides  badge.backgroundColor value at options processor
    */
   badgeColor?: string;
   /**
