@@ -30,6 +30,10 @@ public class StatusBarUtils {
         return statusBarHeight;
     }
 
+    public static int getStatusBarHeightDp(Context context) {
+        return (int) UiUtils.pxToDp(context, getStatusBarHeight(context));
+    }
+
     public static boolean isTranslucent(Window window) {
         WindowManager.LayoutParams lp = window.getAttributes();
         return lp != null && (lp.flags & FLAG_TRANSLUCENT_STATUS) == FLAG_TRANSLUCENT_STATUS;
