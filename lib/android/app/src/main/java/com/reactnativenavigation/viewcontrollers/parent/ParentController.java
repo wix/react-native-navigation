@@ -45,7 +45,16 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @Override
     public void onViewDidAppear() {
-        getCurrentChild().onViewDidAppear();
+        super.onViewDidAppear();
+        ViewController currentChild = getCurrentChild();
+        if (currentChild != null) currentChild.onViewDidAppear();
+    }
+
+    @Override
+    public void onViewDisappear() {
+        super.onViewDisappear();
+        ViewController currentChild = getCurrentChild();
+        if (currentChild != null) currentChild.onViewDisappear();
     }
 
     @Override
