@@ -48,6 +48,7 @@ The following example demonstrates how to replace the default push and pop anima
 }>
 <TabItem value="push">
 
+
 ```js
 options: {
   animations: {
@@ -66,6 +67,7 @@ options: {
 
 </TabItem>
 <TabItem value="pop">
+
 
 ```js
 options: {
@@ -86,6 +88,7 @@ options: {
 </TabItem>
 </Tabs>
 
+
 ### Modal animations
 
 Modal animations are declared similarly to stack animations, only this time we animate the entire view and not only part of the UI (content).
@@ -98,6 +101,7 @@ Modal animations are declared similarly to stack animations, only this time we a
   ]
 }>
 <TabItem value="show">
+
 
 The following example demonstrates how to show a modal with a fade-in animation.
 
@@ -118,6 +122,7 @@ options: {
 </TabItem>
 <TabItem value="dismiss">
 
+
 The following example demonstrates how to dismiss a modal with a fade-out animation.
 
 ```js
@@ -137,6 +142,7 @@ options: {
 </TabItem>
 </Tabs>
 
+
 ## Shared element transitions
 
 Shared element transitions allow us to provide visual continuity when navigating between destinations. This also focuses user attention on a particular significant element, which then also gives such user better context when transitioning to some other destination.
@@ -149,7 +155,7 @@ At the moment, the transition is available for push and pop commands. We are wor
 
 Let's take a more in-depth look at the following example, which you can find in the playground app:
 
-> [Source screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailsListScreen.tsx) and the [Destination screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailDetailsScreen.tsx)
+> [Source screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailsListScreen.js) and the [Destination screen](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/sharedElementTransition/CocktailSecondaryScreen.js)
 
 <p align="center">
   <img alt="Shared Element Transition" src={useBaseUrl('img/sharedElement.gif')} />
@@ -205,7 +211,7 @@ each element must include a unique `nativeID` prop.
 ```jsx
 Navigation.push(this.props.componentId, {
   component: {
-    name: Screens.CocktailDetailsScreen,
+    name: Screens.CocktailSecondaryScreen,
     passProps: { ...item },
     options: {
       animations: {
@@ -214,7 +220,7 @@ Navigation.push(this.props.componentId, {
             {
               fromId: `image${item.id}`,
               toId: `image${item.id}Dest`,
-              interpolation: { type: 'linear' }
+              interpolation: { type: 'linear' },
             },
           ],
         },
@@ -226,16 +232,16 @@ Navigation.push(this.props.componentId, {
 
 The `interpolation` property is an object which consists of a `type` property, and optional parameters to further configure the interpolation function. The following `type`s are supported:
 
-* `'accelerate'`: Begin building up speed until destination has been reached.
+- `'accelerate'`: Begin building up speed until destination has been reached.
   - `factor`: The acceleration factor. Higher values look faster.
-* `'decelerate'`: Start at a high speed and slow down to settle.
+- `'decelerate'`: Start at a high speed and slow down to settle.
   - `factor`: The acceleration factor. Higher values look slower.
-* `'accelerateDecelerate'`: Begin building up speed until half of the animation is complete, then begin slowing down to settle.
-* `'decelerateAccelerate'`: Start at a high speed and slow down until half of the animation is complete, then speed up again to settle.
-* `'linear'`: Linearly move towards the destination.
-* `'overshoot'`: Begin building up speed and overshoot the destination, then fling back to settle.
+- `'accelerateDecelerate'`: Begin building up speed until half of the animation is complete, then begin slowing down to settle.
+- `'decelerateAccelerate'`: Start at a high speed and slow down until half of the animation is complete, then speed up again to settle.
+- `'linear'`: Linearly move towards the destination.
+- `'overshoot'`: Begin building up speed and overshoot the destination, then fling back to settle.
   - `tension`: The tension of the overshoot animation defines how far the object can overshoot. _Default: `1`_
-* `'spring'`: Acts like an actual spring. Depending on the configuration, this interpolation can overshoot the destination multiple times, or be very stiff and smoothly ease towards the destination.
+- `'spring'`: Acts like an actual spring. Depending on the configuration, this interpolation can overshoot the destination multiple times, or be very stiff and smoothly ease towards the destination.
   - `mass`: The mass defines how "heavy" the object is. _Default: `3`_
   - `damping`: The damping property specifies how much the moving object is being slowed down. Higher values can lead to overdamping, lower values to underdamping. _Default: `500`_
   - `stiffness`: The stiffness property defines how stiff the animated object is. _Default: `1000`_
@@ -265,7 +271,7 @@ An element can either be in the source or destination screen.
 ```jsx
 Navigation.push(this.props.componentId, {
   component: {
-    name: Screens.CocktailDetailsScreen,
+    name: Screens.CocktailSecondaryScreen,
     passProps: { ...item },
     options: {
       animations: {

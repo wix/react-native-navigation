@@ -130,26 +130,26 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
       root: {
         splitView: {
           id: 'SPLITVIEW_ID',
-          master: {
+          primary: {
             stack: {
-              id: 'MASTER_ID',
+              id: 'PRIMARY_ID',
               children: [
                 {
                   component: {
-                    name: Screens.CocktailsListMasterScreen,
+                    name: Screens.CocktailsListPrimaryScreen,
                   },
                 },
               ],
             },
           },
-          detail: {
+          secondary: {
             stack: {
-              id: 'DETAILS_ID',
+              id: 'SECONDARY_ID',
               children: [
                 {
                   component: {
                     id: 'DETAILS_COMPONENT_ID',
-                    name: Screens.CocktailDetailsScreen,
+                    name: Screens.CocktailSecondaryScreen,
                   },
                 },
               ],
@@ -161,6 +161,9 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
             },
             splitView: {
               displayMode: 'visible',
+              minWidth: 375,
+              maxWidth: 375,
+              style: 'doubleColumn',
             },
           },
         },

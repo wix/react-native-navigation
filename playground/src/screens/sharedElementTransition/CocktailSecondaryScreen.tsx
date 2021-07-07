@@ -14,7 +14,7 @@ const { COCKTAILS_DETAILS_HEADER, PUSH_DETAILS_BTN } = testIDs;
 
 interface Props extends NavigationComponentProps, CocktailItem {}
 
-export default class CocktailDetailsScreen extends React.Component<Props> {
+export default class CocktailSecondaryScreen extends React.Component<Props> {
   static options(): Options {
     return {
       ...Platform.select({
