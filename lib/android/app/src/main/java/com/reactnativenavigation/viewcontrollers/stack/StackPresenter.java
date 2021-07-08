@@ -2,6 +2,8 @@ package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -22,6 +24,7 @@ import com.reactnativenavigation.options.TopTabsOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CollectionUtils;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.StatusBarUtils;
@@ -192,15 +195,15 @@ public class StackPresenter {
             }
             topBarController.alignTitleComponent(topBarOptions.title.component.alignment);
         } else {
-            topBar.applyTitleOptions(topBarOptions.title, typefaceLoader);
-            topBar.applySubtitleOptions(topBarOptions.subtitle, typefaceLoader);
+            topBar.applyTitleOptions(topBarOptions.title, typefaceLoader, child.getActivity());
+            topBar.applySubtitleOptions(topBarOptions.subtitle, typefaceLoader, child.getActivity());
             topBarController.alignTitleComponent(topBarOptions.title.alignment);
         }
 
 
         topBar.setBorderHeight(topBarOptions.borderHeight.get(0d));
         topBar.setBorderColor(topBarOptions.borderColor.get(DEFAULT_BORDER_COLOR));
-        topBar.setBackgroundColor(topBarOptions.background.color.get(Color.WHITE));
+        topBar.setBackgroundColor(topBarOptions.background.color.selectMode(ContextKt.isDarkMode(activity)).get(Color.WHITE));
 
         if (topBarOptions.background.component.hasValue()) {
             View createdComponent = findBackgroundComponent(topBarOptions.background.component);
@@ -282,9 +285,9 @@ public class StackPresenter {
         if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) {
             topBar.setBackButton(createButtonController(options.buttons.back));
         }
-        if(options.animateRightButtons.hasValue())
+        if (options.animateRightButtons.hasValue())
             topBar.animateRightButtons(options.animateRightButtons.isTrue());
-        if(options.animateLeftButtons.hasValue())
+        if (options.animateLeftButtons.hasValue())
             topBar.animateLeftButtons(options.animateLeftButtons.isTrue());
         topBar.setOverflowButtonColor(options.rightButtonColor.get(Color.BLACK));
     }
@@ -463,8 +466,10 @@ public class StackPresenter {
 
         if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
-        if (topBarOptions.animateLeftButtons.hasValue()) topBar.animateLeftButtons(topBarOptions.animateLeftButtons.isTrue());
-        if (topBarOptions.animateRightButtons.hasValue()) topBar.animateRightButtons(topBarOptions.animateRightButtons.isTrue());
+        if (topBarOptions.animateLeftButtons.hasValue())
+            topBar.animateLeftButtons(topBarOptions.animateLeftButtons.isTrue());
+        if (topBarOptions.animateRightButtons.hasValue())
+            topBar.animateRightButtons(topBarOptions.animateRightButtons.isTrue());
         if (topBarOptions.title.component.hasValue()) {
             TitleBarReactViewController controller = findTitleComponent(topBarOptions.title.component);
             if (controller == null) {
@@ -482,7 +487,7 @@ public class StackPresenter {
             topBarController.alignTitleComponent(resolveOptions.title.alignment);
         }
 
-        if (resolveOptions.title.color.hasValue()) topBar.setTitleTextColor(resolveOptions.title.color.get());
+        if (resolveOptions.title.color.hasValue()) topBar.setTitleTextColor(resolveOptions.title.color.selectMode(ContextKt.isDarkMode(child.getActivity())).get());
         if (resolveOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
         if (resolveOptions.title.font.hasValue()) topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 
@@ -498,7 +503,7 @@ public class StackPresenter {
             topBar.setSubtitleTypeface(typefaceLoader, resolveOptions.subtitle.font);
         }
 
-        if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.get());
+        if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.selectMode(ContextKt.isDarkMode(activity)).get());
 
         if (topBarOptions.background.component.hasValue()) {
             if (backgroundControllers.containsKey(component)) {
@@ -626,4 +631,5 @@ public class StackPresenter {
     public int getTopInset(Options resolvedOptions) {
         return resolvedOptions.withDefaultOptions(defaultOptions).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
     }
+
 }

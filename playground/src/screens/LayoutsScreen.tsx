@@ -44,8 +44,10 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     return {
       topBar: {
         testID: WELCOME_SCREEN_HEADER,
+        background: { color: { light: 'red', dark: '#23272A' } },
         title: {
           text: 'React Native Navigation',
+          color: { light: '#23272A', dark: 'red' },
         },
       },
       layout: {

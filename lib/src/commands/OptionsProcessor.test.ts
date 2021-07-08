@@ -459,7 +459,7 @@ describe('navigation options', () => {
   it('processes color keys', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'red' },
-      topBar: { background: { color: 'blue' } },
+      topBar: { background: { color: { light: 'blue', dark: 'red' } } },
     };
     uut.processOptions(options, CommandName.SetRoot);
     expect(options).toEqual({

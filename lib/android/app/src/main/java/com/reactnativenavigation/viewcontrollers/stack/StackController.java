@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -68,6 +69,15 @@ public class StackController extends ParentController<StackLayout> {
             child.setParentController(this);
             stack.push(child.getId(), child);
             if (size() > 1) backButtonHelper.addToPushedChild(child);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        List<ViewController> values = stack.values();
+        for(ViewController child: values){
+            Options options = resolveCurrentOptions();
+            applyChildOptions(options,child);
         }
     }
 

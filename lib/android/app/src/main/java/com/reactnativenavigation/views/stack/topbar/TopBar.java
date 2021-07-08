@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.stack.topbar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -29,8 +31,10 @@ import com.reactnativenavigation.options.SubtitleOptions;
 import com.reactnativenavigation.options.TitleOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.RNNColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
@@ -161,13 +165,14 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleAndButtonsContainer.setSubtitleFontSize((float) size);
     }
 
-    public void animateRightButtons(boolean animate){
+    public void animateRightButtons(boolean animate) {
         titleAndButtonsContainer.animateRightButtons(animate);
     }
 
-    public void animateLeftButtons(boolean animate){
+    public void animateLeftButtons(boolean animate) {
         titleAndButtonsContainer.animateLeftButtons(animate);
     }
+
     public void setSubtitleAlignment(Alignment alignment) {
         titleAndButtonsContainer.setSubTitleTextAlignment(alignment);
     }
@@ -340,18 +345,17 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return titleAndButtonsContainer;
     }
 
-    public void applyTitleOptions(TitleOptions titleOptions, TypefaceLoader typefaceLoader) {
+    public void applyTitleOptions(TitleOptions titleOptions, TypefaceLoader typefaceLoader, Context context) {
         final double DEFAULT_TITLE_FONT_SIZE = 18;
         final int DEFAULT_TITLE_COLOR = Color.BLACK;
-
         this.setTitle(titleOptions.text.get(""));
         this.setTitleFontSize(titleOptions.fontSize.get(DEFAULT_TITLE_FONT_SIZE));
-        this.setTitleTextColor(titleOptions.color.get(DEFAULT_TITLE_COLOR));
+        this.setTitleTextColor(titleOptions.color.selectMode(ContextKt.isDarkMode(context)).get(DEFAULT_TITLE_COLOR));
         this.setTitleTypeface(typefaceLoader, titleOptions.font);
         this.setTitleAlignment(titleOptions.alignment);
     }
 
-    public void applySubtitleOptions(SubtitleOptions subtitle, TypefaceLoader typefaceLoader) {
+    public void applySubtitleOptions(SubtitleOptions subtitle, TypefaceLoader typefaceLoader,Context context) {
         final double DEFAULT_SUBTITLE_FONT_SIZE = 14;
         final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
 

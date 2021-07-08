@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -303,6 +304,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 onViewDisappear();
             }
         }
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+
     }
 
     public void onAttachToParent() {

@@ -76,6 +76,10 @@ export type Interpolation =
       initialVelocity?: number;
     };
 
+export interface RNNColour {
+  light: Color;
+  dark: Color;
+}
 export interface OptionsSplitView {
   /**
    * Master view display mode
@@ -238,7 +242,7 @@ export interface OptionsTopBarTitle {
   /**
    * Text color
    */
-  color?: Color;
+  color?: RNNColour;
   /**
    * Set the font family for the title
    */
@@ -439,7 +443,7 @@ export interface OptionsTopBarBackground {
   /**
    * Background color of the top bar
    */
-  color?: Color;
+  color?: RNNColour;
   /**
    * Clip the top bar background to bounds if set to true.
    * #### (iOS specific)

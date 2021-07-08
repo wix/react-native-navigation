@@ -9,6 +9,9 @@ import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.RNNColour;
+import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
@@ -27,7 +30,7 @@ public class TitleOptions {
 
         options.component = ComponentOptions.parse(json.optJSONObject("component"));
         options.text = TextParser.parse(json, "text");
-        options.color = ColorParser.parse(context, json, "color");
+        options.color = RNNColourKt.parseRNNColour(context, json.optJSONObject("color"));
         options.fontSize = FractionParser.parse(json, "fontSize");
         options.font = FontParser.parse(json);
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
@@ -38,7 +41,7 @@ public class TitleOptions {
     }
 
     public Text text = new NullText();
-    public Colour color = new NullColor();
+    public RNNColour color = new RNNNullColor();
     public Fraction fontSize = new NullFraction();
     public Alignment alignment = Alignment.Default;
     public FontOptions font = new FontOptions();
@@ -55,7 +58,7 @@ public class TitleOptions {
             if (other.component.hasValue())
                 this.text = other.text;
         }
-        if (other.color.hasValue()) color = other.color;
+        color.mergeWith(other.color);
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         font.mergeWith(other.font);
         if (other.alignment != Alignment.Default) alignment = other.alignment;
@@ -66,7 +69,7 @@ public class TitleOptions {
 
     void mergeWithDefault(TitleOptions defaultOptions) {
         if (!text.hasValue()) text = defaultOptions.text;
-        if (!color.hasValue()) color = defaultOptions.color;
+        color.mergeWithDefault(defaultOptions.color);
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         font.mergeWithDefault(defaultOptions.font);
         if (alignment == Alignment.Default) alignment = defaultOptions.alignment;

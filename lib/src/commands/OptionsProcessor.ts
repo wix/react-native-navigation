@@ -79,6 +79,7 @@ export class OptionsProcessor {
         commandName,
         props
       );
+
       this.processColor(key, value, objectToProcess);
 
       if (!value) {
@@ -114,8 +115,19 @@ export class OptionsProcessor {
   }
 
   private processColor(key: string, value: any, options: Record<string, any>) {
+    console.log('xxxxxxxxxx', 'processColor: ' + key + ': ' + JSON.stringify(value));
     if (isEqual(key, 'color') || endsWith(key, 'Color')) {
-      options[key] = value === null ? 'NoColor' : this.colorService.toNativeColor(value);
+      if (value === null) {
+        options[key] = 'NoColor';
+      } else if (value instanceof Object) {
+        const newColorObj: Record<string, any> = {};
+        for (let keyColor in value) {
+          newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
+        }
+        options[key] = newColorObj;
+      } else {
+        options[key] = this.colorService.toNativeColor(value);
+      }
     }
   }
 

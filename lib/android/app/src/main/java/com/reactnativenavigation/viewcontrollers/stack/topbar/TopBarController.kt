@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.stack.topbar
 
 import android.animation.Animator
 import android.content.Context
+import android.content.res.Configuration
 import android.view.MenuItem
 import android.view.View
 import androidx.viewpager.widget.ViewPager
@@ -125,5 +126,9 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         view.clearBackButton();
         toRemove.forEach { view.removeLeftButton(it) }
         forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonBar, i * 10) }
+    }
+
+    fun onConfigurationChanged(newConfig:Configuration){
+
     }
 }
