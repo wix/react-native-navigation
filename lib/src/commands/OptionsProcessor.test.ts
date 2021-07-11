@@ -456,15 +456,25 @@ describe('navigation options', () => {
     });
   });
 
-  it('processes color keys', () => {
+  it('processes color keys to ModedColours', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'red' },
-      topBar: { background: { color: { light: 'blue', dark: 'red' } } },
+      topBar: {
+        background: { color: { light: 'blue', dark: 'red' } },
+        title: {
+          color: undefined,
+        },
+      },
     };
     uut.processOptions(options, CommandName.SetRoot);
     expect(options).toEqual({
-      statusBar: { backgroundColor: 0xffff0000 },
-      topBar: { background: { color: 0xff0000ff } },
+      statusBar: { backgroundColor: { light: 0xffff0000, dark: 0xffff0000 } },
+      topBar: {
+        background: { color: { light: 0xff0000ff, dark: 0xffff0000 } },
+        title: {
+          color: {},
+        },
+      },
     });
   });
 
@@ -579,8 +589,8 @@ describe('navigation options', () => {
       hideOnScroll: false,
       hideTopBarOnFocus: false,
       obscuresBackgroundDuringPresentation: false,
-      backgroundColor: null,
-      tintColor: null,
+      backgroundColor: {},
+      tintColor: {},
       placeholder: '',
     });
   });
@@ -602,8 +612,8 @@ describe('navigation options', () => {
       hideOnScroll: true,
       hideTopBarOnFocus: true,
       obscuresBackgroundDuringPresentation: false,
-      backgroundColor: 0xffff0000,
-      tintColor: 0xff00ff00,
+      backgroundColor: { dark: 0xffff0000, light: 0xffff0000 },
+      tintColor: { dark: 0xff00ff00, light: 0xff00ff00 },
       placeholder: 'foo',
     });
   });

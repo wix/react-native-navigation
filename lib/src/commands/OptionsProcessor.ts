@@ -115,18 +115,20 @@ export class OptionsProcessor {
   }
 
   private processColor(key: string, value: any, options: Record<string, any>) {
-    console.log('xxxxxxxxxx', 'processColor: ' + key + ': ' + JSON.stringify(value));
     if (isEqual(key, 'color') || endsWith(key, 'Color')) {
-      if (value === null) {
-        options[key] = 'NoColor';
+      const newColorObj: Record<string, any> = { dark: 'NoColor', light: 'NoColor' };
+      if (!value) {
+        options[key] = {};
       } else if (value instanceof Object) {
-        const newColorObj: Record<string, any> = {};
         for (let keyColor in value) {
           newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
         }
         options[key] = newColorObj;
       } else {
-        options[key] = this.colorService.toNativeColor(value);
+        let parsedColor = this.colorService.toNativeColor(value);
+        newColorObj.light = parsedColor;
+        newColorObj.dark = parsedColor;
+        options[key] = newColorObj;
       }
     }
   }
