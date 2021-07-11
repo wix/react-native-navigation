@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.StackAnimationOptions;
+import com.reactnativenavigation.options.TabsAttachMode;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.ViewExtensionsKt;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
@@ -202,6 +205,8 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     public void setRoot(@Size(min = 1) List<ViewController> children, CommandListener listener) {
+        ensureViewIsCreated();
+
         animator.cancelPushAnimations();
         final ViewController toRemove = stack.peek();
         IdStack stackToDestroy = stack;
@@ -222,7 +227,8 @@ public class StackController extends ParentController<StackLayout> {
         CommandListener listenerAdapter = new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                child.onViewDidAppear();
+                if (child.isViewShown())
+                    child.onViewDidAppear();
                 destroyStack(stackToDestroy);
                 if (children.size() > 1) {
                     for (int i = 0; i < children.size() - 1; i++) {
@@ -445,7 +451,8 @@ public class StackController extends ParentController<StackLayout> {
     public boolean onDependentViewChanged(CoordinatorLayout parent, ViewGroup child, View dependency) {
         perform(findController(child), controller -> {
             if (dependency instanceof TopBar) presenter.applyTopInsets(this, controller);
-            if (dependency instanceof Fab || dependency instanceof FabMenu) updateBottomMargin(dependency, getBottomInset());
+            if (dependency instanceof Fab || dependency instanceof FabMenu)
+                updateBottomMargin(dependency, getBottomInset());
         });
         return false;
     }

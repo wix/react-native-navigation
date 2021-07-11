@@ -112,7 +112,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.viewVisibilityListener = viewVisibilityListener;
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public void ensureViewIsCreated() {
         getView();
     }
