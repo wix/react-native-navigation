@@ -170,10 +170,10 @@
           "type": "iPhone 11"
         }
       },
-      "genymotion.emulator.uuid": {
+      "genymotion.emulator.name": {
         "type": "android.genycloud",
         "device": {
-          "recipeUUID": "90450ce0-cdd8-4229-8618-18a1fc195b62"
+          "recipeName": "Detox_Pixel_3A_API_29"
         }
       },
       "emulator": {
@@ -233,7 +233,7 @@
       },
       "android.genycloud.release": {
         "app": "android.release",
-        "device": "genymotion.emulator.uuid"
+        "device": "genymotion.emulator.name"
       }
     }
   }
