@@ -173,7 +173,7 @@
       "genymotion.emulator.name": {
         "type": "android.genycloud",
         "device": {
-          "recipeName": "Detox_Pixel_3A_API_29"
+          "recipeUUID": "a50a71d6-da90-4c67-bdfa-5b602b0bbd15"
         }
       },
       "emulator": {
