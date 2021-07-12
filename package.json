@@ -208,8 +208,7 @@
       "android.genycloud.release": {
         "device": "genymotion.emulator.uuid",
         "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
-        "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
-        "type": "android.emulator"
+        "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release"
       }
     }
   }
