@@ -1,8 +1,8 @@
 const exec = require('shell-utils').exec;
 const utils = {
-  pressBack: () => utils.pressKeyCode(4),
-  pressMenu: () => utils.pressKeyCode(82),
-  pressKeyCode: (keyCode) => utils.executeShellCommand(`input keyevent ${keyCode}`),
+  pressBack: () => device.pressBack(),
+  pressMenu: () => device.getUiDevice().pressMenu(),
+  pressKeyCode: (keyCode) => device.getUiDevice().pressKeyCode(keyCode),
   grantPermission: () =>
     utils.executeShellCommand(
       'pm grant com.reactnativenavigation.playground android.permission.READ_PHONE_STATE'
