@@ -7,11 +7,12 @@ const skipBuild = includes(process.argv, '--skipBuild');
 const headless = includes(process.argv, '--headless');
 const multi = includes(process.argv, '--multi');
 const verbose = includes(process.argv, '--verbose');
+const CI = includes(process.argv, '--ci');
 
 run();
 
 function run() {
-  const prefix = android ? `android.emu` : `ios.sim`;
+  const prefix = android ? (CI ? `android.genycloud` : `android.emu`) : `ios.sim`;
   const suffix = release ? `release` : `debug`;
   const configuration = `${prefix}.${suffix}`;
   const headless$ = android ? (headless ? `--headless` : ``) : ``;

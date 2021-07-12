@@ -200,11 +200,16 @@
         "name": "Pixel_API_28"
       },
       "android.emu.release": {
-        "device": "genymotion.emulator.uuid",
         "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
         "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
         "type": "android.emulator",
         "name": "Pixel_API_28"
+      },
+      "android.genycloud.release": {
+        "device": "genymotion.emulator.uuid",
+        "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
+        "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
+        "type": "android.emulator"
       }
     }
   }
