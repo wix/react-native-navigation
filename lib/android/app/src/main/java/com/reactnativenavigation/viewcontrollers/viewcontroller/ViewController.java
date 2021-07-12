@@ -18,6 +18,7 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiThread;
@@ -62,13 +63,17 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final Activity activity;
     private final String id;
     private final YellowBoxDelegate yellowBoxDelegate;
-    @Nullable protected T view;
-    @Nullable private ParentController<? extends ViewGroup> parentController;
+    @Nullable
+    protected T view;
+    @Nullable
+    private ParentController<? extends ViewGroup> parentController;
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
     private ViewControllerOverlay overlay;
-    @Nullable public abstract String getCurrentComponentName();
+
+    @Nullable
+    public abstract String getCurrentComponentName();
 
     public void setOverlay(ViewControllerOverlay overlay) {
         this.overlay = overlay;
@@ -307,7 +312,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public void onConfigurationChanged(Configuration newConfig) {
-
+        applyOptions(resolveCurrentOptions());
     }
 
     public void onAttachToParent() {
@@ -332,16 +337,16 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public boolean isViewShown() {
         return !isDestroyed &&
-               view != null &&
-               view.isShown() &&
-               isRendered();
+                view != null &&
+                view.isShown() &&
+                isRendered();
     }
 
     public boolean isRendered() {
         return view != null && (
                 waitForRender.isFalseOrUndefined() ||
-                !(view instanceof Renderable) ||
-                ((Renderable) view).isRendered()
+                        !(view instanceof Renderable) ||
+                        ((Renderable) view).isRendered()
         );
     }
 

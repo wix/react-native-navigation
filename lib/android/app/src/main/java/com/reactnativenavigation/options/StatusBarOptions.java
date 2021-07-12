@@ -5,11 +5,11 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.options.params.NullColor;
+import com.reactnativenavigation.options.params.RNNColour;
+import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
-import com.reactnativenavigation.options.parsers.ColorParser;
 
 import org.json.JSONObject;
 
@@ -44,7 +44,7 @@ public class StatusBarOptions {
         StatusBarOptions result = new StatusBarOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ColorParser.parse(context, json, "backgroundColor");
+        result.backgroundColor = RNNColourKt.parse(context, json.optJSONObject("backgroundColor"));
         result.textColorScheme = TextColorScheme.fromString(json.optString("style"));
         result.visible = BoolParser.parse(json, "visible");
         result.drawBehind = BoolParser.parse(json, "drawBehind");
@@ -53,14 +53,14 @@ public class StatusBarOptions {
         return result;
     }
 
-    public Colour backgroundColor = new NullColor();
+    public RNNColour backgroundColor = new RNNNullColor();
     public TextColorScheme textColorScheme = TextColorScheme.None;
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
     public Bool translucent = new NullBool();
 
     public void mergeWith(StatusBarOptions other) {
-        if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
+        backgroundColor.mergeWith(other.backgroundColor);
         if (other.textColorScheme.hasValue()) textColorScheme = other.textColorScheme;
         if (other.visible.hasValue()) visible = other.visible;
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
@@ -68,7 +68,7 @@ public class StatusBarOptions {
     }
 
     public void mergeWithDefault(StatusBarOptions defaultOptions) {
-        if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
+        backgroundColor.mergeWithDefault(defaultOptions.backgroundColor);
         if (!textColorScheme.hasValue()) textColorScheme = defaultOptions.textColorScheme;
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;

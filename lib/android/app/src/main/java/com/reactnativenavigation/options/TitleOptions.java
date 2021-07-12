@@ -2,9 +2,7 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
-import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
@@ -13,7 +11,6 @@ import com.reactnativenavigation.options.params.RNNColour;
 import com.reactnativenavigation.options.params.RNNColourKt;
 import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
@@ -30,7 +27,7 @@ public class TitleOptions {
 
         options.component = ComponentOptions.parse(json.optJSONObject("component"));
         options.text = TextParser.parse(json, "text");
-        options.color = RNNColourKt.parseRNNColour(context, json.optJSONObject("color"));
+        options.color = RNNColourKt.parse(context, json.optJSONObject("color"));
         options.fontSize = FractionParser.parse(json, "fontSize");
         options.font = FontParser.parse(json);
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));

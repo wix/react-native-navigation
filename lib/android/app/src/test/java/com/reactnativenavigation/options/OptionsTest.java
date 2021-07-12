@@ -8,6 +8,7 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.RNNColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 
@@ -275,7 +276,7 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_bottomTabsOptions() {
         Options uut = new Options();
-        uut.bottomTabsOptions.backgroundColor = new Colour(Color.RED);
+        uut.bottomTabsOptions.backgroundColor = new RNNColour(new Colour(Color.RED),new Colour(Color.RED));
         uut.clearBottomTabsOptions();
         assertThat(uut.bottomTabsOptions.backgroundColor.hasValue()).isFalse();
     }

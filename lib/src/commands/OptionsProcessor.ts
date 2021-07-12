@@ -116,9 +116,10 @@ export class OptionsProcessor {
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (isEqual(key, 'color') || endsWith(key, 'Color')) {
+      console.log(`XXXX`, `color:${key} before parsing ${JSON.stringify(value)}`);
       const newColorObj: Record<string, any> = { dark: 'NoColor', light: 'NoColor' };
       if (!value) {
-        options[key] = {};
+        options[key] = newColorObj;
       } else if (value instanceof Object) {
         for (let keyColor in value) {
           newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
@@ -130,6 +131,7 @@ export class OptionsProcessor {
         newColorObj.dark = parsedColor;
         options[key] = newColorObj;
       }
+      console.log(`XXXX`, `color:${key} after parsing ${JSON.stringify(options[key])}`);
     }
   }
 

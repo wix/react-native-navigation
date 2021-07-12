@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -244,6 +246,11 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     public Animator getSetStackRootAnimation(Options appearingOptions) {
         return presenter.getSetStackRootAnimation(appearingOptions);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     public Animator getPopAnimation(Options appearingOptions, Options disappearingOptions) {

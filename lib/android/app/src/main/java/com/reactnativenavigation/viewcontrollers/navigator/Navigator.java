@@ -5,6 +5,11 @@ import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
@@ -25,11 +30,6 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOver
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class Navigator extends ParentController {
 

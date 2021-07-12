@@ -4,14 +4,16 @@ import android.content.Context
 import android.graphics.Color
 import androidx.annotation.ColorInt
 import com.reactnativenavigation.options.parsers.ColorParser
+import com.reactnativenavigation.utils.isDarkMode
 import org.json.JSONObject
 
-fun parseRNNColour(context: Context, json: JSONObject?): RNNColour {
+fun parse(context: Context, json: JSONObject?): RNNColour {
     return json?.let {
         RNNColour(ColorParser.parse(context, json, "light"), ColorParser.parse(context, json, "dark"))
-    } ?: transparent()
+    } ?: RNNNullColor()
 }
 
+private fun DontApplyRNNColour() = RNNColour(DontApplyColour(), DontApplyColour())
 fun transparent() = RNNColour(Colour(Color.TRANSPARENT), Colour(Color.TRANSPARENT))
 class RNNNullColor() : RNNColour(NullColor(), NullColor()) {
     override fun hasValue(): Boolean {
@@ -21,19 +23,11 @@ class RNNNullColor() : RNNColour(NullColor(), NullColor()) {
 
 open class RNNColour(private var lightColor: Colour, private var darkColor: Colour) {
 
+    private fun selectedColor() = if (isDarkMode()) darkColor else lightColor
 
-    private var isDark = false
-
-    fun selectMode(isDarkMode: Boolean): RNNColour {
-        isDark = isDarkMode
-        return this
-    }
-
-    fun value() = if (isDark) darkColor else lightColor
-
-    fun get(@ColorInt defaultColor:Int) = value().get(defaultColor)
-    fun get() = value().get()
-    open fun hasValue() = if (isDark) darkColor.hasValue() else lightColor.hasValue()
+    fun get(@ColorInt defaultColor: Int?): Int? = selectedColor().get(defaultColor)
+    fun get(): Int = selectedColor().get()
+    open fun hasValue() = selectedColor().hasValue()
 
     fun mergeWith(rnnColour: RNNColour) {
         if (rnnColour.darkColor.hasValue()) darkColor = rnnColour.darkColor
@@ -45,5 +39,6 @@ open class RNNColour(private var lightColor: Colour, private var darkColor: Colo
         if (!lightColor.hasValue()) lightColor = rnnColour.lightColor
     }
 
-    fun hasTransparency() = if (isDark) darkColor.hasTransparency() else lightColor.hasTransparency()
+    fun hasTransparency() = selectedColor().hasTransparency()
+    fun canApplyValue() = selectedColor().canApplyValue()
 }

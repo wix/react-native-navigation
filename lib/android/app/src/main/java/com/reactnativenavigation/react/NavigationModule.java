@@ -17,6 +17,7 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.parsers.JSONParser;
 import com.reactnativenavigation.options.parsers.LayoutNodeParser;
 import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.LaunchArgsParser;
 import com.reactnativenavigation.utils.Now;
 import com.reactnativenavigation.utils.StatusBarUtils;

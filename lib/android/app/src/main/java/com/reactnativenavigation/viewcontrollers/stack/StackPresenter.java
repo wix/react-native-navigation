@@ -2,14 +2,16 @@ package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.animation.Animator;
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.AnimationOptions;
@@ -21,7 +23,7 @@ import com.reactnativenavigation.options.TopBarButtons;
 import com.reactnativenavigation.options.TopBarOptions;
 import com.reactnativenavigation.options.TopTabOptions;
 import com.reactnativenavigation.options.TopTabsOptions;
-import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.RNNColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.ContextKt;
@@ -50,11 +52,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CollectionUtils.difference;
+import static com.reactnativenavigation.utils.CollectionUtils.filter;
+import static com.reactnativenavigation.utils.CollectionUtils.first;
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.getOrDefault;
+import static com.reactnativenavigation.utils.CollectionUtils.isNullOrEmpty;
+import static com.reactnativenavigation.utils.CollectionUtils.keyBy;
+import static com.reactnativenavigation.utils.CollectionUtils.merge;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static com.reactnativenavigation.utils.ObjectUtils.take;
 
@@ -195,15 +200,15 @@ public class StackPresenter {
             }
             topBarController.alignTitleComponent(topBarOptions.title.component.alignment);
         } else {
-            topBar.applyTitleOptions(topBarOptions.title, typefaceLoader, child.getActivity());
-            topBar.applySubtitleOptions(topBarOptions.subtitle, typefaceLoader, child.getActivity());
+            topBar.applyTitleOptions(topBarOptions.title, typefaceLoader);
+            topBar.applySubtitleOptions(topBarOptions.subtitle, typefaceLoader);
             topBarController.alignTitleComponent(topBarOptions.title.alignment);
         }
 
 
         topBar.setBorderHeight(topBarOptions.borderHeight.get(0d));
         topBar.setBorderColor(topBarOptions.borderColor.get(DEFAULT_BORDER_COLOR));
-        topBar.setBackgroundColor(topBarOptions.background.color.selectMode(ContextKt.isDarkMode(activity)).get(Color.WHITE));
+        topBar.setBackgroundColor(topBarOptions.background.color.get(Color.WHITE));
 
         if (topBarOptions.background.component.hasValue()) {
             View createdComponent = findBackgroundComponent(topBarOptions.background.component);
@@ -257,7 +262,9 @@ public class StackPresenter {
 
     private void applyButtons(TopBarOptions options, ViewController child) {
         if (options.buttons.right != null) {
-            List<ButtonOptions> rightButtons = mergeButtonsWithColor(options.buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
+            List<ButtonOptions> rightButtons = mergeButtonsWithColor(options.buttons.right,
+                    options.rightButtonColor
+                    , options.rightButtonDisabledColor);
             List<ButtonController> rightButtonControllers = getOrCreateButtonControllersByInstanceId(componentRightButtons.get(child.getView()), rightButtons);
             componentRightButtons.put(child.getView(), keyBy(rightButtonControllers, ButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
@@ -270,7 +277,9 @@ public class StackPresenter {
         }
 
         if (options.buttons.left != null) {
-            List<ButtonOptions> leftButtons = mergeButtonsWithColor(options.buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
+            List<ButtonOptions> leftButtons = mergeButtonsWithColor(options.buttons.left,
+                    options.leftButtonColor,
+                    options.leftButtonDisabledColor);
             List<ButtonController> leftButtonControllers = getOrCreateButtonControllersByInstanceId(componentLeftButtons.get(child.getView()), leftButtons);
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, ButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentLeftButtons, leftButtonControllers)) {
@@ -319,7 +328,8 @@ public class StackPresenter {
     }
 
     private void applyTopTabsOptions(TopTabsOptions options) {
-        topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
+        topBar.applyTopTabsColors(options.selectedTabColor,
+                options.unselectedTabColor);
         topBar.applyTopTabsFontSize(options.fontSize);
         topBar.setTopTabsVisible(options.visible.isTrueOrUndefined());
         topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
@@ -373,7 +383,7 @@ public class StackPresenter {
         mergeBackButton(optionsToMerge.buttons, stack);
     }
 
-    private void mergeLeftButtonsColor(View child, Colour color, Colour disabledColor) {
+    private void mergeLeftButtonsColor(View child, RNNColour color, RNNColour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
             Map<String, ButtonController> stringButtonControllerMap = componentLeftButtons.get(child);
             if (stringButtonControllerMap != null) {
@@ -389,7 +399,7 @@ public class StackPresenter {
         }
     }
 
-    private void mergeRightButtonsColor(View child, Colour color, Colour disabledColor) {
+    private void mergeRightButtonsColor(View child, RNNColour color, RNNColour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
             Map<String, ButtonController> stringButtonControllerMap = componentRightButtons.get(child);
             if (stringButtonControllerMap != null) {
@@ -443,7 +453,8 @@ public class StackPresenter {
         }
     }
 
-    private List<ButtonOptions> mergeButtonsWithColor(@NonNull List<ButtonOptions> buttons, Colour buttonColor, Colour disabledColor) {
+    private List<ButtonOptions> mergeButtonsWithColor(@NonNull List<ButtonOptions> buttons, RNNColour buttonColor,
+                                                      RNNColour disabledColor) {
         List<ButtonOptions> result = new ArrayList<>();
         for (ButtonOptions button : buttons) {
             ButtonOptions copy = button.copy();
@@ -487,7 +498,7 @@ public class StackPresenter {
             topBarController.alignTitleComponent(resolveOptions.title.alignment);
         }
 
-        if (resolveOptions.title.color.hasValue()) topBar.setTitleTextColor(resolveOptions.title.color.selectMode(ContextKt.isDarkMode(child.getActivity())).get());
+        if (resolveOptions.title.color.hasValue()) topBar.setTitleTextColor(resolveOptions.title.color.get());
         if (resolveOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
         if (resolveOptions.title.font.hasValue()) topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 
@@ -503,7 +514,7 @@ public class StackPresenter {
             topBar.setSubtitleTypeface(typefaceLoader, resolveOptions.subtitle.font);
         }
 
-        if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.selectMode(ContextKt.isDarkMode(activity)).get());
+        if (topBarOptions.background.color.hasValue()) topBar.setBackgroundColor(topBarOptions.background.color.get());
 
         if (topBarOptions.background.component.hasValue()) {
             if (backgroundControllers.containsKey(component)) {

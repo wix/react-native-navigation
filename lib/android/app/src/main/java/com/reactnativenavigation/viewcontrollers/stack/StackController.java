@@ -12,6 +12,7 @@ import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
@@ -74,11 +75,11 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        List<ViewController> values = stack.values();
-        for(ViewController child: values){
-            Options options = resolveCurrentOptions();
-            applyChildOptions(options,child);
-        }
+//        List<ViewController> values = stack.values();
+//        for(ViewController child: values){
+//            Options options = child.resolveCurrentOptions();
+//            applyChildOptions(options,child);
+//        }
     }
 
     @Override
@@ -122,7 +123,7 @@ public class StackController extends ParentController<StackLayout> {
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
         fabPresenter.applyOptions(this.options.fabOptions, child, getView());
         performOnParentController(parent ->
-                parent.applyChildOptions(
+                        parent.applyChildOptions(
                         this.options.copy()
                                 .clearTopBarOptions()
                                 .clearAnimationOptions()

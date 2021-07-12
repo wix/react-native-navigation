@@ -28,10 +28,8 @@ export default class Options extends React.Component<Props> {
       topBar: {
         visible: true,
         testID: TOP_BAR,
-        background: { color: { light: '#50E4EA', dark: '#6F235F' } },
         title: {
           text: 'Styling Options',
-          color: { light: '#6F235F', dark: '#50E4EA' },
         },
       },
     };

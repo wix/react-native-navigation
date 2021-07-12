@@ -16,6 +16,7 @@ import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.StatusBarOptions;
 import com.reactnativenavigation.options.StatusBarOptions.TextColorScheme;
 import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;

@@ -64,6 +64,7 @@ class BottomTabsPresenter(
     }
 
     private fun mergeBottomTabsOptions(options: Options, view: ViewController<*>) {
+//        options.selectColorMode(view.activity.isDarkMode())
         val bottomTabsOptions = options.bottomTabsOptions
         if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction)
         if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get())
@@ -139,11 +140,12 @@ class BottomTabsPresenter(
     }
 
     private fun applyBottomTabsOptions(options: Options) {
+//        options.selectColorMode(bottomTabs.context.isDarkMode())
         val bottomTabsOptions = options.bottomTabsOptions
         bottomTabs.setLayoutDirection(options.layout.direction)
         bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
         bottomTabs.titleState = bottomTabsOptions.titleDisplayMode[defaultTitleState]
-        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor[Color.WHITE])
+        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
         bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get(true))
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             val tabIndex = bottomTabsOptions.currentTabIndex.get()

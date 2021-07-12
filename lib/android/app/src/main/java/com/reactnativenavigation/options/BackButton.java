@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.options.params.RNNColour;
+import com.reactnativenavigation.options.params.RNNColourKt;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
@@ -24,8 +26,8 @@ public class BackButton extends ButtonOptions {
         result.id = json.optString("id", Constants.BACK_BUTTON_ID);
         result.enabled = BoolParser.parse(json, "enabled");
         result.disableIconTint = BoolParser.parse(json, "disableIconTint");
-        result.color = ColorParser.parse(context, json, "color");
-        result.disabledColor = ColorParser.parse(context, json, "disabledColor");
+        result.color = RNNColourKt.parse(context, json.optJSONObject( "color"));
+        result.disabledColor = RNNColourKt.parse(context, json.optJSONObject( "disabledColor"));
         result.testId = TextParser.parse(json, "testID");
         result.popStackOnPress = BoolParser.parse(json, "popStackOnPress");
 

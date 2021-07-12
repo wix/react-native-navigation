@@ -26,10 +26,8 @@ export default class NavigationScreen extends React.Component<Props> {
   static options() {
     return {
       topBar: {
-        background: { color: { light: '#FFFFD2', dark: '#934434' } },
         title: {
           text: 'Navigation',
-          color: { light: '#934434', dark: '#FFFFD2' },
         },
       },
       bottomTab: {
