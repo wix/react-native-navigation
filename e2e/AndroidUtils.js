@@ -1,4 +1,6 @@
 const exec = require('shell-utils').exec;
+const isCI = process.env.CI === 'true';
+
 const utils = {
   pressBack: () => device.pressBack(),
   pressMenu: () => device.getUiDevice().pressMenu(),
@@ -12,7 +14,7 @@ const utils = {
       'pm revoke com.reactnativenavigation.playground android.permission.READ_PHONE_STATE'
     ),
   executeShellCommand: (command) => {
-    exec.execSync(`adb -s ${device.id} shell ${command}`);
+    exec.execSync(`adb -s ${isCI ? device.id.adbName : device.id} shell ${command}`);
   },
 };
 

@@ -52,8 +52,7 @@ describe('application lifecycle test', () => {
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 
-  // Enable when detox add support for shell commands
-  xit(':android: relaunch after activity killed by system', async () => {
+  it(':android: relaunch after activity killed by system', async () => {
     await elementById(TestIDs.STACK_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
