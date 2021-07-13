@@ -8,9 +8,7 @@ labels: 'triage: enhancement, needs triage'
 
 (A clear and concise description of what the feature is.)
 
-### Have you read the [Contributing Guidelines on issues](https://wix.github.io/react-native-navigation/docs/meta-contributing)?
-
-(Write your answer here.)
+- [ ] <strong>Have you read the [Contributing Guidelines on issues](https://wix.github.io/react-native-navigation/docs/meta-contributing)?</strong>
 
 ## Motivation
 
