@@ -26,7 +26,6 @@ import com.reactnativenavigation.options.TopTabsOptions;
 import com.reactnativenavigation.options.params.RNNColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CollectionUtils;
-import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.StatusBarUtils;

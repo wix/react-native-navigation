@@ -74,15 +74,6 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-//        List<ViewController> values = stack.values();
-//        for(ViewController child: values){
-//            Options options = child.resolveCurrentOptions();
-//            applyChildOptions(options,child);
-//        }
-    }
-
-    @Override
     public boolean isRendered() {
         if (isEmpty()) return false;
         if (getCurrentChild().isDestroyed()) return false;

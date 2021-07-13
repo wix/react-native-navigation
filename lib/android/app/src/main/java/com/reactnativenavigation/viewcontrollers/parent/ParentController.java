@@ -198,8 +198,10 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        applyOptions(resolveCurrentOptions());
         Collection<? extends ViewController> childControllers = getChildControllers();
         for(ViewController controller: childControllers){
+            applyChildOptions(controller.resolveCurrentOptions(),controller);
             controller.onConfigurationChanged(newConfig);
         }
     }
