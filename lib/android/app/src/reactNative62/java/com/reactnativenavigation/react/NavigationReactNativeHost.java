@@ -8,7 +8,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.react.DevBundleDownloadListenerAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
