@@ -4,7 +4,6 @@ import addProcessors from './commons/Processors';
 import { setDefaultOptions } from './commons/options/Options';
 import testIDs from './testIDs';
 import Screens from './screens/Screens';
-import RNNTheme from './commons/RNNTheme';
 
 // @ts-ignore
 alert = (title, message) =>
@@ -32,9 +31,6 @@ function setRoot() {
   Navigation.setRoot({
     root: {
       bottomTabs: {
-        options: {
-          bottomTabs: { backgroundColor: RNNTheme.bottomTabsBg },
-        },
         children: [
           {
             stack: {

@@ -1,6 +1,5 @@
 import { Navigation, OptionsModalPresentationStyle } from 'react-native-navigation';
 import Colors from '../Colors';
-import RNNTheme from '../RNNTheme';
 import animations from './Animations';
 
 const setDefaultOptions = () =>
@@ -14,18 +13,29 @@ const setDefaultOptions = () =>
       orientation: ['portrait'],
       direction: 'locale',
     },
+    fab: {
+      backgroundColor: Colors.accent,
+      rippleColor: Colors.primary,
+      clickColor: Colors.secondary,
+      iconColor: Colors.iconTint,
+    },
     topBar: {
-      background: { color: RNNTheme.topBarBg },
-      title: { color: RNNTheme.topBarText },
+      rightButtonColor: Colors.buttonColor,
+      rightButtonDisabledColor: Colors.disabledButtonColor,
+      leftButtonColor: Colors.buttonColor,
+      leftButtonDisabledColor: Colors.disabledButtonColor,
+      background: { color: Colors.barBackground },
+      title: { color: Colors.textColor },
     },
     bottomTabs: {
+      backgroundColor: Colors.barBackground,
       titleDisplayMode: 'alwaysShow',
     },
     bottomTab: {
-      iconColor: { light: 'black', dark: '#f0b88a' },
-      textColor: { light: 'black', dark: '#f0b88a' },
-      selectedIconColor: { light: '#5962e5', dark: '#fffcc2' },
-      selectedTextColor: { light: '#5962e5', dark: '#fffcc2' },
+      iconColor: Colors.iconTint,
+      textColor: Colors.textColor,
+      selectedIconColor: Colors.activeIconTint,
+      selectedTextColor: Colors.activeTextColor,
     },
     modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
   });

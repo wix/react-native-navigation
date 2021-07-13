@@ -37,7 +37,6 @@ export default class ButtonOptions extends NavigationComponent {
       fab: {
         id: 'fab',
         icon: require('../../img/navicon_add.png'),
-        backgroundColor: Colors.secondary,
       },
       topBar: {
         testID: TOP_BAR,
@@ -75,7 +74,6 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'LEFT',
             testID: LEFT_BUTTON,
             icon: require('../../img/clear.png'),
-            color: Colors.primary,
             accessibilityLabel: 'Close button',
           },
           {
@@ -157,7 +155,6 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'ONE',
             testID: BUTTON_ONE,
             text: 'One',
-            color: Colors.primary,
           },
           {
             id: 'ROUND',
@@ -174,7 +171,7 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'Three',
             text: 'Three',
             testID: BUTTON_THREE,
-            color: Colors.primary,
+            color:Colors.buttonColor,
           },
         ],
       },
@@ -208,7 +205,6 @@ export default class ButtonOptions extends NavigationComponent {
       testID: `rightButton${currentCount}`,
       text: `R${currentCount}`,
       showAsAction: 'ifRoom',
-      color: Colors.primary,
       enabled: currentCount % 2 === 0,
     });
     Navigation.mergeOptions(this, {
