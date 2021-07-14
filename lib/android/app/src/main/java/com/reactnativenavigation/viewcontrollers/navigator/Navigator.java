@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -241,6 +242,13 @@ public class Navigator extends ParentController {
         } else {
             listener.onError("Failed to execute stack command. Stack " + fromId + " not found.");
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (!modalStack.isEmpty())
+            modalStack.peek().onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
     }
 
     private boolean isRootNotCreated() {

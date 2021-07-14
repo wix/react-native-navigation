@@ -128,7 +128,7 @@ public class ModalStack {
         }
     }
 
-    ViewController peek() {
+    public ViewController peek() {
         if (modals.isEmpty()) throw new EmptyStackException();
         return modals.get(modals.size() - 1);
     }
