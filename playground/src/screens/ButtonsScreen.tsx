@@ -37,6 +37,10 @@ export default class ButtonOptions extends NavigationComponent {
       fab: {
         id: 'fab',
         icon: require('../../img/navicon_add.png'),
+        backgroundColor: Colors.accent,
+        rippleColor: Colors.primary,
+        clickColor: Colors.secondary,
+        iconColor: Colors.iconTint,
       },
       topBar: {
         testID: TOP_BAR,

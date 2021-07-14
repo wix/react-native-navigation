@@ -13,12 +13,6 @@ const setDefaultOptions = () =>
       orientation: ['portrait'],
       direction: 'locale',
     },
-    fab: {
-      backgroundColor: Colors.accent,
-      rippleColor: Colors.primary,
-      clickColor: Colors.secondary,
-      iconColor: Colors.iconTint,
-    },
     topBar: {
       backButton: { color: Colors.buttonColor },
       rightButtonColor: Colors.buttonColor,
