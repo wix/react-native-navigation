@@ -265,5 +265,10 @@ public class Navigator extends ParentController {
         return overlaysLayout;
     }
 
-
+    public void onHostPause() {
+        super.onViewDisappear();
+    }
+    public void onHostResume(){
+        super.onViewDidAppear();
+    }
 }

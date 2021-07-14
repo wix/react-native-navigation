@@ -158,6 +158,22 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void shouldCallOnViewDidAppearWhenHostResumes() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostResume();
+        verify(child1,times(2)).onViewDidAppear();
+    }
+
+    @Test
+    public void shouldCallOnViewDisappearWhenHostPauses() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostPause();
+        verify(child1).onViewDidAppear();
+    }
+
+    @Test
     public void setDefaultOptions() {
         uut.setDefaultOptions(new Options());
 

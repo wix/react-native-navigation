@@ -54,6 +54,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         this.layoutFactory = layoutFactory;
         reactContext.addLifecycleEventListener(new LifecycleEventListenerAdapter() {
             @Override
+            public void onHostPause() {
+                super.onHostPause();
+                navigator().onHostPause();
+            }
+
+            @Override
             public void onHostResume() {
                 eventEmitter = new EventEmitter(reactContext);
                 navigator().setEventEmitter(eventEmitter);
@@ -63,6 +69,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                         navigator().getChildRegistry(),
                         ((NavigationApplication) activity().getApplication()).getExternalComponents()
                 );
+                navigator().onHostResume();
             }
         });
     }
