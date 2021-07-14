@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
+import com.reactnativenavigation.options.params.RNNColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -123,11 +125,27 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBackBackgroundColor() {
-        uut.options.topBar.background.color = new Colour(Color.RED);
+        uut.options.topBar.background.color = new RNNColour(new Colour(Color.RED));
         stack.push(uut, new CommandListenerAdapter());
         idleMainLooper();
         assertThat(((ColorDrawable) stack.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
     }
+
+    @Test
+    public void appliesTopBackBackgroundColor_shouldSupportDarkModeChange() {
+        uut.options.topBar.background.color = new RNNColour(new Colour(Color.RED), new Colour(Color.BLACK));
+        stack.push(uut, new CommandListenerAdapter());
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
+        stack.onConfigurationChanged(mockConfiguration);
+        idleMainLooper();
+        assertThat(((ColorDrawable) stack.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES;
+        stack.onConfigurationChanged(mockConfiguration);
+        assertThat(((ColorDrawable) stack.getTopBar().getBackground()).getColor()).isEqualTo(Color.BLACK);
+    }
+
+
 
     @Test
     public void appliesTopBarVisible() {

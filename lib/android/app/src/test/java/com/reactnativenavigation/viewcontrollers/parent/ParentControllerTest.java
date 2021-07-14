@@ -84,6 +84,19 @@ public class ParentControllerTest extends BaseTest {
     }
 
     @Test
+    public void onConfigurationChange_shouldApplyOptionsForParentAndChildren() {
+        children.add(spy(new SimpleViewController(activity, childRegistry, "child1", new Options())));
+        children.add(spy(new SimpleViewController(activity, childRegistry, "child2", new Options())));
+        ParentController spyUUT = spy(uut);
+        spyUUT.onConfigurationChanged(mockConfiguration);
+        verify(spyUUT).applyOptions(any());
+        for (ViewController controller : children) {
+            verify(spyUUT).applyChildOptions(any(), eq(controller));
+            verify(controller).onConfigurationChanged(eq(mockConfiguration));
+        }
+    }
+
+    @Test
     public void holdsViewGroup() {
         assertThat(uut.getView()).isInstanceOf(ViewGroup.class);
     }
@@ -214,7 +227,7 @@ public class ParentControllerTest extends BaseTest {
     public void applyTopInset() {
         children.addAll(createChildren());
         uut.applyTopInset();
-        forEach(children, c-> verify(c).applyTopInset());
+        forEach(children, c -> verify(c).applyTopInset());
     }
 
     @Test
@@ -235,7 +248,7 @@ public class ParentControllerTest extends BaseTest {
     public void applyBottomInset() {
         children.addAll(createChildren());
         uut.applyBottomInset();
-        forEach(children, c-> verify(c).applyBottomInset());
+        forEach(children, c -> verify(c).applyBottomInset());
     }
 
     @Test

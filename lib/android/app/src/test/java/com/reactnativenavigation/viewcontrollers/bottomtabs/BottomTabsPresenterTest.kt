@@ -5,10 +5,8 @@ import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.options.params.Colour
+import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.options.params.Number
-import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
@@ -45,7 +43,7 @@ class BottomTabsPresenterTest : BaseTest() {
         defaultOptions.bottomTabsOptions.visible = Bool(false)
         uut.setDefaultOptions(defaultOptions)
         val options = Options()
-        options.bottomTabsOptions.backgroundColor = Colour(10)
+        options.bottomTabsOptions.backgroundColor = RNNColour(Colour(10))
         uut.mergeChildOptions(options, tabs[0])
         verify(bottomTabs).setBackgroundColor(options.bottomTabsOptions.backgroundColor.get())
         verifyNoMoreInteractions(bottomTabs)

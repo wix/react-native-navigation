@@ -34,6 +34,7 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
@@ -82,6 +83,7 @@ public class NavigatorTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         childRegistry = new ChildControllersRegistry();
         eventEmitter = Mockito.mock(EventEmitter.class);
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
@@ -123,6 +125,19 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void onConfigurationChange_shouldApplyOptionsForModals() {
+        Navigator spyUUT = spy(uut);
+        SimpleViewController spyChild1 = spy(child1);
+        ViewController spyChild2 = spy(child2);
+
+        spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
+        spyUUT.showModal(spyChild2, new CommandListenerAdapter());
+        spyUUT.onConfigurationChanged(mockConfiguration);
+
+        verify(spyChild2).applyOptions(any());
+    }
+
+    @Test
     public void setContentLayout() {
         ViewGroup contentLayout = Mockito.mock(ViewGroup.class);
         uut.setContentLayout(contentLayout);
@@ -160,10 +175,9 @@ public class NavigatorTest extends BaseTest {
         CommandListenerAdapter listener = new CommandListenerAdapter();
         uut.setRoot(child1, listener, reactInstanceManager);
         ArgumentCaptor<CommandListenerAdapter> captor = ArgumentCaptor.forClass(CommandListenerAdapter.class);
-        verify(rootPresenter).setRoot(eq(child1), eq(null),eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
+        verify(rootPresenter).setRoot(eq(child1), eq(null), eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
         assertThat(captor.getValue().getListener()).isEqualTo(listener);
     }
-
 
 
     @Test

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.utils;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -21,7 +22,6 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
@@ -51,6 +51,7 @@ public class ButtonPresenterTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         activity = newActivity();
         titleBar = new ButtonBar(activity);
         activity.setContentView(titleBar);
@@ -84,6 +85,19 @@ public class ButtonPresenterTest extends BaseTest {
         button.color = new RNNColour(new Colour(Color.RED), new Colour(Color.RED));
         addButtonAndApplyOptions();
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.RED);
+    }
+
+    @Test
+    public void applyOptions_appliesColorOnButtonTextViewOnDarkMode() {
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
+        button.color = new RNNColour(new Colour(Color.RED), new Colour(Color.BLACK));
+        MenuItem menuItem = addButtonAndApplyOptions();
+        assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.RED);
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES;
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+        assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.BLACK);
+
     }
 
     @Test
@@ -188,9 +202,10 @@ public class ButtonPresenterTest extends BaseTest {
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.BLUE);
     }
 
-    private void addButtonAndApplyOptions() {
+    private MenuItem addButtonAndApplyOptions() {
         MenuItem menuItem = addMenuButton();
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
+        return menuItem;
     }
 
     private MenuItem addMenuButton() {

@@ -11,6 +11,7 @@ import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
+import com.reactnativenavigation.options.params.RNNColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
@@ -70,8 +71,8 @@ public class BottomTabPresenterTest extends BaseTest {
     @Test
     public void mergeOptions_createTabsOnce() {
         Options options = new Options();
-        options.bottomTabOptions.iconColor = new Colour(1);
-        options.bottomTabOptions.selectedIconColor = new Colour(1);
+        options.bottomTabOptions.iconColor = new RNNColour(new Colour(1));
+        options.bottomTabOptions.selectedIconColor = new RNNColour(new Colour(1));
         BottomTabPresenter spy = spy(uut);
 
         spy.mergeOptions(options);
@@ -106,8 +107,8 @@ public class BottomTabPresenterTest extends BaseTest {
     @Test
     public void mergeChildOptions_nullColorsAreNotMerged() {
         Options options = new Options();
-        options.bottomTabOptions.iconColor = new DontApplyColour();
-        options.bottomTabOptions.selectedIconColor = new DontApplyColour();
+        options.bottomTabOptions.iconColor = new RNNColour(new DontApplyColour());
+        options.bottomTabOptions.selectedIconColor = new RNNColour(new DontApplyColour());
         uut.mergeChildOptions(options, child3);
         verify(bottomTabs, times(0)).setIconActiveColor(anyInt(), anyInt());
         verify(bottomTabs, times(0)).setIconInactiveColor(anyInt(), anyInt());
@@ -116,16 +117,16 @@ public class BottomTabPresenterTest extends BaseTest {
     private Options createTab1Options() {
         Options options = new Options();
         options.bottomTabOptions.badge = new Text("tab1badge");
-        options.bottomTabOptions.iconColor = new Colour(Color.RED);
-        options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
+        options.bottomTabOptions.iconColor = new RNNColour(new Colour(Color.RED));
+        options.bottomTabOptions.selectedIconColor = new RNNColour(new Colour(Color.RED));
         return options;
     }
 
     private Options createTab2Options() {
         Options options = new Options();
         options.bottomTabOptions.badge = new Text("tab2badge");
-        options.bottomTabOptions.iconColor = new Colour(Color.RED);
-        options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
+        options.bottomTabOptions.iconColor = new RNNColour(new Colour(Color.RED));
+        options.bottomTabOptions.selectedIconColor = new RNNColour(new Colour(Color.RED));
         return options;
     }
 }
