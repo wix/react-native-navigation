@@ -116,7 +116,6 @@ export class OptionsProcessor {
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (isEqual(key, 'color') || endsWith(key, 'Color')) {
-      console.log(`XXXX`, `color:${key} before parsing ${JSON.stringify(value)}`);
       const newColorObj: Record<string, any> = { dark: 'NoColor', light: 'NoColor' };
       if (!value) {
         options[key] = newColorObj;
