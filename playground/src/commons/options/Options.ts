@@ -20,6 +20,7 @@ const setDefaultOptions = () =>
       iconColor: Colors.iconTint,
     },
     topBar: {
+      backButton: { color: Colors.buttonColor },
       rightButtonColor: Colors.buttonColor,
       rightButtonDisabledColor: Colors.disabledButtonColor,
       leftButtonColor: Colors.buttonColor,
