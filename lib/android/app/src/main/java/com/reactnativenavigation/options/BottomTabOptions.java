@@ -69,6 +69,12 @@ public class BottomTabOptions {
 
 
     void mergeWith(final BottomTabOptions other) {
+        if (other.textColor.hasValue()) textColor = other.textColor;
+        if (other.selectedTextColor.hasValue()) selectedTextColor = other.selectedTextColor;
+        if (other.iconColor.hasValue()) iconColor = other.iconColor;
+        if (other.selectedIconColor.hasValue()) selectedIconColor = other.selectedIconColor;
+        if (other.badgeColor.hasValue()) badgeColor = other.badgeColor;
+
         if (other.text.hasValue()) text = other.text;
         if (other.icon.hasValue()) icon = other.icon;
         if (other.iconWidth.hasValue()) iconWidth = other.iconWidth;
@@ -82,15 +88,15 @@ public class BottomTabOptions {
         font.mergeWith(other.font);
         if (other.dotIndicator.hasValue()) dotIndicator = other.dotIndicator;
         if (other.selectTabOnPress.hasValue()) selectTabOnPress = other.selectTabOnPress;
-
-        textColor.mergeWith(other.textColor);
-        selectedTextColor.mergeWith(other.selectedTextColor);
-        iconColor.mergeWith(other.iconColor);
-        selectedIconColor.mergeWith(other.selectedIconColor);
-        badgeColor.mergeWith(other.badgeColor);
     }
 
     void mergeWithDefault(final BottomTabOptions defaultOptions) {
+        if (!textColor.hasValue()) textColor = defaultOptions.textColor;
+        if (!selectedTextColor.hasValue()) selectedTextColor = defaultOptions.selectedTextColor;
+        if (!iconColor.hasValue()) iconColor = defaultOptions.iconColor;
+        if (!selectedIconColor.hasValue()) selectedIconColor = defaultOptions.selectedIconColor;
+        if (!badgeColor.hasValue()) badgeColor = defaultOptions.badgeColor;
+
         if (!text.hasValue()) text = defaultOptions.text;
         if (!icon.hasValue()) icon = defaultOptions.icon;
         if (!iconWidth.hasValue()) iconWidth = defaultOptions.iconWidth;
@@ -105,11 +111,6 @@ public class BottomTabOptions {
         if (!dotIndicator.hasValue()) dotIndicator = defaultOptions.dotIndicator;
         if (!selectTabOnPress.hasValue()) selectTabOnPress = defaultOptions.selectTabOnPress;
 
-        textColor.mergeWithDefault(defaultOptions.textColor);
-        selectedTextColor.mergeWithDefault(defaultOptions.selectedTextColor);
-        iconColor.mergeWithDefault(defaultOptions.iconColor);
-        selectedIconColor.mergeWithDefault(defaultOptions.selectedIconColor);
-        badgeColor.mergeWithDefault(defaultOptions.badgeColor);
     }
 
 }

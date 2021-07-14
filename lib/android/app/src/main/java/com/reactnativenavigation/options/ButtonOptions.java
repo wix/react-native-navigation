@@ -168,8 +168,8 @@ public class ButtonOptions {
         if (other.accessibilityLabel.hasValue()) accessibilityLabel = other.accessibilityLabel;
         if (other.enabled.hasValue()) enabled = other.enabled;
         if (other.disableIconTint.hasValue()) disableIconTint = other.disableIconTint;
-        color.mergeWith(other.color);
-        disabledColor.mergeWith(other.disabledColor);
+        if (other.color.hasValue()) color = other.color;
+        if (other.disabledColor.hasValue()) disabledColor = other.disabledColor;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         font.mergeWith(other.font);
         if (other.testId.hasValue()) testId = other.testId;
@@ -188,8 +188,8 @@ public class ButtonOptions {
         if (!accessibilityLabel.hasValue()) accessibilityLabel = defaultOptions.accessibilityLabel;
         if (!enabled.hasValue()) enabled = defaultOptions.enabled;
         if (!disableIconTint.hasValue()) disableIconTint = defaultOptions.disableIconTint;
-        color.mergeWithDefault(defaultOptions.color);
-        disabledColor.mergeWithDefault(defaultOptions.disabledColor);
+        if (!color.hasValue()) color = defaultOptions.color;
+        if (!disabledColor.hasValue()) disabledColor = defaultOptions.disabledColor;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         font.mergeWithDefault(defaultOptions.font);
         if (!testId.hasValue()) testId = defaultOptions.testId;

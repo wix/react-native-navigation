@@ -40,7 +40,7 @@ public class SubtitleOptions {
 
     void mergeWith(final SubtitleOptions other) {
         if (other.text.hasValue()) text = other.text;
-        color.mergeWith( other.color);
+        if (other.color.hasValue()) color = other.color;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         font.mergeWith(other.font);
         if (other.alignment != Alignment.Default) alignment = other.alignment;
@@ -48,7 +48,7 @@ public class SubtitleOptions {
 
     void mergeWithDefault(SubtitleOptions defaultOptions) {
         if (!text.hasValue()) text = defaultOptions.text;
-        color.mergeWithDefault(defaultOptions.color);
+        if (!color.hasValue()) color = defaultOptions.color;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         font.mergeWithDefault(defaultOptions.font);
         if (alignment == Alignment.Default) alignment = defaultOptions.alignment;

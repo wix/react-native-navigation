@@ -32,7 +32,7 @@ public class FabOptions {
         if (json.has("icon")) {
             options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
-        options.iconColor = RNNColourKt.parse(context, json.optJSONObject( "iconColor"));
+        options.iconColor = RNNColourKt.parse(context, json.optJSONObject("iconColor"));
         if (json.has("actions")) {
             JSONArray fabsArray = json.optJSONArray("actions");
             for (int i = 0; i < fabsArray.length(); i++) {
@@ -65,10 +65,10 @@ public class FabOptions {
             id = other.id;
         }
 
-        backgroundColor.mergeWith(other.backgroundColor);
-        clickColor.mergeWith(other.clickColor);
-        iconColor.mergeWith(other.iconColor);
-        rippleColor.mergeWith(other.rippleColor);
+        if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
+        if (other.clickColor.hasValue()) clickColor = other.clickColor;
+        if (other.iconColor.hasValue()) iconColor = other.iconColor;
+        if (other.rippleColor.hasValue()) rippleColor = other.rippleColor;
 
         if (other.visible.hasValue()) {
             visible = other.visible;
@@ -98,10 +98,11 @@ public class FabOptions {
         if (!id.hasValue()) {
             id = defaultOptions.id;
         }
-        backgroundColor.mergeWithDefault(defaultOptions.backgroundColor);
-        clickColor.mergeWithDefault(defaultOptions.clickColor);
-        rippleColor.mergeWithDefault(defaultOptions.rippleColor);
-        iconColor.mergeWithDefault(defaultOptions.iconColor);
+
+        if (!iconColor.hasValue()) iconColor = defaultOptions.iconColor;
+        if (!rippleColor.hasValue()) rippleColor = defaultOptions.rippleColor;
+        if (!clickColor.hasValue()) clickColor = defaultOptions.clickColor;
+        if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
 
         if (!visible.hasValue()) {
             visible = defaultOptions.visible;

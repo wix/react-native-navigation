@@ -89,10 +89,12 @@ public class TopBarOptions {
         subtitle.mergeWith(other.subtitle);
         background.mergeWith(other.background);
         buttons.mergeWith(other.buttons);
-        rightButtonColor.mergeWith(other.rightButtonColor);
-        leftButtonColor.mergeWith(other.leftButtonColor);
-        rightButtonDisabledColor.mergeWith(other.rightButtonDisabledColor);
-        leftButtonDisabledColor.mergeWith(other.leftButtonDisabledColor);
+
+
+        if (other.rightButtonColor.hasValue()) rightButtonColor = other.rightButtonColor;
+        if (other.leftButtonColor.hasValue()) leftButtonColor = other.leftButtonColor;
+        if (other.rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = other.rightButtonDisabledColor;
+        if (other.leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = other.leftButtonDisabledColor;
 
         if (other.testId.hasValue()) testId = other.testId;
         if (other.visible.hasValue()) visible = other.visible;
@@ -116,10 +118,11 @@ public class TopBarOptions {
         background.mergeWithDefault(defaultOptions.background);
         buttons.mergeWithDefault(defaultOptions.buttons);
 
-        rightButtonColor.mergeWithDefault(defaultOptions.rightButtonColor);
-        leftButtonColor.mergeWithDefault(defaultOptions.leftButtonColor);
-        rightButtonDisabledColor.mergeWithDefault(defaultOptions.rightButtonDisabledColor);
-        leftButtonDisabledColor.mergeWithDefault(defaultOptions.leftButtonDisabledColor);
+
+        if (!rightButtonColor.hasValue()) rightButtonColor = defaultOptions.rightButtonColor;
+        if (!leftButtonColor.hasValue()) leftButtonColor = defaultOptions.leftButtonColor;
+        if (!rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = defaultOptions.rightButtonDisabledColor;
+        if (!leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = defaultOptions.leftButtonDisabledColor;
 
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!animate.hasValue()) animate = defaultOptions.animate;

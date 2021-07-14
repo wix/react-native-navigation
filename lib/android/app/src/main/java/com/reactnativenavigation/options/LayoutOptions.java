@@ -32,16 +32,16 @@ public class LayoutOptions {
     public LayoutDirection direction = LayoutDirection.DEFAULT;
 
     public void mergeWith(LayoutOptions other) {
-        backgroundColor.mergeWith(other.backgroundColor);
-        componentBackgroundColor.mergeWith(other.componentBackgroundColor);
+        if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
+        if (other.componentBackgroundColor.hasValue()) componentBackgroundColor = other.componentBackgroundColor;
         if (other.topMargin.hasValue()) topMargin = other.topMargin;
         if (other.orientation.hasValue()) orientation = other.orientation;
         if (other.direction.hasValue()) direction = other.direction;
     }
 
     public void mergeWithDefault(LayoutOptions defaultOptions) {
-        backgroundColor.mergeWithDefault(defaultOptions.backgroundColor);
-        componentBackgroundColor.mergeWithDefault(defaultOptions.componentBackgroundColor);
+        if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
+        if (!componentBackgroundColor.hasValue()) componentBackgroundColor = defaultOptions.componentBackgroundColor;
         if (!topMargin.hasValue()) topMargin = defaultOptions.topMargin;
         if (!orientation.hasValue()) orientation = defaultOptions.orientation;
         if (!direction.hasValue()) direction = defaultOptions.direction;

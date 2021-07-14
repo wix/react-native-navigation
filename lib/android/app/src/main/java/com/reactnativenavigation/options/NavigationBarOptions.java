@@ -26,12 +26,12 @@ public class NavigationBarOptions {
     public Bool isVisible = new NullBool();
 
     public void mergeWith(NavigationBarOptions other) {
-        backgroundColor.mergeWith(other.backgroundColor);
         if (other.isVisible.hasValue()) isVisible = other.isVisible;
+        if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
     }
 
     public void mergeWithDefault(NavigationBarOptions defaultOptions) {
-        backgroundColor.mergeWithDefault(defaultOptions.backgroundColor);
         if (!isVisible.hasValue()) isVisible = defaultOptions.isVisible;
+        if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
     }
 }

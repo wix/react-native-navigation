@@ -42,16 +42,16 @@ public class TopTabsOptions {
     }
 
     void mergeWith(TopTabsOptions other) {
-        selectedTabColor.mergeWith(other.selectedTabColor);
-        unselectedTabColor.mergeWith(other.unselectedTabColor);
+        if (other.selectedTabColor.hasValue()) selectedTabColor = other.selectedTabColor;
+        if (other.unselectedTabColor.hasValue()) unselectedTabColor = other.unselectedTabColor;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.visible.hasValue()) visible = other.visible;
         if (other.height.hasValue()) height = other.height;
     }
 
     void mergeWithDefault(TopTabsOptions defaultOptions) {
-        selectedTabColor.mergeWithDefault(defaultOptions.selectedTabColor);
-        unselectedTabColor.mergeWithDefault(defaultOptions.unselectedTabColor);
+        if (!selectedTabColor.hasValue()) selectedTabColor = defaultOptions.selectedTabColor;
+        if (!unselectedTabColor.hasValue()) unselectedTabColor = defaultOptions.unselectedTabColor;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!height.hasValue()) height = defaultOptions.height;

@@ -23,21 +23,14 @@ class RNNNullColor() : RNNColour(NullColor(), NullColor()) {
 
 open class RNNColour(private var lightColor: Colour, private var darkColor: Colour) {
 
+    constructor(color:Colour):this(color,color)
+
     private fun selectedColor() = if (isDarkMode()) darkColor else lightColor
 
     fun get(@ColorInt defaultColor: Int?): Int? = selectedColor().get(defaultColor)
     fun get(): Int = selectedColor().get()
     open fun hasValue() = selectedColor().hasValue()
 
-    fun mergeWith(rnnColour: RNNColour) {
-        if (rnnColour.darkColor.hasValue()) darkColor = rnnColour.darkColor
-        if (rnnColour.lightColor.hasValue()) lightColor = rnnColour.lightColor
-    }
-
-    fun mergeWithDefault(rnnColour: RNNColour) {
-        if (!darkColor.hasValue()) darkColor = rnnColour.darkColor
-        if (!lightColor.hasValue()) lightColor = rnnColour.lightColor
-    }
 
     fun hasTransparency() = selectedColor().hasTransparency()
     fun canApplyValue() = selectedColor().canApplyValue()

@@ -51,16 +51,16 @@ public class IconBackgroundOptions {
     }
 
     public void mergeWith(IconBackgroundOptions other) {
-        color.mergeWith(other.color);
-        disabledColor.mergeWith(other.disabledColor);
+        if (other.color.hasValue()) color = other.color;
+        if (other.disabledColor.hasValue()) disabledColor = other.disabledColor;
         if (other.width.hasValue()) width = other.width;
         if (other.height.hasValue()) height = other.height;
         if (other.cornerRadius.hasValue()) cornerRadius = other.cornerRadius;
     }
 
     public void mergeWithDefault(IconBackgroundOptions defaultOptions) {
-        color.mergeWithDefault(defaultOptions.color);
-        disabledColor.mergeWithDefault(defaultOptions.disabledColor);
+        if (!color.hasValue()) color = defaultOptions.color;
+        if (!disabledColor.hasValue()) disabledColor = defaultOptions.disabledColor;
         if (!width.hasValue()) width = defaultOptions.width;
         if (!height.hasValue()) height = defaultOptions.height;
         if (!cornerRadius.hasValue()) cornerRadius = defaultOptions.cornerRadius;

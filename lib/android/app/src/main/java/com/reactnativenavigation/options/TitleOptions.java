@@ -55,7 +55,7 @@ public class TitleOptions {
             if (other.component.hasValue())
                 this.text = other.text;
         }
-        color.mergeWith(other.color);
+        if (other.color.hasValue()) color = other.color;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         font.mergeWith(other.font);
         if (other.alignment != Alignment.Default) alignment = other.alignment;
@@ -66,7 +66,7 @@ public class TitleOptions {
 
     void mergeWithDefault(TitleOptions defaultOptions) {
         if (!text.hasValue()) text = defaultOptions.text;
-        color.mergeWithDefault(defaultOptions.color);
+        if (!color.hasValue()) color = defaultOptions.color;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         font.mergeWithDefault(defaultOptions.font);
         if (alignment == Alignment.Default) alignment = defaultOptions.alignment;

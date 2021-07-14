@@ -32,13 +32,13 @@ public class TopBarBackgroundOptions {
     public Bool waitForRender = new NullBool();
 
     void mergeWith(final TopBarBackgroundOptions other) {
-        color.mergeWith(other.color);
+        if (other.color.hasValue()) color = other.color;
         if (other.waitForRender.hasValue()) waitForRender = other.waitForRender;
         component.mergeWith(other.component);
     }
 
     void mergeWithDefault(TopBarBackgroundOptions defaultOptions) {
-        color.mergeWithDefault(defaultOptions.color);
+        if (!color.hasValue()) color = defaultOptions.color;
         if (!waitForRender.hasValue()) waitForRender = defaultOptions.waitForRender;
         component.mergeWithDefault(defaultOptions.component);
     }

@@ -78,12 +78,14 @@ public class BottomTabsOptions {
         if (other.tabsAttachMode.hasValue()) tabsAttachMode = other.tabsAttachMode;
         if (other.borderWidth.hasValue()) borderWidth = other.borderWidth;
         if (other.shadowOptions.hasValue()) shadowOptions = shadowOptions.copy().mergeWith(other.shadowOptions);
+        if (other.borderColor.hasValue()) borderColor = other.borderColor;
+        if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
 
-        borderColor.mergeWith(other.borderColor);
-        backgroundColor.mergeWith(other.backgroundColor);
     }
 
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
+        if (!borderColor.hasValue()) borderColor = defaultOptions.borderColor;
+        if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
         if (!currentTabId.hasValue()) currentTabId = defaultOptions.currentTabId;
         if (!currentTabIndex.hasValue()) currentTabIndex = defaultOptions.currentTabIndex;
         if (!hideOnScroll.hasValue()) hideOnScroll = defaultOptions.hideOnScroll;
@@ -98,9 +100,6 @@ public class BottomTabsOptions {
         if (!borderWidth.hasValue()) borderWidth = defaultOptions.borderWidth;
         if (!shadowOptions.hasValue())
             shadowOptions = shadowOptions.copy().mergeWithDefaults(defaultOptions.shadowOptions);
-
-        borderColor.mergeWithDefault(defaultOptions.borderColor);
-        backgroundColor.mergeWithDefault(defaultOptions.backgroundColor);
     }
 
     public boolean isHiddenOrDrawBehind() {
