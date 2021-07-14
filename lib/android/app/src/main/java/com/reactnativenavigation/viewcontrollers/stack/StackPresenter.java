@@ -268,8 +268,8 @@ public class StackPresenter {
             componentRightButtons.put(child.getView(), keyBy(rightButtonControllers, ButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
                 currentRightButtons = rightButtonControllers;
-                topBarController.applyRightButtons(currentRightButtons);
             }
+            topBarController.applyRightButtons(currentRightButtons);
         } else {
             currentRightButtons = null;
             topBar.clearRightButtons();
@@ -283,8 +283,8 @@ public class StackPresenter {
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, ButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentLeftButtons, leftButtonControllers)) {
                 currentLeftButtons = leftButtonControllers;
-                topBarController.applyLeftButtons(currentLeftButtons);
             }
+            topBarController.applyLeftButtons(currentLeftButtons);
         } else {
             currentLeftButtons = null;
             topBar.clearLeftButtons();
