@@ -13,7 +13,6 @@ fun parse(context: Context, json: JSONObject?): RNNColour {
     } ?: RNNNullColor()
 }
 
-private fun DontApplyRNNColour() = RNNColour(DontApplyColour(), DontApplyColour())
 fun transparent() = RNNColour(Colour(Color.TRANSPARENT), Colour(Color.TRANSPARENT))
 class RNNNullColor() : RNNColour(NullColor(), NullColor()) {
     override fun hasValue(): Boolean {
