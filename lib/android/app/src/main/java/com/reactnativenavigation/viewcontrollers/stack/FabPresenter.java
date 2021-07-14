@@ -309,8 +309,4 @@ public class FabPresenter {
             fabMenu.disableCollapse();
         }
     }
-
-    public void onConfigurationChanged(Configuration newConfig) {
-
-    }
 }
