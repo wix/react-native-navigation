@@ -248,11 +248,6 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         return presenter.getSetStackRootAnimation(appearingOptions);
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
     public Animator getPopAnimation(Options appearingOptions, Options disappearingOptions) {
         return presenter.getPopAnimation(appearingOptions, disappearingOptions);
     }
