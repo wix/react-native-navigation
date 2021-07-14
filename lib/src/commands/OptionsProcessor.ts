@@ -130,7 +130,6 @@ export class OptionsProcessor {
         newColorObj.dark = parsedColor;
         options[key] = newColorObj;
       }
-      console.log(`XXXX`, `color:${key} after parsing ${JSON.stringify(options[key])}`);
     }
   }
 
