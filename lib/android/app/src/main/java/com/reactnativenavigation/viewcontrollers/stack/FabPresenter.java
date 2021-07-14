@@ -3,7 +3,6 @@ package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.content.res.Configuration;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
