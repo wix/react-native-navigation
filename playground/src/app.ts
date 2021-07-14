@@ -66,7 +66,6 @@ function setRoot() {
                     text: 'Default Title',
                   },
                 },
-
                 bottomTab: {
                   text: 'Options',
                   icon: require('../img/options.png'),
