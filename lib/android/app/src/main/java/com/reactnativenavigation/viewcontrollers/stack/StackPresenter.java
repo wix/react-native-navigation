@@ -141,6 +141,20 @@ public class StackPresenter {
         mergeTopTabOptions(options.topTabOptions);
     }
 
+    public void onConfigurationChanged(Options options) {
+        if (currentRightButtons != null && !currentRightButtons.isEmpty())
+            topBarController.applyRightButtons(currentRightButtons);
+        if (currentLeftButtons != null && !currentLeftButtons.isEmpty())
+            topBarController.applyLeftButtons(currentLeftButtons);
+        topBar.setOverflowButtonColor(options.topBar.rightButtonColor.get(Color.BLACK));
+        topBar.applyTopTabsColors(options.topTabs.selectedTabColor,
+                options.topTabs.unselectedTabColor);
+        topBar.setBorderColor(options.topBar.borderColor.get(DEFAULT_BORDER_COLOR));
+        topBar.setBackgroundColor(options.topBar.background.color.get(Color.WHITE));
+        topBar.applyTitleOptions(options.topBar.title, typefaceLoader);
+        topBar.applySubtitleOptions(options.topBar.subtitle, typefaceLoader);
+    }
+
     public void applyInitialChildLayoutOptions(Options options) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         applyTopBarVisibility(withDefault.topBar);
@@ -268,8 +282,8 @@ public class StackPresenter {
             componentRightButtons.put(child.getView(), keyBy(rightButtonControllers, ButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentRightButtons, rightButtonControllers)) {
                 currentRightButtons = rightButtonControllers;
+                topBarController.applyRightButtons(currentRightButtons);
             }
-            topBarController.applyRightButtons(currentRightButtons);
         } else {
             currentRightButtons = null;
             topBar.clearRightButtons();
@@ -283,8 +297,8 @@ public class StackPresenter {
             componentLeftButtons.put(child.getView(), keyBy(leftButtonControllers, ButtonController::getButtonInstanceId));
             if (!CollectionUtils.equals(currentLeftButtons, leftButtonControllers)) {
                 currentLeftButtons = leftButtonControllers;
+                topBarController.applyLeftButtons(currentLeftButtons);
             }
-            topBarController.applyLeftButtons(currentLeftButtons);
         } else {
             currentLeftButtons = null;
             topBar.clearLeftButtons();
@@ -641,5 +655,4 @@ public class StackPresenter {
     public int getTopInset(Options resolvedOptions) {
         return resolvedOptions.withDefaultOptions(defaultOptions).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
     }
-
 }

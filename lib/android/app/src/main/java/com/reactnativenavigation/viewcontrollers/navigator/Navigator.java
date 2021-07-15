@@ -245,10 +245,10 @@ public class Navigator extends ParentController {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(Options options) {
         if (!modalStack.isEmpty())
-            modalStack.peek().onConfigurationChanged(newConfig);
-        super.onConfigurationChanged(newConfig);
+            modalStack.peek().onConfigurationChanged(options);
+        super.onConfigurationChanged(resolveCurrentOptions(defaultOptions));
     }
 
     private boolean isRootNotCreated() {

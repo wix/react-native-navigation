@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -72,6 +73,13 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
+    public void onConfigurationChanged(Options options) {
+        super.onConfigurationChanged(options);
+        presenter.onConfigurationChanged( options);
+        fabPresenter.onConfigurationChanged( options);
+    }
+
+    @Override
     public boolean isRendered() {
         if (isEmpty()) return false;
         if (getCurrentChild().isDestroyed()) return false;
@@ -112,7 +120,7 @@ public class StackController extends ParentController<StackLayout> {
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
         fabPresenter.applyOptions(this.options.fabOptions, child, getView());
         performOnParentController(parent ->
-                        parent.applyChildOptions(
+                parent.applyChildOptions(
                         this.options.copy()
                                 .clearTopBarOptions()
                                 .clearAnimationOptions()
@@ -445,7 +453,8 @@ public class StackController extends ParentController<StackLayout> {
     public boolean onDependentViewChanged(CoordinatorLayout parent, ViewGroup child, View dependency) {
         perform(findController(child), controller -> {
             if (dependency instanceof TopBar) presenter.applyTopInsets(this, controller);
-            if (dependency instanceof Fab || dependency instanceof FabMenu) updateBottomMargin(dependency, getBottomInset());
+            if (dependency instanceof Fab || dependency instanceof FabMenu)
+                updateBottomMargin(dependency, getBottomInset());
         });
         return false;
     }

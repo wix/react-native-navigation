@@ -205,13 +205,11 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return getCurrentChild().getCurrentComponentName();
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        applyOptions(resolveCurrentOptions());
+    public void onConfigurationChanged(Options options) {
+        super.onConfigurationChanged(options);
         Collection<? extends ViewController> childControllers = getChildControllers();
         for(ViewController controller: childControllers){
-            applyChildOptions(controller.resolveCurrentOptions(),controller);
-            controller.onConfigurationChanged(newConfig);
+            controller.onConfigurationChanged(resolveChildOptions(controller));
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.externalcomponent;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;

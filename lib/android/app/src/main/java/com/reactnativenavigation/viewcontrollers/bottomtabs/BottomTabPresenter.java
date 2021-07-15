@@ -158,4 +158,17 @@ public class BottomTabPresenter {
     private boolean canMergeColor(RNNColour p) {
         return p.hasValue() && p.canApplyValue();
     }
+
+    public void onConfigurationChanged(Options options) {
+        bottomTabs.perform(bottomTabs -> {
+            for (int i = 0; i < tabs.size(); i++) {
+                BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
+                if (tab.selectedIconColor.canApplyValue()) bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
+                if (tab.iconColor.canApplyValue()) bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
+                bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
+                bottomTabs.setTitleInactiveColor(i, tab.textColor.get(null));
+                if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator); else applyBadge(i, tab);
+            }
+        });
+    }
 }
