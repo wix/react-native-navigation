@@ -311,8 +311,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
-    public void onConfigurationChanged(Configuration newConfig) {
-        applyOptions(resolveCurrentOptions());
+    public void onConfigurationChanged(Options options) {
     }
 
     public void onAttachToParent() {
@@ -385,5 +384,4 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     public int getBottomInset() {
         return perform(parentController, 0, p -> p.getBottomInset(this));
     }
-
 }
