@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -10,7 +9,6 @@ import android.view.ViewTreeObserver;
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
 import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -18,7 +16,6 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.react.CommandListener;
-import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiThread;
