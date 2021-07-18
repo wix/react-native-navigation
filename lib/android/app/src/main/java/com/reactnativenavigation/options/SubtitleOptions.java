@@ -6,8 +6,7 @@ import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.RNNNullColor;
+import com.reactnativenavigation.options.params.ThemeNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
@@ -33,7 +32,7 @@ public class SubtitleOptions {
     }
 
     public Text text = new NullText();
-    public ThemeColour color = new RNNNullColor();
+    public ThemeColour color = new ThemeNullColor();
     public Fraction fontSize = new NullFraction();
     public FontOptions font = new FontOptions();
     public Alignment alignment = Alignment.Default;

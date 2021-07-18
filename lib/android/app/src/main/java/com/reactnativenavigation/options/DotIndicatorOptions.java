@@ -9,8 +9,7 @@ import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.RNNNullColor;
+import com.reactnativenavigation.options.params.ThemeNullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 
@@ -29,7 +28,7 @@ public class DotIndicatorOptions {
         return options;
     }
 
-    public ThemeColour color = new RNNNullColor();
+    public ThemeColour color = new ThemeNullColor();
     public Number size = new NullNumber();
     public Bool visible = new NullBool();
     public Bool animate = new NullBool();

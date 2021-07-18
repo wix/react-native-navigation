@@ -7,8 +7,7 @@ import androidx.annotation.Nullable;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.RNNNullColor;
+import com.reactnativenavigation.options.params.ThemeNullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
 
 import org.json.JSONObject;
@@ -53,7 +52,7 @@ public class StatusBarOptions {
         return result;
     }
 
-    public ThemeColour backgroundColor = new RNNNullColor();
+    public ThemeColour backgroundColor = new ThemeNullColor();
     public TextColorScheme textColorScheme = TextColorScheme.None;
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();

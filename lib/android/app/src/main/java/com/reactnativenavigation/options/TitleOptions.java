@@ -8,8 +8,7 @@ import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.RNNNullColor;
+import com.reactnativenavigation.options.params.ThemeNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
@@ -38,7 +37,7 @@ public class TitleOptions {
     }
 
     public Text text = new NullText();
-    public ThemeColour color = new RNNNullColor();
+    public ThemeColour color = new ThemeNullColor();
     public Fraction fontSize = new NullFraction();
     public Alignment alignment = Alignment.Default;
     public FontOptions font = new FontOptions();

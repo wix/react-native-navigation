@@ -7,8 +7,7 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.RNNNullColor;
+import com.reactnativenavigation.options.params.ThemeNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.TextParser;
@@ -48,11 +47,11 @@ public class FabOptions {
     }
 
     public Text id = new NullText();
-    public ThemeColour backgroundColor = new RNNNullColor();
-    public ThemeColour clickColor = new RNNNullColor();
-    public ThemeColour rippleColor = new RNNNullColor();
+    public ThemeColour backgroundColor = new ThemeNullColor();
+    public ThemeColour clickColor = new ThemeNullColor();
+    public ThemeColour rippleColor = new ThemeNullColor();
     public Text icon = new NullText();
-    public ThemeColour iconColor = new RNNNullColor();
+    public ThemeColour iconColor = new ThemeNullColor();
     public Bool visible = new NullBool();
     public ArrayList<FabOptions> actionsArray = new ArrayList<>();
     public Text alignHorizontally = new NullText();

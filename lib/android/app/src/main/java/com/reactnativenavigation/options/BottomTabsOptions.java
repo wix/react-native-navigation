@@ -10,8 +10,7 @@ import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.RNNNullColor;
+import com.reactnativenavigation.options.params.ThemeNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.params.TitleDisplayMode;
 import com.reactnativenavigation.options.parsers.BoolParser;
@@ -46,7 +45,7 @@ public class BottomTabsOptions {
         return options;
     }
 
-    public ThemeColour backgroundColor = new RNNNullColor();
+    public ThemeColour backgroundColor = new ThemeNullColor();
     public Bool hideOnScroll = new NullBool();
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
@@ -59,7 +58,7 @@ public class BottomTabsOptions {
     public Text testId = new NullText();
     public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
     public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
-    public ThemeColour borderColor = new RNNNullColor();
+    public ThemeColour borderColor = new ThemeNullColor();
     public Fraction borderWidth = new NullFraction();
     public ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
 

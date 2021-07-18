@@ -8,8 +8,7 @@ import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.RNNNullColor;
+import com.reactnativenavigation.options.params.ThemeNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.FontParser;
@@ -49,17 +48,17 @@ public class BottomTabOptions {
     }
 
     public Text text = new NullText();
-    public ThemeColour textColor = new RNNNullColor();
-    public ThemeColour selectedTextColor = new RNNNullColor();
+    public ThemeColour textColor = new ThemeNullColor();
+    public ThemeColour selectedTextColor = new ThemeNullColor();
     public Text icon = new NullText();
     public Number iconWidth = new NullNumber();
     public Number iconHeight = new NullNumber();
     public Text selectedIcon = new NullText();
-    public ThemeColour iconColor = new RNNNullColor();
-    public ThemeColour selectedIconColor = new RNNNullColor();
+    public ThemeColour iconColor = new ThemeNullColor();
+    public ThemeColour selectedIconColor = new ThemeNullColor();
     public Text testId = new NullText();
     public Text badge = new NullText();
-    public ThemeColour badgeColor = new RNNNullColor();
+    public ThemeColour badgeColor = new ThemeNullColor();
     public Bool animateBadge = new NullBool();
     public DotIndicatorOptions dotIndicator = new DotIndicatorOptions();
     public Number fontSize = new NullNumber();

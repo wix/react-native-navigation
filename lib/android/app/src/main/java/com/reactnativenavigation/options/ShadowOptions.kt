@@ -3,7 +3,7 @@ package com.reactnativenavigation.options
 import android.content.Context
 import com.reactnativenavigation.options.params.Fraction
 import com.reactnativenavigation.options.params.NullFraction
-import com.reactnativenavigation.options.params.RNNNullColor
+import com.reactnativenavigation.options.params.ThemeNullColor
 import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.options.parsers.FractionParser
 import org.json.JSONObject
@@ -25,7 +25,7 @@ object NullShadowOptions : ShadowOptions() {
 }
 
 open class ShadowOptions(
-    var color: ThemeColour = RNNNullColor(), var radius: Fraction = NullFraction(), var opacity: Fraction =
+    var color: ThemeColour = ThemeNullColor(), var radius: Fraction = NullFraction(), var opacity: Fraction =
         NullFraction()
 ) {
 
