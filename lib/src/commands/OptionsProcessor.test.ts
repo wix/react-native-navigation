@@ -456,7 +456,7 @@ describe('navigation options', () => {
     });
   });
 
-  it('processes color keys to ModedColours', () => {
+  it('processes color keys to ThemeColour', () => {
     const options: Options = {
       statusBar: { backgroundColor: 'red' },
       topBar: {
@@ -472,7 +472,7 @@ describe('navigation options', () => {
       topBar: {
         background: { color: { light: 0xff0000ff, dark: 0xffff0000 } },
         title: {
-          color: { light: 'NoColor', dark: 'NoColor' },
+          color: { light: null, dark: null },
         },
       },
     });
@@ -589,8 +589,8 @@ describe('navigation options', () => {
       hideOnScroll: false,
       hideTopBarOnFocus: false,
       obscuresBackgroundDuringPresentation: false,
-      backgroundColor: { light: 'NoColor', dark: 'NoColor' },
-      tintColor: { light: 'NoColor', dark: 'NoColor' },
+      backgroundColor: { light: null, dark: null },
+      tintColor: { light: null, dark: null },
       placeholder: '',
     });
   });
