@@ -125,16 +125,16 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void onConfigurationChange_shouldApplyOptionsForModals() {
+    public void onConfigurationChange_shouldCallOnConfigurationChangedForModals() {
         Navigator spyUUT = spy(uut);
         SimpleViewController spyChild1 = spy(child1);
         ViewController spyChild2 = spy(child2);
 
         spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
         spyUUT.showModal(spyChild2, new CommandListenerAdapter());
-        spyUUT.onConfigurationChanged(mockConfiguration);
+        spyUUT.onConfigurationChanged(Options.EMPTY);
 
-        verify(spyChild2).applyOptions(any());
+        verify(spyChild2).onConfigurationChanged(any());
     }
 
     @Test
