@@ -462,9 +462,32 @@ describe('navigation options', () => {
         Platform.OS = 'android';
       });
 
-      it('processes color keys to ThemeColor', () => {
+      it('processes color keys', () => {
         const options: Options = {
           statusBar: { backgroundColor: 'red' },
+          topBar: { background: { color: 'blue' } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          statusBar: { backgroundColor: { light: 0xffff0000, dark: 0xffff0000 } },
+          topBar: { background: { color: { light: 0xff0000ff, dark: 0xff0000ff } } },
+        });
+      });
+
+      it('processes null color', () => {
+        const options: Options = {
+          topBar: { background: { color: null } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: { background: { color: { light: 'NoColor', dark: 'NoColor' } } },
+        });
+      });
+
+      it('processes color keys to ThemeColor', () => {
+        const options: Options = {
           topBar: {
             background: { color: { light: 'blue', dark: 'red' } },
             title: {
@@ -474,7 +497,6 @@ describe('navigation options', () => {
         };
         uut.processOptions(options, CommandName.SetRoot);
         expect(options).toEqual({
-          statusBar: { backgroundColor: { light: 0xffff0000, dark: 0xffff0000 } },
           topBar: {
             background: { color: { light: 0xff0000ff, dark: 0xffff0000 } },
             title: {
@@ -488,6 +510,30 @@ describe('navigation options', () => {
     describe('iOS', () => {
       beforeEach(() => {
         Platform.OS = 'ios';
+      });
+
+      it('processes color keys', () => {
+        const options: Options = {
+          statusBar: { backgroundColor: 'red' },
+          topBar: { background: { color: 'blue' } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          statusBar: { backgroundColor: { dynamic: { light: 0xffff0000, dark: 0xffff0000 } } },
+          topBar: { background: { color: { dynamic: { light: 0xff0000ff, dark: 0xff0000ff } } } },
+        });
+      });
+
+      it('processes null color', () => {
+        const options: Options = {
+          topBar: { background: { color: null } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: { background: { color: { dynamic: { light: 'NoColor', dark: 'NoColor' } } } },
+        });
       });
 
       it('processes color keys to ThemeColor', () => {
