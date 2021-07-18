@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
@@ -128,7 +129,7 @@ public class ModalStack {
         }
     }
 
-    public ViewController peek() {
+    ViewController peek() {
         if (modals.isEmpty()) throw new EmptyStackException();
         return modals.get(modals.size() - 1);
     }
@@ -176,5 +177,11 @@ public class ModalStack {
             modal.destroy();
         }
         modals.clear();
+    }
+
+    public void onConfigurationChanged(Options options){
+        for(ViewController controller: modals){
+            controller.onConfigurationChanged(controller.resolveCurrentOptions(options));
+        }
     }
 }

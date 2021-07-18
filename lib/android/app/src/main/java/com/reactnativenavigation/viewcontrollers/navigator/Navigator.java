@@ -247,8 +247,7 @@ public class Navigator extends ParentController {
     @Override
     public void onConfigurationChanged(Options options) {
         Options merged = options.mergeWith(defaultOptions);
-        if (!modalStack.isEmpty())
-            modalStack.peek().onConfigurationChanged(merged);
+        modalStack.onConfigurationChanged(merged);
         super.onConfigurationChanged(merged);
     }
 
@@ -269,7 +268,8 @@ public class Navigator extends ParentController {
     public void onHostPause() {
         super.onViewDisappear();
     }
-    public void onHostResume(){
+
+    public void onHostResume() {
         super.onViewDidAppear();
     }
 }

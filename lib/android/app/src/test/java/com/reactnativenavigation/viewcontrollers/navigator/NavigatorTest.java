@@ -129,12 +129,15 @@ public class NavigatorTest extends BaseTest {
         Navigator spyUUT = spy(uut);
         SimpleViewController spyChild1 = spy(child1);
         ViewController spyChild2 = spy(child2);
+        ViewController spyChild3 = spy(child3);
 
         spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
         spyUUT.showModal(spyChild2, new CommandListenerAdapter());
+        spyUUT.showModal(spyChild3, new CommandListenerAdapter());
         spyUUT.onConfigurationChanged(Options.EMPTY);
 
         verify(spyChild2).onConfigurationChanged(any());
+        verify(spyChild3).onConfigurationChanged(any());
     }
 
     @Test
