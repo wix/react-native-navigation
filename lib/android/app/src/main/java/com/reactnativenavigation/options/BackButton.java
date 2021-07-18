@@ -32,7 +32,7 @@ public class BackButton extends ButtonOptions {
         return result;
     }
 
-    BackButton() {
+    public BackButton() {
         id = Constants.BACK_BUTTON_ID;
         accessibilityLabel = new Text("Navigate Up");
     }
