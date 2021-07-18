@@ -146,7 +146,7 @@ public class StackPresenter {
             topBarController.applyRightButtons(currentRightButtons);
         if (currentLeftButtons != null && !currentLeftButtons.isEmpty())
             topBarController.applyLeftButtons(currentLeftButtons);
-        if (options.topBar.buttons.back.visible.isTrue() && !options.topBar.buttons.hasLeftButtons()) {
+        if (options.topBar.buttons.back.visible.isTrue()) {
             topBar.setBackButton(createButtonController(options.topBar.buttons.back));
         }
         topBar.setOverflowButtonColor(options.topBar.rightButtonColor.get(Color.BLACK));
@@ -154,8 +154,8 @@ public class StackPresenter {
                 options.topTabs.unselectedTabColor);
         topBar.setBorderColor(options.topBar.borderColor.get(DEFAULT_BORDER_COLOR));
         topBar.setBackgroundColor(options.topBar.background.color.get(Color.WHITE));
-        topBar.applyTitleOptions(options.topBar.title, typefaceLoader);
-        topBar.applySubtitleOptions(options.topBar.subtitle, typefaceLoader);
+        topBar.setTitleTextColor(options.topBar.title.color.get(TopBar.DEFAULT_TITLE_COLOR));
+        topBar.setSubtitleColor(options.topBar.subtitle.color.get(TopBar.DEFAULT_TITLE_COLOR));
     }
 
     public void applyInitialChildLayoutOptions(Options options) {
