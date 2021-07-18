@@ -117,7 +117,7 @@ export class OptionsProcessor {
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (isEqual(key, 'color') || endsWith(key, 'Color')) {
       const newColorObj: Record<string, any> = { dark: 'NoColor', light: 'NoColor' };
-      if (!value) {
+      if (value === null) {
         options[key] = newColorObj;
       } else if (value instanceof Object) {
         for (let keyColor in value) {
