@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.component;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.view.View;
 
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
