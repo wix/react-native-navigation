@@ -26,16 +26,16 @@ public class BottomTabOptions {
         if (json == null) return options;
 
         options.text = TextParser.parse(json, "text");
-        options.textColor = ThemeColour.parseThemeColour(context, json.optJSONObject("textColor"));
-        options.selectedTextColor = ThemeColour.parseThemeColour(context, json.optJSONObject("selectedTextColor"));
+        options.textColor = ThemeColour.parse(context, json.optJSONObject("textColor"));
+        options.selectedTextColor = ThemeColour.parse(context, json.optJSONObject("selectedTextColor"));
         options.icon = IconParser.parse(json, "icon");
         options.iconWidth = NumberParser.parse(json, "iconWidth");
         options.iconHeight = NumberParser.parse(json, "iconHeight");
         options.selectedIcon = IconParser.parse(json, "selectedIcon");
-        options.iconColor = ThemeColour.parseThemeColour(context, json.optJSONObject("iconColor"));
-        options.selectedIconColor = ThemeColour.parseThemeColour(context, json.optJSONObject("selectedIconColor"));
+        options.iconColor = ThemeColour.parse(context, json.optJSONObject("iconColor"));
+        options.selectedIconColor = ThemeColour.parse(context, json.optJSONObject("selectedIconColor"));
         options.badge = TextParser.parse(json, "badge");
-        options.badgeColor = ThemeColour.parseThemeColour(context, json.optJSONObject("badgeColor"));
+        options.badgeColor = ThemeColour.parse(context, json.optJSONObject("badgeColor"));
         options.animateBadge = BoolParser.parse(json, "animateBadge");
         options.testId = TextParser.parse(json, "testID");
         options.font = FontParser.parse(json);

@@ -32,8 +32,8 @@ public class TopTabsOptions {
     public static TopTabsOptions parse(Context context, @Nullable JSONObject json) {
         TopTabsOptions result = new TopTabsOptions();
         if (json == null) return result;
-        result.selectedTabColor = ThemeColour.parseThemeColour(context, json.optJSONObject("selectedTabColor"));
-        result.unselectedTabColor = ThemeColour.parseThemeColour(context, json.optJSONObject("unselectedTabColor"));
+        result.selectedTabColor = ThemeColour.parse(context, json.optJSONObject("selectedTabColor"));
+        result.unselectedTabColor = ThemeColour.parse(context, json.optJSONObject("unselectedTabColor"));
         result.fontSize = NumberParser.parse(json, "fontSize");
         result.visible = BoolParser.parse(json, "visible");
         result.height = NumberParser.parse(json, "height");

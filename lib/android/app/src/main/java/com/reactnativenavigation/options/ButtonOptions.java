@@ -76,8 +76,8 @@ public class ButtonOptions {
         button.disableIconTint = BoolParser.parse(json, "disableIconTint");
         button.popStackOnPress = BoolParser.parse(json, "popStackOnPress");
         button.showAsAction = parseShowAsAction(json);
-        button.color = ThemeColour.parseThemeColour(context, json.optJSONObject("color"));
-        button.disabledColor = ThemeColour.parseThemeColour(context, json.optJSONObject("disabledColor"));
+        button.color = ThemeColour.parse(context, json.optJSONObject("color"));
+        button.disabledColor = ThemeColour.parse(context, json.optJSONObject("disabledColor"));
         button.fontSize = FractionParser.parse(json, "fontSize");
         button.font = FontParser.parse(json);
         button.testId = TextParser.parse(json, "testID");

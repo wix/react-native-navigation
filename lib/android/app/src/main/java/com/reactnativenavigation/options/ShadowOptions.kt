@@ -11,7 +11,7 @@ import org.json.JSONObject
 
 fun parseShadowOptions(context: Context, shadowJson: JSONObject?): ShadowOptions = shadowJson?.let { json ->
     ShadowOptions(
-        ThemeColour.parseThemeColour(context, json.optJSONObject("color")), FractionParser.parse(json, "radius"),
+        ThemeColour.parse(context, json.optJSONObject("color")), FractionParser.parse(json, "radius"),
         FractionParser
             .parse(
                 json,

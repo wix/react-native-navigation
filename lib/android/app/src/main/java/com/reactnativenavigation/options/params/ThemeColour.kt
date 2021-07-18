@@ -37,7 +37,7 @@ open class ThemeColour(private var lightColor: Colour, private var darkColor: Co
         fun of(light:Int,dark:Int) = ThemeColour(Colour(light),Colour(dark))
 
         @JvmStatic
-        fun parseThemeColour(context: Context, json: JSONObject?): ThemeColour {
+        fun parse(context: Context, json: JSONObject?): ThemeColour {
             return json?.let {
                 ThemeColour(ColorParser.parse(context, json, LIGHT_COLOR_KEY), ColorParser.parse(context, json, DARK_COLOR_KEY))
             } ?: ThemeNullColor()

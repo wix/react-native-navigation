@@ -15,7 +15,7 @@ public class NavigationBarOptions {
         NavigationBarOptions result = new NavigationBarOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ThemeColour.parseThemeColour(context, json.optJSONObject("backgroundColor"));
+        result.backgroundColor = ThemeColour.parse(context, json.optJSONObject("backgroundColor"));
         result.isVisible = BoolParser.parse(json, "visible");
 
         return result;

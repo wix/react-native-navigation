@@ -1,8 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
 import android.app.Activity;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -12,7 +10,6 @@ import android.widget.LinearLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
@@ -28,19 +25,16 @@ import com.reactnativenavigation.views.component.Component;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.Shadows;
 
 import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.withSettings;
 
 public class ViewControllerTest extends BaseTest {

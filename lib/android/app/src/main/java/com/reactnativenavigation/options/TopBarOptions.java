@@ -38,7 +38,7 @@ public class TopBarOptions {
         options.drawBehind = BoolParser.parse(json,"drawBehind");
         options.testId = TextParser.parse(json, "testID");
         options.height = NumberParser.parse(json, "height");
-        options.borderColor = ThemeColour.parseThemeColour(context, json.optJSONObject( "borderColor"));
+        options.borderColor = ThemeColour.parse(context, json.optJSONObject( "borderColor"));
         options.borderHeight = FractionParser.parse(json, "borderHeight");
         options.elevation = FractionParser.parse(json, "elevation");
         options.topMargin = NumberParser.parse(json, "topMargin");
@@ -46,10 +46,10 @@ public class TopBarOptions {
         options.animateRightButtons = BoolParser.parse(json, "animateRightButtons");
         options.buttons = TopBarButtons.parse(context, json);
 
-        options.rightButtonColor = ThemeColour.parseThemeColour(context, json.optJSONObject("rightButtonColor"));
-        options.leftButtonColor = ThemeColour.parseThemeColour(context, json.optJSONObject("leftButtonColor"));
-        options.leftButtonDisabledColor = ThemeColour.parseThemeColour(context, json.optJSONObject("leftButtonDisabledColor"));
-        options.rightButtonDisabledColor = ThemeColour.parseThemeColour(context, json.optJSONObject("rightButtonDisabledColor"));
+        options.rightButtonColor = ThemeColour.parse(context, json.optJSONObject("rightButtonColor"));
+        options.leftButtonColor = ThemeColour.parse(context, json.optJSONObject("leftButtonColor"));
+        options.leftButtonDisabledColor = ThemeColour.parse(context, json.optJSONObject("leftButtonDisabledColor"));
+        options.rightButtonDisabledColor = ThemeColour.parse(context, json.optJSONObject("rightButtonDisabledColor"));
 
         options.validate();
         return options;

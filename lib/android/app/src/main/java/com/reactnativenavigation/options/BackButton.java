@@ -24,8 +24,8 @@ public class BackButton extends ButtonOptions {
         result.id = json.optString("id", Constants.BACK_BUTTON_ID);
         result.enabled = BoolParser.parse(json, "enabled");
         result.disableIconTint = BoolParser.parse(json, "disableIconTint");
-        result.color = ThemeColour.parseThemeColour(context, json.optJSONObject( "color"));
-        result.disabledColor = ThemeColour.parseThemeColour(context, json.optJSONObject( "disabledColor"));
+        result.color = ThemeColour.parse(context, json.optJSONObject( "color"));
+        result.disabledColor = ThemeColour.parse(context, json.optJSONObject( "disabledColor"));
         result.testId = TextParser.parse(json, "testID");
         result.popStackOnPress = BoolParser.parse(json, "popStackOnPress");
 

@@ -26,7 +26,7 @@ public class BottomTabsOptions {
         BottomTabsOptions options = new BottomTabsOptions();
         if (json == null) return options;
 
-        options.backgroundColor = ThemeColour.parseThemeColour(context, json.optJSONObject("backgroundColor"));
+        options.backgroundColor = ThemeColour.parse(context, json.optJSONObject("backgroundColor"));
         options.currentTabId = TextParser.parse(json, "currentTabId");
         options.currentTabIndex = NumberParser.parse(json, "currentTabIndex");
         options.hideOnScroll = BoolParser.parse(json, "hideOnScroll");
@@ -39,7 +39,7 @@ public class BottomTabsOptions {
         options.testId = TextParser.parse(json, "testID");
         options.titleDisplayMode = TitleDisplayMode.fromString(json.optString("titleDisplayMode"));
         options.tabsAttachMode = TabsAttachMode.fromString(json.optString("tabsAttachMode"));
-        options.borderColor = ThemeColour.parseThemeColour(context, json.optJSONObject("borderColor"));
+        options.borderColor = ThemeColour.parse(context, json.optJSONObject("borderColor"));
         options.borderWidth = FractionParser.parse(json, "borderWidth");
         options.shadowOptions = ShadowOptionsKt.parseShadowOptions(context, json.optJSONObject("shadow"));
         return options;

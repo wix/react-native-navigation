@@ -15,8 +15,8 @@ public class LayoutOptions {
         LayoutOptions result = new LayoutOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ThemeColour.parseThemeColour(context, json.optJSONObject("backgroundColor"));
-        result.componentBackgroundColor = ThemeColour.parseThemeColour(context, json.optJSONObject("componentBackgroundColor"));
+        result.backgroundColor = ThemeColour.parse(context, json.optJSONObject("backgroundColor"));
+        result.componentBackgroundColor = ThemeColour.parse(context, json.optJSONObject("componentBackgroundColor"));
         result.topMargin = NumberParser.parse(json, "topMargin");
         result.orientation = OrientationOptions.parse(json);
         result.direction = LayoutDirection.fromString(json.optString("direction", ""));

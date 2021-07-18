@@ -20,7 +20,7 @@ public class DotIndicatorOptions {
         DotIndicatorOptions options = new DotIndicatorOptions();
         if (json == null) return options;
 
-        options.color = ThemeColour.parseThemeColour(context, json.optJSONObject("color"));
+        options.color = ThemeColour.parse(context, json.optJSONObject("color"));
         options.size = NumberParser.parse(json, "size");
         options.visible = BoolParser.parse(json, "visible");
         options.animate = BoolParser.parse(json, "animate");

@@ -43,7 +43,7 @@ public class StatusBarOptions {
         StatusBarOptions result = new StatusBarOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ThemeColour.parseThemeColour(context, json.optJSONObject("backgroundColor"));
+        result.backgroundColor = ThemeColour.parse(context, json.optJSONObject("backgroundColor"));
         result.textColorScheme = TextColorScheme.fromString(json.optString("style"));
         result.visible = BoolParser.parse(json, "visible");
         result.drawBehind = BoolParser.parse(json, "drawBehind");

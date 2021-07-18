@@ -22,8 +22,8 @@ public class IconBackgroundOptions {
     public static IconBackgroundOptions parse(Context context, @Nullable JSONObject json) {
         IconBackgroundOptions button = new IconBackgroundOptions();
         if (json == null) return button;
-        button.color = ThemeColour.parseThemeColour(context, json.optJSONObject("color"));
-        button.disabledColor = ThemeColour.parseThemeColour(context, json.optJSONObject("disabledColor"));
+        button.color = ThemeColour.parse(context, json.optJSONObject("color"));
+        button.disabledColor = ThemeColour.parse(context, json.optJSONObject("disabledColor"));
         button.width = DensityPixelParser.parse(json, "width");
         button.height = DensityPixelParser.parse(json, "height");
         button.cornerRadius = DensityPixelParser.parse(json, "cornerRadius");

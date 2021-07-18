@@ -15,7 +15,7 @@ public class TopBarBackgroundOptions {
         TopBarBackgroundOptions options = new TopBarBackgroundOptions();
         if (json == null) return options;
 
-        options.color = ThemeColour.parseThemeColour(context, json.optJSONObject("color"));
+        options.color = ThemeColour.parse(context, json.optJSONObject("color"));
         options.component = ComponentOptions.parse(json.optJSONObject("component"));
         options.waitForRender = BoolParser.parse(json, "waitForRender");
 
