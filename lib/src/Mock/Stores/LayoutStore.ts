@@ -23,6 +23,7 @@ const setters = remx.setters({
   },
   pop(layoutId: string) {
     const stack = getters.getLayoutById(layoutId).getStack();
+    if (stack.children.length === 1) return;
     const poppedChild = stack.children.pop();
     const newVisibleChild = stack.getVisibleLayout();
     poppedChild.componentDidDisappear();
