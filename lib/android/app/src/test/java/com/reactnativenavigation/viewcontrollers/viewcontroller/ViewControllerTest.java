@@ -61,13 +61,6 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void onConfigurationChanged_shouldCallApplyOptions(){
-        ViewController spyUUT = spy(uut);
-        spyUUT.onConfigurationChanged(mockConfiguration);
-        verify(spyUUT).applyOptions(any());
-    }
-
-    @Test
     public void holdsAView() {
         assertThat(uut.getView()).isNotNull().isInstanceOf(View.class);
     }
