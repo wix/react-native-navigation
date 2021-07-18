@@ -90,7 +90,7 @@ public class ParentControllerTest extends BaseTest {
         children.add(spy(new SimpleViewController(activity, childRegistry, "child1", new Options())));
         children.add(spy(new SimpleViewController(activity, childRegistry, "child2", new Options())));
         ParentController spyUUT = spy(uut);
-        spyUUT.onConfigurationChanged(Options.EMPTY);
+        spyUUT.onConfigurationChanged(mockConfiguration);
         verify(presenter).onConfigurationChanged(any(),any());
         for (ViewController controller : children) {
             verify(controller).onConfigurationChanged(any());

@@ -134,7 +134,7 @@ public class NavigatorTest extends BaseTest {
         spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
         spyUUT.showModal(spyChild2, new CommandListenerAdapter());
         spyUUT.showModal(spyChild3, new CommandListenerAdapter());
-        spyUUT.onConfigurationChanged(Options.EMPTY);
+        spyUUT.onConfigurationChanged(mockConfiguration);
 
         verify(spyChild2).onConfigurationChanged(any());
         verify(spyChild3).onConfigurationChanged(any());
