@@ -25,7 +25,7 @@ import {
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
-import { Platform } from 'react-native';
+import { Platform, DynamicColorIOS } from 'react-native';
 
 export class OptionsProcessor {
   constructor(
@@ -130,6 +130,8 @@ export class OptionsProcessor {
         newColorObj.dark = parsedColor;
         options[key] = newColorObj;
       }
+
+      if (Platform.OS === 'ios') options[key] = DynamicColorIOS(options[key]);
     }
   }
 

@@ -3,7 +3,7 @@ import { ImageRequireSource, ImageSourcePropType, Insets } from 'react-native';
 
 // TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
-export declare type Colour = string | symbol | ThemeColour;
+export declare type Color = string | symbol | ThemeColor;
 type FontFamily = string;
 type FontStyle = 'normal' | 'italic';
 type FontWeightIOS =
@@ -75,7 +75,7 @@ export type Interpolation =
       allowsOverdamping?: boolean;
       initialVelocity?: number;
     };
-interface ThemeColour {
+interface ThemeColor {
   light?: string | symbol;
   dark?: string | symbol;
 }
@@ -120,7 +120,7 @@ export interface OptionsStatusBar {
    * Set the background color of the status bar
    * #### (Android specific)
    */
-  backgroundColor?: Colour;
+  backgroundColor?: Color;
   /**
    * Draw screen behind the status bar
    * #### (Android specific)
@@ -153,12 +153,12 @@ export interface OptionsLayout {
   /**
    * Set the screen background color
    */
-  backgroundColor?: Colour;
+  backgroundColor?: Color;
   /**
    * Set background color only for components, helps reduce overdraw if background color is set in default options.
    * #### (Android specific)
    */
-  componentBackgroundColor?: Colour;
+  componentBackgroundColor?: Color;
   /**
    * Set the allowed orientations
    */
@@ -212,7 +212,7 @@ export interface OptionsTopBarLargeTitle {
   /**
    * Set the color of large title's text
    */
-  color?: Colour;
+  color?: Color;
   /**
    * Set the font family of the large title text
    */
@@ -241,7 +241,7 @@ export interface OptionsTopBarTitle {
   /**
    * Text color
    */
-  color?: Colour;
+  color?: Color;
   /**
    * Set the font family for the title
    */
@@ -301,7 +301,7 @@ export interface OptionsTopBarSubtitle {
   /**
    * Set subtitle color
    */
-  color?: Colour;
+  color?: Color;
   /**
    * Set the font family for the subtitle
    */
@@ -354,7 +354,7 @@ export interface OptionsTopBarBackButton {
   /**
    * Back button icon and text color
    */
-  color?: Colour;
+  color?: Color;
   /**
    * Set subtitle font size
    */
@@ -415,7 +415,7 @@ export interface OptionsTopBarScrollEdgeAppearanceBackground {
   /**
    * Background color of the top bar
    */
-  color?: Colour;
+  color?: Color;
   /**
    * Allows the NavBar to be translucent (blurred)
    * #### (iOS specific)
@@ -435,14 +435,14 @@ export interface OptionsTopBarScrollEdgeAppearance {
   /**
    * Change the navbar border color
    */
-  borderColor?: Colour;
+  borderColor?: Color;
 }
 
 export interface OptionsTopBarBackground {
   /**
    * Background color of the top bar
    */
-  color?: Colour;
+  color?: Color;
   /**
    * Clip the top bar background to bounds if set to true.
    * #### (iOS specific)
@@ -554,11 +554,11 @@ export interface OptionsTopBarButton {
   /**
    * Set text color
    */
-  color?: Colour;
+  color?: Color;
   /**
    * Set text color in disabled state
    */
-  disabledColor?: Colour;
+  disabledColor?: Color;
   /**
    * Set icon background style
    */
@@ -580,8 +580,8 @@ export interface OptionsSearchBar {
   hideOnScroll?: boolean;
   hideTopBarOnFocus?: boolean;
   obscuresBackgroundDuringPresentation?: boolean;
-  backgroundColor?: Colour;
-  tintColor?: Colour;
+  backgroundColor?: Color;
+  tintColor?: Color;
   placeholder?: string;
 }
 
@@ -602,10 +602,10 @@ export interface OptionsTopBar {
    * Change button colors in the top bar
    */
 
-  leftButtonColor?: Colour;
-  rightButtonColor?: Colour;
-  leftButtonDisabledColor?: Colour;
-  rightButtonDisabledColor?: Colour;
+  leftButtonColor?: Color;
+  rightButtonColor?: Color;
+  leftButtonDisabledColor?: Color;
+  rightButtonDisabledColor?: Color;
   /**
    * Draw behind the navbar
    */
@@ -699,7 +699,7 @@ export interface OptionsTopBar {
   /**
    * Change the navbar border color
    */
-  borderColor?: Colour;
+  borderColor?: Color;
   /**
    * Set the border height of the navbar in dp
    * #### (Android specific)
@@ -763,12 +763,12 @@ export interface ElementAnimation {
 
 export interface OptionsFab {
   id: string;
-  backgroundColor?: Colour;
-  clickColor?: Colour;
-  rippleColor?: Colour;
+  backgroundColor?: Color;
+  clickColor?: Color;
+  rippleColor?: Color;
   visible?: boolean;
   icon?: ImageResource;
-  iconColor?: Colour;
+  iconColor?: Color;
   alignHorizontally?: 'left' | 'right';
   hideOnScroll?: boolean;
   size?: 'mini' | 'regular';
@@ -819,7 +819,7 @@ export interface OptionsBottomTabs {
   /**
    * Set a background color for the bottom tabs
    */
-  backgroundColor?: Colour;
+  backgroundColor?: Color;
   /**
    * Set when tabs are attached to hierarchy consequently when the
    * RootView's constructor is called.
@@ -861,7 +861,7 @@ export interface OptionsBottomTabs {
   /**
    * Control the top border color of the Bottom tabs bar
    */
-  borderColor?: Colour;
+  borderColor?: Color;
   /**
    * Control the top border width of the Bottom tabs bar
    */
@@ -880,7 +880,7 @@ export interface ShadowOptions {
   /**
    * The color of the shadow
    */
-  color?: Colour;
+  color?: Color;
   /**
    * The blur radius used to create the shadow
    */
@@ -889,7 +889,7 @@ export interface ShadowOptions {
 
 export interface DotIndicatorOptions {
   // default red
-  color?: Colour;
+  color?: Color;
   // default 6
   size?: number;
   // default false
@@ -934,7 +934,7 @@ export interface OptionsBottomTab {
   /**
    * Set the icon tint
    */
-  iconColor?: Colour;
+  iconColor?: Color;
   /**
    * Set the icon width
    * #### (Android specific)
@@ -948,15 +948,15 @@ export interface OptionsBottomTab {
   /**
    * Set the text color
    */
-  textColor?: Colour;
+  textColor?: Color;
   /**
    * Set the selected icon tint
    */
-  selectedIconColor?: Colour;
+  selectedIconColor?: Color;
   /**
    * Set the selected text color
    */
-  selectedTextColor?: Colour;
+  selectedTextColor?: Color;
   /**
    * Set the font family for the tab's text
    */
@@ -1347,7 +1347,7 @@ export interface AnimationOptions {
  * Configure Android's NavigationBar
  */
 export interface NavigationBarOptions {
-  backgroundColor?: Colour;
+  backgroundColor?: Color;
   visible?: boolean;
 }
 
@@ -1358,18 +1358,18 @@ export interface WindowOptions {
   /**
    * Configure the background color of the application's main window.
    */
-  backgroundColor?: Colour;
+  backgroundColor?: Color;
 }
 
 export interface IconBackgroundOptions {
   /**
    * Set background color
    */
-  color: Colour;
+  color: Color;
   /**
    * Set background color on disabled state
    */
-  disabledColor?: Colour;
+  disabledColor?: Color;
   /**
    * Set corner radius
    */
