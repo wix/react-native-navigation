@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.stack
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.View
@@ -65,6 +66,7 @@ class StackPresenterTest : BaseTest() {
     private lateinit var reactTitleView: TitleBarReactView
 
     override fun beforeEach() {
+        super.beforeEach()
         activity = spy(newActivity())
         val titleViewCreator: TitleBarReactViewCreatorMock = object : TitleBarReactViewCreatorMock() {
             override fun create(activity: Activity, componentId: String, componentName: String): TitleBarReactView {
@@ -77,25 +79,86 @@ class StackPresenterTest : BaseTest() {
         iconResolver = IconResolverFake(activity)
         buttonCreator = TitleBarButtonCreatorMock()
         ogUut = StackPresenter(
-                activity,
-                titleViewCreator,
-                TopBarBackgroundViewCreatorMock(),
-                buttonCreator,
-                iconResolver,
-                typefaceLoader,
-                renderChecker,
-                Options()
+            activity,
+            titleViewCreator,
+            TopBarBackgroundViewCreatorMock(),
+            buttonCreator,
+            iconResolver,
+            typefaceLoader,
+            renderChecker,
+            Options()
         )
         uut = spy(ogUut)
         createTopBarController()
         parent = TestUtils.newStackController(activity)
-                .setTopBarController(topBarController)
-                .setStackPresenter(uut)
-                .build()
+            .setTopBarController(topBarController)
+            .setStackPresenter(uut)
+            .build()
         childRegistry = ChildControllersRegistry()
         child = spy(SimpleViewController(activity, childRegistry, "child1", Options.EMPTY))
         otherChild = spy(SimpleViewController(activity, childRegistry, "child1", Options.EMPTY))
         activity.setContentView(parent.view)
+    }
+
+    @Test
+    fun onConfigurationChange_shouldApplyColors() {
+        val options = Options.EMPTY.copy()
+        options.topBar.borderColor = ThemeColour.of(Color.BLACK, Color.RED)
+        options.topBar.background = TopBarBackgroundOptions().apply {
+            color = ThemeColour.of(Color.BLACK, Color.RED)
+        }
+        options.topBar.title = TitleOptions().apply {
+            color = ThemeColour.of(Color.BLACK, Color.RED)
+        }
+        options.topBar.subtitle = SubtitleOptions().apply {
+            color = ThemeColour.of(Color.BLACK, Color.RED)
+        }
+        options.topBar.buttons.back = BackButton().apply {
+            color = ThemeColour.of(Color.BLACK, Color.RED)
+            visible = Bool(true)
+        }
+        options.topBar.rightButtonColor = ThemeColour.of(Color.BLACK, Color.RED)
+        options.topBar.buttons.left = arrayListOf(ButtonOptions())
+        options.topBar.buttons.right = arrayListOf(ButtonOptions())
+
+        options.topTabs.selectedTabColor = ThemeColour.of(Color.BLACK, Color.RED)
+        options.topTabs.unselectedTabColor = ThemeColour.of(Color.BLACK, Color.RED)
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO
+        uut.onConfigurationChanged(options)
+
+        verify(topBar).setTitleTextColor(Color.BLACK)
+        verify(topBar).setSubtitleColor(Color.BLACK)
+        verify(topBar).setBackgroundColor(Color.BLACK)
+        verify(topBar).setBorderColor(Color.BLACK)
+        verify(topBar).applyTopTabsColors(options.topTabs.selectedTabColor,options.topTabs.unselectedTabColor)
+        verify(topBar).setOverflowButtonColor(Color.BLACK)
+        verify(topBar).setBackButton(any())
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES
+        uut.onConfigurationChanged(options)
+
+        verify(topBar).setTitleTextColor(Color.RED)
+        verify(topBar).setSubtitleColor(Color.RED)
+        verify(topBar).setBackgroundColor(Color.RED)
+        verify(topBar).setBorderColor(Color.RED)
+        verify(topBar,times(2)).applyTopTabsColors(options.topTabs.selectedTabColor,options.topTabs.unselectedTabColor)
+        verify(topBar).setOverflowButtonColor(Color.RED)
+        verify(topBar,times(2)).setBackButton(any())
+
+    }
+
+    @Test
+    fun onConfigurationChange_shouldApplyColorsOnTopBarButtons() {
+        val options = Options.EMPTY.copy()
+        options.topBar.buttons.left = arrayListOf(ButtonOptions())
+        options.topBar.buttons.right = arrayListOf(ButtonOptions())
+        uut.applyChildOptions(options,parent,child)
+
+        uut.onConfigurationChanged(options)
+
+        verify(topBarController, times(2)).applyRightButtons(any())
+        verify(topBarController, times(2)).applyLeftButtons(any())
     }
 
     @Test
@@ -345,7 +408,7 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
-    fun mergeChildOptions_mergeAnimateLeftRightButtons(){
+    fun mergeChildOptions_mergeAnimateLeftRightButtons() {
         val options = Options().apply {
             topBar.animateLeftButtons = Bool(false)
         }
@@ -431,7 +494,7 @@ class StackPresenterTest : BaseTest() {
         childOptions.topBar.title.font.fontFamily = Text(SOME_FONT_FAMILY)
         child.mergeOptions(childOptions)
         val parentOptions = Options()
-        parentOptions.topBar.title.color = ThemeColour(Colour(Color.RED))
+        parentOptions.topBar.title.color = ThemeColour.of(Color.RED)
         parent.mergeOptions(parentOptions)
         val defaultOptions = Options()
         defaultOptions.topBar.title.fontSize = Fraction(9.0)
@@ -837,8 +900,8 @@ class StackPresenterTest : BaseTest() {
         val options = Options().apply {
             topBar.buttons.right = ArrayList(listOf(componentBtn1))
             topBar.buttons.left = ArrayList(listOf(componentBtn2))
-            topBar.animateLeftButtons= Bool(false);
-            topBar.animateRightButtons= Bool(true);
+            topBar.animateLeftButtons = Bool(false);
+            topBar.animateRightButtons = Bool(true);
         }
 
         uut.applyChildOptions(options, parent, child)
