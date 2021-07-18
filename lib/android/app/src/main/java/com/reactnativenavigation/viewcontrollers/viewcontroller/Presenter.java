@@ -248,9 +248,10 @@ public class Presenter {
     }
 
     public void onConfigurationChanged(ViewController controller, Options options) {
-        setNavigationBarBackgroundColor(options.navigationBar);
-        setStatusBarBackgroundColor(options.statusBar);
-        setTextColorScheme(options.statusBar);
-        applyBackgroundColor(controller, options);
+        Options withDefault = options.mergeWith(defaultOptions);
+        setNavigationBarBackgroundColor(withDefault.navigationBar);
+        setStatusBarBackgroundColor(withDefault.statusBar);
+        setTextColorScheme(withDefault.statusBar);
+        applyBackgroundColor(controller, withDefault);
     }
 }

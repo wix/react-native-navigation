@@ -31,6 +31,7 @@ public class ComponentPresenter extends ComponentPresenterBase {
     }
 
     public void onConfigurationChanged(ComponentLayout view, Options options) {
-        setBackgroundColor(view, options);
+        Options withDefault = options.mergeWith(defaultOptions);
+        setBackgroundColor(view, withDefault);
     }
 }
