@@ -2,7 +2,6 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.animation.Animator;
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
