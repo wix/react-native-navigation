@@ -132,22 +132,6 @@ public class OptionsApplyingTest extends BaseTest {
     }
 
     @Test
-    public void appliesTopBackBackgroundColor_shouldSupportDarkModeChange() {
-        uut.options.topBar.background.color = new ThemeColour(new Colour(Color.RED), new Colour(Color.BLACK));
-        stack.push(uut, new CommandListenerAdapter());
-        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
-        stack.onConfigurationChanged(mockConfiguration);
-        idleMainLooper();
-        assertThat(((ColorDrawable) stack.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
-
-        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES;
-        stack.onConfigurationChanged(mockConfiguration);
-        assertThat(((ColorDrawable) stack.getTopBar().getBackground()).getColor()).isEqualTo(Color.BLACK);
-    }
-
-
-
-    @Test
     public void appliesTopBarVisible() {
         stack.push(uut, new CommandListenerAdapter());
 
