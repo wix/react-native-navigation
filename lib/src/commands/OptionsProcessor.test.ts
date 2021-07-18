@@ -472,7 +472,7 @@ describe('navigation options', () => {
       topBar: {
         background: { color: { light: 0xff0000ff, dark: 0xffff0000 } },
         title: {
-          color: {},
+          color: { light: 'NoColor', dark: 'NoColor' },
         },
       },
     });
