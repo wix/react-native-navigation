@@ -47,6 +47,8 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
+    public final static int  DEFAULT_TITLE_COLOR = Color.BLACK;
+    public final static int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
 
     private final TopBarCollapseBehavior collapsingBehavior;
     private TopTabs topTabs;
@@ -344,7 +346,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void applyTitleOptions(TitleOptions titleOptions, TypefaceLoader typefaceLoader) {
         final double DEFAULT_TITLE_FONT_SIZE = 18;
-        final int DEFAULT_TITLE_COLOR = Color.BLACK;
         this.setTitle(titleOptions.text.get(""));
         this.setTitleFontSize(titleOptions.fontSize.get(DEFAULT_TITLE_FONT_SIZE));
         this.setTitleTextColor(titleOptions.color.get(DEFAULT_TITLE_COLOR));
@@ -354,7 +355,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void applySubtitleOptions(SubtitleOptions subtitle, TypefaceLoader typefaceLoader) {
         final double DEFAULT_SUBTITLE_FONT_SIZE = 14;
-        final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
 
         this.setSubtitle(subtitle.text.get(""));
         this.setSubtitleFontSize(subtitle.fontSize.get(DEFAULT_SUBTITLE_FONT_SIZE));
