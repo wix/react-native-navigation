@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Color;
 
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
@@ -43,16 +44,24 @@ public class BottomTabPresenterTest extends BaseTest {
     private ViewController child1;
     private ViewController child2;
     private ViewController child3;
+    private Activity activity;
+    private ChildControllersRegistry childRegistry;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
-        Activity activity = newActivity();
-        ChildControllersRegistry childRegistry = new ChildControllersRegistry();
+        activity = newActivity();
+        childRegistry = new ChildControllersRegistry();
+        createBottomTabs(tab1Options,tab2Options,new Options());
+    }
+
+    private void createBottomTabs(Options tab1Options,
+                                  Options tab2Options,Options tab3Options ) {
+        childRegistry = new ChildControllersRegistry();
         bottomTabs = Mockito.mock(BottomTabs.class);
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", tab1Options));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", tab2Options));
-        child3 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
+        child3 = spy(new SimpleViewController(activity, childRegistry, "child2", tab3Options));
         tabs = Arrays.asList(child1, child2, child3);
         uut = new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), new Options());
         uut.bindView(bottomTabs);
@@ -62,8 +71,32 @@ public class BottomTabPresenterTest extends BaseTest {
     @Test
     public void onConfigurationChange_shouldChangeColors(){
         Options options = Options.EMPTY;
-        options.bottomTabsOptions.borderColor = ThemeColour.
-      //  uut.onConfigurationChanged();
+        options.bottomTabOptions.textColor = ThemeColour.of(Color.BLACK,Color.WHITE);
+        options.bottomTabOptions.selectedTextColor = ThemeColour.of(Color.BLUE,Color.RED);
+        options.bottomTabOptions.iconColor = ThemeColour.of(Color.BLACK,Color.WHITE);
+        options.bottomTabOptions.selectedIconColor = ThemeColour.of(Color.BLUE,Color.RED);
+        options.bottomTabOptions.badgeColor = ThemeColour.of(Color.BLACK,Color.WHITE);
+        createBottomTabs(options,options,options);
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
+        uut.onConfigurationChanged(options);
+        for(int i=0;i<tabs.size();++i){
+            verify(bottomTabs).setIconActiveColor(i,Color.BLUE);
+            verify(bottomTabs).setIconInactiveColor(i,Color.BLACK);
+
+            verify(bottomTabs).setTitleActiveColor(i,Color.BLUE);
+            verify(bottomTabs).setTitleInactiveColor(i,Color.BLACK);
+        }
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES;
+        uut.onConfigurationChanged(options);
+        for(int i=0;i<tabs.size();++i){
+            verify(bottomTabs).setIconActiveColor(i,Color.RED);
+            verify(bottomTabs).setIconInactiveColor(i,Color.WHITE);
+
+            verify(bottomTabs).setTitleActiveColor(i,Color.RED);
+            verify(bottomTabs).setTitleInactiveColor(i,Color.WHITE);
+        }
     }
 
     @Test
