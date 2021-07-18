@@ -13,7 +13,7 @@ import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeNullColor;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
@@ -68,14 +68,14 @@ public class TopBarOptions {
     public Fraction elevation = new NullFraction();
     public Number topMargin = new NullNumber();
     public Fraction borderHeight = new NullFraction();
-    public ThemeColour borderColor = new ThemeNullColor();
+    public ThemeColour borderColor = new NullThemeColour();
     public Bool animateLeftButtons = new NullBool();
     public Bool animateRightButtons = new NullBool();
     // Deprecated
-    public ThemeColour rightButtonColor = new ThemeNullColor();
-    public ThemeColour leftButtonColor = new ThemeNullColor();
-    public ThemeColour rightButtonDisabledColor = new ThemeNullColor();
-    public ThemeColour leftButtonDisabledColor = new ThemeNullColor();
+    public ThemeColour rightButtonColor = new NullThemeColour();
+    public ThemeColour leftButtonColor = new NullThemeColour();
+    public ThemeColour rightButtonDisabledColor = new NullThemeColour();
+    public ThemeColour leftButtonDisabledColor = new NullThemeColour();
 
     public TopBarOptions copy() {
         TopBarOptions result = new TopBarOptions();

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeNullColor;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.parsers.BoolParser;
 
 import org.json.JSONObject;
@@ -26,7 +26,7 @@ public class TopBarBackgroundOptions {
         return options;
     }
 
-    public ThemeColour color = new ThemeNullColor();
+    public ThemeColour color = new NullThemeColour();
     public ComponentOptions component = new ComponentOptions();
     public Bool waitForRender = new NullBool();
 

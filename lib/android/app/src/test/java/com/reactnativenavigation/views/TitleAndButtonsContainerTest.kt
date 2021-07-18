@@ -13,7 +13,7 @@ import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.params.ThemeColour
-import com.reactnativenavigation.options.params.ThemeNullColor
+import com.reactnativenavigation.options.params.NullThemeColour
 import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_PX
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleAndButtonsContainer
@@ -418,7 +418,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
     @Test
     fun setBackgroundColor_changesTitleBarBgColor() {
         uut = Mockito.spy(uut)
-        uut.setBackgroundColor(ThemeNullColor())
+        uut.setBackgroundColor(NullThemeColour())
         verify(uut, times(0)).setBackgroundColor(Color.GRAY)
         uut.setBackgroundColor(ThemeColour(Colour(Color.GRAY)))
         verify(uut, times(1)).setBackgroundColor(Color.GRAY)

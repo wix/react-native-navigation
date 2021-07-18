@@ -7,14 +7,14 @@ import androidx.annotation.Nullable;
 import com.reactnativenavigation.options.params.NullDensityPixel;
 import com.reactnativenavigation.options.params.DensityPixel;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeNullColor;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.parsers.DensityPixelParser;
 
 import org.json.JSONObject;
 
 public class IconBackgroundOptions {
-    public ThemeColour color = new ThemeNullColor();
-    public ThemeColour disabledColor = new ThemeNullColor();
+    public ThemeColour color = new NullThemeColour();
+    public ThemeColour disabledColor = new NullThemeColour();
     public DensityPixel width = new NullDensityPixel();
     public DensityPixel height = new NullDensityPixel();
     public DensityPixel cornerRadius = new NullDensityPixel();

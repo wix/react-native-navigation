@@ -10,7 +10,7 @@ import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeNullColor;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 
@@ -19,9 +19,9 @@ import org.json.JSONObject;
 public class TopTabsOptions {
 
     @NonNull
-    public ThemeColour selectedTabColor = new ThemeNullColor();
+    public ThemeColour selectedTabColor = new NullThemeColour();
     @NonNull
-    public ThemeColour unselectedTabColor = new ThemeNullColor();
+    public ThemeColour unselectedTabColor = new NullThemeColour();
     @NonNull
     public Number fontSize = new NullNumber();
     @NonNull

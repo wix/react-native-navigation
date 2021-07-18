@@ -10,7 +10,7 @@ import org.json.JSONObject
 private const val LIGHT_COLOR_KEY = "light"
 private const val DARK_COLOR_KEY = "dark"
 
-class ThemeNullColor() : ThemeColour(NullColor(), NullColor()) {
+class NullThemeColour() : ThemeColour(NullColor(), NullColor()) {
     override fun hasValue(): Boolean {
         return false;
     }
@@ -40,7 +40,7 @@ open class ThemeColour(private var lightColor: Colour, private var darkColor: Co
         fun parse(context: Context, json: JSONObject?): ThemeColour {
             return json?.let {
                 ThemeColour(ColorParser.parse(context, json, LIGHT_COLOR_KEY), ColorParser.parse(context, json, DARK_COLOR_KEY))
-            } ?: ThemeNullColor()
+            } ?: NullThemeColour()
         }
         @JvmStatic
         fun transparent() = of(Color.TRANSPARENT)

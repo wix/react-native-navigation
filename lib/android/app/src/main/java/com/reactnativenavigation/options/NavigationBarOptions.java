@@ -5,7 +5,7 @@ import android.content.Context;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.ThemeColour;
-import com.reactnativenavigation.options.params.ThemeNullColor;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.parsers.BoolParser;
 
 import org.json.JSONObject;
@@ -21,7 +21,7 @@ public class NavigationBarOptions {
         return result;
     }
 
-    public ThemeColour backgroundColor = new ThemeNullColor();
+    public ThemeColour backgroundColor = new NullThemeColour();
     public Bool isVisible = new NullBool();
 
     public void mergeWith(NavigationBarOptions other) {
