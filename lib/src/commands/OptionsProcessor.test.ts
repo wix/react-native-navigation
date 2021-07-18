@@ -589,8 +589,8 @@ describe('navigation options', () => {
       hideOnScroll: false,
       hideTopBarOnFocus: false,
       obscuresBackgroundDuringPresentation: false,
-      backgroundColor: {},
-      tintColor: {},
+      backgroundColor: { light: 'NoColor', dark: 'NoColor' },
+      tintColor: { light: 'NoColor', dark: 'NoColor' },
       placeholder: '',
     });
   });
