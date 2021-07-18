@@ -6,7 +6,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.reactnativenavigation.options.params.RNNColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.viewcontrollers.stack.FabAnimator;
 import com.reactnativenavigation.viewcontrollers.stack.FabCollapseBehaviour;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
@@ -30,7 +30,7 @@ public class Fab extends FloatingActionButton implements FabAnimator {
         this.id = id;
     }
 
-    public void applyIcon(String icon, RNNColour color) {
+    public void applyIcon(String icon, ThemeColour color) {
         new ImageLoader().loadIcons(getContext(), Collections.singletonList(icon), new ImageLoadingListenerAdapter() {
             @Override
             public void onComplete(@NonNull List<? extends Drawable> drawables) {

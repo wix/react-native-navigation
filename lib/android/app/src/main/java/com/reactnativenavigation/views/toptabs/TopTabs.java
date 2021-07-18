@@ -7,7 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.RNNColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.utils.ViewExtensionsKt;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 
@@ -31,7 +31,7 @@ public class TopTabs extends TabLayout {
         return EMPTY_STATE_SET;
     }
 
-    public void applyTopTabsColors(RNNColour selectedTabColor, RNNColour unselectedTabColor) {
+    public void applyTopTabsColors(ThemeColour selectedTabColor, ThemeColour unselectedTabColor) {
         styleHelper.applyTopTabsColors(selectedTabColor, unselectedTabColor);
     }
 

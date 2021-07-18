@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
 
@@ -16,13 +16,13 @@ public class NavigationBarOptions {
         NavigationBarOptions result = new NavigationBarOptions();
         if (json == null) return result;
 
-        result.backgroundColor = RNNColourKt.parse(context, json.optJSONObject("backgroundColor"));
+        result.backgroundColor = ThemeColour.parseThemeColour(context, json.optJSONObject("backgroundColor"));
         result.isVisible = BoolParser.parse(json, "visible");
 
         return result;
     }
 
-    public RNNColour backgroundColor = new RNNNullColor();
+    public ThemeColour backgroundColor = new RNNNullColor();
     public Bool isVisible = new NullBool();
 
     public void mergeWith(NavigationBarOptions other) {

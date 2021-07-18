@@ -249,7 +249,7 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeRightButtons_buttonsAreCreatedOnlyIfNeeded() {
         val toApply = Options()
-        textBtn1.color = RNNColour(Colour(Color.GREEN))
+        textBtn1.color = ThemeColour(Colour(Color.GREEN))
         toApply.topBar.buttons.right = arrayListOf(textBtn1, componentBtn1)
         uut.applyChildOptions(toApply, parent, child)
 
@@ -260,7 +260,7 @@ class StackPresenterTest : BaseTest() {
         val appliedButtons = captor1.firstValue
         val toMerge = Options()
         toMerge.topBar.buttons.right = ArrayList(toApply.topBar.buttons.right!!.map(ButtonOptions::copy))
-        toMerge.topBar.buttons.right!![0].color = RNNColour(Colour(Color.RED))
+        toMerge.topBar.buttons.right!![0].color = ThemeColour(Colour(Color.RED))
         toMerge.topBar.buttons.right!!.add(1, componentBtn2)
         uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child)
 
@@ -375,18 +375,18 @@ class StackPresenterTest : BaseTest() {
         assertTopBarOptions(options, 0)
         val title = TitleOptions()
         title.text = Text("abc")
-        title.color = RNNColour(Colour(0))
+        title.color = ThemeColour(Colour(0))
         title.fontSize = Fraction(1.0)
         title.font = FontOptions()
         title.font.fontStyle = Text("bold")
         options.topBar.title = title
         val subtitleOptions = SubtitleOptions()
         subtitleOptions.text = Text("Sub")
-        subtitleOptions.color = RNNColour(Colour(1))
+        subtitleOptions.color = ThemeColour(Colour(1))
         subtitleOptions.font.fontStyle = Text("bold")
         subtitleOptions.fontSize = Fraction(1.0)
         options.topBar.subtitle = subtitleOptions
-        options.topBar.background.color = RNNColour(Colour(0))
+        options.topBar.background.color = ThemeColour(Colour(0))
         options.topBar.testId = Text("test123")
         options.topBar.animate = Bool(false)
         options.topBar.visible = Bool(false)
@@ -402,7 +402,7 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeOptions_defaultOptionsAreNotApplied() {
         val defaultOptions = Options()
-        defaultOptions.topBar.background.color = RNNColour(Colour(10))
+        defaultOptions.topBar.background.color = ThemeColour(Colour(10))
         uut.defaultOptions = defaultOptions
         val toMerge = Options()
         toMerge.topBar.title.text = Text("someText")
@@ -431,7 +431,7 @@ class StackPresenterTest : BaseTest() {
         childOptions.topBar.title.font.fontFamily = Text(SOME_FONT_FAMILY)
         child.mergeOptions(childOptions)
         val parentOptions = Options()
-        parentOptions.topBar.title.color = RNNColour(Colour(Color.RED))
+        parentOptions.topBar.title.color = ThemeColour(Colour(Color.RED))
         parent.mergeOptions(parentOptions)
         val defaultOptions = Options()
         defaultOptions.topBar.title.fontSize = Fraction(9.0)
@@ -452,7 +452,7 @@ class StackPresenterTest : BaseTest() {
         childOptions.topBar.subtitle.font.fontFamily = Text(SOME_FONT_FAMILY)
         child.mergeOptions(childOptions)
         val parentOptions = Options()
-        parentOptions.topBar.subtitle.color = RNNColour(Colour(Color.RED))
+        parentOptions.topBar.subtitle.color = ThemeColour(Colour(Color.RED))
         parent.mergeOptions(parentOptions)
         val defaultOptions = Options()
         defaultOptions.topBar.subtitle.fontSize = Fraction(9.0)
@@ -474,7 +474,7 @@ class StackPresenterTest : BaseTest() {
         uut.defaultOptions = defaultOptions
         val resolvedOptions = Options()
         resolvedOptions.topBar.title.font.fontFamily = Text(SOME_FONT_FAMILY)
-        resolvedOptions.topBar.title.color = RNNColour(Colour(Color.RED))
+        resolvedOptions.topBar.title.color = ThemeColour(Colour(Color.RED))
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
@@ -492,7 +492,7 @@ class StackPresenterTest : BaseTest() {
         uut.defaultOptions = defaultOptions
         val resolvedOptions = Options()
         resolvedOptions.topBar.subtitle.font.fontFamily = Text(SOME_FONT_FAMILY)
-        resolvedOptions.topBar.subtitle.color = RNNColour(Colour(Color.RED))
+        resolvedOptions.topBar.subtitle.color = ThemeColour(Colour(Color.RED))
         val toMerge = Options()
         toMerge.topBar.subtitle.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
@@ -506,7 +506,7 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeChildOptions_defaultOptionsAreNotApplied() {
         val defaultOptions = Options()
-        defaultOptions.topBar.background.color = RNNColour(Colour(10))
+        defaultOptions.topBar.background.color = ThemeColour(Colour(10))
         uut.defaultOptions = defaultOptions
         val childOptions = Options()
         childOptions.topBar.title.text = Text("someText")
@@ -569,8 +569,8 @@ class StackPresenterTest : BaseTest() {
         verify(topBar, never()).applyTopTabsColors(any(), any())
         verify(topBar, never()).applyTopTabsFontSize(any())
         verify(topBar, never()).setTopTabsVisible(any())
-        options.topTabs.selectedTabColor = RNNColour(Colour(1))
-        options.topTabs.unselectedTabColor = RNNColour(Colour(1))
+        options.topTabs.selectedTabColor = ThemeColour(Colour(1))
+        options.topTabs.unselectedTabColor = ThemeColour(Colour(1))
         options.topTabs.fontSize = Number(1)
         options.topTabs.visible = Bool(true)
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
@@ -594,8 +594,8 @@ class StackPresenterTest : BaseTest() {
         val rightButton1 = ButtonOptions()
         val rightButton2 = ButtonOptions()
         val leftButton = ButtonOptions()
-        options.topBar.rightButtonColor = RNNColour(Colour(10))
-        options.topBar.leftButtonColor = RNNColour(Colour(100))
+        options.topBar.rightButtonColor = ThemeColour(Colour(10))
+        options.topBar.leftButtonColor = ThemeColour(Colour(100))
         options.topBar.buttons.right = ArrayList()
         options.topBar.buttons.right!!.add(rightButton1)
         options.topBar.buttons.right!!.add(rightButton2)
@@ -638,18 +638,18 @@ class StackPresenterTest : BaseTest() {
         uut.applyChildOptions(initialOptions, parent, child)
 
         //Merge color change for right and left buttons
-        mergeOptions.topBar.rightButtonColor = RNNColour(Colour(100))
-        mergeOptions.topBar.leftButtonColor = RNNColour(Colour(10))
+        mergeOptions.topBar.rightButtonColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.leftButtonColor = ThemeColour(Colour(10))
         val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock()))
         val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock()))
         uut.setComponentsButtonController(child.view, rightController, leftController)
         uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
 
-        val rightColorCaptor = argumentCaptor<RNNColour>()
+        val rightColorCaptor = argumentCaptor<ThemeColour>()
         verify(rightController).applyColor(any(), rightColorCaptor.capture())
         assertThat(rightColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.rightButtonColor)
 
-        val leftColorCaptor = argumentCaptor<RNNColour>()
+        val leftColorCaptor = argumentCaptor<ThemeColour>()
         verify(leftController).applyColor(any(), leftColorCaptor.capture())
         assertThat(leftColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.leftButtonColor)
     }
@@ -667,18 +667,18 @@ class StackPresenterTest : BaseTest() {
         uut.applyChildOptions(initialOptions, parent, child)
 
         //Merge color change for right and left buttons
-        mergeOptions.topBar.rightButtonDisabledColor = RNNColour(Colour(100))
-        mergeOptions.topBar.leftButtonDisabledColor = RNNColour(Colour(10))
+        mergeOptions.topBar.rightButtonDisabledColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.leftButtonDisabledColor = ThemeColour(Colour(10))
         val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock { }))
         val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock { }))
         uut.setComponentsButtonController(child.view, rightController, leftController)
         uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
 
-        val rightColorCaptor = argumentCaptor<RNNColour>()
+        val rightColorCaptor = argumentCaptor<ThemeColour>()
         verify(rightController).applyDisabledColor(any(), rightColorCaptor.capture())
         assertThat(rightColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.rightButtonDisabledColor)
 
-        val leftColorCaptor = argumentCaptor<RNNColour>()
+        val leftColorCaptor = argumentCaptor<ThemeColour>()
         verify(leftController).applyDisabledColor(any(), leftColorCaptor.capture())
         assertThat(leftColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.leftButtonDisabledColor)
     }
@@ -699,10 +699,10 @@ class StackPresenterTest : BaseTest() {
         //Merge color change for right and left buttons with clear buttons
         mergeOptions.topBar.buttons.right = ArrayList()
         mergeOptions.topBar.buttons.left = ArrayList()
-        mergeOptions.topBar.rightButtonColor = RNNColour(Colour(100))
-        mergeOptions.topBar.leftButtonColor = RNNColour(Colour(100))
-        mergeOptions.topBar.rightButtonDisabledColor = RNNColour(Colour(100))
-        mergeOptions.topBar.leftButtonDisabledColor = RNNColour(Colour(10))
+        mergeOptions.topBar.rightButtonColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.leftButtonColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.rightButtonDisabledColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.leftButtonDisabledColor = ThemeColour(Colour(10))
         val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock { }))
         val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock { }))
         uut.setComponentsButtonController(child.view, rightController, leftController)
@@ -719,8 +719,8 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeChildOptions_buttonColorIsResolvedFromAppliedOptions() {
         val appliedOptions = Options()
-        appliedOptions.topBar.rightButtonColor = RNNColour(Colour(10))
-        appliedOptions.topBar.leftButtonColor = RNNColour(Colour(100))
+        appliedOptions.topBar.rightButtonColor = ThemeColour(Colour(10))
+        appliedOptions.topBar.leftButtonColor = ThemeColour(Colour(100))
 
         val options2 = Options()
         val rightButton1 = ButtonOptions()
@@ -745,8 +745,8 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeChildOptions_buttonColorIsResolvedFromMergedOptions() {
         val resolvedOptions = Options()
-        resolvedOptions.topBar.rightButtonColor = RNNColour(Colour(10))
-        resolvedOptions.topBar.leftButtonColor = RNNColour(Colour(100))
+        resolvedOptions.topBar.rightButtonColor = ThemeColour(Colour(10))
+        resolvedOptions.topBar.leftButtonColor = ThemeColour(Colour(100))
 
         val rightButton1 = ButtonOptions()
         val rightButton2 = ButtonOptions()

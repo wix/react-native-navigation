@@ -15,7 +15,7 @@ import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.RNNColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -125,7 +125,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBackBackgroundColor() {
-        uut.options.topBar.background.color = new RNNColour(new Colour(Color.RED));
+        uut.options.topBar.background.color = new ThemeColour(new Colour(Color.RED));
         stack.push(uut, new CommandListenerAdapter());
         idleMainLooper();
         assertThat(((ColorDrawable) stack.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
@@ -133,7 +133,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBackBackgroundColor_shouldSupportDarkModeChange() {
-        uut.options.topBar.background.color = new RNNColour(new Colour(Color.RED), new Colour(Color.BLACK));
+        uut.options.topBar.background.color = new ThemeColour(new Colour(Color.RED), new Colour(Color.BLACK));
         stack.push(uut, new CommandListenerAdapter());
         mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
         stack.onConfigurationChanged(mockConfiguration);

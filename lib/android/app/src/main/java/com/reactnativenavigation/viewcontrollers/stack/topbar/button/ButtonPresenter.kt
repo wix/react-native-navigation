@@ -16,7 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
-import com.reactnativenavigation.options.params.RNNColour
+import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.utils.ArrayUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.views.stack.topbar.titlebar.IconBackgroundDrawable
@@ -52,7 +52,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
     }
 
-    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: RNNColour) {
+    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: ThemeColour) {
         button.color = color
         applyIcon(menuItem)
         applyOptionsDirectlyOnView(toolbar, menuItem) {
@@ -60,7 +60,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
     }
 
-    fun applyDisabledColor(toolbar: Toolbar, menuItem: MenuItem, disabledColor: RNNColour) {
+    fun applyDisabledColor(toolbar: Toolbar, menuItem: MenuItem, disabledColor: ThemeColour) {
         button.disabledColor = disabledColor
         applyIcon(menuItem)
         applyOptionsDirectlyOnView(toolbar, menuItem) {

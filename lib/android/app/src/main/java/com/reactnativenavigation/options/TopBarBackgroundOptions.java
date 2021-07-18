@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
 
@@ -16,18 +16,18 @@ public class TopBarBackgroundOptions {
         TopBarBackgroundOptions options = new TopBarBackgroundOptions();
         if (json == null) return options;
 
-        options.color = RNNColourKt.parse(context, json.optJSONObject("color"));
+        options.color = ThemeColour.parseThemeColour(context, json.optJSONObject("color"));
         options.component = ComponentOptions.parse(json.optJSONObject("component"));
         options.waitForRender = BoolParser.parse(json, "waitForRender");
 
         if (options.component.hasValue()) {
-            options.color = RNNColourKt.transparent();
+            options.color = ThemeColour.transparent();
         }
 
         return options;
     }
 
-    public RNNColour color = new RNNNullColor();
+    public ThemeColour color = new RNNNullColor();
     public ComponentOptions component = new ComponentOptions();
     public Bool waitForRender = new NullBool();
 

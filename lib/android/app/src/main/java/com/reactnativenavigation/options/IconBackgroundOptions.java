@@ -6,17 +6,16 @@ import androidx.annotation.Nullable;
 
 import com.reactnativenavigation.options.params.NullDensityPixel;
 import com.reactnativenavigation.options.params.DensityPixel;
-import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.RNNNullColor;
-import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.DensityPixelParser;
 
 import org.json.JSONObject;
 
 public class IconBackgroundOptions {
-    public RNNColour color = new RNNNullColor();
-    public RNNColour disabledColor = new RNNNullColor();
+    public ThemeColour color = new RNNNullColor();
+    public ThemeColour disabledColor = new RNNNullColor();
     public DensityPixel width = new NullDensityPixel();
     public DensityPixel height = new NullDensityPixel();
     public DensityPixel cornerRadius = new NullDensityPixel();
@@ -24,8 +23,8 @@ public class IconBackgroundOptions {
     public static IconBackgroundOptions parse(Context context, @Nullable JSONObject json) {
         IconBackgroundOptions button = new IconBackgroundOptions();
         if (json == null) return button;
-        button.color = RNNColourKt.parse(context, json.optJSONObject("color"));
-        button.disabledColor = RNNColourKt.parse(context, json.optJSONObject("disabledColor"));
+        button.color = ThemeColour.parseThemeColour(context, json.optJSONObject("color"));
+        button.disabledColor = ThemeColour.parseThemeColour(context, json.optJSONObject("disabledColor"));
         button.width = DensityPixelParser.parse(json, "width");
         button.height = DensityPixelParser.parse(json, "height");
         button.cornerRadius = DensityPixelParser.parse(json, "cornerRadius");

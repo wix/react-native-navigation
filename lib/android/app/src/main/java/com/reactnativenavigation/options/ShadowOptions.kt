@@ -8,7 +8,7 @@ import org.json.JSONObject
 
 fun parseShadowOptions(context: Context, shadowJson: JSONObject?): ShadowOptions = shadowJson?.let { json ->
     ShadowOptions(
-        parse(context, json.optJSONObject("color")), FractionParser.parse(json, "radius"), FractionParser
+        parseThemeColour(context, json.optJSONObject("color")), FractionParser.parse(json, "radius"), FractionParser
             .parse(
                 json,
                 "opacity"
@@ -21,7 +21,7 @@ object NullShadowOptions : ShadowOptions() {
 }
 
 open class ShadowOptions(
-    var color: RNNColour = RNNNullColor(), var radius: Fraction = NullFraction(), var opacity: Fraction =
+    var color: ThemeColour = RNNNullColor(), var radius: Fraction = NullFraction(), var opacity: Fraction =
         NullFraction()
 ) {
 

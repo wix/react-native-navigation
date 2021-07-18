@@ -14,7 +14,7 @@ import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.RNNColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
@@ -84,7 +84,7 @@ public class TopBarButtonControllerTest extends BaseTest {
     @Test
     public void setIconColor_disabledColor() {
         setIconButton(false);
-        button.disabledColor = new RNNColour(new Colour(Color.BLACK), new Colour(Color.BLACK));
+        button.disabledColor = new ThemeColour(new Colour(Color.BLACK), new Colour(Color.BLACK));
         uut.addToMenu(getTitleBar(), 0);
 
         verify(optionsPresenter).tint(any(), eq(Color.BLACK));
@@ -105,7 +105,7 @@ public class TopBarButtonControllerTest extends BaseTest {
     private void setIconButton(boolean enabled) {
         button.id = "btn1";
         button.icon = new Text("someIcon");
-        button.color = new RNNColour(new Colour(Color.RED),new Colour(Color.RED));
+        button.color = new ThemeColour(new Colour(Color.RED),new Colour(Color.RED));
         button.component.name = new NullText();
         button.component.componentId = new NullText();
         button.enabled = new Bool(enabled);

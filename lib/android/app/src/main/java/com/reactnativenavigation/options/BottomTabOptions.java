@@ -7,8 +7,8 @@ import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
@@ -27,16 +27,16 @@ public class BottomTabOptions {
         if (json == null) return options;
 
         options.text = TextParser.parse(json, "text");
-        options.textColor = RNNColourKt.parse(context, json.optJSONObject("textColor"));
-        options.selectedTextColor = RNNColourKt.parse(context, json.optJSONObject("selectedTextColor"));
+        options.textColor = ThemeColour.parseThemeColour(context, json.optJSONObject("textColor"));
+        options.selectedTextColor = ThemeColour.parseThemeColour(context, json.optJSONObject("selectedTextColor"));
         options.icon = IconParser.parse(json, "icon");
         options.iconWidth = NumberParser.parse(json, "iconWidth");
         options.iconHeight = NumberParser.parse(json, "iconHeight");
         options.selectedIcon = IconParser.parse(json, "selectedIcon");
-        options.iconColor = RNNColourKt.parse(context, json.optJSONObject("iconColor"));
-        options.selectedIconColor = RNNColourKt.parse(context, json.optJSONObject("selectedIconColor"));
+        options.iconColor = ThemeColour.parseThemeColour(context, json.optJSONObject("iconColor"));
+        options.selectedIconColor = ThemeColour.parseThemeColour(context, json.optJSONObject("selectedIconColor"));
         options.badge = TextParser.parse(json, "badge");
-        options.badgeColor = RNNColourKt.parse(context, json.optJSONObject("badgeColor"));
+        options.badgeColor = ThemeColour.parseThemeColour(context, json.optJSONObject("badgeColor"));
         options.animateBadge = BoolParser.parse(json, "animateBadge");
         options.testId = TextParser.parse(json, "testID");
         options.font = FontParser.parse(json);
@@ -49,17 +49,17 @@ public class BottomTabOptions {
     }
 
     public Text text = new NullText();
-    public RNNColour textColor = new RNNNullColor();
-    public RNNColour selectedTextColor = new RNNNullColor();
+    public ThemeColour textColor = new RNNNullColor();
+    public ThemeColour selectedTextColor = new RNNNullColor();
     public Text icon = new NullText();
     public Number iconWidth = new NullNumber();
     public Number iconHeight = new NullNumber();
     public Text selectedIcon = new NullText();
-    public RNNColour iconColor = new RNNNullColor();
-    public RNNColour selectedIconColor = new RNNNullColor();
+    public ThemeColour iconColor = new RNNNullColor();
+    public ThemeColour selectedIconColor = new RNNNullColor();
     public Text testId = new NullText();
     public Text badge = new NullText();
-    public RNNColour badgeColor = new RNNNullColor();
+    public ThemeColour badgeColor = new RNNNullColor();
     public Bool animateBadge = new NullBool();
     public DotIndicatorOptions dotIndicator = new DotIndicatorOptions();
     public Number fontSize = new NullNumber();

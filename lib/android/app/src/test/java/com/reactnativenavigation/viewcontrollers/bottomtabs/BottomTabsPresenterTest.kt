@@ -43,7 +43,7 @@ class BottomTabsPresenterTest : BaseTest() {
         defaultOptions.bottomTabsOptions.visible = Bool(false)
         uut.setDefaultOptions(defaultOptions)
         val options = Options()
-        options.bottomTabsOptions.backgroundColor = RNNColour(Colour(10))
+        options.bottomTabsOptions.backgroundColor = ThemeColour(Colour(10))
         uut.mergeChildOptions(options, tabs[0])
         verify(bottomTabs).setBackgroundColor(options.bottomTabsOptions.backgroundColor.get())
         verifyNoMoreInteractions(bottomTabs)

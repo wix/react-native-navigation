@@ -23,7 +23,7 @@ import com.reactnativenavigation.options.TopBarButtons;
 import com.reactnativenavigation.options.TopBarOptions;
 import com.reactnativenavigation.options.TopTabOptions;
 import com.reactnativenavigation.options.TopTabsOptions;
-import com.reactnativenavigation.options.params.RNNColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.ObjectUtils;
@@ -146,6 +146,9 @@ public class StackPresenter {
             topBarController.applyRightButtons(currentRightButtons);
         if (currentLeftButtons != null && !currentLeftButtons.isEmpty())
             topBarController.applyLeftButtons(currentLeftButtons);
+        if (options.topBar.buttons.back.visible.isTrue() && !options.topBar.buttons.hasLeftButtons()) {
+            topBar.setBackButton(createButtonController(options.topBar.buttons.back));
+        }
         topBar.setOverflowButtonColor(options.topBar.rightButtonColor.get(Color.BLACK));
         topBar.applyTopTabsColors(options.topTabs.selectedTabColor,
                 options.topTabs.unselectedTabColor);
@@ -396,7 +399,7 @@ public class StackPresenter {
         mergeBackButton(optionsToMerge.buttons, stack);
     }
 
-    private void mergeLeftButtonsColor(View child, RNNColour color, RNNColour disabledColor) {
+    private void mergeLeftButtonsColor(View child, ThemeColour color, ThemeColour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
             Map<String, ButtonController> stringButtonControllerMap = componentLeftButtons.get(child);
             if (stringButtonControllerMap != null) {
@@ -412,7 +415,7 @@ public class StackPresenter {
         }
     }
 
-    private void mergeRightButtonsColor(View child, RNNColour color, RNNColour disabledColor) {
+    private void mergeRightButtonsColor(View child, ThemeColour color, ThemeColour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
             Map<String, ButtonController> stringButtonControllerMap = componentRightButtons.get(child);
             if (stringButtonControllerMap != null) {
@@ -466,8 +469,8 @@ public class StackPresenter {
         }
     }
 
-    private List<ButtonOptions> mergeButtonsWithColor(@NonNull List<ButtonOptions> buttons, RNNColour buttonColor,
-                                                      RNNColour disabledColor) {
+    private List<ButtonOptions> mergeButtonsWithColor(@NonNull List<ButtonOptions> buttons, ThemeColour buttonColor,
+                                                      ThemeColour disabledColor) {
         List<ButtonOptions> result = new ArrayList<>();
         for (ButtonOptions button : buttons) {
             ButtonOptions copy = button.copy();

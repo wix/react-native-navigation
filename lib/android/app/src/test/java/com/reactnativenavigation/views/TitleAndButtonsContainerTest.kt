@@ -12,7 +12,7 @@ import com.nhaarman.mockitokotlin2.verify
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.params.Colour
-import com.reactnativenavigation.options.params.RNNColour
+import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.options.params.RNNNullColor
 import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_PX
@@ -420,7 +420,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
         uut = Mockito.spy(uut)
         uut.setBackgroundColor(RNNNullColor())
         verify(uut, times(0)).setBackgroundColor(Color.GRAY)
-        uut.setBackgroundColor(RNNColour(Colour(Color.GRAY)))
+        uut.setBackgroundColor(ThemeColour(Colour(Color.GRAY)))
         verify(uut, times(1)).setBackgroundColor(Color.GRAY)
     }
 

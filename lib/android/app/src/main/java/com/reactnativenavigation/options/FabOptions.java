@@ -6,8 +6,8 @@ import android.content.Context;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
@@ -25,14 +25,14 @@ public class FabOptions {
         if (json == null) return options;
 
         options.id = TextParser.parse(json, "id");
-        options.backgroundColor = RNNColourKt.parse(context, json.optJSONObject("backgroundColor"));
-        options.clickColor = RNNColourKt.parse(context, json.optJSONObject("clickColor"));
-        options.rippleColor = RNNColourKt.parse(context, json.optJSONObject("rippleColor"));
+        options.backgroundColor = ThemeColour.parseThemeColour(context, json.optJSONObject("backgroundColor"));
+        options.clickColor = ThemeColour.parseThemeColour(context, json.optJSONObject("clickColor"));
+        options.rippleColor = ThemeColour.parseThemeColour(context, json.optJSONObject("rippleColor"));
         options.visible = BoolParser.parse(json, "visible");
         if (json.has("icon")) {
             options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
-        options.iconColor = RNNColourKt.parse(context, json.optJSONObject("iconColor"));
+        options.iconColor = ThemeColour.parseThemeColour(context, json.optJSONObject("iconColor"));
         if (json.has("actions")) {
             JSONArray fabsArray = json.optJSONArray("actions");
             for (int i = 0; i < fabsArray.length(); i++) {
@@ -48,11 +48,11 @@ public class FabOptions {
     }
 
     public Text id = new NullText();
-    public RNNColour backgroundColor = new RNNNullColor();
-    public RNNColour clickColor = new RNNNullColor();
-    public RNNColour rippleColor = new RNNNullColor();
+    public ThemeColour backgroundColor = new RNNNullColor();
+    public ThemeColour clickColor = new RNNNullColor();
+    public ThemeColour rippleColor = new RNNNullColor();
     public Text icon = new NullText();
-    public RNNColour iconColor = new RNNNullColor();
+    public ThemeColour iconColor = new RNNNullColor();
     public Bool visible = new NullBool();
     public ArrayList<FabOptions> actionsArray = new ArrayList<>();
     public Text alignHorizontally = new NullText();

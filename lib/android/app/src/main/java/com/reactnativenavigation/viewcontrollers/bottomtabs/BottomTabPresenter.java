@@ -9,7 +9,7 @@ import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.DotIndicatorOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Param;
-import com.reactnativenavigation.options.params.RNNColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -155,7 +155,7 @@ public class BottomTabPresenter {
         return tab.dotIndicator.visible.hasValue() && !tab.badge.hasValue();
     }
 
-    private boolean canMergeColor(RNNColour p) {
+    private boolean canMergeColor(ThemeColour p) {
         return p.hasValue() && p.canApplyValue();
     }
 

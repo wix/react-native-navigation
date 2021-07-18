@@ -12,8 +12,8 @@ import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
@@ -39,7 +39,7 @@ public class TopBarOptions {
         options.drawBehind = BoolParser.parse(json,"drawBehind");
         options.testId = TextParser.parse(json, "testID");
         options.height = NumberParser.parse(json, "height");
-        options.borderColor = RNNColourKt.parse(context, json.optJSONObject( "borderColor"));
+        options.borderColor = ThemeColour.parseThemeColour(context, json.optJSONObject( "borderColor"));
         options.borderHeight = FractionParser.parse(json, "borderHeight");
         options.elevation = FractionParser.parse(json, "elevation");
         options.topMargin = NumberParser.parse(json, "topMargin");
@@ -47,10 +47,10 @@ public class TopBarOptions {
         options.animateRightButtons = BoolParser.parse(json, "animateRightButtons");
         options.buttons = TopBarButtons.parse(context, json);
 
-        options.rightButtonColor = RNNColourKt.parse(context, json.optJSONObject("rightButtonColor"));
-        options.leftButtonColor = RNNColourKt.parse(context, json.optJSONObject("leftButtonColor"));
-        options.leftButtonDisabledColor = RNNColourKt.parse(context, json.optJSONObject("leftButtonDisabledColor"));
-        options.rightButtonDisabledColor = RNNColourKt.parse(context, json.optJSONObject("rightButtonDisabledColor"));
+        options.rightButtonColor = ThemeColour.parseThemeColour(context, json.optJSONObject("rightButtonColor"));
+        options.leftButtonColor = ThemeColour.parseThemeColour(context, json.optJSONObject("leftButtonColor"));
+        options.leftButtonDisabledColor = ThemeColour.parseThemeColour(context, json.optJSONObject("leftButtonDisabledColor"));
+        options.rightButtonDisabledColor = ThemeColour.parseThemeColour(context, json.optJSONObject("rightButtonDisabledColor"));
 
         options.validate();
         return options;
@@ -69,14 +69,14 @@ public class TopBarOptions {
     public Fraction elevation = new NullFraction();
     public Number topMargin = new NullNumber();
     public Fraction borderHeight = new NullFraction();
-    public RNNColour borderColor = new RNNNullColor();
+    public ThemeColour borderColor = new RNNNullColor();
     public Bool animateLeftButtons = new NullBool();
     public Bool animateRightButtons = new NullBool();
     // Deprecated
-    public RNNColour rightButtonColor = new RNNNullColor();
-    public RNNColour leftButtonColor = new RNNNullColor();
-    public RNNColour rightButtonDisabledColor = new RNNNullColor();
-    public RNNColour leftButtonDisabledColor = new RNNNullColor();
+    public ThemeColour rightButtonColor = new RNNNullColor();
+    public ThemeColour leftButtonColor = new RNNNullColor();
+    public ThemeColour rightButtonDisabledColor = new RNNNullColor();
+    public ThemeColour leftButtonDisabledColor = new RNNNullColor();
 
     public TopBarOptions copy() {
         TopBarOptions result = new TopBarOptions();

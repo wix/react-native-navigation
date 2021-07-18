@@ -5,8 +5,8 @@ import android.content.Context;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.FontParser;
@@ -24,7 +24,7 @@ public class SubtitleOptions {
         }
 
         options.text = TextParser.parse(json, "text");
-        options.color = RNNColourKt.parse(context, json.optJSONObject( "color"));
+        options.color = ThemeColour.parseThemeColour(context, json.optJSONObject( "color"));
         options.fontSize = FractionParser.parse(json, "fontSize");
         options.font = FontParser.parse(json);
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
@@ -33,7 +33,7 @@ public class SubtitleOptions {
     }
 
     public Text text = new NullText();
-    public RNNColour color = new RNNNullColor();
+    public ThemeColour color = new RNNNullColor();
     public Fraction fontSize = new NullFraction();
     public FontOptions font = new FontOptions();
     public Alignment alignment = Alignment.Default;

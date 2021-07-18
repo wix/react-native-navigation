@@ -9,8 +9,8 @@ import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.params.TitleDisplayMode;
@@ -27,7 +27,7 @@ public class BottomTabsOptions {
         BottomTabsOptions options = new BottomTabsOptions();
         if (json == null) return options;
 
-        options.backgroundColor = RNNColourKt.parse(context, json.optJSONObject("backgroundColor"));
+        options.backgroundColor = ThemeColour.parseThemeColour(context, json.optJSONObject("backgroundColor"));
         options.currentTabId = TextParser.parse(json, "currentTabId");
         options.currentTabIndex = NumberParser.parse(json, "currentTabIndex");
         options.hideOnScroll = BoolParser.parse(json, "hideOnScroll");
@@ -40,13 +40,13 @@ public class BottomTabsOptions {
         options.testId = TextParser.parse(json, "testID");
         options.titleDisplayMode = TitleDisplayMode.fromString(json.optString("titleDisplayMode"));
         options.tabsAttachMode = TabsAttachMode.fromString(json.optString("tabsAttachMode"));
-        options.borderColor = RNNColourKt.parse(context, json.optJSONObject("borderColor"));
+        options.borderColor = ThemeColour.parseThemeColour(context, json.optJSONObject("borderColor"));
         options.borderWidth = FractionParser.parse(json, "borderWidth");
         options.shadowOptions = ShadowOptionsKt.parseShadowOptions(context, json.optJSONObject("shadow"));
         return options;
     }
 
-    public RNNColour backgroundColor = new RNNNullColor();
+    public ThemeColour backgroundColor = new RNNNullColor();
     public Bool hideOnScroll = new NullBool();
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
@@ -59,7 +59,7 @@ public class BottomTabsOptions {
     public Text testId = new NullText();
     public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
     public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
-    public RNNColour borderColor = new RNNNullColor();
+    public ThemeColour borderColor = new RNNNullColor();
     public Fraction borderWidth = new NullFraction();
     public ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
 

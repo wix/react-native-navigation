@@ -209,7 +209,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         super.onConfigurationChanged(options);
         Collection<? extends ViewController> childControllers = getChildControllers();
         for(ViewController controller: childControllers){
-            controller.onConfigurationChanged(resolveChildOptions(controller));
+            controller.onConfigurationChanged(resolveChildOptions(controller).mergeWith(options));
         }
     }
 }

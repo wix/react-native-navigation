@@ -9,8 +9,8 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.RNNColour;
-import com.reactnativenavigation.options.params.RNNColourKt;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.RNNNullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
@@ -20,9 +20,9 @@ import org.json.JSONObject;
 public class TopTabsOptions {
 
     @NonNull
-    public RNNColour selectedTabColor = new RNNNullColor();
+    public ThemeColour selectedTabColor = new RNNNullColor();
     @NonNull
-    public RNNColour unselectedTabColor = new RNNNullColor();
+    public ThemeColour unselectedTabColor = new RNNNullColor();
     @NonNull
     public Number fontSize = new NullNumber();
     @NonNull
@@ -33,8 +33,8 @@ public class TopTabsOptions {
     public static TopTabsOptions parse(Context context, @Nullable JSONObject json) {
         TopTabsOptions result = new TopTabsOptions();
         if (json == null) return result;
-        result.selectedTabColor = RNNColourKt.parse(context, json.optJSONObject("selectedTabColor"));
-        result.unselectedTabColor = RNNColourKt.parse(context, json.optJSONObject("unselectedTabColor"));
+        result.selectedTabColor = ThemeColour.parseThemeColour(context, json.optJSONObject("selectedTabColor"));
+        result.unselectedTabColor = ThemeColour.parseThemeColour(context, json.optJSONObject("unselectedTabColor"));
         result.fontSize = NumberParser.parse(json, "fontSize");
         result.visible = BoolParser.parse(json, "visible");
         result.height = NumberParser.parse(json, "height");
