@@ -43,6 +43,7 @@ public class ParentControllerTest extends BaseTest {
     private ChildControllersRegistry childRegistry;
     private List<ViewController> children;
     private ParentController uut;
+    private Presenter presenter;
 
     @Override
     public void beforeEach() {
@@ -52,7 +53,7 @@ public class ParentControllerTest extends BaseTest {
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        Presenter presenter = new Presenter(activity, new Options());
+        presenter = spy(new Presenter(activity, new Options()));
         uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
 
             @Override
@@ -85,15 +86,14 @@ public class ParentControllerTest extends BaseTest {
     }
 
     @Test
-    public void onConfigurationChange_shouldApplyOptionsForParentAndChildren() {
+    public void onConfigurationChange_shouldCallConfigurationChangeForPresenterAndChildren() {
         children.add(spy(new SimpleViewController(activity, childRegistry, "child1", new Options())));
         children.add(spy(new SimpleViewController(activity, childRegistry, "child2", new Options())));
         ParentController spyUUT = spy(uut);
-        spyUUT.onConfigurationChanged(mockConfiguration);
-        verify(spyUUT).applyOptions(any());
+        spyUUT.onConfigurationChanged(Options.EMPTY);
+        verify(presenter).onConfigurationChanged(any(),any());
         for (ViewController controller : children) {
-            verify(spyUUT).applyChildOptions(any(), eq(controller));
-            verify(controller).onConfigurationChanged(eq(mockConfiguration));
+            verify(controller).onConfigurationChanged(any());
         }
     }
 
