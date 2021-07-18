@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -48,10 +49,10 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public void onConfigurationChanged(Options options) {
-        super.onConfigurationChanged(options);
-        presenter.onConfigurationChanged(options);
-        tabPresenter.onConfigurationChanged(options);
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        presenter.onConfigurationChanged(resolveCurrentOptions());
+        tabPresenter.onConfigurationChanged(resolveCurrentOptions());
     }
 
     public BottomTabsController(Activity activity, List<ViewController<?>> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsAttacher tabsAttacher, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {

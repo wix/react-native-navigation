@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.child;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -107,8 +108,8 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     @Override
-    public void onConfigurationChanged(Options options) {
-        super.onConfigurationChanged(options);
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
         presenter.onConfigurationChanged(this,options);
     }
 }

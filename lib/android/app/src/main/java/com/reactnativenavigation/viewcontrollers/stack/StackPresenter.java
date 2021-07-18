@@ -142,20 +142,21 @@ public class StackPresenter {
     }
 
     public void onConfigurationChanged(Options options) {
+        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         if (currentRightButtons != null && !currentRightButtons.isEmpty())
             topBarController.applyRightButtons(currentRightButtons);
         if (currentLeftButtons != null && !currentLeftButtons.isEmpty())
             topBarController.applyLeftButtons(currentLeftButtons);
-        if (options.topBar.buttons.back.visible.isTrue()) {
-            topBar.setBackButton(createButtonController(options.topBar.buttons.back));
+        if (withDefault.topBar.buttons.back.visible.isTrue()) {
+            topBar.setBackButton(createButtonController(withDefault.topBar.buttons.back));
         }
-        topBar.setOverflowButtonColor(options.topBar.rightButtonColor.get(Color.BLACK));
-        topBar.applyTopTabsColors(options.topTabs.selectedTabColor,
-                options.topTabs.unselectedTabColor);
-        topBar.setBorderColor(options.topBar.borderColor.get(DEFAULT_BORDER_COLOR));
-        topBar.setBackgroundColor(options.topBar.background.color.get(Color.WHITE));
-        topBar.setTitleTextColor(options.topBar.title.color.get(TopBar.DEFAULT_TITLE_COLOR));
-        topBar.setSubtitleColor(options.topBar.subtitle.color.get(TopBar.DEFAULT_TITLE_COLOR));
+        topBar.setOverflowButtonColor(withDefault.topBar.rightButtonColor.get(Color.BLACK));
+        topBar.applyTopTabsColors(withDefault.topTabs.selectedTabColor,
+                withDefault.topTabs.unselectedTabColor);
+        topBar.setBorderColor(withDefault.topBar.borderColor.get(DEFAULT_BORDER_COLOR));
+        topBar.setBackgroundColor(withDefault.topBar.background.color.get(Color.WHITE));
+        topBar.setTitleTextColor(withDefault.topBar.title.color.get(TopBar.DEFAULT_TITLE_COLOR));
+        topBar.setSubtitleColor(withDefault.topBar.subtitle.color.get(TopBar.DEFAULT_TITLE_COLOR));
     }
 
     public void applyInitialChildLayoutOptions(Options options) {

@@ -245,7 +245,7 @@ class BottomTabsPresenter(
     }
 
     fun onConfigurationChanged(options: Options) {
-        val bottomTabsOptions = options.bottomTabsOptions
+        val bottomTabsOptions = options.withDefaultOptions(defaultOptions).bottomTabsOptions
         bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
 
         if (bottomTabsOptions.shadowOptions.hasValue()) {

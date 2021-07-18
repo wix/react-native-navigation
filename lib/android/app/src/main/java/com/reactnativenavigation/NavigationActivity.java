@@ -53,7 +53,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         getReactGateway().onConfigurationChanged(this, newConfig);
-        navigator.onConfigurationChanged(navigator.resolveCurrentOptions());
+        navigator.onConfigurationChanged(newConfig);
     }
 
     @Override

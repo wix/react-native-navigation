@@ -179,9 +179,9 @@ public class ModalStack {
         modals.clear();
     }
 
-    public void onConfigurationChanged(Options options){
+    public void onConfigurationChanged(Configuration newConfig){
         for(ViewController controller: modals){
-            controller.onConfigurationChanged(controller.resolveCurrentOptions(options));
+            controller.onConfigurationChanged(newConfig);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.component;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
@@ -163,8 +164,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    public void onConfigurationChanged(Options options) {
-        super.onConfigurationChanged(options);
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
         presenter.onConfigurationChanged(view, options);
     }
 }

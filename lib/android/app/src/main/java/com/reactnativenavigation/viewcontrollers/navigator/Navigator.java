@@ -245,10 +245,9 @@ public class Navigator extends ParentController {
     }
 
     @Override
-    public void onConfigurationChanged(Options options) {
-        Options merged = options.mergeWith(defaultOptions);
-        modalStack.onConfigurationChanged(merged);
-        super.onConfigurationChanged(merged);
+    public void onConfigurationChanged(Configuration newConfig) {
+        modalStack.onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
     }
 
     private boolean isRootNotCreated() {

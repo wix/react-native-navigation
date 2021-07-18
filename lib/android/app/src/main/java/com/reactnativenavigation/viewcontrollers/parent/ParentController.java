@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.parent;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -203,11 +204,11 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return getCurrentChild().getCurrentComponentName();
     }
 
-    public void onConfigurationChanged(Options options) {
-        super.onConfigurationChanged(options);
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
         Collection<? extends ViewController> childControllers = getChildControllers();
         for(ViewController controller: childControllers){
-            controller.onConfigurationChanged(resolveChildOptions(controller).mergeWith(options));
+            controller.onConfigurationChanged(newConfig);
         }
     }
 }
