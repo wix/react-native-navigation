@@ -138,4 +138,9 @@ describe('Stack', () => {
     await expect(elementByLabel('push promise resolved with: ChildId')).toBeVisible();
     await expect(elementByLabel('pop promise resolved with: ChildId')).toBeVisible();
   });
+
+  it('pop from root screen should do nothing', async () => {
+    await elementById(TestIDs.POP_BTN).tap();
+    await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
+  });
 });
