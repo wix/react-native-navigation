@@ -7,13 +7,10 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.StackAnimationOptions;
-import com.reactnativenavigation.options.TabsAttachMode;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.ViewExtensionsKt;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
@@ -64,14 +61,7 @@ public class StackController extends ParentController<StackLayout> {
         this.presenter = stackPresenter;
         this.fabPresenter = fabPresenter;
         stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
-        for (ViewController child : children) {
-            if (stack.containsId(child.getId())) {
-                throw new IllegalArgumentException("A stack can't contain two children with the same id: " + child.getId());
-            }
-            child.setParentController(this);
-            stack.push(child.getId(), child);
-            if (size() > 1) backButtonHelper.addToPushedChild(child);
-        }
+        refillStack(children);
     }
 
     @Override
@@ -164,9 +154,9 @@ public class StackController extends ParentController<StackLayout> {
         if (size() > 0) backButtonHelper.addToPushedChild(child);
         child.setParentController(this);
         stack.push(child.getId(), child);
+        if (!isViewCreated()) return;
         Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
         addChildToStack(child, resolvedOptions);
-
         if (toRemove != null) {
             StackAnimationOptions animation = resolvedOptions.animations.push;
             if (animation.enabled.isTrueOrUndefined()) {
@@ -205,7 +195,10 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     public void setRoot(@Size(min = 1) List<ViewController> children, CommandListener listener) {
-        ensureViewIsCreated();
+        if (!isViewCreated()) {
+            refillStack(children);
+            return;
+        }
 
         animator.cancelPushAnimations();
         final ViewController toRemove = stack.peek();
@@ -269,6 +262,18 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
+    private void refillStack(List<ViewController> children) {
+        stack = new IdStack<>();
+        for (ViewController child : children) {
+            if (stack.containsId(child.getId())) {
+                throw new IllegalArgumentException("A stack can't contain two children with the same id: " + child.getId());
+            }
+            child.setParentController(this);
+            stack.push(child.getId(), child);
+            if (size() > 1) backButtonHelper.addToPushedChild(child);
+        }
+    }
+
     private void destroyStack(IdStack stack) {
         animator.cancelAllAnimations();
         for (String s : (Iterable<String>) stack) {
@@ -286,6 +291,7 @@ public class StackController extends ParentController<StackLayout> {
         Options disappearingOptions = resolveCurrentOptions(presenter.getDefaultOptions());
 
         final ViewController disappearing = stack.pop();
+        if (!isViewCreated()) return;
         final ViewController appearing = stack.peek();
 
         disappearing.onViewWillDisappear();
@@ -405,11 +411,12 @@ public class StackController extends ParentController<StackLayout> {
 
     private void addInitialChild(StackLayout stackLayout) {
         if (isEmpty()) return;
-        ViewGroup child = peek().getView();
+        ViewController childController = peek();
+        ViewGroup child = childController.getView();
         child.setId(CompatUtils.generateViewId());
-        peek().addOnAppearedListener(this::startChildrenBellowTopChild);
-        presenter.applyInitialChildLayoutOptions(resolveCurrentOptions());
+        childController.addOnAppearedListener(this::startChildrenBellowTopChild);
         stackLayout.addView(child, 0, matchParentWithBehaviour(new StackBehaviour(this)));
+        presenter.applyInitialChildLayoutOptions(resolveCurrentOptions());
     }
 
     private void startChildrenBellowTopChild() {
@@ -470,5 +477,10 @@ public class StackController extends ParentController<StackLayout> {
     @RestrictTo(RestrictTo.Scope.TESTS)
     public StackLayout getStackLayout() {
         return getView();
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public void setView(StackLayout view) {
+        this.view = view;
     }
 }

@@ -9,7 +9,6 @@ import android.view.ViewTreeObserver;
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
 import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -115,6 +114,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public void ensureViewIsCreated() {
         getView();
+    }
+
+    protected boolean isViewCreated() {
+        return view != null;
     }
 
     public boolean handleBack(CommandListener listener) {
