@@ -142,6 +142,7 @@ public class StackPresenter {
     }
 
     public void onConfigurationChanged(Options options) {
+        if (topBar == null) return;
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         if (currentRightButtons != null && !currentRightButtons.isEmpty())
             topBarController.applyRightButtons(currentRightButtons);
