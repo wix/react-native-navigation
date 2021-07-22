@@ -8,7 +8,7 @@ describe('Stack SetRoot', () => {
     await device.launchApp({ newInstance: true });
   });
 
-  it('SetStackRoot on a non created tab should work', async () => {
+  it.e2e('SetStackRoot on a non created tab should work', async () => {
     await elementById(TestIDs.SET_ROOT_NAVIGATION_TAB).tap();
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
