@@ -61,7 +61,7 @@ public class StackController extends ParentController<StackLayout> {
         this.presenter = stackPresenter;
         this.fabPresenter = fabPresenter;
         stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
-        refillStack(children);
+        setChildren(children);
     }
 
     @Override
@@ -196,7 +196,7 @@ public class StackController extends ParentController<StackLayout> {
 
     public void setRoot(@Size(min = 1) List<ViewController> children, CommandListener listener) {
         if (!isViewCreated()) {
-            refillStack(children);
+            setChildren(children);
             return;
         }
 
@@ -262,8 +262,8 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-    private void refillStack(List<ViewController> children) {
-        stack = new IdStack<>();
+    private void setChildren(List<ViewController> children) {
+        stack.clear();
         for (ViewController child : children) {
             if (stack.containsId(child.getId())) {
                 throw new IllegalArgumentException("A stack can't contain two children with the same id: " + child.getId());
