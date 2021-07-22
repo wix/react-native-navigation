@@ -14,6 +14,7 @@ const setDefaultOptions = () =>
       direction: 'locale',
     },
     bottomTabs: {
+      tabsAttachMode: 'onSwitchToTab',
       titleDisplayMode: 'alwaysShow',
     },
     bottomTab: {
