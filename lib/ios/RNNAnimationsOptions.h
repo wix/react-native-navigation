@@ -7,8 +7,8 @@
 
 @property(nonatomic, strong) RNNScreenTransition *push;
 @property(nonatomic, strong) RNNScreenTransition *pop;
-@property(nonatomic, strong) ViewAnimationOptions *showModal;
-@property(nonatomic, strong) ViewAnimationOptions *dismissModal;
+@property(nonatomic, strong) RNNEnterExitAnimation *showModal;
+@property(nonatomic, strong) RNNEnterExitAnimation *dismissModal;
 @property(nonatomic, strong) RNNScreenTransition *setStackRoot;
 @property(nonatomic, strong) TransitionOptions *setRoot;
 

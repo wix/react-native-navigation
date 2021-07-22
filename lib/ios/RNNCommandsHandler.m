@@ -364,27 +364,25 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNAssertMainQueue();
 
     UIViewController *newVc = [_controllerFactory createLayout:layout];
+    RNNNavigationOptions *withDefault = newVc.resolveOptionsWithDefault;
+
     [_layoutManager addPendingViewController:newVc];
 
     __weak UIViewController *weakNewVC = newVc;
-    newVc.waitForRender =
-        [newVc.resolveOptionsWithDefault.animations.showModal shouldWaitForRender];
-    newVc.modalPresentationStyle =
-        [RNNConvert UIModalPresentationStyle:[newVc.resolveOptionsWithDefault.modalPresentationStyle
-                                                 withDefault:@"default"]];
-    newVc.modalTransitionStyle =
-        [RNNConvert UIModalTransitionStyle:[newVc.resolveOptionsWithDefault.modalTransitionStyle
-                                               withDefault:@"coverVertical"]];
+    newVc.waitForRender = [withDefault.animations.showModal.enter shouldWaitForRender];
+    newVc.modalPresentationStyle = [RNNConvert
+        UIModalPresentationStyle:[withDefault.modalPresentationStyle withDefault:@"default"]];
+    newVc.modalTransitionStyle = [RNNConvert
+        UIModalTransitionStyle:[withDefault.modalTransitionStyle withDefault:@"coverVertical"]];
     [newVc setReactViewReadyCallback:^{
-      [self->_modalManager
-           showModal:weakNewVC
-            animated:[weakNewVC.resolveOptionsWithDefault.animations.showModal.enter.enable
-                         withDefault:YES]
-          completion:^(NSString *componentId) {
-            [self->_layoutManager removePendingViewController:weakNewVC];
-            [self->_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId];
-            completion(weakNewVC.layoutInfo.componentId);
-          }];
+      [self->_modalManager showModal:weakNewVC
+                            animated:[withDefault.animations.showModal.enter.enable withDefault:YES]
+                          completion:^(NSString *componentId) {
+                            [self->_layoutManager removePendingViewController:weakNewVC];
+                            [self->_eventEmitter sendOnNavigationCommandCompletion:showModal
+                                                                         commandId:commandId];
+                            completion(weakNewVC.layoutInfo.componentId);
+                          }];
     }];
     [newVc render];
 }
