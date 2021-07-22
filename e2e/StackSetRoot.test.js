@@ -3,12 +3,12 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementById } = Utils;
 
-describe('Stack SetRoot', () => {
+describe.e2e('Stack SetRoot', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
   });
 
-  it.e2e('SetStackRoot on a non created tab should work', async () => {
+  it('SetStackRoot on a non created tab should work', async () => {
     await elementById(TestIDs.SET_ROOT_NAVIGATION_TAB).tap();
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
