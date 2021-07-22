@@ -17,7 +17,6 @@ import { Text } from 'react-native';
 const {
   WELCOME_SCREEN_HEADER,
   STACK_BTN,
-  SET_ROOT_NAVIGATION_TAB,
   BOTTOM_TABS_BTN,
   BOTTOM_TABS,
   SIDE_MENU_BTN,
@@ -62,12 +61,6 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button
-          label="setStackRoot Navigation tab"
-          testID={SET_ROOT_NAVIGATION_TAB}
-          onPress={this.setNavigationTabStackRoot}
-        />
-
-        <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
           platform="ios"
@@ -78,20 +71,6 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     );
   }
 
-  setNavigationTabStackRoot() {
-    Navigation.setStackRoot('NavigationTabStack', [
-      {
-        component: {
-          name: Screens.Navigation,
-        },
-      },
-      {
-        component: {
-          name: Screens.Pushed,
-        },
-      },
-    ]);
-  }
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
   bottomTabs = () =>
