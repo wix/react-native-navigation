@@ -136,6 +136,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (!navigatingToAnotherActivity && navigator.shouldSwitchToPIPonHomePress() &&
+                (navigator.getPipMode() == PIPStates.CUSTOM_MOUNTED || navigator.getPipMode() == PIPStates.CUSTOM_COMPACT)) {
+            navigator.updatePIPState(PIPStates.UNMOUNT_START);
         }
     }
 
