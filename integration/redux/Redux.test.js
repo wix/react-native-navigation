@@ -2,7 +2,7 @@ const React = require('react');
 require('react-native');
 const renderer = require('react-test-renderer');
 const { Provider } = require('react-redux');
-const { Navigation } = require('../../lib/dist/index');
+const { Navigation } = require('../../lib/src/index');
 
 describe('redux support', () => {
   let MyConnectedComponent;

@@ -47,6 +47,10 @@
            self.waitForRender.hasValue || self.enable.hasValue;
 }
 
+- (BOOL)shouldWaitForRender {
+    return [self.waitForRender withDefault:NO] || self.hasAnimation;
+}
+
 - (NSTimeInterval)maxDuration {
     double maxDuration = 0;
     if ([_x.duration withDefault:0] > maxDuration) {

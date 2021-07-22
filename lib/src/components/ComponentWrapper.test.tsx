@@ -286,4 +286,41 @@ describe('ComponentWrapper', () => {
       expect((NavigationComponent as any).options()).toEqual({ foo: 123 });
     });
   });
+
+  it('initialize isMounted with false value', () => {
+    const NavigationComponent = uut.wrap(
+      componentName,
+      () => MyComponent,
+      store,
+      componentEventsObserver
+    );
+    new NavigationComponent({ componentId: 'component123' });
+    expect(store.getComponentInstance('component123')?.isMounted).toEqual(false);
+  });
+
+  it('updates isMounted on componentDidMount', () => {
+    const NavigationComponent = uut.wrap(
+      componentName,
+      () => MyComponent,
+      store,
+      componentEventsObserver
+    );
+
+    renderer.create(<NavigationComponent componentId={'component123'} />);
+    expect(store.getComponentInstance('component123')?.isMounted).toEqual(true);
+  });
+
+  it('clears isMounted on componentDidUnmount', () => {
+    const NavigationComponent = uut.wrap(
+      componentName,
+      () => MyComponent,
+      store,
+      componentEventsObserver
+    );
+
+    const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
+    expect(store.getComponentInstance('component123')?.isMounted).toEqual(true);
+    tree.unmount();
+    expect(store.getComponentInstance('component123')?.isMounted).toBeUndefined();
+  });
 });

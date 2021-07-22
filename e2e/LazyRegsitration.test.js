@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementById } = Utils;
 
-describe('Lazy Registration', () => {
+describe.e2e('Lazy Registration', () => {
   beforeEach(async () => {
     await device.relaunchApp();
     await elementById(TestIDs.STACK_BTN).tap();

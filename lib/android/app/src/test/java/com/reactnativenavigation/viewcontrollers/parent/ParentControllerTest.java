@@ -30,6 +30,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -83,6 +84,31 @@ public class ParentControllerTest extends BaseTest {
         });
     }
 
+    @Test
+    public void onViewDidAppearShouldCallCurrentChildDidAppear(){
+        SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
+        SimpleViewController child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
+        children.add(child1);
+        children.add(child2);
+
+        uut.onViewDidAppear();
+
+        verify(child1).onViewDidAppear();
+        verify(child2,never()).onViewDidAppear();
+    }
+
+    @Test
+    public void onViewDisappearShouldCallCurrentChildDisAppear(){
+        SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
+        SimpleViewController child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
+        children.add(child1);
+        children.add(child2);
+
+        uut.onViewDisappear();
+
+        verify(child1).onViewDisappear();
+        verify(child2,never()).onViewDisappear();
+    }
     @Test
     public void holdsViewGroup() {
         assertThat(uut.getView()).isInstanceOf(ViewGroup.class);

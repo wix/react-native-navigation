@@ -81,13 +81,13 @@ describe('Stack', () => {
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 
-  it('Screen popped event', async () => {
+  it.e2e('Screen popped event', async () => {
     await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
     await elementById(TestIDs.SCREEN_POPPED_BTN).tap();
     await expect(elementByLabel('Screen popped event')).toBeVisible();
   });
 
-  it('unmount is called on pop', async () => {
+  it.e2e('unmount is called on pop', async () => {
     await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
     await elementById(TestIDs.POP_BTN).tap();
     await expect(elementByLabel('componentWillUnmount')).toBeVisible();
@@ -95,7 +95,7 @@ describe('Stack', () => {
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 
-  it(':android: override hardware back button', async () => {
+  it.e2e(':android: override hardware back button', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.ADD_BACK_HANDLER).tap();
     Android.pressBack();
@@ -113,7 +113,7 @@ describe('Stack', () => {
     await elementById(TestIDs.SET_STACK_ROOT_WITH_ID_BTN).tap();
   });
 
-  it(':ios: set stack root component should be first in stack', async () => {
+  it.e2e(':ios: set stack root component should be first in stack', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Stack Position: 1')).toBeVisible();
     await elementById(TestIDs.SET_STACK_ROOT_BUTTON).tap();
@@ -135,12 +135,12 @@ describe('Stack', () => {
   it('push promise is resolved with pushed ViewController id', async () => {
     await elementById(TestIDs.STACK_COMMANDS_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
+    await expect(elementByLabel('push promise resolved with: ChildId')).toBeVisible();
+    await expect(elementByLabel('pop promise resolved with: ChildId')).toBeVisible();
+  });
 
-    await expect(element(by.id(TestIDs.PUSH_PROMISE_RESULT))).toHaveText(
-      'push promise resolved with: ChildId'
-    );
-    await expect(element(by.id(TestIDs.POP_PROMISE_RESULT))).toHaveText(
-      'pop promise resolved with: ChildId'
-    );
+  it('pop from root screen should do nothing', async () => {
+    await elementById(TestIDs.POP_BTN).tap();
+    await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
   });
 });

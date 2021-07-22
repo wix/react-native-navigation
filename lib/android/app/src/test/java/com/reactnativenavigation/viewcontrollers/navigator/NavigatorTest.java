@@ -143,6 +143,22 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void shouldCallOnViewDidAppearWhenHostResumes() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostResume();
+        verify(child1,times(2)).onViewDidAppear();
+    }
+
+    @Test
+    public void shouldCallOnViewDisappearWhenHostPauses() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostPause();
+        verify(child1).onViewDidAppear();
+    }
+
+    @Test
     public void setDefaultOptions() {
         uut.setDefaultOptions(new Options());
 
@@ -160,10 +176,9 @@ public class NavigatorTest extends BaseTest {
         CommandListenerAdapter listener = new CommandListenerAdapter();
         uut.setRoot(child1, listener, reactInstanceManager);
         ArgumentCaptor<CommandListenerAdapter> captor = ArgumentCaptor.forClass(CommandListenerAdapter.class);
-        verify(rootPresenter).setRoot(eq(child1), eq(null),eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
+        verify(rootPresenter).setRoot(eq(child1), eq(null), eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
         assertThat(captor.getValue().getListener()).isEqualTo(listener);
     }
-
 
 
     @Test

@@ -3,7 +3,7 @@ import Utils from './Utils';
 
 const { elementById, elementByTraits } = Utils;
 
-describe(':ios: SearchBar', () => {
+describe.e2e(':ios: SearchBar', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
@@ -18,7 +18,7 @@ describe(':ios: SearchBar', () => {
   });
 });
 
-describe(':ios: SearchBar Modal', () => {
+describe.e2e(':ios: SearchBar Modal', () => {
   beforeAll(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();

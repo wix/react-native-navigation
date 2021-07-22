@@ -20,6 +20,7 @@ const {
   SET_STACK_ROOT_BTN,
   SET_STACK_ROOT_WITH_ID_BTN,
   STACK_COMMANDS_BTN,
+  POP_BTN,
 } = testIDs;
 
 export default class StackScreen extends React.Component<NavigationComponentProps> {
@@ -75,6 +76,7 @@ export default class StackScreen extends React.Component<NavigationComponentProp
           testID={STACK_COMMANDS_BTN}
           onPress={this.pushStackCommands}
         />
+        <Button label="Pop" testID={POP_BTN} onPress={this.pop} />
       </Root>
     );
   }
@@ -140,4 +142,6 @@ export default class StackScreen extends React.Component<NavigationComponentProp
     });
 
   pushStackCommands = () => Navigation.push(this, component(Screens.StackCommands));
+
+  pop = () => Navigation.pop(this);
 }

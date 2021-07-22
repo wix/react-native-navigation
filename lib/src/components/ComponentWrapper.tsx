@@ -16,6 +16,7 @@ interface HocProps {
 
 export interface IWrappedComponent extends React.Component {
   setProps(newProps: Record<string, any>): void;
+  isMounted: boolean;
 }
 
 export class ComponentWrapper {
@@ -39,6 +40,12 @@ export class ComponentWrapper {
         };
       }
 
+      private _isMounted = false;
+
+      get isMounted() {
+        return this._isMounted;
+      }
+
       constructor(props: HocProps) {
         super(props);
         this._assertComponentId();
@@ -56,6 +63,10 @@ export class ComponentWrapper {
             ...newProps,
           },
         }));
+      }
+
+      componentDidMount() {
+        this._isMounted = true;
       }
 
       componentWillUnmount() {

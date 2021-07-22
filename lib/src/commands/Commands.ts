@@ -75,6 +75,12 @@ export class Commands {
     const input = cloneDeep(options);
     this.optionsProcessor.processOptions(input, CommandName.MergeOptions);
 
+    const component = this.store.getComponentInstance(componentId);
+    if (component && !component.isMounted)
+      console.warn(
+        `Navigation.mergeOptions was invoked on component with id: ${componentId} before it is mounted, this can cause UI issues and should be avoided.\n Use static options instead.`
+      );
+
     this.nativeCommandsSender.mergeOptions(componentId, input);
     this.commandsObserver.notify(CommandName.MergeOptions, { componentId, options });
   }

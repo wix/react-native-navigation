@@ -54,7 +54,7 @@ export class Store {
     this.componentsInstancesById[id] = component;
   }
 
-  getComponentInstance(id: string): IWrappedComponent {
+  getComponentInstance(id: string): IWrappedComponent | undefined {
     return this.componentsInstancesById[id];
   }
 

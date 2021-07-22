@@ -17,6 +17,7 @@ import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsCrawler } from './OptionsCrawler';
 import React from 'react';
+import { IWrappedComponent } from 'react-native-navigation/components/ComponentWrapper';
 
 describe('Commands', () => {
   let uut: Commands;
@@ -42,7 +43,7 @@ describe('Commands', () => {
     jest.spyOn(layoutProcessor, 'process');
 
     uut = new Commands(
-      mockedStore,
+      instance(mockedStore),
       instance(mockedNativeCommandsSender),
       new LayoutTreeParser(uniqueIdProvider),
       new LayoutTreeCrawler(instance(mockedStore), optionsProcessor),
@@ -189,6 +190,40 @@ describe('Commands', () => {
           deepEqual({ blurOnUnmount: true })
         )
       ).called();
+    });
+
+    it('show warning when invoking before componentDidMount', () => {
+      jest.spyOn(console, 'warn');
+      when(mockedStore.getComponentInstance('component1')).thenReturn({} as IWrappedComponent);
+      const componentId = 'component1';
+      uut.mergeOptions(componentId, { blurOnUnmount: true });
+      expect(console.warn).toBeCalledWith(
+        `Navigation.mergeOptions was invoked on component with id: ${componentId} before it is mounted, this can cause UI issues and should be avoided.\n Use static options instead.`
+      );
+    });
+
+    it('should not show warning for mounted component', () => {
+      jest.spyOn(console, 'warn');
+      const componentId = 'component1';
+      when(mockedStore.getComponentInstance('component1')).thenReturn({
+        isMounted: true,
+      } as IWrappedComponent);
+
+      uut.mergeOptions('component1', { blurOnUnmount: true });
+      expect(console.warn).not.toBeCalledWith(
+        `Navigation.mergeOptions was invoked on component with id: ${componentId} before it is mounted, this can cause UI issues and should be avoided.\n Use static options instead.`
+      );
+    });
+
+    it('should not show warning for component id that does not exist', () => {
+      jest.spyOn(console, 'warn');
+      const componentId = 'component1';
+      when(mockedStore.getComponentInstance('stackId')).thenReturn(undefined);
+
+      uut.mergeOptions('stackId', { blurOnUnmount: true });
+      expect(console.warn).not.toBeCalledWith(
+        `Navigation.mergeOptions was invoked on component with id: ${componentId} before it is mounted, this can cause UI issues and should be avoided.\n Use static options instead.`
+      );
     });
   });
 
