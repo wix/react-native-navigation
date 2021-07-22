@@ -121,6 +121,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         getView();
     }
 
+    protected boolean isViewCreated() {
+        return view != null;
+    }
+
     public boolean handleBack(CommandListener listener) {
         return false;
     }

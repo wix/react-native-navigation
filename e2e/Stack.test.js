@@ -10,6 +10,15 @@ describe('Stack', () => {
     await elementById(TestIDs.STACK_BTN).tap();
   });
 
+  it.e2e('SetStackRoot on a non created tab should work', async () => {
+    await elementById(TestIDs.SET_ROOT_NAVIGATION_TAB).tap();
+    await elementById(TestIDs.DISMISS_MODAL_TOPBAR_BTN).tap();
+    await elementById(TestIDs.NAVIGATION_TAB).tap();
+    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    await elementById(TestIDs.BACK_BUTTON).tap();
+    await expect(elementById(TestIDs.NAVIGATION_SCREEN)).toBeVisible();
+  });
+
   it('push and pop screen', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
