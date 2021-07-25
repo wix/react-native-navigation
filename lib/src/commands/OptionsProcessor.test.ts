@@ -878,4 +878,62 @@ describe('navigation options', () => {
       });
     });
   });
+
+  describe('BottomTabBadgeOptions', () => {
+    it('transform old options to new options', () => {
+      const options: Options = {
+        bottomTab: {
+          badgeColor: 'red',
+          badge: 'hello',
+        },
+      };
+      uut.processOptions(options, CommandName.MergeOptions);
+
+      expect(options).toEqual({
+        bottomTab: {
+          badge: {
+            text: 'hello',
+            textColor: undefined,
+            backgroundColor: 0xffff0000,
+          },
+        },
+      });
+    });
+
+    it('transform badge/Color to badge object with text/backgroundColor', () => {
+      const options: Options = {
+        bottomTab: {
+          badge: 'hello',
+        },
+      };
+      uut.processOptions(options, CommandName.MergeOptions);
+
+      expect(options).toEqual({
+        bottomTab: {
+          badge: {
+            text: 'hello',
+            textColor: undefined,
+            backgroundColor: null,
+          },
+        },
+      });
+
+      const colorOptions: Options = {
+        bottomTab: {
+          badgeColor: 'red',
+        },
+      };
+      uut.processOptions(colorOptions, CommandName.MergeOptions);
+
+      expect(colorOptions).toEqual({
+        bottomTab: {
+          badge: {
+            text: undefined,
+            textColor: undefined,
+            backgroundColor: 0xffff0000,
+          },
+        },
+      });
+    });
+  });
 });

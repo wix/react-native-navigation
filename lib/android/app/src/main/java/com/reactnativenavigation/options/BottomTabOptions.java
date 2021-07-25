@@ -35,8 +35,7 @@ public class BottomTabOptions {
         options.selectedIcon = IconParser.parse(json, "selectedIcon");
         options.iconColor = ColorParser.parse(context, json, "iconColor");
         options.selectedIconColor = ColorParser.parse(context, json, "selectedIconColor");
-        options.badge = TextParser.parse(json, "badge");
-        options.badgeColor = ColorParser.parse(context, json, "badgeColor");
+        options.badge = BadgeOptionsKt.parseBadgeOptions(context, json.optJSONObject("badge"));
         options.animateBadge = BoolParser.parse(json, "animateBadge");
         options.testId = TextParser.parse(json, "testID");
         options.font = FontParser.parse(json);
@@ -58,8 +57,7 @@ public class BottomTabOptions {
     public Colour iconColor = new NullColor();
     public Colour selectedIconColor = new NullColor();
     public Text testId = new NullText();
-    public Text badge = new NullText();
-    public Colour badgeColor = new NullColor();
+    public BadgeOptions badge = new BadgeOptions();
     public Bool animateBadge = new NullBool();
     public DotIndicatorOptions dotIndicator = new DotIndicatorOptions();
     public Number fontSize = new NullNumber();
@@ -78,8 +76,7 @@ public class BottomTabOptions {
         if (other.selectedIcon.hasValue()) selectedIcon = other.selectedIcon;
         if (other.iconColor.hasValue()) iconColor = other.iconColor;
         if (other.selectedIconColor.hasValue()) selectedIconColor = other.selectedIconColor;
-        if (other.badge.hasValue()) badge = other.badge;
-        if (other.badgeColor.hasValue()) badgeColor = other.badgeColor;
+        badge.mergeWith(other.badge);
         if (other.animateBadge.hasValue()) animateBadge = other.animateBadge;
         if (other.testId.hasValue()) testId = other.testId;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
@@ -99,8 +96,7 @@ public class BottomTabOptions {
         if (!selectedIcon.hasValue()) selectedIcon = defaultOptions.selectedIcon;
         if (!iconColor.hasValue()) iconColor = defaultOptions.iconColor;
         if (!selectedIconColor.hasValue()) selectedIconColor = defaultOptions.selectedIconColor;
-        if (!badge.hasValue()) badge = defaultOptions.badge;
-        if (!badgeColor.hasValue()) badgeColor = defaultOptions.badgeColor;
+        badge.mergeWithDefaults(defaultOptions.badge);
         if (!animateBadge.hasValue()) animateBadge = defaultOptions.animateBadge;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (!selectedFontSize.hasValue()) selectedFontSize = defaultOptions.selectedFontSize;

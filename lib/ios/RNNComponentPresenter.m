@@ -51,7 +51,10 @@
     RNNComponentViewController *viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     [viewController setBackgroundImage:[withDefault.backgroundImage withDefault:nil]];
-    [viewController setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor withDefault:nil]];
+    [viewController
+        setTabBarItemBadgeColor:[withDefault.bottomTab.badge.backgroundColor withDefault:nil]];
+    [viewController setTabBarItemBadgeTextColor:[withDefault.bottomTab.badge.textColor
+                                                    withDefault:[UIColor blackColor]]];
     [viewController setStatusBarBlur:[withDefault.statusBar.blur withDefault:NO]];
     [viewController setStatusBarStyle:[withDefault.statusBar.style withDefault:@"default"]
                              animated:[withDefault.statusBar.animate withDefault:YES]];
@@ -170,8 +173,12 @@
         [viewController setBackgroundColor:mergeOptions.layout.componentBackgroundColor.get];
     }
 
-    if (mergeOptions.bottomTab.badgeColor.hasValue) {
-        [viewController setTabBarItemBadgeColor:mergeOptions.bottomTab.badgeColor.get];
+    if (mergeOptions.bottomTab.badge.backgroundColor.hasValue) {
+        [viewController setTabBarItemBadgeColor:mergeOptions.bottomTab.badge.backgroundColor.get];
+    }
+
+    if (mergeOptions.bottomTab.badge.textColor.hasValue) {
+        [viewController setTabBarItemBadgeTextColor:mergeOptions.bottomTab.badge.textColor.get];
     }
 
     if (mergeOptions.bottomTab.visible.hasValue) {

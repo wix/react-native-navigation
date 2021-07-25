@@ -8,15 +8,19 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;
+import com.reactnativenavigation.options.BadgeOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
+import com.reactnativenavigation.options.params.NullColor;
+import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 
@@ -24,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -113,9 +118,40 @@ public class BottomTabPresenterTest extends BaseTest {
         verify(bottomTabs, times(0)).setIconInactiveColor(anyInt(), anyInt());
     }
 
+    @Test
+    public void mergeChildOptions_shouldMergeBadgeOptions() {
+        Options options = new Options();
+        options.bottomTabOptions.badge = new BadgeOptions(new Text("tab1badge"), new Colour(Color.RED), new Colour(Color.BLUE));
+        uut.mergeChildOptions(options, child2);
+        ArgumentCaptor<AHNotification> notificationArgumentCaptor = ArgumentCaptor.forClass(AHNotification.class);
+        verify(bottomTabs, times(1)).setNotification(notificationArgumentCaptor.capture(), anyInt());
+        AHNotification value = notificationArgumentCaptor.getValue();
+        assertThat(value).isNotNull();
+        assertThat(value.getReadableText()).isEqualTo("tab1badge");
+        assertThat(value.getBackgroundColor()).isEqualTo(Color.BLUE);
+        assertThat(value.getTextColor()).isEqualTo(Color.RED);
+    }
+
+    @Test
+    public void mergeChildOptions_shouldMergeChangedBadgeOptionsOnly() {
+        Options options = new Options();
+        options.bottomTabOptions.badge = new BadgeOptions(new Text("tab1badge"), new Colour(Color.RED), new Colour(Color.BLUE));
+        uut.mergeChildOptions(options, child2);
+
+        Options options2 = new Options();
+        options2.bottomTabOptions.badge = new BadgeOptions(new NullText(), new Colour(Color.YELLOW), new NullColor());
+        uut.mergeChildOptions(options2, child2);
+
+        //now second time
+        ArgumentCaptor<AHNotification> notificationArgumentCaptor2 = ArgumentCaptor.forClass(AHNotification.class);
+        verify(bottomTabs, times(2)).setNotification(notificationArgumentCaptor2.capture(), anyInt());
+        AHNotification value2 = notificationArgumentCaptor2.getValue();
+        assertThat(value2.getTextColor()).isEqualTo(Color.YELLOW);
+    }
+
     private Options createTab1Options() {
         Options options = new Options();
-        options.bottomTabOptions.badge = new Text("tab1badge");
+        options.bottomTabOptions.badge = new BadgeOptions(new Text("tab1badge"), new NullColor(), new NullColor());
         options.bottomTabOptions.iconColor = new Colour(Color.RED);
         options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
         return options;
@@ -123,7 +159,7 @@ public class BottomTabPresenterTest extends BaseTest {
 
     private Options createTab2Options() {
         Options options = new Options();
-        options.bottomTabOptions.badge = new Text("tab2badge");
+        options.bottomTabOptions.badge = new BadgeOptions(new Text("tab2badge"), new NullColor(), new NullColor());
         options.bottomTabOptions.iconColor = new Colour(Color.RED);
         options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
         return options;

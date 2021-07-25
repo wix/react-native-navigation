@@ -55,6 +55,8 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
         <Button label="Set Badge" testID={SET_BADGE_BTN} onPress={() => this.setBadge('NEW')} />
         <Button label="Clear Badge" testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge('')} />
         <Button label="Set Notification Dot" onPress={this.setNotificationDot} />
+        <Button label="Merge badge new" onPress={this.merge} />
+        <Button label="Merge badge Old" onPress={this.mergeOld} />
         <Button label="Hide Tabs" testID={HIDE_TABS_BTN} onPress={() => this.toggleTabs(false)} />
         <Button label="Show Tabs" testID={SHOW_TABS_BTN} onPress={() => this.toggleTabs(true)} />
         <Button
@@ -68,6 +70,26 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
     );
   }
 
+  merge = () => {
+    Navigation.mergeOptions(this.props.componentId, {
+      bottomTab: {
+        badge: {
+          text: 'content',
+          textColor: 'green',
+          backgroundColor: 'blue',
+        },
+      },
+    });
+  };
+
+  mergeOld = () => {
+    Navigation.mergeOptions(this.props.componentId, {
+      bottomTab: {
+        badgeColor: 'red',
+        badge: 'hello',
+      },
+    });
+  };
   modifyBottomTabs = () => {
     Navigation.mergeOptions(this.props.componentId, {
       bottomTabs: {

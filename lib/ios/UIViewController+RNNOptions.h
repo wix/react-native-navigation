@@ -22,6 +22,8 @@
 
 - (void)setTabBarItemBadgeColor:(UIColor *_Nullable)badgeColor;
 
+- (void)setTabBarItemBadgeTextColor:(UIColor *_Nullable)textColor;
+
 - (void)setTabBarItemBadge:(NSString *_Nullable)badge;
 
 - (void)setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;

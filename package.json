@@ -46,7 +46,7 @@
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
     "docusaurus": "npm start --prefix website",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
+    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./"
   },
   "peerDependencies": {
     "react": "*",

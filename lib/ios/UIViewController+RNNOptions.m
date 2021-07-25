@@ -99,6 +99,20 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     }
 }
 
+- (void)setTabBarItemBadgeTextColor:(UIColor *)textColor {
+    [UITabBarItem.appearance setBadgeTextAttributes:@{NSForegroundColorAttributeName : textColor}
+                                           forState:UIControlStateNormal];
+
+    [UITabBarItem.appearance setBadgeTextAttributes:@{NSBackgroundColorAttributeName : textColor}
+                                           forState:UIControlStateNormal];
+
+    [UITabBarItem.appearance setBadgeTextAttributes:@{NSForegroundColorAttributeName : textColor}
+                                           forState:UIControlStateSelected];
+
+    [UITabBarItem.appearance setBadgeTextAttributes:@{NSForegroundColorAttributeName : textColor}
+                                           forState:UIControlStateHighlighted];
+}
+
 - (void)setStatusBarStyle:(NSString *)style animated:(BOOL)animated {
     if (animated) {
         [UIView animateWithDuration:[self statusBarAnimationDuration:animated]
