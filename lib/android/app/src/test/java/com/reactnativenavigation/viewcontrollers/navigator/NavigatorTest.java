@@ -141,6 +141,22 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void onConfigurationChange_shouldCallOnConfigurationChangedForOverlays() {
+        Navigator spyUUT = spy(uut);
+        SimpleViewController spyChild1 = spy(child1);
+        ViewController spyChild2 = spy(child2);
+        ViewController spyChild3 = spy(child3);
+
+        spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
+        spyUUT.showOverlay(spyChild2, new CommandListenerAdapter());
+        spyUUT.showOverlay(spyChild3, new CommandListenerAdapter());
+        spyUUT.onConfigurationChanged(mockConfiguration);
+
+        verify(spyChild2).onConfigurationChanged(any());
+        verify(spyChild3).onConfigurationChanged(any());
+    }
+
+    @Test
     public void setContentLayout() {
         ViewGroup contentLayout = Mockito.mock(ViewGroup.class);
         uut.setContentLayout(contentLayout);

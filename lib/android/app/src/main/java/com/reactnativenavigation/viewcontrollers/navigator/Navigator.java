@@ -247,6 +247,7 @@ public class Navigator extends ParentController {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         modalStack.onConfigurationChanged(newConfig);
+        overlayManager.onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
     }
 
