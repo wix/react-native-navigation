@@ -1,5 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.overlay;
 
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -7,6 +8,7 @@ import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
@@ -23,6 +25,12 @@ public class OverlayManager {
             listener.onSuccess(overlay.getId());
         });
         overlaysContainer.addView(overlay.getView(), matchParentWithBehaviour(new BehaviourDelegate(overlay)));
+    }
+    public void onConfigurationChanged(Configuration configuration){
+        final Collection<ViewController> values = overlayRegistry.values();
+        for(ViewController controller : values){
+            controller.onConfigurationChanged(configuration);
+        }
     }
 
     public void dismiss(ViewGroup overlaysContainer, String componentId, CommandListener listener) {

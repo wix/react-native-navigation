@@ -9,7 +9,9 @@ import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.DotIndicatorOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Param;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;
@@ -86,8 +88,8 @@ public class BottomTabPresenter {
                 if (tab.iconWidth.hasValue()) bottomTabs.setIconWidth(index, tab.iconWidth.get(null));
                 if (tab.iconHeight.hasValue()) bottomTabs.setIconHeight(index, tab.iconHeight.get(null));
                 if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));
-                if (canMerge(tab.selectedIconColor)) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
-                if (canMerge(tab.iconColor)) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
+                if (canMergeColor(tab.selectedIconColor)) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
+                if (canMergeColor(tab.iconColor)) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
                 if (tab.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, tab.selectedTextColor.get());
                 if (tab.textColor.hasValue()) bottomTabs.setTitleInactiveColor(index, tab.textColor.get());
                 if (tab.text.hasValue()) bottomTabs.setText(index, tab.text.get());
@@ -153,7 +155,20 @@ public class BottomTabPresenter {
         return tab.dotIndicator.visible.hasValue() && !tab.badge.hasValue();
     }
 
-    private boolean canMerge(Param p) {
+    private boolean canMergeColor(ThemeColour p) {
         return p.hasValue() && p.canApplyValue();
+    }
+
+    public void onConfigurationChanged(Options options) {
+        bottomTabs.perform(bottomTabs -> {
+            for (int i = 0; i < tabs.size(); i++) {
+                BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
+                if (tab.selectedIconColor.canApplyValue()) bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
+                if (tab.iconColor.canApplyValue()) bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
+                bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
+                bottomTabs.setTitleInactiveColor(i, tab.textColor.get(null));
+                if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator); else applyBadge(i, tab);
+            }
+        });
     }
 }

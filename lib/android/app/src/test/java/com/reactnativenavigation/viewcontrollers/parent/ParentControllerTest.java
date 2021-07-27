@@ -43,6 +43,7 @@ public class ParentControllerTest extends BaseTest {
     private ChildControllersRegistry childRegistry;
     private List<ViewController> children;
     private ParentController uut;
+    private Presenter presenter;
 
     @Override
     public void beforeEach() {
@@ -52,7 +53,7 @@ public class ParentControllerTest extends BaseTest {
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        Presenter presenter = new Presenter(activity, new Options());
+        presenter = spy(new Presenter(activity, new Options()));
         uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
 
             @Override
@@ -82,6 +83,18 @@ public class ParentControllerTest extends BaseTest {
                 return children;
             }
         });
+    }
+
+    @Test
+    public void onConfigurationChange_shouldCallConfigurationChangeForPresenterAndChildren() {
+        children.add(spy(new SimpleViewController(activity, childRegistry, "child1", new Options())));
+        children.add(spy(new SimpleViewController(activity, childRegistry, "child2", new Options())));
+        ParentController spyUUT = spy(uut);
+        spyUUT.onConfigurationChanged(mockConfiguration);
+        verify(presenter).onConfigurationChanged(any(),any());
+        for (ViewController controller : children) {
+            verify(controller).onConfigurationChanged(any());
+        }
     }
 
     @Test
@@ -240,7 +253,7 @@ public class ParentControllerTest extends BaseTest {
     public void applyTopInset() {
         children.addAll(createChildren());
         uut.applyTopInset();
-        forEach(children, c-> verify(c).applyTopInset());
+        forEach(children, c -> verify(c).applyTopInset());
     }
 
     @Test
@@ -261,7 +274,7 @@ public class ParentControllerTest extends BaseTest {
     public void applyBottomInset() {
         children.addAll(createChildren());
         uut.applyBottomInset();
-        forEach(children, c-> verify(c).applyBottomInset());
+        forEach(children, c -> verify(c).applyBottomInset());
     }
 
     @Test

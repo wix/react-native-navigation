@@ -2,8 +2,12 @@ package com.reactnativenavigation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,6 +34,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -37,10 +42,16 @@ import static org.mockito.Mockito.when;
 public abstract class BaseTest {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final ShadowLooper shadowMainLooper = Shadows.shadowOf(Looper.getMainLooper());
+    protected Configuration mockConfiguration;
 
     @Before
     public void beforeEach() {
-        //
+        NavigationApplication.instance = Mockito.mock(NavigationApplication.class);
+        mockConfiguration = Mockito.mock(Configuration.class);
+        Resources res = mock(Resources.class);
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
+        when(res.getConfiguration()).thenReturn(mockConfiguration);
+        when(NavigationApplication.instance.getResources()).thenReturn(res);
     }
 
     @After

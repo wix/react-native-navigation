@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Color;
 
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
@@ -11,6 +12,7 @@ import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
@@ -42,19 +44,59 @@ public class BottomTabPresenterTest extends BaseTest {
     private ViewController child1;
     private ViewController child2;
     private ViewController child3;
+    private Activity activity;
+    private ChildControllersRegistry childRegistry;
 
     @Override
     public void beforeEach() {
-        Activity activity = newActivity();
-        ChildControllersRegistry childRegistry = new ChildControllersRegistry();
+        super.beforeEach();
+        activity = newActivity();
+        childRegistry = new ChildControllersRegistry();
+        createBottomTabs(tab1Options,tab2Options,new Options());
+    }
+
+    private void createBottomTabs(Options tab1Options,
+                                  Options tab2Options,Options tab3Options ) {
+        childRegistry = new ChildControllersRegistry();
         bottomTabs = Mockito.mock(BottomTabs.class);
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", tab1Options));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", tab2Options));
-        child3 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
+        child3 = spy(new SimpleViewController(activity, childRegistry, "child2", tab3Options));
         tabs = Arrays.asList(child1, child2, child3);
         uut = new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), new Options());
         uut.bindView(bottomTabs);
         uut.setDefaultOptions(new Options());
+    }
+
+    @Test
+    public void onConfigurationChange_shouldChangeColors(){
+        Options options = Options.EMPTY;
+        options.bottomTabOptions.textColor = ThemeColour.of(Color.BLACK,Color.WHITE);
+        options.bottomTabOptions.selectedTextColor = ThemeColour.of(Color.BLUE,Color.RED);
+        options.bottomTabOptions.iconColor = ThemeColour.of(Color.BLACK,Color.WHITE);
+        options.bottomTabOptions.selectedIconColor = ThemeColour.of(Color.BLUE,Color.RED);
+        options.bottomTabOptions.badgeColor = ThemeColour.of(Color.BLACK,Color.WHITE);
+        createBottomTabs(options,options,options);
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
+        uut.onConfigurationChanged(options);
+        for(int i=0;i<tabs.size();++i){
+            verify(bottomTabs).setIconActiveColor(i,Color.BLUE);
+            verify(bottomTabs).setIconInactiveColor(i,Color.BLACK);
+
+            verify(bottomTabs).setTitleActiveColor(i,Color.BLUE);
+            verify(bottomTabs).setTitleInactiveColor(i,Color.BLACK);
+        }
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES;
+        uut.onConfigurationChanged(options);
+        for(int i=0;i<tabs.size();++i){
+            verify(bottomTabs).setIconActiveColor(i,Color.RED);
+            verify(bottomTabs).setIconInactiveColor(i,Color.WHITE);
+
+            verify(bottomTabs).setTitleActiveColor(i,Color.RED);
+            verify(bottomTabs).setTitleInactiveColor(i,Color.WHITE);
+        }
     }
 
     @Test
@@ -70,8 +112,8 @@ public class BottomTabPresenterTest extends BaseTest {
     @Test
     public void mergeOptions_createTabsOnce() {
         Options options = new Options();
-        options.bottomTabOptions.iconColor = new Colour(1);
-        options.bottomTabOptions.selectedIconColor = new Colour(1);
+        options.bottomTabOptions.iconColor = new ThemeColour(new Colour(1));
+        options.bottomTabOptions.selectedIconColor = new ThemeColour(new Colour(1));
         BottomTabPresenter spy = spy(uut);
 
         spy.mergeOptions(options);
@@ -106,8 +148,8 @@ public class BottomTabPresenterTest extends BaseTest {
     @Test
     public void mergeChildOptions_nullColorsAreNotMerged() {
         Options options = new Options();
-        options.bottomTabOptions.iconColor = new DontApplyColour();
-        options.bottomTabOptions.selectedIconColor = new DontApplyColour();
+        options.bottomTabOptions.iconColor = new ThemeColour(new DontApplyColour());
+        options.bottomTabOptions.selectedIconColor = new ThemeColour(new DontApplyColour());
         uut.mergeChildOptions(options, child3);
         verify(bottomTabs, times(0)).setIconActiveColor(anyInt(), anyInt());
         verify(bottomTabs, times(0)).setIconInactiveColor(anyInt(), anyInt());
@@ -116,16 +158,16 @@ public class BottomTabPresenterTest extends BaseTest {
     private Options createTab1Options() {
         Options options = new Options();
         options.bottomTabOptions.badge = new Text("tab1badge");
-        options.bottomTabOptions.iconColor = new Colour(Color.RED);
-        options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
+        options.bottomTabOptions.iconColor = new ThemeColour(new Colour(Color.RED));
+        options.bottomTabOptions.selectedIconColor = new ThemeColour(new Colour(Color.RED));
         return options;
     }
 
     private Options createTab2Options() {
         Options options = new Options();
         options.bottomTabOptions.badge = new Text("tab2badge");
-        options.bottomTabOptions.iconColor = new Colour(Color.RED);
-        options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
+        options.bottomTabOptions.iconColor = new ThemeColour(new Colour(Color.RED));
+        options.bottomTabOptions.selectedIconColor = new ThemeColour(new Colour(Color.RED));
         return options;
     }
 }

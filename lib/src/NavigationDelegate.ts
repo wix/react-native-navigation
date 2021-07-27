@@ -215,6 +215,10 @@ export class NavigationDelegate {
     return await this.concreteNavigation.constants();
   }
 
+  public constantsSync(): NavigationConstants {
+    return this.concreteNavigation.constantsSync();
+  }
+
   get TouchablePreview() {
     return this.concreteNavigation.TouchablePreview;
   }

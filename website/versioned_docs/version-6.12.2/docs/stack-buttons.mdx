@@ -40,9 +40,11 @@ Now you can create buttons which use the component registered with `'ButtonCompo
 topBar: {
   rightButtons: [
     {
-      component: 'ButtonComponent',
-      passProps: {
-        // Pass initial props to the button here
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          // Pass initial props to the button here
+        },
       },
     },
   ];
@@ -61,10 +63,12 @@ topBar: {
   rightButtons: [
     {
       id: 'SomeUniqueId',
-      component: 'ButtonComponent',
-      passProps: {
-        count: 0,
-      },
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          count: 0
+        },
+      },,
     },
   ];
 }

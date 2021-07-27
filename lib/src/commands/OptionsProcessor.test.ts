@@ -456,15 +456,107 @@ describe('navigation options', () => {
     });
   });
 
-  it('processes color keys', () => {
-    const options: Options = {
-      statusBar: { backgroundColor: 'red' },
-      topBar: { background: { color: 'blue' } },
-    };
-    uut.processOptions(options, CommandName.SetRoot);
-    expect(options).toEqual({
-      statusBar: { backgroundColor: 0xffff0000 },
-      topBar: { background: { color: 0xff0000ff } },
+  describe('color processor', () => {
+    describe('Android', () => {
+      beforeEach(() => {
+        Platform.OS = 'android';
+      });
+
+      it('processes color keys', () => {
+        const options: Options = {
+          statusBar: { backgroundColor: 'red' },
+          topBar: { background: { color: 'blue' } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          statusBar: { backgroundColor: { light: 0xffff0000, dark: 0xffff0000 } },
+          topBar: { background: { color: { light: 0xff0000ff, dark: 0xff0000ff } } },
+        });
+      });
+
+      it('processes null color', () => {
+        const options: Options = {
+          topBar: { background: { color: null } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: { background: { color: { light: 'NoColor', dark: 'NoColor' } } },
+        });
+      });
+
+      it('processes color keys to ThemeColor', () => {
+        const options: Options = {
+          topBar: {
+            background: { color: { light: 'blue', dark: 'red' } },
+            title: {
+              color: undefined,
+            },
+          },
+        };
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: {
+            background: { color: { light: 0xff0000ff, dark: 0xffff0000 } },
+            title: {
+              color: { light: null, dark: null },
+            },
+          },
+        });
+      });
+    });
+
+    describe('iOS', () => {
+      beforeEach(() => {
+        Platform.OS = 'ios';
+      });
+
+      it('processes color keys', () => {
+        const options: Options = {
+          statusBar: { backgroundColor: 'red' },
+          topBar: { background: { color: 'blue' } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          statusBar: { backgroundColor: { dynamic: { light: 0xffff0000, dark: 0xffff0000 } } },
+          topBar: { background: { color: { dynamic: { light: 0xff0000ff, dark: 0xff0000ff } } } },
+        });
+      });
+
+      it('processes null color', () => {
+        const options: Options = {
+          topBar: { background: { color: null } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: { background: { color: { dynamic: { light: 'NoColor', dark: 'NoColor' } } } },
+        });
+      });
+
+      it('processes color keys to ThemeColor', () => {
+        const options: Options = {
+          statusBar: { backgroundColor: 'red' },
+          topBar: {
+            background: { color: { light: 'blue', dark: 'red' } },
+            title: {
+              color: undefined,
+            },
+          },
+        };
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          statusBar: { backgroundColor: { dynamic: { light: 0xffff0000, dark: 0xffff0000 } } },
+          topBar: {
+            background: { color: { dynamic: { light: 0xff0000ff, dark: 0xffff0000 } } },
+            title: {
+              color: { dynamic: { light: null, dark: null } },
+            },
+          },
+        });
+      });
     });
   });
 
@@ -571,40 +663,91 @@ describe('navigation options', () => {
     );
   });
 
-  it('transform searchBar bool to object', () => {
-    const options = { topBar: { searchBar: true as any } };
-    uut.processOptions(options, CommandName.SetRoot);
-    expect(options.topBar.searchBar).toStrictEqual({
-      visible: true,
-      hideOnScroll: false,
-      hideTopBarOnFocus: false,
-      obscuresBackgroundDuringPresentation: false,
-      backgroundColor: null,
-      tintColor: null,
-      placeholder: '',
-    });
-  });
+  describe('searchBar', () => {
+    describe('Android', () => {
+      beforeEach(() => {
+        Platform.OS = 'android';
+      });
 
-  it('transform searchBar bool to object and merges in deprecated values', () => {
-    const options = {
-      topBar: {
-        searchBar: true as any,
-        searchBarHiddenWhenScrolling: true,
-        hideNavBarOnFocusSearchBar: true,
-        searchBarBackgroundColor: 'red',
-        searchBarTintColor: 'green',
-        searchBarPlaceholder: 'foo',
-      },
-    };
-    uut.processOptions(options, CommandName.SetRoot);
-    expect(options.topBar.searchBar).toStrictEqual({
-      visible: true,
-      hideOnScroll: true,
-      hideTopBarOnFocus: true,
-      obscuresBackgroundDuringPresentation: false,
-      backgroundColor: 0xffff0000,
-      tintColor: 0xff00ff00,
-      placeholder: 'foo',
+      it('transform searchBar bool to object', () => {
+        const options = { topBar: { searchBar: true as any } };
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options.topBar.searchBar).toStrictEqual({
+          visible: true,
+          hideOnScroll: false,
+          hideTopBarOnFocus: false,
+          obscuresBackgroundDuringPresentation: false,
+          backgroundColor: { light: null, dark: null },
+          tintColor: { light: null, dark: null },
+          placeholder: '',
+        });
+      });
+
+      it('transform searchBar bool to object and merges in deprecated values', () => {
+        const options = {
+          topBar: {
+            searchBar: true as any,
+            searchBarHiddenWhenScrolling: true,
+            hideNavBarOnFocusSearchBar: true,
+            searchBarBackgroundColor: 'red',
+            searchBarTintColor: 'green',
+            searchBarPlaceholder: 'foo',
+          },
+        };
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options.topBar.searchBar).toStrictEqual({
+          visible: true,
+          hideOnScroll: true,
+          hideTopBarOnFocus: true,
+          obscuresBackgroundDuringPresentation: false,
+          backgroundColor: { dark: 0xffff0000, light: 0xffff0000 },
+          tintColor: { dark: 0xff00ff00, light: 0xff00ff00 },
+          placeholder: 'foo',
+        });
+      });
+    });
+
+    describe('iOS', () => {
+      beforeEach(() => {
+        Platform.OS = 'ios';
+      });
+
+      it('transform searchBar bool to object', () => {
+        const options = { topBar: { searchBar: true as any } };
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options.topBar.searchBar).toStrictEqual({
+          visible: true,
+          hideOnScroll: false,
+          hideTopBarOnFocus: false,
+          obscuresBackgroundDuringPresentation: false,
+          backgroundColor: { dynamic: { light: null, dark: null } },
+          tintColor: { dynamic: { light: null, dark: null } },
+          placeholder: '',
+        });
+      });
+
+      it('transform searchBar bool to object and merges in deprecated values', () => {
+        const options = {
+          topBar: {
+            searchBar: true as any,
+            searchBarHiddenWhenScrolling: true,
+            hideNavBarOnFocusSearchBar: true,
+            searchBarBackgroundColor: 'red',
+            searchBarTintColor: 'green',
+            searchBarPlaceholder: 'foo',
+          },
+        };
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options.topBar.searchBar).toStrictEqual({
+          visible: true,
+          hideOnScroll: true,
+          hideTopBarOnFocus: true,
+          obscuresBackgroundDuringPresentation: false,
+          backgroundColor: { dynamic: { dark: 0xffff0000, light: 0xffff0000 } },
+          tintColor: { dynamic: { dark: 0xff00ff00, light: 0xff00ff00 } },
+          placeholder: 'foo',
+        });
+      });
     });
   });
 

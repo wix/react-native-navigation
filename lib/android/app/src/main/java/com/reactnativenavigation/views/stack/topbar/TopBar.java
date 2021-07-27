@@ -27,10 +27,11 @@ import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.LayoutDirection;
 import com.reactnativenavigation.options.SubtitleOptions;
 import com.reactnativenavigation.options.TitleOptions;
-import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
@@ -46,6 +47,8 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
+    public final static int  DEFAULT_TITLE_COLOR = Color.BLACK;
+    public final static int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
 
     private final TopBarCollapseBehavior collapsingBehavior;
     private TopTabs topTabs;
@@ -161,13 +164,14 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleAndButtonsContainer.setSubtitleFontSize((float) size);
     }
 
-    public void animateRightButtons(boolean animate){
+    public void animateRightButtons(boolean animate) {
         titleAndButtonsContainer.animateRightButtons(animate);
     }
 
-    public void animateLeftButtons(boolean animate){
+    public void animateLeftButtons(boolean animate) {
         titleAndButtonsContainer.animateLeftButtons(animate);
     }
+
     public void setSubtitleAlignment(Alignment alignment) {
         titleAndButtonsContainer.setSubTitleTextAlignment(alignment);
     }
@@ -211,7 +215,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         topTabs.setFontFamily(tabIndex, fontFamily);
     }
 
-    public void applyTopTabsColors(Colour selectedTabColor, Colour unselectedTabColor) {
+    public void applyTopTabsColors(ThemeColour selectedTabColor, ThemeColour unselectedTabColor) {
         topTabs.applyTopTabsColors(selectedTabColor, unselectedTabColor);
     }
 
@@ -342,8 +346,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void applyTitleOptions(TitleOptions titleOptions, TypefaceLoader typefaceLoader) {
         final double DEFAULT_TITLE_FONT_SIZE = 18;
-        final int DEFAULT_TITLE_COLOR = Color.BLACK;
-
         this.setTitle(titleOptions.text.get(""));
         this.setTitleFontSize(titleOptions.fontSize.get(DEFAULT_TITLE_FONT_SIZE));
         this.setTitleTextColor(titleOptions.color.get(DEFAULT_TITLE_COLOR));
@@ -353,7 +355,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void applySubtitleOptions(SubtitleOptions subtitle, TypefaceLoader typefaceLoader) {
         final double DEFAULT_SUBTITLE_FONT_SIZE = 14;
-        final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
 
         this.setSubtitle(subtitle.text.get(""));
         this.setSubtitleFontSize(subtitle.fontSize.get(DEFAULT_SUBTITLE_FONT_SIZE));

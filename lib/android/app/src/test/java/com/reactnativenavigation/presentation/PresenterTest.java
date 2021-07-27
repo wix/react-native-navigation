@@ -5,9 +5,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -20,6 +20,7 @@ public class PresenterTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         activity = newActivity();
         uut = new Presenter(activity, Options.EMPTY);
     }

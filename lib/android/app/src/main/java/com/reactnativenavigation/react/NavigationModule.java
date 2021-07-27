@@ -1,5 +1,8 @@
 package com.reactnativenavigation.react;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -16,20 +19,17 @@ import com.reactnativenavigation.options.LayoutNode;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.parsers.JSONParser;
 import com.reactnativenavigation.options.parsers.LayoutNodeParser;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.LaunchArgsParser;
 import com.reactnativenavigation.utils.Now;
 import com.reactnativenavigation.utils.StatusBarUtils;
-import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 

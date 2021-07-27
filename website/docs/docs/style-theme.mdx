@@ -7,6 +7,29 @@ sidebar_label: Themes
 A theme is a type of style which is applied to the entire app. It allows you to declare
 a consistent style to all Navigation components such as the TopBar and BottomTabs and also
 to system elements like the StatusBar and NavigationBar.
+## Dark mode
+
+Dark mode support for navigation UI components can be done via colors, perferably via setting a "Theme" in the default options, as in the example below.
+
+The trigger for the change is the system wide Dark Mode toggle.
+
+```js
+Navigation.setDefaultOptions({
+  topBar: {
+    background: {
+      color: {
+        light:'white',
+        dark:'black'
+      }
+    },
+    title:{
+      color: {
+        light:'black',
+        dark:'red'
+      }
+    }
+  }
+});
 
 ## Applying a theme
 

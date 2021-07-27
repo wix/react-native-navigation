@@ -646,6 +646,13 @@
     XCTAssertNotNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
 }
 
+- (void)testStatusBarBlurOn_shouldBeOnTop {
+    NSNumber *statusBarBlurInput = @(1);
+    self.options.statusBar.blur = [[Bool alloc] initWithValue:statusBarBlurInput];
+    [self.uut viewWillAppear:false];
+    XCTAssertTrue([self.uut.view viewWithTag:BLUR_STATUS_TAG] == self.uut.view.subviews.lastObject);
+}
+
 - (void)testStatusBarBlurOff {
     NSNumber *statusBarBlurInput = @(0);
     self.options.statusBar.blur = [[Bool alloc] initWithValue:statusBarBlurInput];

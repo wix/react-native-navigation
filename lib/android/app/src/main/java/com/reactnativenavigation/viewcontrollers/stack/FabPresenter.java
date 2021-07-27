@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.FabOptions;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewExtensionsKt;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
@@ -306,6 +307,36 @@ public class FabPresenter {
         }
         if (options.hideOnScroll.isFalse()) {
             fabMenu.disableCollapse();
+        }
+    }
+
+    public void onConfigurationChanged( Options options) {
+        FabOptions fabOptions = options.fabOptions;
+        if(fab!=null){
+            if (fabOptions.backgroundColor.hasValue()) {
+                fab.setColorNormal(fabOptions.backgroundColor.get());
+            }
+            if (fabOptions.clickColor.hasValue()) {
+                fab.setColorPressed(fabOptions.clickColor.get());
+            }
+            if (fabOptions.rippleColor.hasValue()) {
+                fab.setColorRipple(fabOptions.rippleColor.get());
+            }
+            if (fabOptions.icon.hasValue()) {
+                fab.applyIcon(fabOptions.icon.get(), fabOptions.iconColor);
+            }
+        }
+
+        if(fabMenu!=null){
+            if (fabOptions.backgroundColor.hasValue()) {
+                fabMenu.setMenuButtonColorNormal(fabOptions.backgroundColor.get());
+            }
+            if (fabOptions.clickColor.hasValue()) {
+                fabMenu.setMenuButtonColorPressed(fabOptions.clickColor.get());
+            }
+            if (fabOptions.rippleColor.hasValue()) {
+                fabMenu.setMenuButtonColorRipple(fabOptions.rippleColor.get());
+            }
         }
     }
 }

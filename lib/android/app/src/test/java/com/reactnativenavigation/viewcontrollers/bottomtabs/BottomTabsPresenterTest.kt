@@ -1,14 +1,15 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs
 
 import android.animation.AnimatorSet
+import android.content.res.Configuration
+import android.graphics.Color
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.options.params.Colour
+import com.reactnativenavigation.options.ShadowOptions
+import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.options.params.Number
-import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
@@ -25,6 +26,7 @@ class BottomTabsPresenterTest : BaseTest() {
     private lateinit var tabSelector: TabSelector
 
     override fun beforeEach() {
+        super.beforeEach()
         val activity = newActivity()
         val childRegistry = ChildControllersRegistry()
         val child1 = spy(SimpleViewController(activity, childRegistry, "child1", Options()))
@@ -40,12 +42,31 @@ class BottomTabsPresenterTest : BaseTest() {
     }
 
     @Test
+    fun onConfigurationChange_shouldApplyColors() {
+        val options = Options.EMPTY
+        options.bottomTabsOptions.backgroundColor = ThemeColour.of(Color.BLACK, Color.RED)
+        options.bottomTabsOptions.borderColor = ThemeColour.of(Color.BLACK, Color.RED)
+        options.bottomTabsOptions.shadowOptions = ShadowOptions(ThemeColour.of(Color.BLACK, Color.RED))
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO
+        uut.onConfigurationChanged(options)
+        verify(bottomTabs).setBackgroundColor(Color.BLACK)
+        verify(bottomTabsContainer).setTopOutLineColor(Color.BLACK)
+        verify(bottomTabsContainer).shadowColor = Color.BLACK
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES
+        uut.onConfigurationChanged(options)
+        verify(bottomTabs).setBackgroundColor(Color.RED)
+        verify(bottomTabsContainer).setTopOutLineColor(Color.RED)
+        verify(bottomTabsContainer).shadowColor = Color.RED
+    }
+
+    @Test
     fun mergeChildOptions_onlyDeclaredOptionsAreApplied() { // default options are not applied on merge
         val defaultOptions = Options()
         defaultOptions.bottomTabsOptions.visible = Bool(false)
         uut.setDefaultOptions(defaultOptions)
         val options = Options()
-        options.bottomTabsOptions.backgroundColor = Colour(10)
+        options.bottomTabsOptions.backgroundColor = ThemeColour(Colour(10))
         uut.mergeChildOptions(options, tabs[0])
         verify(bottomTabs).setBackgroundColor(options.bottomTabsOptions.backgroundColor.get())
         verifyNoMoreInteractions(bottomTabs)
@@ -100,9 +121,9 @@ class BottomTabsPresenterTest : BaseTest() {
         val someAnimator = AnimatorSet()
         val options = Options.EMPTY
         doReturn(someAnimator).whenever(animator).getPushAnimation(
-                options.animations.push.bottomTabs,
-                options.bottomTabsOptions.visible,
-                0f
+            options.animations.push.bottomTabs,
+            options.bottomTabsOptions.visible,
+            0f
         )
         val result = uut.getPushAnimation(options)
         assertThat(result).isEqualTo(someAnimator)
@@ -122,9 +143,9 @@ class BottomTabsPresenterTest : BaseTest() {
         val appearing = Options.EMPTY
         val disappearing = Options.EMPTY
         doReturn(someAnimator).whenever(animator).getPopAnimation(
-                disappearing.animations.pop.bottomTabs,
-                appearing.bottomTabsOptions.visible,
-                0f
+            disappearing.animations.pop.bottomTabs,
+            appearing.bottomTabsOptions.visible,
+            0f
         )
         val result = uut.getPopAnimation(appearing, disappearing)
         assertThat(result).isEqualTo(someAnimator)
@@ -142,9 +163,9 @@ class BottomTabsPresenterTest : BaseTest() {
         val someAnimator = AnimatorSet()
         val options = Options.EMPTY
         doReturn(someAnimator).whenever(animator).getSetStackRootAnimation(
-                options.animations.setStackRoot.bottomTabs,
-                options.bottomTabsOptions.visible,
-                0f
+            options.animations.setStackRoot.bottomTabs,
+            options.bottomTabsOptions.visible,
+            0f
         )
         val result = uut.getSetStackRootAnimation(options)
         assertThat(result).isEqualTo(someAnimator)

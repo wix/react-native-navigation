@@ -15,6 +15,7 @@
 @property(nonatomic, strong) Bool *waitForRender;
 @property(nonatomic, strong) Bool *enable;
 
+- (BOOL)shouldWaitForRender;
 - (NSTimeInterval)maxDuration;
 - (BOOL)hasAnimation;
 - (BOOL)hasValue;

@@ -34,6 +34,7 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
@@ -82,6 +83,7 @@ public class NavigatorTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         childRegistry = new ChildControllersRegistry();
         eventEmitter = Mockito.mock(EventEmitter.class);
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
@@ -120,6 +122,38 @@ public class NavigatorTest extends BaseTest {
         activityController.visible();
         activityController.postCreate(Bundle.EMPTY);
         idleMainLooper();
+    }
+
+    @Test
+    public void onConfigurationChange_shouldCallOnConfigurationChangedForModals() {
+        Navigator spyUUT = spy(uut);
+        SimpleViewController spyChild1 = spy(child1);
+        ViewController spyChild2 = spy(child2);
+        ViewController spyChild3 = spy(child3);
+
+        spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
+        spyUUT.showModal(spyChild2, new CommandListenerAdapter());
+        spyUUT.showModal(spyChild3, new CommandListenerAdapter());
+        spyUUT.onConfigurationChanged(mockConfiguration);
+
+        verify(spyChild2).onConfigurationChanged(any());
+        verify(spyChild3).onConfigurationChanged(any());
+    }
+
+    @Test
+    public void onConfigurationChange_shouldCallOnConfigurationChangedForOverlays() {
+        Navigator spyUUT = spy(uut);
+        SimpleViewController spyChild1 = spy(child1);
+        ViewController spyChild2 = spy(child2);
+        ViewController spyChild3 = spy(child3);
+
+        spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
+        spyUUT.showOverlay(spyChild2, new CommandListenerAdapter());
+        spyUUT.showOverlay(spyChild3, new CommandListenerAdapter());
+        spyUUT.onConfigurationChanged(mockConfiguration);
+
+        verify(spyChild2).onConfigurationChanged(any());
+        verify(spyChild3).onConfigurationChanged(any());
     }
 
     @Test

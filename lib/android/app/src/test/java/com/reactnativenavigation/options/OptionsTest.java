@@ -1,5 +1,6 @@
 package com.reactnativenavigation.options;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
@@ -8,6 +9,7 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 
@@ -54,9 +56,12 @@ public class OptionsTest extends BaseTest {
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ComponentId";
     private static final Number BOTTOM_TABS_CURRENT_TAB_INDEX = new Number(1);
     private TypefaceLoader mockLoader;
+    private Activity activity;
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
+        activity = newActivity();
         mockLoader = Mockito.mock(TypefaceLoader.class);
         when(mockLoader.getTypeFace("HelveticaNeue-Condensed", null, null, null)).then((Answer<Typeface>) invocation -> SUBTITLE_TYPEFACE);
         when(mockLoader.getTypeFace("HelveticaNeue-CondensedBold", null, null, null)).then((Answer<Typeface>) invocation -> TOP_BAR_TYPEFACE);
@@ -72,13 +77,13 @@ public class OptionsTest extends BaseTest {
     @Test
     public void parsesJson() throws Exception {
         JSONObject layout = new JSONObject()
-                .put("backgroundColor", SCREEN_BACKGROUND_COLOR);
+                .put("backgroundColor", createColor(SCREEN_BACKGROUND_COLOR,SCREEN_BACKGROUND_COLOR));
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("fab", createFab())
                 .put("bottomTabs", createBottomTabs())
                 .put("layout", layout);
-        Options result = Options.parse(null, mockLoader, json);
+        Options result = Options.parse(activity, mockLoader, json);
         assertResult(result);
     }
 
@@ -131,14 +136,18 @@ public class OptionsTest extends BaseTest {
 
     private JSONObject createBackground() throws JSONException {
         return new JSONObject()
-                .put("color", TOP_BAR_BACKGROUND_COLOR);
+                .put("color", createColor(TOP_BAR_BACKGROUND_COLOR, TOP_BAR_BACKGROUND_COLOR));
+    }
+
+    private JSONObject createColor(int light, int dark) throws JSONException {
+        return new JSONObject().put("light", light).put("dark", dark);
     }
 
     private JSONObject createTitle() throws JSONException {
         return new JSONObject()
                 .put("text", "the title")
                 .put("height", TITLE_HEIGHT.get())
-                .put("color", TOP_BAR_TEXT_COLOR)
+                .put("color", createColor(TOP_BAR_TEXT_COLOR,TOP_BAR_TEXT_COLOR))
                 .put("fontSize", TOP_BAR_FONT_SIZE)
                 .put("fontFamily", TOP_BAR_FONT_FAMILY);
     }
@@ -146,7 +155,7 @@ public class OptionsTest extends BaseTest {
     private JSONObject createSubtitle() throws JSONException {
         return new JSONObject()
                 .put("text", "the subtitle")
-                .put("color", SUBTITLE_TEXT_COLOR)
+                .put("color", createColor(SUBTITLE_TEXT_COLOR,SUBTITLE_TEXT_COLOR))
                 .put("fontSize", SUBTITLE_FONT_SIZE)
                 .put("fontFamily", SUBTITLE_FONT_FAMILY)
                 .put("alignment", SUBTITLE_ALIGNMENT);
@@ -156,9 +165,9 @@ public class OptionsTest extends BaseTest {
     private JSONObject createFab() throws JSONException {
         return new JSONObject()
                 .put("id", FAB_ID)
-                .put("backgroundColor", FAB_BACKGROUND_COLOR)
-                .put("clickColor", FAB_CLICK_COLOR)
-                .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("backgroundColor", createColor(FAB_BACKGROUND_COLOR,FAB_BACKGROUND_COLOR))
+                .put("clickColor", createColor(FAB_CLICK_COLOR,FAB_CLICK_COLOR))
+                .put("rippleColor", createColor(FAB_RIPPLE_COLOR,FAB_RIPPLE_COLOR))
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
@@ -169,9 +178,9 @@ public class OptionsTest extends BaseTest {
     private JSONObject createOtherFab() throws JSONException {
         return new JSONObject()
                 .put("id", "FAB")
-                .put("backgroundColor", FAB_BACKGROUND_COLOR)
-                .put("clickColor", FAB_CLICK_COLOR)
-                .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("backgroundColor", createColor(FAB_BACKGROUND_COLOR,FAB_BACKGROUND_COLOR))
+                .put("clickColor", createColor(FAB_CLICK_COLOR,FAB_CLICK_COLOR))
+                .put("rippleColor", createColor(FAB_RIPPLE_COLOR,FAB_RIPPLE_COLOR))
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
@@ -201,12 +210,12 @@ public class OptionsTest extends BaseTest {
     public void mergeDoesNotMutate() throws Exception {
         JSONObject json1 = new JSONObject();
         json1.put("topBar", createTopBar(true));
-        Options options1 = Options.parse(null, mockLoader, json1);
+        Options options1 = Options.parse(activity, mockLoader, json1);
         options1.topBar.title.text = new Text("some title");
 
         JSONObject json2 = new JSONObject();
         json2.put("topBar", createTopBar(false));
-        Options options2 = Options.parse(null, mockLoader, json2);
+        Options options2 = Options.parse(activity, mockLoader, json2);
         options2.topBar.title.text = new NullText();
 
         Options merged = options1.mergeWith(options2);
@@ -218,13 +227,13 @@ public class OptionsTest extends BaseTest {
     @Test
     public void mergeDefaultOptions() throws Exception {
         JSONObject layout = new JSONObject()
-                .put("backgroundColor", SCREEN_BACKGROUND_COLOR);
+                .put("backgroundColor", createColor(SCREEN_BACKGROUND_COLOR,SCREEN_BACKGROUND_COLOR));
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("fab", createFab())
                 .put("bottomTabs", createBottomTabs())
                 .put("layout", layout);
-        Options defaultOptions = Options.parse(null, mockLoader, json);
+        Options defaultOptions = Options.parse(activity, mockLoader, json);
         Options options = new Options();
 
         assertResult(options.mergeWith(defaultOptions));
@@ -233,18 +242,18 @@ public class OptionsTest extends BaseTest {
     @Test
     public void mergedDefaultOptionsDontOverrideGivenOptions() throws Exception {
         JSONObject layout = new JSONObject()
-                .put("backgroundColor", SCREEN_BACKGROUND_COLOR);
+                .put("backgroundColor", createColor(SCREEN_BACKGROUND_COLOR,SCREEN_BACKGROUND_COLOR));
         JSONObject defaultJson = new JSONObject()
                 .put("topBar", createOtherTopBar())
                 .put("fab", createOtherFab())
                 .put("bottomTabs", createOtherBottomTabs())
                 .put("layout", layout);
-        Options defaultOptions = Options.parse(null, mockLoader, defaultJson);
+        Options defaultOptions = Options.parse(activity, mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("bottomTabs", createBottomTabs());
-        Options options = Options.parse(null, mockLoader, json);
+        Options options = Options.parse(activity, mockLoader, json);
         options.withDefaultOptions(defaultOptions);
         assertResult(options);
     }
@@ -275,7 +284,7 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_bottomTabsOptions() {
         Options uut = new Options();
-        uut.bottomTabsOptions.backgroundColor = new Colour(Color.RED);
+        uut.bottomTabsOptions.backgroundColor = new ThemeColour(new Colour(Color.RED), new Colour(Color.RED));
         uut.clearBottomTabsOptions();
         assertThat(uut.bottomTabsOptions.backgroundColor.hasValue()).isFalse();
     }

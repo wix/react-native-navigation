@@ -64,8 +64,30 @@
     XCTAssertFalse(self.boundViewController.navigationItem.hidesBackButton);
 }
 
+- (void)testApplyOptions_defaultAnimateLeftButtonsFalse {
+    RNNButtonOptions *button = [RNNButtonOptions new];
+    self.options.topBar.leftButtons = @[ button ];
+    [[self.buttonsPresenter expect] applyLeftButtons:self.options.topBar.leftButtons
+                                        defaultColor:OCMArg.any
+                                defaultDisabledColor:OCMArg.any
+                                            animated:NO];
+    [self.uut applyOptions:self.options];
+    [self.buttonsPresenter verify];
+}
+
+- (void)testApplyOptions_defaultAnimateRightButtonsFalse {
+    RNNButtonOptions *button = [RNNButtonOptions new];
+    self.options.topBar.rightButtons = @[ button ];
+    [[self.buttonsPresenter expect] applyRightButtons:self.options.topBar.rightButtons
+                                         defaultColor:OCMArg.any
+                                 defaultDisabledColor:OCMArg.any
+                                             animated:NO];
+    [self.uut applyOptions:self.options];
+    [self.buttonsPresenter verify];
+}
+
 - (void)testApplyOptions_animateLeftButtons {
-    self.options.topBar.animateLeftButtons = [Bool withValue:NO];
+    self.options.topBar.animateLeftButtons = [Bool withValue:YES];
     RNNButtonOptions *button = [RNNButtonOptions new];
     self.options.topBar.leftButtons = @[ button ];
     [[self.buttonsPresenter expect] applyLeftButtons:self.options.topBar.leftButtons
