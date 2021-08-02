@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primary.light,
   },
   carIcon: {
     fontSize: 40,
