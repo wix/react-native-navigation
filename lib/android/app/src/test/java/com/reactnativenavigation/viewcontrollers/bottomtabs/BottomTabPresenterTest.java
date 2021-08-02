@@ -12,6 +12,9 @@ import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
+import com.reactnativenavigation.options.params.NullColor;
+import com.reactnativenavigation.options.params.NullText;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -19,6 +22,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 
@@ -26,10 +30,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -102,11 +108,39 @@ public class BottomTabPresenterTest extends BaseTest {
     @Test
     public void present() {
         uut.applyOptions();
+        verify(bottomTabs, times(1)).setNotification(any(AHNotification.class), eq(0));
+        verify(bottomTabs, times(1)).setNotification(any(AHNotification.class), eq(1));
+        verify(bottomTabs, never()).setNotification(any(AHNotification.class), eq(2));
+
         for (int i = 0; i < tabs.size(); i++) {
-            verify(bottomTabs, times(1)).setNotification(any(AHNotification.class), eq(i));
             verify(bottomTabs, times(1)).setTitleInactiveColor(i, tabs.get(i).options.bottomTabOptions.textColor.get(null));
             verify(bottomTabs, times(1)).setTitleActiveColor(i, tabs.get(i).options.bottomTabOptions.selectedTextColor.get(null));
         }
+    }
+
+    @Test
+    public void applyOptions_shouldPresentBadgeIfAvailable() {
+        final Options tab1 = tab1Options.copy();
+        tab1.bottomTabOptions.badge = new NullText();
+        tab1.bottomTabOptions.badgeColor = new NullThemeColour();
+
+        final Options tab2 = tab2Options.copy();
+        tab2.bottomTabOptions.badge = new Text("Badge");
+        tab2.bottomTabOptions.badgeColor = ThemeColour.of(Color.RED);
+
+
+        createBottomTabs(tab1, tab2, new Options());
+        uut.applyOptions();
+
+        ArgumentCaptor<AHNotification> notificationArgumentCaptor = ArgumentCaptor.forClass(AHNotification.class);
+        verify(bottomTabs).setNotification(notificationArgumentCaptor.capture(), eq(1));
+        final AHNotification value = notificationArgumentCaptor.getValue();
+        assertThat(value.getReadableText()).isEqualTo("Badge");
+        assertThat(value.getBackgroundColor()).isEqualTo(Color.RED);
+
+        verify(bottomTabs,never()).setNotification(notificationArgumentCaptor.capture(), eq(0));
+        verify(bottomTabs,never()).setNotification(notificationArgumentCaptor.capture(), eq(2));
+
     }
 
     @Test

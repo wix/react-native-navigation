@@ -67,7 +67,8 @@ public class BottomTabPresenter {
                 if (tab.fontSize.hasValue()) bottomTabs.setTitleInactiveTextSizeInSp(i, Float.valueOf(tab.fontSize.get()));
                 if (tab.selectedFontSize.hasValue()) bottomTabs.setTitleActiveTextSizeInSp(i, Float.valueOf(tab.selectedFontSize.get()));
                 if (tab.testId.hasValue()) bottomTabs.setTag(i, tab.testId.get());
-                if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator); else applyBadge(i, tab);
+                if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator);
+                if (tab.badge.hasValue()) applyBadge(i, tab);
             }
         });
     }
@@ -131,11 +132,9 @@ public class BottomTabPresenter {
     }
 
     private void mergeBadge(int index, BottomTabOptions tab) {
-        if (bottomTabs == null) return;
-        if (!tab.badge.hasValue()) return;
+        if (bottomTabs == null || !tab.badge.hasValue()) return;
         AHNotification.Builder builder = new AHNotification.Builder();
         if (tab.badge.hasValue()) builder.setText(tab.badge.get());
-        if (tab.badgeColor.hasValue()) builder.setBackgroundColor(tab.badgeColor.get());
         if (tab.badgeColor.hasValue()) builder.setBackgroundColor(tab.badgeColor.get());
         if (tab.animateBadge.hasValue()) builder.animate(tab.animateBadge.get());
         bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), index));
@@ -167,7 +166,8 @@ public class BottomTabPresenter {
                 if (tab.iconColor.canApplyValue()) bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
                 bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
                 bottomTabs.setTitleInactiveColor(i, tab.textColor.get(null));
-                if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator); else applyBadge(i, tab);
+                if (shouldApplyDot(tab)) applyDotIndicator(i, tab.dotIndicator);
+                if (tab.badge.hasValue()) applyBadge(i, tab);
             }
         });
     }
