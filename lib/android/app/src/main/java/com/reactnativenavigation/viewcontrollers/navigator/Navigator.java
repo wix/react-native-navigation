@@ -1,13 +1,20 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
@@ -36,6 +43,7 @@ import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import org.jetbrains.annotations.NotNull;
+
 
 public class Navigator extends ParentController {
     static class OverlaysLayout extends CoordinatorLayout{
@@ -250,11 +258,11 @@ public class Navigator extends ParentController {
         final WindowManager windowManager = getActivity().getWindowManager();
         windowManager.removeViewImmediate(overlaysLayout);
         windowManager.addView(overlaysLayout, overlaysLP);
-        overlayManager.show(overlaysLayout, overlay, listener,getActivity());
+        overlayManager.show(overlaysLayout, overlay, listener);
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
-        overlayManager.dismiss(overlaysLayout, componentId, listener,getActivity());
+        overlayManager.dismiss(overlaysLayout, componentId, listener);
     }
 
     public void dismissAllOverlays(CommandListener listener) {
@@ -287,6 +295,13 @@ public class Navigator extends ParentController {
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        modalStack.onConfigurationChanged(newConfig);
+        overlayManager.onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
+    }
+
     private boolean isRootNotCreated() {
         return view == null;
     }
@@ -304,7 +319,8 @@ public class Navigator extends ParentController {
     public void onHostPause() {
         super.onViewDisappear();
     }
-    public void onHostResume(){
+
+    public void onHostResume() {
         super.onViewDidAppear();
     }
 }

@@ -1,8 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.overlay;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
+
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -11,6 +10,7 @@ import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
@@ -19,7 +19,7 @@ import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParent
 public class OverlayManager {
     private final HashMap<String, ViewController> overlayRegistry = new HashMap<>();
 
-    public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener, Activity activity) {
+    public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
         overlaysContainer.setVisibility(View.VISIBLE);
         overlayRegistry.put(overlay.getId(), overlay);
         overlay.addOnAppearedListener(() -> {
@@ -29,8 +29,14 @@ public class OverlayManager {
 //        activity.addContentView(overlay.getView(),matchParentWithBehaviour(new BehaviourDelegate(overlay)));
         overlaysContainer.addView(overlay.getView(), matchParentWithBehaviour(new BehaviourDelegate(overlay)));
     }
+    public void onConfigurationChanged(Configuration configuration){
+        final Collection<ViewController> values = overlayRegistry.values();
+        for(ViewController controller : values){
+            controller.onConfigurationChanged(configuration);
+        }
+    }
 
-    public void dismiss(ViewGroup overlaysContainer, String componentId, CommandListener listener,Activity activity) {
+    public void dismiss(ViewGroup overlaysContainer, String componentId, CommandListener listener) {
         ViewController overlay = overlayRegistry.get(componentId);
         if (overlay == null) {
             listener.onError("Could not dismiss Overlay. Overlay with id " + componentId + " was not found.");

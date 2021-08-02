@@ -16,7 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
-import com.reactnativenavigation.options.params.Colour
+import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.utils.ArrayUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.views.stack.topbar.titlebar.IconBackgroundDrawable
@@ -52,7 +52,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
     }
 
-    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: Colour) {
+    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: ThemeColour) {
         button.color = color
         applyIcon(menuItem)
         applyOptionsDirectlyOnView(toolbar, menuItem) {
@@ -60,7 +60,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
     }
 
-    fun applyDisabledColor(toolbar: Toolbar, menuItem: MenuItem, disabledColor: Colour) {
+    fun applyDisabledColor(toolbar: Toolbar, menuItem: MenuItem, disabledColor: ThemeColour) {
         button.disabledColor = disabledColor
         applyIcon(menuItem)
         applyOptionsDirectlyOnView(toolbar, menuItem) {
@@ -127,7 +127,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
             if (button.enabled.isTrueOrUndefined) {
                 if (button.color.hasValue()) view.setTextColor(button.color.get())
             } else {
-                view.setTextColor(button.disabledColor.get(DISABLED_COLOR))
+                view.setTextColor(button.disabledColor.get(DISABLED_COLOR)!!)
             }
         }
     }
@@ -171,7 +171,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         if (button.enabled.isTrueOrUndefined && button.color.hasValue()) {
             return button.color.get()
         } else if (button.enabled.isFalse) {
-            return button.disabledColor[Color.LTGRAY]
+            return button.disabledColor.get(Color.LTGRAY)
         }
 
         return null

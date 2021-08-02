@@ -13,13 +13,25 @@ const setDefaultOptions = () =>
       orientation: ['portrait'],
       direction: 'locale',
     },
+    topBar: {
+      backButton: { color: Colors.buttonColor },
+      rightButtonColor: Colors.buttonColor,
+      rightButtonDisabledColor: Colors.disabledButtonColor,
+      leftButtonColor: Colors.buttonColor,
+      leftButtonDisabledColor: Colors.disabledButtonColor,
+      background: { color: Colors.barBackground },
+      title: { color: Colors.textColor },
+    },
     bottomTabs: {
+      backgroundColor: Colors.barBackground,
       tabsAttachMode: 'onSwitchToTab',
       titleDisplayMode: 'alwaysShow',
     },
     bottomTab: {
-      selectedIconColor: Colors.primary,
-      selectedTextColor: Colors.primary,
+      iconColor: Colors.iconTint,
+      textColor: Colors.textColor,
+      selectedIconColor: Colors.activeIconTint,
+      selectedTextColor: Colors.activeTextColor,
     },
     modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
   });

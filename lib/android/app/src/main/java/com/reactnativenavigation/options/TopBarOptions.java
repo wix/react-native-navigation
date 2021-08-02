@@ -6,17 +6,16 @@ import android.util.Log;
 
 import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
-import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 import com.reactnativenavigation.options.parsers.TextParser;
@@ -39,7 +38,7 @@ public class TopBarOptions {
         options.drawBehind = BoolParser.parse(json,"drawBehind");
         options.testId = TextParser.parse(json, "testID");
         options.height = NumberParser.parse(json, "height");
-        options.borderColor = ColorParser.parse(context, json, "borderColor");
+        options.borderColor = ThemeColour.parse(context, json.optJSONObject( "borderColor"));
         options.borderHeight = FractionParser.parse(json, "borderHeight");
         options.elevation = FractionParser.parse(json, "elevation");
         options.topMargin = NumberParser.parse(json, "topMargin");
@@ -47,10 +46,10 @@ public class TopBarOptions {
         options.animateRightButtons = BoolParser.parse(json, "animateRightButtons");
         options.buttons = TopBarButtons.parse(context, json);
 
-        options.rightButtonColor = ColorParser.parse(context, json, "rightButtonColor");
-        options.leftButtonColor = ColorParser.parse(context, json, "leftButtonColor");
-        options.leftButtonDisabledColor = ColorParser.parse(context, json, "leftButtonDisabledColor");
-        options.rightButtonDisabledColor = ColorParser.parse(context, json, "rightButtonDisabledColor");
+        options.rightButtonColor = ThemeColour.parse(context, json.optJSONObject("rightButtonColor"));
+        options.leftButtonColor = ThemeColour.parse(context, json.optJSONObject("leftButtonColor"));
+        options.leftButtonDisabledColor = ThemeColour.parse(context, json.optJSONObject("leftButtonDisabledColor"));
+        options.rightButtonDisabledColor = ThemeColour.parse(context, json.optJSONObject("rightButtonDisabledColor"));
 
         options.validate();
         return options;
@@ -69,14 +68,14 @@ public class TopBarOptions {
     public Fraction elevation = new NullFraction();
     public Number topMargin = new NullNumber();
     public Fraction borderHeight = new NullFraction();
-    public Colour borderColor = new NullColor();
+    public ThemeColour borderColor = new NullThemeColour();
     public Bool animateLeftButtons = new NullBool();
     public Bool animateRightButtons = new NullBool();
     // Deprecated
-    public Colour rightButtonColor = new NullColor();
-    public Colour leftButtonColor = new NullColor();
-    public Colour rightButtonDisabledColor = new NullColor();
-    public Colour leftButtonDisabledColor = new NullColor();
+    public ThemeColour rightButtonColor = new NullThemeColour();
+    public ThemeColour leftButtonColor = new NullThemeColour();
+    public ThemeColour rightButtonDisabledColor = new NullThemeColour();
+    public ThemeColour leftButtonDisabledColor = new NullThemeColour();
 
     public TopBarOptions copy() {
         TopBarOptions result = new TopBarOptions();
@@ -89,6 +88,13 @@ public class TopBarOptions {
         subtitle.mergeWith(other.subtitle);
         background.mergeWith(other.background);
         buttons.mergeWith(other.buttons);
+
+
+        if (other.rightButtonColor.hasValue()) rightButtonColor = other.rightButtonColor;
+        if (other.leftButtonColor.hasValue()) leftButtonColor = other.leftButtonColor;
+        if (other.rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = other.rightButtonDisabledColor;
+        if (other.leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = other.leftButtonDisabledColor;
+
         if (other.testId.hasValue()) testId = other.testId;
         if (other.visible.hasValue()) visible = other.visible;
         if (other.animate.hasValue()) animate = other.animate;
@@ -102,11 +108,6 @@ public class TopBarOptions {
         if (other.animateLeftButtons.hasValue()) animateLeftButtons = other.animateLeftButtons;
         if (other.animateRightButtons.hasValue()) animateRightButtons = other.animateRightButtons;
 
-        if (other.rightButtonColor.hasValue()) rightButtonColor = other.rightButtonColor;
-        if (other.leftButtonColor.hasValue()) leftButtonColor = other.leftButtonColor;
-        if (other.rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = other.rightButtonDisabledColor;
-        if (other.leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = other.leftButtonDisabledColor;
-
         validate();
     }
 
@@ -115,6 +116,13 @@ public class TopBarOptions {
         subtitle.mergeWithDefault(defaultOptions.subtitle);
         background.mergeWithDefault(defaultOptions.background);
         buttons.mergeWithDefault(defaultOptions.buttons);
+
+
+        if (!rightButtonColor.hasValue()) rightButtonColor = defaultOptions.rightButtonColor;
+        if (!leftButtonColor.hasValue()) leftButtonColor = defaultOptions.leftButtonColor;
+        if (!rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = defaultOptions.rightButtonDisabledColor;
+        if (!leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = defaultOptions.leftButtonDisabledColor;
+
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!animate.hasValue()) animate = defaultOptions.animate;
         if (!hideOnScroll.hasValue()) hideOnScroll = defaultOptions.hideOnScroll;
@@ -127,11 +135,6 @@ public class TopBarOptions {
         if (!topMargin.hasValue()) topMargin = defaultOptions.topMargin;
         if (!animateLeftButtons.hasValue()) animateLeftButtons = defaultOptions.animateLeftButtons;
         if (!animateRightButtons.hasValue()) animateRightButtons = defaultOptions.animateRightButtons;
-
-        if (!rightButtonColor.hasValue()) rightButtonColor = defaultOptions.rightButtonColor;
-        if (!leftButtonColor.hasValue()) leftButtonColor = defaultOptions.leftButtonColor;
-        if (!rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = defaultOptions.rightButtonDisabledColor;
-        if (!leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = defaultOptions.leftButtonDisabledColor;
 
         validate();
         return this;
@@ -148,4 +151,6 @@ public class TopBarOptions {
     public boolean isHiddenOrDrawBehind() {
         return drawBehind.isTrue() || visible.isFalse();
     }
+
+
 }

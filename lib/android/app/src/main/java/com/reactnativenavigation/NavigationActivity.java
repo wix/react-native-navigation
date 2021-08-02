@@ -12,6 +12,7 @@ import android.view.View;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
@@ -52,6 +53,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         getReactGateway().onConfigurationChanged(this, newConfig);
+        navigator.onConfigurationChanged(newConfig);
     }
 
     @Override

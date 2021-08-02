@@ -3,7 +3,7 @@ import { ImageRequireSource, ImageSourcePropType, Insets } from 'react-native';
 
 // TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
-declare type Color = string | symbol;
+export declare type Color = string | symbol | ThemeColor | null;
 type FontFamily = string;
 type FontStyle = 'normal' | 'italic';
 type FontWeightIOS =
@@ -75,7 +75,10 @@ export type Interpolation =
       allowsOverdamping?: boolean;
       initialVelocity?: number;
     };
-
+interface ThemeColor {
+  light?: string | symbol;
+  dark?: string | symbol;
+}
 export interface OptionsSplitView {
   /**
    * Master view display mode

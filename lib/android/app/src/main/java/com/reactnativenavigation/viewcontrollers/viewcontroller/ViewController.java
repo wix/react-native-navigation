@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -60,13 +61,17 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final Activity activity;
     private final String id;
     private final YellowBoxDelegate yellowBoxDelegate;
-    @Nullable protected T view;
-    @Nullable private ParentController<? extends ViewGroup> parentController;
+    @Nullable
+    protected T view;
+    @Nullable
+    private ParentController<? extends ViewGroup> parentController;
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
     private ViewControllerOverlay overlay;
-    @Nullable public abstract String getCurrentComponentName();
+
+    @Nullable
+    public abstract String getCurrentComponentName();
 
     public void setOverlay(ViewControllerOverlay overlay) {
         this.overlay = overlay;
@@ -308,6 +313,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
+    public void onConfigurationChanged(Configuration newConfig) {
+    }
+
     public void onAttachToParent() {
 
     }
@@ -330,16 +338,16 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public boolean isViewShown() {
         return !isDestroyed &&
-               view != null &&
-               view.isShown() &&
-               isRendered();
+                view != null &&
+                view.isShown() &&
+                isRendered();
     }
 
     public boolean isRendered() {
         return view != null && (
                 waitForRender.isFalseOrUndefined() ||
-                !(view instanceof Renderable) ||
-                ((Renderable) view).isRendered()
+                        !(view instanceof Renderable) ||
+                        ((Renderable) view).isRendered()
         );
     }
 
@@ -378,5 +386,4 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     public int getBottomInset() {
         return perform(parentController, 0, p -> p.getBottomInset(this));
     }
-
 }

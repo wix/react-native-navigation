@@ -7,7 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.options.params.Colour
+import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate
@@ -77,9 +77,9 @@ open class ButtonController(activity: Activity,
         }
     }
 
-    open fun applyColor(toolbar: Toolbar, color: Colour) = this.menuItem?.let { presenter.applyColor(toolbar, it, color) }
+    open fun applyColor(toolbar: Toolbar, color: ThemeColour) = this.menuItem?.let { presenter.applyColor(toolbar, it, color) }
 
-    open fun applyDisabledColor(toolbar: Toolbar, disabledColour: Colour) = this.menuItem?.let { presenter.applyDisabledColor(toolbar, it, disabledColour) }
+    open fun applyDisabledColor(toolbar: Toolbar, disabledColour: ThemeColour) = this.menuItem?.let { presenter.applyDisabledColor(toolbar, it, disabledColour) }
 
     fun addToMenu(buttonBar: ButtonBar, order: Int) {
         if (button.component.hasValue() && buttonBar.containsButton(menuItem, order)) return

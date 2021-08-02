@@ -1,8 +1,15 @@
 const colors = {
-  background: '#e8e8e8',
-  primary: '#5847ff',
-  secondary: '#FFC249',
-  accent: '#65C888',
+  background: { light: '#e8e8e8', dark: '#282528' },
+  barBackground: { light: 'white', dark: '#282528' },
+  primary: { light: '#5847ff', dark: '#BA292E' },
+  secondary: { light: '#FFC249', dark: '#5847ff' },
+  accent: { light: '#65C888', dark: '#FFA73C' },
+  textColor: { light: 'black', dark: '#BA292E' },
+  activeTextColor: { light: '#5847ff', dark: '#FFA73C' },
+  iconTint: { light: 'black', dark: '#BA292E' },
+  activeIconTint: { light: '#5847ff', dark: '#FFA73C' },
+  buttonColor: { light: 'black', dark: '#BA292E' },
+  disabledButtonColor: { light: 'grey', dark: '#BA292E' },
 };
 
 export default colors;

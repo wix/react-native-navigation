@@ -2,15 +2,14 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
-import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
@@ -27,7 +26,7 @@ public class TitleOptions {
 
         options.component = ComponentOptions.parse(json.optJSONObject("component"));
         options.text = TextParser.parse(json, "text");
-        options.color = ColorParser.parse(context, json, "color");
+        options.color = ThemeColour.parse(context, json.optJSONObject("color"));
         options.fontSize = FractionParser.parse(json, "fontSize");
         options.font = FontParser.parse(json);
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
@@ -38,7 +37,7 @@ public class TitleOptions {
     }
 
     public Text text = new NullText();
-    public Colour color = new NullColor();
+    public ThemeColour color = new NullThemeColour();
     public Fraction fontSize = new NullFraction();
     public Alignment alignment = Alignment.Default;
     public FontOptions font = new FontOptions();

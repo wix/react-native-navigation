@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     width: STORY_SIZE,
     height: STORY_SIZE,
     borderRadius: STORY_SIZE / 2,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primary.light,
   },
   story: {
     width: STORY_SIZE,

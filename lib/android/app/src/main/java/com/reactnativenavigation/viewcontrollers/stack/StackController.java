@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -62,6 +63,13 @@ public class StackController extends ParentController<StackLayout> {
         this.fabPresenter = fabPresenter;
         stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
         setChildren(children);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        presenter.onConfigurationChanged(resolveCurrentOptions());
+        fabPresenter.onConfigurationChanged(resolveCurrentOptions());
     }
 
     @Override

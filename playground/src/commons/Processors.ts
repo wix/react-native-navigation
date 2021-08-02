@@ -43,7 +43,6 @@ const addDismissModalProcessor = () => {
               testID: DISMISS_MODAL_TOPBAR_BTN,
               id: 'dismissModalButton',
               icon: require('../../img/x.png'),
-              color: 'black',
             },
           ];
         }

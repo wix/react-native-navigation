@@ -25,7 +25,7 @@ import {
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
-import { Platform } from 'react-native';
+import { Platform, DynamicColorIOS } from 'react-native';
 
 export class OptionsProcessor {
   constructor(
@@ -79,6 +79,7 @@ export class OptionsProcessor {
         commandName,
         props
       );
+
       this.processColor(key, value, objectToProcess);
 
       if (!value) {
@@ -115,7 +116,22 @@ export class OptionsProcessor {
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (isEqual(key, 'color') || endsWith(key, 'Color')) {
-      options[key] = value === null ? 'NoColor' : this.colorService.toNativeColor(value);
+      const newColorObj: Record<string, any> = { dark: 'NoColor', light: 'NoColor' };
+      if (value === null) {
+        options[key] = newColorObj;
+      } else if (value instanceof Object) {
+        for (let keyColor in value) {
+          newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
+        }
+        options[key] = newColorObj;
+      } else {
+        let parsedColor = this.colorService.toNativeColor(value);
+        newColorObj.light = parsedColor;
+        newColorObj.dark = parsedColor;
+        options[key] = newColorObj;
+      }
+
+      if (Platform.OS === 'ios') options[key] = DynamicColorIOS(options[key]);
     }
   }
 

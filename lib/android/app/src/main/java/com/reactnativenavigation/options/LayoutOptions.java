@@ -2,11 +2,10 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.parsers.ColorParser;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.parsers.NumberParser;
 
 import org.json.JSONObject;
@@ -16,8 +15,8 @@ public class LayoutOptions {
         LayoutOptions result = new LayoutOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ColorParser.parse(context, json, "backgroundColor");
-        result.componentBackgroundColor = ColorParser.parse(context, json, "componentBackgroundColor");
+        result.backgroundColor = ThemeColour.parse(context, json.optJSONObject("backgroundColor"));
+        result.componentBackgroundColor = ThemeColour.parse(context, json.optJSONObject("componentBackgroundColor"));
         result.topMargin = NumberParser.parse(json, "topMargin");
         result.orientation = OrientationOptions.parse(json);
         result.direction = LayoutDirection.fromString(json.optString("direction", ""));
@@ -25,8 +24,8 @@ public class LayoutOptions {
         return result;
     }
 
-    public Colour backgroundColor = new NullColor();
-    public Colour componentBackgroundColor = new NullColor();
+    public ThemeColour backgroundColor = new NullThemeColour();
+    public ThemeColour componentBackgroundColor = new NullThemeColour();
     public Number topMargin = new NullNumber();
     public OrientationOptions orientation = new OrientationOptions();
     public LayoutDirection direction = LayoutDirection.DEFAULT;

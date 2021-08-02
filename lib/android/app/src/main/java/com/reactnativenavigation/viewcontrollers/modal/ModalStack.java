@@ -1,7 +1,8 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.content.Context;
-import android.util.ArrayMap;
+
+import android.content.res.Configuration;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.collection.ArrayMap;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.react.Constants.HARDWARE_BACK_BUTTON_ID;
@@ -182,5 +184,11 @@ public class ModalStack {
             modal.destroy();
         }
         modals.clear();
+    }
+
+    public void onConfigurationChanged(Configuration newConfig){
+        for(ViewController controller: modals){
+            controller.onConfigurationChanged(newConfig);
+        }
     }
 }
