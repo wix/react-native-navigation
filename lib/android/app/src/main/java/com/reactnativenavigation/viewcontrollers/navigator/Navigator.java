@@ -1,8 +1,13 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.PixelFormat;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
@@ -30,8 +35,33 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-public class Navigator extends ParentController {
+import org.jetbrains.annotations.NotNull;
 
+public class Navigator extends ParentController {
+    static class OverlaysLayout extends CoordinatorLayout{
+
+        public OverlaysLayout(@NonNull @NotNull Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onViewAdded(View child) {
+            super.onViewAdded(child);
+            child.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.onTouchEvent(event);
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent ev) {
+             super.onTouchEvent(ev);
+             return true;
+        }
+    }
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
     private final RootPresenter rootPresenter;
@@ -39,10 +69,17 @@ public class Navigator extends ParentController {
     private ViewController previousRoot;
     private final CoordinatorLayout rootLayout;
     private final CoordinatorLayout modalsLayout;
-    private final CoordinatorLayout overlaysLayout;
+    public final OverlaysLayout overlaysLayout;
+
     private ViewGroup contentLayout;
     private Options defaultOptions = new Options();
-
+    WindowManager.LayoutParams overlaysLP = new WindowManager.LayoutParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.TYPE_APPLICATION,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            PixelFormat.TRANSPARENT);
     @Override
     public void setDefaultOptions(Options defaultOptions) {
         super.setDefaultOptions(defaultOptions);
@@ -65,10 +102,11 @@ public class Navigator extends ParentController {
     public void setContentLayout(ViewGroup contentLayout) {
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
+        final Window window = getActivity().getWindow();
         modalsLayout.setVisibility(View.GONE);
         contentLayout.addView(modalsLayout);
         overlaysLayout.setVisibility(View.GONE);
-        contentLayout.addView(overlaysLayout);
+        getActivity().getWindowManager().addView(overlaysLayout, overlaysLP);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
@@ -78,7 +116,7 @@ public class Navigator extends ParentController {
         this.rootPresenter = rootPresenter;
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
-        overlaysLayout = new CoordinatorLayout(getActivity());
+        overlaysLayout = new OverlaysLayout(getActivity());
     }
 
     public void bindViews() {
@@ -189,6 +227,9 @@ public class Navigator extends ParentController {
         }
     }
 
+    public void declareModal(final ViewController viewController){
+        modalStack.declareModal(viewController);
+    }
     public void showModal(final ViewController viewController, CommandListener listener) {
         modalStack.showModal(viewController, root, listener);
     }
@@ -206,11 +247,14 @@ public class Navigator extends ParentController {
     }
 
     public void showOverlay(ViewController overlay, CommandListener listener) {
-        overlayManager.show(overlaysLayout, overlay, listener);
+        final WindowManager windowManager = getActivity().getWindowManager();
+        windowManager.removeViewImmediate(overlaysLayout);
+        windowManager.addView(overlaysLayout, overlaysLP);
+        overlayManager.show(overlaysLayout, overlay, listener,getActivity());
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
-        overlayManager.dismiss(overlaysLayout, componentId, listener);
+        overlayManager.dismiss(overlaysLayout, componentId, listener,getActivity());
     }
 
     public void dismissAllOverlays(CommandListener listener) {

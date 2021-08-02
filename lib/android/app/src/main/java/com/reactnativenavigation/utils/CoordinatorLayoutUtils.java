@@ -7,6 +7,7 @@ import com.reactnativenavigation.R;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class CoordinatorLayoutUtils {
     public static CoordinatorLayout.LayoutParams matchParentLP() {

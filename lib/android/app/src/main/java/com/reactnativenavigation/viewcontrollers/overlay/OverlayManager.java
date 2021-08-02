@@ -1,7 +1,11 @@
 package com.reactnativenavigation.viewcontrollers.overlay;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
@@ -15,17 +19,18 @@ import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParent
 public class OverlayManager {
     private final HashMap<String, ViewController> overlayRegistry = new HashMap<>();
 
-    public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener) {
+    public void show(ViewGroup overlaysContainer, ViewController overlay, CommandListener listener, Activity activity) {
         overlaysContainer.setVisibility(View.VISIBLE);
         overlayRegistry.put(overlay.getId(), overlay);
         overlay.addOnAppearedListener(() -> {
             overlay.onViewDidAppear();
             listener.onSuccess(overlay.getId());
         });
+//        activity.addContentView(overlay.getView(),matchParentWithBehaviour(new BehaviourDelegate(overlay)));
         overlaysContainer.addView(overlay.getView(), matchParentWithBehaviour(new BehaviourDelegate(overlay)));
     }
 
-    public void dismiss(ViewGroup overlaysContainer, String componentId, CommandListener listener) {
+    public void dismiss(ViewGroup overlaysContainer, String componentId, CommandListener listener,Activity activity) {
         ViewController overlay = overlayRegistry.get(componentId);
         if (overlay == null) {
             listener.onError("Could not dismiss Overlay. Overlay with id " + componentId + " was not found.");

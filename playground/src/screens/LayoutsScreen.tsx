@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  RNNModal,
   Options,
   OptionsModalPresentationStyle,
   NavigationComponent,
@@ -23,8 +24,10 @@ const {
   SPLIT_VIEW_BUTTON,
 } = testIDs;
 
+console.log(`xxxxxxxx,${RNNModal}`);
 interface State {
   componentDidAppear: boolean;
+  modalVisible: boolean;
 }
 
 export default class LayoutsScreen extends NavigationComponent<NavigationComponentProps, State> {
@@ -33,6 +36,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     Navigation.events().bindComponent(this);
     this.state = {
       componentDidAppear: false,
+      modalVisible: false,
     };
   }
 
@@ -57,6 +61,11 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
   render() {
     return (
       <Root componentId={this.props.componentId}>
+        <RNNModal>
+          <Button label="Button" onPress={this.toggleModal} />
+          <Button label="Button2" onPress={this.toggleModal} />
+          <Button label="Button3" onPress={this.toggleModal} />
+        </RNNModal>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
@@ -71,6 +80,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     );
   }
 
+  toggleModal = () => this.setState({ modalVisible: !this.state.modalVisible });
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
   bottomTabs = () =>

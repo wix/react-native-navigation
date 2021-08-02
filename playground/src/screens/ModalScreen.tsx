@@ -12,10 +12,9 @@ import { stack } from '../commons/Layouts';
 import Screens from './Screens';
 import flags from '../flags';
 import testIDs from '../testIDs';
-import { Dimensions, Modal } from 'react-native';
+import { Dimensions } from 'react-native';
 const height = Math.round(Dimensions.get('window').height);
 const MODAL_ANIMATION_DURATION = 350;
-
 const {
   PUSH_BTN,
   MODAL_SCREEN_HEADER,
@@ -31,7 +30,7 @@ const {
   DISMISS_FIRST_MODAL_BTN,
   SET_ROOT,
   TOGGLE_REACT_NATIVE_MODAL,
-  SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL,
+  // SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL,
 } = testIDs;
 
 interface Props {
@@ -130,10 +129,12 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
           onPress={this.toggleModal}
         />
 
-        <Modal visible={this.state.reactNativeModalVisible} animationType={'slide'}>
+        {/* <Modal visible={this.state.reactNativeModalVisible} animationType={'slide'}>
           <Root componentId={this.props.componentId} footer={`ReactNative modal in action!`}>
             <Button label="Toggle react-native modal" onPress={this.toggleModal} />
             <Button label="Show overlay" onPress={this.showOverlay} />
+            <Button label="Show RN modal" onPress={this.showRNModal} />
+
             <Button
               label="Present another modal and dismiss current modal"
               testID={SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL}
@@ -147,16 +148,22 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
               }}
             />
           </Root>
-        </Modal>
+        </Modal> */}
       </Root>
     );
   }
 
-  showOverlay = async () => {
-    await Navigation.showOverlay({
+  showRNModal = async () => {
+    await Navigation.showModal({
       component: {
-        name: Screens.OverlayAlert,
+        name: Screens.Stack,
       },
+    });
+  };
+
+  showOverlay = async () => {
+    await Navigation.showOverlay(Screens.OverlayAlert, {
+      layout: { componentBackgroundColor: 'transparent' },
     });
   };
   toggleModal = () =>

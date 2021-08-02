@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.content.Context;
+import android.util.ArrayMap;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
@@ -13,6 +14,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ModalOve
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -23,6 +25,7 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ModalStack {
     private final List<ViewController> modals = new ArrayList<>();
+    private final Map<String, ViewController> declaredModals = new ArrayMap<>();
     private final ModalPresenter presenter;
     private final ModalOverlay overlay;
     private EventEmitter eventEmitter;
@@ -55,6 +58,9 @@ public class ModalStack {
         presenter.setDefaultOptions(defaultOptions);
     }
 
+    public void declareModal(ViewController viewController){
+        declaredModals.put(viewController.getId(),viewController);
+    }
     public void showModal(ViewController viewController, ViewController root, CommandListener listener) {
         ViewController toRemove = isEmpty() ? root : peek();
         modals.add(viewController);
