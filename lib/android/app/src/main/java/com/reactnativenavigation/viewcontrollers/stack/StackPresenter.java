@@ -197,16 +197,10 @@ public class StackPresenter {
         TopBarOptions topBarOptions = options.topBar;
 
         Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
-        int statusBarOffset = withDefault.statusBar.visible.isTrueOrUndefined() && withDefault.statusBar.drawBehind.isTrue() ? StatusBarUtils.getStatusBarHeightDp(activity) : 0;
 
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
-        if(withDefault.statusBar.visible.isTrueOrUndefined() && withDefault.statusBar.drawBehind.isTrue()){
-            topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
-            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
-        } else {
-            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
-        }
+ applyStatusBarDrawBehindOptions(topBarOptions,withDefault);
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get(0));
@@ -259,6 +253,16 @@ public class StackPresenter {
             }
         } else if (topBarOptions.hideOnScroll.isFalseOrUndefined()) {
             topBar.disableCollapse();
+        }
+    }
+
+    private void applyStatusBarDrawBehindOptions(TopBarOptions topBarOptions, Options withDefault) {
+        if(withDefault.statusBar.visible.isTrueOrUndefined() && withDefault.statusBar.drawBehind.isTrue()){
+            topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
+            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
+        } else {
+            topBar.setTopPadding(0);
+            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
         }
     }
 
@@ -500,7 +504,7 @@ public class StackPresenter {
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());
         }
-
+        applyStatusBarDrawBehindOptions(resolveOptions,options);
         if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
         if (topBarOptions.animateLeftButtons.hasValue())

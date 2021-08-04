@@ -17,10 +17,7 @@ import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.options.params.Number
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.react.CommandListenerAdapter
-import com.reactnativenavigation.utils.CollectionUtils
-import com.reactnativenavigation.utils.RenderChecker
-import com.reactnativenavigation.utils.TitleBarHelper
-import com.reactnativenavigation.utils.UiUtils
+import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
@@ -931,6 +928,46 @@ class StackPresenterTest : BaseTest() {
         assertThat(buttons).hasSize(1)
         uut.onChildDestroyed(child)
         assertThat(buttons[0].isDestroyed).isTrue()
+    }
+
+    @Test
+    fun applyChildOptions_topBarShouldExtendBehindStatusBarWhenDrawBehind() {
+        val options = Options()
+        uut.defaultOptions.statusBar.drawBehind = Bool(true)
+        uut.applyChildOptions(options, parent, child)
+        assertThat(topBar.paddingTop).isEqualTo(StatusBarUtils.STATUS_BAR_HEIGHT_M)
+        assertThat(topBar.y).isEqualTo(0f)
+        assertThat(topBar.layoutParams.height).isEqualTo(StatusBarUtils.STATUS_BAR_HEIGHT_M + UiUtils.DEFAULT_TOOLBAR_HEIGHT)
+    }
+
+    @Test
+    fun applyChildOptions_topBarShouldNotExtendBehindStatusBarWhenNoDrawBehind() {
+        val options = Options()
+        uut.defaultOptions.statusBar.drawBehind = Bool(false)
+        uut.applyChildOptions(options, parent, child)
+        assertThat(topBar.paddingTop).isEqualTo(0)
+        assertThat(topBar.y).isEqualTo(0f)
+        assertThat(topBar.layoutParams.height).isEqualTo(UiUtils.DEFAULT_TOOLBAR_HEIGHT)
+    }
+
+    @Test
+    fun mergeChildOptions_topBarShouldExtendBehindStatusBarWhenDrawBehind() {
+        val options = Options()
+        options.statusBar.drawBehind = Bool(true)
+        uut.mergeChildOptions(options, Options.EMPTY.copy().mergeWith(options), parent, child)
+        assertThat(topBar.paddingTop).isEqualTo(StatusBarUtils.STATUS_BAR_HEIGHT_M)
+        assertThat(topBar.y).isEqualTo(0f)
+        assertThat(topBar.layoutParams.height).isEqualTo(StatusBarUtils.STATUS_BAR_HEIGHT_M + UiUtils.DEFAULT_TOOLBAR_HEIGHT)
+    }
+
+    @Test
+    fun mergeChildOptions_topBarShouldNoExtendBehindStatusBarWhenNoDrawBehind() {
+        val options = Options()
+        options.statusBar.drawBehind = Bool(false)
+        uut.mergeChildOptions(options, Options.EMPTY.copy().mergeWith(options), parent, child)
+        assertThat(topBar.paddingTop).isEqualTo(0)
+        assertThat(topBar.y).isEqualTo(0f)
+        assertThat(topBar.layoutParams.height).isEqualTo(UiUtils.DEFAULT_TOOLBAR_HEIGHT)
     }
 
     @Test
