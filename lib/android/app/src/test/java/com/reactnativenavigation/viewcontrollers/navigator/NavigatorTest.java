@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestActivity;
@@ -32,14 +34,13 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
-import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -49,8 +50,6 @@ import org.robolectric.annotation.Config;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -84,6 +83,7 @@ public class NavigatorTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         childRegistry = new ChildControllersRegistry();
         eventEmitter = Mockito.mock(EventEmitter.class);
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
@@ -125,6 +125,38 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void onConfigurationChange_shouldCallOnConfigurationChangedForModals() {
+        Navigator spyUUT = spy(uut);
+        SimpleViewController spyChild1 = spy(child1);
+        ViewController spyChild2 = spy(child2);
+        ViewController spyChild3 = spy(child3);
+
+        spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
+        spyUUT.showModal(spyChild2, new CommandListenerAdapter());
+        spyUUT.showModal(spyChild3, new CommandListenerAdapter());
+        spyUUT.onConfigurationChanged(mockConfiguration);
+
+        verify(spyChild2).onConfigurationChanged(any());
+        verify(spyChild3).onConfigurationChanged(any());
+    }
+
+    @Test
+    public void onConfigurationChange_shouldCallOnConfigurationChangedForOverlays() {
+        Navigator spyUUT = spy(uut);
+        SimpleViewController spyChild1 = spy(child1);
+        ViewController spyChild2 = spy(child2);
+        ViewController spyChild3 = spy(child3);
+
+        spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
+        spyUUT.showOverlay(spyChild2, new CommandListenerAdapter());
+        spyUUT.showOverlay(spyChild3, new CommandListenerAdapter());
+        spyUUT.onConfigurationChanged(mockConfiguration);
+
+        verify(spyChild2).onConfigurationChanged(any());
+        verify(spyChild3).onConfigurationChanged(any());
+    }
+
+    @Test
     public void setContentLayout() {
         ViewGroup contentLayout = Mockito.mock(ViewGroup.class);
         uut.setContentLayout(contentLayout);
@@ -145,6 +177,22 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void shouldCallOnViewDidAppearWhenHostResumes() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostResume();
+        verify(child1,times(2)).onViewDidAppear();
+    }
+
+    @Test
+    public void shouldCallOnViewDisappearWhenHostPauses() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostPause();
+        verify(child1).onViewDidAppear();
+    }
+
+    @Test
     public void setDefaultOptions() {
         uut.setDefaultOptions(new Options());
 
@@ -162,9 +210,10 @@ public class NavigatorTest extends BaseTest {
         CommandListenerAdapter listener = new CommandListenerAdapter();
         uut.setRoot(child1, listener, reactInstanceManager);
         ArgumentCaptor<CommandListenerAdapter> captor = ArgumentCaptor.forClass(CommandListenerAdapter.class);
-        verify(rootPresenter).setRoot(eq(child1), eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
+        verify(rootPresenter).setRoot(eq(child1), eq(null), eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
         assertThat(captor.getValue().getListener()).isEqualTo(listener);
     }
+
 
     @Test
     public void setRoot_clearsSplashLayout() {
@@ -194,7 +243,7 @@ public class NavigatorTest extends BaseTest {
         ViewController initialRoot = spy(child2);
         uut.setRoot(initialRoot, new CommandListenerAdapter(), reactInstanceManager);
 
-        child3.options.animations.setRoot.waitForRender = new Bool(true);
+        child3.options.animations.setRoot.getEnter().waitForRender = new Bool(true);
         ViewController secondRoot = spy(child3);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.setRoot(secondRoot, listener, reactInstanceManager);
@@ -244,8 +293,10 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void push_OnCorrectStackByFindingChildId() {
-        StackController stack1 = newStack(); stack1.ensureViewIsCreated();
-        StackController stack2 = newStack(); stack2.ensureViewIsCreated();
+        StackController stack1 = newStack();
+        stack1.ensureViewIsCreated();
+        StackController stack2 = newStack();
+        stack2.ensureViewIsCreated();
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
         BottomTabsController bottomTabsController = newTabs(Arrays.asList(stack1, stack2));
@@ -298,7 +349,8 @@ public class NavigatorTest extends BaseTest {
     public void pop_byStackId() {
         disablePushAnimation(child1, child2);
         disablePopAnimation(child2, child1);
-        StackController stack = newStack(child1, child2); stack.ensureViewIsCreated();
+        StackController stack = newStack(child1, child2);
+        stack.ensureViewIsCreated();
         uut.setRoot(stack, new CommandListenerAdapter(), reactInstanceManager);
 
         uut.pop(stack.getId(), Options.EMPTY, new CommandListenerAdapter());
@@ -505,7 +557,7 @@ public class NavigatorTest extends BaseTest {
         spy.push(child2, new CommandListenerAdapter());
 
         StackController parent = newStack(spy);
-        parent.options.animations.setRoot.enabled = new Bool(false);
+        parent.options.animations.setRoot.getEnter().enabled = new Bool(false);
 
         uut.setRoot(parent, new CommandListenerAdapter(), reactInstanceManager);
 
@@ -643,11 +695,31 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void destroy_shouldNotChangeViewIds() {
+        disablePushAnimation(child1);
+        disableShowModalAnimation(child1, child2, child3);
+
+        StackController spy = spy(parentController);
+        SimpleViewController.SimpleView view = child1.getView();
+        ViewGroup view1 = child2.getView();
+        view.setId(10);
+        view1.setId(11);
+        spy.options.animations.setRoot.getEnter().enabled = new Bool(false);
+        uut.setRoot(spy, new CommandListenerAdapter(), reactInstanceManager);
+        spy.push(child1, new CommandListenerAdapter());
+        uut.showModal(child2, new CommandListenerAdapter());
+        activityController.destroy();
+        assertThat(view.getId()).isEqualTo(10);
+        assertThat(view1.getId()).isEqualTo(11);
+        verify(spy, times(1)).destroy();
+    }
+
+    @Test
     public void destroy_destroyedRoot() {
         disablePushAnimation(child1);
 
         StackController spy = spy(parentController);
-        spy.options.animations.setRoot.enabled = new Bool(false);
+        spy.options.animations.setRoot.getEnter().enabled = new Bool(false);
         uut.setRoot(spy, new CommandListenerAdapter(), reactInstanceManager);
         spy.push(child1, new CommandListenerAdapter());
         activityController.destroy();

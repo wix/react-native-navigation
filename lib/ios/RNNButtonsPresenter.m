@@ -27,20 +27,22 @@
 
 - (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
             defaultColor:(Color *)defaultColor
-    defaultDisabledColor:(Color *)defaultDisabledColor {
+    defaultDisabledColor:(Color *)defaultDisabledColor
+                animated:(BOOL)animated {
     [self setButtons:leftButtons
                         side:@"left"
-                    animated:NO
+                    animated:animated
                 defaultColor:defaultColor
         defaultDisabledColor:defaultDisabledColor];
 }
 
 - (void)applyRightButtons:(NSArray<RNNButtonOptions *> *)rightButtons
              defaultColor:(Color *)defaultColor
-     defaultDisabledColor:(Color *)defaultDisabledColor {
+     defaultDisabledColor:(Color *)defaultDisabledColor
+                 animated:(BOOL)animated {
     [self setButtons:rightButtons
                         side:@"right"
-                    animated:NO
+                    animated:animated
                 defaultColor:defaultColor
         defaultDisabledColor:defaultDisabledColor];
 }
@@ -78,19 +80,17 @@
     }
 
     if ([side isEqualToString:@"left"]) {
-        [self clearPreviousButtonViews:barButtonItems
-                            oldButtons:self.viewController.navigationItem.leftBarButtonItems];
+        [self replaceCurrentButtons:self.viewController.navigationItem.leftBarButtonItems
+                        withButtons:barButtonItems];
         [self.viewController.navigationItem setLeftBarButtonItems:barButtonItems animated:animated];
     }
 
     if ([side isEqualToString:@"right"]) {
-        [self clearPreviousButtonViews:barButtonItems
-                            oldButtons:self.viewController.navigationItem.rightBarButtonItems];
+        [self replaceCurrentButtons:self.viewController.navigationItem.rightBarButtonItems
+                        withButtons:barButtonItems];
         [self.viewController.navigationItem setRightBarButtonItems:barButtonItems
                                                           animated:animated];
     }
-
-    [self notifyButtonsDidAppear:barButtonItems];
 }
 
 - (NSArray *)currentButtons {
@@ -98,6 +98,14 @@
     [currentButtons addObjectsFromArray:self.viewController.navigationItem.leftBarButtonItems];
     [currentButtons addObjectsFromArray:self.viewController.navigationItem.rightBarButtonItems];
     return currentButtons;
+}
+
+- (void)componentWillAppear {
+    for (UIBarButtonItem *barButtonItem in [self currentButtons]) {
+        if ([self isRNNUIBarButton:barButtonItem]) {
+            [(RNNUIBarButtonItem *)barButtonItem notifyWillAppear];
+        }
+    }
 }
 
 - (void)componentDidAppear {
@@ -116,28 +124,29 @@
     }
 }
 
-- (void)notifyButtonsDidAppear:(NSArray *)barButtonItems {
-    for (UIBarButtonItem *barButtonItem in barButtonItems) {
-        if ([self isRNNUIBarButton:barButtonItem]) {
-            [(RNNUIBarButtonItem *)barButtonItem notifyDidAppear];
-        }
-    }
-}
-
 - (BOOL)isRNNUIBarButton:(UIBarButtonItem *)barButtonItem {
     return [barButtonItem isKindOfClass:[RNNUIBarButtonItem class]];
 }
 
-- (void)clearPreviousButtonViews:(NSArray<UIBarButtonItem *> *)newButtons
-                      oldButtons:(NSArray<UIBarButtonItem *> *)oldButtons {
+- (void)replaceCurrentButtons:(NSArray<UIBarButtonItem *> *)oldButtons
+                  withButtons:(NSArray<UIBarButtonItem *> *)newButtons {
     NSArray<UIBarButtonItem *> *removedButtons = [oldButtons difference:newButtons
                                                        withPropertyName:@"customView"];
+    NSArray<UIBarButtonItem *> *addedButtons = [newButtons difference:oldButtons
+                                                     withPropertyName:@"customView"];
 
     for (UIBarButtonItem *buttonItem in removedButtons) {
         RNNReactView *reactView = buttonItem.customView;
         if ([reactView isKindOfClass:[RNNReactView class]]) {
             [reactView componentDidDisappear];
             [_componentRegistry removeChildComponent:reactView.componentId];
+        }
+    }
+
+    for (RNNUIBarButtonItem *barButtonItem in addedButtons) {
+        if ([self isRNNUIBarButton:barButtonItem]) {
+            [(RNNUIBarButtonItem *)barButtonItem notifyWillAppear];
+            [(RNNUIBarButtonItem *)barButtonItem notifyDidAppear];
         }
     }
 }

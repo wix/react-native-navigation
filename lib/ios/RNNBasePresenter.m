@@ -31,6 +31,9 @@
     _prefersHomeIndicatorAutoHidden = [withDefault.layout.autoHideHomeIndicator withDefault:NO];
 }
 
+- (void)componentWillAppear {
+}
+
 - (void)componentDidAppear {
 }
 

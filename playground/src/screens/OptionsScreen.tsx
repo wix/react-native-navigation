@@ -1,11 +1,10 @@
 import React from 'react';
 import { NavigationComponentProps } from 'react-native-navigation';
-
-import Root from '../components/Root';
 import Button from '../components/Button';
+import Root from '../components/Root';
 import Navigation from '../services/Navigation';
-import Screens from './Screens';
 import testIDs from '../testIDs';
+import Screens from './Screens';
 
 const {
   CHANGE_TITLE_BTN,
@@ -18,6 +17,7 @@ const {
   SET_REACT_TITLE_VIEW,
   GOTO_BUTTONS_SCREEN,
   GOTO_SEARCHBAR_SCREEN,
+  GOTO_SEARCHBAR_MODAL,
 } = testIDs;
 
 interface Props extends NavigationComponentProps {}
@@ -72,6 +72,12 @@ export default class Options extends React.Component<Props> {
           testID={GOTO_SEARCHBAR_SCREEN}
           label="Search Bar"
           onPress={this.searchBarScreen}
+        />
+        <Button
+          platform={'ios'}
+          testID={GOTO_SEARCHBAR_MODAL}
+          label="Search Bar Modal"
+          onPress={this.searchBarModal}
         />
         <Button
           label="Toggle Navigation bar visibility"
@@ -191,6 +197,8 @@ export default class Options extends React.Component<Props> {
   statusBarScreen = () => Navigation.showModal(Screens.StatusBar);
 
   searchBarScreen = () => Navigation.push(this, Screens.SearchBar, {});
+
+  searchBarModal = () => Navigation.showModal(Screens.SearchBarModal);
 
   pushButtonsScreen = () =>
     Navigation.push(this, Screens.Buttons, {

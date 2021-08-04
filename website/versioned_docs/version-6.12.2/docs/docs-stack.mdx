@@ -26,6 +26,7 @@ The stack manages the TopBar at the top of the stack. The TopBar displays the cu
 }>
 <TabItem value="single">
 
+
 A stack declared with a single child.
 
 ```js
@@ -42,6 +43,7 @@ const stack = {
 
 </TabItem>
 <TabItem value="multiple">
+
 
 A stack can be initialized with more than one child, in which case the last child will be the currently displayed child and the first child will be hidden. In this case the back button will be visible automatically, clicking it will go back in the stack revealing the first (previous) child.
 Once the root child becomes visible, the back button is hidden.
@@ -65,6 +67,7 @@ const stack = {
 
 </TabItem>
 </Tabs>
+
 
 ## TopBar Buttons
 
@@ -108,9 +111,11 @@ Now you can create buttons which use the component registered with `'ButtonCompo
 topBar: {
   rightButtons: [
     {
-      component: 'ButtonComponent',
-      passProps: {
-        // Pass initial props to the button here
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          // Pass initial props to the button here
+        },
       },
     },
   ];
@@ -129,10 +134,12 @@ topBar: {
   rightButtons: [
     {
       id: 'SomeUniqueId',
-      component: 'ButtonComponent',
-      passProps: {
-        count: 0,
-      },
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          count: 0
+        },
+      },,
     },
   ];
 }

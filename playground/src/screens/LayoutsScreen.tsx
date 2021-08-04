@@ -3,6 +3,7 @@ import {
   Options,
   OptionsModalPresentationStyle,
   NavigationComponent,
+  NavigationComponentProps,
 } from 'react-native-navigation';
 
 import Root from '../components/Root';
@@ -11,6 +12,7 @@ import testIDs from '../testIDs';
 import Screens from './Screens';
 import Navigation from '../services/Navigation';
 import { stack } from '../commons/Layouts';
+import { Text } from 'react-native';
 
 const {
   WELCOME_SCREEN_HEADER,
@@ -21,7 +23,23 @@ const {
   SPLIT_VIEW_BUTTON,
 } = testIDs;
 
-export default class LayoutsScreen extends NavigationComponent {
+interface State {
+  componentDidAppear: boolean;
+}
+
+export default class LayoutsScreen extends NavigationComponent<NavigationComponentProps, State> {
+  constructor(props: NavigationComponentProps) {
+    super(props);
+    Navigation.events().bindComponent(this);
+    this.state = {
+      componentDidAppear: false,
+    };
+  }
+
+  componentDidAppear() {
+    this.setState({ componentDidAppear: true });
+  }
+
   static options(): Options {
     return {
       topBar: {
@@ -48,6 +66,7 @@ export default class LayoutsScreen extends NavigationComponent {
           platform="ios"
           onPress={this.splitView}
         />
+        <Text>{this.state.componentDidAppear && 'componentDidAppear'}</Text>
       </Root>
     );
   }

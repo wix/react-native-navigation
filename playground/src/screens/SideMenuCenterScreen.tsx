@@ -17,6 +17,7 @@ const {
   CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN,
 } = testIDs;
 
+// @ts-ignore TSC is unhappy as leftButtons is defined as an object instead of an array. Declaring buttons as a single object is not reflected in Options, but still supported.
 export default class SideMenuCenterScreen extends NavigationComponent {
   static options() {
     return {

@@ -6,11 +6,13 @@ import {
   SearchBarCancelPressedEvent,
   PreviewCompletedEvent,
   ScreenPoppedEvent,
+  ComponentWillAppearEvent,
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
 } from './ComponentEvents';
 
 export interface NavigationComponentListener {
+  componentWillAppear?: (_event: ComponentWillAppearEvent) => void;
   componentDidAppear?: (_event: ComponentDidAppearEvent) => void;
   componentDidDisappear?: (_event: ComponentDidDisappearEvent) => void;
   navigationButtonPressed?: (_event: NavigationButtonPressedEvent) => void;

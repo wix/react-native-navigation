@@ -54,6 +54,7 @@ public class ExternalComponentViewController extends ChildController<ExternalCom
 
     @Override
     public void onViewWillAppear() {
+        emitter.emitComponentWillAppear(getId(), externalComponent.name.get(), ComponentType.Component);
         super.onViewWillAppear();
         emitter.emitComponentDidAppear(getId(), externalComponent.name.get(), ComponentType.Component);
     }

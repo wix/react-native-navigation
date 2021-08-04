@@ -28,6 +28,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.reactView componentWillAppear];
+    [self componentWillAppear];
     [_presenter applyOptions:self.resolveOptions];
     [self.parentViewController onChildWillAppear];
 }
@@ -38,14 +40,17 @@
     [self componentDidAppear];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    // Fix's momentum scroll bug
+    // https://github.com/wix/react-native-navigation/issues/4325
+    [self.view stopMomentumScrollViews];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self.reactView componentDidDisappear];
     [self componentDidDisappear];
-
-    // Fix's momentum scroll bug
-    // https://github.com/wix/react-native-navigation/issues/4325
-    [self.view stopMomentumScrollViews];
 }
 
 - (RNNNavigationOptions *)resolveOptions {

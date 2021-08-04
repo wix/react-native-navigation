@@ -1,8 +1,14 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
@@ -24,11 +30,6 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOver
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class Navigator extends ParentController {
 
@@ -65,12 +66,14 @@ public class Navigator extends ParentController {
     public void setContentLayout(ViewGroup contentLayout) {
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
-        modalsLayout.setVisibility(View.GONE); contentLayout.addView(modalsLayout);
-        overlaysLayout.setVisibility(View.GONE); contentLayout.addView(overlaysLayout);
+        modalsLayout.setVisibility(View.GONE);
+        contentLayout.addView(modalsLayout);
+        overlaysLayout.setVisibility(View.GONE);
+        contentLayout.addView(overlaysLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
-        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
+        super(activity, childRegistry, "navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
@@ -136,14 +139,15 @@ public class Navigator extends ParentController {
 
     }
 
-    public void setRoot(final ViewController viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
+    public void setRoot(final ViewController<?> appearing, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
         previousRoot = root;
         modalStack.destroy();
         final boolean removeSplashView = isRootNotCreated();
         if (isRootNotCreated()) getView();
-        root = viewController;
+        final ViewController<?> disappearing = previousRoot;
+        root = appearing;
         root.setOverlay(new RootOverlay(getActivity(), contentLayout));
-        rootPresenter.setRoot(root, defaultOptions, new CommandListenerAdapter(commandListener) {
+        rootPresenter.setRoot(appearing, disappearing, defaultOptions, new CommandListenerAdapter(commandListener) {
             @Override
             public void onSuccess(String childId) {
                 root.onViewDidAppear();
@@ -240,6 +244,13 @@ public class Navigator extends ParentController {
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        modalStack.onConfigurationChanged(newConfig);
+        overlayManager.onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
+    }
+
     private boolean isRootNotCreated() {
         return view == null;
     }
@@ -252,5 +263,13 @@ public class Navigator extends ParentController {
     @RestrictTo(RestrictTo.Scope.TESTS)
     CoordinatorLayout getOverlaysLayout() {
         return overlaysLayout;
+    }
+
+    public void onHostPause() {
+        super.onViewDisappear();
+    }
+
+    public void onHostResume() {
+        super.onViewDidAppear();
     }
 }

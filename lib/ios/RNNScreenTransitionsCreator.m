@@ -1,54 +1,33 @@
 #import "RNNScreenTransitionsCreator.h"
-#import "ContentTransitionCreator.h"
 #import "DisplayLinkAnimatorDelegate.h"
 #import "ElementTransitionsCreator.h"
-#import "SharedElementTransitionsCreator.h"
 
 @implementation RNNScreenTransitionsCreator
 
 + (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC
                                 toVC:(UIViewController *)toVC
                        containerView:(UIView *)containerView
-                   contentTransition:(TransitionOptions *)contentTransitionOptions
+                   contentTransition:(RNNEnterExitAnimation *)contentTransitionOptions
                   elementTransitions:
-                      (NSArray<ElementTransitionOptions *> *)elementTransitionsOptions
-            sharedElementTransitions:
-                (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitionsOptions
-                            reversed:(BOOL)reversed {
+                      (NSArray<ElementTransitionOptions *> *)elementTransitionsOptions {
     NSArray *elementTransitions = [ElementTransitionsCreator create:elementTransitionsOptions
                                                              fromVC:fromVC
                                                                toVC:toVC
                                                       containerView:containerView];
-    NSArray *sharedElementTransitions =
-        [SharedElementTransitionsCreator create:sharedElementTransitionsOptions
-                                         fromVC:fromVC
-                                           toVC:toVC
-                                  containerView:containerView];
-    id<DisplayLinkAnimatorDelegate> contentTransition =
-        [self createContentTransitionFromVC:fromVC
-                                       toVC:toVC
-                              containerView:containerView
-                          contentTransition:contentTransitionOptions
-                                   reversed:reversed];
+    id<DisplayLinkAnimatorDelegate> enterTransition =
+        [ElementTransitionsCreator createTransition:contentTransitionOptions.enter
+                                               view:toVC.view
+                                      containerView:containerView];
 
-    return [[[NSArray arrayWithObject:contentTransition]
-        arrayByAddingObjectsFromArray:elementTransitions]
-        arrayByAddingObjectsFromArray:sharedElementTransitions];
-}
+    id<DisplayLinkAnimatorDelegate> exitTransition;
+    if (contentTransitionOptions.exit.hasAnimation) {
+        exitTransition = [ElementTransitionsCreator createTransition:contentTransitionOptions.exit
+                                                                view:fromVC.view
+                                                       containerView:containerView];
+    }
 
-+ (id<DisplayLinkAnimatorDelegate>)createContentTransitionFromVC:(UIViewController *)fromVC
-                                                            toVC:(UIViewController *)toVC
-                                                   containerView:(UIView *)containerView
-                                               contentTransition:
-                                                   (TransitionOptions *)contentTransition
-                                                        reversed:(BOOL)reversed {
-    UIView *contentView = reversed ? fromVC.view : toVC.view;
-    return [ContentTransitionCreator createTransition:contentTransition
-                                                 view:contentView
-                                               fromVC:fromVC
-                                                 toVC:toVC
-                                        containerView:containerView
-                                             reversed:reversed];
+    return [[NSArray arrayWithObjects:enterTransition, exitTransition, nil]
+        arrayByAddingObjectsFromArray:elementTransitions];
 }
 
 @end

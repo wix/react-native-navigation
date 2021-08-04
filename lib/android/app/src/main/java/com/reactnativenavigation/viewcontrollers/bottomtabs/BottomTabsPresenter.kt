@@ -14,9 +14,9 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 
 class BottomTabsPresenter(
-        private val tabs: List<ViewController<*>>,
-        private var defaultOptions: Options,
-        val animator: BottomTabsAnimator
+    private val tabs: List<ViewController<*>>,
+    private var defaultOptions: Options,
+    val animator: BottomTabsAnimator
 ) {
     private val bottomTabFinder: BottomTabFinder = BottomTabFinder(tabs)
     private lateinit var bottomTabsContainer: BottomTabsContainer
@@ -143,7 +143,7 @@ class BottomTabsPresenter(
         bottomTabs.setLayoutDirection(options.layout.direction)
         bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
         bottomTabs.titleState = bottomTabsOptions.titleDisplayMode[defaultTitleState]
-        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor[Color.WHITE])
+        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
         bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get(true))
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             val tabIndex = bottomTabsOptions.currentTabIndex.get()
@@ -218,28 +218,44 @@ class BottomTabsPresenter(
     fun getPushAnimation(appearingOptions: Options): Animator? {
         if (appearingOptions.bottomTabsOptions.animate.isFalse) return null
         return animator.getPushAnimation(
-                appearingOptions.animations.push.bottomTabs,
-                appearingOptions.bottomTabsOptions.visible
+            appearingOptions.animations.push.bottomTabs,
+            appearingOptions.bottomTabsOptions.visible
         )
     }
 
     fun getPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator? {
         if (appearingOptions.bottomTabsOptions.animate.isFalse) return null
         return animator.getPopAnimation(
-                disappearingOptions.animations.pop.bottomTabs,
-                appearingOptions.bottomTabsOptions.visible
+            disappearingOptions.animations.pop.bottomTabs,
+            appearingOptions.bottomTabsOptions.visible
         )
     }
 
     fun getSetStackRootAnimation(appearingOptions: Options): Animator? {
         if (appearingOptions.bottomTabsOptions.animate.isFalse) return null
         return animator.getSetStackRootAnimation(
-                appearingOptions.animations.setStackRoot.bottomTabs,
-                appearingOptions.bottomTabsOptions.visible
+            appearingOptions.animations.setStackRoot.bottomTabs,
+            appearingOptions.bottomTabsOptions.visible
         )
     }
+
     fun findTabIndexByTabId(id: String?): Int {
         val index = bottomTabFinder.findByControllerId(id)
         return max(index, 0)
+    }
+
+    fun onConfigurationChanged(options: Options) {
+        val bottomTabsOptions = options.withDefaultOptions(defaultOptions).bottomTabsOptions
+        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+
+        if (bottomTabsOptions.shadowOptions.hasValue()) {
+            if (bottomTabsOptions.shadowOptions.color.hasValue())
+                bottomTabsContainer.shadowColor = bottomTabsOptions.shadowOptions.color.get()
+        }
+
+        if (bottomTabsOptions.borderColor.hasValue()) {
+            bottomTabsContainer.setTopOutLineColor(bottomTabsOptions.borderColor.get())
+            bottomTabsContainer.showTopLine()
+        }
     }
 }

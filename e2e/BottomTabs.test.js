@@ -33,6 +33,16 @@ describe('BottomTabs', () => {
     await expect(element(by.text('NEW'))).toBeVisible();
   });
 
+  it('Badge not cleared after showing/dismissing modal', async () => {
+    await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
+    await elementById(TestIDs.SET_BADGE_BTN).tap();
+    await expect(element(by.text('Badge'))).toBeVisible();
+    await elementById(TestIDs.MODAL_BTN).tap();
+    await elementById(TestIDs.MODAL_BTN).tap();
+    await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
+    await expect(element(by.text('Badge'))).toBeVisible();
+  });
+
   it('set empty string badge on a current Tab should clear badge', async () => {
     await elementById(TestIDs.SET_BADGE_BTN).tap();
     await expect(element(by.text('NEW'))).toBeVisible();
@@ -40,7 +50,7 @@ describe('BottomTabs', () => {
     await expect(element(by.text('NEW'))).toBeNotVisible();
   });
 
-  it('merge options correctly in SideMenu inside BottomTabs layout', async () => {
+  it.e2e('merge options correctly in SideMenu inside BottomTabs layout', async () => {
     await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
     await elementById(TestIDs.SIDE_MENU_INSIDE_BOTTOM_TABS_BTN).tap();
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();

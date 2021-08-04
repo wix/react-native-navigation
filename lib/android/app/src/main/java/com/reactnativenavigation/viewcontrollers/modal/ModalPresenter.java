@@ -4,7 +4,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.AnimationOptions;
-import com.reactnativenavigation.options.ModalAnimationOptions;
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
@@ -14,17 +13,19 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import org.jetbrains.annotations.NotNull;
+
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 
 public class ModalPresenter {
 
     private ViewGroup rootLayout;
     private CoordinatorLayout modalsLayout;
-    private final ModalAnimator animator;
+    private final ModalAnimator modalAnimator;
     private Options defaultOptions = new Options();
 
     ModalPresenter(ModalAnimator animator) {
-        this.animator = animator;
+        this.modalAnimator = animator;
     }
 
     void setRootLayout(ViewGroup rootLayout) {
@@ -39,36 +40,38 @@ public class ModalPresenter {
         this.defaultOptions = defaultOptions;
     }
 
-    void showModal(ViewController toAdd, ViewController toRemove, CommandListener listener) {
+    void showModal(ViewController<?> appearing, ViewController<?> disappearing, CommandListener listener) {
         if (modalsLayout == null) {
             listener.onError("Can not show modal before activity is created");
             return;
         }
 
-        Options options = toAdd.resolveCurrentOptions(defaultOptions);
+        Options options = appearing.resolveCurrentOptions(defaultOptions);
+
         AnimationOptions enterAnimationOptions = options.animations.showModal.getEnter();
-        toAdd.setWaitForRender(enterAnimationOptions.waitForRender);
+        appearing.setWaitForRender(enterAnimationOptions.waitForRender);
         modalsLayout.setVisibility(View.VISIBLE);
-        modalsLayout.addView(toAdd.getView(), matchParentLP());
+        modalsLayout.addView(appearing.getView(), matchParentLP());
 
         if (enterAnimationOptions.enabled.isTrueOrUndefined()) {
-            toAdd.getView().setAlpha(0);
             if (enterAnimationOptions.shouldWaitForRender().isTrue()) {
-                toAdd.addOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
+                appearing.addOnAppearedListener(() -> modalAnimator.show(appearing, disappearing, options.animations.showModal, createListener(appearing, disappearing, listener)));
             } else {
-                animateShow(toAdd, toRemove, listener, options);
+                modalAnimator.show(appearing, disappearing, options.animations.showModal, createListener(appearing, disappearing, listener));
             }
         } else {
             if (enterAnimationOptions.waitForRender.isTrue()) {
-                toAdd.addOnAppearedListener(() -> onShowModalEnd(toAdd, toRemove, listener));
+                appearing.addOnAppearedListener(() -> onShowModalEnd(appearing, disappearing, listener));
             } else {
-                onShowModalEnd(toAdd, toRemove, listener);
+                onShowModalEnd(appearing, disappearing, listener);
             }
         }
     }
 
-    private void animateShow(ViewController toAdd, ViewController toRemove, CommandListener listener, Options options) {
-        animator.show(toAdd, toRemove, options.animations.showModal, new ScreenAnimationListener() {
+
+    @NotNull
+    private ScreenAnimationListener createListener(ViewController toAdd, ViewController toRemove, CommandListener listener) {
+        return new ScreenAnimationListener() {
             @Override
             public void onStart() {
                 toAdd.getView().setAlpha(1);
@@ -83,7 +86,7 @@ public class ModalPresenter {
             public void onCancel() {
                 listener.onSuccess(toAdd.getId());
             }
-        });
+        };
     }
 
     private void onShowModalEnd(ViewController toAdd, @Nullable ViewController toRemove, CommandListener listener) {
@@ -105,7 +108,7 @@ public class ModalPresenter {
         }
         Options options = toDismiss.resolveCurrentOptions(defaultOptions);
         if (options.animations.dismissModal.getExit().enabled.isTrueOrUndefined()) {
-            animator.dismiss(toAdd, toDismiss, options.animations.dismissModal, new ScreenAnimationListener() {
+            modalAnimator.dismiss(toAdd, toDismiss, options.animations.dismissModal, new ScreenAnimationListener() {
                 @Override
                 public void onEnd() {
                     onDismissEnd(toDismiss, listener);

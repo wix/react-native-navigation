@@ -29,6 +29,9 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
 
     @Override
     public void onViewWillAppear() {
+        if (!isDestroyed()) {
+            getView().sendComponentWillStart(ComponentType.Title);
+        }
         super.onViewWillAppear();
         if (!isDestroyed()) {
             runOnPreDraw(view -> view.setLayoutParams(view.getLayoutParams()));

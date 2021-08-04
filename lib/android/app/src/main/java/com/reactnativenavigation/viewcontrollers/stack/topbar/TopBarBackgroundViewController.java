@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.events.ComponentType;
+import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate;
@@ -29,6 +30,7 @@ public class TopBarBackgroundViewController extends ViewController<TopBarBackgro
 
     @Override
     public void onViewWillAppear() {
+        getView().sendComponentWillStart(ComponentType.Background);
         super.onViewWillAppear();
         getView().sendComponentStart(ComponentType.Background);
     }

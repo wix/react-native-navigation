@@ -1,14 +1,14 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "RNNConvert.h"
-#import "ReversedTransitionDelegate.h"
-#import "TransitionDelegate.h"
+#import "ScreenAnimationController.h"
+#import "ScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "ViewAnimationOptions.h"
 
 @interface RNNModalManager ()
-@property(nonatomic, strong) TransitionDelegate *showModalTransitionDelegate;
-@property(nonatomic, strong) TransitionDelegate *dismissModalTransitionDelegate;
+@property(nonatomic, strong) ScreenAnimationController *showModalTransitionDelegate;
+@property(nonatomic, strong) ScreenAnimationController *dismissModalTransitionDelegate;
 @end
 
 @implementation RNNModalManager {
@@ -33,6 +33,30 @@
     return self;
 }
 
+- (void)connectModalHostViewManager:(RCTModalHostViewManager *)modalHostViewManager {
+    modalHostViewManager.presentationBlock =
+        ^(UIViewController *reactViewController, UIViewController *viewController, BOOL animated,
+          dispatch_block_t completionBlock) {
+          [self showModal:viewController
+                 animated:animated
+               completion:^(NSString *_Nonnull componentId) {
+                 if (completionBlock)
+                     completionBlock();
+               }];
+        };
+
+    modalHostViewManager.dismissalBlock =
+        ^(UIViewController *reactViewController, UIViewController *viewController, BOOL animated,
+          dispatch_block_t completionBlock) {
+          [self dismissModal:viewController
+                    animated:animated
+                  completion:^{
+                    if (completionBlock)
+                        completionBlock();
+                  }];
+        };
+}
+
 - (void)showModal:(UIViewController<RNNLayoutProtocol> *)viewController
          animated:(BOOL)animated
        completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
@@ -44,13 +68,6 @@
 
     UIViewController *topVC = [self topPresentedVC];
 
-    viewController.modalPresentationStyle = [RNNConvert
-        UIModalPresentationStyle:[viewController.resolveOptionsWithDefault.modalPresentationStyle
-                                     withDefault:@"default"]];
-    viewController.modalTransitionStyle = [RNNConvert
-        UIModalTransitionStyle:[viewController.resolveOptionsWithDefault.modalTransitionStyle
-                                   withDefault:@"coverVertical"]];
-
     if (viewController.presentationController) {
         viewController.presentationController.delegate = self;
     }
@@ -58,7 +75,7 @@
     if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             viewController.resolveOptionsWithDefault.animations.showModal;
-        _showModalTransitionDelegate = [[TransitionDelegate alloc]
+        _showModalTransitionDelegate = [[ScreenAnimationController alloc]
             initWithContentTransition:viewAnimationOptions
                    elementTransitions:viewAnimationOptions.elementTransitions
              sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
@@ -66,7 +83,6 @@
                                bridge:_bridge];
 
         viewController.transitioningDelegate = _showModalTransitionDelegate;
-        viewController.modalPresentationStyle = UIModalPresentationCustom;
     }
 
     [topVC presentViewController:viewController
@@ -81,16 +97,30 @@
 }
 
 - (void)dismissModal:(UIViewController *)viewController
+            animated:(BOOL)animated
           completion:(RNNTransitionCompletionBlock)completion {
     if (viewController) {
         [_pendingModalIdsToDismiss addObject:viewController];
-        [self removePendingNextModalIfOnTop:completion];
+        [self removePendingNextModalIfOnTop:completion animated:animated];
     }
 }
 
 - (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^__nullable)(void))completion {
     UIViewController *root = [self rootViewController];
     if (root.presentedViewController) {
+        ViewAnimationOptions *dismissModalOptions =
+            root.presentedViewController.resolveOptionsWithDefault.animations.dismissModal;
+        if (dismissModalOptions.hasAnimation) {
+            _dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
+                initWithContentTransition:dismissModalOptions
+                       elementTransitions:dismissModalOptions.elementTransitions
+                 sharedElementTransitions:dismissModalOptions.sharedElementTransitions
+                                 duration:dismissModalOptions.maxDuration
+                                   bridge:_bridge];
+
+            root.presentedViewController.transitioningDelegate = _dismissModalTransitionDelegate;
+        }
+
         [root dismissViewControllerAnimated:animated completion:completion];
         [_eventHandler dismissedMultipleModals:_presentedModals];
         [_pendingModalIdsToDismiss removeAllObjects];
@@ -116,7 +146,8 @@
 
 #pragma mark - private
 
-- (void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion {
+- (void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion
+                             animated:(BOOL)animated {
     UIViewController<RNNLayoutProtocol> *modalToDismiss = [_pendingModalIdsToDismiss lastObject];
     RNNNavigationOptions *optionsWithDefault = modalToDismiss.resolveOptionsWithDefault;
 
@@ -129,23 +160,22 @@
     if (optionsWithDefault.animations.dismissModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
-        _dismissModalTransitionDelegate = [[ReversedTransitionDelegate alloc]
+        _dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
             initWithContentTransition:viewAnimationOptions
                    elementTransitions:viewAnimationOptions.elementTransitions
              sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
                              duration:viewAnimationOptions.maxDuration
                                bridge:_bridge];
 
-        modalToDismiss.modalPresentationStyle = UIModalPresentationCustom;
         [self topViewControllerParent:modalToDismiss].transitioningDelegate =
             _dismissModalTransitionDelegate;
     }
 
-    if (modalToDismiss == topPresentedVC ||
-        [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
+    if ((modalToDismiss == topPresentedVC ||
+         [[topPresentedVC childViewControllers] containsObject:modalToDismiss])) {
+        [self dismissSearchController:modalToDismiss];
         [modalToDismiss
-            dismissViewControllerAnimated:[optionsWithDefault.animations.dismissModal.enable
-                                              withDefault:YES]
+            dismissViewControllerAnimated:animated
                                completion:^{
                                  [self->_pendingModalIdsToDismiss removeObject:modalToDismiss];
                                  if (modalToDismiss.view) {
@@ -156,18 +186,21 @@
                                      completion();
                                  }
 
-                                 [self removePendingNextModalIfOnTop:nil];
+                                 [self removePendingNextModalIfOnTop:nil animated:NO];
                                }];
     } else {
         [modalToDismiss.view removeFromSuperview];
         modalToDismiss.view = nil;
-        modalToDismiss.getCurrentChild.resolveOptions.animations.dismissModal.enable =
-            [[Bool alloc] initWithBOOL:NO];
         [self dismissedModal:modalToDismiss];
 
-        if (completion) {
+        if (completion)
             completion();
-        }
+    }
+}
+
+- (void)dismissSearchController:(UIViewController *)modalToDismiss {
+    if ([modalToDismiss.presentedViewController.class isSubclassOfClass:UISearchController.class]) {
+        [modalToDismiss.presentedViewController dismissViewControllerAnimated:NO completion:nil];
     }
 }
 

@@ -22,14 +22,11 @@ Pod::Spec.new do |s|
   end
   
   s.subspec 'Fabric' do |ss|
-    ss.compiler_flags      = "-DRN_FABRIC_ENABLED -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32"
-    ss.pod_target_xcconfig = {
-      "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost-for-react-native\" \"$(PODS_ROOT)/Folly\"",
-      "CLANG_CXX_LANGUAGE_STANDARD" => "c++14" 
-    }
+    ss.xcconfig = { "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost-for-react-native\" \"$(PODS_ROOT)/RCT-Folly\"",
+                    "OTHER_CFLAGS" => "$(inherited) -DRN_FABRIC_ENABLED -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1" }
     ss.dependency 'React-RCTFabric'
     ss.dependency 'React-Fabric'
-    ss.dependency 'Folly/Fabric'
+    ss.dependency 'RCT-Folly/Fabric'
   end
 
   s.dependency 'React-Core'

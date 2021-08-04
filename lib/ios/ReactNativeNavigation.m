@@ -16,10 +16,15 @@
 
 #pragma mark - public API
 
++ (void)bootstrapWithBridge:(RCTBridge *)bridge {
+    [[ReactNativeNavigation sharedInstance] bootstrapWithBridge:bridge];
+}
+
 + (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate
                 launchOptions:(NSDictionary *)launchOptions {
-    [[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:bridgeDelegate
-                                                    launchOptions:launchOptions];
+    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:bridgeDelegate
+                                              launchOptions:launchOptions];
+    [[ReactNativeNavigation sharedInstance] bootstrapWithBridge:bridge];
 }
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
@@ -27,8 +32,11 @@
                                                                            callback:callback];
 }
 
+// gets called when the Bridge is created, implicitly initializes the RNNBridgeManager.
 + (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
-    return [[ReactNativeNavigation sharedInstance].bridgeManager extraModulesForBridge:bridge];
+    RNNBridgeManager *bridgeManager =
+        [[ReactNativeNavigation sharedInstance] getBridgeManagerForBridge:bridge];
+    return [bridgeManager extraModulesForBridge:bridge];
 }
 
 + (RCTBridge *)getBridge {
@@ -53,18 +61,19 @@
     return instance;
 }
 
-- (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate
-                launchOptions:(NSDictionary *)launchOptions {
-    UIWindow *mainWindow = [self initializeKeyWindowIfNeeded];
-
-    self.bridgeManager = [[RNNBridgeManager alloc] initWithLaunchOptions:launchOptions
-                                                       andBridgeDelegate:bridgeDelegate
-                                                              mainWindow:mainWindow];
-    [self.bridgeManager initializeBridge];
-    [RNNSplashScreen showOnWindow:mainWindow];
+- (void)bootstrapWithBridge:(RCTBridge *)bridge {
+    [RNNSplashScreen showOnWindow:[self mainWindow]];
 }
 
-- (UIWindow *)initializeKeyWindowIfNeeded {
+- (RNNBridgeManager *)getBridgeManagerForBridge:(RCTBridge *)bridge {
+    if (self.bridgeManager == nil) {
+        self.bridgeManager = [[RNNBridgeManager alloc] initWithBridge:bridge
+                                                           mainWindow:[self mainWindow]];
+    }
+    return self.bridgeManager;
+}
+
+- (UIWindow *)mainWindow {
     UIWindow *keyWindow = UIApplication.sharedApplication.delegate.window;
     if (!keyWindow) {
         keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

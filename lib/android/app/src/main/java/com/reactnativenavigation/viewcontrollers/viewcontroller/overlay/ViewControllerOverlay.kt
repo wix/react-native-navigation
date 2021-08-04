@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import com.reactnativenavigation.utils.ViewUtils.removeFromParent
+import com.reactnativenavigation.utils.removeFromParent
 
 open class ViewControllerOverlay(context: Context) {
     private val overlay = OverlayLayout(context)
@@ -16,7 +16,7 @@ open class ViewControllerOverlay(context: Context) {
 
     fun remove(view: View) {
         overlay.removeView(view)
-        if (overlay.childCount == 0) removeFromParent(overlay)
+        if (overlay.childCount == 0) overlay.removeFromParent()
     }
 
     private fun attachOverlayToParent(parent: ViewGroup) {

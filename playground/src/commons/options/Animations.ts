@@ -2,6 +2,7 @@ import {
   AnimationOptions,
   ViewAnimationOptions,
   OptionsAnimationPropertyConfig,
+  EnterExitAnimationOptions,
 } from 'react-native-navigation';
 import { Dimensions } from 'react-native';
 import flags from '../../flags';
@@ -9,7 +10,7 @@ import flags from '../../flags';
 const { useCustomAnimations, useSlowOpenScreenAnimations, useSlideAnimation } = flags;
 const height = Math.round(Dimensions.get('window').height);
 const width = Math.round(Dimensions.get('window').width);
-const SCREEN_ANIMATION_DURATION = 300 * (useSlowOpenScreenAnimations ? 2.5 : 1);
+const SCREEN_ANIMATION_DURATION = 500 * (useSlowOpenScreenAnimations ? 2.5 : 1);
 
 const baseAnimation: OptionsAnimationPropertyConfig = {
   duration: SCREEN_ANIMATION_DURATION,
@@ -77,6 +78,10 @@ const slideOutAndExit: ViewAnimationOptions = {
   },
 };
 
+const setRootAnimation: EnterExitAnimationOptions = {
+  enter: slideInFromRight,
+  exit: slideOutAndExit,
+};
 const slideAnimations: AnimationOptions = {
   push: {
     waitForRender: true,
@@ -100,75 +105,76 @@ const slideAnimations: AnimationOptions = {
   },
 };
 
-const modalEnterAnimations: ViewAnimationOptions = {
+const showModalEnterAnimations: ViewAnimationOptions = {
   translationY: {
     from: height,
     to: 0,
-    duration: 3000,
+    duration: SCREEN_ANIMATION_DURATION,
     interpolation: { type: 'decelerate' },
   },
   alpha: {
     from: 0.65,
     to: 1,
-    duration: 3000 * 0.7,
+    duration: SCREEN_ANIMATION_DURATION * 0.7,
     interpolation: { type: 'decelerate' },
   },
 };
 
-const modalExitAnimations: ViewAnimationOptions = {
+const showModalExitAnimations: ViewAnimationOptions = {
   translationY: {
     from: 0,
-    to: height,
-    duration: 3000,
+    to: -height,
+    duration: SCREEN_ANIMATION_DURATION,
     interpolation: { type: 'decelerate' },
   },
   alpha: {
     from: 1,
     to: 0.65,
-    duration: 3000 * 0.3,
+    duration: SCREEN_ANIMATION_DURATION * 0.3,
+    interpolation: { type: 'decelerate' },
+  },
+};
+
+const dismissModalEnterAnimations: ViewAnimationOptions = {
+  translationY: {
+    from: -height,
+    to: 0,
+    duration: SCREEN_ANIMATION_DURATION,
+    interpolation: { type: 'decelerate' },
+  },
+  alpha: {
+    from: 0.65,
+    to: 1,
+    duration: SCREEN_ANIMATION_DURATION * 0.7,
+    interpolation: { type: 'decelerate' },
+  },
+};
+
+const dismissModalExitAnimations: ViewAnimationOptions = {
+  translationY: {
+    from: 0,
+    to: height,
+    duration: SCREEN_ANIMATION_DURATION,
+    interpolation: { type: 'decelerate' },
+  },
+  alpha: {
+    from: 1,
+    to: 0.65,
+    duration: SCREEN_ANIMATION_DURATION * 0.3,
     interpolation: { type: 'decelerate' },
   },
 };
 
 const customAnimations: AnimationOptions = {
+  ...slideAnimations,
+  setRoot: setRootAnimation,
   showModal: {
-    enter: modalEnterAnimations,
-    exit: modalExitAnimations,
+    enter: showModalEnterAnimations,
+    exit: showModalExitAnimations,
   },
   dismissModal: {
-    enter: modalEnterAnimations,
-    exit: modalExitAnimations,
-  },
-  push: {
-    waitForRender: true,
-    content: {
-      alpha: {
-        from: 0.65,
-        to: 1,
-        duration: SCREEN_ANIMATION_DURATION * 0.7,
-        interpolation: { type: 'decelerate' },
-      },
-      translationY: {
-        from: height * 0.3,
-        to: 0,
-        duration: SCREEN_ANIMATION_DURATION,
-        interpolation: { type: 'decelerate' },
-      },
-    },
-  },
-  pop: {
-    content: {
-      alpha: {
-        from: 1,
-        to: 0,
-        duration: SCREEN_ANIMATION_DURATION,
-      },
-      translationY: {
-        from: 0,
-        to: height * 0.7,
-        duration: SCREEN_ANIMATION_DURATION * 0.9,
-      },
-    },
+    enter: dismissModalEnterAnimations,
+    exit: dismissModalExitAnimations,
   },
 };
 

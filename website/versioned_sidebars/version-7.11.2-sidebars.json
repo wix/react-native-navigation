@@ -1,0 +1,346 @@
+{
+  "version-7.11.2/docs": [
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/before-you-start"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/installing"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/playground-app"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/showcases"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Using the app",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/app-launch"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/basic-navigation"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/advanced-navigation"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/screen-lifecycle"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/passing-data-to-components"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/functionalComponents"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Layouts",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/stack"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/bottomTabs"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/sideMenu"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/externalComponent"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Hierarchy",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/root"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/modal"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/overlay"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Styling",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/style-options"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/stack-buttons"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/style-theme"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/style-statusBar"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/style-orientation"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/style-animations"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/style-fonts"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/style-constants"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Third party integration",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/community-libraries"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/third-party-typescript"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/third-party-mobx"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/third-party-react-context"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Meta",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/docs/meta-contributing"
+        }
+      ]
+    }
+  ],
+  "version-7.11.2/api": [
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Navigation",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/component"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/root"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/stack"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/modal"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/overlay"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Layouts",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/layout-layout"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/layout-component"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/layout-stack"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/layout-bottomTabs"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/layout-sideMenu"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/layout-splitView"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Options",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-api"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-root"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-bottomTabs"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-bottomTab"
+        },
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "Stack",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-stack"
+            },
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-title"
+            },
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-subtitle"
+            },
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-background"
+            },
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-backButton"
+            },
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-hardwareBackButton"
+            },
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-button"
+            },
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-iconInsets"
+            },
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-iconBackground"
+            },
+            {
+              "type": "doc",
+              "id": "version-7.11.2/api/options-largeTitle"
+            }
+          ]
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-statusBar"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-layout"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-modal"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-navigationBar"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-overlay"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-sideMenu"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-sideMenuSide"
+        },
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/options-splitView"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Events",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-7.11.2/api/events"
+        }
+      ]
+    }
+  ]
+}

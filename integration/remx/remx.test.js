@@ -1,7 +1,7 @@
 const React = require('react');
 require('react-native');
 const renderer = require('react-test-renderer');
-const { Navigation } = require('../../lib/dist/index');
+const { Navigation } = require('../../lib/src/index');
 
 describe('remx support', () => {
   let MyConnectedComponent;
@@ -14,6 +14,7 @@ describe('remx support', () => {
 
   it('renders normally', () => {
     const tree = renderer.create(<MyConnectedComponent />);
+    const tree2 = renderer.create(<MyConnectedComponent />);
     expect(tree.toJSON().children).toEqual(['no name']);
   });
 

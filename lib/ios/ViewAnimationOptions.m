@@ -12,6 +12,7 @@
     self.elementTransitions = [OptionsArrayParser parse:dict
                                                     key:@"elementTransitions"
                                                 ofClass:ElementTransitionOptions.class];
+    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
 
     return self;
 }
@@ -22,6 +23,8 @@
         self.sharedElementTransitions = options.sharedElementTransitions;
     if (options.elementTransitions)
         self.elementTransitions = options.elementTransitions;
+    if (options.waitForRender.hasValue)
+        self.waitForRender = options.waitForRender;
 }
 
 - (BOOL)hasAnimation {

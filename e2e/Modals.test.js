@@ -1,12 +1,12 @@
-import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 import Android from './AndroidUtils';
+import Utils from './Utils';
 
-const {elementByLabel, elementById, sleep} = Utils;
+const { elementByLabel, elementById, sleep } = Utils;
 
 describe('modal', () => {
   beforeEach(async () => {
-    await device.launchApp({newInstance: true});
+    await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
   });
@@ -21,7 +21,7 @@ describe('modal', () => {
     await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
   });
 
-  it('unmount modal when dismissed', async () => {
+  it.e2e('unmount modal when dismissed', async () => {
     await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
     await elementById(TestIDs.MODAL_LIFECYCLE_BTN).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
@@ -104,13 +104,12 @@ describe('modal', () => {
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 
-  it(':android: push into modal and dismiss pushed screen with hardware back', async () => {
+  it.e2e(':android: push into modal and dismiss pushed screen with hardware back', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
     Android.pressBack();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
-
 
   it('present modal multiple times', async () => {
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
@@ -124,7 +123,7 @@ describe('modal', () => {
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
   });
 
-  it(':android: override hardware back button in modal with stack', async () => {
+  it.e2e(':android: override hardware back button in modal with stack', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.ADD_BACK_HANDLER).tap();
 
@@ -149,14 +148,17 @@ describe('modal', () => {
     await elementById(TestIDs.MODAL_COMMANDS_BTN).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
 
-    await expect(element(by.id(TestIDs.SHOW_MODAL_PROMISE_RESULT))).toHaveText(
-      'showModal promise resolved with: UniqueStackId'
-    );
-    await expect(element(by.id(TestIDs.MODAL_DISMISSED_LISTENER_RESULT))).toHaveText(
-      'modalDismissed listener called with with: UniqueStackId'
-    );
-    await expect(element(by.id(TestIDs.DISMISS_MODAL_PROMISE_RESULT))).toHaveText(
-      'dismissModal promise resolved with: UniqueStackId'
-    );
+    await expect(elementByLabel('showModal promise resolved with: UniqueStackId')).toBeVisible();
+    await expect(
+      elementByLabel('modalDismissed listener called with with: UniqueStackId')
+    ).toBeVisible();
+    await expect(elementByLabel('dismissModal promise resolved with: UniqueStackId')).toBeVisible();
+  });
+
+  it('dismiss previous react-native modal', async () => {
+    await elementById(TestIDs.TOGGLE_REACT_NATIVE_MODAL).tap();
+    await elementById(TestIDs.SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL).tap();
+    await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
+    await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
   });
 });

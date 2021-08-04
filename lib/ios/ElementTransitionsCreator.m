@@ -18,8 +18,6 @@
         ElementAnimator *elementAnimator =
             [[ElementAnimator alloc] initWithTransitionOptions:transitionOptions
                                                           view:element
-                                                        fromVC:fromVC
-                                                          toVC:toVC
                                                  containerView:containerView];
         [transitions addObject:elementAnimator];
     }
@@ -29,14 +27,10 @@
 
 + (id<DisplayLinkAnimatorDelegate>)createTransition:(ElementTransitionOptions *)transitionOptions
                                                view:(UIView *)view
-                                             fromVC:(UIViewController *)fromVC
-                                               toVC:(UIViewController *)toVC
                                       containerView:(UIView *)containerView {
     ElementAnimator *elementAnimator =
         [[ElementAnimator alloc] initWithTransitionOptions:transitionOptions
                                                       view:view
-                                                    fromVC:fromVC
-                                                      toVC:toVC
                                              containerView:containerView];
 
     return elementAnimator;

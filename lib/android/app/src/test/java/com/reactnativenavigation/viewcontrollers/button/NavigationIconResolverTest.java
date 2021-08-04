@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.options.BackButton;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.mocks.BackDrawable;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
@@ -65,7 +66,7 @@ public class NavigationIconResolverTest extends BaseTest {
         ButtonOptions button = new ButtonOptions();
         button.id = "iconBtnId";
         button.icon = new Text(ICON_URI);
-        button.color = new Colour(Color.RED);
+        button.color = new ThemeColour(new Colour(Color.RED));
         return button;
     }
 

@@ -43,6 +43,10 @@
 }
 
 - (void)_displayLinkDidTick:(CADisplayLink *)displayLink {
+    if (_onStart) {
+        _onStart();
+        _onStart = nil;
+    }
     NSTimeInterval elapsed = [NSDate.date timeIntervalSinceDate:_startDate];
     if (elapsed > _duration) {
         [self updateAnimators:_duration];

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { NavigationComponent, Options, OptionsTopBarButton } from 'react-native-navigation';
 import Root from '../components/Root';
@@ -9,6 +10,8 @@ import testIDs from '../testIDs';
 
 const {
   PUSH_BTN,
+  TOGGLE_BACK,
+  BACK_BUTTON,
   TOP_BAR,
   ROUND_BUTTON,
   BUTTON_ONE,
@@ -26,12 +29,18 @@ const {
 } = testIDs;
 
 export default class ButtonOptions extends NavigationComponent {
+
+  backButtonVisibile = false
+
   static options(): Options {
     return {
       fab: {
         id: 'fab',
         icon: require('../../img/navicon_add.png'),
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.accent,
+        rippleColor: Colors.primary,
+        clickColor: Colors.secondary,
+        iconColor: Colors.iconTint,
       },
       topBar: {
         testID: TOP_BAR,
@@ -69,7 +78,6 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'LEFT',
             testID: LEFT_BUTTON,
             icon: require('../../img/clear.png'),
-            color: Colors.primary,
             accessibilityLabel: 'Close button',
           },
           {
@@ -122,8 +130,25 @@ export default class ButtonOptions extends NavigationComponent {
           label="Set leftButtons default Color"
           onPress={this.changeButtonsColor}
         />
+        <Button
+          label="Toggle back"
+          testID={TOGGLE_BACK}
+          onPress={this.toggleBack}
+        />
       </Root>
     );
+  }
+
+  toggleBack= ()=> {
+    this.backButtonVisibile = !this.backButtonVisibile;
+    Navigation.mergeOptions(this.props.componentId,{
+      topBar:{
+        backButton:{
+          testID:BACK_BUTTON,
+          visible:this.backButtonVisibile
+        }
+      }
+    })
   }
 
   setRightButtons = () =>
@@ -134,7 +159,6 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'ONE',
             testID: BUTTON_ONE,
             text: 'One',
-            color: Colors.primary,
           },
           {
             id: 'ROUND',
@@ -151,7 +175,7 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'Three',
             text: 'Three',
             testID: BUTTON_THREE,
-            color: Colors.primary,
+            color:Colors.buttonColor,
           },
         ],
       },
@@ -185,7 +209,6 @@ export default class ButtonOptions extends NavigationComponent {
       testID: `rightButton${currentCount}`,
       text: `R${currentCount}`,
       showAsAction: 'ifRoom',
-      color: Colors.primary,
       enabled: currentCount % 2 === 0,
     });
     Navigation.mergeOptions(this, {

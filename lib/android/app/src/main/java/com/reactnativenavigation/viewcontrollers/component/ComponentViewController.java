@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.component;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
@@ -23,7 +24,9 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private final ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
-    private enum VisibilityState { Appear, Disappear }
+
+    private enum VisibilityState {Appear, Disappear}
+
     private VisibilityState lastVisibilityState = VisibilityState.Disappear;
 
     public ComponentViewController(final Activity activity,
@@ -62,7 +65,16 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
+    public void onViewWillAppear() {
+        super.onViewWillAppear();
+        if (view != null)
+            view.sendComponentWillStart();
+    }
+
+    @Override
     public void onViewDidAppear() {
+        if (view != null)
+            view.sendComponentWillStart();
         super.onViewDidAppear();
         if (view != null && lastVisibilityState == VisibilityState.Disappear) view.sendComponentStart();
         lastVisibilityState = VisibilityState.Appear;
@@ -149,5 +161,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (focusView != null) {
             focusView.clearFocus();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        presenter.onConfigurationChanged(view, options);
     }
 }

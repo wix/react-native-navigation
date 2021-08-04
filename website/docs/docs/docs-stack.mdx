@@ -100,9 +100,12 @@ Now you can create buttons which use the component registered with `'ButtonCompo
 topBar: {
   rightButtons: [
     {
-      component: 'ButtonComponent',
-      passProps: {
-        // Pass initial props to the button here
+      id: 'custom',
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          // Pass initial props to the button here
+        },
       },
     },
   ];
@@ -121,9 +124,11 @@ topBar: {
   rightButtons: [
     {
       id: 'SomeUniqueId',
-      component: 'ButtonComponent',
-      passProps: {
-        count: 0,
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          count: 0,
+        },
       },
     },
   ];
@@ -204,32 +209,6 @@ Navigation.mergeOptions(this.props.componentId, {
   },
 });
 ```
-
-### Handling the back button
-
-Handling the back button press event is done by first disabling the default back button behaviour by adding:
-
-```js
-topBar: {
-  backButton: {
-    popStackOnPress: false,
-  }
-}
-```
-
-As a result, pressing the back button will not pop the stack and will dispatch [`navigationButtonPress`](https://wix.github.io/react-native-navigation/api/events#navigationbuttonpressed-event) event with the default back button id `RNN.back`.
-
-### Handling the hardware back button on Android
-
-Same as handling the default back button, handling the hardware back button is done by disabling `popStackOnPress` for the hardware button:
-
-```js
-hardwareBackButton: {
-  popStackOnPress: false,
-}
-```
-
-As a result, pressing the hardware back button will not pop the stack and will dispatch [`navigationButtonPress`](https://wix.github.io/react-native-navigation/api/events#navigationbuttonpressed-event) event with the default hardware back button id `RNN.hardwareBackButton`.
 
 ## Interacting programmatically
 

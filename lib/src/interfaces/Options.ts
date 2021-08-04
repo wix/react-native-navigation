@@ -3,7 +3,7 @@ import { ImageRequireSource, ImageSourcePropType, Insets } from 'react-native';
 
 // TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
-declare type Color = string | symbol;
+export declare type Color = string | symbol | ThemeColor | null;
 type FontFamily = string;
 type FontStyle = 'normal' | 'italic';
 type FontWeightIOS =
@@ -75,7 +75,10 @@ export type Interpolation =
       allowsOverdamping?: boolean;
       initialVelocity?: number;
     };
-
+interface ThemeColor {
+  light?: string | symbol;
+  dark?: string | symbol;
+}
 export interface OptionsSplitView {
   /**
    * Master view display mode
@@ -712,6 +715,16 @@ export interface OptionsTopBar {
    * #### (Android specific)
    */
   topMargin?: number;
+
+  /**
+   * Toggles animation on left buttons bar upon changes
+   */
+  animateLeftButtons?: boolean;
+
+  /**
+   * Toggles animation on right buttons bar upon changes
+   */
+  animateRightButtons?: boolean;
 }
 
 export interface SharedElementTransition {
@@ -1208,6 +1221,17 @@ export interface ViewAnimationOptions extends ScreenAnimationOptions {
   id?: string;
 }
 
+export interface EnterExitAnimationOptions {
+  /**
+   * Animate opening component
+   */
+  enter?: ViewAnimationOptions;
+  /**
+   * Animate closing component
+   */
+  exit?: ViewAnimationOptions;
+}
+
 export interface OldModalAnimationOptions extends ViewAnimationOptions {
   /**
    * Animations to be applied on elements which are shared between the appearing and disappearing screens
@@ -1299,7 +1323,7 @@ export interface AnimationOptions {
   /**
    * Configure the setRoot animation
    */
-  setRoot?: ViewAnimationOptions;
+  setRoot?: ViewAnimationOptions | EnterExitAnimationOptions;
   /**
    * Configure the animation of the pushed screen
    * #### (Android specific)

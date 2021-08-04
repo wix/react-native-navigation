@@ -26,6 +26,11 @@
     [_buttonsPresenter bindViewController:viewController];
 }
 
+- (void)componentWillAppear {
+    [_topBarTitlePresenter componentWillAppear];
+    [_buttonsPresenter componentWillAppear];
+}
+
 - (void)componentDidAppear {
     [_topBarTitlePresenter componentDidAppear];
     [_buttonsPresenter componentDidAppear];
@@ -86,13 +91,16 @@
     if (withDefault.topBar.leftButtons) {
         [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
                                defaultColor:withDefault.topBar.leftButtonColor
-                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor
+                                   animated:[withDefault.topBar.animateLeftButtons withDefault:NO]];
     }
 
     if (withDefault.topBar.rightButtons) {
-        [_buttonsPresenter applyRightButtons:withDefault.topBar.rightButtons
-                                defaultColor:withDefault.topBar.rightButtonColor
-                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
+        [_buttonsPresenter
+               applyRightButtons:withDefault.topBar.rightButtons
+                    defaultColor:withDefault.topBar.rightButtonColor
+            defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
+                        animated:[withDefault.topBar.animateRightButtons withDefault:NO]];
     }
 }
 
@@ -188,13 +196,16 @@
     if (mergeOptions.topBar.leftButtons) {
         [_buttonsPresenter applyLeftButtons:mergeOptions.topBar.leftButtons
                                defaultColor:withDefault.topBar.leftButtonColor
-                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor
+                                   animated:[withDefault.topBar.animateLeftButtons withDefault:NO]];
     }
 
     if (mergeOptions.topBar.rightButtons) {
-        [_buttonsPresenter applyRightButtons:mergeOptions.topBar.rightButtons
-                                defaultColor:withDefault.topBar.rightButtonColor
-                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
+        [_buttonsPresenter
+               applyRightButtons:mergeOptions.topBar.rightButtons
+                    defaultColor:withDefault.topBar.rightButtonColor
+            defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
+                        animated:[withDefault.topBar.animateRightButtons withDefault:NO]];
     }
 
     if (mergeOptions.topBar.leftButtonColor.hasValue) {

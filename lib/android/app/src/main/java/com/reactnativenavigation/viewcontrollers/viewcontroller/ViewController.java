@@ -1,10 +1,17 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.CheckResult;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
@@ -24,13 +31,7 @@ import com.reactnativenavigation.views.component.Renderable;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener,
@@ -60,13 +61,17 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final Activity activity;
     private final String id;
     private final YellowBoxDelegate yellowBoxDelegate;
-    @Nullable protected T view;
-    @Nullable private ParentController<? extends ViewGroup> parentController;
+    @Nullable
+    protected T view;
+    @Nullable
+    private ParentController<? extends ViewGroup> parentController;
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
     private ViewControllerOverlay overlay;
-    @Nullable public abstract String getCurrentComponentName();
+
+    @Nullable
+    public abstract String getCurrentComponentName();
 
     public void setOverlay(ViewControllerOverlay overlay) {
         this.overlay = overlay;
@@ -114,6 +119,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     public void ensureViewIsCreated() {
         getView();
+    }
+
+    protected boolean isViewCreated() {
+        return view != null;
     }
 
     public boolean handleBack(CommandListener listener) {
@@ -304,6 +313,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
+    public void onConfigurationChanged(Configuration newConfig) {
+    }
+
     public void onAttachToParent() {
 
     }
@@ -326,16 +338,16 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public boolean isViewShown() {
         return !isDestroyed &&
-               view != null &&
-               view.isShown() &&
-               isRendered();
+                view != null &&
+                view.isShown() &&
+                isRendered();
     }
 
     public boolean isRendered() {
         return view != null && (
                 waitForRender.isFalseOrUndefined() ||
-                !(view instanceof Renderable) ||
-                ((Renderable) view).isRendered()
+                        !(view instanceof Renderable) ||
+                        ((Renderable) view).isRendered()
         );
     }
 

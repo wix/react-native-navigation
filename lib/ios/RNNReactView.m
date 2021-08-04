@@ -36,6 +36,14 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)componentWillAppear {
+    if (!_isAppeared) {
+        [_eventEmitter sendComponentWillAppear:self.componentId
+                                 componentName:self.moduleName
+                                 componentType:self.componentType];
+    }
+}
+
 - (void)componentDidAppear {
     if (!_isAppeared) {
         [_eventEmitter sendComponentDidAppear:self.componentId

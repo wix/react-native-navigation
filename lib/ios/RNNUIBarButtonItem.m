@@ -124,7 +124,9 @@
         [titleTextAttributes setValue:color forKey:NSForegroundColorAttributeName];
         [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
         [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateHighlighted];
-    }
+    } else
+        self.image = [self.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
     self.tintColor = color;
 }
 
@@ -149,6 +151,12 @@
                                                     color:[button.disabledColor withDefault:nil]]];
 
     [self setTitleTextAttributes:disabledTextAttributes forState:UIControlStateDisabled];
+}
+
+- (void)notifyWillAppear {
+    if ([self.customView isKindOfClass:[RNNReactView class]]) {
+        [((RNNReactView *)self.customView) componentWillAppear];
+    }
 }
 
 - (void)notifyDidAppear {

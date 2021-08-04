@@ -53,7 +53,8 @@
                                  buttonId:[self.getCurrentChild.options.topBar.backButton.identifier
                                               withDefault:@"RNN.back"]];
     }
-    return shouldPopItem;
+
+    return [_stackDelegate navigationController:self shouldPopItem:shouldPopItem];
 }
 
 - (void)prepareForPop {

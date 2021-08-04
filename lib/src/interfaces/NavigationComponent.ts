@@ -5,6 +5,7 @@ import {
   SearchBarCancelPressedEvent,
   PreviewCompletedEvent,
   ScreenPoppedEvent,
+  ComponentWillAppearEvent,
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
 } from './ComponentEvents';
@@ -24,6 +25,7 @@ export class NavigationComponent<Props = {}, State = {}, Snapshot = any> extends
    */
   static options: ((props?: any) => Options) | Options;
 
+  componentWillAppear(_event: ComponentWillAppearEvent) {}
   componentDidAppear(_event: ComponentDidAppearEvent) {}
   componentDidDisappear(_event: ComponentDidDisappearEvent) {}
   navigationButtonPressed(_event: NavigationButtonPressedEvent) {}

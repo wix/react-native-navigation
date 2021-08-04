@@ -1,11 +1,12 @@
 #import "ElementTransitionOptions.h"
+#import "RNNEnterExitAnimation.h"
 #import "RNNOptions.h"
 #import "SharedElementTransitionOptions.h"
 
 @interface RNNScreenTransition : RNNOptions
 
 @property(nonatomic, strong) ElementTransitionOptions *topBar;
-@property(nonatomic, strong) ElementTransitionOptions *content;
+@property(nonatomic, strong) RNNEnterExitAnimation *content;
 @property(nonatomic, strong) ElementTransitionOptions *bottomTabs;
 @property(nonatomic, strong) NSArray<ElementTransitionOptions *> *elementTransitions;
 @property(nonatomic, strong) NSArray<SharedElementTransitionOptions *> *sharedElementTransitions;

@@ -34,6 +34,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)viewDidLayoutSubviews;
 
+- (void)componentWillAppear;
+
 - (void)componentDidAppear;
 
 - (void)componentDidDisappear;

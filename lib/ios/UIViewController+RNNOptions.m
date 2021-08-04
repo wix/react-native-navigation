@@ -126,7 +126,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
                 initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
             blur.frame = [[UIApplication sharedApplication] statusBarFrame];
             blur.tag = BLUR_STATUS_TAG;
-            [self.view insertSubview:blur atIndex:0];
+            [self.view addSubview:blur];
         }
     } else {
         if (curBlurView) {

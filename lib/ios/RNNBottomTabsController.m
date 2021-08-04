@@ -92,7 +92,7 @@
 }
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
-    NSArray *children = self.pendingChildViewControllers ?: self.childViewControllers;
+    NSArray *children = self.childViewControllers;
     for (id child in children) {
         UIViewController<RNNLayoutProtocol> *vc = child;
 
@@ -111,14 +111,16 @@
 }
 
 - (UIViewController *)selectedViewController {
-    NSArray *children = self.pendingChildViewControllers ?: self.childViewControllers;
-    return children.count ? children[_currentTabIndex] : nil;
+    return self.childViewControllers.count ? self.childViewControllers[_currentTabIndex] : nil;
+}
+
+- (NSArray<__kindof UIViewController *> *)childViewControllers {
+    return self.pendingChildViewControllers ?: super.childViewControllers;
 }
 
 - (void)setSelectedViewController:(__kindof UIViewController *)selectedViewController {
-    NSArray *children = self.pendingChildViewControllers ?: self.childViewControllers;
     _previousTabIndex = _currentTabIndex;
-    _currentTabIndex = [children indexOfObject:selectedViewController];
+    _currentTabIndex = [self.childViewControllers indexOfObject:selectedViewController];
     [super setSelectedViewController:selectedViewController];
 }
 
@@ -169,9 +171,11 @@
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
     shouldSelectViewController:(UIViewController *)viewController {
     NSUInteger _index = [tabBarController.viewControllers indexOfObject:viewController];
+    BOOL isMoreTab = ![tabBarController.viewControllers containsObject:viewController];
+
     [self.eventEmitter sendBottomTabPressed:@(_index)];
 
-    if ([[viewController resolveOptions].bottomTab.selectTabOnPress withDefault:YES]) {
+    if ([[viewController resolveOptions].bottomTab.selectTabOnPress withDefault:YES] || isMoreTab) {
         return YES;
     }
 

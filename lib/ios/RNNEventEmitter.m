@@ -12,6 +12,7 @@ static NSString *const AppLaunched = @"RNN.AppLaunched";
 static NSString *const CommandCompleted = @"RNN.CommandCompleted";
 static NSString *const BottomTabSelected = @"RNN.BottomTabSelected";
 static NSString *const BottomTabLongPressed = @"RNN.BottomTabLongPressed";
+static NSString *const ComponentWillAppear = @"RNN.ComponentWillAppear";
 static NSString *const ComponentDidAppear = @"RNN.ComponentDidAppear";
 static NSString *const ComponentDidDisappear = @"RNN.ComponentDidDisappear";
 static NSString *const NavigationButtonPressed = @"RNN.NavigationButtonPressed";
@@ -26,8 +27,8 @@ static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
 - (NSArray<NSString *> *)supportedEvents {
     return @[
         AppLaunched, CommandCompleted, BottomTabSelected, BottomTabLongPressed, BottomTabPressed,
-        ComponentDidAppear, ComponentDidDisappear, NavigationButtonPressed, ModalDismissed,
-        SearchBarUpdated, SearchBarCancelPressed, PreviewCompleted, ScreenPopped,
+        ComponentWillAppear, ComponentDidAppear, ComponentDidDisappear, NavigationButtonPressed,
+        ModalDismissed, SearchBarUpdated, SearchBarCancelPressed, PreviewCompleted, ScreenPopped,
         ModalAttemptedToDismiss
     ];
 }
@@ -40,6 +41,17 @@ static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
     } else {
         _appLaunchedEventDeferred = TRUE;
     }
+}
+
+- (void)sendComponentWillAppear:(NSString *)componentId
+                  componentName:(NSString *)componentName
+                  componentType:(NSString *)componentType {
+    [self send:ComponentWillAppear
+          body:@{
+              @"componentId" : componentId,
+              @"componentName" : componentName,
+              @"componentType" : componentType
+          }];
 }
 
 - (void)sendComponentDidAppear:(NSString *)componentId
@@ -112,8 +124,10 @@ static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
 
 - (void)sendModalsDismissedEvent:(NSString *)componentId
          numberOfModalsDismissed:(NSNumber *)modalsDismissed {
-    [self send:ModalDismissed
-          body:@{@"componentId" : componentId, @"modalsDismissed" : modalsDismissed}];
+    if (componentId) {
+        [self send:ModalDismissed
+              body:@{@"componentId" : componentId, @"modalsDismissed" : modalsDismissed}];
+    }
 }
 
 - (void)sendModalAttemptedToDismissEvent:(NSString *)componentId {

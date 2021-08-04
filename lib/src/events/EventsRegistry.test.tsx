@@ -28,6 +28,13 @@ describe('EventsRegistry', () => {
     expect(mockNativeEventsReceiver.registerAppLaunchedListener).toHaveBeenCalledWith(cb);
   });
 
+  it('delegates willAppear to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerComponentWillAppearListener(cb);
+    expect(mockNativeEventsReceiver.registerComponentWillAppearListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerComponentWillAppearListener).toHaveBeenCalledWith(cb);
+  });
+
   it('delegates didAppear to nativeEventsReceiver', () => {
     const cb = jest.fn();
     uut.registerComponentDidAppearListener(cb);

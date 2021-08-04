@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.FabOptions;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.utils.UiUtils;
+import com.reactnativenavigation.utils.ViewExtensionsKt;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.fab.Fab;
 import com.reactnativenavigation.views.stack.fab.FabMenu;
@@ -21,7 +23,6 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
 import static com.github.clans.fab.FloatingActionButton.SIZE_NORMAL;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
-import static com.reactnativenavigation.utils.ViewUtils.removeFromParent;
 
 public class FabPresenter {
     private static final int DURATION = 200;
@@ -72,8 +73,8 @@ public class FabPresenter {
     }
 
     private void createFab(ViewController component, FabOptions options) {
-        removeFromParent(fabMenu);
-        removeFromParent(fab);
+        ViewExtensionsKt.removeFromParent(fabMenu);
+        ViewExtensionsKt.removeFromParent(fab);
         if (options.actionsArray.size() > 0) {
             fabMenu = new FabMenu(viewGroup.getContext(), options.id.get());
             setParams(component, fabMenu, options);
@@ -306,6 +307,36 @@ public class FabPresenter {
         }
         if (options.hideOnScroll.isFalse()) {
             fabMenu.disableCollapse();
+        }
+    }
+
+    public void onConfigurationChanged( Options options) {
+        FabOptions fabOptions = options.fabOptions;
+        if(fab!=null){
+            if (fabOptions.backgroundColor.hasValue()) {
+                fab.setColorNormal(fabOptions.backgroundColor.get());
+            }
+            if (fabOptions.clickColor.hasValue()) {
+                fab.setColorPressed(fabOptions.clickColor.get());
+            }
+            if (fabOptions.rippleColor.hasValue()) {
+                fab.setColorRipple(fabOptions.rippleColor.get());
+            }
+            if (fabOptions.icon.hasValue()) {
+                fab.applyIcon(fabOptions.icon.get(), fabOptions.iconColor);
+            }
+        }
+
+        if(fabMenu!=null){
+            if (fabOptions.backgroundColor.hasValue()) {
+                fabMenu.setMenuButtonColorNormal(fabOptions.backgroundColor.get());
+            }
+            if (fabOptions.clickColor.hasValue()) {
+                fabMenu.setMenuButtonColorPressed(fabOptions.clickColor.get());
+            }
+            if (fabOptions.rippleColor.hasValue()) {
+                fabMenu.setMenuButtonColorRipple(fabOptions.rippleColor.get());
+            }
         }
     }
 }

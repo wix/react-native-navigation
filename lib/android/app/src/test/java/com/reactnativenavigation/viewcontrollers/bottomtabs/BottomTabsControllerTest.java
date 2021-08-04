@@ -18,6 +18,7 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -187,7 +188,7 @@ public class BottomTabsControllerTest extends BaseTest {
         ParentController parent = Mockito.mock(ParentController.class);
         uut.setParentController(parent);
 
-        child1.options.bottomTabsOptions.backgroundColor = new Colour(Color.RED);
+        child1.options.bottomTabsOptions.backgroundColor = new ThemeColour(new Colour(Color.RED));
         child1.onViewWillAppear();
 
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);

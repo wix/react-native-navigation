@@ -6,6 +6,7 @@ import forEach from 'lodash/forEach';
 import { EventSubscription } from '../interfaces/EventSubscription';
 import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
 import {
+  ComponentWillAppearEvent,
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
   NavigationButtonPressedEvent,
@@ -28,6 +29,7 @@ export class ComponentEventsObserver {
     private readonly nativeEventsReceiver: NativeEventsReceiver,
     private readonly store: Store
   ) {
+    this.notifyComponentWillAppear = this.notifyComponentWillAppear.bind(this);
     this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
     this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
     this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
@@ -42,6 +44,7 @@ export class ComponentEventsObserver {
       return;
     }
     this.alreadyRegistered = true;
+    this.nativeEventsReceiver.registerComponentWillAppearListener(this.notifyComponentWillAppear);
     this.nativeEventsReceiver.registerComponentDidAppearListener(this.notifyComponentDidAppear);
     this.nativeEventsReceiver.registerComponentDidDisappearListener(
       this.notifyComponentDidDisappear
@@ -90,6 +93,11 @@ export class ComponentEventsObserver {
 
   public unmounted(componentId: string) {
     unset(this.listeners, componentId);
+  }
+
+  notifyComponentWillAppear(event: ComponentWillAppearEvent) {
+    event.passProps = this.store.getPropsForId(event.componentId);
+    this.triggerOnAllListenersByComponentId(event, 'componentWillAppear');
   }
 
   notifyComponentDidAppear(event: ComponentDidAppearEvent) {

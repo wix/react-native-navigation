@@ -20,7 +20,9 @@ class SpringInterpolator(private val mass: Float = 3f, private val damping: Floa
         val x0 = -1;
 
         if (!this.allowsOverdamping && beta > omega0) beta = omega0;
-
+        if (t == 1f) {
+            return 1f
+        }
         return when {
             beta < omega0 -> {
                 // Underdamped
