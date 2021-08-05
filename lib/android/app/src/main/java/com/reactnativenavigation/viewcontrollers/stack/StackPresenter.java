@@ -165,13 +165,13 @@ public class StackPresenter {
         applyTopBarVisibility(withDefault.topBar);
     }
 
-    public void applyChildOptions(Options options, StackController stack, ViewController child) {
-        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        applyOrientation(withDefault.layout.orientation);
-        applyButtons(withDefault.topBar, child);
-        applyTopBarOptions(withDefault, stack, child);
-        applyTopTabsOptions(withDefault.topTabs);
-        applyTopTabOptions(withDefault.topTabOptions);
+    public void applyChildOptions(Options currentChildOptions, StackController stack, ViewController child) {
+        Options finalChildOptions = currentChildOptions.copy().withDefaultOptions(defaultOptions);
+        applyOrientation(finalChildOptions.layout.orientation);
+        applyButtons(finalChildOptions.topBar, child);
+        applyTopBarOptions(finalChildOptions, stack, child);
+        applyTopTabsOptions(finalChildOptions.topTabs);
+        applyTopTabOptions(finalChildOptions.topTabOptions);
     }
 
     public void applyOrientation(OrientationOptions options) {
@@ -200,7 +200,7 @@ public class StackPresenter {
 
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
- applyStatusBarDrawBehindOptions(topBarOptions,withDefault);
+        applyStatusBarDrawBehindOptions(topBarOptions, withDefault);
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get(0));
