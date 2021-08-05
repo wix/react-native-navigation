@@ -192,8 +192,8 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.4"
     testImplementation 'org.assertj:assertj-core:3.8.0'
     testImplementation 'com.squareup.assertj:assertj-android:1.1.1'
-    testImplementation 'org.mockito:mockito-core:2.28.2'
-
+    testImplementation 'org.mockito:mockito-core:3.4.0'
+    testImplementation 'org.mockito:mockito-inline:3.4.0'
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
 }
