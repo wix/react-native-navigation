@@ -14,8 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 public class UiUtils {
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    public static final int DEFAULT_TOOLBAR_HEIGHT = 56;
+    private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
 
     private static int topBarHeight = -1;
 
