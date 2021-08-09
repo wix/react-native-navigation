@@ -24,7 +24,6 @@ const {
   SPLIT_VIEW_BUTTON,
 } = testIDs;
 
-console.log(`xxxxxxxx,${RNNModal}`);
 interface State {
   componentDidAppear: boolean;
   modalVisible: boolean;
@@ -61,14 +60,22 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
   render() {
     return (
       <Root componentId={this.props.componentId}>
-        <RNNModal>
+        <RNNModal visible={this.state.modalVisible}>
           <Button label="Button" onPress={this.toggleModal} />
           <Button label="Button2" onPress={this.toggleModal} />
           <Button label="Button3" onPress={this.toggleModal} />
         </RNNModal>
+
+        {/* <Modal visible={this.state.modalVisible}>
+          <Button label="Button" onPress={this.toggleModal} />
+          <Button label="Button2" onPress={this.toggleModal} />
+          <Button label="Button3" onPress={this.toggleModal} />
+        </Modal> */}
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
+        <Button label="Toggle modal" onPress={this.toggleModal} />
+
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
