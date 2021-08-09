@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.UiThreadUtil
-import com.facebook.react.uimanager.FabricViewStateManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.utils.CompatUtils
@@ -18,8 +17,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegat
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay
 import java.util.*
 
-open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reactContext), LifecycleEventListener,
-    FabricViewStateManager.HasFabricViewStateManager {
+open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reactContext), LifecycleEventListener {
     val viewController = DeclaredLayoutController(
         reactContext.currentActivity, CompatUtils.generateViewId().toString(),
         YellowBoxDelegate(reactContext), Options.EMPTY, ViewControllerOverlay(reactContext)
@@ -77,11 +75,12 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
         this.dismiss()
     }
 
-     open fun dismiss() {
+    open fun dismiss() {
         UiThreadUtil.assertOnUiThread()
-            val parent = mHostView.parent as ViewGroup
-            parent.removeViewAt(0)
-        }
+//        val parent = mHostView.parent as? ViewGroup
+//        parent?.removeViewAt(0)
+    }
+
     override fun onHostResume() {
         this.showOrUpdate()
     }
@@ -91,18 +90,19 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
     override fun onHostDestroy() {
         onDropInstance()
     }
+
     private fun getCurrentActivity(): Activity? {
         return (this.context as ReactContext).currentActivity
     }
 
-     open fun showOrUpdate() {
+    open fun showOrUpdate() {
         UiThreadUtil.assertOnUiThread()
         val currentActivity = getCurrentActivity()
         val context = currentActivity ?: this.context
 
     }
 
-     open fun getContentView(): View? {
+    open fun getContentView(): View? {
         val frameLayout = FrameLayout(this.context)
         frameLayout.addView(mHostView)
 //        if (this.mStatusBarTranslucent) {
@@ -111,13 +111,6 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
 //            frameLayout.fitsSystemWindows = true
 //        }
         return frameLayout
-    }
-
-    override fun getFabricViewStateManager(): FabricViewStateManager? {
-        return mHostView.fabricViewStateManager
-    }
-    open fun updateState(width: Int, height: Int) {
-        mHostView.updateState(width, height)
     }
 
 }
