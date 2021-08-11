@@ -18,7 +18,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewCont
 import java.util.*
 
 open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reactContext), LifecycleEventListener {
-    val viewController = DeclaredLayoutController(
+    val viewController = DeclaredLayoutController(reactContext,
         reactContext.currentActivity, CompatUtils.generateViewId().toString(),
         YellowBoxDelegate(reactContext), Options.EMPTY, ViewControllerOverlay(reactContext)
     )
@@ -99,6 +99,7 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
         UiThreadUtil.assertOnUiThread()
         val currentActivity = getCurrentActivity()
         val context = currentActivity ?: this.context
+//        requestLayout()
 
     }
 
