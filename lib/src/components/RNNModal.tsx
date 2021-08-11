@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, ViewProps } from 'react-native';
+import { requireNativeComponent, ViewProps, StyleSheet, View } from 'react-native';
 export interface RNNModalProps extends ViewProps {
   animationType?: 'none' | 'slide' | 'fade' | null;
   presentationStyle?: 'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen' | null;
@@ -18,6 +18,22 @@ export class RNNModal extends React.Component<RNNModalProps> {
   render() {
     console.log(`xxxxxxx, visibility: ${this.props.visible}`);
     if (this.props.visible !== true) return null;
-    return <RNNModalViewManager {...this.props} />;
+    const p = { visible: this.props.visible, style: styles.modal };
+    return (
+      <RNNModalViewManager {...p}>
+        <View style={styles.container}>{this.props.children}</View>
+      </RNNModalViewManager>
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  modal: {
+    //s: 'absolute',
+  },
+  container: {
+    backgroundColor: 'yellow',
+    top: 0,
+    flex: 1,
+  },
+});

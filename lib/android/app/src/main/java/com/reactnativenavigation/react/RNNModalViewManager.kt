@@ -15,9 +15,9 @@ private const val MODAL_MANAGER_NAME = "RNNModalViewManager"
 class DeclaredLayoutShadowNode : LayoutShadowNode() {
     override fun addChildAt(child: ReactShadowNodeImpl, i: Int) {
         super.addChildAt(child, i)
-        val modalSize = Point(screenWidth,screenHeight)
-        child.setStyleWidth(0f)
-        child.setStyleHeight(0f)
+        val modalSize = Point(screenWidth, screenHeight)
+        child.setStyleWidth(100f)
+        child.setStyleHeight(100f)
     }
 
 }
@@ -29,8 +29,7 @@ class RNNModalViewManager(private val navigator: Navigator) : ViewGroupManager<D
     override fun getName(): String = MODAL_MANAGER_NAME
 
     override fun createViewInstance(reactContext: ThemedReactContext): DeclaredLayoutHost {
-        val declaredLayoutHost = DeclaredLayoutHost(reactContext)
-        return declaredLayoutHost
+        return DeclaredLayoutHost(reactContext)
     }
 
     override fun createShadowNodeInstance(): LayoutShadowNode {
@@ -40,40 +39,28 @@ class RNNModalViewManager(private val navigator: Navigator) : ViewGroupManager<D
     override fun getShadowNodeClass(): Class<out LayoutShadowNode> {
         return DeclaredLayoutShadowNode::class.java
     }
+
     override fun onDropViewInstance(view: DeclaredLayoutHost) {
         super.onDropViewInstance(view)
         view.onDropInstance()
+        navigator.dismissModal(view.viewController.id, CommandListenerAdapter())
     }
 
-     override fun onAfterUpdateTransaction(view: DeclaredLayoutHost) {
+    override fun onAfterUpdateTransaction(view: DeclaredLayoutHost) {
         super.onAfterUpdateTransaction(view)
         view.showOrUpdate()
+        navigator.showModal(view.viewController, CommandListenerAdapter())
     }
+
     override fun addView(parent: DeclaredLayoutHost?, child: View?, index: Int) {
         super.addView(parent, child, index)
     }
 
     @ReactProp(name = "visible")
     fun setVisible(modal: DeclaredLayoutHost, visible: Boolean) {
-        if (visible) {
-            modal.viewController.view.visibility = View.VISIBLE
-            modal.visibility = View.VISIBLE
-            navigator.showModal(modal.viewController, CommandListenerAdapter())
+        if(visible){
+
         }
-//        else {
-//            if(modal.viewController.isViewShown){
-//                navigator.dismissModal(modal.viewController.id,object : CommandListener {
-//                    override fun onSuccess(childId: String?) {
-//                        modal.viewController.view.visibility = View.GONE
-//                    }
-//
-//                    override fun onError(message: String?) {
-//                        modal.viewController.view.visibility = View.GONE
-//                    }
-//                })
-//            }
-//            modal.visibility = View.GONE
-//        }
     }
 
 }
