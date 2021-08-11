@@ -1,12 +1,14 @@
 package com.reactnativenavigation.react
 
 import android.app.Activity
+import com.facebook.react.bridge.ReactContext
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay
 
 class DeclaredLayoutController(
+    val reactContext: ReactContext,
     activity: Activity?,
     id: String?,
     yellowBoxDelegate: YellowBoxDelegate?,
@@ -23,11 +25,9 @@ class DeclaredLayoutController(
 
     override fun getCurrentComponentName(): String = "GenericDeclaredLayoutController"
 
-    override fun getView(): DeclaredLayout {
-        return createView()
-    }
+
     override fun createView(): DeclaredLayout {
-        return DeclaredLayout(activity)
+        return DeclaredLayout(reactContext)
     }
 
     override fun sendOnNavigationButtonPressed(buttonId: String?) {
