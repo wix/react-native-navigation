@@ -120,10 +120,15 @@ export class OptionsProcessor {
       if (value === null) {
         options[key] = newColorObj;
       } else if (value instanceof Object) {
-        for (let keyColor in value) {
-          newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
+        //may check type of PlatformColor result
+        if ('resource_paths' in value) {
+          options[key] = value;
+        } else {
+          for (let keyColor in value) {
+            newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
+          }
+          options[key] = newColorObj;
         }
-        options[key] = newColorObj;
       } else {
         let parsedColor = this.colorService.toNativeColor(value);
         newColorObj.light = parsedColor;
