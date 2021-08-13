@@ -1,4 +1,4 @@
-import { PlatformColor } from 'react-native';
+import { Platform, PlatformColor } from 'react-native';
 
 const colors = {
   background: { light: '#e8e8e8', dark: '#282528' },
@@ -6,7 +6,8 @@ const colors = {
   primary: { light: '#5847ff', dark: '#BA292E' },
   secondary: { light: '#FFC249', dark: '#5847ff' },
   accent: { light: '#65C888', dark: '#FFA73C' },
-  textColor: PlatformColor('@color/textColor'),
+  textColor:
+    Platform.OS === 'ios' ? PlatformColor('placeholderText') : PlatformColor('@color/textColor'),
   activeTextColor: { light: '#5847ff', dark: '#FFA73C' },
   iconTint: { light: 'black', dark: '#BA292E' },
   activeIconTint: { light: '#5847ff', dark: '#FFA73C' },
