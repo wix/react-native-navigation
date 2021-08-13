@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
@@ -58,6 +59,8 @@ public abstract class BaseTest {
         mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
         when(res.getConfiguration()).thenReturn(mockConfiguration);
         when(NavigationApplication.instance.getResources()).thenReturn(res);
+        when(res.getColor(any(Integer.class))).thenReturn(0x00000);
+        when(res.getColor(any(),any())).thenReturn(0x00000);
     }
 
     public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func block) {
