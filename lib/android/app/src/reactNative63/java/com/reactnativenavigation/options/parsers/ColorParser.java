@@ -6,12 +6,16 @@ import com.facebook.react.bridge.ColorPropConverter;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
 import com.reactnativenavigation.options.params.NullColor;
+import com.reactnativenavigation.options.params.ReactPlatformColor;
 
 import org.json.JSONObject;
 
 public class ColorParser {
     public static Colour parse(Context context, JSONObject json, String colorName) {
-        if (json.has(colorName)) {
+        if(json.has("resource_paths")){
+            return new ReactPlatformColor(JSONParser.convert(json));
+        }
+        else if (json.has(colorName)) {
             Object color = json.opt(colorName);
             if (color == null) {
                 return new DontApplyColour();
