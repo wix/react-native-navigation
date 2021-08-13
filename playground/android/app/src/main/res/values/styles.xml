@@ -2,6 +2,5 @@
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/backgroundColor</item>
-        <item name="android:colorForeground">@color/textColor</item>
     </style>
 </resources>
