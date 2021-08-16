@@ -45,12 +45,8 @@ public class ColorParseTest extends BaseTest {
         color.put("resource_paths",
                 jsonArray);
         try (MockedStatic<Arguments> theMock = Mockito.mockStatic(Arguments.class)) {
-            theMock.when(() -> {
-                Arguments.createMap();
-            }).thenReturn(new JavaOnlyMap());
-            theMock.when(() -> {
-                Arguments.createArray();
-            }).thenReturn(new JavaOnlyArray());
+            theMock.when(Arguments::createMap).thenReturn(new JavaOnlyMap());
+            theMock.when(Arguments::createArray).thenReturn(new JavaOnlyArray());
             assertThat(ColorParser.parse(activity, color, "color")).isInstanceOf(ReactPlatformColor.class);
         }
     }

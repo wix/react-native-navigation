@@ -21,6 +21,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
@@ -59,8 +60,8 @@ public abstract class BaseTest {
         mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
         when(res.getConfiguration()).thenReturn(mockConfiguration);
         when(NavigationApplication.instance.getResources()).thenReturn(res);
-        when(res.getColor(any(Integer.class))).thenReturn(0x00000);
-        when(res.getColor(any(),any())).thenReturn(0x00000);
+        when(res.getColor(ArgumentMatchers.anyInt())).thenReturn(0x00000);
+        when(res.getColor(ArgumentMatchers.anyInt(),any())).thenReturn(0x00000);
     }
 
     public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func block) {
