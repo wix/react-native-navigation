@@ -121,8 +121,6 @@ export class OptionsProcessor {
         options[key] = newColorObj;
       } else if (value instanceof Object) {
         if ('semantic' in value || 'resource_paths' in value) {
-          console.log(`PlatformColorXXXx key:${key}, val${JSON.stringify(value)}`);
-
           options[key] = value;
           return;
         } else {
