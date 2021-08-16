@@ -120,8 +120,11 @@ export class OptionsProcessor {
       if (value === null) {
         options[key] = newColorObj;
       } else if (value instanceof Object) {
-        if ('resource_paths' in value) {
+        if ('semantic' in value || 'resource_paths' in value) {
+          console.log(`PlatformColorXXXx key:${key}, val${JSON.stringify(value)}`);
+
           options[key] = value;
+          return;
         } else {
           for (let keyColor in value) {
             newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
