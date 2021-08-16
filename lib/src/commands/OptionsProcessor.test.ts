@@ -462,6 +462,23 @@ describe('navigation options', () => {
         Platform.OS = 'android';
       });
 
+      it('PlatformColor should be passed to native as is', () => {
+        const options: Options = {
+          topBar: {
+            background: {
+              color: {
+                // @ts-ignore
+                resource_paths: ['@color/textColor'],
+              },
+            },
+          },
+        };
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: { background: { color: { resource_paths: ['@color/textColor'] } } },
+        });
+      });
+
       it('processes color keys', () => {
         const options: Options = {
           statusBar: { backgroundColor: 'red' },
