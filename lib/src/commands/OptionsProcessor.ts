@@ -120,7 +120,6 @@ export class OptionsProcessor {
       if (value === null) {
         options[key] = newColorObj;
       } else if (value instanceof Object) {
-        //may check type of PlatformColor result
         if ('resource_paths' in value) {
           options[key] = value;
         } else {
