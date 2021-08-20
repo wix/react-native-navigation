@@ -184,12 +184,6 @@ public class Presenter {
             }
             if (flags != view.getSystemUiVisibility()) view.requestLayout();
             view.setSystemUiVisibility(flags);
-        } else if (drawBehind.hasValue()) {
-            if (drawBehind.isTrue()) {
-                view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            } else {
-                view.setSystemUiVisibility(~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            }
         }
     }
 

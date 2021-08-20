@@ -165,13 +165,13 @@ public class StackPresenter {
         applyTopBarVisibility(withDefault.topBar);
     }
 
-    public void applyChildOptions(Options options, StackController stack, ViewController child) {
-        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        applyOrientation(withDefault.layout.orientation);
-        applyButtons(withDefault.topBar, child);
-        applyTopBarOptions(withDefault, stack, child);
-        applyTopTabsOptions(withDefault.topTabs);
-        applyTopTabOptions(withDefault.topTabOptions);
+    public void applyChildOptions(Options currentChildOptions, StackController stack, ViewController child) {
+        Options finalChildOptions = currentChildOptions.copy().withDefaultOptions(defaultOptions);
+        applyOrientation(finalChildOptions.layout.orientation);
+        applyButtons(finalChildOptions.topBar, child);
+        applyTopBarOptions(finalChildOptions, stack, child);
+        applyTopTabsOptions(finalChildOptions.topTabs);
+        applyTopTabOptions(finalChildOptions.topTabOptions);
     }
 
     public void applyOrientation(OrientationOptions options) {
@@ -196,9 +196,11 @@ public class StackPresenter {
         final View component = child.getView();
         TopBarOptions topBarOptions = options.topBar;
 
+        Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
+
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
-        topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+        applyStatusBarDrawBehindOptions(topBarOptions, withDefault);
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get(0));
@@ -251,6 +253,16 @@ public class StackPresenter {
             }
         } else if (topBarOptions.hideOnScroll.isFalseOrUndefined()) {
             topBar.disableCollapse();
+        }
+    }
+
+    private void applyStatusBarDrawBehindOptions(TopBarOptions topBarOptions, Options withDefault) {
+        if(withDefault.statusBar.visible.isTrueOrUndefined() && withDefault.statusBar.drawBehind.isTrue()){
+            topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
+            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
+        } else {
+            topBar.setTopPadding(0);
+            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
         }
     }
 
@@ -492,7 +504,7 @@ public class StackPresenter {
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());
         }
-
+        applyStatusBarDrawBehindOptions(resolveOptions,options);
         if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
         if (topBarOptions.animateLeftButtons.hasValue())
@@ -653,7 +665,7 @@ public class StackPresenter {
     private int getTopBarTopMargin(StackController stack, ViewController child) {
         Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
         int topMargin = UiUtils.dpToPx(activity, withDefault.topBar.topMargin.get(0));
-        int statusBarInset = withDefault.statusBar.visible.isTrueOrUndefined() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0;
+        int statusBarInset = withDefault.statusBar.visible.isTrueOrUndefined() && !withDefault.statusBar.drawBehind.isTrue() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0;
         return topMargin + statusBarInset;
     }
 

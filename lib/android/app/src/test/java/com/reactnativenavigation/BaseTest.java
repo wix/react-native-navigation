@@ -12,12 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.utils.Functions;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
@@ -34,8 +37,11 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import kotlin.Function;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, application = TestApplication.class)
@@ -54,6 +60,18 @@ public abstract class BaseTest {
         when(NavigationApplication.instance.getResources()).thenReturn(res);
     }
 
+    public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func block) {
+        try (MockedStatic<StatusBarUtils> theMock = Mockito.mockStatic(StatusBarUtils.class)) {
+            theMock.when(() -> {
+                StatusBarUtils.getStatusBarHeight(any());
+            }).thenReturn(statusBarHeight);
+            theMock.when(() -> {
+                StatusBarUtils.getStatusBarHeightDp(any());
+            }).thenReturn(statusBarHeightDp);
+            block.run();
+        }
+    }
+
     @After
     @CallSuper
     public void afterEach() {
@@ -69,7 +87,7 @@ public abstract class BaseTest {
     }
 
     public void assertIsChild(ViewGroup parent, ViewController... children) {
-        forEach(Arrays.asList(children),c -> assertIsChild(parent, c.getView()));
+        forEach(Arrays.asList(children), c -> assertIsChild(parent, c.getView()));
     }
 
     public void assertIsChild(ViewGroup parent, View child) {
