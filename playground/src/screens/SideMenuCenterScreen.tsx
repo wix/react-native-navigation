@@ -5,6 +5,8 @@ import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
+// import Screens from '../Screens';
+
 import { Text } from 'react-native-ui-lib';
 const {
   OPEN_LEFT_SIDE_MENU_BTN,
@@ -16,50 +18,106 @@ export interface MaProps {
   label: string;
 }
 const SideMenuCenterScreen: NavigationFunctionComponent = (props) => {
-  const [side] = useState('');
+  const [stam, setStam] = useState<undefined | string>(undefined);
   const [topBarVisible, setTopBarVisible] = useState(false);
 
   useEffect(() => {
-    Navigation.mergeOptions(props.componentId, {
-      layout: {
-        backgroundColor: '#ffffff',
-      },
-      topBar: {
-        background: {
-          color: '#ffffff',
+    if (stam) {
+      Navigation.mergeOptions(props.componentId, {
+        statusBar: {
+          backgroundColor: '#FFFFFF',
+          style: 'dark',
         },
-        title: {
-          text: 'Center',
-        },
-        leftButtons: {
-          id: 'sideMenu',
-          icon: require('../../img/menu.png'),
-        },
-        leftButtonColor: 'red',
-        elevation: 0,
-      },
-      sideMenu: {
-        [side]: {
-          visible: true,
-        },
-      },
-    });
-  }, [side, props.componentId]);
+      });
+    }
+  }, [stam, props.componentId]);
 
   useEffect(() => {
-    Navigation.mergeOptions(props.componentId, {
-      topBar: {
-        visible: topBarVisible,
-      },
-    });
-  }, [topBarVisible, props.componentId]);
+    setTimeout(() => {
+      setStam('sss');
+    }, 777);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      //setStam('sss');
+    }, 1000);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      //setStam('sss');
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      //setStam('sss');
+    }, 666);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      // setStam('sss');
+    }, 777);
+  }, []);
+
   return (
     <Root componentId={props.componentId} style={{ backgroundColor: '#ffffff' }}>
       <Button
         label="Open Left"
         testID={OPEN_LEFT_SIDE_MENU_BTN}
-        onPress={() => {
-          open(props.componentId, 'left');
+        onPress={async () => {
+          await Navigation.push(props.componentId, 'Pushed', {
+            statusBar: {
+              backgroundColor: '#FFFFFF',
+              style: 'dark',
+            },
+          });
         }}
       />
       <Button
@@ -75,31 +133,7 @@ const SideMenuCenterScreen: NavigationFunctionComponent = (props) => {
     </Root>
   );
 };
-const open = (componentId: string, side: 'left' | 'right') =>
-  Navigation.mergeOptions(componentId, {
-    layout: {
-      backgroundColor: '#ffffff',
-    },
-    topBar: {
-      background: {
-        color: '#ffffff',
-      },
-      title: {
-        text: 'Center',
-      },
-      leftButtons: {
-        id: 'sideMenu',
-        icon: require('../../img/menu.png'),
-      },
-      leftButtonColor: 'red',
-      elevation: 0,
-    },
-    sideMenu: {
-      [side]: {
-        visible: true,
-      },
-    },
-  });
+
 export default SideMenuCenterScreen;
 // @ts-ignore TSC is unhappy as leftButtons is defined as an object instead of an array. Declaring buttons as a single object is not reflected in Options, but still supported.
 // export default class SideMenuCenterScreen extends NavigationComponent {

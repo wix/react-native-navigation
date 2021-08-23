@@ -96,7 +96,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     });
 
   sideMenu = () =>
-    Navigation.showModal({
+    Navigation.setRoot({
       sideMenu: {
         left: {
           component: {
@@ -108,6 +108,11 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
           component: {
             id: 'SideMenuCenter',
             name: Screens.SideMenuCenter,
+            options: {
+              layout: {
+                backgroundColor: '#FFFFFF',
+              },
+            },
           },
         }),
         right: {
