@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewProps, StyleSheet, View } from 'react-native';
+import { ViewProps, StyleSheet, View, BackHandler } from 'react-native';
 import { Navigation } from '..'; // this is cyclic we must have a fix!!
 import { NavigationFunctionComponent } from '../interfaces/NavigationFunctionComponent';
 
@@ -18,7 +18,7 @@ let incID = 0;
 export class RNNModal extends React.Component<RNNModalProps> {
   private displayed: boolean;
   private modalId: string;
-  private dismissEventListener?: any;
+  private backHandler?: any;
   constructor(props: RNNModalProps) {
     super(props);
     this.modalId = `RNNModal${++incID}`;
@@ -26,14 +26,13 @@ export class RNNModal extends React.Component<RNNModalProps> {
     this.registerModalComponent();
   }
   componentDidMount() {
-    this.dismissEventListener = Navigation.events().registerModalDismissedListener((event) => {
-      if (event.componentId === this.modalId) {
-        this.displayed = false;
-      }
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.displayed = false;
+      return false;
     });
   }
   componentWillUnmount() {
-    this.dismissEventListener?.remove();
+    this.backHandler?.remove();
   }
   registerModalComponent() {
     let component: NavigationFunctionComponent<RNNModalProps> = (modalProps) => {
@@ -45,8 +44,8 @@ export class RNNModal extends React.Component<RNNModalProps> {
     };
     Navigation.registerComponent(this.modalId, () => component);
   }
-  componentDidUpdate() {
-    if (this.props.visible === true && !this.displayed) {
+  componentDidUpdate(prevProps: RNNModalProps) {
+    if (this.props.visible !== prevProps.visible && !this.displayed) {
       Navigation.showModal({
         component: {
           id: this.modalId,
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     //s: 'absolute',
   },
   container: {
-    top: 0,
-    flex: 1,
+    // top: 0,
+    // flex: 1,
   },
 });
