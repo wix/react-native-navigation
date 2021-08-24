@@ -3,6 +3,7 @@ const navigationDelegate = new NavigationDelegate();
 
 export const Navigation = navigationDelegate;
 export * from './events/EventsRegistry';
+export * from './components/RNNModal';
 export * from './adapters/Constants';
 export * from './interfaces/ComponentEvents';
 export * from './interfaces/Events';
