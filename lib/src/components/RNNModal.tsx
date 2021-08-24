@@ -18,11 +18,22 @@ let incID = 0;
 export class RNNModal extends React.Component<RNNModalProps> {
   private displayed: boolean;
   private modalId: string;
+  private dismissEventListener?: any;
   constructor(props: RNNModalProps) {
     super(props);
     this.modalId = `RNNModal${++incID}`;
     this.displayed = false;
     this.registerModalComponent();
+  }
+  componentDidMount() {
+    this.dismissEventListener = Navigation.events().registerModalDismissedListener((event) => {
+      if (event.componentId === this.modalId) {
+        this.displayed = false;
+      }
+    });
+  }
+  componentWillUnmount() {
+    this.dismissEventListener?.remove();
   }
   registerModalComponent() {
     let component: NavigationFunctionComponent<RNNModalProps> = (modalProps) => {
@@ -34,7 +45,7 @@ export class RNNModal extends React.Component<RNNModalProps> {
     };
     Navigation.registerComponent(this.modalId, () => component);
   }
-  render() {
+  componentDidUpdate() {
     if (this.props.visible === true && !this.displayed) {
       Navigation.showModal({
         component: {
@@ -49,7 +60,9 @@ export class RNNModal extends React.Component<RNNModalProps> {
       }
       this.displayed = false;
     }
-    return null;
+  }
+  render() {
+    return <></>;
   }
 }
 
