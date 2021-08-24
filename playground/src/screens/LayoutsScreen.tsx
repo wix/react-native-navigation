@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  RNNModal,
   Options,
   OptionsModalPresentationStyle,
   NavigationComponent,
@@ -25,6 +26,7 @@ const {
 
 interface State {
   componentDidAppear: boolean;
+  declaredModalVisible: boolean;
 }
 
 export default class LayoutsScreen extends NavigationComponent<NavigationComponentProps, State> {
@@ -33,6 +35,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     Navigation.events().bindComponent(this);
     this.state = {
       componentDidAppear: false,
+      declaredModalVisible: false,
     };
   }
 
@@ -60,6 +63,12 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
+        <Button label="DeclaredModal" onPress={this.toggleDeclaredModal} />
+        <RNNModal visible={this.state.declaredModalVisible}>
+          <Button label="Dismiss" onPress={this.toggleDeclaredModal} />
+          <Button label="Dismiss" onPress={this.toggleDeclaredModal} />
+          <Button label="Dismiss" onPress={this.toggleDeclaredModal} />
+        </RNNModal>
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -124,6 +133,10 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         },
       },
     });
+
+  toggleDeclaredModal = () => {
+    this.setState({ declaredModalVisible: !this.state.declaredModalVisible });
+  };
 
   splitView = () => {
     Navigation.setRoot({
