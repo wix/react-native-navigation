@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewProps, StyleSheet, View, BackHandler } from 'react-native';
+import { ViewProps, StyleSheet, BackHandler, SafeAreaView } from 'react-native';
 import { Navigation } from '..'; // this is cyclic we must have a fix!!
 import { NavigationFunctionComponent } from '../interfaces/NavigationFunctionComponent';
 
@@ -37,9 +37,9 @@ export class RNNModal extends React.Component<RNNModalProps> {
   registerModalComponent() {
     let component: NavigationFunctionComponent<RNNModalProps> = (modalProps) => {
       return (
-        <View style={styles.container} {...modalProps}>
+        <SafeAreaView style={styles.container} {...modalProps}>
           {this.props.children}
-        </View>
+        </SafeAreaView>
       );
     };
     Navigation.registerComponent(this.modalId, () => component);
@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
   },
   container: {
     // top: 0,
-    // flex: 1,
+    flex: 1,
   },
 });
