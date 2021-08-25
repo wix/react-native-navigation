@@ -17,10 +17,7 @@ import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.options.params.Number
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.react.CommandListenerAdapter
-import com.reactnativenavigation.utils.CollectionUtils
-import com.reactnativenavigation.utils.RenderChecker
-import com.reactnativenavigation.utils.TitleBarHelper
-import com.reactnativenavigation.utils.UiUtils
+import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
@@ -931,6 +928,59 @@ class StackPresenterTest : BaseTest() {
         assertThat(buttons).hasSize(1)
         uut.onChildDestroyed(child)
         assertThat(buttons[0].isDestroyed).isTrue()
+    }
+
+    @Test
+    fun applyChildOptions_topBarShouldExtendBehindStatusBarWhenDrawBehind() {
+        val statusBarHeight = 10
+        val statusBarHeightDp = 20
+        val topBarHeightDp = 100
+        val options = Options().apply {
+            statusBar.drawBehind = Bool(true)
+        }
+        Mockito.`when`(child.resolveCurrentOptions()).thenReturn(options)
+        mockStatusBarUtils(statusBarHeight, statusBarHeightDp) {
+            uut.applyChildOptions(Options.EMPTY.copy().apply {
+                topBar.height = Number(topBarHeightDp)
+            }, parent, child)
+            assertThat(topBar.paddingTop).isEqualTo(statusBarHeight)
+            assertThat(topBar.y).isEqualTo(0f)
+            assertThat(topBar.layoutParams.height).isEqualTo(statusBarHeightDp + topBarHeightDp)
+        }
+    }
+
+    @Test
+    fun mergeChildOptions_topBarShouldExtendBehindStatusBarWhenDrawBehind() {
+        val statusBarHeight = 10
+        val statusBarHeightDp = 20
+        val topBarHeightDp = 100
+
+        mockStatusBarUtils(statusBarHeight, statusBarHeightDp) {
+            uut.mergeChildOptions(Options.EMPTY.copy().apply {
+                topBar.height = Number(topBarHeightDp)
+                statusBar.drawBehind = Bool(true)
+            }, Options.EMPTY, parent, child)
+            assertThat(topBar.paddingTop).isEqualTo(statusBarHeight)
+            assertThat(topBar.y).isEqualTo(0f)
+            assertThat(topBar.layoutParams.height).isEqualTo(statusBarHeightDp + topBarHeightDp)
+        }
+    }
+
+    @Test
+    fun mergeChildOptions_topBarShouldNotExtendBehindStatusBarWhenNoDrawBehind() {
+        val statusBarHeight = 10
+        val statusBarHeightDp = 20
+        val topBarHeightDp = 100
+
+        mockStatusBarUtils(statusBarHeight, statusBarHeightDp) {
+            uut.mergeChildOptions(Options.EMPTY.copy().apply {
+                topBar.height = Number(topBarHeightDp)
+                statusBar.drawBehind = Bool(false)
+            }, Options.EMPTY, parent, child)
+            assertThat(topBar.paddingTop).isEqualTo(0)
+            assertThat(topBar.y).isEqualTo(0f)
+            assertThat(topBar.layoutParams.height).isEqualTo( topBarHeightDp)
+        }
     }
 
     @Test

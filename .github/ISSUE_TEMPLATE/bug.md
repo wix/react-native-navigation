@@ -69,3 +69,16 @@ labels: 'triage: bug, needs triage'
 
   Thanks for helping us help you!
 -->
+
+### Are you willing to resolve this issue by submitting a Pull Request?
+
+<!-- Put "✅" (:white_check_mark:) to one of these options, left "✖️" (:heavy_multiplication_x:) others: -->
+
+ - ✅  &nbsp; Yes, I have the time, and I know how to start.
+ - ✖️  &nbsp; Yes, I have the time, but I don't know how to start. I would need guidance.
+ - ✖️  &nbsp; No, I don’t have the time and I’m okay to wait for the community / maintainers to resolve this issue.
+
+<!--
+  Remember that first-time contributors are welcome! 🙌 Feel free to reach us out on https://discord.gg/DhkZjq2
+  👋 Have a great day and thank you for the bug report!
+-->

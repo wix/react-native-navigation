@@ -45,6 +45,8 @@
         self.fontSize = options.fontSize;
     if (options.enableMenu.hasValue)
         self.enableMenu = options.enableMenu;
+    if (options.displayMode.hasValue)
+        self.displayMode = options.displayMode;
     if (options.popStackOnPress.hasValue)
         self.popStackOnPress = options.popStackOnPress;
 }

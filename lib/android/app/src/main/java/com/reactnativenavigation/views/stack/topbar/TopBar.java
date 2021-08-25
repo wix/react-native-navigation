@@ -122,6 +122,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         setLayoutParams(lp);
     }
 
+    public void setTopPadding(int padding) {
+        setPadding(0, padding, 0, 0);
+    }
+
     public void setTitleHeight(int height) {
         int pixelHeight = UiUtils.dpToPx(getContext(), height);
         ViewGroup.LayoutParams layoutParams = titleAndButtonsContainer.getLayoutParams();
