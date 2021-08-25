@@ -50,15 +50,20 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "remx": "*"
+  },
+  "peerDependenciesMeta": {
+    "remx": {
+      "optional": true
+    }
   },
   "dependencies": {
     "hoist-non-react-statics": "3.x.x",
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
-    "tslib": "1.9.3",
-    "remx": "3.x.x"
+    "tslib": "1.9.3"
   },
   "devDependencies": {
     "@babel/core": "7.10.3",
@@ -109,7 +114,8 @@
     "ts-mockito": "^2.3.1",
     "typedoc": "0.x.x",
     "typescript": "3.9.5",
-    "detox-testing-library-rnn-adapter": "1.x.x"
+    "detox-testing-library-rnn-adapter": "1.x.x",
+    "remx": "4.x.x"
   },
   "jest": {
     "preset": "react-native",
