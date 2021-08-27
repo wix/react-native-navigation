@@ -4,17 +4,16 @@ import android.content.Context;
 import android.view.MenuItem;
 
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
-import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.TextParser;
@@ -40,8 +39,8 @@ public class ButtonOptions {
     public Bool disableIconTint = new NullBool();
     public Bool popStackOnPress = new NullBool();
     public Number showAsAction = new NullNumber();
-    public Colour color = new NullColor();
-    public Colour disabledColor = new NullColor();
+    public ThemeColour color = new NullThemeColour();
+    public ThemeColour disabledColor = new NullThemeColour();
     public Fraction fontSize = new NullFraction();
     public FontOptions font = new FontOptions();
     public Text icon = new NullText();
@@ -51,19 +50,19 @@ public class ButtonOptions {
 
     public boolean equals(ButtonOptions other) {
         return Objects.equals(id, other.id) &&
-               accessibilityLabel.equals(other.accessibilityLabel) &&
-               text.equals(other.text) &&
-               allCaps.equals(other.allCaps) &&
-               enabled.equals(other.enabled) &&
-               disableIconTint.equals(other.disableIconTint) &&
-               showAsAction.equals(other.showAsAction) &&
-               color.equals(other.color) &&
-               disabledColor.equals(other.disabledColor) &&
-               fontSize.equals(other.fontSize) &&
-               font.equals(other.font) &&
-               icon.equals(other.icon) &&
-               testId.equals(other.testId) &&
-               component.equals(other.component) &&
+                accessibilityLabel.equals(other.accessibilityLabel) &&
+                text.equals(other.text) &&
+                allCaps.equals(other.allCaps) &&
+                enabled.equals(other.enabled) &&
+                disableIconTint.equals(other.disableIconTint) &&
+                showAsAction.equals(other.showAsAction) &&
+                color.equals(other.color) &&
+                disabledColor.equals(other.disabledColor) &&
+                fontSize.equals(other.fontSize) &&
+                font.equals(other.font) &&
+                icon.equals(other.icon) &&
+                testId.equals(other.testId) &&
+                component.equals(other.component) &&
                 popStackOnPress.equals(other.popStackOnPress);
     }
 
@@ -77,8 +76,8 @@ public class ButtonOptions {
         button.disableIconTint = BoolParser.parse(json, "disableIconTint");
         button.popStackOnPress = BoolParser.parse(json, "popStackOnPress");
         button.showAsAction = parseShowAsAction(json);
-        button.color = ColorParser.parse(context, json, "color");
-        button.disabledColor = ColorParser.parse(context, json, "disabledColor");
+        button.color = ThemeColour.parse(context, json.optJSONObject("color"));
+        button.disabledColor = ThemeColour.parse(context, json.optJSONObject("disabledColor"));
         button.fontSize = FractionParser.parse(json, "fontSize");
         button.font = FontParser.parse(json);
         button.testId = TextParser.parse(json, "testID");
@@ -130,7 +129,9 @@ public class ButtonOptions {
         return icon.hasValue();
     }
 
-    public boolean isBackButton() { return false; }
+    public boolean isBackButton() {
+        return false;
+    }
 
     public boolean shouldPopOnPress() {
         return popStackOnPress.get(true);

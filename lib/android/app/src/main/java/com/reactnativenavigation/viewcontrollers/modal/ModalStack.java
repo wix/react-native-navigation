@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
@@ -176,5 +177,11 @@ public class ModalStack {
             modal.destroy();
         }
         modals.clear();
+    }
+
+    public void onConfigurationChanged(Configuration newConfig){
+        for(ViewController controller: modals){
+            controller.onConfigurationChanged(newConfig);
+        }
     }
 }

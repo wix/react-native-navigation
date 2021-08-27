@@ -124,7 +124,9 @@
         [titleTextAttributes setValue:color forKey:NSForegroundColorAttributeName];
         [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
         [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateHighlighted];
-    }
+    } else
+        self.image = [self.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
     self.tintColor = color;
 }
 

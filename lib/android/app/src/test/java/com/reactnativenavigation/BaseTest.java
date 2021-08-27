@@ -2,18 +2,25 @@ package com.reactnativenavigation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.utils.Functions;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
@@ -30,17 +37,39 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import kotlin.Function;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, application = TestApplication.class)
 public abstract class BaseTest {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final ShadowLooper shadowMainLooper = Shadows.shadowOf(Looper.getMainLooper());
+    protected Configuration mockConfiguration;
 
     @Before
     public void beforeEach() {
-        //
+        NavigationApplication.instance = Mockito.mock(NavigationApplication.class);
+        mockConfiguration = Mockito.mock(Configuration.class);
+        Resources res = mock(Resources.class);
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
+        when(res.getConfiguration()).thenReturn(mockConfiguration);
+        when(NavigationApplication.instance.getResources()).thenReturn(res);
+    }
+
+    public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func block) {
+        try (MockedStatic<StatusBarUtils> theMock = Mockito.mockStatic(StatusBarUtils.class)) {
+            theMock.when(() -> {
+                StatusBarUtils.getStatusBarHeight(any());
+            }).thenReturn(statusBarHeight);
+            theMock.when(() -> {
+                StatusBarUtils.getStatusBarHeightDp(any());
+            }).thenReturn(statusBarHeightDp);
+            block.run();
+        }
     }
 
     @After
@@ -58,7 +87,7 @@ public abstract class BaseTest {
     }
 
     public void assertIsChild(ViewGroup parent, ViewController... children) {
-        forEach(Arrays.asList(children),c -> assertIsChild(parent, c.getView()));
+        forEach(Arrays.asList(children), c -> assertIsChild(parent, c.getView()));
     }
 
     public void assertIsChild(ViewGroup parent, View child) {

@@ -35,7 +35,6 @@ import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
 import org.robolectric.Robolectric
-import org.robolectric.android.controller.ActivityController
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.test.fail
@@ -74,7 +73,7 @@ class StackControllerTest : BaseTest() {
                 TypefaceLoaderMock(),
                 RenderChecker(),
                 Options()
-        )
+            )
         )
         createChildren()
         uut = createStack()
@@ -286,6 +285,20 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
+    fun `push - should make push when stack is not yet created`() {
+        val child11 = spy(child1)
+        val child21 = spy(child2)
+        disablePushAnimation(child11, child21)
+        uut.view = null
+        uut.push(child11, mock())
+        assertThat(uut.size()).isEqualTo(1)
+        uut.push(child21, mock())
+        assertThat(uut.size()).isEqualTo(2)
+        verify(child11, never()).view
+        verify(child21, never()).view
+    }
+
+    @Test
     fun animateSetRoot() {
         disablePushAnimation(child1, child2, child3)
         assertThat(uut.isEmpty).isTrue()
@@ -390,6 +403,27 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
+    fun `setRoot - should change stack children, no view creation, when stack is not yet created`() {
+        val spyChild = spy(child1)
+        val spyChild2 = spy(child2)
+        uut.view = null
+
+        uut.setRoot(listOf(spyChild), CommandListenerAdapter())
+        verify(spyChild, never()).view
+        verify(spyChild).parentController = uut
+        assertThat(uut.size()).isEqualTo(1)
+
+        val listOf = listOf(spyChild, spyChild2)
+        uut.setRoot(listOf, CommandListenerAdapter())
+        verify(spyChild, never()).view
+        verify(spyChild2, never()).view
+        verify(spyChild2).parentController = uut
+
+        assertThat(uut.size()).isEqualTo(2)
+        assertThat(uut.childControllers).isEqualTo(listOf)
+    }
+
+    @Test
     fun setRoot_onViewDidAppearIsInvokedBeforePreviousRootIsDestroyed() {
         disablePushAnimation(child1, child2, child3)
         uut.push(child1, CommandListenerAdapter())
@@ -414,6 +448,19 @@ class StackControllerTest : BaseTest() {
         })
     }
 
+    @Test
+    fun `pop - should make pop when stack is not yet created`() {
+        val child11 = spy(child1)
+        val child21 = spy(child2)
+        disablePushAnimation(child11, child21)
+        uut.view = null
+        uut.push(child11, mock())
+        uut.push(child21, mock())
+        uut.pop(Options.EMPTY, mock())
+        assertThat(uut.size()).isEqualTo(1)
+        verify(child11, never()).view
+        verify(child21, never()).view
+    }
     @Test
     fun pop_screenCurrentlyBeingPushedIsPopped() {
         disablePushAnimation(child1, child2)
@@ -515,7 +562,7 @@ class StackControllerTest : BaseTest() {
         val captor = argumentCaptor<Options>()
         verify(animator).pop(any(), any(), captor.capture(), any(), any())
         val animator = captor.firstValue.animations.pop.content.exit
-                .getAnimation(mockView(activity))
+            .getAnimation(mockView(activity))
         assertThat((animator as AnimatorSet).childAnimations.first().duration).isEqualTo(123)
     }
 
@@ -532,7 +579,7 @@ class StackControllerTest : BaseTest() {
         val captor = argumentCaptor<Options>()
         verify(animator).pop(any(), any(), captor.capture(), any(), any())
         val animator = captor.firstValue.animations.pop.content.exit
-                .getAnimation(mockView(activity))
+            .getAnimation(mockView(activity))
         assertThat((animator as AnimatorSet).childAnimations.first().duration).isEqualTo(123)
     }
 
@@ -933,8 +980,8 @@ class StackControllerTest : BaseTest() {
     @Test
     fun mergeChildOptions_updatesParentControllerWithNewOptions() {
         val uut = TestUtils.newStackController(activity)
-                .setId("stack")
-                .build()
+            .setId("stack")
+            .build()
         val parentController = mock<ParentController<*>>()
         uut.parentController = parentController
         uut.ensureViewIsCreated()
@@ -1071,7 +1118,8 @@ class StackControllerTest : BaseTest() {
 
     private fun assertContainsOnlyId(vararg ids: String) {
         assertThat(uut.size()).isEqualTo(ids.size)
-        assertThat(uut.childControllers).extracting(Extractor { obj: ViewController<*> -> obj.id } as Extractor<ViewController<*>, String>).containsOnly(*ids)
+        assertThat(uut.childControllers).extracting(Extractor { obj: ViewController<*> -> obj.id } as Extractor<ViewController<*>, String>)
+            .containsOnly(*ids)
     }
 
     private fun createStack(): StackController {
@@ -1089,14 +1137,14 @@ class StackControllerTest : BaseTest() {
     private fun createStackBuilder(id: String, children: List<ViewController<*>>): StackControllerBuilder {
         createTopBarController()
         return TestUtils.newStackController(activity)
-                .setEventEmitter(eventEmitter)
-                .setChildren(children)
-                .setId(id)
-                .setTopBarController(topBarController)
-                .setChildRegistry(childRegistry)
-                .setAnimator(animator)
-                .setStackPresenter(presenter)
-                .setBackButtonHelper(backButtonHelper)
+            .setEventEmitter(eventEmitter)
+            .setChildren(children)
+            .setId(id)
+            .setTopBarController(topBarController)
+            .setChildRegistry(childRegistry)
+            .setAnimator(animator)
+            .setStackPresenter(presenter)
+            .setBackButtonHelper(backButtonHelper)
     }
 
     private fun createTopBarController() {

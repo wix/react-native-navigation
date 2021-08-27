@@ -184,12 +184,6 @@ public class Presenter {
             }
             if (flags != view.getSystemUiVisibility()) view.requestLayout();
             view.setSystemUiVisibility(flags);
-        } else if (drawBehind.hasValue()) {
-            if (drawBehind.isTrue()) {
-                view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            } else {
-                view.setSystemUiVisibility(~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            }
         }
     }
 
@@ -245,5 +239,13 @@ public class Presenter {
     private boolean isColorLight(int color) {
         double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
         return darkness < 0.5;
+    }
+
+    public void onConfigurationChanged(ViewController controller, Options options) {
+        Options withDefault = options.withDefaultOptions(defaultOptions);
+        setNavigationBarBackgroundColor(withDefault.navigationBar);
+        setStatusBarBackgroundColor(withDefault.statusBar);
+        setTextColorScheme(withDefault.statusBar);
+        applyBackgroundColor(controller, withDefault);
     }
 }

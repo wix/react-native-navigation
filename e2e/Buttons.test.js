@@ -10,7 +10,7 @@ describe('Buttons', () => {
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
 
-  it(':android: should not effect left buttons when hiding back button',async ()=>{
+  it(':android: should not effect left buttons when hiding back button', async () => {
     await elementById(TestIDs.TOGGLE_BACK).tap();
     await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
     await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
@@ -65,7 +65,7 @@ describe('Buttons', () => {
   it('resizes title component when a button is added with mergeOptions', async () => {
     await elementById(TestIDs.RESET_BUTTONS).tap();
     await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
-      await elementById(TestIDs.BUTTON_THREE).tap();
+    await elementById(TestIDs.BUTTON_THREE).tap();
   });
 
   it('Button component is not recreated if it has a predefined componentId', async () => {

@@ -9,6 +9,7 @@ import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonSpan;
 
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +51,7 @@ public class ButtonSpanTest extends BaseTest {
     @NotNull
     private ButtonOptions createButton() {
         ButtonOptions button = new ButtonOptions();
-        button.color = new Colour(Color.RED);
+        button.color = new ThemeColour(new Colour(Color.RED));
         return button;
     }
 }

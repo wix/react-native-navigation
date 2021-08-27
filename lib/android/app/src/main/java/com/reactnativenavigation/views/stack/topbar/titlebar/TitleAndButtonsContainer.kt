@@ -7,7 +7,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.RestrictTo
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.FontOptions
-import com.reactnativenavigation.options.params.Colour
+import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.utils.isRTL
 import com.reactnativenavigation.utils.removeFromParent
@@ -78,7 +78,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
     fun setTitleTextAlignment(alignment: Alignment) = titleSubTitleBar.setTitleAlignment(alignment)
 
-    fun setBackgroundColor(color: Colour) = if (color.hasValue()) setBackgroundColor(color.get()) else Unit
+    fun setBackgroundColor(color: ThemeColour) = if (color.hasValue()) setBackgroundColor(color.get()) else Unit
 
     fun setTitleFontSize(size: Float) = titleSubTitleBar.setTitleFontSize(size)
 

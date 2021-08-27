@@ -77,6 +77,7 @@ function setRoot() {
           },
           {
             stack: {
+              id: 'NavigationTabStack',
               children: [
                 {
                   component: {

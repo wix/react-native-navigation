@@ -34,9 +34,9 @@ describe('Back Button', () => {
     await elementById(TestIDs.DISMISS_BTN).tap();
     await elementById(TestIDs.BACK_BUTTON).tap();
     await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
-  })
+  });
 
-  it(':android: hardware back button prevents pop and dispatch event', async () => {
+  it.e2e(':android: hardware back button prevents pop and dispatch event', async () => {
     await elementById(TestIDs.PUSH_DISABLED_HARDWARE_BACK_BTN).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     Android.pressBack();
@@ -44,7 +44,7 @@ describe('Back Button', () => {
     await expect(elementById(testIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
   });
 
-  it(':android: hardware button pops and does not dispatch event', async () => {
+  it.e2e(':android: hardware button pops and does not dispatch event', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     Android.pressBack();
@@ -54,7 +54,7 @@ describe('Back Button', () => {
     await expect(elementById(testIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
   });
 
-  it(':android: hardware back should not dismiss modal and dispatch event', async () => {
+  it.e2e(':android: hardware back should not dismiss modal and dispatch event', async () => {
     await elementById(TestIDs.MODAL_DISABLED_BACK_BTN).tap();
     await expect(elementByLabel('Modal')).toBeVisible();
     Android.pressBack();

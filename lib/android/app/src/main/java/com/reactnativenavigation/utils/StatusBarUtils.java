@@ -9,6 +9,8 @@ import android.view.WindowManager;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
+import androidx.annotation.VisibleForTesting;
+
 public class StatusBarUtils {
     private static final int STATUS_BAR_HEIGHT_M = 24;
     private static final int STATUS_BAR_HEIGHT_L = 25;
@@ -28,6 +30,10 @@ public class StatusBarUtils {
                 resources.getDimensionPixelSize(resourceId) :
                 dpToPx(context, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? STATUS_BAR_HEIGHT_M : STATUS_BAR_HEIGHT_L);
         return statusBarHeight;
+    }
+
+    public static int getStatusBarHeightDp(Context context) {
+        return (int) UiUtils.pxToDp(context, getStatusBarHeight(context));
     }
 
     public static boolean isTranslucent(Window window) {

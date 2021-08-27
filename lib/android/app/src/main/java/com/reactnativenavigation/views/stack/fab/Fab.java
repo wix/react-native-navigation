@@ -6,10 +6,10 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.viewcontrollers.stack.FabAnimator;
 import com.reactnativenavigation.viewcontrollers.stack.FabCollapseBehaviour;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
-import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 
@@ -30,11 +30,12 @@ public class Fab extends FloatingActionButton implements FabAnimator {
         this.id = id;
     }
 
-    public void applyIcon(String icon, Colour color) {
+    public void applyIcon(String icon, ThemeColour color) {
         new ImageLoader().loadIcons(getContext(), Collections.singletonList(icon), new ImageLoadingListenerAdapter() {
             @Override
             public void onComplete(@NonNull List<? extends Drawable> drawables) {
-                if (color.hasValue()) drawables.get(0).setColorFilter(new PorterDuffColorFilter(color.get(), PorterDuff.Mode.SRC_IN));
+                if (color.hasValue()) drawables.get(0).setColorFilter(new PorterDuffColorFilter(color.get(),
+                        PorterDuff.Mode.SRC_IN));
                 setImageDrawable(drawables.get(0));
             }
 

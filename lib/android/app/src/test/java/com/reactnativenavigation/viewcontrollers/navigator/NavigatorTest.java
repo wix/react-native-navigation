@@ -34,6 +34,7 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
@@ -82,6 +83,7 @@ public class NavigatorTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         childRegistry = new ChildControllersRegistry();
         eventEmitter = Mockito.mock(EventEmitter.class);
         reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
@@ -123,6 +125,38 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void onConfigurationChange_shouldCallOnConfigurationChangedForModals() {
+        Navigator spyUUT = spy(uut);
+        SimpleViewController spyChild1 = spy(child1);
+        ViewController spyChild2 = spy(child2);
+        ViewController spyChild3 = spy(child3);
+
+        spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
+        spyUUT.showModal(spyChild2, new CommandListenerAdapter());
+        spyUUT.showModal(spyChild3, new CommandListenerAdapter());
+        spyUUT.onConfigurationChanged(mockConfiguration);
+
+        verify(spyChild2).onConfigurationChanged(any());
+        verify(spyChild3).onConfigurationChanged(any());
+    }
+
+    @Test
+    public void onConfigurationChange_shouldCallOnConfigurationChangedForOverlays() {
+        Navigator spyUUT = spy(uut);
+        SimpleViewController spyChild1 = spy(child1);
+        ViewController spyChild2 = spy(child2);
+        ViewController spyChild3 = spy(child3);
+
+        spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
+        spyUUT.showOverlay(spyChild2, new CommandListenerAdapter());
+        spyUUT.showOverlay(spyChild3, new CommandListenerAdapter());
+        spyUUT.onConfigurationChanged(mockConfiguration);
+
+        verify(spyChild2).onConfigurationChanged(any());
+        verify(spyChild3).onConfigurationChanged(any());
+    }
+
+    @Test
     public void setContentLayout() {
         ViewGroup contentLayout = Mockito.mock(ViewGroup.class);
         uut.setContentLayout(contentLayout);
@@ -143,6 +177,22 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void shouldCallOnViewDidAppearWhenHostResumes() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostResume();
+        verify(child1,times(2)).onViewDidAppear();
+    }
+
+    @Test
+    public void shouldCallOnViewDisappearWhenHostPauses() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostPause();
+        verify(child1).onViewDidAppear();
+    }
+
+    @Test
     public void setDefaultOptions() {
         uut.setDefaultOptions(new Options());
 
@@ -160,10 +210,9 @@ public class NavigatorTest extends BaseTest {
         CommandListenerAdapter listener = new CommandListenerAdapter();
         uut.setRoot(child1, listener, reactInstanceManager);
         ArgumentCaptor<CommandListenerAdapter> captor = ArgumentCaptor.forClass(CommandListenerAdapter.class);
-        verify(rootPresenter).setRoot(eq(child1), eq(null),eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
+        verify(rootPresenter).setRoot(eq(child1), eq(null), eq(uut.getDefaultOptions()), captor.capture(), eq(reactInstanceManager));
         assertThat(captor.getValue().getListener()).isEqualTo(listener);
     }
-
 
 
     @Test

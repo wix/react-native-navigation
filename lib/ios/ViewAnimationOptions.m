@@ -23,7 +23,7 @@
         self.sharedElementTransitions = options.sharedElementTransitions;
     if (options.elementTransitions)
         self.elementTransitions = options.elementTransitions;
-    if (options.waitForRender)
+    if (options.waitForRender.hasValue)
         self.waitForRender = options.waitForRender;
 }
 
