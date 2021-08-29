@@ -7,7 +7,9 @@ const colors = {
   secondary: { light: '#FFC249', dark: '#5847ff' },
   accent: { light: '#65C888', dark: '#FFA73C' },
   textColor:
-    Platform.OS === 'ios' ? PlatformColor('labelColor') : PlatformColor('@color/textColor'),
+    Platform.OS === 'ios'
+      ? { light: '#5847ff', dark: '#BA292E' }
+      : PlatformColor('@color/textColor'),
   activeTextColor: { light: '#5847ff', dark: '#FFA73C' },
   iconTint: { light: 'black', dark: '#BA292E' },
   activeIconTint: { light: '#5847ff', dark: '#FFA73C' },
