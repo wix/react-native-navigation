@@ -136,15 +136,21 @@ public class Presenter {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
 
         final View view = activity.getWindow().getDecorView();
+        //This is a HACK, in certain devices, posted to DecorView queue
+        //in order to prevent ui freeze on certain devices: Samsungs with Android 9.
+        //When calling mergeOptions inside useEffect that has fast enough fetch that
+        //resolves before window even got to change, this way we can grant changes for status bar
+        //will be called in the correct order.
+        view.post(()->{
+            int flags = view.getSystemUiVisibility();
+            if (isDarkTextColorScheme(statusBar)) {
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
 
-        int flags = view.getSystemUiVisibility();
-        if (isDarkTextColorScheme(statusBar)) {
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        } else {
-            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        }
-        
-        view.setSystemUiVisibility(flags);
+            view.setSystemUiVisibility(flags);
+        });
     }
 
     private void mergeStatusBarOptions(View view, StatusBarOptions statusBar) {
