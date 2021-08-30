@@ -115,7 +115,7 @@
     "typedoc": "0.x.x",
     "typescript": "3.9.5",
     "detox-testing-library-rnn-adapter": "1.x.x",
-    "remx": "4.x.x"
+    "remx": "3.x.x"
   },
   "jest": {
     "preset": "react-native",
@@ -133,6 +133,7 @@
       "./jest-setup.js"
     ],
     "moduleNameMapper": {
+      "react-native-navigation/Mock": "<rootDir>/lib/src/Mock",
       "react-native-navigation": "<rootDir>/lib/src",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/playground/img/layouts@2x.png"
     },
