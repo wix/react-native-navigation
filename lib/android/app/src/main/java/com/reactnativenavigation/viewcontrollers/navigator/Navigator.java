@@ -266,10 +266,20 @@ public class Navigator extends ParentController {
     }
 
     public void onHostPause() {
-        super.onViewDisappear();
+        overlayManager.onHostPause();
+        if (!modalStack.isEmpty()) {
+            modalStack.onHostPause();
+        } else {
+            super.onViewDisappear();
+        }
     }
 
     public void onHostResume() {
-        super.onViewDidAppear();
+        overlayManager.onHostResume();
+        if (!modalStack.isEmpty()) {
+            modalStack.onHostResume();
+        } else {
+            super.onViewDidAppear();
+        }
     }
 }
