@@ -184,4 +184,16 @@ public class ModalStack {
             controller.onConfigurationChanged(newConfig);
         }
     }
+
+    public void onHostPause() {
+        if(!isEmpty()){
+            peek().onViewDisappear();
+        }
+    }
+
+    public void onHostResume() {
+        if(!isEmpty()){
+            peek().onViewDidAppear();
+        }
+    }
 }
