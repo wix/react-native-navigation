@@ -15,6 +15,8 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;
+import com.reactnativenavigation.options.ModalOptions;
+import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Text;
@@ -212,6 +214,55 @@ public class NavigatorTest extends BaseTest {
         verify(child3).onViewDidAppear();
     }
 
+    @Test
+    public void shouldCallRootOnViewDidAppearWhenModalDisplayedOverContext(){
+        SimpleViewController child1 = spy(this.child1);
+        final Options overContextOptions = tabOptions.copy();
+        overContextOptions.modal =new ModalOptions();
+        overContextOptions.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
+        ViewController overContextModal = spy(new SimpleViewController(activity, childRegistry, "overContextModal",
+                overContextOptions));
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.showModal(overContextModal, new CommandListenerAdapter());
+        uut.onHostResume();
+
+        verify(child1, times(2)).onViewDidAppear();
+        verify(overContextModal, times(1)).onViewDidAppear();
+    }
+
+    @Test
+    public void shouldCallRootOnViewDisappearWhenModalDisplayedOverContext(){
+        SimpleViewController child1 = spy(this.child1);
+        final Options overContextOptions = tabOptions.copy();
+        overContextOptions.modal =new ModalOptions();
+        overContextOptions.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
+        ViewController overContextModal = spy(new SimpleViewController(activity, childRegistry, "overContextModal",
+                overContextOptions));
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.showModal(overContextModal, new CommandListenerAdapter());
+        uut.onHostPause();
+
+        verify(child1, times(1)).onViewDisappear();
+        verify(overContextModal, times(1)).onViewDisappear();
+    }
+
+    @Test
+    public void shouldCallModalOnViewDisappearWhenModalDisplayedOverContextUnderneath(){
+        SimpleViewController child1 = spy(this.child1);
+        ViewController child2 = spy(this.child2);
+        final Options overContextOptions = tabOptions.copy();
+        overContextOptions.modal =new ModalOptions();
+        overContextOptions.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
+        ViewController overContextModal = spy(new SimpleViewController(activity, childRegistry, "overContextModal",
+                overContextOptions));
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.showModal(overContextModal, new CommandListenerAdapter());
+        uut.showModal(child2, new CommandListenerAdapter());
+        uut.onHostPause();
+
+        verify(child2, times(1)).onViewDisappear();
+        verify(overContextModal, never()).onViewDisappear();
+    }
     @Test
     public void shouldCallOverlaysAndModalsChildrenOnViewDidAppearOnHostResume() {
         SimpleViewController child1 = spy(this.child1);
