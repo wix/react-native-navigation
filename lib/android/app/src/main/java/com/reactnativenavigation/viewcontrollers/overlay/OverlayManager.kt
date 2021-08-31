@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import android.view.View
 import android.view.ViewGroup
 import com.reactnativenavigation.react.CommandListener
-import com.reactnativenavigation.utils.CollectionUtils
 import com.reactnativenavigation.utils.CoordinatorLayoutUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.BehaviourDelegate
@@ -25,10 +24,7 @@ class OverlayManager {
     }
 
     fun onConfigurationChanged(configuration: Configuration?) {
-        val values: Collection<ViewController<*>> = overlayRegistry.values
-        for (controller in values) {
-            controller.onConfigurationChanged(configuration)
-        }
+        overlayRegistry.values.forEach { controller -> controller.onConfigurationChanged(configuration) }
     }
 
     fun dismiss(overlaysContainer: ViewGroup, componentId: String, listener: CommandListener) {
@@ -47,17 +43,10 @@ class OverlayManager {
     }
 
     fun destroy(overlaysContainer: ViewGroup) {
-        CollectionUtils.forEach(overlayRegistry.values) { overlay: ViewController<*> ->
-            destroyOverlay(
-                overlaysContainer,
-                overlay
-            )
-        }
+        overlayRegistry.values.forEach { overlay -> destroyOverlay(overlaysContainer, overlay) }
     }
 
-    fun size(): Int {
-        return overlayRegistry.size
-    }
+    fun size() = overlayRegistry.size
 
     fun findControllerById(id: String?): ViewController<*>? {
         return overlayRegistry[id]
@@ -73,13 +62,10 @@ class OverlayManager {
         get() = size() == 0
 
     fun onHostPause() {
-        overlayRegistry.values.forEach {
-            it.onViewDisappear()
-        }
+        overlayRegistry.values.forEach(ViewController<*>::onViewDisappear)
     }
+
     fun onHostResume() {
-        overlayRegistry.values.forEach {
-            it.onViewDidAppear()
-        }
+        overlayRegistry.values.forEach(ViewController<*>::onViewDidAppear)
     }
 }
