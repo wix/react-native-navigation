@@ -55,6 +55,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -181,7 +182,77 @@ public class NavigatorTest extends BaseTest {
         SimpleViewController child1 = spy(this.child1);
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.onHostResume();
-        verify(child1,times(2)).onViewDidAppear();
+        verify(child1, times(2)).onViewDidAppear();
+    }
+
+    @Test
+    public void shouldCallOverlaysOnHostResumeWhenHostResumes() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostResume();
+        verify(overlayManager).onHostResume();
+    }
+
+    @Test
+    public void shouldCallOverlaysChildrenOnViewDidAppearOnHostResume() {
+        SimpleViewController child1 = spy(this.child1);
+        ViewController child2 = spy(this.child2);
+        ViewController child3 = spy(this.child3);
+
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.showOverlay(child2, new CommandListenerAdapter());
+        uut.showOverlay(child3, new CommandListenerAdapter());
+        verify(child1, times(1)).onViewDidAppear();
+
+        uut.onHostResume();
+
+        verify(overlayManager).onHostResume();
+        verify(child1, times(2)).onViewDidAppear();
+        verify(child2).onViewDidAppear();
+        verify(child3).onViewDidAppear();
+    }
+
+    @Test
+    public void shouldCallOverlaysAndModalsChildrenOnViewDidAppearOnHostResume() {
+        SimpleViewController child1 = spy(this.child1);
+        ViewController child2 = spy(this.child2);
+        ViewController child3 = spy(this.child3);
+        ViewController child4 = spy(this.child4);
+
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.showModal(child2, new CommandListenerAdapter());
+        uut.showOverlay(child3, new CommandListenerAdapter());
+        uut.showOverlay(child4, new CommandListenerAdapter());
+        verify(child1, times(1)).onViewDidAppear();
+
+        uut.onHostResume();
+
+        verify(overlayManager).onHostResume();
+        verify(child1, times(1)).onViewDidAppear();
+        verify(child2).onViewDidAppear();
+        verify(child3).onViewDidAppear();
+        verify(child4).onViewDidAppear();
+    }
+
+    @Test
+    public void shouldNotCallModalOnHostResumeWhenHostResumesAndNoModals() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostResume();
+        verify(modalStack, never()).onHostResume();
+    }
+
+    @Test
+    public void shouldCallModalPeekDidAppearWhenHostResumes() {
+        SimpleViewController child1 = spy(this.child1);
+        ViewController child2 = spy(this.child2);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.showModal(child2, new CommandListenerAdapter());
+        uut.onHostResume();
+
+        verify(modalStack).onHostResume();
+        verify(child2).onViewDidAppear();
+        verify(child1, times(1)).onViewDidAppear();
     }
 
     @Test
@@ -191,6 +262,27 @@ public class NavigatorTest extends BaseTest {
         uut.onHostPause();
         verify(child1).onViewDidAppear();
     }
+
+    @Test
+    public void shouldNotCallModalOnHostPauseWhenHostPausesAndNoModals() {
+        SimpleViewController child1 = spy(this.child1);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.onHostPause();
+        verify(modalStack, never()).onHostPause();
+    }
+
+    @Test
+    public void shouldCallModalPeekDidDisappearWhenHostPauses() {
+        SimpleViewController child1 = spy(this.child1);
+        ViewController child2 = spy(this.child2);
+        uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
+        uut.showModal(child2, new CommandListenerAdapter());
+        uut.onHostPause();
+
+        verify(modalStack).onHostPause();
+        verify(child2).onViewDisappear();
+    }
+
 
     @Test
     public void setDefaultOptions() {
