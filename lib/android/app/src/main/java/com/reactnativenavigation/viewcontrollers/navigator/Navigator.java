@@ -270,7 +270,7 @@ public class Navigator extends ParentController {
         if (!modalStack.isEmpty()) {
             modalStack.onHostPause();
         } else {
-            super.onViewDisappear();
+            onViewDisappear();
         }
     }
 
@@ -279,7 +279,7 @@ public class Navigator extends ParentController {
         if (!modalStack.isEmpty()) {
             modalStack.onHostResume();
         } else {
-            super.onViewDidAppear();
+            onViewDidAppear();
         }
     }
 }
