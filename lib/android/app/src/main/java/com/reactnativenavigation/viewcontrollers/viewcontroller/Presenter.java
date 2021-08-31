@@ -136,11 +136,8 @@ public class Presenter {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
 
         final View view = activity.getWindow().getDecorView();
-        //This is a HACK, in certain devices, posted to DecorView queue
-        //in order to prevent ui freeze on certain devices: Samsungs with Android 9.
-        //When calling mergeOptions inside useEffect that has fast enough fetch that
-        //resolves before window even got to change, this way we can grant changes for status bar
-        //will be called in the correct order.
+        //View.post is a Workaround, added to solve internal Samsung 
+        //Android 9 issues. For more info see https://github.com/wix/react-native-navigation/pull/7231
         view.post(()->{
             int flags = view.getSystemUiVisibility();
             if (isDarkTextColorScheme(statusBar)) {
