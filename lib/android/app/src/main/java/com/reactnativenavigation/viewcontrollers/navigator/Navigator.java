@@ -269,6 +269,9 @@ public class Navigator extends ParentController {
         overlayManager.onHostPause();
         if (!modalStack.isEmpty()) {
             modalStack.onHostPause();
+            if(modalStack.peekDisplayedOverCurrentContext()){
+                onViewDisappear();
+            }
         } else {
             onViewDisappear();
         }
@@ -278,6 +281,9 @@ public class Navigator extends ParentController {
         overlayManager.onHostResume();
         if (!modalStack.isEmpty()) {
             modalStack.onHostResume();
+            if(modalStack.peekDisplayedOverCurrentContext()){
+                onViewDidAppear();
+            }
         } else {
             onViewDidAppear();
         }
