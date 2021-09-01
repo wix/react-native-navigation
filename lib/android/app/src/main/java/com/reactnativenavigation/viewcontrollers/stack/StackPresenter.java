@@ -266,6 +266,18 @@ public class StackPresenter {
         }
     }
 
+    private void mergeStatusBarDrawBehindOptions(TopBarOptions topBarOptions, Options toMerge) {
+      if(toMerge.statusBar.drawBehind.hasValue()){
+          if(toMerge.statusBar.visible.isTrueOrUndefined() && toMerge.statusBar.drawBehind.isTrue()){
+              topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
+              topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
+          } else {
+              topBar.setTopPadding(0);
+              topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+          }
+      }
+    }
+
     @Nullable
     private View findBackgroundComponent(ComponentOptions component) {
         for (TopBarBackgroundViewController controller : backgroundControllers.values()) {
@@ -504,7 +516,7 @@ public class StackPresenter {
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());
         }
-        applyStatusBarDrawBehindOptions(resolveOptions,options);
+        mergeStatusBarDrawBehindOptions(resolveOptions,options);
         if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
         if (topBarOptions.animateLeftButtons.hasValue())
