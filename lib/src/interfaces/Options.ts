@@ -583,6 +583,7 @@ export interface OptionsSearchBar {
   backgroundColor?: Color;
   tintColor?: Color;
   placeholder?: string;
+  cancelText?: string;
 }
 
 export interface OptionsTopBar {

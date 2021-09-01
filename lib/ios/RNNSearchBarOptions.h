@@ -10,5 +10,6 @@
 @property(nonatomic, strong) Color *backgroundColor;
 @property(nonatomic, strong) Color *tintColor;
 @property(nonatomic, strong) Text *placeholder;
+@property(nonatomic, strong) Text *cancelText;
 
 @end

@@ -13,6 +13,7 @@
     self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
     self.tintColor = [ColorParser parse:dict key:@"tintColor"];
     self.placeholder = [TextParser parse:dict key:@"placeholder"];
+    self.cancelText = [TextParser parse:dict key:@"cancelText"];
     return self;
 }
 
@@ -33,6 +34,8 @@
         self.tintColor = options.tintColor;
     if (options.placeholder.hasValue)
         self.placeholder = options.placeholder;
+    if (options.cancelText.hasValue)
+        self.cancelText = options.cancelText;
 }
 
 @end
