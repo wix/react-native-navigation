@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
@@ -179,9 +180,25 @@ public class ModalStack {
         modals.clear();
     }
 
-    public void onConfigurationChanged(Configuration newConfig){
-        for(ViewController controller: modals){
+    public void onConfigurationChanged(Configuration newConfig) {
+        for (ViewController controller : modals) {
             controller.onConfigurationChanged(newConfig);
         }
+    }
+
+    public void onHostPause() {
+        if (!isEmpty()) {
+            peek().onViewDisappear();
+        }
+    }
+
+    public void onHostResume() {
+        if (!isEmpty()) {
+            peek().onViewDidAppear();
+        }
+    }
+
+    public boolean peekDisplayedOverCurrentContext() {
+        return !isEmpty() && presenter.resolveOptions(peek()).modal.presentationStyle == ModalPresentationStyle.OverCurrentContext;
     }
 }
