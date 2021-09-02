@@ -25,6 +25,7 @@
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
     "xcode": "open playground/ios/playground.xcworkspace",
+    "studio": "studio playground/android",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
     "clean": "node ./scripts/clean",
