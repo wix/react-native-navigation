@@ -136,15 +136,18 @@ public class Presenter {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
 
         final View view = activity.getWindow().getDecorView();
+        //View.post is a Workaround, added to solve internal Samsung 
+        //Android 9 issues. For more info see https://github.com/wix/react-native-navigation/pull/7231
+        view.post(()->{
+            int flags = view.getSystemUiVisibility();
+            if (isDarkTextColorScheme(statusBar)) {
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
 
-        int flags = view.getSystemUiVisibility();
-        if (isDarkTextColorScheme(statusBar)) {
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        } else {
-            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        }
-        
-        view.setSystemUiVisibility(flags);
+            view.setSystemUiVisibility(flags);
+        });
     }
 
     private void mergeStatusBarOptions(View view, StatusBarOptions statusBar) {
