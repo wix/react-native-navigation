@@ -60,7 +60,7 @@
     XCTAssertTrue([options.backgroundColor.get isEqual:UIColor.greenColor]);
     XCTAssertTrue([options.tintColor.get isEqual:UIColor.greenColor]);
     XCTAssertTrue([options.placeholder.get isEqualToString:@"mergedPlaceholder"]);
-    XCTAssertTrue([options.placeholder.get isEqualToString:@"mergedCancelText"]);
+    XCTAssertTrue([options.cancelText.get isEqualToString:@"mergedCancelText"]);
 }
 
 @end
