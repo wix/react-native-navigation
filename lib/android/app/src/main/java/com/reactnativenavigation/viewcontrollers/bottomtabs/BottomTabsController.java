@@ -176,15 +176,16 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
         eventEmitter.emitBottomTabPressed(index);
 
+        if (wasSelected && stack instanceof StackController) {
+            ((StackController) stack).popToRoot(Options.EMPTY, new CommandListenerAdapter());
+            return false;
+        }
+        
         if (options.selectTabOnPress.get(true)) {
             eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
             if (!wasSelected) {
                 selectTab(index);
             }
-        }
-
-        if (wasSelected && stack instanceof StackController) {
-            ((StackController) stack).popToRoot(Options.EMPTY, new CommandListenerAdapter());
         }
 
         return false;
