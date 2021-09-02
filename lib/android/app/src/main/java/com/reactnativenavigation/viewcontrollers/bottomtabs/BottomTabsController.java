@@ -183,7 +183,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
             }
         }
 
-        if (wasSelected && stack instanceof StackController) {
+        if (options.popToRoot.get(false) && wasSelected && stack instanceof StackController) {
             ((StackController) stack).popToRoot(Options.EMPTY, new CommandListenerAdapter());
         }
 

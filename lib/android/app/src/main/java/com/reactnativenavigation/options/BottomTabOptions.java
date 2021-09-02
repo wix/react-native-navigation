@@ -43,6 +43,7 @@ public class BottomTabOptions {
         options.selectedFontSize = NumberParser.parse(json, "selectedFontSize");
         options.dotIndicator = DotIndicatorOptions.parse(context, json.optJSONObject("dotIndicator"));
         options.selectTabOnPress = BoolParser.parse(json, "selectTabOnPress");
+        options.popToRoot = BoolParser.parse(json, "popToRoot");
 
         return options;
     }
@@ -64,6 +65,7 @@ public class BottomTabOptions {
     public Number fontSize = new NullNumber();
     public Number selectedFontSize = new NullNumber();
     public Bool selectTabOnPress = new NullBool();
+    public Bool popToRoot = new NullBool();
     public FontOptions font = new FontOptions();
 
 
@@ -87,6 +89,7 @@ public class BottomTabOptions {
         font.mergeWith(other.font);
         if (other.dotIndicator.hasValue()) dotIndicator = other.dotIndicator;
         if (other.selectTabOnPress.hasValue()) selectTabOnPress = other.selectTabOnPress;
+        if (other.popToRoot.hasValue()) popToRoot = other.popToRoot;
     }
 
     void mergeWithDefault(final BottomTabOptions defaultOptions) {
@@ -109,6 +112,7 @@ public class BottomTabOptions {
         if (!testId.hasValue()) testId = defaultOptions.testId;
         if (!dotIndicator.hasValue()) dotIndicator = defaultOptions.dotIndicator;
         if (!selectTabOnPress.hasValue()) selectTabOnPress = defaultOptions.selectTabOnPress;
+        if (!popToRoot.hasValue()) popToRoot = defaultOptions.popToRoot;
 
     }
 

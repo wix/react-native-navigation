@@ -1005,6 +1005,11 @@ export interface OptionsBottomTab {
    * instead it will emit a bottomTabPressedEvent
    */
   selectTabOnPress?: boolean;
+  /**
+   * Pop to root of stack by tapping on already selected tab
+   * #### (Android specific)
+   */
+  popToRoot?: boolean;
 }
 
 export interface SideMenuSide {
