@@ -171,7 +171,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
-        StackController stack = ((StackController) tabs.get(index));
+        ViewController<?> stack = tabs.get(index);
         BottomTabOptions options = stack.resolveCurrentOptions().bottomTabOptions;
 
         eventEmitter.emitBottomTabPressed(index);
@@ -183,8 +183,8 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
             }
         }
 
-        if (wasSelected) {
-            stack.popToRoot(Options.EMPTY, new CommandListenerAdapter());
+        if (wasSelected && stack instanceof StackController) {
+            ((StackController) stack).popToRoot(Options.EMPTY, new CommandListenerAdapter());
         }
 
         return false;
