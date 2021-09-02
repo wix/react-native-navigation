@@ -226,6 +226,18 @@ export class NavigationDelegate {
     return this.concreteNavigation.TouchablePreview;
   }
 
+  public mockNativeComponents(
+    mockedNativeCommandsSender: NativeCommandsSender,
+    mockedNativeEventsReceiver: NativeEventsReceiver,
+    mockedAppRegistryService: AppRegistryService
+  ) {
+    this.concreteNavigation = this.createConcreteNavigation(
+      mockedNativeCommandsSender,
+      mockedNativeEventsReceiver,
+      mockedAppRegistryService
+    );
+  }
+
   public get mock() {
     return {
       store: this.concreteNavigation.store,
