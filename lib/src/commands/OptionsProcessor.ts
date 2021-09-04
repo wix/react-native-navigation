@@ -142,9 +142,7 @@ export class OptionsProcessor {
         options[key] = newColorObj;
       }
 
-      if (Platform.OS === 'ios') {
-        options[key] = DynamicColorIOS(options[key]);
-      }
+      if (Platform.OS === 'ios') options[key] = DynamicColorIOS(options[key]);
     }
   }
 
