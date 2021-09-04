@@ -13,7 +13,7 @@ import { AssetService } from '../adapters/AssetResolver';
 import { Deprecations } from './Deprecations';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsProcessor as Processor } from '../interfaces/Processors';
-import { Platform } from 'react-native';
+import { DynamicColorIOS, Platform } from 'react-native';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
@@ -572,6 +572,17 @@ describe('navigation options', () => {
               color: { dynamic: { light: null, dark: null } },
             },
           },
+        });
+      });
+
+      it('supports DynamicColorIOS', () => {
+        const options: Options = {
+          topBar: { background: { color: DynamicColorIOS({ light: 'red', dark: 'blue' }) } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: { background: { color: { dynamic: { light: 0xffff0000, dark: 0xff0000ff } } } },
         });
       });
     });
