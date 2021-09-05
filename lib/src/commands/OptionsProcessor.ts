@@ -116,33 +116,49 @@ export class OptionsProcessor {
 
   private processColor(key: string, value: any, options: Record<string, any>) {
     if (isEqual(key, 'color') || endsWith(key, 'Color')) {
-      const newColorObj: Record<string, any> = { dark: 'NoColor', light: 'NoColor' };
-      if (value === null) {
-        options[key] = newColorObj;
-      } else if (value instanceof Object) {
-        if ('semantic' in value || 'resource_paths' in value) {
-          options[key] = value;
-          return;
-        } else if ('dynamic' in value) {
-          for (let keyColor in value.dynamic) {
-            newColorObj[keyColor] = this.colorService.toNativeColor(value.dynamic[keyColor]);
-          }
+      if (Platform.OS === 'ios') this.processColorIOS(key, value, options);
+      else this.processColorAndroid(key, value, options);
+    }
+  }
 
-          options[key] = newColorObj;
+  private processColorIOS(key: string, value: any, options: Record<string, any>) {
+    if (value !== undefined) {
+      if (value === null) {
+        options[key] = 'NoColor';
+      } else if (value instanceof Object) {
+        if ('dynamic' in value) {
+          options[key].dynamic.light = this.colorService.toNativeColor(value.dynamic.light);
+          options[key].dynamic.dark = this.colorService.toNativeColor(value.dynamic.dark);
         } else {
-          for (let keyColor in value) {
-            newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
-          }
-          options[key] = newColorObj;
+          options[key].light = this.colorService.toNativeColor(value.light);
+          options[key].dark = this.colorService.toNativeColor(value.dark);
+          options[key] = DynamicColorIOS(options[key]);
         }
       } else {
-        let parsedColor = this.colorService.toNativeColor(value);
-        newColorObj.light = parsedColor;
-        newColorObj.dark = parsedColor;
+        options[key] = this.colorService.toNativeColor(value);
+      }
+    }
+  }
+
+  private processColorAndroid(key: string, value: any, options: Record<string, any>) {
+    const newColorObj: Record<string, any> = { dark: 'NoColor', light: 'NoColor' };
+    if (value === null) {
+      options[key] = newColorObj;
+    } else if (value instanceof Object) {
+      if ('semantic' in value || 'resource_paths' in value) {
+        options[key] = value;
+        return;
+      } else {
+        for (let keyColor in value) {
+          newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
+        }
         options[key] = newColorObj;
       }
-
-      if (Platform.OS === 'ios') options[key] = DynamicColorIOS(options[key]);
+    } else {
+      let parsedColor = this.colorService.toNativeColor(value);
+      newColorObj.light = parsedColor;
+      newColorObj.dark = parsedColor;
+      options[key] = newColorObj;
     }
   }
 

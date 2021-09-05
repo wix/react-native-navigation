@@ -537,8 +537,8 @@ describe('navigation options', () => {
 
         uut.processOptions(options, CommandName.SetRoot);
         expect(options).toEqual({
-          statusBar: { backgroundColor: { dynamic: { light: 0xffff0000, dark: 0xffff0000 } } },
-          topBar: { background: { color: { dynamic: { light: 0xff0000ff, dark: 0xff0000ff } } } },
+          statusBar: { backgroundColor: 0xffff0000 },
+          topBar: { background: { color: 0xff0000ff } },
         });
       });
 
@@ -549,7 +549,7 @@ describe('navigation options', () => {
 
         uut.processOptions(options, CommandName.SetRoot);
         expect(options).toEqual({
-          topBar: { background: { color: { dynamic: { light: 'NoColor', dark: 'NoColor' } } } },
+          topBar: { background: { color: 'NoColor' } },
         });
       });
 
@@ -565,11 +565,11 @@ describe('navigation options', () => {
         };
         uut.processOptions(options, CommandName.SetRoot);
         expect(options).toEqual({
-          statusBar: { backgroundColor: { dynamic: { light: 0xffff0000, dark: 0xffff0000 } } },
+          statusBar: { backgroundColor: 0xffff0000 },
           topBar: {
             background: { color: { dynamic: { light: 0xff0000ff, dark: 0xffff0000 } } },
             title: {
-              color: { dynamic: { light: null, dark: null } },
+              color: undefined,
             },
           },
         });
@@ -583,6 +583,17 @@ describe('navigation options', () => {
         uut.processOptions(options, CommandName.SetRoot);
         expect(options).toEqual({
           topBar: { background: { color: { dynamic: { light: 0xffff0000, dark: 0xff0000ff } } } },
+        });
+      });
+
+      it('should not process undefined value', () => {
+        const options: Options = {
+          topBar: { background: { color: undefined } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: { background: { color: undefined } },
         });
       });
     });
@@ -748,8 +759,8 @@ describe('navigation options', () => {
           hideOnScroll: false,
           hideTopBarOnFocus: false,
           obscuresBackgroundDuringPresentation: false,
-          backgroundColor: { dynamic: { light: null, dark: null } },
-          tintColor: { dynamic: { light: null, dark: null } },
+          backgroundColor: undefined,
+          tintColor: undefined,
           placeholder: '',
         });
       });
@@ -771,8 +782,8 @@ describe('navigation options', () => {
           hideOnScroll: true,
           hideTopBarOnFocus: true,
           obscuresBackgroundDuringPresentation: false,
-          backgroundColor: { dynamic: { dark: 0xffff0000, light: 0xffff0000 } },
-          tintColor: { dynamic: { dark: 0xff00ff00, light: 0xff00ff00 } },
+          backgroundColor: 0xffff0000,
+          tintColor: 0xff00ff00,
           placeholder: 'foo',
         });
       });
