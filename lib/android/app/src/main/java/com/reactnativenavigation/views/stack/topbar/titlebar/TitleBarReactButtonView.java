@@ -24,6 +24,10 @@ public class TitleBarReactButtonView extends ReactView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (!this.isAttachedToWindow() || this.getReactInstanceManager() == null) {
+            this.setId(View.NO_ID);
+        }
+
         super.onMeasure(createSpec(widthMeasureSpec, component.width), createSpec(heightMeasureSpec, component.height));
     }
 
