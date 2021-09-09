@@ -25,9 +25,13 @@ object ColorParser {
                 Colour(json.optInt(colorName))
             }
             is JSONObject -> {
-                ColorPropConverter.getColor(color, context)?.let {
-                    Colour(it)
-                } ?: NullColor()
+                if (color.has(KEY_RESOURCE_PATHS)) {
+                    ReactPlatformColor(JSONParser.convert(color))
+                } else {
+                    ColorPropConverter.getColor(color, context)?.let {
+                        Colour(it)
+                    } ?: NullColor()
+                }
             }
             else -> {
                 NullColor()
