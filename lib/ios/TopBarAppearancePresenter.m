@@ -131,6 +131,7 @@
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {
     [self.getAppearance setBackIndicatorImage:image transitionMaskImage:image];
+    [self.getScrollEdgeAppearance setBackIndicatorImage:image transitionMaskImage:image];
 }
 
 - (void)setTitleAttributes:(RNNTitleOptions *)titleOptions {
