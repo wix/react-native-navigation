@@ -132,9 +132,12 @@ export class OptionsProcessor {
         } else if ('semantic' in value) {
           options[key] = value;
         } else {
-          options[key].light = this.colorService.toNativeColor(value.light);
-          options[key].dark = this.colorService.toNativeColor(value.dark);
-          options[key] = DynamicColorIOS(options[key]);
+          options[key] = {
+            dynamic: {
+              light: this.colorService.toNativeColor(value.light),
+              dark: this.colorService.toNativeColor(value.dark),
+            }
+          };
         }
       } else {
         options[key] = this.colorService.toNativeColor(value);
