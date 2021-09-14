@@ -25,6 +25,9 @@ public class TitleBarReactButtonView extends ReactView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        
+        //This is a workaround, ReactNative throws exception when views have ids, On android MenuItems 
+        // With ActionViews like this got an id, see #7253
         if (!this.isAttachedToWindow() || this.getReactInstanceManager() == null) {
             this.setId(View.NO_ID);
         }
