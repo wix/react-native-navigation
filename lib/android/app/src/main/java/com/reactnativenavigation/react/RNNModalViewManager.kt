@@ -40,16 +40,15 @@ class RNNModalViewManager(private val navigator: Navigator) : ViewGroupManager<D
         return DeclaredLayoutShadowNode::class.java
     }
 
-    override fun onDropViewInstance(view: DeclaredLayoutHost) {
-        super.onDropViewInstance(view)
-        view.onDropInstance()
-        navigator.dismissModal(view.viewController.id, CommandListenerAdapter())
+    override fun onDropViewInstance(modal: DeclaredLayoutHost) {
+        super.onDropViewInstance(modal)
+        modal.onDropInstance()
+        navigator.dismissModal(modal.viewController.id, CommandListenerAdapter())
     }
 
-    override fun onAfterUpdateTransaction(view: DeclaredLayoutHost) {
-        super.onAfterUpdateTransaction(view)
-        view.showOrUpdate()
-        navigator.showModal(view.viewController, CommandListenerAdapter())
+    override fun onAfterUpdateTransaction(modal: DeclaredLayoutHost) {
+        super.onAfterUpdateTransaction(modal)
+        navigator.showModal(modal.viewController, CommandListenerAdapter())
     }
 
     override fun addView(parent: DeclaredLayoutHost?, child: View?, index: Int) {
@@ -58,9 +57,6 @@ class RNNModalViewManager(private val navigator: Navigator) : ViewGroupManager<D
 
     @ReactProp(name = "visible")
     fun setVisible(modal: DeclaredLayoutHost, visible: Boolean) {
-        if(visible){
-
-        }
     }
 
 }

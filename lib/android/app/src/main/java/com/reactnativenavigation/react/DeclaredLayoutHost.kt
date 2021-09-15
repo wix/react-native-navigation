@@ -1,12 +1,10 @@
 package com.reactnativenavigation.react
 
 import android.annotation.TargetApi
-import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStructure
 import android.view.accessibility.AccessibilityEvent
-import android.widget.FrameLayout
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.UiThreadUtil
@@ -37,7 +35,6 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        this.dismiss()
     }
 
     override fun addView(child: View?, index: Int) {
@@ -72,17 +69,9 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
 
     open fun onDropInstance() {
         (this.context as ReactContext).removeLifecycleEventListener(this)
-        this.dismiss()
-    }
-
-    open fun dismiss() {
-        UiThreadUtil.assertOnUiThread()
-//        val parent = mHostView.parent as? ViewGroup
-//        parent?.removeViewAt(0)
     }
 
     override fun onHostResume() {
-        this.showOrUpdate()
     }
 
     override fun onHostPause() {}
@@ -90,28 +79,4 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
     override fun onHostDestroy() {
         onDropInstance()
     }
-
-    private fun getCurrentActivity(): Activity? {
-        return (this.context as ReactContext).currentActivity
-    }
-
-    open fun showOrUpdate() {
-        UiThreadUtil.assertOnUiThread()
-        val currentActivity = getCurrentActivity()
-        val context = currentActivity ?: this.context
-//        requestLayout()
-
-    }
-
-    open fun getContentView(): View? {
-        val frameLayout = FrameLayout(this.context)
-        frameLayout.addView(mHostView)
-//        if (this.mStatusBarTranslucent) {
-//            frameLayout.systemUiVisibility = 1024
-//        } else {
-//            frameLayout.fitsSystemWindows = true
-//        }
-        return frameLayout
-    }
-
 }

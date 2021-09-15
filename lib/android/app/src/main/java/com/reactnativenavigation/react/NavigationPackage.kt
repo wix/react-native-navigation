@@ -20,6 +20,7 @@ class NavigationPackage(private val reactNativeHost: ReactNativeHost) : ReactPac
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
+
         return listOf(RNNModalViewManager((reactContext.currentActivity as NavigationActivity).navigator))
     }
 }

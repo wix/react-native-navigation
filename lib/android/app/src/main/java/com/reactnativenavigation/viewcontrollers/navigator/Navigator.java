@@ -70,7 +70,7 @@ public class Navigator extends ParentController {
              return true;
         }
     }
-    private final ModalStack modalStack;
+    public final ModalStack modalStack;
     private final OverlayManager overlayManager;
     private final RootPresenter rootPresenter;
     private ViewController root;

@@ -1,29 +1,64 @@
 import React from 'react';
-import { requireNativeComponent, ViewProps, StyleSheet, View } from 'react-native';
+import {
+  requireNativeComponent,
+  ViewProps,
+  StyleSheet,
+  BackHandler,
+  SafeAreaView,
+} from 'react-native';
+import { View } from 'react-native-ui-lib';
 export interface RNNModalProps extends ViewProps {
-  animationType?: 'none' | 'slide' | 'fade' | null;
-  presentationStyle?: 'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen' | null;
-  transparent?: boolean;
-  statusBarTranslucent?: boolean;
-  hardwareAccelerated?: boolean;
-  visible?: boolean;
+  // animationType?: 'none' | 'slide' | 'fade' | null;
+  // presentationStyle?: 'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen' | null;
+  // transparent?: boolean;
+  // statusBarTranslucent?: boolean;
+  // hardwareAccelerated?: boolean;
+  onDismissed(): any;
+  visible: boolean;
 }
 
 const RNNModalViewManager = requireNativeComponent('RNNModalViewManager');
-
-export class RNNModal extends React.Component<RNNModalProps> {
+type RNNModalState = {
+  displayed: boolean;
+};
+export class RNNModal extends React.Component<RNNModalProps, RNNModalState> {
+  private backHandler?: any;
+  private backPressed: boolean;
   constructor(props: RNNModalProps) {
     super(props);
+    this.backPressed = false;
+  }
+
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.backPressed = true;
+      return false;
+    });
+  }
+  componentWillUnmount() {
+    console.log(`componentWillUnmount`);
+    this.backHandler?.remove();
+  }
+
+  componentDidUpdate() {
+    if (this.backPressed) {
+      this.backPressed = false;
+    }
   }
   render() {
-    console.log(`xxxxxxx, visibility: ${this.props.visible}`);
-    if (this.props.visible !== true) return null;
-    const p = { visible: this.props.visible, style: styles.modal };
-    return (
-      <RNNModalViewManager {...p}>
-        <View style={styles.container}>{this.props.children}</View>
-      </RNNModalViewManager>
-    );
+    console.log(`render`, this.props);
+    const p = { visible: this.props.visible };
+    if (this.props.visible && !this.backPressed) {
+      return (
+        <RNNModalViewManager {...p}>
+          <SafeAreaView style={styles.container}>
+            <View style={styles.container}>{this.props.children}</View>
+          </SafeAreaView>
+        </RNNModalViewManager>
+      );
+    } else {
+      return <></>;
+    }
   }
 }
 
@@ -32,7 +67,6 @@ const styles = StyleSheet.create({
     //s: 'absolute',
   },
   container: {
-    backgroundColor: 'yellow',
     top: 0,
     flex: 1,
   },

@@ -13,7 +13,7 @@ import testIDs from '../testIDs';
 import Screens from './Screens';
 import Navigation from '../services/Navigation';
 import { stack } from '../commons/Layouts';
-import { Text } from 'react-native';
+import { Modal, Text } from 'react-native';
 
 const {
   WELCOME_SCREEN_HEADER,
@@ -27,6 +27,7 @@ const {
 interface State {
   componentDidAppear: boolean;
   modalVisible: boolean;
+  rnModalVisibile: boolean;
 }
 
 export default class LayoutsScreen extends NavigationComponent<NavigationComponentProps, State> {
@@ -36,6 +37,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     this.state = {
       componentDidAppear: false,
       modalVisible: false,
+      rnModalVisibile: false,
     };
   }
 
@@ -61,20 +63,17 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     return (
       <Root componentId={this.props.componentId}>
         <RNNModal visible={this.state.modalVisible}>
-          <Button label="Button" onPress={this.toggleModal} />
-          <Button label="Button2" onPress={this.toggleModal} />
-          <Button label="Button3" onPress={this.toggleModal} />
+          <Button label="Dismiss Modal" onPress={this.toggleModal} />
         </RNNModal>
 
-        {/* <Modal visible={this.state.modalVisible}>
-          <Button label="Button" onPress={this.toggleModal} />
-          <Button label="Button2" onPress={this.toggleModal} />
-          <Button label="Button3" onPress={this.toggleModal} />
-        </Modal> */}
+        <Modal visible={this.state.rnModalVisibile}>
+          <Button label="Dismiss RN Modal" onPress={this.toggleRNModal} />
+        </Modal>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Toggle modal" onPress={this.toggleModal} />
+        <Button label="Toggle RN modal" onPress={this.toggleRNModal} />
 
         <Button
           label="SplitView"
@@ -87,6 +86,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     );
   }
 
+  toggleRNModal = () => this.setState({ rnModalVisibile: !this.state.rnModalVisibile });
   toggleModal = () => this.setState({ modalVisible: !this.state.modalVisible });
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
