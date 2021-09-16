@@ -1,5 +1,6 @@
 package com.reactnativenavigation.react
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +11,21 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.reactnativenavigation.options.Options
+import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.utils.CompatUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay
 import java.util.*
 
+@SuppressLint("ViewConstructor")
 open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reactContext), LifecycleEventListener {
-    val viewController = DeclaredLayoutController(reactContext,
+    val viewController = DeclaredLayoutController(
+        reactContext,
         reactContext.currentActivity, CompatUtils.generateViewId().toString(),
-        YellowBoxDelegate(reactContext), Options.EMPTY, ViewControllerOverlay(reactContext)
+        YellowBoxDelegate(reactContext), Options().apply {
+            hardwareBack.dismissModalOnPress = Bool(false)
+        }, ViewControllerOverlay(reactContext),
+        getHostId = { this.id }
     )
     private val mHostView = viewController.view
 
@@ -32,10 +39,6 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {}
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-    }
 
     override fun addView(child: View?, index: Int) {
         UiThreadUtil.assertOnUiThread()
@@ -63,20 +66,13 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
 
     override fun addChildrenForAccessibility(outChildren: ArrayList<View?>?) {}
 
-    override fun dispatchPopulateAccessibilityEvent(event: AccessibilityEvent?): Boolean {
-        return false
-    }
+    override fun dispatchPopulateAccessibilityEvent(event: AccessibilityEvent?): Boolean { return false }
 
-    open fun onDropInstance() {
-        (this.context as ReactContext).removeLifecycleEventListener(this)
-    }
+    open fun onDropInstance() { (this.context as ReactContext).removeLifecycleEventListener(this) }
 
-    override fun onHostResume() {
-    }
+    override fun onHostResume() {}
 
     override fun onHostPause() {}
 
-    override fun onHostDestroy() {
-        onDropInstance()
-    }
+    override fun onHostDestroy() { onDropInstance() }
 }

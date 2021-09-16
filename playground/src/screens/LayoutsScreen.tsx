@@ -59,14 +59,35 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     };
   }
 
+  onRequestDismiss = () => {
+    console.log('OnRequestDismiss called');
+    this.setState({ modalVisible: false });
+  };
+
+  onModalDismiss = () => {
+    console.log('Modal Dismissed');
+  };
+
+  onModalShow = () => {
+    console.log('Modal Shown');
+  };
+
   render() {
     return (
       <Root componentId={this.props.componentId}>
-        <RNNModal visible={this.state.modalVisible}>
-          <Button label="Dismiss Modal" onPress={this.toggleModal} />
+        <RNNModal
+          visible={this.state.modalVisible}
+          onRequestDismiss={this.onRequestDismiss}
+          onDismiss={this.onModalDismiss}
+          onShow={this.onModalShow}
+        >
+          <Button label="Dismiss Modal eee" onPress={this.toggleModal} />
         </RNNModal>
 
-        <Modal visible={this.state.rnModalVisibile}>
+        <Modal
+          visible={this.state.rnModalVisibile}
+          onRequestClose={() => this.setState({ rnModalVisibile: false })}
+        >
           <Button label="Dismiss RN Modal" onPress={this.toggleRNModal} />
         </Modal>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
