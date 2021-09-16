@@ -1,4 +1,4 @@
-package com.reactnativenavigation.react
+package com.reactnativenavigation.react.modal
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -18,8 +18,8 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewCont
 import java.util.*
 
 @SuppressLint("ViewConstructor")
-open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reactContext), LifecycleEventListener {
-    val viewController = DeclaredLayoutController(
+open class ModalHostLayout(reactContext: ThemedReactContext) : ViewGroup(reactContext), LifecycleEventListener {
+    val viewController = ModalLayoutController(
         reactContext,
         reactContext.currentActivity, CompatUtils.generateViewId().toString(),
         YellowBoxDelegate(reactContext), Options().apply {
@@ -27,7 +27,7 @@ open class DeclaredLayoutHost(reactContext: ThemedReactContext) : ViewGroup(reac
         }, ViewControllerOverlay(reactContext),
         getHostId = { this.id }
     )
-    private val mHostView = viewController.view
+    private val mHostView = viewController.view.modalContentLayout
 
     init {
         (context as ReactContext).addLifecycleEventListener(this)

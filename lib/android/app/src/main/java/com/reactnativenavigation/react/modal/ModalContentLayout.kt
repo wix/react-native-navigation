@@ -1,4 +1,4 @@
-package com.reactnativenavigation.react
+package com.reactnativenavigation.react.modal
 
 import android.content.Context
 import android.view.MotionEvent
@@ -8,11 +8,13 @@ import com.facebook.react.uimanager.*
 import com.facebook.react.uimanager.events.EventDispatcher
 import com.facebook.react.views.view.ReactViewGroup
 
-class DeclaredLayout(context: Context?) : ReactViewGroup(context), RootView{
+
+class ModalContentLayout(context: Context?) : ReactViewGroup(context), RootView{
     private var hasAdjustedSize = false
     private var viewWidth = 0
     private var viewHeight = 0
     private val mJSTouchDispatcher = JSTouchDispatcher(this)
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         viewWidth = w
@@ -26,13 +28,13 @@ class DeclaredLayout(context: Context?) : ReactViewGroup(context), RootView{
             val reactContext: ReactContext = this.getReactContext()
             reactContext.runOnNativeModulesQueueThread(object : GuardedRunnable(reactContext) {
                 override fun runGuarded() {
-                    val uiManager = this@DeclaredLayout.getReactContext().getNativeModule<UIManagerModule>(
+                    val uiManager = this@ModalContentLayout.getReactContext().getNativeModule<UIManagerModule>(
                         UIManagerModule::class.java
                     ) as UIManagerModule
                     uiManager.updateNodeSize(
                         viewTag,
-                        this@DeclaredLayout.viewWidth,
-                        this@DeclaredLayout.viewHeight
+                        this@ModalContentLayout.viewWidth,
+                        this@ModalContentLayout.viewHeight
                     )
                 }
             })

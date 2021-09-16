@@ -13,7 +13,8 @@ import testIDs from '../testIDs';
 import Screens from './Screens';
 import Navigation from '../services/Navigation';
 import { stack } from '../commons/Layouts';
-import { Modal, Text } from 'react-native';
+import { Modal, Text, Image, StyleSheet } from 'react-native';
+import { View } from 'react-native-ui-lib';
 
 const {
   WELCOME_SCREEN_HEADER,
@@ -59,29 +60,22 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     };
   }
 
-  onRequestDismiss = () => {
-    console.log('OnRequestDismiss called');
-    this.setState({ modalVisible: false });
-  };
-
-  onModalDismiss = () => {
-    console.log('Modal Dismissed');
-  };
-
-  onModalShow = () => {
-    console.log('Modal Shown');
-  };
-
   render() {
     return (
       <Root componentId={this.props.componentId}>
         <RNNModal
           visible={this.state.modalVisible}
-          onRequestDismiss={this.onRequestDismiss}
-          onDismiss={this.onModalDismiss}
-          onShow={this.onModalShow}
+          onRequestDismiss={() => this.setState({ modalVisible: false })}
         >
-          <Button label="Dismiss Modal eee" onPress={this.toggleModal} />
+          <Button label="Dismiss Our Modal" onPress={this.toggleModal} />
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.tinyLogo}
+              source={{
+                uri: 'https://wix.github.io/react-native-navigation/img/logo.png',
+              }}
+            />
+          </View>
         </RNNModal>
 
         <Modal
@@ -89,6 +83,14 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
           onRequestClose={() => this.setState({ rnModalVisibile: false })}
         >
           <Button label="Dismiss RN Modal" onPress={this.toggleRNModal} />
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.tinyLogo}
+              source={{
+                uri: 'https://reactnative.dev/img/tiny_logo.png',
+              }}
+            />
+          </View>
         </Modal>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
@@ -214,3 +216,15 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     });
   };
 }
+const styles = StyleSheet.create({
+  logoContainer: {
+    justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'row',
+  },
+  tinyLogo: {
+    justifyContent: 'center',
+    width: 128,
+    height: 128,
+  },
+});
