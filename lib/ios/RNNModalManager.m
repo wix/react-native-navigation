@@ -4,7 +4,6 @@
 #import "ScreenAnimationController.h"
 #import "ScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
-#import "ViewAnimationOptions.h"
 
 @interface RNNModalManager ()
 @property(nonatomic, strong) ScreenAnimationController *showModalTransitionDelegate;
@@ -73,13 +72,13 @@
     }
 
     if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
-        ViewAnimationOptions *viewAnimationOptions =
+        RNNEnterExitAnimation *enterExitAnimationOptions =
             viewController.resolveOptionsWithDefault.animations.showModal;
         _showModalTransitionDelegate = [[ScreenAnimationController alloc]
-            initWithContentTransition:viewAnimationOptions
-                   elementTransitions:viewAnimationOptions.elementTransitions
-             sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
-                             duration:viewAnimationOptions.maxDuration
+            initWithContentTransition:enterExitAnimationOptions
+                   elementTransitions:enterExitAnimationOptions.elementTransitions
+             sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions
+                             duration:enterExitAnimationOptions.maxDuration
                                bridge:_bridge];
 
         viewController.transitioningDelegate = _showModalTransitionDelegate;
@@ -108,7 +107,7 @@
 - (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^__nullable)(void))completion {
     UIViewController *root = [self rootViewController];
     if (root.presentedViewController) {
-        ViewAnimationOptions *dismissModalOptions =
+        RNNEnterExitAnimation *dismissModalOptions =
             root.presentedViewController.resolveOptionsWithDefault.animations.dismissModal;
         if (dismissModalOptions.hasAnimation) {
             _dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
@@ -158,13 +157,13 @@
     UIViewController *topPresentedVC = [self topPresentedVC];
 
     if (optionsWithDefault.animations.dismissModal.hasAnimation) {
-        ViewAnimationOptions *viewAnimationOptions =
+        RNNEnterExitAnimation *enterExitAnimationOptions =
             modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
         _dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
-            initWithContentTransition:viewAnimationOptions
-                   elementTransitions:viewAnimationOptions.elementTransitions
-             sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
-                             duration:viewAnimationOptions.maxDuration
+            initWithContentTransition:enterExitAnimationOptions
+                   elementTransitions:enterExitAnimationOptions.elementTransitions
+             sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions
+                             duration:enterExitAnimationOptions.maxDuration
                                bridge:_bridge];
 
         [self topViewControllerParent:modalToDismiss].transitioningDelegate =

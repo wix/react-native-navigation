@@ -123,6 +123,9 @@ public class ModalPresenter {
         return toDismiss.resolveCurrentOptions(defaultOptions).hardwareBack.dismissModalOnPress.get(true);
     }
 
+    public Options resolveOptions(ViewController modalController){
+        return modalController.resolveCurrentOptions(defaultOptions);
+    }
     private void onDismissEnd(ViewController toDismiss, CommandListener listener) {
         listener.onSuccess(toDismiss.getId());
         toDismiss.destroy();

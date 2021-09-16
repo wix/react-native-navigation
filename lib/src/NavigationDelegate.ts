@@ -9,21 +9,24 @@ import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
 import { NavigationRoot } from './Navigation';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
+import { AppRegistryService } from './adapters/AppRegistryService';
 
 export class NavigationDelegate {
   private concreteNavigation: NavigationRoot;
   constructor() {
     this.concreteNavigation = this.createConcreteNavigation(
       new NativeCommandsSender(),
-      new NativeEventsReceiver()
+      new NativeEventsReceiver(),
+      new AppRegistryService()
     );
   }
 
   private createConcreteNavigation(
     nativeCommandsSender: NativeCommandsSender,
-    nativeEventsReceiver: NativeEventsReceiver
+    nativeEventsReceiver: NativeEventsReceiver,
+    appRegistryService: AppRegistryService
   ) {
-    return new NavigationRoot(nativeCommandsSender, nativeEventsReceiver);
+    return new NavigationRoot(nativeCommandsSender, nativeEventsReceiver, appRegistryService);
   }
 
   /**
@@ -223,12 +226,15 @@ export class NavigationDelegate {
     return this.concreteNavigation.TouchablePreview;
   }
 
-  public mockNativeComponents() {
-    const { NativeCommandsSender } = require('./Mock/mocks/NativeCommandsSender');
-    const { NativeEventsReceiver } = require('./Mock/mocks/NativeEventsReceiver');
+  public mockNativeComponents(
+    mockedNativeCommandsSender: NativeCommandsSender,
+    mockedNativeEventsReceiver: NativeEventsReceiver,
+    mockedAppRegistryService: AppRegistryService
+  ) {
     this.concreteNavigation = this.createConcreteNavigation(
-      new NativeCommandsSender(),
-      new NativeEventsReceiver()
+      mockedNativeCommandsSender,
+      mockedNativeEventsReceiver,
+      mockedAppRegistryService
     );
   }
 

@@ -18,7 +18,7 @@ class NullThemeColour() : ThemeColour(NullColor(), NullColor()) {
 
 open class ThemeColour(private var lightColor: Colour, private var darkColor: Colour) {
 
-    constructor(color:Colour):this(color,color)
+    constructor(color: Colour) : this(color, color)
 
     private fun selectedColor() = if (isDarkMode()) darkColor else lightColor
 
@@ -30,18 +30,23 @@ open class ThemeColour(private var lightColor: Colour, private var darkColor: Co
     fun hasTransparency() = selectedColor().hasTransparency()
     fun canApplyValue() = selectedColor().canApplyValue()
 
-    companion object{
+    companion object {
         @JvmStatic
-        fun of(color:Int) = ThemeColour(Colour(color), Colour(color))
+        fun of(color: Int) = ThemeColour(Colour(color), Colour(color))
+
         @JvmStatic
-        fun of(light:Int,dark:Int) = ThemeColour(Colour(light),Colour(dark))
+        fun of(light: Int, dark: Int) = ThemeColour(Colour(light), Colour(dark))
 
         @JvmStatic
         fun parse(context: Context, json: JSONObject?): ThemeColour {
             return json?.let {
-                ThemeColour(ColorParser.parse(context, json, LIGHT_COLOR_KEY), ColorParser.parse(context, json, DARK_COLOR_KEY))
+                ThemeColour(
+                    ColorParser.parse(context, json, LIGHT_COLOR_KEY),
+                    ColorParser.parse(context, json, DARK_COLOR_KEY)
+                )
             } ?: NullThemeColour()
         }
+
         @JvmStatic
         fun transparent() = of(Color.TRANSPARENT)
 

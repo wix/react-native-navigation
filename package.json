@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "7.18.0",
+  "version": "7.21.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -25,6 +25,7 @@
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
     "xcode": "open playground/ios/playground.xcworkspace",
+    "studio": "studio playground/android",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
     "clean": "node ./scripts/clean",
@@ -50,15 +51,20 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "remx": "*"
+  },
+  "peerDependenciesMeta": {
+    "remx": {
+      "optional": true
+    }
   },
   "dependencies": {
     "hoist-non-react-statics": "3.x.x",
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
-    "tslib": "1.9.3",
-    "remx": "3.x.x"
+    "tslib": "1.9.3"
   },
   "devDependencies": {
     "@babel/core": "7.10.3",
@@ -109,7 +115,8 @@
     "ts-mockito": "^2.3.1",
     "typedoc": "0.x.x",
     "typescript": "3.9.5",
-    "detox-testing-library-rnn-adapter": "1.x.x"
+    "detox-testing-library-rnn-adapter": "2.x.x",
+    "remx": "3.x.x"
   },
   "jest": {
     "preset": "react-native",
@@ -127,6 +134,7 @@
       "./jest-setup.js"
     ],
     "moduleNameMapper": {
+      "react-native-navigation/Mock": "<rootDir>/lib/src/Mock",
       "react-native-navigation": "<rootDir>/lib/src",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/playground/img/layouts@2x.png"
     },

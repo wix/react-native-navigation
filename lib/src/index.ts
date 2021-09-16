@@ -16,4 +16,3 @@ export * from './interfaces/NavigationFunctionComponent';
 export * from './interfaces/CommandName';
 export * from './interfaces/Processors';
 export * from './interfaces/ProcessorSubscription';
-export * from './Mock';

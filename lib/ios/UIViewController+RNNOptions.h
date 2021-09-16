@@ -14,7 +14,8 @@
                             hideOnScroll:(BOOL)searchBarHiddenWhenScrolling
     obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
                          backgroundColor:(nullable UIColor *)backgroundColor
-                               tintColor:(nullable UIColor *)tintColor;
+                               tintColor:(nullable UIColor *)tintColor
+                              cancelText:(NSString *_Nullable)cancelText;
 
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden;
 

@@ -15,8 +15,10 @@ import androidx.annotation.VisibleForTesting;
 
 public class UiUtils {
     private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
+    private static final int DEFAULT_BOTTOM_TABS_HEIGHT = 56;
 
     private static int topBarHeight = -1;
+    private static int bottomTabsHeight = -1;
 
     public static <T extends View> void runOnPreDrawOnce(@Nullable final T view, final Functions.Func1<T> task) {
         if (view == null) return;
@@ -115,6 +117,18 @@ public class UiUtils {
                 resources.getDimensionPixelSize(resourceId) :
                 dpToPx(context, DEFAULT_TOOLBAR_HEIGHT);
         return topBarHeight;
+    }
+
+    public static int getBottomTabsHeight(Context context) {
+        if (bottomTabsHeight > 0) {
+            return bottomTabsHeight;
+        }
+        final Resources resources = context.getResources();
+        final int resourceId = resources.getIdentifier("bottom_navigation_height", "dimen", context.getPackageName());
+        bottomTabsHeight = resourceId > 0 ?
+                resources.getDimensionPixelSize(resourceId) :
+                dpToPx(context, DEFAULT_BOTTOM_TABS_HEIGHT);
+        return bottomTabsHeight;
     }
 
     public static float dpToPx(Context context, float dp) {
