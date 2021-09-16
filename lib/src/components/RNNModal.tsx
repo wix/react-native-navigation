@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireNativeComponent, ViewProps, StyleSheet } from 'react-native';
+import { requireNativeComponent, ViewProps, StyleSheet, ScrollView } from 'react-native';
 import { View } from 'react-native-ui-lib';
 export interface RNNModalProps extends ViewProps {
   // animationType?: 'none' | 'slide' | 'fade' | null;
@@ -24,7 +24,11 @@ export class RNNModal extends React.Component<RNNModalProps> {
     if (this.props.visible) {
       return (
         <RNNModalViewManager {...p}>
-          <View style={styles.container}>{this.props.children}</View>
+          <ScrollView>
+            <View style={styles.container} collapsable={false}>
+              {this.props.children}
+            </View>
+          </ScrollView>
         </RNNModalViewManager>
       );
     } else {
@@ -35,9 +39,11 @@ export class RNNModal extends React.Component<RNNModalProps> {
 
 const styles = StyleSheet.create({
   modal: {
+    backgroundColor: 'yellow',
     position: 'absolute',
   },
   container: {
+    backgroundColor: 'red',
     top: 0,
     flex: 1,
   },
