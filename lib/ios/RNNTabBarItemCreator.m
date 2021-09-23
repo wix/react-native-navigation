@@ -21,7 +21,9 @@
             icon = [UIImage systemImageNamed: [bottomTabOptions.sfSymbol withDefault:nil]];
         }
 
-        selectedIcon = bottomTabOptions.sfSelectedSymbol.hasValue ? [UIImage systemImageNamed: [bottomTabOptions.sfSelectedSymbol withDefault:nil]] : icon;
+        if (bottomTabOptions.sfSelectedSymbol.hasValue) {
+            selectedIcon = [UIImage systemImageNamed: [bottomTabOptions.sfSelectedSymbol withDefault:nil]];
+        }
     }
 
     tabItem.image = [self getIconImage:icon withTint:iconColor];

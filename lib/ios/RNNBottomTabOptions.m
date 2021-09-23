@@ -29,8 +29,8 @@
     self.fontSize = [NumberParser parse:dict key:@"fontSize"];
     self.visible = [BoolParser parse:dict key:@"visible"];
     self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
-    self.sfSymbol = [TextParser parse:dict key:@"symbol"];
-    self.sfSelectedSymbol = [TextParser parse:dict key:@"selectedSymbol"];
+    self.sfSymbol = [TextParser parse:dict key:@"sfSymbol"];
+    self.sfSelectedSymbol = [TextParser parse:dict key:@"sfSelectedSymbol"];
 
     return self;
 }
