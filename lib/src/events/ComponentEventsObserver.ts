@@ -15,9 +15,12 @@ import {
   ComponentEvent,
   PreviewCompletedEvent,
   ScreenPoppedEvent,
+  PIPStateChangedEvent,
+  PIPButtonPressedEvent,
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { Store } from '../components/Store';
+import { Platform } from 'react-native';
 
 type ReactComponentWithIndexing = NavigationComponentListener & Record<string, any>;
 
@@ -37,6 +40,10 @@ export class ComponentEventsObserver {
     this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
     this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
     this.notifyScreenPopped = this.notifyScreenPopped.bind(this);
+    if (Platform.OS === 'android') {
+      this.notifyPIPStateChangedEvent = this.notifyPIPStateChangedEvent.bind(this);
+      this.notifyPIPButtonPressedEvent = this.notifyPIPButtonPressedEvent.bind(this);
+    }
   }
 
   public registerOnceForAllComponentEvents() {
@@ -58,6 +65,14 @@ export class ComponentEventsObserver {
     );
     this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
     this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyPreviewCompleted);
+    if (Platform.OS === 'android') {
+      this.nativeEventsReceiver.registerPIPStateChangedEventListener(
+        this.notifyPIPStateChangedEvent
+      );
+      this.nativeEventsReceiver.registerPIPButtonPressedEventListener(
+        this.notifyPIPButtonPressedEvent
+      );
+    }
   }
 
   public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
@@ -127,6 +142,14 @@ export class ComponentEventsObserver {
 
   notifyScreenPopped(event: ScreenPoppedEvent) {
     this.triggerOnAllListenersByComponentId(event, 'screenPopped');
+  }
+
+  notifyPIPStateChangedEvent(event: PIPStateChangedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'onPIPStateChanged');
+  }
+
+  notifyPIPButtonPressedEvent(event: PIPButtonPressedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'onPIPButtonPressed');
   }
 
   private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {

@@ -1,5 +1,6 @@
 // tslint:disable jsdoc-format
 import { ImageRequireSource, ImageSourcePropType, Insets } from 'react-native';
+import { PIPActionButton } from './Layout';
 
 // TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
@@ -75,10 +76,12 @@ export type Interpolation =
       allowsOverdamping?: boolean;
       initialVelocity?: number;
     };
+
 interface ThemeColor {
   light?: string | symbol;
   dark?: string | symbol;
 }
+
 export interface OptionsSplitView {
   /**
    * Master view display mode
@@ -745,6 +748,8 @@ export interface ElementTransition {
   rotationY?: AppearingElementAnimation | DisappearingElementAnimation;
   x?: AppearingElementAnimation | DisappearingElementAnimation;
   y?: AppearingElementAnimation | DisappearingElementAnimation;
+  height?: AppearingElementAnimation | DisappearingElementAnimation;
+  width?: AppearingElementAnimation | DisappearingElementAnimation;
 }
 
 export interface AppearingElementAnimation extends ElementAnimation {
@@ -762,7 +767,11 @@ export interface ElementAnimation {
 }
 
 export interface OptionsFab {
-  id: string;
+  /**
+   * ID is required when first instantiating the Fab button,
+   * however when updating the existing Fab button, ID is not required.
+   */
+  id?: string;
   backgroundColor?: Color;
   clickColor?: Color;
   rippleColor?: Color;
@@ -1147,6 +1156,14 @@ export interface ScreenAnimationOptions {
   /**
    * Animate the element over x value
    */
+  height?: OptionsAnimationPropertyConfig;
+  /**
+   * Animate the element over y value
+   */
+  width?: OptionsAnimationPropertyConfig;
+  /**
+   * Animate the element over x value
+   */
   x?: OptionsAnimationPropertyConfig;
   /**
    * Animate the element over y value
@@ -1341,6 +1358,14 @@ export interface AnimationOptions {
    * Configure what animates when modal is dismissed
    */
   dismissModal?: OldModalAnimationOptions | ModalAnimationOptions;
+  /**
+   * Configure what animates when a screen is pushed
+   */
+  pipIn?: StackAnimationOptions;
+  /**
+   * Configure what animates when a screen is popped
+   */
+  pipOut?: StackAnimationOptions;
 }
 
 /**
@@ -1349,6 +1374,29 @@ export interface AnimationOptions {
 export interface NavigationBarOptions {
   backgroundColor?: Color;
   visible?: boolean;
+}
+
+export interface PIPOptions {
+  enabled?: boolean;
+
+  actionControlGroup: string;
+
+  actionButtons?: PIPActionButton[];
+
+  customPIP: {
+    compact: {
+      height: number;
+      width: number;
+    };
+    expanded: {
+      height: number;
+      width: number;
+    };
+  };
+  aspectRatio: {
+    numerator: number;
+    denominator: number;
+  };
 }
 
 /**
@@ -1432,6 +1480,8 @@ export interface Options {
    * Configure the modal
    */
   modal?: ModalOptions;
+
+  pipOptions?: PIPOptions;
   /**
    * Animation used for navigation commands that modify the layout
    * hierarchy can be controlled in options.
@@ -1440,8 +1490,8 @@ export interface Options {
    * to change the default animation for each command.
    *
    * Example:
-```js
-setRoot: {
+   ```js
+   setRoot: {
   y: {
     from: 1000,
     to: 0,
@@ -1456,7 +1506,7 @@ setRoot: {
     interpolation: 'accelerate'
   }
 }
-```
+   ```
    */
   animations?: AnimationOptions;
 

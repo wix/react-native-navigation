@@ -37,7 +37,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private static final String NAME = "RNNBridgeModule";
 
     private final Now now = new Now();
-    private final ReactInstanceManager reactInstanceManager;
+    public static ReactInstanceManager reactInstanceManager;
+    public static Navigator currentNavigator;
     private final JSONParser jsonParser;
     private final LayoutFactory layoutFactory;
     private EventEmitter eventEmitter;
@@ -138,6 +139,30 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void switchToPIP(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
+        handle(() -> navigator().switchToPIP(componentId, parse(mergeOptions), new NativeCommandListener("switchToPIP", commandId, promise, eventEmitter, now)));
+    }
+
+    @ReactMethod
+    public void pushAsPIP(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
+        final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
+        handle(() -> {
+            final ViewController viewController = layoutFactory.create(layoutTree);
+            navigator().pushAsPIP(onComponentId, viewController, new NativeCommandListener("pushAsPIP", commandId, promise, eventEmitter, now));
+        });
+    }
+
+    @ReactMethod
+    public void closePIP(String commandId, Promise promise) {
+        handle(() ->  navigator().closePIP(new NativeCommandListener("closePIP", commandId, promise, eventEmitter, now)));
+    }
+
+    @ReactMethod
+    public void restorePIP(String commandId, String stackId, Promise promise) {
+        handle(() -> navigator().restorePIP(stackId, new NativeCommandListener("restorePIP", commandId, promise, eventEmitter, now)));
+    }
+
+    @ReactMethod
     public void setStackRoot(String commandId, String onComponentId, ReadableArray children, Promise promise) {
         handle(() -> {
             ArrayList<ViewController> _children = new ArrayList<>();
@@ -205,6 +230,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         handle(() -> navigator().dismissAllOverlays(new NativeCommandListener("dismissAllOverlays", commandId, promise, eventEmitter, now)));
     }
 
+    @ReactMethod
+    public void setPIPHostId(String componentId) {
+        handle(() -> navigator().setPIPHostId(componentId));
+    }
+
     private Navigator navigator() {
         return activity().getNavigator();
     }
@@ -218,6 +248,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     protected void handle(Runnable task) {
         UiThread.post(() -> {
             if (getCurrentActivity() != null && !activity().isFinishing()) {
+                currentNavigator = activity().getNavigator();
                 task.run();
             }
         });

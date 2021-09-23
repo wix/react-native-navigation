@@ -1,6 +1,6 @@
 {
   "name": "@dream11mobile/react-native-navigation",
-  "version": "7.19.0",
+  "version": "7.19.2",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -54,11 +54,11 @@
   },
   "dependencies": {
     "hoist-non-react-statics": "3.x.x",
-    "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
+    "remx": "3.x.x",
     "tslib": "1.9.3",
-    "remx": "3.x.x"
+    "user": "*"
   },
   "devDependencies": {
     "@babel/core": "7.10.3",
@@ -84,6 +84,7 @@
     "babel-jest": "26.1.0",
     "clang-format": "^1.4.0",
     "detox": "18.19.0",
+    "detox-testing-library-rnn-adapter": "1.x.x",
     "eslint": "7.3.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",
@@ -108,8 +109,7 @@
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",
     "typedoc": "0.x.x",
-    "typescript": "3.9.5",
-    "detox-testing-library-rnn-adapter": "1.x.x"
+    "typescript": "3.9.5"
   },
   "jest": {
     "preset": "react-native",

@@ -93,6 +93,16 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
+    public void sendOnPIPStateChanged(String prevState, String newState) {
+        getView().sendOnPIPStateChanged(prevState, newState);
+    }
+
+    @Override
+    public void sendOnPIPButtonPressed(String buttonId) {
+        getView().sendOnPIPButtonPressed(buttonId);
+    }
+
+    @Override
     public void applyOptions(Options options) {
         if (isRoot()) applyTopInset();
         super.applyOptions(options);

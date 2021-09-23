@@ -17,6 +17,7 @@ const Screens = {
   CarsListScreen: 'CarsListScreen',
   ImageFullScreenViewer: 'ImageFullScreenViewer',
   ContextScreen: 'ContextScreen',
+  PIPScreen: 'PIPScreen',
   ExternalComponent: 'ExternalComponent',
   FullScreenModal: 'FullScreenModal',
   Layouts: 'Layouts',

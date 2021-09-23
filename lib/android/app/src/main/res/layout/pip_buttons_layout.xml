@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/pip_button_horizontal_margin"
+    android:paddingTop="@dimen/pip_button_top_margin">
+
+    <ImageView
+        android:id="@+id/fullScreenButton"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/fullscreen_icon" />
+
+    <ImageView
+        android:id="@+id/closeButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_baseline_close_24" />
+
+</RelativeLayout>

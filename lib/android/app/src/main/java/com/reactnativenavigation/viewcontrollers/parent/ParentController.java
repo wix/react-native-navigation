@@ -131,6 +131,8 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return null;
     }
 
+
+
     @Override
     public boolean containsComponent(Component component) {
         if (super.containsComponent(component)) {

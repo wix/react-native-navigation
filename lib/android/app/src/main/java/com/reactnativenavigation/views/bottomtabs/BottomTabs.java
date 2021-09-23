@@ -75,7 +75,7 @@ public class BottomTabs extends AHBottomNavigation {
             onItemCreationEnabled.add(() -> super.setCurrentItem(position, useCallback));
         }
     }
-    
+
 
     @Override
     public void setTitleState(TitleState titleState) {
@@ -89,9 +89,15 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     @Override
+    public void restoreBottomNavigation(boolean withAnimation) {
+        this.setVisibility(VISIBLE);
+        super.restoreBottomNavigation(withAnimation);
+    }
+
+    @Override
     public void hideBottomNavigation(boolean withAnimation) {
         super.hideBottomNavigation(withAnimation);
-        if (!withAnimation) setVisibility(View.GONE);
+        setVisibility(View.GONE);
     }
 
     public void setText(int index, String text) {

@@ -2,4 +2,5 @@
 <resources>
     <string name="drawer_close">Drawer Close</string>
     <string name="drawer_open">Drawer Open</string>
+    <string name="pip_phone_dismiss_hint">"Drag down to dismiss"</string>
 </resources>

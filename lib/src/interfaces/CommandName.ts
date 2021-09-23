@@ -15,4 +15,5 @@ export enum CommandName {
   DismissOverlay = 'dismissOverlay',
   DismissAllOverlays = 'dismissAllOverlays',
   GetLaunchArgs = 'getLaunchArgs',
+  PushAsPIP = 'pushAsPIP',
 }

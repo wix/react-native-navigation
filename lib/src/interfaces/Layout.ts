@@ -197,4 +197,42 @@ export interface Layout<P = {}> {
    * Set the external component
    */
   externalComponent?: ExternalComponent;
+
+  /**
+   * set the pipComponent
+   */
+  pipComponent?: PIPComponent;
+}
+
+export interface PIPActionButton {
+  requestCode: number;
+  requestType: string;
+  actionTitle: string;
+  actionIcon: string;
+}
+
+export interface PIPComponent {
+  /**
+   * Component reference id, Auto generated if empty
+   */
+  id?: string;
+  /**
+   * Name of your component
+   */
+  name: string;
+  /**
+   * Properties to pass down to the component
+   */
+  passProps?: object;
+
+  options: {
+    actionControlGroup: string;
+
+    actionButtons?: PIPActionButton[];
+
+    aspectRatio: {
+      numerator: number;
+      denominator: number;
+    };
+  };
 }

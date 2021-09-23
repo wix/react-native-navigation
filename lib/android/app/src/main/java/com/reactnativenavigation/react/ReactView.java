@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
+import androidx.annotation.RestrictTo;
+
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.ReactContext;
@@ -110,6 +112,22 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
     @Override
     public boolean isRendered() {
         return getChildCount() >= 1;
+    }
+
+    @Override
+    public void sendOnPIPStateChanged(String prevState, String newState) {
+        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        if (currentReactContext != null) {
+            new EventEmitter(currentReactContext).emitOnPIPStateChanged(componentId, prevState, newState);
+        }
+    }
+
+    @Override
+    public void sendOnPIPButtonPressed(String buttonId) {
+        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        if (currentReactContext != null) {
+            new EventEmitter(currentReactContext).emitOnPIPButtonPressed(componentId, buttonId);
+        }
     }
 
     public EventDispatcher getEventDispatcher() {

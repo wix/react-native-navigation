@@ -164,6 +164,41 @@ export class NavigationDelegate {
   }
 
   /**
+   * show pipComponent in pip Mode
+   */
+  public pushAsPIP<P>(componentId: string, component: Layout<P>): Promise<any> {
+    return this.concreteNavigation.pushAsPIP(componentId, component);
+  }
+
+  /**
+   * close pip component
+   */
+  public closePIP(): Promise<any> {
+    return this.concreteNavigation.closePIP();
+  }
+
+  /**
+   * Pop a component from the stack, regardless of it's position.
+   */
+  public switchToPIP(componentId: string, mergeOptions?: Options): Promise<any> {
+    return this.concreteNavigation.switchToPIP(componentId, mergeOptions);
+  }
+
+  /**
+   * restore pip component
+   */
+  public restorePIP(componentId: string): Promise<any> {
+    return this.concreteNavigation.restorePIP(componentId);
+  }
+
+  /**
+   * set pip host
+   */
+  public setPIPHostId(componentId: string) {
+    this.concreteNavigation.setPIPHostId(componentId);
+  }
+
+  /**
    * Sets new root component to stack.
    */
   public setStackRoot<P>(

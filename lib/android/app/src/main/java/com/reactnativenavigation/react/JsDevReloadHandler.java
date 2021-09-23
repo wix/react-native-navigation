@@ -53,7 +53,11 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
 	}
 
 	public void onActivityPaused(Activity activity) {
-		activity.unregisterReceiver(reloadReceiver);
+		try {
+			activity.unregisterReceiver(reloadReceiver);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public boolean onKeyUp(Activity activity, int keyCode) {

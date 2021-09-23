@@ -107,4 +107,14 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     public boolean superOnInterceptTouchEvent(MotionEvent event) {
         return super.onInterceptTouchEvent(event);
     }
+
+    @Override
+    public void sendOnPIPStateChanged(String prevState, String newState) {
+        reactView.sendOnPIPStateChanged(prevState, newState);
+    }
+
+    @Override
+    public void sendOnPIPButtonPressed(String buttonId) {
+        reactView.sendOnPIPButtonPressed(buttonId);
+    }
 }

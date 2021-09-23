@@ -79,16 +79,24 @@ public class UiUtils {
         });
     }
 
-	public static void runOnMainThread(Runnable runnable) {
-		new Handler(Looper.getMainLooper()).post(runnable);
-	}
+    public static void runOnMainThread(Runnable runnable) {
+        new Handler(Looper.getMainLooper()).post(runnable);
+    }
 
-	public static float getWindowHeight(Context context) {
+    public static float getWindowHeight(Context context) {
         return getDisplayMetrics(context).heightPixels;
-	}
+    }
 
     public static float getWindowWidth(Context context) {
         return getDisplayMetrics(context).widthPixels;
+    }
+
+    public static float getWindowHeightDP(Context context) {
+        return pxToDp(context, getDisplayMetrics(context).heightPixels);
+    }
+
+    public static float getWindowWidthDP(Context context) {
+        return pxToDp(context, getDisplayMetrics(context).widthPixels);
     }
 
     @NonNull
@@ -130,7 +138,7 @@ public class UiUtils {
         if (dp <= 0) return dp;
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        return (int) (dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+        return (int) (dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static float pxToDp(Context context, float px) {

@@ -275,22 +275,26 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @CallSuper
     public void destroy() {
-        if (isShown) {
-            isShown = false;
-            onViewDisappear();
-        }
-        yellowBoxDelegate.destroy();
-        if (view instanceof Destroyable) {
-            ((Destroyable) view).destroy();
-        }
-        if (view != null) {
-            view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            view.setOnHierarchyChangeListener(null);
-            if (view.getParent() instanceof ViewGroup) {
-                ((ViewManager) view.getParent()).removeView(view);
+        try {
+            if (isShown) {
+                isShown = false;
+                onViewDisappear();
             }
-            view = null;
-            isDestroyed = true;
+            yellowBoxDelegate.destroy();
+            if (view instanceof Destroyable) {
+                ((Destroyable) view).destroy();
+            }
+            if (view != null) {
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                view.setOnHierarchyChangeListener(null);
+                if (view.getParent() instanceof ViewGroup) {
+                    ((ViewManager) view.getParent()).removeView(view);
+                }
+                view = null;
+                isDestroyed = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -335,6 +339,14 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public abstract void sendOnNavigationButtonPressed(String buttonId);
+
+    public void sendOnPIPStateChanged(String prevState, String newState) {
+
+    }
+
+    public void sendOnPIPButtonPressed(String buttonId) {
+
+    }
 
     public boolean isViewShown() {
         return !isDestroyed &&

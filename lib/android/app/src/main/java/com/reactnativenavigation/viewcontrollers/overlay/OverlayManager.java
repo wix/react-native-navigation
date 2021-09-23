@@ -66,7 +66,7 @@ public class OverlayManager {
         if (isEmpty()) overlaysContainer.setVisibility(View.GONE);
     }
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return size() == 0;
     }
 }

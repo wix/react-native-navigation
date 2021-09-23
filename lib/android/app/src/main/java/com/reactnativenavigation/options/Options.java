@@ -33,7 +33,7 @@ public class Options {
         result.statusBar = StatusBarOptions.parse(context, json.optJSONObject("statusBar"));
         result.layout = LayoutOptions.parse(context, json.optJSONObject("layout"));
         result.hardwareBack = new HardwareBackButtonOptions(json.optJSONObject("hardwareBackButton"));
-
+        result.pipOptions = PIPOptions.parse(json.optJSONObject("pipOptions"));
         return result;
     }
 
@@ -51,7 +51,7 @@ public class Options {
     @NonNull public StatusBarOptions statusBar = new StatusBarOptions();
     @NonNull public LayoutOptions layout = new LayoutOptions();
     @NonNull public HardwareBackButtonOptions hardwareBack = new HardwareBackButtonOptions();
-
+    @NonNull public PIPOptions pipOptions = new PIPOptions();
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
     }
@@ -73,11 +73,12 @@ public class Options {
         result.statusBar.mergeWith(statusBar);
         result.layout.mergeWith(layout);
         result.hardwareBack.mergeWith(hardwareBack);
+        result.pipOptions.mergeWith(pipOptions);
         return result;
     }
 
     @CheckResult
-	public Options mergeWith(final Options other) {
+    public Options mergeWith(final Options other) {
         Options result = copy();
         result.topBar.mergeWith(other.topBar);
         result.topTabs.mergeWith(other.topTabs);
@@ -92,6 +93,7 @@ public class Options {
         result.statusBar.mergeWith(other.statusBar);
         result.layout.mergeWith(other.layout);
         result.hardwareBack.mergeWith(other.hardwareBack);
+        result.pipOptions.mergeWith(other.pipOptions);
         return result;
     }
 
@@ -109,6 +111,12 @@ public class Options {
         statusBar.mergeWithDefault(defaultOptions.statusBar);
         layout.mergeWithDefault(defaultOptions.layout);
         hardwareBack.mergeWithDefault(defaultOptions.hardwareBack);
+        pipOptions.mergeWith(defaultOptions.pipOptions);
+        return this;
+    }
+
+    public Options clearPIPOptions() {
+        pipOptions = new PIPOptions();
         return this;
     }
 

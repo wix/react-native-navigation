@@ -22,26 +22,47 @@ import java.util.*
 
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
 
-    suspend fun create(animation: LayoutAnimation, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
+    suspend fun create(
+        animation: LayoutAnimation,
+        fadeAnimation: AnimationOptions,
+        fromScreen: ViewController<*>,
+        toScreen: ViewController<*>
+    ): AnimatorSet {
         val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
         return createAnimator(fadeAnimation, transitions)
     }
 
-    private fun createAnimator(fadeAnimation: AnimationOptions, transitions: TransitionSet): AnimatorSet {
+    suspend fun createPIP(
+        animation: LayoutAnimation,
+        fadeAnimation: AnimationOptions,
+        pipScreen: ViewController<*>
+    ): AnimatorSet {
+        val transitions = transitionSetCreator.createPIP(animation, pipScreen)
+        return createAnimator(fadeAnimation, transitions)
+    }
+
+    private fun createAnimator(
+        fadeAnimation: AnimationOptions,
+        transitions: TransitionSet
+    ): AnimatorSet {
         recordIndices(transitions)
         reparentViews(transitions)
         val animators = ArrayList<Animator>()
         animators.addAll(createSharedElementTransitionAnimators(transitions.validSharedElementTransitions))
         animators.addAll(createElementTransitionAnimators(transitions.validElementTransitions))
-
         setAnimatorsDuration(animators, fadeAnimation)
         return AnimatorSet().apply {
             playTogether(animators)
-            doOnStart { transitions.validSharedElementTransitions.forEach { it.view.visibility = View.VISIBLE } }
+            doOnStart {
+                transitions.validSharedElementTransitions.forEach {
+                    it.view.visibility = View.VISIBLE
+                }
+            }
             doOnEnd { restoreViewsToOriginalState(transitions) }
             doOnCancel { restoreViewsToOriginalState(transitions) }
         }
     }
+
 
     private fun recordIndices(transitions: TransitionSet) {
         transitions.forEach {
@@ -49,7 +70,10 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         }
     }
 
-    private fun setAnimatorsDuration(animators: Collection<Animator>, fadeAnimation: AnimationOptions) {
+    private fun setAnimatorsDuration(
+        animators: Collection<Animator>,
+        fadeAnimation: AnimationOptions
+    ) {
         for (animator in animators) {
             if (animator is AnimatorSet) {
                 setAnimatorsDuration(animator.childAnimations, fadeAnimation)
@@ -61,10 +85,10 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
 
     private fun reparentViews(transitions: TransitionSet) {
         transitions.transitions
-                .sortedBy { getZIndex(it.view) }
-                .forEach { reparent(it) }
+            .sortedBy { getZIndex(it.view) }
+            .forEach { reparent(it) }
         transitions.validSharedElementTransitions
-                .forEach { it.view.visibility = View.INVISIBLE }
+            .forEach { it.view.visibility = View.INVISIBLE }
     }
 
     private fun createSharedElementTransitionAnimators(transitions: List<SharedElementTransition>): List<AnimatorSet> {
@@ -77,14 +101,14 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
 
     private fun createSharedElementAnimator(transition: SharedElementTransition): AnimatorSet {
         return transition
-                .createAnimators()
-                .apply {
-                    addListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationStart(animation: Animator) {
-                            transition.from.alpha = 0f
-                        }
-                    })
-                }
+            .createAnimators()
+            .apply {
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationStart(animation: Animator) {
+                        transition.from.alpha = 0f
+                    }
+                })
+            }
     }
 
     private fun createElementTransitionAnimators(transitions: List<ElementTransition>): List<Animator> {
@@ -149,12 +173,14 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         val parent = ViewTags.get<ViewGroup>(element, R.id.original_parent)
         val lp = ViewTags.get<ViewGroup.LayoutParams>(element, R.id.original_layout_params)
         val index = ViewTags.get<Int>(element, R.id.original_index_in_parent)
+        element.x = element.left.toFloat()
+        element.y = element.top.toFloat()
         parent.addView(element, index, lp)
     }
 
     private fun getZIndex(view: View) = ViewGroupManager.getViewZIndex(view)
-            ?: ViewTags.get(view, R.id.original_z_index)
-            ?: 0
+        ?: ViewTags.get(view, R.id.original_z_index)
+        ?: 0
 
     private fun addToOverlay(vc: ViewController<*>, element: View, lp: FrameLayout.LayoutParams) {
         val viewController = vc.parentController ?: vc

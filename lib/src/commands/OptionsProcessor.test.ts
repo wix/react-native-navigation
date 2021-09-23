@@ -384,6 +384,7 @@ describe('navigation options', () => {
 
     optionProcessorsRegistry.addProcessor('topBar.visible', (_value, commandName) => {
       expect(commandName).toEqual(CommandName.SetRoot);
+      return _value
     });
 
     uut.processOptions(options, CommandName.SetRoot);

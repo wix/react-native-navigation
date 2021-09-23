@@ -1,12 +1,17 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+import android.app.PictureInPictureParams;
+import android.graphics.Color;
+import android.os.Build;
+import android.util.Log;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -17,22 +22,27 @@ import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
+import com.reactnativenavigation.utils.ILogger;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.pip.PIPNavigator;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOverlay;
+import com.reactnativenavigation.views.pip.IPIPListener;
+import com.reactnativenavigation.views.pip.PIPStates;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class Navigator extends ParentController {
 
+public class Navigator extends ParentController {
+    private PIPNavigator pipNavigator;
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
     private final RootPresenter rootPresenter;
@@ -43,6 +53,10 @@ public class Navigator extends ParentController {
     private final CoordinatorLayout overlaysLayout;
     private ViewGroup contentLayout;
     private Options defaultOptions = new Options();
+    private StackController activeStack = null;
+    private ILogger logger;
+    private String pipHostId = "";
+    private String TAG = "Navigator";
 
     @Override
     public void setDefaultOptions(Options defaultOptions) {
@@ -64,22 +78,28 @@ public class Navigator extends ParentController {
     }
 
     public void setContentLayout(ViewGroup contentLayout) {
+        contentLayout.setBackgroundColor(Color.WHITE);
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
         modalsLayout.setVisibility(View.GONE);
         contentLayout.addView(modalsLayout);
         overlaysLayout.setVisibility(View.GONE);
         contentLayout.addView(overlaysLayout);
+        pipNavigator.setContentLayout(contentLayout);
     }
 
-    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
+    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter,ILogger logger) {
         super(activity, childRegistry, "navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
+        this.logger = logger;
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
+        this.pipNavigator = new PIPNavigator(activity, new ChildControllersRegistry(), new Presenter(activity, new Options()), new Options(), this.logger);
+        this.pipNavigator.setParentController(this);
+        this.pipNavigator.setPipListener(pipListener);
     }
 
     public void bindViews() {
@@ -162,11 +182,12 @@ public class Navigator extends ParentController {
         ViewController target = findController(componentId);
         if (target != null) {
             target.mergeOptions(options);
+        } else {
+            target = pipNavigator.findController(componentId);
+            if (target != null) {
+                target.mergeOptions(options);
+            }
         }
-    }
-
-    public void push(final String id, final ViewController viewController, CommandListener listener) {
-        applyOnStack(id, listener, stack -> stack.push(viewController, listener));
     }
 
     public void setStackRoot(String id, List<ViewController> children, CommandListener listener) {
@@ -175,6 +196,67 @@ public class Navigator extends ParentController {
 
     public void pop(String id, Options mergeOptions, CommandListener listener) {
         applyOnStack(id, listener, stack -> stack.pop(mergeOptions, listener));
+    }
+
+    public void push(final String id, final ViewController viewController, CommandListener listener) {
+        applyOnStack(id, listener, stack -> {
+            this.activeStack = stack;
+            stack.push(viewController, listener);
+        });
+    }
+
+    public void pushAsPIP(final String id, final ViewController viewController, CommandListener listener) {
+        applyOnStack(id, listener, stack -> {
+            setPIPHostId(stack.getId());
+            this.pipNavigator.pushPIP(viewController, false);
+            viewController.start();
+        });
+    }
+
+    public void switchToPIP(String id, Options mergeOptions, CommandListener listener) {
+        applyOnStack(id, listener, stack -> {
+            setPIPHostId(stack.getId());
+            this.pipNavigator.pushPIP(stack.switchToPIP(mergeOptions), false);
+        });
+    }
+
+    public void setPIPHostId(String id) {
+        this.pipHostId = id;
+    }
+
+    public void restorePIP(String id, CommandListener listener) {
+        applyOnStack(id, listener, stack -> this.pipNavigator.restorePIP(child -> stack.restorePIP(child, new CommandListener() {
+            @Override
+            public void onSuccess(String childId) {
+                activeStack = stack;
+                if (listener != null)
+                    listener.onSuccess(childId);
+            }
+
+            @Override
+            public void onError(String message) {
+                if (listener != null)
+                    listener.onError(message);
+            }
+        })));
+    }
+
+    public void closePIP(CommandListener listener) {
+        pipNavigator.closePIP(listener);
+    }
+
+    public void forceClosePIP() {
+        pipNavigator.closePIP(null);
+    }
+
+    @Override
+    public void removeOverlay(View view) {
+        super.removeOverlay(view);
+    }
+
+    public int dpToPx(int dp) {
+        float density = getActivity().getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
     }
 
     public void popToRoot(final String id, Options mergeOptions, CommandListener listener) {
@@ -239,7 +321,7 @@ public class Navigator extends ParentController {
             } else {
                 from.performOnParentStack(task);
             }
-        } else {
+        } else if (listener != null) {
             listener.onError("Failed to execute stack command. Stack " + fromId + " not found.");
         }
     }
@@ -250,6 +332,89 @@ public class Navigator extends ParentController {
         overlayManager.onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
     }
+
+    public void updatePIPState(PIPStates newPIPState) {
+        logger.log(Log.INFO, TAG, "pipState " + newPIPState);
+        switch (newPIPState) {
+            case MOUNT_START:
+                pipNavigator.pushPIP(activeStack.switchToPIP(null), false);
+                break;
+            case NATIVE_MOUNTED:
+                pipNavigator.updatePIPState(newPIPState);
+                break;
+            case CUSTOM_MOUNTED:
+                rootLayout.setVisibility(View.VISIBLE);
+                modalsLayout.setVisibility(View.VISIBLE);
+                overlaysLayout.setVisibility(View.VISIBLE);
+                pipNavigator.updatePIPState(newPIPState);
+                if (pipNavigator.wasDirectLaunchToNative()) {
+                    this.pipNavigator.restorePIP(child -> activeStack.restorePIP(child, new CommandListener() {
+                        @Override
+                        public void onSuccess(String childId) {
+                        }
+
+                        @Override
+                        public void onError(String message) {
+                        }
+                    }));
+                }
+                break;
+            case NATIVE_MOUNT_START:
+                rootLayout.setVisibility(View.INVISIBLE);
+                modalsLayout.setVisibility(View.INVISIBLE);
+                overlaysLayout.setVisibility(View.INVISIBLE);
+                pipNavigator.getView().setVisibility(View.VISIBLE);
+                if (getPipMode() == PIPStates.NOT_STARTED && activeStack != null) {
+                    pipNavigator.updatePIPState(newPIPState);
+                    pipNavigator.pushPIP(activeStack.switchToPIP(null), true);
+                } else {
+                    pipNavigator.updatePIPState(newPIPState);
+                }
+                break;
+            default:
+                pipNavigator.updatePIPState(newPIPState);
+                break;
+        }
+
+    }
+
+    public boolean shouldSwitchToPIPonHomePress() {
+        return (getPipMode() != PIPStates.NOT_STARTED || (this.activeStack != null && this.activeStack.shouldSwitchToPIP())) && modalStack.isEmpty() && overlayManager.isEmpty();
+    }
+
+    public boolean shouldSwitchToPIPonBackPress() {
+        return (this.activeStack != null && this.activeStack.shouldSwitchToPIP()) && modalStack.isEmpty() && overlayManager.isEmpty();
+    }
+
+    public void resetPIP() {
+        rootLayout.setVisibility(View.VISIBLE);
+        modalsLayout.setVisibility(View.VISIBLE);
+        overlaysLayout.setVisibility(View.VISIBLE);
+        forceClosePIP();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public PictureInPictureParams getPictureInPictureParams() {
+        return pipNavigator.getPictureInPictureParams();
+    }
+
+    private IPIPListener pipListener = new IPIPListener() {
+        @Override
+        public void onPIPStateChanged(PIPStates oldPIPState, PIPStates pipState) {
+
+        }
+
+        @Override
+        public void onCloseClick() {
+            closePIP(null);
+        }
+
+        @Override
+        public void onFullScreenClick() {
+            restorePIP(pipHostId, null);
+        }
+    };
+
 
     private boolean isRootNotCreated() {
         return view == null;
@@ -263,6 +428,10 @@ public class Navigator extends ParentController {
     @RestrictTo(RestrictTo.Scope.TESTS)
     CoordinatorLayout getOverlaysLayout() {
         return overlaysLayout;
+    }
+
+    public PIPStates getPipMode() {
+        return this.pipNavigator.getPipStates();
     }
 
     public void onHostPause() {

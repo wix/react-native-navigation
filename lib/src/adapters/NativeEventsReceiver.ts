@@ -10,6 +10,8 @@ import {
   ModalDismissedEvent,
   ScreenPoppedEvent,
   ModalAttemptedToDismissEvent,
+  PIPStateChangedEvent,
+  PIPButtonPressedEvent,
 } from '../interfaces/ComponentEvents';
 import {
   CommandCompletedEvent,
@@ -20,6 +22,7 @@ import {
 
 export class NativeEventsReceiver {
   private emitter: EventEmitter;
+
   constructor() {
     // NOTE: This try catch is workaround for integration tests
     // TODO: mock NativeEventEmitter in integration tests rather done adding try catch in source code
@@ -122,5 +125,17 @@ export class NativeEventsReceiver {
     callback: (event: ScreenPoppedEvent) => void
   ): EmitterSubscription {
     return this.emitter.addListener('RNN.ScreenPopped', callback);
+  }
+
+  public registerPIPStateChangedEventListener(
+    callback: (event: PIPStateChangedEvent) => void
+  ): EmitterSubscription {
+    return this.emitter.addListener('RNN.PIPStateChanged', callback);
+  }
+
+  public registerPIPButtonPressedEventListener(
+    callback: (event: PIPButtonPressedEvent) => void
+  ): EmitterSubscription {
+    return this.emitter.addListener('RNN.PIPButtonPressed', callback);
   }
 }

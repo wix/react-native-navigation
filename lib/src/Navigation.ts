@@ -294,6 +294,41 @@ export class NavigationRoot {
   }
 
   /**
+   * show pipComponent in pip Mode
+   */
+  public pushAsPIP<P>(componentId: string, component: Layout<P>): Promise<any> {
+    return this.commands.pushAsPIP(componentId, component);
+  }
+
+  /**
+   * close pip component
+   */
+  public closePIP(): Promise<any> {
+    return this.commands.closePIP();
+  }
+
+  /**
+   * Pop a component from the stack, regardless of it's position.
+   */
+  public switchToPIP(componentId: string, mergeOptions?: Options): Promise<any> {
+    return this.commands.switchToPIP(componentId, mergeOptions);
+  }
+
+  /**
+   * restore pip component
+   */
+  public restorePIP(componentId: string): Promise<any> {
+    return this.commands.restorePIP(componentId);
+  }
+
+  /**
+   * set pip host
+   */
+  public setPIPHostId(componentId: string) {
+    this.commands.setPIPHostId(componentId);
+  }
+
+  /**
    * Constants coming from native (synchronized call)
    */
   public constantsSync(): NavigationConstants {

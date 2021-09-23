@@ -532,6 +532,113 @@ describe('Commands', () => {
     });
   });
 
+  describe('switchToPIP', () => {
+    it('switch a component to PIP mode, passing componentId', () => {
+      uut.switchToPIP('theComponentId', {});
+      verify(
+        mockedNativeCommandsSender.switchToPIP(
+          'switchToPIP+UNIQUE_ID',
+          'theComponentId',
+          deepEqual({})
+        )
+      ).called();
+    });
+    it('switch a component to PIP mode, passing componentId and options', () => {
+      const options: Options = {
+        pipOptions: {
+          enabled: true,
+          actionButtons: [],
+          actionControlGroup: 'test',
+          customPIP: {
+            compact: {
+              height: 33,
+              width: 123,
+            },
+            expanded: {
+              height: 67,
+              width: 123,
+            },
+          },
+          aspectRatio: { numerator: 16, denominator: 9 },
+        },
+      };
+      uut.switchToPIP('theComponentId', options);
+      verify(
+        mockedNativeCommandsSender.switchToPIP('switchToPIP+UNIQUE_ID', 'theComponentId', options)
+      ).called();
+    });
+
+    it('switchToPIP returns a promise that resolves to componentId', async () => {
+      when(
+        mockedNativeCommandsSender.switchToPIP(anyString(), anyString(), anything())
+      ).thenResolve('theComponentId');
+      const result = await uut.switchToPIP('theComponentId', {});
+      expect(result).toEqual('theComponentId');
+    });
+  });
+
+  describe('setPIPHostId', () => {
+    it('close a component if its in in PIP mode', () => {
+      uut.setPIPHostId('theComponentId');
+      verify(mockedNativeCommandsSender.setPIPHostId('setPIPHostId+UNIQUE_ID')).called();
+    });
+  });
+
+  describe('closePIP', () => {
+    it('close a component if its in in PIP mode', () => {
+      uut.closePIP();
+      verify(mockedNativeCommandsSender.closePIP('closePIP+UNIQUE_ID')).called();
+    });
+  });
+
+  describe('restorePIP', () => {
+    it('restorePIP a component if its in in PIP mode, passing componentId', () => {
+      uut.restorePIP('theComponentId');
+      verify(
+        mockedNativeCommandsSender.restorePIP('restorePIP+UNIQUE_ID', 'theComponentId')
+      ).called();
+    });
+    it('restorePIP returns a promise that resolves to componentId', async () => {
+      when(mockedNativeCommandsSender.restorePIP(anyString(), anyString())).thenResolve(
+        'theComponentId'
+      );
+      const result = await uut.restorePIP('theComponentId');
+      expect(result).toEqual('theComponentId');
+    });
+  });
+
+  describe('pushAsPIP', () => {
+    it('resolves with the parsed layout', async () => {
+      when(mockedNativeCommandsSender.pushAsPIP(anyString(), anyString(), anything())).thenResolve(
+        'the resolved layout'
+      );
+      const result = await uut.pushAsPIP('theComponentId', {
+        component: { name: 'com.example.MyScreen' },
+      });
+      expect(result).toEqual('the resolved layout');
+    });
+
+    it('parses into correct layout node and sends to native', () => {
+      uut.pushAsPIP('theComponentId', { component: { name: 'com.example.MyScreen' } });
+      verify(
+        mockedNativeCommandsSender.pushAsPIP(
+          'pushAsPIP+UNIQUE_ID',
+          'theComponentId',
+          deepEqual({
+            type: 'Component',
+            id: 'Component+UNIQUE_ID',
+            data: {
+              name: 'com.example.MyScreen',
+              options: {},
+              passProps: undefined,
+            },
+            children: [],
+          })
+        )
+      ).called();
+    });
+  });
+
   describe('notifies commandsObserver', () => {
     let cb: any;
     let mockedLayoutTreeParser: LayoutTreeParser;

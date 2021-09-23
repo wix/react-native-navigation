@@ -12,7 +12,6 @@ import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.StatusBarUtils;
-import com.reactnativenavigation.views.component.ComponentLayout;
 
 import org.assertj.core.api.Java6Assertions;
 import org.junit.Test;

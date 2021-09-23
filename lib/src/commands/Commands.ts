@@ -213,6 +213,42 @@ export class Commands {
     this.commandsObserver.notify(CommandName.GetLaunchArgs, { commandId });
     return result;
   }
+
+  public switchToPIP(componentId: string, mergeOptions?: Options) {
+    const commandId = this.uniqueIdProvider.generate('switchToPIP');
+    const result = this.nativeCommandsSender.switchToPIP(commandId, componentId, mergeOptions);
+    this.commandsObserver.notify('switchToPIP', { commandId, componentId, mergeOptions });
+    return result;
+  }
+
+  public restorePIP(componentId: string) {
+    const commandId = this.uniqueIdProvider.generate('restorePIP');
+    const result = this.nativeCommandsSender.restorePIP(commandId, componentId);
+    this.commandsObserver.notify('restorePIP', { commandId, componentId });
+    return result;
+  }
+
+  public closePIP() {
+    const commandId = this.uniqueIdProvider.generate('closePIP');
+    const result = this.nativeCommandsSender.closePIP(commandId);
+    this.commandsObserver.notify('closePIP', { commandId });
+    return result;
+  }
+
+  public pushAsPIP(componentId: string, simpleApi: Layout) {
+    const input = cloneDeep(simpleApi);
+    const layout = this.layoutTreeParser.parse(input);
+    const commandId = this.uniqueIdProvider.generate('pushAsPIP');
+    this.layoutTreeCrawler.crawl(layout, CommandName.PushAsPIP);
+    const result = this.nativeCommandsSender.pushAsPIP(commandId, componentId, layout);
+    this.commandsObserver.notify('pushAsPIP', { commandId, componentId, layout });
+    return result;
+  }
+
+  public setPIPHostId(componentId: string) {
+    this.nativeCommandsSender.setPIPHostId(componentId);
+    this.commandsObserver.notify('setPIPHostId', {componentId });
+  }
 }
 
 function cloneLayout<L>(layout: L): L {
