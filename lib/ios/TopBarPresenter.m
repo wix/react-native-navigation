@@ -150,6 +150,7 @@
 
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
     UIImage *icon = [backButtonOptions.icon withDefault:nil];
+    UIImage *sfSymbol = [UIImage systemImageNamed:[backButtonOptions.sfSymbol withDefault:nil]];
     UIColor *color = [backButtonOptions.color withDefault:nil];
     NSString *title = [backButtonOptions.title withDefault:nil];
     BOOL showTitle = [backButtonOptions.showTitle withDefault:YES];
@@ -160,9 +161,18 @@
     UIBarButtonItem *backItem = [[RNNUIBarBackButtonItem alloc] initWithOptions:backButtonOptions];
     UINavigationItem *previousNavigationItem = previousViewControllerInStack.navigationItem;
 
-    icon = color ? [[icon withTintColor:color]
-                       imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                 : icon;
+
+    if (@available(iOS 13.0, *)) {
+        if (backButtonOptions.sfSymbol.hasValue) {
+            icon = color ? [sfSymbol imageWithTintColor:color renderingMode:UIImageRenderingModeAlwaysOriginal]
+                         : [sfSymbol imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        } else {
+            icon = color ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] : icon;
+        }
+    } else {
+        icon = color ? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] : icon;
+    }
+
     [self setBackIndicatorImage:icon withColor:color];
 
     title = title ? title : (previousNavigationItem.title ? previousNavigationItem.title : @"");

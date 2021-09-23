@@ -337,6 +337,11 @@ export interface OptionsTopBarBackButton {
    */
   icon?: ImageResource;
   /**
+   * SF Symbol to show as the back button
+   * #### (iOS 13+ specific)
+   */
+  sfSymbol?: string;
+  /**
    * Weither the back button is visible or not
    * @default true
    */
