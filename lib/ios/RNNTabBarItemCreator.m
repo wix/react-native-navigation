@@ -16,6 +16,14 @@
     UIColor *iconColor = [bottomTabOptions.iconColor withDefault:nil];
     UIColor *selectedIconColor = [bottomTabOptions.selectedIconColor withDefault:iconColor];
 
+    if (@available(iOS 13.0, *)) {
+        if (bottomTabOptions.sfSymbol.hasValue) {
+            icon = [UIImage systemImageNamed: [bottomTabOptions.sfSymbol withDefault:nil]];
+        }
+
+        selectedIcon = bottomTabOptions.sfSelectedSymbol.hasValue ? [UIImage systemImageNamed: [bottomTabOptions.sfSelectedSymbol withDefault:nil]] : icon;
+    }
+
     tabItem.image = [self getIconImage:icon withTint:iconColor];
     tabItem.selectedImage = [self getSelectedIconImage:selectedIcon
                                      selectedIconColor:selectedIconColor];
