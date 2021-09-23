@@ -28,8 +28,12 @@
 
 - (void)setTabBarBackgroundColor:(UIColor *)backgroundColor {
     [self setTabBarOpaqueBackground];
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers)
+    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
         childViewController.tabBarItem.standardAppearance.backgroundColor = backgroundColor;
+        if (@available(iOS 15.0, *)) {
+            childViewController.tabBarItem.scrollEdgeAppearance.backgroundColor = backgroundColor;
+        }
+    }
 }
 
 - (void)setTabBarTranslucent:(BOOL)translucent {
@@ -46,18 +50,31 @@
 }
 
 - (void)setTabBarTranslucentBackground {
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers)
+    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
         [childViewController.tabBarItem.standardAppearance configureWithDefaultBackground];
+        if (@available(iOS 15.0, *)) {
+            [childViewController.tabBarItem.scrollEdgeAppearance configureWithDefaultBackground];
+        }
+    }
 }
 
 - (void)setTabBarTransparentBackground {
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers)
+    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
         [childViewController.tabBarItem.standardAppearance configureWithTransparentBackground];
+        if (@available(iOS 15.0, *)) {
+            [childViewController.tabBarItem.scrollEdgeAppearance configureWithTransparentBackground];
+        }
+    }
+      
 }
 
 - (void)setTabBarOpaqueBackground {
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers)
+    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
         [childViewController.tabBarItem.standardAppearance configureWithOpaqueBackground];
+        if (@available(iOS 15.0, *)) {
+            [childViewController.tabBarItem.scrollEdgeAppearance configureWithOpaqueBackground];
+        }
+    }
 }
 
 @end

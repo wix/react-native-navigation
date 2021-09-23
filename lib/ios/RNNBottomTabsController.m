@@ -41,6 +41,10 @@
         self.tabBar.standardAppearance = [UITabBarAppearance new];
     }
 
+    if (@available(iOS 15.0, *)) {
+        self.tabBar.scrollEdgeAppearance = [UITabBarAppearance new];
+    }
+
     self.longPressRecognizer =
         [[UILongPressGestureRecognizer alloc] initWithTarget:self
                                                       action:@selector(handleLongPressGesture:)];
