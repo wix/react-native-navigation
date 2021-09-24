@@ -126,11 +126,13 @@ export class OptionsProcessor {
       if (value === null) {
         options[key] = 'NoColor';
       } else if (value instanceof Object) {
-        if ('dynamic' in value) {
-          options[key].dynamic.light = this.colorService.toNativeColor(value.dynamic.light);
-          options[key].dynamic.dark = this.colorService.toNativeColor(value.dynamic.dark);
-        } else if ('semantic' in value) {
+        if ('semantic' in value) {
           options[key] = value;
+        } else if ('dynamic' in value) {
+          options[key] = DynamicColorIOS({
+            light: this.colorService.toNativeColor(value.dynamic.light),
+            dark: this.colorService.toNativeColor(value.dynamic.dark)
+          });
         } else {
           options[key] = DynamicColorIOS({
             light: this.colorService.toNativeColor(value.light),
