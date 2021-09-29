@@ -49,12 +49,18 @@
     if ([self hasIndicator:child])
         [self remove:child];
 
+    UITabBarController *bottomTabs = [self getTabBarController:child];
+    int index = (int)[[bottomTabs childViewControllers] indexOfObject:child];
+    UIView *tabIcon = [bottomTabs getTabIcon:index];
+
+    if (!tabIcon) {
+        return;
+    }
+
     UIView *indicator = [self createIndicator:options];
     [child tabBarItem].tag = indicator.tag;
 
-    UITabBarController *bottomTabs = [self getTabBarController:child];
-    int index = (int)[[bottomTabs childViewControllers] indexOfObject:child];
-    [[bottomTabs getTabIcon:index] addSubview:indicator];
+    [tabIcon addSubview:indicator];
     [self applyConstraints:options badge:indicator tabBar:bottomTabs index:index];
 }
 
