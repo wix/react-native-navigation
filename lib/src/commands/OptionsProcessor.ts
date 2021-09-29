@@ -25,7 +25,7 @@ import {
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
-import { Platform, DynamicColorIOS } from 'react-native';
+import { Platform, DynamicColorIOS, ColorValue } from 'react-native';
 
 export class OptionsProcessor {
   constructor(
@@ -130,13 +130,13 @@ export class OptionsProcessor {
           options[key] = value;
         } else if ('dynamic' in value) {
           options[key] = DynamicColorIOS({
-            light: this.colorService.toNativeColor(value.dynamic.light),
-            dark: this.colorService.toNativeColor(value.dynamic.dark)
+            light: this.colorService.toNativeColor(value.dynamic.light) as ColorValue,
+            dark: this.colorService.toNativeColor(value.dynamic.dark) as ColorValue,
           });
         } else {
           options[key] = DynamicColorIOS({
-            light: this.colorService.toNativeColor(value.light),
-            dark: this.colorService.toNativeColor(value.dark)
+            light: this.colorService.toNativeColor(value.light) as ColorValue,
+            dark: this.colorService.toNativeColor(value.dark) as ColorValue
           });
         }
       } else {
