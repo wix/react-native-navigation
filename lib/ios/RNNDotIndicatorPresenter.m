@@ -54,7 +54,7 @@
 
     UITabBarController *bottomTabs = [self getTabBarController:child];
     int index = (int)[[bottomTabs childViewControllers] indexOfObject:child];
-    [[bottomTabs getTabView:index] addSubview:indicator];
+    [[bottomTabs getTabIcon:index] addSubview:indicator];
     [self applyConstraints:options badge:indicator tabBar:bottomTabs index:index];
 }
 
@@ -92,7 +92,7 @@
 - (UIView *)getCurrentIndicator:(UIViewController *)child {
     UITabBarController *bottomTabs = [self getTabBarController:child];
     int tabIndex = (int)[[bottomTabs childViewControllers] indexOfObject:child];
-    return [[bottomTabs getTabView:tabIndex] viewWithTag:[child tabBarItem].tag];
+    return [[bottomTabs getTabIcon:tabIndex] viewWithTag:[child tabBarItem].tag];
 }
 
 - (BOOL)hasIndicator:(UIViewController *)child {
