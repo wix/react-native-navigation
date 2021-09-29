@@ -92,7 +92,7 @@
         return NO;
     UIView *currentIndicator = [self getCurrentIndicator:child];
 
-    return [[currentIndicator backgroundColor] isEqual:[options.color withDefault:[UIColor redColor]]] && [[currentIndicator widthAnchor] isEqual:[options.size withDefault:@6]];
+    return [[currentIndicator backgroundColor] isEqual:[options.color withDefault:[UIColor redColor]]];
 }
 
 - (UIView *)getCurrentIndicator:(UIViewController *)child {
