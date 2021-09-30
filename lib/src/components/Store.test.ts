@@ -23,6 +23,19 @@ describe('Store', () => {
     expect(uut.getPropsForId('component1')).toEqual({});
   });
 
+  test('update props with callback', done => {
+    function callback () {
+      try {
+        expect(true).toBe(true);
+        done();
+      } catch (error) {
+        done(error);
+      }
+    }
+
+    uut.updateProps('component1', { someProp: 'someValue' }, callback);
+  });
+
   it('holds original components classes by componentName', () => {
     const MyWrappedComponent = () => class MyComponent extends React.Component {};
     uut.setComponentClassForName('example.mycomponent', MyWrappedComponent);
