@@ -188,8 +188,8 @@ export class NavigationRoot {
   /**
    * Update a mounted component's props
    */
-  public updateProps(componentId: string, props: object) {
-    this.commands.updateProps(componentId, props);
+  public updateProps(componentId: string, props: object, callback?: () => void) {
+    this.commands.updateProps(componentId, props, callback);
   }
 
   /**
