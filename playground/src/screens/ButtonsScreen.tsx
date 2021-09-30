@@ -7,6 +7,7 @@ import Navigation from '../services/Navigation';
 import Screens from './Screens';
 import Colors from '../commons/Colors';
 import testIDs from '../testIDs';
+import { View, Text, Image } from 'react-native';
 
 const {
   PUSH_BTN,
@@ -93,6 +94,13 @@ export default class ButtonOptions extends NavigationComponent {
   render() {
     return (
       <Root componentId={this.props.componentId}>
+
+        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'  }}>
+          <Text ellipsizeMode={'tail'} numberOfLines={1}>Ast elit et nulla tempor dolore minim est ea nostrud et eiusmod aliquip</Text>
+          <Image
+            source={require('../../img/two.png')}
+          />
+        </View>
         <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
         <Button
           label="Show Lifecycle button"
