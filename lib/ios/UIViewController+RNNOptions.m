@@ -98,6 +98,13 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     if (@available(iOS 13.0, *)) {
         self.tabBarItem.standardAppearance.stackedLayoutAppearance.normal.badgeBackgroundColor =
             badgeColor;
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+        if (@available(iOS 15.0, *)) {
+            self.tabBarItem.scrollEdgeAppearance.stackedLayoutAppearance.normal
+                .badgeBackgroundColor = badgeColor;
+        }
+#endif
     } else {
         self.tabBarItem.badgeColor = badgeColor;
     }
