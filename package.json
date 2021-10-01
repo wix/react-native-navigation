@@ -107,6 +107,7 @@
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
+    "react-native-redash": "14.2.4",
     "react-native-ui-lib": "5.11.0",
     "react-redux": "5.x.x",
     "react-test-renderer": "16.13.1",
